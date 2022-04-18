@@ -19,6 +19,8 @@
     "paths": {
       "modules": ["modules/*"],
       "components": ["components/*"],
+      "state": ["state/*"],
+      "shared": ["shared/*"]
     }
   },
   "include": ["src"]

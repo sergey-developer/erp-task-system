@@ -56,7 +56,9 @@
         "cacheStrategy": "never",
         "extraAliases": [
           "modules",
-          "components"
+          "components",
+          "state",
+          "shared"
         ],
         "ignoredAliases": [],
         "bottomAliases": []

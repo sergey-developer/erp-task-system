@@ -7,6 +7,8 @@ module.exports = {
     alias: {
       modules: resolvePath('./src/modules'),
       components: resolvePath('./src/components'),
+      state: resolvePath('./src/state'),
+      shared: resolvePath('./src/shared'),
     },
   },
 }
