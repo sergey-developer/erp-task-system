@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
   },
   "dependencies": {
+    "@craco/craco": "7.0.0-alpha.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -25,12 +26,8 @@
   "devDependencies": {
     "husky": "^7.0.4",
     "lint-staged": "^12.3.8",
-    "prettier": "^2.6.2"
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx,json}": [
-      "prettier --write"
-    ]
+    "prettier": "^2.6.2",
+    "prettier-plugin-sorted": "^2.0.0"
   },
   "eslintConfig": {
     "extends": [
@@ -38,9 +35,33 @@
       "react-app/jest"
     ]
   },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,json}": [
+      "prettier --write"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
+    }
+  },
+  "importSort": {
+    ".ts, .tsx": {
+      "options": {
+        "cacheStrategy": "never",
+        "extraAliases": [
+          "modules",
+          "components"
+        ],
+        "ignoredAliases": [],
+        "bottomAliases": []
+      }
+    }
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^modules(.*)$": "<rootDir>/src/modules/$1",
+      "^components(.*)$": "<rootDir>/src/components/$1"
     }
   },
   "browserslist": {
