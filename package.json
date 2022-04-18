@@ -55,6 +55,7 @@
       "options": {
         "cacheStrategy": "never",
         "extraAliases": [
+          "configs",
           "modules",
           "components",
           "state",
@@ -67,6 +68,7 @@
   },
   "jest": {
     "moduleNameMapper": {
+      "^configs(.*)$": "<rootDir>/src/configs/$1",
       "^modules(.*)$": "<rootDir>/src/modules/$1",
       "^components(.*)$": "<rootDir>/src/components/$1",
       "^state(.*)$": "<rootDir>/src/state/$1",

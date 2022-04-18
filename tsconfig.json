@@ -17,6 +17,7 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
+      "configs": ["configs/*"],
       "modules": ["modules/*"],
       "components": ["components/*"],
       "state": ["state/*"],
