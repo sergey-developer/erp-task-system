@@ -1,0 +1,8 @@
+{
+  "semi": false,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "trailingComma": "all",
+  "plugins": ["prettier-plugin-sorted"],
+  "printWidth": 75
+}
