@@ -1,1 +1,1 @@
-export { default as envConfig } from './env.config'
+export { default as env } from './env.config'

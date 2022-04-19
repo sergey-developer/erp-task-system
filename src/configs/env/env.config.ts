@@ -1,37 +1,60 @@
-import _reduce from 'lodash/reduce'
+import developmentConfig, { DevelopmentKeysUnion } from './development.config'
+import { BaseConfig, EnvUnion, ParsedValueUnion } from './interfaces'
+import productionConfig, { ProductionKeysUnion } from './production.config'
+import testConfig, { TestKeysUnion } from './test.config'
 
-import getVars from './utils/getVars'
-import sanitizeVars, { SanitizedVars } from './utils/sanitizeVars'
+type Configs = Record<EnvUnion, BaseConfig>
 
-const envVars = getVars()
-const sanitizedEnvVars = sanitizeVars(envVars)
-
-type EnvConfig = {
-  env: SanitizedVars['NODE_ENV']
-  apiUrl: SanitizedVars['REACT_APP_API_URL']
+const configs: Configs = {
+  development: developmentConfig,
+  production: productionConfig,
+  test: testConfig,
 }
 
-const configKeysMap: Record<keyof SanitizedVars, keyof EnvConfig> = {
-  NODE_ENV: 'env',
-  REACT_APP_API_URL: 'apiUrl',
+type ConfigKeysUnion =
+  | DevelopmentKeysUnion
+  | ProductionKeysUnion
+  | TestKeysUnion
+
+type ValidatedConfig = Record<string, ParsedValueUnion>
+
+interface IEnvConfig {
+  get<T extends ParsedValueUnion>(key: ConfigKeysUnion): T
 }
 
-const config = _reduce(
-  Object.keys(sanitizedEnvVars),
-  (acc, rawKey) => {
-    const envKey = rawKey as keyof SanitizedVars
-    const value = sanitizedEnvVars[envKey]
-    const key = configKeysMap[envKey]
+class EnvConfig implements IEnvConfig {
+  private static instance: EnvConfig
+  private readonly config: ValidatedConfig
 
-    if (acc[key]) {
-      throw new Error(`Environment variable "${envKey}" is set twice`)
-    } else {
-      acc[key] = value
+  private validate = (config: BaseConfig): ValidatedConfig => {
+    for (const [key, value] of Object.entries(config)) {
+      if (value === undefined) {
+        throw new Error(`Missing key "${key}" in process.env`)
+      }
     }
 
-    return acc
-  },
-  {} as EnvConfig,
-)
+    return config as ValidatedConfig
+  }
+
+  private constructor(configs: Configs) {
+    const env = process.env.NODE_ENV
+    const rawConfig = configs[env] || configs.development
+    this.config = this.validate(rawConfig)
+  }
+
+  public static getInstance = (configs: Configs): EnvConfig => {
+    if (!EnvConfig.instance) {
+      EnvConfig.instance = new EnvConfig(configs)
+    }
+
+    return EnvConfig.instance
+  }
+
+  public get<T extends ParsedValueUnion>(key: ConfigKeysUnion): T {
+    return this.config[key] as T
+  }
+}
+
+const config = EnvConfig.getInstance(configs)
 
 export default config
