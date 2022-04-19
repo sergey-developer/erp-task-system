@@ -19,6 +19,7 @@ type ConfigKeysUnion =
 type ValidatedConfig = Record<string, ParsedValueUnion>
 
 interface IEnvConfig {
+  isDevelopment: boolean
   get<T extends ParsedValueUnion>(key: ConfigKeysUnion): T
 }
 
@@ -39,8 +40,12 @@ class EnvConfig implements IEnvConfig {
   private constructor(configs: Configs) {
     const env = process.env.NODE_ENV
     const rawConfig = configs[env] || configs.development
+
     this.config = this.validate(rawConfig)
+    this.isDevelopment = env === 'development'
   }
+
+  public readonly isDevelopment: boolean
 
   public static getInstance = (configs: Configs): EnvConfig => {
     if (!EnvConfig.instance) {
