@@ -1,8 +1,8 @@
 import commonConfig, { CommonKeysUnion } from './common.config'
-import { BaseConfig } from './interfaces'
+import { ConfigType } from './interfaces'
 
 export type ProductionKeysUnion = CommonKeysUnion
 
-const productionConfig: BaseConfig = commonConfig
+const productionConfig: ConfigType = commonConfig
 
 export default productionConfig

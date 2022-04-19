@@ -4,4 +4,4 @@ export type EnvUnion = 'development' | 'production' | 'test'
 
 export type ParsedValueUnion = string | number | boolean
 
-export type BaseConfig = Record<string, MaybeUndefined<ParsedValueUnion>>
+export type ConfigType = Record<string, MaybeUndefined<ParsedValueUnion>>
