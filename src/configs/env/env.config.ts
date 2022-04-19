@@ -1,11 +1,11 @@
 import developmentConfig, { DevelopmentKeysUnion } from './development.config'
-import { BaseConfig, EnvUnion, ParsedValueUnion } from './interfaces'
+import { ConfigType, EnvUnion, ParsedValueUnion } from './interfaces'
 import productionConfig, { ProductionKeysUnion } from './production.config'
 import testConfig, { TestKeysUnion } from './test.config'
 
-type Configs = Record<EnvUnion, BaseConfig>
+type ConfigsType = Record<EnvUnion, ConfigType>
 
-const configs: Configs = {
+const configs: ConfigsType = {
   development: developmentConfig,
   production: productionConfig,
   test: testConfig,
@@ -16,7 +16,7 @@ type ConfigKeysUnion =
   | ProductionKeysUnion
   | TestKeysUnion
 
-type ValidatedConfig = Record<string, ParsedValueUnion>
+type ValidatedConfigType = Record<string, ParsedValueUnion>
 
 interface IEnvConfig {
   isDevelopment: boolean
@@ -25,19 +25,19 @@ interface IEnvConfig {
 
 class EnvConfig implements IEnvConfig {
   private static instance: EnvConfig
-  private readonly config: ValidatedConfig
+  private readonly config: ValidatedConfigType
 
-  private validate = (config: BaseConfig): ValidatedConfig => {
+  private validate = (config: ConfigType): ValidatedConfigType => {
     for (const [key, value] of Object.entries(config)) {
       if (value === undefined) {
         throw new Error(`Missing key "${key}" in process.env`)
       }
     }
 
-    return config as ValidatedConfig
+    return config as ValidatedConfigType
   }
 
-  private constructor(configs: Configs) {
+  private constructor(configs: ConfigsType) {
     const env = process.env.NODE_ENV
     const rawConfig = configs[env] || configs.development
 
@@ -47,7 +47,7 @@ class EnvConfig implements IEnvConfig {
 
   public readonly isDevelopment: boolean
 
-  public static getInstance = (configs: Configs): EnvConfig => {
+  public static getInstance = (configs: ConfigsType): EnvConfig => {
     if (!EnvConfig.instance) {
       EnvConfig.instance = new EnvConfig(configs)
     }

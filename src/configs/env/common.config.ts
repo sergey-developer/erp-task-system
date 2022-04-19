@@ -1,8 +1,8 @@
-import { BaseConfig } from './interfaces'
+import { ConfigType } from './interfaces'
 
 export type CommonKeysUnion = 'env' | 'apiUrl'
 
-const commonConfig: BaseConfig = {
+const commonConfig: ConfigType = {
   env: process.env.NODE_ENV,
   apiUrl: process.env.REACT_APP_API_URL,
 }
