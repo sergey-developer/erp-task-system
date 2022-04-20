@@ -11,6 +11,7 @@
   "dependencies": {
     "@craco/craco": "7.0.0-alpha.3",
     "antd": "^4.19.5",
+    "axios": "^0.26.1",
     "lodash": "^4.17.21",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
