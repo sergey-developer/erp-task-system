@@ -1,7 +1,12 @@
-import axios from 'axios'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-import { config } from 'configs/api'
+import { env } from 'configs/env'
 
-const api = axios.create(config)
+export const api = createApi({
+  baseQuery: fetchBaseQuery({
+    baseUrl: env.get<string>('apiUrl'),
+  }),
+  endpoints: () => ({}),
+})
 
 export default api
