@@ -21,7 +21,8 @@
       "modules": ["modules"],
       "components": ["components"],
       "state": ["state"],
-      "shared": ["shared"]
+      "shared": ["shared"],
+      "app": ["app"]
     }
   },
   "include": ["src"]
