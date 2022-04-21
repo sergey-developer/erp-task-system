@@ -17,11 +17,11 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "configs": ["configs/*"],
-      "modules": ["modules/*"],
-      "components": ["components/*"],
-      "state": ["state/*"],
-      "shared": ["shared/*"]
+      "configs": ["configs"],
+      "modules": ["modules"],
+      "components": ["components"],
+      "state": ["state"],
+      "shared": ["shared"]
     }
   },
   "include": ["src"]

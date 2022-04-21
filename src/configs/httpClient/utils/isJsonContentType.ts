@@ -1,5 +1,5 @@
 const isJsonContentType = (type: string): boolean => {
-  return type === 'application/json'
+  return type.includes('application/json')
 }
 
 export default isJsonContentType
