@@ -1,8 +1,24 @@
 import path from 'path'
+const CracoLessPlugin = require('craco-less')
 
 const resolvePath = (p: string) => path.resolve(__dirname, p)
 
 module.exports = {
+  plugins: [
+    {
+      plugin: CracoLessPlugin,
+      options: {
+        lessLoaderOptions: {
+          lessOptions: {
+            modifyVars: {
+              '@layout-header-background': '#FFFFFF',
+            },
+            javascriptEnabled: true,
+          },
+        },
+      },
+    },
+  ],
   webpack: {
     alias: {
       configs: resolvePath('./src/configs'),
