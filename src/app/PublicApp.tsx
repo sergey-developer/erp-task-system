@@ -1,12 +1,12 @@
 import React, { FC } from 'react'
 
-import PublicLayout from 'components/Layout/PublicLayout'
+import Layout from 'components/Layout/PublicLayout'
 
 const PublicApp: FC = () => {
   return (
-    <PublicLayout>
+    <Layout>
       <span>Public App</span>
-    </PublicLayout>
+    </Layout>
   )
 }
 

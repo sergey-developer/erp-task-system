@@ -19,22 +19,24 @@ enum NavItemKeysEnum {
   AdminPanel = 'admin-panel',
 }
 
+const defaultMenuKeys = [NavItemKeysEnum.Requests]
+
 const PrivateHeader: FC = () => {
   const items: MenuProps['items'] = useMemo(
     () => [
       {
         label: 'Заявки',
-        icon: <UnorderedListOutlined style={{ fontSize: '18px' }} />,
+        icon: <UnorderedListOutlined />,
         key: NavItemKeysEnum.Requests,
       },
       {
         label: 'Рабочие группы',
-        icon: <TeamOutlined style={{ fontSize: '18px' }} />,
+        icon: <TeamOutlined />,
         key: NavItemKeysEnum.WorkingGroups,
       },
       {
         label: 'Админ-панель',
-        icon: <ToolOutlined style={{ fontSize: '18px' }} />,
+        icon: <ToolOutlined />,
         key: NavItemKeysEnum.AdminPanel,
       },
     ],
@@ -51,14 +53,14 @@ const PrivateHeader: FC = () => {
         <Col span={18}>
           <Menu
             mode='horizontal'
-            defaultSelectedKeys={[NavItemKeysEnum.Requests]}
+            defaultSelectedKeys={defaultMenuKeys}
             items={items}
           />
         </Col>
 
         <Col span={2}>
           <Row justify='end' align='middle'>
-            <BellOutlined style={{ fontSize: '18px' }} />
+            <BellOutlined />
             <Avatar size='large' className='margin-l-20' />
           </Row>
         </Col>
