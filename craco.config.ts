@@ -11,7 +11,10 @@ module.exports = {
         lessLoaderOptions: {
           lessOptions: {
             modifyVars: {
+              '@font-family': 'Roboto',
+              '@layout-header-padding': '0px 40px',
               '@layout-header-background': '#FFFFFF',
+              '@layout-header-height': '60px',
             },
             javascriptEnabled: true,
           },
