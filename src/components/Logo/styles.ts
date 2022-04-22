@@ -1,0 +1,12 @@
+import { Typography } from 'antd'
+
+import styled from 'styled-components'
+
+export const StyledTitle = styled(Typography.Title)`
+  display: inline-block;
+  cursor: pointer;
+
+  &&& {
+    margin-bottom: 0;
+  }
+`
