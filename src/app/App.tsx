@@ -2,10 +2,8 @@ import './App.less'
 
 import React, { FC } from 'react'
 
-import PrivateApp from './PrivateApp'
-
 const App: FC = () => {
-  return <PrivateApp />
+  return <div>App</div>
 }
 
 export default App
