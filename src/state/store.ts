@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import { env } from 'configs/env'
-import api from 'shared/services/api.service'
+import { api } from 'shared/services/api'
 
 import { rootReducer } from './rootReducer'
 
