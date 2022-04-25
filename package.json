@@ -69,7 +69,8 @@
           "components",
           "state",
           "shared",
-          "app"
+          "app",
+          "styles"
         ],
         "ignoredAliases": [],
         "bottomAliases": []
