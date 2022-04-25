@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from 'axios'
 
 import { env } from 'configs/env'
 
+import paramsSerializer from './paramsSerializer'
 import {
   toJsonTransformer,
   toSnakeCaseTransformer,
@@ -18,6 +19,7 @@ const config: AxiosRequestConfig = {
   },
   transformRequest: [toJsonTransformer, toSnakeCaseTransformer],
   transformResponse: [fromSnakeCaseTransformer, fromJsonTransformer],
+  paramsSerializer,
 }
 
 export default config
