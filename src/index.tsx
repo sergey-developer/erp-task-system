@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { Provider as StoreProvider } from 'react-redux'
 
 import App from 'app/App'
+import ErrorBoundary from 'components/ErrorBoundary'
 import store from 'state/store'
 import { ThemeProvider } from 'styled-components'
 import theme from 'styles/theme'
@@ -14,7 +15,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <StoreProvider store={store}>
     <ThemeProvider theme={theme}>
-      <App />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </ThemeProvider>
   </StoreProvider>,
 )
