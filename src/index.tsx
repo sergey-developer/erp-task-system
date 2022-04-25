@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { Provider } from 'react-redux'
+import { Provider as StoreProvider } from 'react-redux'
 
 import App from 'app/App'
 import store from 'state/store'
@@ -12,11 +12,11 @@ import reportWebVitals from './reportWebVitals'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
-  <Provider store={store}>
+  <StoreProvider store={store}>
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
-  </Provider>,
+  </StoreProvider>,
 )
 
 // If you want to start measuring performance in your app, pass a function
