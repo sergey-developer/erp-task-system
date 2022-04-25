@@ -2,16 +2,22 @@ import { AxiosRequestConfig } from 'axios'
 
 import { env } from 'configs/env'
 
-import { toJsonTransformer } from './requestTransformers'
-import { fromJsonTransformer } from './responseTransformers'
+import {
+  toJsonTransformer,
+  toSnakeCaseTransformer,
+} from './requestTransformers'
+import {
+  fromJsonTransformer,
+  fromSnakeCaseTransformer,
+} from './responseTransformers'
 
 const config: AxiosRequestConfig = {
   baseURL: env.get<string>('apiUrl'),
   headers: {
     'Content-Type': 'application/json',
   },
-  transformRequest: [toJsonTransformer],
-  transformResponse: [fromJsonTransformer],
+  transformRequest: [toJsonTransformer, toSnakeCaseTransformer],
+  transformResponse: [fromSnakeCaseTransformer, fromJsonTransformer],
 }
 
 export default config
