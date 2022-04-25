@@ -1,9 +1,9 @@
 import { FC } from 'react'
 
-import { StyledTitle } from './styles'
+import { TitleStyled } from './styles'
 
 const Logo: FC = () => {
-  return <StyledTitle level={4}>Obermeister-ITSM</StyledTitle>
+  return <TitleStyled level={4}>Obermeister-ITSM</TitleStyled>
 }
 
 export default Logo

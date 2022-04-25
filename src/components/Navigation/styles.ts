@@ -1,15 +1,13 @@
-import { Menu as BaseMenu } from 'antd'
+import { Menu } from 'antd'
 
 import styled from 'styled-components'
 
-const Menu = styled(BaseMenu)`
+export const MenuStyled = styled(Menu)`
   border-bottom: 0;
-  color: #4f4f4f;
+  color: ${({ theme }) => theme.colors.gray2};
 
   .ant-menu-item {
     display: flex;
     align-items: center;
   }
 `
-
-export default Menu

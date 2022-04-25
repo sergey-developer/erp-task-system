@@ -22,7 +22,8 @@
       "components": ["components"],
       "state": ["state"],
       "shared": ["shared"],
-      "app": ["app"]
+      "app": ["app"],
+      "styles": ["styles"]
     }
   },
   "include": ["src"]

@@ -4,6 +4,8 @@ import { Provider } from 'react-redux'
 
 import App from 'app/App'
 import store from 'state/store'
+import { ThemeProvider } from 'styled-components'
+import theme from 'styles/theme'
 
 import reportWebVitals from './reportWebVitals'
 
@@ -11,7 +13,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <Provider store={store}>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </Provider>,
 )
 

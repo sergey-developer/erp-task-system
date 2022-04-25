@@ -1,15 +1,16 @@
 import {
-  BellOutlined,
   TeamOutlined,
   ToolOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons'
-import { Avatar, Col, Layout, Row } from 'antd'
+import { Col, Layout, Row } from 'antd'
 import { MenuProps } from 'antd/lib/menu'
 import React, { FC, useMemo } from 'react'
 
+import Avatar from 'components/Avatar'
 import Logo from 'components/Logo'
-import Menu from 'components/Menu'
+import Navigation from 'components/Navigation'
+import NotificationCounter from 'components/NotificationCounter'
 
 const { Header } = Layout
 
@@ -19,29 +20,29 @@ enum NavItemKeysEnum {
   AdminPanel = 'admin-panel',
 }
 
-const defaultMenuKeys = [NavItemKeysEnum.Requests]
+const defaultSelectedMenuKeys = [NavItemKeysEnum.Requests]
+
+const defaultMenuItems: MenuProps['items'] = [
+  {
+    label: 'Заявки',
+    icon: <UnorderedListOutlined />,
+    key: NavItemKeysEnum.Requests,
+  },
+  {
+    label: 'Рабочие группы',
+    icon: <TeamOutlined />,
+    key: NavItemKeysEnum.WorkingGroups,
+  },
+]
 
 const PrivateHeader: FC = () => {
-  const items: MenuProps['items'] = useMemo(
-    () => [
-      {
-        label: 'Заявки',
-        icon: <UnorderedListOutlined />,
-        key: NavItemKeysEnum.Requests,
-      },
-      {
-        label: 'Рабочие группы',
-        icon: <TeamOutlined />,
-        key: NavItemKeysEnum.WorkingGroups,
-      },
-      {
-        label: 'Админ-панель',
-        icon: <ToolOutlined />,
-        key: NavItemKeysEnum.AdminPanel,
-      },
-    ],
-    [],
-  )
+  const menuItems: MenuProps['items'] = useMemo(() => {
+    return defaultMenuItems.concat({
+      label: 'Админ-панель',
+      icon: <ToolOutlined />,
+      key: NavItemKeysEnum.AdminPanel,
+    })
+  }, [])
 
   return (
     <Header>
@@ -51,17 +52,17 @@ const PrivateHeader: FC = () => {
         </Col>
 
         <Col span={18}>
-          <Menu
-            mode='horizontal'
-            defaultSelectedKeys={defaultMenuKeys}
-            items={items}
+          <Navigation
+            defaultSelectedKeys={defaultSelectedMenuKeys}
+            items={menuItems}
           />
         </Col>
 
         <Col span={2}>
           <Row justify='end' align='middle'>
-            <BellOutlined />
-            <Avatar size='large' className='margin-l-20' />
+            <NotificationCounter />
+
+            <Avatar className='margin-l-20' />
           </Row>
         </Col>
       </Row>
