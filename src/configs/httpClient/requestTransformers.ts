@@ -1,16 +1,14 @@
 import { AxiosRequestTransformer } from 'axios'
-import isArray from 'lodash/isArray'
-import isPlainObject from 'lodash/isPlainObject'
+import { decamelize } from 'humps'
 
-import { getContentType, isJsonContentType } from './utils'
+import { hasJsonContentType } from './utils'
 
 const toJsonTransformer: AxiosRequestTransformer = (data, headers) => {
-  const contentType = getContentType(headers) as string
-
-  return isJsonContentType(contentType) &&
-    (isPlainObject(data) || isArray(data))
-    ? JSON.stringify(data)
-    : data
+  return hasJsonContentType(headers) ? JSON.stringify(data) : data
 }
 
-export { toJsonTransformer }
+const toSnakeCaseTransformer: AxiosRequestTransformer = (data, headers) => {
+  return hasJsonContentType(headers) ? decamelize(data) : data
+}
+
+export { toJsonTransformer, toSnakeCaseTransformer }
