@@ -1,2 +1,1 @@
-export { default as getContentType } from './getContentType'
-export { default as isJsonContentType } from './isJsonContentType'
+export { default as hasJsonContentType } from './hasJsonContentType'
