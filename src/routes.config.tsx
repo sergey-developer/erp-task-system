@@ -3,19 +3,15 @@ import PublicLayout from './components/Layout/PublicLayout';
 import PrivateLayout from './components/Layout/PrivateLayout';
 
 /** компоненты */
-const SignInPage = React.lazy(() => import('./Pages/SignIn'));
-const ForgotPassword = React.lazy(() => import('./Pages/ForgotPassword'));
-const NotFound = React.lazy(() => import('./Pages/NotFound'));
-
-const SomePrivatePage = React.lazy(() => import('./Pages/SomePrivatePage'));
-
+const SignInPage = React.lazy(() => import('./modules/auth/SignInPage'));
+const ForgotPassword = React.lazy(() => import('./modules/auth/ForgotPasswordPage'));
+const NotFound = React.lazy(() => import('./components/NotFound'));
 
 export enum Routes {
   index = '/',
-  signIn = 'signIn',
-  forgotPassword = 'forgotPassword',
-  recoveryPassword = 'recoveryPassword',
-  somePrivatePage = 'somePrivatePage',
+  signIn = '/signIn',
+  forgotPassword = '/forgotPassword',
+  recoveryPassword = '/recoveryPassword',
   notFound = '*',
 }
 
@@ -54,14 +50,6 @@ export const publicRoutesConfig: RouteConfig[] = [
 ];
 
 export const privateRoutesConfig: RouteConfig[] = [
-  {
-    name: Routes.somePrivatePage,
-    key: Routes.somePrivatePage,
-    path: Routes.somePrivatePage,
-    element: SomePrivatePage,
-    layout: PrivateLayout,
-    default: true,
-  },
   {
     name: Routes.notFound,
     key: Routes.notFound,

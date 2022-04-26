@@ -14,7 +14,7 @@ function useMockAuth () {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-      setIsAuth(true);
+      setIsAuth(false);
     }, 1000);
   }, []);
 
@@ -28,7 +28,6 @@ const App: FC = () => {
 
   const { isLoading, isAuth } = useMockAuth();
 
-  /** берем делаем выбор что именно publicRoutesConfig || privateRoutesConfig */
   const routesConfig = isAuth ? privateRoutesConfig : publicRoutesConfig;
   const defaultRoute = routesConfig.find(route => route.default);
 

@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { Button, Card, Form, Typography } from 'antd'
-import { Link } from 'react-router-dom'
+import { Card, Form, Typography } from 'antd'
 
 export const CardStyled = styled(Card)`
   &.ant-card {
@@ -10,7 +9,7 @@ export const CardStyled = styled(Card)`
   }
 `;
 
-export const TitleStyledLevelFirst = styled(Typography.Title)`
+export const PageTitleStyled = styled(Typography.Title)`
   &.ant-typography {
     color: ${props => props.theme.colors.blue1};
     font-size: 20px;
@@ -20,7 +19,7 @@ export const TitleStyledLevelFirst = styled(Typography.Title)`
   }
 `;
 
-export const TitleStyledLevelTwo = styled(Typography.Title)`
+export const FormTitleStyled = styled(Typography.Title)`
   &.ant-typography {
     font-size: 16px;
     font-weight: 600;
@@ -37,9 +36,6 @@ export const FormItemStyled = styled(Form.Item)`
     > label {
       color: ${props => props.theme.colors.gray3};
       font-size: 12px;
-      &.ant-form-item-required:before {
-        display: none;
-      }
     }
   }
   .ant-form-item-explain-error {
@@ -59,20 +55,7 @@ export const FormItemStyled = styled(Form.Item)`
 
 export const FooterStyled = styled.div`
   display: flex;
+  flex-direction: column;
   margin: 26px 0 42px;
   gap: 12px;
-  flex-wrap: wrap;
-  
-`;
-
-export const ButtonStyled = styled(Button)`
-  width: 100%;
-  background-color: ${props => props.theme.colors.blue1};
-  border-radius: 4px;
-  height: 38px;
-`;
-
-export const LinkStyled = styled(Link)`
-  color: ${props => props.theme.colors.blue1};
-  margin: 0 auto;
 `;

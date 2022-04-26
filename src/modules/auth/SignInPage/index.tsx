@@ -1,18 +1,17 @@
-import React from 'react'
-import { Form, Input } from 'antd';
+import React, { FC } from 'react'
+import { Form, Input, Button } from 'antd';
 
 import {
   CardStyled,
-  LinkStyled,
-  ButtonStyled,
   FooterStyled,
   FormItemStyled,
-  TitleStyledLevelFirst,
-  TitleStyledLevelTwo,
+  PageTitleStyled,
+  FormTitleStyled,
 } from './styles'
+import { Routes } from '../../../routes.config'
+import { Link } from 'react-router-dom'
 
-/** Страница авторизации */
-const SignIn = () => {
+const SignIn:FC = () => {
 
   const onFinish = (values: any) => {
     console.log('Success:', values)
@@ -22,23 +21,19 @@ const SignIn = () => {
     console.log('Failed:', errorInfo)
   }
 
-  /** PublicLayout вынести в настройки Routes */
   return <CardStyled>
-    <TitleStyledLevelFirst level={1}>
+    <PageTitleStyled level={1}>
       Obermeister-ITSM
-    </TitleStyledLevelFirst>
-    <TitleStyledLevelTwo level={2}>
+    </PageTitleStyled>
+    <FormTitleStyled level={2}>
       Авторизация
-    </TitleStyledLevelTwo>
+    </FormTitleStyled>
     <Form
       name='basic'
-      // labelCol={{ span: 8 }}
-      // wrapperCol={{ span: 16 }}
-      // initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      // autoComplete='off'
       layout='vertical'
+      requiredMark={false}
     >
       <FormItemStyled
         label='E-mail'
@@ -55,10 +50,10 @@ const SignIn = () => {
         <Input.Password />
       </FormItemStyled>
       <FooterStyled>
-        <ButtonStyled type='primary' htmlType='submit'>
+        <Button type='primary' htmlType='submit' block size='large'>
           Войти
-        </ButtonStyled>
-        <LinkStyled to={'/'}>Забили пароль?</LinkStyled>
+        </Button>
+        <Link to={Routes.forgotPassword}><Button type="link" block>Забили пароль?</Button></Link>
       </FooterStyled>
     </Form>
   </CardStyled>
