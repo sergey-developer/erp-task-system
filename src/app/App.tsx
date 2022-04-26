@@ -1,7 +1,7 @@
 import './App.less'
 
-import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
-import { publicRoutesConfig, privateRoutesConfig, Routes as RouteKeys } from './../routes.config';
+import { Route, Routes, Navigate, useLocation, useRoutes, RouteObject } from 'react-router-dom'
+import { publicRoutesConfig, privateRoutesConfig, Routes as RouteKeys, applyRoutesLayout } from 'routes'
 
 import React, { FC, useEffect, useState } from 'react'
 
@@ -14,8 +14,12 @@ function useMockAuth () {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-      setIsAuth(false);
+      setIsAuth(true);
     }, 1000);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsAuth(false);
+    }, 3000);
   }, []);
 
   return {
@@ -27,29 +31,10 @@ function useMockAuth () {
 const App: FC = () => {
 
   const { isLoading, isAuth } = useMockAuth();
-
-  const routesConfig = isAuth ? privateRoutesConfig : publicRoutesConfig;
-  const defaultRoute = routesConfig.find(route => route.default);
-
-  /** текущий pathname */
-  const { pathname } = useLocation();
+  const element = useRoutes(applyRoutesLayout(isAuth ? privateRoutesConfig : publicRoutesConfig));
 
   if (isLoading) return null;
-  return (
-    <>
-      {pathname === RouteKeys.index && defaultRoute && <Navigate to={defaultRoute.path} replace />}
-      <Routes>
-        {routesConfig
-          .map(({ key, path, element: Element, layout: Layout }) => (
-            <Route
-              key={key}
-              path={path}
-              element={<Layout><Element /></Layout>}
-            />
-          ))}
-      </Routes>
-    </>
-  );
+  return element;
 }
 
 export default App

@@ -8,7 +8,7 @@ import {
   PageTitleStyled,
   FormTitleStyled,
 } from './styles'
-import { Routes } from '../../../routes.config'
+import { Routes } from 'routes';
 import { Link } from 'react-router-dom'
 
 const SignIn:FC = () => {
