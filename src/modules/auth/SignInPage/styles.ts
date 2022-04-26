@@ -2,11 +2,9 @@ import styled from 'styled-components'
 import { Card, Form, Typography } from 'antd'
 
 export const CardStyled = styled(Card)`
-  &.ant-card {
     ${props => props.theme.shadows.shadow1}
     border-radius: 4px;
     padding: 54px 130px;
-  }
 `;
 
 export const PageTitleStyled = styled(Typography.Title)`

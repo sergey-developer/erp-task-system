@@ -1,11 +1,11 @@
-import React, { ComponentType } from 'react'
+import { ComponentType } from 'react'
 import PublicLayout from './components/Layout/PublicLayout';
 import PrivateLayout from './components/Layout/PrivateLayout';
 
 /** компоненты */
-const SignInPage = React.lazy(() => import('./modules/auth/SignInPage'));
-const ForgotPassword = React.lazy(() => import('./modules/auth/ForgotPasswordPage'));
-const NotFound = React.lazy(() => import('./components/NotFound'));
+import SignInPage from  './modules/auth/SignInPage';
+import ForgotPassword from './modules/auth/ForgotPasswordPage';
+import NotFound from './components/NotFound';
 
 export enum Routes {
   index = '/',
