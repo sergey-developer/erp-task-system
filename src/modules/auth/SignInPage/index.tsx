@@ -1,18 +1,17 @@
+import { Button, Form, Input } from 'antd'
 import React, { FC } from 'react'
-import { Form, Input, Button } from 'antd';
+import { Link } from 'react-router-dom'
+
+import { RoutesEnum } from 'configs/routes'
 
 import {
   CardStyled,
-  FooterStyled,
-  FormItemStyled,
-  PageTitleStyled,
+  FormStyled,
   FormTitleStyled,
+  PageTitleStyled,
 } from './styles'
-import { Routes } from 'routes';
-import { Link } from 'react-router-dom'
 
-const SignIn:FC = () => {
-
+const SignInPage: FC = () => {
   const onFinish = (values: any) => {
     console.log('Success:', values)
   }
@@ -21,42 +20,43 @@ const SignIn:FC = () => {
     console.log('Failed:', errorInfo)
   }
 
-  return <CardStyled>
-    <PageTitleStyled level={1}>
-      Obermeister-ITSM
-    </PageTitleStyled>
-    <FormTitleStyled level={2}>
-      Авторизация
-    </FormTitleStyled>
-    <Form
-      name='basic'
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      layout='vertical'
-      requiredMark={false}
-    >
-      <FormItemStyled
-        label='E-mail'
-        name='email'
-        rules={[{ required: true, message: 'Введите E-mail', type: 'email' }]}
+  return (
+    <CardStyled>
+      <PageTitleStyled level={4}>Obermeister-ITSM</PageTitleStyled>
+      <FormTitleStyled level={5}>Авторизация</FormTitleStyled>
+      <FormStyled
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout='vertical'
+        requiredMark={false}
       >
-        <Input placeholder='ober@obermeister.ru' />
-      </FormItemStyled>
-      <FormItemStyled
-        label='Пароль'
-        name='password'
-        rules={[{ required: true, message: 'Введите пароль' }]}
-      >
-        <Input.Password />
-      </FormItemStyled>
-      <FooterStyled>
-        <Button type='primary' htmlType='submit' block size='large'>
-          Войти
-        </Button>
-        <Link to={Routes.forgotPassword}><Button type="link" block>Забили пароль?</Button></Link>
-      </FooterStyled>
-    </Form>
-  </CardStyled>
+        <Form.Item
+          label='E-mail'
+          name='email'
+          rules={[{ required: true, message: 'Введите E-mail', type: 'email' }]}
+        >
+          <Input placeholder='ober@obermeister.ru' />
+        </Form.Item>
+        <Form.Item
+          label='Пароль'
+          name='password'
+          rules={[{ required: true, message: 'Введите пароль' }]}
+        >
+          <Input.Password placeholder='••••••••' />
+        </Form.Item>
+        <Form.Item>
+          <Button type='primary' htmlType='submit' block size='large'>
+            Войти
+          </Button>
+          <Link to={RoutesEnum.ForgotPassword}>
+            <Button type='link' block>
+              Забыли пароль?
+            </Button>
+          </Link>
+        </Form.Item>
+      </FormStyled>
+    </CardStyled>
+  )
 }
 
-export default SignIn
+export default SignInPage

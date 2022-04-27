@@ -1,6 +1,5 @@
 import path from 'path'
 const CracoAntDesignPlugin = require('craco-antd')
-
 const resolvePath = (p: string) => path.resolve(__dirname, p)
 
 module.exports = {
@@ -8,9 +7,7 @@ module.exports = {
     {
       plugin: CracoAntDesignPlugin,
       options: {
-        customizeThemeLessPath: resolvePath(
-          'src/styles/customTheme.less'
-        ),
+        customizeThemeLessPath: resolvePath('./src/styles/customTheme.less'),
       },
     },
   ],
