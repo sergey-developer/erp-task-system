@@ -1,10 +1,9 @@
 import './App.less'
 
-import { Route, Routes, Navigate, useLocation, useRoutes, RouteObject } from 'react-router-dom'
-import { publicRoutesConfig, privateRoutesConfig, Routes as RouteKeys, applyRoutesLayout } from 'routes'
+import { FC, useEffect, useState } from 'react'
 
-import React, { FC, useEffect, useState } from 'react'
-
+import {  useRoutes, } from 'react-router-dom'
+import { publicRoutesConfig, privateRoutesConfig, applyRoutesLayout } from 'routes'
 
 /** пока тестовый хук для отладки пока не подключено апи по авторизации */
 function useMockAuth () {
