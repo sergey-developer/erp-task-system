@@ -9,6 +9,7 @@ import { ThemeProvider } from 'styled-components'
 import theme from 'styles/theme'
 
 import reportWebVitals from './reportWebVitals'
+import { BrowserRouter } from 'react-router-dom'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -16,7 +17,9 @@ root.render(
   <StoreProvider store={store}>
     <ThemeProvider theme={theme}>
       <ErrorBoundary>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ErrorBoundary>
     </ThemeProvider>
   </StoreProvider>,
