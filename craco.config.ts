@@ -1,27 +1,13 @@
 import path from 'path'
-
-import theme from './src/styles/theme'
-
-const CracoLessPlugin = require('craco-less')
-
+const CracoAntDesignPlugin = require('craco-antd')
 const resolvePath = (p: string) => path.resolve(__dirname, p)
 
 module.exports = {
   plugins: [
     {
-      plugin: CracoLessPlugin,
+      plugin: CracoAntDesignPlugin,
       options: {
-        lessLoaderOptions: {
-          lessOptions: {
-            modifyVars: {
-              '@layout-header-height': '60px',
-              '@layout-header-padding': '0px 40px',
-              // @ts-ignore
-              '@layout-header-background': theme.colors.white,
-            },
-            javascriptEnabled: true,
-          },
-        },
+        customizeThemeLessPath: resolvePath('./src/styles/customTheme.less'),
       },
     },
   ],
