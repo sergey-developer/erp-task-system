@@ -1,8 +1,9 @@
-import { Layout, Spin } from 'antd'
+import { Layout } from 'antd'
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import Header from 'components/Header/PrivateHeader'
+import Spin from 'components/Spin'
 
 import { ContentStyled } from './styles'
 
@@ -12,7 +13,7 @@ const PrivateLayout: FC = () => {
       <Header />
 
       <ContentStyled>
-        <React.Suspense fallback={<Spin size='large' />}>
+        <React.Suspense fallback={<Spin />}>
           <Outlet />
         </React.Suspense>
       </ContentStyled>

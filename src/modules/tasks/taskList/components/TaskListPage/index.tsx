@@ -1,6 +1,7 @@
 import { FilterTwoTone } from '@ant-design/icons'
 import { Button, Col, Input, Row, Table } from 'antd'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import FilterTag from 'components/FilterTag'
 
@@ -134,25 +135,35 @@ const dataSource: any[] = [
 
 const filterList = [
   {
-    text: FiltersEnum.All,
+    text: 'Все',
+    value: FiltersEnum.All,
     amount: 378,
   },
   {
-    text: FiltersEnum.Overdue,
+    text: 'Просроченные',
+    value: FiltersEnum.Overdue,
     amount: 145,
   },
   {
-    text: FiltersEnum.DecideToday,
+    text: 'Решить сегодня',
+    value: FiltersEnum.DecideToday,
     amount: 45,
   },
   {
-    text: FiltersEnum.Free,
+    text: 'Свободные',
+    value: FiltersEnum.Free,
     amount: 11,
   },
 ]
 
 const TaskListPage: FC = () => {
+  const [, setSearchParams] = useSearchParams()
   const [selectedFilter, setSelectedFilter] = useState<string>(FiltersEnum.All)
+
+  const handleChangeFilter = (value: FiltersEnum) => {
+    setSelectedFilter(value)
+    setSearchParams({ filter: selectedFilter })
+  }
 
   return (
     <Row gutter={[0, 40]}>
@@ -164,8 +175,8 @@ const TaskListPage: FC = () => {
                 {filterList.map((filter, index) => (
                   <FilterTag
                     key={index}
-                    checked={selectedFilter === filter.text}
-                    onChange={() => setSelectedFilter(filter.text)}
+                    checked={selectedFilter === filter.value}
+                    onChange={() => handleChangeFilter(filter.value)}
                     text={filter.text}
                     amount={filter.amount}
                   />
@@ -199,7 +210,6 @@ const TaskListPage: FC = () => {
               dataSource={dataSource}
               columns={tableColumns}
               pagination={false}
-              scroll={{ y: 900 }}
             />
           </Col>
         </Row>

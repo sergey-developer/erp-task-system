@@ -4,11 +4,7 @@ import { FC, useEffect, useState } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import Spin from 'components/Spin'
-import {
-  applyRoutesLayout,
-  privateRoutesConfig,
-  publicRoutesConfig,
-} from 'configs/routes'
+import { privateRoutesConfig, publicRoutesConfig } from 'configs/routes'
 
 /** пока тестовый хук для отладки пока не подключено апи по авторизации */
 function useMockAuth() {
@@ -30,12 +26,10 @@ function useMockAuth() {
 
 const App: FC = () => {
   const { isLoading, isAuth } = useMockAuth()
-  const element = useRoutes(
-    applyRoutesLayout(isAuth ? privateRoutesConfig : publicRoutesConfig),
-  )
 
-  if (isLoading) return <Spin />
-  return element
+  const routes = useRoutes(isAuth ? privateRoutesConfig : publicRoutesConfig)
+
+  return isLoading ? <Spin /> : routes
 }
 
 export default App

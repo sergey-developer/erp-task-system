@@ -6,30 +6,32 @@ import {
 import { Col, Layout, Row } from 'antd'
 import { MenuProps } from 'antd/lib/menu'
 import React, { FC, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 
 import Avatar from 'components/Avatar'
 import Logo from 'components/Logo'
 import Navigation from 'components/Navigation'
 import NotificationCounter from 'components/NotificationCounter'
+import { RoutesEnum } from 'configs/routes/constants'
 
 const { Header } = Layout
 
 enum NavItemKeysEnum {
-  Requests = 'requests',
+  Tasks = 'tasks',
   WorkingGroups = 'working-groups',
   AdminPanel = 'admin-panel',
 }
 
-const defaultSelectedMenuKeys = [NavItemKeysEnum.Requests]
+const defaultSelectedMenuKeys = [NavItemKeysEnum.Tasks]
 
 const defaultMenuItems: MenuProps['items'] = [
   {
-    label: 'Заявки',
+    label: <Link to={RoutesEnum.TaskList}>Заявки</Link>,
     icon: <UnorderedListOutlined />,
-    key: NavItemKeysEnum.Requests,
+    key: NavItemKeysEnum.Tasks,
   },
   {
-    label: 'Рабочие группы',
+    label: <Link to={RoutesEnum.WorkingGroups}>Рабочие группы</Link>,
     icon: <TeamOutlined />,
     key: NavItemKeysEnum.WorkingGroups,
   },
@@ -38,7 +40,7 @@ const defaultMenuItems: MenuProps['items'] = [
 const PrivateHeader: FC = () => {
   const menuItems: MenuProps['items'] = useMemo(() => {
     return defaultMenuItems.concat({
-      label: 'Админ-панель',
+      label: <Link to={RoutesEnum.AdminPanel}>Админ-панель</Link>,
       icon: <ToolOutlined />,
       key: NavItemKeysEnum.AdminPanel,
     })

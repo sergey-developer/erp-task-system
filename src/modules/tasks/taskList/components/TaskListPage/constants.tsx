@@ -58,8 +58,8 @@ export const tableColumns: ColumnsType<any> = [
 ]
 
 export enum FiltersEnum {
-  All = 'Все',
-  Overdue = 'Просроченные',
-  DecideToday = 'Решить сегодня',
-  Free = 'Свободные',
+  All = 'all',
+  Overdue = 'overdue',
+  DecideToday = 'decideToday',
+  Free = 'free',
 }

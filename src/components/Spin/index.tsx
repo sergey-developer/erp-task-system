@@ -1,7 +1,8 @@
+import { SpinProps } from 'antd'
 import React, { FC } from 'react'
 
-import { SpinStyled } from './styled'
+import { SpinStyled } from './styles'
 
-const Spin: FC = () => <SpinStyled />
+const Spin: FC<SpinProps> = (props) => <SpinStyled {...props} />
 
 export default Spin
