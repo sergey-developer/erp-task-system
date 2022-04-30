@@ -6,7 +6,13 @@ import { useSearchParams } from 'react-router-dom'
 import FilterTag from 'components/FilterTag'
 
 import TaskTable from '../TaskTable'
-import { TaskStatusEnum, TasksFiltersEnum } from './constants'
+import {
+  TASK_LIST_FILTER_KEY,
+  TaskListFiltersEnum,
+  TaskStatusEnum,
+} from './constants'
+import { FilterListItem } from './interfaces'
+import { initSelectedFilterState } from './utils'
 
 const { Search } = Input
 
@@ -83,95 +89,43 @@ const dataSource: any[] = [
     comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
     createdAt: '06.12.2021, 16:00:25',
   },
-  // {
-  //   task: 'REQ0000007898',
-  //   foreignNumber: 'ЗНО-000345456-001',
-  //   object: '1298-Пятерочка (гп.Воскресенск)',
-  //   theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-  //   executor: 'Александровский А.А.',
-  //   workingGroup: 'РГ гп.Воскресенск (Московская ...',
-  //   executeBefore: '06.12.2021, 16:00:25',
-  //   comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-  //   createdAt: '06.12.2021, 16:00:25',
-  // },
-  // {
-  //   task: 'REQ0000007898',
-  //   foreignNumber: 'ЗНО-000345456-001',
-  //   object: '1298-Пятерочка (гп.Воскресенск)',
-  //   theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-  //   executor: 'Александровский А.А.',
-  //   workingGroup: 'РГ гп.Воскресенск (Московская ...',
-  //   executeBefore: '06.12.2021, 16:00:25',
-  //   comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-  //   createdAt: '06.12.2021, 16:00:25',
-  // },
-  // {
-  //   task: 'REQ0000007898',
-  //   foreignNumber: 'ЗНО-000345456-001',
-  //   object: '1298-Пятерочка (гп.Воскресенск)',
-  //   theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-  //   executor: 'Александровский А.А.',
-  //   workingGroup: 'РГ гп.Воскресенск (Московская ...',
-  //   executeBefore: '06.12.2021, 16:00:25',
-  //   comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-  //   createdAt: '06.12.2021, 16:00:25',
-  // },
-  // {
-  //   task: 'REQ0000007898',
-  //   foreignNumber: 'ЗНО-000345456-001',
-  //   object: '1298-Пятерочка (гп.Воскресенск)',
-  //   theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-  //   executor: 'Александровский А.А.',
-  //   workingGroup: 'РГ гп.Воскресенск (Московская ...',
-  //   executeBefore: '06.12.2021, 16:00:25',
-  //   comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-  //   createdAt: '06.12.2021, 16:00:25',
-  // },
-  // {
-  //   task: 'REQ0000007898',
-  //   foreignNumber: 'ЗНО-000345456-001',
-  //   object: '1298-Пятерочка (гп.Воскресенск)',
-  //   theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-  //   executor: 'Александровский А.А.',
-  //   workingGroup: 'РГ гп.Воскресенск (Московская ...',
-  //   executeBefore: '06.12.2021, 16:00:25',
-  //   comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-  //   createdAt: '06.12.2021, 16:00:25',
-  // },
 ]
 
-const filterList = [
+const filterList: Array<FilterListItem> = [
   {
     text: 'Все',
-    value: TasksFiltersEnum.All,
+    value: TaskListFiltersEnum.All,
     amount: 378,
   },
   {
     text: 'Мои',
-    value: TasksFiltersEnum.Mine,
+    value: TaskListFiltersEnum.Mine,
     amount: 45,
   },
   {
     text: 'Просроченные',
-    value: TasksFiltersEnum.Overdue,
+    value: TaskListFiltersEnum.Overdue,
     amount: 145,
   },
   {
     text: 'Свободные',
-    value: TasksFiltersEnum.Free,
+    value: TaskListFiltersEnum.Free,
     amount: 11,
   },
 ]
 
 const TaskListPage: FC = () => {
-  const [, setSearchParams] = useSearchParams()
-  const [selectedFilter, setSelectedFilter] = useState<string>(
-    TasksFiltersEnum.All,
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [selectedFilter, setSelectedFilter] = useState<TaskListFiltersEnum>(
+    () =>
+      initSelectedFilterState(
+        searchParams.get(TASK_LIST_FILTER_KEY) as TaskListFiltersEnum,
+      ),
   )
 
-  const handleChangeFilter = (value: TasksFiltersEnum) => {
-    setSelectedFilter(value)
-    setSearchParams({ filter: selectedFilter })
+  const handleChangeFilter = (filter: TaskListFiltersEnum) => {
+    setSelectedFilter(filter)
+    setSearchParams({ filter })
   }
 
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { RouteObject } from 'react-router-dom'
+import { Navigate, RouteObject } from 'react-router-dom'
 
 import PublicLayout from 'components/Layout/PublicLayout'
 
@@ -20,7 +20,7 @@ export default [
     children: [
       {
         index: true,
-        element: <SignInPage />,
+        element: <Navigate to={RoutesEnum.SignIn} />,
       },
       {
         path: RoutesEnum.SignIn,

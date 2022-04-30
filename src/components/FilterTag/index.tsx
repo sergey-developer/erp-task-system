@@ -6,7 +6,7 @@ import { CheckableTagStyled } from './styles'
 
 const { Text } = Typography
 
-type FilterTagProps = CheckableTagProps & {
+export type FilterTagProps = CheckableTagProps & {
   text: string
   amount: number
 }

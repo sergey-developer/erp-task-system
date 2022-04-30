@@ -5,16 +5,15 @@ import {
 } from '@ant-design/icons'
 import { Col, Layout, Row } from 'antd'
 import { MenuProps } from 'antd/lib/menu'
-import qs from 'qs'
 import React, { FC, useMemo } from 'react'
-import { Link, generatePath } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import Avatar from 'components/Avatar'
 import Logo from 'components/Logo'
 import Navigation from 'components/Navigation'
 import NotificationCounter from 'components/NotificationCounter'
-import { RoutesEnum, RoutesPathsEnum } from 'configs/routes/constants'
-import { TasksFiltersEnum } from 'modules/tasks/taskList/components/TaskListPage/constants'
+import { RoutesEnum } from 'configs/routes/constants'
+import { taskListDefaultRoute } from 'modules/tasks/taskList/components/TaskListPage/constants'
 
 const { Header } = Layout
 
@@ -28,18 +27,7 @@ const defaultSelectedMenuKeys = [NavItemKeysEnum.Tasks]
 
 const defaultMenuItems: MenuProps['items'] = [
   {
-    label: (
-      <Link
-        to={generatePath(RoutesPathsEnum.TaskList, {
-          '*': qs.stringify(
-            { filter: TasksFiltersEnum.All },
-            { addQueryPrefix: true },
-          ),
-        })}
-      >
-        Заявки
-      </Link>
-    ),
+    label: <Link to={taskListDefaultRoute}>Заявки</Link>,
     icon: <UnorderedListOutlined className='font-s-18' />,
     key: NavItemKeysEnum.Tasks,
   },
