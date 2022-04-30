@@ -5,14 +5,16 @@ import {
 } from '@ant-design/icons'
 import { Col, Layout, Row } from 'antd'
 import { MenuProps } from 'antd/lib/menu'
+import qs from 'qs'
 import React, { FC, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, generatePath } from 'react-router-dom'
 
 import Avatar from 'components/Avatar'
 import Logo from 'components/Logo'
 import Navigation from 'components/Navigation'
 import NotificationCounter from 'components/NotificationCounter'
-import { RoutesEnum } from 'configs/routes/constants'
+import { RoutesEnum, RoutesPathsEnum } from 'configs/routes/constants'
+import { TasksFiltersEnum } from 'modules/tasks/taskList/components/TaskListPage/constants'
 
 const { Header } = Layout
 
@@ -26,13 +28,24 @@ const defaultSelectedMenuKeys = [NavItemKeysEnum.Tasks]
 
 const defaultMenuItems: MenuProps['items'] = [
   {
-    label: <Link to={RoutesEnum.TaskList}>Заявки</Link>,
-    icon: <UnorderedListOutlined />,
+    label: (
+      <Link
+        to={generatePath(RoutesPathsEnum.TaskList, {
+          '*': qs.stringify(
+            { filter: TasksFiltersEnum.All },
+            { addQueryPrefix: true },
+          ),
+        })}
+      >
+        Заявки
+      </Link>
+    ),
+    icon: <UnorderedListOutlined className='font-s-18' />,
     key: NavItemKeysEnum.Tasks,
   },
   {
     label: <Link to={RoutesEnum.WorkingGroups}>Рабочие группы</Link>,
-    icon: <TeamOutlined />,
+    icon: <TeamOutlined className='font-s-18' />,
     key: NavItemKeysEnum.WorkingGroups,
   },
 ]
@@ -41,7 +54,7 @@ const PrivateHeader: FC = () => {
   const menuItems: MenuProps['items'] = useMemo(() => {
     return defaultMenuItems.concat({
       label: <Link to={RoutesEnum.AdminPanel}>Админ-панель</Link>,
-      icon: <ToolOutlined />,
+      icon: <ToolOutlined className='font-s-18' />,
       key: NavItemKeysEnum.AdminPanel,
     })
   }, [])

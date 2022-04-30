@@ -3,8 +3,12 @@ export enum RoutesEnum {
   SignIn = '/signIn',
   ForgotPassword = '/forgotPassword',
   RecoveryPassword = '/recoveryPassword',
-  TaskList = '/tasks',
-  WorkingGroups = '/working-groups',
-  AdminPanel = '/admin-panel',
+  TaskList = '/tasks/view',
+  WorkingGroups = '/workingGroups',
+  AdminPanel = '/adminPanel',
   NotFound = '*',
+}
+
+export enum RoutesPathsEnum {
+  TaskList = '/tasks/view/*',
 }
