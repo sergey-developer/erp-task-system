@@ -18,7 +18,6 @@ module.exports = {
       components: resolvePath('./src/components'),
       state: resolvePath('./src/state'),
       shared: resolvePath('./src/shared'),
-      app: resolvePath('./src/app'),
       styles: resolvePath('./src/styles'),
     },
   },

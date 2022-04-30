@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client'
 import { Provider as StoreProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
-import App from 'app/App'
 import ErrorBoundary from 'components/ErrorBoundary'
 import store from 'state/store'
 import { ThemeProvider } from 'styled-components'
 import theme from 'styles/theme'
 
+import App from './App'
 import reportWebVitals from './reportWebVitals'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

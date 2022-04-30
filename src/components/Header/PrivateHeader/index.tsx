@@ -6,7 +6,7 @@ import {
 import { Col, Layout, Row } from 'antd'
 import { MenuProps } from 'antd/lib/menu'
 import React, { FC, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useMatch } from 'react-router-dom'
 
 import Avatar from 'components/Avatar'
 import Logo from 'components/Logo'
@@ -17,33 +17,33 @@ import { taskListDefaultRoute } from 'modules/tasks/taskList/components/TaskList
 
 const { Header } = Layout
 
-enum NavItemKeysEnum {
-  Tasks = 'tasks',
-  WorkingGroups = 'working-groups',
-  AdminPanel = 'admin-panel',
-}
-
-const defaultSelectedMenuKeys = [NavItemKeysEnum.Tasks]
-
 const defaultMenuItems: MenuProps['items'] = [
   {
     label: <Link to={taskListDefaultRoute}>Заявки</Link>,
     icon: <UnorderedListOutlined className='font-s-18' />,
-    key: NavItemKeysEnum.Tasks,
+    key: RoutesEnum.TaskList,
   },
   {
     label: <Link to={RoutesEnum.WorkingGroups}>Рабочие группы</Link>,
     icon: <TeamOutlined className='font-s-18' />,
-    key: NavItemKeysEnum.WorkingGroups,
+    key: RoutesEnum.WorkingGroups,
   },
 ]
 
 const PrivateHeader: FC = () => {
+  const taskListRouteMatch = useMatch(RoutesEnum.TaskList)
+  const workingGroupRouteMatch = useMatch(RoutesEnum.WorkingGroups)
+  const adminPanelRouteMatch = useMatch(RoutesEnum.AdminPanel)
+  const matchedRoute =
+    taskListRouteMatch || workingGroupRouteMatch || adminPanelRouteMatch
+
+  const activeNavKey = matchedRoute?.pathnameBase
+
   const menuItems: MenuProps['items'] = useMemo(() => {
     return defaultMenuItems.concat({
       label: <Link to={RoutesEnum.AdminPanel}>Админ-панель</Link>,
       icon: <ToolOutlined className='font-s-18' />,
-      key: NavItemKeysEnum.AdminPanel,
+      key: RoutesEnum.AdminPanel,
     })
   }, [])
 
@@ -56,7 +56,7 @@ const PrivateHeader: FC = () => {
 
         <Col span={18}>
           <Navigation
-            defaultSelectedKeys={defaultSelectedMenuKeys}
+            selectedKeys={activeNavKey ? [activeNavKey] : undefined}
             items={menuItems}
           />
         </Col>

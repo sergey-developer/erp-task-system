@@ -3,15 +3,11 @@ import React, { FC } from 'react'
 
 import { MenuStyled } from './styles'
 
-type NavigationProps = Pick<MenuProps, 'items' | 'defaultSelectedKeys'>
+type NavigationProps = Pick<MenuProps, 'items' | 'selectedKeys'>
 
-const Navigation: FC<NavigationProps> = ({ defaultSelectedKeys, items }) => {
+const Navigation: FC<NavigationProps> = ({ selectedKeys, items }) => {
   return (
-    <MenuStyled
-      mode='horizontal'
-      defaultSelectedKeys={defaultSelectedKeys}
-      items={items}
-    />
+    <MenuStyled mode='horizontal' selectedKeys={selectedKeys} items={items} />
   )
 }
 
