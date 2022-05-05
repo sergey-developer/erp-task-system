@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
 
-const adminMenu: ItemType[] = [
+const adminNavMenu: ItemType[] = [
   {
     label: <Link to={RoutesEnum.AdminPanel}>Админ-панель</Link>,
     icon: <ToolOutlined className='font-s-18' />,
@@ -13,4 +13,4 @@ const adminMenu: ItemType[] = [
   },
 ]
 
-export default adminMenu
+export default adminNavMenu

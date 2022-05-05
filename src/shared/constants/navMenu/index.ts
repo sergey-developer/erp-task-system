@@ -1,1 +1,1 @@
-export { default as adminMenu } from './adminMenu'
+export { default as adminNavMenu } from './adminNavMenu'

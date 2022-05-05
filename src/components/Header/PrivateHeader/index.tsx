@@ -2,15 +2,16 @@ import { TeamOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { Col, Layout, Row } from 'antd'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import React, { FC } from 'react'
-import { Link, useMatch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import Avatar from 'components/Avatar'
 import Logo from 'components/Logo'
 import Navigation from 'components/Navigation'
 import NotificationCounter from 'components/NotificationCounter'
-import { RoutesEnum } from 'configs/routes/constants'
+import { RoutesEnum } from 'configs/routes'
 import { taskListDefaultRoute } from 'modules/tasks/taskList/components/TaskListPage/constants'
-import { adminMenu } from 'shared/constants/navMenu'
+import { adminNavMenu } from 'shared/constants/navMenu'
+import useMatchedRoute from 'shared/hooks/useMatchedRoute'
 
 const { Header } = Layout
 
@@ -25,15 +26,15 @@ const menuItems: ItemType[] = [
     icon: <TeamOutlined className='font-s-18' />,
     key: RoutesEnum.WorkingGroups,
   },
-  ...adminMenu,
+  ...adminNavMenu,
 ]
 
 const PrivateHeader: FC = () => {
-  const taskListRouteMatch = useMatch(RoutesEnum.TaskList)
-  const workingGroupRouteMatch = useMatch(RoutesEnum.WorkingGroups)
-  const adminPanelRouteMatch = useMatch(RoutesEnum.AdminPanel)
-  const matchedRoute =
-    taskListRouteMatch || workingGroupRouteMatch || adminPanelRouteMatch
+  const matchedRoute = useMatchedRoute([
+    RoutesEnum.TaskList,
+    RoutesEnum.WorkingGroups,
+    RoutesEnum.AdminPanel,
+  ])
 
   const activeNavKey = matchedRoute?.pathnameBase
 
