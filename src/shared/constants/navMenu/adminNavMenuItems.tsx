@@ -1,11 +1,12 @@
 import { ToolOutlined } from '@ant-design/icons'
-import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
 
-const adminNavMenu: ItemType[] = [
+import { NavMenuItem } from './interfaces'
+
+const adminNavMenuItems: Array<NavMenuItem> = [
   {
     label: <Link to={RoutesEnum.AdminPanel}>Админ-панель</Link>,
     icon: <ToolOutlined className='font-s-18' />,
@@ -13,4 +14,4 @@ const adminNavMenu: ItemType[] = [
   },
 ]
 
-export default adminNavMenu
+export default adminNavMenuItems
