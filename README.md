@@ -1,49 +1,86 @@
-# Getting Started with Create React App
+# ITSM
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Технологии
+- [Typescript](https://www.typescriptlang.org/)
+- [React](https://reactjs.org/) single page application
+- Routing [React Router](https://reactrouter.com/docs/en/v6)
+- State management [Redux Toolkit](https://redux-toolkit.js.org/)
+- UI library [Ant Design](https://ant.design/)
+- Styles [styled-components](https://styled-components.com/)
+- HTTP Client [Axios](https://axios-http.com/docs/intro)
 
-## Available Scripts
+---
+Приложение создано с помощью [create-react-app](https://github.com/facebook/create-react-app)
 
-In the project directory, you can run:
+## Команды
+- [yarn start](https://create-react-app.dev/docs/getting-started/#npm-start-or-yarn-start): Запускает приложение локально в development режиме, по умолчанию на http://localhost:3000
+- [yarn test](https://create-react-app.dev/docs/getting-started/#npm-test-or-yarn-test): Запускает тесты используя watch mode
+- [yarn build](https://create-react-app.dev/docs/production-build/): Собирает production версию приложения
+- [yarn eject](https://create-react-app.dev/docs/available-scripts/#npm-run-eject): Команда из create-react-app
 
-### `yarn start`
+## Настройка проекта
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Переменные окружения
+Хранятся в `.env.*` файле. Пример файла можно найти в [репозитории](https://gitlab.benovate.ru/obermeister/itsm/frontend), он называется `env.example`. Префикс `REACT_APP_` обязателен.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- development: `.env.development`
+- production: `.env.production`
+- test: `.env.test`
 
-### `yarn test`
+Подробнее про добавление переменных в `create-react-app` можно прочесть [здесь](https://create-react-app.dev/docs/adding-custom-environment-variables).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Environment config
+После добавления новой переменной в `.env.*` файл, её нужно добавить в `env.config.ts` который находится в папке `src/configs/env`
 
-### `yarn build`
+### Development
+1. Склонировать [репозиторий](https://gitlab.benovate.ru/obermeister/itsm/frontend) и перейти в корень проекта
+2. Создать файл `.env.development` и добавить нужные переменные
+3. Установить зависимости `yarn install`
+4. Запустить приложение `yarn start`
+5. Открыть браузер на http://localhost:3000
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Production
+1. Перейти в корень проекта
+2. Создать файл `.env.production` и добавить нужные переменные
+3. Установить зависимости `yarn install`
+4. Собрать приложение `yarn build`
+5. В папке `build` будет лежать `index.html` в котором будут ссылки на всё необходимое 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Архитектура
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+TODO
 
-### `yarn eject`
+## Автоматическая генерация типов
+производится командой `yarn genapi` на основе OpenApi схемы
+URL схемы необходимо задать в локальном .env, переменная REACT_APP_SCHEMA_FILE
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Сборка проекта
+Этим занимается [webpack](https://webpack.js.org/), конфиг которого настраивается с помощью [craco](https://www.npmjs.com/package/@craco/craco), файл `craco.config.ts`.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Стили
+- Библиотека компонентов `Ant Design`
+- Кастомизация `Ant Design` с помощью `styled-components`
+- Дефолтная тема `Ant Design` кастомизируется с помощью [craco-antd](https://www.npmjs.com/package/craco-antd) в конфиге `craco.config.ts`
+- Файлы для кастомизации стилей находятся в папке `src/styles`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Code style
+### Prettier
+TODO
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Авто сортировка импортов
+TODO
 
-## Learn More
+## Testing
+TODO
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Routing
+TODO
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## State management
+TODO
 
-### `yarn genapi`
-Для разработки генерирует АПИ из OpeenApi схемы. URL схемы необходимо задать в локальном .env, переменная REACT_APP_SCHEMA_FILE
+## CI/CD
+TODO
+
+## Deployment
+TODO
