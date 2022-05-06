@@ -16,7 +16,7 @@ import { initSelectedFilterState } from './utils'
 
 const { Search } = Input
 
-const dataSource: any[] = [
+const dataSource: Array<any> = [
   {
     task: 'REQ0000007898',
     status: TaskStatusEnum.InProgress,

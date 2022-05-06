@@ -14,7 +14,7 @@ function useMockAuth() {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
-      setIsAuth(false)
+      setIsAuth(true)
     }, 1000)
   }, [])
 

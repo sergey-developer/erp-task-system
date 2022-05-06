@@ -31,4 +31,4 @@ export default [
       },
     ],
   },
-] as RouteObject[]
+] as Array<RouteObject>
