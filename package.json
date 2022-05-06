@@ -7,7 +7,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "genapi": "npx @rtk-query/codegen-openapi openapi-config.ts"
+    "genapi": "npx @rtk-query/codegen-openapi ./tools/api/openapi.config.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
