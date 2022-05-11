@@ -50,8 +50,9 @@
 
 TODO
 
-## Автоматическая генерация типов
-TODO
+## Автоматическая генерация типов и методов АПИ
+производится командой `yarn genapi` на основе OpenApi схемы
+URL схемы необходимо задать в локальном .env, переменная REACT_APP_SWAGGER_SCHEMA_URL
 
 ## Сборка проекта
 Этим занимается [webpack](https://webpack.js.org/), конфиг которого настраивается с помощью [craco](https://www.npmjs.com/package/@craco/craco), файл `craco.config.ts`.
