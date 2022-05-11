@@ -1,48 +1,32 @@
-import {
-  TeamOutlined,
-  ToolOutlined,
-  UnorderedListOutlined,
-} from '@ant-design/icons'
 import { Col, Layout, Row } from 'antd'
-import { MenuProps } from 'antd/lib/menu'
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
 
 import Avatar from 'components/Avatar'
 import Logo from 'components/Logo'
-import Navigation from 'components/Navigation'
+import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
+import { getNavMenuConfig } from 'configs/navMenu/utils'
+import UserRoles from 'shared/constants/roles'
+import useMatchedRoute from 'shared/hooks/useMatchedRoute'
 
 const { Header } = Layout
 
-enum NavItemKeysEnum {
-  Requests = 'requests',
-  WorkingGroups = 'working-groups',
-  AdminPanel = 'admin-panel',
-}
+const mockedRole = UserRoles.FirstLineSupport
 
-const defaultSelectedMenuKeys = [NavItemKeysEnum.Requests]
-
-const defaultMenuItems: MenuProps['items'] = [
-  {
-    label: 'Заявки',
-    icon: <UnorderedListOutlined />,
-    key: NavItemKeysEnum.Requests,
-  },
-  {
-    label: 'Рабочие группы',
-    icon: <TeamOutlined />,
-    key: NavItemKeysEnum.WorkingGroups,
-  },
-]
+const menuItems: NavMenuProps['items'] = getNavMenuConfig(mockedRole).map(
+  ({ key, icon: Icon, link, text }) => ({
+    key,
+    label: <Link to={link}>{text}</Link>,
+    icon: <Icon className='font-s-18' />,
+  }),
+)
+const menuItemsKeys = menuItems.map(({ key }) => key)
 
 const PrivateHeader: FC = () => {
-  const menuItems: MenuProps['items'] = useMemo(() => {
-    return defaultMenuItems.concat({
-      label: 'Админ-панель',
-      icon: <ToolOutlined />,
-      key: NavItemKeysEnum.AdminPanel,
-    })
-  }, [])
+  const matchedRoute = useMatchedRoute(menuItemsKeys)
+  const activeNavKey = matchedRoute?.pathnameBase
+  const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
 
   return (
     <Header>
@@ -52,10 +36,7 @@ const PrivateHeader: FC = () => {
         </Col>
 
         <Col span={18}>
-          <Navigation
-            defaultSelectedKeys={defaultSelectedMenuKeys}
-            items={menuItems}
-          />
+          <NavMenu selectedKeys={navMenuSelectedKeys} items={menuItems} />
         </Col>
 
         <Col span={2}>

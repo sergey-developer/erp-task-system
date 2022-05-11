@@ -1,16 +1,22 @@
 import { Layout } from 'antd'
-import React from 'react'
+import React, { FC } from 'react'
+import { Outlet } from 'react-router-dom'
 
 import Header from 'components/Header/PrivateHeader'
-import { FCWithChildren } from 'shared/interfaces/utils'
+import Spin from 'components/Spin'
 
 import { ContentStyled } from './styles'
 
-const PrivateLayout: FCWithChildren = ({ children }) => {
+const PrivateLayout: FC = () => {
   return (
     <Layout>
       <Header />
-      <ContentStyled>{children}</ContentStyled>
+
+      <ContentStyled>
+        <React.Suspense fallback={<Spin />}>
+          <Outlet />
+        </React.Suspense>
+      </ContentStyled>
     </Layout>
   )
 }

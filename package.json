@@ -12,7 +12,7 @@
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "7.0.0-alpha.3",
     "@reduxjs/toolkit": "^1.8.1",
-    "antd": "^4.20.0-alpha.1",
+    "antd": "^4.20.2",
     "axios": "^0.26.1",
     "craco-antd": "^2.0.0",
     "humps": "^2.0.1",
@@ -70,7 +70,6 @@
           "components",
           "state",
           "shared",
-          "app",
           "styles"
         ],
         "ignoredAliases": [],
@@ -84,8 +83,7 @@
       "^modules(.*)$": "<rootDir>/src/modules/$1",
       "^components(.*)$": "<rootDir>/src/components/$1",
       "^state(.*)$": "<rootDir>/src/state/$1",
-      "^shared(.*)$": "<rootDir>/src/shared/$1",
-      "^app(.*)$": "<rootDir>/src/app/$1"
+      "^shared(.*)$": "<rootDir>/src/shared/$1"
     }
   },
   "browserslist": {

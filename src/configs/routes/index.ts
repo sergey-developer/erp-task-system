@@ -1,5 +1,4 @@
-export { default as publicRoutesConfig } from './publicRoutesConfig'
-export { default as privateRoutesConfig } from './privateRoutesConfig'
-export * from './interfaces'
 export * from './constants'
-export * from './utils'
+
+export { default as publicRoutesConfig } from './publicRoutes.config'
+export { default as privateRoutesConfig } from './privateRoutes.config'
