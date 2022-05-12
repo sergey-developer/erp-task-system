@@ -1,5 +1,3 @@
-import { LoginApiArg } from '../../../modules/auth/models'
-
 export type ErrorValidation<T> = {
   [key in keyof T]: string[]
 }

@@ -35,6 +35,7 @@ const slice = createSlice({
       (state, { payload }) => {
         state.access = payload.access
         state.refresh = payload.refresh
+        state.isAuthenticated = true
         setItem(StorageKeys.access, payload.access)
         setItem(StorageKeys.refresh, payload.refresh)
       },
