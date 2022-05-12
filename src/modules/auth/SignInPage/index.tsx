@@ -1,9 +1,12 @@
-import { Button, Form, Input } from 'antd'
-import React, { FC } from 'react'
+import { Button, Form, Input, Typography } from 'antd'
+import React, { FC, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
+import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 
+import { LoginApiArg } from '../models'
+import { useLoginMutation } from '../services'
 import {
   CardStyled,
   FormStyled,
@@ -12,21 +15,25 @@ import {
 } from './styles'
 
 const SignInPage: FC = () => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values)
-  }
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
+  const [login, { isLoading, error }] = useLoginMutation()
+  const onFinish = useCallback(
+    (values: LoginApiArg) => {
+      login(values)
+    },
+    [login],
+  )
 
   return (
     <CardStyled>
       <PageTitleStyled level={4}>Obermeister-ITSM</PageTitleStyled>
       <FormTitleStyled level={5}>Авторизация</FormTitleStyled>
+      {error ? (
+        <Typography.Text type='danger'>
+          {getErrorDetail(error as ErrorResponse<LoginApiArg>)}
+        </Typography.Text>
+      ) : null}
       <FormStyled
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        onFinish={onFinish as (v: any) => void}
         layout='vertical'
         requiredMark={false}
       >
@@ -35,17 +42,23 @@ const SignInPage: FC = () => {
           name='email'
           rules={[{ required: true, message: 'Введите E-mail', type: 'email' }]}
         >
-          <Input placeholder='ober@obermeister.ru' />
+          <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
         </Form.Item>
         <Form.Item
           label='Пароль'
           name='password'
           rules={[{ required: true, message: 'Введите пароль' }]}
         >
-          <Input.Password placeholder='••••••••' />
+          <Input.Password placeholder='••••••••' disabled={isLoading} />
         </Form.Item>
         <Form.Item>
-          <Button type='primary' htmlType='submit' block size='large'>
+          <Button
+            type='primary'
+            htmlType='submit'
+            block
+            size='large'
+            loading={isLoading}
+          >
             Войти
           </Button>
           <Link to={RoutesEnum.ForgotPassword}>

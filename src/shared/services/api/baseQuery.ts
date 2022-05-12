@@ -20,7 +20,7 @@ type CustomBaseQueryConfig = {
 
 type CustomBaseQueryFn = BaseQueryFn<{
   url: string
-  method: AxiosRequestConfig['method']
+  method?: AxiosRequestConfig['method']
   data?: AxiosRequestConfig['data']
   params?: AxiosRequestConfig['params']
 }>
@@ -29,7 +29,7 @@ const httpClient = axios.create(httpClientConfig)
 
 const baseQuery =
   ({ prepareHeaders }: CustomBaseQueryConfig): CustomBaseQueryFn =>
-  async ({ url, method, data, params }, api, extraOptions) => {
+  async ({ url, method = 'get', data, params }, api, extraOptions) => {
     const headers = prepareHeaders
       ? prepareHeaders(httpClient.defaults.headers.common, api)
       : undefined
