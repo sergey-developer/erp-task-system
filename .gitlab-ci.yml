@@ -4,11 +4,11 @@ upload_static:
   only:
     refs:
       - rc
-      - task-18996
   before_script:
     - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     - unzip awscliv2.zip
     - ./aws/install
+    - cp ${ENV} .env
   script:
     - yarn install
     - yarn build
