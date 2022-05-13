@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { api } from 'modules/auth/auth.service'
+import { authService } from 'modules/auth/auth.service'
 import { StorageKeys } from 'shared/constants/storage'
 import localStorageService from 'shared/services/localStorage'
-import { RootState } from 'state/store'
 
 import { IAuthSliceState } from './interfaces'
 
@@ -31,7 +30,7 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(
-      api.endpoints.login.matchFulfilled,
+      authService.endpoints.login.matchFulfilled,
       (state, { payload }) => {
         localStorageService.setItem(StorageKeys.accessToken, payload.access)
         localStorageService.setItem(StorageKeys.refreshToken, payload.refresh)

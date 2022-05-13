@@ -8,11 +8,11 @@ import {
   UserRefreshCreateApiResponse,
 } from './models'
 
-const injectedRtkApi = api.injectEndpoints({
+const authService = api.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation<LoginApiResponse, LoginApiArg>({
       query: (queryArg) => ({
-        url: `/api/v1/user/auth`,
+        url: `/user/auth`,
         method: MethodEnums.POST,
         data: queryArg,
       }),
@@ -22,7 +22,7 @@ const injectedRtkApi = api.injectEndpoints({
       UserRefreshCreateApiArg
     >({
       query: (queryArg) => ({
-        url: `/api/v1/user/refresh`,
+        url: `/user/refresh`,
         method: MethodEnums.POST,
         data: queryArg,
       }),
@@ -30,6 +30,7 @@ const injectedRtkApi = api.injectEndpoints({
   }),
   overrideExisting: false,
 })
-export { injectedRtkApi as api }
 
-export const { useLoginMutation, useUserRefreshCreateMutation } = injectedRtkApi
+export { authService }
+
+export const { useLoginMutation, useUserRefreshCreateMutation } = authService

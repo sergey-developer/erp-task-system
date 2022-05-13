@@ -1,13 +1,12 @@
 import { Button, Form, Input, Typography } from 'antd'
-import React, { FC, useCallback } from 'react'
+import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
-import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import { getErrorDetail } from 'shared/services/api'
 
-import { MaybeUndefined } from '../../../shared/interfaces/utils'
 import { useLoginMutation } from '../auth.service'
-import { LoginApiArg } from '../models'
+import { IUseLoginMutationResult } from '../interfaces'
 import {
   CardStyled,
   FormStyled,
@@ -17,10 +16,8 @@ import {
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
 const SignInPage: FC = () => {
-  const [login, { isLoading, error }] = useLoginMutation<{
-    error: MaybeUndefined<ErrorResponse<LoginApiArg>>
-    isLoading: boolean
-  }>()
+  const [login, { isLoading, error }] =
+    useLoginMutation<IUseLoginMutationResult>()
 
   return (
     <CardStyled>

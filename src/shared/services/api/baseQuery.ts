@@ -10,6 +10,8 @@ import { httpClientConfig } from 'configs/httpClient'
 import { MethodEnums } from 'shared/constants/http'
 
 type CustomBaseQueryConfig = {
+  apiVersion: string
+  apiPath: string
   prepareHeaders?: (
     headers: AxiosRequestHeaders,
     api: Pick<
@@ -29,7 +31,11 @@ type CustomBaseQueryFn = BaseQueryFn<{
 const httpClient = axios.create(httpClientConfig)
 
 const baseQuery =
-  ({ prepareHeaders }: CustomBaseQueryConfig): CustomBaseQueryFn =>
+  ({
+    prepareHeaders,
+    apiVersion,
+    apiPath,
+  }: CustomBaseQueryConfig): CustomBaseQueryFn =>
   async (
     { url, method = MethodEnums.GET, data, params },
     api,
@@ -40,7 +46,13 @@ const baseQuery =
       : undefined
 
     try {
-      const result = await httpClient({ url, method, data, params, headers })
+      const result = await httpClient({
+        url: `${apiPath}${apiVersion}${url}`,
+        method,
+        data,
+        params,
+        headers,
+      })
       return { data: result.data }
     } catch (axiosError) {
       let err = axiosError as AxiosError

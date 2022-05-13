@@ -17,8 +17,8 @@ const config: AxiosRequestConfig = {
   headers: {
     'Content-Type': 'application/json',
   },
-  transformRequest: [toJsonTransformer, toSnakeCaseTransformer],
-  transformResponse: [fromSnakeCaseTransformer, fromJsonTransformer],
+  transformRequest: [toSnakeCaseTransformer, toJsonTransformer],
+  transformResponse: [fromJsonTransformer, fromSnakeCaseTransformer],
   paramsSerializer,
 }
 
