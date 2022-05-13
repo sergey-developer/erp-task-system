@@ -35,6 +35,7 @@ helm_chart:
   only:
     refs:
       - rc
+      - task-18996-deploy
     changes:
       - charts/itsm-frontend/Chart.yaml
 
@@ -47,8 +48,11 @@ helm_release:
   environment:
     name: itsm-develop
     url: https://itsm.bvnt.ru
+    kubernetes:
+      namespace: backend-278-itsm-develop
   only:
     - rc
+    - task-18996-deploy
   script:
     >-
       helm upgrade
@@ -58,4 +62,5 @@ helm_release:
       --timeout 720s
       --history-max 0
       --set image.tag=${CI_PIPELINE_ID}
+      --set imageCredentials.password=${REGISTRY_PASSWORD}
       $HELM_RELEASE_NAME $HELM_CHART
