@@ -48,8 +48,6 @@ helm_release:
   environment:
     name: itsm-develop
     url: https://itsm.bvnt.ru
-    kubernetes:
-      namespace: backend-278-itsm-develop
   only:
     - rc
     - task-18996-deploy
