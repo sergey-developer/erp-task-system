@@ -12,7 +12,7 @@ image:
 
 imageCredentials:
   registry: gitlab.benovate.ru:5050
-  username: gitlab+deploy-token-35
+  username: gitlab+deploy-token-36
   email: devops@benovate.ru
 
 imagePullSecrets:
