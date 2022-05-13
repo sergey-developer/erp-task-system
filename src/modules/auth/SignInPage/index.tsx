@@ -5,50 +5,39 @@ import { Link } from 'react-router-dom'
 import { RoutesEnum } from 'configs/routes'
 import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 
+import { MaybeUndefined } from '../../../shared/interfaces/utils'
+import { useLoginMutation } from '../auth.service'
 import { LoginApiArg } from '../models'
-import { useLoginMutation } from '../services'
 import {
   CardStyled,
   FormStyled,
   FormTitleStyled,
   PageTitleStyled,
 } from './styles'
+import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
 const SignInPage: FC = () => {
-  const [login, { isLoading, error }] = useLoginMutation()
-  const onFinish = useCallback(
-    (values: LoginApiArg) => {
-      login(values)
-    },
-    [login],
-  )
+  const [login, { isLoading, error }] = useLoginMutation<{
+    error: MaybeUndefined<ErrorResponse<LoginApiArg>>
+    isLoading: boolean
+  }>()
 
   return (
     <CardStyled>
       <PageTitleStyled level={4}>Obermeister-ITSM</PageTitleStyled>
       <FormTitleStyled level={5}>Авторизация</FormTitleStyled>
-      {error ? (
-        <Typography.Text type='danger'>
-          {getErrorDetail(error as ErrorResponse<LoginApiArg>)}
-        </Typography.Text>
-      ) : null}
+      {error && (
+        <Typography.Text type='danger'>{getErrorDetail(error)}</Typography.Text>
+      )}
       <FormStyled
-        onFinish={onFinish as (v: any) => void}
+        onFinish={login as (v: any) => void}
         layout='vertical'
         requiredMark={false}
       >
-        <Form.Item
-          label='E-mail'
-          name='email'
-          rules={[{ required: true, message: 'Введите E-mail', type: 'email' }]}
-        >
+        <Form.Item label='E-mail' name='email' rules={EMAIL_RULES}>
           <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
         </Form.Item>
-        <Form.Item
-          label='Пароль'
-          name='password'
-          rules={[{ required: true, message: 'Введите пароль' }]}
-        >
+        <Form.Item label='Пароль' name='password' rules={PASSWORD_RULES}>
           <Input.Password placeholder='••••••••' disabled={isLoading} />
         </Form.Item>
         <Form.Item>

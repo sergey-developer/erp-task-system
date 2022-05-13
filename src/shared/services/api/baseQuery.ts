@@ -7,6 +7,7 @@ import axios, {
 } from 'axios'
 
 import { httpClientConfig } from 'configs/httpClient'
+import { MethodEnums } from 'shared/constants/http'
 
 type CustomBaseQueryConfig = {
   prepareHeaders?: (
@@ -29,7 +30,11 @@ const httpClient = axios.create(httpClientConfig)
 
 const baseQuery =
   ({ prepareHeaders }: CustomBaseQueryConfig): CustomBaseQueryFn =>
-  async ({ url, method = 'get', data, params }, api, extraOptions) => {
+  async (
+    { url, method = MethodEnums.GET, data, params },
+    api,
+    extraOptions,
+  ) => {
     const headers = prepareHeaders
       ? prepareHeaders(httpClient.defaults.headers.common, api)
       : undefined

@@ -1,15 +1,22 @@
-/** хелперы по работе с localStorage */
-
 import { StorageKeys } from 'shared/constants/storage'
+import { MaybeNull } from 'shared/interfaces/utils'
 
-export const setItem = (key: StorageKeys, value: string) => {
+const setItem = (key: StorageKeys, value: string): void => {
   localStorage.setItem(key, value)
 }
 
-export const removeItem = (key: StorageKeys): void => {
+const removeItem = (key: StorageKeys): void => {
   localStorage.removeItem(key)
 }
 
-export const getItem = (key: StorageKeys): string | null => {
+const getItem = (key: StorageKeys): MaybeNull<string> => {
   return localStorage.getItem(key)
 }
+
+const localStorageService = {
+  setItem,
+  getItem,
+  removeItem,
+}
+
+export default localStorageService

@@ -1,4 +1,4 @@
 export enum StorageKeys {
-  access = 'access',
-  refresh = 'refresh',
+  accessToken = 'accessToken',
+  refreshToken = 'refreshToken',
 }

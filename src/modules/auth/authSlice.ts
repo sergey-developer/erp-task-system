@@ -1,20 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { api } from 'modules/auth/services'
-import { getItem, removeItem, setItem } from 'shared/services/localStorage'
+import { api } from 'modules/auth/auth.service'
+import { StorageKeys } from 'shared/constants/storage'
+import localStorageService from 'shared/services/localStorage'
 import { RootState } from 'state/store'
 
-import { StorageKeys } from '../../shared/constants/storage'
 import { IAuthSliceState } from './interfaces'
 
 function getInitialState(): IAuthSliceState {
-  const access = getItem(StorageKeys.access)
-  const refresh = getItem(StorageKeys.refresh)
+  const accessToken = localStorageService.getItem(StorageKeys.accessToken)
+  const refreshToken = localStorageService.getItem(StorageKeys.refreshToken)
   return {
     user: null /** todo может тоже хранить в localStorage */,
-    access,
-    refresh,
-    isAuthenticated: !!access && !!refresh,
+    accessToken,
+    refreshToken,
+    isAuthenticated: !!accessToken && !!refreshToken,
   }
 }
 
@@ -24,8 +24,8 @@ const slice = createSlice({
   reducers: {
     logout: () => {
       /** может надо дергать метод апи */
-      removeItem(StorageKeys.access)
-      removeItem(StorageKeys.refresh)
+      localStorageService.removeItem(StorageKeys.accessToken)
+      localStorageService.removeItem(StorageKeys.refreshToken)
       return getInitialState()
     },
   },
@@ -33,17 +33,12 @@ const slice = createSlice({
     builder.addMatcher(
       api.endpoints.login.matchFulfilled,
       (state, { payload }) => {
-        state.access = payload.access
-        state.refresh = payload.refresh
-        state.isAuthenticated = true
-        setItem(StorageKeys.access, payload.access)
-        setItem(StorageKeys.refresh, payload.refresh)
+        localStorageService.setItem(StorageKeys.accessToken, payload.access)
+        localStorageService.setItem(StorageKeys.refreshToken, payload.refresh)
+        return getInitialState()
       },
     )
   },
 })
 
 export default slice.reducer
-
-export const selectIsAuthenticated = (state: RootState) =>
-  state.auth.isAuthenticated

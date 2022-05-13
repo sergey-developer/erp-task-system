@@ -8,7 +8,7 @@ const toJsonTransformer: AxiosRequestTransformer = (data, headers) => {
 }
 
 const toSnakeCaseTransformer: AxiosRequestTransformer = (data, headers) => {
-  return hasJsonContentType(headers) ? (data ? decamelize(data) : data) : data
+  return hasJsonContentType(headers) && data ? decamelize(data) : data
 }
 
 export { toJsonTransformer, toSnakeCaseTransformer }

@@ -1,6 +1,8 @@
+import { MaybeNull } from 'shared/interfaces/utils'
+
 export interface IAuthSliceState {
   user: unknown
-  access: null | string
-  refresh: null | string
+  accessToken: MaybeNull<string>
+  refreshToken: MaybeNull<string>
   isAuthenticated: boolean
 }

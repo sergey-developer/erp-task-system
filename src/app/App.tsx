@@ -9,7 +9,7 @@ import {
   privateRoutesConfig,
   publicRoutesConfig,
 } from 'configs/routes'
-import { useAuth } from 'modules/auth/hooks'
+import useAuth from 'modules/auth/hooks/useAuth'
 
 /** пока тестовый хук для отладки пока не подключено апи по авторизации */
 function useMockAuth() {

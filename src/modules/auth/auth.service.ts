@@ -1,3 +1,4 @@
+import { MethodEnums } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
 import {
@@ -12,7 +13,7 @@ const injectedRtkApi = api.injectEndpoints({
     login: build.mutation<LoginApiResponse, LoginApiArg>({
       query: (queryArg) => ({
         url: `/api/v1/user/auth`,
-        method: 'POST',
+        method: MethodEnums.POST,
         data: queryArg,
       }),
     }),
@@ -22,7 +23,7 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/api/v1/user/refresh`,
-        method: 'POST',
+        method: MethodEnums.POST,
         data: queryArg,
       }),
     }),

@@ -1,2 +1,3 @@
 export { default as api } from './api.service'
-export * from './parseError'
+export * from './utils'
+export * from './intefraces'
