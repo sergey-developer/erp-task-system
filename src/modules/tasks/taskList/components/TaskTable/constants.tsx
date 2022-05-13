@@ -1,9 +1,14 @@
+import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
+import { TextProps } from 'antd/es/typography/Text'
 import React from 'react'
 
 import { TaskStatusEnum } from '../TaskListPage/constants'
 import BidColumn from './BidColumn'
 
+const { Text } = Typography
+
+// TODO: добавить правильный тип в ColumnsType как генерация типов будет готова
 export const tableColumns: ColumnsType<{ status: TaskStatusEnum }> = [
   {
     title: 'Заявка',
@@ -39,6 +44,16 @@ export const tableColumns: ColumnsType<{ status: TaskStatusEnum }> = [
     title: 'Выполнить до',
     dataIndex: 'executeBefore',
     width: 160,
+    render: (value: string, record) => {
+      // TODO: поправить условие как будет готов бэк
+      const type: TextProps['type'] = true ? 'warning' : 'success'
+
+      return (
+        <Text type={type} strong>
+          {value}
+        </Text>
+      )
+    },
   },
   {
     title: 'Комментарий',

@@ -2,15 +2,17 @@ import { Table } from 'antd'
 import { TableProps } from 'antd/lib/table/Table'
 import React, { FC } from 'react'
 
-import { tableColumns } from './constants'
+// TODO: заменить any когда генерация типов будет готова
+type TaskTableProps = Pick<
+  TableProps<any>,
+  'dataSource' | 'loading' | 'columns'
+>
 
-type TaskTableProps = Pick<TableProps<any>, 'dataSource' | 'loading'>
-
-const TaskTable: FC<TaskTableProps> = ({ dataSource, loading }) => {
+const TaskTable: FC<TaskTableProps> = ({ dataSource, loading, columns }) => {
   return (
     <Table
       dataSource={dataSource}
-      columns={tableColumns}
+      columns={columns}
       pagination={false}
       loading={loading}
     />

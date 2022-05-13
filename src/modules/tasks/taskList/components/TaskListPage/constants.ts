@@ -10,6 +10,7 @@ export enum TaskStatusEnum {
   Reclassified = 'RECLASSIFIED',
   Completed = 'COMPLETED',
   Closed = 'CLOSED',
+  Suspended = 'SUSPENDED',
 }
 
 export enum TaskListFiltersEnum {

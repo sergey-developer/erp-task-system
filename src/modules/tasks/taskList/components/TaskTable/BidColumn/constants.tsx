@@ -14,8 +14,7 @@ export const iconOrBadgeStatusMap: Record<
   TaskStatusEnum,
   ReactElement | BadgeProps['status']
 > = {
-  [TaskStatusEnum.New]: <QuestionCircleTwoTone />,
-  [TaskStatusEnum.InProgress]: <PauseCircleTwoTone />,
+  [TaskStatusEnum.Appointed]: <QuestionCircleTwoTone />,
 
   [TaskStatusEnum.Reclassified]: (
     <RightCircleOutlined style={{ color: theme.colors.red1 }} />
@@ -23,7 +22,11 @@ export const iconOrBadgeStatusMap: Record<
   [TaskStatusEnum.Closed]: (
     <ExclamationCircleOutlined style={{ color: theme.colors.red1 }} />
   ),
+  // TODO: Код выше будет изменён
+
+  [TaskStatusEnum.Suspended]: <PauseCircleTwoTone />,
 
   [TaskStatusEnum.Completed]: 'success',
-  [TaskStatusEnum.Appointed]: 'default',
+  [TaskStatusEnum.InProgress]: 'warning',
+  [TaskStatusEnum.New]: 'default',
 }

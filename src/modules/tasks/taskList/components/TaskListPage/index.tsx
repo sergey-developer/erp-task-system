@@ -1,4 +1,4 @@
-import { FilterTwoTone } from '@ant-design/icons'
+import { FilterTwoTone, SyncOutlined } from '@ant-design/icons'
 import { Button, Col, Input, Row } from 'antd'
 import React, { FC, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom'
 import FilterTag from 'components/FilterTag'
 
 import TaskTable from '../TaskTable'
+import { tableColumns } from '../TaskTable/constants'
 import {
   TASK_LIST_FILTER_KEY,
   TaskListFiltersEnum,
@@ -132,9 +133,9 @@ const TaskListPage: FC = () => {
     <Row gutter={[0, 40]}>
       <Col span={24}>
         <Row justify='space-between'>
-          <Col span={15}>
+          <Col span={12}>
             <Row align='middle'>
-              <Col span={12}>
+              <Col span={15}>
                 {filterList.map((filter, index) => (
                   <FilterTag
                     key={index}
@@ -146,7 +147,7 @@ const TaskListPage: FC = () => {
                 ))}
               </Col>
 
-              <Col span={3}>
+              <Col span={4}>
                 <Button icon={<FilterTwoTone className='font-s-18' />}>
                   Фильтры
                 </Button>
@@ -154,13 +155,19 @@ const TaskListPage: FC = () => {
             </Row>
           </Col>
 
-          <Col span={7}>
+          <Col span={10}>
             <Row justify='space-between'>
-              <Col span={14}>
+              <Col flex='230px'>
                 <Search placeholder='Искать заявку по номеру' />
               </Col>
 
-              <Col span={8}>
+              <Col flex='170px'>
+                <Button icon={<SyncOutlined className='font-s-18' />}>
+                  Обновить заявки
+                </Button>
+              </Col>
+
+              <Col flex='147px'>
                 <Button>+ Создать заявку</Button>
               </Col>
             </Row>
@@ -171,7 +178,7 @@ const TaskListPage: FC = () => {
       <Col span={24}>
         <Row>
           <Col span={24}>
-            <TaskTable dataSource={dataSource} />
+            <TaskTable dataSource={dataSource} columns={tableColumns} />
           </Col>
         </Row>
       </Col>
