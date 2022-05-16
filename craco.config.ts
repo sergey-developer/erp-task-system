@@ -1,5 +1,6 @@
 import path from 'path'
 const CracoAntDesignPlugin = require('craco-antd')
+
 const resolvePath = (p: string) => path.resolve(__dirname, p)
 
 module.exports = {

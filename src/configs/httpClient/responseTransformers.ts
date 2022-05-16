@@ -1,5 +1,5 @@
 import { AxiosResponseTransformer } from 'axios'
-import { camelize } from 'humps'
+import { camelizeKeys } from 'humps'
 
 import { hasJsonContentType } from './utils'
 
@@ -8,7 +8,7 @@ const fromJsonTransformer: AxiosResponseTransformer = (data, headers) => {
 }
 
 const fromSnakeCaseTransformer: AxiosResponseTransformer = (data, headers) => {
-  return hasJsonContentType(headers) ? camelize(data) : data
+  return hasJsonContentType(headers) ? camelizeKeys(data) : data
 }
 
 export { fromJsonTransformer, fromSnakeCaseTransformer }
