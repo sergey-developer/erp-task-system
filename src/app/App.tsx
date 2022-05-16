@@ -9,6 +9,7 @@ import {
   privateRoutesConfig,
   publicRoutesConfig,
 } from 'configs/routes'
+import useAuth from 'modules/auth/hooks/useAuth'
 
 /** пока тестовый хук для отладки пока не подключено апи по авторизации */
 function useMockAuth() {
@@ -29,9 +30,12 @@ function useMockAuth() {
 }
 
 const App: FC = () => {
-  const { isLoading, isAuth } = useMockAuth()
+  const { isLoading } = useMockAuth()
+  const { isAuthenticated } = useAuth()
   const element = useRoutes(
-    applyRoutesLayout(isAuth ? privateRoutesConfig : publicRoutesConfig),
+    applyRoutesLayout(
+      isAuthenticated ? privateRoutesConfig : publicRoutesConfig,
+    ),
   )
 
   if (isLoading) return <Spin />
