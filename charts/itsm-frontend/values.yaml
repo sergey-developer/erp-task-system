@@ -58,7 +58,7 @@ ingress:
     - host: itsm.bnvt.ru
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
   tls:
     - secretName: chart-itsm-tls
       hosts:
