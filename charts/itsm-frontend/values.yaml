@@ -54,10 +54,11 @@ ingress:
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
   hosts:
     - host: itsm.bnvt.ru
       paths:
-        - path: /
+        - path: /.*
           pathType: Prefix
   tls:
     - secretName: chart-itsm-tls
