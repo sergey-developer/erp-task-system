@@ -12,6 +12,7 @@
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "7.0.0-alpha.3",
     "@reduxjs/toolkit": "^1.8.1",
+    "@rehooks/component-size": "^1.0.3",
     "antd": "^4.20.2",
     "axios": "^0.26.1",
     "craco-antd": "^2.0.0",

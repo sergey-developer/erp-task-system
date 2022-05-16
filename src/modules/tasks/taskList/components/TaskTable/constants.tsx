@@ -4,7 +4,7 @@ import React from 'react'
 import { TaskStatusEnum } from '../TaskListPage/constants'
 import BidColumn from './BidColumn'
 
-export const tableColumns: ColumnsType<{ status: TaskStatusEnum }> = [
+export const TABLE_COLUMNS_SHORT: ColumnsType<{ status: TaskStatusEnum }> = [
   {
     title: 'Заявка',
     dataIndex: 'task',
@@ -35,6 +35,9 @@ export const tableColumns: ColumnsType<{ status: TaskStatusEnum }> = [
     title: 'Рабочая группа',
     dataIndex: 'workingGroup',
   },
+]
+
+export const TABLE_COLUMNS_ETC: ColumnsType<{ status: TaskStatusEnum }> = [
   {
     title: 'Выполнить до',
     dataIndex: 'executeBefore',

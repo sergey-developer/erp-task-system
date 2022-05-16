@@ -1,10 +1,12 @@
 import { FilterTwoTone } from '@ant-design/icons'
+import useComponentSize from '@rehooks/component-size'
 import { Button, Col, Input, Row } from 'antd'
-import React, { FC, useState } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import FilterTag from 'components/FilterTag'
 
+import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
 import {
   TASK_LIST_FILTER_KEY,
@@ -12,13 +14,14 @@ import {
   TaskStatusEnum,
 } from './constants'
 import { FilterListItem } from './interfaces'
+import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
 import { initSelectedFilterState } from './utils'
 
 const { Search } = Input
 
 const dataSource: Array<any> = [
   {
-    task: 'REQ0000007898',
+    task: 'REQ0000007801',
     status: TaskStatusEnum.InProgress,
     foreignNumber: 'ЗНО-000345456-001',
     object: '1298-Пятерочка (гп.Воскресенск)',
@@ -30,7 +33,7 @@ const dataSource: Array<any> = [
     createdAt: '06.12.2021, 16:00:25',
   },
   {
-    task: 'REQ0000007898',
+    task: 'REQ0000007802',
     status: TaskStatusEnum.Completed,
     foreignNumber: 'ЗНО-000345456-001',
     object: '1298-Пятерочка (гп.Воскресенск)',
@@ -42,7 +45,7 @@ const dataSource: Array<any> = [
     createdAt: '06.12.2021, 16:00:25',
   },
   {
-    task: 'REQ0000007898',
+    task: 'REQ0000007803',
     status: TaskStatusEnum.Reclassified,
     foreignNumber: 'ЗНО-000345456-001',
     object: '1298-Пятерочка (гп.Воскресенск)',
@@ -54,7 +57,7 @@ const dataSource: Array<any> = [
     createdAt: '06.12.2021, 16:00:25',
   },
   {
-    task: 'REQ0000007898',
+    task: 'REQ0000007804',
     status: TaskStatusEnum.New,
     foreignNumber: 'ЗНО-000345456-001',
     object: '1298-Пятерочка (гп.Воскресенск)',
@@ -66,7 +69,7 @@ const dataSource: Array<any> = [
     createdAt: '06.12.2021, 16:00:25',
   },
   {
-    task: 'REQ0000007898',
+    task: 'REQ0000007805',
     status: TaskStatusEnum.Closed,
     foreignNumber: 'ЗНО-000345456-001',
     object: '1298-Пятерочка (гп.Воскресенск)',
@@ -78,7 +81,79 @@ const dataSource: Array<any> = [
     createdAt: '06.12.2021, 16:00:25',
   },
   {
-    task: 'REQ0000007898',
+    task: 'REQ0000007806',
+    status: TaskStatusEnum.Appointed,
+    foreignNumber: 'ЗНО-000345456-001',
+    object: '1298-Пятерочка (гп.Воскресенск)',
+    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
+    executor: 'Александровский А.А.',
+    workingGroup: 'РГ гп.Воскресенск (Московская ...',
+    executeBefore: '06.12.2021, 16:00:25',
+    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
+    createdAt: '06.12.2021, 16:00:25',
+  },
+  {
+    task: 'REQ0000007807',
+    status: TaskStatusEnum.InProgress,
+    foreignNumber: 'ЗНО-000345456-001',
+    object: '1298-Пятерочка (гп.Воскресенск)',
+    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
+    executor: 'Александровский А.А.',
+    workingGroup: 'РГ гп.Воскресенск (Московская ...',
+    executeBefore: '06.12.2021, 16:00:25',
+    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
+    createdAt: '06.12.2021, 16:00:25',
+  },
+  {
+    task: 'REQ0000007808',
+    status: TaskStatusEnum.Completed,
+    foreignNumber: 'ЗНО-000345456-001',
+    object: '1298-Пятерочка (гп.Воскресенск)',
+    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
+    executor: 'Александровский А.А.',
+    workingGroup: 'РГ гп.Воскресенск (Московская ...',
+    executeBefore: '06.12.2021, 16:00:25',
+    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
+    createdAt: '06.12.2021, 16:00:25',
+  },
+  {
+    task: 'REQ0000007809',
+    status: TaskStatusEnum.Reclassified,
+    foreignNumber: 'ЗНО-000345456-001',
+    object: '1298-Пятерочка (гп.Воскресенск)',
+    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
+    executor: 'Александровский А.А.',
+    workingGroup: 'РГ гп.Воскресенск (Московская ...',
+    executeBefore: '06.12.2021, 16:00:25',
+    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
+    createdAt: '06.12.2021, 16:00:25',
+  },
+  {
+    task: 'REQ0000007810',
+    status: TaskStatusEnum.New,
+    foreignNumber: 'ЗНО-000345456-001',
+    object: '1298-Пятерочка (гп.Воскресенск)',
+    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
+    executor: 'Александровский А.А.',
+    workingGroup: 'РГ гп.Воскресенск (Московская ...',
+    executeBefore: '06.12.2021, 16:00:25',
+    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
+    createdAt: '06.12.2021, 16:00:25',
+  },
+  {
+    task: 'REQ0000007811',
+    status: TaskStatusEnum.Closed,
+    foreignNumber: 'ЗНО-000345456-001',
+    object: '1298-Пятерочка (гп.Воскресенск)',
+    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
+    executor: 'Александровский А.А.',
+    workingGroup: 'РГ гп.Воскресенск (Московская ...',
+    executeBefore: '06.12.2021, 16:00:25',
+    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
+    createdAt: '06.12.2021, 16:00:25',
+  },
+  {
+    task: 'REQ0000007812',
     status: TaskStatusEnum.Appointed,
     foreignNumber: 'ЗНО-000345456-001',
     object: '1298-Пятерочка (гп.Воскресенск)',
@@ -127,55 +202,61 @@ const TaskListPage: FC = () => {
     setSelectedFilter(filter)
     setSearchParams({ filter })
   }
+  const refContainer = useRef<HTMLDivElement>(null)
+  const { height: heightContainer } = useComponentSize(refContainer)
 
   return (
-    <Row gutter={[0, 40]}>
-      <Col span={24}>
-        <Row justify='space-between'>
-          <Col span={15}>
-            <Row align='middle'>
-              <Col span={12}>
-                {filterList.map((filter, index) => (
-                  <FilterTag
-                    key={index}
-                    checked={selectedFilter === filter.value}
-                    onChange={() => handleChangeFilter(filter.value)}
-                    text={filter.text}
-                    amount={filter.amount}
-                  />
-                ))}
-              </Col>
+    <RowWrapStyled gutter={[0, 40]} style={{ maxHeight: '100%' }}>
+      <Row justify='space-between'>
+        <Col span={15}>
+          <Row align='middle'>
+            <Col span={12}>
+              {filterList.map((filter, index) => (
+                <FilterTag
+                  key={index}
+                  checked={selectedFilter === filter.value}
+                  onChange={() => handleChangeFilter(filter.value)}
+                  text={filter.text}
+                  amount={filter.amount}
+                />
+              ))}
+            </Col>
 
-              <Col span={3}>
-                <Button icon={<FilterTwoTone className='font-s-18' />}>
-                  Фильтры
-                </Button>
-              </Col>
-            </Row>
+            <Col span={3}>
+              <Button icon={<FilterTwoTone className='font-s-18' />}>
+                Фильтры
+              </Button>
+            </Col>
+          </Row>
+        </Col>
+
+        <Col span={7}>
+          <Row justify='space-between'>
+            <Col span={14}>
+              <Search placeholder='Искать заявку по номеру' />
+            </Col>
+
+            <Col span={8}>
+              <Button>+ Создать заявку</Button>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <ColFlexStyled span={24} flex='1'>
+        <RowStyled>
+          <Col span={16} ref={refContainer}>
+            <TaskTable
+              heightContainer={heightContainer}
+              dataSource={dataSource}
+              columns={'shorts'}
+            />
           </Col>
-
-          <Col span={7}>
-            <Row justify='space-between'>
-              <Col span={14}>
-                <Search placeholder='Искать заявку по номеру' />
-              </Col>
-
-              <Col span={8}>
-                <Button>+ Создать заявку</Button>
-              </Col>
-            </Row>
+          <Col span={8}>
+            <TaskDetail />
           </Col>
-        </Row>
-      </Col>
-
-      <Col span={24}>
-        <Row>
-          <Col span={24}>
-            <TaskTable dataSource={dataSource} />
-          </Col>
-        </Row>
-      </Col>
-    </Row>
+        </RowStyled>
+      </ColFlexStyled>
+    </RowWrapStyled>
   )
 }
 
