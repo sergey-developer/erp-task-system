@@ -1,0 +1,17 @@
+upload_static:
+  image: node:18-buster
+  stage: deploy
+  only:
+    refs:
+      - rc
+  before_script:
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - ./aws/install
+  script:
+    - yarn install
+    - yarn build
+    - aws s3 sync build s3://itsm-frontend --endpoint-url http://hb.bizmrg.com
+  tags:
+    - docker
+    - selectel

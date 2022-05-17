@@ -1,11 +1,13 @@
 import { FilterTwoTone } from '@ant-design/icons'
 import useComponentSize from '@rehooks/component-size'
 import { Button, Col, Input, Row } from 'antd'
-import React, { FC, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import FilterTag from 'components/FilterTag'
 
+import { Task } from '../../../models'
+import { useTasksListQuery } from '../../../tasks.service'
 import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
 import {
@@ -202,6 +204,28 @@ const TaskListPage: FC = () => {
     setSelectedFilter(filter)
     setSearchParams({ filter })
   }
+
+  /** todo Логика должна быть с фильтрами */
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [tasks, setTasks] = useState<Task[]>([])
+  const { data: taskCurrentPage, isFetching } = useTasksListQuery({
+    page: currentPage,
+  })
+
+  useEffect(() => {
+    if (taskCurrentPage?.length && !isFetching) {
+      if (currentPage === 1) {
+        setTasks(taskCurrentPage)
+      } else {
+        setTasks((state) => state.concat(taskCurrentPage))
+      }
+    }
+  }, [taskCurrentPage])
+
+  const handleLoadMore = useCallback(() => {
+    setCurrentPage(currentPage + 1)
+  }, [currentPage])
+  console.log(isFetching)
   const refContainer = useRef<HTMLDivElement>(null)
   const { height: heightContainer } = useComponentSize(refContainer)
 
@@ -247,8 +271,10 @@ const TaskListPage: FC = () => {
           <Col span={16} ref={refContainer}>
             <TaskTable
               heightContainer={heightContainer}
-              dataSource={dataSource}
+              dataSource={tasks}
               columns={'shorts'}
+              onLoadMore={handleLoadMore}
+              loadingData={isFetching}
             />
           </Col>
           <Col span={8}>

@@ -15,7 +15,8 @@ export const TABLE_COLUMNS_SHORT: ColumnsType<{ status: TaskStatusEnum }> = [
   },
   {
     title: 'Внеш.номер',
-    dataIndex: 'foreignNumber',
+    // dataIndex: 'foreignNumber',
+    dataIndex: 'id',
     width: 170,
   },
   {

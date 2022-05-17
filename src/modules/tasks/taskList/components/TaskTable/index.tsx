@@ -1,20 +1,23 @@
-import useComponentSize from '@rehooks/component-size'
 import { Table } from 'antd'
 import { TableProps } from 'antd/lib/table/Table'
 import React, {
   FC,
-  RefObject,
+  useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react'
 
 import { TABLE_COLUMNS_ETC, TABLE_COLUMNS_SHORT } from './constants'
+import { TableStyled } from './styles'
 
 type TaskTableProps = Pick<TableProps<any>, 'dataSource' | 'loading'> & {
   columns: 'all' | 'shorts'
   heightContainer: number
+  onLoadMore: () => void
+  loadingData: boolean
 }
 
 const TaskTable: FC<TaskTableProps> = ({
@@ -22,6 +25,8 @@ const TaskTable: FC<TaskTableProps> = ({
   loading,
   columns,
   heightContainer,
+  onLoadMore,
+  loadingData,
 }) => {
   const columnsData = useMemo(() => {
     switch (columns) {
@@ -33,7 +38,37 @@ const TaskTable: FC<TaskTableProps> = ({
         return TABLE_COLUMNS_SHORT
     }
   }, [columns])
+
   const refTable = useRef(null)
+
+  /** автоподгрузка страниц */
+  useEffect(() => {
+    const node = (
+      refTable?.current as unknown as HTMLDivElement
+    )?.querySelector<HTMLElement>('.ant-table-body')
+
+    const onScroll = (e: Event) => {
+      if (!loadingData) {
+        const { currentTarget: element } = e
+        const perc =
+          ((element as unknown as HTMLDivElement)?.scrollTop /
+            ((element as unknown as HTMLDivElement)?.scrollHeight -
+              (element as unknown as HTMLDivElement)?.clientHeight)) *
+          100
+        if (perc >= 80) {
+          onLoadMore()
+          node?.removeEventListener('scroll', onScroll)
+        }
+      }
+    }
+
+    if (node) {
+      node.addEventListener('scroll', onScroll)
+    }
+    return () => node?.removeEventListener('scroll', onScroll)
+  }, [loadingData, onLoadMore])
+
+  /** установка скролла, под высоту внешнего блока - голова таблицы*/
   const [scrollY, setScrollY] = useState<number>()
   useEffect(() => {
     const { offsetHeight: tableBodyHeight } = (
@@ -47,16 +82,17 @@ const TaskTable: FC<TaskTableProps> = ({
     } else {
       setScrollY(0)
     }
-  }, [heightContainer])
+  }, [heightContainer, dataSource])
   return (
-    <Table
+    <TableStyled
       ref={refTable}
       dataSource={dataSource}
+      // @ts-ignore
       columns={columnsData}
       pagination={false}
-      rowKey={'task'}
+      rowKey={'id'}
       loading={loading}
-      scroll={scrollY ? { y: scrollY } : undefined}
+      scroll={scrollY ? { y: scrollY } : { y: 'auto' }}
     />
   )
 }
