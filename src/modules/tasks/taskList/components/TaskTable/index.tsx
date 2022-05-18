@@ -1,18 +1,15 @@
 import { ColumnsType } from 'antd/es/table'
-import { TableProps } from 'antd/lib/table/Table'
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Task } from 'modules/tasks/models'
 
-import { TABLE_COLUMNS_ETC, TABLE_COLUMNS_SHORT } from './constants'
+import {
+  ColumnsTypeContentEnum,
+  TABLE_COLUMNS_ETC,
+  TABLE_COLUMNS_SHORT,
+} from './constants'
+import { TaskTableProps } from './interfaces'
 import { TableStyled } from './styles'
-
-type TaskTableProps = Pick<TableProps<Task>, 'dataSource' | 'loading'> & {
-  columns: 'all' | 'shorts'
-  heightContainer: number
-  onLoadMore: () => void
-  loadingData: boolean
-}
 
 const TaskTable: FC<TaskTableProps> = ({
   dataSource,
@@ -21,12 +18,13 @@ const TaskTable: FC<TaskTableProps> = ({
   heightContainer,
   onLoadMore,
   loadingData,
+  onChange,
 }) => {
   const columnsData: ColumnsType<Task> = useMemo(() => {
     switch (columns) {
-      case 'all':
+      case ColumnsTypeContentEnum.All:
         return TABLE_COLUMNS_SHORT.concat(TABLE_COLUMNS_ETC)
-      case 'shorts':
+      case ColumnsTypeContentEnum.Shorts:
         return TABLE_COLUMNS_SHORT
       default:
         return TABLE_COLUMNS_SHORT
@@ -62,7 +60,7 @@ const TaskTable: FC<TaskTableProps> = ({
     return () => node?.removeEventListener('scroll', onScroll)
   }, [loadingData, onLoadMore])
 
-  /** установка скролла, под высоту внешнего блока - голова таблицы*/
+  /** установка скрола, под высоту внешнего блока - голова таблицы*/
   const [scrollY, setScrollY] = useState<number>()
 
   useEffect(() => {
@@ -81,7 +79,7 @@ const TaskTable: FC<TaskTableProps> = ({
         onLoadMore()
       }
     }
-  }, [heightContainer, dataSource, onLoadMore])
+  }, [heightContainer, dataSource, onLoadMore, loadingData])
 
   return (
     <TableStyled
@@ -92,6 +90,7 @@ const TaskTable: FC<TaskTableProps> = ({
       loading={loading}
       rowKey='id'
       scroll={scrollY ? { y: scrollY } : { y: 'auto' }}
+      onChange={onChange}
     />
   )
 }

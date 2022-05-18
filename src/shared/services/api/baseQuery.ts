@@ -1,13 +1,10 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/react'
 import { BaseQueryApi } from '@reduxjs/toolkit/src/query/baseQueryTypes'
-import axios, {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosRequestHeaders,
-} from 'axios'
+import axios, { AxiosError, AxiosRequestHeaders } from 'axios'
 
 import { httpClientConfig } from 'configs/httpClient'
 import MethodEnums from 'shared/constants/http'
+
+import { CustomBaseQueryFn } from './intefraces'
 
 type CustomBaseQueryConfig = {
   apiVersion: string
@@ -20,13 +17,6 @@ type CustomBaseQueryConfig = {
     >,
   ) => AxiosRequestHeaders
 }
-
-type CustomBaseQueryFn = BaseQueryFn<{
-  url: string
-  method?: AxiosRequestConfig['method']
-  data?: AxiosRequestConfig['data']
-  params?: AxiosRequestConfig['params']
-}>
 
 const httpClient = axios.create(httpClientConfig)
 

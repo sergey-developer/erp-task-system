@@ -6,6 +6,7 @@ const initialState: ITasksSliceState = {
   selectedTask: null,
 }
 
+/** todo Заготовка для отображения карточки, если не надо - кикаем */
 const slice = createSlice({
   name: 'tasks',
   initialState,

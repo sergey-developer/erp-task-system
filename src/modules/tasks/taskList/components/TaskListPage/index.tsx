@@ -1,19 +1,31 @@
 import { FilterTwoTone } from '@ant-design/icons'
 import useComponentSize from '@rehooks/component-size'
 import { Button, Col, Input, Row } from 'antd'
+import {
+  FilterValue,
+  SorterResult,
+  TablePaginationConfig,
+} from 'antd/lib/table/interface'
+import { camelize } from 'humps'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import FilterTag from 'components/FilterTag'
+import {
+  GetTasksListApiArg,
+  Task,
+  TaskListFiltersEnum,
+} from 'modules/tasks/models'
+import { useTasksListQuery } from 'modules/tasks/tasks.service'
 
-import { Task } from '../../../models'
-import { useTasksListQuery } from '../../../tasks.service'
 import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
+import { ColumnsTypeContentEnum } from '../TaskTable/constants'
 import {
   DEFAULT_PAGE_LIMIT,
+  SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
+  SORTED_FIELDS,
   TASK_LIST_FILTER_KEY,
-  TaskListFiltersEnum,
 } from './constants'
 import { FilterListItem } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
@@ -58,13 +70,15 @@ const TaskListPage: FC = () => {
     setSearchParams({ filter })
   }
 
-  /** todo Логика должна быть с фильтрами */
-  const [currentOffset, setCurrentOffset] = useState<number>(0)
-  const [tasks, setTasks] = useState<Task[]>([])
-  const { data: taskCurrentResponsePage, isFetching } = useTasksListQuery({
+  const [queryArgs, setQueryArgs] = useState<GetTasksListApiArg>({
     limit: DEFAULT_PAGE_LIMIT,
-    offset: currentOffset,
+    offset: 0,
   })
+
+  const [tasks, setTasks] = useState<Task[]>([])
+  const { data: taskCurrentResponsePage, isFetching } =
+    useTasksListQuery(queryArgs)
+
   useEffect(() => {
     if (
       taskCurrentResponsePage?.count &&
@@ -88,15 +102,42 @@ const TaskListPage: FC = () => {
 
   const handleLoadMore = useCallback(() => {
     if (taskCurrentResponsePage?.next) {
-      setCurrentOffset(currentOffset + DEFAULT_PAGE_LIMIT)
+      setQueryArgs((state) => ({
+        ...state,
+        offset: (queryArgs?.offset ?? 0) + DEFAULT_PAGE_LIMIT,
+      }))
     }
-  }, [currentOffset, taskCurrentResponsePage?.next])
+  }, [queryArgs?.offset, taskCurrentResponsePage?.next])
 
   const refContainer = useRef<HTMLDivElement>(null)
   const { height: heightContainer } = useComponentSize(refContainer)
 
+  /** обработка сортировок в таблице */
+  const handleChangeTable = useCallback(
+    (
+      pagination: TablePaginationConfig,
+      filters: Record<string, FilterValue | null>,
+      sorter: SorterResult<Task> | SorterResult<Task>[],
+    ) => {
+      const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
+      if (SORTED_FIELDS.includes(field as string)) {
+        const key = camelize(`${field}_${order}`)
+        setQueryArgs((state) => ({
+          ...state,
+          smartSort:
+            key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
+              ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
+                  key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
+                ]
+              : undefined,
+          offset: 0,
+        }))
+      }
+    },
+    [],
+  )
   return (
-    <RowWrapStyled gutter={[0, 40]} style={{ maxHeight: '100%' }}>
+    <RowWrapStyled gutter={[0, 40]}>
       <Row justify='space-between'>
         <Col span={15}>
           <Row align='middle'>
@@ -138,9 +179,10 @@ const TaskListPage: FC = () => {
             <TaskTable
               heightContainer={heightContainer}
               dataSource={tasks}
-              columns={'all'}
+              columns={ColumnsTypeContentEnum.All}
               onLoadMore={handleLoadMore}
               loadingData={isFetching}
+              onChange={handleChangeTable}
             />
           </Col>
           {undefined && (
