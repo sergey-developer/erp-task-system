@@ -1,24 +1,47 @@
-import React, { FC, useState } from 'react';
+import { Button, DrawerProps, Form, FormProps, Input, Radio, Space } from 'antd'
+import { Moment } from 'moment'
+import React, { FC } from 'react'
+
+import { TaskStatusEnum } from 'modules/tasks/taskList/components/TaskListPage/constants'
+import BidColumn from 'modules/tasks/taskList/components/TaskTable/BidColumn'
+import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
+
+import { taskStatusDictionary } from './constants'
+import FilterBlock from './FilterBlock'
+import FilterBlockLabel from './FilterBlockLabel'
 import {
-  Button,
-  Checkbox,
-  CheckboxProps,
-  DrawerProps,
-  Input,
-  InputProps,
-  Radio,
-  RadioProps,
-  Space,
-  TimeRangePickerProps
-} from 'antd';
-import { Moment } from 'moment';
-import { RangeValue } from 'rc-picker/lib/interface';
-import { TaskStatusEnum } from 'modules/tasks/taskList/components/TaskListPage/constants';
-import BidColumn from "modules/tasks/taskList/components/TaskTable/BidColumn";
-import FilterBlock from "./FilterBlock";
-import FilterBlockLabel from "./FilterBlockLabel";
-import { taskStatusDictionary } from './constants';
-import {DrawerStyled, RadioGroupStyled, RangePickerStyled, TaskStatusList} from './styles';
+  CheckboxGroupStyled,
+  DrawerStyled,
+  RadioGroupStyled,
+  RangePickerStyled,
+} from './styles'
+
+type Props = Pick<DrawerProps, 'onClose' | 'visible'> & {
+  onSubmit: (result: FormResultValues) => void
+}
+
+type FormFields = {
+  columnName: keyof typeof searchableFields
+  columnKeyword: string
+  taskStatuses: TaskStatusEnum[]
+  creationDate: MaybeNull<[Moment, Moment]>
+}
+
+type FormResultValues = {
+  columnName: keyof typeof searchableFields
+  columnKeyword: MaybeUndefined<string>
+  taskStatuses: MaybeUndefined<TaskStatusEnum[]>
+  creationDate: MaybeUndefined<MaybeNull<[Date, Date]>>
+}
+
+const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
+  (taskStatus) => ({
+    label: (
+      <BidColumn status={taskStatus} value={taskStatusDictionary[taskStatus]} />
+    ),
+    value: taskStatus,
+  }),
+)
 
 const searchableFields = {
   topic: 'Тема',
@@ -26,132 +49,93 @@ const searchableFields = {
   executor: 'Исполнитель',
 }
 
-type Props = {
-  onClose: () => void
-  // todo: add typings
-  onSubmit: (result: any) => void
-}
-
 const FilterDrawer: FC<Props> = (props) => {
-  const { onClose, onSubmit } = props;
+  const { onClose, onSubmit, visible } = props
 
-  const [isVisible, setIsVisible] = useState<boolean>(true);
-
-  const [checkedTaskStatuses, setCheckedTaskStatuses] = useState<TaskStatusEnum[]>([]);
-
-  const [creationRange, setCreationRange] = useState<RangeValue<Moment>>(null);
-
-  const [keywordFieldName, setKeywordFieldName] = useState<keyof typeof searchableFields>('topic');
-
-  const [keywordValue, setKeywordValue] = useState<string>('');
-
-  const handleAfterVisibleChange: DrawerProps['afterVisibleChange'] = (visible) => {
-    if (!visible) {
-      onClose();
-    }
-  }
-
-  const handleCreationRangeChange: TimeRangePickerProps['onChange'] = (range) => {
-    setCreationRange(range)
-  }
-
-  const handleKeywordFieldNameChange: RadioProps['onChange'] = (evt) => {
-    setKeywordFieldName(evt.target.value);
-  }
-
-  const handleKeywordValueChange: InputProps['onChange'] = (evt) => {
-    setKeywordValue(evt.target.value);
-  }
+  const [form] = Form.useForm<FormFields>()
 
   const handleResetAll = () => {
-    setCheckedTaskStatuses([]);
-    setCreationRange(null);
-    setKeywordFieldName('topic');
-    setKeywordValue('');
+    form.resetFields()
   }
 
-  const handleSubmit = () => {
-    const result = {
-      creationRange: creationRange && creationRange.map(date => date?.toDate()),
-      keywordFieldName,
-      keywordValue,
-      taskStatuses: checkedTaskStatuses.length ? checkedTaskStatuses : null,
+  const handleSubmit: FormProps<FormFields>['onFinish'] = (values) => {
+    const resultValues = {
+      ...values,
+      creationDate:
+        values.creationDate &&
+        ([values.creationDate[0].toDate(), values.creationDate[1].toDate()] as [
+          Date,
+          Date,
+        ]),
     }
-
-    console.log('result', result);
-    onSubmit(result);
-    setIsVisible(false);
-  }
-
-  const handleTaskStatusCheck: CheckboxProps['onChange'] = (evt) => {
-    if (evt.target.checked) {
-      setCheckedTaskStatuses(prev => [...prev, (evt.target.name as TaskStatusEnum)]);
-      return;
-    }
-    setCheckedTaskStatuses(prev => prev.filter(taskStatus => taskStatus !== evt.target.name));
+    onSubmit(resultValues)
   }
 
   return (
     <DrawerStyled
-      afterVisibleChange={handleAfterVisibleChange}
+      destroyOnClose
       extra={
         <Space>
           <Button onClick={handleResetAll}>Сбросить все</Button>
-          <Button type="primary" onClick={handleSubmit}>
+          <Button type='primary' onClick={form.submit}>
             Применить
           </Button>
         </Space>
       }
-      title="Фильтры"
-      placement="left"
+      title='Фильтры'
+      placement='left'
       width={500}
-      onClose={() => setIsVisible(false)}
-      visible={isVisible}
+      onClose={onClose}
+      visible={visible}
     >
-      <FilterBlock withDivider>
-        <FilterBlockLabel
-          onReset={() => setCheckedTaskStatuses([])}
-        >
-          Статус
-        </FilterBlockLabel>
-        <TaskStatusList>
-          {Object.values(TaskStatusEnum).map((taskStatus) => (
-            <li key={taskStatus}>
-              <Checkbox
-                checked={checkedTaskStatuses.includes(taskStatus)}
-                name={taskStatus}
-                onChange={handleTaskStatusCheck}
-              >
-                <BidColumn status={taskStatus} value={taskStatusDictionary[taskStatus]}/>
-              </Checkbox>
-            </li>
-          ))}
-        </TaskStatusList>
-      </FilterBlock>
-      <FilterBlock withDivider>
-        <FilterBlockLabel
-          onReset={() => setCreationRange(null)}
-        >
-          Период создания
-        </FilterBlockLabel>
-        <RangePickerStyled allowClear={false} onChange={handleCreationRangeChange} value={creationRange} />
-      </FilterBlock>
-      <FilterBlock withDivider={false}>
-        <FilterBlockLabel
-          onReset={() => {
-            setKeywordFieldName('topic');
-            setKeywordValue('');
-          }}
-        >
-          Поиск по столбцу
-        </FilterBlockLabel>
-        <RadioGroupStyled onChange={handleKeywordFieldNameChange} value={keywordFieldName}>
-          {Object.entries(searchableFields).map(([name, label]) => (
-            <Radio key={name} value={name}>{label}</Radio>
-          ))}
-        </RadioGroupStyled>
-        <Input onChange={handleKeywordValueChange} placeholder="Ключевое слово" value={keywordValue} />
-      </FilterBlock>
+      <Form<FormFields> form={form} onFinish={handleSubmit}>
+        <FilterBlock withDivider>
+          <FilterBlockLabel
+            onReset={() => form.setFieldsValue({ taskStatuses: [] })}
+          >
+            Статус
+          </FilterBlockLabel>
+          <Form.Item name='taskStatuses'>
+            <CheckboxGroupStyled options={checkboxStatusOptions} />
+          </Form.Item>
+        </FilterBlock>
+
+        <FilterBlock withDivider>
+          <FilterBlockLabel
+            onReset={() => form.setFieldsValue({ creationDate: null })}
+          >
+            Период создания
+          </FilterBlockLabel>
+          <Form.Item name='creationDate'>
+            <RangePickerStyled allowClear={false} />
+          </Form.Item>
+        </FilterBlock>
+
+        <FilterBlock withDivider={false}>
+          <FilterBlockLabel
+            onReset={() =>
+              form.setFieldsValue({
+                columnName: 'topic',
+                columnKeyword: '',
+              })
+            }
+          >
+            Поиск по столбцу
+          </FilterBlockLabel>
+          <Form.Item name='columnName' initialValue='topic'>
+            <RadioGroupStyled>
+              {Object.entries(searchableFields).map(([name, label]) => (
+                <Radio key={name} value={name}>
+                  {label}
+                </Radio>
+              ))}
+            </RadioGroupStyled>
+          </Form.Item>
+          <Form.Item name='columnKeyword'>
+            <Input placeholder='Ключевое слово' />
+          </Form.Item>
+        </FilterBlock>
+      </Form>
     </DrawerStyled>
   )
 }

@@ -1,9 +1,20 @@
-import { Radio, DatePicker, Drawer } from 'antd';
+import { Radio, Checkbox, DatePicker, Drawer } from 'antd';
 import styled from 'styled-components';
 
 export const RadioGroupStyled = styled(Radio.Group)`
   &&& {
     margin-bottom: 24px;
+  }
+`
+
+export const CheckboxGroupStyled = styled(Checkbox.Group)`
+  &&& {
+    display: flex;
+    flex-direction: column;
+    
+    & .ant-checkbox-group-item:not(:nth-last-child(1)) {
+      margin-bottom: 20px;
+    }
   }
 `
 
@@ -16,18 +27,4 @@ export const DrawerStyled = styled(Drawer)`
 
 export const RangePickerStyled = styled(DatePicker.RangePicker)`
   width: 100%;
-`
-
-export const TaskStatusList = styled.ul`
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-  
-  li {
-    line-height: 1;
-  }
-  
-  li:not(:nth-last-child(1)) {
-    margin-bottom: 20px;
-  }
 `

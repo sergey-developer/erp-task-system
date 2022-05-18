@@ -1,5 +1,6 @@
-import { Divider } from 'antd';
-import styled from 'styled-components';
+import { Divider } from 'antd'
+
+import styled from 'styled-components'
 
 export const DividerStyled = styled(Divider)`
   &&& {
