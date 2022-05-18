@@ -1,5 +1,5 @@
 import { AxiosRequestTransformer } from 'axios'
-import { decamelize } from 'humps'
+import { decamelizeKeys } from 'humps'
 
 import { hasJsonContentType } from './utils'
 
@@ -8,7 +8,7 @@ const toJsonTransformer: AxiosRequestTransformer = (data, headers) => {
 }
 
 const toSnakeCaseTransformer: AxiosRequestTransformer = (data, headers) => {
-  return hasJsonContentType(headers) ? decamelize(data) : data
+  return hasJsonContentType(headers) && data ? decamelizeKeys(data) : data
 }
 
 export { toJsonTransformer, toSnakeCaseTransformer }

@@ -6,17 +6,22 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "genapi": "npx @rtk-query/codegen-openapi ./tools/api/openapi.config.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "7.0.0-alpha.3",
     "@reduxjs/toolkit": "^1.8.1",
-    "antd": "^4.20.2",
+    "@rehooks/component-size": "^1.0.3",
+    "antd": "^4.20.3",
+    "async-mutex": "^0.3.2",
     "axios": "^0.26.1",
     "craco-antd": "^2.0.0",
     "humps": "^2.0.1",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
+    "moment": "^2.29.3",
     "qs": "^6.10.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -27,6 +32,7 @@
     "web-vitals": "^2.1.0"
   },
   "devDependencies": {
+    "@rtk-query/codegen-openapi": "^1.0.0-alpha.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -38,6 +44,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/styled-components": "^5.1.25",
+    "dotenv": "^16.0.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.8",
     "prettier": "^2.6.2",

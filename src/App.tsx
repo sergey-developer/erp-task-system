@@ -1,33 +1,27 @@
 import './App.less'
 
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import Spin from 'components/Spin'
 import { privateRoutesConfig, publicRoutesConfig } from 'configs/routes'
+import useAuth from 'modules/auth/hooks/useAuth'
 
-/** пока тестовый хук для отладки пока не подключено апи по авторизации */
-function useMockAuth() {
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [isAuth, setIsAuth] = useState<boolean>(false)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-      setIsAuth(true)
-    }, 1000)
-  }, [])
-
-  return {
-    isLoading,
-    isAuth,
-  }
-}
+import { useLazyTestRetrieveQuery } from './modules/auth/auth.service'
 
 const App: FC = () => {
-  const { isLoading, isAuth } = useMockAuth()
+  const { isAuthenticated } = useAuth()
+  const [testLoadQuery, { isLoading }] = useLazyTestRetrieveQuery()
 
-  const routes = useRoutes(isAuth ? privateRoutesConfig : publicRoutesConfig)
+  useEffect(() => {
+    if (isAuthenticated) {
+      /** тестовая ручка проверит аутентификацию пользователя и выполнит релогин если токен протух */
+      testLoadQuery()
+    }
+  }, [])
+  const routes = useRoutes(
+    isAuthenticated ? privateRoutesConfig : publicRoutesConfig,
+  )
 
   return isLoading ? <Spin /> : routes
 }

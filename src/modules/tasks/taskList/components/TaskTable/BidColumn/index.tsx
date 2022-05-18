@@ -1,7 +1,7 @@
 import { Badge, Space } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskStatusEnum } from 'modules/tasks/taskList/components/TaskListPage/constants'
+import { TaskStatusEnum } from 'modules/tasks/models'
 
 import { iconOrBadgeStatusMap } from './constants'
 

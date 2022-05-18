@@ -7,26 +7,26 @@ import {
 import { BadgeProps } from 'antd'
 import React, { ReactElement } from 'react'
 
-import { TaskStatusEnum } from 'modules/tasks/taskList/components/TaskListPage/constants'
+import { TaskStatusEnum } from 'modules/tasks/models'
 import theme from 'styles/theme'
 
 export const iconOrBadgeStatusMap: Record<
   TaskStatusEnum,
   ReactElement | BadgeProps['status']
 > = {
-  [TaskStatusEnum.Appointed]: <QuestionCircleTwoTone />,
+  [TaskStatusEnum.New]: 'default', //true
+  [TaskStatusEnum.InProgress]: 'warning', // true
 
+  // ? хз правильно ли
   [TaskStatusEnum.Reclassified]: (
     <RightCircleOutlined style={{ color: theme.colors.red1 }} />
   ),
   [TaskStatusEnum.Closed]: (
     <ExclamationCircleOutlined style={{ color: theme.colors.red1 }} />
   ),
-  // TODO: Код выше будет изменён
 
-  [TaskStatusEnum.Suspended]: <PauseCircleTwoTone />,
-
-  [TaskStatusEnum.Completed]: 'success',
-  [TaskStatusEnum.InProgress]: 'warning',
-  [TaskStatusEnum.New]: 'default',
+  [TaskStatusEnum.Completed]: 'success', // true
+  [TaskStatusEnum.Appointed]: 'default', // true
+  [TaskStatusEnum.Awaiting]: <PauseCircleTwoTone />, // true
+  [TaskStatusEnum.InReclassification]: <QuestionCircleTwoTone />, // true
 }

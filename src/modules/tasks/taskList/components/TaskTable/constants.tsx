@@ -1,15 +1,12 @@
-import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-import { TextProps } from 'antd/es/typography/Text'
 import React from 'react'
 
-import { TaskStatusEnum } from '../TaskListPage/constants'
+import { Task } from 'modules/tasks/models'
+
 import BidColumn from './BidColumn'
+import { getDateTimeString } from './utils'
 
-const { Text } = Typography
-
-// TODO: добавить правильный тип в ColumnsType как генерация типов будет готова
-export const tableColumns: ColumnsType<{ status: TaskStatusEnum }> = [
+export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
   {
     title: 'Заявка',
     dataIndex: 'task',
@@ -17,43 +14,42 @@ export const tableColumns: ColumnsType<{ status: TaskStatusEnum }> = [
     render: (value: string, { status }) => {
       return <BidColumn value={value} status={status} />
     },
+    ellipsis: true,
   },
   {
     title: 'Внеш.номер',
-    dataIndex: 'foreignNumber',
+    dataIndex: 'recordId',
     width: 170,
+    ellipsis: true,
   },
   {
     title: 'Объект',
-    dataIndex: 'object',
+    dataIndex: 'name',
+    ellipsis: true,
   },
   {
     title: 'Тема',
-    dataIndex: 'theme',
+    dataIndex: 'title',
     width: 250,
+    ellipsis: true,
   },
   {
     title: 'Исполнитель',
-    dataIndex: 'executor',
+    dataIndex: 'assignee',
+    ellipsis: true,
   },
   {
     title: 'Рабочая группа',
-    dataIndex: 'workingGroup',
+    dataIndex: 'workGroup',
   },
+]
+
+export const TABLE_COLUMNS_ETC: ColumnsType<Task> = [
   {
     title: 'Выполнить до',
-    dataIndex: 'executeBefore',
+    dataIndex: 'slaNextBreachAt',
     width: 160,
-    render: (value: string, record) => {
-      // TODO: поправить условие как будет готов бэк
-      const type: TextProps['type'] = true ? 'warning' : 'success'
-
-      return (
-        <Text type={type} strong>
-          {value}
-        </Text>
-      )
-    },
+    render: getDateTimeString,
   },
   {
     title: 'Комментарий',
@@ -64,5 +60,6 @@ export const tableColumns: ColumnsType<{ status: TaskStatusEnum }> = [
     title: 'Дата создания',
     dataIndex: 'createdAt',
     width: 160,
+    render: getDateTimeString,
   },
 ]
