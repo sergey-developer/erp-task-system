@@ -1,12 +1,15 @@
 import { Button, Form, Input, Typography } from 'antd'
 import React, { FC, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
 import { getErrorDetail } from 'shared/services/api'
 
 import { useLoginMutation } from '../auth.service'
+import { login as loginAction } from '../authSlice'
 import { IUseLoginMutationResult } from '../interfaces'
+import { LoginApiResponse } from '../models'
 import {
   CardStyled,
   FormStyled,
@@ -16,12 +19,16 @@ import {
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
 const SignInPage: FC = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [login, { isLoading, error }] =
     useLoginMutation<IUseLoginMutationResult>()
   const onFinish = useCallback(
     (value: any) => {
-      login(value).then(() => navigate(RoutesEnum.Root))
+      login(value).then((data) => {
+        dispatch(loginAction((data as { data: LoginApiResponse })?.data))
+        navigate(RoutesEnum.Root)
+      })
     },
     [login, navigate],
   )

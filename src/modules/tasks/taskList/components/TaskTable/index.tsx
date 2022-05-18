@@ -1,19 +1,13 @@
-import { Table } from 'antd'
+import { ColumnsType } from 'antd/es/table'
 import { TableProps } from 'antd/lib/table/Table'
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
+
+import { Task } from 'modules/tasks/models'
 
 import { TABLE_COLUMNS_ETC, TABLE_COLUMNS_SHORT } from './constants'
 import { TableStyled } from './styles'
 
-type TaskTableProps = Pick<TableProps<any>, 'dataSource' | 'loading'> & {
+type TaskTableProps = Pick<TableProps<Task>, 'dataSource' | 'loading'> & {
   columns: 'all' | 'shorts'
   heightContainer: number
   onLoadMore: () => void
@@ -28,7 +22,7 @@ const TaskTable: FC<TaskTableProps> = ({
   onLoadMore,
   loadingData,
 }) => {
-  const columnsData = useMemo(() => {
+  const columnsData: ColumnsType<Task> = useMemo(() => {
     switch (columns) {
       case 'all':
         return TABLE_COLUMNS_SHORT.concat(TABLE_COLUMNS_ETC)
@@ -70,6 +64,7 @@ const TaskTable: FC<TaskTableProps> = ({
 
   /** установка скролла, под высоту внешнего блока - голова таблицы*/
   const [scrollY, setScrollY] = useState<number>()
+
   useEffect(() => {
     const { offsetHeight: tableBodyHeight } = (
       refTable?.current as unknown as HTMLDivElement
@@ -77,21 +72,25 @@ const TaskTable: FC<TaskTableProps> = ({
     const { offsetHeight: tableHeadHeight } = (
       refTable?.current as unknown as HTMLDivElement
     )?.querySelector('.ant-table-thead') as HTMLDivElement
+
     if (tableBodyHeight + tableHeadHeight > heightContainer) {
       setScrollY(heightContainer - tableHeadHeight)
     } else {
       setScrollY(0)
+      if (!loadingData) {
+        onLoadMore()
+      }
     }
-  }, [heightContainer, dataSource])
+  }, [heightContainer, dataSource, onLoadMore])
+
   return (
     <TableStyled
       ref={refTable}
       dataSource={dataSource}
-      // @ts-ignore
       columns={columnsData}
       pagination={false}
-      rowKey={'id'}
       loading={loading}
+      rowKey='id'
       scroll={scrollY ? { y: scrollY } : { y: 'auto' }}
     />
   )

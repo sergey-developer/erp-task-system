@@ -11,162 +11,15 @@ import { useTasksListQuery } from '../../../tasks.service'
 import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
 import {
+  DEFAULT_PAGE_LIMIT,
   TASK_LIST_FILTER_KEY,
   TaskListFiltersEnum,
-  TaskStatusEnum,
 } from './constants'
 import { FilterListItem } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
 import { initSelectedFilterState } from './utils'
 
 const { Search } = Input
-
-const dataSource: Array<any> = [
-  {
-    task: 'REQ0000007801',
-    status: TaskStatusEnum.InProgress,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007802',
-    status: TaskStatusEnum.Completed,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007803',
-    status: TaskStatusEnum.Reclassified,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007804',
-    status: TaskStatusEnum.New,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007805',
-    status: TaskStatusEnum.Closed,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007806',
-    status: TaskStatusEnum.Appointed,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007807',
-    status: TaskStatusEnum.InProgress,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007808',
-    status: TaskStatusEnum.Completed,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007809',
-    status: TaskStatusEnum.Reclassified,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007810',
-    status: TaskStatusEnum.New,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007811',
-    status: TaskStatusEnum.Closed,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-  {
-    task: 'REQ0000007812',
-    status: TaskStatusEnum.Appointed,
-    foreignNumber: 'ЗНО-000345456-001',
-    object: '1298-Пятерочка (гп.Воскресенск)',
-    theme: 'Плохо печатает принтер, шумит/застревает, заминается бумага',
-    executor: 'Александровский А.А.',
-    workingGroup: 'РГ гп.Воскресенск (Московская ...',
-    executeBefore: '06.12.2021, 16:00:25',
-    comment: 'Нужно приехать на объект в любой день с 12:00 до 16:00',
-    createdAt: '06.12.2021, 16:00:25',
-  },
-]
 
 const filterList: Array<FilterListItem> = [
   {
@@ -206,26 +59,39 @@ const TaskListPage: FC = () => {
   }
 
   /** todo Логика должна быть с фильтрами */
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentOffset, setCurrentOffset] = useState<number>(0)
   const [tasks, setTasks] = useState<Task[]>([])
-  const { data: taskCurrentPage, isFetching } = useTasksListQuery({
-    page: currentPage,
+  const { data: taskCurrentResponsePage, isFetching } = useTasksListQuery({
+    limit: DEFAULT_PAGE_LIMIT,
+    offset: currentOffset,
   })
-
   useEffect(() => {
-    if (taskCurrentPage?.length && !isFetching) {
-      if (currentPage === 1) {
-        setTasks(taskCurrentPage)
+    if (
+      taskCurrentResponsePage?.count &&
+      !isFetching &&
+      taskCurrentResponsePage?.results
+    ) {
+      if (!taskCurrentResponsePage.previous) {
+        setTasks(taskCurrentResponsePage?.results)
       } else {
-        setTasks((state) => state.concat(taskCurrentPage))
+        setTasks((state) =>
+          state.concat(taskCurrentResponsePage?.results ?? []),
+        )
       }
     }
-  }, [taskCurrentPage])
+  }, [
+    isFetching,
+    taskCurrentResponsePage?.count,
+    taskCurrentResponsePage?.previous,
+    taskCurrentResponsePage?.results,
+  ])
 
   const handleLoadMore = useCallback(() => {
-    setCurrentPage(currentPage + 1)
-  }, [currentPage])
-  console.log(isFetching)
+    if (taskCurrentResponsePage?.next) {
+      setCurrentOffset(currentOffset + DEFAULT_PAGE_LIMIT)
+    }
+  }, [currentOffset, taskCurrentResponsePage?.next])
+
   const refContainer = useRef<HTMLDivElement>(null)
   const { height: heightContainer } = useComponentSize(refContainer)
 
@@ -268,18 +134,20 @@ const TaskListPage: FC = () => {
       </Row>
       <ColFlexStyled span={24} flex='1'>
         <RowStyled>
-          <Col span={16} ref={refContainer}>
+          <Col span={24} ref={refContainer}>
             <TaskTable
               heightContainer={heightContainer}
               dataSource={tasks}
-              columns={'shorts'}
+              columns={'all'}
               onLoadMore={handleLoadMore}
               loadingData={isFetching}
             />
           </Col>
-          <Col span={8}>
-            <TaskDetail />
-          </Col>
+          {undefined && (
+            <Col span={8}>
+              <TaskDetail />
+            </Col>
+          )}
         </RowStyled>
       </ColFlexStyled>
     </RowWrapStyled>

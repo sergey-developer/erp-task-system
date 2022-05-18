@@ -47,8 +47,7 @@ const baseQuery =
 
     try {
       const result = await httpClient({
-        // url: `${apiPath}${apiVersion}${url}`,
-        url,
+        url: `${apiPath}${apiVersion}${url}`,
         method,
         data,
         params,

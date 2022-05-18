@@ -3,15 +3,6 @@ import { generatePath } from 'react-router-dom'
 
 import { RoutesPathsEnum } from 'configs/routes'
 
-export enum TaskStatusEnum {
-  New = 'NEW',
-  Appointed = 'APPOINTED',
-  InProgress = 'IN_PROGRESS',
-  Reclassified = 'RECLASSIFIED',
-  Completed = 'COMPLETED',
-  Closed = 'CLOSED',
-}
-
 export enum TaskListFiltersEnum {
   All = 'ALL',
   Mine = 'MINE',
@@ -30,3 +21,5 @@ export const taskListDefaultRoute: string = generatePath(
     ),
   },
 )
+
+export const DEFAULT_PAGE_LIMIT = 20

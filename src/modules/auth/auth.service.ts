@@ -27,10 +27,13 @@ const authService = api.injectEndpoints({
         data: queryArg,
       }),
     }),
+    testRetrieve: build.query<unknown, void>({
+      query: () => ({ url: `/test/` }),
+    }),
   }),
   overrideExisting: false,
 })
 
 export { authService }
 
-export const { useLoginMutation, useUserRefreshCreateMutation } = authService
+export const { useLoginMutation, useLazyTestRetrieveQuery } = authService
