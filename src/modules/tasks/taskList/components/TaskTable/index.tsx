@@ -1,8 +1,9 @@
-import { Table, TablePaginationConfig } from 'antd'
+import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import React, { FC, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { Task } from 'modules/tasks/models'
+import { getElementFullHeight } from 'shared/utils'
 
 import {
   ColumnsTypeContentEnum,
@@ -22,16 +23,39 @@ const TaskTable: FC<TaskTableProps> = ({
 
   const ref = useRef<HTMLDivElement>(null)
 
+  /**
+   * AntD таблица не умеет подстраиваться под высоту родителя
+   * Чтобы таблица заняла всю доступную высоту требуется провести вычисления
+   * Т.к. отрисовка пагинации зависит от наличия данных, добавлена зависимость
+   * эффекта от наличия DataSource
+   * todo: переопределять размеры тела таблицы при ресайзе экрана
+   * todo: уменьшить частоту переопределений размеров: 1. при ресайзе с помощью trottle 2. из-за зависимости от dataSource  держать флаг внутри рефы вычислялся ли уже размер
+   */
+
   useLayoutEffect(() => {
-    if (!ref.current) {
+    if (!ref.current || !dataSource) {
       return
     }
 
-    const { top } = ref.current.getBoundingClientRect()
+    const tableTopOffset = ref.current.getBoundingClientRect().top
 
-    // normally TABLE_HEADER_HEIGHT would be 55.
-    setTableHeight(window.innerHeight - top - 55 - 60)
-  }, [ref])
+    const headerEl =
+      ref.current.querySelector<HTMLDivElement>('.ant-table-header')
+
+    const paginationEl = ref.current.querySelector<HTMLUListElement>(
+      '.ant-table-pagination',
+    )
+
+    const headerHeight = headerEl ? getElementFullHeight(headerEl) : 0
+
+    const paginationHeight = paginationEl
+      ? getElementFullHeight(paginationEl)
+      : 0
+
+    setTableHeight(
+      window.innerHeight - tableTopOffset - headerHeight - paginationHeight,
+    )
+  }, [dataSource])
 
   const columnsData: ColumnsType<Task> = useMemo(() => {
     switch (columns) {
@@ -49,7 +73,7 @@ const TaskTable: FC<TaskTableProps> = ({
       ref={ref}
       dataSource={dataSource}
       columns={columnsData}
-      pagination={pagination}
+      pagination={pagination && { ...pagination, position: ['bottomLeft'] }}
       loading={loading}
       rowKey='id'
       onChange={onChange}

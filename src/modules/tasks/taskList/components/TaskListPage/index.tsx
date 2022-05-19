@@ -1,7 +1,7 @@
 import { FilterTwoTone } from '@ant-design/icons'
 import { Button, Col, Input, Row, TableProps } from 'antd'
 import { camelize } from 'humps'
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import FilterTag from 'components/FilterTag'
@@ -54,12 +54,6 @@ const filterList: Array<FilterListItem> = [
 const TaskListPage: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const tablePagination = useState({
-    current: 1,
-    pageSize: DEFAULT_PAGE_LIMIT,
-    total: 0,
-  })
-
   const [selectedFilter, setSelectedFilter] = useState<TaskListFiltersEnum>(
     () =>
       initSelectedFilterState(
@@ -107,24 +101,33 @@ const TaskListPage: FC = () => {
 
   console.log('taskCurrentResponsePage', taskCurrentResponsePage)
 
-  /** обработка сортировок в таблице */
+  /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
     NonNullable<TableProps<Task>['onChange']>
   >((pagination, filters, sorter) => {
+    console.log('handleChangeTable', pagination)
+
     const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
+
+    const newQueryArgs: Partial<GetTaskListApiArg> = {
+      offset: (pagination.current! - 1) * pagination.pageSize!,
+      limit: pagination.pageSize!,
+    }
+
     if (SORTED_FIELDS.includes(field as string)) {
       const key = camelize(`${field}_${order}`)
-      setQueryArgs((state) => ({
-        ...state,
-        smartSort:
-          key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
-            ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
-                key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
-              ]
-            : undefined,
-        offset: 0,
-      }))
+      newQueryArgs.smartSort =
+        key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
+          ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
+              key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
+            ]
+          : undefined
     }
+
+    setQueryArgs((state) => ({
+      ...state,
+      ...newQueryArgs,
+    }))
   }, [])
 
   return (
@@ -179,7 +182,7 @@ const TaskListPage: FC = () => {
                 pagination={taskCurrentResponsePage?.pagination}
               />
             </Col>
-            {true && (
+            {false && (
               <Col span={8}>
                 <TaskDetail />
               </Col>

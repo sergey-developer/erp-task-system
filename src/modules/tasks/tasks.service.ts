@@ -28,7 +28,7 @@ const tasksService = api.injectEndpoints({
           console.groupEnd()
           return {
             pagination: {
-              current: arg.offset / arg.limit,
+              current: arg.offset / arg.limit + 1,
               pageSize: arg.limit,
               total: response.count,
             },
