@@ -1,12 +1,15 @@
 import { Button, Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
 import { getErrorDetail } from 'shared/services/api'
 
 import { useLoginMutation } from '../auth.service'
+import { login as loginAction } from '../authSlice'
 import { IUseLoginMutationResult } from '../interfaces'
+import { SignInFormFields } from './interfaces'
 import {
   CardStyled,
   FormStyled,
@@ -16,9 +19,21 @@ import {
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
 const SignInPage: FC = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [login, { isLoading, error }] =
     useLoginMutation<IUseLoginMutationResult>()
-
+  const onFinish = async (fields: SignInFormFields) => {
+    try {
+      let data = await login(fields)
+      if ('data' in data) {
+        dispatch(loginAction(data.data))
+        navigate(RoutesEnum.Root)
+      }
+    } finally {
+      return
+    }
+  }
   return (
     <CardStyled>
       <PageTitleStyled level={4}>Obermeister-ITSM</PageTitleStyled>
@@ -26,8 +41,8 @@ const SignInPage: FC = () => {
       {error && (
         <Typography.Text type='danger'>{getErrorDetail(error)}</Typography.Text>
       )}
-      <FormStyled
-        onFinish={login as (v: any) => void}
+      <FormStyled<SignInFormFields>
+        onFinish={onFinish}
         layout='vertical'
         requiredMark={false}
       >
