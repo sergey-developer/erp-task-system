@@ -1,13 +1,13 @@
 import MethodEnums from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
-import { GetTasksListApiArg, GetTasksListApiResponse } from './models'
+import { GetTaskListApiArg, GetTaskListApiResponse } from './models'
 
 const tasksService = api.injectEndpoints({
   endpoints: (build) => ({
-    tasksList: build.query<GetTasksListApiResponse, GetTasksListApiArg>({
+    taskList: build.query<GetTaskListApiResponse, GetTaskListApiArg>({
       query: (data) => ({
-        url: `/tasks/view/`,
+        url: '/tasks/view/',
         method: MethodEnums.GET,
         params: data,
       }),
@@ -18,4 +18,4 @@ const tasksService = api.injectEndpoints({
 
 export { tasksService }
 
-export const { useTasksListQuery } = tasksService
+export const { useTaskListQuery } = tasksService

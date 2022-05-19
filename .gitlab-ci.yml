@@ -1,17 +1,64 @@
-upload_static:
-  image: node:18-buster
-  stage: deploy
+include:
+  - project: 'devops/gitlab-ci'
+    ref: v0.1.1
+    file: '/build/helm.yaml'
+  - project: 'devops/gitlab-ci'
+    ref: v0.1.1
+    file: '/build/docker.yaml'
+  - project: 'devops/gitlab-ci'
+    ref: v0.1.1
+    file: '/deploy/helm.yaml'
+  - project: 'devops/gitlab-ci'
+    ref: v0.1.1
+    file: '/test/helm.yaml'
+  - project: 'devops/gitlab-ci'
+    ref: v0.1.1
+    file: '/destroy/helm.yaml'
+
+docker_image:
+  extends:
+    - .docker_image
+  variables:
+    DOCKER_IMAGE_TAG: ${CI_PIPELINE_ID}
   only:
     refs:
       - rc
+      - task-18996-deploy
   before_script:
-    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    - unzip awscliv2.zip
-    - ./aws/install
+    - cp ${ENV} .env
+
+helm_chart:
+  variables:
+    HELM_RELEASE_NAME: itsm-frontend
+  extends:
+    - .helm_package
+  only:
+    refs:
+      - rc
+      - task-18996-deploy
+    changes:
+      - charts/itsm-frontend/Chart.yaml
+
+helm_release:
+  variables:
+    HELM_RELEASE_NAME: itsm-frontend
+    HELM_CHART: itsm-frontend/itsm-frontend
+  extends:
+    - .helm_release
+  environment:
+    name: itsm-develop
+    url: https://itsm.bvnt.ru
+  only:
+    - rc
+    - task-18996-deploy
   script:
-    - yarn install
-    - yarn build
-    - aws s3 sync build s3://itsm-frontend --endpoint-url http://hb.bizmrg.com
-  tags:
-    - docker
-    - selectel
+    >-
+      helm upgrade
+      --install
+      --wait
+      --force
+      --timeout 720s
+      --history-max 0
+      --set image.tag=${CI_PIPELINE_ID}
+      --set imageCredentials.password=${REGISTRY_PASSWORD}
+      $HELM_RELEASE_NAME $HELM_CHART

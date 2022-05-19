@@ -1,21 +1,17 @@
 import { ColumnsType } from 'antd/es/table'
-import { TableProps } from 'antd/lib/table/Table'
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Task } from 'modules/tasks/models'
+import { CustomEvent } from 'shared/interfaces/utils'
 
-import { TABLE_COLUMNS_ETC, TABLE_COLUMNS_SHORT } from './constants'
+import {
+  ColumnsTypeContentEnum,
+  PERCENT_LIMIT_TO_HANDLE_SCROLL,
+  TABLE_COLUMNS_ETC,
+  TABLE_COLUMNS_SHORT,
+} from './constants'
+import { TaskTableProps } from './interfaces'
 import { TableStyled } from './styles'
-
-export type TaskTableProps = Pick<
-  TableProps<Task>,
-  'dataSource' | 'loading' | 'onRow'
-> & {
-  columns: 'all' | 'shorts'
-  heightContainer: number
-  onLoadMore: () => void
-  loadingData: boolean
-}
 
 const TaskTable: FC<TaskTableProps> = ({
   dataSource,
@@ -24,49 +20,48 @@ const TaskTable: FC<TaskTableProps> = ({
   heightContainer,
   onLoadMore,
   loadingData,
+  onChange,
   onRow,
 }) => {
   const columnsData: ColumnsType<Task> = useMemo(() => {
     switch (columns) {
-      case 'all':
+      case ColumnsTypeContentEnum.All:
         return TABLE_COLUMNS_SHORT.concat(TABLE_COLUMNS_ETC)
-      case 'shorts':
+      case ColumnsTypeContentEnum.Short:
         return TABLE_COLUMNS_SHORT
       default:
         return TABLE_COLUMNS_SHORT
     }
   }, [columns])
 
-  const refTable = useRef(null)
+  const refTable = useRef<HTMLDivElement>(null)
 
   /** автоподгрузка страниц */
   useEffect(() => {
-    const node = (
-      refTable?.current as unknown as HTMLDivElement
-    )?.querySelector<HTMLElement>('.ant-table-body')
+    const node = refTable?.current?.querySelector('.ant-table-body')
 
-    const onScroll = (e: Event) => {
+    const onScroll = (event: CustomEvent) => {
       if (!loadingData) {
-        const { currentTarget: element } = e
+        const { currentTarget: element } = event
         const perc =
-          ((element as unknown as HTMLDivElement)?.scrollTop /
-            ((element as unknown as HTMLDivElement)?.scrollHeight -
-              (element as unknown as HTMLDivElement)?.clientHeight)) *
+          (element?.scrollTop /
+            (element?.scrollHeight - element?.clientHeight)) *
           100
-        if (perc >= 80) {
+        if (perc >= PERCENT_LIMIT_TO_HANDLE_SCROLL) {
           onLoadMore()
-          node?.removeEventListener('scroll', onScroll)
+          node?.removeEventListener('scroll', onScroll as EventListener)
         }
       }
     }
 
     if (node) {
-      node.addEventListener('scroll', onScroll)
+      node.addEventListener('scroll', onScroll as EventListener)
     }
-    return () => node?.removeEventListener('scroll', onScroll)
+    return () => node?.removeEventListener('scroll', onScroll as EventListener)
   }, [loadingData, onLoadMore])
 
-  /** установка скролла, под высоту внешнего блока - голова таблицы*/
+  /** установка скрола, под высоту внешнего блока - голова таблицы*/
+  /** todo переделать на решение https://github.com/ankeetmaini/react-infinite-scroll-component */
   const [scrollY, setScrollY] = useState<number>()
 
   useEffect(() => {
@@ -79,13 +74,13 @@ const TaskTable: FC<TaskTableProps> = ({
 
     if (tableBodyHeight + tableHeadHeight > heightContainer) {
       setScrollY(heightContainer - tableHeadHeight)
-    } else {
-      setScrollY(0)
-      if (!loadingData) {
-        onLoadMore()
-      }
+      return
     }
-  }, [heightContainer, dataSource, onLoadMore])
+    setScrollY(0)
+    if (!loadingData) {
+      onLoadMore()
+    }
+  }, [heightContainer, dataSource, onLoadMore, loadingData])
 
   return (
     <TableStyled
@@ -97,6 +92,7 @@ const TaskTable: FC<TaskTableProps> = ({
       onRow={onRow}
       rowKey='id'
       scroll={scrollY ? { y: scrollY } : { y: 'auto' }}
+      onChange={onChange}
     />
   )
 }

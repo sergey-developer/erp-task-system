@@ -5,6 +5,10 @@ import { BrowserRouter } from 'react-router-dom'
 
 import ErrorBoundary from 'components/ErrorBoundary'
 import store from 'state/store'
+import { ConfigProvider } from 'antd';
+import ruRU from 'antd/lib/locale/ru_RU';
+import moment from 'moment';
+import 'moment/locale/ru';
 import { ThemeProvider } from 'styled-components'
 import theme from 'styles/theme'
 
@@ -13,15 +17,19 @@ import reportWebVitals from './reportWebVitals'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
+moment.locale('ru');
+
 root.render(
   <StoreProvider store={store}>
-    <ThemeProvider theme={theme}>
-      <ErrorBoundary>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ErrorBoundary>
-    </ThemeProvider>
+    <ConfigProvider locale={ruRU} >
+      <ThemeProvider theme={theme}>
+        <ErrorBoundary>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ErrorBoundary>
+      </ThemeProvider>
+    </ConfigProvider>
   </StoreProvider>,
 )
 

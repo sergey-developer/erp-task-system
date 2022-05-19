@@ -1,4 +1,4 @@
-import { TaskListFiltersEnum } from './constants'
+import { TaskListFiltersEnum } from 'modules/tasks/models'
 
 export const initSelectedFilterState = (
   filter: TaskListFiltersEnum,

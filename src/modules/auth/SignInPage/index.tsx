@@ -1,5 +1,5 @@
 import { Button, Form, Input, Typography } from 'antd'
-import React, { FC, useCallback } from 'react'
+import React, { FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -9,7 +9,7 @@ import { getErrorDetail } from 'shared/services/api'
 import { useLoginMutation } from '../auth.service'
 import { login as loginAction } from '../authSlice'
 import { IUseLoginMutationResult } from '../interfaces'
-import { LoginApiResponse } from '../models'
+import { SignInFormFields } from './interfaces'
 import {
   CardStyled,
   FormStyled,
@@ -23,15 +23,17 @@ const SignInPage: FC = () => {
   const navigate = useNavigate()
   const [login, { isLoading, error }] =
     useLoginMutation<IUseLoginMutationResult>()
-  const onFinish = useCallback(
-    (value: any) => {
-      login(value).then((data) => {
-        dispatch(loginAction((data as { data: LoginApiResponse })?.data))
+  const onFinish = async (fields: SignInFormFields) => {
+    try {
+      let data = await login(fields)
+      if ('data' in data) {
+        dispatch(loginAction(data.data))
         navigate(RoutesEnum.Root)
-      })
-    },
-    [login, navigate],
-  )
+      }
+    } finally {
+      return
+    }
+  }
   return (
     <CardStyled>
       <PageTitleStyled level={4}>Obermeister-ITSM</PageTitleStyled>
@@ -39,7 +41,11 @@ const SignInPage: FC = () => {
       {error && (
         <Typography.Text type='danger'>{getErrorDetail(error)}</Typography.Text>
       )}
-      <FormStyled onFinish={onFinish} layout='vertical' requiredMark={false}>
+      <FormStyled<SignInFormFields>
+        onFinish={onFinish}
+        layout='vertical'
+        requiredMark={false}
+      >
         <Form.Item label='E-mail' name='email' rules={EMAIL_RULES}>
           <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
         </Form.Item>

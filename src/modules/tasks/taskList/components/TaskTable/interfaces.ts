@@ -1,0 +1,15 @@
+import { TableProps } from 'antd/lib/table/Table'
+
+import { Task } from 'modules/tasks/models'
+
+import { ColumnsTypeContentEnum } from './constants'
+
+export type TaskTableProps = Pick<
+  TableProps<Task>,
+  'dataSource' | 'loading' | 'onChange'
+> & {
+  columns: ColumnsTypeContentEnum
+  heightContainer: number
+  onLoadMore: () => void
+  loadingData: boolean
+}
