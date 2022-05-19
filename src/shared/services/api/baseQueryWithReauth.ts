@@ -31,6 +31,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   await mutex.waitForUnlock()
   let result = await query(args, api, extraOptions)
   const { error } = result
+
   if (error && (error as { status: number })?.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()

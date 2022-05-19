@@ -27,7 +27,7 @@ export const FormTitleStyled = styled(Typography.Title)`
   }
 `
 
-export const FormStyled = styled(Form)`
+export const FormStyled: typeof Form = styled(Form)`
   margin-top: 24px;
   min-width: 300px;
 `

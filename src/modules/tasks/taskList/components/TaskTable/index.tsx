@@ -5,10 +5,11 @@ import { Task } from 'modules/tasks/models'
 
 import {
   ColumnsTypeContentEnum,
+  PERCENT_LIMIT_TO_HANDLE_SCROLL,
   TABLE_COLUMNS_ETC,
   TABLE_COLUMNS_SHORT,
 } from './constants'
-import { TaskTableProps } from './interfaces'
+import { CustomEvent, TaskTableProps } from './interfaces'
 import { TableStyled } from './styles'
 
 const TaskTable: FC<TaskTableProps> = ({
@@ -31,33 +32,30 @@ const TaskTable: FC<TaskTableProps> = ({
     }
   }, [columns])
 
-  const refTable = useRef(null)
+  const refTable = useRef<HTMLDivElement>(null)
 
   /** автоподгрузка страниц */
   useEffect(() => {
-    const node = (
-      refTable?.current as unknown as HTMLDivElement
-    )?.querySelector<HTMLElement>('.ant-table-body')
+    const node = refTable?.current?.querySelector('.ant-table-body')
 
-    const onScroll = (e: Event) => {
+    const onScroll = (event: CustomEvent) => {
       if (!loadingData) {
-        const { currentTarget: element } = e
+        const { currentTarget: element } = event
         const perc =
-          ((element as unknown as HTMLDivElement)?.scrollTop /
-            ((element as unknown as HTMLDivElement)?.scrollHeight -
-              (element as unknown as HTMLDivElement)?.clientHeight)) *
+          (element?.scrollTop /
+            (element?.scrollHeight - element?.clientHeight)) *
           100
-        if (perc >= 80) {
+        if (perc >= PERCENT_LIMIT_TO_HANDLE_SCROLL) {
           onLoadMore()
-          node?.removeEventListener('scroll', onScroll)
+          node?.removeEventListener('scroll', onScroll as EventListener)
         }
       }
     }
 
     if (node) {
-      node.addEventListener('scroll', onScroll)
+      node.addEventListener('scroll', onScroll as EventListener)
     }
-    return () => node?.removeEventListener('scroll', onScroll)
+    return () => node?.removeEventListener('scroll', onScroll as EventListener)
   }, [loadingData, onLoadMore])
 
   /** установка скрола, под высоту внешнего блока - голова таблицы*/

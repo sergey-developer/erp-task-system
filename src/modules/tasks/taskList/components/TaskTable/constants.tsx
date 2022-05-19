@@ -5,7 +5,7 @@ import { Assignee, Task, WorkGroup } from 'modules/tasks/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import BidColumn from './BidColumn'
-import { getDateTimeString } from './utils'
+import { getDateTimeString, getFIOString } from './utils'
 
 export enum ColumnsTypeContentEnum {
   All = 'all',
@@ -39,14 +39,7 @@ export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
   {
     title: 'Исполнитель',
     dataIndex: 'assignee',
-    render: (value: MaybeNull<Assignee>) => {
-      return (
-        value &&
-        `${value.lastName} ${value.firstName.charAt(0)}.${
-          value?.middleName ? value.middleName.charAt(0) + '.' : ''
-        }`
-      )
-    },
+    render: (value: MaybeNull<Assignee>) => getFIOString(value),
   },
   {
     title: 'Рабочая группа',
@@ -80,3 +73,5 @@ export const TABLE_COLUMNS_ETC: ColumnsType<Task> = [
     sorter: true,
   },
 ]
+
+export const PERCENT_LIMIT_TO_HANDLE_SCROLL = 80

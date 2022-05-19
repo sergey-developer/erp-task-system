@@ -9,7 +9,7 @@ import { getErrorDetail } from 'shared/services/api'
 import { useLoginMutation } from '../auth.service'
 import { login as loginAction } from '../authSlice'
 import { IUseLoginMutationResult } from '../interfaces'
-import { LoginApiResponse } from '../models'
+import { SignInFormFields } from './interfaces'
 import {
   CardStyled,
   FormStyled,
@@ -24,13 +24,15 @@ const SignInPage: FC = () => {
   const [login, { isLoading, error }] =
     useLoginMutation<IUseLoginMutationResult>()
   const onFinish = useCallback(
-    (value: any) => {
+    (value: SignInFormFields) => {
       login(value).then((data) => {
-        dispatch(loginAction((data as { data: LoginApiResponse })?.data))
-        navigate(RoutesEnum.Root)
+        if ('data' in data) {
+          dispatch(loginAction(data.data))
+          navigate(RoutesEnum.Root)
+        }
       })
     },
-    [login, navigate],
+    [dispatch, login, navigate],
   )
   return (
     <CardStyled>
@@ -39,7 +41,11 @@ const SignInPage: FC = () => {
       {error && (
         <Typography.Text type='danger'>{getErrorDetail(error)}</Typography.Text>
       )}
-      <FormStyled onFinish={onFinish} layout='vertical' requiredMark={false}>
+      <FormStyled<SignInFormFields>
+        onFinish={onFinish}
+        layout='vertical'
+        requiredMark={false}
+      >
         <Form.Item label='E-mail' name='email' rules={EMAIL_RULES}>
           <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
         </Form.Item>

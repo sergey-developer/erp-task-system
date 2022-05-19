@@ -80,11 +80,7 @@ const TaskListPage: FC = () => {
     useTasksListQuery(queryArgs)
 
   useEffect(() => {
-    if (
-      taskCurrentResponsePage?.count &&
-      !isFetching &&
-      taskCurrentResponsePage?.results
-    ) {
+    if (!isFetching && taskCurrentResponsePage?.results) {
       if (!taskCurrentResponsePage.previous) {
         setTasks(taskCurrentResponsePage?.results)
       } else {
@@ -95,7 +91,6 @@ const TaskListPage: FC = () => {
     }
   }, [
     isFetching,
-    taskCurrentResponsePage?.count,
     taskCurrentResponsePage?.previous,
     taskCurrentResponsePage?.results,
   ])
