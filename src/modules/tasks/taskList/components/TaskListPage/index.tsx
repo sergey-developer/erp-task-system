@@ -31,7 +31,12 @@ import {
   TASK_LIST_FILTER_KEY,
 } from './constants'
 import { FilterListItem } from './interfaces'
-import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
+import {
+  ColFlexStyled,
+  RowStyled,
+  RowWrapStyled,
+  TaskListWrapper,
+} from './styles'
 import { initSelectedFilterState } from './utils'
 
 const { Search } = Input
@@ -67,7 +72,7 @@ const TaskListPage: FC = () => {
         searchParams.get(TASK_LIST_FILTER_KEY) as TaskListFiltersEnum,
       ),
   )
-  const [selectedTask, setSelectedTask] = useState<MaybeNull<any>>({})
+  const [selectedTask, setSelectedTask] = useState<MaybeNull<any>>(null)
 
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
     useState<boolean>(false)
@@ -109,7 +114,7 @@ const TaskListPage: FC = () => {
     taskCurrentResponsePage?.results,
   ])
 
-  const handleRowClick: GetComponentProps<Task> = useCallback(
+  const handleTableRowClick: GetComponentProps<Task> = useCallback(
     (record: Task) => ({
       onClick: () => setSelectedTask(record),
     }),
@@ -200,19 +205,21 @@ const TaskListPage: FC = () => {
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
             <Col span={selectedTask ? 16 : 24} ref={refContainer}>
-              <TaskTable
-                onRow={handleRowClick}
-                heightContainer={heightContainer}
-                dataSource={tasks}
-                columns={
-                  selectedTask
-                    ? ColumnsTypeContentEnum.Short
-                    : ColumnsTypeContentEnum.All
-                }
-                onLoadMore={handleLoadMore}
-                loadingData={isFetching}
-                onChange={handleChangeTable}
-              />
+              <TaskListWrapper>
+                <TaskTable
+                  onRow={handleTableRowClick}
+                  heightContainer={heightContainer}
+                  dataSource={tasks}
+                  columns={
+                    selectedTask
+                      ? ColumnsTypeContentEnum.Short
+                      : ColumnsTypeContentEnum.All
+                  }
+                  onLoadMore={handleLoadMore}
+                  loadingData={isFetching}
+                  onChange={handleChangeTable}
+                />
+              </TaskListWrapper>
             </Col>
 
             {!!selectedTask && (

@@ -1,7 +1,8 @@
-import React, { FC, memo } from 'react'
+import React, { FC } from 'react'
 
 import CardTitle from './CardTitle'
 import MainDetail from './MainDetail'
+import SecondaryDetail from './SecondaryDetail'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 type TaskDetailProps = {
@@ -17,9 +18,11 @@ const TaskDetail: FC<TaskDetailProps> = ({ onClose }) => {
         <MainDetail />
 
         <DividerStyled />
+
+        <SecondaryDetail />
       </CardStyled>
     </RootWrapperStyled>
   )
 }
 
-export default memo(TaskDetail)
+export default TaskDetail

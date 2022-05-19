@@ -2,6 +2,10 @@ import { Col, Row } from 'antd'
 
 import styled from 'styled-components'
 
+export const TaskListWrapper = styled.div`
+  overflow-y: hidden;
+`
+
 export const ColFlexStyled = styled(Col)`
   display: flex;
   flex-direction: column;

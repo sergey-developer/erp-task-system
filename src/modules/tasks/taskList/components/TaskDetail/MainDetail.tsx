@@ -1,11 +1,11 @@
-import { Space, Typography } from 'antd'
+import { Col, Row, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { MainDetailContainerStyled } from './styles'
+import { DetailContainerStyled } from './styles'
 
 const MainDetail: FC = () => {
   return (
-    <MainDetailContainerStyled>
+    <DetailContainerStyled>
       <Space direction='vertical' size='middle'>
         <Space
           size={4}
@@ -26,31 +26,35 @@ const MainDetail: FC = () => {
           <Typography.Text>06.12.2021, 16:00</Typography.Text>
         </Space>
 
-        <Space size={45} align='start'>
-          <Space direction='vertical' size={4}>
-            <Typography.Text type='secondary'>Адрес</Typography.Text>
+        <Row justify='space-between'>
+          <Col span={12}>
+            <Space direction='vertical'>
+              <Typography.Text type='secondary'>Адрес</Typography.Text>
 
-            <Typography.Text strong>
-              1298-Пятерочка (гп.Воскресенск)
-            </Typography.Text>
+              <Typography.Text strong>
+                1298-Пятерочка (гп.Воскресенск)
+              </Typography.Text>
 
-            <Typography.Text>
-              Московская область, гп.Воскресенск, ул.Центральная, д.16
-            </Typography.Text>
-          </Space>
+              <Typography.Text>
+                Московская область, гп.Воскресенск, ул.Центральная, д.16
+              </Typography.Text>
+            </Space>
+          </Col>
 
-          <Space direction='vertical' size={4}>
-            <Typography.Text type='secondary'>Заявитель</Typography.Text>
+          <Col span={10}>
+            <Space direction='vertical'>
+              <Typography.Text type='secondary'>Заявитель</Typography.Text>
 
-            <Typography.Text strong>
-              Константинопольский Константин Константинович
-            </Typography.Text>
+              <Typography.Text strong>
+                Константинопольский Константин Константинович
+              </Typography.Text>
 
-            <Typography.Text>+7 (900) 345-34-54</Typography.Text>
-          </Space>
-        </Space>
+              <Typography.Text>+7 (900) 345-34-54</Typography.Text>
+            </Space>
+          </Col>
+        </Row>
       </Space>
-    </MainDetailContainerStyled>
+    </DetailContainerStyled>
   )
 }
 

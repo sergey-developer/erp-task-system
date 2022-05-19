@@ -2,7 +2,7 @@ import { CloseOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Menu, Row, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-const menu = (
+const actionMenu = (
   <Menu
     onClick={() => {}}
     items={[
@@ -32,9 +32,9 @@ const CardTitle: FC<CardTitleProps> = ({ onClose }) => {
       <Typography.Text>REQ0000007898</Typography.Text>
 
       <Space>
-        <Dropdown.Button onClick={onClose} overlay={menu} type='text' />
+        <Dropdown.Button overlay={actionMenu} type='text' />
 
-        <Button type='text' icon={<CloseOutlined />} />
+        <Button type='text' icon={<CloseOutlined />} onClick={onClose} />
       </Space>
     </Row>
   )

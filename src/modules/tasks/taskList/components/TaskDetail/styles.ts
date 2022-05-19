@@ -1,10 +1,10 @@
 import { Card, Divider } from 'antd'
 
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
 export const RootWrapperStyled = styled.div`
   padding: 0 0 8px 8px;
-  height: 100%;
+  min-width: 645px;
 `
 
 export const CardStyled = styled(Card)`
@@ -37,10 +37,6 @@ export const DividerStyled = styled(Divider)`
   }
 `
 
-const detailContainerCss = css`
-  padding: 20px 40px;
-`
-
-export const MainDetailContainerStyled = styled.div`
-  ${detailContainerCss}
+export const DetailContainerStyled = styled.div`
+  padding: 20px 30px;
 `
