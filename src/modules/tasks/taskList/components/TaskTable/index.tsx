@@ -2,6 +2,7 @@ import { ColumnsType } from 'antd/es/table'
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Task } from 'modules/tasks/models'
+import { CustomEvent } from 'shared/interfaces/utils'
 
 import {
   ColumnsTypeContentEnum,
@@ -9,7 +10,7 @@ import {
   TABLE_COLUMNS_ETC,
   TABLE_COLUMNS_SHORT,
 } from './constants'
-import { CustomEvent, TaskTableProps } from './interfaces'
+import { TaskTableProps } from './interfaces'
 import { TableStyled } from './styles'
 
 const TaskTable: FC<TaskTableProps> = ({
@@ -25,7 +26,7 @@ const TaskTable: FC<TaskTableProps> = ({
     switch (columns) {
       case ColumnsTypeContentEnum.All:
         return TABLE_COLUMNS_SHORT.concat(TABLE_COLUMNS_ETC)
-      case ColumnsTypeContentEnum.Shorts:
+      case ColumnsTypeContentEnum.Short:
         return TABLE_COLUMNS_SHORT
       default:
         return TABLE_COLUMNS_SHORT
@@ -59,6 +60,7 @@ const TaskTable: FC<TaskTableProps> = ({
   }, [loadingData, onLoadMore])
 
   /** установка скрола, под высоту внешнего блока - голова таблицы*/
+  /** todo переделать на решение https://github.com/ankeetmaini/react-infinite-scroll-component */
   const [scrollY, setScrollY] = useState<number>()
 
   useEffect(() => {
@@ -71,11 +73,11 @@ const TaskTable: FC<TaskTableProps> = ({
 
     if (tableBodyHeight + tableHeadHeight > heightContainer) {
       setScrollY(heightContainer - tableHeadHeight)
-    } else {
-      setScrollY(0)
-      if (!loadingData) {
-        onLoadMore()
-      }
+      return
+    }
+    setScrollY(0)
+    if (!loadingData) {
+      onLoadMore()
     }
   }, [heightContainer, dataSource, onLoadMore, loadingData])
 

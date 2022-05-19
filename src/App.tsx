@@ -6,8 +6,7 @@ import { useRoutes } from 'react-router-dom'
 import Spin from 'components/Spin'
 import { privateRoutesConfig, publicRoutesConfig } from 'configs/routes'
 import useAuth from 'modules/auth/hooks/useAuth'
-
-import { useLazyTestRetrieveQuery } from './modules/auth/auth.service'
+import { useLazyTestRetrieveQuery } from 'shared/services/api/api.service'
 
 const App: FC = () => {
   const { isAuthenticated } = useAuth()

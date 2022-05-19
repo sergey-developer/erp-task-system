@@ -11,7 +11,3 @@ export type LoginApiArg = {
 export type UserRefreshCreateApiResponse = {
   access: string
 }
-
-export type UserRefreshCreateApiArg = {
-  refresh: string
-}

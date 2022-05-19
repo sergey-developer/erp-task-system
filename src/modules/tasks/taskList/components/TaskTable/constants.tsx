@@ -9,7 +9,7 @@ import { getDateTimeString, getFIOString } from './utils'
 
 export enum ColumnsTypeContentEnum {
   All = 'all',
-  Shorts = 'shorts',
+  Short = 'short',
 }
 
 export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
@@ -61,13 +61,11 @@ export const TABLE_COLUMNS_ETC: ColumnsType<Task> = [
   {
     title: 'Комментарий',
     dataIndex: 'comment',
-    key: 'comment',
     width: 150,
   },
   {
     title: 'Дата создания',
     dataIndex: 'createdAt',
-    key: 'createdAt',
     width: 160,
     render: getDateTimeString,
     sorter: true,

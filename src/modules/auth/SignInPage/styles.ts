@@ -3,9 +3,6 @@ import { Card, Form, Typography } from 'antd'
 import styled from 'styled-components'
 
 export const CardStyled = styled(Card)`
-  ${(props) => props.theme.shadows.shadow1}
-  border-radius: 4px;
-  padding: 54px 130px;
   && {
     ${(props) => props.theme.shadows.shadow1}
     border-radius: 4px;

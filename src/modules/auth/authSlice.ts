@@ -31,7 +31,7 @@ const slice = createSlice({
       localStorageService.setItem(StorageKeys.refreshToken, payload.refresh)
       return getInitialState()
     },
-    tokenReceived: (
+    tokenRefreshed: (
       state,
       { payload }: PayloadAction<UserRefreshCreateApiResponse>,
     ) => {
@@ -42,4 +42,4 @@ const slice = createSlice({
 })
 
 export default slice.reducer
-export const { logout, tokenReceived, login } = slice.actions
+export const { logout, tokenRefreshed, login } = slice.actions

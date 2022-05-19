@@ -1,4 +1,4 @@
-import { CloseOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons'
+import { CloseOutlined } from '@ant-design/icons'
 import { Button, Card, Dropdown, Menu, Typography } from 'antd'
 import React from 'react'
 

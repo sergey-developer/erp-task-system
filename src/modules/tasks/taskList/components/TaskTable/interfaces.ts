@@ -13,7 +13,3 @@ export type TaskTableProps = Pick<
   onLoadMore: () => void
   loadingData: boolean
 }
-
-export type CustomEvent = Event & {
-  currentTarget: HTMLButtonElement
-}

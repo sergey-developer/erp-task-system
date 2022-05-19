@@ -12,11 +12,11 @@ import { useSearchParams } from 'react-router-dom'
 
 import FilterTag from 'components/FilterTag'
 import {
-  GetTasksListApiArg,
+  GetTaskListApiArg,
   Task,
   TaskListFiltersEnum,
 } from 'modules/tasks/models'
-import { useTasksListQuery } from 'modules/tasks/tasks.service'
+import { useTaskListQuery } from 'modules/tasks/tasks.service'
 
 import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
@@ -70,14 +70,14 @@ const TaskListPage: FC = () => {
     setSearchParams({ filter })
   }
 
-  const [queryArgs, setQueryArgs] = useState<GetTasksListApiArg>({
+  const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
     limit: DEFAULT_PAGE_LIMIT,
     offset: 0,
   })
 
   const [tasks, setTasks] = useState<Task[]>([])
   const { data: taskCurrentResponsePage, isFetching } =
-    useTasksListQuery(queryArgs)
+    useTaskListQuery(queryArgs)
 
   useEffect(() => {
     if (!isFetching && taskCurrentResponsePage?.results) {

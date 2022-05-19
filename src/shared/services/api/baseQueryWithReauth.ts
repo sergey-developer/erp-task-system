@@ -1,6 +1,6 @@
 import { Mutex } from 'async-mutex'
 
-import { logout, tokenReceived } from 'modules/auth/authSlice'
+import { logout, tokenRefreshed } from 'modules/auth/authSlice'
 import { UserRefreshCreateApiResponse } from 'modules/auth/models'
 import MethodEnums from 'shared/constants/http'
 import { RootState } from 'state/store'
@@ -31,7 +31,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   await mutex.waitForUnlock()
   let result = await query(args, api, extraOptions)
   const { error } = result
-
+  /** todo пересмотреть строчку ниже */
   if (error && (error as { status: number })?.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
@@ -51,7 +51,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
         )
         if (refreshResult.data) {
           api.dispatch(
-            tokenReceived(refreshResult.data as UserRefreshCreateApiResponse),
+            tokenRefreshed(refreshResult.data as UserRefreshCreateApiResponse),
           )
           result = await query(args, api, extraOptions)
         } else {

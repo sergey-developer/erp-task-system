@@ -1,6 +1,6 @@
 import { MaybeNull } from 'shared/interfaces/utils'
 
-export type GetTasksListApiResponse = PaginatedTaskList
+export type GetTaskListApiResponse = PaginatedTaskList
 export enum TaskListFiltersEnum {
   All = 'ALL',
   Free = 'FREE',
@@ -26,7 +26,7 @@ export enum SmartSortEnum {
   ByOlaDesc = 'BY_OLA_DESC',
 }
 
-export type GetTasksListApiArg = MaybeNull<{
+export type GetTaskListApiArg = MaybeNull<{
   dateFrom?: string
   dateTo?: string
   filter?: TaskListFiltersEnum

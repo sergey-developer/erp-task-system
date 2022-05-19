@@ -26,11 +26,7 @@ const baseQuery =
     apiVersion,
     apiPath,
   }: CustomBaseQueryConfig): CustomBaseQueryFn =>
-  async (
-    { url, method = MethodEnums.GET, data, params },
-    api,
-    extraOptions,
-  ) => {
+  async ({ url, method = MethodEnums.GET, data, params }, api) => {
     const headers = prepareHeaders
       ? prepareHeaders(httpClient.defaults.headers.common, api)
       : undefined

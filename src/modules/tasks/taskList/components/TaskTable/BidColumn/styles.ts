@@ -6,7 +6,6 @@ export const WrapBadgeStyled = styled.div`
   gap: 16px;
   & > :first-child {
     width: 16px;
-    display: block;
     display: flex;
     justify-content: center;
     & > .ant-badge-status-text {

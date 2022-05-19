@@ -1,5 +1,5 @@
 import { Button, Form, Input, Typography } from 'antd'
-import React, { FC, useCallback } from 'react'
+import React, { FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -23,17 +23,17 @@ const SignInPage: FC = () => {
   const navigate = useNavigate()
   const [login, { isLoading, error }] =
     useLoginMutation<IUseLoginMutationResult>()
-  const onFinish = useCallback(
-    (value: SignInFormFields) => {
-      login(value).then((data) => {
-        if ('data' in data) {
-          dispatch(loginAction(data.data))
-          navigate(RoutesEnum.Root)
-        }
-      })
-    },
-    [dispatch, login, navigate],
-  )
+  const onFinish = async (fields: SignInFormFields) => {
+    try {
+      let data = await login(fields)
+      if ('data' in data) {
+        dispatch(loginAction(data.data))
+        navigate(RoutesEnum.Root)
+      }
+    } finally {
+      return
+    }
+  }
   return (
     <CardStyled>
       <PageTitleStyled level={4}>Obermeister-ITSM</PageTitleStyled>
