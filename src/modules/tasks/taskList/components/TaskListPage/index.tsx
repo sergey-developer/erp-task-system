@@ -31,12 +31,7 @@ import {
   TASK_LIST_FILTER_KEY,
 } from './constants'
 import { FilterListItem } from './interfaces'
-import {
-  ColFlexStyled,
-  RowStyled,
-  RowWrapStyled,
-  TaskListWrapper,
-} from './styles'
+import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
 import { initSelectedFilterState } from './utils'
 
 const { Search } = Input
@@ -205,21 +200,19 @@ const TaskListPage: FC = () => {
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
             <Col span={selectedTask ? 16 : 24} ref={refContainer}>
-              <TaskListWrapper>
-                <TaskTable
-                  onRow={handleTableRowClick}
-                  heightContainer={heightContainer}
-                  dataSource={tasks}
-                  columns={
-                    selectedTask
-                      ? ColumnsTypeContentEnum.Short
-                      : ColumnsTypeContentEnum.All
-                  }
-                  onLoadMore={handleLoadMore}
-                  loadingData={isFetching}
-                  onChange={handleChangeTable}
-                />
-              </TaskListWrapper>
+              <TaskTable
+                onRow={handleTableRowClick}
+                heightContainer={heightContainer}
+                dataSource={tasks}
+                columns={
+                  selectedTask
+                    ? ColumnsTypeContentEnum.Short
+                    : ColumnsTypeContentEnum.All
+                }
+                onLoadMore={handleLoadMore}
+                loadingData={isFetching}
+                onChange={handleChangeTable}
+              />
             </Col>
 
             {!!selectedTask && (

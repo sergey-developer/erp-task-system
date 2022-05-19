@@ -11,7 +11,7 @@ import {
   TABLE_COLUMNS_SHORT,
 } from './constants'
 import { TaskTableProps } from './interfaces'
-import { TableStyled } from './styles'
+import { TableStyled, TableWrapper } from './styles'
 
 const TaskTable: FC<TaskTableProps> = ({
   dataSource,
@@ -83,17 +83,19 @@ const TaskTable: FC<TaskTableProps> = ({
   }, [heightContainer, dataSource, onLoadMore, loadingData])
 
   return (
-    <TableStyled
-      ref={refTable}
-      dataSource={dataSource}
-      columns={columnsData}
-      pagination={false}
-      loading={loading}
-      onRow={onRow}
-      rowKey='id'
-      scroll={scrollY ? { y: scrollY } : { y: 'auto' }}
-      onChange={onChange}
-    />
+    <TableWrapper>
+      <TableStyled
+        ref={refTable}
+        dataSource={dataSource}
+        columns={columnsData}
+        pagination={false}
+        loading={loading}
+        onRow={onRow}
+        rowKey='id'
+        scroll={scrollY ? { y: scrollY } : { y: 'auto' }}
+        onChange={onChange}
+      />
+    </TableWrapper>
   )
 }
 
