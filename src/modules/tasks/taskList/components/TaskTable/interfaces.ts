@@ -6,10 +6,7 @@ import { ColumnsTypeContentEnum } from './constants'
 
 export type TaskTableProps = Pick<
   TableProps<Task>,
-  'dataSource' | 'loading' | 'onChange'
+  'dataSource' | 'loading' | 'onChange' | 'pagination'
 > & {
   columns: ColumnsTypeContentEnum
-  heightContainer: number
-  onLoadMore: () => void
-  loadingData: boolean
 }

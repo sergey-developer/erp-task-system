@@ -1,6 +1,23 @@
-import { MaybeNull } from 'shared/interfaces/utils'
+import { TableProps } from 'antd'
 
-export type GetTaskListApiResponse = PaginatedTaskList
+export type GetTaskListBaseApiResponse = PaginatedTaskList
+
+export type GetTaskListTransformedApiResponse = {
+  pagination: {
+    current: number
+    total: number
+    pageSize: number
+  }
+  results: Task[]
+}
+
+export type PaginatedTaskList = {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Task[]
+}
+
 export enum TaskListFiltersEnum {
   All = 'ALL',
   Free = 'FREE',
@@ -26,13 +43,13 @@ export enum SmartSortEnum {
   ByOlaDesc = 'BY_OLA_DESC',
 }
 
-export type GetTaskListApiArg = MaybeNull<{
+export type GetTaskListApiArg = {
   dateFrom?: string
   dateTo?: string
   filter?: TaskListFiltersEnum
   hideAwaitingTask?: boolean
-  limit?: number
-  offset?: number
+  limit: number
+  offset: number
   smartSearchAssignee?: string
   smartSearchDescription?: string
   smartSearchName?: string
@@ -41,7 +58,7 @@ export type GetTaskListApiArg = MaybeNull<{
   taskId?: string
   userId?: number
   workGroupId?: number
-}>
+}
 
 export enum CommentTypeEnum {
   Common = 'COMMON',
@@ -170,12 +187,6 @@ export type Task = {
   state?: string
   zipCode?: string
   parentTask?: number | null
-}
-export type PaginatedTaskList = {
-  count?: number
-  next?: string | null
-  previous?: string | null
-  results?: Task[]
 }
 
 export type Assignee = {

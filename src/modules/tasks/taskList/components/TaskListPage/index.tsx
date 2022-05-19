@@ -1,11 +1,5 @@
 import { FilterTwoTone } from '@ant-design/icons'
-import useComponentSize from '@rehooks/component-size'
-import { Button, Col, Input, Row } from 'antd'
-import {
-  FilterValue,
-  SorterResult,
-  TablePaginationConfig,
-} from 'antd/lib/table/interface'
+import { Button, Col, Input, Row, TableProps } from 'antd'
 import { camelize } from 'humps'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -59,6 +53,13 @@ const filterList: Array<FilterListItem> = [
 
 const TaskListPage: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
+
+  const tablePagination = useState({
+    current: 1,
+    pageSize: DEFAULT_PAGE_LIMIT,
+    total: 0,
+  })
+
   const [selectedFilter, setSelectedFilter] = useState<TaskListFiltersEnum>(
     () =>
       initSelectedFilterState(
@@ -69,11 +70,31 @@ const TaskListPage: FC = () => {
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
     useState<boolean>(false)
 
+  const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
+    limit: DEFAULT_PAGE_LIMIT,
+    offset: 0,
+  })
+
   const toggleFilterDrawer = () => setIsFilterDrawerVisible((prev) => !prev)
 
   /** заготовка под сабмит расширенного фильтра todo: допилить */
   const handleFilterDrawerSubmit: FilterDrawerProps['onSubmit'] = (values) => {
     console.log('Filter drawer submit', values)
+    if (values.taskStatuses) {
+      setQueryArgs((prev) => ({
+        ...prev,
+        status: values.taskStatuses,
+        offset: 0,
+      }))
+    }
+
+    if (values.creationDate) {
+      setQueryArgs((prev) => ({
+        ...prev,
+        dateFrom: values.creationDate![0].toDateString(),
+        dateTo: values.creationDate![1].toDateString(),
+      }))
+    }
   }
 
   const handleChangeFilter = (filter: TaskListFiltersEnum) => {
@@ -81,69 +102,33 @@ const TaskListPage: FC = () => {
     setSearchParams({ filter })
   }
 
-  const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
-    limit: DEFAULT_PAGE_LIMIT,
-    offset: 0,
-  })
-
-  const [tasks, setTasks] = useState<Task[]>([])
   const { data: taskCurrentResponsePage, isFetching } =
     useTaskListQuery(queryArgs)
 
-  useEffect(() => {
-    if (!isFetching && taskCurrentResponsePage?.results) {
-      if (!taskCurrentResponsePage.previous) {
-        setTasks(taskCurrentResponsePage?.results)
-      } else {
-        setTasks((state) =>
-          state.concat(taskCurrentResponsePage?.results ?? []),
-        )
-      }
-    }
-  }, [
-    isFetching,
-    taskCurrentResponsePage?.previous,
-    taskCurrentResponsePage?.results,
-  ])
-
-  const handleLoadMore = useCallback(() => {
-    if (taskCurrentResponsePage?.next) {
-      setQueryArgs((state) => ({
-        ...state,
-        offset: (queryArgs?.offset ?? 0) + DEFAULT_PAGE_LIMIT,
-      }))
-    }
-  }, [queryArgs?.offset, taskCurrentResponsePage?.next])
-
-  const refContainer = useRef<HTMLDivElement>(null)
-  const { height: heightContainer } = useComponentSize(refContainer)
+  console.log('taskCurrentResponsePage', taskCurrentResponsePage)
 
   /** обработка сортировок в таблице */
-  const handleChangeTable = useCallback(
-    (
-      pagination: TablePaginationConfig,
-      filters: Record<string, FilterValue | null>,
-      sorter: SorterResult<Task> | SorterResult<Task>[],
-    ) => {
-      const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
-      if (SORTED_FIELDS.includes(field as string)) {
-        const key = camelize(`${field}_${order}`)
-        setQueryArgs((state) => ({
-          ...state,
-          smartSort:
-            key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
-              ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
-                  key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
-                ]
-              : undefined,
-          offset: 0,
-        }))
-      }
-    },
-    [],
-  )
+  const handleChangeTable = useCallback<
+    NonNullable<TableProps<Task>['onChange']>
+  >((pagination, filters, sorter) => {
+    const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
+    if (SORTED_FIELDS.includes(field as string)) {
+      const key = camelize(`${field}_${order}`)
+      setQueryArgs((state) => ({
+        ...state,
+        smartSort:
+          key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
+            ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
+                key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
+              ]
+            : undefined,
+        offset: 0,
+      }))
+    }
+  }, [])
+
   return (
-    <>
+    <div style={{ maxHeight: '100%' }}>
       <RowWrapStyled gutter={[0, 40]}>
         <Row justify='space-between'>
           <Col span={15}>
@@ -185,17 +170,16 @@ const TaskListPage: FC = () => {
         </Row>
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
-            <Col span={24} ref={refContainer}>
+            <Col span={24}>
               <TaskTable
-                heightContainer={heightContainer}
-                dataSource={tasks}
+                dataSource={taskCurrentResponsePage?.results}
                 columns={ColumnsTypeContentEnum.All}
-                onLoadMore={handleLoadMore}
-                loadingData={isFetching}
+                loading={isFetching}
                 onChange={handleChangeTable}
+                pagination={taskCurrentResponsePage?.pagination}
               />
             </Col>
-            {undefined && (
+            {true && (
               <Col span={8}>
                 <TaskDetail />
               </Col>
@@ -208,7 +192,7 @@ const TaskListPage: FC = () => {
         onSubmit={handleFilterDrawerSubmit}
         visible={isFilterDrawerVisible}
       />
-    </>
+    </div>
   )
 }
 
