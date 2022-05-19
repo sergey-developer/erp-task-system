@@ -2,7 +2,7 @@ import { Button, DrawerProps, Form, FormProps, Input, Radio, Space } from 'antd'
 import { Moment } from 'moment'
 import React, { FC } from 'react'
 
-import { TaskStatusEnum } from 'modules/tasks/taskList/components/TaskListPage/constants'
+import { TaskStatusEnum } from 'modules/tasks/models'
 import BidColumn from 'modules/tasks/taskList/components/TaskTable/BidColumn'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 
@@ -16,7 +16,7 @@ import {
   RangePickerStyled,
 } from './styles'
 
-type Props = Pick<DrawerProps, 'onClose' | 'visible'> & {
+export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
   onSubmit: (result: FormResultValues) => void
 }
 
@@ -49,7 +49,7 @@ const searchableFields = {
   executor: 'Исполнитель',
 }
 
-const FilterDrawer: FC<Props> = (props) => {
+const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { onClose, onSubmit, visible } = props
 
   const [form] = Form.useForm<FormFields>()
