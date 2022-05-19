@@ -1,14 +1,14 @@
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/react'
 import { BaseQueryApi } from '@reduxjs/toolkit/src/query/baseQueryTypes'
-import axios, {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosRequestHeaders,
-} from 'axios'
+import axios, { AxiosError, AxiosRequestHeaders } from 'axios'
 
 import { httpClientConfig } from 'configs/httpClient'
+import MethodEnums from 'shared/constants/http'
+
+import { CustomBaseQueryFn } from './intefraces'
 
 type CustomBaseQueryConfig = {
+  apiVersion: string
+  apiPath: string
   prepareHeaders?: (
     headers: AxiosRequestHeaders,
     api: Pick<
@@ -18,24 +18,27 @@ type CustomBaseQueryConfig = {
   ) => AxiosRequestHeaders
 }
 
-type CustomBaseQueryFn = BaseQueryFn<{
-  url: string
-  method: AxiosRequestConfig['method']
-  data?: AxiosRequestConfig['data']
-  params?: AxiosRequestConfig['params']
-}>
-
 const httpClient = axios.create(httpClientConfig)
 
 const baseQuery =
-  ({ prepareHeaders }: CustomBaseQueryConfig): CustomBaseQueryFn =>
-  async ({ url, method, data, params }, api, extraOptions) => {
+  ({
+    prepareHeaders,
+    apiVersion,
+    apiPath,
+  }: CustomBaseQueryConfig): CustomBaseQueryFn =>
+  async ({ url, method = MethodEnums.GET, data, params }, api) => {
     const headers = prepareHeaders
       ? prepareHeaders(httpClient.defaults.headers.common, api)
       : undefined
 
     try {
-      const result = await httpClient({ url, method, data, params, headers })
+      const result = await httpClient({
+        url: `${apiPath}${apiVersion}${url}`,
+        method,
+        data,
+        params,
+        headers,
+      })
       return { data: result.data }
     } catch (axiosError) {
       let err = axiosError as AxiosError

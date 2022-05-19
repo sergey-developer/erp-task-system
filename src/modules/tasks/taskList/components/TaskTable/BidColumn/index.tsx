@@ -1,25 +1,18 @@
-import { Badge, Space } from 'antd'
+import { Badge } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskStatusEnum } from 'modules/tasks/taskList/components/TaskListPage/constants'
-
 import { iconOrBadgeStatusMap } from './constants'
-
-type BidColumnProps = {
-  value: string
-  status: TaskStatusEnum
-}
+import { BidColumnProps } from './interfaces'
+import { WrapBadgeStyled } from './styles'
 
 const BidColumn: FC<BidColumnProps> = ({ value, status: taskStatus }) => {
   const status = iconOrBadgeStatusMap[taskStatus]
 
-  return typeof status === 'string' ? (
-    <Badge status={status} text={value} />
-  ) : (
-    <Space>
-      {status}
-      {value}
-    </Space>
+  return (
+    <WrapBadgeStyled>
+      {typeof status === 'string' ? <Badge status={status} /> : status}
+      <div>{value}</div>
+    </WrapBadgeStyled>
   )
 }
 

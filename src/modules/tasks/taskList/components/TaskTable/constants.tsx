@@ -1,44 +1,62 @@
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
-import { TaskStatusEnum } from '../TaskListPage/constants'
-import BidColumn from './BidColumn'
+import { Assignee, Task, WorkGroup } from 'modules/tasks/models'
+import { MaybeNull } from 'shared/interfaces/utils'
 
-export const tableColumns: ColumnsType<{ status: TaskStatusEnum }> = [
+import BidColumn from './BidColumn'
+import { getDateTimeString, getFIOString } from './utils'
+
+export enum ColumnsTypeContentEnum {
+  All = 'all',
+  Short = 'short',
+}
+
+export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
   {
     title: 'Заявка',
-    dataIndex: 'task',
+    dataIndex: 'id',
     width: 150,
     render: (value: string, { status }) => {
       return <BidColumn value={value} status={status} />
     },
+    align: 'center',
   },
   {
     title: 'Внеш.номер',
-    dataIndex: 'foreignNumber',
+    dataIndex: 'recordId',
     width: 170,
   },
   {
     title: 'Объект',
-    dataIndex: 'object',
+    dataIndex: 'name',
   },
   {
     title: 'Тема',
-    dataIndex: 'theme',
+    dataIndex: 'title',
     width: 250,
   },
   {
     title: 'Исполнитель',
-    dataIndex: 'executor',
+    dataIndex: 'assignee',
+    render: (value: MaybeNull<Assignee>) => getFIOString(value),
   },
   {
     title: 'Рабочая группа',
-    dataIndex: 'workingGroup',
+    dataIndex: 'workGroup',
+    render: (value: MaybeNull<WorkGroup>) => {
+      return value && value.name
+    },
   },
+]
+
+export const TABLE_COLUMNS_ETC: ColumnsType<Task> = [
   {
     title: 'Выполнить до',
-    dataIndex: 'executeBefore',
+    dataIndex: 'olaNextBreachTime',
     width: 160,
+    render: getDateTimeString,
+    sorter: true,
   },
   {
     title: 'Комментарий',
@@ -49,5 +67,9 @@ export const tableColumns: ColumnsType<{ status: TaskStatusEnum }> = [
     title: 'Дата создания',
     dataIndex: 'createdAt',
     width: 160,
+    render: getDateTimeString,
+    sorter: true,
   },
 ]
+
+export const PERCENT_LIMIT_TO_HANDLE_SCROLL = 80

@@ -1,10 +1,17 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
-import baseQuery from './baseQuery'
+import baseQueryWithReauth from './baseQueryWithReauth'
+import { CACHE_TIME } from './constants'
 
-const api = createApi({
-  baseQuery: baseQuery({}),
-  endpoints: () => ({}),
+const apiV1 = createApi({
+  baseQuery: baseQueryWithReauth,
+  keepUnusedDataFor: CACHE_TIME,
+  endpoints: (build) => ({
+    testRetrieve: build.query<unknown, void>({
+      query: () => ({ url: '/test/' }),
+    }),
+  }),
 })
 
-export default api
+export default apiV1
+export const { useLazyTestRetrieveQuery } = apiV1

@@ -5,8 +5,6 @@ import PublicLayout from 'components/Layout/PublicLayout'
 
 import { RoutesEnum } from './constants'
 
-const NotFound = React.lazy(() => import('components/NotFound'))
-
 const SignInPage = React.lazy(() => import('modules/auth/SignInPage'))
 
 const ForgotPasswordPage = React.lazy(
@@ -32,7 +30,7 @@ export default [
       },
       {
         path: RoutesEnum.NotFound,
-        element: <NotFound />,
+        element: <Navigate to={RoutesEnum.SignIn} replace />,
       },
     ],
   },
