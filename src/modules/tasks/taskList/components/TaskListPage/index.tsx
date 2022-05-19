@@ -18,6 +18,7 @@ import {
 } from 'modules/tasks/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
 
+import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
 import { ColumnsTypeContentEnum } from '../TaskTable/constants'
@@ -64,6 +65,16 @@ const TaskListPage: FC = () => {
         searchParams.get(TASK_LIST_FILTER_KEY) as TaskListFiltersEnum,
       ),
   )
+
+  const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
+    useState<boolean>(false)
+
+  const toggleFilterDrawer = () => setIsFilterDrawerVisible((prev) => !prev)
+
+  /** заготовка под сабмит расширенного фильтра todo: допилить */
+  const handleFilterDrawerSubmit: FilterDrawerProps['onSubmit'] = (values) => {
+    console.log('Filter drawer submit', values)
+  }
 
   const handleChangeFilter = (filter: TaskListFiltersEnum) => {
     setSelectedFilter(filter)
@@ -132,62 +143,72 @@ const TaskListPage: FC = () => {
     [],
   )
   return (
-    <RowWrapStyled gutter={[0, 40]}>
-      <Row justify='space-between'>
-        <Col span={15}>
-          <Row align='middle'>
-            <Col span={12}>
-              {filterList.map((filter, index) => (
-                <FilterTag
-                  key={index}
-                  checked={selectedFilter === filter.value}
-                  onChange={() => handleChangeFilter(filter.value)}
-                  text={filter.text}
-                  amount={filter.amount}
-                />
-              ))}
-            </Col>
+    <>
+      <RowWrapStyled gutter={[0, 40]}>
+        <Row justify='space-between'>
+          <Col span={15}>
+            <Row align='middle'>
+              <Col span={12}>
+                {filterList.map((filter, index) => (
+                  <FilterTag
+                    key={index}
+                    checked={selectedFilter === filter.value}
+                    onChange={() => handleChangeFilter(filter.value)}
+                    text={filter.text}
+                    amount={filter.amount}
+                  />
+                ))}
+              </Col>
 
-            <Col span={3}>
-              <Button icon={<FilterTwoTone className='font-s-18' />}>
-                Фильтры
-              </Button>
-            </Col>
-          </Row>
-        </Col>
-
-        <Col span={7}>
-          <Row justify='space-between'>
-            <Col span={14}>
-              <Search placeholder='Искать заявку по номеру' />
-            </Col>
-
-            <Col span={8}>
-              <Button>+ Создать заявку</Button>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      <ColFlexStyled span={24} flex='1'>
-        <RowStyled>
-          <Col span={24} ref={refContainer}>
-            <TaskTable
-              heightContainer={heightContainer}
-              dataSource={tasks}
-              columns={ColumnsTypeContentEnum.All}
-              onLoadMore={handleLoadMore}
-              loadingData={isFetching}
-              onChange={handleChangeTable}
-            />
+              <Col span={3}>
+                <Button
+                  icon={<FilterTwoTone className='font-s-18' />}
+                  onClick={toggleFilterDrawer}
+                >
+                  Фильтры
+                </Button>
+              </Col>
+            </Row>
           </Col>
-          {undefined && (
-            <Col span={8}>
-              <TaskDetail />
+
+          <Col span={7}>
+            <Row justify='space-between'>
+              <Col span={14}>
+                <Search placeholder='Искать заявку по номеру' />
+              </Col>
+
+              <Col span={8}>
+                <Button>+ Создать заявку</Button>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <ColFlexStyled span={24} flex='1'>
+          <RowStyled>
+            <Col span={24} ref={refContainer}>
+              <TaskTable
+                heightContainer={heightContainer}
+                dataSource={tasks}
+                columns={ColumnsTypeContentEnum.All}
+                onLoadMore={handleLoadMore}
+                loadingData={isFetching}
+                onChange={handleChangeTable}
+              />
             </Col>
-          )}
-        </RowStyled>
-      </ColFlexStyled>
-    </RowWrapStyled>
+            {undefined && (
+              <Col span={8}>
+                <TaskDetail />
+              </Col>
+            )}
+          </RowStyled>
+        </ColFlexStyled>
+      </RowWrapStyled>
+      <FilterDrawer
+        onClose={toggleFilterDrawer}
+        onSubmit={handleFilterDrawerSubmit}
+        visible={isFilterDrawerVisible}
+      />
+    </>
   )
 }
 
