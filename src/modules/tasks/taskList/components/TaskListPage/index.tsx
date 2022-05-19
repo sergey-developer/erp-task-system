@@ -1,13 +1,13 @@
 import { FilterTwoTone } from '@ant-design/icons'
 import useComponentSize from '@rehooks/component-size'
 import { Button, Col, Input, Row } from 'antd'
-import { GetComponentProps } from 'rc-table/lib/interface'
 import {
   FilterValue,
   SorterResult,
   TablePaginationConfig,
 } from 'antd/lib/table/interface'
 import { camelize } from 'humps'
+import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
@@ -18,6 +18,7 @@ import {
   TaskListFiltersEnum,
 } from 'modules/tasks/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskDetail from '../TaskDetail'
@@ -198,19 +199,25 @@ const TaskListPage: FC = () => {
         </Row>
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
-            <Col span={24} ref={refContainer}>
+            <Col span={selectedTask ? 16 : 24} ref={refContainer}>
               <TaskTable
+                onRow={handleRowClick}
                 heightContainer={heightContainer}
                 dataSource={tasks}
-                columns={ColumnsTypeContentEnum.All}
+                columns={
+                  selectedTask
+                    ? ColumnsTypeContentEnum.Short
+                    : ColumnsTypeContentEnum.All
+                }
                 onLoadMore={handleLoadMore}
                 loadingData={isFetching}
                 onChange={handleChangeTable}
               />
             </Col>
-            {undefined && (
+
+            {!!selectedTask && (
               <Col span={8}>
-                <TaskDetail />
+                <TaskDetail onClose={handleCloseTaskDetail} />
               </Col>
             )}
           </RowStyled>

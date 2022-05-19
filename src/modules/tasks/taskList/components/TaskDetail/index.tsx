@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, memo } from 'react'
 
 import CardTitle from './CardTitle'
 import MainDetail from './MainDetail'
@@ -22,4 +22,4 @@ const TaskDetail: FC<TaskDetailProps> = ({ onClose }) => {
   )
 }
 
-export default TaskDetail
+export default memo(TaskDetail)
