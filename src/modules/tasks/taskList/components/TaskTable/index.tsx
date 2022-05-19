@@ -7,7 +7,10 @@ import { Task } from 'modules/tasks/models'
 import { TABLE_COLUMNS_ETC, TABLE_COLUMNS_SHORT } from './constants'
 import { TableStyled } from './styles'
 
-type TaskTableProps = Pick<TableProps<Task>, 'dataSource' | 'loading'> & {
+export type TaskTableProps = Pick<
+  TableProps<Task>,
+  'dataSource' | 'loading' | 'onRow'
+> & {
   columns: 'all' | 'shorts'
   heightContainer: number
   onLoadMore: () => void
@@ -21,6 +24,7 @@ const TaskTable: FC<TaskTableProps> = ({
   heightContainer,
   onLoadMore,
   loadingData,
+  onRow,
 }) => {
   const columnsData: ColumnsType<Task> = useMemo(() => {
     switch (columns) {
@@ -90,6 +94,7 @@ const TaskTable: FC<TaskTableProps> = ({
       columns={columnsData}
       pagination={false}
       loading={loading}
+      onRow={onRow}
       rowKey='id'
       scroll={scrollY ? { y: scrollY } : { y: 'auto' }}
     />

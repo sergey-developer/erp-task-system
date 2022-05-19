@@ -1,11 +1,13 @@
 import { FilterTwoTone } from '@ant-design/icons'
 import useComponentSize from '@rehooks/component-size'
 import { Button, Col, Input, Row } from 'antd'
+import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import FilterTag from 'components/FilterTag'
 
+import { MaybeNull } from '../../../../../shared/interfaces/utils'
 import { Task } from '../../../models'
 import { useTasksListQuery } from '../../../tasks.service'
 import TaskDetail from '../TaskDetail'
@@ -52,6 +54,7 @@ const TaskListPage: FC = () => {
         searchParams.get(TASK_LIST_FILTER_KEY) as TaskListFiltersEnum,
       ),
   )
+  const [selectedTask, setSelectedTask] = useState<MaybeNull<any>>({})
 
   const handleChangeFilter = (filter: TaskListFiltersEnum) => {
     setSelectedFilter(filter)
@@ -85,6 +88,17 @@ const TaskListPage: FC = () => {
     taskCurrentResponsePage?.previous,
     taskCurrentResponsePage?.results,
   ])
+
+  const handleRowClick: GetComponentProps<Task> = useCallback(
+    (record: Task) => ({
+      onClick: () => setSelectedTask(record),
+    }),
+    [setSelectedTask],
+  )
+
+  const handleCloseTaskDetail = useCallback(() => {
+    setSelectedTask(null)
+  }, [setSelectedTask])
 
   const handleLoadMore = useCallback(() => {
     if (taskCurrentResponsePage?.next) {
@@ -134,18 +148,20 @@ const TaskListPage: FC = () => {
       </Row>
       <ColFlexStyled span={24} flex='1'>
         <RowStyled>
-          <Col span={24} ref={refContainer}>
+          <Col span={selectedTask ? 16 : 24} ref={refContainer}>
             <TaskTable
+              onRow={handleRowClick}
               heightContainer={heightContainer}
               dataSource={tasks}
-              columns={'all'}
+              columns={selectedTask ? 'shorts' : 'all'}
               onLoadMore={handleLoadMore}
               loadingData={isFetching}
             />
           </Col>
-          {undefined && (
+
+          {!!selectedTask && (
             <Col span={8}>
-              <TaskDetail />
+              <TaskDetail onClose={handleCloseTaskDetail} />
             </Col>
           )}
         </RowStyled>

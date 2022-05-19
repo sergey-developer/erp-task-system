@@ -1,4 +1,5 @@
-import { api } from '/Users/madmaxx/Documents/projects/itsm/src/shared/services/api/index'
+import { api } from 'shared/services/api'
+
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     getTasksList: build.query<GetTasksListApiResponse, GetTasksListApiArg>({
