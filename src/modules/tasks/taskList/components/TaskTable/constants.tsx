@@ -71,5 +71,3 @@ export const TABLE_COLUMNS_ETC: ColumnsType<Task> = [
     sorter: true,
   },
 ]
-
-export const PERCENT_LIMIT_TO_HANDLE_SCROLL = 80
