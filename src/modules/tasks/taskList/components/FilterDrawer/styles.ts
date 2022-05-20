@@ -1,5 +1,6 @@
-import { Radio, Checkbox, DatePicker, Drawer } from 'antd';
-import styled from 'styled-components';
+import { Checkbox, DatePicker, Drawer, Radio } from 'antd'
+
+import styled from 'styled-components'
 
 export const RadioGroupStyled = styled(Radio.Group)`
   &&& {
@@ -11,7 +12,7 @@ export const CheckboxGroupStyled = styled(Checkbox.Group)`
   &&& {
     display: flex;
     flex-direction: column;
-    
+
     & .ant-checkbox-group-item:not(:nth-last-child(1)) {
       margin-bottom: 20px;
     }

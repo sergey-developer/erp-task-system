@@ -17,21 +17,14 @@ import {
 } from './styles'
 
 export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
-  onSubmit: (result: FormResultValues) => void
+  onSubmit: (result: FormFields) => void
 }
 
 type FormFields = {
   columnName: keyof typeof searchableFields
-  columnKeyword: string
-  taskStatuses: TaskStatusEnum[]
-  creationDate: MaybeNull<[Moment, Moment]>
-}
-
-type FormResultValues = {
-  columnName: keyof typeof searchableFields
   columnKeyword: MaybeUndefined<string>
   taskStatuses: MaybeUndefined<TaskStatusEnum[]>
-  creationDate: MaybeUndefined<MaybeNull<[Date, Date]>>
+  creationDate: MaybeNull<[Moment, Moment]>
 }
 
 const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
@@ -44,10 +37,13 @@ const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
 )
 
 const searchableFields = {
-  topic: 'Тема',
-  object: 'Объект',
-  executor: 'Исполнитель',
+  smartSearchDescription: 'Тема',
+  smartSearchName: 'Объект',
+  smartSearchAssignee: 'Исполнитель',
 }
+
+const INITIAL_SEARCH_FIELD: keyof typeof searchableFields =
+  'smartSearchDescription'
 
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { onClose, onSubmit, visible } = props
@@ -59,16 +55,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   }
 
   const handleSubmit: FormProps<FormFields>['onFinish'] = (values) => {
-    const resultValues = {
-      ...values,
-      creationDate:
-        values.creationDate &&
-        ([values.creationDate[0].toDate(), values.creationDate[1].toDate()] as [
-          Date,
-          Date,
-        ]),
-    }
-    onSubmit(resultValues)
+    onSubmit(values)
   }
 
   return (
@@ -115,14 +102,14 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           <FilterBlockLabel
             onReset={() =>
               form.setFieldsValue({
-                columnName: 'topic',
+                columnName: INITIAL_SEARCH_FIELD,
                 columnKeyword: '',
               })
             }
           >
             Поиск по столбцу
           </FilterBlockLabel>
-          <Form.Item name='columnName' initialValue='topic'>
+          <Form.Item name='columnName' initialValue={INITIAL_SEARCH_FIELD}>
             <RadioGroupStyled>
               {Object.entries(searchableFields).map(([name, label]) => (
                 <Radio key={name} value={name}>
