@@ -2,7 +2,6 @@ import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
 import PrivateLayout from 'components/Layout/PrivateLayout'
-import { taskListDefaultRoute } from 'modules/tasks/taskList/components/TaskListPage/constants'
 
 import { RoutesEnum } from './constants'
 
@@ -19,7 +18,7 @@ export default [
     children: [
       {
         index: true,
-        element: <Navigate to={taskListDefaultRoute} />,
+        element: <Navigate to={RoutesEnum.TaskList} />,
       },
       {
         path: RoutesEnum.TaskList,

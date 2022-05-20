@@ -9,7 +9,6 @@ import {
 import { camelize } from 'humps'
 import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
 
 import FilterTag from 'components/FilterTag'
 import {
@@ -28,11 +27,9 @@ import {
   DEFAULT_PAGE_LIMIT,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
-  TASK_LIST_FILTER_KEY,
 } from './constants'
 import { FilterListItem } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
-import { initSelectedFilterState } from './utils'
 
 const { Search } = Input
 
@@ -60,12 +57,8 @@ const filterList: Array<FilterListItem> = [
 ]
 
 const TaskListPage: FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
   const [selectedFilter, setSelectedFilter] = useState<TaskListFiltersEnum>(
-    () =>
-      initSelectedFilterState(
-        searchParams.get(TASK_LIST_FILTER_KEY) as TaskListFiltersEnum,
-      ),
+    TaskListFiltersEnum.All,
   )
   const [selectedTask, setSelectedTask] = useState<MaybeNull<any>>(null)
 
@@ -81,7 +74,6 @@ const TaskListPage: FC = () => {
 
   const handleChangeFilter = (filter: TaskListFiltersEnum) => {
     setSelectedFilter(filter)
-    setSearchParams({ filter })
   }
 
   const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
