@@ -12,6 +12,7 @@ import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
 import { ColumnsTypeContentEnum } from '../TaskTable/constants'
 import {
+  DATE_FILTER_FORMAT,
   DEFAULT_PAGE_LIMIT,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
@@ -68,10 +69,10 @@ const TaskListPage: FC = () => {
       offset: 0,
       status: taskStatuses,
       dateFrom: creationDate
-        ? creationDate[0].format('YYYY[-]MM[-]DD')
+        ? creationDate[0].format(DATE_FILTER_FORMAT)
         : undefined,
       dateTo: creationDate
-        ? creationDate[1].format('YYYY[-]MM[-]DD')
+        ? creationDate[1].format(DATE_FILTER_FORMAT)
         : undefined,
       smartSearchAssignee: undefined,
       smartSearchDescription: undefined,
