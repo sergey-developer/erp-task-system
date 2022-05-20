@@ -4,12 +4,11 @@ import styled from 'styled-components'
 
 export const RootWrapperStyled = styled.div`
   padding: 0 0 8px 8px;
-  min-width: 645px;
+  min-width: 100%;
 `
 
 export const CardStyled = styled(Card)`
   height: 100%;
-  overflow-y: auto;
 
   && {
     border-radius: 4px;
