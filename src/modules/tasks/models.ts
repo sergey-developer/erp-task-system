@@ -1,5 +1,6 @@
 export type GetTaskListBaseApiResponse = PaginatedTaskList
 
+// todo: вынести трансформацию ответа под ант пагинацию в общий модуль
 export type GetTaskListTransformedApiResponse = {
   pagination: {
     current: number

@@ -3,7 +3,7 @@ import { ColumnsType } from 'antd/es/table'
 import React, { FC, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { Task } from 'modules/tasks/models'
-import { getElementFullHeight } from 'shared/utils'
+import { getElementFullHeight } from 'shared/utils/getElementFullHeight'
 
 import {
   ColumnsTypeContentEnum,
@@ -19,7 +19,7 @@ const TaskTable: FC<TaskTableProps> = ({
   onChange,
   pagination,
 }) => {
-  const [tableHeight, setTableHeight] = useState(600)
+  const [tableHeight, setTableHeight] = useState<'auto' | number>('auto')
 
   const ref = useRef<HTMLDivElement>(null)
 

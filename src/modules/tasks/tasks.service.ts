@@ -12,10 +12,11 @@ const tasksService = api.injectEndpoints({
     taskList: build.query<GetTaskListTransformedApiResponse, GetTaskListApiArg>(
       {
         query: (data) => ({
-          url: '/tasks/view/',
+          url: '/tasks/view',
           method: MethodEnums.GET,
           params: data,
         }),
+        // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
         transformResponse: (
           response: GetTaskListBaseApiResponse,
           meta,

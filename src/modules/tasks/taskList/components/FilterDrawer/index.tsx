@@ -17,21 +17,14 @@ import {
 } from './styles'
 
 export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
-  onSubmit: (result: FormResultValues) => void
+  onSubmit: (result: FormFields) => void
 }
 
 type FormFields = {
   columnName: keyof typeof searchableFields
-  columnKeyword: string
-  taskStatuses: TaskStatusEnum[]
-  creationDate: MaybeNull<[Moment, Moment]>
-}
-
-type FormResultValues = {
-  columnName: keyof typeof searchableFields
   columnKeyword: MaybeUndefined<string>
   taskStatuses: MaybeUndefined<TaskStatusEnum[]>
-  creationDate: MaybeUndefined<MaybeNull<[Date, Date]>>
+  creationDate: MaybeNull<[Moment, Moment]>
 }
 
 const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
@@ -62,16 +55,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   }
 
   const handleSubmit: FormProps<FormFields>['onFinish'] = (values) => {
-    const resultValues = {
-      ...values,
-      creationDate:
-        values.creationDate &&
-        ([values.creationDate[0].toDate(), values.creationDate[1].toDate()] as [
-          Date,
-          Date,
-        ]),
-    }
-    onSubmit(resultValues)
+    onSubmit(values)
   }
 
   return (

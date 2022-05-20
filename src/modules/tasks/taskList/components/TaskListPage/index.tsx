@@ -58,7 +58,7 @@ const TaskListPage: FC = () => {
     filter: fastFilterValue,
   })
 
-  const { data: tasksResponse, isFetching } = useTaskListQuery(queryArgs)
+  const { data: tasksListResponse, isFetching } = useTaskListQuery(queryArgs)
 
   const toggleFilterDrawer = () => setIsFilterDrawerVisible((prev) => !prev)
 
@@ -67,8 +67,12 @@ const TaskListPage: FC = () => {
     const newQueryArgs: Partial<GetTaskListApiArg> = {
       offset: 0,
       status: taskStatuses,
-      dateFrom: creationDate ? creationDate[0].toISOString() : undefined,
-      dateTo: creationDate ? creationDate[1].toISOString() : undefined,
+      dateFrom: creationDate
+        ? creationDate[0].format('YYYY[-]MM[-]DD')
+        : undefined,
+      dateTo: creationDate
+        ? creationDate[1].format('YYYY[-]MM[-]DD')
+        : undefined,
       smartSearchAssignee: undefined,
       smartSearchDescription: undefined,
       smartSearchName: undefined,
@@ -158,11 +162,11 @@ const TaskListPage: FC = () => {
           <RowStyled>
             <Col span={24}>
               <TaskTable
-                dataSource={tasksResponse?.results}
+                dataSource={tasksListResponse?.results}
                 columns={ColumnsTypeContentEnum.All}
                 loading={isFetching}
                 onChange={handleChangeTable}
-                pagination={tasksResponse?.pagination}
+                pagination={tasksListResponse?.pagination}
               />
             </Col>
             {false && (
