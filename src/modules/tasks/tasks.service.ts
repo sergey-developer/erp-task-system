@@ -21,11 +21,6 @@ const tasksService = api.injectEndpoints({
           meta,
           arg,
         ) => {
-          console.group('transforming response')
-          console.log('response', response)
-          console.log('meta', meta)
-          console.log('arg', arg)
-          console.groupEnd()
           return {
             pagination: {
               current: arg.offset / arg.limit + 1,

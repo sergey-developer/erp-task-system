@@ -63,7 +63,6 @@ const TaskListPage: FC = () => {
   const toggleFilterDrawer = () => setIsFilterDrawerVisible((prev) => !prev)
 
   const handleFilterDrawerSubmit: FilterDrawerProps['onSubmit'] = (values) => {
-    console.log('Filter drawer submit', values)
     const { creationDate, columnName, columnKeyword, taskStatuses } = values
     const newQueryArgs: Partial<GetTaskListApiArg> = {
       offset: 0,
@@ -79,8 +78,6 @@ const TaskListPage: FC = () => {
       newQueryArgs[columnName] = columnKeyword
     }
 
-    console.log('new query args', newQueryArgs)
-
     setQueryArgs((prev) => ({ ...prev, ...newQueryArgs }))
   }
 
@@ -89,14 +86,10 @@ const TaskListPage: FC = () => {
     setQueryArgs((prev) => ({ ...prev, offset: 0, filter: value }))
   }
 
-  console.log('tasksResponse', tasksResponse)
-
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
     NonNullable<TableProps<Task>['onChange']>
   >((pagination, filters, sorter) => {
-    console.log('handleChangeTable', pagination)
-
     const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
     const newQueryArgs: Partial<GetTaskListApiArg> = {
