@@ -7,6 +7,7 @@ import {
   TablePaginationConfig,
 } from 'antd/lib/table/interface'
 import { camelize } from 'humps'
+import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
@@ -17,6 +18,7 @@ import {
   TaskListFiltersEnum,
 } from 'modules/tasks/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskDetail from '../TaskDetail'
@@ -65,6 +67,7 @@ const TaskListPage: FC = () => {
         searchParams.get(TASK_LIST_FILTER_KEY) as TaskListFiltersEnum,
       ),
   )
+  const [selectedTask, setSelectedTask] = useState<MaybeNull<any>>(null)
 
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
     useState<boolean>(false)
@@ -105,6 +108,17 @@ const TaskListPage: FC = () => {
     taskCurrentResponsePage?.previous,
     taskCurrentResponsePage?.results,
   ])
+
+  const handleTableRowClick: GetComponentProps<Task> = useCallback(
+    (record: Task) => ({
+      onClick: () => setSelectedTask(record),
+    }),
+    [setSelectedTask],
+  )
+
+  const handleCloseTaskDetail = useCallback(() => {
+    setSelectedTask(null)
+  }, [setSelectedTask])
 
   const handleLoadMore = useCallback(() => {
     if (taskCurrentResponsePage?.next) {
@@ -185,19 +199,25 @@ const TaskListPage: FC = () => {
         </Row>
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
-            <Col span={24} ref={refContainer}>
+            <Col span={selectedTask ? 16 : 24} ref={refContainer}>
               <TaskTable
+                onRow={handleTableRowClick}
                 heightContainer={heightContainer}
                 dataSource={tasks}
-                columns={ColumnsTypeContentEnum.All}
+                columns={
+                  selectedTask
+                    ? ColumnsTypeContentEnum.Short
+                    : ColumnsTypeContentEnum.All
+                }
                 onLoadMore={handleLoadMore}
                 loadingData={isFetching}
                 onChange={handleChangeTable}
               />
             </Col>
-            {undefined && (
+
+            {!!selectedTask && (
               <Col span={8}>
-                <TaskDetail />
+                <TaskDetail onClose={handleCloseTaskDetail} />
               </Col>
             )}
           </RowStyled>
