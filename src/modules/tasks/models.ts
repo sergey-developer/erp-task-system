@@ -1,5 +1,3 @@
-import { TableProps } from 'antd'
-
 export type GetTaskListBaseApiResponse = PaginatedTaskList
 
 export type GetTaskListTransformedApiResponse = {
@@ -18,7 +16,7 @@ export type PaginatedTaskList = {
   results: Task[]
 }
 
-export enum TaskListFiltersEnum {
+export enum FastFilterEnum {
   All = 'ALL',
   Free = 'FREE',
   Mine = 'MINE',
@@ -46,7 +44,7 @@ export enum SmartSortEnum {
 export type GetTaskListApiArg = {
   dateFrom?: string
   dateTo?: string
-  filter?: TaskListFiltersEnum
+  filter?: FastFilterEnum
   hideAwaitingTask?: boolean
   limit: number
   offset: number

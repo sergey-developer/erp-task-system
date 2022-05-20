@@ -2,14 +2,9 @@ import { FilterTwoTone } from '@ant-design/icons'
 import { Button, Col, Input, Row, TableProps } from 'antd'
 import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
 
 import FilterTag from 'components/FilterTag'
-import {
-  GetTaskListApiArg,
-  Task,
-  TaskListFiltersEnum,
-} from 'modules/tasks/models'
+import { FastFilterEnum, GetTaskListApiArg, Task } from 'modules/tasks/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
@@ -20,45 +15,38 @@ import {
   DEFAULT_PAGE_LIMIT,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
-  TASK_LIST_FILTER_KEY,
 } from './constants'
 import { FilterListItem } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
-import { initSelectedFilterState } from './utils'
 
 const { Search } = Input
 
 const filterList: Array<FilterListItem> = [
   {
     text: 'Все',
-    value: TaskListFiltersEnum.All,
+    value: FastFilterEnum.All,
     amount: 378,
   },
   {
     text: 'Мои',
-    value: TaskListFiltersEnum.Mine,
+    value: FastFilterEnum.Mine,
     amount: 45,
   },
   {
     text: 'Просроченные',
-    value: TaskListFiltersEnum.Overdue,
+    value: FastFilterEnum.Overdue,
     amount: 145,
   },
   {
     text: 'Свободные',
-    value: TaskListFiltersEnum.Free,
+    value: FastFilterEnum.Free,
     amount: 11,
   },
 ]
 
 const TaskListPage: FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  const [selectedFilter, setSelectedFilter] = useState<TaskListFiltersEnum>(
-    () =>
-      initSelectedFilterState(
-        searchParams.get(TASK_LIST_FILTER_KEY) as TaskListFiltersEnum,
-      ),
+  const [fastFilterValue, setFastFilterValue] = useState<FastFilterEnum>(
+    FastFilterEnum.All,
   )
 
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
@@ -67,39 +55,41 @@ const TaskListPage: FC = () => {
   const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
     limit: DEFAULT_PAGE_LIMIT,
     offset: 0,
+    filter: fastFilterValue,
   })
+
+  const { data: tasksResponse, isFetching } = useTaskListQuery(queryArgs)
 
   const toggleFilterDrawer = () => setIsFilterDrawerVisible((prev) => !prev)
 
-  /** заготовка под сабмит расширенного фильтра todo: допилить */
   const handleFilterDrawerSubmit: FilterDrawerProps['onSubmit'] = (values) => {
     console.log('Filter drawer submit', values)
-    if (values.taskStatuses) {
-      setQueryArgs((prev) => ({
-        ...prev,
-        status: values.taskStatuses,
-        offset: 0,
-      }))
+    const { creationDate, columnName, columnKeyword, taskStatuses } = values
+    const newQueryArgs: Partial<GetTaskListApiArg> = {
+      offset: 0,
+      status: taskStatuses,
+      dateFrom: creationDate ? creationDate[0].toISOString() : undefined,
+      dateTo: creationDate ? creationDate[1].toISOString() : undefined,
+      smartSearchAssignee: undefined,
+      smartSearchDescription: undefined,
+      smartSearchName: undefined,
     }
 
-    if (values.creationDate) {
-      setQueryArgs((prev) => ({
-        ...prev,
-        dateFrom: values.creationDate![0].toDateString(),
-        dateTo: values.creationDate![1].toDateString(),
-      }))
+    if (columnKeyword) {
+      newQueryArgs[columnName] = columnKeyword
     }
+
+    console.log('new query args', newQueryArgs)
+
+    setQueryArgs((prev) => ({ ...prev, ...newQueryArgs }))
   }
 
-  const handleChangeFilter = (filter: TaskListFiltersEnum) => {
-    setSelectedFilter(filter)
-    setSearchParams({ filter })
+  const handleFastFilterChange = (value: FastFilterEnum) => {
+    setFastFilterValue(value)
+    setQueryArgs((prev) => ({ ...prev, offset: 0, filter: value }))
   }
 
-  const { data: taskCurrentResponsePage, isFetching } =
-    useTaskListQuery(queryArgs)
-
-  console.log('taskCurrentResponsePage', taskCurrentResponsePage)
+  console.log('tasksResponse', tasksResponse)
 
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
@@ -131,19 +121,19 @@ const TaskListPage: FC = () => {
   }, [])
 
   return (
-    <div style={{ maxHeight: '100%' }}>
+    <>
       <RowWrapStyled gutter={[0, 40]}>
         <Row justify='space-between'>
           <Col span={15}>
             <Row align='middle'>
               <Col span={12}>
-                {filterList.map((filter, index) => (
+                {filterList.map(({ amount, text, value }) => (
                   <FilterTag
-                    key={index}
-                    checked={selectedFilter === filter.value}
-                    onChange={() => handleChangeFilter(filter.value)}
-                    text={filter.text}
-                    amount={filter.amount}
+                    key={value}
+                    checked={fastFilterValue === value}
+                    onChange={() => handleFastFilterChange(value)}
+                    text={text}
+                    amount={amount}
                   />
                 ))}
               </Col>
@@ -175,11 +165,11 @@ const TaskListPage: FC = () => {
           <RowStyled>
             <Col span={24}>
               <TaskTable
-                dataSource={taskCurrentResponsePage?.results}
+                dataSource={tasksResponse?.results}
                 columns={ColumnsTypeContentEnum.All}
                 loading={isFetching}
                 onChange={handleChangeTable}
-                pagination={taskCurrentResponsePage?.pagination}
+                pagination={tasksResponse?.pagination}
               />
             </Col>
             {false && (
@@ -195,7 +185,7 @@ const TaskListPage: FC = () => {
         onSubmit={handleFilterDrawerSubmit}
         visible={isFilterDrawerVisible}
       />
-    </div>
+    </>
   )
 }
 

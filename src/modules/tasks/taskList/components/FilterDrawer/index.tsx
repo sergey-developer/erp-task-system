@@ -44,10 +44,13 @@ const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
 )
 
 const searchableFields = {
-  topic: 'Тема',
-  object: 'Объект',
-  executor: 'Исполнитель',
+  smartSearchDescription: 'Тема',
+  smartSearchName: 'Объект',
+  smartSearchAssignee: 'Исполнитель',
 }
+
+const INITIAL_SEARCH_FIELD: keyof typeof searchableFields =
+  'smartSearchDescription'
 
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { onClose, onSubmit, visible } = props
@@ -115,14 +118,14 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           <FilterBlockLabel
             onReset={() =>
               form.setFieldsValue({
-                columnName: 'topic',
+                columnName: INITIAL_SEARCH_FIELD,
                 columnKeyword: '',
               })
             }
           >
             Поиск по столбцу
           </FilterBlockLabel>
-          <Form.Item name='columnName' initialValue='topic'>
+          <Form.Item name='columnName' initialValue={INITIAL_SEARCH_FIELD}>
             <RadioGroupStyled>
               {Object.entries(searchableFields).map(([name, label]) => (
                 <Radio key={name} value={name}>
