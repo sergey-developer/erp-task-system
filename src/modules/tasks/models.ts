@@ -1,21 +1,6 @@
-export type GetTaskListBaseApiResponse = PaginatedTaskList
+import { Moment } from 'moment'
 
-// todo: вынести трансформацию ответа под ант пагинацию в общий модуль
-export type GetTaskListTransformedApiResponse = {
-  pagination: {
-    current: number
-    total: number
-    pageSize: number
-  }
-  results: Task[]
-}
-
-export type PaginatedTaskList = {
-  count: number
-  next: string | null
-  previous: string | null
-  results: Task[]
-}
+import { MaybeNull } from 'shared/interfaces/utils'
 
 export enum FastFilterEnum {
   All = 'ALL',
@@ -42,22 +27,51 @@ export enum SmartSortEnum {
   ByOlaDesc = 'BY_OLA_DESC',
 }
 
+export type GetTaskListBaseApiResponse = PaginatedTaskList
+
+// todo: вынести трансформацию ответа под ант пагинацию в общий модуль
+export type GetTaskListTransformedApiResponse = {
+  pagination: {
+    current: number
+    total: number
+    pageSize: number
+  }
+  results: Task[]
+}
+
+export type PaginatedTaskList = {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Task[]
+}
+
+export type ExtendedFilterFormFields = {
+  creationDateRange: MaybeNull<[Moment, Moment]>
+  smartSearchField: keyof SmartSearchFields
+  smartSearchValue: string
+  status: TaskStatusEnum[]
+}
+
+export type SmartSearchFields = {
+  smartSearchAssignee?: string
+  smartSearchDescription?: string
+  smartSearchName?: string
+}
+
 export type GetTaskListApiArg = {
   dateFrom?: string
   dateTo?: string
   filter?: FastFilterEnum
   hideAwaitingTask?: boolean
-  limit: number
-  offset: number
-  smartSearchAssignee?: string
-  smartSearchDescription?: string
-  smartSearchName?: string
-  smartSort?: SmartSortEnum
   status?: TaskStatusEnum[]
   taskId?: string
+  limit: number
+  offset: number
+  smartSort?: SmartSortEnum
   userId?: number
   workGroupId?: number
-}
+} & SmartSearchFields
 
 export enum CommentTypeEnum {
   Common = 'COMMON',
