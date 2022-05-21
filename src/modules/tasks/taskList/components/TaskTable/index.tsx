@@ -17,6 +17,7 @@ const TaskTable: FC<TaskTableProps> = ({
   loading,
   columns,
   onChange,
+  onRow,
   pagination,
 }) => {
   const [tableHeight, setTableHeight] = useState<'auto' | number>('auto')
@@ -76,6 +77,7 @@ const TaskTable: FC<TaskTableProps> = ({
       pagination={pagination && { ...pagination, position: ['bottomLeft'] }}
       loading={loading}
       rowKey='id'
+      onRow={onRow}
       onChange={onChange}
       scroll={{ y: tableHeight }}
     />

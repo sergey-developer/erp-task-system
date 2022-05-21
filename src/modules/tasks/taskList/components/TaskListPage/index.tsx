@@ -2,10 +2,12 @@ import { FilterTwoTone } from '@ant-design/icons'
 import { Button, Col, Input, Row, TableProps } from 'antd'
 import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
+import { GetComponentProps } from 'rc-table/lib/interface'
 
 import FilterTag from 'components/FilterTag'
 import { FastFilterEnum, GetTaskListApiArg, Task } from 'modules/tasks/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskDetail from '../TaskDetail'
@@ -49,6 +51,7 @@ const TaskListPage: FC = () => {
   const [fastFilterValue, setFastFilterValue] = useState<FastFilterEnum>(
     FastFilterEnum.All,
   )
+  const [selectedTask, setSelectedTask] = useState<MaybeNull<Task>>(null)
 
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
     useState<boolean>(false)
@@ -90,6 +93,17 @@ const TaskListPage: FC = () => {
     setFastFilterValue(value)
     setQueryArgs((prev) => ({ ...prev, offset: 0, filter: value }))
   }
+
+  const handleTableRowClick: GetComponentProps<Task> = useCallback(
+    (record: Task) => ({
+      onClick: () => setSelectedTask(record),
+    }),
+    [setSelectedTask],
+  )
+
+  const handleCloseTaskDetail = useCallback(() => {
+    setSelectedTask(null)
+  }, [setSelectedTask])
 
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
@@ -161,8 +175,9 @@ const TaskListPage: FC = () => {
         </Row>
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
-            <Col span={24}>
+            <Col span={selectedTask ? 16 : 24}>
               <TaskTable
+                onRow={handleTableRowClick}
                 dataSource={tasksListResponse?.results}
                 columns={ColumnsTypeContentEnum.All}
                 loading={isFetching}
@@ -170,9 +185,10 @@ const TaskListPage: FC = () => {
                 pagination={tasksListResponse?.pagination}
               />
             </Col>
-            {false && (
+
+            {!!selectedTask && (
               <Col span={8}>
-                <TaskDetail />
+                <TaskDetail onClose={handleCloseTaskDetail} />
               </Col>
             )}
           </RowStyled>
