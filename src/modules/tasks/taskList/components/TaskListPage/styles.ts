@@ -7,9 +7,12 @@ export const ColFlexStyled = styled(Col)`
   flex-direction: column;
 `
 export const RowStyled = styled.div`
-  max-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex: 1;
 `
 
 export const RowWrapStyled = styled(Row)`

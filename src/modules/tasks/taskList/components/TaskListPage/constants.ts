@@ -16,7 +16,9 @@ export const taskListDefaultRoute: string = generatePath(
   },
 )
 
-export const DEFAULT_PAGE_LIMIT = 20
+export const DEFAULT_PAGE_LIMIT = 15
+
+export const DEFAULT_FAST_FILTER = FastFilterEnum.All
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 

@@ -1,5 +1,6 @@
 import { FilterTwoTone } from '@ant-design/icons'
-import { Button, Col, Input, Row, TableProps } from 'antd'
+import { Button, Col, Input, InputProps, Row, TableProps } from 'antd'
+import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
 
@@ -13,6 +14,7 @@ import TaskTable from '../TaskTable'
 import { ColumnsTypeContentEnum } from '../TaskTable/constants'
 import {
   DATE_FILTER_FORMAT,
+  DEFAULT_FAST_FILTER,
   DEFAULT_PAGE_LIMIT,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
@@ -46,9 +48,10 @@ const filterList: Array<FilterListItem> = [
 ]
 
 const TaskListPage: FC = () => {
-  const [fastFilterValue, setFastFilterValue] = useState<FastFilterEnum>(
-    FastFilterEnum.All,
-  )
+  const [taskIdFilterValue, setTaskIdFilterValue] = useState<string>('')
+
+  const [fastFilterValue, setFastFilterValue] =
+    useState<FastFilterEnum>(DEFAULT_FAST_FILTER)
 
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
     useState<boolean>(false)
@@ -91,6 +94,22 @@ const TaskListPage: FC = () => {
     setQueryArgs((prev) => ({ ...prev, offset: 0, filter: value }))
   }
 
+  const handleTaskIdFilterChange: InputProps['onChange'] = (evt) => {
+    console.log('handleTaskIdFilterChange', evt.target.value)
+    setTaskIdFilterValue(evt.target.value)
+  }
+
+  const handleTaskIdFilterSearch: SearchProps['onSearch'] = (value) => {
+    console.log('handleTaskIdFilterSearch', value)
+    setQueryArgs((prev) => ({
+      ...prev,
+      offset: 0,
+      filter: DEFAULT_FAST_FILTER,
+      taskId: value,
+    }))
+    setFastFilterValue(DEFAULT_FAST_FILTER)
+  }
+
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
     NonNullable<TableProps<Task>['onChange']>
@@ -124,7 +143,7 @@ const TaskListPage: FC = () => {
         <Row justify='space-between'>
           <Col span={15}>
             <Row align='middle'>
-              <Col span={12}>
+              <Col span={10}>
                 {filterList.map(({ amount, text, value }) => (
                   <FilterTag
                     key={value}
@@ -150,7 +169,13 @@ const TaskListPage: FC = () => {
           <Col span={7}>
             <Row justify='space-between'>
               <Col span={14}>
-                <Search placeholder='Искать заявку по номеру' />
+                <Search
+                  allowClear
+                  onChange={handleTaskIdFilterChange}
+                  onSearch={handleTaskIdFilterSearch}
+                  placeholder='Искать заявку по номеру'
+                  value={taskIdFilterValue}
+                />
               </Col>
 
               <Col span={8}>
