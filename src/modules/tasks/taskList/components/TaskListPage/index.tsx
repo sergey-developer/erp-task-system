@@ -1,8 +1,9 @@
 import { FilterTwoTone, SyncOutlined } from '@ant-design/icons'
+import useComponentSize from '@rehooks/component-size'
 import { Button, Col, Input, Row, Space, TableProps } from 'antd'
 import { camelize } from 'humps'
-import React, { FC, useCallback, useState } from 'react'
 import { GetComponentProps } from 'rc-table/lib/interface'
+import React, { FC, useCallback, useRef, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
 import {
@@ -140,6 +141,9 @@ const TaskListPage: FC = () => {
     }))
   }, [])
 
+  const refTableContainer = useRef<HTMLDivElement>(null)
+  const { height: heightContainer } = useComponentSize(refTableContainer)
+
   return (
     <>
       <RowWrapStyled gutter={[0, 40]}>
@@ -185,8 +189,9 @@ const TaskListPage: FC = () => {
         </Row>
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
-            <Col span={selectedTask ? 16 : 24}>
+            <Col span={selectedTask ? 16 : 24} ref={refTableContainer}>
               <TaskTable
+                heightContainer={heightContainer}
                 sorting={queryArgs?.smartSort}
                 onRow={handleTableRowClick}
                 dataSource={tasksListResponse?.results}

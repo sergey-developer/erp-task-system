@@ -7,4 +7,5 @@ export type TaskTableProps = Pick<
   'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
 > & {
   sorting?: SmartSortEnum
+  heightContainer: number
 }

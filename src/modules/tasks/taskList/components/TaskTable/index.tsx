@@ -1,4 +1,3 @@
-import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import React, { FC, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
@@ -8,6 +7,7 @@ import { getElementFullHeight } from 'shared/utils/getElementFullHeight'
 
 import { TABLE_COLUMNS } from './constants'
 import { TaskTableProps } from './interfaces'
+import { TableStyled } from './styles'
 import { applySortingToColumn } from './utils'
 
 const TaskTable: FC<TaskTableProps> = ({
@@ -17,6 +17,7 @@ const TaskTable: FC<TaskTableProps> = ({
   onChange,
   onRow,
   pagination,
+  heightContainer,
 }) => {
   const [tableHeight, setTableHeight] = useState<'auto' | number>('auto')
 
@@ -36,8 +37,6 @@ const TaskTable: FC<TaskTableProps> = ({
       return
     }
 
-    const tableTopOffset = ref.current.getBoundingClientRect().top
-
     const headerEl =
       ref.current.querySelector<HTMLDivElement>('.ant-table-header')
 
@@ -50,11 +49,8 @@ const TaskTable: FC<TaskTableProps> = ({
     const paginationHeight = paginationEl
       ? getElementFullHeight(paginationEl)
       : 0
-
-    setTableHeight(
-      window.innerHeight - tableTopOffset - headerHeight - paginationHeight,
-    )
-  }, [dataSource])
+    setTableHeight(heightContainer - headerHeight - paginationHeight)
+  }, [dataSource, heightContainer])
 
   const columnsData: ColumnsType<Task> = useMemo(() => {
     const sorterResult =
@@ -66,7 +62,7 @@ const TaskTable: FC<TaskTableProps> = ({
   }, [sorting])
 
   return (
-    <Table
+    <TableStyled
       ref={ref}
       dataSource={dataSource}
       columns={columnsData}
@@ -76,6 +72,7 @@ const TaskTable: FC<TaskTableProps> = ({
       onRow={onRow}
       onChange={onChange}
       scroll={{ y: tableHeight }}
+      showSorterTooltip={false}
     />
   )
 }

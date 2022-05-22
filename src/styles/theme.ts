@@ -10,6 +10,7 @@ const colors = {
   red1: '#EB5757',
   extraLightGray: '#FAFAFA',
   lightBlue: '#EEF5FE',
+  defaultBackground: '#F0F2F5',
 }
 
 const shadows = {

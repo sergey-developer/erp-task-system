@@ -1,6 +1,6 @@
 import { TaskStatusEnum } from 'modules/tasks/models'
 
 export type BidColumnProps = {
-  value: string
+  value?: string
   status: TaskStatusEnum
 }

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 export const RootWrapperStyled = styled.div`
   padding: 0 0 8px 8px;
-  min-width: 645px;
+  height: 100%;
 `
 
 export const CardStyled = styled(Card)`
