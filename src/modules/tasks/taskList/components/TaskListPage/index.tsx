@@ -1,16 +1,17 @@
 import { FilterTwoTone } from '@ant-design/icons'
 import { Button, Col, Input, Row, TableProps } from 'antd'
 import { camelize } from 'humps'
-import React, { FC, useCallback, useState } from 'react'
 import { GetComponentProps } from 'rc-table/lib/interface'
+import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
-import { FastFilterEnum, GetTaskListApiArg, Task } from 'modules/tasks/models'
+import { FastFilterEnum } from 'modules/tasks/constants'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
+import TaskDetail from 'modules/tasks/taskView/components/TaskDetailContainer'
 import { MaybeNull } from 'shared/interfaces/utils'
 
+import { GetTaskListApiArg, Task } from '../../models'
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
-import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
 import { ColumnsTypeContentEnum } from '../TaskTable/constants'
 import {
@@ -51,7 +52,9 @@ const TaskListPage: FC = () => {
   const [fastFilterValue, setFastFilterValue] = useState<FastFilterEnum>(
     FastFilterEnum.All,
   )
-  const [selectedTask, setSelectedTask] = useState<MaybeNull<Task>>(null)
+
+  const [selectedTaskId, setSelectedTaskId] =
+    useState<MaybeNull<Task['id']>>(null)
 
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
     useState<boolean>(false)
@@ -96,14 +99,14 @@ const TaskListPage: FC = () => {
 
   const handleTableRowClick: GetComponentProps<Task> = useCallback(
     (record: Task) => ({
-      onClick: () => setSelectedTask(record),
+      onClick: () => setSelectedTaskId(record.id),
     }),
-    [setSelectedTask],
+    [setSelectedTaskId],
   )
 
   const handleCloseTaskDetail = useCallback(() => {
-    setSelectedTask(null)
-  }, [setSelectedTask])
+    setSelectedTaskId(null)
+  }, [setSelectedTaskId])
 
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
@@ -175,7 +178,7 @@ const TaskListPage: FC = () => {
         </Row>
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
-            <Col span={selectedTask ? 16 : 24}>
+            <Col span={selectedTaskId ? 16 : 24}>
               <TaskTable
                 onRow={handleTableRowClick}
                 dataSource={tasksListResponse?.results}
@@ -186,7 +189,7 @@ const TaskListPage: FC = () => {
               />
             </Col>
 
-            {!!selectedTask && (
+            {!!selectedTaskId && (
               <Col span={8}>
                 <TaskDetail onClose={handleCloseTaskDetail} />
               </Col>
@@ -194,6 +197,7 @@ const TaskListPage: FC = () => {
           </RowStyled>
         </ColFlexStyled>
       </RowWrapStyled>
+
       <FilterDrawer
         onClose={toggleFilterDrawer}
         onSubmit={handleFilterDrawerSubmit}

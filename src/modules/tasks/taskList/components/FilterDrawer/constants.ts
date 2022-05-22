@@ -1,4 +1,4 @@
-import { TaskStatusEnum } from 'modules/tasks/models'
+import { TaskStatusEnum } from 'modules/tasks/constants'
 
 export const taskStatusDictionary: Record<TaskStatusEnum, string> = {
   [TaskStatusEnum.Appointed]: 'В ожидании',

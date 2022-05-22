@@ -2,7 +2,7 @@ import { Button, DrawerProps, Form, FormProps, Input, Radio, Space } from 'antd'
 import { Moment } from 'moment'
 import React, { FC } from 'react'
 
-import { TaskStatusEnum } from 'modules/tasks/models'
+import { TaskStatusEnum } from 'modules/tasks/constants'
 import BidColumn from 'modules/tasks/taskList/components/TaskTable/BidColumn'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 

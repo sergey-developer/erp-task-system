@@ -1,4 +1,4 @@
-import { SmartSortEnum } from 'modules/tasks/models'
+import { SmartSortEnum } from 'modules/tasks/constants'
 
 export const DEFAULT_PAGE_LIMIT = 20
 

@@ -7,12 +7,12 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 import { getNavMenuConfig } from 'configs/navMenu/utils'
-import UserRoles from 'shared/constants/roles'
+import UserRolesEnum from 'shared/constants/roles'
 import useMatchedRoute from 'shared/hooks/useMatchedRoute'
 
 const { Header } = Layout
 
-const mockedRole = UserRoles.FirstLineSupport
+const mockedRole = UserRolesEnum.FirstLineSupport
 
 const menuItems: NavMenuProps['items'] = getNavMenuConfig(mockedRole).map(
   ({ key, icon: Icon, link, text }) => ({

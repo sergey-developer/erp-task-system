@@ -1,9 +1,10 @@
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
-import { Assignee, Task, WorkGroup } from 'modules/tasks/models'
+import { WorkGroupModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
+import { Task } from '../../models'
 import BidColumn from './BidColumn'
 import { getDateTimeString, getFIOString } from './utils'
 
@@ -39,12 +40,12 @@ export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
   {
     title: 'Исполнитель',
     dataIndex: 'assignee',
-    render: (value: MaybeNull<Assignee>) => getFIOString(value),
+    render: (value: MaybeNull<Task['assignee']>) => getFIOString(value),
   },
   {
     title: 'Рабочая группа',
     dataIndex: 'workGroup',
-    render: (value: MaybeNull<WorkGroup>) => {
+    render: (value: MaybeNull<WorkGroupModel>) => {
       return value && value.name
     },
   },
