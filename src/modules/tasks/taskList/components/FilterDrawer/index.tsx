@@ -55,12 +55,6 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
     form.resetFields()
   }
 
-  const handleSubmit: FormProps<ExtendedFilterFormFields>['onFinish'] = (
-    values,
-  ) => {
-    onSubmit(values)
-  }
-
   return (
     <DrawerStyled
       extra={
@@ -80,7 +74,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
       <Form<ExtendedFilterFormFields>
         form={form}
         initialValues={initialValues}
-        onFinish={handleSubmit}
+        onFinish={onSubmit}
       >
         <FilterBlock withDivider>
           <FilterBlockLabel onReset={() => form.setFieldsValue({ status: [] })}>
