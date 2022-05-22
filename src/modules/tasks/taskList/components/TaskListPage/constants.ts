@@ -5,6 +5,7 @@ import { RoutesPathsEnum } from 'configs/routes'
 import {
   ExtendedFilterFormFields,
   FastFilterEnum,
+  SmartSearchQueries,
   SmartSortEnum,
 } from 'modules/tasks/models'
 
@@ -12,7 +13,10 @@ export const TASK_LIST_FILTER_KEY: string = 'filter'
 
 export const DEFAULT_PAGE_LIMIT = 15
 
-export const DEFAULT_FAST_FILTER = FastFilterEnum.All
+export const DEFAULT_SMART_SEARCH_FIELD: keyof SmartSearchQueries =
+  'smartSearchDescription'
+
+export const DEFAULT_FAST_FILTER: FastFilterEnum = FastFilterEnum.All
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 
@@ -27,7 +31,7 @@ export const SMART_SORT_TO_FIELD_SORT_DIRECTIONS = {
 
 export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
   creationDateRange: null,
-  smartSearchField: 'smartSearchDescription',
+  smartSearchField: DEFAULT_SMART_SEARCH_FIELD,
   smartSearchValue: '',
   status: [],
 }

@@ -48,30 +48,41 @@ export type PaginatedTaskList = {
 
 export type ExtendedFilterFormFields = {
   creationDateRange: MaybeNull<[Moment, Moment]>
-  smartSearchField: keyof SmartSearchFields
+  smartSearchField: keyof SmartSearchQueries
   smartSearchValue: string
   status: TaskStatusEnum[]
 }
 
-export type SmartSearchFields = {
+export type SmartSearchQueries = {
   smartSearchAssignee?: string
   smartSearchDescription?: string
   smartSearchName?: string
 }
 
-export type GetTaskListApiArg = {
+export type ExtendedFilterQueries = {
   dateFrom?: string
   dateTo?: string
-  filter?: FastFilterEnum
-  hideAwaitingTask?: boolean
   status?: TaskStatusEnum[]
+} & SmartSearchQueries
+
+export type QuickFilterQueries = {
+  filter?: FastFilterEnum
+}
+
+export type TaskIdFilterQueries = {
   taskId?: string
+}
+
+export type GetTaskListApiArg = {
+  hideAwaitingTask?: boolean
   limit: number
   offset: number
   smartSort?: SmartSortEnum
   userId?: number
   workGroupId?: number
-} & SmartSearchFields
+} & ExtendedFilterQueries &
+  QuickFilterQueries &
+  TaskIdFilterQueries
 
 export enum CommentTypeEnum {
   Common = 'COMMON',
