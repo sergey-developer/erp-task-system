@@ -7,15 +7,11 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import BidColumn from './BidColumn'
 import { getDateTimeString, getFIOString } from './utils'
 
-export enum ColumnsTypeContentEnum {
-  All = 'all',
-  Short = 'short',
-}
-
-export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
+export const TABLE_COLUMNS: ColumnsType<Task> = [
   {
     title: 'Заявка',
     dataIndex: 'id',
+    key: 'id',
     width: 150,
     render: (value: string, { status }) => {
       return <BidColumn value={value} status={status} />
@@ -25,35 +21,38 @@ export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
   {
     title: 'Внеш.номер',
     dataIndex: 'recordId',
+    key: 'recordId',
     width: 170,
   },
   {
     title: 'Объект',
     dataIndex: 'name',
+    key: 'name',
   },
   {
     title: 'Тема',
     dataIndex: 'title',
+    key: 'title',
     width: 250,
   },
   {
     title: 'Исполнитель',
     dataIndex: 'assignee',
+    key: 'assignee',
     render: (value: MaybeNull<Assignee>) => getFIOString(value),
   },
   {
     title: 'Рабочая группа',
     dataIndex: 'workGroup',
+    key: 'workGroup',
     render: (value: MaybeNull<WorkGroup>) => {
       return value && value.name
     },
   },
-]
-
-export const TABLE_COLUMNS_ETC: ColumnsType<Task> = [
   {
     title: 'Выполнить до',
     dataIndex: 'olaNextBreachTime',
+    key: 'olaNextBreachTime',
     width: 160,
     render: getDateTimeString,
     sorter: true,
@@ -61,11 +60,13 @@ export const TABLE_COLUMNS_ETC: ColumnsType<Task> = [
   {
     title: 'Комментарий',
     dataIndex: 'comment',
+    key: 'comment',
     width: 150,
   },
   {
     title: 'Дата создания',
     dataIndex: 'createdAt',
+    key: 'createdAt',
     width: 160,
     render: getDateTimeString,
     sorter: true,

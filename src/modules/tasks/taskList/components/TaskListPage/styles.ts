@@ -16,4 +16,5 @@ export const RowWrapStyled = styled(Row)`
   flex-direction: column;
   flex-flow: column;
   flex: 1;
+  max-height: 100%;
 `

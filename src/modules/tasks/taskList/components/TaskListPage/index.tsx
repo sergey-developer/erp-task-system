@@ -1,23 +1,28 @@
-import { FilterTwoTone } from '@ant-design/icons'
-import { Button, Col, Input, Row, TableProps } from 'antd'
+import { FilterTwoTone, SyncOutlined } from '@ant-design/icons'
+import { Button, Col, Input, Row, Space, TableProps } from 'antd'
 import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
-import { FastFilterEnum, GetTaskListApiArg, Task } from 'modules/tasks/models'
+import {
+  FastFilterEnum,
+  GetTaskListApiArg,
+  SmartSortEnum,
+  Task,
+} from 'modules/tasks/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
-import { ColumnsTypeContentEnum } from '../TaskTable/constants'
 import {
   DATE_FILTER_FORMAT,
   DEFAULT_PAGE_LIMIT,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
+  SORTED_FIELDS_ENUM,
 } from './constants'
-import { FilterListItem } from './interfaces'
+import { FilterListItem, SORT_DIRECTIONS } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
 
 const { Search } = Input
@@ -57,6 +62,7 @@ const TaskListPage: FC = () => {
     limit: DEFAULT_PAGE_LIMIT,
     offset: 0,
     filter: fastFilterValue,
+    smartSort: SmartSortEnum.ByOlaAsc,
   })
 
   const { data: tasksListResponse, isFetching } = useTaskListQuery(queryArgs)
@@ -95,14 +101,16 @@ const TaskListPage: FC = () => {
   const handleChangeTable = useCallback<
     NonNullable<TableProps<Task>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
+    const { field, order = SORT_DIRECTIONS.ascend } = Array.isArray(sorter)
+      ? sorter[0]
+      : sorter
 
     const newQueryArgs: Partial<GetTaskListApiArg> = {
       offset: (pagination.current! - 1) * pagination.pageSize!,
       limit: pagination.pageSize!,
     }
 
-    if (SORTED_FIELDS.includes(field as string)) {
+    if (SORTED_FIELDS.includes(field as SORTED_FIELDS_ENUM)) {
       const key = camelize(`${field}_${order}`)
       newQueryArgs.smartSort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
@@ -122,7 +130,7 @@ const TaskListPage: FC = () => {
     <>
       <RowWrapStyled gutter={[0, 40]}>
         <Row justify='space-between'>
-          <Col span={15}>
+          <Col span={12}>
             <Row align='middle'>
               <Col span={12}>
                 {filterList.map(({ amount, text, value }) => (
@@ -147,14 +155,16 @@ const TaskListPage: FC = () => {
             </Row>
           </Col>
 
-          <Col span={7}>
-            <Row justify='space-between'>
-              <Col span={14}>
+          <Col span={12}>
+            <Row justify='end' gutter={[8, 8]}>
+              <Col span={12}>
                 <Search placeholder='Искать заявку по номеру' />
               </Col>
-
-              <Col span={8}>
-                <Button>+ Создать заявку</Button>
+              <Col>
+                <Space align='end'>
+                  <Button icon={<SyncOutlined />}>Обновить заявки</Button>
+                  <Button>+ Создать заявку</Button>
+                </Space>
               </Col>
             </Row>
           </Col>
@@ -163,8 +173,8 @@ const TaskListPage: FC = () => {
           <RowStyled>
             <Col span={24}>
               <TaskTable
+                sorting={queryArgs?.smartSort}
                 dataSource={tasksListResponse?.results}
-                columns={ColumnsTypeContentEnum.All}
                 loading={isFetching}
                 onChange={handleChangeTable}
                 pagination={tasksListResponse?.pagination}
