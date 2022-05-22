@@ -15,7 +15,7 @@ const query = baseQuery({
   apiPath: '/api',
   apiVersion: '/v1',
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).authReducer.accessToken
+    const token = (getState() as RootState).auth.accessToken
     if (token) {
       headers['authorization'] = `Bearer ${token}`
     }
@@ -36,8 +36,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       try {
-        const { refreshToken: refresh } = (api.getState() as RootState)
-          .authReducer
+        const { refreshToken: refresh } = (api.getState() as RootState).auth
         const refreshResult = await query(
           {
             method: MethodEnums.POST,

@@ -8,6 +8,7 @@ import useAuth from 'modules/auth/hooks/useAuth'
 
 const App: FC = () => {
   const { isAuthenticated } = useAuth()
+
   return useRoutes(isAuthenticated ? privateRoutesConfig : publicRoutesConfig)
 }
 

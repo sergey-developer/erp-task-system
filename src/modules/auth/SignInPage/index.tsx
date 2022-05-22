@@ -1,9 +1,9 @@
 import { Button, Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
-import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
+import useDispatch from 'shared/hooks/useDispatch'
 import { getErrorDetail } from 'shared/services/api'
 
 import { useLoginMutation } from '../auth.service'
@@ -21,8 +21,10 @@ import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 const SignInPage: FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
   const [login, { isLoading, error }] =
     useLoginMutation<IUseLoginMutationResult>()
+
   const onFinish = async (fields: SignInFormFields) => {
     try {
       let data = await login(fields)

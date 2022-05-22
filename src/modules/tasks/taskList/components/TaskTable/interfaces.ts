@@ -4,7 +4,7 @@ import { SmartSortEnum, Task } from 'modules/tasks/models'
 
 export type TaskTableProps = Pick<
   TableProps<Task>,
-  'dataSource' | 'loading' | 'onChange' | 'pagination'
+  'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
 > & {
   sorting?: SmartSortEnum
 }
