@@ -191,7 +191,10 @@ const TaskListPage: FC = () => {
 
             {!!selectedTaskId && (
               <Col span={8}>
-                <TaskDetail onClose={handleCloseTaskDetail} />
+                <TaskDetail
+                  onClose={handleCloseTaskDetail}
+                  taskId={selectedTaskId}
+                />
               </Col>
             )}
           </RowStyled>

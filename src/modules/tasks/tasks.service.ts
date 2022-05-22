@@ -5,6 +5,7 @@ import {
   GetTaskListApiArg,
   GetTaskListBaseApiResponse,
   GetTaskListTransformedApiResponse,
+  Task,
 } from './taskList/models'
 
 const tasksService = api.injectEndpoints({
@@ -33,26 +34,11 @@ const tasksService = api.injectEndpoints({
         },
       },
     ),
-    getOneTask: build.query<
-      GetTaskListTransformedApiResponse,
-      GetTaskListApiArg
-    >({
-      query: (data) => ({
-        url: '/tasks/view',
+    getOneTask: build.query<any, any>({
+      query: (id: Task['id']) => ({
+        url: `/tasks/view/${id}`,
         method: MethodEnums.GET,
-        params: data,
       }),
-      // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
-      transformResponse: (response: GetTaskListBaseApiResponse, meta, arg) => {
-        return {
-          pagination: {
-            current: arg.offset / arg.limit + 1,
-            pageSize: arg.limit,
-            total: response.count,
-          },
-          results: response.results,
-        }
-      },
     }),
   }),
   overrideExisting: false,
@@ -60,4 +46,4 @@ const tasksService = api.injectEndpoints({
 
 export { tasksService }
 
-export const { useTaskListQuery } = tasksService
+export const { useTaskListQuery, useGetOneTaskQuery } = tasksService
