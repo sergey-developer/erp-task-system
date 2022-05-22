@@ -7,7 +7,9 @@ import { DetailContainerStyled } from './styles'
 
 const { Text } = Typography
 
-const SecondaryDetail: FC = () => {
+type SecondaryDetailsProps = {}
+
+const SecondaryDetails: FC<SecondaryDetailsProps> = () => {
   return (
     <DetailContainerStyled>
       <Row justify='space-between'>
@@ -39,4 +41,4 @@ const SecondaryDetail: FC = () => {
   )
 }
 
-export default SecondaryDetail
+export default SecondaryDetails

@@ -6,9 +6,9 @@ import { RoutesEnum } from 'configs/routes'
 import useDispatch from 'shared/hooks/useDispatch'
 import { getErrorDetail } from 'shared/services/api'
 
-import { useLoginMutation } from '../auth.service'
-import { login as loginAction } from '../authSlice'
-import { IUseLoginMutationResult } from '../interfaces'
+import { useLoginMutation } from '../../../auth.service'
+import { login as loginAction } from '../../../authSlice'
+import { IUseLoginMutationResult } from '../../../interfaces'
 import { SignInFormFields } from './interfaces'
 import {
   CardStyled,

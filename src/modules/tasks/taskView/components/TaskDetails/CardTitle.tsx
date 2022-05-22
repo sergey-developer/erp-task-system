@@ -2,6 +2,8 @@ import { CloseOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Menu, Row, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import { TaskDetailModel } from '../../models'
+
 const actionMenu = (
   <Menu
     onClick={() => {}}
@@ -22,14 +24,14 @@ const actionMenu = (
   />
 )
 
-type CardTitleProps = {
+type CardTitleProps = Pick<TaskDetailModel, 'id'> & {
   onClose: () => void
 }
 
-const CardTitle: FC<CardTitleProps> = ({ onClose }) => {
+const CardTitle: FC<CardTitleProps> = ({ id, onClose }) => {
   return (
     <Row justify='space-between' align='middle'>
-      <Typography.Text>REQ0000007898</Typography.Text>
+      <Typography.Text>{id}</Typography.Text>
 
       <Space>
         <Dropdown.Button overlay={actionMenu} type='text' />

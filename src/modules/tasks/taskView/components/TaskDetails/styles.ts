@@ -7,7 +7,9 @@ export const RootWrapperStyled = styled.div`
   min-width: 645px;
 `
 
-export const CardStyled = styled(Card)`
+type CardStyledProps = { $isLoading: boolean }
+
+export const CardStyled = styled(Card)<CardStyledProps>`
   height: 100%;
 
   && {
@@ -21,11 +23,11 @@ export const CardStyled = styled(Card)`
   }
 
   .ant-card-head-title {
-    padding: 12px 20px 12px 40px;
+    padding: 12px 20px 12px 30px;
   }
 
   .ant-card-body {
-    padding: 0;
+    padding: ${({ $isLoading }) => ($isLoading ? '20px' : 0)};
   }
 `
 

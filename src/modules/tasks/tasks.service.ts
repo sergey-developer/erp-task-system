@@ -7,6 +7,7 @@ import {
   GetTaskListTransformedApiResponse,
   Task,
 } from './taskList/models'
+import { GetOneTaskResponse } from './taskView/interfaces'
 
 const tasksService = api.injectEndpoints({
   endpoints: (build) => ({
@@ -34,8 +35,8 @@ const tasksService = api.injectEndpoints({
         },
       },
     ),
-    getOneTask: build.query<any, any>({
-      query: (id: Task['id']) => ({
+    getOneTask: build.query<GetOneTaskResponse, Task['id']>({
+      query: (id) => ({
         url: `/tasks/view/${id}`,
         method: MethodEnums.GET,
       }),

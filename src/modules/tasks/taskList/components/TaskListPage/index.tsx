@@ -7,7 +7,7 @@ import React, { FC, useCallback, useState } from 'react'
 import FilterTag from 'components/FilterTag'
 import { FastFilterEnum } from 'modules/tasks/constants'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
-import TaskDetail from 'modules/tasks/taskView/components/TaskDetailContainer'
+import TaskDetails from 'modules/tasks/taskView/components/TaskDetailsContainer'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import { GetTaskListApiArg, Task } from '../../models'
@@ -191,7 +191,7 @@ const TaskListPage: FC = () => {
 
             {!!selectedTaskId && (
               <Col span={8}>
-                <TaskDetail
+                <TaskDetails
                   onClose={handleCloseTaskDetail}
                   taskId={selectedTaskId}
                 />
