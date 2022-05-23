@@ -24,7 +24,7 @@ const SignInPage: FC = () => {
 
   const [login, { isLoading, error }] =
     useLoginMutation<IUseLoginMutationResult>()
-  console.log(error)
+
   const onFinish = async (fields: SignInFormFields) => {
     try {
       let data = await login(fields)
