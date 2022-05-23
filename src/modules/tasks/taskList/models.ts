@@ -1,5 +1,6 @@
-import { AssigneeModel, WorkGroupModel } from 'shared/interfaces/models'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { WorkGroupModel } from 'modules/workGroups/models'
+import { PaginatedListResponse } from 'shared/interfaces/api'
+import { AssigneeModel } from 'shared/interfaces/models'
 
 import {
   FastFilterEnum,
@@ -25,12 +26,7 @@ export type GetTaskListTransformedApiResponse = {
   results: Task[]
 }
 
-export type PaginatedTaskList = {
-  count: number
-  next: MaybeNull<string>
-  previous: MaybeNull<string>
-  results: Task[]
-}
+export type PaginatedTaskList = PaginatedListResponse<Task>
 
 export type GetTaskListApiArg = {
   dateFrom?: string

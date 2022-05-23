@@ -22,7 +22,7 @@ export type TaskAttachmentModel = {
   extension?: MaybeNull<string>
 }
 
-export type TaskDetailModel = {
+export type TaskDetailsModel = {
   id: number
   comments: Array<TaskCommentDetailModel>
   assignee: AssigneeModel

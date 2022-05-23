@@ -1,3 +1,3 @@
-import { TaskDetailModel } from './models'
+import { TaskDetailsModel } from './models'
 
-export type GetOneTaskResponse = TaskDetailModel
+export type GetOneTaskResponse = TaskDetailsModel

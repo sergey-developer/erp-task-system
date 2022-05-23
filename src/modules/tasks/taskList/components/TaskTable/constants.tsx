@@ -1,7 +1,7 @@
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
-import { WorkGroupModel } from 'shared/interfaces/models'
+import { WorkGroupModel } from 'modules/workGroups/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import { Task } from '../../models'

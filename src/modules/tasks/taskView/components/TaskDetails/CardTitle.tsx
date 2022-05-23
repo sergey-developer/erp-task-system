@@ -2,7 +2,7 @@ import { CloseOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Menu, Row, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskDetailModel } from '../../models'
+import { TaskDetailsModel } from '../../models'
 
 const actionMenu = (
   <Menu
@@ -24,7 +24,7 @@ const actionMenu = (
   />
 )
 
-type CardTitleProps = Pick<TaskDetailModel, 'id'> & {
+type CardTitleProps = Pick<TaskDetailsModel, 'id'> & {
   onClose: () => void
 }
 

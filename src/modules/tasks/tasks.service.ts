@@ -35,7 +35,7 @@ const tasksService = api.injectEndpoints({
         },
       },
     ),
-    getOneTask: build.query<GetOneTaskResponse, Task['id']>({
+    getOneTaskById: build.query<GetOneTaskResponse, Task['id']>({
       query: (id) => ({
         url: `/tasks/view/${id}`,
         method: MethodEnums.GET,
@@ -47,4 +47,4 @@ const tasksService = api.injectEndpoints({
 
 export { tasksService }
 
-export const { useTaskListQuery, useGetOneTaskQuery } = tasksService
+export const { useTaskListQuery, useGetOneTaskByIdQuery } = tasksService

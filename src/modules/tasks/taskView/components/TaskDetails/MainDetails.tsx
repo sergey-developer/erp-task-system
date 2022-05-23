@@ -1,12 +1,18 @@
 import { Col, Row, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskDetailModel } from '../../models'
+import { TaskDetailsModel } from '../../models'
 import { DetailContainerStyled } from './styles'
 
 type MainDetailsProps = Pick<
-  TaskDetailModel,
-  'recordId' | 'title' | 'createdAt' | 'name' | 'address' | 'contactService'
+  TaskDetailsModel,
+  | 'recordId'
+  | 'title'
+  | 'createdAt'
+  | 'name'
+  | 'address'
+  | 'contactService'
+  | 'olaNextBreachTime'
 >
 
 const MainDetails: FC<MainDetailsProps> = ({
@@ -16,21 +22,28 @@ const MainDetails: FC<MainDetailsProps> = ({
   name,
   address,
   contactService,
+  olaNextBreachTime,
 }) => {
   return (
     <DetailContainerStyled>
       <Space direction='vertical' size='middle'>
         <Space
           size={4}
-          split={<Typography.Text type='secondary'>•</Typography.Text>}
+          split={
+            olaNextBreachTime ? (
+              <Typography.Text type='secondary'>•</Typography.Text>
+            ) : null
+          }
         >
           <Typography.Text type='secondary' ellipsis>
             {recordId}
           </Typography.Text>
 
-          <Typography.Text type='danger'>
-            до 17.11.2021, 18:00 (2ч)
-          </Typography.Text>
+          {olaNextBreachTime && (
+            <Typography.Text type='danger'>
+              до {olaNextBreachTime} (2ч)
+            </Typography.Text>
+          )}
         </Space>
 
         <Space direction='vertical' size={4}>
