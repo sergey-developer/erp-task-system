@@ -5,12 +5,17 @@ import localStorageService from 'shared/services/localStorage'
 
 import { IAuthSliceState } from './interfaces'
 import { LoginApiResponse, UserRefreshCreateApiResponse } from './models'
+import { parseJwt } from './utils'
 
 function getInitialState(): IAuthSliceState {
   const accessToken = localStorageService.getItem(StorageKeys.accessToken)
   const refreshToken = localStorageService.getItem(StorageKeys.refreshToken)
+  let userInfo = null
+  if (accessToken) {
+    userInfo = parseJwt(accessToken)
+  }
   return {
-    user: null,
+    user: userInfo,
     accessToken,
     refreshToken,
     isAuthenticated: !!accessToken && !!refreshToken,
