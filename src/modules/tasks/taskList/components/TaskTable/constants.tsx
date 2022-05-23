@@ -30,16 +30,18 @@ export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
   {
     title: 'Объект',
     dataIndex: 'name',
+    width: 250,
   },
   {
     title: 'Тема',
     dataIndex: 'title',
-    width: 250,
+    width: 300,
   },
   {
     title: 'Исполнитель',
     dataIndex: 'assignee',
     render: (value: MaybeNull<Assignee>) => getFIOString(value),
+    width: 200,
   },
   {
     title: 'Рабочая группа',
@@ -47,6 +49,7 @@ export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
     render: (value: MaybeNull<WorkGroup>) => {
       return value && value.name
     },
+    width: 200,
   },
 ]
 

@@ -8,8 +8,10 @@ import { WrapBadgeStyled } from './styles'
 const BidColumn: FC<BidColumnProps> = ({ value, status: taskStatus }) => {
   const status = iconOrBadgeStatusMap[taskStatus]
 
+  const isBadge = typeof status === 'string'
+
   return (
-    <WrapBadgeStyled>
+    <WrapBadgeStyled isBadge={isBadge}>
       {typeof status === 'string' ? <Badge status={status} /> : status}
       <div>{value}</div>
     </WrapBadgeStyled>

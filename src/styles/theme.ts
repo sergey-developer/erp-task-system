@@ -7,7 +7,8 @@ const colors = {
   gray6: '#E8E8E8',
   blue1: '#2F80ED',
   red1: '#EB5757',
-  extraLightGray: '#FAFAFA'
+  extraLightGray: '#FAFAFA',
+  lightGray: '#F0F2F5',
 }
 
 const shadows = {
