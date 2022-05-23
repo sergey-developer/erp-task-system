@@ -1,9 +1,6 @@
-import { SmartSortEnum } from 'modules/tasks/constants'
-import {
-  ExtendedFilterFormFields,
-  FastFilterEnum,
-  SmartSearchQueries,
-} from 'modules/tasks/models'
+import { FastFilterEnum, SmartSortEnum } from 'modules/tasks/constants'
+
+import { ExtendedFilterFormFields, SmartSearchQueries } from './interfaces'
 
 export const DEFAULT_PAGE_LIMIT = 15
 

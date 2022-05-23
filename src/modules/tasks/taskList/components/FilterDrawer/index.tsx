@@ -9,10 +9,10 @@ import {
 } from 'antd'
 import React, { FC } from 'react'
 
-import { ExtendedFilterFormFields } from 'modules/tasks/models'
 import { TaskStatusEnum } from 'modules/tasks/constants'
-import BidColumn from 'modules/tasks/taskList/components/TaskTable/BidColumn'
 
+import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
+import BidColumn from '../TaskTable/BidColumn'
 import { smartSearchQueriesDictionary, taskStatusDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'

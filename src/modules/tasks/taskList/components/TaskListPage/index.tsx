@@ -2,24 +2,16 @@ import { FilterTwoTone } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, TableProps } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
-import React, { FC, useCallback, useState } from 'react'
 import { GetComponentProps } from 'rc-table/lib/interface'
+import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
 import { FastFilterEnum } from 'modules/tasks/constants'
-import {
-  ExtendedFilterFormFields,
-  ExtendedFilterQueries,
-  GetTaskListApiArg,
-  QuickFilterQueries,
-  Task,
-  TaskIdFilterQueries,
-} from 'modules/tasks/models'
+import { GetTaskListApiArg, Task } from 'modules/tasks/taskList/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
 import TaskDetails from 'modules/tasks/taskView/components/TaskDetailsContainer'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import { GetTaskListApiArg, Task } from '../../models'
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskTable from '../TaskTable'
 import { ColumnsTypeContentEnum } from '../TaskTable/constants'
@@ -30,7 +22,13 @@ import {
   SORTED_FIELDS,
   initialExtendedFilterFormValues,
 } from './constants'
-import { FilterListItem } from './interfaces'
+import {
+  ExtendedFilterFormFields,
+  ExtendedFilterQueries,
+  FilterListItem,
+  QuickFilterQueries,
+  TaskIdFilterQueries,
+} from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'
 

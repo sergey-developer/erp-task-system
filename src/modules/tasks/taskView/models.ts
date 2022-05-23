@@ -9,6 +9,7 @@ import {
   TaskTypeEnum,
 } from '../constants'
 import { BaseTaskCommentModel } from '../models'
+import { Task } from '../taskList/models'
 
 export type TaskCommentDetailModel = BaseTaskCommentModel & {
   author: CommentAuthorModel
@@ -73,3 +74,7 @@ export type TaskDetailsModel = {
   workGroup?: MaybeNull<number>
   parentTask?: MaybeNull<number>
 }
+
+export type GetOneTaskResponseModel = TaskDetailsModel
+
+export type GetOneTaskQueryArgsModel = Task['id']

@@ -1,11 +1,11 @@
 import MethodEnums from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
-import { GetWorkGroupListResponse } from './interfaces'
+import { GetWorkGroupListResponseModel } from './models'
 
 const workGroupsService = api.injectEndpoints({
   endpoints: (build) => ({
-    getWorkGroupList: build.query<GetWorkGroupListResponse, null>({
+    getWorkGroupList: build.query<GetWorkGroupListResponseModel, null>({
       query: () => ({
         url: '/work-groups',
         method: MethodEnums.GET,

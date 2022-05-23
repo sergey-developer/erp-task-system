@@ -1,9 +1,9 @@
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { PaginatedListResponse } from 'shared/interfaces/api'
 import { AssigneeModel } from 'shared/interfaces/models'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 import {
-  FastFilterEnum,
   ReclassificationReasonEnum,
   ReclassificationRequestStatusEnum,
   ResolutionCodeEnum,
@@ -13,6 +13,11 @@ import {
   TaskTypeEnum,
 } from '../constants'
 import { BaseTaskCommentModel } from '../models'
+import {
+  ExtendedFilterQueries,
+  QuickFilterQueries,
+  TaskIdFilterQueries,
+} from './components/TaskListPage/interfaces'
 
 export type GetTaskListBaseApiResponse = PaginatedTaskList
 
@@ -29,21 +34,15 @@ export type GetTaskListTransformedApiResponse = {
 export type PaginatedTaskList = PaginatedListResponse<Task>
 
 export type GetTaskListApiArg = {
-  dateFrom?: string
-  dateTo?: string
-  filter?: FastFilterEnum
   hideAwaitingTask?: boolean
   limit: number
   offset: number
-  smartSearchAssignee?: string
-  smartSearchDescription?: string
-  smartSearchName?: string
   smartSort?: SmartSortEnum
-  status?: TaskStatusEnum[]
-  taskId?: string
   userId?: number
   workGroupId?: number
-}
+} & ExtendedFilterQueries &
+  QuickFilterQueries &
+  TaskIdFilterQueries
 
 export type Comment = BaseTaskCommentModel & {
   author: number
@@ -72,33 +71,33 @@ export type Task = {
   contactService: string
   description?: string
   itService: string
-  initialImpact?: number | null
+  initialImpact?: MaybeNull<number>
   isFailure: boolean
   isMass: boolean
   isOlaBreached: boolean
-  olaNextBreachTime?: string | null
+  olaNextBreachTime?: MaybeNull<string>
   parentExternalId?: string
   parentInteractionExternalId?: string
   parentInteractionPortalExternalId?: string
   parentTaskExternalId?: string
-  priorityCode?: number | null
+  priorityCode?: MaybeNull<number>
   productClassifier1: string
   productClassifier2: string
   productClassifier3: string
   recordId: string
   isSlaBreached: boolean
-  slaNextBreachAt?: string | null
-  severity?: number | null
+  slaNextBreachAt?: MaybeNull<string>
+  severity?: MaybeNull<number>
   status: TaskStatusEnum
   supportingService: string
   title: string
-  isPendingUpdate?: boolean | null
+  isPendingUpdate?: MaybeNull<boolean>
   resolutionCode?: ResolutionCodeEnum
   techResolution?: string
   userResolution?: string
-  isSuspended?: boolean | null
+  isSuspended?: MaybeNull<boolean>
   suspendReason?: SuspendReasonEnum
-  suspendUntilTime?: string | null
+  suspendUntilTime?: MaybeNull<string>
   address?: string
   city?: string
   country?: string
@@ -107,5 +106,5 @@ export type Task = {
   longitude?: string
   state?: string
   zipCode?: string
-  parentTask?: number | null
+  parentTask?: MaybeNull<number>
 }

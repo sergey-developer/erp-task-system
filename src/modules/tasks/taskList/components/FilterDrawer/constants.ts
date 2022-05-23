@@ -1,5 +1,6 @@
 import { TaskStatusEnum } from 'modules/tasks/constants'
-import { SmartSearchQueries } from 'modules/tasks/models'
+
+import { SmartSearchQueries } from '../TaskListPage/interfaces'
 
 export const smartSearchQueriesDictionary: Record<
   keyof SmartSearchQueries,
