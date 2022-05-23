@@ -1,4 +1,13 @@
-import { TaskStatusEnum } from 'modules/tasks/models'
+import { SmartSearchQueries, TaskStatusEnum } from 'modules/tasks/models'
+
+export const smartSearchQueriesDictionary: Record<
+  keyof SmartSearchQueries,
+  string
+> = {
+  smartSearchDescription: 'Тема',
+  smartSearchName: 'Объект',
+  smartSearchAssignee: 'Исполнитель',
+}
 
 export const taskStatusDictionary: Record<TaskStatusEnum, string> = {
   [TaskStatusEnum.Appointed]: 'В ожидании',

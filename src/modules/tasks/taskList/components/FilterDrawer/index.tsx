@@ -3,21 +3,16 @@ import {
   DrawerProps,
   Form,
   FormInstance,
-  FormProps,
   Input,
   Radio,
   Space,
 } from 'antd'
 import React, { FC } from 'react'
 
-import {
-  ExtendedFilterFormFields,
-  SmartSearchQueries,
-  TaskStatusEnum,
-} from 'modules/tasks/models'
+import { ExtendedFilterFormFields, TaskStatusEnum } from 'modules/tasks/models'
 import BidColumn from 'modules/tasks/taskList/components/TaskTable/BidColumn'
 
-import { taskStatusDictionary } from './constants'
+import { smartSearchQueriesDictionary, taskStatusDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import {
@@ -41,12 +36,6 @@ const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
     value: taskStatus,
   }),
 )
-
-const searchableFields: Record<keyof SmartSearchQueries, any> = {
-  smartSearchDescription: 'Тема',
-  smartSearchName: 'Объект',
-  smartSearchAssignee: 'Исполнитель',
-}
 
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { form, initialValues, onClose, onSubmit, visible } = props
@@ -109,11 +98,13 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           </FilterBlockLabel>
           <Form.Item name='smartSearchField'>
             <RadioGroupStyled>
-              {Object.entries(searchableFields).map(([name, label]) => (
-                <Radio key={name} value={name}>
-                  {label}
-                </Radio>
-              ))}
+              {Object.entries(smartSearchQueriesDictionary).map(
+                ([name, label]) => (
+                  <Radio key={name} value={name}>
+                    {label}
+                  </Radio>
+                ),
+              )}
             </RadioGroupStyled>
           </Form.Item>
           <Form.Item name='smartSearchValue'>
