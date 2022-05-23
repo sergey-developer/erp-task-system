@@ -1,10 +1,10 @@
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
 
-import { LoginApiArg } from './models'
+import { LoginApiArg, UserInfo } from './models'
 
 export interface IAuthSliceState {
-  user: unknown
+  user: MaybeNull<UserInfo>
   accessToken: MaybeNull<string>
   refreshToken: MaybeNull<string>
   isAuthenticated: boolean

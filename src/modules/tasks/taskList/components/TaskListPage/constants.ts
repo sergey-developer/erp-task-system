@@ -1,10 +1,20 @@
 import { SorterResult } from 'antd/es/table/interface'
 
-import { SmartSortEnum, Task } from 'modules/tasks/models'
-
 import { SORT_DIRECTIONS } from './interfaces'
+import {
+  ExtendedFilterFormFields,
+  FastFilterEnum,
+  SmartSearchQueries,
+  SmartSortEnum,
+  Task
+} from 'modules/tasks/models'
 
-export const DEFAULT_PAGE_LIMIT = 20
+export const DEFAULT_PAGE_LIMIT = 15
+
+export const DEFAULT_SMART_SEARCH_FIELD: keyof SmartSearchQueries =
+  'smartSearchDescription'
+
+export const DEFAULT_FAST_FILTER: FastFilterEnum = FastFilterEnum.All
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 
@@ -44,4 +54,11 @@ export const SMART_SORT_DIRECTIONS_TO_SORT_FIELDS: Record<
     columnKey: SORTED_FIELDS_ENUM.createdAt,
     order: SORT_DIRECTIONS.ascend,
   },
+}
+
+export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
+  creationDateRange: null,
+  smartSearchField: DEFAULT_SMART_SEARCH_FIELD,
+  smartSearchValue: '',
+  status: [],
 }

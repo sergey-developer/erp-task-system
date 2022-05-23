@@ -1,13 +1,12 @@
 import { ColumnsType } from 'antd/es/table'
-import React, { FC, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { FC, useMemo } from 'react'
 
+import { ParentSizedTable } from 'components/ParentSizedTable'
 import { Task } from 'modules/tasks/models'
 import { SMART_SORT_DIRECTIONS_TO_SORT_FIELDS } from 'modules/tasks/taskList/components/TaskListPage/constants'
-import { getElementFullHeight } from 'shared/utils/getElementFullHeight'
 
 import { TABLE_COLUMNS } from './constants'
 import { TaskTableProps } from './interfaces'
-import { TableStyled } from './styles'
 import { applySortingToColumn } from './utils'
 
 const TaskTable: FC<TaskTableProps> = ({
@@ -17,41 +16,7 @@ const TaskTable: FC<TaskTableProps> = ({
   onChange,
   onRow,
   pagination,
-  heightContainer,
 }) => {
-  const [tableHeight, setTableHeight] = useState<'auto' | number>('auto')
-
-  const ref = useRef<HTMLDivElement>(null)
-
-  /**
-   * AntD таблица не умеет подстраиваться под высоту родителя
-   * Чтобы таблица заняла всю доступную высоту требуется провести вычисления
-   * Т.к. отрисовка пагинации зависит от наличия данных, добавлена зависимость
-   * эффекта от наличия DataSource
-   * todo: переопределять размеры тела таблицы при ресайзе экрана
-   * todo: уменьшить частоту переопределений размеров: 1. при ресайзе с помощью trottle 2. из-за зависимости от dataSource  держать флаг внутри рефы вычислялся ли уже размер
-   */
-
-  useLayoutEffect(() => {
-    if (!ref.current || !dataSource) {
-      return
-    }
-
-    const headerEl =
-      ref.current.querySelector<HTMLDivElement>('.ant-table-header')
-
-    const paginationEl = ref.current.querySelector<HTMLUListElement>(
-      '.ant-table-pagination',
-    )
-
-    const headerHeight = headerEl ? getElementFullHeight(headerEl) : 0
-
-    const paginationHeight = paginationEl
-      ? getElementFullHeight(paginationEl)
-      : 0
-    setTableHeight(heightContainer - headerHeight - paginationHeight)
-  }, [dataSource, heightContainer])
-
   const columnsData: ColumnsType<Task> = useMemo(() => {
     const sorterResult =
       (sorting &&
@@ -62,16 +27,14 @@ const TaskTable: FC<TaskTableProps> = ({
   }, [sorting])
 
   return (
-    <TableStyled
-      ref={ref}
+    <ParentSizedTable<Task>
       dataSource={dataSource}
       columns={columnsData}
-      pagination={pagination && { ...pagination, position: ['bottomLeft'] }}
+      pagination={pagination && { ...pagination, position: ['bottomCenter'] }}
       loading={loading}
       rowKey='id'
       onRow={onRow}
       onChange={onChange}
-      scroll={{ y: tableHeight }}
       showSorterTooltip={false}
     />
   )

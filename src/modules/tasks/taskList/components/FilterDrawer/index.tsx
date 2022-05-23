@@ -1,12 +1,18 @@
-import { Button, DrawerProps, Form, FormProps, Input, Radio, Space } from 'antd'
-import { Moment } from 'moment'
+import {
+  Button,
+  DrawerProps,
+  Form,
+  FormInstance,
+  Input,
+  Radio,
+  Space,
+} from 'antd'
 import React, { FC } from 'react'
 
-import { TaskStatusEnum } from 'modules/tasks/models'
+import { ExtendedFilterFormFields, TaskStatusEnum } from 'modules/tasks/models'
 import BidColumn from 'modules/tasks/taskList/components/TaskTable/BidColumn'
-import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 
-import { taskStatusDictionary } from './constants'
+import { smartSearchQueriesDictionary, taskStatusDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import {
@@ -17,14 +23,9 @@ import {
 } from './styles'
 
 export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
-  onSubmit: (result: FormFields) => void
-}
-
-type FormFields = {
-  columnName: keyof typeof searchableFields
-  columnKeyword: MaybeUndefined<string>
-  taskStatuses: MaybeUndefined<TaskStatusEnum[]>
-  creationDate: MaybeNull<[Moment, Moment]>
+  form: FormInstance<ExtendedFilterFormFields>
+  initialValues: ExtendedFilterFormFields
+  onSubmit: (result: ExtendedFilterFormFields) => void
 }
 
 const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
@@ -36,31 +37,15 @@ const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
   }),
 )
 
-const searchableFields = {
-  smartSearchDescription: 'Тема',
-  smartSearchName: 'Объект',
-  smartSearchAssignee: 'Исполнитель',
-}
-
-const INITIAL_SEARCH_FIELD: keyof typeof searchableFields =
-  'smartSearchDescription'
-
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
-  const { onClose, onSubmit, visible } = props
-
-  const [form] = Form.useForm<FormFields>()
+  const { form, initialValues, onClose, onSubmit, visible } = props
 
   const handleResetAll = () => {
     form.resetFields()
   }
 
-  const handleSubmit: FormProps<FormFields>['onFinish'] = (values) => {
-    onSubmit(values)
-  }
-
   return (
     <DrawerStyled
-      destroyOnClose
       extra={
         <Space>
           <Button onClick={handleResetAll}>Сбросить все</Button>
@@ -75,25 +60,27 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
       onClose={onClose}
       visible={visible}
     >
-      <Form<FormFields> form={form} onFinish={handleSubmit}>
+      <Form<ExtendedFilterFormFields>
+        form={form}
+        initialValues={initialValues}
+        onFinish={onSubmit}
+      >
         <FilterBlock withDivider>
-          <FilterBlockLabel
-            onReset={() => form.setFieldsValue({ taskStatuses: [] })}
-          >
+          <FilterBlockLabel onReset={() => form.setFieldsValue({ status: [] })}>
             Статус
           </FilterBlockLabel>
-          <Form.Item name='taskStatuses'>
+          <Form.Item name='status'>
             <CheckboxGroupStyled options={checkboxStatusOptions} />
           </Form.Item>
         </FilterBlock>
 
         <FilterBlock withDivider>
           <FilterBlockLabel
-            onReset={() => form.setFieldsValue({ creationDate: null })}
+            onReset={() => form.setFieldsValue({ creationDateRange: null })}
           >
             Период создания
           </FilterBlockLabel>
-          <Form.Item name='creationDate'>
+          <Form.Item name='creationDateRange'>
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>
@@ -102,23 +89,25 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           <FilterBlockLabel
             onReset={() =>
               form.setFieldsValue({
-                columnName: INITIAL_SEARCH_FIELD,
-                columnKeyword: '',
+                smartSearchField: initialValues.smartSearchField,
+                smartSearchValue: '',
               })
             }
           >
             Поиск по столбцу
           </FilterBlockLabel>
-          <Form.Item name='columnName' initialValue={INITIAL_SEARCH_FIELD}>
+          <Form.Item name='smartSearchField'>
             <RadioGroupStyled>
-              {Object.entries(searchableFields).map(([name, label]) => (
-                <Radio key={name} value={name}>
-                  {label}
-                </Radio>
-              ))}
+              {Object.entries(smartSearchQueriesDictionary).map(
+                ([name, label]) => (
+                  <Radio key={name} value={name}>
+                    {label}
+                  </Radio>
+                ),
+              )}
             </RadioGroupStyled>
           </Form.Item>
-          <Form.Item name='columnKeyword'>
+          <Form.Item name='smartSearchValue'>
             <Input placeholder='Ключевое слово' />
           </Form.Item>
         </FilterBlock>

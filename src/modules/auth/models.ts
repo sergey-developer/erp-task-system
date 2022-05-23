@@ -1,3 +1,5 @@
+import UserRoles from 'shared/constants/roles'
+
 export type LoginApiResponse = {
   access: string
   refresh: string
@@ -10,4 +12,9 @@ export type LoginApiArg = {
 
 export type UserRefreshCreateApiResponse = {
   access: string
+}
+
+export type UserInfo = {
+  userId: number
+  userRole: UserRoles
 }

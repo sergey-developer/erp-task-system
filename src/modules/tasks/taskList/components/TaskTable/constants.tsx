@@ -9,48 +9,38 @@ import { getDateTimeString, getFIOString } from './utils'
 
 export const TABLE_COLUMNS: ColumnsType<Task> = [
   {
-    key: 'noop',
-    width: 52,
-    render: (value: string, { status }) => {
-      return <BidColumn value='' status={status} />
-    },
-    align: 'center',
-  },
-  {
     title: 'Заявка',
     dataIndex: 'id',
     key: 'id',
     width: 150,
-    ellipsis: true,
+    render: (value: string, { status }) => {
+      return <BidColumn value={value} status={status} />
+    },
+    align: 'center',
   },
   {
     title: 'Внеш.номер',
     dataIndex: 'recordId',
     key: 'recordId',
-    width: 180,
-    ellipsis: true,
+    width: 170,
   },
   {
     title: 'Объект',
     dataIndex: 'name',
     key: 'name',
-    width: 180,
-    ellipsis: true,
+    width: 250,
   },
   {
     title: 'Тема',
     dataIndex: 'title',
-    key: 'title',
-    width: 340,
-    ellipsis: true,
+    width: 300,
   },
   {
     title: 'Исполнитель',
     dataIndex: 'assignee',
     key: 'assignee',
     render: (value: MaybeNull<Assignee>) => getFIOString(value),
-    width: 180,
-    ellipsis: true,
+    width: 200,
   },
   {
     title: 'Рабочая группа',
@@ -59,32 +49,28 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     render: (value: MaybeNull<WorkGroup>) => {
       return value && value.name
     },
-    width: 180,
-    ellipsis: true,
+    width: 200,
   },
   {
     title: 'Выполнить до',
     dataIndex: 'olaNextBreachTime',
     key: 'olaNextBreachTime',
-    width: 180,
+    width: 160,
     render: getDateTimeString,
     sorter: true,
-    ellipsis: true,
   },
   {
     title: 'Комментарий',
     dataIndex: 'comment',
     key: 'comment',
-    width: 240,
-    ellipsis: true,
+    width: 150,
   },
   {
     title: 'Дата создания',
     dataIndex: 'createdAt',
     key: 'createdAt',
-    width: 150,
+    width: 160,
     render: getDateTimeString,
     sorter: true,
-    ellipsis: true,
   },
 ]
