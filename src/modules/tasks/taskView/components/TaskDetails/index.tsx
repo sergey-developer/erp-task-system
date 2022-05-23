@@ -26,13 +26,15 @@ type TaskDetailsProps = {
   >
   workGroupList: Array<WorkGroupModel>
   onClose: () => void
-  isLoading: boolean
+  taskLoading: boolean
+  workGroupListLoading: boolean
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
   details,
   workGroupList,
-  isLoading,
+  taskLoading,
+  workGroupListLoading,
   onClose,
 }) => {
   const cardTitle = details?.id ? (
@@ -41,7 +43,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <RootWrapperStyled>
-      <CardStyled title={cardTitle} loading={isLoading} $isLoading={isLoading}>
+      <CardStyled
+        title={cardTitle}
+        loading={taskLoading}
+        $isLoading={taskLoading}
+      >
         {details && (
           <MainDetails
             recordId={details.recordId}
@@ -57,6 +63,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         <DividerStyled />
 
         <SecondaryDetails
+          workGroupListLoading={workGroupListLoading}
           workGroupList={workGroupList}
           workGroup={details?.workGroup}
         />

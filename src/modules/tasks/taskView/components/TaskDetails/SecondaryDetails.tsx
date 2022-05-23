@@ -1,23 +1,36 @@
-import { Col, Row, Select, Space, Typography } from 'antd'
-import React, { FC } from 'react'
+import { Col, Row, Space, Typography } from 'antd'
+import React, { FC, useMemo } from 'react'
 
 import ButtonText from 'components/Buttons/ButtonText'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
 
-import { DetailContainerStyled } from './styles'
+import {
+  DetailContainerStyled,
+  SelectOptionWrapperStyled,
+  SelectStyled,
+} from './styles'
 
 const { Text } = Typography
 
 type SecondaryDetailsProps = Pick<TaskDetailsModel, 'workGroup'> & {
   workGroupList: Array<WorkGroupModel>
+  workGroupListLoading: boolean
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
-  workGroupList,
   workGroup,
+  workGroupList,
+  workGroupListLoading,
 }) => {
-  console.log({ workGroupList, workGroup })
+  const workGroupOptions = useMemo(() => {
+    return workGroupList.map(({ id, name }) => (
+      <SelectStyled.Option key={id} value={id}>
+        <SelectOptionWrapperStyled>{name}</SelectOptionWrapperStyled>
+      </SelectStyled.Option>
+    ))
+  }, [workGroupList])
+
   return (
     <DetailContainerStyled>
       <Row justify='space-between'>
@@ -29,13 +42,13 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
               <ButtonText type='link'>Перевести на II линию</ButtonText>
             </Space>
 
-            <Select
+            <SelectStyled
               defaultValue={workGroup}
-              options={workGroupList.map(({ id, name }) => ({
-                label: name,
-                value: id,
-              }))}
-            />
+              loading={workGroupListLoading}
+              bordered={false}
+            >
+              {workGroupOptions}
+            </SelectStyled>
           </Space>
         </Col>
 

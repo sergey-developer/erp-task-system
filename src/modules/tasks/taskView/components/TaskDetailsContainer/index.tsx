@@ -30,9 +30,6 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     isFetching: workGroupListFetching,
   } = useGetWorkGroupListQuery(null)
 
-  const isLoading: boolean =
-    taskLoading || taskFetching || workGroupListLoading || workGroupListFetching
-
   const olaNextBreachTime = '2022-05-19T14:25:01.006257+03:00'
 
   const taskDetails = task
@@ -59,7 +56,8 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   return (
     <TaskDetails
       onClose={onClose}
-      isLoading={isLoading}
+      taskLoading={taskLoading || taskFetching}
+      workGroupListLoading={workGroupListLoading || workGroupListFetching}
       workGroupList={workGroupList?.results || []}
       details={taskDetails}
     />

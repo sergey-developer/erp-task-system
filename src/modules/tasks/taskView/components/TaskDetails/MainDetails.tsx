@@ -28,14 +28,14 @@ const MainDetails: FC<MainDetailsProps> = ({
     <DetailContainerStyled>
       <Space direction='vertical' size='middle'>
         <Space
-          size={4}
+          size='middle'
           split={
             olaNextBreachTime ? (
               <Typography.Text type='secondary'>•</Typography.Text>
             ) : null
           }
         >
-          <Typography.Text type='secondary' ellipsis>
+          <Typography.Text type='secondary' ellipsis className='break-text'>
             {recordId}
           </Typography.Text>
 
@@ -47,7 +47,11 @@ const MainDetails: FC<MainDetailsProps> = ({
         </Space>
 
         <Space direction='vertical' size={4}>
-          <Typography.Title level={4} className='margin-b-0'>
+          <Typography.Title
+            level={4}
+            ellipsis
+            className='break-text margin-b-0'
+          >
             {title}
           </Typography.Title>
 
@@ -59,9 +63,15 @@ const MainDetails: FC<MainDetailsProps> = ({
             <Space direction='vertical'>
               <Typography.Text type='secondary'>Адрес</Typography.Text>
 
-              <Typography.Text strong>{name}</Typography.Text>
+              <Typography.Text strong ellipsis className='break-text'>
+                {name}
+              </Typography.Text>
 
-              {address && <Typography.Text>{address}</Typography.Text>}
+              {address && (
+                <Typography.Text ellipsis className='break-text'>
+                  {address}
+                </Typography.Text>
+              )}
             </Space>
           </Col>
 
@@ -69,7 +79,9 @@ const MainDetails: FC<MainDetailsProps> = ({
             <Space direction='vertical'>
               <Typography.Text type='secondary'>Заявитель</Typography.Text>
 
-              <Typography.Text strong>{contactService}</Typography.Text>
+              <Typography.Text strong ellipsis className='break-text'>
+                {contactService}
+              </Typography.Text>
             </Space>
           </Col>
         </Row>
