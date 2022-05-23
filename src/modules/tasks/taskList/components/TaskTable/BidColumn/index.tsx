@@ -13,7 +13,7 @@ const BidColumn: FC<BidColumnProps> = ({ value, status: taskStatus }) => {
   return (
     <WrapBadgeStyled isBadge={isBadge}>
       {typeof status === 'string' ? <Badge status={status} /> : status}
-      <div>{value}</div>
+      {value && <div>{value}</div>}
     </WrapBadgeStyled>
   )
 }

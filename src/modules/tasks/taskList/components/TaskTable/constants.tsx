@@ -9,38 +9,43 @@ import { getDateTimeString, getFIOString } from './utils'
 
 export const TABLE_COLUMNS: ColumnsType<Task> = [
   {
+    key: 'noop',
+    width: 52,
+    render: (value: string, { status }) => {
+      return <BidColumn status={status} />
+    },
+    align: 'center',
+  },
+  {
     title: 'Заявка',
     dataIndex: 'id',
     key: 'id',
     width: 150,
-    render: (value: string, { status }) => {
-      return <BidColumn value={value} status={status} />
-    },
-    align: 'center',
   },
   {
     title: 'Внеш.номер',
     dataIndex: 'recordId',
     key: 'recordId',
-    width: 170,
+    width: 180,
   },
   {
     title: 'Объект',
     dataIndex: 'name',
     key: 'name',
-    width: 250,
+    width: 180,
   },
   {
     title: 'Тема',
     dataIndex: 'title',
-    width: 300,
+    key: 'title',
+    width: 340,
   },
   {
     title: 'Исполнитель',
     dataIndex: 'assignee',
     key: 'assignee',
     render: (value: MaybeNull<Assignee>) => getFIOString(value),
-    width: 200,
+    width: 180,
   },
   {
     title: 'Рабочая группа',
@@ -49,13 +54,13 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     render: (value: MaybeNull<WorkGroup>) => {
       return value && value.name
     },
-    width: 200,
+    width: 180,
   },
   {
     title: 'Выполнить до',
     dataIndex: 'olaNextBreachTime',
     key: 'olaNextBreachTime',
-    width: 160,
+    width: 180,
     render: getDateTimeString,
     sorter: true,
   },
@@ -63,13 +68,13 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     title: 'Комментарий',
     dataIndex: 'comment',
     key: 'comment',
-    width: 150,
+    width: 240,
   },
   {
     title: 'Дата создания',
     dataIndex: 'createdAt',
     key: 'createdAt',
-    width: 160,
+    width: 150,
     render: getDateTimeString,
     sorter: true,
   },

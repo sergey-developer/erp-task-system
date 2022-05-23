@@ -182,7 +182,7 @@ const TaskListPage: FC = () => {
         <Row justify='space-between'>
           <Col span={12}>
             <Row align='middle'>
-              <Col span={10}>
+              <Col span={12}>
                 {filterList.map(({ amount, text, value }) => (
                   <FilterTag
                     key={value}
