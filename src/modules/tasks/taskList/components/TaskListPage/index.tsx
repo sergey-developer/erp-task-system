@@ -1,11 +1,20 @@
 import { FilterTwoTone } from '@ant-design/icons'
-import { Button, Col, Input, Row, TableProps } from 'antd'
+import { Button, Col, Form, Input, Row, TableProps } from 'antd'
+import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
-import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useState } from 'react'
+import { GetComponentProps } from 'rc-table/lib/interface'
 
 import FilterTag from 'components/FilterTag'
 import { FastFilterEnum } from 'modules/tasks/constants'
+import {
+  ExtendedFilterFormFields,
+  ExtendedFilterQueries,
+  GetTaskListApiArg,
+  QuickFilterQueries,
+  Task,
+  TaskIdFilterQueries,
+} from 'modules/tasks/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
 import TaskDetails from 'modules/tasks/taskView/components/TaskDetailsContainer'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -15,13 +24,15 @@ import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskTable from '../TaskTable'
 import { ColumnsTypeContentEnum } from '../TaskTable/constants'
 import {
-  DATE_FILTER_FORMAT,
+  DEFAULT_FAST_FILTER,
   DEFAULT_PAGE_LIMIT,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
+  initialExtendedFilterFormValues,
 } from './constants'
 import { FilterListItem } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
+import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
 const { Search } = Input
 
@@ -49,52 +60,59 @@ const filterList: Array<FilterListItem> = [
 ]
 
 const TaskListPage: FC = () => {
-  const [fastFilterValue, setFastFilterValue] = useState<FastFilterEnum>(
-    FastFilterEnum.All,
-  )
-
-  const [selectedTaskId, setSelectedTaskId] =
-    useState<MaybeNull<Task['id']>>(null)
-
-  const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
-    useState<boolean>(false)
-
   const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
+    filter: DEFAULT_FAST_FILTER,
     limit: DEFAULT_PAGE_LIMIT,
     offset: 0,
-    filter: fastFilterValue,
   })
 
   const { data: tasksListResponse, isFetching } = useTaskListQuery(queryArgs)
 
+  const [selectedTaskId, setSelectedTaskId] =
+    useState<MaybeNull<Task['id']>>(null)
+
+  const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
+
+  const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
+    useState<boolean>(false)
+
+  const [extendedFilterFormValues, setExtendedFilterFormValues] =
+    useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
+
+  const [fastFilterValue, setFastFilterValue] =
+    useState<FastFilterEnum>(DEFAULT_FAST_FILTER)
+
   const toggleFilterDrawer = () => setIsFilterDrawerVisible((prev) => !prev)
 
   const handleFilterDrawerSubmit: FilterDrawerProps['onSubmit'] = (values) => {
-    const { creationDate, columnName, columnKeyword, taskStatuses } = values
-    const newQueryArgs: Partial<GetTaskListApiArg> = {
-      offset: 0,
-      status: taskStatuses,
-      dateFrom: creationDate
-        ? creationDate[0].format(DATE_FILTER_FORMAT)
-        : undefined,
-      dateTo: creationDate
-        ? creationDate[1].format(DATE_FILTER_FORMAT)
-        : undefined,
-      smartSearchAssignee: undefined,
-      smartSearchDescription: undefined,
-      smartSearchName: undefined,
-    }
-
-    if (columnKeyword) {
-      newQueryArgs[columnName] = columnKeyword
-    }
-
-    setQueryArgs((prev) => ({ ...prev, ...newQueryArgs }))
+    setExtendedFilterFormValues(values)
+    setFastFilterValue(DEFAULT_FAST_FILTER)
+    triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
     setFastFilterValue(value)
-    setQueryArgs((prev) => ({ ...prev, offset: 0, filter: value }))
+    extendedFilterForm.resetFields()
+    setExtendedFilterFormValues(initialExtendedFilterFormValues)
+
+    triggerFilterChange({
+      filter: value,
+    })
+  }
+
+  const handleTaskIdFilterSearch: SearchProps['onSearch'] = (value) => {
+    if (value) {
+      extendedFilterForm.resetFields()
+      triggerFilterChange({
+        taskId: value,
+      })
+    } else {
+      extendedFilterForm.setFieldsValue(extendedFilterFormValues)
+      triggerFilterChange({
+        ...mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues),
+        filter: fastFilterValue,
+      })
+    }
   }
 
   const handleTableRowClick: GetComponentProps<Task> = useCallback(
@@ -135,17 +153,38 @@ const TaskListPage: FC = () => {
     }))
   }, [])
 
+  const triggerFilterChange = (
+    filterQueryParams:
+      | ExtendedFilterQueries
+      | QuickFilterQueries
+      | TaskIdFilterQueries,
+  ) => {
+    setQueryArgs((prev) => ({
+      ...prev,
+      offset: 0,
+      dateFrom: undefined,
+      dateTo: undefined,
+      filter: DEFAULT_FAST_FILTER,
+      status: undefined,
+      smartSearchAssignee: undefined,
+      smartSearchDescription: undefined,
+      smartSearchName: undefined,
+      taskId: undefined,
+      ...filterQueryParams,
+    }))
+  }
+
   return (
     <>
       <RowWrapStyled gutter={[0, 40]}>
         <Row justify='space-between'>
           <Col span={15}>
             <Row align='middle'>
-              <Col span={12}>
+              <Col span={10}>
                 {filterList.map(({ amount, text, value }) => (
                   <FilterTag
                     key={value}
-                    checked={fastFilterValue === value}
+                    checked={queryArgs.filter === value}
                     onChange={() => handleFastFilterChange(value)}
                     text={text}
                     amount={amount}
@@ -167,7 +206,11 @@ const TaskListPage: FC = () => {
           <Col span={7}>
             <Row justify='space-between'>
               <Col span={14}>
-                <Search placeholder='Искать заявку по номеру' />
+                <Search
+                  allowClear
+                  onSearch={handleTaskIdFilterSearch}
+                  placeholder='Искать заявку по номеру'
+                />
               </Col>
 
               <Col span={8}>
@@ -202,6 +245,8 @@ const TaskListPage: FC = () => {
       </RowWrapStyled>
 
       <FilterDrawer
+        form={extendedFilterForm}
+        initialValues={initialExtendedFilterFormValues}
         onClose={toggleFilterDrawer}
         onSubmit={handleFilterDrawerSubmit}
         visible={isFilterDrawerVisible}

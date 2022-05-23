@@ -4,7 +4,7 @@ import React from 'react'
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import { Task } from '../../models'
+import { Task } from 'modules/tasks/taskList/models'
 import BidColumn from './BidColumn'
 import { getDateTimeString, getFIOString } from './utils'
 
@@ -31,16 +31,18 @@ export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
   {
     title: 'Объект',
     dataIndex: 'name',
+    width: 250,
   },
   {
     title: 'Тема',
     dataIndex: 'title',
-    width: 250,
+    width: 300,
   },
   {
     title: 'Исполнитель',
     dataIndex: 'assignee',
     render: (value: MaybeNull<Task['assignee']>) => getFIOString(value),
+    width: 200,
   },
   {
     title: 'Рабочая группа',
@@ -48,6 +50,7 @@ export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
     render: (value: MaybeNull<WorkGroupModel>) => {
       return value && value.name
     },
+    width: 200,
   },
 ]
 
