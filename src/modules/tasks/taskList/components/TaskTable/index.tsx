@@ -16,6 +16,7 @@ const TaskTable: FC<TaskTableProps> = ({
   loading,
   columns,
   onChange,
+  onRow,
   pagination,
 }) => {
   const columnsData: ColumnsType<Task> = useMemo(() => {
@@ -36,6 +37,7 @@ const TaskTable: FC<TaskTableProps> = ({
       pagination={pagination && { ...pagination, position: ['bottomCenter'] }}
       loading={loading}
       rowKey='id'
+      onRow={onRow}
       onChange={onChange}
     />
   )

@@ -6,6 +6,7 @@ export const ColFlexStyled = styled(Col)`
   display: flex;
   flex-direction: column;
 `
+
 export const RowStyled = styled.div`
   position: absolute;
   top: 0;

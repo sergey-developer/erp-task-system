@@ -3,6 +3,7 @@ import { Button, Col, Form, Input, Row, TableProps } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
+import { GetComponentProps } from 'rc-table/lib/interface'
 
 import FilterTag from 'components/FilterTag'
 import {
@@ -15,6 +16,7 @@ import {
   TaskIdFilterQueries,
 } from 'modules/tasks/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskDetail from '../TaskDetail'
@@ -65,6 +67,8 @@ const TaskListPage: FC = () => {
 
   const { data: tasksListResponse, isFetching } = useTaskListQuery(queryArgs)
 
+  const [selectedTask, setSelectedTask] = useState<MaybeNull<Task>>(null)
+
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
@@ -108,6 +112,17 @@ const TaskListPage: FC = () => {
       })
     }
   }
+
+  const handleTableRowClick: GetComponentProps<Task> = useCallback(
+    (record: Task) => ({
+      onClick: () => setSelectedTask(record),
+    }),
+    [setSelectedTask],
+  )
+
+  const handleCloseTaskDetail = useCallback(() => {
+    setSelectedTask(null)
+  }, [setSelectedTask])
 
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
@@ -204,8 +219,9 @@ const TaskListPage: FC = () => {
         </Row>
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
-            <Col span={24}>
+            <Col span={selectedTask ? 16 : 24}>
               <TaskTable
+                onRow={handleTableRowClick}
                 dataSource={tasksListResponse?.results}
                 columns={ColumnsTypeContentEnum.All}
                 loading={isFetching}
@@ -213,9 +229,10 @@ const TaskListPage: FC = () => {
                 pagination={tasksListResponse?.pagination}
               />
             </Col>
-            {false && (
+
+            {!!selectedTask && (
               <Col span={8}>
-                <TaskDetail />
+                <TaskDetail onClose={handleCloseTaskDetail} />
               </Col>
             )}
           </RowStyled>

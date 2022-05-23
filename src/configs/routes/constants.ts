@@ -8,7 +8,3 @@ export enum RoutesEnum {
   AdminPanel = '/adminPanel',
   NotFound = '*',
 }
-
-export enum RoutesPathsEnum {
-  TaskList = '/tasks/view/*',
-}

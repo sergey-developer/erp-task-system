@@ -1,15 +1,9 @@
-import qs from 'qs'
-import { generatePath } from 'react-router-dom'
-
-import { RoutesPathsEnum } from 'configs/routes'
 import {
   ExtendedFilterFormFields,
   FastFilterEnum,
   SmartSearchQueries,
   SmartSortEnum,
 } from 'modules/tasks/models'
-
-export const TASK_LIST_FILTER_KEY: string = 'filter'
 
 export const DEFAULT_PAGE_LIMIT = 15
 
@@ -35,13 +29,3 @@ export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
   smartSearchValue: '',
   status: [],
 }
-
-export const taskListDefaultRoute: string = generatePath(
-  RoutesPathsEnum.TaskList,
-  {
-    '*': qs.stringify(
-      { [TASK_LIST_FILTER_KEY]: FastFilterEnum.All },
-      { addQueryPrefix: true },
-    ),
-  },
-)
