@@ -9,8 +9,10 @@ import {
 } from 'antd'
 import React, { FC } from 'react'
 
+import useUserInfo from 'modules/auth/hooks/useUserInfo'
 import { ExtendedFilterFormFields, TaskStatusEnum } from 'modules/tasks/models'
 import BidColumn from 'modules/tasks/taskList/components/TaskTable/BidColumn'
+import UserRoles from 'shared/constants/roles'
 
 import { smartSearchQueriesDictionary, taskStatusDictionary } from './constants'
 import FilterBlock from './FilterBlock'
@@ -39,6 +41,8 @@ const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
 
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { form, initialValues, onClose, onSubmit, visible } = props
+
+  const { role: userRole } = useUserInfo()
 
   const handleResetAll = () => {
     form.resetFields()
@@ -84,6 +88,20 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>
+
+        {userRole !== UserRoles.Engineer &&
+          userRole !== UserRoles.FirstLineSupport && (
+            <FilterBlock withDivider>
+              <FilterBlockLabel
+                onReset={() => form.setFieldsValue({ workGroupId: '' })}
+              >
+                Рабочая группа
+              </FilterBlockLabel>
+              <Form.Item name='workGroupId'>
+                <Input placeholder='Рабочая группа' />
+              </Form.Item>
+            </FilterBlock>
+          )}
 
         <FilterBlock withDivider={false}>
           <FilterBlockLabel
