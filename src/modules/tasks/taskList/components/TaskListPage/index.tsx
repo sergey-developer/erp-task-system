@@ -227,7 +227,7 @@ const TaskListPage: FC = () => {
           <RowStyled>
             <Col span={selectedTask ? 16 : 24}>
               <TaskTable
-                sorting={queryArgs?.smartSort}
+                sorting={queryArgs.smartSort}
                 onRow={handleTableRowClick}
                 dataSource={tasksListResponse?.results}
                 loading={isFetching}
