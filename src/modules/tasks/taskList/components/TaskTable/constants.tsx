@@ -7,69 +7,74 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import BidColumn from './BidColumn'
 import { getDateTimeString, getFIOString } from './utils'
 
-export enum ColumnsTypeContentEnum {
-  All = 'all',
-  Short = 'short',
-}
-
-export const TABLE_COLUMNS_SHORT: ColumnsType<Task> = [
+export const TABLE_COLUMNS: ColumnsType<Task> = [
   {
-    title: 'Заявка',
-    dataIndex: 'id',
-    width: 150,
+    key: 'noop',
+    width: 52,
     render: (value: string, { status }) => {
-      return <BidColumn value={value} status={status} />
+      return <BidColumn status={status} />
     },
     align: 'center',
   },
   {
+    title: 'Заявка',
+    dataIndex: 'id',
+    key: 'id',
+    width: 150,
+  },
+  {
     title: 'Внеш.номер',
     dataIndex: 'recordId',
-    width: 170,
+    key: 'recordId',
+    width: 180,
   },
   {
     title: 'Объект',
     dataIndex: 'name',
-    width: 250,
+    key: 'name',
+    width: 180,
   },
   {
     title: 'Тема',
     dataIndex: 'title',
-    width: 300,
+    key: 'title',
+    width: 340,
   },
   {
     title: 'Исполнитель',
     dataIndex: 'assignee',
+    key: 'assignee',
     render: (value: MaybeNull<Assignee>) => getFIOString(value),
-    width: 200,
+    width: 180,
   },
   {
     title: 'Рабочая группа',
     dataIndex: 'workGroup',
+    key: 'workGroup',
     render: (value: MaybeNull<WorkGroup>) => {
       return value && value.name
     },
-    width: 200,
+    width: 180,
   },
-]
-
-export const TABLE_COLUMNS_ETC: ColumnsType<Task> = [
   {
     title: 'Выполнить до',
     dataIndex: 'olaNextBreachTime',
-    width: 160,
+    key: 'olaNextBreachTime',
+    width: 180,
     render: getDateTimeString,
     sorter: true,
   },
   {
     title: 'Комментарий',
     dataIndex: 'comment',
-    width: 150,
+    key: 'comment',
+    width: 240,
   },
   {
     title: 'Дата создания',
     dataIndex: 'createdAt',
-    width: 160,
+    key: 'createdAt',
+    width: 150,
     render: getDateTimeString,
     sorter: true,
   },
