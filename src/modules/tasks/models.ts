@@ -51,6 +51,7 @@ export type ExtendedFilterFormFields = {
   smartSearchField: keyof SmartSearchQueries
   smartSearchValue: string
   status: TaskStatusEnum[]
+  workGroupId: string
 }
 
 export type SmartSearchQueries = {
@@ -63,6 +64,7 @@ export type ExtendedFilterQueries = {
   dateFrom?: string
   dateTo?: string
   status?: TaskStatusEnum[]
+  workGroupId?: number
 } & SmartSearchQueries
 
 export type QuickFilterQueries = {
@@ -79,7 +81,6 @@ export type GetTaskListApiArg = {
   offset: number
   smartSort?: SmartSortEnum
   userId?: number
-  workGroupId?: number
 } & ExtendedFilterQueries &
   QuickFilterQueries &
   TaskIdFilterQueries
