@@ -13,6 +13,7 @@ const authService = api.injectEndpoints({
       }),
     }),
   }),
+
   overrideExisting: false,
 })
 

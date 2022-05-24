@@ -4,7 +4,7 @@ import {
   ExtendedFilterFormFields,
   FastFilterEnum,
   SearchQueries,
-  SmartSortEnum,
+  SortEnum,
   Task,
 } from 'modules/tasks/models'
 
@@ -28,29 +28,29 @@ export const SORTED_FIELDS = [
   SORTED_FIELDS_ENUM.createdAt,
 ]
 export const SMART_SORT_TO_FIELD_SORT_DIRECTIONS = {
-  olaNextBreachTimeDescend: SmartSortEnum.ByOlaDesc,
-  olaNextBreachTimeAscend: SmartSortEnum.ByOlaAsc,
-  createdAtDescend: SmartSortEnum.ByCreatedDateDesc,
-  createdAtAscend: SmartSortEnum.ByCreatedDateAsc,
+  olaNextBreachTimeDescend: SortEnum.ByOlaDesc,
+  olaNextBreachTimeAscend: SortEnum.ByOlaAsc,
+  createdAtDescend: SortEnum.ByCreatedDateDesc,
+  createdAtAscend: SortEnum.ByCreatedDateAsc,
 }
 
 export const SMART_SORT_DIRECTIONS_TO_SORT_FIELDS: Record<
-  SmartSortEnum,
+  SortEnum,
   SorterResult<Task>
 > = {
-  [SmartSortEnum.ByOlaDesc]: {
+  [SortEnum.ByOlaDesc]: {
     columnKey: SORTED_FIELDS_ENUM.olaNextBreachTime,
     order: SORT_DIRECTIONS.descend,
   },
-  [SmartSortEnum.ByOlaAsc]: {
+  [SortEnum.ByOlaAsc]: {
     columnKey: SORTED_FIELDS_ENUM.olaNextBreachTime,
     order: SORT_DIRECTIONS.ascend,
   },
-  [SmartSortEnum.ByCreatedDateDesc]: {
+  [SortEnum.ByCreatedDateDesc]: {
     columnKey: SORTED_FIELDS_ENUM.createdAt,
     order: SORT_DIRECTIONS.descend,
   },
-  [SmartSortEnum.ByCreatedDateAsc]: {
+  [SortEnum.ByCreatedDateAsc]: {
     columnKey: SORTED_FIELDS_ENUM.createdAt,
     order: SORT_DIRECTIONS.ascend,
   },

@@ -14,6 +14,7 @@ export const StyledTable: typeof Table = styled(Table)`
       flex-flow: column nowrap;
 
       .ant-table {
+        background-color: ${({ theme }) => theme.colors.lightGray};
         flex: auto;
         overflow: hidden;
 
@@ -29,6 +30,13 @@ export const StyledTable: typeof Table = styled(Table)`
           .ant-table-body {
             flex: auto;
             overflow: auto;
+          }
+          .ant-table-tbody {
+            background-color: ${({ theme }) => theme.colors.white};
+          }
+          &:after,
+          &:before {
+            box-shadow: none;
           }
         }
       }
