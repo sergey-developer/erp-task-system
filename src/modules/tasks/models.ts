@@ -49,16 +49,16 @@ export type PaginatedTaskList = {
 
 export type ExtendedFilterFormFields = {
   creationDateRange: MaybeNull<[Moment, Moment]>
-  smartSearchField: keyof SmartSearchQueries
-  smartSearchValue: string
+  searchField: keyof SearchQueries
+  searchValue: string
   status: TaskStatusEnum[]
   workGroupId: string
 }
 
-export type SmartSearchQueries = {
-  smartSearchAssignee?: string
-  smartSearchDescription?: string
-  smartSearchName?: string
+export type SearchQueries = {
+  searchByAssignee?: string
+  searchByName?: string
+  searchByTitle?: string
 }
 
 export type ExtendedFilterQueries = {
@@ -66,7 +66,7 @@ export type ExtendedFilterQueries = {
   dateTo?: string
   status?: TaskStatusEnum[]
   workGroupId?: number
-} & SmartSearchQueries
+} & SearchQueries
 
 export type QuickFilterQueries = {
   filter?: FastFilterEnum

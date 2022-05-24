@@ -15,13 +15,8 @@ import { DATE_FILTER_FORMAT } from './constants'
 export const mapExtendedFilterFormFieldsToQueries = (
   fields: ExtendedFilterFormFields,
 ): ExtendedFilterQueries => {
-  const {
-    creationDateRange,
-    smartSearchField,
-    smartSearchValue,
-    status,
-    workGroupId,
-  } = fields
+  const { creationDateRange, searchField, searchValue, status, workGroupId } =
+    fields
 
   return {
     dateFrom: creationDateRange
@@ -31,7 +26,7 @@ export const mapExtendedFilterFormFieldsToQueries = (
       ? creationDateRange[1].format(DATE_FILTER_FORMAT)
       : undefined,
     status,
-    [smartSearchField]: smartSearchValue || undefined,
+    [searchField]: searchValue || undefined,
     workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
   }
 }

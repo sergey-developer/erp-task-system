@@ -1,12 +1,9 @@
-import { SmartSearchQueries, TaskStatusEnum } from 'modules/tasks/models'
+import { SearchQueries, TaskStatusEnum } from 'modules/tasks/models'
 
-export const smartSearchQueriesDictionary: Record<
-  keyof SmartSearchQueries,
-  string
-> = {
-  smartSearchDescription: 'Тема',
-  smartSearchName: 'Объект',
-  smartSearchAssignee: 'Исполнитель',
+export const searchQueriesDictionary: Record<keyof SearchQueries, string> = {
+  searchByTitle: 'Тема',
+  searchByName: 'Объект',
+  searchByAssignee: 'Исполнитель',
 }
 
 export const taskStatusDictionary: Record<TaskStatusEnum, string> = {
