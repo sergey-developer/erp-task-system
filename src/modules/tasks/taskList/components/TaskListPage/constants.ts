@@ -1,4 +1,7 @@
+import { SorterResult } from 'antd/lib/table/interface'
+
 import { FastFilterEnum, SmartSortEnum } from 'modules/tasks/constants'
+import { Task } from 'modules/tasks/taskList/models'
 
 import { ExtendedFilterFormFields, SmartSearchQueries } from './interfaces'
 
@@ -10,6 +13,11 @@ export const DEFAULT_SMART_SEARCH_FIELD: keyof SmartSearchQueries =
 export const DEFAULT_FAST_FILTER: FastFilterEnum = FastFilterEnum.All
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
+
+export enum SORT_DIRECTIONS_ENUM {
+  ascend = 'ascend',
+  descend = 'descend',
+}
 
 export enum SORTED_FIELDS_ENUM {
   olaNextBreachTime = 'olaNextBreachTime',
@@ -33,19 +41,19 @@ export const SMART_SORT_DIRECTIONS_TO_SORT_FIELDS: Record<
 > = {
   [SmartSortEnum.ByOlaDesc]: {
     columnKey: SORTED_FIELDS_ENUM.olaNextBreachTime,
-    order: SORT_DIRECTIONS.descend,
+    order: SORT_DIRECTIONS_ENUM.descend,
   },
   [SmartSortEnum.ByOlaAsc]: {
     columnKey: SORTED_FIELDS_ENUM.olaNextBreachTime,
-    order: SORT_DIRECTIONS.ascend,
+    order: SORT_DIRECTIONS_ENUM.ascend,
   },
   [SmartSortEnum.ByCreatedDateDesc]: {
     columnKey: SORTED_FIELDS_ENUM.createdAt,
-    order: SORT_DIRECTIONS.descend,
+    order: SORT_DIRECTIONS_ENUM.descend,
   },
   [SmartSortEnum.ByCreatedDateAsc]: {
     columnKey: SORTED_FIELDS_ENUM.createdAt,
-    order: SORT_DIRECTIONS.ascend,
+    order: SORT_DIRECTIONS_ENUM.ascend,
   },
 }
 

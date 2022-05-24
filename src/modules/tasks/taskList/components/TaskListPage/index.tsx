@@ -2,11 +2,11 @@ import { FilterTwoTone, SyncOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Space, TableProps } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
-import React, { FC, useCallback, useState } from 'react'
 import { GetComponentProps } from 'rc-table/lib/interface'
+import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
-import { FastFilterEnum } from 'modules/tasks/constants'
+import { FastFilterEnum, SmartSortEnum } from 'modules/tasks/constants'
 import { GetTaskListApiArg, Task } from 'modules/tasks/taskList/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
 import TaskDetails from 'modules/tasks/taskView/components/TaskDetailsContainer'
@@ -20,9 +20,9 @@ import {
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
   SORTED_FIELDS_ENUM,
+  SORT_DIRECTIONS_ENUM,
   initialExtendedFilterFormValues,
 } from './constants'
-import { SORT_DIRECTIONS } from './interfaces'
 import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
@@ -130,7 +130,7 @@ const TaskListPage: FC = () => {
   const handleChangeTable = useCallback<
     NonNullable<TableProps<Task>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order = SORT_DIRECTIONS.ascend } = Array.isArray(sorter)
+    const { field, order = SORT_DIRECTIONS_ENUM.ascend } = Array.isArray(sorter)
       ? sorter[0]
       : sorter
 

@@ -3,11 +3,11 @@ import React, { FC } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
+import { useLoginMutation } from 'modules/auth/auth.service'
+import { login as loginAction } from 'modules/auth/authSlice'
+import { IUseLoginMutationResult } from 'modules/auth/interfaces'
 import useDispatch from 'shared/hooks/useDispatch'
 
-import { useLoginMutation } from '../../../auth.service'
-import { login as loginAction } from '../../../authSlice'
-import { IUseLoginMutationResult } from '../../../interfaces'
 import { SignInFormFields } from './interfaces'
 import {
   CardStyled,

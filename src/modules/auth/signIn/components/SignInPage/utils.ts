@@ -1,6 +1,5 @@
+import { LoginApiArg } from 'modules/auth/models'
 import { ErrorResponse, getErrorDetail } from 'shared/services/api'
-
-import { LoginApiArg } from '../models'
 
 export const getError = (error: ErrorResponse<LoginApiArg>): string => {
   switch (error.status) {

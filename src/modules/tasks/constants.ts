@@ -33,7 +33,7 @@ export enum TaskCommentTypeEnum {
 
 export enum ReclassificationReasonEnum {
   WrongClassification = 'WRONG_CLASSIFICATION',
-  WrongSupport_group = 'WRONG_SUPPORT_GROUP',
+  WrongSupportGroup = 'WRONG_SUPPORT_GROUP',
   DivideTask = 'DIVIDE_TASK',
 }
 
@@ -62,7 +62,7 @@ export enum ResolutionCodeEnum {
   Success = 'SUCCESS',
   WorkAround = 'WORK_AROUND',
   Canceled = 'CANCELED',
-  Dublicate = 'DUBLICATE',
+  Duplicate = 'DUBLICATE',
   Reclassified = 'RECLASSIFIED',
   NoResponse = 'NO_RESPONSE',
   NotResolved = 'NOT_RESOLVED',
