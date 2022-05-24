@@ -7,10 +7,9 @@ import { DetailContainerStyled } from './styles'
 const { TabPane } = Tabs
 
 const TabsSection: FC = () => {
-  const onChange = () => {}
   return (
     <DetailContainerStyled>
-      <Tabs defaultActiveKey='1' onChange={onChange}>
+      <Tabs defaultActiveKey='1'>
         <TabPane tab='Описание и комментарии' key='1'>
           Описание и комментарии
         </TabPane>
