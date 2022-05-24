@@ -8,6 +8,11 @@ export type FilterListItem = Pick<FilterTagProps, 'text' | 'amount'> & {
   value: FastFilterEnum
 }
 
+export enum SORT_DIRECTIONS {
+  ascend = 'ascend',
+  descend = 'descend',
+}
+
 export type SmartSearchQueries = {
   smartSearchAssignee?: string
   smartSearchDescription?: string

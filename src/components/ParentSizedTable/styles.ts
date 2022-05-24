@@ -14,6 +14,7 @@ export const StyledTable: typeof Table = styled(Table)`
       flex-flow: column nowrap;
 
       .ant-table {
+        background-color: ${({ theme }) => theme.colors.lightGray};
         flex: auto;
         overflow: hidden;
 
@@ -30,6 +31,13 @@ export const StyledTable: typeof Table = styled(Table)`
             flex: auto;
             overflow: auto;
           }
+          .ant-table-tbody {
+            background-color: ${({ theme }) => theme.colors.white};
+          }
+          &:after,
+          &:before {
+            box-shadow: none;
+          }
         }
       }
 
@@ -37,8 +45,15 @@ export const StyledTable: typeof Table = styled(Table)`
         flex: none;
         margin: 0;
         padding: 16px 10px;
-        background-color: white;
         border-top: ${(props) => `1px solid ${props.theme.colors.lightGray}`};
+      }
+    }
+  }
+  && .ant-table-thead {
+    .ant-table-cell {
+      background-color: ${({ theme }) => theme.colors.lightGray};
+      &:before {
+        display: none;
       }
     }
   }
