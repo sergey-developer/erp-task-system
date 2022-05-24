@@ -53,10 +53,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             recordId={details.recordId}
             title={details.title}
             createdAt={details.createdAt}
+            olaNextBreachTime={details.olaNextBreachTime}
             name={details.name}
             address={details.address}
             contactService={details.contactService}
-            olaNextBreachTime={details.olaNextBreachTime}
           />
         )}
 

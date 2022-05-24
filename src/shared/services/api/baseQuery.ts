@@ -2,7 +2,7 @@ import { BaseQueryApi } from '@reduxjs/toolkit/src/query/baseQueryTypes'
 import axios, { AxiosError, AxiosRequestHeaders } from 'axios'
 
 import { httpClientConfig } from 'configs/httpClient'
-import MethodEnums from 'shared/constants/http'
+import { HttpMethodEnums } from 'shared/constants/http'
 
 import { CustomBaseQueryFn } from './intefraces'
 
@@ -26,7 +26,7 @@ const baseQuery =
     apiVersion,
     apiPath,
   }: CustomBaseQueryConfig): CustomBaseQueryFn =>
-  async ({ url, method = MethodEnums.GET, data, params }, api) => {
+  async ({ url, method = HttpMethodEnums.GET, data, params }, api) => {
     const headers = prepareHeaders
       ? prepareHeaders(httpClient.defaults.headers.common, api)
       : undefined

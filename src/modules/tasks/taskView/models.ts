@@ -75,6 +75,6 @@ export type TaskDetailsModel = {
   parentTask?: MaybeNull<number>
 }
 
-export type GetOneTaskResponseModel = TaskDetailsModel
+export type GetOneTaskByIdResponseModel = TaskDetailsModel
 
-export type GetOneTaskQueryArgsModel = Task['id']
+export type GetOneTaskByIdQueryArgsModel = Task['id']

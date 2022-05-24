@@ -1,4 +1,4 @@
-enum MethodEnums {
+export enum HttpMethodEnums {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
@@ -6,4 +6,11 @@ enum MethodEnums {
   DELETE = 'DELETE',
 }
 
-export default MethodEnums
+export enum HttpStatusCodeEnum {
+  // 4**
+  BadRequest = 400,
+  Unauthorized = 401,
+  NotFound = 404,
+  // 5**
+  ServerError = 500,
+}

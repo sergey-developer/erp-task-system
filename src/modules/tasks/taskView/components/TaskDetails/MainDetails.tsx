@@ -1,7 +1,10 @@
 import { Col, Row, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskDetailsModel } from '../../models'
+import { TaskDetailsModel } from 'modules/tasks/taskView/models'
+import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import formatDate from 'shared/utils/date/formatDate'
+
 import { DetailContainerStyled } from './styles'
 
 type MainDetailsProps = Pick<
@@ -24,11 +27,15 @@ const MainDetails: FC<MainDetailsProps> = ({
   contactService,
   olaNextBreachTime,
 }) => {
+  // TODO:
+  //  const olaNextBreachTimeDiff = olaNextBreachTime
+  //   ? moment(olaNextBreachTime).diff(moment(), 'hours')
+  //   : ''
+  //  console.log(olaNextBreachTimeDiff)
   return (
     <DetailContainerStyled>
       <Space direction='vertical' size='middle'>
         <Space
-          size='middle'
           split={
             olaNextBreachTime ? (
               <Typography.Text type='secondary'>•</Typography.Text>
@@ -41,7 +48,7 @@ const MainDetails: FC<MainDetailsProps> = ({
 
           {olaNextBreachTime && (
             <Typography.Text type='danger'>
-              до {olaNextBreachTime} (2ч)
+              до {formatDate(olaNextBreachTime, DATE_TIME_FORMAT)} (2ч)
             </Typography.Text>
           )}
         </Space>
@@ -55,7 +62,9 @@ const MainDetails: FC<MainDetailsProps> = ({
             {title}
           </Typography.Title>
 
-          <Typography.Text>{createdAt}</Typography.Text>
+          <Typography.Text>
+            {formatDate(createdAt, DATE_TIME_FORMAT)}
+          </Typography.Text>
         </Space>
 
         <Row justify='space-between'>

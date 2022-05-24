@@ -1,11 +1,8 @@
-// import moment from 'moment'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import { Task } from 'modules/tasks/taskList/models'
-import { useGetOneTaskByIdQuery } from 'modules/tasks/tasks.service'
-import { useGetWorkGroupListQuery } from 'modules/workGroups/workGroups.service'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import formatDate from 'shared/utils/date/formatDate'
+import useGetOneTaskById from 'modules/tasks/taskView/hooks/useGetOneTaskById'
+import useGetWorkGroupList from 'modules/workGroups/workGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'
 
@@ -22,36 +19,20 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     data: task,
     isLoading: taskLoading,
     isFetching: taskFetching,
-  } = useGetOneTaskByIdQuery(taskId)
+    isError: isTaskError,
+  } = useGetOneTaskById(taskId)
 
   const {
     data: workGroupList,
     isLoading: workGroupListLoading,
     isFetching: workGroupListFetching,
-  } = useGetWorkGroupListQuery(null)
+  } = useGetWorkGroupList()
 
-  const olaNextBreachTime = '2022-05-19T14:25:01.006257+03:00'
-
-  const taskDetails = task
-    ? {
-        id: task.id,
-        recordId: task.recordId,
-        title: task.title,
-        name: task.name,
-        address: task.address,
-        contactService: task.contactService,
-        workGroup: task.workGroup,
-        createdAt: formatDate(task.createdAt, DATE_TIME_FORMAT),
-        olaNextBreachTime: formatDate(olaNextBreachTime, DATE_TIME_FORMAT),
-        // olaNextBreachTime: formatDate(task.olaNextBreachTime, DATE_TIME_FORMAT),
-      }
-    : null
-
-  // TODO:
-  //  const olaNextBreachTimeDiff = olaNextBreachTime
-  //   ? moment(olaNextBreachTime).diff(moment(), 'hours')
-  //   : ''
-  //  console.log(olaNextBreachTimeDiff)
+  useEffect(() => {
+    if (isTaskError) {
+      onClose()
+    }
+  }, [isTaskError, onClose])
 
   return (
     <TaskDetails
@@ -59,7 +40,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       taskLoading={taskLoading || taskFetching}
       workGroupListLoading={workGroupListLoading || workGroupListFetching}
       workGroupList={workGroupList?.results || []}
-      details={taskDetails}
+      details={task || null}
     />
   )
 }

@@ -3,6 +3,7 @@ import React, { FC, useMemo } from 'react'
 
 import ButtonText from 'components/Buttons/ButtonText'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
+import useUserRole from 'modules/user/hooks/useUserRole'
 import { WorkGroupModel } from 'modules/workGroups/models'
 
 import {
@@ -23,13 +24,38 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   workGroupList,
   workGroupListLoading,
 }) => {
+  const {
+    isFirstLineSupportRole,
+    isEngineerRole,
+    isSeniorEngineerRole,
+    isHeadOfDepartmentRole,
+  } = useUserRole()
+
+  const hasWorkGroup: boolean = !!workGroup
+
+  const workGroupFirstLineSupportCase: boolean =
+    !hasWorkGroup && isFirstLineSupportRole
+
+  const workGroupEngineerCase: boolean = isEngineerRole
+
+  const workGroupSeniorEngineerCase: boolean =
+    hasWorkGroup && isSeniorEngineerRole
+
+  const workGroupHeadOfDepartmentCase: boolean =
+    hasWorkGroup && isHeadOfDepartmentRole
+
   const workGroupOptions = useMemo(() => {
     return workGroupList.map(({ id, name }) => (
-      <SelectStyled.Option key={id} value={id}>
+      <SelectStyled.Option key={id} value={id} disabled={id === workGroup}>
         <SelectOptionWrapperStyled>{name}</SelectOptionWrapperStyled>
       </SelectStyled.Option>
     ))
-  }, [workGroupList])
+  }, [workGroup, workGroupList])
+
+  const workGroupFromList = useMemo(
+    () => workGroupList.find(({ id }) => id === workGroup),
+    [workGroupList, workGroup],
+  )
 
   return (
     <DetailContainerStyled>
@@ -39,16 +65,26 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             <Space size='large'>
               <Text type='secondary'>Рабочая группа</Text>
 
-              <ButtonText type='link'>Перевести на II линию</ButtonText>
+              {workGroupFirstLineSupportCase ? (
+                <ButtonText type='link'>Перевести на II линию</ButtonText>
+              ) : workGroupSeniorEngineerCase ||
+                workGroupHeadOfDepartmentCase ? (
+                <ButtonText type='link'>Вернуть на I линию</ButtonText>
+              ) : null}
             </Space>
 
-            <SelectStyled
-              defaultValue={workGroup}
-              loading={workGroupListLoading}
-              bordered={false}
-            >
-              {workGroupOptions}
-            </SelectStyled>
+            {(workGroupFirstLineSupportCase || workGroupEngineerCase) &&
+            workGroupFromList ? (
+              <Typography.Text>{workGroupFromList.name}</Typography.Text>
+            ) : (
+              <SelectStyled
+                defaultValue={workGroup}
+                loading={workGroupListLoading}
+                bordered={false}
+              >
+                {workGroupOptions}
+              </SelectStyled>
+            )}
           </Space>
         </Col>
 

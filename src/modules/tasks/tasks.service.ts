@@ -1,4 +1,4 @@
-import MethodEnums from 'shared/constants/http'
+import { HttpMethodEnums } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
 import {
@@ -7,8 +7,8 @@ import {
   GetTaskListTransformedApiResponse,
 } from './taskList/models'
 import {
-  GetOneTaskQueryArgsModel,
-  GetOneTaskResponseModel,
+  GetOneTaskByIdQueryArgsModel,
+  GetOneTaskByIdResponseModel,
 } from './taskView/models'
 
 const tasksService = api.injectEndpoints({
@@ -17,7 +17,7 @@ const tasksService = api.injectEndpoints({
       {
         query: (data) => ({
           url: '/tasks/view',
-          method: MethodEnums.GET,
+          method: HttpMethodEnums.GET,
           params: data,
         }),
         // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
@@ -38,12 +38,12 @@ const tasksService = api.injectEndpoints({
       },
     ),
     getOneTaskById: build.query<
-      GetOneTaskResponseModel,
-      GetOneTaskQueryArgsModel
+      GetOneTaskByIdResponseModel,
+      GetOneTaskByIdQueryArgsModel
     >({
       query: (id) => ({
         url: `/tasks/view/${id}`,
-        method: MethodEnums.GET,
+        method: HttpMethodEnums.GET,
       }),
     }),
   }),
