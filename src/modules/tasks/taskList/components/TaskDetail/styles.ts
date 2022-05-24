@@ -1,4 +1,4 @@
-import { Card, Divider } from 'antd'
+import { Card, Divider, Image } from 'antd'
 
 import styled from 'styled-components'
 
@@ -9,6 +9,8 @@ export const RootWrapperStyled = styled.div`
 
 export const CardStyled = styled(Card)`
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   && {
     border-radius: 4px;
@@ -25,6 +27,9 @@ export const CardStyled = styled(Card)`
   }
 
   .ant-card-body {
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
     padding: 0;
   }
 `
@@ -38,4 +43,13 @@ export const DividerStyled = styled(Divider)`
 
 export const DetailContainerStyled = styled.div`
   padding: 20px 30px;
+`
+export const ImageStyled = styled(Image)`
+  && {
+    border-radius: 4px;
+    width: 58px;
+  }
+  ~ .ant-image-mask {
+    border-radius: 4px;
+  }
 `
