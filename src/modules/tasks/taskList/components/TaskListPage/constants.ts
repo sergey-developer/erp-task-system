@@ -3,7 +3,7 @@ import { SorterResult } from 'antd/es/table/interface'
 import {
   ExtendedFilterFormFields,
   FastFilterEnum,
-  SmartSearchQueries,
+  SearchQueries,
   SmartSortEnum,
   Task,
 } from 'modules/tasks/models'
@@ -12,8 +12,7 @@ import { SORT_DIRECTIONS } from './interfaces'
 
 export const DEFAULT_PAGE_LIMIT = 15
 
-export const DEFAULT_SMART_SEARCH_FIELD: keyof SmartSearchQueries =
-  'smartSearchDescription'
+export const DEFAULT_SEARCH_FIELD: keyof SearchQueries = 'searchByTitle'
 
 export const DEFAULT_FAST_FILTER: FastFilterEnum = FastFilterEnum.All
 
@@ -59,8 +58,8 @@ export const SMART_SORT_DIRECTIONS_TO_SORT_FIELDS: Record<
 
 export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
   creationDateRange: null,
-  smartSearchField: DEFAULT_SMART_SEARCH_FIELD,
-  smartSearchValue: '',
+  searchField: DEFAULT_SEARCH_FIELD,
+  searchValue: '',
   status: [],
   workGroupId: '',
 }

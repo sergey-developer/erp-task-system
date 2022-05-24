@@ -14,7 +14,7 @@ import { ExtendedFilterFormFields, TaskStatusEnum } from 'modules/tasks/models'
 import BidColumn from 'modules/tasks/taskList/components/TaskTable/BidColumn'
 import UserRoles from 'shared/constants/roles'
 
-import { smartSearchQueriesDictionary, taskStatusDictionary } from './constants'
+import { searchQueriesDictionary, taskStatusDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import {
@@ -107,25 +107,23 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           <FilterBlockLabel
             onReset={() =>
               form.setFieldsValue({
-                smartSearchField: initialValues.smartSearchField,
-                smartSearchValue: '',
+                searchField: initialValues.searchField,
+                searchValue: '',
               })
             }
           >
             Поиск по столбцу
           </FilterBlockLabel>
-          <Form.Item name='smartSearchField'>
+          <Form.Item name='searchField'>
             <RadioGroupStyled>
-              {Object.entries(smartSearchQueriesDictionary).map(
-                ([name, label]) => (
-                  <Radio key={name} value={name}>
-                    {label}
-                  </Radio>
-                ),
-              )}
+              {Object.entries(searchQueriesDictionary).map(([name, label]) => (
+                <Radio key={name} value={name}>
+                  {label}
+                </Radio>
+              ))}
             </RadioGroupStyled>
           </Form.Item>
-          <Form.Item name='smartSearchValue'>
+          <Form.Item name='searchValue'>
             <Input placeholder='Ключевое слово' />
           </Form.Item>
         </FilterBlock>
