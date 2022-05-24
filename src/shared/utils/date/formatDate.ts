@@ -4,7 +4,9 @@ const formatDate = (
   date: moment.MomentInput,
   format: string,
 ): ReturnType<Moment['format']> => {
-  return moment(date).format(format)
+  if (!date) return ''
+  const momentDate = moment(date)
+  return momentDate.isValid() ? momentDate.format(format) : 'Некорректная дата'
 }
 
 export default formatDate

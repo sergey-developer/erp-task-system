@@ -1,12 +1,14 @@
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
-import { WorkGroupModel } from 'modules/workGroups/models'
-import { MaybeNull } from 'shared/interfaces/utils'
-
 import { Task } from 'modules/tasks/taskList/models'
+import { WorkGroupModel } from 'modules/workGroups/models'
+import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import { MaybeNull } from 'shared/interfaces/utils'
+import formatDate from 'shared/utils/date/formatDate'
+
 import BidColumn from './BidColumn'
-import { getDateTimeString, getFIOString } from './utils'
+import { getFIOString } from './utils'
 
 export const TABLE_COLUMNS: ColumnsType<Task> = [
   {
@@ -62,7 +64,7 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     dataIndex: 'olaNextBreachTime',
     key: 'olaNextBreachTime',
     width: 180,
-    render: getDateTimeString,
+    render: (value) => formatDate(value, DATE_TIME_FORMAT),
     sorter: true,
   },
   {
@@ -76,7 +78,7 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     dataIndex: 'createdAt',
     key: 'createdAt',
     width: 150,
-    render: getDateTimeString,
+    render: (value) => formatDate(value, DATE_TIME_FORMAT),
     sorter: true,
   },
 ]
