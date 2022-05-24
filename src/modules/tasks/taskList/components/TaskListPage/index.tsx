@@ -59,6 +59,11 @@ const filterList: Array<FilterListItem> = [
     value: FastFilterEnum.Free,
     amount: 11,
   },
+  {
+    text: 'Закрытые',
+    value: FastFilterEnum.Closed,
+    amount: 13,
+  },
 ]
 
 const TaskListPage: FC = () => {
@@ -74,7 +79,11 @@ const TaskListPage: FC = () => {
     smartSort: SmartSortEnum.ByOlaAsc,
   })
 
-  const { data: tasksListResponse, isFetching } = useTaskListQuery(queryArgs)
+  const {
+    data: tasksListResponse,
+    isFetching,
+    refetch: refetchTasksList,
+  } = useTaskListQuery(queryArgs)
 
   const [selectedTask, setSelectedTask] = useState<MaybeNull<Task>>(null)
 
@@ -190,7 +199,7 @@ const TaskListPage: FC = () => {
         <Row justify='space-between'>
           <Col span={12}>
             <Row align='middle'>
-              <Col span={12}>
+              <Col span={15}>
                 {filterList.map(({ amount, text, value }) => (
                   <FilterTag
                     key={value}
@@ -224,7 +233,9 @@ const TaskListPage: FC = () => {
               </Col>
               <Col>
                 <Space align='end'>
-                  <Button icon={<SyncOutlined />}>Обновить заявки</Button>
+                  <Button icon={<SyncOutlined />} onClick={refetchTasksList}>
+                    Обновить заявки
+                  </Button>
                   <Button>+ Создать заявку</Button>
                 </Space>
               </Col>

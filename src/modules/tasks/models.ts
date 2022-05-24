@@ -4,6 +4,7 @@ import { MaybeNull } from 'shared/interfaces/utils'
 
 export enum FastFilterEnum {
   All = 'ALL',
+  Closed = 'CLOSED',
   Free = 'FREE',
   Mine = 'MINE',
   Overdue = 'OVERDUE',
