@@ -32,7 +32,7 @@ const CardTitle: FC<CardTitleProps> = ({ onClose }) => {
       <Typography.Text>REQ0000007898</Typography.Text>
 
       <Space>
-        <Dropdown.Button overlay={actionMenu} type='text' />
+        {false && <Dropdown.Button overlay={actionMenu} type='text' />}
 
         <Button type='text' icon={<CloseOutlined />} onClick={onClose} />
       </Space>
