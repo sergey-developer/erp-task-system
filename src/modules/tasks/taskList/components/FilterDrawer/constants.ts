@@ -10,13 +10,12 @@ export const smartSearchQueriesDictionary: Record<
 }
 
 export const taskStatusDictionary: Record<TaskStatusEnum, string> = {
-  [TaskStatusEnum.Appointed]: 'В ожидании',
-  [TaskStatusEnum.Awaiting]: 'В ожидании (Awaiting?)',
+  [TaskStatusEnum.Appointed]: 'Назначено',
+  [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.Closed]: 'Возврат с II линии',
   [TaskStatusEnum.Completed]: 'Выполнено',
   [TaskStatusEnum.InProgress]: 'В работе',
-  [TaskStatusEnum.InReclassification]:
-    'На переклассификации (InReclassification?)',
+  [TaskStatusEnum.InReclassification]: 'На переклассификации',
   [TaskStatusEnum.New]: 'Ожидает выполнения',
-  [TaskStatusEnum.Reclassified]: 'На переклассификации',
+  [TaskStatusEnum.Reclassified]: 'Переклассифицировано',
 }

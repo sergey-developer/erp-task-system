@@ -6,6 +6,7 @@ import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
+import useUserInfo from 'modules/auth/hooks/useUserInfo'
 import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
@@ -17,6 +18,7 @@ import {
   TaskIdFilterQueries,
 } from 'modules/tasks/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
+import UserRoles from 'shared/constants/roles'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
@@ -60,8 +62,13 @@ const filterList: Array<FilterListItem> = [
 ]
 
 const TaskListPage: FC = () => {
+  const { role: userRole } = useUserInfo()
+
+  const initialFastFilter: FastFilterEnum =
+    userRole === UserRoles.Engineer ? FastFilterEnum.Mine : FastFilterEnum.All
+
   const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
-    filter: DEFAULT_FAST_FILTER,
+    filter: initialFastFilter,
     limit: DEFAULT_PAGE_LIMIT,
     offset: 0,
     smartSort: SmartSortEnum.ByOlaAsc,
@@ -80,7 +87,7 @@ const TaskListPage: FC = () => {
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
 
   const [fastFilterValue, setFastFilterValue] =
-    useState<FastFilterEnum>(DEFAULT_FAST_FILTER)
+    useState<FastFilterEnum>(initialFastFilter)
 
   const toggleFilterDrawer = () => setIsFilterDrawerVisible((prev) => !prev)
 
@@ -172,6 +179,7 @@ const TaskListPage: FC = () => {
       smartSearchDescription: undefined,
       smartSearchName: undefined,
       taskId: undefined,
+      workGroupId: undefined,
       ...filterQueryParams,
     }))
   }
