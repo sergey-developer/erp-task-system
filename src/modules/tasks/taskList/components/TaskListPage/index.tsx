@@ -13,7 +13,7 @@ import {
   FastFilterEnum,
   GetTaskListApiArg,
   QuickFilterQueries,
-  SmartSortEnum,
+  SortEnum,
   Task,
   TaskIdFilterQueries,
 } from 'modules/tasks/models'
@@ -71,7 +71,7 @@ const TaskListPage: FC = () => {
     filter: initialFastFilter,
     limit: DEFAULT_PAGE_LIMIT,
     offset: 0,
-    smartSort: SmartSortEnum.ByOlaAsc,
+    sort: SortEnum.ByOlaAsc,
   })
 
   const { data: tasksListResponse, isFetching } = useTaskListQuery(queryArgs)
@@ -148,7 +148,11 @@ const TaskListPage: FC = () => {
 
     if (SORTED_FIELDS.includes(field as SORTED_FIELDS_ENUM)) {
       const key = camelize(`${field}_${order}`)
-      newQueryArgs.smartSort =
+      console.log({
+        key,
+        SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
+      })
+      newQueryArgs.sort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
           ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
               key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
@@ -235,7 +239,7 @@ const TaskListPage: FC = () => {
           <RowStyled>
             <Col span={selectedTask ? 16 : 24}>
               <TaskTable
-                sorting={queryArgs.smartSort}
+                sorting={queryArgs.sort}
                 onRow={handleTableRowClick}
                 dataSource={tasksListResponse?.results}
                 loading={isFetching}

@@ -20,11 +20,11 @@ export enum TaskStatusEnum {
   Reclassified = 'RECLASSIFIED',
 }
 
-export enum SmartSortEnum {
-  ByCreatedDateAsc = 'BY_CREATED_DATE_ASC',
-  ByCreatedDateDesc = 'BY_CREATED_DATE_DESC',
-  ByOlaAsc = 'BY_OLA_ASC',
-  ByOlaDesc = 'BY_OLA_DESC',
+export enum SortEnum {
+  ByCreatedDateAsc = 'created_at',
+  ByCreatedDateDesc = '-created_at',
+  ByOlaAsc = 'ola_next_breach_time',
+  ByOlaDesc = '-ola_next_breach_time',
 }
 
 export type GetTaskListBaseApiResponse = PaginatedTaskList
@@ -79,7 +79,7 @@ export type GetTaskListApiArg = {
   hideAwaitingTask?: boolean
   limit: number
   offset: number
-  smartSort?: SmartSortEnum
+  sort?: SortEnum
   userId?: number
 } & ExtendedFilterQueries &
   QuickFilterQueries &
