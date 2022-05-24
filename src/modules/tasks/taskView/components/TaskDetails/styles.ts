@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 export const RootWrapperStyled = styled.div`
   padding: 0 0 8px 8px;
-  height: 100%;
 `
 
 type CardStyledProps = { $isLoading: boolean }
