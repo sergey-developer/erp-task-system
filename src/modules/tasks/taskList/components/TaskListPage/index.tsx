@@ -148,10 +148,6 @@ const TaskListPage: FC = () => {
 
     if (SORTED_FIELDS.includes(field as SORTED_FIELDS_ENUM)) {
       const key = camelize(`${field}_${order}`)
-      console.log({
-        key,
-        SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
-      })
       newQueryArgs.sort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
           ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
