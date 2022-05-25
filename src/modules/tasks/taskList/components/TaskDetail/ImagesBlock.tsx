@@ -3,10 +3,10 @@ import React, { FC } from 'react'
 
 import { ImageStyled } from './styles'
 
-type ImagesBlockType = {
+type ImagesBlockProps = {
   images: string[]
 }
-const ImagesBlock: FC<ImagesBlockType> = ({ images }) => {
+const ImagesBlock: FC<ImagesBlockProps> = ({ images }) => {
   return (
     <Space>
       {images.map((image) => (
