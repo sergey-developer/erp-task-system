@@ -1,3 +1,4 @@
+import { WorkGroupModel } from 'modules/workGroups/models'
 import { CommentAuthorModel, FileModel } from 'shared/interfaces/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -71,7 +72,7 @@ export type TaskDetailsModel = {
   state?: string
   zipCode?: string
   isReturned?: boolean
-  workGroup?: MaybeNull<number>
+  workGroup?: MaybeNull<WorkGroupModel>
   parentTask?: MaybeNull<number>
 }
 

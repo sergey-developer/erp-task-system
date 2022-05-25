@@ -1,5 +1,5 @@
 import { Col, Row, Space, Typography } from 'antd'
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 
 import ButtonText from 'components/Buttons/ButtonText'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
@@ -33,29 +33,14 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   const hasWorkGroup: boolean = !!workGroup
 
-  const workGroupFirstLineSupportCase: boolean =
+  const changeWorkGroupFirstLineSupportCase: boolean =
     !hasWorkGroup && isFirstLineSupportRole
 
-  const workGroupEngineerCase: boolean = isEngineerRole
-
-  const workGroupSeniorEngineerCase: boolean =
+  const changeWorkGroupSeniorEngineerCase: boolean =
     hasWorkGroup && isSeniorEngineerRole
 
-  const workGroupHeadOfDepartmentCase: boolean =
+  const changeWorkGroupHeadOfDepartmentCase: boolean =
     hasWorkGroup && isHeadOfDepartmentRole
-
-  const workGroupOptions = useMemo(() => {
-    return workGroupList.map(({ id, name }) => (
-      <SelectStyled.Option key={id} value={id} disabled={id === workGroup}>
-        <SelectOptionWrapperStyled>{name}</SelectOptionWrapperStyled>
-      </SelectStyled.Option>
-    ))
-  }, [workGroup, workGroupList])
-
-  const workGroupFromList = useMemo(
-    () => workGroupList.find(({ id }) => id === workGroup),
-    [workGroupList, workGroup],
-  )
 
   return (
     <DetailContainerStyled>
@@ -65,25 +50,37 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             <Space size='large'>
               <Text type='secondary'>Рабочая группа</Text>
 
-              {workGroupFirstLineSupportCase ? (
+              {changeWorkGroupFirstLineSupportCase ? (
                 <ButtonText type='link'>Перевести на II линию</ButtonText>
-              ) : workGroupSeniorEngineerCase ||
-                workGroupHeadOfDepartmentCase ? (
+              ) : changeWorkGroupSeniorEngineerCase ||
+                changeWorkGroupHeadOfDepartmentCase ? (
                 <ButtonText type='link'>Вернуть на I линию</ButtonText>
               ) : null}
             </Space>
 
-            {(workGroupFirstLineSupportCase || workGroupEngineerCase) &&
-            workGroupFromList ? (
-              <Typography.Text>{workGroupFromList.name}</Typography.Text>
+            {isEngineerRole || isFirstLineSupportRole ? (
+              <Typography.Text>{workGroup?.name || '—'}</Typography.Text>
             ) : (
-              <SelectStyled
-                defaultValue={workGroup}
-                loading={workGroupListLoading}
-                bordered={false}
-              >
-                {workGroupOptions}
-              </SelectStyled>
+              (changeWorkGroupSeniorEngineerCase ||
+                changeWorkGroupHeadOfDepartmentCase) && (
+                <SelectStyled
+                  defaultValue={workGroup?.id}
+                  loading={workGroupListLoading}
+                  bordered={false}
+                >
+                  {workGroupList.map(({ id, name }) => (
+                    <SelectStyled.Option
+                      key={id}
+                      value={id}
+                      disabled={id === workGroup?.id}
+                    >
+                      <SelectOptionWrapperStyled>
+                        {name}
+                      </SelectOptionWrapperStyled>
+                    </SelectStyled.Option>
+                  ))}
+                </SelectStyled>
+              )
             )}
           </Space>
         </Col>
