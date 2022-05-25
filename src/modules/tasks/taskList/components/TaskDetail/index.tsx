@@ -4,6 +4,7 @@ import CardTitle from './CardTitle'
 import MainDetail from './MainDetail'
 import SecondaryDetail from './SecondaryDetail'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
+import TabsSection from './TabsSection'
 
 type TaskDetailProps = {
   onClose: () => void
@@ -20,6 +21,7 @@ const TaskDetail: FC<TaskDetailProps> = ({ onClose }) => {
         <DividerStyled />
 
         <SecondaryDetail />
+        <TabsSection />
       </CardStyled>
     </RootWrapperStyled>
   )
