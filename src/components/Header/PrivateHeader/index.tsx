@@ -2,13 +2,15 @@ import { Col, Layout, Row } from 'antd'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import Avatar from 'components/Avatar'
+import UserAvatar from 'components/Avatars/UserAvatar'
 import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 import { getNavMenuConfig } from 'configs/navMenu/utils'
 import UserRolesEnum from 'shared/constants/roles'
 import useMatchedRoute from 'shared/hooks/useMatchedRoute'
+
+import { BadgeStyled } from './styles'
 
 const { Header } = Layout
 
@@ -43,7 +45,9 @@ const PrivateHeader: FC = () => {
           <Row justify='end' align='middle'>
             <NotificationCounter />
 
-            <Avatar className='margin-l-20' />
+            <BadgeStyled dot color='orange'>
+              <UserAvatar size='large' />
+            </BadgeStyled>
           </Row>
         </Col>
       </Row>

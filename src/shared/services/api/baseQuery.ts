@@ -1,22 +1,9 @@
-import { BaseQueryApi } from '@reduxjs/toolkit/src/query/baseQueryTypes'
-import axios, { AxiosError, AxiosRequestHeaders } from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import { httpClientConfig } from 'configs/httpClient'
 import { HttpMethodEnums } from 'shared/constants/http'
 
-import { CustomBaseQueryFn } from './intefraces'
-
-type CustomBaseQueryConfig = {
-  apiVersion: string
-  apiPath: string
-  prepareHeaders?: (
-    headers: AxiosRequestHeaders,
-    api: Pick<
-      BaseQueryApi,
-      'getState' | 'extra' | 'endpoint' | 'type' | 'forced'
-    >,
-  ) => AxiosRequestHeaders
-}
+import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'
 
 const httpClient = axios.create(httpClientConfig)
 
@@ -33,7 +20,7 @@ const baseQuery =
 
     try {
       const result = await httpClient({
-        url: `${apiPath}${apiVersion}${url}`,
+        url: `${apiPath}/${apiVersion}${url}`,
         method,
         data,
         params,

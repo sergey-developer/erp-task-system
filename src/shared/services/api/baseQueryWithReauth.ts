@@ -13,7 +13,7 @@ const mutex = new Mutex()
 
 const query = baseQuery({
   apiPath: '/api',
-  apiVersion: '/v1',
+  apiVersion: 'v1',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken
     if (token) {

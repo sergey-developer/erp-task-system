@@ -1,4 +1,4 @@
-import { Card, Divider, Select } from 'antd'
+import { Card, Divider } from 'antd'
 
 import styled from 'styled-components'
 
@@ -39,17 +39,4 @@ export const DividerStyled = styled(Divider)`
 
 export const DetailContainerStyled = styled.div`
   padding: 20px 30px;
-`
-
-export const SelectStyled = styled(Select)`
-  width: 100%;
-
-  .ant-select-selector {
-    height: max-content !important;
-    padding-left: 0 !important;
-  }
-`
-
-export const SelectOptionWrapperStyled = styled.span`
-  white-space: normal;
 `

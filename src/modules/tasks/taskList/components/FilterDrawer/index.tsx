@@ -9,11 +9,11 @@ import {
 } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskStatusEnum } from 'modules/tasks/constants'
+import TaskStatus from 'components/TaskStatus'
+import { TaskStatusEnum, taskStatusDictionary } from 'modules/tasks/constants'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
-import BidColumn from '../TaskTable/BidColumn'
-import { smartSearchQueriesDictionary, taskStatusDictionary } from './constants'
+import { smartSearchQueriesDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import {
@@ -32,7 +32,10 @@ export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
 const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
   (taskStatus) => ({
     label: (
-      <BidColumn status={taskStatus} value={taskStatusDictionary[taskStatus]} />
+      <TaskStatus
+        status={taskStatus}
+        value={taskStatusDictionary[taskStatus]}
+      />
     ),
     value: taskStatus,
   }),

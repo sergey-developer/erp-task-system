@@ -27,7 +27,7 @@ export type TaskAttachmentModel = {
 export type TaskDetailsModel = {
   id: number
   comments: Array<TaskCommentDetailModel>
-  assignee: AssigneeModel
+  assignee: MaybeNull<AssigneeModel>
   attachments: Array<TaskAttachmentModel>
   createdAt: string
   updatedAt: string

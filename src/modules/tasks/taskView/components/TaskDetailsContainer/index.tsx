@@ -1,3 +1,4 @@
+import _pick from 'lodash/pick'
 import React, { FC, useEffect } from 'react'
 
 import { Task } from 'modules/tasks/taskList/models'
@@ -34,13 +35,30 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     }
   }, [isTaskError, onClose])
 
+  const taskDetails = task
+    ? _pick(
+        task,
+        'id',
+        'recordId',
+        'title',
+        'createdAt',
+        'name',
+        'address',
+        'contactService',
+        'olaNextBreachTime',
+        'workGroup',
+        'assignee',
+        'status',
+      )
+    : null
+
   return (
     <TaskDetails
       onClose={onClose}
       taskLoading={taskLoading || taskFetching}
       workGroupListLoading={workGroupListLoading || workGroupListFetching}
       workGroupList={workGroupList?.results || []}
-      details={task || null}
+      details={taskDetails}
     />
   )
 }

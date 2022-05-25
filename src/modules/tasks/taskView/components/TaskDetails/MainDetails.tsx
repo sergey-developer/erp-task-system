@@ -1,6 +1,7 @@
-import { Col, Row, Space, Typography } from 'antd'
+import { Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import Space from 'components/Space'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
@@ -34,7 +35,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   //  console.log(olaNextBreachTimeDiff)
   return (
     <DetailContainerStyled>
-      <Space direction='vertical' size='middle'>
+      <Space direction='vertical' size='middle' $fullWidth>
         <Space
           split={
             olaNextBreachTime ? (

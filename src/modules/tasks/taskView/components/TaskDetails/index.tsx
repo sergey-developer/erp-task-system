@@ -22,6 +22,8 @@ type TaskDetailsProps = {
       | 'contactService'
       | 'olaNextBreachTime'
       | 'workGroup'
+      | 'assignee'
+      | 'status'
     >
   >
   workGroupList: Array<WorkGroupModel>
@@ -32,8 +34,8 @@ type TaskDetailsProps = {
 
 const TaskDetails: FC<TaskDetailsProps> = ({
   details,
-  workGroupList,
   taskLoading,
+  workGroupList,
   workGroupListLoading,
   onClose,
 }) => {
@@ -63,6 +65,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         <DividerStyled />
 
         <SecondaryDetails
+          status={details?.status}
+          assignee={details?.assignee}
           workGroupListLoading={workGroupListLoading}
           workGroupList={workGroupList}
           workGroup={details?.workGroup}

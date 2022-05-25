@@ -1,13 +1,13 @@
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
+import TaskStatus from 'components/TaskStatus'
 import { Task } from 'modules/tasks/taskList/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { MaybeNull } from 'shared/interfaces/utils'
 import formatDate from 'shared/utils/date/formatDate'
 
-import BidColumn from './BidColumn'
 import { getFIOString } from './utils'
 
 export const TABLE_COLUMNS: ColumnsType<Task> = [
@@ -15,7 +15,7 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     key: 'noop',
     width: 52,
     render: (value: string, { status }) => {
-      return <BidColumn status={status} />
+      return <TaskStatus status={status} />
     },
     align: 'center',
   },

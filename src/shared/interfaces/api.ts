@@ -1,8 +1,8 @@
 import { MaybeNull } from 'shared/interfaces/utils'
 
-export type PaginatedListResponse<Result> = {
+export type PaginatedListResponse<ListItem> = {
   count: number
   next: MaybeNull<string>
   previous: MaybeNull<string>
-  results: Result[]
+  results: ListItem[]
 }
