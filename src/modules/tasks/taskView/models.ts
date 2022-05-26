@@ -1,3 +1,4 @@
+import { TaskListItemModel } from 'modules/tasks/taskList/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { CommentAuthorModel, FileModel } from 'shared/interfaces/models'
 import { AssigneeModel } from 'shared/interfaces/models'
@@ -10,9 +11,8 @@ import {
   TaskTypeEnum,
 } from '../constants'
 import { BaseTaskCommentModel } from '../models'
-import { TaskListItemModel } from '../taskList/models'
 
-export type TaskCommentDetailModel = BaseTaskCommentModel & {
+export type TaskDetailsCommentModel = BaseTaskCommentModel & {
   author: CommentAuthorModel
 }
 
@@ -26,7 +26,7 @@ export type TaskAttachmentModel = {
 
 export type TaskDetailsModel = {
   id: number
-  comments: Array<TaskCommentDetailModel>
+  comments: Array<TaskDetailsCommentModel>
   assignee: MaybeNull<AssigneeModel>
   attachments: Array<TaskAttachmentModel>
   createdAt: string

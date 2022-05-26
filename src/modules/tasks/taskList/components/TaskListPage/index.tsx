@@ -143,7 +143,7 @@ const TaskListPage: FC = () => {
     [setSelectedTaskId],
   )
 
-  const handleCloseTaskDetail = useCallback(() => {
+  const handleCloseTaskDetails = useCallback(() => {
     setSelectedTaskId(null)
   }, [setSelectedTaskId])
 
@@ -263,7 +263,7 @@ const TaskListPage: FC = () => {
             {!!selectedTaskId && (
               <Col span={8}>
                 <TaskDetails
-                  onClose={handleCloseTaskDetail}
+                  onClose={handleCloseTaskDetails}
                   taskId={selectedTaskId}
                 />
               </Col>
