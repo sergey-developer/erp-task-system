@@ -1,10 +1,11 @@
 import { TableProps } from 'antd/lib/table/Table'
 
-import { SmartSortEnum, Task } from 'modules/tasks/models'
+import { SortEnum } from 'modules/tasks/constants'
+import { TaskListItemModel } from 'modules/tasks/taskList/models'
 
 export type TaskTableProps = Pick<
-  TableProps<Task>,
+  TableProps<TaskListItemModel>,
   'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
 > & {
-  sorting?: SmartSortEnum
+  sorting?: SortEnum
 }

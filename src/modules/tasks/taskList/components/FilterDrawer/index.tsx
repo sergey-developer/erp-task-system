@@ -9,10 +9,13 @@ import {
 } from 'antd'
 import React, { FC } from 'react'
 
-import { ExtendedFilterFormFields, TaskStatusEnum } from 'modules/tasks/models'
-import BidColumn from 'modules/tasks/taskList/components/TaskTable/BidColumn'
+import TaskStatus from 'components/TaskStatus'
+import useUserInfo from 'modules/auth/hooks/useUserInfo'
+import { TaskStatusEnum, taskStatusDictionary } from 'modules/tasks/constants'
+import UserRolesEnum from 'shared/constants/roles'
 
-import { smartSearchQueriesDictionary, taskStatusDictionary } from './constants'
+import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
+import { searchQueriesDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import {
@@ -31,7 +34,10 @@ export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
 const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
   (taskStatus) => ({
     label: (
-      <BidColumn status={taskStatus} value={taskStatusDictionary[taskStatus]} />
+      <TaskStatus
+        status={taskStatus}
+        value={taskStatusDictionary[taskStatus]}
+      />
     ),
     value: taskStatus,
   }),
@@ -39,6 +45,8 @@ const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
 
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { form, initialValues, onClose, onSubmit, visible } = props
+
+  const { role: userRole } = useUserInfo()
 
   const handleResetAll = () => {
     form.resetFields()
@@ -69,6 +77,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           <FilterBlockLabel onReset={() => form.setFieldsValue({ status: [] })}>
             Статус
           </FilterBlockLabel>
+
           <Form.Item name='status'>
             <CheckboxGroupStyled options={checkboxStatusOptions} />
           </Form.Item>
@@ -80,34 +89,50 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           >
             Период создания
           </FilterBlockLabel>
+
           <Form.Item name='creationDateRange'>
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>
 
+        {userRole !== UserRolesEnum.Engineer &&
+          userRole !== UserRolesEnum.FirstLineSupport && (
+            <FilterBlock withDivider>
+              <FilterBlockLabel
+                onReset={() => form.setFieldsValue({ workGroupId: '' })}
+              >
+                Рабочая группа
+              </FilterBlockLabel>
+
+              <Form.Item name='workGroupId'>
+                <Input placeholder='Рабочая группа' />
+              </Form.Item>
+            </FilterBlock>
+          )}
+
         <FilterBlock withDivider={false}>
           <FilterBlockLabel
             onReset={() =>
               form.setFieldsValue({
-                smartSearchField: initialValues.smartSearchField,
-                smartSearchValue: '',
+                searchField: initialValues.searchField,
+                searchValue: '',
               })
             }
           >
             Поиск по столбцу
           </FilterBlockLabel>
-          <Form.Item name='smartSearchField'>
+
+          <Form.Item name='searchField'>
             <RadioGroupStyled>
-              {Object.entries(smartSearchQueriesDictionary).map(
-                ([name, label]) => (
-                  <Radio key={name} value={name}>
-                    {label}
-                  </Radio>
-                ),
-              )}
+              {Object.entries(searchQueriesDictionary).map(([name, label]) => (
+                <Radio key={name} value={name}>
+                  {label}
+                </Radio>
+              ))}
             </RadioGroupStyled>
           </Form.Item>
-          <Form.Item name='smartSearchValue'>
+
+          <Form.Item name='searchValue'>
             <Input placeholder='Ключевое слово' />
           </Form.Item>
         </FilterBlock>

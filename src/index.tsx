@@ -1,3 +1,8 @@
+import 'moment/locale/ru'
+
+import { ConfigProvider } from 'antd'
+import ruRU from 'antd/lib/locale/ru_RU'
+import moment from 'moment'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider as StoreProvider } from 'react-redux'
@@ -5,10 +10,6 @@ import { BrowserRouter } from 'react-router-dom'
 
 import ErrorBoundary from 'components/ErrorBoundary'
 import store from 'state/store'
-import { ConfigProvider } from 'antd';
-import ruRU from 'antd/lib/locale/ru_RU';
-import moment from 'moment';
-import 'moment/locale/ru';
 import { ThemeProvider } from 'styled-components'
 import theme from 'styles/theme'
 
@@ -17,11 +18,11 @@ import reportWebVitals from './reportWebVitals'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
-moment.locale('ru');
+moment.locale('ru')
 
 root.render(
   <StoreProvider store={store}>
-    <ConfigProvider locale={ruRU} >
+    <ConfigProvider locale={ruRU}>
       <ThemeProvider theme={theme}>
         <ErrorBoundary>
           <BrowserRouter>

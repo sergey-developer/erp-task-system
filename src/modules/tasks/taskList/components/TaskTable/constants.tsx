@@ -1,18 +1,21 @@
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
-import { Assignee, Task, WorkGroup } from 'modules/tasks/models'
+import TaskStatus from 'components/TaskStatus'
+import { TaskListItemModel } from 'modules/tasks/taskList/models'
+import { WorkGroupModel } from 'modules/workGroups/models'
+import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { MaybeNull } from 'shared/interfaces/utils'
+import formatDate from 'shared/utils/date/formatDate'
 
-import BidColumn from './BidColumn'
-import { getDateTimeString, getFIOString } from './utils'
+import { getFIOString } from './utils'
 
-export const TABLE_COLUMNS: ColumnsType<Task> = [
+export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
   {
     key: 'noop',
     width: 52,
     render: (value: string, { status }) => {
-      return <BidColumn status={status} />
+      return <TaskStatus status={status} />
     },
     align: 'center',
   },
@@ -44,14 +47,15 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     title: 'Исполнитель',
     dataIndex: 'assignee',
     key: 'assignee',
-    render: (value: MaybeNull<Assignee>) => getFIOString(value),
+    render: (value: MaybeNull<TaskListItemModel['assignee']>) =>
+      getFIOString(value),
     width: 180,
   },
   {
     title: 'Рабочая группа',
     dataIndex: 'workGroup',
     key: 'workGroup',
-    render: (value: MaybeNull<WorkGroup>) => {
+    render: (value: MaybeNull<WorkGroupModel>) => {
       return value && value.name
     },
     width: 180,
@@ -61,7 +65,7 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     dataIndex: 'olaNextBreachTime',
     key: 'olaNextBreachTime',
     width: 180,
-    render: getDateTimeString,
+    render: (value) => formatDate(value, DATE_TIME_FORMAT),
     sorter: true,
   },
   {
@@ -75,7 +79,7 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     dataIndex: 'createdAt',
     key: 'createdAt',
     width: 150,
-    render: getDateTimeString,
+    render: (value) => formatDate(value, DATE_TIME_FORMAT),
     sorter: true,
   },
 ]

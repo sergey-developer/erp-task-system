@@ -2,8 +2,8 @@ import { ColumnsType } from 'antd/es/table'
 import React, { FC, useMemo } from 'react'
 
 import { ParentSizedTable } from 'components/ParentSizedTable'
-import { Task } from 'modules/tasks/models'
 import { SMART_SORT_DIRECTIONS_TO_SORT_FIELDS } from 'modules/tasks/taskList/components/TaskListPage/constants'
+import { TaskListItemModel } from 'modules/tasks/taskList/models'
 
 import { TABLE_COLUMNS } from './constants'
 import { TaskTableProps } from './interfaces'
@@ -17,7 +17,7 @@ const TaskTable: FC<TaskTableProps> = ({
   onRow,
   pagination,
 }) => {
-  const columnsData: ColumnsType<Task> = useMemo(() => {
+  const columnsData: ColumnsType<TaskListItemModel> = useMemo(() => {
     const sorterResult =
       (sorting &&
         sorting in SMART_SORT_DIRECTIONS_TO_SORT_FIELDS &&
@@ -27,7 +27,7 @@ const TaskTable: FC<TaskTableProps> = ({
   }, [sorting])
 
   return (
-    <ParentSizedTable<Task>
+    <ParentSizedTable<TaskListItemModel>
       dataSource={dataSource}
       columns={columnsData}
       pagination={pagination && { ...pagination, position: ['bottomCenter'] }}

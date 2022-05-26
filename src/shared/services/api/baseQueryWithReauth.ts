@@ -2,7 +2,7 @@ import { Mutex } from 'async-mutex'
 
 import { logout, tokenRefreshed } from 'modules/auth/authSlice'
 import { UserRefreshCreateApiResponse } from 'modules/auth/models'
-import MethodEnums from 'shared/constants/http'
+import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
@@ -13,7 +13,7 @@ const mutex = new Mutex()
 
 const query = baseQuery({
   apiPath: '/api',
-  apiVersion: '/v1',
+  apiVersion: 'v1',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken
     if (token) {
@@ -32,14 +32,17 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   let result = await query(args, api, extraOptions)
   const { error } = result
   /** todo пересмотреть строчку ниже */
-  if (error && (error as { status: number })?.status === 401) {
+  if (
+    error &&
+    (error as { status: number })?.status === HttpStatusCodeEnum.Unauthorized
+  ) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       try {
         const { refreshToken: refresh } = (api.getState() as RootState).auth
         const refreshResult = await query(
           {
-            method: MethodEnums.POST,
+            method: HttpMethodEnum.POST,
             url: TOKEN_REFRESH_PATH,
             data: {
               refresh,

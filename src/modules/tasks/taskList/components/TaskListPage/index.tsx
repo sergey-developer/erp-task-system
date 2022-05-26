@@ -6,21 +6,18 @@ import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
+import useUserInfo from 'modules/auth/hooks/useUserInfo'
+import { FastFilterEnum, SortEnum } from 'modules/tasks/constants'
 import {
-  ExtendedFilterFormFields,
-  ExtendedFilterQueries,
-  FastFilterEnum,
   GetTaskListApiArg,
-  QuickFilterQueries,
-  SmartSortEnum,
-  Task,
-  TaskIdFilterQueries,
-} from 'modules/tasks/models'
+  TaskListItemModel,
+} from 'modules/tasks/taskList/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
+import TaskDetails from 'modules/tasks/taskView/components/TaskDetailsContainer'
+import UserRolesEnum from 'shared/constants/roles'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
-import TaskDetail from '../TaskDetail'
 import TaskTable from '../TaskTable'
 import {
   DEFAULT_FAST_FILTER,
@@ -28,9 +25,16 @@ import {
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
   SORTED_FIELDS_ENUM,
+  SORT_DIRECTIONS_ENUM,
   initialExtendedFilterFormValues,
 } from './constants'
-import { FilterListItem, SORT_DIRECTIONS } from './interfaces'
+import {
+  ExtendedFilterFormFields,
+  ExtendedFilterQueries,
+  FilterListItem,
+  QuickFilterQueries,
+  TaskIdFilterQueries,
+} from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
@@ -57,19 +61,36 @@ const filterList: Array<FilterListItem> = [
     value: FastFilterEnum.Free,
     amount: 11,
   },
+  {
+    text: 'Закрытые',
+    value: FastFilterEnum.Closed,
+    amount: 13,
+  },
 ]
 
 const TaskListPage: FC = () => {
+  const { role: userRole } = useUserInfo()
+
+  const initialFastFilter: FastFilterEnum =
+    userRole === UserRolesEnum.Engineer
+      ? FastFilterEnum.Mine
+      : FastFilterEnum.All
+
   const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
-    filter: DEFAULT_FAST_FILTER,
+    filter: initialFastFilter,
     limit: DEFAULT_PAGE_LIMIT,
     offset: 0,
-    smartSort: SmartSortEnum.ByOlaAsc,
+    sort: SortEnum.ByOlaAsc,
   })
 
-  const { data: tasksListResponse, isFetching } = useTaskListQuery(queryArgs)
+  const {
+    data: tasksListResponse,
+    isFetching,
+    refetch: refetchTasksList,
+  } = useTaskListQuery(queryArgs)
 
-  const [selectedTask, setSelectedTask] = useState<MaybeNull<Task>>(null)
+  const [selectedTaskId, setSelectedTaskId] =
+    useState<MaybeNull<TaskListItemModel['id']>>(null)
 
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
@@ -80,7 +101,7 @@ const TaskListPage: FC = () => {
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
 
   const [fastFilterValue, setFastFilterValue] =
-    useState<FastFilterEnum>(DEFAULT_FAST_FILTER)
+    useState<FastFilterEnum>(initialFastFilter)
 
   const toggleFilterDrawer = () => setIsFilterDrawerVisible((prev) => !prev)
 
@@ -115,22 +136,22 @@ const TaskListPage: FC = () => {
     }
   }
 
-  const handleTableRowClick: GetComponentProps<Task> = useCallback(
-    (record: Task) => ({
-      onClick: () => setSelectedTask(record),
+  const handleTableRowClick: GetComponentProps<TaskListItemModel> = useCallback(
+    (record: TaskListItemModel) => ({
+      onClick: () => setSelectedTaskId(record.id),
     }),
-    [setSelectedTask],
+    [setSelectedTaskId],
   )
 
-  const handleCloseTaskDetail = useCallback(() => {
-    setSelectedTask(null)
-  }, [setSelectedTask])
+  const handleCloseTaskDetails = useCallback(() => {
+    setSelectedTaskId(null)
+  }, [setSelectedTaskId])
 
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
-    NonNullable<TableProps<Task>['onChange']>
+    NonNullable<TableProps<TaskListItemModel>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order = SORT_DIRECTIONS.ascend } = Array.isArray(sorter)
+    const { field, order = SORT_DIRECTIONS_ENUM.ascend } = Array.isArray(sorter)
       ? sorter[0]
       : sorter
 
@@ -141,7 +162,7 @@ const TaskListPage: FC = () => {
 
     if (SORTED_FIELDS.includes(field as SORTED_FIELDS_ENUM)) {
       const key = camelize(`${field}_${order}`)
-      newQueryArgs.smartSort =
+      newQueryArgs.sort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
           ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
               key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
@@ -168,10 +189,11 @@ const TaskListPage: FC = () => {
       dateTo: undefined,
       filter: DEFAULT_FAST_FILTER,
       status: undefined,
-      smartSearchAssignee: undefined,
-      smartSearchDescription: undefined,
-      smartSearchName: undefined,
+      searchByAssignee: undefined,
+      searchByName: undefined,
+      searchByTitle: undefined,
       taskId: undefined,
+      workGroupId: undefined,
       ...filterQueryParams,
     }))
   }
@@ -182,7 +204,7 @@ const TaskListPage: FC = () => {
         <Row justify='space-between'>
           <Col span={12}>
             <Row align='middle'>
-              <Col span={12}>
+              <Col span={15}>
                 {filterList.map(({ amount, text, value }) => (
                   <FilterTag
                     key={value}
@@ -216,7 +238,9 @@ const TaskListPage: FC = () => {
               </Col>
               <Col>
                 <Space align='end'>
-                  <Button icon={<SyncOutlined />}>Обновить заявки</Button>
+                  <Button icon={<SyncOutlined />} onClick={refetchTasksList}>
+                    Обновить заявки
+                  </Button>
                   <Button>+ Создать заявку</Button>
                 </Space>
               </Col>
@@ -225,9 +249,9 @@ const TaskListPage: FC = () => {
         </Row>
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
-            <Col span={selectedTask ? 16 : 24}>
+            <Col span={selectedTaskId ? 16 : 24}>
               <TaskTable
-                sorting={queryArgs.smartSort}
+                sorting={queryArgs.sort}
                 onRow={handleTableRowClick}
                 dataSource={tasksListResponse?.results}
                 loading={isFetching}
@@ -236,14 +260,18 @@ const TaskListPage: FC = () => {
               />
             </Col>
 
-            {!!selectedTask && (
+            {!!selectedTaskId && (
               <Col span={8}>
-                <TaskDetail onClose={handleCloseTaskDetail} />
+                <TaskDetails
+                  onClose={handleCloseTaskDetails}
+                  taskId={selectedTaskId}
+                />
               </Col>
             )}
           </RowStyled>
         </ColFlexStyled>
       </RowWrapStyled>
+
       <FilterDrawer
         form={extendedFilterForm}
         initialValues={initialExtendedFilterFormValues}

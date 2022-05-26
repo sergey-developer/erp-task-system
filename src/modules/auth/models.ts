@@ -1,4 +1,4 @@
-import UserRoles from 'shared/constants/roles'
+import UserRolesEnum from 'shared/constants/roles'
 
 export type LoginApiResponse = {
   access: string
@@ -16,5 +16,5 @@ export type UserRefreshCreateApiResponse = {
 
 export type UserInfo = {
   userId: number
-  userRole: UserRoles
+  userRole: UserRolesEnum
 }
