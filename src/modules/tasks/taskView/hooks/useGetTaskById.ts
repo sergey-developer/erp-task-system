@@ -13,11 +13,14 @@ const useGetTaskById = (
   const { isEngineerRole, isSeniorEngineerRole, isHeadOfDepartmentRole } =
     useUserRole()
 
-  const shouldSkip: boolean =
-    isEngineerRole || isSeniorEngineerRole || isHeadOfDepartmentRole
+  const shouldSkip: boolean = !(
+    isEngineerRole ||
+    isSeniorEngineerRole ||
+    isHeadOfDepartmentRole
+  )
 
   const result = useGetTaskByIdQuery(id, {
-    skip: !shouldSkip,
+    skip: shouldSkip,
   })
 
   useEffect(() => {

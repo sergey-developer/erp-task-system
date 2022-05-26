@@ -13,11 +13,14 @@ const useGetWorkGroupList = (): ReturnType<typeof useGetWorkGroupListQuery> => {
     isHeadOfDepartmentRole,
   } = useUserRole()
 
-  const shouldSkip: boolean =
-    isFirstLineSupportRole || isSeniorEngineerRole || isHeadOfDepartmentRole
+  const shouldSkip: boolean = !(
+    isFirstLineSupportRole ||
+    isSeniorEngineerRole ||
+    isHeadOfDepartmentRole
+  )
 
   const result = useGetWorkGroupListQuery(null, {
-    skip: !shouldSkip,
+    skip: shouldSkip,
   })
 
   useEffect(() => {
