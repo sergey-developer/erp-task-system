@@ -54,6 +54,14 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
     return workGroupFromList ? workGroupFromList.members : []
   }, [workGroup?.id, workGroupList])
 
+  const renderChangeTaskLineButton = () => {
+    return firstLineSupportNotHasWorkGroup ? (
+      <ButtonText type='link'>Перевести на II линию</ButtonText>
+    ) : seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup ? (
+      <ButtonText type='link'>Вернуть на I линию</ButtonText>
+    ) : null
+  }
+
   return (
     <DetailContainerStyled>
       <Row justify='space-between'>
@@ -62,11 +70,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             <Space size='large'>
               <Text type='secondary'>Рабочая группа</Text>
 
-              {firstLineSupportNotHasWorkGroup ? (
-                <ButtonText type='link'>Перевести на II линию</ButtonText>
-              ) : seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup ? (
-                <ButtonText type='link'>Вернуть на I линию</ButtonText>
-              ) : null}
+              {renderChangeTaskLineButton()}
             </Space>
 
             {isEngineerRole || isFirstLineSupportRole ? (
