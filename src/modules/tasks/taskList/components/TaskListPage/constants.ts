@@ -13,20 +13,21 @@ export const DEFAULT_FAST_FILTER: FastFilterEnum = FastFilterEnum.All
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 
-export enum SORT_DIRECTIONS_ENUM {
+export enum SortDirectionsEnum {
   ascend = 'ascend',
   descend = 'descend',
 }
 
-export enum SORTED_FIELDS_ENUM {
+export enum SortedFieldsEnum {
   olaNextBreachTime = 'olaNextBreachTime',
   createdAt = 'createdAt',
 }
 
 export const SORTED_FIELDS = [
-  SORTED_FIELDS_ENUM.olaNextBreachTime,
-  SORTED_FIELDS_ENUM.createdAt,
+  SortedFieldsEnum.olaNextBreachTime,
+  SortedFieldsEnum.createdAt,
 ]
+
 export const SMART_SORT_TO_FIELD_SORT_DIRECTIONS = {
   olaNextBreachTimeDescend: SortEnum.ByOlaDesc,
   olaNextBreachTimeAscend: SortEnum.ByOlaAsc,
@@ -39,20 +40,20 @@ export const SMART_SORT_DIRECTIONS_TO_SORT_FIELDS: Record<
   SorterResult<TaskListItemModel>
 > = {
   [SortEnum.ByOlaDesc]: {
-    columnKey: SORTED_FIELDS_ENUM.olaNextBreachTime,
-    order: SORT_DIRECTIONS_ENUM.descend,
+    columnKey: SortedFieldsEnum.olaNextBreachTime,
+    order: SortDirectionsEnum.descend,
   },
   [SortEnum.ByOlaAsc]: {
-    columnKey: SORTED_FIELDS_ENUM.olaNextBreachTime,
-    order: SORT_DIRECTIONS_ENUM.ascend,
+    columnKey: SortedFieldsEnum.olaNextBreachTime,
+    order: SortDirectionsEnum.ascend,
   },
   [SortEnum.ByCreatedDateDesc]: {
-    columnKey: SORTED_FIELDS_ENUM.createdAt,
-    order: SORT_DIRECTIONS_ENUM.descend,
+    columnKey: SortedFieldsEnum.createdAt,
+    order: SortDirectionsEnum.descend,
   },
   [SortEnum.ByCreatedDateAsc]: {
-    columnKey: SORTED_FIELDS_ENUM.createdAt,
-    order: SORT_DIRECTIONS_ENUM.ascend,
+    columnKey: SortedFieldsEnum.createdAt,
+    order: SortDirectionsEnum.ascend,
   },
 }
 

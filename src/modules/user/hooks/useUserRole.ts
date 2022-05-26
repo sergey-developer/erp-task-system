@@ -3,14 +3,8 @@ import { useMemo } from 'react'
 import useUserInfo from 'modules/auth/hooks/useUserInfo'
 import UserRolesEnum from 'shared/constants/roles'
 
-type UseUserRoleResult = Record<
-  | 'isFirstLineSupportRole'
-  | 'isEngineerRole'
-  | 'isSeniorEngineerRole'
-  | 'isHeadOfDepartmentRole'
-  | 'isAdminRole',
-  boolean
->
+type UserRoleKey = `is${keyof typeof UserRolesEnum}Role`
+type UseUserRoleResult = Record<UserRoleKey, boolean>
 
 const useUserRole = (): UseUserRoleResult => {
   const { role } = useUserInfo()

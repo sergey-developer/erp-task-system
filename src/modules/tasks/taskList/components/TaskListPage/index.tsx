@@ -24,8 +24,8 @@ import {
   DEFAULT_PAGE_LIMIT,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
-  SORTED_FIELDS_ENUM,
-  SORT_DIRECTIONS_ENUM,
+  SortDirectionsEnum,
+  SortedFieldsEnum,
   initialExtendedFilterFormValues,
 } from './constants'
 import {
@@ -151,7 +151,7 @@ const TaskListPage: FC = () => {
   const handleChangeTable = useCallback<
     NonNullable<TableProps<TaskListItemModel>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order = SORT_DIRECTIONS_ENUM.ascend } = Array.isArray(sorter)
+    const { field, order = SortDirectionsEnum.ascend } = Array.isArray(sorter)
       ? sorter[0]
       : sorter
 
@@ -160,7 +160,7 @@ const TaskListPage: FC = () => {
       limit: pagination.pageSize!,
     }
 
-    if (SORTED_FIELDS.includes(field as SORTED_FIELDS_ENUM)) {
+    if (SORTED_FIELDS.includes(field as SortedFieldsEnum)) {
       const key = camelize(`${field}_${order}`)
       newQueryArgs.sort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
