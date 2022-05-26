@@ -1,5 +1,5 @@
 import { LoginApiArg, LoginApiResponse } from 'modules/auth/models'
-import { HttpMethodEnums } from 'shared/constants/http'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
 const authService = api.injectEndpoints({
@@ -7,7 +7,7 @@ const authService = api.injectEndpoints({
     login: build.mutation<LoginApiResponse, LoginApiArg>({
       query: (queryArg) => ({
         url: '/user/auth',
-        method: HttpMethodEnums.POST,
+        method: HttpMethodEnum.POST,
         data: queryArg,
       }),
     }),

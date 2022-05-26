@@ -1,22 +1,22 @@
 import { notification } from 'antd'
 import { useEffect } from 'react'
 
-import { useGetOneTaskByIdQuery } from 'modules/tasks/tasks.service'
-import { GetOneTaskByIdQueryArgsModel } from 'modules/tasks/taskView/models'
+import { useGetTaskByIdQuery } from 'modules/tasks/tasks.service'
+import { GetTaskByIdQueryArgsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
 
-const useGetOneTaskById = (
-  id: GetOneTaskByIdQueryArgsModel,
-): ReturnType<typeof useGetOneTaskByIdQuery> => {
+const useGetTaskById = (
+  id: GetTaskByIdQueryArgsModel,
+): ReturnType<typeof useGetTaskByIdQuery> => {
   const { isEngineerRole, isSeniorEngineerRole, isHeadOfDepartmentRole } =
     useUserRole()
 
   const shouldSkip: boolean =
     isEngineerRole || isSeniorEngineerRole || isHeadOfDepartmentRole
 
-  const result = useGetOneTaskByIdQuery(id, {
+  const result = useGetTaskByIdQuery(id, {
     skip: !shouldSkip,
   })
 
@@ -47,4 +47,4 @@ const useGetOneTaskById = (
   return result
 }
 
-export default useGetOneTaskById
+export default useGetTaskById

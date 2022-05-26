@@ -2,7 +2,7 @@ import _pick from 'lodash/pick'
 import React, { FC, useEffect } from 'react'
 
 import { Task } from 'modules/tasks/taskList/models'
-import useGetOneTaskById from 'modules/tasks/taskView/hooks/useGetOneTaskById'
+import useGetTaskById from 'modules/tasks/taskView/hooks/useGetTaskById'
 import useGetWorkGroupList from 'modules/workGroups/workGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'
@@ -21,7 +21,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     isLoading: taskLoading,
     isFetching: taskFetching,
     isError: isTaskError,
-  } = useGetOneTaskById(taskId)
+  } = useGetTaskById(taskId)
 
   const {
     data: workGroupList,

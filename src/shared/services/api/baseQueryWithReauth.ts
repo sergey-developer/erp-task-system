@@ -2,7 +2,7 @@ import { Mutex } from 'async-mutex'
 
 import { logout, tokenRefreshed } from 'modules/auth/authSlice'
 import { UserRefreshCreateApiResponse } from 'modules/auth/models'
-import { HttpMethodEnums, HttpStatusCodeEnum } from 'shared/constants/http'
+import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
@@ -42,7 +42,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
         const { refreshToken: refresh } = (api.getState() as RootState).auth
         const refreshResult = await query(
           {
-            method: HttpMethodEnums.POST,
+            method: HttpMethodEnum.POST,
             url: TOKEN_REFRESH_PATH,
             data: {
               refresh,

@@ -1,12 +1,16 @@
 import { Col, Row, Typography } from 'antd'
+import { BaseType as TypographyType } from 'antd/lib/typography/Base'
+import moment from 'moment'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import { MaybeUndefined } from 'shared/interfaces/utils'
 import formatDate from 'shared/utils/date/formatDate'
 
-import { DetailContainerStyled } from './styles'
+import { DetailContainerStyled } from '../styles'
+import { getOlaNextBreachTimeAndCurrentMomentDiff } from './utils'
 
 type MainDetailsProps = Pick<
   TaskDetailsModel,
@@ -28,11 +32,55 @@ const MainDetails: FC<MainDetailsProps> = ({
   contactService,
   olaNextBreachTime,
 }) => {
-  // TODO:
-  //  const olaNextBreachTimeDiff = olaNextBreachTime
-  //   ? moment(olaNextBreachTime).diff(moment(), 'hours')
-  //   : ''
-  //  console.log(olaNextBreachTimeDiff)
+  const renderOlaNextBreachTime = () => {
+    const currentMoment = moment()
+    const olaNextBreachTimeMoment = moment(olaNextBreachTime)
+    const isTaskOverdue = olaNextBreachTimeMoment.isBefore(currentMoment)
+
+    const currentMomentAndCreatedAtDiff = currentMoment.diff(
+      createdAt,
+      'seconds',
+    )
+
+    const olaNextBreachTimeAndCreatedAtDiff = olaNextBreachTimeMoment.diff(
+      createdAt,
+      'seconds',
+    )
+
+    const olaNextBreachTimeAndCreatedAtHalfTime =
+      olaNextBreachTimeAndCreatedAtDiff / 2
+
+    const isTaskHalfTimeWasSpent = moment(
+      currentMomentAndCreatedAtDiff,
+    ).isBefore(olaNextBreachTimeAndCreatedAtHalfTime)
+
+    const olaNextBreachTimeAndCurrentMomentDiff = isTaskHalfTimeWasSpent
+      ? getOlaNextBreachTimeAndCurrentMomentDiff(
+          olaNextBreachTimeMoment.diff(currentMoment),
+        )
+      : null
+
+    const formattedOlaNextBreachTime = formatDate(
+      olaNextBreachTime,
+      DATE_TIME_FORMAT,
+    )
+
+    const olaNextBreachTimeTextType: MaybeUndefined<TypographyType> =
+      isTaskOverdue ? 'danger' : isTaskHalfTimeWasSpent ? 'warning' : undefined
+
+    const olaNextBreachTimeText = `до ${formattedOlaNextBreachTime}${
+      olaNextBreachTimeAndCurrentMomentDiff
+        ? ` (${olaNextBreachTimeAndCurrentMomentDiff})`
+        : ''
+    }`
+
+    return (
+      <Typography.Text type={olaNextBreachTimeTextType}>
+        {olaNextBreachTimeText}
+      </Typography.Text>
+    )
+  }
+
   return (
     <DetailContainerStyled>
       <Space direction='vertical' size='middle' $fullWidth>
@@ -47,11 +95,7 @@ const MainDetails: FC<MainDetailsProps> = ({
             {recordId}
           </Typography.Text>
 
-          {olaNextBreachTime && (
-            <Typography.Text type='danger'>
-              до {formatDate(olaNextBreachTime, DATE_TIME_FORMAT)} (2ч)
-            </Typography.Text>
-          )}
+          {olaNextBreachTime && renderOlaNextBreachTime()}
         </Space>
 
         <Space direction='vertical' size={4}>

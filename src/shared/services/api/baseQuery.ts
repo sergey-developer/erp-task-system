@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 import { httpClientConfig } from 'configs/httpClient'
-import { HttpMethodEnums } from 'shared/constants/http'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'
 
@@ -13,7 +13,7 @@ const baseQuery =
     apiVersion,
     apiPath,
   }: CustomBaseQueryConfig): CustomBaseQueryFn =>
-  async ({ url, method = HttpMethodEnums.GET, data, params }, api) => {
+  async ({ url, method = HttpMethodEnum.GET, data, params }, api) => {
     const headers = prepareHeaders
       ? prepareHeaders(httpClient.defaults.headers.common, api)
       : undefined
