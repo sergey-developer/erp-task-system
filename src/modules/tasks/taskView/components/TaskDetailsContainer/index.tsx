@@ -40,7 +40,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       taskLoading={taskLoading || taskFetching}
       workGroupListLoading={workGroupListLoading || workGroupListFetching}
       workGroupList={workGroupList?.results || []}
-      details={task}
+      details={task || null}
     />
   )
 }
