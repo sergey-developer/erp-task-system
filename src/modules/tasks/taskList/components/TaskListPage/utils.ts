@@ -12,7 +12,7 @@ import { ExtendedFilterFormFields, ExtendedFilterQueries } from './interfaces'
 export const mapExtendedFilterFormFieldsToQueries = (
   fields: ExtendedFilterFormFields,
 ): ExtendedFilterQueries => {
-  const { creationDateRange, smartSearchField, smartSearchValue, status } =
+  const { creationDateRange, searchField, searchValue, status, workGroupId } =
     fields
 
   return {
@@ -23,6 +23,7 @@ export const mapExtendedFilterFormFieldsToQueries = (
       ? creationDateRange[1].format(DATE_FILTER_FORMAT)
       : undefined,
     status,
-    [smartSearchField]: smartSearchValue,
+    [searchField]: searchValue || undefined,
+    workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
   }
 }
