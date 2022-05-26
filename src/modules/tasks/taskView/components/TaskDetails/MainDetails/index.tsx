@@ -54,11 +54,12 @@ const MainDetails: FC<MainDetailsProps> = ({
       currentMomentAndCreatedAtDiff,
     ).isBefore(olaNextBreachTimeAndCreatedAtHalfTime)
 
-    const olaNextBreachTimeAndCurrentMomentDiff = isTaskHalfTimeWasSpent
-      ? getOlaNextBreachTimeAndCurrentMomentDiff(
-          olaNextBreachTimeMoment.diff(currentMoment),
-        )
-      : null
+    const olaNextBreachTimeAndCurrentMomentDiff =
+      isTaskHalfTimeWasSpent && !isTaskOverdue
+        ? getOlaNextBreachTimeAndCurrentMomentDiff(
+            olaNextBreachTimeMoment.diff(currentMoment),
+          )
+        : null
 
     const formattedOlaNextBreachTime = formatDate(
       olaNextBreachTime,

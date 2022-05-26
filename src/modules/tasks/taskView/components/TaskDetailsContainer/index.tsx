@@ -1,14 +1,14 @@
 import _pick from 'lodash/pick'
 import React, { FC, useEffect, useMemo } from 'react'
 
-import { Task } from 'modules/tasks/taskList/models'
+import { TaskListItemModel } from 'modules/tasks/taskList/models'
 import useGetTaskById from 'modules/tasks/taskView/hooks/useGetTaskById'
 import useGetWorkGroupList from 'modules/workGroups/workGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'
 
 type TaskDetailsContainerProps = {
-  taskId: Task['id']
+  taskId: TaskListItemModel['id']
   onClose: () => void
 }
 

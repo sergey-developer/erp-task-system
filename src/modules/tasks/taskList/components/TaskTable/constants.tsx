@@ -2,7 +2,7 @@ import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
 import TaskStatus from 'components/TaskStatus'
-import { Task } from 'modules/tasks/taskList/models'
+import { TaskListItemModel } from 'modules/tasks/taskList/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -10,7 +10,7 @@ import formatDate from 'shared/utils/date/formatDate'
 
 import { getFIOString } from './utils'
 
-export const TABLE_COLUMNS: ColumnsType<Task> = [
+export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
   {
     key: 'noop',
     width: 52,
@@ -47,7 +47,8 @@ export const TABLE_COLUMNS: ColumnsType<Task> = [
     title: 'Исполнитель',
     dataIndex: 'assignee',
     key: 'assignee',
-    render: (value: MaybeNull<Task['assignee']>) => getFIOString(value),
+    render: (value: MaybeNull<TaskListItemModel['assignee']>) =>
+      getFIOString(value),
     width: 180,
   },
   {

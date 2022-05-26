@@ -1,13 +1,13 @@
 import { WorkGroupModel } from 'modules/workGroups/models'
-import { PaginatedListResponse } from 'shared/interfaces/api'
 import { AssigneeModel } from 'shared/interfaces/models'
+import { PaginatedListResponseModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import {
   ReclassificationReasonEnum,
   ReclassificationRequestStatusEnum,
   ResolutionCodeEnum,
-  SmartSortEnum,
+  SortEnum,
   SuspendReasonEnum,
   TaskStatusEnum,
   TaskTypeEnum,
@@ -28,18 +28,17 @@ export type GetTaskListTransformedApiResponse = {
     total: number
     pageSize: number
   }
-  results: Task[]
+  results: TaskListItemModel[]
 }
 
-export type PaginatedTaskList = PaginatedListResponse<Task>
+export type PaginatedTaskList = PaginatedListResponseModel<TaskListItemModel>
 
 export type GetTaskListApiArg = {
   hideAwaitingTask?: boolean
   limit: number
   offset: number
-  smartSort?: SmartSortEnum
+  sort?: SortEnum
   userId?: number
-  workGroupId?: number
 } & ExtendedFilterQueries &
   QuickFilterQueries &
   TaskIdFilterQueries
@@ -58,7 +57,7 @@ export type ReclassificationRequest = {
   task: number
 }
 
-export type Task = {
+export type TaskListItemModel = {
   id: number
   comment: Comment
   reclassificationRequest: ReclassificationRequest

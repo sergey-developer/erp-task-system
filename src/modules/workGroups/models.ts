@@ -1,4 +1,4 @@
-import { PaginatedListResponse } from 'shared/interfaces/api'
+import { PaginatedListResponseModel } from 'shared/interfaces/models'
 
 export type WorkGroupMemberModel = {
   id: number
@@ -12,4 +12,4 @@ export type WorkGroupModel = {
 }
 
 export type GetWorkGroupListResponseModel =
-  PaginatedListResponse<WorkGroupModel>
+  PaginatedListResponseModel<WorkGroupModel>

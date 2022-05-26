@@ -8,17 +8,18 @@ export type FilterListItem = Pick<FilterTagProps, 'text' | 'amount'> & {
   value: FastFilterEnum
 }
 
-export type SmartSearchQueries = {
-  smartSearchAssignee?: string
-  smartSearchDescription?: string
-  smartSearchName?: string
+export type SearchQueries = {
+  searchByAssignee?: string
+  searchByName?: string
+  searchByTitle?: string
 }
 
 export type ExtendedFilterQueries = {
   dateFrom?: string
   dateTo?: string
   status?: TaskStatusEnum[]
-} & SmartSearchQueries
+  workGroupId?: number
+} & SearchQueries
 
 export type QuickFilterQueries = {
   filter?: FastFilterEnum
@@ -30,7 +31,8 @@ export type TaskIdFilterQueries = {
 
 export type ExtendedFilterFormFields = {
   creationDateRange: MaybeNull<[Moment, Moment]>
-  smartSearchField: keyof SmartSearchQueries
-  smartSearchValue: string
+  searchField: keyof SearchQueries
+  searchValue: string
   status: TaskStatusEnum[]
+  workGroupId: string
 }

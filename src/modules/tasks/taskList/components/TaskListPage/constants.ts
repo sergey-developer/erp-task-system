@@ -1,7 +1,7 @@
 import { SorterResult } from 'antd/es/table/interface'
 
 import { FastFilterEnum, SortEnum } from 'modules/tasks/constants'
-import { Task } from 'modules/tasks/taskList/models'
+import { TaskListItemModel } from 'modules/tasks/taskList/models'
 
 import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
 
@@ -36,7 +36,7 @@ export const SMART_SORT_TO_FIELD_SORT_DIRECTIONS = {
 
 export const SMART_SORT_DIRECTIONS_TO_SORT_FIELDS: Record<
   SortEnum,
-  SorterResult<Task>
+  SorterResult<TaskListItemModel>
 > = {
   [SortEnum.ByOlaDesc]: {
     columnKey: SORTED_FIELDS_ENUM.olaNextBreachTime,

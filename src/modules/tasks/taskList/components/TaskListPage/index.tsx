@@ -6,10 +6,15 @@ import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
-import { FastFilterEnum, SmartSortEnum } from 'modules/tasks/constants'
-import { GetTaskListApiArg, Task } from 'modules/tasks/taskList/models'
+import useUserInfo from 'modules/auth/hooks/useUserInfo'
+import { FastFilterEnum, SortEnum } from 'modules/tasks/constants'
+import {
+  GetTaskListApiArg,
+  TaskListItemModel,
+} from 'modules/tasks/taskList/models'
 import { useTaskListQuery } from 'modules/tasks/tasks.service'
 import TaskDetails from 'modules/tasks/taskView/components/TaskDetailsContainer'
+import UserRolesEnum from 'shared/constants/roles'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
@@ -67,7 +72,9 @@ const TaskListPage: FC = () => {
   const { role: userRole } = useUserInfo()
 
   const initialFastFilter: FastFilterEnum =
-    userRole === UserRoles.Engineer ? FastFilterEnum.Mine : FastFilterEnum.All
+    userRole === UserRolesEnum.Engineer
+      ? FastFilterEnum.Mine
+      : FastFilterEnum.All
 
   const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
     filter: initialFastFilter,
@@ -83,7 +90,7 @@ const TaskListPage: FC = () => {
   } = useTaskListQuery(queryArgs)
 
   const [selectedTaskId, setSelectedTaskId] =
-    useState<MaybeNull<Task['id']>>(null)
+    useState<MaybeNull<TaskListItemModel['id']>>(null)
 
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
@@ -129,8 +136,8 @@ const TaskListPage: FC = () => {
     }
   }
 
-  const handleTableRowClick: GetComponentProps<Task> = useCallback(
-    (record: Task) => ({
+  const handleTableRowClick: GetComponentProps<TaskListItemModel> = useCallback(
+    (record: TaskListItemModel) => ({
       onClick: () => setSelectedTaskId(record.id),
     }),
     [setSelectedTaskId],
@@ -142,7 +149,7 @@ const TaskListPage: FC = () => {
 
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
-    NonNullable<TableProps<Task>['onChange']>
+    NonNullable<TableProps<TaskListItemModel>['onChange']>
   >((pagination, filters, sorter) => {
     const { field, order = SORT_DIRECTIONS_ENUM.ascend } = Array.isArray(sorter)
       ? sorter[0]

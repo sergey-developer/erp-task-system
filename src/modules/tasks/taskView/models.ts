@@ -10,7 +10,7 @@ import {
   TaskTypeEnum,
 } from '../constants'
 import { BaseTaskCommentModel } from '../models'
-import { Task } from '../taskList/models'
+import { TaskListItemModel } from '../taskList/models'
 
 export type TaskCommentDetailModel = BaseTaskCommentModel & {
   author: CommentAuthorModel
@@ -78,4 +78,4 @@ export type TaskDetailsModel = {
 
 export type GetTaskByIdResponseModel = TaskDetailsModel
 
-export type GetTaskByIdQueryArgsModel = Task['id']
+export type GetTaskByIdQueryArgsModel = TaskListItemModel['id']

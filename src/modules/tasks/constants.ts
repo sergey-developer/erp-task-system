@@ -3,6 +3,7 @@ export enum FastFilterEnum {
   Free = 'FREE',
   Mine = 'MINE',
   Overdue = 'OVERDUE',
+  Closed = 'CLOSED',
 }
 
 export enum TaskStatusEnum {
@@ -16,11 +17,11 @@ export enum TaskStatusEnum {
   Reclassified = 'RECLASSIFIED',
 }
 
-export enum SmartSortEnum {
-  ByCreatedDateAsc = 'BY_CREATED_DATE_ASC',
-  ByCreatedDateDesc = 'BY_CREATED_DATE_DESC',
-  ByOlaAsc = 'BY_OLA_ASC',
-  ByOlaDesc = 'BY_OLA_DESC',
+export enum SortEnum {
+  ByCreatedDateAsc = 'created_at',
+  ByCreatedDateDesc = '-created_at',
+  ByOlaAsc = 'ola_next_breach_time',
+  ByOlaDesc = '-ola_next_breach_time',
 }
 
 export enum TaskCommentTypeEnum {
@@ -91,13 +92,12 @@ export enum SuspendReasonEnum {
 }
 
 export const taskStatusDictionary: Record<TaskStatusEnum, string> = {
-  [TaskStatusEnum.Appointed]: 'В ожидании',
-  [TaskStatusEnum.Awaiting]: 'В ожидании (Awaiting?)',
+  [TaskStatusEnum.Appointed]: 'Назначено',
+  [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.Closed]: 'Возврат с II линии',
   [TaskStatusEnum.Completed]: 'Выполнено',
   [TaskStatusEnum.InProgress]: 'В работе',
-  [TaskStatusEnum.InReclassification]:
-    'На переклассификации (InReclassification?)',
+  [TaskStatusEnum.InReclassification]: 'На переклассификации',
   [TaskStatusEnum.New]: 'Ожидает выполнения',
-  [TaskStatusEnum.Reclassified]: 'На переклассификации',
+  [TaskStatusEnum.Reclassified]: 'Переклассифицировано',
 }

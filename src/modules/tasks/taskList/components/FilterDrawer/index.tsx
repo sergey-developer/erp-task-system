@@ -10,10 +10,12 @@ import {
 import React, { FC } from 'react'
 
 import TaskStatus from 'components/TaskStatus'
+import useUserInfo from 'modules/auth/hooks/useUserInfo'
 import { TaskStatusEnum, taskStatusDictionary } from 'modules/tasks/constants'
+import UserRolesEnum from 'shared/constants/roles'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
-import { smartSearchQueriesDictionary } from './constants'
+import { searchQueriesDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import {
@@ -93,8 +95,8 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           </Form.Item>
         </FilterBlock>
 
-        {userRole !== UserRoles.Engineer &&
-          userRole !== UserRoles.FirstLineSupport && (
+        {userRole !== UserRolesEnum.Engineer &&
+          userRole !== UserRolesEnum.FirstLineSupport && (
             <FilterBlock withDivider>
               <FilterBlockLabel
                 onReset={() => form.setFieldsValue({ workGroupId: '' })}
