@@ -1,5 +1,4 @@
-import _pick from 'lodash/pick'
-import React, { FC, useEffect, useMemo } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import { TaskListItemModel } from 'modules/tasks/taskList/models'
 import useGetTaskById from 'modules/tasks/taskView/hooks/useGetTaskById'
@@ -35,32 +34,13 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     }
   }, [isTaskError, onClose])
 
-  const taskDetails = useMemo(() => {
-    return task
-      ? _pick(
-          task,
-          'id',
-          'recordId',
-          'title',
-          'createdAt',
-          'name',
-          'address',
-          'contactService',
-          'olaNextBreachTime',
-          'workGroup',
-          'assignee',
-          'status',
-        )
-      : null
-  }, [task])
-
   return (
     <TaskDetails
       onClose={onClose}
       taskLoading={taskLoading || taskFetching}
       workGroupListLoading={workGroupListLoading || workGroupListFetching}
       workGroupList={workGroupList?.results || []}
-      details={taskDetails}
+      details={task}
     />
   )
 }
