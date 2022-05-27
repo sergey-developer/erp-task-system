@@ -18,7 +18,7 @@ const tasksService = api.injectEndpoints({
       GetTaskListApiArg
     >({
       query: (data) => ({
-        url: '/tasks/view',
+        url: '/tasks',
         method: HttpMethodEnum.GET,
         params: data,
       }),
@@ -39,7 +39,7 @@ const tasksService = api.injectEndpoints({
       GetTaskByIdQueryArgsModel
     >({
       query: (id) => ({
-        url: `/tasks/view/${id}`,
+        url: `/tasks/${id}`,
         method: HttpMethodEnum.GET,
       }),
     }),
