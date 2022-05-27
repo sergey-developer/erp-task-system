@@ -13,30 +13,27 @@ import {
 
 const tasksService = api.injectEndpoints({
   endpoints: (build) => ({
-    taskList: build.query<GetTaskListTransformedApiResponse, GetTaskListApiArg>(
-      {
-        query: (data) => ({
-          url: '/tasks/view',
-          method: HttpMethodEnum.GET,
-          params: data,
-        }),
-        // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
-        transformResponse: (
-          response: GetTaskListBaseApiResponse,
-          meta,
-          arg,
-        ) => {
-          return {
-            pagination: {
-              current: arg.offset / arg.limit + 1,
-              pageSize: arg.limit,
-              total: response.count,
-            },
-            results: response.results,
-          }
-        },
+    getTaskList: build.query<
+      GetTaskListTransformedApiResponse,
+      GetTaskListApiArg
+    >({
+      query: (data) => ({
+        url: '/tasks/view',
+        method: HttpMethodEnum.GET,
+        params: data,
+      }),
+      // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
+      transformResponse: (response: GetTaskListBaseApiResponse, meta, arg) => {
+        return {
+          pagination: {
+            current: arg.offset / arg.limit + 1,
+            pageSize: arg.limit,
+            total: response.count,
+          },
+          results: response.results,
+        }
       },
-    ),
+    }),
     getTaskById: build.query<
       GetTaskByIdResponseModel,
       GetTaskByIdQueryArgsModel
@@ -52,4 +49,4 @@ const tasksService = api.injectEndpoints({
 
 export { tasksService }
 
-export const { useTaskListQuery, useGetTaskByIdQuery } = tasksService
+export const { useGetTaskListQuery, useGetTaskByIdQuery } = tasksService
