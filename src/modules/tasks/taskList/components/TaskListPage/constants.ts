@@ -62,5 +62,5 @@ export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
   searchField: DEFAULT_SEARCH_FIELD,
   searchValue: '',
   status: [],
-  workGroupId: '',
+  workGroupId: undefined,
 }

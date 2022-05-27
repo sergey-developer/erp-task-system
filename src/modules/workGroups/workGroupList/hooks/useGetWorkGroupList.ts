@@ -2,11 +2,14 @@ import { notification } from 'antd'
 import { useEffect } from 'react'
 
 import useUserRole from 'modules/user/hooks/useUserRole'
-import { useGetWorkGroupListQuery } from 'modules/workGroups/workGroups.service'
+import {
+  UseGetWorkGroupListQueryReturnType,
+  useGetWorkGroupListQuery,
+} from 'modules/workGroups/workGroups.service'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
 
-const useGetWorkGroupList = (): ReturnType<typeof useGetWorkGroupListQuery> => {
+const useGetWorkGroupList = (): UseGetWorkGroupListQueryReturnType => {
   const {
     isFirstLineSupportRole,
     isSeniorEngineerRole,

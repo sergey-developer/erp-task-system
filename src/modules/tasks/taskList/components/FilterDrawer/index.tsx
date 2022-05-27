@@ -5,14 +5,15 @@ import {
   FormInstance,
   Input,
   Radio,
+  Select,
   Space,
 } from 'antd'
 import React, { FC } from 'react'
 
 import TaskStatus from 'components/TaskStatus'
-import useUserInfo from 'modules/auth/hooks/useUserInfo'
 import { TaskStatusEnum, taskStatusDictionary } from 'modules/tasks/constants'
-import UserRolesEnum from 'shared/constants/roles'
+import useUserRole from 'modules/user/hooks/useUserRole'
+import useGetWorkGroupList from 'modules/workGroups/workGroupList/hooks/useGetWorkGroupList'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
 import { searchQueriesDictionary } from './constants'
@@ -46,7 +47,10 @@ const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { form, initialValues, onClose, onSubmit, visible } = props
 
-  const { role: userRole } = useUserInfo()
+  const { isFirstLineSupportRole, isEngineerRole } = useUserRole()
+
+  const { data: workGroupList, isFetching: workGroupListIsFetching } =
+    useGetWorkGroupList()
 
   const handleResetAll = () => {
     form.resetFields()
@@ -95,20 +99,35 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           </Form.Item>
         </FilterBlock>
 
-        {userRole !== UserRolesEnum.Engineer &&
-          userRole !== UserRolesEnum.FirstLineSupport && (
-            <FilterBlock withDivider>
-              <FilterBlockLabel
-                onReset={() => form.setFieldsValue({ workGroupId: '' })}
-              >
-                Рабочая группа
-              </FilterBlockLabel>
+        {!isFirstLineSupportRole && !isEngineerRole && (
+          <FilterBlock withDivider>
+            <FilterBlockLabel
+              onReset={() => form.setFieldsValue({ workGroupId: undefined })}
+            >
+              Рабочая группа
+            </FilterBlockLabel>
 
-              <Form.Item name='workGroupId'>
-                <Input placeholder='Рабочая группа' />
-              </Form.Item>
-            </FilterBlock>
-          )}
+            <Form.Item name='workGroupId'>
+              <Select
+                disabled={workGroupListIsFetching}
+                loading={workGroupListIsFetching}
+                placeholder='Рабочая группа'
+                showSearch
+                filterOption={(input, option) =>
+                  (option!.children as unknown as string)
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+              >
+                {workGroupList?.map(({ id, name }) => (
+                  <Select.Option key={id} value={id}>
+                    {name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </FilterBlock>
+        )}
 
         <FilterBlock withDivider={false}>
           <FilterBlockLabel
