@@ -12,7 +12,7 @@ import {
   GetTaskListApiArg,
   TaskListItemModel,
 } from 'modules/tasks/taskList/models'
-import { useTaskListQuery } from 'modules/tasks/tasks.service'
+import { useGetTaskListQuery } from 'modules/tasks/tasks.service'
 import TaskDetails from 'modules/tasks/taskView/components/TaskDetailsContainer'
 import UserRolesEnum from 'shared/constants/roles'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -84,10 +84,10 @@ const TaskListPage: FC = () => {
   })
 
   const {
-    data: tasksListResponse,
+    data: taskListResponse,
     isFetching,
-    refetch: refetchTasksList,
-  } = useTaskListQuery(queryArgs)
+    refetch: refetchTaskList,
+  } = useGetTaskListQuery(queryArgs)
 
   const [selectedTaskId, setSelectedTaskId] =
     useState<MaybeNull<TaskListItemModel['id']>>(null)
@@ -236,11 +236,13 @@ const TaskListPage: FC = () => {
                   placeholder='Искать заявку по номеру'
                 />
               </Col>
+
               <Col>
                 <Space align='end'>
-                  <Button icon={<SyncOutlined />} onClick={refetchTasksList}>
+                  <Button icon={<SyncOutlined />} onClick={refetchTaskList}>
                     Обновить заявки
                   </Button>
+
                   <Button>+ Создать заявку</Button>
                 </Space>
               </Col>
@@ -253,10 +255,10 @@ const TaskListPage: FC = () => {
               <TaskTable
                 sorting={queryArgs.sort}
                 onRow={handleTableRowClick}
-                dataSource={tasksListResponse?.results}
+                dataSource={taskListResponse?.results}
                 loading={isFetching}
                 onChange={handleChangeTable}
-                pagination={tasksListResponse?.pagination}
+                pagination={taskListResponse?.pagination}
               />
             </Col>
 
