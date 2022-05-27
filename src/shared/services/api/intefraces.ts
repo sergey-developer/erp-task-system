@@ -1,5 +1,6 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/react'
-import { AxiosRequestConfig } from 'axios'
+import { BaseQueryApi } from '@reduxjs/toolkit/src/query/baseQueryTypes'
+import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 
 import { MaybeUndefined } from 'shared/interfaces/utils'
 
@@ -22,3 +23,17 @@ export type CustomBaseQueryFn = BaseQueryFn<{
   data?: AxiosRequestConfig['data']
   params?: AxiosRequestConfig['params']
 }>
+
+export type ApiVersionUnion = 'v1'
+
+export type CustomBaseQueryConfig = {
+  apiVersion: ApiVersionUnion
+  apiPath: string
+  prepareHeaders?: (
+    headers: AxiosRequestHeaders,
+    api: Pick<
+      BaseQueryApi,
+      'getState' | 'extra' | 'endpoint' | 'type' | 'forced'
+    >,
+  ) => AxiosRequestHeaders
+}

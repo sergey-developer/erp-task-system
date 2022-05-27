@@ -1,4 +1,4 @@
-enum UserRoles {
+enum UserRolesEnum {
   FirstLineSupport = 'FIRST_LINE_SUPPORT',
   Engineer = 'ENGINEER',
   SeniorEngineer = 'SENIOR_ENGINEER',
@@ -6,4 +6,4 @@ enum UserRoles {
   Admin = 'ADMIN',
 }
 
-export default UserRoles
+export default UserRolesEnum
