@@ -110,21 +110,21 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
             <Form.Item name='workGroupId'>
               <Select
                 disabled={workGroupListIsFetching}
+                fieldNames={{
+                  label: 'name',
+                  value: 'id',
+                }}
                 loading={workGroupListIsFetching}
+                options={workGroupList}
                 placeholder='Рабочая группа'
                 showSearch
-                filterOption={(input, option) =>
-                  (option!.children as unknown as string)
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-              >
-                {workGroupList?.map(({ id, name }) => (
-                  <Select.Option key={id} value={id}>
-                    {name}
-                  </Select.Option>
-                ))}
-              </Select>
+                filterOption={(input, option) => {
+                  if (!option) {
+                    return false
+                  }
+                  return option.name.toLowerCase().includes(input.toLowerCase())
+                }}
+              />
             </Form.Item>
           </FilterBlock>
         )}
