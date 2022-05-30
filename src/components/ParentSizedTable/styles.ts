@@ -44,8 +44,7 @@ export const StyledTable: typeof Table = styled(Table)`
       .ant-table-pagination {
         flex: none;
         margin: 0;
-        padding: 16px 10px;
-        border-top: ${(props) => `1px solid ${props.theme.colors.lightGray}`};
+        padding: 12px 10px;
       }
     }
   }

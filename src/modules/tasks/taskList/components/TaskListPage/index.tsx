@@ -6,7 +6,6 @@ import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
-import useUserInfo from 'modules/auth/hooks/useUserInfo'
 import { FastFilterEnum, SortEnum } from 'modules/tasks/constants'
 import {
   GetTaskListQueryArgsModel,
@@ -14,7 +13,7 @@ import {
 } from 'modules/tasks/taskList/models'
 import { useGetTaskListQuery } from 'modules/tasks/tasks.service'
 import TaskDetails from 'modules/tasks/taskView/components/TaskDetailsContainer'
-import UserRolesEnum from 'shared/constants/roles'
+import useUserRole from 'modules/user/hooks/useUserRole'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
@@ -69,12 +68,11 @@ const filterList: Array<FilterListItem> = [
 ]
 
 const TaskListPage: FC = () => {
-  const { role: userRole } = useUserInfo()
+  const { isEngineerRole } = useUserRole()
 
-  const initialFastFilter: FastFilterEnum =
-    userRole === UserRolesEnum.Engineer
-      ? FastFilterEnum.Mine
-      : FastFilterEnum.All
+  const initialFastFilter: FastFilterEnum = isEngineerRole
+    ? FastFilterEnum.Mine
+    : FastFilterEnum.All
 
   const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgsModel>({
     filter: initialFastFilter,
