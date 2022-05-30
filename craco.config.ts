@@ -14,6 +14,7 @@ module.exports = {
   ],
   webpack: {
     alias: {
+      lib: resolvePath('./src/lib'),
       configs: resolvePath('./src/configs'),
       modules: resolvePath('./src/modules'),
       components: resolvePath('./src/components'),

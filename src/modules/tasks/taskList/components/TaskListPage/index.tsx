@@ -8,7 +8,7 @@ import React, { FC, useCallback, useState } from 'react'
 import FilterTag from 'components/FilterTag'
 import { FastFilterEnum, SortEnum } from 'modules/tasks/constants'
 import {
-  GetTaskListApiArg,
+  GetTaskListQueryArgsModel,
   TaskListItemModel,
 } from 'modules/tasks/taskList/models'
 import { useGetTaskListQuery } from 'modules/tasks/tasks.service'
@@ -74,7 +74,7 @@ const TaskListPage: FC = () => {
     ? FastFilterEnum.Mine
     : FastFilterEnum.All
 
-  const [queryArgs, setQueryArgs] = useState<GetTaskListApiArg>({
+  const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgsModel>({
     filter: initialFastFilter,
     limit: DEFAULT_PAGE_LIMIT,
     offset: 0,
@@ -153,7 +153,7 @@ const TaskListPage: FC = () => {
       ? sorter[0]
       : sorter
 
-    const newQueryArgs: Partial<GetTaskListApiArg> = {
+    const newQueryArgs: Partial<GetTaskListQueryArgsModel> = {
       offset: (pagination.current! - 1) * pagination.pageSize!,
       limit: pagination.pageSize!,
     }

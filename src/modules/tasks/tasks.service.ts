@@ -1,10 +1,10 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
+import { GetTaskListTransformedResponse } from './taskList/interfaces'
 import {
-  GetTaskListApiArg,
-  GetTaskListBaseApiResponse,
-  GetTaskListTransformedApiResponse,
+  GetTaskListQueryArgsModel,
+  GetTaskListResponseModel,
 } from './taskList/models'
 import {
   GetTaskByIdQueryArgsModel,
@@ -14,8 +14,8 @@ import {
 const tasksService = api.injectEndpoints({
   endpoints: (build) => ({
     getTaskList: build.query<
-      GetTaskListTransformedApiResponse,
-      GetTaskListApiArg
+      GetTaskListTransformedResponse,
+      GetTaskListQueryArgsModel
     >({
       query: (data) => ({
         url: '/tasks',
@@ -23,7 +23,7 @@ const tasksService = api.injectEndpoints({
         params: data,
       }),
       // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
-      transformResponse: (response: GetTaskListBaseApiResponse, meta, arg) => {
+      transformResponse: (response: GetTaskListResponseModel, meta, arg) => {
         return {
           pagination: {
             current: arg.offset / arg.limit + 1,

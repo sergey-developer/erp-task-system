@@ -4,5 +4,5 @@ export type PaginatedListResponseModel<ListItem> = {
   count: number
   next: MaybeNull<string>
   previous: MaybeNull<string>
-  results: ListItem[]
+  results: Array<ListItem>
 }

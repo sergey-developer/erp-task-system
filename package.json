@@ -72,6 +72,7 @@
       "options": {
         "cacheStrategy": "never",
         "extraAliases": [
+          "lib",
           "configs",
           "modules",
           "components",
@@ -86,6 +87,7 @@
   },
   "jest": {
     "moduleNameMapper": {
+      "^lib(.*)$": "<rootDir>/src/lib/$1",
       "^configs(.*)$": "<rootDir>/src/configs/$1",
       "^modules(.*)$": "<rootDir>/src/modules/$1",
       "^components(.*)$": "<rootDir>/src/components/$1",

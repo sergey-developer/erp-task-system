@@ -19,21 +19,10 @@ import {
   TaskIdFilterQueries,
 } from './components/TaskListPage/interfaces'
 
-export type GetTaskListBaseApiResponse = PaginatedTaskList
+export type GetTaskListResponseModel =
+  PaginatedListResponseModel<TaskListItemModel>
 
-// todo: вынести трансформацию ответа под ант пагинацию в общий модуль
-export type GetTaskListTransformedApiResponse = {
-  pagination: {
-    current: number
-    total: number
-    pageSize: number
-  }
-  results: TaskListItemModel[]
-}
-
-export type PaginatedTaskList = PaginatedListResponseModel<TaskListItemModel>
-
-export type GetTaskListApiArg = {
+export type GetTaskListQueryArgsModel = {
   hideAwaitingTask?: boolean
   limit: number
   offset: number
@@ -43,11 +32,11 @@ export type GetTaskListApiArg = {
   QuickFilterQueries &
   TaskIdFilterQueries
 
-export type Comment = BaseTaskCommentModel & {
+export type TaskListItemCommentModel = BaseTaskCommentModel & {
   author: number
 }
 
-export type ReclassificationRequest = {
+export type TaskReclassificationRequestModel = {
   id: number
   createdAt: string
   updatedAt: string
@@ -59,8 +48,8 @@ export type ReclassificationRequest = {
 
 export type TaskListItemModel = {
   id: number
-  comment: Comment
-  reclassificationRequest: ReclassificationRequest
+  comment: TaskListItemCommentModel
+  reclassificationRequest: TaskReclassificationRequestModel
   assignee: Pick<AssigneeModel, 'id' | 'firstName' | 'lastName' | 'middleName'>
   workGroup: WorkGroupModel
   createdAt: string
