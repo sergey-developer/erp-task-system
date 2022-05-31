@@ -4,7 +4,7 @@ import { StorageKeys } from 'shared/constants/storage'
 import localStorageService from 'shared/services/localStorage'
 
 import { IAuthSliceState } from './interfaces'
-import { LoginApiResponse, UserRefreshCreateApiResponse } from './models'
+import { LoginResponseModel, RefreshTokenResponseModel } from './models'
 import { parseJwt } from './utils'
 
 function getInitialState(): IAuthSliceState {
@@ -31,14 +31,14 @@ const slice = createSlice({
       localStorageService.removeItem(StorageKeys.refreshToken)
       return getInitialState()
     },
-    login: (state, { payload }: PayloadAction<LoginApiResponse>) => {
+    login: (state, { payload }: PayloadAction<LoginResponseModel>) => {
       localStorageService.setItem(StorageKeys.accessToken, payload.access)
       localStorageService.setItem(StorageKeys.refreshToken, payload.refresh)
       return getInitialState()
     },
-    tokenRefreshed: (
+    refreshToken: (
       state,
-      { payload }: PayloadAction<UserRefreshCreateApiResponse>,
+      { payload }: PayloadAction<RefreshTokenResponseModel>,
     ) => {
       localStorageService.setItem(StorageKeys.accessToken, payload.access)
       return getInitialState()
@@ -47,4 +47,4 @@ const slice = createSlice({
 })
 
 export default slice.reducer
-export const { logout, tokenRefreshed, login } = slice.actions
+export const { logout, refreshToken, login } = slice.actions

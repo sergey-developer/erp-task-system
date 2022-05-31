@@ -1,8 +1,13 @@
 import { camelizeKeys } from 'humps'
 
-import { UserInfo } from './models'
+import UserRolesEnum from 'shared/constants/roles'
 
-export const parseJwt = (token: string): UserInfo => {
+export type JwtPayload = {
+  userId: number
+  userRole: UserRolesEnum
+}
+
+export const parseJwt = (token: string): JwtPayload => {
   const base64Url = token.split('.')[1]
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
   const jsonPayload = decodeURIComponent(
@@ -14,5 +19,5 @@ export const parseJwt = (token: string): UserInfo => {
       })
       .join(''),
   )
-  return camelizeKeys(JSON.parse(jsonPayload)) as unknown as UserInfo
+  return camelizeKeys(JSON.parse(jsonPayload)) as unknown as JwtPayload
 }

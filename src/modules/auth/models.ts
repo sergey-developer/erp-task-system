@@ -1,20 +1,17 @@
-import UserRolesEnum from 'shared/constants/roles'
+import { JwtPayload } from './utils'
 
-export type LoginApiResponse = {
+export type LoginResponseModel = {
   access: string
   refresh: string
 }
 
-export type LoginApiArg = {
+export type LoginMutationArgsModel = {
   email: string
   password: string
 }
 
-export type UserRefreshCreateApiResponse = {
+export type RefreshTokenResponseModel = {
   access: string
 }
 
-export type UserInfo = {
-  userId: number
-  userRole: UserRolesEnum
-}
+export type AuthenticatedUserModel = JwtPayload

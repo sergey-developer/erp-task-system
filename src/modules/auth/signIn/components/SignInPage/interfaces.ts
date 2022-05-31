@@ -1,3 +1,3 @@
-import { LoginApiArg } from 'modules/auth/models'
+import { LoginMutationArgsModel } from 'modules/auth/models'
 
-export type SignInFormFields = LoginApiArg
+export type SignInFormFields = LoginMutationArgsModel

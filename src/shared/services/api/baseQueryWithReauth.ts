@@ -1,7 +1,7 @@
 import { Mutex } from 'async-mutex'
 
-import { logout, tokenRefreshed } from 'modules/auth/authSlice'
-import { UserRefreshCreateApiResponse } from 'modules/auth/models'
+import { logout, refreshToken } from 'modules/auth/authSlice'
+import { RefreshTokenResponseModel } from 'modules/auth/models'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 import { RootState } from 'state/store'
 
@@ -53,7 +53,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
         )
         if (refreshResult.data) {
           api.dispatch(
-            tokenRefreshed(refreshResult.data as UserRefreshCreateApiResponse),
+            refreshToken(refreshResult.data as RefreshTokenResponseModel),
           )
           result = await query(args, api, extraOptions)
         } else {

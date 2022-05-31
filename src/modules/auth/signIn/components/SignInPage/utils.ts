@@ -1,8 +1,10 @@
-import { LoginApiArg } from 'modules/auth/models'
+import { LoginMutationArgsModel } from 'modules/auth/models'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 
-export const getError = (error: ErrorResponse<LoginApiArg>): string => {
+export const getError = (
+  error: ErrorResponse<LoginMutationArgsModel>,
+): string => {
   switch (error.status) {
     case HttpStatusCodeEnum.BadRequest:
       return 'Неверный запрос'
