@@ -7,17 +7,17 @@ type UserRoleKey = `is${keyof typeof UserRolesEnum}Role`
 type UseUserRoleResult = Record<UserRoleKey, boolean>
 
 const useUserRole = (): UseUserRoleResult => {
-  const { role } = useUserInfo()
+  const userInfo = useUserInfo()
 
   return useMemo(
     () => ({
-      isFirstLineSupportRole: role === UserRolesEnum.FirstLineSupport,
-      isEngineerRole: role === UserRolesEnum.Engineer,
-      isSeniorEngineerRole: role === UserRolesEnum.SeniorEngineer,
-      isHeadOfDepartmentRole: role === UserRolesEnum.HeadOfDepartment,
-      isAdminRole: role === UserRolesEnum.Admin,
+      isFirstLineSupportRole: userInfo?.role === UserRolesEnum.FirstLineSupport,
+      isEngineerRole: userInfo?.role === UserRolesEnum.Engineer,
+      isSeniorEngineerRole: userInfo?.role === UserRolesEnum.SeniorEngineer,
+      isHeadOfDepartmentRole: userInfo?.role === UserRolesEnum.HeadOfDepartment,
+      isAdminRole: userInfo?.role === UserRolesEnum.Admin,
     }),
-    [role],
+    [userInfo?.role],
   )
 }
 

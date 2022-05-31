@@ -28,7 +28,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   workGroupList,
   workGroupListLoading,
 }) => {
-  const { id: userId } = useUserInfo()
+  const userInfo = useUserInfo()
   const {
     isFirstLineSupportRole,
     isEngineerRole,
@@ -102,11 +102,13 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             <Space size='large'>
               <Text type='secondary'>Исполнитель</Text>
 
-              <ButtonText type='link'>
-                {assignee?.id === userId
-                  ? 'Отказаться от заявки'
-                  : 'Назначить на себя'}
-              </ButtonText>
+              {userInfo && (
+                <ButtonText type='link'>
+                  {assignee?.id === userInfo.id
+                    ? 'Отказаться от заявки'
+                    : 'Назначить на себя'}
+                </ButtonText>
+              )}
             </Space>
 
             {isEngineerRole || isFirstLineSupportRole ? (
