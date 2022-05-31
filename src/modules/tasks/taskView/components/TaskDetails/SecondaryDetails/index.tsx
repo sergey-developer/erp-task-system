@@ -3,7 +3,7 @@ import React, { FC, useMemo } from 'react'
 
 import ButtonText from 'components/Buttons/ButtonText'
 import Space from 'components/Space'
-import useUserInfo from 'modules/auth/hooks/useUserInfo'
+import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import getUserFullName from 'modules/user/utils/getUserFullName'
@@ -28,7 +28,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   workGroupList,
   workGroupListLoading,
 }) => {
-  const userInfo = useUserInfo()
+  const authenticatedUser = useAuthenticatedUser()
   const {
     isFirstLineSupportRole,
     isEngineerRole,
@@ -102,9 +102,9 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             <Space size='large'>
               <Text type='secondary'>Исполнитель</Text>
 
-              {userInfo && (
+              {authenticatedUser && (
                 <ButtonText type='link'>
-                  {assignee?.id === userInfo.id
+                  {assignee?.id === authenticatedUser.id
                     ? 'Отказаться от заявки'
                     : 'Назначить на себя'}
                 </ButtonText>

@@ -1,23 +1,23 @@
 import { useMemo } from 'react'
 
-import useUserInfo from 'modules/auth/hooks/useUserInfo'
+import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import UserRolesEnum from 'shared/constants/roles'
 
 type UserRoleKey = `is${keyof typeof UserRolesEnum}Role`
 type UseUserRoleResult = Record<UserRoleKey, boolean>
 
 const useUserRole = (): UseUserRoleResult => {
-  const userInfo = useUserInfo()
+  const user = useAuthenticatedUser()
 
   return useMemo(
     () => ({
-      isFirstLineSupportRole: userInfo?.role === UserRolesEnum.FirstLineSupport,
-      isEngineerRole: userInfo?.role === UserRolesEnum.Engineer,
-      isSeniorEngineerRole: userInfo?.role === UserRolesEnum.SeniorEngineer,
-      isHeadOfDepartmentRole: userInfo?.role === UserRolesEnum.HeadOfDepartment,
-      isAdminRole: userInfo?.role === UserRolesEnum.Admin,
+      isFirstLineSupportRole: user?.role === UserRolesEnum.FirstLineSupport,
+      isEngineerRole: user?.role === UserRolesEnum.Engineer,
+      isSeniorEngineerRole: user?.role === UserRolesEnum.SeniorEngineer,
+      isHeadOfDepartmentRole: user?.role === UserRolesEnum.HeadOfDepartment,
+      isAdminRole: user?.role === UserRolesEnum.Admin,
     }),
-    [userInfo?.role],
+    [user?.role],
   )
 }
 
