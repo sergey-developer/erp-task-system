@@ -13,13 +13,18 @@ import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
 const useGetTaskById = (
   id: GetTaskByIdQueryArgsModel,
 ): UseGetTaskByIdQueryReturnType => {
-  const { isEngineerRole, isSeniorEngineerRole, isHeadOfDepartmentRole } =
-    useUserRole()
+  const {
+    isEngineerRole,
+    isSeniorEngineerRole,
+    isHeadOfDepartmentRole,
+    isFirstLineSupportRole,
+  } = useUserRole()
 
   const shouldSkip: boolean = !(
     isEngineerRole ||
     isSeniorEngineerRole ||
-    isHeadOfDepartmentRole
+    isHeadOfDepartmentRole ||
+    isFirstLineSupportRole
   )
 
   const result = useGetTaskByIdQuery(id, {
