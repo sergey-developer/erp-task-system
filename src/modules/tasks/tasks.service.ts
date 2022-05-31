@@ -59,10 +59,16 @@ export const { useGetTaskListQuery, useGetTaskByIdQuery } = tasksService
  * пулл реквест за которым нужно следить https://github.com/reduxjs/redux-toolkit/pull/2276
  */
 
-let x
+let getTaskById
+let getTaskList
 if (false as boolean) {
+  // @ts-ignore
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  x = useGetTaskByIdQuery(1)
+  getTaskById = useGetTaskByIdQuery()
+  // @ts-ignore
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  getTaskList = useGetTaskListQuery()
 }
 
-export type UseGetTaskByIdQueryReturnType = NonNullable<typeof x>
+export type UseGetTaskByIdQueryReturnType = NonNullable<typeof getTaskById>
+export type UseGetTaskListQueryReturnType = NonNullable<typeof getTaskList>

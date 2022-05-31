@@ -2,18 +2,18 @@ import { FilterTwoTone, SyncOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Space, TableProps } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
-import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
 import { FastFilterEnum, SortEnum } from 'modules/tasks/constants'
+import useGetTaskList from 'modules/tasks/taskList/hooks/useGetTaskList'
 import {
   GetTaskListQueryArgsModel,
   TaskListItemModel,
 } from 'modules/tasks/taskList/models'
-import { useGetTaskListQuery } from 'modules/tasks/tasks.service'
 import TaskDetails from 'modules/tasks/taskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
+import { GetComponentProps } from 'rc-table/lib/interface'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
@@ -83,9 +83,9 @@ const TaskListPage: FC = () => {
 
   const {
     data: taskListResponse,
-    isFetching,
+    isFetching: taskListIsFetching,
     refetch: refetchTaskList,
-  } = useGetTaskListQuery(queryArgs)
+  } = useGetTaskList(queryArgs)
 
   const [selectedTaskId, setSelectedTaskId] =
     useState<MaybeNull<TaskListItemModel['id']>>(null)
@@ -254,7 +254,7 @@ const TaskListPage: FC = () => {
                 sorting={queryArgs.sort}
                 onRow={handleTableRowClick}
                 dataSource={taskListResponse?.results}
-                loading={isFetching}
+                loading={taskListIsFetching}
                 onChange={handleChangeTable}
                 pagination={taskListResponse?.pagination}
               />
