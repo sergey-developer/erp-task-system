@@ -1,4 +1,4 @@
-import { JwtPayload } from './utils'
+import { JwtPayload } from './utils/parseJwt'
 
 export type LoginResponseModel = {
   access: string

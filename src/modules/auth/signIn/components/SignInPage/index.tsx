@@ -6,7 +6,10 @@ import { RoutesEnum } from 'configs/routes'
 import { useLoginMutation } from 'modules/auth/auth.service'
 import { login as loginAction } from 'modules/auth/authSlice'
 import { IUseLoginMutationResult } from 'modules/auth/interfaces'
+import parseJwt from 'modules/auth/utils/parseJwt'
+import { StorageKeys } from 'shared/constants/storage'
 import useDispatch from 'shared/hooks/useDispatch'
+import localStorageService from 'shared/services/localStorage'
 
 import { SignInFormFields } from './interfaces'
 import {
@@ -27,15 +30,20 @@ const SignInPage: FC = () => {
 
   const onFinish = async (fields: SignInFormFields) => {
     try {
-      let data = await login(fields)
-      if ('data' in data) {
-        dispatch(loginAction(data.data))
+      const result = await login(fields)
+      if ('data' in result) {
+        const data = result.data
+        localStorageService.setItem(StorageKeys.accessToken, data.access)
+        localStorageService.setItem(StorageKeys.refreshToken, data.refresh)
+
+        dispatch(loginAction({ user: parseJwt(data.access), ...data }))
         navigate(RoutesEnum.Root)
       }
     } finally {
       return
     }
   }
+
   return (
     <CardStyled>
       <PageTitleStyled level={4}>Obermeister-ITSM</PageTitleStyled>

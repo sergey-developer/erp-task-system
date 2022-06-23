@@ -1,8 +1,12 @@
 import { Mutex } from 'async-mutex'
 
 import { logout, refreshToken } from 'modules/auth/authSlice'
+import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
 import { RefreshTokenResponseModel } from 'modules/auth/models'
+import parseJwt from 'modules/auth/utils/parseJwt'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
+import { StorageKeys } from 'shared/constants/storage'
+import localStorageService from 'shared/services/localStorage'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
@@ -52,9 +56,20 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           extraOptions,
         )
         if (refreshResult.data) {
-          api.dispatch(
-            refreshToken(refreshResult.data as RefreshTokenResponseModel),
+          const refreshData = refreshResult.data as RefreshTokenResponseModel
+
+          localStorageService.setItem(
+            StorageKeys.accessToken,
+            refreshData.access,
           )
+
+          api.dispatch(
+            refreshToken({
+              ...refreshData,
+              user: parseJwt(refreshData.access),
+            } as RefreshTokenActionPayload),
+          )
+
           result = await query(args, api, extraOptions)
         } else {
           api.dispatch(logout())

@@ -8,14 +8,19 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 import { getNavMenuConfig } from 'configs/navMenu/utils'
+import { logout } from 'modules/auth/authSlice'
 import useUserRole from 'modules/user/hooks/useUserRole'
+import { StorageKeys } from 'shared/constants/storage'
+import useDispatch from 'shared/hooks/useDispatch'
 import useMatchedRoute from 'shared/hooks/useMatchedRoute'
+import localStorageService from 'shared/services/localStorage'
 
 import { BadgeStyled } from './styles'
 
 const { Header } = Layout
 
 const PrivateHeader: FC = () => {
+  const dispatch = useDispatch()
   const { role } = useUserRole()
 
   const navMenu = useMemo(() => {
@@ -35,6 +40,13 @@ const PrivateHeader: FC = () => {
   const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
   const activeNavKey = matchedRoute?.pathnameBase
   const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
+
+  const handleLogout = () => {
+    // todo: доработать как будет готов бэк
+    localStorageService.removeItem(StorageKeys.accessToken)
+    localStorageService.removeItem(StorageKeys.refreshToken)
+    dispatch(logout())
+  }
 
   return (
     <Header>
@@ -56,7 +68,7 @@ const PrivateHeader: FC = () => {
                 <UserAvatar size='large' />
               </BadgeStyled>
 
-              <LogoutOutlined className='font-s-18' />
+              <LogoutOutlined className='font-s-18' onClick={handleLogout} />
             </Space>
           </Row>
         </Col>

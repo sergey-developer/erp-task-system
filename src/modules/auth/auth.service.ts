@@ -16,6 +16,4 @@ const authService = api.injectEndpoints({
   overrideExisting: false,
 })
 
-export { authService }
-
 export const { useLoginMutation } = authService
