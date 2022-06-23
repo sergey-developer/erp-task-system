@@ -1,16 +1,21 @@
 import { useMemo } from 'react'
 
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
+import { AuthenticatedUserModel } from 'modules/auth/models'
 import UserRolesEnum from 'shared/constants/roles'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 type UserRoleKey = `is${keyof typeof UserRolesEnum}Role`
-type UseUserRoleResult = Record<UserRoleKey, boolean>
+type UseUserRoleResult = Record<UserRoleKey, boolean> & {
+  role: MaybeNull<AuthenticatedUserModel['userRole']>
+}
 
 const useUserRole = (): UseUserRoleResult => {
   const user = useAuthenticatedUser()
 
   return useMemo(
     () => ({
+      role: user?.role || null,
       isFirstLineSupportRole: user?.role === UserRolesEnum.FirstLineSupport,
       isEngineerRole: user?.role === UserRolesEnum.Engineer,
       isSeniorEngineerRole: user?.role === UserRolesEnum.SeniorEngineer,
