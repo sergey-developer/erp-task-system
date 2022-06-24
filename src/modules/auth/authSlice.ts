@@ -13,12 +13,9 @@ import parseJwt from './utils/parseJwt'
 function getInitialState(): IAuthSliceState {
   const accessToken = localStorageService.getItem(StorageKeys.accessToken)
   const refreshToken = localStorageService.getItem(StorageKeys.refreshToken)
-  let userInfo = null
-  if (accessToken) {
-    userInfo = parseJwt(accessToken)
-  }
+
   return {
-    user: userInfo,
+    user: accessToken ? parseJwt(accessToken) : null,
     accessToken,
     refreshToken,
     isAuthenticated: !!accessToken && !!refreshToken,
