@@ -1,9 +1,11 @@
+import { useBoolean } from 'ahooks'
 import React, { FC } from 'react'
 
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
+import AddTaskSolutionModal from '../AddTaskSolutionModal'
 import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
@@ -39,6 +41,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   workGroupListLoading,
   onClose,
 }) => {
+  const [isModalOpened, { setFalse: closeModal }] = useBoolean(true)
+
   const cardTitle = details?.id ? (
     <CardTitle id={details.id} onClose={onClose} />
   ) : null
@@ -70,6 +74,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           workGroupListLoading={workGroupListLoading}
           workGroupList={workGroupList}
           workGroup={details?.workGroup}
+        />
+
+        <AddTaskSolutionModal
+          title={`Решение по заявке ${details?.id}`}
+          visible={true}
+          onOk={closeModal}
+          onCancel={closeModal}
         />
       </CardStyled>
     </RootWrapperStyled>
