@@ -24,16 +24,9 @@ const menuItems = [
   },
 ]
 
-const CardTitle: FC<CardTitleProps> = ({ id, onClose }) => {
-  const actionMenu = (
-    <Menu
-      onClick={(arg) => {
-        console.log(arg)
-      }}
-      items={menuItems}
-    />
-  )
+const actionMenu = <Menu items={menuItems} />
 
+const CardTitle: FC<CardTitleProps> = ({ id, onClose }) => {
   return (
     <Row justify='space-between' align='middle'>
       <Typography.Text>{id}</Typography.Text>

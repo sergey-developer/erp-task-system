@@ -26,6 +26,9 @@ type TaskDetailsProps = {
       | 'workGroup'
       | 'assignee'
       | 'status'
+      | 'type'
+      | 'techResolution'
+      | 'userResolution'
     >
   >
   workGroupList: Array<WorkGroupModel>
@@ -41,7 +44,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   workGroupListLoading,
   onClose,
 }) => {
-  const [isModalOpened, { setFalse: closeModal }] = useBoolean(true)
+  const [addTaskSolutionModalOpened, { setFalse: closeAddTaskSolutionModal }] =
+    useBoolean(false)
 
   const cardTitle = details?.id ? (
     <CardTitle id={details.id} onClose={onClose} />
@@ -76,12 +80,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           workGroup={details?.workGroup}
         />
 
-        <AddTaskSolutionModal
-          title={`Решение по заявке ${details?.id}`}
-          visible={true}
-          onOk={closeModal}
-          onCancel={closeModal}
-        />
+        {details && (
+          <AddTaskSolutionModal
+            title={`Решение по заявке ${details.id}`}
+            visible={addTaskSolutionModalOpened}
+            onOk={closeAddTaskSolutionModal}
+            onCancel={closeAddTaskSolutionModal}
+            type={details.type}
+          />
+        )}
       </CardStyled>
     </RootWrapperStyled>
   )

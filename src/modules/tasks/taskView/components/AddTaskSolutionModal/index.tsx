@@ -7,7 +7,12 @@ import {
   Space,
   Typography,
 } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
+
+import useTaskType from 'modules/tasks/hooks/useTaskType'
+import { TaskDetailsModel } from 'modules/tasks/taskView/models'
+
+import { AddTaskSolutionFormFields } from './interfaces'
 
 const { Text } = Typography
 const { TextArea } = Input
@@ -19,10 +24,29 @@ const buttonCommonProps: ButtonProps = {
 type TaskDecisionModalProps = Pick<
   ModalProps,
   'visible' | 'title' | 'onOk' | 'onCancel'
->
+> &
+  Pick<TaskDetailsModel, 'type' | 'techResolution' | 'userResolution'>
 
 const AddTaskSolutionModal: FC<TaskDecisionModalProps> = (props) => {
-  const { title, visible, onOk, onCancel } = props
+  const {
+    title,
+    visible,
+    onOk,
+    onCancel,
+    type,
+    userResolution,
+    techResolution,
+  } = props
+
+  const taskType = useTaskType(type)
+
+  const initialFormValues: AddTaskSolutionFormFields = useMemo(
+    () => ({
+      technicalSolution: techResolution,
+      solutionForUser: userResolution,
+    }),
+    [userResolution, techResolution],
+  )
 
   return (
     <Modal
@@ -48,14 +72,19 @@ const AddTaskSolutionModal: FC<TaskDecisionModalProps> = (props) => {
           </Text>
         </Space>
 
-        <Form layout='vertical'>
+        <Form<AddTaskSolutionFormFields>
+          layout='vertical'
+          initialValues={initialFormValues}
+        >
           <Form.Item label='Техническое решение' name='technicalSolution'>
             <TextArea placeholder='Расскажите о работах на объекте' />
           </Form.Item>
 
-          <Form.Item label='Решение для пользователя' name='solutionForUser'>
-            <TextArea placeholder='Расскажите заявителю о решении' />
-          </Form.Item>
+          {!taskType.isIncidentTask && !taskType.isRequestTask && (
+            <Form.Item label='Решение для пользователя' name='solutionForUser'>
+              <TextArea placeholder='Расскажите заявителю о решении' />
+            </Form.Item>
+          )}
         </Form>
       </Space>
     </Modal>
