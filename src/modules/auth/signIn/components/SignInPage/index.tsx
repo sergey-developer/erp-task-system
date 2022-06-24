@@ -30,9 +30,9 @@ const SignInPage: FC = () => {
 
   const onFinish = async (fields: SignInFormFields) => {
     try {
-      const result = await login(fields)
-      if ('data' in result) {
-        const data = result.data
+      const response = await login(fields)
+      if ('data' in response) {
+        const data = response.data
         localStorageService.setItem(StorageKeys.accessToken, data.access)
         localStorageService.setItem(StorageKeys.refreshToken, data.refresh)
 
@@ -48,9 +48,11 @@ const SignInPage: FC = () => {
     <CardStyled>
       <PageTitleStyled level={4}>Obermeister-ITSM</PageTitleStyled>
       <FormTitleStyled level={5}>Авторизация</FormTitleStyled>
+
       {error && (
         <Typography.Text type='danger'>{getError(error)}</Typography.Text>
       )}
+
       <FormStyled<SignInFormFields>
         onFinish={onFinish}
         layout='vertical'
@@ -59,9 +61,11 @@ const SignInPage: FC = () => {
         <Form.Item label='E-mail' name='email' rules={EMAIL_RULES}>
           <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
         </Form.Item>
+
         <Form.Item label='Пароль' name='password' rules={PASSWORD_RULES}>
           <Input.Password placeholder='••••••••' disabled={isLoading} />
         </Form.Item>
+
         <Form.Item>
           <Button
             type='primary'

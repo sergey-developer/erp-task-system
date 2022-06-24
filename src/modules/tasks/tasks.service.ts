@@ -47,9 +47,8 @@ const tasksService = api.injectEndpoints({
   overrideExisting: false,
 })
 
-export { tasksService }
-
 export const { useGetTaskListQuery, useGetTaskByIdQuery } = tasksService
+export default tasksService
 
 /**
  * todo: Внимательно следить за обновлениями RTK query и поправить при первой возможности

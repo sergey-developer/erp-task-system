@@ -17,3 +17,4 @@ const authService = api.injectEndpoints({
 })
 
 export const { useLoginMutation } = authService
+export default authService
