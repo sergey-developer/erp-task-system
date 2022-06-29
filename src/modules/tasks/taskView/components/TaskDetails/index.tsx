@@ -8,6 +8,7 @@ import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
+import TabsSection from './TabsSection'
 
 type TaskDetailsProps = {
   details: MaybeNull<
@@ -24,6 +25,9 @@ type TaskDetailsProps = {
       | 'workGroup'
       | 'assignee'
       | 'status'
+      | 'type'
+      | 'techResolution'
+      | 'userResolution'
     >
   >
   workGroupList: Array<WorkGroupModel>
@@ -70,6 +74,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           workGroupListLoading={workGroupListLoading}
           workGroupList={workGroupList}
           workGroup={details?.workGroup}
+        />
+        <TabsSection
+          type={details?.type}
+          techResolution={details?.techResolution}
+          userResolution={details?.userResolution}
         />
       </CardStyled>
     </RootWrapperStyled>
