@@ -10,6 +10,10 @@ export type LoginMutationArgsModel = {
   password: string
 }
 
+export type LogoutMutationArgsModel = {
+  refresh: string
+}
+
 export type RefreshTokenResponseModel = {
   access: string
 }
