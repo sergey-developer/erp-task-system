@@ -1,4 +1,8 @@
-import { LoginMutationArgsModel, LoginResponseModel } from 'modules/auth/models'
+import {
+  LoginMutationArgsModel,
+  LoginResponseModel,
+  LogoutMutationArgsModel,
+} from 'modules/auth/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
@@ -11,11 +15,17 @@ const authService = api.injectEndpoints({
         data: queryArg,
       }),
     }),
+    logout: build.mutation<unknown, LogoutMutationArgsModel>({
+      query: (queryArg) => ({
+        url: '/user/logout',
+        method: HttpMethodEnum.POST,
+        data: queryArg,
+      }),
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export { authService }
-
-export const { useLoginMutation } = authService
+export const { useLoginMutation, useLogoutMutation } = authService
+export default authService

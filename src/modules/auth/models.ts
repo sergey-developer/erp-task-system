@@ -1,4 +1,4 @@
-import { JwtPayload } from './utils'
+import { JwtPayload } from './utils/parseJwt'
 
 export type LoginResponseModel = {
   access: string
@@ -8,6 +8,10 @@ export type LoginResponseModel = {
 export type LoginMutationArgsModel = {
   email: string
   password: string
+}
+
+export type LogoutMutationArgsModel = {
+  refresh: string
 }
 
 export type RefreshTokenResponseModel = {
