@@ -1,13 +1,13 @@
 import 'moment/locale/ru'
 
 import { ConfigProvider } from 'antd'
-import ruRU from 'antd/lib/locale/ru_RU'
 import moment from 'moment'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider as StoreProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
+import ruRU from 'antd/lib/locale/ru_RU'
 import ErrorBoundary from 'components/ErrorBoundary'
 import store from 'state/store'
 import { ThemeProvider } from 'styled-components'
