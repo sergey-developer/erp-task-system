@@ -1,6 +1,9 @@
+import { CheckCircleOutlined } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
-import React, { FC } from 'react'
+import { MenuProps } from 'antd'
+import React, { FC, useMemo } from 'react'
 
+import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -44,12 +47,35 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   workGroupListLoading,
   onClose,
 }) => {
-  const [addTaskSolutionModalOpened, { setFalse: closeAddTaskSolutionModal }] =
+  const [addTaskSolutionModalOpened, { toggle: toggleAddTaskSolutionModal }] =
     useBoolean(false)
 
-  const cardTitle = details?.id ? (
-    <CardTitle id={details.id} onClose={onClose} />
-  ) : null
+  const taskStatus = useTaskStatus(details?.status)
+
+  const menuItems = useMemo<MenuProps['items']>(
+    () => [
+      {
+        key: '1',
+        label: '1st menu item',
+      },
+      {
+        key: '2',
+        label: '2nd menu item',
+      },
+      {
+        key: '3',
+        disabled: !taskStatus.isInProgress,
+        icon: <CheckCircleOutlined />,
+        label: 'Выполнить заявку',
+        onClick: toggleAddTaskSolutionModal,
+      },
+    ],
+    [taskStatus, toggleAddTaskSolutionModal],
+  )
+
+  const cardTitle = details?.id && (
+    <CardTitle id={details.id} menuItems={menuItems} onClose={onClose} />
+  )
 
   return (
     <RootWrapperStyled>
@@ -84,8 +110,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           <AddTaskSolutionModal
             title={`Решение по заявке ${details.id}`}
             visible={addTaskSolutionModalOpened}
-            onOk={closeAddTaskSolutionModal}
-            onCancel={closeAddTaskSolutionModal}
+            onOk={toggleAddTaskSolutionModal}
+            onCancel={toggleAddTaskSolutionModal}
             type={details.type}
           />
         )}
