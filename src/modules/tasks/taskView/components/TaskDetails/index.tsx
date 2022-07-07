@@ -1,9 +1,11 @@
+import { useBoolean } from 'ahooks'
 import React, { FC } from 'react'
 
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
+import AddTaskSolutionModal from '../AddTaskSolutionModal'
 import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
@@ -24,6 +26,9 @@ type TaskDetailsProps = {
       | 'workGroup'
       | 'assignee'
       | 'status'
+      | 'type'
+      | 'techResolution'
+      | 'userResolution'
     >
   >
   workGroupList: Array<WorkGroupModel>
@@ -39,6 +44,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   workGroupListLoading,
   onClose,
 }) => {
+  const [addTaskSolutionModalOpened, { setFalse: closeAddTaskSolutionModal }] =
+    useBoolean(false)
+
   const cardTitle = details?.id ? (
     <CardTitle id={details.id} onClose={onClose} />
   ) : null
@@ -71,6 +79,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           workGroupList={workGroupList}
           workGroup={details?.workGroup}
         />
+
+        {details && (
+          <AddTaskSolutionModal
+            title={`Решение по заявке ${details.id}`}
+            visible={addTaskSolutionModalOpened}
+            onOk={closeAddTaskSolutionModal}
+            onCancel={closeAddTaskSolutionModal}
+            type={details.type}
+          />
+        )}
       </CardStyled>
     </RootWrapperStyled>
   )
