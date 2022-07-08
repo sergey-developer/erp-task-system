@@ -50,8 +50,8 @@ const TabsSection: FC<TabsSectionProps> = ({
           <Typography.Title level={5}>Решение</Typography.Title>
           {showResolution ? (
             <>
-              {techResolution}
-              {userResolution}
+              {techResolutionContent}
+              {userResolutionContent}
             </>
           ) : (
             '-'
