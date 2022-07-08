@@ -1,32 +1,19 @@
-import { CheckCircleOutlined, CloseOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Menu, Row, Space, Typography } from 'antd'
-import React, { FC } from 'react'
+import { CloseOutlined } from '@ant-design/icons'
+import { Button, Dropdown, Menu, MenuProps, Row, Space, Typography } from 'antd'
+import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from '../../models'
 
 type CardTitleProps = Pick<TaskDetailsModel, 'id'> & {
+  menuItems: MenuProps['items']
   onClose: () => void
 }
 
-const menuItems = [
-  {
-    label: '1st menu item',
-    key: '1',
-  },
-  {
-    label: '2nd menu item',
-    key: '2',
-  },
-  {
-    label: 'Выполнить заявку',
-    icon: <CheckCircleOutlined />,
-    key: '3',
-  },
-]
+const CardTitle: FC<CardTitleProps> = (props) => {
+  const { id, menuItems, onClose } = props
 
-const actionMenu = <Menu items={menuItems} />
+  const actionMenu = useMemo(() => <Menu items={menuItems} />, [menuItems])
 
-const CardTitle: FC<CardTitleProps> = ({ id, onClose }) => {
   return (
     <Row justify='space-between' align='middle'>
       <Typography.Text>{id}</Typography.Text>
