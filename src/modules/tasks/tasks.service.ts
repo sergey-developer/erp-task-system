@@ -9,6 +9,7 @@ import {
 import {
   GetTaskByIdQueryArgsModel,
   GetTaskByIdResponseModel,
+  ResolveTaskMutationArgsModel,
 } from './taskView/models'
 
 const tasksService = api.injectEndpoints({
@@ -43,13 +44,27 @@ const tasksService = api.injectEndpoints({
         method: HttpMethodEnum.GET,
       }),
     }),
+    resolveTask: build.mutation<null, ResolveTaskMutationArgsModel>({
+      query: (queryArg) => {
+        const { taskId, ...body } = queryArg
+        return {
+          url: `/tasks/${taskId}/resolution/`,
+          method: HttpMethodEnum.POST,
+          data: body,
+        }
+      },
+    }),
   }),
   overrideExisting: false,
 })
 
 export { tasksService }
 
-export const { useGetTaskListQuery, useGetTaskByIdQuery } = tasksService
+export const {
+  useGetTaskListQuery,
+  useGetTaskByIdQuery,
+  useResolveTaskMutation,
+} = tasksService
 
 /**
  * todo: Внимательно следить за обновлениями RTK query и поправить при первой возможности

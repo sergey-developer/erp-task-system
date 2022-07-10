@@ -12,7 +12,7 @@ import React, { FC, useMemo } from 'react'
 import useTaskType from 'modules/tasks/hooks/useTaskType'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
-import { AddTaskSolutionFormFields } from './interfaces'
+import { TaskSolutionFormFields } from './interfaces'
 
 const { Text } = Typography
 const { TextArea } = Input
@@ -21,30 +21,31 @@ const buttonCommonProps: ButtonProps = {
   size: 'large',
 }
 
-type TaskDecisionModalProps = Pick<
+export type TaskSolutionModalProps = Pick<
   ModalProps,
   'visible' | 'title' | 'onOk' | 'onCancel'
 > &
-  Pick<TaskDetailsModel, 'type' | 'techResolution' | 'userResolution'>
+  Pick<TaskDetailsModel, 'type' | 'techResolution' | 'userResolution'> & {
+    onResolutionSubmit: (values: TaskSolutionFormFields) => void
+  }
 
-const AddTaskSolutionModal: FC<TaskDecisionModalProps> = (props) => {
+const TaskSolutionModal: FC<TaskSolutionModalProps> = (props) => {
   const {
     title,
     visible,
-    onOk,
     onCancel,
     type,
     userResolution,
     techResolution,
+    onResolutionSubmit,
   } = props
+
+  const [form] = Form.useForm<TaskSolutionFormFields>()
 
   const taskType = useTaskType(type)
 
-  const initialFormValues: AddTaskSolutionFormFields = useMemo(
-    () => ({
-      technicalSolution: techResolution,
-      solutionForUser: userResolution,
-    }),
+  const initialFormValues: TaskSolutionFormFields = useMemo(
+    () => ({ techResolution, userResolution }),
     [userResolution, techResolution],
   )
 
@@ -52,7 +53,7 @@ const AddTaskSolutionModal: FC<TaskDecisionModalProps> = (props) => {
     <Modal
       title={title}
       visible={visible}
-      onOk={onOk}
+      onOk={form.submit}
       onCancel={onCancel}
       okText='Выполнить заявку'
       okButtonProps={buttonCommonProps}
@@ -72,16 +73,38 @@ const AddTaskSolutionModal: FC<TaskDecisionModalProps> = (props) => {
           </Text>
         </Space>
 
-        <Form<AddTaskSolutionFormFields>
-          layout='vertical'
+        <Form<TaskSolutionFormFields>
+          form={form}
           initialValues={initialFormValues}
+          layout='vertical'
+          onFinish={onResolutionSubmit}
         >
-          <Form.Item label='Техническое решение' name='technicalSolution'>
+          <Form.Item
+            label='Техническое решение'
+            name='techResolution'
+            rules={[
+              {
+                required: true,
+                message: 'Обязательное поле',
+                whitespace: true,
+              },
+            ]}
+          >
             <TextArea placeholder='Расскажите о работах на объекте' />
           </Form.Item>
 
           {!taskType.isIncidentTask && !taskType.isRequestTask && (
-            <Form.Item label='Решение для пользователя' name='solutionForUser'>
+            <Form.Item
+              label='Решение для пользователя'
+              name='userResolution'
+              rules={[
+                {
+                  required: true,
+                  message: 'Обязательное поле',
+                  whitespace: true,
+                },
+              ]}
+            >
               <TextArea placeholder='Расскажите заявителю о решении' />
             </Form.Item>
           )}
@@ -91,4 +114,4 @@ const AddTaskSolutionModal: FC<TaskDecisionModalProps> = (props) => {
   )
 }
 
-export default AddTaskSolutionModal
+export default TaskSolutionModal
