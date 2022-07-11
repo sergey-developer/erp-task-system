@@ -1,14 +1,19 @@
 import { CheckCircleOutlined } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
-import { MenuProps } from 'antd'
-import React, { FC, useMemo } from 'react'
+import { MenuProps, notification } from 'antd'
+import React, { FC, useCallback, useMemo } from 'react'
 
+import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
+import { useResolveTaskMutation } from 'modules/tasks/tasks.service'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
+import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import AddTaskSolutionModal from '../AddTaskSolutionModal'
+import TaskResolutionModal, {
+  TaskResolutionModalProps,
+} from '../TaskResolutionModal'
 import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
@@ -36,6 +41,7 @@ type TaskDetailsProps = {
   >
   workGroupList: Array<WorkGroupModel>
   onClose: () => void
+  onTaskResolved: () => void
   taskLoading: boolean
   workGroupListLoading: boolean
 }
@@ -46,11 +52,23 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   workGroupList,
   workGroupListLoading,
   onClose,
+  onTaskResolved,
 }) => {
-  const [addTaskSolutionModalOpened, { toggle: toggleAddTaskSolutionModal }] =
+  const user = useAuthenticatedUser()
+
+  const [isTaskResolutionModalOpened, { toggle: toggleTaskResolutionModal }] =
     useBoolean(false)
 
+  const [resolveTask, { isLoading: isTaskResolving }] = useResolveTaskMutation()
+
   const taskStatus = useTaskStatus(details?.status)
+
+  const isAssignedToCurrentUser = useMemo(() => {
+    if (!user || !details) {
+      return false
+    }
+    return user.id === details.assignee?.id
+  }, [details, user])
 
   const menuItems = useMemo<MenuProps['items']>(
     () => [
@@ -64,13 +82,30 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       },
       {
         key: '3',
-        disabled: !taskStatus.isInProgress,
+        disabled: !taskStatus.isInProgress || !isAssignedToCurrentUser,
         icon: <CheckCircleOutlined />,
         label: 'Выполнить заявку',
-        onClick: toggleAddTaskSolutionModal,
+        onClick: toggleTaskResolutionModal,
       },
     ],
-    [taskStatus, toggleAddTaskSolutionModal],
+    [taskStatus, isAssignedToCurrentUser, toggleTaskResolutionModal],
+  )
+
+  const handleResolutionSubmit = useCallback<
+    TaskResolutionModalProps['onResolutionSubmit']
+  >(
+    async (values) => {
+      try {
+        await resolveTask({ taskId: details!.id, ...values }).unwrap()
+        onTaskResolved()
+      } catch (err) {
+        notification.error({
+          message: (err as any)?.data.detail,
+          duration: ERROR_NOTIFICATION_DURATION,
+        })
+      }
+    },
+    [details, onTaskResolved, resolveTask],
   )
 
   const cardTitle = details?.id && (
@@ -107,12 +142,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         />
 
         {details && (
-          <AddTaskSolutionModal
+          <TaskResolutionModal
+            isTaskResolving={isTaskResolving}
+            onCancel={toggleTaskResolutionModal}
+            onResolutionSubmit={handleResolutionSubmit}
             title={`Решение по заявке ${details.id}`}
-            visible={addTaskSolutionModalOpened}
-            onOk={toggleAddTaskSolutionModal}
-            onCancel={toggleAddTaskSolutionModal}
             type={details.type}
+            visible={isTaskResolutionModalOpened}
           />
         )}
       </CardStyled>

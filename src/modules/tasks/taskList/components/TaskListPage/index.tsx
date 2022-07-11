@@ -145,6 +145,11 @@ const TaskListPage: FC = () => {
     setSelectedTaskId(null)
   }, [setSelectedTaskId])
 
+  const handleTaskResolved = useCallback(() => {
+    handleCloseTaskDetails()
+    refetchTaskList()
+  }, [refetchTaskList, handleCloseTaskDetails])
+
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
     NonNullable<TableProps<TaskListItemModel>['onChange']>
@@ -264,6 +269,7 @@ const TaskListPage: FC = () => {
               <Col span={8}>
                 <TaskDetails
                   onClose={handleCloseTaskDetails}
+                  onTaskResolved={handleTaskResolved}
                   taskId={selectedTaskId}
                 />
               </Col>

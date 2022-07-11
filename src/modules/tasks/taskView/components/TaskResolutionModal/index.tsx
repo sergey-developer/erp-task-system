@@ -12,7 +12,8 @@ import React, { FC, useMemo } from 'react'
 import useTaskType from 'modules/tasks/hooks/useTaskType'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
-import { AddTaskSolutionFormFields } from './interfaces'
+import { TaskResolutionFormFields } from './interfaces'
+import { TECH_RESOLUTION_RULES, USER_RESOLUTION_RULES } from './validation'
 
 const { Text } = Typography
 const { TextArea } = Input
@@ -21,41 +22,53 @@ const buttonCommonProps: ButtonProps = {
   size: 'large',
 }
 
-type TaskDecisionModalProps = Pick<
+export type TaskResolutionModalProps = Pick<
   ModalProps,
-  'visible' | 'title' | 'onOk' | 'onCancel'
+  'visible' | 'title' | 'onCancel'
 > &
-  Pick<TaskDetailsModel, 'type' | 'techResolution' | 'userResolution'>
+  Pick<TaskDetailsModel, 'type' | 'techResolution' | 'userResolution'> & {
+    isTaskResolving: boolean
+    onResolutionSubmit: (values: TaskResolutionFormFields) => void
+  }
 
-const AddTaskSolutionModal: FC<TaskDecisionModalProps> = (props) => {
+const TaskSolutionModal: FC<TaskResolutionModalProps> = (props) => {
   const {
-    title,
-    visible,
-    onOk,
+    isTaskResolving,
     onCancel,
+    onResolutionSubmit,
+    techResolution,
+    title,
     type,
     userResolution,
-    techResolution,
+    visible,
   } = props
+
+  const [form] = Form.useForm<TaskResolutionFormFields>()
 
   const taskType = useTaskType(type)
 
-  const initialFormValues: AddTaskSolutionFormFields = useMemo(
-    () => ({
-      technicalSolution: techResolution,
-      solutionForUser: userResolution,
-    }),
+  const initialFormValues: TaskResolutionFormFields = useMemo(
+    () => ({ techResolution, userResolution }),
     [userResolution, techResolution],
+  )
+
+  const submitButtonProps = useMemo<ButtonProps>(
+    () => ({
+      ...buttonCommonProps,
+      disabled: isTaskResolving,
+      loading: isTaskResolving,
+    }),
+    [isTaskResolving],
   )
 
   return (
     <Modal
       title={title}
       visible={visible}
-      onOk={onOk}
+      onOk={form.submit}
       onCancel={onCancel}
       okText='Выполнить заявку'
-      okButtonProps={buttonCommonProps}
+      okButtonProps={submitButtonProps}
       cancelText='Отменить'
       cancelButtonProps={buttonCommonProps}
       width={613}
@@ -72,16 +85,26 @@ const AddTaskSolutionModal: FC<TaskDecisionModalProps> = (props) => {
           </Text>
         </Space>
 
-        <Form<AddTaskSolutionFormFields>
-          layout='vertical'
+        <Form<TaskResolutionFormFields>
+          form={form}
           initialValues={initialFormValues}
+          layout='vertical'
+          onFinish={onResolutionSubmit}
         >
-          <Form.Item label='Техническое решение' name='technicalSolution'>
+          <Form.Item
+            label='Техническое решение'
+            name='techResolution'
+            rules={TECH_RESOLUTION_RULES}
+          >
             <TextArea placeholder='Расскажите о работах на объекте' />
           </Form.Item>
 
           {!taskType.isIncidentTask && !taskType.isRequestTask && (
-            <Form.Item label='Решение для пользователя' name='solutionForUser'>
+            <Form.Item
+              label='Решение для пользователя'
+              name='userResolution'
+              rules={USER_RESOLUTION_RULES}
+            >
               <TextArea placeholder='Расскажите заявителю о решении' />
             </Form.Item>
           )}
@@ -91,4 +114,4 @@ const AddTaskSolutionModal: FC<TaskDecisionModalProps> = (props) => {
   )
 }
 
-export default AddTaskSolutionModal
+export default TaskSolutionModal
