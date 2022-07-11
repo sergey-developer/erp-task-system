@@ -11,7 +11,9 @@ import { WorkGroupModel } from 'modules/workGroups/models'
 import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import TaskSolutionModal, { TaskSolutionModalProps } from '../TaskSolutionModal'
+import TaskResolutionModal, {
+  TaskResolutionModalProps,
+} from '../TaskResolutionModal'
 import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
@@ -54,7 +56,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 }) => {
   const user = useAuthenticatedUser()
 
-  const [isTaskSolutionModalOpened, { toggle: toggleTaskSolutionModal }] =
+  const [isTaskResolutionModalOpened, { toggle: toggleTaskResolutionModal }] =
     useBoolean(false)
 
   const [resolveTask, { isLoading: isTaskResolving }] = useResolveTaskMutation()
@@ -83,14 +85,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         disabled: !taskStatus.isInProgress || !isAssignedToCurrentUser,
         icon: <CheckCircleOutlined />,
         label: 'Выполнить заявку',
-        onClick: toggleTaskSolutionModal,
+        onClick: toggleTaskResolutionModal,
       },
     ],
-    [taskStatus, toggleTaskSolutionModal],
+    [taskStatus, isAssignedToCurrentUser, toggleTaskResolutionModal],
   )
 
   const handleResolutionSubmit = useCallback<
-    TaskSolutionModalProps['onResolutionSubmit']
+    TaskResolutionModalProps['onResolutionSubmit']
   >(
     async (values) => {
       try {
@@ -103,7 +105,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         })
       }
     },
-    [details],
+    [details, onTaskResolved, resolveTask],
   )
 
   const cardTitle = details?.id && (
@@ -140,13 +142,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         />
 
         {details && (
-          <TaskSolutionModal
+          <TaskResolutionModal
             isTaskResolving={isTaskResolving}
-            onCancel={toggleTaskSolutionModal}
+            onCancel={toggleTaskResolutionModal}
             onResolutionSubmit={handleResolutionSubmit}
             title={`Решение по заявке ${details.id}`}
             type={details.type}
-            visible={isTaskSolutionModalOpened}
+            visible={isTaskResolutionModalOpened}
           />
         )}
       </CardStyled>

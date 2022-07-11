@@ -12,7 +12,8 @@ import React, { FC, useMemo } from 'react'
 import useTaskType from 'modules/tasks/hooks/useTaskType'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
-import { TaskSolutionFormFields } from './interfaces'
+import { TaskResolutionFormFields } from './interfaces'
+import { TECH_RESOLUTION_RULES, USER_RESOLUTION_RULES } from './validation'
 
 const { Text } = Typography
 const { TextArea } = Input
@@ -21,16 +22,16 @@ const buttonCommonProps: ButtonProps = {
   size: 'large',
 }
 
-export type TaskSolutionModalProps = Pick<
+export type TaskResolutionModalProps = Pick<
   ModalProps,
-  'visible' | 'title' | 'onOk' | 'onCancel'
+  'visible' | 'title' | 'onCancel'
 > &
   Pick<TaskDetailsModel, 'type' | 'techResolution' | 'userResolution'> & {
     isTaskResolving: boolean
-    onResolutionSubmit: (values: TaskSolutionFormFields) => void
+    onResolutionSubmit: (values: TaskResolutionFormFields) => void
   }
 
-const TaskSolutionModal: FC<TaskSolutionModalProps> = (props) => {
+const TaskSolutionModal: FC<TaskResolutionModalProps> = (props) => {
   const {
     isTaskResolving,
     onCancel,
@@ -42,11 +43,11 @@ const TaskSolutionModal: FC<TaskSolutionModalProps> = (props) => {
     visible,
   } = props
 
-  const [form] = Form.useForm<TaskSolutionFormFields>()
+  const [form] = Form.useForm<TaskResolutionFormFields>()
 
   const taskType = useTaskType(type)
 
-  const initialFormValues: TaskSolutionFormFields = useMemo(
+  const initialFormValues: TaskResolutionFormFields = useMemo(
     () => ({ techResolution, userResolution }),
     [userResolution, techResolution],
   )
@@ -84,7 +85,7 @@ const TaskSolutionModal: FC<TaskSolutionModalProps> = (props) => {
           </Text>
         </Space>
 
-        <Form<TaskSolutionFormFields>
+        <Form<TaskResolutionFormFields>
           form={form}
           initialValues={initialFormValues}
           layout='vertical'
@@ -93,13 +94,7 @@ const TaskSolutionModal: FC<TaskSolutionModalProps> = (props) => {
           <Form.Item
             label='Техническое решение'
             name='techResolution'
-            rules={[
-              {
-                required: true,
-                message: 'Обязательное поле',
-                whitespace: true,
-              },
-            ]}
+            rules={TECH_RESOLUTION_RULES}
           >
             <TextArea placeholder='Расскажите о работах на объекте' />
           </Form.Item>
@@ -108,13 +103,7 @@ const TaskSolutionModal: FC<TaskSolutionModalProps> = (props) => {
             <Form.Item
               label='Решение для пользователя'
               name='userResolution'
-              rules={[
-                {
-                  required: true,
-                  message: 'Обязательное поле',
-                  whitespace: true,
-                },
-              ]}
+              rules={USER_RESOLUTION_RULES}
             >
               <TextArea placeholder='Расскажите заявителю о решении' />
             </Form.Item>
