@@ -27,8 +27,8 @@ const TabsSection: FC<TabsSectionProps> = ({
 
   const userResolutionContent = useMemo(() => {
     return userResolution &&
-      type !== TaskTypeEnum.Incident &&
-      type !== TaskTypeEnum.Request ? (
+      type !== TaskTypeEnum.IncidentTask &&
+      type !== TaskTypeEnum.RequestTask ? (
       <>
         <Typography.Text type='secondary'>
           Решение для пользователя
