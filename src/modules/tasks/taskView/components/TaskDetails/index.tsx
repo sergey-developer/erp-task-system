@@ -18,6 +18,7 @@ import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
+import TabsSection from './TabsSection'
 
 type TaskDetailsProps = {
   details: MaybeNull<
@@ -151,6 +152,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             visible={isTaskResolutionModalOpened}
           />
         )}
+        <TabsSection
+          type={details?.type}
+          techResolution={details?.techResolution}
+          userResolution={details?.userResolution}
+        />
       </CardStyled>
     </RootWrapperStyled>
   )
