@@ -9,12 +9,12 @@ import TaskDetails from '../TaskDetails'
 type TaskDetailsContainerProps = {
   taskId: TaskListItemModel['id']
   onClose: () => void
+  onTaskResolved: () => void
 }
 
-const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
-  taskId,
-  onClose,
-}) => {
+const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
+  const { onClose, onTaskResolved, taskId } = props
+
   const {
     data: task,
     isFetching: taskIsFetching,
@@ -32,11 +32,12 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
 
   return (
     <TaskDetails
+      details={task || null}
       onClose={onClose}
+      onTaskResolved={onTaskResolved}
       taskLoading={taskIsFetching}
       workGroupListLoading={workGroupListIsFetching}
       workGroupList={workGroupList || []}
-      details={task || null}
     />
   )
 }

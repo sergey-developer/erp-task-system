@@ -79,3 +79,9 @@ export type TaskDetailsModel = {
 export type GetTaskByIdResponseModel = TaskDetailsModel
 
 export type GetTaskByIdQueryArgsModel = TaskListItemModel['id']
+
+export type ResolveTaskMutationArgsModel = {
+  taskId: TaskListItemModel['id']
+  techResolution?: string
+  userResolution?: string
+}
