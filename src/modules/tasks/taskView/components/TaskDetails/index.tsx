@@ -1,12 +1,14 @@
 import { CheckCircleOutlined } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
-import { MenuProps } from 'antd'
+import { MenuProps, notification } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
+import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { useResolveTaskMutation } from 'modules/tasks/tasks.service'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
+import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import TaskSolutionModal, { TaskSolutionModalProps } from '../TaskSolutionModal'
@@ -50,13 +52,21 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   onClose,
   onTaskResolved,
 }) => {
+  const user = useAuthenticatedUser()
+
   const [isTaskSolutionModalOpened, { toggle: toggleTaskSolutionModal }] =
     useBoolean(false)
 
-  const [resolveTask, { isLoading: isTaskResolving, error: taskResolveError }] =
-    useResolveTaskMutation()
+  const [resolveTask, { isLoading: isTaskResolving }] = useResolveTaskMutation()
 
   const taskStatus = useTaskStatus(details?.status)
+
+  const isAssignedToCurrentUser = useMemo(() => {
+    if (!user || !details) {
+      return false
+    }
+    return user.id === details.assignee?.id
+  }, [details, user])
 
   const menuItems = useMemo<MenuProps['items']>(
     () => [
@@ -70,7 +80,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       },
       {
         key: '3',
-        disabled: !taskStatus.isInProgress,
+        disabled: !taskStatus.isInProgress || !isAssignedToCurrentUser,
         icon: <CheckCircleOutlined />,
         label: 'Выполнить заявку',
         onClick: toggleTaskSolutionModal,
@@ -83,13 +93,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     TaskSolutionModalProps['onResolutionSubmit']
   >(
     async (values) => {
-      const result = await resolveTask({ taskId: details!.id, ...values })
-      if ('data' in result) {
-        console.log('TASK RESOLVED')
+      try {
+        await resolveTask({ taskId: details!.id, ...values }).unwrap()
         onTaskResolved()
-      }
-      if ('error' in result) {
-        console.log('error', result.error)
+      } catch (err) {
+        notification.error({
+          message: (err as any)?.data.detail,
+          duration: ERROR_NOTIFICATION_DURATION,
+        })
       }
     },
     [details],
@@ -130,11 +141,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
         {details && (
           <TaskSolutionModal
-            title={`Решение по заявке ${details.id}`}
-            visible={isTaskSolutionModalOpened}
+            isTaskResolving={isTaskResolving}
             onCancel={toggleTaskSolutionModal}
             onResolutionSubmit={handleResolutionSubmit}
+            title={`Решение по заявке ${details.id}`}
             type={details.type}
+            visible={isTaskSolutionModalOpened}
           />
         )}
       </CardStyled>

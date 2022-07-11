@@ -26,18 +26,20 @@ export type TaskSolutionModalProps = Pick<
   'visible' | 'title' | 'onOk' | 'onCancel'
 > &
   Pick<TaskDetailsModel, 'type' | 'techResolution' | 'userResolution'> & {
+    isTaskResolving: boolean
     onResolutionSubmit: (values: TaskSolutionFormFields) => void
   }
 
 const TaskSolutionModal: FC<TaskSolutionModalProps> = (props) => {
   const {
-    title,
-    visible,
+    isTaskResolving,
     onCancel,
+    onResolutionSubmit,
+    techResolution,
+    title,
     type,
     userResolution,
-    techResolution,
-    onResolutionSubmit,
+    visible,
   } = props
 
   const [form] = Form.useForm<TaskSolutionFormFields>()
@@ -49,6 +51,15 @@ const TaskSolutionModal: FC<TaskSolutionModalProps> = (props) => {
     [userResolution, techResolution],
   )
 
+  const submitButtonProps = useMemo<ButtonProps>(
+    () => ({
+      ...buttonCommonProps,
+      disabled: isTaskResolving,
+      loading: isTaskResolving,
+    }),
+    [isTaskResolving],
+  )
+
   return (
     <Modal
       title={title}
@@ -56,7 +67,7 @@ const TaskSolutionModal: FC<TaskSolutionModalProps> = (props) => {
       onOk={form.submit}
       onCancel={onCancel}
       okText='Выполнить заявку'
-      okButtonProps={buttonCommonProps}
+      okButtonProps={submitButtonProps}
       cancelText='Отменить'
       cancelButtonProps={buttonCommonProps}
       width={613}
