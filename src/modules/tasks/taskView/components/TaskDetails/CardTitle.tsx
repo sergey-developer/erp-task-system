@@ -2,7 +2,7 @@ import { CloseOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Menu, Row, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskDetailsModel } from '../../models'
+import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
 const actionMenu = (
   <Menu
