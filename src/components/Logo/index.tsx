@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { Link } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
-import { APP_NAME } from 'shared/constants/appName'
+import { APP_NAME } from 'shared/constants/common'
 
 import { LogoStyled } from './styles'
 

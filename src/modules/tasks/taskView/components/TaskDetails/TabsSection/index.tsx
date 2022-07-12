@@ -7,6 +7,7 @@ import {
   TaskDetailsModel,
 } from 'modules/tasks/taskView/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
+import { NO_CONTENT_HYPHEN } from 'shared/constants/common'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
@@ -92,7 +93,7 @@ const TabsSection: FC<TabsSectionProps> = ({
                 : false
             }
           >
-            {description || '—'}
+            {description || NO_CONTENT_HYPHEN}
           </Paragraph>
 
           <Title level={5}>Комментарии</Title>
@@ -109,7 +110,7 @@ const TabsSection: FC<TabsSectionProps> = ({
               {userResolutionContent}
             </>
           ) : (
-            '—'
+            NO_CONTENT_HYPHEN
           )}
         </TabPane>
 
