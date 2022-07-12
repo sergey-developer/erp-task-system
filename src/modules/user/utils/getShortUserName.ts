@@ -2,16 +2,11 @@ import { UserNameModel } from 'modules/user/models'
 import addDotAtEnd from 'shared/utils/string/addDotToEnd'
 import firstLetterUpperCase from 'shared/utils/string/firstLetterUpperCase'
 
-type UserNameTypeUnion = 'full' | 'short'
-
-const getUserName = <T extends UserNameModel>(
-  { firstName, lastName, middleName }: T,
-  type: UserNameTypeUnion,
-): string => {
-  if (type === 'full') {
-    return [lastName, firstName, middleName].join(' ').trimEnd()
-  }
-
+const getShortUserName = <T extends UserNameModel>({
+  firstName,
+  lastName,
+  middleName,
+}: T): string => {
   return [
     `${lastName} `,
     addDotAtEnd(firstLetterUpperCase(firstName)),
@@ -19,4 +14,4 @@ const getUserName = <T extends UserNameModel>(
   ].join('')
 }
 
-export default getUserName
+export default getShortUserName

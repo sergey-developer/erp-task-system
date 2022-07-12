@@ -2,12 +2,16 @@ import { Space, Tabs, Typography } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
 import { TaskTypeEnum } from 'modules/tasks/constants'
-import { TaskDetailsModel } from 'modules/tasks/taskView/models'
+import {
+  TaskDetailsCommentModel,
+  TaskDetailsModel,
+} from 'modules/tasks/taskView/models'
+import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
-import getUserName from '../../../../user/utils/getUserName'
-import { DetailContainerStyled } from './styles'
+import { DetailContainerStyled } from '../styles'
+import { TaskDetailsTabsEnum } from './constants'
 import TaskComment from './TaskComment'
 
 const { TabPane } = Tabs
@@ -15,14 +19,17 @@ const { Title, Text, Paragraph } = Typography
 
 export type TabsSectionProps = Pick<
   TaskDetailsModel,
-  'techResolution' | 'userResolution' | 'type' | 'comments'
->
+  'techResolution' | 'userResolution' | 'type' | 'description'
+> & {
+  comments: Array<TaskDetailsCommentModel>
+}
 
 const TabsSection: FC<TabsSectionProps> = ({
   techResolution,
   userResolution,
   type,
-  comments = [],
+  comments,
+  description,
 }) => {
   const techResolutionContent = useMemo(() => {
     return techResolution ? (
@@ -57,7 +64,7 @@ const TabsSection: FC<TabsSectionProps> = ({
           <TaskComment
             key={comment.id}
             text={comment.text}
-            author={getUserName(comment.author, 'short')}
+            author={getShortUserName(comment.author)}
             createdAt={formatDate(comment.createdAt, DATE_TIME_FORMAT)}
           />
         ))}
@@ -67,21 +74,25 @@ const TabsSection: FC<TabsSectionProps> = ({
 
   return (
     <DetailContainerStyled>
-      <Tabs defaultActiveKey='1'>
-        <TabPane tab='Описание и комментарии' key='1'>
+      <Tabs defaultActiveKey={TaskDetailsTabsEnum.DescriptionAndComments}>
+        <TabPane
+          tab='Описание и комментарии'
+          key={TaskDetailsTabsEnum.DescriptionAndComments}
+        >
           <Title level={5}>Описание</Title>
 
           <Paragraph
-            ellipsis={{
-              rows: 5,
-              expandable: true,
-              symbol: 'Читать полностью',
-              onExpand: () => {
-                console.log('TODO: open modal')
-              },
-            }}
+            ellipsis={
+              description
+                ? {
+                    rows: 5,
+                    expandable: true,
+                    symbol: 'Читать полностью',
+                  }
+                : false
+            }
           >
-            Описание
+            {description || '—'}
           </Paragraph>
 
           <Title level={5}>Комментарии</Title>
@@ -89,24 +100,29 @@ const TabsSection: FC<TabsSectionProps> = ({
           {renderTaskComments()}
         </TabPane>
 
-        <TabPane tab='Решение' key='2'>
+        <TabPane tab='Решение' key={TaskDetailsTabsEnum.Resolution}>
           <Title level={5}>Решение</Title>
+
           {showResolution ? (
             <>
               {techResolutionContent}
               {userResolutionContent}
             </>
           ) : (
-            '-'
+            '—'
           )}
         </TabPane>
 
-        <TabPane tab='Задания' key='3'>
+        <TabPane tab='Задания' key={TaskDetailsTabsEnum.Tasks}>
           Задания
         </TabPane>
       </Tabs>
     </DetailContainerStyled>
   )
+}
+
+TabsSection.defaultProps = {
+  comments: [],
 }
 
 export default TabsSection

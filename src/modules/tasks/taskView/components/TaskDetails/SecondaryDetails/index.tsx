@@ -6,7 +6,7 @@ import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
-import getUserName from 'modules/user/utils/getUserName'
+import getFullUserName from 'modules/user/utils/getFullUserName'
 import { WorkGroupModel } from 'modules/workGroups/models'
 
 import Performer from '../Performer'
@@ -114,7 +114,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             {isEngineerRole || isFirstLineSupportRole ? (
               assignee ? (
                 <Performer
-                  name={getUserName(assignee, 'full')}
+                  name={getFullUserName(assignee)}
                   status={status}
                   assignee={assignee}
                 />

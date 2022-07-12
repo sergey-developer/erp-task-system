@@ -28,7 +28,7 @@ type TaskDetailsProps = {
       | 'type'
       | 'techResolution'
       | 'userResolution'
-      | 'comments'
+      | 'description'
     >
   >
   workGroupList: Array<WorkGroupModel>
@@ -82,7 +82,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             type={details.type}
             techResolution={details.techResolution}
             userResolution={details.userResolution}
-            comments={details.comments}
+            description={details.description}
+            comments={[]}
           />
         )}
       </CardStyled>

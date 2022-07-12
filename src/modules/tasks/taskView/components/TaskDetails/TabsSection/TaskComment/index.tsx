@@ -4,7 +4,7 @@ import { FC, useState } from 'react'
 import { EllipsisConfig } from 'antd/lib/typography/Base'
 import { TaskDetailsCommentModel } from 'modules/tasks/taskView/models'
 
-import { CommentHeaderTextStyled } from './styles'
+import { HeaderTextStyled } from './styles'
 
 const { Paragraph } = Typography
 const commentEllipsisProps: EllipsisConfig = { rows: 3 }
@@ -19,9 +19,9 @@ const TaskComment: FC<TaskCommentProps> = (props) => {
 
   return (
     <Space direction='vertical'>
-      <Space split={<CommentHeaderTextStyled>•</CommentHeaderTextStyled>}>
-        <CommentHeaderTextStyled>{author}</CommentHeaderTextStyled>
-        <CommentHeaderTextStyled>{createdAt}</CommentHeaderTextStyled>
+      <Space split={<HeaderTextStyled>•</HeaderTextStyled>}>
+        <HeaderTextStyled>{author}</HeaderTextStyled>
+        <HeaderTextStyled>{createdAt}</HeaderTextStyled>
       </Space>
 
       <Paragraph
