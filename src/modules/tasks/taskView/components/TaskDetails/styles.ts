@@ -1,4 +1,4 @@
-import { Card, Divider, Image } from 'antd'
+import { Card, Divider } from 'antd'
 
 import styled from 'styled-components'
 
@@ -45,14 +45,4 @@ export const DividerStyled = styled(Divider)`
 
 export const DetailContainerStyled = styled.div`
   padding: 20px 30px;
-`
-
-export const ImageStyled = styled(Image)`
-  && {
-    border-radius: 4px;
-    width: 58px;
-  }
-  ~ .ant-image-mask {
-    border-radius: 4px;
-  }
 `

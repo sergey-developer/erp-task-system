@@ -2,7 +2,7 @@ import { CloseOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Menu, MenuProps, Row, Space, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import { TaskDetailsModel } from '../../models'
+import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
 type CardTitleProps = Pick<TaskDetailsModel, 'id'> & {
   menuItems: MenuProps['items']
