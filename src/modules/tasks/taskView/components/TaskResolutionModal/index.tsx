@@ -11,6 +11,7 @@ import React, { FC, useMemo } from 'react'
 
 import useTaskType from 'modules/tasks/hooks/useTaskType'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
+import { DEFAULT_MODAL_WIDTH } from 'shared/constants/components'
 
 import { TaskResolutionFormFields } from './interfaces'
 import { TECH_RESOLUTION_RULES, USER_RESOLUTION_RULES } from './validation'
@@ -31,7 +32,7 @@ export type TaskResolutionModalProps = Pick<
     onResolutionSubmit: (values: TaskResolutionFormFields) => void
   }
 
-const TaskSolutionModal: FC<TaskResolutionModalProps> = (props) => {
+const TaskResolutionModal: FC<TaskResolutionModalProps> = (props) => {
   const {
     isTaskResolving,
     onCancel,
@@ -71,7 +72,7 @@ const TaskSolutionModal: FC<TaskResolutionModalProps> = (props) => {
       okButtonProps={submitButtonProps}
       cancelText='Отменить'
       cancelButtonProps={buttonCommonProps}
-      width={613}
+      width={DEFAULT_MODAL_WIDTH}
     >
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>
@@ -114,4 +115,4 @@ const TaskSolutionModal: FC<TaskResolutionModalProps> = (props) => {
   )
 }
 
-export default TaskSolutionModal
+export default TaskResolutionModal

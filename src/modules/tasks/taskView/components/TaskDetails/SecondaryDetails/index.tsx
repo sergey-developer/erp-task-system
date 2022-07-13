@@ -1,7 +1,6 @@
-import { Col, Row, Typography } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import ButtonText from 'components/Buttons/ButtonText'
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
@@ -56,9 +55,9 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   const renderChangeTaskLineButton = () => {
     return firstLineSupportNotHasWorkGroup ? (
-      <ButtonText type='link'>Перевести на II линию</ButtonText>
+      <Button type='link'>Перевести на II линию</Button>
     ) : seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup ? (
-      <ButtonText type='link'>Вернуть на I линию</ButtonText>
+      <Button type='link'>Вернуть на I линию</Button>
     ) : null
   }
 
@@ -103,11 +102,11 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
               <Text type='secondary'>Исполнитель</Text>
 
               {authenticatedUser && (
-                <ButtonText type='link'>
+                <Button type='link'>
                   {assignee?.id === authenticatedUser.id
                     ? 'Отказаться от заявки'
                     : 'Назначить на себя'}
-                </ButtonText>
+                </Button>
               )}
             </Space>
 

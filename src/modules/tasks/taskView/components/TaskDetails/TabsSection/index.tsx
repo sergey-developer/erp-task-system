@@ -1,13 +1,13 @@
 import { Space, Tabs, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
+import OpenableText from 'components/OpenableText'
 import { TaskTypeEnum } from 'modules/tasks/constants'
 import {
   TaskDetailsCommentModel,
   TaskDetailsModel,
 } from 'modules/tasks/taskView/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
-import { NO_CONTENT_HYPHEN } from 'shared/constants/common'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
@@ -82,19 +82,13 @@ const TabsSection: FC<TabsSectionProps> = ({
         >
           <Title level={5}>Описание</Title>
 
-          <Paragraph
-            ellipsis={
-              description
-                ? {
-                    rows: 5,
-                    expandable: true,
-                    symbol: 'Читать полностью',
-                  }
-                : false
-            }
-          >
-            {description || NO_CONTENT_HYPHEN}
-          </Paragraph>
+          {description && (
+            <OpenableText
+              className='margin-b-15'
+              text={description}
+              modalTitle='Описание'
+            />
+          )}
 
           <Title level={5}>Комментарии</Title>
 
@@ -110,7 +104,7 @@ const TabsSection: FC<TabsSectionProps> = ({
               {userResolutionContent}
             </>
           ) : (
-            NO_CONTENT_HYPHEN
+            '—'
           )}
         </TabPane>
 

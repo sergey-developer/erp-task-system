@@ -1,7 +1,7 @@
 import { ColumnsType } from 'antd/es/table'
 import React, { FC, useMemo } from 'react'
 
-import { ParentSizedTable } from 'components/ParentSizedTable'
+import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 import { SMART_SORT_DIRECTIONS_TO_SORT_FIELDS } from 'modules/tasks/taskList/components/TaskListPage/constants'
 import { TaskListItemModel } from 'modules/tasks/taskList/models'
 
