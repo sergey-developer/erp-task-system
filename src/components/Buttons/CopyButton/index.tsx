@@ -1,20 +1,18 @@
 import { CopyOutlined } from '@ant-design/icons'
 import { Button, ButtonProps } from 'antd'
 import React, { FC } from 'react'
-import { useClipboard } from 'use-clipboard-copy'
 
-const NOT_SUPPORTED_TEXT: string = 'Ваш браузер не поддерживает копирование'
-const COPIED_TIMEOUT: number = 2000
+import useClipboard from 'shared/hooks/useClipboard'
 
 type CopyButtonProps = ButtonProps & {
   value: string
 }
 
 const CopyButton: FC<CopyButtonProps> = ({ value, onClick, ...props }) => {
-  const clipboard = useClipboard({ copiedTimeout: COPIED_TIMEOUT })
+  const clipboard = useClipboard()
 
-  const handleClick: ButtonProps['onClick'] = (event) => {
-    clipboard.copy(value)
+  const handleClick: ButtonProps['onClick'] = async (event) => {
+    await clipboard.copy(value)
     onClick && onClick(event)
   }
 
@@ -24,11 +22,7 @@ const CopyButton: FC<CopyButtonProps> = ({ value, onClick, ...props }) => {
       onClick={handleClick}
       {...props}
     >
-      {clipboard.isSupported()
-        ? clipboard.copied
-          ? 'Скопировано!'
-          : 'Копировать'
-        : NOT_SUPPORTED_TEXT}
+      {clipboard.copied ? 'Скопировано!' : 'Копировать'}
     </Button>
   )
 }

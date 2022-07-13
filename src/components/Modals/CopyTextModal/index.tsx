@@ -26,6 +26,7 @@ const CopyTextModal: FC<CopyTextModalProps> = (props) => {
       }
       onCancel={onCancel}
       footer={null}
+      destroyOnClose
     >
       {text}
     </ModalStyled>
