@@ -1,10 +1,9 @@
 import { useBoolean } from 'ahooks'
-import { Button, Typography } from 'antd'
+import { Button, Space, Typography } from 'antd'
 import { EllipsisConfig } from 'antd/es/typography/Base'
 import React, { FC } from 'react'
 
 import CopyTextModal from 'components/Modals/CopyTextModal'
-import Space from 'components/Space'
 
 const { Paragraph } = Typography
 
