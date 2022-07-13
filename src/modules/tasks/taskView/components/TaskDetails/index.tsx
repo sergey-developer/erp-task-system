@@ -38,6 +38,7 @@ type TaskDetailsProps = {
       | 'type'
       | 'techResolution'
       | 'userResolution'
+      | 'description'
     >
   >
   workGroupList: Array<WorkGroupModel>
@@ -152,11 +153,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             visible={isTaskResolutionModalOpened}
           />
         )}
-        <TabsSection
-          type={details?.type}
-          techResolution={details?.techResolution}
-          userResolution={details?.userResolution}
-        />
+
+        {details && (
+          <TabsSection
+            type={details.type}
+            techResolution={details.techResolution}
+            userResolution={details.userResolution}
+            description={details.description}
+            comments={[]}
+          />
+        )}
       </CardStyled>
     </RootWrapperStyled>
   )

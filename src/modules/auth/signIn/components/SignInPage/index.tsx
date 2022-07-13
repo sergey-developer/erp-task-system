@@ -7,6 +7,7 @@ import { useLoginMutation } from 'modules/auth/auth.service'
 import { login as loginAction } from 'modules/auth/authSlice'
 import { IUseLoginMutationResult } from 'modules/auth/interfaces'
 import parseJwt from 'modules/auth/utils/parseJwt'
+import { APP_NAME } from 'shared/constants/common'
 import { StorageKeys } from 'shared/constants/storage'
 import useDispatch from 'shared/hooks/useDispatch'
 import localStorageService from 'shared/services/localStorage'
@@ -29,24 +30,18 @@ const SignInPage: FC = () => {
     useLoginMutation<IUseLoginMutationResult>()
 
   const onFinish = async (fields: SignInFormFields) => {
-    try {
-      const response = await login(fields)
-      if ('data' in response) {
-        const data = response.data
-        localStorageService.setItem(StorageKeys.accessToken, data.access)
-        localStorageService.setItem(StorageKeys.refreshToken, data.refresh)
+    // todo: добавить обработку ошибок
+    const response = await login(fields).unwrap()
+    localStorageService.setItem(StorageKeys.accessToken, response.access)
+    localStorageService.setItem(StorageKeys.refreshToken, response.refresh)
 
-        dispatch(loginAction({ user: parseJwt(data.access), ...data }))
-        navigate(RoutesEnum.Root)
-      }
-    } finally {
-      return
-    }
+    dispatch(loginAction({ user: parseJwt(response.access), ...response }))
+    navigate(RoutesEnum.Root)
   }
 
   return (
     <CardStyled>
-      <PageTitleStyled level={4}>Obermeister-ITSM</PageTitleStyled>
+      <PageTitleStyled level={4}>{APP_NAME}</PageTitleStyled>
       <FormTitleStyled level={5}>Авторизация</FormTitleStyled>
 
       {error && (

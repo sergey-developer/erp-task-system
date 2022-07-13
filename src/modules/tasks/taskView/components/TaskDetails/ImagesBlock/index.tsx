@@ -6,6 +6,7 @@ import { ImageStyled } from './styles'
 type ImagesBlockProps = {
   images: string[]
 }
+
 const ImagesBlock: FC<ImagesBlockProps> = ({ images }) => {
   return (
     <Space>
