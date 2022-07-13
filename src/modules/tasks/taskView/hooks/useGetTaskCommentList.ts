@@ -2,17 +2,17 @@ import { notification } from 'antd'
 import { useEffect } from 'react'
 
 import {
-  UseGetTaskByIdQueryReturnType,
-  useGetTaskByIdQuery,
-} from 'modules/tasks/services/tasks.service'
-import { GetTaskByIdQueryArgsModel } from 'modules/tasks/taskView/models'
+  UseGetTaskCommentListQueryReturnType,
+  useGetTaskCommentListQuery,
+} from 'modules/tasks/services/taskComments.service'
+import { GetTaskCommentListQueryArgsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
 
-const useGetTaskById = (
-  id: GetTaskByIdQueryArgsModel,
-): UseGetTaskByIdQueryReturnType => {
+const useGetTaskCommentList = (
+  id: GetTaskCommentListQueryArgsModel,
+): UseGetTaskCommentListQueryReturnType => {
   const {
     isEngineerRole,
     isSeniorEngineerRole,
@@ -27,7 +27,7 @@ const useGetTaskById = (
     isFirstLineSupportRole
   )
 
-  const result = useGetTaskByIdQuery(id, {
+  const result = useGetTaskCommentListQuery(id, {
     skip: shouldSkip,
   })
 
@@ -44,12 +44,9 @@ const useGetTaskById = (
       })
     }
 
-    if (
-      error.status === HttpStatusCodeEnum.BadRequest ||
-      error.status >= HttpStatusCodeEnum.ServerError
-    ) {
+    if (error.status >= HttpStatusCodeEnum.ServerError) {
       notification.error({
-        message: `Ошибка открытия заявки с идентификатором ${id}`,
+        message: `Ошибка получения комментариев для заявки с идентификатором ${id}`,
         duration: ERROR_NOTIFICATION_DURATION,
       })
     }
@@ -58,4 +55,4 @@ const useGetTaskById = (
   return result
 }
 
-export default useGetTaskById
+export default useGetTaskCommentList

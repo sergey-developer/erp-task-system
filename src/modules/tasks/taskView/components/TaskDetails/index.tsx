@@ -1,11 +1,11 @@
 import { CheckCircleOutlined } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
-import { MenuProps, notification } from 'antd'
+import { MenuProps, Tabs, notification } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
-import { useResolveTaskMutation } from 'modules/tasks/tasks.service'
+import { useResolveTaskMutation } from 'modules/tasks/services/tasks.service'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
@@ -18,7 +18,15 @@ import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
-import TabsSection from './TabsSection'
+import TaskDetailsTabs from './TaskDetailsTabs'
+import {
+  TaskDetailsTabsEnum,
+  taskDetailsTabNames,
+} from './TaskDetailsTabs/constants'
+import DescriptionAndComments from './TaskDetailsTabs/DescriptionAndComments'
+import Resolution from './TaskDetailsTabs/Resolution'
+
+const { TabPane } = Tabs
 
 type TaskDetailsProps = {
   details: MaybeNull<
@@ -144,6 +152,42 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         />
 
         {details && (
+          <TaskDetailsTabs
+            defaultTabKey={TaskDetailsTabsEnum.DescriptionAndComments}
+          >
+            <TabPane
+              tab={
+                taskDetailsTabNames[TaskDetailsTabsEnum.DescriptionAndComments]
+              }
+              key={TaskDetailsTabsEnum.DescriptionAndComments}
+            >
+              <DescriptionAndComments
+                id={details.id}
+                description={details.description}
+              />
+            </TabPane>
+
+            <TabPane
+              tab={taskDetailsTabNames[TaskDetailsTabsEnum.Resolution]}
+              key={TaskDetailsTabsEnum.Resolution}
+            >
+              <Resolution
+                type={details.type}
+                techResolution={details.techResolution}
+                userResolution={details.userResolution}
+              />
+            </TabPane>
+
+            <TabPane
+              tab={taskDetailsTabNames[TaskDetailsTabsEnum.Tasks]}
+              key={TaskDetailsTabsEnum.Tasks}
+            >
+              Задания
+            </TabPane>
+          </TaskDetailsTabs>
+        )}
+
+        {details && (
           <TaskResolutionModal
             isTaskResolving={isTaskResolving}
             onCancel={toggleTaskResolutionModal}
@@ -151,16 +195,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             title={`Решение по заявке ${details.id}`}
             type={details.type}
             visible={isTaskResolutionModalOpened}
-          />
-        )}
-
-        {details && (
-          <TabsSection
-            type={details.type}
-            techResolution={details.techResolution}
-            userResolution={details.userResolution}
-            description={details.description}
-            comments={[]}
           />
         )}
       </CardStyled>

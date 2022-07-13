@@ -1,7 +1,7 @@
 import {
   UseGetTaskListQueryReturnType,
   useGetTaskListQuery,
-} from 'modules/tasks/tasks.service'
+} from 'modules/tasks/services/tasks.service'
 import useUserRole from 'modules/user/hooks/useUserRole'
 
 import { GetTaskListQueryArgsModel } from '../models'
