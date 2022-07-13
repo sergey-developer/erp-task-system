@@ -1,15 +1,13 @@
-import { useBoolean } from 'ahooks'
-import { Button, Space, Tabs, Typography } from 'antd'
+import { Space, Tabs, Typography } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
-import CopyTextModal from 'components/Modals/CopyTextModal'
+import OpenableText from 'components/OpenableText'
 import { TaskTypeEnum } from 'modules/tasks/constants'
 import {
   TaskDetailsCommentModel,
   TaskDetailsModel,
 } from 'modules/tasks/taskView/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
-import { NO_CONTENT_HYPHEN } from 'shared/constants/common'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
@@ -34,12 +32,6 @@ const TabsSection: FC<TabsSectionProps> = ({
   comments,
   description,
 }) => {
-  const [descriptionHasEllipsis, { setTrue: setDescriptionHasEllipsis }] =
-    useBoolean(false)
-
-  const [isDescriptionModalOpened, { toggle: toggleDescriptionModalOpened }] =
-    useBoolean(false)
-
   const techResolutionContent = useMemo(() => {
     return techResolution ? (
       <>
@@ -90,32 +82,11 @@ const TabsSection: FC<TabsSectionProps> = ({
         >
           <Title level={5}>Описание</Title>
 
-          <Paragraph
-            className='margin-b-0'
-            ellipsis={
-              description
-                ? {
-                    rows: 5,
-                    onEllipsis: setDescriptionHasEllipsis,
-                  }
-                : false
-            }
-          >
-            {description || NO_CONTENT_HYPHEN}
-          </Paragraph>
-
-          {descriptionHasEllipsis && (
-            <Button type='link' onClick={toggleDescriptionModalOpened}>
-              Читать полностью
-            </Button>
-          )}
-
           {description && (
-            <CopyTextModal
-              title='Описание'
-              visible={isDescriptionModalOpened}
+            <OpenableText
+              className='margin-b-15'
               text={description}
-              onCancel={toggleDescriptionModalOpened}
+              modalTitle='Описание'
             />
           )}
 
@@ -133,7 +104,7 @@ const TabsSection: FC<TabsSectionProps> = ({
               {userResolutionContent}
             </>
           ) : (
-            NO_CONTENT_HYPHEN
+            '—'
           )}
         </TabPane>
 

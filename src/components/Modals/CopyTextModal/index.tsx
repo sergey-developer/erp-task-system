@@ -1,22 +1,25 @@
-import { Modal, ModalProps, Row } from 'antd'
+import { ModalProps, Row } from 'antd'
 import React, { FC } from 'react'
 
 import CopyButton from 'components/Buttons/CopyButton'
 import { DEFAULT_MODAL_WIDTH } from 'shared/constants/components'
 
-type TextModalProps = Pick<ModalProps, 'visible' | 'title' | 'onCancel'> & {
+import { ModalStyled } from './styles'
+
+type CopyTextModalProps = Pick<ModalProps, 'visible' | 'onCancel'> & {
   text: string
+  title: string
 }
 
-const CopyTextModal: FC<TextModalProps> = (props) => {
+const CopyTextModal: FC<CopyTextModalProps> = (props) => {
   const { visible, title, text, onCancel } = props
 
   return (
-    <Modal
+    <ModalStyled
       visible={visible}
       width={DEFAULT_MODAL_WIDTH}
       title={
-        <Row className='margin-r-20' justify='space-between' align='middle'>
+        <Row className='margin-r-30' justify='space-between' align='middle'>
           <span>{title}</span>
           <CopyButton type='link' value={text} />
         </Row>
@@ -25,7 +28,7 @@ const CopyTextModal: FC<TextModalProps> = (props) => {
       footer={null}
     >
       {text}
-    </Modal>
+    </ModalStyled>
   )
 }
 
