@@ -6,11 +6,11 @@ import { FCWithChildren } from 'shared/interfaces/utils'
 import { DetailContainerStyled } from '../styles'
 import { TaskDetailsTabsEnum } from './constants'
 
-export type TabsSectionProps = {
+export type TaskDetailsTabsProps = {
   defaultTabKey: TaskDetailsTabsEnum
 }
 
-const TabsSection: FCWithChildren<TabsSectionProps> = ({
+const TaskDetailsTabs: FCWithChildren<TaskDetailsTabsProps> = ({
   defaultTabKey,
   children,
 }) => {
@@ -21,4 +21,4 @@ const TabsSection: FCWithChildren<TabsSectionProps> = ({
   )
 }
 
-export default TabsSection
+export default TaskDetailsTabs
