@@ -1,5 +1,6 @@
+import { useBoolean } from 'ahooks'
 import { Space, Typography } from 'antd'
-import { FC, useState } from 'react'
+import React, { FC } from 'react'
 
 import { EllipsisConfig } from 'antd/lib/typography/Base'
 import { TaskDetailsCommentModel } from 'modules/tasks/taskView/models'
@@ -15,7 +16,8 @@ type TaskCommentProps = Pick<TaskDetailsCommentModel, 'createdAt' | 'text'> & {
 
 const TaskComment: FC<TaskCommentProps> = (props) => {
   const { text, createdAt, author } = props
-  const [commentHasEllipsis, setCommentHasEllipsis] = useState(true)
+  const [commentHasEllipsis, { setFalse: setCommentHasNotEllipsis }] =
+    useBoolean(true)
 
   return (
     <Space direction='vertical'>
@@ -26,7 +28,7 @@ const TaskComment: FC<TaskCommentProps> = (props) => {
 
       <Paragraph
         ellipsis={commentHasEllipsis ? commentEllipsisProps : false}
-        onClick={() => setCommentHasEllipsis(false)}
+        onClick={setCommentHasNotEllipsis}
       >
         {text}
       </Paragraph>

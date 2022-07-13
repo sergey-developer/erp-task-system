@@ -1,13 +1,14 @@
 import { UserNameModel } from 'modules/user/models'
-import firstLetterUpperCase from 'shared/utils/string/firstLetterUpperCase'
+import getFirstLetterInUpperCase from 'shared/utils/string/getFirstLetterInUpperCase'
 
 const getUserAbbr = <T extends Omit<UserNameModel, 'middleName'>>({
   firstName,
   lastName,
 }: T): string => {
-  return [firstLetterUpperCase(lastName), firstLetterUpperCase(firstName)].join(
-    '',
-  )
+  return [
+    getFirstLetterInUpperCase(lastName),
+    getFirstLetterInUpperCase(firstName),
+  ].join('')
 }
 
 export default getUserAbbr

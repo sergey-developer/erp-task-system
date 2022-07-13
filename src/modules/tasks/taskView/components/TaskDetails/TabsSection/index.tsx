@@ -1,5 +1,5 @@
 import { Space, Tabs, Typography } from 'antd'
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { FC, useMemo } from 'react'
 
 import { TaskTypeEnum } from 'modules/tasks/constants'
 import {
@@ -54,7 +54,7 @@ const TabsSection: FC<TabsSectionProps> = ({
 
   const showResolution = !!techResolutionContent || !!userResolutionContent
 
-  const renderTaskComments = useCallback(() => {
+  const taskComments = useMemo(() => {
     if (!comments.length) {
       return <Paragraph>Комментариев пока нет</Paragraph>
     }
@@ -98,7 +98,7 @@ const TabsSection: FC<TabsSectionProps> = ({
 
           <Title level={5}>Комментарии</Title>
 
-          {renderTaskComments()}
+          {taskComments}
         </TabPane>
 
         <TabPane tab='Решение' key={TaskDetailsTabsEnum.Resolution}>

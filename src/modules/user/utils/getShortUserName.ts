@@ -1,6 +1,6 @@
 import { UserNameModel } from 'modules/user/models'
 import addDotAtEnd from 'shared/utils/string/addDotToEnd'
-import firstLetterUpperCase from 'shared/utils/string/firstLetterUpperCase'
+import getFirstLetterInUpperCase from 'shared/utils/string/getFirstLetterInUpperCase'
 
 const getShortUserName = <T extends UserNameModel>({
   firstName,
@@ -9,8 +9,8 @@ const getShortUserName = <T extends UserNameModel>({
 }: T): string => {
   return [
     `${lastName} `,
-    addDotAtEnd(firstLetterUpperCase(firstName)),
-    middleName ? addDotAtEnd(firstLetterUpperCase(middleName)) : undefined,
+    addDotAtEnd(getFirstLetterInUpperCase(firstName)),
+    middleName ? addDotAtEnd(getFirstLetterInUpperCase(middleName)) : undefined,
   ].join('')
 }
 
