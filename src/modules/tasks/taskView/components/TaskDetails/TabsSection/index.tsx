@@ -1,6 +1,8 @@
-import { Space, Tabs, Typography } from 'antd'
+import { useBoolean } from 'ahooks'
+import { Button, Space, Tabs, Typography } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
+import CopyTextModal from 'components/Modals/CopyTextModal'
 import { TaskTypeEnum } from 'modules/tasks/constants'
 import {
   TaskDetailsCommentModel,
@@ -32,6 +34,12 @@ const TabsSection: FC<TabsSectionProps> = ({
   comments,
   description,
 }) => {
+  const [descriptionHasEllipsis, { setTrue: setDescriptionHasEllipsis }] =
+    useBoolean(false)
+
+  const [isDescriptionModalOpened, { toggle: toggleDescriptionModalOpened }] =
+    useBoolean(false)
+
   const techResolutionContent = useMemo(() => {
     return techResolution ? (
       <>
@@ -83,18 +91,33 @@ const TabsSection: FC<TabsSectionProps> = ({
           <Title level={5}>Описание</Title>
 
           <Paragraph
+            className='margin-b-0'
             ellipsis={
               description
                 ? {
                     rows: 5,
-                    expandable: true,
-                    symbol: 'Читать полностью',
+                    onEllipsis: setDescriptionHasEllipsis,
                   }
                 : false
             }
           >
             {description || NO_CONTENT_HYPHEN}
           </Paragraph>
+
+          {descriptionHasEllipsis && (
+            <Button type='link' onClick={toggleDescriptionModalOpened}>
+              Читать полностью
+            </Button>
+          )}
+
+          {description && (
+            <CopyTextModal
+              title='Описание'
+              visible={isDescriptionModalOpened}
+              text={description}
+              onCancel={toggleDescriptionModalOpened}
+            />
+          )}
 
           <Title level={5}>Комментарии</Title>
 
