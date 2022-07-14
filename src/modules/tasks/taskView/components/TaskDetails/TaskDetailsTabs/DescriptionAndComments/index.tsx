@@ -1,17 +1,15 @@
-import { useBoolean } from 'ahooks'
-import { Button, Space, Spin, Typography } from 'antd'
+import { Spin, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import OpenableText from 'components/OpenableText'
+import TaskCommentList from 'modules/tasks/taskView/components/TaskCommentList'
 import useGetTaskCommentList from 'modules/tasks/taskView/hooks/useGetTaskCommentList'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
-import TaskComment from './TaskComment'
-
-const { Title, Text } = Typography
+const { Title } = Typography
 const DEFAULT_DISPLAYABLE_COMMENTS_COUNT: number = 3
 
 type DescriptionAndCommentsTabProps = Pick<
@@ -23,7 +21,6 @@ const DescriptionAndComments: FC<DescriptionAndCommentsTabProps> = ({
   id: taskId,
   description,
 }) => {
-  const [isShowAllComments, { setTrue: setShowAllComments }] = useBoolean(false)
   const { data: commentList = [], isFetching: commentListIsFetching } =
     useGetTaskCommentList(taskId)
 
@@ -34,41 +31,6 @@ const DescriptionAndComments: FC<DescriptionAndCommentsTabProps> = ({
       createdAt: formatDate(comment.createdAt, DATE_TIME_FORMAT),
     }))
   }, [commentList])
-
-  const commentListContent = useMemo(() => {
-    if (!modifiedCommentList.length) {
-      return <Text>Комментариев пока нет</Text>
-    }
-
-    const isMoreThanThreeComments: boolean =
-      modifiedCommentList.length > DEFAULT_DISPLAYABLE_COMMENTS_COUNT
-
-    const displayableComments =
-      isShowAllComments && isMoreThanThreeComments
-        ? modifiedCommentList
-        : modifiedCommentList.slice(0, DEFAULT_DISPLAYABLE_COMMENTS_COUNT)
-
-    return (
-      <Space direction='vertical'>
-        <Space size='large' direction='vertical'>
-          {displayableComments.map((comment) => (
-            <TaskComment
-              key={comment.id}
-              text={comment.text}
-              author={comment.author}
-              createdAt={comment.createdAt}
-            />
-          ))}
-        </Space>
-
-        {isMoreThanThreeComments && !isShowAllComments && (
-          <Button type='link' onClick={setShowAllComments}>
-            Показать все
-          </Button>
-        )}
-      </Space>
-    )
-  }, [isShowAllComments, modifiedCommentList, setShowAllComments])
 
   return (
     <>
@@ -84,7 +46,14 @@ const DescriptionAndComments: FC<DescriptionAndCommentsTabProps> = ({
 
       <Title level={5}>Комментарии</Title>
 
-      {commentListIsFetching ? <Spin /> : commentListContent}
+      {commentListIsFetching ? (
+        <Spin />
+      ) : (
+        <TaskCommentList
+          list={modifiedCommentList}
+          defaultDisplayableCount={DEFAULT_DISPLAYABLE_COMMENTS_COUNT}
+        />
+      )}
     </>
   )
 }
