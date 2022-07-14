@@ -147,7 +147,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             isTaskResolving={isTaskResolving}
             onCancel={toggleTaskResolutionModal}
             onResolutionSubmit={handleResolutionSubmit}
-            title={`Решение по заявке ${details.id}`}
+            title={`Решение по заявке ${details.recordId}`}
             type={details.type}
             visible={isTaskResolutionModalOpened}
           />
