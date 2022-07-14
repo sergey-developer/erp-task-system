@@ -26,7 +26,7 @@ const Resolution: FC<ResolutionProps> = ({
   ) : null
 
   const userResolutionContent =
-    userResolution && !taskType.isIncident && !taskType.isRequest ? (
+    userResolution && !taskType.isIncidentTask && !taskType.isRequestTask ? (
       <>
         <Text type='secondary'>Решение для пользователя</Text>
         <Paragraph>{userResolution}</Paragraph>
