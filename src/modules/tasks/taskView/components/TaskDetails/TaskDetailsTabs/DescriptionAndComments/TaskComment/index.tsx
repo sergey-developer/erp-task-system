@@ -26,7 +26,7 @@ const TaskComment: FC<TaskCommentProps> = (props) => {
       </Space>
 
       <CommentText
-        ellipsis={commentHasEllipsis ? commentEllipsisProps : false}
+        ellipsis={commentHasEllipsis && commentEllipsisProps}
         onClick={setCommentHasNotEllipsis}
       >
         {text}

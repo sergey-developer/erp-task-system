@@ -33,13 +33,13 @@ const Resolution: FC<ResolutionProps> = ({
       </>
     ) : null
 
-  const isShowResolution = !!techResolutionContent || !!userResolutionContent
+  const isResolutionVisible = !!techResolutionContent || !!userResolutionContent
 
   return (
     <>
       <Title level={5}>Решение</Title>
 
-      {isShowResolution ? (
+      {isResolutionVisible ? (
         <>
           {techResolutionContent}
           {userResolutionContent}
