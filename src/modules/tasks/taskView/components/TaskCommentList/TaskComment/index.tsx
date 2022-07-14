@@ -1,13 +1,12 @@
 import { useBoolean } from 'ahooks'
-import { Space, Typography } from 'antd'
+import { Space } from 'antd'
 import React, { FC } from 'react'
 
 import { EllipsisConfig } from 'antd/lib/typography/Base'
 import { TaskDetailsCommentModel } from 'modules/tasks/taskView/models'
 
-import { HeaderTextStyled } from './styles'
+import { CommentText, HeaderTextStyled } from './styles'
 
-const { Paragraph } = Typography
 const commentEllipsisProps: EllipsisConfig = { rows: 3 }
 
 type TaskCommentProps = Pick<TaskDetailsCommentModel, 'createdAt' | 'text'> & {
@@ -26,12 +25,12 @@ const TaskComment: FC<TaskCommentProps> = (props) => {
         <HeaderTextStyled>{createdAt}</HeaderTextStyled>
       </Space>
 
-      <Paragraph
-        ellipsis={commentHasEllipsis ? commentEllipsisProps : false}
+      <CommentText
+        ellipsis={commentHasEllipsis && commentEllipsisProps}
         onClick={setCommentHasNotEllipsis}
       >
         {text}
-      </Paragraph>
+      </CommentText>
     </Space>
   )
 }

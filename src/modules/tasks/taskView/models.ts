@@ -14,6 +14,8 @@ import { BaseTaskCommentModel } from '../models'
 
 export type TaskDetailsCommentModel = BaseTaskCommentModel & {
   author: CommentAuthorModel
+  taskId: number
+  attachments: Array<string>
 }
 
 export type TaskAttachmentModel = {
@@ -76,7 +78,6 @@ export type TaskDetailsModel = {
 }
 
 export type GetTaskByIdResponseModel = TaskDetailsModel
-
 export type GetTaskByIdQueryArgsModel = TaskListItemModel['id']
 
 export type ResolveTaskMutationArgsModel = {
@@ -84,3 +85,6 @@ export type ResolveTaskMutationArgsModel = {
   techResolution?: string
   userResolution?: string
 }
+
+export type GetTaskCommentListQueryArgsModel = TaskDetailsModel['id']
+export type GetTaskCommentListResponseModel = Array<TaskDetailsCommentModel>
