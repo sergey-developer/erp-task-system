@@ -1,16 +1,15 @@
-import { HttpMethodEnum } from 'shared/constants/http'
-import { api } from 'shared/services/api'
-
-import { GetTaskListTransformedResponse } from './taskList/interfaces'
+import { GetTaskListTransformedResponse } from 'modules/tasks/taskList/interfaces'
 import {
   GetTaskListQueryArgsModel,
   GetTaskListResponseModel,
-} from './taskList/models'
+} from 'modules/tasks/taskList/models'
 import {
   GetTaskByIdQueryArgsModel,
   GetTaskByIdResponseModel,
   ResolveTaskMutationArgsModel,
-} from './taskView/models'
+} from 'modules/tasks/taskView/models'
+import { HttpMethodEnum } from 'shared/constants/http'
+import { api } from 'shared/services/api'
 
 const tasksService = api.injectEndpoints({
   endpoints: (build) => ({

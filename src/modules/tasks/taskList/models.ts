@@ -33,7 +33,9 @@ export type GetTaskListQueryArgsModel = {
   TaskIdFilterQueries
 
 export type TaskListItemCommentModel = BaseTaskCommentModel & {
+  task: number
   author: number
+  updatedAt: string
 }
 
 export type TaskReclassificationRequestModel = {

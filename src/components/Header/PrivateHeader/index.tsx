@@ -16,8 +16,6 @@ import useDispatch from 'shared/hooks/useDispatch'
 import useMatchedRoute from 'shared/hooks/useMatchedRoute'
 import localStorageService from 'shared/services/localStorage'
 
-import { BadgeStyled } from './styles'
-
 const { Header } = Layout
 
 const PrivateHeader: FC = () => {
@@ -69,11 +67,7 @@ const PrivateHeader: FC = () => {
           <Row justify='end'>
             <Space size='large'>
               <NotificationCounter />
-
-              <BadgeStyled dot color='orange'>
-                <UserAvatar size='large' />
-              </BadgeStyled>
-
+              <UserAvatar size='large' dot />
               <LogoutOutlined className='font-s-18' onClick={handleLogout} />
             </Space>
           </Row>
