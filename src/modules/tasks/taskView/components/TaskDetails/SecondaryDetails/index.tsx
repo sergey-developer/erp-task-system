@@ -25,7 +25,7 @@ type SecondaryDetailsProps = Pick<
   transferTaskIsLoading: boolean
   refetchTaskList: () => void
   closeTaskDetailsModal: () => void
-  transferTask: (value: WorkGroupModel['id']) => void
+  transferTask: (id: WorkGroupModel['id']) => Promise<void>
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
@@ -83,9 +83,9 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   }
 
   const handleTransferTask = async (
-    value: WorkGroupModel['id'],
+    id: WorkGroupModel['id'],
   ): Promise<void> => {
-    await transferTask(value)
+    await transferTask(id)
     closeTaskSecondLineModal()
     closeTaskDetailsModal()
     refetchTaskList()

@@ -150,7 +150,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               workGroupListLoading={workGroupListLoading}
               refetchTaskList={refetchTaskList}
               closeTaskDetailsModal={onClose}
-              transferTask={() => {}}
+              transferTask={async () => {}}
               transferTaskIsLoading={false}
             />
 
