@@ -19,17 +19,17 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
   const {
     data: task,
     isFetching: taskIsFetching,
-    isError: isTaskError,
+    isError: isGetTaskError,
   } = useGetTaskById(taskId)
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
 
   useEffect(() => {
-    if (isTaskError) {
+    if (isGetTaskError) {
       onClose()
     }
-  }, [isTaskError, onClose])
+  }, [isGetTaskError, onClose])
 
   return (
     <TaskDetails

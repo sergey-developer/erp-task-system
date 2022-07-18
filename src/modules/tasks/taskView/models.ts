@@ -1,7 +1,10 @@
 import { TaskListItemModel } from 'modules/tasks/taskList/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
-import { CommentAuthorModel, FileModel } from 'shared/interfaces/models'
-import { AssigneeModel } from 'shared/interfaces/models'
+import {
+  AssigneeModel,
+  CommentAuthorModel,
+  FileModel,
+} from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import {
@@ -81,10 +84,15 @@ export type GetTaskByIdResponseModel = TaskDetailsModel
 export type GetTaskByIdQueryArgsModel = TaskListItemModel['id']
 
 export type ResolveTaskMutationArgsModel = {
-  taskId: TaskListItemModel['id']
+  taskId: TaskDetailsModel['id']
   techResolution?: string
   userResolution?: string
 }
 
 export type GetTaskCommentListQueryArgsModel = TaskDetailsModel['id']
 export type GetTaskCommentListResponseModel = Array<TaskDetailsCommentModel>
+
+export type UpdateTaskWorkGroupMutationArgsModel = {
+  taskId: TaskDetailsModel['id']
+  workGroup: MaybeNull<number>
+}

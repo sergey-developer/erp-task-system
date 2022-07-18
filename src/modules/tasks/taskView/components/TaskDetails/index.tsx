@@ -5,7 +5,10 @@ import React, { FC, useCallback, useMemo } from 'react'
 
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
-import { useResolveTaskMutation } from 'modules/tasks/services/tasks.service'
+import {
+  useResolveTaskMutation,
+  useUpdateTaskWorkGroupMutation,
+} from 'modules/tasks/services/tasks.service'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupModel } from 'modules/workGroups/models'
 import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
@@ -73,6 +76,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const [resolveTask, { isLoading: isTaskResolving }] = useResolveTaskMutation()
 
+  const [updateTaskWorkGroup, { isLoading: isTaskWorkGroupUpdating }] =
+    useUpdateTaskWorkGroupMutation()
+
   const taskStatus = useTaskStatus(details?.status)
 
   const isAssignedToCurrentUser = useMemo(() => {
@@ -108,7 +114,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   >(
     async (values) => {
       try {
-        await resolveTask({ taskId: details!.id, ...values }).unwrap()
+        await resolveTask({ taskId: details!.id, ...values })
         onTaskResolved()
       } catch (err) {
         notification.error({
@@ -119,6 +125,23 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     },
     [details, onTaskResolved, resolveTask],
   )
+
+  const handleUpdateTaskWorkGroup = async (
+    workGroup: WorkGroupModel['id'],
+    closeTaskSecondLineModal: () => void,
+  ) => {
+    try {
+      await updateTaskWorkGroup({ taskId: details!.id, workGroup })
+      closeTaskSecondLineModal()
+      onClose()
+      refetchTaskList()
+    } catch (error: any) {
+      notification.error({
+        message: error?.data.detail,
+        duration: ERROR_NOTIFICATION_DURATION,
+      })
+    }
+  }
 
   const cardTitle = details?.id && (
     <CardTitle id={details.id} menuItems={menuItems} onClose={onClose} />
@@ -148,10 +171,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               workGroup={details.workGroup}
               workGroupList={workGroupList}
               workGroupListLoading={workGroupListLoading}
-              refetchTaskList={refetchTaskList}
-              closeTaskDetailsModal={onClose}
-              transferTask={async () => {}}
-              transferTaskIsLoading={false}
+              transferTask={handleUpdateTaskWorkGroup}
+              transferTaskIsLoading={isTaskWorkGroupUpdating}
             />
 
             <TaskDetailsTabs

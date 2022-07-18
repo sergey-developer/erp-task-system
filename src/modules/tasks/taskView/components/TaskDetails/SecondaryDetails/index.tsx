@@ -4,6 +4,7 @@ import React, { FC, useMemo } from 'react'
 
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
+import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
@@ -23,9 +24,10 @@ type SecondaryDetailsProps = Pick<
   workGroupList: Array<WorkGroupModel>
   workGroupListLoading: boolean
   transferTaskIsLoading: boolean
-  refetchTaskList: () => void
-  closeTaskDetailsModal: () => void
-  transferTask: (id: WorkGroupModel['id']) => Promise<void>
+  transferTask: (
+    workGroup: WorkGroupModel['id'],
+    closeTaskSecondLineModal: () => void,
+  ) => Promise<void>
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
@@ -37,8 +39,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   workGroupListLoading,
   transferTask,
   transferTaskIsLoading,
-  refetchTaskList,
-  closeTaskDetailsModal,
 }) => {
   const [
     isTaskSecondLineModalOpened,
@@ -46,6 +46,8 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   ] = useBoolean(false)
 
   const authenticatedUser = useAuthenticatedUser()
+
+  const taskStatus = useTaskStatus(status)
 
   const {
     isFirstLineSupportRole,
@@ -72,23 +74,28 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
     return workGroupFromList ? workGroupFromList.members : []
   }, [workGroup?.id, workGroupList])
 
-  const renderChangeTaskLineButton = () => {
-    return firstLineSupportNotHasWorkGroup ? (
-      <Button type='link' onClick={openTaskSecondLineModal}>
-        Перевести на II линию
-      </Button>
-    ) : seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup ? (
-      <Button type='link'>Вернуть на I линию</Button>
-    ) : null
-  }
+  const changeTaskLineButton = firstLineSupportNotHasWorkGroup ? (
+    <Button
+      type='link'
+      onClick={openTaskSecondLineModal}
+      disabled={
+        taskStatus.isAppointed ||
+        taskStatus.isClosed ||
+        taskStatus.isCompleted ||
+        taskStatus.isInReclassification ||
+        taskStatus.isReclassified
+      }
+    >
+      Перевести на II линию
+    </Button>
+  ) : seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup ? (
+    <Button type='link'>Вернуть на I линию</Button>
+  ) : null
 
   const handleTransferTask = async (
-    id: WorkGroupModel['id'],
+    workGroup: WorkGroupModel['id'],
   ): Promise<void> => {
-    await transferTask(id)
-    closeTaskSecondLineModal()
-    closeTaskDetailsModal()
-    refetchTaskList()
+    await transferTask(workGroup, closeTaskSecondLineModal)
   }
 
   return (
@@ -99,7 +106,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             <Space size='large'>
               <Text type='secondary'>Рабочая группа</Text>
 
-              {renderChangeTaskLineButton()}
+              {changeTaskLineButton}
             </Space>
 
             {isEngineerRole || isFirstLineSupportRole ? (
