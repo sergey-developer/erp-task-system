@@ -85,12 +85,10 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   const handleTransferTask = async (
     value: WorkGroupModel['id'],
   ): Promise<void> => {
-    try {
-      await transferTask(value)
-      closeTaskSecondLineModal()
-      closeTaskDetailsModal()
-      refetchTaskList()
-    } catch {}
+    await transferTask(value)
+    closeTaskSecondLineModal()
+    closeTaskDetailsModal()
+    refetchTaskList()
   }
 
   return (
