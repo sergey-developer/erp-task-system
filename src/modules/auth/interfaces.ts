@@ -2,15 +2,16 @@ import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
 
 import {
-  AuthenticatedUserModel,
   LoginMutationArgsModel,
   LoginResponseModel,
   RefreshTokenResponseModel,
 } from './models'
 import { JwtPayload } from './utils/parseJwt'
 
+export type AuthenticatedUser = JwtPayload
+
 export interface IAuthSliceState {
-  user: MaybeNull<AuthenticatedUserModel>
+  user: MaybeNull<AuthenticatedUser>
   accessToken: MaybeNull<string>
   refreshToken: MaybeNull<string>
   isAuthenticated: boolean

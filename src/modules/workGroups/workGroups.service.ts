@@ -1,7 +1,7 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
-import { GetWorkGroupListResponseModel } from './models'
+import { GetWorkGroupListResponseModel } from './workGroupList/models'
 
 const workGroupsService = api.injectEndpoints({
   endpoints: (build) => ({

@@ -10,9 +10,10 @@ import {
   useUpdateTaskWorkGroupMutation,
 } from 'modules/tasks/services/tasks.service'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
-import { WorkGroupModel } from 'modules/workGroups/models'
+import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
 import { MaybeNull } from 'shared/interfaces/utils'
+import { getErrorDetail } from 'shared/services/api'
 
 import TaskResolutionModal, {
   TaskResolutionModalProps,
@@ -46,7 +47,7 @@ type TaskDetailsProps = {
     >
   >
   taskLoading: boolean
-  workGroupList: Array<WorkGroupModel>
+  workGroupList: Array<WorkGroupListItemModel>
   workGroupListLoading: boolean
   onClose: () => void
   onTaskResolved: () => void
@@ -109,9 +110,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       try {
         await resolveTask({ taskId: details!.id, ...values })
         onTaskResolved()
-      } catch (err) {
+      } catch (error) {
         notification.error({
-          message: (err as any)?.data.detail,
+          message: getErrorDetail(error as any),
           duration: ERROR_NOTIFICATION_DURATION,
         })
       }
@@ -120,7 +121,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   )
 
   const handleUpdateTaskWorkGroup = async (
-    workGroup: WorkGroupModel['id'],
+    workGroup: WorkGroupListItemModel['id'],
     closeTaskSecondLineModal: () => void,
   ) => {
     try {
@@ -128,9 +129,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       closeTaskSecondLineModal()
       onClose()
       refetchTaskList()
-    } catch (error: any) {
+    } catch (error) {
       notification.error({
-        message: error?.data.detail,
+        message: getErrorDetail(error as any),
         duration: ERROR_NOTIFICATION_DURATION,
       })
     }

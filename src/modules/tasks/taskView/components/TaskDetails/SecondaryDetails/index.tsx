@@ -8,7 +8,7 @@ import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
-import { WorkGroupModel } from 'modules/workGroups/models'
+import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 
 import TaskSecondLineModal from '../../TaskSecondLineModal'
 import Performer from '../Performer'
@@ -21,11 +21,11 @@ type SecondaryDetailsProps = Pick<
   TaskDetailsModel,
   'id' | 'workGroup' | 'assignee' | 'status'
 > & {
-  workGroupList: Array<WorkGroupModel>
+  workGroupList: Array<WorkGroupListItemModel>
   workGroupListLoading: boolean
   transferTaskIsLoading: boolean
   transferTask: (
-    workGroup: WorkGroupModel['id'],
+    workGroup: WorkGroupListItemModel['id'],
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
 }
@@ -93,7 +93,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   ) : null
 
   const handleTransferTask = async (
-    workGroup: WorkGroupModel['id'],
+    workGroup: WorkGroupListItemModel['id'],
   ): Promise<void> => {
     await transferTask(workGroup, closeTaskSecondLineModal)
   }

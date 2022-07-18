@@ -1,4 +1,4 @@
-import { TaskCommentTypeEnum } from './constants'
+import { TaskCommentTypeEnum } from '../constants'
 
 export type BaseTaskCommentModel = {
   id: number

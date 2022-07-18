@@ -1,33 +1,13 @@
-import { TaskListItemModel } from 'modules/tasks/taskList/models'
-import { WorkGroupModel } from 'modules/workGroups/models'
-import {
-  AssigneeModel,
-  CommentAuthorModel,
-  FileModel,
-} from 'shared/interfaces/models'
-import { MaybeNull } from 'shared/interfaces/utils'
-
 import {
   ResolutionCodeEnum,
   SuspendReasonEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from '../constants'
-import { BaseTaskCommentModel } from '../models'
-
-export type TaskDetailsCommentModel = BaseTaskCommentModel & {
-  author: CommentAuthorModel
-  taskId: number
-  attachments: Array<string>
-}
-
-export type TaskAttachmentModel = {
-  id: number
-  source: FileModel
-  externalId: string
-  task: number
-  extension?: MaybeNull<string>
-}
+} from 'modules/tasks/constants'
+import { TaskAttachmentModel } from 'modules/tasks/models'
+import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
+import { AssigneeModel } from 'shared/interfaces/models'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskDetailsModel = {
   id: number
@@ -76,23 +56,6 @@ export type TaskDetailsModel = {
   state?: string
   zipCode?: string
   isReturned?: boolean
-  workGroup?: MaybeNull<WorkGroupModel>
+  workGroup?: MaybeNull<WorkGroupListItemModel>
   parentTask?: MaybeNull<number>
-}
-
-export type GetTaskByIdResponseModel = TaskDetailsModel
-export type GetTaskByIdQueryArgsModel = TaskListItemModel['id']
-
-export type ResolveTaskMutationArgsModel = {
-  taskId: TaskDetailsModel['id']
-  techResolution?: string
-  userResolution?: string
-}
-
-export type GetTaskCommentListQueryArgsModel = TaskDetailsModel['id']
-export type GetTaskCommentListResponseModel = Array<TaskDetailsCommentModel>
-
-export type UpdateTaskWorkGroupMutationArgsModel = {
-  taskId: TaskDetailsModel['id']
-  workGroup: MaybeNull<number>
 }

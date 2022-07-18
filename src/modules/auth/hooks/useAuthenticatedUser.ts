@@ -3,12 +3,12 @@ import { useMemo } from 'react'
 import useSelector from 'shared/hooks/useSelector'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import { AuthenticatedUserModel } from '../models'
+import { AuthenticatedUser } from '../interfaces'
 import { authenticatedUserSelector } from '../selectors'
 
 type UseAuthenticatedUserReturnType = MaybeNull<{
-  id: AuthenticatedUserModel['userId']
-  role: AuthenticatedUserModel['userRole']
+  id: AuthenticatedUser['userId']
+  role: AuthenticatedUser['userRole']
 }>
 
 const useAuthenticatedUser = (): UseAuthenticatedUserReturnType => {

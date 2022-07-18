@@ -2,8 +2,8 @@ import { Modal, ModalProps, Select, Space, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
-import { WorkGroupModel } from 'modules/workGroups/models'
 import { workGroupListSelectFieldNames } from 'modules/workGroups/workGroupList/constants'
+import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { DEFAULT_MODAL_WIDTH } from 'shared/constants/components'
 import { BUTTON_TEXT_CANCEL } from 'shared/constants/text'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -14,10 +14,10 @@ const TRANSFER_BUTTON_TEXT: string = 'Перевести заявку'
 
 type TaskSecondLineModalProps = Pick<ModalProps, 'visible' | 'onCancel'> &
   Pick<TaskDetailsModel, 'id'> & {
-    workGroupList: Array<WorkGroupModel>
+    workGroupList: Array<WorkGroupListItemModel>
     workGroupListLoading: boolean
     transferTaskIsLoading: boolean
-    onTransfer: (value: WorkGroupModel['id']) => void
+    onTransfer: (value: WorkGroupListItemModel['id']) => void
   }
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
@@ -30,7 +30,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   onCancel,
 }) => {
   const [selectedWorkGroup, setSelectedWorkGroup] =
-    useState<MaybeNull<WorkGroupModel['id']>>(null)
+    useState<MaybeNull<WorkGroupListItemModel['id']>>(null)
 
   const modalTitle = (
     <Text>
