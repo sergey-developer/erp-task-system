@@ -126,11 +126,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <RootWrapperStyled>
-      <CardStyled
-        title={cardTitle}
-        loading={taskLoading}
-        $isLoading={taskLoading}
-      >
+      <CardStyled title={cardTitle} loading={taskLoading}>
         {details && (
           <>
             <MainDetails
