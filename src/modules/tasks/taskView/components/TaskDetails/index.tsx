@@ -1,6 +1,6 @@
 import { CheckCircleOutlined } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
-import { MenuProps, Tabs, notification } from 'antd'
+import { MenuProps, notification } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
@@ -22,14 +22,7 @@ import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 import TaskDetailsTabs from './TaskDetailsTabs'
-import {
-  TaskDetailsTabsEnum,
-  taskDetailsTabNames,
-} from './TaskDetailsTabs/constants'
-import DescriptionAndComments from './TaskDetailsTabs/DescriptionAndComments'
-import Resolution from './TaskDetailsTabs/Resolution'
-
-const { TabPane } = Tabs
+import { TaskDetailsTabsEnum } from './TaskDetailsTabs/constants'
 
 type TaskDetailsProps = {
   details: MaybeNull<
@@ -52,8 +45,8 @@ type TaskDetailsProps = {
       | 'description'
     >
   >
-  workGroupList: Array<WorkGroupModel>
   taskLoading: boolean
+  workGroupList: Array<WorkGroupModel>
   workGroupListLoading: boolean
   onClose: () => void
   onTaskResolved: () => void
@@ -176,40 +169,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             />
 
             <TaskDetailsTabs
-              defaultTabKey={TaskDetailsTabsEnum.DescriptionAndComments}
-            >
-              <TabPane
-                tab={
-                  taskDetailsTabNames[
-                    TaskDetailsTabsEnum.DescriptionAndComments
-                  ]
-                }
-                key={TaskDetailsTabsEnum.DescriptionAndComments}
-              >
-                <DescriptionAndComments
-                  id={details.id}
-                  description={details.description}
-                />
-              </TabPane>
-
-              <TabPane
-                tab={taskDetailsTabNames[TaskDetailsTabsEnum.Resolution]}
-                key={TaskDetailsTabsEnum.Resolution}
-              >
-                <Resolution
-                  type={details.type}
-                  techResolution={details.techResolution}
-                  userResolution={details.userResolution}
-                />
-              </TabPane>
-
-              <TabPane
-                tab={taskDetailsTabNames[TaskDetailsTabsEnum.Tasks]}
-                key={TaskDetailsTabsEnum.Tasks}
-              >
-                Задания
-              </TabPane>
-            </TaskDetailsTabs>
+              details={details}
+              defaultTab={TaskDetailsTabsEnum.DescriptionAndComments}
+            />
 
             <TaskResolutionModal
               isTaskResolving={isTaskResolving}
