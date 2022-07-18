@@ -1,5 +1,5 @@
-import { UserNameModel } from 'modules/user/models'
+import { BaseUserModel } from 'modules/user/models'
 
-export type CommentAuthorModel = UserNameModel & {
+export type CommentAuthorModel = Omit<BaseUserModel, 'id' | 'avatar'> & {
   id: number
 }

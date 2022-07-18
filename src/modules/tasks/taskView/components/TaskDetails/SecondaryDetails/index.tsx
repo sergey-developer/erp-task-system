@@ -1,3 +1,4 @@
+import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
@@ -8,26 +9,44 @@ import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { WorkGroupModel } from 'modules/workGroups/models'
 
+import TaskSecondLineModal from '../../TaskSecondLineModal'
 import Performer from '../Performer'
 import { DetailContainerStyled } from '../styles'
 import { SelectStyled } from './styles'
 
 const { Text } = Typography
 
-type SecondaryDetailsProps = Pick<TaskDetailsModel, 'workGroup'> &
-  Partial<Pick<TaskDetailsModel, 'assignee' | 'status'>> & {
-    workGroupList: Array<WorkGroupModel>
-    workGroupListLoading: boolean
-  }
+type SecondaryDetailsProps = Pick<
+  TaskDetailsModel,
+  'id' | 'workGroup' | 'assignee' | 'status'
+> & {
+  workGroupList: Array<WorkGroupModel>
+  workGroupListLoading: boolean
+  transferTaskIsLoading: boolean
+  refetchTaskList: () => void
+  closeTaskDetailsModal: () => void
+  transferTask: (value: WorkGroupModel['id']) => void
+}
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
+  id,
   status,
   assignee,
   workGroup,
   workGroupList,
   workGroupListLoading,
+  transferTask,
+  transferTaskIsLoading,
+  refetchTaskList,
+  closeTaskDetailsModal,
 }) => {
+  const [
+    isTaskSecondLineModalOpened,
+    { setTrue: openTaskSecondLineModal, setFalse: closeTaskSecondLineModal },
+  ] = useBoolean(false)
+
   const authenticatedUser = useAuthenticatedUser()
+
   const {
     isFirstLineSupportRole,
     isEngineerRole,
@@ -55,10 +74,23 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   const renderChangeTaskLineButton = () => {
     return firstLineSupportNotHasWorkGroup ? (
-      <Button type='link'>Перевести на II линию</Button>
+      <Button type='link' onClick={openTaskSecondLineModal}>
+        Перевести на II линию
+      </Button>
     ) : seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup ? (
       <Button type='link'>Вернуть на I линию</Button>
     ) : null
+  }
+
+  const handleTransferTask = async (
+    value: WorkGroupModel['id'],
+  ): Promise<void> => {
+    try {
+      await transferTask(value)
+      closeTaskSecondLineModal()
+      closeTaskDetailsModal()
+      refetchTaskList()
+    } catch {}
   }
 
   return (
@@ -147,6 +179,16 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           </Space>
         </Col>
       </Row>
+
+      <TaskSecondLineModal
+        id={id}
+        visible={isTaskSecondLineModalOpened}
+        workGroupList={workGroupList}
+        workGroupListLoading={workGroupListLoading}
+        transferTaskIsLoading={transferTaskIsLoading}
+        onCancel={closeTaskSecondLineModal}
+        onTransfer={handleTransferTask}
+      />
     </DetailContainerStyled>
   )
 }

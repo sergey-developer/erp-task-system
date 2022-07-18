@@ -10,10 +10,11 @@ type TaskDetailsContainerProps = {
   taskId: TaskListItemModel['id']
   onClose: () => void
   onTaskResolved: () => void
+  refetchTaskList: () => void
 }
 
 const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
-  const { onClose, onTaskResolved, taskId } = props
+  const { onClose, onTaskResolved, taskId, refetchTaskList } = props
 
   const {
     data: task,
@@ -38,6 +39,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
       taskLoading={taskIsFetching}
       workGroupListLoading={workGroupListIsFetching}
       workGroupList={workGroupList || []}
+      refetchTaskList={refetchTaskList}
     />
   )
 }

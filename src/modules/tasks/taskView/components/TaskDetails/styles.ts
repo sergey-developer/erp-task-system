@@ -32,7 +32,10 @@ export const CardStyled = styled(Card)<CardStyledProps>`
     flex: 1;
     height: 100%;
     overflow-y: auto;
-    padding: ${({ $isLoading }) => ($isLoading ? '20px' : 0)};
+    padding: ${({ $isLoading, ...props }) => {
+      console.log(props)
+      return $isLoading ? '20px' : 0
+    }};
   }
 `
 

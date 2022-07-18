@@ -50,10 +50,11 @@ type TaskDetailsProps = {
     >
   >
   workGroupList: Array<WorkGroupModel>
-  onClose: () => void
-  onTaskResolved: () => void
   taskLoading: boolean
   workGroupListLoading: boolean
+  onClose: () => void
+  onTaskResolved: () => void
+  refetchTaskList: () => void
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
@@ -63,6 +64,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   workGroupListLoading,
   onClose,
   onTaskResolved,
+  refetchTaskList,
 }) => {
   const user = useAuthenticatedUser()
 
@@ -130,72 +132,77 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         $isLoading={taskLoading}
       >
         {details && (
-          <MainDetails
-            recordId={details.recordId}
-            title={details.title}
-            createdAt={details.createdAt}
-            olaNextBreachTime={details.olaNextBreachTime}
-            name={details.name}
-            address={details.address}
-            contactService={details.contactService}
-          />
-        )}
+          <>
+            <MainDetails
+              recordId={details.recordId}
+              title={details.title}
+              createdAt={details.createdAt}
+              olaNextBreachTime={details.olaNextBreachTime}
+              name={details.name}
+              address={details.address}
+              contactService={details.contactService}
+            />
 
-        <DividerStyled />
+            <DividerStyled />
 
-        <SecondaryDetails
-          status={details?.status}
-          assignee={details?.assignee}
-          workGroupListLoading={workGroupListLoading}
-          workGroupList={workGroupList}
-          workGroup={details?.workGroup}
-        />
+            <SecondaryDetails
+              id={details.id}
+              status={details.status}
+              assignee={details.assignee}
+              workGroup={details.workGroup}
+              workGroupList={workGroupList}
+              workGroupListLoading={workGroupListLoading}
+              refetchTaskList={refetchTaskList}
+              closeTaskDetailsModal={onClose}
+              transferTask={() => {}}
+              transferTaskIsLoading={false}
+            />
 
-        {details && (
-          <TaskDetailsTabs
-            defaultTabKey={TaskDetailsTabsEnum.DescriptionAndComments}
-          >
-            <TabPane
-              tab={
-                taskDetailsTabNames[TaskDetailsTabsEnum.DescriptionAndComments]
-              }
-              key={TaskDetailsTabsEnum.DescriptionAndComments}
+            <TaskDetailsTabs
+              defaultTabKey={TaskDetailsTabsEnum.DescriptionAndComments}
             >
-              <DescriptionAndComments
-                id={details.id}
-                description={details.description}
-              />
-            </TabPane>
+              <TabPane
+                tab={
+                  taskDetailsTabNames[
+                    TaskDetailsTabsEnum.DescriptionAndComments
+                  ]
+                }
+                key={TaskDetailsTabsEnum.DescriptionAndComments}
+              >
+                <DescriptionAndComments
+                  id={details.id}
+                  description={details.description}
+                />
+              </TabPane>
 
-            <TabPane
-              tab={taskDetailsTabNames[TaskDetailsTabsEnum.Resolution]}
-              key={TaskDetailsTabsEnum.Resolution}
-            >
-              <Resolution
-                type={details.type}
-                techResolution={details.techResolution}
-                userResolution={details.userResolution}
-              />
-            </TabPane>
+              <TabPane
+                tab={taskDetailsTabNames[TaskDetailsTabsEnum.Resolution]}
+                key={TaskDetailsTabsEnum.Resolution}
+              >
+                <Resolution
+                  type={details.type}
+                  techResolution={details.techResolution}
+                  userResolution={details.userResolution}
+                />
+              </TabPane>
 
-            <TabPane
-              tab={taskDetailsTabNames[TaskDetailsTabsEnum.Tasks]}
-              key={TaskDetailsTabsEnum.Tasks}
-            >
-              Задания
-            </TabPane>
-          </TaskDetailsTabs>
-        )}
+              <TabPane
+                tab={taskDetailsTabNames[TaskDetailsTabsEnum.Tasks]}
+                key={TaskDetailsTabsEnum.Tasks}
+              >
+                Задания
+              </TabPane>
+            </TaskDetailsTabs>
 
-        {details && (
-          <TaskResolutionModal
-            isTaskResolving={isTaskResolving}
-            onCancel={toggleTaskResolutionModal}
-            onResolutionSubmit={handleResolutionSubmit}
-            title={`Решение по заявке ${details.recordId}`}
-            type={details.type}
-            visible={isTaskResolutionModalOpened}
-          />
+            <TaskResolutionModal
+              isTaskResolving={isTaskResolving}
+              onCancel={toggleTaskResolutionModal}
+              onResolutionSubmit={handleResolutionSubmit}
+              title={`Решение по заявке ${details.recordId}`}
+              type={details.type}
+              visible={isTaskResolutionModalOpened}
+            />
+          </>
         )}
       </CardStyled>
     </RootWrapperStyled>
