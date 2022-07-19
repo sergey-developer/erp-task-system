@@ -52,7 +52,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
       onOk={handleClickTransfer}
       onCancel={onCancel}
       okButtonProps={{
-        disabled: !selectedWorkGroup || transferTaskIsLoading,
+        disabled: !selectedWorkGroup,
         loading: transferTaskIsLoading,
       }}
     >
