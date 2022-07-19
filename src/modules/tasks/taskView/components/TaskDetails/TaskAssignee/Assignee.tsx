@@ -14,7 +14,7 @@ type TaskAssigneeProps = Partial<
   name: string
 }
 
-const TaskAssignee: FC<TaskAssigneeProps> = ({ assignee, status, name }) => {
+const Assignee: FC<TaskAssigneeProps> = ({ assignee, status, name }) => {
   return (
     <Space size='middle' align='start'>
       {assignee && <UserAvatar user={assignee} />}
@@ -30,4 +30,4 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({ assignee, status, name }) => {
   )
 }
 
-export default TaskAssignee
+export default Assignee

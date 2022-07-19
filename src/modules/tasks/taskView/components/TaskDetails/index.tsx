@@ -69,10 +69,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const [resolveTask, { isLoading: isTaskResolving }] = useResolveTaskMutation()
 
-  const [updateTaskWorkGroup, { isLoading: taskWorkGroupIsUpdating }] =
+  const [updateTaskWorkGroup, { isLoading: updateTaskWorkGroupIsLoading }] =
     useUpdateTaskWorkGroupMutation()
 
-  const [updateTaskAssignee, { isLoading: taskAssigneeIsUpdating }] =
+  const [updateTaskAssignee, { isLoading: updateTaskAssigneeIsLoading }] =
     useUpdateTaskAssigneeMutation()
 
   const taskStatus = useTaskStatus(details?.status)
@@ -130,6 +130,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleUpdateTaskAssignee = async (assignee: AssigneeModel['id']) => {
     try {
+      // todo: после обновления нужно получить обновлённую заявку для карточки
       await updateTaskAssignee({ taskId: details!.id, assignee })
     } catch (error) {
       showErrorNotification(error)
@@ -165,9 +166,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               workGroupList={workGroupList}
               workGroupListIsLoading={workGroupListIsLoading}
               transferTask={handleUpdateTaskWorkGroup}
-              transferTaskIsLoading={taskWorkGroupIsUpdating}
-              setTaskAssignee={handleUpdateTaskAssignee}
-              setTaskAssigneeIsLoading={taskAssigneeIsUpdating}
+              transferTaskIsLoading={updateTaskWorkGroupIsLoading}
+              updateTaskAssignee={handleUpdateTaskAssignee}
+              updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
             />
 
             <TaskDetailsTabs

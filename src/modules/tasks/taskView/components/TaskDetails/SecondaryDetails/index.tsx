@@ -3,11 +3,9 @@ import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import Space from 'components/Space'
-import useIsAuthenticatedUser from 'modules/auth/hooks/useIsAuthenticatedUser'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
-import getFullUserName from 'modules/user/utils/getFullUserName'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 
@@ -17,8 +15,6 @@ import TaskAssignee from '../TaskAssignee'
 import { SelectStyled } from './styles'
 
 const { Text } = Typography
-
-const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
 
 type SecondaryDetailsProps = Pick<
   TaskDetailsModel,
@@ -33,8 +29,8 @@ type SecondaryDetailsProps = Pick<
   ) => Promise<void>
   transferTaskIsLoading: boolean
 
-  setTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
-  setTaskAssigneeIsLoading: boolean
+  updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
+  updateTaskAssigneeIsLoading: boolean
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
@@ -49,15 +45,13 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   transferTask,
   transferTaskIsLoading,
 
-  setTaskAssignee,
-  setTaskAssigneeIsLoading,
+  updateTaskAssignee,
+  updateTaskAssigneeIsLoading,
 }) => {
   const [
     isTaskSecondLineModalOpened,
     { setTrue: openTaskSecondLineModal, setFalse: closeTaskSecondLineModal },
   ] = useBoolean(false)
-
-  const assigneeIsAuthenticatedUser = useIsAuthenticatedUser(assignee?.id)
 
   const taskStatus = useTaskStatus(status)
 
@@ -80,6 +74,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
     hasWorkGroup && isHeadOfDepartmentRole
 
   const workGroupMembers = useMemo(() => {
+    // todo: как поправят бэк, возможно брать это значение из "workGroup.members"
     const workGroupFromList = workGroupList.find(
       ({ id }) => id === workGroup?.id,
     )
@@ -109,12 +104,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
     workGroup: WorkGroupListItemModel['id'],
   ): Promise<void> => {
     await transferTask(workGroup, closeTaskSecondLineModal)
-  }
-
-  const assignTaskOnMe = async () => {
-    if (assigneeIsAuthenticatedUser) {
-      await setTaskAssignee(assignee!.id)
-    }
   }
 
   return (
@@ -153,59 +142,15 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
         </Col>
 
         <Col span={10}>
-          <Space direction='vertical' $fullWidth>
-            <Space size='large'>
-              <Text type='secondary'>Исполнитель</Text>
-
-              <Button
-                type='link'
-                loading={setTaskAssigneeIsLoading}
-                onClick={
-                  assigneeIsAuthenticatedUser ? assignTaskOnMe : undefined
-                }
-              >
-                {assigneeIsAuthenticatedUser
-                  ? 'Отказаться от заявки'
-                  : 'Назначить на себя'}
-              </Button>
-            </Space>
-
-            {isEngineerRole || isFirstLineSupportRole ? (
-              assignee ? (
-                <TaskAssignee
-                  name={getFullUserName(assignee)}
-                  status={status}
-                  assignee={assignee}
-                />
-              ) : (
-                <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
-              )
-            ) : (
-              (seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup) && (
-                <SelectStyled
-                  defaultValue={assignee?.id}
-                  loading={workGroupListIsLoading}
-                  disabled={setTaskAssigneeIsLoading}
-                  bordered={false}
-                  placeholder={assignee ? null : ASSIGNEE_NOT_SET_TEXT}
-                >
-                  {workGroupMembers.map(({ id, fullName }) => (
-                    <SelectStyled.Option
-                      key={id}
-                      value={id}
-                      disabled={id === assignee?.id}
-                    >
-                      <TaskAssignee
-                        name={fullName}
-                        status={status}
-                        assignee={assignee}
-                      />
-                    </SelectStyled.Option>
-                  ))}
-                </SelectStyled>
-              )
-            )}
-          </Space>
+          <TaskAssignee
+            status={status}
+            assignee={assignee}
+            hasWorkGroup={hasWorkGroup}
+            workGroupListIsLoading={workGroupListIsLoading}
+            workGroupMembers={workGroupMembers}
+            updateTaskAssignee={updateTaskAssignee}
+            updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
+          />
         </Col>
       </Row>
 
