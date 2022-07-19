@@ -18,6 +18,8 @@ import { SelectStyled } from './styles'
 
 const { Text } = Typography
 
+const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
+
 type SecondaryDetailsProps = Pick<
   TaskDetailsModel,
   'id' | 'workGroup' | 'assignee' | 'status'
@@ -109,6 +111,12 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
     await transferTask(workGroup, closeTaskSecondLineModal)
   }
 
+  const assignTaskOnMe = async () => {
+    if (assigneeIsAuthenticatedUser) {
+      await setTaskAssignee(assignee!.id)
+    }
+  }
+
   return (
     <DetailContainerStyled>
       <Row justify='space-between'>
@@ -149,7 +157,13 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             <Space size='large'>
               <Text type='secondary'>Исполнитель</Text>
 
-              <Button type='link' loading={setTaskAssigneeIsLoading}>
+              <Button
+                type='link'
+                loading={setTaskAssigneeIsLoading}
+                onClick={
+                  assigneeIsAuthenticatedUser ? assignTaskOnMe : undefined
+                }
+              >
                 {assigneeIsAuthenticatedUser
                   ? 'Отказаться от заявки'
                   : 'Назначить на себя'}
@@ -164,7 +178,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
                   assignee={assignee}
                 />
               ) : (
-                <Text>Не назначен</Text>
+                <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
               )
             ) : (
               (seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup) && (
@@ -173,7 +187,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
                   loading={workGroupListIsLoading}
                   disabled={setTaskAssigneeIsLoading}
                   bordered={false}
-                  placeholder={assignee ? null : 'Не назначен'}
+                  placeholder={assignee ? null : ASSIGNEE_NOT_SET_TEXT}
                 >
                   {workGroupMembers.map(({ id, fullName }) => (
                     <SelectStyled.Option

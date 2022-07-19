@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { MaybeUndefined } from 'shared/interfaces/utils'
+
 import { TaskStatusEnum } from '../constants'
 
 type UseTaskStatusReturnType = Record<
@@ -7,7 +9,9 @@ type UseTaskStatusReturnType = Record<
   boolean
 >
 
-const useTaskStatus = (status?: TaskStatusEnum): UseTaskStatusReturnType => {
+const useTaskStatus = (
+  status: MaybeUndefined<TaskStatusEnum>,
+): UseTaskStatusReturnType => {
   return useMemo(
     () => ({
       isAppointed: status === TaskStatusEnum.Appointed,
