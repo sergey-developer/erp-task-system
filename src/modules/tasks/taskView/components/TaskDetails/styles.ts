@@ -7,9 +7,7 @@ export const RootWrapperStyled = styled.div`
   height: 100%;
 `
 
-type CardStyledProps = { $isLoading: boolean }
-
-export const CardStyled = styled(Card)<CardStyledProps>`
+export const CardStyled = styled(Card)`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -32,7 +30,7 @@ export const CardStyled = styled(Card)<CardStyledProps>`
     flex: 1;
     height: 100%;
     overflow-y: auto;
-    padding: ${({ $isLoading }) => ($isLoading ? '20px' : 0)};
+    padding: ${({ loading }) => (loading ? '20px' : 0)};
   }
 `
 

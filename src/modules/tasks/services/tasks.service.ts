@@ -7,6 +7,7 @@ import {
   GetTaskByIdQueryArgsModel,
   GetTaskByIdResponseModel,
   ResolveTaskMutationArgsModel,
+  UpdateTaskWorkGroupMutationArgsModel,
 } from 'modules/tasks/taskView/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { api } from 'shared/services/api'
@@ -47,7 +48,20 @@ const tasksService = api.injectEndpoints({
       query: (queryArg) => {
         const { taskId, ...body } = queryArg
         return {
-          url: `/tasks/${taskId}/resolution/`,
+          url: `/tasks/${taskId}/resolution`,
+          method: HttpMethodEnum.POST,
+          data: body,
+        }
+      },
+    }),
+    updateTaskWorkGroup: build.mutation<
+      void,
+      UpdateTaskWorkGroupMutationArgsModel
+    >({
+      query: (queryArg) => {
+        const { taskId, ...body } = queryArg
+        return {
+          url: `/tasks/${taskId}/work-group`,
           method: HttpMethodEnum.POST,
           data: body,
         }
@@ -61,6 +75,7 @@ export const {
   useGetTaskListQuery,
   useGetTaskByIdQuery,
   useResolveTaskMutation,
+  useUpdateTaskWorkGroupMutation,
 } = tasksService
 
 export default tasksService

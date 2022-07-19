@@ -13,6 +13,7 @@ import React, { FC } from 'react'
 import TaskStatus from 'components/TaskStatus'
 import { TaskStatusEnum, taskStatusDictionary } from 'modules/tasks/constants'
 import useUserRole from 'modules/user/hooks/useUserRole'
+import { workGroupListSelectFieldNames } from 'modules/workGroups/workGroupList/constants'
 import useGetWorkGroupList from 'modules/workGroups/workGroupList/hooks/useGetWorkGroupList'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
@@ -110,10 +111,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
             <Form.Item name='workGroupId'>
               <Select
                 disabled={workGroupListIsFetching}
-                fieldNames={{
-                  label: 'name',
-                  value: 'id',
-                }}
+                fieldNames={workGroupListSelectFieldNames}
                 loading={workGroupListIsFetching}
                 options={workGroupList}
                 placeholder='Рабочая группа'

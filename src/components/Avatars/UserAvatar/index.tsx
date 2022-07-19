@@ -1,18 +1,24 @@
 import { AvatarProps, BadgeProps } from 'antd'
-import React from 'react'
+import React, { FC } from 'react'
 
-import { FCWithChildren } from 'shared/interfaces/utils'
+import { BaseUserModel } from 'modules/user/models'
+import getUserAbbr from 'modules/user/utils/getUserAbbr'
 
 import { AvatarStyled, BadgeStyled } from './styles'
 
-type UserAvatarProps = AvatarProps & Pick<BadgeProps, 'dot'>
+// todo: сделать поле user обязательным когда с апи будут приходить данные для этого поля
 
-const UserAvatar: FCWithChildren<UserAvatarProps> = ({
-  dot,
-  children,
-  ...props
-}) => {
-  const avatar = <AvatarStyled {...props}>{children}</AvatarStyled>
+type UserAvatarProps = Omit<AvatarProps, 'src' | 'alt'> &
+  Pick<BadgeProps, 'dot'> & {
+    user?: Pick<BaseUserModel, 'firstName' | 'lastName' | 'avatar'>
+  }
+
+const UserAvatar: FC<UserAvatarProps> = ({ dot, user, ...props }) => {
+  const avatar = (
+    <AvatarStyled src={user?.avatar} alt='Avatar' {...props}>
+      {user && !user.avatar ? getUserAbbr(user) : null}
+    </AvatarStyled>
+  )
 
   return dot ? (
     <BadgeStyled dot color='orange'>

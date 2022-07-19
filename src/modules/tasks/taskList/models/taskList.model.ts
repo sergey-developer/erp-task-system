@@ -1,59 +1,22 @@
-import { WorkGroupModel } from 'modules/workGroups/models'
-import { AssigneeModel } from 'shared/interfaces/models'
-import { PaginatedListResponseModel } from 'shared/interfaces/models'
-import { MaybeNull } from 'shared/interfaces/utils'
-
 import {
-  ReclassificationReasonEnum,
-  ReclassificationRequestStatusEnum,
   ResolutionCodeEnum,
-  SortEnum,
   SuspendReasonEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from '../constants'
-import { BaseTaskCommentModel } from '../models'
-import {
-  ExtendedFilterQueries,
-  QuickFilterQueries,
-  TaskIdFilterQueries,
-} from './components/TaskListPage/interfaces'
+} from 'modules/tasks/constants'
+import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
+import { AssigneeModel } from 'shared/interfaces/models'
+import { MaybeNull } from 'shared/interfaces/utils'
 
-export type GetTaskListResponseModel =
-  PaginatedListResponseModel<TaskListItemModel>
-
-export type GetTaskListQueryArgsModel = {
-  hideAwaitingTask?: boolean
-  limit: number
-  offset: number
-  sort?: SortEnum
-  userId?: number
-} & ExtendedFilterQueries &
-  QuickFilterQueries &
-  TaskIdFilterQueries
-
-export type TaskListItemCommentModel = BaseTaskCommentModel & {
-  task: number
-  author: number
-  updatedAt: string
-}
-
-export type TaskReclassificationRequestModel = {
-  id: number
-  createdAt: string
-  updatedAt: string
-  reclassificationReason: ReclassificationReasonEnum
-  textComment: string
-  status: ReclassificationRequestStatusEnum
-  task: number
-}
+import { TaskListCommentModel } from './taskListComment.model'
+import { TaskReclassificationRequestModel } from './taskReclassificationRequest.model'
 
 export type TaskListItemModel = {
   id: number
-  comment: TaskListItemCommentModel
+  comment: TaskListCommentModel
   reclassificationRequest: TaskReclassificationRequestModel
   assignee: Pick<AssigneeModel, 'id' | 'firstName' | 'lastName' | 'middleName'>
-  workGroup: WorkGroupModel
+  workGroup: WorkGroupListItemModel
   createdAt: string
   updatedAt: string
   type: TaskTypeEnum
