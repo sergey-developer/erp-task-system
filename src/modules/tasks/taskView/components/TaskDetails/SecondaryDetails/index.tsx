@@ -78,6 +78,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
     <Button
       type='link'
       onClick={openTaskSecondLineModal}
+      loading={transferTaskIsLoading}
       disabled={
         taskStatus.isAppointed ||
         taskStatus.isClosed ||

@@ -52,7 +52,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
       onOk={handleClickTransfer}
       onCancel={onCancel}
       okButtonProps={{
-        disabled: !selectedWorkGroup || transferTaskIsLoading,
+        disabled: !selectedWorkGroup,
         loading: transferTaskIsLoading,
       }}
     >
@@ -75,6 +75,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           placeholder='Выберите рабочую группу'
           options={workGroupList}
           loading={workGroupListLoading}
+          disabled={transferTaskIsLoading}
           fieldNames={workGroupListSelectFieldNames}
           onSelect={setSelectedWorkGroup}
         />
