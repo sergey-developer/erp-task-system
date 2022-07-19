@@ -3,16 +3,17 @@ import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import Space from 'components/Space'
-import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
+import useIsAuthenticatedUser from 'modules/auth/hooks/useIsAuthenticatedUser'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
+import { AssigneeModel } from 'shared/interfaces/models'
 
 import TaskSecondLineModal from '../../TaskSecondLineModal'
-import Performer from '../Performer'
 import { DetailContainerStyled } from '../styles'
+import TaskAssignee from '../TaskAssignee'
 import { SelectStyled } from './styles'
 
 const { Text } = Typography
@@ -22,30 +23,39 @@ type SecondaryDetailsProps = Pick<
   'id' | 'workGroup' | 'assignee' | 'status'
 > & {
   workGroupList: Array<WorkGroupListItemModel>
-  workGroupListLoading: boolean
-  transferTaskIsLoading: boolean
+  workGroupListIsLoading: boolean
+
   transferTask: (
     workGroup: WorkGroupListItemModel['id'],
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
+  transferTaskIsLoading: boolean
+
+  setTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
+  setTaskAssigneeIsLoading: boolean
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   id,
   status,
   assignee,
+
   workGroup,
   workGroupList,
-  workGroupListLoading,
+  workGroupListIsLoading,
+
   transferTask,
   transferTaskIsLoading,
+
+  setTaskAssignee,
+  setTaskAssigneeIsLoading,
 }) => {
   const [
     isTaskSecondLineModalOpened,
     { setTrue: openTaskSecondLineModal, setFalse: closeTaskSecondLineModal },
   ] = useBoolean(false)
 
-  const authenticatedUser = useAuthenticatedUser()
+  const assigneeIsAuthenticatedUser = useIsAuthenticatedUser(assignee?.id)
 
   const taskStatus = useTaskStatus(status)
 
@@ -115,7 +125,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
               (seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup) && (
                 <SelectStyled
                   defaultValue={workGroup?.id}
-                  loading={workGroupListLoading}
+                  loading={workGroupListIsLoading}
                   bordered={false}
                 >
                   {workGroupList.map(({ id, name }) => (
@@ -138,18 +148,16 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             <Space size='large'>
               <Text type='secondary'>Исполнитель</Text>
 
-              {authenticatedUser && (
-                <Button type='link'>
-                  {assignee?.id === authenticatedUser.id
-                    ? 'Отказаться от заявки'
-                    : 'Назначить на себя'}
-                </Button>
-              )}
+              <Button type='link' loading={setTaskAssigneeIsLoading}>
+                {assigneeIsAuthenticatedUser
+                  ? 'Отказаться от заявки'
+                  : 'Назначить на себя'}
+              </Button>
             </Space>
 
             {isEngineerRole || isFirstLineSupportRole ? (
               assignee ? (
-                <Performer
+                <TaskAssignee
                   name={getFullUserName(assignee)}
                   status={status}
                   assignee={assignee}
@@ -161,7 +169,8 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
               (seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup) && (
                 <SelectStyled
                   defaultValue={assignee?.id}
-                  loading={workGroupListLoading}
+                  loading={workGroupListIsLoading}
+                  disabled={setTaskAssigneeIsLoading}
                   bordered={false}
                   placeholder={assignee ? null : 'Не назначен'}
                 >
@@ -171,7 +180,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
                       value={id}
                       disabled={id === assignee?.id}
                     >
-                      <Performer
+                      <TaskAssignee
                         name={fullName}
                         status={status}
                         assignee={assignee}
@@ -188,11 +197,11 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
       <TaskSecondLineModal
         id={id}
         visible={isTaskSecondLineModalOpened}
-        workGroupList={workGroupList}
-        workGroupListLoading={workGroupListLoading}
-        transferTaskIsLoading={transferTaskIsLoading}
         onCancel={closeTaskSecondLineModal}
+        workGroupList={workGroupList}
+        workGroupListIsLoading={workGroupListIsLoading}
         onTransfer={handleTransferTask}
+        transferTaskIsLoading={transferTaskIsLoading}
       />
     </DetailContainerStyled>
   )

@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react'
 
 import { TaskListItemModel } from 'modules/tasks/taskList/models'
-import useGetTaskById from 'modules/tasks/taskView/hooks/useGetTaskById'
+import useGetTask from 'modules/tasks/taskView/hooks/useGetTask'
 import useGetWorkGroupList from 'modules/workGroups/workGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'
@@ -20,7 +20,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
     data: task,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
-  } = useGetTaskById(taskId)
+  } = useGetTask(taskId)
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
@@ -37,7 +37,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
       onClose={onClose}
       onTaskResolved={onTaskResolved}
       taskLoading={taskIsFetching}
-      workGroupListLoading={workGroupListIsFetching}
+      workGroupListIsLoading={workGroupListIsFetching}
       workGroupList={workGroupList || []}
       refetchTaskList={refetchTaskList}
     />

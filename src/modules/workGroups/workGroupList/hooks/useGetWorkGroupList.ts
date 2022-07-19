@@ -1,4 +1,3 @@
-import { notification } from 'antd'
 import { useEffect } from 'react'
 
 import useUserRole from 'modules/user/hooks/useUserRole'
@@ -7,7 +6,7 @@ import {
   useGetWorkGroupListQuery,
 } from 'modules/workGroups/workGroups.service'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
+import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 const useGetWorkGroupList = (): UseGetWorkGroupListQueryReturnType => {
   const {
@@ -36,10 +35,7 @@ const useGetWorkGroupList = (): UseGetWorkGroupListQueryReturnType => {
       error.status === HttpStatusCodeEnum.BadRequest ||
       error.status >= HttpStatusCodeEnum.ServerError
     ) {
-      notification.error({
-        message: 'Невозможно получить список рабочих групп',
-        duration: ERROR_NOTIFICATION_DURATION,
-      })
+      showErrorNotification('Невозможно получить список рабочих групп')
     }
   }, [result.error, result.isError])
 

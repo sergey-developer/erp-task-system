@@ -8,11 +8,13 @@ import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
 const { Text } = Typography
 
-type PerformerProps = Partial<Pick<TaskDetailsModel, 'assignee' | 'status'>> & {
+type TaskAssigneeProps = Partial<
+  Pick<TaskDetailsModel, 'assignee' | 'status'>
+> & {
   name: string
 }
 
-const Performer: FC<PerformerProps> = ({ assignee, status, name }) => {
+const TaskAssignee: FC<TaskAssigneeProps> = ({ assignee, status, name }) => {
   return (
     <Space size='middle' align='start'>
       {assignee && <UserAvatar user={assignee} />}
@@ -28,4 +30,4 @@ const Performer: FC<PerformerProps> = ({ assignee, status, name }) => {
   )
 }
 
-export default Performer
+export default TaskAssignee

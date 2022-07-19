@@ -15,7 +15,7 @@ const TRANSFER_BUTTON_TEXT: string = 'Перевести заявку'
 type TaskSecondLineModalProps = Pick<ModalProps, 'visible' | 'onCancel'> &
   Pick<TaskDetailsModel, 'id'> & {
     workGroupList: Array<WorkGroupListItemModel>
-    workGroupListLoading: boolean
+    workGroupListIsLoading: boolean
     transferTaskIsLoading: boolean
     onTransfer: (value: WorkGroupListItemModel['id']) => void
   }
@@ -23,11 +23,11 @@ type TaskSecondLineModalProps = Pick<ModalProps, 'visible' | 'onCancel'> &
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
   visible,
-  workGroupList,
-  workGroupListLoading,
-  transferTaskIsLoading,
-  onTransfer,
   onCancel,
+  workGroupList,
+  workGroupListIsLoading,
+  onTransfer,
+  transferTaskIsLoading,
 }) => {
   const [selectedWorkGroup, setSelectedWorkGroup] =
     useState<MaybeNull<WorkGroupListItemModel['id']>>(null)
@@ -74,7 +74,8 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
         <Select
           placeholder='Выберите рабочую группу'
           options={workGroupList}
-          loading={workGroupListLoading}
+          loading={workGroupListIsLoading}
+          disabled={transferTaskIsLoading}
           fieldNames={workGroupListSelectFieldNames}
           onSelect={setSelectedWorkGroup}
         />
