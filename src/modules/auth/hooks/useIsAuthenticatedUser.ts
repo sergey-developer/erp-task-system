@@ -15,7 +15,7 @@ const useIsAuthenticatedUser = (
   const authenticatedUser = useAuthenticatedUser()
 
   return useMemo(() => {
-    return authenticatedUser ? authenticatedUser.id === userId : false
+    return authenticatedUser?.id === userId
   }, [authenticatedUser, userId])
 }
 
