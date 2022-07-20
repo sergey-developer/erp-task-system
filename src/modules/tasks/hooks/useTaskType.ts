@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-import { TaskTypeEnum } from '../constants'
+import { TaskTypeEnum } from 'modules/tasks/constants/enums'
+
 import {
   checkIncidentTaskType,
   checkIncidentType,

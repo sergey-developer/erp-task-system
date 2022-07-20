@@ -104,7 +104,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         )
       ) : (
         canSelectAssignee && (
-          <Space direction='vertical'>
+          <Space direction='vertical' $fullWidth>
             <SelectStyled
               defaultValue={selectedAssignee}
               loading={workGroupListIsLoading}

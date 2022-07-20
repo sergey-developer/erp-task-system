@@ -1,4 +1,4 @@
-import { TaskTypeEnum } from '../constants'
+import { TaskTypeEnum } from 'modules/tasks/constants/enums'
 
 const checkTaskType =
   (typeToCheck: TaskTypeEnum) =>

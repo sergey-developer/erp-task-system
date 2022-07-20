@@ -135,8 +135,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   }
 
   const handleUpdateTaskAssignee = async (assignee: AssigneeModel['id']) => {
-    await updateTaskAssignee({ taskId: details!.id, assignee })
-    refetchTask()
+    try {
+      await updateTaskAssignee({ taskId: details!.id, assignee })
+      refetchTask()
+    } catch {}
   }
 
   const cardTitle = details?.id && (

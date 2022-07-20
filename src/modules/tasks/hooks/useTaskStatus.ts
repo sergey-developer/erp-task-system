@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
+import { TaskStatusEnum } from 'modules/tasks/constants/enums'
 import { MaybeUndefined } from 'shared/interfaces/utils'
-
-import { TaskStatusEnum } from '../constants'
 
 type UseTaskStatusReturnType = Record<
   `is${keyof typeof TaskStatusEnum}`,

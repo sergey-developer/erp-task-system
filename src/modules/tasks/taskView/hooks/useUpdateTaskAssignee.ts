@@ -33,6 +33,7 @@ const useUpdateTaskAssignee = () => {
         await mutation(data).unwrap()
       } catch (error) {
         showErrorNotification(UPDATE_ASSIGNEE_ERROR_MSG)
+        throw error
       }
     },
     [mutation, shouldSkip],
