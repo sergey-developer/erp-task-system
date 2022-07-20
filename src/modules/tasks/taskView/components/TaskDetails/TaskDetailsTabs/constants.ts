@@ -1,11 +1,13 @@
 export enum TaskDetailsTabsEnum {
   Tasks = 'Tasks',
+  Comments = 'Comments',
   Resolution = 'Resolution',
-  DescriptionAndComments = 'DescriptionAndComments',
+  Description = 'Description',
 }
 
 export const taskDetailsTabNames = {
   [TaskDetailsTabsEnum.Tasks]: 'Задания',
+  [TaskDetailsTabsEnum.Comments]: 'Комментарии',
   [TaskDetailsTabsEnum.Resolution]: 'Решение',
-  [TaskDetailsTabsEnum.DescriptionAndComments]: 'Описание и комментарии',
+  [TaskDetailsTabsEnum.Description]: 'Описание',
 } as const
