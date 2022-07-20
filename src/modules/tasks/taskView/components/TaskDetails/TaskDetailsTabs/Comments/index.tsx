@@ -1,7 +1,6 @@
 import { Spin, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import OpenableText from 'components/OpenableText'
 import TaskCommentList from 'modules/tasks/taskView/components/TaskCommentList'
 import useGetTaskCommentList from 'modules/tasks/taskView/hooks/useGetTaskCommentList'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
@@ -12,15 +11,11 @@ import formatDate from 'shared/utils/date/formatDate'
 const { Title } = Typography
 const DEFAULT_DISPLAYABLE_COMMENTS_COUNT: number = 3
 
-type DescriptionAndCommentsTabProps = Pick<
-  TaskDetailsModel,
-  'id' | 'description'
->
+type CommentsTabProps = {
+  taskId: TaskDetailsModel['id']
+}
 
-const DescriptionAndComments: FC<DescriptionAndCommentsTabProps> = ({
-  id: taskId,
-  description,
-}) => {
+const Comments: FC<CommentsTabProps> = ({ taskId }) => {
   const { data: commentList = [], isFetching: commentListIsFetching } =
     useGetTaskCommentList(taskId)
 
@@ -34,16 +29,6 @@ const DescriptionAndComments: FC<DescriptionAndCommentsTabProps> = ({
 
   return (
     <>
-      <Title level={5}>Описание</Title>
-
-      {description && (
-        <OpenableText
-          className='margin-b-15'
-          text={description}
-          modalTitle='Описание'
-        />
-      )}
-
       <Title level={5}>Комментарии</Title>
 
       {commentListIsFetching ? (
@@ -58,4 +43,4 @@ const DescriptionAndComments: FC<DescriptionAndCommentsTabProps> = ({
   )
 }
 
-export default DescriptionAndComments
+export default Comments
