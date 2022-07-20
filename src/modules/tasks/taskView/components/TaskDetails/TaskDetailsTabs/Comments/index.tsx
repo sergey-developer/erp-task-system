@@ -11,11 +11,11 @@ import formatDate from 'shared/utils/date/formatDate'
 const { Title } = Typography
 const DEFAULT_DISPLAYABLE_COMMENTS_COUNT: number = 3
 
-type CommentsTabProps = {
+type CommentsProps = {
   taskId: TaskDetailsModel['id']
 }
 
-const Comments: FC<CommentsTabProps> = ({ taskId }) => {
+const Comments: FC<CommentsProps> = ({ taskId }) => {
   const { data: commentList = [], isFetching: commentListIsFetching } =
     useGetTaskCommentList(taskId)
 
