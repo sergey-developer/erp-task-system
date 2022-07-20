@@ -9,10 +9,13 @@ const { Title, Text, Paragraph } = Typography
 type ResolutionProps = Pick<
   TaskDetailsModel,
   'type' | 'techResolution' | 'userResolution'
->
+> & {
+  title: string
+}
 
 const Resolution: FC<ResolutionProps> = ({
   type,
+  title,
   userResolution,
   techResolution,
 }) => {
@@ -37,7 +40,7 @@ const Resolution: FC<ResolutionProps> = ({
 
   return (
     <>
-      <Title level={5}>Решение</Title>
+      <Title level={5}>{title}</Title>
 
       {isResolutionVisible ? (
         <>

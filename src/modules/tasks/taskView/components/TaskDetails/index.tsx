@@ -171,7 +171,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
             <TaskDetailsTabs
               details={details}
-              defaultTab={TaskDetailsTabsEnum.DescriptionAndComments}
+              defaultTab={TaskDetailsTabsEnum.Description}
             />
 
             <TaskResolutionModal
