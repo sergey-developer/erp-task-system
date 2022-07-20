@@ -69,16 +69,18 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           </Text>
         </Space>
 
-        <Text type='secondary'>Рабочая группа</Text>
+        <Space direction='vertical'>
+          <Text type='secondary'>Рабочая группа</Text>
 
-        <Select
-          placeholder='Выберите рабочую группу'
-          options={workGroupList}
-          loading={workGroupListLoading}
-          disabled={transferTaskIsLoading}
-          fieldNames={workGroupListSelectFieldNames}
-          onSelect={setSelectedWorkGroup}
-        />
+          <Select
+            placeholder='Выберите рабочую группу'
+            options={workGroupList}
+            loading={workGroupListLoading}
+            disabled={transferTaskIsLoading}
+            fieldNames={workGroupListSelectFieldNames}
+            onSelect={setSelectedWorkGroup}
+          />
+        </Space>
       </Space>
     </Modal>
   )
