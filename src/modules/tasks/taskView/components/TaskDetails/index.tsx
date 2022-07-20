@@ -9,13 +9,13 @@ import {
   useResolveTaskMutation,
   useUpdateTaskWorkGroupMutation,
 } from 'modules/tasks/services/tasks.service'
+import useUpdateTaskAssignee from 'modules/tasks/taskView/hooks/useUpdateTaskAssignee'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
-import useUpdateTaskAssignee from '../../hooks/useUpdateTaskAssignee'
 import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
