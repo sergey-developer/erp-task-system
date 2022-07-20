@@ -46,7 +46,7 @@ const tasksService = api.injectEndpoints({
       query: (queryArg) => {
         const { taskId, ...body } = queryArg
         return {
-          url: `/tasks/${taskId}/resolution`,
+          url: `/tasks/${taskId}/resolution/`,
           method: HttpMethodEnum.POST,
           data: body,
         }
@@ -59,7 +59,7 @@ const tasksService = api.injectEndpoints({
       query: (queryArg) => {
         const { taskId, ...body } = queryArg
         return {
-          url: `/tasks/${taskId}/work-group`,
+          url: `/tasks/${taskId}/work-group/`,
           method: HttpMethodEnum.POST,
           data: body,
         }
@@ -72,7 +72,7 @@ const tasksService = api.injectEndpoints({
       query: (queryArg) => {
         const { taskId, ...body } = queryArg
         return {
-          url: `/tasks/${taskId}/assignee`,
+          url: `/tasks/${taskId}/assignee/`,
           method: HttpMethodEnum.POST,
           data: body,
         }
@@ -100,16 +100,11 @@ export default tasksService
  * пулл реквест за которым нужно следить https://github.com/reduxjs/redux-toolkit/pull/2276
  */
 
-let getTask
 let getTaskList
 if (false as boolean) {
-  // @ts-ignore
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  getTask = useGetTaskQuery()
   // @ts-ignore
   // eslint-disable-next-line react-hooks/rules-of-hooks
   getTaskList = useGetTaskListQuery()
 }
 
-export type UseGetTaskQueryReturnType = NonNullable<typeof getTask>
 export type UseGetTaskListQueryReturnType = NonNullable<typeof getTaskList>

@@ -1,15 +1,15 @@
 import { Button, Row, Typography } from 'antd'
-import React, { FC, useMemo, useState } from 'react'
+import React, { FC, useState } from 'react'
 
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
-import useIsAuthenticatedUser from 'modules/auth/hooks/useIsAuthenticatedUser'
+import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
-import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 
+import useTaskStatus from '../../../../hooks/useTaskStatus'
 import { SelectStyled } from '../SecondaryDetails/styles'
 import Assignee from './Assignee'
 
@@ -21,7 +21,6 @@ type TaskAssigneeProps = Pick<
   TaskDetailsModel,
   'assignee' | 'status' | 'workGroup'
 > & {
-  workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
 
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
@@ -33,39 +32,36 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   assignee,
 
   workGroup,
-  workGroupList,
   workGroupListIsLoading,
 
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
 }) => {
   const [selectedAssignee, setSelectedAssignee] = useState(assignee?.id)
-
+  const taskStatus = useTaskStatus(status)
   const authenticatedUser = useAuthenticatedUser()
-  const assigneeIsAuthenticatedUser = useIsAuthenticatedUser(selectedAssignee)
+  const { isFirstLineSupportRole, isEngineerRole } = useUserRole()
 
-  const {
-    isFirstLineSupportRole,
-    isEngineerRole,
-    isSeniorEngineerRole,
-    isHeadOfDepartmentRole,
-  } = useUserRole()
+  const assigneeIsAuthenticatedUser =
+    useCheckUserAuthenticated(selectedAssignee)
+
+  const seniorEngineerFromWorkGroupIsAuthenticatedUser =
+    useCheckUserAuthenticated(workGroup?.seniorEngineer?.id)
+
+  const headOfDepartmentFromWorkGroupIsAuthenticatedUser =
+    useCheckUserAuthenticated(workGroup?.groupLead?.id)
 
   const hasWorkGroup: boolean = !!workGroup
+  const workGroupMembers = workGroup?.members || []
 
-  const seniorEngineerHasWorkGroup: boolean =
-    hasWorkGroup && isSeniorEngineerRole
+  const canSelectAssignee: boolean =
+    hasWorkGroup &&
+    !taskStatus.isClosed &&
+    !taskStatus.isCompleted &&
+    (seniorEngineerFromWorkGroupIsAuthenticatedUser ||
+      headOfDepartmentFromWorkGroupIsAuthenticatedUser)
 
-  const headOfDepartmentHasWorkGroup: boolean =
-    hasWorkGroup && isHeadOfDepartmentRole
-
-  const workGroupMembers = useMemo(() => {
-    // todo: как поправят бэк, возможно брать это значение из "workGroup.members"
-    const workGroupFromList = workGroupList.find(
-      ({ id }) => id === workGroup?.id,
-    )
-    return workGroupFromList ? workGroupFromList.members : []
-  }, [workGroup?.id, workGroupList])
+  const canOnlyViewAssignee: boolean = isEngineerRole || isFirstLineSupportRole
 
   const handleAssignTaskOnMe = async () => {
     setSelectedAssignee(authenticatedUser!.id)
@@ -84,7 +80,9 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         <Button
           type='link'
           loading={updateTaskAssigneeIsLoading}
-          disabled={!hasWorkGroup}
+          disabled={
+            !hasWorkGroup || taskStatus.isClosed || taskStatus.isCompleted
+          }
           onClick={
             assigneeIsAuthenticatedUser ? undefined : handleAssignTaskOnMe
           }
@@ -95,7 +93,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         </Button>
       </Space>
 
-      {isEngineerRole || isFirstLineSupportRole ? (
+      {canOnlyViewAssignee ? (
         assignee ? (
           <Assignee
             name={getFullUserName(assignee)}
@@ -106,7 +104,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
           <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
         )
       ) : (
-        (seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup) && (
+        canSelectAssignee && (
           <Space direction='vertical'>
             <SelectStyled
               defaultValue={selectedAssignee}
@@ -116,19 +114,28 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
               placeholder={assignee ? null : ASSIGNEE_NOT_SET_TEXT}
               onSelect={setSelectedAssignee}
             >
-              {workGroupMembers.map(({ id, fullName }) => (
-                <SelectStyled.Option
-                  key={id}
-                  value={id}
-                  disabled={id === assignee?.id}
-                >
-                  <Assignee
-                    name={fullName}
-                    status={status}
-                    assignee={assignee}
-                  />
-                </SelectStyled.Option>
-              ))}
+              {workGroupMembers.map(({ id, fullName }) => {
+                const assigneeInWorkGroup: boolean = id === assignee?.id
+
+                const authenticatedUserInWorkGroup: boolean =
+                  id === authenticatedUser!.id
+
+                return (
+                  <SelectStyled.Option
+                    key={id}
+                    value={id}
+                    disabled={
+                      assigneeInWorkGroup || authenticatedUserInWorkGroup
+                    }
+                  >
+                    <Assignee
+                      name={fullName}
+                      status={status}
+                      assignee={assignee}
+                    />
+                  </SelectStyled.Option>
+                )
+              })}
             </SelectStyled>
 
             <Row justify='end'>
@@ -137,7 +144,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                 ghost
                 onClick={handleClickAssignee}
                 loading={updateTaskAssigneeIsLoading}
-                disabled={!selectedAssignee || assigneeIsAuthenticatedUser}
+                disabled={!selectedAssignee}
               >
                 Назначить
               </Button>

@@ -13,16 +13,20 @@ type TaskDetailsContainerProps = {
   refetchTaskList: () => void
 }
 
-const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
-  const { onClose, onTaskResolved, taskId, refetchTaskList } = props
-
+const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
+  onClose,
+  onTaskResolved,
+  taskId,
+  refetchTaskList,
+}) => {
   const {
     data: task,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
+    refetch: refetchTask,
   } = useGetTask(taskId)
 
-  const { data: workGroupList, isFetching: workGroupListIsFetching } =
+  const { data: workGroupList = [], isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
 
   useEffect(() => {
@@ -38,7 +42,8 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
       onTaskResolved={onTaskResolved}
       taskLoading={taskIsFetching}
       workGroupListIsLoading={workGroupListIsFetching}
-      workGroupList={workGroupList || []}
+      workGroupList={workGroupList}
+      refetchTask={refetchTask}
       refetchTaskList={refetchTaskList}
     />
   )

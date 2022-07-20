@@ -1,15 +1,12 @@
 import { useEffect } from 'react'
 
-import {
-  UseGetTaskQueryReturnType,
-  useGetTaskQuery,
-} from 'modules/tasks/services/tasks.service'
+import { useGetTaskQuery } from 'modules/tasks/services/tasks.service'
 import { GetTaskQueryArgsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
-const useGetTask = (id: GetTaskQueryArgsModel): UseGetTaskQueryReturnType => {
+const useGetTask = (id: GetTaskQueryArgsModel) => {
   const {
     isEngineerRole,
     isSeniorEngineerRole,

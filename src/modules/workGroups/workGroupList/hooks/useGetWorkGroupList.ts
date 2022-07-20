@@ -1,14 +1,11 @@
 import { useEffect } from 'react'
 
 import useUserRole from 'modules/user/hooks/useUserRole'
-import {
-  UseGetWorkGroupListQueryReturnType,
-  useGetWorkGroupListQuery,
-} from 'modules/workGroups/workGroups.service'
+import { useGetWorkGroupListQuery } from 'modules/workGroups/workGroups.service'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
-const useGetWorkGroupList = (): UseGetWorkGroupListQueryReturnType => {
+const useGetWorkGroupList = () => {
   const {
     isFirstLineSupportRole,
     isSeniorEngineerRole,
@@ -21,15 +18,15 @@ const useGetWorkGroupList = (): UseGetWorkGroupListQueryReturnType => {
     isHeadOfDepartmentRole
   )
 
-  const result = useGetWorkGroupListQuery(null, {
+  const state = useGetWorkGroupListQuery(null, {
     skip: shouldSkip,
   })
 
   useEffect(() => {
-    if (!result.isError) return
+    if (!state.isError) return
 
     // TODO: Найти как установить правильно тип. В CustomBaseQueryFn не получилось, ругается TS.
-    const error = result.error as any
+    const error = state.error as any
 
     if (
       error.status === HttpStatusCodeEnum.BadRequest ||
@@ -37,9 +34,9 @@ const useGetWorkGroupList = (): UseGetWorkGroupListQueryReturnType => {
     ) {
       showErrorNotification('Невозможно получить список рабочих групп')
     }
-  }, [result.error, result.isError])
+  }, [state.error, state.isError])
 
-  return result
+  return state
 }
 
 export default useGetWorkGroupList

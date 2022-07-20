@@ -61,7 +61,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             status={status}
             assignee={assignee}
             workGroup={workGroup}
-            workGroupList={workGroupList}
             workGroupListIsLoading={workGroupListIsLoading}
             updateTaskAssignee={updateTaskAssignee}
             updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}

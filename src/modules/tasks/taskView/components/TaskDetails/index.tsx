@@ -3,11 +3,10 @@ import { useBoolean } from 'ahooks'
 import { MenuProps } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
-import useIsAuthenticatedUser from 'modules/auth/hooks/useIsAuthenticatedUser'
+import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import {
   useResolveTaskMutation,
-  useUpdateTaskAssigneeMutation,
   useUpdateTaskWorkGroupMutation,
 } from 'modules/tasks/services/tasks.service'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
@@ -16,6 +15,7 @@ import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
+import useUpdateTaskAssignee from '../../hooks/useUpdateTaskAssignee'
 import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
@@ -52,6 +52,7 @@ type TaskDetailsProps = {
   workGroupListIsLoading: boolean
   onClose: () => void
   onTaskResolved: () => void
+  refetchTask: () => void
   refetchTaskList: () => void
 }
 
@@ -62,6 +63,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   workGroupListIsLoading,
   onClose,
   onTaskResolved,
+  refetchTask,
   refetchTaskList,
 }) => {
   const [isTaskResolutionModalOpened, { toggle: toggleTaskResolutionModal }] =
@@ -72,12 +74,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const [updateTaskWorkGroup, { isLoading: updateTaskWorkGroupIsLoading }] =
     useUpdateTaskWorkGroupMutation()
 
-  const [updateTaskAssignee, { isLoading: updateTaskAssigneeIsLoading }] =
-    useUpdateTaskAssigneeMutation()
+  const {
+    mutation: updateTaskAssignee,
+    state: { isLoading: updateTaskAssigneeIsLoading },
+  } = useUpdateTaskAssignee()
 
   const taskStatus = useTaskStatus(details?.status)
 
-  const isAssignedToCurrentUser = useIsAuthenticatedUser(details?.assignee?.id)
+  const isAssignedToCurrentUser = useCheckUserAuthenticated(
+    details?.assignee?.id,
+  )
 
   const menuItems = useMemo<MenuProps['items']>(
     () => [
@@ -129,13 +135,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   }
 
   const handleUpdateTaskAssignee = async (assignee: AssigneeModel['id']) => {
-    try {
-      // todo: проверить интеграцию с бэком
-      //  и после обновления нужно получить обновлённую заявку для карточки
-      await updateTaskAssignee({ taskId: details!.id, assignee }).unwrap()
-    } catch (error) {
-      showErrorNotification(error)
-    }
+    await updateTaskAssignee({ taskId: details!.id, assignee })
+    refetchTask()
   }
 
   const cardTitle = details?.id && (

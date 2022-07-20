@@ -9,7 +9,7 @@ import useAuthenticatedUser from './useAuthenticatedUser'
  * Хук для проверки, совпадает ли переданный id, с id авторизованного пользователя
  */
 
-const useIsAuthenticatedUser = (
+const useCheckUserAuthenticated = (
   userId: MaybeUndefined<BaseUserModel['id']>,
 ): boolean => {
   const authenticatedUser = useAuthenticatedUser()
@@ -19,4 +19,4 @@ const useIsAuthenticatedUser = (
   }, [authenticatedUser, userId])
 }
 
-export default useIsAuthenticatedUser
+export default useCheckUserAuthenticated
