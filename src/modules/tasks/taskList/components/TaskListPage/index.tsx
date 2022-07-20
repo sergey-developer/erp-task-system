@@ -268,9 +268,10 @@ const TaskListPage: FC = () => {
             {!!selectedTaskId && (
               <Col span={8}>
                 <TaskDetails
+                  taskId={selectedTaskId}
                   onClose={handleCloseTaskDetails}
                   onTaskResolved={handleTaskResolved}
-                  taskId={selectedTaskId}
+                  refetchTaskList={refetchTaskList}
                 />
               </Col>
             )}

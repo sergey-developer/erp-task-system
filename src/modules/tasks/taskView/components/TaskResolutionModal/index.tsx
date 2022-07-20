@@ -12,6 +12,7 @@ import React, { FC, useMemo } from 'react'
 import useTaskType from 'modules/tasks/hooks/useTaskType'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { DEFAULT_MODAL_WIDTH } from 'shared/constants/components'
+import { BUTTON_TEXT_CANCEL } from 'shared/constants/text'
 
 import { TaskResolutionFormFields } from './interfaces'
 import { TECH_RESOLUTION_RULES, USER_RESOLUTION_RULES } from './validation'
@@ -70,7 +71,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = (props) => {
       onCancel={onCancel}
       okText='Выполнить заявку'
       okButtonProps={submitButtonProps}
-      cancelText='Отменить'
+      cancelText={BUTTON_TEXT_CANCEL}
       cancelButtonProps={buttonCommonProps}
       width={DEFAULT_MODAL_WIDTH}
     >

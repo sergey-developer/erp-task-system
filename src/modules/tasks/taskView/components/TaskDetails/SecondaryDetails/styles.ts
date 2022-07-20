@@ -2,7 +2,7 @@ import { Select } from 'antd'
 
 import styled from 'styled-components'
 
-export const SelectStyled = styled(Select)`
+export const SelectStyled: typeof Select = styled(Select)`
   width: 100%;
 
   &&.ant-select .ant-select-selector {

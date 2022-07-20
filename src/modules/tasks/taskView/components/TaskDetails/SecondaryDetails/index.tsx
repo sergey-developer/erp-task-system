@@ -1,33 +1,54 @@
+import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
+import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
-import { WorkGroupModel } from 'modules/workGroups/models'
+import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 
+import TaskSecondLineModal from '../../TaskSecondLineModal'
 import Performer from '../Performer'
 import { DetailContainerStyled } from '../styles'
 import { SelectStyled } from './styles'
 
 const { Text } = Typography
 
-type SecondaryDetailsProps = Pick<TaskDetailsModel, 'workGroup'> &
-  Partial<Pick<TaskDetailsModel, 'assignee' | 'status'>> & {
-    workGroupList: Array<WorkGroupModel>
-    workGroupListLoading: boolean
-  }
+type SecondaryDetailsProps = Pick<
+  TaskDetailsModel,
+  'id' | 'workGroup' | 'assignee' | 'status'
+> & {
+  workGroupList: Array<WorkGroupListItemModel>
+  workGroupListLoading: boolean
+  transferTaskIsLoading: boolean
+  transferTask: (
+    workGroup: WorkGroupListItemModel['id'],
+    closeTaskSecondLineModal: () => void,
+  ) => Promise<void>
+}
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
+  id,
   status,
   assignee,
   workGroup,
   workGroupList,
   workGroupListLoading,
+  transferTask,
+  transferTaskIsLoading,
 }) => {
+  const [
+    isTaskSecondLineModalOpened,
+    { setTrue: openTaskSecondLineModal, setFalse: closeTaskSecondLineModal },
+  ] = useBoolean(false)
+
   const authenticatedUser = useAuthenticatedUser()
+
+  const taskStatus = useTaskStatus(status)
+
   const {
     isFirstLineSupportRole,
     isEngineerRole,
@@ -53,12 +74,29 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
     return workGroupFromList ? workGroupFromList.members : []
   }, [workGroup?.id, workGroupList])
 
-  const renderChangeTaskLineButton = () => {
-    return firstLineSupportNotHasWorkGroup ? (
-      <Button type='link'>Перевести на II линию</Button>
-    ) : seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup ? (
-      <Button type='link'>Вернуть на I линию</Button>
-    ) : null
+  const changeTaskLineButton = firstLineSupportNotHasWorkGroup ? (
+    <Button
+      type='link'
+      onClick={openTaskSecondLineModal}
+      loading={transferTaskIsLoading}
+      disabled={
+        taskStatus.isAppointed ||
+        taskStatus.isClosed ||
+        taskStatus.isCompleted ||
+        taskStatus.isInReclassification ||
+        taskStatus.isReclassified
+      }
+    >
+      Перевести на II линию
+    </Button>
+  ) : seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup ? (
+    <Button type='link'>Вернуть на I линию</Button>
+  ) : null
+
+  const handleTransferTask = async (
+    workGroup: WorkGroupListItemModel['id'],
+  ): Promise<void> => {
+    await transferTask(workGroup, closeTaskSecondLineModal)
   }
 
   return (
@@ -69,7 +107,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             <Space size='large'>
               <Text type='secondary'>Рабочая группа</Text>
 
-              {renderChangeTaskLineButton()}
+              {changeTaskLineButton}
             </Space>
 
             {isEngineerRole || isFirstLineSupportRole ? (
@@ -147,6 +185,16 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           </Space>
         </Col>
       </Row>
+
+      <TaskSecondLineModal
+        id={id}
+        visible={isTaskSecondLineModalOpened}
+        workGroupList={workGroupList}
+        workGroupListLoading={workGroupListLoading}
+        transferTaskIsLoading={transferTaskIsLoading}
+        onCancel={closeTaskSecondLineModal}
+        onTransfer={handleTransferTask}
+      />
     </DetailContainerStyled>
   )
 }

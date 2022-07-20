@@ -1,28 +1,20 @@
-import { LogoutOutlined } from '@ant-design/icons'
 import { Col, Layout, Row, Space } from 'antd'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 import UserAvatar from 'components/Avatars/UserAvatar'
+import LogoutButton from 'components/Buttons/LogoutButton'
 import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 import { getNavMenuConfig } from 'configs/navMenu/utils'
-import { useLogoutMutation } from 'modules/auth/auth.service'
-import { logout as logoutAction } from 'modules/auth/authSlice'
 import useUserRole from 'modules/user/hooks/useUserRole'
-import { StorageKeys } from 'shared/constants/storage'
-import useDispatch from 'shared/hooks/useDispatch'
 import useMatchedRoute from 'shared/hooks/useMatchedRoute'
-import localStorageService from 'shared/services/localStorage'
 
 const { Header } = Layout
 
 const PrivateHeader: FC = () => {
-  const dispatch = useDispatch()
   const { role } = useUserRole()
-
-  const [logout] = useLogoutMutation()
 
   const navMenu = useMemo(() => {
     const items: NavMenuProps['items'] = role
@@ -42,16 +34,6 @@ const PrivateHeader: FC = () => {
   const activeNavKey = matchedRoute?.pathnameBase
   const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
 
-  const handleLogout = async () => {
-    const refreshToken = localStorageService.getItem(StorageKeys.refreshToken)
-    if (refreshToken) {
-      await logout({ refresh: refreshToken })
-    }
-    localStorageService.removeItem(StorageKeys.accessToken)
-    localStorageService.removeItem(StorageKeys.refreshToken)
-    dispatch(logoutAction())
-  }
-
   return (
     <Header>
       <Row justify='space-between' align='middle'>
@@ -68,7 +50,7 @@ const PrivateHeader: FC = () => {
             <Space size='large'>
               <NotificationCounter />
               <UserAvatar size='large' dot />
-              <LogoutOutlined className='font-s-18' onClick={handleLogout} />
+              <LogoutButton />
             </Space>
           </Row>
         </Col>

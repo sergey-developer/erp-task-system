@@ -1,6 +1,6 @@
-import { UserNameModel } from 'modules/user/models'
+import { BaseUserModel } from 'modules/user/models'
 
-const getFullUserName = <T extends UserNameModel>({
+const getFullUserName = <T extends Omit<BaseUserModel, 'id' | 'avatar'>>({
   firstName,
   lastName,
   middleName,

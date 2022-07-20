@@ -1,15 +1,19 @@
 import { CheckCircleOutlined } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
-import { MenuProps, Tabs, notification } from 'antd'
+import { MenuProps, notification } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
-import { useResolveTaskMutation } from 'modules/tasks/services/tasks.service'
+import {
+  useResolveTaskMutation,
+  useUpdateTaskWorkGroupMutation,
+} from 'modules/tasks/services/tasks.service'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
-import { WorkGroupModel } from 'modules/workGroups/models'
+import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
 import { MaybeNull } from 'shared/interfaces/utils'
+import { getErrorDetail } from 'shared/services/api'
 
 import TaskResolutionModal, {
   TaskResolutionModalProps,
@@ -19,14 +23,7 @@ import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 import TaskDetailsTabs from './TaskDetailsTabs'
-import {
-  TaskDetailsTabsEnum,
-  taskDetailsTabNames,
-} from './TaskDetailsTabs/constants'
-import DescriptionAndComments from './TaskDetailsTabs/DescriptionAndComments'
-import Resolution from './TaskDetailsTabs/Resolution'
-
-const { TabPane } = Tabs
+import { TaskDetailsTabsEnum } from './TaskDetailsTabs/constants'
 
 type TaskDetailsProps = {
   details: MaybeNull<
@@ -49,11 +46,12 @@ type TaskDetailsProps = {
       | 'description'
     >
   >
-  workGroupList: Array<WorkGroupModel>
+  taskLoading: boolean
+  workGroupList: Array<WorkGroupListItemModel>
+  workGroupListLoading: boolean
   onClose: () => void
   onTaskResolved: () => void
-  taskLoading: boolean
-  workGroupListLoading: boolean
+  refetchTaskList: () => void
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
@@ -63,6 +61,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   workGroupListLoading,
   onClose,
   onTaskResolved,
+  refetchTaskList,
 }) => {
   const user = useAuthenticatedUser()
 
@@ -70,6 +69,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     useBoolean(false)
 
   const [resolveTask, { isLoading: isTaskResolving }] = useResolveTaskMutation()
+
+  const [updateTaskWorkGroup, { isLoading: isTaskWorkGroupUpdating }] =
+    useUpdateTaskWorkGroupMutation()
 
   const taskStatus = useTaskStatus(details?.status)
 
@@ -108,9 +110,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       try {
         await resolveTask({ taskId: details!.id, ...values }).unwrap()
         onTaskResolved()
-      } catch (err) {
+      } catch (error) {
         notification.error({
-          message: (err as any)?.data.detail,
+          message: getErrorDetail(error as any),
           duration: ERROR_NOTIFICATION_DURATION,
         })
       }
@@ -118,84 +120,69 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [details, onTaskResolved, resolveTask],
   )
 
+  const handleUpdateTaskWorkGroup = async (
+    workGroup: WorkGroupListItemModel['id'],
+    closeTaskSecondLineModal: () => void,
+  ) => {
+    try {
+      await updateTaskWorkGroup({ taskId: details!.id, workGroup }).unwrap()
+      closeTaskSecondLineModal()
+      onClose()
+      refetchTaskList()
+    } catch (error) {
+      notification.error({
+        message: getErrorDetail(error as any),
+        duration: ERROR_NOTIFICATION_DURATION,
+      })
+    }
+  }
+
   const cardTitle = details?.id && (
     <CardTitle id={details.id} menuItems={menuItems} onClose={onClose} />
   )
 
   return (
     <RootWrapperStyled>
-      <CardStyled
-        title={cardTitle}
-        loading={taskLoading}
-        $isLoading={taskLoading}
-      >
+      <CardStyled title={cardTitle} loading={taskLoading}>
         {details && (
-          <MainDetails
-            recordId={details.recordId}
-            title={details.title}
-            createdAt={details.createdAt}
-            olaNextBreachTime={details.olaNextBreachTime}
-            name={details.name}
-            address={details.address}
-            contactService={details.contactService}
-          />
-        )}
+          <>
+            <MainDetails
+              recordId={details.recordId}
+              title={details.title}
+              createdAt={details.createdAt}
+              olaNextBreachTime={details.olaNextBreachTime}
+              name={details.name}
+              address={details.address}
+              contactService={details.contactService}
+            />
 
-        <DividerStyled />
+            <DividerStyled />
 
-        <SecondaryDetails
-          status={details?.status}
-          assignee={details?.assignee}
-          workGroupListLoading={workGroupListLoading}
-          workGroupList={workGroupList}
-          workGroup={details?.workGroup}
-        />
+            <SecondaryDetails
+              id={details.id}
+              status={details.status}
+              assignee={details.assignee}
+              workGroup={details.workGroup}
+              workGroupList={workGroupList}
+              workGroupListLoading={workGroupListLoading}
+              transferTask={handleUpdateTaskWorkGroup}
+              transferTaskIsLoading={isTaskWorkGroupUpdating}
+            />
 
-        {details && (
-          <TaskDetailsTabs
-            defaultTabKey={TaskDetailsTabsEnum.DescriptionAndComments}
-          >
-            <TabPane
-              tab={
-                taskDetailsTabNames[TaskDetailsTabsEnum.DescriptionAndComments]
-              }
-              key={TaskDetailsTabsEnum.DescriptionAndComments}
-            >
-              <DescriptionAndComments
-                id={details.id}
-                description={details.description}
-              />
-            </TabPane>
+            <TaskDetailsTabs
+              details={details}
+              defaultTab={TaskDetailsTabsEnum.Description}
+            />
 
-            <TabPane
-              tab={taskDetailsTabNames[TaskDetailsTabsEnum.Resolution]}
-              key={TaskDetailsTabsEnum.Resolution}
-            >
-              <Resolution
-                type={details.type}
-                techResolution={details.techResolution}
-                userResolution={details.userResolution}
-              />
-            </TabPane>
-
-            <TabPane
-              tab={taskDetailsTabNames[TaskDetailsTabsEnum.Tasks]}
-              key={TaskDetailsTabsEnum.Tasks}
-            >
-              Задания
-            </TabPane>
-          </TaskDetailsTabs>
-        )}
-
-        {details && (
-          <TaskResolutionModal
-            isTaskResolving={isTaskResolving}
-            onCancel={toggleTaskResolutionModal}
-            onResolutionSubmit={handleResolutionSubmit}
-            title={`Решение по заявке ${details.recordId}`}
-            type={details.type}
-            visible={isTaskResolutionModalOpened}
-          />
+            <TaskResolutionModal
+              isTaskResolving={isTaskResolving}
+              onCancel={toggleTaskResolutionModal}
+              onResolutionSubmit={handleResolutionSubmit}
+              title={`Решение по заявке ${details.recordId}`}
+              type={details.type}
+              visible={isTaskResolutionModalOpened}
+            />
+          </>
         )}
       </CardStyled>
     </RootWrapperStyled>

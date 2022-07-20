@@ -5,7 +5,6 @@ import UserAvatar from 'components/Avatars/UserAvatar'
 import TaskStatus from 'components/TaskStatus'
 import { taskStatusDictionary } from 'modules/tasks/constants'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
-import getUserAbbr from 'modules/user/utils/getUserAbbr'
 
 const { Text } = Typography
 
@@ -16,11 +15,7 @@ type PerformerProps = Partial<Pick<TaskDetailsModel, 'assignee' | 'status'>> & {
 const Performer: FC<PerformerProps> = ({ assignee, status, name }) => {
   return (
     <Space size='middle' align='start'>
-      {assignee && (
-        <UserAvatar src={assignee?.avatar} alt='Avatar'>
-          {!assignee?.avatar ? getUserAbbr(assignee) : null}
-        </UserAvatar>
-      )}
+      {assignee && <UserAvatar user={assignee} />}
 
       <Space direction='vertical'>
         <Text className='break-text'>{name}</Text>

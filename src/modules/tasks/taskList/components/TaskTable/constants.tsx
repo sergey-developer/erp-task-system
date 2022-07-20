@@ -3,7 +3,7 @@ import React from 'react'
 
 import TaskStatus from 'components/TaskStatus'
 import { TaskListItemModel } from 'modules/tasks/taskList/models'
-import { WorkGroupModel } from 'modules/workGroups/models'
+import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { MaybeNull } from 'shared/interfaces/utils'
 import formatDate from 'shared/utils/date/formatDate'
@@ -55,7 +55,7 @@ export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
     title: 'Рабочая группа',
     dataIndex: 'workGroup',
     key: 'workGroup',
-    render: (value: MaybeNull<WorkGroupModel>) => {
+    render: (value: MaybeNull<WorkGroupListItemModel>) => {
       return value && value.name
     },
     width: 180,
