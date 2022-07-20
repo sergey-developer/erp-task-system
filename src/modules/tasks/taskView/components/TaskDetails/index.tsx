@@ -75,7 +75,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     useUpdateTaskWorkGroupMutation()
 
   const {
-    mutation: updateTaskAssignee,
+    fn: updateTaskAssignee,
     state: { isLoading: updateTaskAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 

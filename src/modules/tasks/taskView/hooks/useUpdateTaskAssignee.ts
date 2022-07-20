@@ -9,7 +9,7 @@ import { UpdateTaskAssigneeMutationArgsModel } from '../models'
 const UPDATE_ASSIGNEE_ERROR_MSG = 'Невозможно изменить исполнителя'
 
 const useUpdateTaskAssignee = () => {
-  const [fn, state] = useUpdateTaskAssigneeMutation()
+  const [mutation, state] = useUpdateTaskAssigneeMutation()
 
   const {
     isFirstLineSupportRole,
@@ -25,20 +25,20 @@ const useUpdateTaskAssignee = () => {
     isHeadOfDepartmentRole
   )
 
-  const mutation = useCallback(
+  const fn = useCallback(
     async (data: UpdateTaskAssigneeMutationArgsModel) => {
       if (shouldSkip) return
 
       try {
-        await fn(data).unwrap()
+        await mutation(data).unwrap()
       } catch (error) {
         showErrorNotification(UPDATE_ASSIGNEE_ERROR_MSG)
       }
     },
-    [fn, shouldSkip],
+    [mutation, shouldSkip],
   )
 
-  return { mutation, state }
+  return { fn, state }
 }
 
 export default useUpdateTaskAssignee
