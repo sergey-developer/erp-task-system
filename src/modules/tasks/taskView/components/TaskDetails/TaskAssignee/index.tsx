@@ -1,5 +1,5 @@
 import { Button, Row, Typography } from 'antd'
-import React, { FC, useState } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
@@ -7,7 +7,7 @@ import useIsAuthenticatedUser from 'modules/auth/hooks/useIsAuthenticatedUser'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
-import { WorkGroupListMemberModel } from 'modules/workGroups/workGroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 
 import { SelectStyled } from '../SecondaryDetails/styles'
@@ -17,10 +17,13 @@ const { Text } = Typography
 
 const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
 
-type TaskAssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'status'> & {
-  hasWorkGroup: boolean
-  workGroupMembers: Array<WorkGroupListMemberModel>
+type TaskAssigneeProps = Pick<
+  TaskDetailsModel,
+  'assignee' | 'status' | 'workGroup'
+> & {
+  workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
+
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
 }
@@ -28,11 +31,13 @@ type TaskAssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'status'> & {
 const TaskAssignee: FC<TaskAssigneeProps> = ({
   status,
   assignee,
-  hasWorkGroup,
-  workGroupMembers,
+
+  workGroup,
+  workGroupList,
+  workGroupListIsLoading,
+
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
-  workGroupListIsLoading,
 }) => {
   const [selectedAssignee, setSelectedAssignee] = useState(assignee?.id)
 
@@ -46,11 +51,21 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
     isHeadOfDepartmentRole,
   } = useUserRole()
 
+  const hasWorkGroup: boolean = !!workGroup
+
   const seniorEngineerHasWorkGroup: boolean =
     hasWorkGroup && isSeniorEngineerRole
 
   const headOfDepartmentHasWorkGroup: boolean =
     hasWorkGroup && isHeadOfDepartmentRole
+
+  const workGroupMembers = useMemo(() => {
+    // todo: как поправят бэк, возможно брать это значение из "workGroup.members"
+    const workGroupFromList = workGroupList.find(
+      ({ id }) => id === workGroup?.id,
+    )
+    return workGroupFromList ? workGroupFromList.members : []
+  }, [workGroup?.id, workGroupList])
 
   const handleAssignTaskOnMe = async () => {
     setSelectedAssignee(authenticatedUser!.id)
