@@ -12,10 +12,11 @@ const { Title } = Typography
 const DEFAULT_DISPLAYABLE_COMMENTS_COUNT: number = 3
 
 type CommentsProps = {
+  title: string
   taskId: TaskDetailsModel['id']
 }
 
-const Comments: FC<CommentsProps> = ({ taskId }) => {
+const Comments: FC<CommentsProps> = ({ title, taskId }) => {
   const { data: commentList = [], isFetching: commentListIsFetching } =
     useGetTaskCommentList(taskId)
 
@@ -29,7 +30,7 @@ const Comments: FC<CommentsProps> = ({ taskId }) => {
 
   return (
     <>
-      <Title level={5}>Комментарии</Title>
+      <Title level={5}>{title}</Title>
 
       {commentListIsFetching ? (
         <Spin />

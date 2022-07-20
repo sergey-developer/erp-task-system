@@ -6,12 +6,14 @@ import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
 const { Title } = Typography
 
-type DescriptionProps = Pick<TaskDetailsModel, 'description'>
+type DescriptionProps = Pick<TaskDetailsModel, 'description'> & {
+  title: string
+}
 
-const Description: FC<DescriptionProps> = ({ description }) => {
+const Description: FC<DescriptionProps> = ({ title, description }) => {
   return (
     <>
-      <Title level={5}>Описание</Title>
+      <Title level={5}>{title}</Title>
 
       {description && (
         <OpenableText

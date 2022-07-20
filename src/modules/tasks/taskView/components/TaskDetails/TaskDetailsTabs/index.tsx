@@ -27,14 +27,20 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
           tab={taskDetailsTabNames[TaskDetailsTabsEnum.Description]}
           key={TaskDetailsTabsEnum.Description}
         >
-          <Description description={details.description} />
+          <Description
+            title={taskDetailsTabNames[TaskDetailsTabsEnum.Description]}
+            description={details.description}
+          />
         </TabPane>
 
         <TabPane
           tab={taskDetailsTabNames[TaskDetailsTabsEnum.Comments]}
           key={TaskDetailsTabsEnum.Comments}
         >
-          <Comments taskId={details.id} />
+          <Comments
+            title={taskDetailsTabNames[TaskDetailsTabsEnum.Comments]}
+            taskId={details.id}
+          />
         </TabPane>
 
         <TabPane
@@ -43,6 +49,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
         >
           <Resolution
             type={details.type}
+            title={taskDetailsTabNames[TaskDetailsTabsEnum.Resolution]}
             techResolution={details.techResolution}
             userResolution={details.userResolution}
           />
