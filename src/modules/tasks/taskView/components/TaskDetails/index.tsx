@@ -130,7 +130,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleUpdateTaskAssignee = async (assignee: AssigneeModel['id']) => {
     try {
-      // todo: после обновления нужно получить обновлённую заявку для карточки
+      // todo: проверить интеграцию с бэком
+      //  и после обновления нужно получить обновлённую заявку для карточки
       await updateTaskAssignee({ taskId: details!.id, assignee })
     } catch (error) {
       showErrorNotification(error)
