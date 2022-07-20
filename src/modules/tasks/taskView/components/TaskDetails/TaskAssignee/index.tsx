@@ -4,6 +4,7 @@ import React, { FC, useState } from 'react'
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
+import { ASSIGNEE_WORD } from 'modules/tasks/constants/words'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
@@ -75,7 +76,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   return (
     <Space direction='vertical' $fullWidth>
       <Space size='large'>
-        <Text type='secondary'>Исполнитель</Text>
+        <Text type='secondary'>{ASSIGNEE_WORD}</Text>
 
         <Button
           type='link'

@@ -7,7 +7,7 @@ import {
 import { BadgeProps } from 'antd'
 import React, { ReactElement } from 'react'
 
-import { TaskStatusEnum } from 'modules/tasks/constants'
+import { TaskStatusEnum } from 'modules/tasks/constants/enums'
 import theme from 'styles/theme'
 
 export const iconOrBadgeStatusMap: Record<

@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import UserAvatar from 'components/Avatars/UserAvatar'
 import TaskStatus from 'components/TaskStatus'
-import { taskStatusDictionary } from 'modules/tasks/constants'
+import { taskStatusDictionary } from 'modules/tasks/constants/taskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
 const { Text } = Typography
