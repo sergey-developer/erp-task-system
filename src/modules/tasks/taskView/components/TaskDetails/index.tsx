@@ -108,7 +108,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   >(
     async (values) => {
       try {
-        await resolveTask({ taskId: details!.id, ...values })
+        await resolveTask({ taskId: details!.id, ...values }).unwrap()
         onTaskResolved()
       } catch (error) {
         notification.error({
@@ -125,7 +125,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     closeTaskSecondLineModal: () => void,
   ) => {
     try {
-      await updateTaskWorkGroup({ taskId: details!.id, workGroup })
+      await updateTaskWorkGroup({ taskId: details!.id, workGroup }).unwrap()
       closeTaskSecondLineModal()
       onClose()
       refetchTaskList()
