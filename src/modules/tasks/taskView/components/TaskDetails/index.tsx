@@ -132,7 +132,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     try {
       // todo: проверить интеграцию с бэком
       //  и после обновления нужно получить обновлённую заявку для карточки
-      await updateTaskAssignee({ taskId: details!.id, assignee })
+      await updateTaskAssignee({ taskId: details!.id, assignee }).unwrap()
     } catch (error) {
       showErrorNotification(error)
     }

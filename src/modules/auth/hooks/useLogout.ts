@@ -15,7 +15,7 @@ const useLogout = () => {
     const refreshToken = localStorageService.getItem(StorageKeys.refreshToken)
 
     if (refreshToken) {
-      await logout({ refresh: refreshToken })
+      await logout({ refresh: refreshToken }).unwrap()
     }
 
     localStorageService.removeItem(StorageKeys.accessToken)
