@@ -4,12 +4,12 @@ import React, { FC, useState } from 'react'
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
+import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { AssigneeModel } from 'shared/interfaces/models'
 
-import useTaskStatus from '../../../../hooks/useTaskStatus'
 import { SelectStyled } from '../SecondaryDetails/styles'
 import Assignee from './Assignee'
 
