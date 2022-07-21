@@ -1,13 +1,16 @@
 import { useMemo } from 'react'
 
-import { TaskStatusEnum } from '../constants'
+import { TaskStatusEnum } from 'modules/tasks/constants/enums'
+import { MaybeUndefined } from 'shared/interfaces/utils'
 
 type UseTaskStatusReturnType = Record<
   `is${keyof typeof TaskStatusEnum}`,
   boolean
 >
 
-const useTaskStatus = (status?: TaskStatusEnum): UseTaskStatusReturnType => {
+const useTaskStatus = (
+  status: MaybeUndefined<TaskStatusEnum>,
+): UseTaskStatusReturnType => {
   return useMemo(
     () => ({
       isAppointed: status === TaskStatusEnum.Appointed,

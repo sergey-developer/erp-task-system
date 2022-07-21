@@ -3,7 +3,7 @@ import {
   SuspendReasonEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/tasks/constants'
+} from 'modules/tasks/constants/enums'
 import { TaskAttachmentModel } from 'modules/tasks/models'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'

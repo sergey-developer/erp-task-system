@@ -1,19 +1,20 @@
 import { CheckCircleOutlined } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
-import { MenuProps, notification } from 'antd'
+import { MenuProps } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
-import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
+import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import {
   useResolveTaskMutation,
   useUpdateTaskWorkGroupMutation,
 } from 'modules/tasks/services/tasks.service'
+import useUpdateTaskAssignee from 'modules/tasks/taskView/hooks/useUpdateTaskAssignee'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
-import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
+import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
-import { getErrorDetail } from 'shared/services/api'
+import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 import TaskResolutionModal, {
   TaskResolutionModalProps,
@@ -48,9 +49,10 @@ type TaskDetailsProps = {
   >
   taskLoading: boolean
   workGroupList: Array<WorkGroupListItemModel>
-  workGroupListLoading: boolean
+  workGroupListIsLoading: boolean
   onClose: () => void
   onTaskResolved: () => void
+  refetchTask: () => void
   refetchTaskList: () => void
 }
 
@@ -58,29 +60,30 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   details,
   taskLoading,
   workGroupList,
-  workGroupListLoading,
+  workGroupListIsLoading,
   onClose,
   onTaskResolved,
+  refetchTask,
   refetchTaskList,
 }) => {
-  const user = useAuthenticatedUser()
-
   const [isTaskResolutionModalOpened, { toggle: toggleTaskResolutionModal }] =
     useBoolean(false)
 
   const [resolveTask, { isLoading: isTaskResolving }] = useResolveTaskMutation()
 
-  const [updateTaskWorkGroup, { isLoading: isTaskWorkGroupUpdating }] =
+  const [updateTaskWorkGroup, { isLoading: updateTaskWorkGroupIsLoading }] =
     useUpdateTaskWorkGroupMutation()
+
+  const {
+    fn: updateTaskAssignee,
+    state: { isLoading: updateTaskAssigneeIsLoading },
+  } = useUpdateTaskAssignee()
 
   const taskStatus = useTaskStatus(details?.status)
 
-  const isAssignedToCurrentUser = useMemo(() => {
-    if (!user || !details) {
-      return false
-    }
-    return user.id === details.assignee?.id
-  }, [details, user])
+  const isAssignedToCurrentUser = useCheckUserAuthenticated(
+    details?.assignee?.id,
+  )
 
   const menuItems = useMemo<MenuProps['items']>(
     () => [
@@ -111,10 +114,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         await resolveTask({ taskId: details!.id, ...values }).unwrap()
         onTaskResolved()
       } catch (error) {
-        notification.error({
-          message: getErrorDetail(error as any),
-          duration: ERROR_NOTIFICATION_DURATION,
-        })
+        showErrorNotification(error)
       }
     },
     [details, onTaskResolved, resolveTask],
@@ -130,11 +130,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       onClose()
       refetchTaskList()
     } catch (error) {
-      notification.error({
-        message: getErrorDetail(error as any),
-        duration: ERROR_NOTIFICATION_DURATION,
-      })
+      showErrorNotification(error)
     }
+  }
+
+  const handleUpdateTaskAssignee = async (assignee: AssigneeModel['id']) => {
+    try {
+      await updateTaskAssignee({ taskId: details!.id, assignee })
+      refetchTask()
+    } catch {}
   }
 
   const cardTitle = details?.id && (
@@ -164,9 +168,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               assignee={details.assignee}
               workGroup={details.workGroup}
               workGroupList={workGroupList}
-              workGroupListLoading={workGroupListLoading}
+              workGroupListIsLoading={workGroupListIsLoading}
               transferTask={handleUpdateTaskWorkGroup}
-              transferTaskIsLoading={isTaskWorkGroupUpdating}
+              transferTaskIsLoading={updateTaskWorkGroupIsLoading}
+              updateTaskAssignee={handleUpdateTaskAssignee}
+              updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
             />
 
             <TaskDetailsTabs

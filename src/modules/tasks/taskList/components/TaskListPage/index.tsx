@@ -5,8 +5,8 @@ import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
-import { FastFilterEnum, SortEnum } from 'modules/tasks/constants'
 import useFastFilterList from 'modules/tasks/taskList/hooks/useFastFilterList'
+import { FastFilterEnum, SortEnum } from 'modules/tasks/constants/enums'
 import useGetTaskList from 'modules/tasks/taskList/hooks/useGetTaskList'
 import {
   GetTaskListQueryArgsModel,

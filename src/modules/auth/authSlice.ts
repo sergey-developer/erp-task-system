@@ -1,18 +1,16 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-import { StorageKeys } from 'shared/constants/storage'
-import localStorageService from 'shared/services/localStorage'
-
 import {
   IAuthSliceState,
   LoginActionPayload,
   RefreshTokenActionPayload,
 } from './interfaces'
+import authLocalStorageService from './services/authLocalStorage.service'
 import parseJwt from './utils/parseJwt'
 
 function getInitialState(): IAuthSliceState {
-  const accessToken = localStorageService.getItem(StorageKeys.accessToken)
-  const refreshToken = localStorageService.getItem(StorageKeys.refreshToken)
+  const accessToken = authLocalStorageService.getAccessToken()
+  const refreshToken = authLocalStorageService.getRefreshToken()
 
   return {
     user: accessToken ? parseJwt(accessToken) : null,
@@ -38,7 +36,8 @@ const slice = createSlice({
     ) => {
       state.user = payload.user
       state.accessToken = payload.access
-      state.isAuthenticated = !!payload.access && !!state.refreshToken
+      state.refreshToken = payload.refresh
+      state.isAuthenticated = !!payload.access && !!payload.refresh
     },
     logout: (state) => {
       state.user = null

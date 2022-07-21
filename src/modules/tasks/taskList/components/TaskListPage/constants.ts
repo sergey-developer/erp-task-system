@@ -1,6 +1,6 @@
 import { SorterResult } from 'antd/es/table/interface'
 
-import { FastFilterEnum, SortEnum } from 'modules/tasks/constants'
+import { FastFilterEnum, SortEnum } from 'modules/tasks/constants/enums'
 import { TaskListItemModel } from 'modules/tasks/taskList/models'
 
 import { ExtendedFilterFormFields, SearchQueries } from './interfaces'

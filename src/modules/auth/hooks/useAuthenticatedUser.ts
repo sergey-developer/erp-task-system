@@ -11,6 +11,10 @@ type UseAuthenticatedUserReturnType = MaybeNull<{
   role: AuthenticatedUser['userRole']
 }>
 
+/**
+  Хук возвращает авторизованного пользователя
+ */
+
 const useAuthenticatedUser = (): UseAuthenticatedUserReturnType => {
   const authenticatedUser = useSelector(authenticatedUserSelector)
 

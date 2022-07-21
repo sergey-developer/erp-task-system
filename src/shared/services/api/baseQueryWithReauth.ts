@@ -3,10 +3,9 @@ import { Mutex } from 'async-mutex'
 import { logout, refreshToken } from 'modules/auth/authSlice'
 import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
 import { RefreshTokenResponseModel } from 'modules/auth/models'
+import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import parseJwt from 'modules/auth/utils/parseJwt'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
-import { StorageKeys } from 'shared/constants/storage'
-import localStorageService from 'shared/services/localStorage'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
@@ -44,6 +43,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
       const release = await mutex.acquire()
       try {
         const { refreshToken: refresh } = (api.getState() as RootState).auth
+
         const refreshResult = await query(
           {
             method: HttpMethodEnum.POST,
@@ -55,13 +55,12 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           api,
           extraOptions,
         )
+
         if (refreshResult.data) {
           const refreshData = refreshResult.data as RefreshTokenResponseModel
 
-          localStorageService.setItem(
-            StorageKeys.accessToken,
-            refreshData.access,
-          )
+          authLocalStorageService.setAccessToken(refreshData.access)
+          authLocalStorageService.setRefreshToken(refreshData.refresh)
 
           api.dispatch(
             refreshToken({
@@ -82,6 +81,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
       result = await query(args, api, extraOptions)
     }
   }
+
   return result
 }
 

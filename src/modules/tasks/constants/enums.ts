@@ -90,14 +90,3 @@ export enum SuspendReasonEnum {
   AwaitingNonItWork = 'AWAITING_NON_IT_WORK',
   AwaitingInformationFromFirstLine = 'AWAITING_INFORMATION_FROM_FIRST_LINE',
 }
-
-export const taskStatusDictionary: Record<TaskStatusEnum, string> = {
-  [TaskStatusEnum.Appointed]: 'Назначено',
-  [TaskStatusEnum.Awaiting]: 'В ожидании',
-  [TaskStatusEnum.Closed]: 'Возврат с II линии',
-  [TaskStatusEnum.Completed]: 'Выполнено',
-  [TaskStatusEnum.InProgress]: 'В работе',
-  [TaskStatusEnum.InReclassification]: 'На переклассификации',
-  [TaskStatusEnum.New]: 'Ожидает выполнения',
-  [TaskStatusEnum.Reclassified]: 'Переклассифицировано',
-}
