@@ -1,10 +1,8 @@
-import { notification } from 'antd'
 import { useEffect } from 'react'
 
 import { useGetTaskCountersQuery } from 'modules/tasks/services/tasks.service'
 import useUserRole from 'modules/user/hooks/useUserRole'
-import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
-import { getErrorDetail } from 'shared/services/api'
+import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 const useGetTaskCounters = () => {
   const {
@@ -29,11 +27,7 @@ const useGetTaskCounters = () => {
     if (!state.isError) return
 
     const error = state.error as any
-
-    notification.error({
-      message: getErrorDetail(error.data),
-      duration: ERROR_NOTIFICATION_DURATION,
-    })
+    showErrorNotification(error.data)
   }, [state.error, state.isError])
 
   return state
