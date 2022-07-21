@@ -1,7 +1,7 @@
 import { Moment } from 'moment'
 
 import { FilterTagProps } from 'components/FilterTag'
-import { FastFilterEnum, TaskStatusEnum } from 'modules/tasks/constants'
+import { FastFilterEnum, TaskStatusEnum } from 'modules/tasks/constants/enums'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 
 export type FilterListItem = Pick<FilterTagProps, 'text' | 'amount'> & {

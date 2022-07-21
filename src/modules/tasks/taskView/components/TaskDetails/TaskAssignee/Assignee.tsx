@@ -3,16 +3,18 @@ import React, { FC } from 'react'
 
 import UserAvatar from 'components/Avatars/UserAvatar'
 import TaskStatus from 'components/TaskStatus'
-import { taskStatusDictionary } from 'modules/tasks/constants'
+import { taskStatusDictionary } from 'modules/tasks/constants/taskStatus'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
 const { Text } = Typography
 
-type PerformerProps = Partial<Pick<TaskDetailsModel, 'assignee' | 'status'>> & {
+type TaskAssigneeProps = Partial<
+  Pick<TaskDetailsModel, 'assignee' | 'status'>
+> & {
   name: string
 }
 
-const Performer: FC<PerformerProps> = ({ assignee, status, name }) => {
+const Assignee: FC<TaskAssigneeProps> = ({ assignee, status, name }) => {
   return (
     <Space size='middle' align='start'>
       {assignee && <UserAvatar user={assignee} />}
@@ -28,4 +30,4 @@ const Performer: FC<PerformerProps> = ({ assignee, status, name }) => {
   )
 }
 
-export default Performer
+export default Assignee

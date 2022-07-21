@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react'
 
 import { TaskListItemModel } from 'modules/tasks/taskList/models'
-import useGetTaskById from 'modules/tasks/taskView/hooks/useGetTaskById'
+import useGetTask from 'modules/tasks/taskView/hooks/useGetTask'
 import useGetWorkGroupList from 'modules/workGroups/workGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'
@@ -13,16 +13,20 @@ type TaskDetailsContainerProps = {
   refetchTaskList: () => void
 }
 
-const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
-  const { onClose, onTaskResolved, taskId, refetchTaskList } = props
-
+const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
+  onClose,
+  onTaskResolved,
+  taskId,
+  refetchTaskList,
+}) => {
   const {
     data: task,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
-  } = useGetTaskById(taskId)
+    refetch: refetchTask,
+  } = useGetTask(taskId)
 
-  const { data: workGroupList, isFetching: workGroupListIsFetching } =
+  const { data: workGroupList = [], isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
 
   useEffect(() => {
@@ -37,8 +41,9 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = (props) => {
       onClose={onClose}
       onTaskResolved={onTaskResolved}
       taskLoading={taskIsFetching}
-      workGroupListLoading={workGroupListIsFetching}
-      workGroupList={workGroupList || []}
+      workGroupListIsLoading={workGroupListIsFetching}
+      workGroupList={workGroupList}
+      refetchTask={refetchTask}
       refetchTaskList={refetchTaskList}
     />
   )

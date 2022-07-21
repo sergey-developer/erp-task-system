@@ -2,6 +2,10 @@ import { Select } from 'antd'
 
 import styled from 'styled-components'
 
+/**
+ * "typeof Select" нужен чтобы типы не терялись
+ */
+
 export const SelectStyled: typeof Select = styled(Select)`
   width: 100%;
 

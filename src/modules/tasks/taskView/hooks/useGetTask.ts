@@ -1,18 +1,12 @@
-import { notification } from 'antd'
 import { useEffect } from 'react'
 
-import {
-  UseGetTaskByIdQueryReturnType,
-  useGetTaskByIdQuery,
-} from 'modules/tasks/services/tasks.service'
-import { GetTaskByIdQueryArgsModel } from 'modules/tasks/taskView/models'
+import { useGetTaskQuery } from 'modules/tasks/services/tasks.service'
+import { GetTaskQueryArgsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
+import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
-const useGetTaskById = (
-  id: GetTaskByIdQueryArgsModel,
-): UseGetTaskByIdQueryReturnType => {
+const useGetTask = (id: GetTaskQueryArgsModel) => {
   const {
     isEngineerRole,
     isSeniorEngineerRole,
@@ -27,7 +21,7 @@ const useGetTaskById = (
     isFirstLineSupportRole
   )
 
-  const result = useGetTaskByIdQuery(id, {
+  const result = useGetTaskQuery(id, {
     skip: shouldSkip,
   })
 
@@ -38,24 +32,18 @@ const useGetTaskById = (
     const error = result.error as any
 
     if (error.status === HttpStatusCodeEnum.NotFound) {
-      notification.error({
-        message: `Заявка с идентификатором ${id} не найдена`,
-        duration: ERROR_NOTIFICATION_DURATION,
-      })
+      showErrorNotification(`Заявка с идентификатором ${id} не найдена`)
     }
 
     if (
       error.status === HttpStatusCodeEnum.BadRequest ||
       error.status >= HttpStatusCodeEnum.ServerError
     ) {
-      notification.error({
-        message: `Ошибка открытия заявки с идентификатором ${id}`,
-        duration: ERROR_NOTIFICATION_DURATION,
-      })
+      showErrorNotification(`Ошибка открытия заявки с идентификатором ${id}`)
     }
   }, [id, result.error, result.isError])
 
   return result
 }
 
-export default useGetTaskById
+export default useGetTask

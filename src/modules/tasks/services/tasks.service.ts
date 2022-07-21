@@ -4,9 +4,10 @@ import {
   GetTaskListResponseModel,
 } from 'modules/tasks/taskList/models'
 import {
-  GetTaskByIdQueryArgsModel,
-  GetTaskByIdResponseModel,
+  GetTaskQueryArgsModel,
+  GetTaskResponseModel,
   ResolveTaskMutationArgsModel,
+  UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskWorkGroupMutationArgsModel,
 } from 'modules/tasks/taskView/models'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -35,10 +36,7 @@ const tasksService = api.injectEndpoints({
         }
       },
     }),
-    getTaskById: build.query<
-      GetTaskByIdResponseModel,
-      GetTaskByIdQueryArgsModel
-    >({
+    getTask: build.query<GetTaskResponseModel, GetTaskQueryArgsModel>({
       query: (id) => ({
         url: `/tasks/${id}`,
         method: HttpMethodEnum.GET,
@@ -48,7 +46,7 @@ const tasksService = api.injectEndpoints({
       query: (queryArg) => {
         const { taskId, ...body } = queryArg
         return {
-          url: `/tasks/${taskId}/resolution`,
+          url: `/tasks/${taskId}/resolution/`,
           method: HttpMethodEnum.POST,
           data: body,
         }
@@ -61,7 +59,20 @@ const tasksService = api.injectEndpoints({
       query: (queryArg) => {
         const { taskId, ...body } = queryArg
         return {
-          url: `/tasks/${taskId}/work-group`,
+          url: `/tasks/${taskId}/work-group/`,
+          method: HttpMethodEnum.POST,
+          data: body,
+        }
+      },
+    }),
+    updateTaskAssignee: build.mutation<
+      void,
+      UpdateTaskAssigneeMutationArgsModel
+    >({
+      query: (queryArg) => {
+        const { taskId, ...body } = queryArg
+        return {
+          url: `/tasks/${taskId}/assignee/`,
           method: HttpMethodEnum.POST,
           data: body,
         }
@@ -72,9 +83,10 @@ const tasksService = api.injectEndpoints({
 })
 
 export const {
+  useGetTaskQuery,
   useGetTaskListQuery,
-  useGetTaskByIdQuery,
   useResolveTaskMutation,
+  useUpdateTaskAssigneeMutation,
   useUpdateTaskWorkGroupMutation,
 } = tasksService
 
@@ -88,16 +100,11 @@ export default tasksService
  * пулл реквест за которым нужно следить https://github.com/reduxjs/redux-toolkit/pull/2276
  */
 
-let getTaskById
 let getTaskList
 if (false as boolean) {
-  // @ts-ignore
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  getTaskById = useGetTaskByIdQuery()
   // @ts-ignore
   // eslint-disable-next-line react-hooks/rules-of-hooks
   getTaskList = useGetTaskListQuery()
 }
 
-export type UseGetTaskByIdQueryReturnType = NonNullable<typeof getTaskById>
 export type UseGetTaskListQueryReturnType = NonNullable<typeof getTaskList>

@@ -11,7 +11,8 @@ import {
 import React, { FC } from 'react'
 
 import TaskStatus from 'components/TaskStatus'
-import { TaskStatusEnum, taskStatusDictionary } from 'modules/tasks/constants'
+import { TaskStatusEnum } from 'modules/tasks/constants/enums'
+import { taskStatusDictionary } from 'modules/tasks/constants/taskStatus'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { workGroupListSelectFieldNames } from 'modules/workGroups/workGroupList/constants'
 import useGetWorkGroupList from 'modules/workGroups/workGroupList/hooks/useGetWorkGroupList'

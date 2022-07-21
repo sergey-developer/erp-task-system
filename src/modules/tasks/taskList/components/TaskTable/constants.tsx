@@ -2,6 +2,11 @@ import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
 import TaskStatus from 'components/TaskStatus'
+import {
+  ASSIGNEE_WORD,
+  OBJECT_WORD,
+  THEME_WORD,
+} from 'modules/tasks/constants/words'
 import { TaskListItemModel } from 'modules/tasks/taskList/models'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
@@ -32,19 +37,19 @@ export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
     width: 180,
   },
   {
-    title: 'Объект',
+    title: OBJECT_WORD,
     dataIndex: 'name',
     key: 'name',
     width: 180,
   },
   {
-    title: 'Тема',
+    title: THEME_WORD,
     dataIndex: 'title',
     key: 'title',
     width: 340,
   },
   {
-    title: 'Исполнитель',
+    title: ASSIGNEE_WORD,
     dataIndex: 'assignee',
     key: 'assignee',
     render: (value: MaybeNull<TaskListItemModel['assignee']>) =>
