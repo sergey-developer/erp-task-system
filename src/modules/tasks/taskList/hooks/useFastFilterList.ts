@@ -12,10 +12,9 @@ const useFastFilterList = () => {
     const counters = (data || {}) as NonNullable<typeof data>
 
     return Object.values(FastFilterEnum).map((fastFilterKey) => {
-      const taskCounterKey = fastFilterKey.toLowerCase()
-      const taskCounterValue = isError
-        ? null
-        : counters[taskCounterKey as Lowercase<FastFilterEnum>]
+      const taskCounterKey =
+        fastFilterKey.toLowerCase() as Lowercase<FastFilterEnum>
+      const taskCounterValue = isError ? null : counters[taskCounterKey]
 
       return {
         text: fastFilterNamesDict[fastFilterKey],

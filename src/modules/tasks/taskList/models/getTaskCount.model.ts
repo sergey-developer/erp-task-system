@@ -1,6 +1,6 @@
 import { FastFilterEnum } from 'modules/tasks/constants'
 
-export type GetTaskCountResponseModel = Record<
+export type GetTaskCountersResponseModel = Record<
   Lowercase<FastFilterEnum>,
   number
 >
