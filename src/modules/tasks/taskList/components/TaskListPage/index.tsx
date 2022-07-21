@@ -6,6 +6,7 @@ import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
 import { FastFilterEnum, SortEnum } from 'modules/tasks/constants'
+import useFastFilterList from 'modules/tasks/taskList/hooks/useFastFilterList'
 import useGetTaskList from 'modules/tasks/taskList/hooks/useGetTaskList'
 import {
   GetTaskListQueryArgsModel,
@@ -30,7 +31,6 @@ import {
 import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
-  FilterListItem,
   QuickFilterQueries,
   TaskIdFilterQueries,
 } from './interfaces'
@@ -39,36 +39,14 @@ import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
 const { Search } = Input
 
-const filterList: Array<FilterListItem> = [
-  {
-    text: 'Все',
-    value: FastFilterEnum.All,
-    amount: 378,
-  },
-  {
-    text: 'Мои',
-    value: FastFilterEnum.Mine,
-    amount: 45,
-  },
-  {
-    text: 'Просроченные',
-    value: FastFilterEnum.Overdue,
-    amount: 145,
-  },
-  {
-    text: 'Свободные',
-    value: FastFilterEnum.Free,
-    amount: 11,
-  },
-  {
-    text: 'Закрытые',
-    value: FastFilterEnum.Closed,
-    amount: 13,
-  },
-]
-
 const TaskListPage: FC = () => {
   const { isEngineerRole } = useUserRole()
+
+  const {
+    data: fastFilterList,
+    isFetching: fastFilterListIsFetching,
+    refetch: refetchFastFilterList,
+  } = useFastFilterList()
 
   const initialFastFilter: FastFilterEnum = isEngineerRole
     ? FastFilterEnum.Mine
@@ -201,6 +179,11 @@ const TaskListPage: FC = () => {
     }))
   }
 
+  const handleRefetchTaskList = () => {
+    refetchTaskList()
+    refetchFastFilterList()
+  }
+
   return (
     <>
       <RowWrapStyled gutter={[0, 40]}>
@@ -208,15 +191,18 @@ const TaskListPage: FC = () => {
           <Col span={12}>
             <Row align='middle'>
               <Col span={15}>
-                {filterList.map(({ amount, text, value }) => (
-                  <FilterTag
-                    key={value}
-                    checked={queryArgs.filter === value}
-                    onChange={() => handleFastFilterChange(value)}
-                    text={text}
-                    amount={amount}
-                  />
-                ))}
+                <Space>
+                  {fastFilterList.map(({ amount, text, value }) => (
+                    <FilterTag
+                      key={value}
+                      checked={queryArgs.filter === value}
+                      onChange={() => handleFastFilterChange(value)}
+                      text={text}
+                      amount={amount}
+                      loading={fastFilterListIsFetching}
+                    />
+                  ))}
+                </Space>
               </Col>
 
               <Col span={3}>
@@ -242,7 +228,10 @@ const TaskListPage: FC = () => {
 
               <Col>
                 <Space align='end'>
-                  <Button icon={<SyncOutlined />} onClick={refetchTaskList}>
+                  <Button
+                    icon={<SyncOutlined />}
+                    onClick={handleRefetchTaskList}
+                  >
                     Обновить заявки
                   </Button>
 

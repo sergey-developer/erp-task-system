@@ -1,5 +1,6 @@
 import { GetTaskListTransformedResponse } from 'modules/tasks/taskList/interfaces'
 import {
+  GetTaskCountResponseModel,
   GetTaskListQueryArgsModel,
   GetTaskListResponseModel,
 } from 'modules/tasks/taskList/models'
@@ -34,6 +35,12 @@ const tasksService = api.injectEndpoints({
           results: response.results,
         }
       },
+    }),
+    getTaskCounters: build.query<GetTaskCountResponseModel, null>({
+      query: () => ({
+        url: '/tasks/counters',
+        method: HttpMethodEnum.GET,
+      }),
     }),
     getTaskById: build.query<
       GetTaskByIdResponseModel,
@@ -76,6 +83,7 @@ export const {
   useGetTaskByIdQuery,
   useResolveTaskMutation,
   useUpdateTaskWorkGroupMutation,
+  useGetTaskCountersQuery,
 } = tasksService
 
 export default tasksService
