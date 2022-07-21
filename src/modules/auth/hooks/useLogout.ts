@@ -1,10 +1,9 @@
 import { useCallback } from 'react'
 
-import { StorageKeys } from 'shared/constants/storage'
+import { useLogoutMutation } from 'modules/auth/services/auth.service'
+import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import useDispatch from 'shared/hooks/useDispatch'
-import localStorageService from 'shared/services/localStorage'
 
-import { useLogoutMutation } from '../auth.service'
 import { logout as logoutAction } from '../authSlice'
 
 const useLogout = () => {
@@ -12,14 +11,14 @@ const useLogout = () => {
   const [logout] = useLogoutMutation()
 
   return useCallback(async () => {
-    const refreshToken = localStorageService.getItem(StorageKeys.refreshToken)
+    const refreshToken = authLocalStorageService.getRefreshToken()
 
     if (refreshToken) {
       await logout({ refresh: refreshToken }).unwrap()
     }
 
-    localStorageService.removeItem(StorageKeys.accessToken)
-    localStorageService.removeItem(StorageKeys.refreshToken)
+    authLocalStorageService.removeAccessToken()
+    authLocalStorageService.removeRefreshToken()
 
     dispatch(logoutAction())
   }, [dispatch, logout])
