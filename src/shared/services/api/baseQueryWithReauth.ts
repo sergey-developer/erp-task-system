@@ -3,11 +3,11 @@ import { Mutex } from 'async-mutex'
 import { logout, refreshToken } from 'modules/auth/authSlice'
 import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
 import { RefreshTokenResponseModel } from 'modules/auth/models'
+import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import parseJwt from 'modules/auth/utils/parseJwt'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 import { RootState } from 'state/store'
 
-import authLocalStorageService from '../../../modules/auth/services/authLocalStorage.service'
 import baseQuery from './baseQuery'
 import { TOKEN_REFRESH_PATH } from './constants'
 import { CustomBaseQueryFn } from './intefraces'
@@ -35,7 +35,6 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   let result = await query(args, api, extraOptions)
   const { error } = result
   /** todo пересмотреть строчку ниже */
-  console.log('error: ', error)
   if (
     error &&
     (error as { status: number })?.status === HttpStatusCodeEnum.Unauthorized
@@ -44,7 +43,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
       const release = await mutex.acquire()
       try {
         const { refreshToken: refresh } = (api.getState() as RootState).auth
-        console.log('api.getState(): ', api.getState())
+
         const refreshResult = await query(
           {
             method: HttpMethodEnum.POST,
@@ -56,13 +55,13 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           api,
           extraOptions,
         )
-        console.log('refreshResult: ', refreshResult)
+
         if (refreshResult.data) {
           const refreshData = refreshResult.data as RefreshTokenResponseModel
 
           authLocalStorageService.setAccessToken(refreshData.access)
           authLocalStorageService.setRefreshToken(refreshData.refresh)
-          console.log('parseJwt: ', parseJwt(refreshData.access))
+
           api.dispatch(
             refreshToken({
               ...refreshData,
@@ -72,21 +71,17 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
 
           result = await query(args, api, extraOptions)
         } else {
-          console.log('api.dispatch(logout())')
           api.dispatch(logout())
         }
       } finally {
-        console.log('release')
         release()
       }
     } else {
-      console.log('mutex.isLocked() === true')
       await mutex.waitForUnlock()
       result = await query(args, api, extraOptions)
     }
   }
 
-  console.log('result: ', result)
   return result
 }
 
