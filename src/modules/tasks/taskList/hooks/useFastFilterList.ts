@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { FastFilterEnum } from 'modules/tasks/constants'
+import { FastFilterEnum } from 'modules/tasks/constants/enums'
 import { fastFilterNamesDict } from 'modules/tasks/taskList/components/TaskListPage/constants'
 import { FilterListItem } from 'modules/tasks/taskList/components/TaskListPage/interfaces'
 import useGetTaskCounters from 'modules/tasks/taskList/hooks/useGetTaskCounters'
