@@ -16,6 +16,7 @@ const { Text } = Typography
 type WorkGroupProps = Pick<TaskDetailsModel, 'id' | 'workGroup' | 'status'> & {
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
+  getWorkGroupListError: unknown
 
   transferTask: (
     workGroup: WorkGroupListItemModel['id'],
@@ -31,6 +32,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   workGroupList,
   workGroupListIsLoading,
+  getWorkGroupListError,
 
   transferTask,
   transferTaskIsLoading,

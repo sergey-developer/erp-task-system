@@ -26,8 +26,11 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     refetch: refetchTask,
   } = useGetTask(taskId)
 
-  const { data: workGroupList = [], isFetching: workGroupListIsFetching } =
-    useGetWorkGroupList()
+  const {
+    data: workGroupList = [],
+    isFetching: workGroupListIsFetching,
+    error: getWorkGroupListError,
+  } = useGetWorkGroupList()
 
   useEffect(() => {
     if (isGetTaskError) {
@@ -40,9 +43,10 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       details={task || null}
       onClose={onClose}
       onTaskResolved={onTaskResolved}
-      taskLoading={taskIsFetching}
-      workGroupListIsLoading={workGroupListIsFetching}
+      taskIsLoading={taskIsFetching}
       workGroupList={workGroupList}
+      workGroupListIsLoading={workGroupListIsFetching}
+      getWorkGroupListError={getWorkGroupListError}
       refetchTask={refetchTask}
       refetchTaskList={refetchTaskList}
     />

@@ -15,6 +15,7 @@ type SecondaryDetailsProps = Pick<
 > & {
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
+  getWorkGroupListError: unknown
 
   transferTask: (
     workGroup: WorkGroupListItemModel['id'],
@@ -34,6 +35,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   workGroup,
   workGroupList,
   workGroupListIsLoading,
+  getWorkGroupListError,
 
   transferTask,
   transferTaskIsLoading,
@@ -51,6 +53,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             workGroup={workGroup}
             workGroupList={workGroupList}
             workGroupListIsLoading={workGroupListIsLoading}
+            getWorkGroupListError={getWorkGroupListError}
             transferTask={transferTask}
             transferTaskIsLoading={transferTaskIsLoading}
           />

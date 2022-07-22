@@ -12,17 +12,21 @@ export type Error<T> = ErrorValidation<T> & {
   detail?: string
 }
 
-export type ErrorResponse<T> = {
+export type ErrorResponse<T = {}> = {
   data: Error<T>
   status: MaybeUndefined<number>
 }
 
-export type CustomBaseQueryFn = BaseQueryFn<{
-  url: string
-  method?: AxiosRequestConfig['method']
-  data?: AxiosRequestConfig['data']
-  params?: AxiosRequestConfig['params']
-}>
+export type CustomBaseQueryFn = BaseQueryFn<
+  {
+    url: string
+    method?: AxiosRequestConfig['method']
+    data?: AxiosRequestConfig['data']
+    params?: AxiosRequestConfig['params']
+  },
+  any,
+  ErrorResponse
+>
 
 export type ApiVersionUnion = 'v1'
 
