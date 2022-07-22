@@ -13,12 +13,12 @@ import TaskComment from './TaskComment'
 const { Title, Text } = Typography
 const DEFAULT_DISPLAYABLE_COUNT: number = 3
 
-type CommentsProps = {
+type CommentListProps = {
   title: string
   taskId: TaskDetailsModel['id']
 }
 
-const CommentList: FC<CommentsProps> = ({ title, taskId }) => {
+const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
   const { data: commentList = [], isFetching: commentListIsFetching } =
     useGetTaskCommentList(taskId)
 
