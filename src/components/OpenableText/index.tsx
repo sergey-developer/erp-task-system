@@ -26,7 +26,7 @@ const OpenableText: FC<OpenableTextProps> = ({
     <div className={className}>
       <Space direction='vertical'>
         <Paragraph
-          className='margin-b-0'
+          className='mb-0'
           ellipsis={{
             rows,
             onEllipsis: setTextHasEllipsis,

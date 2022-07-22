@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
 import { DetailContainerStyled } from '../styles'
-import Comments from './Comments'
+import CommentList from './CommentList'
 import { TaskDetailsTabsEnum, taskDetailsTabNames } from './constants'
 import Description from './Description'
 import Resolution from './Resolution'
@@ -37,7 +37,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
           tab={taskDetailsTabNames[TaskDetailsTabsEnum.Comments]}
           key={TaskDetailsTabsEnum.Comments}
         >
-          <Comments
+          <CommentList
             title={taskDetailsTabNames[TaskDetailsTabsEnum.Comments]}
             taskId={details.id}
           />

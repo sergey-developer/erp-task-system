@@ -221,7 +221,7 @@ const TaskListPage: FC = () => {
 
               <Col span={3}>
                 <Button
-                  icon={<FilterTwoTone className='font-s-18' />}
+                  icon={<FilterTwoTone className='fs-18' />}
                   onClick={toggleFilterDrawer}
                 >
                   Фильтры

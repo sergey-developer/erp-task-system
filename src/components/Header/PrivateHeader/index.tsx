@@ -21,7 +21,7 @@ const PrivateHeader: FC = () => {
       ? getNavMenuConfig(role).map(({ key, icon: Icon, link, text }) => ({
           key,
           label: <Link to={link}>{text}</Link>,
-          icon: <Icon className='font-s-18' />,
+          icon: <Icon className='fs-18' />,
         }))
       : []
 

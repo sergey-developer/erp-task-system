@@ -9,7 +9,6 @@ import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
-import { TOKEN_REFRESH_PATH } from './constants'
 import { CustomBaseQueryFn } from './intefraces'
 
 const mutex = new Mutex()
@@ -47,7 +46,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
         const refreshResult = await query(
           {
             method: HttpMethodEnum.POST,
-            url: TOKEN_REFRESH_PATH,
+            url: '/user/refresh',
             data: {
               refresh,
             },

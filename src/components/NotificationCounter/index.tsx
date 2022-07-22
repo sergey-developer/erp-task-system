@@ -7,7 +7,7 @@ type NotificationCounterProps = Pick<BadgeProps, 'count'>
 const NotificationCounter: FC<NotificationCounterProps> = ({ count }) => {
   return (
     <Badge size='small' count={count}>
-      <BellOutlined className='font-s-18' />
+      <BellOutlined className='fs-18' />
     </Badge>
   )
 }
