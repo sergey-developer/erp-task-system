@@ -7,6 +7,7 @@ import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthentica
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
 import { useResolveTaskMutation } from 'modules/tasks/services/tasks.service'
 import useUpdateTaskAssignee from 'modules/tasks/taskView/hooks/useUpdateTaskAssignee'
+import useUpdateTaskWorkGroup from 'modules/tasks/taskView/hooks/useUpdateTaskWorkGroup'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import getTransferTaskSecondLineError from 'modules/tasks/taskView/utils/getTransferTaskSecondLineError'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
@@ -15,7 +16,6 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
-import useUpdateTaskWorkGroup from '../../hooks/useUpdateTaskWorkGroup'
 import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
