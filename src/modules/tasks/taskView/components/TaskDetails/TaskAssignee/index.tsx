@@ -74,7 +74,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   }
 
   return (
-    <Space direction='vertical' $fullWidth>
+    <Space direction='vertical' $block>
       <Space size='large'>
         <Text type='secondary'>{ASSIGNEE_WORD}</Text>
 
@@ -104,7 +104,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         )
       ) : (
         canSelectAssignee && (
-          <Space direction='vertical' $fullWidth>
+          <Space direction='vertical' $block>
             <SelectStyled
               defaultValue={selectedAssignee}
               loading={workGroupListIsLoading}

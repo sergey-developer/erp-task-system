@@ -19,7 +19,7 @@ const CopyTextModal: FC<CopyTextModalProps> = (props) => {
       visible={visible}
       width={DEFAULT_MODAL_WIDTH}
       title={
-        <Row className='margin-r-30' justify='space-between' align='middle'>
+        <Row className='mr-30' justify='space-between' align='middle'>
           <span>{title}</span>
           <CopyButton type='link' value={text} />
         </Row>

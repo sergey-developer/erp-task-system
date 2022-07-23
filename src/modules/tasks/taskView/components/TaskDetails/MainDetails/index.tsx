@@ -1,8 +1,8 @@
 import { Col, Row, Typography } from 'antd'
-import { BaseType as TypographyType } from 'antd/lib/typography/Base'
 import moment from 'moment'
 import React, { FC } from 'react'
 
+import { BaseType as TypographyType } from 'antd/lib/typography/Base'
 import Space from 'components/Space'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
@@ -84,7 +84,7 @@ const MainDetails: FC<MainDetailsProps> = ({
 
   return (
     <DetailContainerStyled>
-      <Space direction='vertical' size='middle' $fullWidth>
+      <Space direction='vertical' size='middle' $block>
         <Space
           split={
             olaNextBreachTime ? (
@@ -100,11 +100,7 @@ const MainDetails: FC<MainDetailsProps> = ({
         </Space>
 
         <Space direction='vertical' size={4}>
-          <Typography.Title
-            level={4}
-            ellipsis
-            className='break-text margin-b-0'
-          >
+          <Typography.Title level={4} ellipsis className='break-text mb-0'>
             {title}
           </Typography.Title>
 

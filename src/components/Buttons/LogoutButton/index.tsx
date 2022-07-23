@@ -5,7 +5,7 @@ import useLogout from 'modules/auth/hooks/useLogout'
 
 const LogoutButton: FC = () => {
   const logout = useLogout()
-  return <LogoutOutlined className='font-s-18' onClick={logout} />
+  return <LogoutOutlined className='fs-18' onClick={logout} />
 }
 
 export default LogoutButton
