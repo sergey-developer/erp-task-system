@@ -62,7 +62,7 @@ const SignInPage: FC = () => {
         </Form.Item>
 
         <Form.Item>
-          <Space direction='vertical' $fullWidth>
+          <Space direction='vertical' $block>
             <Button
               type='primary'
               htmlType='submit'

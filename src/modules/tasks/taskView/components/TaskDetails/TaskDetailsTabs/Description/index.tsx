@@ -1,10 +1,9 @@
-import { Typography } from 'antd'
+import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import OpenableText from 'components/OpenableText'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 
-const { Title } = Typography
+const { Title, Paragraph } = Typography
 
 type DescriptionProps = Pick<TaskDetailsModel, 'description'> & {
   title: string
@@ -12,17 +11,13 @@ type DescriptionProps = Pick<TaskDetailsModel, 'description'> & {
 
 const Description: FC<DescriptionProps> = ({ title, description }) => {
   return (
-    <>
-      <Title level={5}>{title}</Title>
+    <Space direction='vertical'>
+      <Title className='mb-0' level={5}>
+        {title}
+      </Title>
 
-      {description && (
-        <OpenableText
-          className='margin-b-15'
-          text={description}
-          modalTitle='Описание'
-        />
-      )}
-    </>
+      {description && <Paragraph className='mb-0'>{description}</Paragraph>}
+    </Space>
   )
 }
 
