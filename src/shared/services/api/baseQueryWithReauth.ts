@@ -32,9 +32,13 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   extraOptions,
 ) => {
   await mutex.waitForUnlock()
-  let response = await query(args, api, extraOptions)
-
-  if (response.error?.status === HttpStatusCodeEnum.Unauthorized) {
+  let result = await query(args, api, extraOptions)
+  const { error } = result
+  /** todo пересмотреть строчку ниже */
+  if (
+    error &&
+    (error as { status: number })?.status === HttpStatusCodeEnum.Unauthorized
+  ) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       try {
@@ -65,7 +69,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
             } as RefreshTokenActionPayload),
           )
 
-          response = await query(args, api, extraOptions)
+          result = await query(args, api, extraOptions)
         } else {
           api.dispatch(logout())
         }
@@ -74,11 +78,11 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
       }
     } else {
       await mutex.waitForUnlock()
-      response = await query(args, api, extraOptions)
+      result = await query(args, api, extraOptions)
     }
   }
 
-  return response
+  return result
 }
 
 export default baseQueryWithReauth

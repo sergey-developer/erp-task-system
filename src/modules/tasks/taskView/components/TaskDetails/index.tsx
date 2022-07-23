@@ -47,10 +47,9 @@ type TaskDetailsProps = {
       | 'description'
     >
   >
-  taskIsLoading: boolean
+  taskLoading: boolean
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
-  getWorkGroupListError: unknown
   onClose: () => void
   onTaskResolved: () => void
   refetchTask: () => void
@@ -59,10 +58,9 @@ type TaskDetailsProps = {
 
 const TaskDetails: FC<TaskDetailsProps> = ({
   details,
-  taskIsLoading,
+  taskLoading,
   workGroupList,
   workGroupListIsLoading,
-  getWorkGroupListError,
   onClose,
   onTaskResolved,
   refetchTask,
@@ -149,7 +147,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <RootWrapperStyled>
-      <CardStyled title={cardTitle} loading={taskIsLoading}>
+      <CardStyled title={cardTitle} loading={taskLoading}>
         {details && (
           <>
             <MainDetails
@@ -171,7 +169,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               workGroup={details.workGroup}
               workGroupList={workGroupList}
               workGroupListIsLoading={workGroupListIsLoading}
-              getWorkGroupListError={getWorkGroupListError}
               transferTask={handleUpdateTaskWorkGroup}
               transferTaskIsLoading={updateTaskWorkGroupIsLoading}
               updateTaskAssignee={handleUpdateTaskAssignee}
