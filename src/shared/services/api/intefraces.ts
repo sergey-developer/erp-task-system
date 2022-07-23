@@ -12,7 +12,7 @@ export type Error<T> = ErrorValidation<T> & {
   detail?: string
 }
 
-export type ErrorResponse<T> = {
+export type ErrorResponse<T = {}> = {
   data: Error<T>
   status: MaybeUndefined<number>
 }

@@ -23,13 +23,13 @@ const useGetTaskList = (
     isFirstLineSupportRole
   )
 
-  const result = useGetTaskListQuery(filter, {
+  const state = useGetTaskListQuery(filter, {
     skip: shouldSkip,
   })
 
   // todo: добавить обработку 400, 500 ошибок когда будет ясно как их обрабатывать
 
-  return result
+  return state
 }
 
 export default useGetTaskList

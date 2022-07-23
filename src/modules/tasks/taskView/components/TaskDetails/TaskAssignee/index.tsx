@@ -11,8 +11,8 @@ import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { AssigneeModel } from 'shared/interfaces/models'
 
-import { SelectStyled } from '../SecondaryDetails/styles'
 import Assignee from './Assignee'
+import { SelectStyled } from './styles'
 
 const { Text } = Typography
 

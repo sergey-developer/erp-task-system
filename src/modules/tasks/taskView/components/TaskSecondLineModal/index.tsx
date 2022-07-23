@@ -16,6 +16,7 @@ type TaskSecondLineModalProps = Pick<ModalProps, 'visible' | 'onCancel'> &
   Pick<TaskDetailsModel, 'id'> & {
     workGroupList: Array<WorkGroupListItemModel>
     workGroupListIsLoading: boolean
+
     transferTaskIsLoading: boolean
     onTransfer: (value: WorkGroupListItemModel['id']) => void
   }
@@ -24,8 +25,10 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
   visible,
   onCancel,
+
   workGroupList,
   workGroupListIsLoading,
+
   onTransfer,
   transferTaskIsLoading,
 }) => {

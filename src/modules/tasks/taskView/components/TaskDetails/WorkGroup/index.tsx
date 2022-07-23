@@ -8,8 +8,8 @@ import TaskSecondLineModal from 'modules/tasks/taskView/components/TaskSecondLin
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
-
-import { SelectStyled } from '../SecondaryDetails/styles'
+import { ErrorResponse } from 'shared/services/api'
+import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 const { Text } = Typography
 
@@ -22,6 +22,8 @@ type WorkGroupProps = Pick<TaskDetailsModel, 'id' | 'workGroup' | 'status'> & {
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
   transferTaskIsLoading: boolean
+
+  getWorkGroupListError?: ErrorResponse
 }
 
 const WorkGroup: FC<WorkGroupProps> = ({
@@ -31,6 +33,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   workGroupList,
   workGroupListIsLoading,
+  getWorkGroupListError,
 
   transferTask,
   transferTaskIsLoading,
@@ -42,7 +45,6 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   const {
     isFirstLineSupportRole,
-    isEngineerRole,
     isSeniorEngineerRole,
     isHeadOfDepartmentRole,
   } = useUserRole()
@@ -60,10 +62,20 @@ const WorkGroup: FC<WorkGroupProps> = ({
   const headOfDepartmentHasWorkGroup: boolean =
     hasWorkGroup && isHeadOfDepartmentRole
 
+  const handleOpenTaskSecondLineModal = () => {
+    openTaskSecondLineModal()
+
+    if (getWorkGroupListError) {
+      showErrorNotification(
+        'Возникла ошибка при получении списка рабочих групп',
+      )
+    }
+  }
+
   const changeTaskLineButton = firstLineSupportNotHasWorkGroup ? (
     <Button
       type='link'
-      onClick={openTaskSecondLineModal}
+      onClick={handleOpenTaskSecondLineModal}
       loading={transferTaskIsLoading}
       disabled={
         taskStatus.isAppointed ||
@@ -94,27 +106,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
           {changeTaskLineButton}
         </Space>
 
-        {isEngineerRole || isFirstLineSupportRole ? (
-          <Text>{workGroup?.name || 'I линия поддержки'}</Text>
-        ) : (
-          (seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup) && (
-            <SelectStyled
-              defaultValue={workGroup?.id}
-              loading={workGroupListIsLoading}
-              bordered={false}
-            >
-              {workGroupList.map(({ id, name }) => (
-                <SelectStyled.Option
-                  key={id}
-                  value={id}
-                  disabled={id === workGroup?.id}
-                >
-                  <Text className='break-text'>{name}</Text>
-                </SelectStyled.Option>
-              ))}
-            </SelectStyled>
-          )
-        )}
+        <Text>{workGroup?.name || 'I линия поддержки'}</Text>
       </Space>
 
       <TaskSecondLineModal
