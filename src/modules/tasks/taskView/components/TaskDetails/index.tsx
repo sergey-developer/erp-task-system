@@ -5,15 +5,15 @@ import React, { FC, useCallback, useMemo } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import useTaskStatus from 'modules/tasks/hooks/useTaskStatus'
-import {
-  useResolveTaskMutation,
-  useUpdateTaskWorkGroupMutation,
-} from 'modules/tasks/services/tasks.service'
+import { useResolveTaskMutation } from 'modules/tasks/services/tasks.service'
 import useUpdateTaskAssignee from 'modules/tasks/taskView/hooks/useUpdateTaskAssignee'
+import useUpdateTaskWorkGroup from 'modules/tasks/taskView/hooks/useUpdateTaskWorkGroup'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
+import getTransferTaskSecondLineError from 'modules/tasks/taskView/utils/getTransferTaskSecondLineError'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
+import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 import TaskResolutionModal, {
@@ -47,20 +47,22 @@ type TaskDetailsProps = {
       | 'description'
     >
   >
-  taskLoading: boolean
+  taskIsLoading: boolean
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
   onClose: () => void
   onTaskResolved: () => void
   refetchTask: () => void
   refetchTaskList: () => void
+  getWorkGroupListError?: ErrorResponse
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
   details,
-  taskLoading,
+  taskIsLoading,
   workGroupList,
   workGroupListIsLoading,
+  getWorkGroupListError,
   onClose,
   onTaskResolved,
   refetchTask,
@@ -71,8 +73,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const [resolveTask, { isLoading: isTaskResolving }] = useResolveTaskMutation()
 
-  const [updateTaskWorkGroup, { isLoading: updateTaskWorkGroupIsLoading }] =
-    useUpdateTaskWorkGroupMutation()
+  const {
+    fn: updateTaskWorkGroup,
+    state: { isLoading: updateTaskWorkGroupIsLoading },
+  } = useUpdateTaskWorkGroup()
 
   const {
     fn: updateTaskAssignee,
@@ -120,19 +124,25 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [details, onTaskResolved, resolveTask],
   )
 
-  const handleUpdateTaskWorkGroup = async (
-    workGroup: WorkGroupListItemModel['id'],
-    closeTaskSecondLineModal: () => void,
-  ) => {
-    try {
-      await updateTaskWorkGroup({ taskId: details!.id, workGroup }).unwrap()
-      closeTaskSecondLineModal()
-      onClose()
-      refetchTaskList()
-    } catch (error) {
-      showErrorNotification(error)
-    }
-  }
+  const handleUpdateTaskWorkGroup = useCallback(
+    async (
+      workGroup: WorkGroupListItemModel['id'],
+      closeTaskSecondLineModal: () => void,
+    ) => {
+      try {
+        await updateTaskWorkGroup({ taskId: details!.id, workGroup })
+        closeTaskSecondLineModal()
+        onClose()
+        refetchTaskList()
+      } catch (error) {
+        const errorMessage = getTransferTaskSecondLineError(
+          error as ErrorResponse,
+        )
+        showErrorNotification(errorMessage)
+      }
+    },
+    [details, onClose, refetchTaskList, updateTaskWorkGroup],
+  )
 
   const handleUpdateTaskAssignee = async (assignee: AssigneeModel['id']) => {
     try {
@@ -147,7 +157,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <RootWrapperStyled>
-      <CardStyled title={cardTitle} loading={taskLoading}>
+      <CardStyled title={cardTitle} loading={taskIsLoading}>
         {details && (
           <>
             <MainDetails
@@ -169,6 +179,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               workGroup={details.workGroup}
               workGroupList={workGroupList}
               workGroupListIsLoading={workGroupListIsLoading}
+              getWorkGroupListError={getWorkGroupListError}
               transferTask={handleUpdateTaskWorkGroup}
               transferTaskIsLoading={updateTaskWorkGroupIsLoading}
               updateTaskAssignee={handleUpdateTaskAssignee}

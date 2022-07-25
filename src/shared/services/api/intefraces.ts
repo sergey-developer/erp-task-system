@@ -12,11 +12,16 @@ export type Error<T> = ErrorValidation<T> & {
   detail?: string
 }
 
-export type ErrorResponse<T> = {
+export type ErrorResponse<T = {}> = {
   data: Error<T>
   status: MaybeUndefined<number>
 }
 
+/**
+  Дополнительно в BaseQueryFn можно передать тип для поля error, но тип в хуках для этого поля
+ будет такой: MyCustomErrorType | SerialisedError. Решения как убрать тип SerialisedError
+ из этого поля пока не найдено, а данный тип будет мешать при обращении к свойствам поля error
+ */
 export type CustomBaseQueryFn = BaseQueryFn<{
   url: string
   method?: AxiosRequestConfig['method']

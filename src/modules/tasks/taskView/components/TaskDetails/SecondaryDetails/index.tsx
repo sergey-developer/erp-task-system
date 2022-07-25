@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
+import { ErrorResponse } from 'shared/services/api'
 
 import { DetailContainerStyled } from '../styles'
 import TaskAssignee from '../TaskAssignee'
@@ -24,6 +25,8 @@ type SecondaryDetailsProps = Pick<
 
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
+
+  getWorkGroupListError?: ErrorResponse
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
@@ -34,6 +37,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   workGroup,
   workGroupList,
   workGroupListIsLoading,
+  getWorkGroupListError,
 
   transferTask,
   transferTaskIsLoading,
@@ -51,6 +55,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             workGroup={workGroup}
             workGroupList={workGroupList}
             workGroupListIsLoading={workGroupListIsLoading}
+            getWorkGroupListError={getWorkGroupListError}
             transferTask={transferTask}
             transferTaskIsLoading={transferTaskIsLoading}
           />

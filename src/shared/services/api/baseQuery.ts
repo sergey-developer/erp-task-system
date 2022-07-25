@@ -19,14 +19,14 @@ const baseQuery =
       : undefined
 
     try {
-      const result = await httpClient({
+      const response = await httpClient({
         url: `${apiPath}/${apiVersion}${url}`,
         method,
         data,
         params,
         headers,
       })
-      return { data: result.data }
+      return { data: response.data }
     } catch (axiosError) {
       let err = axiosError as AxiosError
 

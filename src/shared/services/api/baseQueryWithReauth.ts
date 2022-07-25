@@ -6,10 +6,11 @@ import { RefreshTokenResponseModel } from 'modules/auth/models'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import parseJwt from 'modules/auth/utils/parseJwt'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
+import { MaybeUndefined } from 'shared/interfaces/utils'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
-import { CustomBaseQueryFn } from './intefraces'
+import { CustomBaseQueryFn, ErrorResponse } from './intefraces'
 
 const mutex = new Mutex()
 
@@ -31,13 +32,10 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   extraOptions,
 ) => {
   await mutex.waitForUnlock()
-  let result = await query(args, api, extraOptions)
-  const { error } = result
-  /** todo пересмотреть строчку ниже */
-  if (
-    error &&
-    (error as { status: number })?.status === HttpStatusCodeEnum.Unauthorized
-  ) {
+  let response = await query(args, api, extraOptions)
+  const error = response.error as MaybeUndefined<ErrorResponse>
+
+  if (error?.status === HttpStatusCodeEnum.Unauthorized) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       try {
@@ -68,7 +66,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
             } as RefreshTokenActionPayload),
           )
 
-          result = await query(args, api, extraOptions)
+          response = await query(args, api, extraOptions)
         } else {
           api.dispatch(logout())
         }
@@ -77,11 +75,11 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
       }
     } else {
       await mutex.waitForUnlock()
-      result = await query(args, api, extraOptions)
+      response = await query(args, api, extraOptions)
     }
   }
 
-  return result
+  return response
 }
 
 export default baseQueryWithReauth
