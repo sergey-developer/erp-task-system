@@ -65,8 +65,8 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const canOnlyViewAssignee: boolean = isEngineerRole || isFirstLineSupportRole
 
   const handleAssignTaskOnMe = async () => {
-    setSelectedAssignee(authenticatedUser!.id)
     await updateTaskAssignee(authenticatedUser!.id)
+    setSelectedAssignee(authenticatedUser!.id)
   }
 
   const handleClickAssignee = async () => {

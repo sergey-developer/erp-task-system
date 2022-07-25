@@ -144,12 +144,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [details, onClose, refetchTaskList, updateTaskWorkGroup],
   )
 
-  const handleUpdateTaskAssignee = async (assignee: AssigneeModel['id']) => {
-    try {
-      await updateTaskAssignee({ taskId: details!.id, assignee })
-      refetchTask()
-    } catch {}
-  }
+  const handleUpdateTaskAssignee = useCallback(
+    async (assignee: AssigneeModel['id']) => {
+      try {
+        await updateTaskAssignee({ taskId: details!.id, assignee })
+        refetchTask()
+      } catch {
+        showErrorNotification('Невозможно изменить исполнителя')
+      }
+    },
+    [details, refetchTask, updateTaskAssignee],
+  )
 
   const cardTitle = details?.id && (
     <CardTitle id={details.id} menuItems={menuItems} onClose={onClose} />
