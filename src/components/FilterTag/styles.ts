@@ -8,6 +8,7 @@ export const CheckableTagStyled = styled(Tag.CheckableTag)`
     display: inline-flex;
     border-radius: 100px;
     font-size: 14px;
+    margin: 0;
   }
 
   &:not(.ant-tag-checkable-checked) {
