@@ -8,7 +8,7 @@ import applyBreakpointStyles from 'shared/utils/breakpoints/applyBreakpointStyle
 import styled, { css } from 'styled-components'
 
 export const DividerStyled = styled(Divider)`
-  &&& {
+  && {
     margin: 0;
   }
 `

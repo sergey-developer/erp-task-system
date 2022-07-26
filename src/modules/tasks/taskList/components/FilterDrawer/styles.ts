@@ -1,21 +1,20 @@
 import { Checkbox, DatePicker, Drawer, Radio } from 'antd'
 
-import styled, { css } from 'styled-components'
-
 import {
   StyledBreakpointStyles,
   StyledBreakpointsProps,
-} from '../../../../../shared/interfaces/breakpoints'
-import applyBreakpointStyles from '../../../../../shared/utils/breakpoints/applyBreakpointStyles'
+} from 'shared/interfaces/breakpoints'
+import applyBreakpointStyles from 'shared/utils/breakpoints/applyBreakpointStyles'
+import styled, { css } from 'styled-components'
 
 export const RadioGroupStyled = styled(Radio.Group)`
-  &&& {
+  && {
     margin-bottom: 24px;
   }
 `
 
 export const CheckboxGroupStyled = styled(Checkbox.Group)`
-  &&& {
+  && {
     display: flex;
     flex-direction: column;
 
