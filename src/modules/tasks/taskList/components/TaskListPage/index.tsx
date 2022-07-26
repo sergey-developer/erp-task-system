@@ -1,12 +1,13 @@
 import { FilterTwoTone, SyncOutlined } from '@ant-design/icons'
-import { Button, Col, Form, Input, Row, Space, TableProps } from 'antd'
+import { Button, Col, Form, Row, Space, TableProps } from 'antd'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
-import useFastFilterList from 'modules/tasks/taskList/hooks/useFastFilterList'
 import { FastFilterEnum, SortEnum } from 'modules/tasks/constants/enums'
+import useFastFilterList from 'modules/tasks/taskList/hooks/useFastFilterList'
 import useGetTaskList from 'modules/tasks/taskList/hooks/useGetTaskList'
 import {
   GetTaskListQueryArgsModel,
@@ -34,12 +35,11 @@ import {
   QuickFilterQueries,
   TaskIdFilterQueries,
 } from './interfaces'
-import { ColFlexStyled, RowStyled, RowWrapStyled } from './styles'
+import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
-const { Search } = Input
-
 const TaskListPage: FC = () => {
+  const breakpoints = useBreakpoint()
   const { isEngineerRole } = useUserRole()
 
   const {
@@ -187,11 +187,11 @@ const TaskListPage: FC = () => {
   return (
     <>
       <RowWrapStyled gutter={[0, 40]}>
-        <Row justify='space-between'>
-          <Col span={12}>
+        <Row justify='space-between' align='bottom'>
+          <Col span={13}>
             <Row align='middle'>
-              <Col span={15}>
-                <Space>
+              <Col span={breakpoints.xxl ? 13 : 20}>
+                <Space wrap>
                   {fastFilterList.map(({ amount, text, value }) => (
                     <FilterTag
                       key={value}
@@ -205,7 +205,7 @@ const TaskListPage: FC = () => {
                 </Space>
               </Col>
 
-              <Col span={3}>
+              <Col span={4}>
                 <Button
                   icon={<FilterTwoTone className='fs-18' />}
                   onClick={toggleFilterDrawer}
@@ -216,10 +216,11 @@ const TaskListPage: FC = () => {
             </Row>
           </Col>
 
-          <Col span={12}>
-            <Row justify='end' gutter={[8, 8]}>
-              <Col span={12}>
-                <Search
+          <Col span={10}>
+            <Row justify='end' gutter={[16, 8]}>
+              <Col>
+                <SearchStyled
+                  $breakpoints={breakpoints}
                   allowClear
                   onSearch={handleTaskIdFilterSearch}
                   placeholder='Искать заявку по номеру'
@@ -227,7 +228,7 @@ const TaskListPage: FC = () => {
               </Col>
 
               <Col>
-                <Space align='end'>
+                <Space align='end' size='middle'>
                   <Button
                     icon={<SyncOutlined />}
                     onClick={handleRefetchTaskList}
@@ -241,6 +242,7 @@ const TaskListPage: FC = () => {
             </Row>
           </Col>
         </Row>
+
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
             <Col span={selectedTaskId ? 16 : 24}>
