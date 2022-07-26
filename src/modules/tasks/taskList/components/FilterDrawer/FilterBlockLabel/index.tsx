@@ -12,7 +12,7 @@ const FilterBlockLabel: FCWithChildren<Props> = (props) => {
   const { children, onReset } = props
 
   return (
-    <SpaceStyled align='baseline'>
+    <SpaceStyled align='baseline' size={12}>
       <TitleStyled level={4}>{children}</TitleStyled>
       <ButtonStyled onClick={onReset} type='text'>
         Сбросить

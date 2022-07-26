@@ -189,8 +189,8 @@ const TaskListPage: FC = () => {
       <RowWrapStyled gutter={[0, 40]}>
         <Row justify='space-between' align='bottom'>
           <Col span={13}>
-            <Row align='middle'>
-              <Col span={breakpoints.xxl ? 13 : 20}>
+            <Row align='middle' gutter={[30, 30]}>
+              <Col>
                 <Space wrap>
                   {fastFilterList.map(({ amount, text, value }) => (
                     <FilterTag
@@ -205,7 +205,7 @@ const TaskListPage: FC = () => {
                 </Space>
               </Col>
 
-              <Col span={4}>
+              <Col>
                 <Button
                   icon={<FilterTwoTone className='fs-18' />}
                   onClick={toggleFilterDrawer}

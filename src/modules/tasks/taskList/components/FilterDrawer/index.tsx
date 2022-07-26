@@ -5,9 +5,11 @@ import {
   FormInstance,
   Input,
   Radio,
+  Row,
   Select,
   Space,
 } from 'antd'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
 import TaskStatus from 'components/TaskStatus'
@@ -49,6 +51,7 @@ const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { form, initialValues, onClose, onSubmit, visible } = props
 
+  const breakpoints = useBreakpoint()
   const { isFirstLineSupportRole, isEngineerRole } = useUserRole()
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
@@ -60,17 +63,20 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
 
   return (
     <DrawerStyled
-      extra={
-        <Space>
-          <Button onClick={handleResetAll}>Сбросить все</Button>
-          <Button type='primary' onClick={form.submit}>
-            Применить
-          </Button>
-        </Space>
+      $breakpoints={breakpoints}
+      footer={
+        <Row justify='end'>
+          <Space>
+            <Button onClick={handleResetAll}>Сбросить все</Button>
+            <Button type='primary' onClick={form.submit}>
+              Применить
+            </Button>
+          </Space>
+        </Row>
       }
       title='Фильтры'
       placement='left'
-      width={500}
+      width={breakpoints.xxl ? 500 : 380}
       onClose={onClose}
       visible={visible}
     >

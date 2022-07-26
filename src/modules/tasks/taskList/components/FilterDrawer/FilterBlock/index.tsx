@@ -1,3 +1,4 @@
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React from 'react'
 
 import { FCWithChildren } from 'shared/interfaces/utils'
@@ -10,10 +11,11 @@ type Props = {
 
 const FilterBlock: FCWithChildren<Props> = (props) => {
   const { children, withDivider } = props
+  const breakpoints = useBreakpoint()
 
   return (
     <>
-      <Wrapper>{children}</Wrapper>
+      <Wrapper $breakpoints={breakpoints}>{children}</Wrapper>
       {withDivider && <DividerStyled />}
     </>
   )
