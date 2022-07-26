@@ -1,6 +1,11 @@
 import { Divider } from 'antd'
 
-import styled from 'styled-components'
+import {
+  StyledBreakpointStyles,
+  StyledBreakpointsProps,
+} from 'shared/interfaces/breakpoints'
+import applyBreakpointStyles from 'shared/utils/breakpoints/applyBreakpointStyles'
+import styled, { css } from 'styled-components'
 
 export const DividerStyled = styled(Divider)`
   &&& {
@@ -8,6 +13,16 @@ export const DividerStyled = styled(Divider)`
   }
 `
 
-export const Wrapper = styled.div`
-  padding: 32px 40px;
+const wrapperBreakpointStyles: StyledBreakpointStyles = {
+  xxl: css`
+    padding: 32px 40px;
+  `,
+  xl: css`
+    padding: 32px 15px;
+  `,
+}
+
+export const Wrapper = styled.div<StyledBreakpointsProps>`
+  ${({ $breakpoints }) =>
+    applyBreakpointStyles($breakpoints, wrapperBreakpointStyles)}
 `

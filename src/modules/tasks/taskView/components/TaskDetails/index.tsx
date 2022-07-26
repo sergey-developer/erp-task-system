@@ -92,15 +92,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const menuItems = useMemo<MenuProps['items']>(
     () => [
       {
-        key: '1',
-        label: '1st menu item',
-      },
-      {
-        key: '2',
-        label: '2nd menu item',
-      },
-      {
-        key: '3',
+        key: 3,
         disabled: !taskStatus.isInProgress || !isAssignedToCurrentUser,
         icon: <CheckCircleOutlined />,
         label: 'Выполнить заявку',
