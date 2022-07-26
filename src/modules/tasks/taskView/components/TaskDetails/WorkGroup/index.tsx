@@ -1,5 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { Button, Typography } from 'antd'
+import _debounce from 'lodash/debounce'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
@@ -8,6 +9,7 @@ import TaskSecondLineModal from 'modules/tasks/taskView/components/TaskSecondLin
 import { TaskDetailsModel } from 'modules/tasks/taskView/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { WorkGroupListItemModel } from 'modules/workGroups/workGroupList/models'
+import { DOUBLE_CLICK_DEBOUNCE_TIME } from 'shared/constants/common'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
@@ -62,7 +64,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
   const headOfDepartmentHasWorkGroup: boolean =
     hasWorkGroup && isHeadOfDepartmentRole
 
-  const handleOpenTaskSecondLineModal = () => {
+  const handleOpenTaskSecondLineModal = _debounce(() => {
     openTaskSecondLineModal()
 
     if (getWorkGroupListError) {
@@ -70,7 +72,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
         'Возникла ошибка при получении списка рабочих групп',
       )
     }
-  }
+  }, DOUBLE_CLICK_DEBOUNCE_TIME)
 
   const changeTaskLineButton = firstLineSupportNotHasWorkGroup ? (
     <Button
