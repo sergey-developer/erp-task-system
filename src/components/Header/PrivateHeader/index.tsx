@@ -1,4 +1,5 @@
-import { Col, Layout, Row, Space } from 'antd'
+import { Col, Row, Space } from 'antd'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -11,9 +12,10 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import useMatchedRoute from 'shared/hooks/useMatchedRoute'
 
-const { Header } = Layout
+import { HeaderStyled } from './styles'
 
 const PrivateHeader: FC = () => {
+  const breakpoints = useBreakpoint()
   const { role } = useUserRole()
 
   const navMenu = useMemo(() => {
@@ -35,7 +37,7 @@ const PrivateHeader: FC = () => {
   const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
 
   return (
-    <Header>
+    <HeaderStyled $breakpoints={breakpoints}>
       <Row justify='space-between' align='middle'>
         <Col span={4}>
           <Logo />
@@ -55,7 +57,7 @@ const PrivateHeader: FC = () => {
           </Row>
         </Col>
       </Row>
-    </Header>
+    </HeaderStyled>
   )
 }
 
