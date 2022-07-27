@@ -21,7 +21,7 @@ export type ExtendedFilterQueries = {
   workGroupId?: number
 } & SearchQueries
 
-export type QuickFilterQueries = {
+export type FastFilterQueries = {
   filter?: FastFilterEnum
 }
 

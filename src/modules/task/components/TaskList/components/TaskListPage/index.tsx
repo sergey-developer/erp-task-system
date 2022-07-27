@@ -32,7 +32,7 @@ import {
 import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
-  QuickFilterQueries,
+  FastFilterQueries,
   TaskIdFilterQueries,
 } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
@@ -160,7 +160,7 @@ const TaskListPage: FC = () => {
   const triggerFilterChange = (
     filterQueryParams:
       | ExtendedFilterQueries
-      | QuickFilterQueries
+      | FastFilterQueries
       | TaskIdFilterQueries,
   ) => {
     setQueryArgs((prev) => ({
