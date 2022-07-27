@@ -1,7 +1,7 @@
 import { Badge } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskStatusEnum } from 'modules/tasks/constants/enums'
+import { TaskStatusEnum } from 'modules/task/constants/enums'
 
 import { iconOrBadgeStatusMap } from './constants'
 import { BadgeWrapperStyled } from './styles'

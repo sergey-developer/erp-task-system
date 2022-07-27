@@ -1,0 +1,14 @@
+import {
+  ReclassificationReasonEnum,
+  ReclassificationRequestStatusEnum,
+} from 'modules/task/constants/enums'
+
+export type TaskReclassificationRequestModel = {
+  id: number
+  createdAt: string
+  updatedAt: string
+  reclassificationReason: ReclassificationReasonEnum
+  textComment: string
+  status: ReclassificationRequestStatusEnum
+  task: number
+}

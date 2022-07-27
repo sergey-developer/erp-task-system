@@ -8,7 +8,7 @@ import { RoutesEnum } from './constants'
 const NotFound = React.lazy(() => import('components/NotFound'))
 
 const TaskListPage = React.lazy(
-  () => import('modules/tasks/taskList/components/TaskListPage'),
+  () => import('modules/task/components/TaskList/components/TaskListPage'),
 )
 
 export default [
