@@ -8,7 +8,7 @@ import TaskSecondLineModal from 'modules/task/components/TaskView/components/Tas
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import useUserRole from 'modules/user/hooks/useUserRole'
-import { WorkGroupListItemModel } from 'modules/workGroup/workGroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { DOUBLE_CLICK_DEBOUNCE_TIME } from 'shared/constants/common'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'

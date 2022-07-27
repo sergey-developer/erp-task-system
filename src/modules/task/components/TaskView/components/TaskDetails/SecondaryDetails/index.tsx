@@ -2,7 +2,7 @@ import { Col, Row } from 'antd'
 import React, { FC } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
-import { WorkGroupListItemModel } from 'modules/workGroup/workGroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { ErrorResponse } from 'shared/services/api'
 

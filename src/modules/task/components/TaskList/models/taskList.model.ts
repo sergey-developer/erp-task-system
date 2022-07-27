@@ -4,7 +4,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/enums'
-import { WorkGroupListItemModel } from 'modules/workGroup/workGroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 

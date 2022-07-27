@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react'
 
 import { TaskListItemModel } from 'modules/task/components/TaskList/models'
 import useGetTask from 'modules/task/components/TaskView/hooks/useGetTask'
-import useGetWorkGroupList from 'modules/workGroup/workGroupList/hooks/useGetWorkGroupList'
+import useGetWorkGroupList from 'modules/workGroup/components/WorkGroupList/hooks/useGetWorkGroupList'
 import { ErrorResponse } from 'shared/services/api'
 
 import TaskDetails from '../TaskDetails'

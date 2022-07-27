@@ -8,7 +8,7 @@ import {
   OBJECT_WORD,
   THEME_WORD,
 } from 'modules/task/constants/words'
-import { WorkGroupListItemModel } from 'modules/workGroup/workGroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { MaybeNull } from 'shared/interfaces/utils'
 import formatDate from 'shared/utils/date/formatDate'
