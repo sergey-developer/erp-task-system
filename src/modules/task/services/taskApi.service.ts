@@ -14,7 +14,7 @@ import {
 import { HttpMethodEnum } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
-const tasksService = api.injectEndpoints({
+const taskApiService = api.injectEndpoints({
   endpoints: (build) => ({
     getTaskList: build.query<
       GetTaskListTransformedResponse,
@@ -96,9 +96,9 @@ export const {
   useUpdateTaskAssigneeMutation,
   useUpdateTaskWorkGroupMutation,
   useGetTaskCountersQuery,
-} = tasksService
+} = taskApiService
 
-export default tasksService
+export default taskApiService
 
 /**
  * todo: Внимательно следить за обновлениями RTK query и поправить при первой возможности

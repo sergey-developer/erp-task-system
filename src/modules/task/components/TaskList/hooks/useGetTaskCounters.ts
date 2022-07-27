@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useGetTaskCountersQuery } from 'modules/task/services/tasks.service'
+import { useGetTaskCountersQuery } from 'modules/task/services/taskApi.service'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 

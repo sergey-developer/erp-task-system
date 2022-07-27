@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/tasks.service'
+import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
 import useUserRole from 'modules/user/hooks/useUserRole'
 
 import { UpdateTaskWorkGroupMutationArgsModel } from '../models'

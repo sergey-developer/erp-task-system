@@ -9,7 +9,7 @@ import useUpdateTaskWorkGroup from 'modules/task/components/TaskView/hooks/useUp
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import getTransferTaskSecondLineError from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineError'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
-import { useResolveTaskMutation } from 'modules/task/services/tasks.service'
+import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'

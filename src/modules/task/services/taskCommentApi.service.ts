@@ -1,13 +1,18 @@
+import {
+  GetTaskCommentListQueryArgsModel,
+  GetTaskCommentListResponseModel,
+} from 'modules/task/components/TaskView/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
-import { GetWorkGroupListResponseModel } from './components/WorkGroupList/models'
-
-const workGroupsService = api.injectEndpoints({
+const taskCommentApiService = api.injectEndpoints({
   endpoints: (build) => ({
-    getWorkGroupList: build.query<GetWorkGroupListResponseModel, null>({
-      query: () => ({
-        url: '/work-groups',
+    getTaskCommentList: build.query<
+      GetTaskCommentListResponseModel,
+      GetTaskCommentListQueryArgsModel
+    >({
+      query: (id) => ({
+        url: `/tasks/${id}/comments`,
         method: HttpMethodEnum.GET,
       }),
     }),
@@ -15,9 +20,9 @@ const workGroupsService = api.injectEndpoints({
   overrideExisting: false,
 })
 
-export { workGroupsService }
+export const { useGetTaskCommentListQuery } = taskCommentApiService
 
-export const { useGetWorkGroupListQuery } = workGroupsService
+export default taskCommentApiService
 
 /**
  * todo: Внимательно следить за обновлениями RTK query и поправить при первой возможности
@@ -26,3 +31,14 @@ export const { useGetWorkGroupListQuery } = workGroupsService
  * открытый issue по проблеме https://github.com/reduxjs/redux-toolkit/issues/1937
  * пулл реквест за которым нужно следить https://github.com/reduxjs/redux-toolkit/pull/2276
  */
+
+let getTaskCommentList
+if (false as boolean) {
+  // @ts-ignore
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  getTaskCommentList = useGetTaskCommentListQuery()
+}
+
+export type UseGetTaskCommentListQueryReturnType = NonNullable<
+  typeof getTaskCommentList
+>

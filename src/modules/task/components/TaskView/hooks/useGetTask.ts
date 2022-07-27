@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { GetTaskQueryArgsModel } from 'modules/task/components/TaskView/models'
-import { useGetTaskQuery } from 'modules/task/services/tasks.service'
+import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse } from 'shared/services/api'

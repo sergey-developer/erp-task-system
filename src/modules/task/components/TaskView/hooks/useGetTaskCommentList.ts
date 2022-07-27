@@ -4,7 +4,7 @@ import { GetTaskCommentListQueryArgsModel } from 'modules/task/components/TaskVi
 import {
   UseGetTaskCommentListQueryReturnType,
   useGetTaskCommentListQuery,
-} from 'modules/task/services/taskComments.service'
+} from 'modules/task/services/taskCommentApi.service'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse } from 'shared/services/api'

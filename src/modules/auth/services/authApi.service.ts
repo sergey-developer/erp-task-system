@@ -6,7 +6,7 @@ import {
 import { HttpMethodEnum } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 
-const authService = api.injectEndpoints({
+const authApiService = api.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation<LoginResponseModel, LoginMutationArgsModel>({
       query: (queryArg) => ({
@@ -27,5 +27,5 @@ const authService = api.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useLoginMutation, useLogoutMutation } = authService
-export default authService
+export const { useLoginMutation, useLogoutMutation } = authApiService
+export default authApiService

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useUpdateTaskAssigneeMutation } from 'modules/task/services/tasks.service'
+import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskApi.service'
 import useUserRole from 'modules/user/hooks/useUserRole'
 
 import { UpdateTaskAssigneeMutationArgsModel } from '../models'

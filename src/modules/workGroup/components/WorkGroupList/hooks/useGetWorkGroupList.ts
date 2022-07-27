@@ -1,5 +1,5 @@
 import useUserRole from 'modules/user/hooks/useUserRole'
-import { useGetWorkGroupListQuery } from 'modules/workGroup/workGroups.service'
+import { useGetWorkGroupListQuery } from 'modules/workGroup/workGroupApi.service'
 
 const useGetWorkGroupList = () => {
   const {
