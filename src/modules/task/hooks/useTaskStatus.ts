@@ -13,14 +13,13 @@ const useTaskStatus = (
 ): UseTaskStatusReturnType => {
   return useMemo(
     () => ({
-      isAppointed: status === TaskStatusEnum.Appointed,
-      isAwaiting: status === TaskStatusEnum.Awaiting,
-      isClosed: status === TaskStatusEnum.Closed,
-      isCompleted: status === TaskStatusEnum.Completed,
-      isInProgress: status === TaskStatusEnum.InProgress,
-      isInReclassification: status === TaskStatusEnum.InReclassification,
       isNew: status === TaskStatusEnum.New,
-      isReclassified: status === TaskStatusEnum.Reclassified,
+      isAppointed: status === TaskStatusEnum.Appointed,
+      isInProgress: status === TaskStatusEnum.InProgress,
+      isCompleted: status === TaskStatusEnum.Completed,
+      isAwaiting: status === TaskStatusEnum.Awaiting,
+      isInReclassification: status === TaskStatusEnum.InReclassification,
+      isReturned: status === TaskStatusEnum.Returned,
     }),
     [status],
   )

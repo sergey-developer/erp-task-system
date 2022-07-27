@@ -15,10 +15,10 @@ export const DividerStyled = styled(Divider)`
 
 const wrapperBreakpointStyles: StyledBreakpointStyles = {
   xxl: css`
-    padding: 32px 40px;
+    padding: 30px 40px;
   `,
   xl: css`
-    padding: 32px 15px;
+    padding: 30px 15px;
   `,
 }
 

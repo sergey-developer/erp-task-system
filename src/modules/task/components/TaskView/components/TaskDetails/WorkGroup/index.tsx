@@ -80,11 +80,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
       onClick={handleOpenTaskSecondLineModal}
       loading={transferTaskIsLoading}
       disabled={
-        taskStatus.isAppointed ||
-        taskStatus.isClosed ||
-        taskStatus.isCompleted ||
-        taskStatus.isInReclassification ||
-        taskStatus.isReclassified
+        !(taskStatus.isNew || taskStatus.isInProgress || taskStatus.isAwaiting)
       }
     >
       Перевести на II линию

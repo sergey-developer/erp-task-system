@@ -7,14 +7,13 @@ export enum FastFilterEnum {
 }
 
 export enum TaskStatusEnum {
-  Appointed = 'APPOINTED',
-  Awaiting = 'AWAITING',
-  Closed = 'CLOSED',
-  Completed = 'COMPLETED',
-  InProgress = 'IN_PROGRESS',
-  InReclassification = 'IN_RECLASSIFICATION',
   New = 'NEW',
-  Reclassified = 'RECLASSIFIED',
+  Appointed = 'APPOINTED',
+  InProgress = 'IN_PROGRESS',
+  Completed = 'COMPLETED',
+  Awaiting = 'AWAITING',
+  InReclassification = 'IN_RECLASSIFICATION',
+  Returned = 'RETURNED',
 }
 
 export enum SortEnum {
