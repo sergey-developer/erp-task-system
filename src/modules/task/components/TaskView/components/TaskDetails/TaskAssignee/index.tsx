@@ -101,54 +101,52 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         ) : (
           <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
         )
-      ) : (
-        canSelectAssignee && (
-          <Space direction='vertical' $block>
-            <SelectStyled
-              defaultValue={selectedAssignee}
-              loading={workGroupListIsLoading}
-              disabled={updateTaskAssigneeIsLoading}
-              bordered={false}
-              placeholder={assignee ? null : ASSIGNEE_NOT_SET_TEXT}
-              onSelect={setSelectedAssignee}
+      ) : canSelectAssignee ? (
+        <Space direction='vertical' $block>
+          <SelectStyled
+            defaultValue={selectedAssignee}
+            loading={workGroupListIsLoading}
+            disabled={updateTaskAssigneeIsLoading}
+            bordered={false}
+            placeholder={assignee ? null : ASSIGNEE_NOT_SET_TEXT}
+            onSelect={setSelectedAssignee}
+          >
+            {workGroupMembers.map(({ id, fullName }) => {
+              const assigneeInWorkGroup: boolean = id === assignee?.id
+
+              const authenticatedUserInWorkGroup: boolean =
+                id === authenticatedUser!.id
+
+              return (
+                <SelectStyled.Option
+                  key={id}
+                  value={id}
+                  disabled={assigneeInWorkGroup || authenticatedUserInWorkGroup}
+                >
+                  <Assignee
+                    name={fullName}
+                    status={status}
+                    assignee={assignee}
+                  />
+                </SelectStyled.Option>
+              )
+            })}
+          </SelectStyled>
+
+          <Row justify='end'>
+            <Button
+              type='primary'
+              ghost
+              onClick={handleClickAssignee}
+              loading={updateTaskAssigneeIsLoading}
+              disabled={!selectedAssignee}
             >
-              {workGroupMembers.map(({ id, fullName }) => {
-                const assigneeInWorkGroup: boolean = id === assignee?.id
-
-                const authenticatedUserInWorkGroup: boolean =
-                  id === authenticatedUser!.id
-
-                return (
-                  <SelectStyled.Option
-                    key={id}
-                    value={id}
-                    disabled={
-                      assigneeInWorkGroup || authenticatedUserInWorkGroup
-                    }
-                  >
-                    <Assignee
-                      name={fullName}
-                      status={status}
-                      assignee={assignee}
-                    />
-                  </SelectStyled.Option>
-                )
-              })}
-            </SelectStyled>
-
-            <Row justify='end'>
-              <Button
-                type='primary'
-                ghost
-                onClick={handleClickAssignee}
-                loading={updateTaskAssigneeIsLoading}
-                disabled={!selectedAssignee}
-              >
-                Назначить
-              </Button>
-            </Row>
-          </Space>
-        )
+              Назначить
+            </Button>
+          </Row>
+        </Space>
+      ) : (
+        <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
       )}
     </Space>
   )
