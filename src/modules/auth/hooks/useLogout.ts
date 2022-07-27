@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useLogoutMutation } from 'modules/auth/services/auth.service'
+import { useLogoutMutation } from 'modules/auth/services/authApi.service'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import useDispatch from 'shared/hooks/useDispatch'
 
