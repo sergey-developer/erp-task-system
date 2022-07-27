@@ -23,12 +23,7 @@ import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
 import { searchQueriesDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
-import {
-  CheckboxGroupStyled,
-  DrawerStyled,
-  RadioGroupStyled,
-  RangePickerStyled,
-} from './styles'
+import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
 
 export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
   form: FormInstance<ExtendedFilterFormFields>
@@ -90,7 +85,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
             Статус
           </FilterBlockLabel>
 
-          <Form.Item name='status'>
+          <Form.Item name='status' className='mb-0'>
             <CheckboxGroupStyled options={checkboxStatusOptions} />
           </Form.Item>
         </FilterBlock>
@@ -102,7 +97,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
             Период создания
           </FilterBlockLabel>
 
-          <Form.Item name='creationDateRange'>
+          <Form.Item name='creationDateRange' className='mb-0'>
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>
@@ -115,7 +110,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
               Рабочая группа
             </FilterBlockLabel>
 
-            <Form.Item name='workGroupId'>
+            <Form.Item name='workGroupId' className='mb-0'>
               <Select
                 disabled={workGroupListIsFetching}
                 fieldNames={workGroupListSelectFieldNames}
@@ -147,16 +142,16 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           </FilterBlockLabel>
 
           <Form.Item name='searchField'>
-            <RadioGroupStyled>
+            <Radio.Group>
               {Object.entries(searchQueriesDictionary).map(([name, label]) => (
                 <Radio key={name} value={name}>
                   {label}
                 </Radio>
               ))}
-            </RadioGroupStyled>
+            </Radio.Group>
           </Form.Item>
 
-          <Form.Item name='searchValue'>
+          <Form.Item name='searchValue' className='mb-0'>
             <Input placeholder='Ключевое слово' />
           </Form.Item>
         </FilterBlock>

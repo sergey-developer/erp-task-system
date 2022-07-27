@@ -1,5 +1,4 @@
 import {
-  ExclamationCircleOutlined,
   PauseCircleTwoTone,
   QuestionCircleTwoTone,
   RightCircleOutlined,
@@ -14,19 +13,14 @@ export const iconOrBadgeStatusMap: Record<
   TaskStatusEnum,
   ReactElement | BadgeProps['status']
 > = {
-  [TaskStatusEnum.New]: 'default', //true
-  [TaskStatusEnum.InProgress]: 'warning', // true
+  [TaskStatusEnum.New]: 'default',
+  [TaskStatusEnum.InProgress]: 'warning',
+  [TaskStatusEnum.Completed]: 'success',
+  [TaskStatusEnum.Appointed]: 'default',
 
-  // ? хз правильно ли
-  [TaskStatusEnum.Reclassified]: (
+  [TaskStatusEnum.Awaiting]: <PauseCircleTwoTone />,
+  [TaskStatusEnum.InReclassification]: <QuestionCircleTwoTone />,
+  [TaskStatusEnum.Returned]: (
     <RightCircleOutlined style={{ color: theme.colors.red1 }} />
   ),
-  [TaskStatusEnum.Closed]: (
-    <ExclamationCircleOutlined style={{ color: theme.colors.red1 }} />
-  ),
-
-  [TaskStatusEnum.Completed]: 'success', // true
-  [TaskStatusEnum.Appointed]: 'default', // true
-  [TaskStatusEnum.Awaiting]: <PauseCircleTwoTone />, // true
-  [TaskStatusEnum.InReclassification]: <QuestionCircleTwoTone />, // true
 }

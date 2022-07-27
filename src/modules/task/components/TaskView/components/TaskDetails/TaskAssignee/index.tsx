@@ -57,7 +57,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   const canSelectAssignee: boolean =
     hasWorkGroup &&
-    !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
     (seniorEngineerFromWorkGroupIsAuthenticatedUser ||
       headOfDepartmentFromWorkGroupIsAuthenticatedUser)
