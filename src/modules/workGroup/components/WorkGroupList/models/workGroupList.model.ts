@@ -5,5 +5,6 @@ export type WorkGroupListItemModel = {
   name: string
   seniorEngineer: WorkGroupListMemberModel
   groupLead: WorkGroupListMemberModel
+  engineers: Array<WorkGroupListMemberModel>
   members: Array<WorkGroupListMemberModel>
 }
