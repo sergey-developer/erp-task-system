@@ -80,6 +80,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         <Button
           type='link'
           loading={updateTaskAssigneeIsLoading}
+          disabled={taskStatus.isCompleted}
           onClick={
             assigneeIsAuthenticatedUser ? undefined : handleAssignTaskOnMe
           }
