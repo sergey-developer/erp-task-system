@@ -1,3 +1,4 @@
+import { TaskDetailsWorkGroupModel } from 'modules/task/components/TaskView/models/taskDetailsWorkGroup.model'
 import {
   ResolutionCodeEnum,
   SuspendReasonEnum,
@@ -5,7 +6,6 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/enums'
 import { TaskAttachmentModel } from 'modules/task/models'
-import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
@@ -56,6 +56,6 @@ export type TaskDetailsModel = {
   state?: string
   zipCode?: string
   isReturned?: boolean
-  workGroup?: MaybeNull<WorkGroupListItemModel>
+  workGroup?: MaybeNull<TaskDetailsWorkGroupModel>
   parentTask?: MaybeNull<number>
 }

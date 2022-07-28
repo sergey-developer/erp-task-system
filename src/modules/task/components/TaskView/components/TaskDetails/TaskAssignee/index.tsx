@@ -9,6 +9,7 @@ import { ASSIGNEE_WORD } from 'modules/task/constants/words'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import getFullUserName from 'modules/user/utils/getFullUserName'
+import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 
 import Assignee from './Assignee'
@@ -18,10 +19,8 @@ const { Text } = Typography
 
 const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
 
-type TaskAssigneeProps = Pick<
-  TaskDetailsModel,
-  'assignee' | 'status' | 'workGroup'
-> & {
+type TaskAssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'status'> & {
+  workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
@@ -47,10 +46,10 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
     useCheckUserAuthenticated(selectedAssignee)
 
   const seniorEngineerFromWorkGroupIsAuthenticatedUser =
-    useCheckUserAuthenticated(workGroup?.seniorEngineer?.id)
+    useCheckUserAuthenticated(workGroup?.seniorEngineer.id)
 
   const headOfDepartmentFromWorkGroupIsAuthenticatedUser =
-    useCheckUserAuthenticated(workGroup?.groupLead?.id)
+    useCheckUserAuthenticated(workGroup?.groupLead.id)
 
   const hasWorkGroup: boolean = !!workGroup
   const workGroupMembers = workGroup?.members || []
