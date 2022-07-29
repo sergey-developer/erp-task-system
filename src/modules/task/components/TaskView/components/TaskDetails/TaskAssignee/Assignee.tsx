@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 import UserAvatar from 'components/Avatars/UserAvatar'
 import TaskStatus from 'components/TaskStatus'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
-import { taskStatusDictionary } from 'modules/task/constants/taskStatus'
+import { taskStatusDict } from 'modules/task/constants/taskStatus'
 
 const { Text } = Typography
 
@@ -23,7 +23,7 @@ const Assignee: FC<TaskAssigneeProps> = ({ assignee, status, name }) => {
         <Text className='break-text'>{name}</Text>
 
         {assignee && status && (
-          <TaskStatus status={status} value={taskStatusDictionary[status]} />
+          <TaskStatus status={status} value={taskStatusDict[status]} />
         )}
       </Space>
     </Space>

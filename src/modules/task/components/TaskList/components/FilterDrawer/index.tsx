@@ -14,7 +14,7 @@ import React, { FC } from 'react'
 
 import TaskStatus from 'components/TaskStatus'
 import { TaskStatusEnum } from 'modules/task/constants/enums'
-import { taskStatusDictionary } from 'modules/task/constants/taskStatus'
+import { taskStatusDict } from 'modules/task/constants/taskStatus'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/components/WorkGroupList/constants'
 import useGetWorkGroupList from 'modules/workGroup/components/WorkGroupList/hooks/useGetWorkGroupList'
@@ -31,17 +31,14 @@ export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
   onSubmit: (result: ExtendedFilterFormFields) => void
 }
 
-const checkboxStatusOptions = Object.values(TaskStatusEnum).map(
-  (taskStatus) => ({
+const checkboxStatusOptions = Object.values(TaskStatusEnum)
+  .filter((status) => status !== TaskStatusEnum.Closed)
+  .map((taskStatus) => ({
     label: (
-      <TaskStatus
-        status={taskStatus}
-        value={taskStatusDictionary[taskStatus]}
-      />
+      <TaskStatus status={taskStatus} value={taskStatusDict[taskStatus]} />
     ),
     value: taskStatus,
-  }),
-)
+  }))
 
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { form, initialValues, onClose, onSubmit, visible } = props

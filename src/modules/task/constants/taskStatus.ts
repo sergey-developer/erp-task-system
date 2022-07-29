@@ -1,6 +1,6 @@
 import { TaskStatusEnum } from './enums'
 
-export const taskStatusDictionary: Record<TaskStatusEnum, string> = {
+export const taskStatusDict: Record<TaskStatusEnum, string> = {
   [TaskStatusEnum.New]: 'Ожидает выполнения',
   [TaskStatusEnum.Appointed]: 'Назначено',
   [TaskStatusEnum.InProgress]: 'В работе',
