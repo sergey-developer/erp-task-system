@@ -1,5 +1,5 @@
 import { Col, Row } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
@@ -34,7 +34,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   status,
   assignee,
 
-  workGroup,
+  workGroup: taskDetailsWorkGroup,
   workGroupList,
   workGroupListIsLoading,
   getWorkGroupListError,
@@ -45,6 +45,15 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
 }) => {
+  const workGroup = useMemo(
+    () =>
+      workGroupList.find(
+        (workGroupListItem) =>
+          workGroupListItem.id === taskDetailsWorkGroup?.id,
+      ),
+    [taskDetailsWorkGroup?.id, workGroupList],
+  )
+
   return (
     <DetailContainerStyled>
       <Row justify='space-between'>
