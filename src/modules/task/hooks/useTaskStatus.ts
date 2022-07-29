@@ -20,6 +20,7 @@ const useTaskStatus = (
       isAwaiting: status === TaskStatusEnum.Awaiting,
       isInReclassification: status === TaskStatusEnum.InReclassification,
       isReturned: status === TaskStatusEnum.Returned,
+      isClosed: status === TaskStatusEnum.Closed,
     }),
     [status],
   )

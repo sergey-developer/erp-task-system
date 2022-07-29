@@ -57,6 +57,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   const canSelectAssignee: boolean =
     hasWorkGroup &&
+    !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
     (seniorEngineerFromWorkGroupIsAuthenticatedUser ||
       headOfDepartmentFromWorkGroupIsAuthenticatedUser)
@@ -80,7 +81,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         <Button
           type='link'
           loading={updateTaskAssigneeIsLoading}
-          disabled={taskStatus.isCompleted}
+          disabled={taskStatus.isClosed || taskStatus.isCompleted}
           onClick={
             assigneeIsAuthenticatedUser ? undefined : handleAssignTaskOnMe
           }

@@ -14,6 +14,7 @@ export enum TaskStatusEnum {
   Awaiting = 'AWAITING',
   InReclassification = 'IN_RECLASSIFICATION',
   Returned = 'RETURNED',
+  Closed = 'CLOSED',
 }
 
 export enum SortEnum {
