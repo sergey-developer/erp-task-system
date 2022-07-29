@@ -8,4 +8,5 @@ export const taskStatusDictionary: Record<TaskStatusEnum, string> = {
   [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.InReclassification]: 'На переклассификации',
   [TaskStatusEnum.Returned]: 'Возврат заявителем',
+  [TaskStatusEnum.Closed]: '',
 }

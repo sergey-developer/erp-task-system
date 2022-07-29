@@ -15,13 +15,13 @@ const TaskStatus: FC<TaskStatusProps> = ({ value, status: taskStatus }) => {
   const status = iconOrBadgeStatusMap[taskStatus]
   const isBadge = typeof status === 'string'
 
-  return (
+  return value || status ? (
     <BadgeWrapperStyled isBadge={isBadge}>
-      {typeof status === 'string' ? <Badge status={status} /> : status}
+      {isBadge ? <Badge status={status} /> : status}
 
       {value && <div>{value}</div>}
     </BadgeWrapperStyled>
-  )
+  ) : null
 }
 
 export default TaskStatus

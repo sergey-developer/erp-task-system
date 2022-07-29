@@ -17,6 +17,7 @@ export const iconOrBadgeStatusMap: Record<
   [TaskStatusEnum.InProgress]: 'warning',
   [TaskStatusEnum.Completed]: 'success',
   [TaskStatusEnum.Appointed]: 'default',
+  [TaskStatusEnum.Closed]: undefined,
 
   [TaskStatusEnum.Awaiting]: <PauseCircleTwoTone />,
   [TaskStatusEnum.InReclassification]: <QuestionCircleTwoTone />,
