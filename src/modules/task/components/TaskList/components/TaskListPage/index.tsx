@@ -1,4 +1,5 @@
 import { FilterTwoTone, SyncOutlined } from '@ant-design/icons'
+import { useBoolean } from 'ahooks'
 import { Button, Col, Form, Row, Space, TableProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
@@ -70,8 +71,8 @@ const TaskListPage: FC = () => {
 
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
-  const [isFilterDrawerVisible, setIsFilterDrawerVisible] =
-    useState<boolean>(false)
+  const [isFilterDrawerVisible, { toggle: toggleFilterDrawer }] =
+    useBoolean(false)
 
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
@@ -79,9 +80,8 @@ const TaskListPage: FC = () => {
   const [fastFilterValue, setFastFilterValue] =
     useState<FastFilterEnum>(initialFastFilter)
 
-  const toggleFilterDrawer = () => setIsFilterDrawerVisible((prev) => !prev)
-
   const handleFilterDrawerSubmit: FilterDrawerProps['onSubmit'] = (values) => {
+    toggleFilterDrawer()
     setExtendedFilterFormValues(values)
     setFastFilterValue(DEFAULT_FAST_FILTER)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
