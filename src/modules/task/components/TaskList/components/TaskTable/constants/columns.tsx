@@ -34,11 +34,13 @@ export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
     title: OBJECT_WORD,
     dataIndex: 'name',
     key: 'name',
+    ellipsis: true,
   },
   {
     title: THEME_WORD,
     dataIndex: 'title',
     key: 'title',
+    ellipsis: true,
   },
   {
     title: ASSIGNEE_WORD,
@@ -46,12 +48,14 @@ export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
     key: 'assignee',
     render: (value: MaybeNull<TaskListItemModel['assignee']>) =>
       value ? getShortUserName(value) : '',
+    ellipsis: true,
   },
   {
     title: 'Рабочая группа',
     dataIndex: 'workGroup',
     key: 'workGroup',
     render: (value: MaybeNull<WorkGroupListItemModel>) => value && value.name,
+    ellipsis: true,
   },
   {
     title: 'Выполнить до',
@@ -64,6 +68,7 @@ export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
     title: 'Комментарий',
     dataIndex: 'comment',
     key: 'comment',
+    ellipsis: true,
   },
   {
     title: 'Дата создания',

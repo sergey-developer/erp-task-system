@@ -18,9 +18,10 @@ const applyWidthToColumn = (
   return columns.map((col) => {
     const colBreakpointWidth: MaybeUndefined<number> = breakpoints.xxl
       ? xxlColumnWidthMap[col.key as XxlColumnWidthMap]
-      : defaultColumnWidthMap[col.key as AllColumnWidthMap]
+      : undefined
 
-    const colWidth = colBreakpointWidth || col.width
+    const colWidth =
+      colBreakpointWidth || defaultColumnWidthMap[col.key as AllColumnWidthMap]
 
     return {
       ...col,

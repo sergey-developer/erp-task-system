@@ -21,24 +21,23 @@ export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
   recordId: 140,
   name: 120,
   title: 160,
-  assignee: 100,
-  workGroup: 100,
-  olaNextBreachTime: 80,
+  assignee: 110,
+  workGroup: 130,
+  olaNextBreachTime: 105,
   comment: 160,
-  createdAt: 80,
+  createdAt: 105,
 }
 
-export type XxlColumnWidthMap = Exclude<
-  AllColumnWidthMap,
-  'noop' | 'id' | 'recordId'
->
+export type XxlColumnWidthMap = Exclude<AllColumnWidthMap, 'noop'>
 
 export const xxlColumnWidthMap: Record<XxlColumnWidthMap, number> = {
-  name: 140,
-  title: 300,
+  id: 75,
+  recordId: 85,
+  name: 100,
+  title: 200,
   assignee: 140,
-  workGroup: 140,
-  olaNextBreachTime: 140,
-  comment: 200,
-  createdAt: 140,
+  workGroup: 160,
+  olaNextBreachTime: 100,
+  comment: 130,
+  createdAt: 100,
 }
