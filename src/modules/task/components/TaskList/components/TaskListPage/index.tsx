@@ -1,5 +1,5 @@
 import { FilterTwoTone, SyncOutlined } from '@ant-design/icons'
-import { useBoolean } from 'ahooks'
+import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, Row, Space, TableProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
@@ -7,6 +7,7 @@ import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
+import { FilterTypeEnum } from 'modules/task/components/TaskList/constants/enums'
 import useFastFilterList from 'modules/task/components/TaskList/hooks/useFastFilterList'
 import useGetTaskList from 'modules/task/components/TaskList/hooks/useGetTaskList'
 import {
@@ -22,7 +23,6 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskTable from '../TaskTable'
 import {
-  DEFAULT_FAST_FILTER,
   DEFAULT_PAGE_LIMIT,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
@@ -78,17 +78,27 @@ const TaskListPage: FC = () => {
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
 
   const [fastFilterValue, setFastFilterValue] =
-    useState<FastFilterEnum>(initialFastFilter)
+    useState<MaybeNull<FastFilterEnum>>(initialFastFilter)
+
+  const [appliedFilterType, setAppliedFilterType] = useState<
+    MaybeNull<FilterTypeEnum>
+  >(FilterTypeEnum.Fast)
+
+  const previousAppliedFilterType =
+    usePrevious<typeof appliedFilterType>(appliedFilterType)
 
   const handleFilterDrawerSubmit: FilterDrawerProps['onSubmit'] = (values) => {
+    setAppliedFilterType(FilterTypeEnum.Extended)
     toggleFilterDrawer()
     setExtendedFilterFormValues(values)
-    setFastFilterValue(DEFAULT_FAST_FILTER)
+    setFastFilterValue(null)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
+    setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilterValue(value)
+
     extendedFilterForm.resetFields()
     setExtendedFilterFormValues(initialExtendedFilterFormValues)
 
@@ -99,16 +109,21 @@ const TaskListPage: FC = () => {
 
   const handleTaskIdFilterSearch: SearchProps['onSearch'] = (value) => {
     if (value) {
-      extendedFilterForm.resetFields()
+      setAppliedFilterType(FilterTypeEnum.Search)
       triggerFilterChange({
         taskId: value,
       })
     } else {
-      extendedFilterForm.setFieldsValue(extendedFilterFormValues)
-      triggerFilterChange({
-        ...mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues),
-        filter: fastFilterValue,
-      })
+      setAppliedFilterType(previousAppliedFilterType!)
+
+      const prevFilter =
+        previousAppliedFilterType === FilterTypeEnum.Extended
+          ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
+          : previousAppliedFilterType === FilterTypeEnum.Fast
+          ? { filter: fastFilterValue }
+          : {}
+
+      triggerFilterChange(prevFilter)
     }
   }
 
@@ -168,7 +183,7 @@ const TaskListPage: FC = () => {
       offset: 0,
       dateFrom: undefined,
       dateTo: undefined,
-      filter: DEFAULT_FAST_FILTER,
+      filter: undefined,
       status: undefined,
       searchByAssignee: undefined,
       searchByName: undefined,
@@ -184,6 +199,9 @@ const TaskListPage: FC = () => {
     refetchFastFilterList()
   }
 
+  const searchFilterApplied: boolean =
+    appliedFilterType === FilterTypeEnum.Search
+
   return (
     <>
       <RowWrapStyled gutter={[0, 40]}>
@@ -195,11 +213,18 @@ const TaskListPage: FC = () => {
                   {fastFilterList.map(({ amount, text, value }) => (
                     <FilterTag
                       key={value}
-                      checked={queryArgs.filter === value}
-                      onChange={() => handleFastFilterChange(value)}
+                      checked={
+                        searchFilterApplied ? false : queryArgs.filter === value
+                      }
+                      onChange={
+                        searchFilterApplied
+                          ? undefined
+                          : () => handleFastFilterChange(value)
+                      }
                       text={text}
                       amount={amount}
                       loading={fastFilterListIsFetching}
+                      disabled={searchFilterApplied}
                     />
                   ))}
                 </Space>
@@ -209,6 +234,7 @@ const TaskListPage: FC = () => {
                 <Button
                   icon={<FilterTwoTone className='fs-18' />}
                   onClick={toggleFilterDrawer}
+                  disabled={searchFilterApplied}
                 >
                   Фильтры
                 </Button>
