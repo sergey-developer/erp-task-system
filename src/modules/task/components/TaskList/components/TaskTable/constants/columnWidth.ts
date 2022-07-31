@@ -1,6 +1,6 @@
 import { TaskListItemModel } from 'modules/task/components/TaskList/models'
 
-export type AllColumnWidthMapKeys =
+export type AllColumnWidthMap =
   | 'noop'
   | keyof Pick<
       TaskListItemModel,
@@ -15,7 +15,7 @@ export type AllColumnWidthMapKeys =
       | 'createdAt'
     >
 
-export const defaultColumnWidthMap: Record<AllColumnWidthMapKeys, number> = {
+export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
   noop: 20,
   id: 110,
   recordId: 140,
@@ -28,12 +28,12 @@ export const defaultColumnWidthMap: Record<AllColumnWidthMapKeys, number> = {
   createdAt: 80,
 }
 
-export type XxlColumnWidthMapKeys = Exclude<
-  AllColumnWidthMapKeys,
+export type XxlColumnWidthMap = Exclude<
+  AllColumnWidthMap,
   'noop' | 'id' | 'recordId'
 >
 
-export const xxlColumnWidthMap: Record<XxlColumnWidthMapKeys, number> = {
+export const xxlColumnWidthMap: Record<XxlColumnWidthMap, number> = {
   name: 140,
   title: 300,
   assignee: 140,

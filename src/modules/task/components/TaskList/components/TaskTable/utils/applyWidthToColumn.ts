@@ -5,8 +5,8 @@ import { ScreenMap } from 'shared/interfaces/breakpoints'
 import { MaybeUndefined } from 'shared/interfaces/utils'
 
 import {
-  AllColumnWidthMapKeys,
-  XxlColumnWidthMapKeys,
+  AllColumnWidthMap,
+  XxlColumnWidthMap,
   defaultColumnWidthMap,
   xxlColumnWidthMap,
 } from '../constants/columnWidth'
@@ -16,10 +16,10 @@ const applyWidthToColumn = (
   breakpoints: ScreenMap,
 ): ColumnsType<TaskListItemModel> => {
   return columns.map((col) => {
-    const colKey = col.key
     const colBreakpointWidth: MaybeUndefined<number> = breakpoints.xxl
-      ? xxlColumnWidthMap[colKey as XxlColumnWidthMapKeys]
-      : defaultColumnWidthMap[colKey as AllColumnWidthMapKeys]
+      ? xxlColumnWidthMap[col.key as XxlColumnWidthMap]
+      : defaultColumnWidthMap[col.key as AllColumnWidthMap]
+
     const colWidth = colBreakpointWidth || col.width
 
     return {
