@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const BadgeWrapperStyled = styled.div<{ isBadge: boolean }>`
   display: flex;
   align-items: ${({ isBadge }) => (isBadge ? 'baseline' : 'center')};
-  gap: 16px;
+  gap: 8px;
 
   & > :first-child {
     width: 16px;
