@@ -1,4 +1,4 @@
-import { SortEnum } from 'modules/task/constants/enums'
+import { SortEnum } from 'modules/task/components/TaskList/constants/enums'
 import { PaginatedListResponseModel } from 'shared/interfaces/models'
 
 import {
