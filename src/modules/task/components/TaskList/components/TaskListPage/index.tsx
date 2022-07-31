@@ -69,7 +69,7 @@ const TaskListPage: FC = () => {
     refetch: refetchTaskList,
   } = useGetTaskList(queryArgs)
 
-  const [selectedTaskId, setSelectedTaskId] =
+  const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskListItemModel['id']>>(null)
 
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
@@ -132,14 +132,14 @@ const TaskListPage: FC = () => {
 
   const handleTableRowClick: GetComponentProps<TaskListItemModel> = useCallback(
     (record: TaskListItemModel) => ({
-      onClick: () => setSelectedTaskId(record.id),
+      onClick: () => setSelectedTask(record.id),
     }),
-    [setSelectedTaskId],
+    [setSelectedTask],
   )
 
   const handleCloseTaskDetails = useCallback(() => {
-    setSelectedTaskId(null)
-  }, [setSelectedTaskId])
+    setSelectedTask(null)
+  }, [setSelectedTask])
 
   const handleTaskResolved = useCallback(() => {
     handleCloseTaskDetails()
@@ -274,7 +274,7 @@ const TaskListPage: FC = () => {
 
         <ColFlexStyled span={24} flex='1'>
           <RowStyled>
-            <Col span={selectedTaskId ? 16 : 24}>
+            <Col span={selectedTask ? (breakpoints.xxl ? 15 : 12) : 24}>
               <TaskTable
                 sorting={queryArgs.sort}
                 onRow={handleTableRowClick}
@@ -285,10 +285,10 @@ const TaskListPage: FC = () => {
               />
             </Col>
 
-            {!!selectedTaskId && (
-              <Col span={8}>
+            {!!selectedTask && (
+              <Col span={breakpoints.xxl ? 9 : 12}>
                 <TaskDetails
-                  taskId={selectedTaskId}
+                  taskId={selectedTask}
                   onClose={handleCloseTaskDetails}
                   onTaskResolved={handleTaskResolved}
                   refetchTaskList={refetchTaskList}
