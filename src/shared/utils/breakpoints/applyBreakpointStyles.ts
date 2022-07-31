@@ -1,5 +1,5 @@
 import {
-  BreakpointsUnion,
+  BreakpointUnion,
   StyledBreakpointStyles,
   StyledBreakpointsProps,
 } from 'shared/interfaces/breakpoints'
@@ -20,10 +20,10 @@ const applyBreakpointStyles = (
 ): SimpleInterpolation => {
   const breakpointSequence = Object.keys(styles)
   const matchedBreakpoint = breakpointSequence.find(
-    (breakpoint) => breakpoints[breakpoint as BreakpointsUnion],
+    (breakpoint) => breakpoints[breakpoint as BreakpointUnion],
   )
 
-  return styles[matchedBreakpoint as BreakpointsUnion] || ''
+  return styles[matchedBreakpoint as BreakpointUnion] || ''
 }
 
 export default applyBreakpointStyles
