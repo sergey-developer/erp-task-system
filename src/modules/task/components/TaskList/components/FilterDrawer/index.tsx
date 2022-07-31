@@ -60,6 +60,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
         <Row justify='end'>
           <Space>
             <Button onClick={handleResetAll}>Сбросить все</Button>
+
             <Button type='primary' onClick={form.submit}>
               Применить
             </Button>

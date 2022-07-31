@@ -8,11 +8,11 @@ export type FilterListItem = Pick<FilterTagProps, 'text' | 'amount'> & {
   value: FastFilterEnum
 }
 
-export type SearchQueries = {
-  searchByAssignee?: string
-  searchByName?: string
-  searchByTitle?: string
-}
+export type SearchQueries = Partial<{
+  searchByAssignee: string
+  searchByName: string
+  searchByTitle: string
+}>
 
 export type ExtendedFilterQueries = {
   dateFrom?: string
@@ -22,7 +22,7 @@ export type ExtendedFilterQueries = {
 } & SearchQueries
 
 export type FastFilterQueries = {
-  filter?: FastFilterEnum
+  filter?: MaybeNull<FastFilterEnum>
 }
 
 export type TaskIdFilterQueries = {

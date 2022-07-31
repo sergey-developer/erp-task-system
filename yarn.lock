@@ -2554,10 +2554,10 @@ ahooks-v3-count@^1.0.0:
   resolved "https://registry.yarnpkg.com/ahooks-v3-count/-/ahooks-v3-count-1.0.0.tgz#ddeb392e009ad6e748905b3cbf63a9fd8262ca80"
   integrity sha512-V7uUvAwnimu6eh/PED4mCDjE7tokeZQLKlxg9lCTMPhN+NjsSbtdacByVlR1oluXQzD3MOw55wylDmQo4+S9ZQ==
 
-ahooks@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/ahooks/-/ahooks-3.5.0.tgz#aa28770205fa0265549a3314c623eff7a11f4044"
-  integrity sha512-GPTsObGggpQJqlRukVgifxk2b5Rz/fEbfmvsQXGIa3AEDpOJqy76ldkWOyhUd0D6ngeaGNBKJx5xS6/b/bZIwA==
+ahooks@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/ahooks/-/ahooks-3.6.2.tgz#662b14dd1fe6642f53641aacd3890ba6fd414fbd"
+  integrity sha512-2OngdOqXcZ9pl85J/2grSXdnvPJwCGi0j7r6KFzPhBXsA7C8NI6emE+kFEe4h35zQY059Uk3BXxNq5UFRr8t4g==
   dependencies:
     "@types/js-cookie" "^2.x.x"
     ahooks-v3-count "^1.0.0"
@@ -3901,9 +3901,9 @@ dayjs@1.x:
   integrity sha512-F4LXf1OeU9hrSYRPTTj/6FbO4HTjPKXvEIC1P2kcnFurViINCVk3ZV0xAS3XVx9MkMsXbbqlK6hjseaYbgKEHw==
 
 dayjs@^1.9.1:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.3.tgz#4754eb694a624057b9ad2224b67b15d552589258"
-  integrity sha512-xxwlswWOlGhzgQ4TKzASQkUhqERI3egRNqgV4ScR8wlANA/A9tZ7miXa44vTTKEq5l7vWoL5G57bG3zA+Kow0A==
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.4.tgz#3b3c10ca378140d8917e06ebc13a4922af4f433e"
+  integrity sha512-Zj/lPM5hOvQ1Bf7uAvewDaUcsJoI6JmNqmHhHl3nyumwe0XHwt8sWdOVAPACJzCebL8gQCi+K49w7iKWnGwX9g==
 
 debug@2.6.9, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
