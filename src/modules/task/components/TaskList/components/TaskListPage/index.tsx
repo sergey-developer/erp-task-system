@@ -7,7 +7,11 @@ import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
 
 import FilterTag from 'components/FilterTag'
-import { FilterTypeEnum } from 'modules/task/components/TaskList/constants/enums'
+import {
+  FastFilterEnum,
+  FilterTypeEnum,
+  SortEnum,
+} from 'modules/task/components/TaskList/constants/enums'
 import useFastFilterList from 'modules/task/components/TaskList/hooks/useFastFilterList'
 import useGetTaskList from 'modules/task/components/TaskList/hooks/useGetTaskList'
 import {
@@ -15,7 +19,6 @@ import {
   TaskListItemModel,
 } from 'modules/task/components/TaskList/models'
 import TaskDetails from 'modules/task/components/TaskView/components/TaskDetailsContainer'
-import { FastFilterEnum, SortEnum } from 'modules/task/constants/enums'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { GetComponentProps } from 'rc-table/lib/interface'
 import { MaybeNull } from 'shared/interfaces/utils'

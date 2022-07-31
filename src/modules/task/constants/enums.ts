@@ -1,11 +1,3 @@
-export enum FastFilterEnum {
-  All = 'ALL',
-  Free = 'FREE',
-  Mine = 'MINE',
-  Overdue = 'OVERDUE',
-  Closed = 'CLOSED',
-}
-
 export enum TaskStatusEnum {
   New = 'NEW',
   Appointed = 'APPOINTED',
@@ -15,13 +7,6 @@ export enum TaskStatusEnum {
   InReclassification = 'IN_RECLASSIFICATION',
   Returned = 'RETURNED',
   Closed = 'CLOSED',
-}
-
-export enum SortEnum {
-  ByCreatedDateAsc = 'created_at',
-  ByCreatedDateDesc = '-created_at',
-  ByOlaAsc = 'ola_next_breach_time',
-  ByOlaDesc = '-ola_next_breach_time',
 }
 
 export enum TaskCommentTypeEnum {
@@ -78,7 +63,7 @@ export enum SuspendReasonEnum {
   NoAnswer = 'NO_ANSWER',
   ByInitiatorDemand = 'BY_INITIATOR_DEMAND',
   NoFacilities = 'NO_FACILITIES',
-  AwaitingConfimation = 'AWAITING_CONFIMATION',
+  AwaitingConfirmation = 'AWAITING_CONFIRMATION',
   TransferToExternal = 'TRANSFER_TO_EXTERNAL',
   AwaitingByInitiatorAgreement = 'AWAITING_BY_INITIATOR_AGREEMENT',
   RequiredApproval = 'REQUIRED_APPROVAL',
