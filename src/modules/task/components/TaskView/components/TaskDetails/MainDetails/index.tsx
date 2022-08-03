@@ -2,11 +2,10 @@ import { Col, Row, Typography } from 'antd'
 import moment from 'moment'
 import React, { FC } from 'react'
 
-import { BaseType as TypographyType } from 'antd/lib/typography/Base'
 import Space from 'components/Space'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
+import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import { MaybeUndefined } from 'shared/interfaces/utils'
 import formatDate from 'shared/utils/date/formatDate'
 
 import { DetailContainerStyled } from '../styles'
@@ -21,6 +20,7 @@ type MainDetailsProps = Pick<
   | 'address'
   | 'contactService'
   | 'olaNextBreachTime'
+  | 'olaStatus'
 >
 
 const MainDetails: FC<MainDetailsProps> = ({
@@ -31,6 +31,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   address,
   contactService,
   olaNextBreachTime,
+  olaStatus,
 }) => {
   const renderOlaNextBreachTime = () => {
     const currentMoment = moment()
@@ -66,9 +67,6 @@ const MainDetails: FC<MainDetailsProps> = ({
       DATE_TIME_FORMAT,
     )
 
-    const olaNextBreachTimeTextType: MaybeUndefined<TypographyType> =
-      isTaskOverdue ? 'danger' : isTaskHalfTimeWasSpent ? 'warning' : undefined
-
     const olaNextBreachTimeText = `до ${formattedOlaNextBreachTime}${
       olaNextBreachTimeAndCurrentMomentDiff
         ? ` (${olaNextBreachTimeAndCurrentMomentDiff})`
@@ -76,7 +74,7 @@ const MainDetails: FC<MainDetailsProps> = ({
     }`
 
     return (
-      <Typography.Text type={olaNextBreachTimeTextType}>
+      <Typography.Text type={getOlaStatusTextType(olaStatus)}>
         {olaNextBreachTimeText}
       </Typography.Text>
     )

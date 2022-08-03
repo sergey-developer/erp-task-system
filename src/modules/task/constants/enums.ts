@@ -9,6 +9,12 @@ export enum TaskStatusEnum {
   Closed = 'CLOSED',
 }
 
+export enum TaskOlaStatusEnum {
+  Expired = 'EXPIRED',
+  HalfExpired = 'HALF_EXPIRED',
+  NotExpired = 'NOT_EXPIRED',
+}
+
 export enum TaskCommentTypeEnum {
   Common = 'COMMON',
   Awaiting = 'AWAITING',

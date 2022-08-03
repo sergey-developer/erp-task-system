@@ -45,6 +45,7 @@ type TaskDetailsProps = {
       | 'techResolution'
       | 'userResolution'
       | 'description'
+      | 'olaStatus'
     >
   >
   taskIsLoading: boolean
@@ -165,6 +166,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               name={details.name}
               address={details.address}
               contactService={details.contactService}
+              olaStatus={details.olaStatus}
             />
 
             <DividerStyled />

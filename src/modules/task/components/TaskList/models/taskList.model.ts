@@ -1,6 +1,7 @@
 import {
   ResolutionCodeEnum,
   SuspendReasonEnum,
+  TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/enums'
@@ -29,6 +30,7 @@ export type TaskListItemModel = {
   isMass: boolean
   isOlaBreached: boolean
   olaNextBreachTime?: MaybeNull<string>
+  olaStatus: TaskOlaStatusEnum
   parentExternalId?: string
   parentInteractionExternalId?: string
   parentInteractionPortalExternalId?: string

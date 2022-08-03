@@ -2,6 +2,7 @@ import { TaskDetailsWorkGroupModel } from 'modules/task/components/TaskView/mode
 import {
   ResolutionCodeEnum,
   SuspendReasonEnum,
+  TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/enums'
@@ -28,6 +29,7 @@ export type TaskDetailsModel = {
   recordId: string
   isSlaBreached: boolean
   status: TaskStatusEnum
+  olaStatus: TaskOlaStatusEnum
   supportingService: string
   title: string
   name: string
