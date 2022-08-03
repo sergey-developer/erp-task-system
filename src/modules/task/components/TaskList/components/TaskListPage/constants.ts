@@ -12,8 +12,6 @@ export const DEFAULT_PAGE_LIMIT = 15
 
 export const DEFAULT_SEARCH_FIELD: keyof SearchQueries = 'searchByTitle'
 
-export const DEFAULT_FAST_FILTER: FastFilterEnum = FastFilterEnum.All
-
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 
 export const fastFilterNamesDict: Record<FastFilterEnum, string> = {
