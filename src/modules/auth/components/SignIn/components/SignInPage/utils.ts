@@ -1,16 +1,17 @@
 import { LoginMutationArgsModel } from 'modules/auth/models'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import { MaybeNull } from 'shared/interfaces/utils'
+import { ErrorResponse } from 'shared/services/api'
 
-export const getError = (
+export const getLoginError = (
   error: ErrorResponse<LoginMutationArgsModel>,
-): string => {
+): MaybeNull<string> => {
   switch (error.status) {
     case HttpStatusCodeEnum.BadRequest:
       return 'Неверный запрос'
     case HttpStatusCodeEnum.Unauthorized:
       return 'Неверный логин и/или пароль'
     default:
-      return getErrorDetail(error)
+      return null
   }
 }

@@ -8,8 +8,10 @@ export type ErrorValidation<T> = {
   [key in keyof T]: string[]
 }
 
+export type DetailError = string[]
+
 export type Error<T> = ErrorValidation<T> & {
-  detail?: string
+  detail?: DetailError
 }
 
 export type ErrorResponse<T = {}> = {

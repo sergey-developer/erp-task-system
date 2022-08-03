@@ -13,8 +13,9 @@ import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 import TaskResolutionModal, {
   TaskResolutionModalProps,
@@ -109,8 +110,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       try {
         await resolveTask({ taskId: details!.id, ...values }).unwrap()
         onTaskResolved()
-      } catch (error) {
-        showErrorNotification(error)
+      } catch (exception) {
+        const error = exception as ErrorResponse
+        const errorDetail = getErrorDetail(error)
+        showMultipleErrorNotification(errorDetail)
       }
     },
     [details, onTaskResolved, resolveTask],
@@ -126,11 +129,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         closeTaskSecondLineModal()
         onClose()
         refetchTaskList()
-      } catch (error) {
-        const errorMessage = getTransferTaskSecondLineError(
-          error as ErrorResponse,
-        )
-        showErrorNotification(errorMessage)
+      } catch (exception) {
+        const error = exception as ErrorResponse
+        const transferTaskSecondLineError =
+          getTransferTaskSecondLineError(error)
+
+        transferTaskSecondLineError
+          ? showErrorNotification(transferTaskSecondLineError)
+          : showMultipleErrorNotification(getErrorDetail(error))
       }
     },
     [details, onClose, refetchTaskList, updateTaskWorkGroup],

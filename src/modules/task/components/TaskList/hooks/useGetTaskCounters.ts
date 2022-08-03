@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 
 import { useGetTaskCountersQuery } from 'modules/task/services/taskApi.service'
 import useUserRole from 'modules/user/hooks/useUserRole'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 const useGetTaskCounters = () => {
   const {
@@ -26,8 +27,9 @@ const useGetTaskCounters = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as any
-    showErrorNotification(error.data)
+    const error = state.error as ErrorResponse
+    const errorDetail = getErrorDetail(error)
+    showMultipleErrorNotification(errorDetail)
   }, [state.error, state.isError])
 
   return state

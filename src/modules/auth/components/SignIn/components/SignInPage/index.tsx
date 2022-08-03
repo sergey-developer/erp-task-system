@@ -11,6 +11,7 @@ import authLocalStorageService from 'modules/auth/services/authLocalStorage.serv
 import parseJwt from 'modules/auth/utils/parseJwt'
 import { APP_NAME } from 'shared/constants/common'
 import useDispatch from 'shared/hooks/useDispatch'
+import { getErrorDetail } from 'shared/services/api'
 
 import { SignInFormFields } from './interfaces'
 import {
@@ -19,15 +20,22 @@ import {
   FormTitleStyled,
   PageTitleStyled,
 } from './styles'
-import { getError } from './utils'
+import { getLoginError } from './utils'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
 const SignInPage: FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const [login, { isLoading, error }] =
+  const [login, { isLoading, error: loginErrorResponse }] =
     useLoginMutation<IUseLoginMutationResult>()
+
+  const loginError = loginErrorResponse
+    ? getLoginError(loginErrorResponse)
+    : loginErrorResponse
+
+  const errorDetails =
+    !loginError && loginErrorResponse ? getErrorDetail(loginErrorResponse) : []
 
   const onFinish = async (fields: SignInFormFields) => {
     // todo: добавить обработку ошибок
@@ -44,8 +52,14 @@ const SignInPage: FC = () => {
       <PageTitleStyled level={4}>{APP_NAME}</PageTitleStyled>
       <FormTitleStyled level={5}>Авторизация</FormTitleStyled>
 
-      {error && (
-        <Typography.Text type='danger'>{getError(error)}</Typography.Text>
+      {loginError ? (
+        <Typography.Text type='danger'>{loginError}</Typography.Text>
+      ) : (
+        <Space direction='vertical'>
+          {errorDetails.map((errorMessage) => (
+            <Typography.Text type='danger'>{errorMessage}</Typography.Text>
+          ))}
+        </Space>
       )}
 
       <FormStyled<SignInFormFields>

@@ -22,6 +22,7 @@ import TaskDetails from 'modules/task/components/TaskView/components/TaskDetails
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { GetComponentProps } from 'rc-table/lib/interface'
 import { MaybeNull } from 'shared/interfaces/utils'
+import isArray from 'shared/utils/array/isArray'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskTable from '../TaskTable'
@@ -150,7 +151,7 @@ const TaskListPage: FC = () => {
   const handleChangeTable = useCallback<
     NonNullable<TableProps<TaskListItemModel>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order = SortDirectionsEnum.ascend } = Array.isArray(sorter)
+    const { field, order = SortDirectionsEnum.ascend } = isArray(sorter)
       ? sorter[0]
       : sorter
 
