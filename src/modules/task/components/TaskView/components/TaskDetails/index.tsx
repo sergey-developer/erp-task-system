@@ -7,7 +7,7 @@ import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthentica
 import useUpdateTaskAssignee from 'modules/task/components/TaskView/hooks/useUpdateTaskAssignee'
 import useUpdateTaskWorkGroup from 'modules/task/components/TaskView/hooks/useUpdateTaskWorkGroup'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
-import getTransferTaskSecondLineError from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineError'
+import getTransferTaskSecondLineErrors from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineErrors'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
@@ -130,13 +130,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         onClose()
         refetchTaskList()
       } catch (exception) {
-        const error = exception as ErrorResponse
-        const transferTaskSecondLineError =
-          getTransferTaskSecondLineError(error)
-
-        transferTaskSecondLineError
-          ? showErrorNotification(transferTaskSecondLineError)
-          : showMultipleErrorNotification(getErrorDetail(error))
+        const errors = getTransferTaskSecondLineErrors(
+          exception as ErrorResponse,
+        )
+        showMultipleErrorNotification(errors)
       }
     },
     [details, onClose, refetchTaskList, updateTaskWorkGroup],
