@@ -20,6 +20,7 @@ import showMultipleErrorNotification from 'shared/utils/notifications/showMultip
 import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
+import { TaskResolutionFormErrors } from '../TaskResolutionModal/interfaces'
 import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
@@ -106,14 +107,22 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const handleResolutionSubmit = useCallback<
     TaskResolutionModalProps['onResolutionSubmit']
   >(
-    async (values) => {
+    async (values, setFields) => {
       try {
         await resolveTask({ taskId: details!.id, ...values }).unwrap()
         onTaskResolved()
       } catch (exception) {
-        const error = exception as ErrorResponse
+        const error = exception as ErrorResponse<TaskResolutionFormErrors>
         const errorDetail = getErrorDetail(error)
         showMultipleErrorNotification(errorDetail)
+
+        setFields([
+          {
+            name: 'techResolution',
+            errors: error.data.techResolution,
+          },
+          { name: 'userResolution', errors: error.data.userResolution },
+        ])
       }
     },
     [details, onTaskResolved, resolveTask],

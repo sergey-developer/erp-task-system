@@ -4,14 +4,14 @@ import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 
 import { MaybeUndefined } from 'shared/interfaces/utils'
 
-export type ErrorValidation<T> = {
-  [key in keyof T]: string[]
+export type ValidationErrors = Array<string>
+
+export type FieldsErrors<T> = {
+  [key in keyof T]: ValidationErrors
 }
 
-export type DetailError = string[]
-
-export type Error<T> = ErrorValidation<T> & {
-  detail?: DetailError
+export type Error<T> = FieldsErrors<T> & {
+  detail?: ValidationErrors
 }
 
 export type ErrorResponse<T = {}> = {
