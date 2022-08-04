@@ -1,7 +1,8 @@
-import { Button, Form, Input, Typography } from 'antd'
+import { Button, Form, Input } from 'antd'
 import React, { FC } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+import ErrorList from 'components/Error/ErrorList'
 import Space from 'components/Space'
 import { RoutesEnum } from 'configs/routes'
 import { login as loginAction } from 'modules/auth/authSlice'
@@ -11,7 +12,6 @@ import authLocalStorageService from 'modules/auth/services/authLocalStorage.serv
 import parseJwt from 'modules/auth/utils/parseJwt'
 import { APP_NAME } from 'shared/constants/common'
 import useDispatch from 'shared/hooks/useDispatch'
-import { getErrorDetail } from 'shared/services/api'
 
 import { SignInFormFields } from './interfaces'
 import {
@@ -20,7 +20,7 @@ import {
   FormTitleStyled,
   PageTitleStyled,
 } from './styles'
-import { getLoginError } from './utils'
+import getLoginErrors from './utils/getLoginErrors'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
 const SignInPage: FC = () => {
@@ -30,12 +30,7 @@ const SignInPage: FC = () => {
   const [login, { isLoading, error: loginErrorResponse }] =
     useLoginMutation<IUseLoginMutationResult>()
 
-  const loginError = loginErrorResponse
-    ? getLoginError(loginErrorResponse)
-    : loginErrorResponse
-
-  const errorDetails =
-    !loginError && loginErrorResponse ? getErrorDetail(loginErrorResponse) : []
+  const loginErrors = getLoginErrors(loginErrorResponse)
 
   const onFinish = async (fields: SignInFormFields) => {
     // todo: добавить обработку ошибок
@@ -52,15 +47,7 @@ const SignInPage: FC = () => {
       <PageTitleStyled level={4}>{APP_NAME}</PageTitleStyled>
       <FormTitleStyled level={5}>Авторизация</FormTitleStyled>
 
-      {loginError ? (
-        <Typography.Text type='danger'>{loginError}</Typography.Text>
-      ) : (
-        <Space direction='vertical'>
-          {errorDetails.map((errorMessage) => (
-            <Typography.Text type='danger'>{errorMessage}</Typography.Text>
-          ))}
-        </Space>
-      )}
+      <ErrorList errors={loginErrors} />
 
       <FormStyled<SignInFormFields>
         onFinish={onFinish}
