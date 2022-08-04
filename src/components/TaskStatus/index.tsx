@@ -1,7 +1,8 @@
-import { Badge } from 'antd'
+import { Badge, BadgeProps } from 'antd'
 import React, { FC } from 'react'
 
 import { TaskStatusEnum } from 'modules/task/constants/enums'
+import isString from 'shared/utils/string/isString'
 
 import { iconOrBadgeStatusMap } from './constants'
 import { BadgeWrapperStyled } from './styles'
@@ -13,11 +14,11 @@ type TaskStatusProps = {
 
 const TaskStatus: FC<TaskStatusProps> = ({ value, status: taskStatus }) => {
   const status = iconOrBadgeStatusMap[taskStatus]
-  const isBadge = typeof status === 'string'
+  const isBadge = isString(status)
 
   return value || status ? (
     <BadgeWrapperStyled isBadge={isBadge}>
-      {isBadge ? <Badge status={status} /> : status}
+      {isBadge ? <Badge status={status as BadgeProps['status']} /> : status}
 
       {value && <div>{value}</div>}
     </BadgeWrapperStyled>
