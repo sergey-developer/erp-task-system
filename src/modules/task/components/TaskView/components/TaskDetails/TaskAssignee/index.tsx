@@ -6,7 +6,7 @@ import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
-import permissions from 'modules/task/components/TaskView/permissions'
+import assigneePermissions from 'modules/task/components/TaskView/permissions/assignee.permissions'
 import { ASSIGNEE_WORD } from 'modules/task/constants/words'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import getFullUserName from 'modules/user/utils/getFullUserName'
@@ -87,7 +87,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         </Button>
       </Space>
 
-      <Permissions config={permissions.assignee}>
+      <Permissions config={assigneePermissions}>
         {({ canView, canEdit }) =>
           canView && !canEdit ? (
             assignee ? (

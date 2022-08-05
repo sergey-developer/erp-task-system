@@ -6,7 +6,7 @@ export type UserPermissionConfig = Partial<
   Record<UserRolesEnum, Array<PermissionsEnum>>
 >
 
-export type ElementPermissionConfig<K extends string> = Record<
+export type ObjectPermissionConfig<K extends string> = Record<
   K,
   UserPermissionConfig
 >
