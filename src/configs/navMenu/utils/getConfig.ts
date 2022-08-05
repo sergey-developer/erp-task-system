@@ -1,4 +1,4 @@
-import UserRolesEnum from 'shared/constants/roles'
+import { UserRolesEnum } from 'shared/constants/roles'
 
 import { NavMenuItem } from '../interfaces'
 import navMenuAdminConfig from '../navMenu.admin.config'

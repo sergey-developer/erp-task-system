@@ -2,12 +2,12 @@ import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/react'
 import { BaseQueryApi } from '@reduxjs/toolkit/src/query/baseQueryTypes'
 import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { Keys, MaybeUndefined } from 'shared/interfaces/utils'
 
 export type ValidationErrors = Array<string>
 
 export type FieldsErrors<T> = {
-  [key in keyof T]: ValidationErrors
+  [key in Keys<T>]: ValidationErrors
 }
 
 export type Error<T> = FieldsErrors<T> & {

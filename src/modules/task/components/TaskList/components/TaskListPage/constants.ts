@@ -5,16 +5,17 @@ import {
   SortEnum,
 } from 'modules/task/components/TaskList/constants/enums'
 import { TaskListItemModel } from 'modules/task/components/TaskList/models'
+import { Keys, StringMap } from 'shared/interfaces/utils'
 
 import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
 
 export const DEFAULT_PAGE_LIMIT = 15
 
-export const DEFAULT_SEARCH_FIELD: keyof SearchQueries = 'searchByTitle'
+export const DEFAULT_SEARCH_FIELD: Keys<SearchQueries> = 'searchByTitle'
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 
-export const fastFilterNamesDict: Record<FastFilterEnum, string> = {
+export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
   [FastFilterEnum.All]: 'Все',
   [FastFilterEnum.Mine]: 'Мои',
   [FastFilterEnum.Overdue]: 'Просроченные',

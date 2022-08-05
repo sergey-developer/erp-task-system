@@ -3,7 +3,7 @@ import { Moment } from 'moment'
 import { FilterTagProps } from 'components/FilterTag'
 import { FastFilterEnum } from 'modules/task/components/TaskList/constants/enums'
 import { TaskStatusEnum } from 'modules/task/constants/enums'
-import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
+import { Keys, MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 
 export type FilterListItem = Pick<FilterTagProps, 'text' | 'amount'> & {
   value: FastFilterEnum
@@ -32,7 +32,7 @@ export type TaskIdFilterQueries = {
 
 export type ExtendedFilterFormFields = {
   creationDateRange: MaybeNull<[Moment, Moment]>
-  searchField: keyof SearchQueries
+  searchField: Keys<SearchQueries>
   searchValue: string
   status: TaskStatusEnum[]
   workGroupId: MaybeUndefined<string>

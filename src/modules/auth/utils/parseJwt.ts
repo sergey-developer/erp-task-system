@@ -1,6 +1,6 @@
 import { camelizeKeys } from 'humps'
 
-import UserRolesEnum from 'shared/constants/roles'
+import { UserRolesEnum } from 'shared/constants/roles'
 
 export type JwtPayload = {
   userId: number
