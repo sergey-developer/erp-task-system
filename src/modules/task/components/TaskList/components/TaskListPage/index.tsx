@@ -200,6 +200,7 @@ const TaskListPage: FC = () => {
 
   const handleRefetchTaskList = () => {
     refetchTaskList()
+    handleCloseTaskDetails()
     refetchFastFilterList()
   }
 
