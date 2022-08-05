@@ -5,14 +5,11 @@ import {
 } from 'shared/interfaces/permissions'
 import getPermissionsMap from 'shared/utils/permissions/getPermissionsMap'
 
-const useUserPermissionConfig = (
-  config: UserPermissionConfig,
-): PermissionsMap => {
+const useUserPermissions = (config: UserPermissionConfig): PermissionsMap => {
   const user = useAuthenticatedUser()
-  if (!user) return {}
+  const permissions = user ? config[user.role] : []
 
-  const permissions = config[user.role] || []
   return getPermissionsMap(permissions)
 }
 
-export default useUserPermissionConfig
+export default useUserPermissions
