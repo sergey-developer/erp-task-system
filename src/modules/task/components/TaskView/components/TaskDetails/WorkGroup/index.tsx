@@ -1,13 +1,13 @@
 import { useBoolean } from 'ahooks'
-import { Button, Typography } from 'antd'
+import { Button, Space, Typography } from 'antd'
 import _debounce from 'lodash/debounce'
 import React, { FC } from 'react'
 
-import Space from 'components/Space'
+import Permissions from 'components/Permissions'
 import TaskSecondLineModal from 'modules/task/components/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
+import workGroupPermissions from 'modules/task/components/TaskView/permissions/workGroup.permissions'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
-import useUserRole from 'modules/user/hooks/useUserRole'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { DOUBLE_CLICK_DEBOUNCE_TIME } from 'shared/constants/common'
 import { ErrorResponse } from 'shared/services/api'
@@ -45,24 +45,9 @@ const WorkGroup: FC<WorkGroupProps> = ({
     { setTrue: openTaskSecondLineModal, setFalse: closeTaskSecondLineModal },
   ] = useBoolean(false)
 
-  const {
-    isFirstLineSupportRole,
-    isSeniorEngineerRole,
-    isHeadOfDepartmentRole,
-  } = useUserRole()
-
   const taskStatus = useTaskStatus(status)
 
   const hasWorkGroup: boolean = !!workGroup
-
-  const firstLineSupportNotHasWorkGroup: boolean =
-    !hasWorkGroup && isFirstLineSupportRole
-
-  const seniorEngineerHasWorkGroup: boolean =
-    hasWorkGroup && isSeniorEngineerRole
-
-  const headOfDepartmentHasWorkGroup: boolean =
-    hasWorkGroup && isHeadOfDepartmentRole
 
   const handleOpenTaskSecondLineModal = _debounce(() => {
     openTaskSecondLineModal()
@@ -73,21 +58,6 @@ const WorkGroup: FC<WorkGroupProps> = ({
       )
     }
   }, DOUBLE_CLICK_DEBOUNCE_TIME)
-
-  const changeTaskLineButton = firstLineSupportNotHasWorkGroup ? (
-    <Button
-      type='link'
-      onClick={handleOpenTaskSecondLineModal}
-      loading={transferTaskIsLoading}
-      disabled={
-        !(taskStatus.isNew || taskStatus.isInProgress || taskStatus.isAwaiting)
-      }
-    >
-      Перевести на II линию
-    </Button>
-  ) : seniorEngineerHasWorkGroup || headOfDepartmentHasWorkGroup ? (
-    <Button type='link'>Вернуть на I линию</Button>
-  ) : null
 
   const handleTransferTask = async (
     workGroup: WorkGroupListItemModel['id'],
@@ -101,7 +71,34 @@ const WorkGroup: FC<WorkGroupProps> = ({
         <Space size='large'>
           <Text type='secondary'>Рабочая группа</Text>
 
-          {changeTaskLineButton}
+          <Permissions config={workGroupPermissions.transferFirstLine}>
+            {() =>
+              hasWorkGroup ? (
+                <Button type='link'>Вернуть на I линию</Button>
+              ) : null
+            }
+          </Permissions>
+
+          <Permissions config={workGroupPermissions.transferSecondLine}>
+            {() =>
+              hasWorkGroup ? null : (
+                <Button
+                  type='link'
+                  onClick={handleOpenTaskSecondLineModal}
+                  loading={transferTaskIsLoading}
+                  disabled={
+                    !(
+                      taskStatus.isNew ||
+                      taskStatus.isInProgress ||
+                      taskStatus.isAwaiting
+                    )
+                  }
+                >
+                  Перевести на II линию
+                </Button>
+              )
+            }
+          </Permissions>
         </Space>
 
         <Text>{workGroup?.name || 'I линия поддержки'}</Text>

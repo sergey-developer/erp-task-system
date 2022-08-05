@@ -26,7 +26,7 @@ const Permissions: FC<PermissionsProps> = ({
 }
 
 Permissions.defaultProps = {
-  hideWhenViewForbidden: false,
+  hideWhenViewForbidden: true,
 }
 
 export default Permissions
