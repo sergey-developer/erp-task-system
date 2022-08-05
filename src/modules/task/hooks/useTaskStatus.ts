@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
 import { TaskStatusEnum } from 'modules/task/constants/enums'
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { Keys, MaybeUndefined } from 'shared/interfaces/utils'
 
 type UseTaskStatusReturnType = Record<
-  `is${keyof typeof TaskStatusEnum}`,
+  `is${Keys<typeof TaskStatusEnum>}`,
   boolean
 >
 

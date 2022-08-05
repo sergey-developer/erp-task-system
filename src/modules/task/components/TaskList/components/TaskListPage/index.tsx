@@ -21,7 +21,7 @@ import {
 import TaskDetails from 'modules/task/components/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { GetComponentProps } from 'rc-table/lib/interface'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { Keys, MaybeNull } from 'shared/interfaces/utils'
 import isArray from 'shared/utils/array/isArray'
 
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
@@ -165,7 +165,7 @@ const TaskListPage: FC = () => {
       newQueryArgs.sort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
           ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
-              key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
+              key as Keys<typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS>
             ]
           : undefined
     }

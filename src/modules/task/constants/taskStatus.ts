@@ -1,6 +1,8 @@
+import { StringMap } from 'shared/interfaces/utils'
+
 import { TaskStatusEnum } from './enums'
 
-export const taskStatusDict: Record<TaskStatusEnum, string> = {
+export const taskStatusDict: StringMap<TaskStatusEnum> = {
   [TaskStatusEnum.New]: 'Ожидает выполнения',
   [TaskStatusEnum.Appointed]: 'Назначено',
   [TaskStatusEnum.InProgress]: 'В работе',
