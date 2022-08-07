@@ -1,5 +1,5 @@
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { useGetWorkGroupListQuery } from 'modules/workGroup/workGroupApi.service'
+import { useGetWorkGroupListQuery } from 'modules/workGroup/services/workGroupApi.service'
 
 import { workGroupListApiPermissions } from '../permissions/workGroupList.permissions'
 
