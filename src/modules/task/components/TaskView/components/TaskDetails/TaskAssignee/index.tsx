@@ -87,7 +87,10 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         </Button>
       </Space>
 
-      <Permissions config={assigneePermissions} hideWhenViewForbidden={false}>
+      <Permissions
+        config={assigneePermissions.select}
+        hideWhenViewForbidden={false}
+      >
         {({ canView, canEdit }) =>
           canView && !canEdit ? (
             assignee ? (

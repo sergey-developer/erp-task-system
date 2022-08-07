@@ -1,21 +1,13 @@
-import useUserRole from 'modules/user/hooks/useUserRole'
+import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { useGetWorkGroupListQuery } from 'modules/workGroup/workGroupApi.service'
 
-const useGetWorkGroupList = () => {
-  const {
-    isFirstLineSupportRole,
-    isSeniorEngineerRole,
-    isHeadOfDepartmentRole,
-  } = useUserRole()
+import getWorkGroupListPermissions from '../permissions/getWorkGroupList.permissions'
 
-  const shouldSkip: boolean = !(
-    isFirstLineSupportRole ||
-    isSeniorEngineerRole ||
-    isHeadOfDepartmentRole
-  )
+const useGetWorkGroupList = () => {
+  const permissions = useUserPermissions(getWorkGroupListPermissions)
 
   return useGetWorkGroupListQuery(null, {
-    skip: shouldSkip,
+    skip: !permissions.canGet,
   })
 }
 

@@ -3,7 +3,7 @@ import { UserRolesEnum } from 'shared/constants/roles'
 import { ObjectPermissionConfig } from 'shared/interfaces/permissions'
 
 const workGroupPermissions: ObjectPermissionConfig<
-  'transferSecondLine' | 'transferFirstLine'
+  'transferSecondLine' | 'transferFirstLine' | 'update'
 > = {
   transferFirstLine: {
     [UserRolesEnum.SeniorEngineer]: [PermissionsEnum.CanView],
@@ -11,6 +11,9 @@ const workGroupPermissions: ObjectPermissionConfig<
   },
   transferSecondLine: {
     [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanView],
+  },
+  update: {
+    [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanUpdate],
   },
 }
 

@@ -5,30 +5,20 @@ import {
   UseGetTaskCommentListQueryReturnType,
   useGetTaskCommentListQuery,
 } from 'modules/task/services/taskCommentApi.service'
-import useUserRole from 'modules/user/hooks/useUserRole'
+import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
+import getTaskCommentListPermissions from '../permissions/getTaskCommentList.permissions'
+
 const useGetTaskCommentList = (
   id: GetTaskCommentListQueryArgsModel,
 ): UseGetTaskCommentListQueryReturnType => {
-  const {
-    isEngineerRole,
-    isSeniorEngineerRole,
-    isHeadOfDepartmentRole,
-    isFirstLineSupportRole,
-  } = useUserRole()
-
-  const shouldSkip: boolean = !(
-    isEngineerRole ||
-    isSeniorEngineerRole ||
-    isHeadOfDepartmentRole ||
-    isFirstLineSupportRole
-  )
+  const permissions = useUserPermissions(getTaskCommentListPermissions)
 
   const state = useGetTaskCommentListQuery(id, {
-    skip: shouldSkip,
+    skip: !permissions.canGet,
   })
 
   useEffect(() => {
