@@ -14,6 +14,7 @@ import React, { FC } from 'react'
 
 import Permissions from 'components/Permissions'
 import TaskStatus from 'components/TaskStatus'
+import { extendedFilterPermissions } from 'modules/task/components/TaskList/permissions/extendedFilter.permissions'
 import { TaskStatusEnum } from 'modules/task/constants/enums'
 import { taskStatusDict } from 'modules/task/constants/taskStatus'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/components/WorkGroupList/constants'
@@ -23,7 +24,6 @@ import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
 import { searchQueriesDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
-import workGroupPermissions from './permissions/workGroup.permissions'
 import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
 
 export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
@@ -100,7 +100,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           </Form.Item>
         </FilterBlock>
 
-        <Permissions config={workGroupPermissions} hideWhenViewForbidden>
+        <Permissions config={extendedFilterPermissions.workGroup}>
           {() => (
             <FilterBlock withDivider>
               <FilterBlockLabel

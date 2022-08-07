@@ -301,13 +301,15 @@ const TaskListPage: FC = () => {
         </ColFlexStyled>
       </RowWrapStyled>
 
-      <FilterDrawer
-        form={extendedFilterForm}
-        initialValues={initialExtendedFilterFormValues}
-        onClose={toggleFilterDrawer}
-        onSubmit={handleFilterDrawerSubmit}
-        visible={isFilterDrawerVisible}
-      />
+      {isFilterDrawerVisible && (
+        <FilterDrawer
+          form={extendedFilterForm}
+          initialValues={initialExtendedFilterFormValues}
+          onClose={toggleFilterDrawer}
+          onSubmit={handleFilterDrawerSubmit}
+          visible={isFilterDrawerVisible}
+        />
+      )}
     </>
   )
 }
