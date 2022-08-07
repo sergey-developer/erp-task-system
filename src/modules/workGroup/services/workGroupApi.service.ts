@@ -9,6 +9,7 @@ const workGroupApiService = api.injectEndpoints({
         url: '/work-groups',
         method: HttpMethodEnum.GET,
       }),
+      keepUnusedDataFor: 30,
     }),
   }),
   overrideExisting: false,
