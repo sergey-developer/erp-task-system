@@ -16,14 +16,6 @@ export const DEFAULT_FAST_FILTER: FastFilterEnum = FastFilterEnum.All
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 
-export const fastFilterNamesDict: Record<FastFilterEnum, string> = {
-  [FastFilterEnum.All]: 'Все',
-  [FastFilterEnum.Mine]: 'Мои',
-  [FastFilterEnum.Overdue]: 'Просроченные',
-  [FastFilterEnum.Free]: 'Свободные',
-  [FastFilterEnum.Closed]: 'Закрытые',
-}
-
 export enum SortDirectionsEnum {
   ascend = 'ascend',
   descend = 'descend',
