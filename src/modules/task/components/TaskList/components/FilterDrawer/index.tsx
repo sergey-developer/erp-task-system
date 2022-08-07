@@ -10,18 +10,16 @@ import {
   Space,
 } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
+import _isEqual from 'lodash/isEqual'
 import React, { FC } from 'react'
 
 import Permissions from 'components/Permissions'
-import TaskStatus from 'components/TaskStatus'
 import { extendedFilterPermissions } from 'modules/task/components/TaskList/permissions/extendedFilter.permissions'
-import { TaskStatusEnum } from 'modules/task/constants/enums'
-import { taskStatusDict } from 'modules/task/constants/taskStatus'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/components/WorkGroupList/constants'
 import useGetWorkGroupList from 'modules/workGroup/components/WorkGroupList/hooks/useGetWorkGroupList'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
-import { searchQueriesDictionary } from './constants'
+import { checkboxStatusOptions, searchQueriesDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
@@ -32,19 +30,26 @@ export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
   onSubmit: (result: ExtendedFilterFormFields) => void
 }
 
-const checkboxStatusOptions = Object.values(TaskStatusEnum)
-  .filter((status) => status !== TaskStatusEnum.Closed)
-  .map((taskStatus) => ({
-    label: (
-      <TaskStatus status={taskStatus} value={taskStatusDict[taskStatus]} />
-    ),
-    value: taskStatus,
-  }))
-
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
   const { form, initialValues, onClose, onSubmit, visible } = props
 
   const breakpoints = useBreakpoint()
+
+  const statusValue = Form.useWatch('status', form)
+  const creationDateRangeValue = Form.useWatch('creationDateRange', form)
+  const workGroupIdValue = Form.useWatch('workGroupId', form)
+  const searchFieldValue = Form.useWatch('searchField', form)
+  const searchValueValue = Form.useWatch('searchValue', form)
+
+  const formValues: ExtendedFilterFormFields = {
+    searchValue: searchValueValue,
+    status: statusValue,
+    creationDateRange: creationDateRangeValue,
+    workGroupId: workGroupIdValue,
+    searchField: searchFieldValue,
+  }
+
+  const valuesNotChanged = _isEqual(initialValues, formValues)
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
@@ -59,9 +64,15 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
       footer={
         <Row justify='end'>
           <Space>
-            <Button onClick={handleResetAll}>Сбросить все</Button>
+            <Button onClick={handleResetAll} disabled={valuesNotChanged}>
+              Сбросить все
+            </Button>
 
-            <Button type='primary' onClick={form.submit}>
+            <Button
+              type='primary'
+              onClick={form.submit}
+              disabled={valuesNotChanged}
+            >
               Применить
             </Button>
           </Space>
