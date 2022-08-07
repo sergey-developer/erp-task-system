@@ -1,11 +1,10 @@
 import { SorterResult } from 'antd/es/table/interface'
 
 import {
-  FastFilterEnum,
   SortEnum,
 } from 'modules/task/components/TaskList/constants/enums'
 import { TaskListItemModel } from 'modules/task/components/TaskList/models'
-import { Keys, StringMap } from 'shared/interfaces/utils'
+import { Keys } from 'shared/interfaces/utils'
 
 import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
 
@@ -14,14 +13,6 @@ export const DEFAULT_PAGE_LIMIT = 15
 export const DEFAULT_SEARCH_FIELD: Keys<SearchQueries> = 'searchByTitle'
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
-
-export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
-  [FastFilterEnum.All]: 'Все',
-  [FastFilterEnum.Mine]: 'Мои',
-  [FastFilterEnum.Overdue]: 'Просроченные',
-  [FastFilterEnum.Free]: 'Свободные',
-  [FastFilterEnum.Closed]: 'Закрытые',
-}
 
 export enum SortDirectionsEnum {
   ascend = 'ascend',
