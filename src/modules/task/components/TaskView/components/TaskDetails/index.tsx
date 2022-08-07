@@ -7,18 +7,20 @@ import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthentica
 import useUpdateTaskAssignee from 'modules/task/components/TaskView/hooks/useUpdateTaskAssignee'
 import useUpdateTaskWorkGroup from 'modules/task/components/TaskView/hooks/useUpdateTaskWorkGroup'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
-import getTransferTaskSecondLineError from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineError'
+import getTransferTaskSecondLineErrors from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineErrors'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
+import { TaskResolutionFormErrors } from '../TaskResolutionModal/interfaces'
 import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
@@ -105,12 +107,22 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const handleResolutionSubmit = useCallback<
     TaskResolutionModalProps['onResolutionSubmit']
   >(
-    async (values) => {
+    async (values, setFields) => {
       try {
         await resolveTask({ taskId: details!.id, ...values }).unwrap()
         onTaskResolved()
-      } catch (error) {
-        showErrorNotification(error)
+      } catch (exception) {
+        const error = exception as ErrorResponse<TaskResolutionFormErrors>
+        const errorDetail = getErrorDetail(error)
+        showMultipleErrorNotification(errorDetail)
+
+        setFields([
+          {
+            name: 'techResolution',
+            errors: error.data.techResolution,
+          },
+          { name: 'userResolution', errors: error.data.userResolution },
+        ])
       }
     },
     [details, onTaskResolved, resolveTask],
@@ -126,11 +138,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         closeTaskSecondLineModal()
         onClose()
         refetchTaskList()
-      } catch (error) {
-        const errorMessage = getTransferTaskSecondLineError(
-          error as ErrorResponse,
+      } catch (exception) {
+        const errors = getTransferTaskSecondLineErrors(
+          exception as ErrorResponse,
         )
-        showErrorNotification(errorMessage)
+        showMultipleErrorNotification(errors)
       }
     },
     [details, onClose, refetchTaskList, updateTaskWorkGroup],

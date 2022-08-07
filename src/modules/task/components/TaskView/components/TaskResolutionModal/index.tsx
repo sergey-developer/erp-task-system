@@ -1,13 +1,14 @@
 import {
   ButtonProps,
   Form,
+  FormInstance,
   Input,
   Modal,
   ModalProps,
   Space,
   Typography,
 } from 'antd'
-import React, { FC, useMemo } from 'react'
+import React, { FC, useCallback, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
@@ -30,7 +31,10 @@ export type TaskResolutionModalProps = Pick<
 > &
   Pick<TaskDetailsModel, 'type' | 'techResolution' | 'userResolution'> & {
     isTaskResolving: boolean
-    onResolutionSubmit: (values: TaskResolutionFormFields) => void
+    onResolutionSubmit: (
+      values: TaskResolutionFormFields,
+      setFields: FormInstance['setFields'],
+    ) => void
   }
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = (props) => {
@@ -49,7 +53,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = (props) => {
 
   const taskType = useTaskType(type)
 
-  const initialFormValues: TaskResolutionFormFields = useMemo(
+  const initialFormValues: Partial<TaskResolutionFormFields> = useMemo(
     () => ({ techResolution, userResolution }),
     [userResolution, techResolution],
   )
@@ -61,6 +65,13 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = (props) => {
       loading: isTaskResolving,
     }),
     [isTaskResolving],
+  )
+
+  const handleFinish = useCallback(
+    async (values: TaskResolutionFormFields) => {
+      await onResolutionSubmit(values, form.setFields)
+    },
+    [form, onResolutionSubmit],
   )
 
   return (
@@ -91,7 +102,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = (props) => {
           form={form}
           initialValues={initialFormValues}
           layout='vertical'
-          onFinish={onResolutionSubmit}
+          onFinish={handleFinish}
         >
           <Form.Item
             label='Техническое решение'

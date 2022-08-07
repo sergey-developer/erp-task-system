@@ -9,18 +9,20 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 import { getNavMenuConfig } from 'configs/navMenu/utils'
-import useUserRole from 'modules/user/hooks/useUserRole'
+import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useMatchedRoute from 'shared/hooks/useMatchedRoute'
 
 import { HeaderStyled } from './styles'
 
 const PrivateHeader: FC = () => {
   const breakpoints = useBreakpoint()
-  const { role } = useUserRole()
+  const user = useAuthenticatedUser()
 
   const navMenu = useMemo(() => {
-    const items: NavMenuProps['items'] = role
-      ? getNavMenuConfig(role).map(({ key, icon: Icon, link, text }) => ({
+    const userRole = user?.role
+
+    const items: NavMenuProps['items'] = userRole
+      ? getNavMenuConfig(userRole).map(({ key, icon: Icon, link, text }) => ({
           key,
           label: <Link to={link}>{text}</Link>,
           icon: <Icon className='fs-18' />,
@@ -30,7 +32,7 @@ const PrivateHeader: FC = () => {
     const itemsKeys = items.map(({ key }) => key)
 
     return { items, itemsKeys }
-  }, [role])
+  }, [user?.role])
 
   const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
   const activeNavKey = matchedRoute?.pathnameBase

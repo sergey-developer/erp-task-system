@@ -1,23 +1,22 @@
 import { useCallback } from 'react'
 
 import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
-import useUserRole from 'modules/user/hooks/useUserRole'
+import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 
 import { UpdateTaskWorkGroupMutationArgsModel } from '../models'
+import { taskWorkGroupApiPermissions } from '../permissions/taskWorkGroup.permissions'
 
 const useUpdateTaskWorkGroup = () => {
   const [mutation, state] = useUpdateTaskWorkGroupMutation()
-  const { isFirstLineSupportRole } = useUserRole()
-
-  const shouldSkip = !isFirstLineSupportRole
+  const permissions = useUserPermissions(taskWorkGroupApiPermissions.update)
 
   const fn = useCallback(
     async (data: UpdateTaskWorkGroupMutationArgsModel) => {
-      if (shouldSkip) return
+      if (!permissions.canUpdate) return
 
       await mutation(data).unwrap()
     },
-    [mutation, shouldSkip],
+    [mutation, permissions.canUpdate],
   )
 
   return { fn, state }

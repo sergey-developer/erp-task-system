@@ -2,7 +2,7 @@ import { Moment } from 'moment'
 
 import { FastFilterEnum } from 'modules/task/components/TaskList/constants/enums'
 import { TaskStatusEnum } from 'modules/task/constants/enums'
-import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
+import { Keys, MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 
 export type SearchQueries = Partial<{
   searchByAssignee: string
@@ -27,7 +27,7 @@ export type TaskIdFilterQueries = {
 
 export type ExtendedFilterFormFields = {
   creationDateRange: MaybeNull<[Moment, Moment]>
-  searchField: keyof SearchQueries
+  searchField: Keys<SearchQueries>
   searchValue: string
   status: TaskStatusEnum[]
   workGroupId: MaybeUndefined<string>

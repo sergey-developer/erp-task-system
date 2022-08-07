@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { TaskTypeEnum } from 'modules/task/constants/enums'
+import { BooleanMap, Keys } from 'shared/interfaces/utils'
 
 import {
   checkIncidentTaskType,
@@ -9,7 +10,7 @@ import {
   checkRequestType,
 } from '../utils/checkTaskType'
 
-type UseTaskTypeReturnType = Record<`is${keyof typeof TaskTypeEnum}`, boolean>
+type UseTaskTypeReturnType = BooleanMap<`is${Keys<typeof TaskTypeEnum>}`>
 
 const useTaskType = (type: TaskTypeEnum): UseTaskTypeReturnType => {
   return useMemo(

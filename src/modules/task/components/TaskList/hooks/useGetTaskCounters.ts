@@ -1,33 +1,25 @@
 import { useEffect } from 'react'
 
 import { useGetTaskCountersQuery } from 'modules/task/services/taskApi.service'
-import useUserRole from 'modules/user/hooks/useUserRole'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
+
+import { taskCountersApiPermissions } from '../permissions/taskCounters.permissions'
 
 const useGetTaskCounters = () => {
-  const {
-    isEngineerRole,
-    isSeniorEngineerRole,
-    isHeadOfDepartmentRole,
-    isFirstLineSupportRole,
-  } = useUserRole()
-
-  const shouldSkip: boolean = !(
-    isEngineerRole ||
-    isSeniorEngineerRole ||
-    isHeadOfDepartmentRole ||
-    isFirstLineSupportRole
-  )
+  const permissions = useUserPermissions(taskCountersApiPermissions.get)
 
   const state = useGetTaskCountersQuery(null, {
-    skip: shouldSkip,
+    skip: !permissions.canGet,
   })
 
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as any
-    showErrorNotification(error.data)
+    const error = state.error as ErrorResponse
+    const errorDetail = getErrorDetail(error)
+    showMultipleErrorNotification(errorDetail)
   }, [state.error, state.isError])
 
   return state

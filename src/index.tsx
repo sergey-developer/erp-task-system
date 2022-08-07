@@ -8,7 +8,7 @@ import { Provider as StoreProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
 import ruRU from 'antd/lib/locale/ru_RU'
-import ErrorBoundary from 'components/ErrorBoundary'
+import ErrorBoundary from 'components/Error/ErrorBoundary'
 import store from 'state/store'
 import { ThemeProvider } from 'styled-components'
 import theme from 'styles/theme'

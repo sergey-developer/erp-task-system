@@ -20,7 +20,8 @@ import {
 import TaskDetails from 'modules/task/components/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { GetComponentProps } from 'rc-table/lib/interface'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { Keys, MaybeNull } from 'shared/interfaces/utils'
+import isArray from 'shared/utils/array/isArray'
 
 import FastFilter from '../FastFilter'
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
@@ -151,7 +152,7 @@ const TaskListPage: FC = () => {
   const handleChangeTable = useCallback<
     NonNullable<TableProps<TaskListItemModel>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order = SortDirectionsEnum.ascend } = Array.isArray(sorter)
+    const { field, order = SortDirectionsEnum.ascend } = isArray(sorter)
       ? sorter[0]
       : sorter
 
@@ -165,7 +166,7 @@ const TaskListPage: FC = () => {
       newQueryArgs.sort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
           ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
-              key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
+              key as Keys<typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS>
             ]
           : undefined
     }
@@ -200,6 +201,7 @@ const TaskListPage: FC = () => {
 
   const handleRefetchTaskList = () => {
     refetchTaskList()
+    handleCloseTaskDetails()
     refetchTaskCounters()
   }
 
@@ -289,13 +291,15 @@ const TaskListPage: FC = () => {
         </ColFlexStyled>
       </RowWrapStyled>
 
-      <FilterDrawer
-        form={extendedFilterForm}
-        initialValues={initialExtendedFilterFormValues}
-        onClose={toggleFilterDrawer}
-        onSubmit={handleFilterDrawerSubmit}
-        visible={isFilterDrawerVisible}
-      />
+      {isFilterDrawerVisible && (
+        <FilterDrawer
+          form={extendedFilterForm}
+          initialValues={initialExtendedFilterFormValues}
+          onClose={toggleFilterDrawer}
+          onSubmit={handleFilterDrawerSubmit}
+          visible={isFilterDrawerVisible}
+        />
+      )}
     </>
   )
 }

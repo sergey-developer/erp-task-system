@@ -1,4 +1,7 @@
-import { Breakpoint, ScreenMap } from 'antd/es/_util/responsiveObserve'
+import {
+  Breakpoint as BaseBreakpoint,
+  ScreenMap as BaseScreenMap,
+} from 'antd/es/_util/responsiveObserve'
 
 import { FlattenSimpleInterpolation } from 'styled-components'
 
@@ -9,10 +12,11 @@ import { FlattenSimpleInterpolation } from 'styled-components'
  Символ "$" нужно добавлять к названию пропса в начале, чтобы не было warnings
  */
 
+export type ScreenMap = BaseScreenMap
+export type BreakpointUnion = BaseBreakpoint
+
 export type StyledBreakpointsProps = Record<`$breakpoints`, ScreenMap>
 
-export type BreakpointsUnion = Breakpoint
-
 export type StyledBreakpointStyles = Partial<
-  Record<BreakpointsUnion, FlattenSimpleInterpolation>
+  Record<BreakpointUnion, FlattenSimpleInterpolation>
 >
