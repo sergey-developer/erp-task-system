@@ -5,10 +5,10 @@ import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
-import getTaskCountersPermissions from '../permissions/getTaskCounters.permissions'
+import { taskCountersApiPermissions } from '../permissions/taskCounters.permissions'
 
 const useGetTaskCounters = () => {
-  const permissions = useUserPermissions(getTaskCountersPermissions)
+  const permissions = useUserPermissions(taskCountersApiPermissions.get)
 
   const state = useGetTaskCountersQuery(null, {
     skip: !permissions.canGet,

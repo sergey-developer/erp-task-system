@@ -2,7 +2,7 @@ import { PermissionsEnum } from 'shared/constants/permissions'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { ObjectPermissionConfig } from 'shared/interfaces/permissions'
 
-const assigneePermissions: ObjectPermissionConfig<'select' | 'update'> = {
+export const taskAssigneePermissions: ObjectPermissionConfig<'select'> = {
   select: {
     [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanView],
     [UserRolesEnum.Engineer]: [PermissionsEnum.CanView],
@@ -15,6 +15,9 @@ const assigneePermissions: ObjectPermissionConfig<'select' | 'update'> = {
       PermissionsEnum.CanEdit,
     ],
   },
+}
+
+export const taskAssigneeApiPermissions: ObjectPermissionConfig<'update'> = {
   update: {
     [UserRolesEnum.Engineer]: [PermissionsEnum.CanUpdate],
     [UserRolesEnum.SeniorEngineer]: [PermissionsEnum.CanUpdate],
@@ -22,5 +25,3 @@ const assigneePermissions: ObjectPermissionConfig<'select' | 'update'> = {
     [UserRolesEnum.HeadOfDepartment]: [PermissionsEnum.CanUpdate],
   },
 }
-
-export default assigneePermissions

@@ -4,11 +4,11 @@ import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskApi.ser
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 
 import { UpdateTaskAssigneeMutationArgsModel } from '../models'
-import assigneePermissions from '../permissions/assignee.permissions'
+import { taskAssigneeApiPermissions } from '../permissions/taskAssignee.permissions'
 
 const useUpdateTaskAssignee = () => {
   const [mutation, state] = useUpdateTaskAssigneeMutation()
-  const permissions = useUserPermissions(assigneePermissions.update)
+  const permissions = useUserPermissions(taskAssigneeApiPermissions.update)
 
   const fn = useCallback(
     async (data: UpdateTaskAssigneeMutationArgsModel) => {

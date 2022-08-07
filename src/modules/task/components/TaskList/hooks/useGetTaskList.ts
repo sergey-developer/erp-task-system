@@ -5,12 +5,12 @@ import {
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 
 import { GetTaskListQueryArgsModel } from '../models'
-import getTaskListPermissions from '../permissions/getTaskList.permissions'
+import { taskListApiPermissions } from '../permissions/taskList.permissions'
 
 const useGetTaskList = (
   filter: GetTaskListQueryArgsModel,
 ): UseGetTaskListQueryReturnType => {
-  const permissions = useUserPermissions(getTaskListPermissions)
+  const permissions = useUserPermissions(taskListApiPermissions.get)
 
   return useGetTaskListQuery(filter, {
     skip: !permissions.canGet,

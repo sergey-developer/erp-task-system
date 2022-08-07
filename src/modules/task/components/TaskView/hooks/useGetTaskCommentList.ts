@@ -10,12 +10,12 @@ import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
-import getTaskCommentListPermissions from '../permissions/getTaskCommentList.permissions'
+import { taskCommentListApiPermissions } from '../permissions/taskCommentList.permissions'
 
 const useGetTaskCommentList = (
   id: GetTaskCommentListQueryArgsModel,
 ): UseGetTaskCommentListQueryReturnType => {
-  const permissions = useUserPermissions(getTaskCommentListPermissions)
+  const permissions = useUserPermissions(taskCommentListApiPermissions.get)
 
   const state = useGetTaskCommentListQuery(id, {
     skip: !permissions.canGet,

@@ -6,7 +6,7 @@ import React, { FC } from 'react'
 import Permissions from 'components/Permissions'
 import TaskSecondLineModal from 'modules/task/components/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
-import workGroupPermissions from 'modules/task/components/TaskView/permissions/workGroup.permissions'
+import { taskWorkGroupPermissions } from 'modules/task/components/TaskView/permissions/taskWorkGroup.permissions'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { DOUBLE_CLICK_DEBOUNCE_TIME } from 'shared/constants/common'
@@ -71,7 +71,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
         <Space size='large'>
           <Text type='secondary'>Рабочая группа</Text>
 
-          <Permissions config={workGroupPermissions.transferFirstLine}>
+          <Permissions config={taskWorkGroupPermissions.transferFirstLineBtn}>
             {() =>
               hasWorkGroup ? (
                 <Button type='link'>Вернуть на I линию</Button>
@@ -79,7 +79,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
             }
           </Permissions>
 
-          <Permissions config={workGroupPermissions.transferSecondLine}>
+          <Permissions config={taskWorkGroupPermissions.transferSecondLineBtn}>
             {() =>
               hasWorkGroup ? null : (
                 <Button

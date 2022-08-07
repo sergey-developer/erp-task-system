@@ -4,11 +4,11 @@ import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskApi.se
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 
 import { UpdateTaskWorkGroupMutationArgsModel } from '../models'
-import workGroupPermissions from '../permissions/workGroup.permissions'
+import { taskWorkGroupApiPermissions } from '../permissions/taskWorkGroup.permissions'
 
 const useUpdateTaskWorkGroup = () => {
   const [mutation, state] = useUpdateTaskWorkGroupMutation()
-  const permissions = useUserPermissions(workGroupPermissions.update)
+  const permissions = useUserPermissions(taskWorkGroupApiPermissions.update)
 
   const fn = useCallback(
     async (data: UpdateTaskWorkGroupMutationArgsModel) => {

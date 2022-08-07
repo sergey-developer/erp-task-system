@@ -14,7 +14,7 @@ import React, { FC } from 'react'
 
 import Permissions from 'components/Permissions'
 import TaskStatus from 'components/TaskStatus'
-import extendedFilterPermissions from 'modules/task/components/TaskList/permissions/extendedFilter.permissions'
+import { extendedFilterPermissions } from 'modules/task/components/TaskList/permissions/extendedFilter.permissions'
 import { TaskStatusEnum } from 'modules/task/constants/enums'
 import { taskStatusDict } from 'modules/task/constants/taskStatus'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/components/WorkGroupList/constants'

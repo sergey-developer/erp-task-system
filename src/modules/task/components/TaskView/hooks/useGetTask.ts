@@ -7,10 +7,10 @@ import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
-import getTaskPermissions from '../permissions/getTask.permissions'
+import { taskApiPermissions } from '../permissions/task.permissions'
 
 const useGetTask = (id: GetTaskQueryArgsModel) => {
-  const permissions = useUserPermissions(getTaskPermissions)
+  const permissions = useUserPermissions(taskApiPermissions.get)
 
   const state = useGetTaskQuery(id, {
     skip: !permissions.canGet,

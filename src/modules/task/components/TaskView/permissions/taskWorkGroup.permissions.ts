@@ -2,19 +2,20 @@ import { PermissionsEnum } from 'shared/constants/permissions'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { ObjectPermissionConfig } from 'shared/interfaces/permissions'
 
-const workGroupPermissions: ObjectPermissionConfig<
-  'transferSecondLine' | 'transferFirstLine' | 'update'
+export const taskWorkGroupPermissions: ObjectPermissionConfig<
+  'transferSecondLineBtn' | 'transferFirstLineBtn'
 > = {
-  transferFirstLine: {
+  transferFirstLineBtn: {
     [UserRolesEnum.SeniorEngineer]: [PermissionsEnum.CanView],
     [UserRolesEnum.HeadOfDepartment]: [PermissionsEnum.CanView],
   },
-  transferSecondLine: {
+  transferSecondLineBtn: {
     [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanView],
   },
+}
+
+export const taskWorkGroupApiPermissions: ObjectPermissionConfig<'update'> = {
   update: {
     [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanUpdate],
   },
 }
-
-export default workGroupPermissions
