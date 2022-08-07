@@ -1,6 +1,7 @@
 import { FastFilterEnum } from 'modules/task/components/TaskList/constants/enums'
+import { StringMap } from 'shared/interfaces/utils'
 
-export const fastFilterNamesDict: Record<FastFilterEnum, string> = {
+export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
   [FastFilterEnum.All]: 'Все',
   [FastFilterEnum.Mine]: 'Мои',
   [FastFilterEnum.Overdue]: 'Просроченные',
