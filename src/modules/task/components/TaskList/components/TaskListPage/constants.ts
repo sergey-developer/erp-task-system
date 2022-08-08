@@ -1,9 +1,6 @@
 import { SorterResult } from 'antd/es/table/interface'
 
-import {
-  SortEnum,
-} from 'modules/task/components/TaskList/constants/enums'
-import { TaskListItemModel } from 'modules/task/components/TaskList/models'
+import { SortEnum } from 'modules/task/components/TaskList/constants/enums'
 import { Keys } from 'shared/interfaces/utils'
 
 import { TaskTableListItem } from '../TaskTable/interfaces'

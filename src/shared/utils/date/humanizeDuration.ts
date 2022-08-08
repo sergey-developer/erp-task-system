@@ -1,32 +1,9 @@
-import baseHumanizeDuration, {
-  Options as BaseOptions,
-  SupportedLanguage,
-} from 'humanize-duration'
-
-const humanizer = baseHumanizeDuration.humanizer({
-  languages: {
-    shortRu: {
-      h: () => 'ч',
-      m: () => 'мин',
-    },
-  },
-  fallbacks: ['en'],
-})
-
-type CustomSupportedLanguageUnion = 'shortRu'
-
-export type HumanizeDurationOptions = Omit<BaseOptions, 'fallbacks'> & {
-  language?: Extract<SupportedLanguage, 'ru'> | CustomSupportedLanguageUnion
-}
+import moment, { DurationFormatSettings } from 'moment'
 
 const humanizeDuration = (
-  value: number,
-  { language = 'ru', ...options }: HumanizeDurationOptions,
-): ReturnType<typeof humanizer> => {
-  return humanizer(value, {
-    language,
-    ...options,
-  })
-}
+  duration: moment.DurationInputArg1,
+  unit: moment.unitOfTime.DurationConstructor,
+  settings: DurationFormatSettings,
+): string => moment.duration(duration, unit).format(settings)
 
 export default humanizeDuration

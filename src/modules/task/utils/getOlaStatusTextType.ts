@@ -3,12 +3,16 @@ import { TextProps } from 'antd/es/typography/Text'
 import { TaskOlaStatusEnum } from 'modules/task/constants/enums'
 import { MaybeUndefined } from 'shared/interfaces/utils'
 
+import getOlaStatusMap from './getOlaStatusMap'
+
 const getOlaStatusTextType = (
   olaStatus: TaskOlaStatusEnum,
 ): Extract<TextProps['type'], MaybeUndefined<'danger' | 'warning'>> => {
-  return olaStatus === TaskOlaStatusEnum.Expired
+  const status = getOlaStatusMap(olaStatus)
+
+  return status.isExpired
     ? 'danger'
-    : olaStatus === TaskOlaStatusEnum.HalfExpired
+    : status.isHalfExpired
     ? 'warning'
     : undefined
 }

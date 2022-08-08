@@ -1,11 +1,12 @@
-import { TaskListItemModel } from 'modules/task/components/TaskList/models'
 import { Keys } from 'shared/interfaces/utils'
+
+import { TaskTableListItem } from '../interfaces'
 
 export type AllColumnWidthMap =
   | 'noop'
   | Keys<
       Pick<
-        TaskListItemModel,
+        TaskTableListItem,
         | 'id'
         | 'recordId'
         | 'name'
@@ -19,7 +20,7 @@ export type AllColumnWidthMap =
     >
 
 export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
-  noop: 20,
+  noop: 25,
   id: 110,
   recordId: 140,
   name: 120,

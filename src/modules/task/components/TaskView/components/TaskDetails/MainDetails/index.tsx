@@ -1,15 +1,16 @@
 import { Col, Row, Typography } from 'antd'
-import moment from 'moment'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 
 import Space from 'components/Space'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
+import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
+import makeString from 'shared/utils/string/makeString'
 
 import { DetailContainerStyled } from '../styles'
-import { getOlaNextBreachTimeAndCurrentMomentDiff } from './utils'
+import { getTaskRemainingTime } from './utils'
 
 type MainDetailsProps = Pick<
   TaskDetailsModel,
@@ -19,8 +20,9 @@ type MainDetailsProps = Pick<
   | 'name'
   | 'address'
   | 'contactService'
-  | 'olaNextBreachTime'
   | 'olaStatus'
+  | 'olaNextBreachTime'
+  | 'olaEstimatedTime'
 >
 
 const MainDetails: FC<MainDetailsProps> = ({
@@ -30,62 +32,44 @@ const MainDetails: FC<MainDetailsProps> = ({
   name,
   address,
   contactService,
-  olaNextBreachTime,
-  olaStatus,
+  olaStatus: rawOlaStatus,
+  olaNextBreachTime: rawOlaNextBreachTime,
+  olaEstimatedTime,
 }) => {
-  const renderOlaNextBreachTime = () => {
-    const currentMoment = moment()
-    const olaNextBreachTimeMoment = moment(olaNextBreachTime)
-    const isTaskOverdue = olaNextBreachTimeMoment.isBefore(currentMoment)
-
-    const currentMomentAndCreatedAtDiff = currentMoment.diff(
-      createdAt,
-      'seconds',
-    )
-
-    const olaNextBreachTimeAndCreatedAtDiff = olaNextBreachTimeMoment.diff(
-      createdAt,
-      'seconds',
-    )
-
-    const olaNextBreachTimeAndCreatedAtHalfTime =
-      olaNextBreachTimeAndCreatedAtDiff / 2
-
-    const isTaskHalfTimeWasSpent = moment(
-      currentMomentAndCreatedAtDiff,
-    ).isBefore(olaNextBreachTimeAndCreatedAtHalfTime)
-
-    const olaNextBreachTimeAndCurrentMomentDiff =
-      isTaskHalfTimeWasSpent && !isTaskOverdue
-        ? getOlaNextBreachTimeAndCurrentMomentDiff(
-            olaNextBreachTimeMoment.diff(currentMoment),
-          )
-        : null
+  const olaNextBreachTime = useMemo(() => {
+    const olaStatus = getOlaStatusMap(rawOlaStatus)
 
     const formattedOlaNextBreachTime = formatDate(
-      olaNextBreachTime,
+      rawOlaNextBreachTime,
       DATE_TIME_FORMAT,
     )
 
-    const olaNextBreachTimeText = `до ${formattedOlaNextBreachTime}${
-      olaNextBreachTimeAndCurrentMomentDiff
-        ? ` (${olaNextBreachTimeAndCurrentMomentDiff})`
-        : ''
-    }`
+    const taskRemainingTime = olaStatus.isHalfExpired
+      ? getTaskRemainingTime(olaEstimatedTime)
+      : null
+
+    const olaNextBreachTimeText = makeString(
+      ' ',
+      'до',
+      formattedOlaNextBreachTime,
+      taskRemainingTime,
+    )
+
+    const olaStatusTextType = getOlaStatusTextType(rawOlaStatus)
 
     return (
-      <Typography.Text type={getOlaStatusTextType(olaStatus)}>
+      <Typography.Text type={olaStatusTextType}>
         {olaNextBreachTimeText}
       </Typography.Text>
     )
-  }
+  }, [olaEstimatedTime, rawOlaStatus, rawOlaNextBreachTime])
 
   return (
     <DetailContainerStyled>
       <Space direction='vertical' size='middle' $block>
         <Space
           split={
-            olaNextBreachTime ? (
+            rawOlaNextBreachTime ? (
               <Typography.Text type='secondary'>•</Typography.Text>
             ) : null
           }
@@ -94,7 +78,7 @@ const MainDetails: FC<MainDetailsProps> = ({
             {recordId}
           </Typography.Text>
 
-          {olaNextBreachTime && renderOlaNextBreachTime()}
+          {rawOlaNextBreachTime && olaNextBreachTime}
         </Space>
 
         <Space direction='vertical' size={4}>
