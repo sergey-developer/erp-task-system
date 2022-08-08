@@ -53,4 +53,6 @@ export type BaseTaskModel = {
   state?: string
   zipCode?: string
   parentTask?: MaybeNull<number>
+  initialImpact?: MaybeNull<number>
+  isReturned?: boolean
 }

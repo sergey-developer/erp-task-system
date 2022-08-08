@@ -8,7 +8,5 @@ export type TaskDetailsModel = BaseTaskModel & {
   assignee: MaybeNull<AssigneeModel>
   attachments: Array<TaskAttachmentModel>
   olaEstimatedTime: number
-  initialImpact?: number
-  isReturned?: boolean
   workGroup?: MaybeNull<TaskDetailsWorkGroupModel>
 }
