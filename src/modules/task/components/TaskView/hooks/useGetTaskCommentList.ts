@@ -1,34 +1,19 @@
 import { useEffect } from 'react'
 
 import { GetTaskCommentListQueryArgsModel } from 'modules/task/components/TaskView/models'
-import {
-  UseGetTaskCommentListQueryReturnType,
-  useGetTaskCommentListQuery,
-} from 'modules/task/services/taskCommentApi.service'
-import useUserRole from 'modules/user/hooks/useUserRole'
+import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi.service'
+import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
-const useGetTaskCommentList = (
-  id: GetTaskCommentListQueryArgsModel,
-): UseGetTaskCommentListQueryReturnType => {
-  const {
-    isEngineerRole,
-    isSeniorEngineerRole,
-    isHeadOfDepartmentRole,
-    isFirstLineSupportRole,
-  } = useUserRole()
+import { taskCommentListApiPermissions } from '../permissions/taskCommentList.permissions'
 
-  const shouldSkip: boolean = !(
-    isEngineerRole ||
-    isSeniorEngineerRole ||
-    isHeadOfDepartmentRole ||
-    isFirstLineSupportRole
-  )
+const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
+  const permissions = useUserPermissions(taskCommentListApiPermissions.getList)
 
   const state = useGetTaskCommentListQuery(id, {
-    skip: shouldSkip,
+    skip: !permissions.canGet,
   })
 
   useEffect(() => {

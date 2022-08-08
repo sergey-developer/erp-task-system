@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import { Provider as StoreProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
-import ErrorBoundary from 'components/ErrorBoundary'
+import ErrorBoundary from 'components/Error/ErrorBoundary'
 import { ThemeProvider } from 'styled-components'
 
 import store from './state/store'

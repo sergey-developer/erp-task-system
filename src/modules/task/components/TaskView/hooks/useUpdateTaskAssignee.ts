@@ -1,34 +1,24 @@
 import { useCallback } from 'react'
 
 import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskApi.service'
-import useUserRole from 'modules/user/hooks/useUserRole'
+import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 
 import { UpdateTaskAssigneeMutationArgsModel } from '../models'
+import { taskAssigneeApiPermissions } from '../permissions/taskAssignee.permissions'
 
 const useUpdateTaskAssignee = () => {
   const [mutation, state] = useUpdateTaskAssigneeMutation()
-
-  const {
-    isFirstLineSupportRole,
-    isEngineerRole,
-    isSeniorEngineerRole,
-    isHeadOfDepartmentRole,
-  } = useUserRole()
-
-  const shouldSkip = !(
-    isFirstLineSupportRole ||
-    isEngineerRole ||
-    isSeniorEngineerRole ||
-    isHeadOfDepartmentRole
+  const permissions = useUserPermissions(
+    taskAssigneeApiPermissions.updateAssignee,
   )
 
   const fn = useCallback(
     async (data: UpdateTaskAssigneeMutationArgsModel) => {
-      if (shouldSkip) return
+      if (!permissions.canUpdate) return
 
       await mutation(data).unwrap()
     },
-    [mutation, shouldSkip],
+    [mutation, permissions.canUpdate],
   )
 
   return { fn, state }

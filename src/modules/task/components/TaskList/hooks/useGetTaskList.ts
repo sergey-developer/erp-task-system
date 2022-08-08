@@ -1,35 +1,17 @@
-import {
-  UseGetTaskListQueryReturnType,
-  useGetTaskListQuery,
-} from 'modules/task/services/taskApi.service'
-import useUserRole from 'modules/user/hooks/useUserRole'
+import { useGetTaskListQuery } from 'modules/task/services/taskApi.service'
+import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 
 import { GetTaskListQueryArgsModel } from '../models'
+import { taskListApiPermissions } from '../permissions/taskList.permissions'
 
-const useGetTaskList = (
-  filter: GetTaskListQueryArgsModel,
-): UseGetTaskListQueryReturnType => {
-  const {
-    isEngineerRole,
-    isSeniorEngineerRole,
-    isHeadOfDepartmentRole,
-    isFirstLineSupportRole,
-  } = useUserRole()
+const useGetTaskList = (filter: GetTaskListQueryArgsModel) => {
+  const permissions = useUserPermissions(taskListApiPermissions.getList)
 
-  const shouldSkip: boolean = !(
-    isEngineerRole ||
-    isSeniorEngineerRole ||
-    isHeadOfDepartmentRole ||
-    isFirstLineSupportRole
-  )
-
-  const state = useGetTaskListQuery(filter, {
-    skip: shouldSkip,
+  return useGetTaskListQuery(filter, {
+    skip: !permissions.canGet,
   })
 
   // todo: добавить обработку 400, 500 ошибок когда будет ясно как их обрабатывать
-
-  return state
 }
 
 export default useGetTaskList

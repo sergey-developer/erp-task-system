@@ -1,18 +1,21 @@
 import { TaskListItemModel } from 'modules/task/components/TaskList/models'
+import { Keys } from 'shared/interfaces/utils'
 
 export type AllColumnWidthMap =
   | 'noop'
-  | keyof Pick<
-      TaskListItemModel,
-      | 'id'
-      | 'recordId'
-      | 'name'
-      | 'title'
-      | 'assignee'
-      | 'workGroup'
-      | 'olaNextBreachTime'
-      | 'comment'
-      | 'createdAt'
+  | Keys<
+      Pick<
+        TaskListItemModel,
+        | 'id'
+        | 'recordId'
+        | 'name'
+        | 'title'
+        | 'assignee'
+        | 'workGroup'
+        | 'olaNextBreachTime'
+        | 'comment'
+        | 'createdAt'
+      >
     >
 
 export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
@@ -31,13 +34,13 @@ export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
 export type XxlColumnWidthMap = Exclude<AllColumnWidthMap, 'noop'>
 
 export const xxlColumnWidthMap: Record<XxlColumnWidthMap, number> = {
-  id: 75,
-  recordId: 85,
-  name: 100,
-  title: 200,
+  id: 110,
+  recordId: 140,
+  name: 140,
+  title: 300,
   assignee: 140,
-  workGroup: 160,
-  olaNextBreachTime: 100,
-  comment: 130,
-  createdAt: 100,
+  workGroup: 140,
+  olaNextBreachTime: 140,
+  comment: 200,
+  createdAt: 140,
 }

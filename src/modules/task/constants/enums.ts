@@ -54,7 +54,7 @@ export enum ResolutionCodeEnum {
   Success = 'SUCCESS',
   WorkAround = 'WORK_AROUND',
   Canceled = 'CANCELED',
-  Duplicate = 'DUBLICATE',
+  Duplicate = 'DUPLICATE',
   Reclassified = 'RECLASSIFIED',
   NoResponse = 'NO_RESPONSE',
   NotResolved = 'NOT_RESOLVED',

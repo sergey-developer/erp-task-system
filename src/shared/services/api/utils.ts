@@ -1,5 +1,5 @@
-import { ErrorResponse } from './intefraces'
+import { ErrorResponse, ValidationErrors } from './intefraces'
 
-export function getErrorDetail<T>(e: ErrorResponse<T>): string {
-  return e.data?.detail ?? ''
+export function getErrorDetail<T>(e: ErrorResponse<T>): ValidationErrors {
+  return e.data?.detail ?? []
 }

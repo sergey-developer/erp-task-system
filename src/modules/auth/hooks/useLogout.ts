@@ -15,12 +15,12 @@ const useLogout = () => {
 
     if (refreshToken) {
       await logout({ refresh: refreshToken }).unwrap()
+
+      authLocalStorageService.removeRefreshToken()
+      authLocalStorageService.removeAccessToken()
+
+      dispatch(logoutAction())
     }
-
-    authLocalStorageService.removeAccessToken()
-    authLocalStorageService.removeRefreshToken()
-
-    dispatch(logoutAction())
   }, [dispatch, logout])
 }
 

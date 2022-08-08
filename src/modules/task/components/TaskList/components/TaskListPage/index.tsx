@@ -6,20 +6,21 @@ import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
 import React, { FC, useCallback, useState } from 'react'
 
-import FilterTag from 'components/FilterTag'
 import {
   FastFilterEnum,
   FilterTypeEnum,
   SortEnum,
 } from 'modules/task/components/TaskList/constants/enums'
-import useFastFilterList from 'modules/task/components/TaskList/hooks/useFastFilterList'
+import useGetTaskCounters from 'modules/task/components/TaskList/hooks/useGetTaskCounters'
 import useGetTaskList from 'modules/task/components/TaskList/hooks/useGetTaskList'
 import { GetTaskListQueryArgsModel } from 'modules/task/components/TaskList/models'
 import TaskDetails from 'modules/task/components/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { GetComponentProps } from 'rc-table/lib/interface'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { Keys, MaybeNull } from 'shared/interfaces/utils'
+import isArray from 'shared/utils/array/isArray'
 
+import FastFilter from '../FastFilter'
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskTable from '../TaskTable'
 import { TaskTableListItem } from '../TaskTable/interfaces'
@@ -45,10 +46,11 @@ const TaskListPage: FC = () => {
   const { isEngineerRole } = useUserRole()
 
   const {
-    data: fastFilterList,
-    isFetching: fastFilterListIsFetching,
-    refetch: refetchFastFilterList,
-  } = useFastFilterList()
+    data: taskCounters,
+    isError: isGetTaskCountersError,
+    isFetching: taskCountersIsFetching,
+    refetch: refetchTaskCounters,
+  } = useGetTaskCounters()
 
   const initialFastFilter: FastFilterEnum = isEngineerRole
     ? FastFilterEnum.Mine
@@ -148,7 +150,7 @@ const TaskListPage: FC = () => {
   const handleChangeTable = useCallback<
     NonNullable<TableProps<TaskTableListItem>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order = SortDirectionsEnum.ascend } = Array.isArray(sorter)
+    const { field, order = SortDirectionsEnum.ascend } = isArray(sorter)
       ? sorter[0]
       : sorter
 
@@ -162,7 +164,7 @@ const TaskListPage: FC = () => {
       newQueryArgs.sort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
           ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
-              key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
+              key as Keys<typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS>
             ]
           : undefined
     }
@@ -197,7 +199,8 @@ const TaskListPage: FC = () => {
 
   const handleRefetchTaskList = () => {
     refetchTaskList()
-    refetchFastFilterList()
+    handleCloseTaskDetails()
+    refetchTaskCounters()
   }
 
   const searchFilterApplied: boolean =
@@ -210,25 +213,14 @@ const TaskListPage: FC = () => {
           <Col span={13}>
             <Row align='middle' gutter={[30, 30]}>
               <Col>
-                <Space wrap>
-                  {fastFilterList.map(({ amount, text, value }) => (
-                    <FilterTag
-                      key={value}
-                      checked={
-                        searchFilterApplied ? false : queryArgs.filter === value
-                      }
-                      onChange={
-                        searchFilterApplied
-                          ? undefined
-                          : () => handleFastFilterChange(value)
-                      }
-                      text={text}
-                      amount={amount}
-                      loading={fastFilterListIsFetching}
-                      disabled={searchFilterApplied}
-                    />
-                  ))}
-                </Space>
+                <FastFilter
+                  data={taskCounters}
+                  selectedFilter={queryArgs.filter}
+                  onChange={handleFastFilterChange}
+                  isError={isGetTaskCountersError}
+                  disabled={searchFilterApplied}
+                  isLoading={taskCountersIsFetching}
+                />
               </Col>
 
               <Col>
@@ -297,13 +289,15 @@ const TaskListPage: FC = () => {
         </ColFlexStyled>
       </RowWrapStyled>
 
-      <FilterDrawer
-        form={extendedFilterForm}
-        initialValues={initialExtendedFilterFormValues}
-        onClose={toggleFilterDrawer}
-        onSubmit={handleFilterDrawerSubmit}
-        visible={isFilterDrawerVisible}
-      />
+      {isFilterDrawerVisible && (
+        <FilterDrawer
+          form={extendedFilterForm}
+          initialValues={initialExtendedFilterFormValues}
+          onClose={toggleFilterDrawer}
+          onSubmit={handleFilterDrawerSubmit}
+          visible={isFilterDrawerVisible}
+        />
+      )}
     </>
   )
 }

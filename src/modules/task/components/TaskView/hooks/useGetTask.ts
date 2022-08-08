@@ -2,28 +2,18 @@ import { useEffect } from 'react'
 
 import { GetTaskQueryArgsModel } from 'modules/task/components/TaskView/models'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
-import useUserRole from 'modules/user/hooks/useUserRole'
+import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
-const useGetTask = (id: GetTaskQueryArgsModel) => {
-  const {
-    isEngineerRole,
-    isSeniorEngineerRole,
-    isHeadOfDepartmentRole,
-    isFirstLineSupportRole,
-  } = useUserRole()
+import { taskApiPermissions } from '../permissions/task.permissions'
 
-  const shouldSkip: boolean = !(
-    isEngineerRole ||
-    isSeniorEngineerRole ||
-    isHeadOfDepartmentRole ||
-    isFirstLineSupportRole
-  )
+const useGetTask = (id: GetTaskQueryArgsModel) => {
+  const permissions = useUserPermissions(taskApiPermissions.getTask)
 
   const state = useGetTaskQuery(id, {
-    skip: shouldSkip,
+    skip: !permissions.canGet,
   })
 
   useEffect(() => {
