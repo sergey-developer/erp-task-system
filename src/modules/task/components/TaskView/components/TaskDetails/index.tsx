@@ -4,12 +4,12 @@ import { MenuProps } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
+import useResolveTask from 'modules/task/components/TaskView/hooks/useResolveTask'
 import useUpdateTaskAssignee from 'modules/task/components/TaskView/hooks/useUpdateTaskAssignee'
 import useUpdateTaskWorkGroup from 'modules/task/components/TaskView/hooks/useUpdateTaskWorkGroup'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import getTransferTaskSecondLineErrors from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineErrors'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
-import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -73,7 +73,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const [isTaskResolutionModalOpened, { toggle: toggleTaskResolutionModal }] =
     useBoolean(false)
 
-  const [resolveTask, { isLoading: isTaskResolving }] = useResolveTaskMutation()
+  const {
+    fn: resolveTask,
+    state: { isLoading: isTaskResolving },
+  } = useResolveTask()
 
   const {
     fn: updateTaskWorkGroup,
@@ -109,7 +112,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   >(
     async (values, setFields) => {
       try {
-        await resolveTask({ taskId: details!.id, ...values }).unwrap()
+        await resolveTask({ taskId: details!.id, ...values })
         onTaskResolved()
       } catch (exception) {
         const error = exception as ErrorResponse<TaskResolutionFormErrors>

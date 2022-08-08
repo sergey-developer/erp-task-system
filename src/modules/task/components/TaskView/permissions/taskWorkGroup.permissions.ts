@@ -14,8 +14,9 @@ export const taskWorkGroupPermissions: ObjectPermissionConfig<
   },
 }
 
-export const taskWorkGroupApiPermissions: ObjectPermissionConfig<'update'> = {
-  update: {
-    [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanUpdate],
-  },
-}
+export const taskWorkGroupApiPermissions: ObjectPermissionConfig<'updateWorkGroup'> =
+  {
+    updateWorkGroup: {
+      [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanUpdate],
+    },
+  }

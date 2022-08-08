@@ -10,8 +10,10 @@ const ErrorList: FC<ErrorListProps> = ({ errors }) => {
 
   return (
     <Space direction='vertical'>
-      {errors.map((error) => (
-        <Typography.Text type='danger'>{error}</Typography.Text>
+      {errors.map((error, index) => (
+        <Typography.Text key={index} type='danger'>
+          {error}
+        </Typography.Text>
       ))}
     </Space>
   )

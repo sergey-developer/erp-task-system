@@ -8,7 +8,9 @@ import { taskWorkGroupApiPermissions } from '../permissions/taskWorkGroup.permis
 
 const useUpdateTaskWorkGroup = () => {
   const [mutation, state] = useUpdateTaskWorkGroupMutation()
-  const permissions = useUserPermissions(taskWorkGroupApiPermissions.update)
+  const permissions = useUserPermissions(
+    taskWorkGroupApiPermissions.updateWorkGroup,
+  )
 
   const fn = useCallback(
     async (data: UpdateTaskWorkGroupMutationArgsModel) => {

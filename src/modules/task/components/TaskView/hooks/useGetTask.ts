@@ -10,7 +10,7 @@ import showErrorNotification from 'shared/utils/notifications/showErrorNotificat
 import { taskApiPermissions } from '../permissions/task.permissions'
 
 const useGetTask = (id: GetTaskQueryArgsModel) => {
-  const permissions = useUserPermissions(taskApiPermissions.get)
+  const permissions = useUserPermissions(taskApiPermissions.getTask)
 
   const state = useGetTaskQuery(id, {
     skip: !permissions.canGet,
