@@ -19,7 +19,7 @@ import { workGroupListSelectFieldNames } from 'modules/workGroup/components/Work
 import useGetWorkGroupList from 'modules/workGroup/components/WorkGroupList/hooks/useGetWorkGroupList'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
-import { checkboxStatusOptions, searchQueriesDictionary } from './constant'
+import { checkboxStatusOptions, searchQueriesDictionary } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
