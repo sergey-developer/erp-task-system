@@ -8,7 +8,7 @@ import showMultipleErrorNotification from 'shared/utils/notifications/showMultip
 import { taskCountersApiPermissions } from '../permissions/taskCounters.permissions'
 
 const useGetTaskCounters = () => {
-  const permissions = useUserPermissions(taskCountersApiPermissions.get)
+  const permissions = useUserPermissions(taskCountersApiPermissions.getCounters)
 
   const state = useGetTaskCountersQuery(null, {
     skip: !permissions.canGet,

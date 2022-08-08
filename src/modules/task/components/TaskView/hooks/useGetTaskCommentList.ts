@@ -15,7 +15,7 @@ import { taskCommentListApiPermissions } from '../permissions/taskCommentList.pe
 const useGetTaskCommentList = (
   id: GetTaskCommentListQueryArgsModel,
 ): UseGetTaskCommentListQueryReturnType => {
-  const permissions = useUserPermissions(taskCommentListApiPermissions.get)
+  const permissions = useUserPermissions(taskCommentListApiPermissions.getList)
 
   const state = useGetTaskCommentListQuery(id, {
     skip: !permissions.canGet,

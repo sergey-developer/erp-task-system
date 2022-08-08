@@ -10,7 +10,7 @@ import { taskListApiPermissions } from '../permissions/taskList.permissions'
 const useGetTaskList = (
   filter: GetTaskListQueryArgsModel,
 ): UseGetTaskListQueryReturnType => {
-  const permissions = useUserPermissions(taskListApiPermissions.get)
+  const permissions = useUserPermissions(taskListApiPermissions.getList)
 
   return useGetTaskListQuery(filter, {
     skip: !permissions.canGet,

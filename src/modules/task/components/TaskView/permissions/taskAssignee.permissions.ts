@@ -17,11 +17,12 @@ export const taskAssigneePermissions: ObjectPermissionConfig<'select'> = {
   },
 }
 
-export const taskAssigneeApiPermissions: ObjectPermissionConfig<'update'> = {
-  update: {
-    [UserRolesEnum.Engineer]: [PermissionsEnum.CanUpdate],
-    [UserRolesEnum.SeniorEngineer]: [PermissionsEnum.CanUpdate],
-    [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanUpdate],
-    [UserRolesEnum.HeadOfDepartment]: [PermissionsEnum.CanUpdate],
-  },
-}
+export const taskAssigneeApiPermissions: ObjectPermissionConfig<'updateAssignee'> =
+  {
+    updateAssignee: {
+      [UserRolesEnum.Engineer]: [PermissionsEnum.CanUpdate],
+      [UserRolesEnum.SeniorEngineer]: [PermissionsEnum.CanUpdate],
+      [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanUpdate],
+      [UserRolesEnum.HeadOfDepartment]: [PermissionsEnum.CanUpdate],
+    },
+  }
