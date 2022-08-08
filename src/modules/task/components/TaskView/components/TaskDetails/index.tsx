@@ -39,7 +39,6 @@ type TaskDetailsProps = {
       | 'name'
       | 'address'
       | 'contactService'
-      | 'olaNextBreachTime'
       | 'workGroup'
       | 'assignee'
       | 'status'
@@ -47,6 +46,9 @@ type TaskDetailsProps = {
       | 'techResolution'
       | 'userResolution'
       | 'description'
+      | 'olaStatus'
+      | 'olaEstimatedTime'
+      | 'olaNextBreachTime'
     >
   >
   taskIsLoading: boolean
@@ -176,10 +178,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               recordId={details.recordId}
               title={details.title}
               createdAt={details.createdAt}
-              olaNextBreachTime={details.olaNextBreachTime}
               name={details.name}
               address={details.address}
               contactService={details.contactService}
+              olaStatus={details.olaStatus}
+              olaEstimatedTime={details.olaEstimatedTime}
+              olaNextBreachTime={details.olaNextBreachTime}
             />
 
             <DividerStyled />

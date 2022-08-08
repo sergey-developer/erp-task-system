@@ -1,13 +1,14 @@
 import { ColumnsType } from 'antd/es/table'
 import { SorterResult } from 'antd/es/table/interface'
 
-import { TaskListItemModel } from 'modules/task/components/TaskList/models'
 import { MaybeUndefined } from 'shared/interfaces/utils'
 
+import { TaskTableListItem } from '../interfaces'
+
 const applySortingToColumn = (
-  columns: ColumnsType<TaskListItemModel>,
-  sorterResult: MaybeUndefined<SorterResult<TaskListItemModel>>,
-): ColumnsType<TaskListItemModel> => {
+  columns: ColumnsType<TaskTableListItem>,
+  sorterResult: MaybeUndefined<SorterResult<TaskTableListItem>>,
+): ColumnsType<TaskTableListItem> => {
   if (!sorterResult) return columns
   return columns.map((field) => {
     if (field.key === sorterResult.columnKey) {

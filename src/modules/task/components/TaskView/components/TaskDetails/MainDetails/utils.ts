@@ -1,16 +1,11 @@
-import humanizeDuration, {
-  HumanizeDurationOptions,
-} from 'shared/utils/date/humanizeDuration'
+import { DurationFormatSettings } from 'moment'
 
-const humanizeDurationOptions: HumanizeDurationOptions = {
-  language: 'shortRu',
-  delimiter: ' ',
-  units: ['h', 'm'],
-  round: true,
+import humanizeDuration from 'shared/utils/date/humanizeDuration'
+
+const settings: DurationFormatSettings = {
+  template: 'Mмес Dд hhч mmмин',
+  trim: 'all',
 }
 
-export const getOlaNextBreachTimeAndCurrentMomentDiff = (
-  value: number,
-): ReturnType<typeof humanizeDuration> => {
-  return humanizeDuration(value, humanizeDurationOptions)
-}
+export const getTaskRemainingTime = (value: number): string =>
+  humanizeDuration(value, 'milliseconds', settings)

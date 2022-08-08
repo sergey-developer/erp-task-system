@@ -1,20 +1,24 @@
+import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
 import TaskStatus from 'components/TaskStatus'
-import { TaskListItemModel } from 'modules/task/components/TaskList/models'
 import {
   ASSIGNEE_WORD,
   OBJECT_WORD,
   THEME_WORD,
 } from 'modules/task/constants/words'
+import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import getShortUserName from 'modules/user/utils/getShortUserName'
-import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { MaybeNull } from 'shared/interfaces/utils'
 import formatDate from 'shared/utils/date/formatDate'
 
-export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
+import { TaskTableListItem } from '../interfaces'
+
+const { Text } = Typography
+
+export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
   {
     key: 'noop',
     render: (value: string, { status }) => <TaskStatus status={status} />,
@@ -46,7 +50,7 @@ export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
     title: ASSIGNEE_WORD,
     dataIndex: 'assignee',
     key: 'assignee',
-    render: (value: MaybeNull<TaskListItemModel['assignee']>) =>
+    render: (value: MaybeNull<TaskTableListItem['assignee']>) =>
       value ? getShortUserName(value) : '',
     ellipsis: true,
   },
@@ -54,14 +58,22 @@ export const TABLE_COLUMNS: ColumnsType<TaskListItemModel> = [
     title: 'Рабочая группа',
     dataIndex: 'workGroup',
     key: 'workGroup',
-    render: (value: MaybeNull<WorkGroupListItemModel>) => value && value.name,
+    render: (value: MaybeNull<TaskTableListItem['workGroup']>) =>
+      value && value.name,
     ellipsis: true,
   },
   {
     title: 'Выполнить до',
     dataIndex: 'olaNextBreachTime',
     key: 'olaNextBreachTime',
-    render: (value) => formatDate(value, DATE_TIME_FORMAT),
+    render: (
+      value: MaybeNull<TaskTableListItem['olaNextBreachTime']>,
+      { olaStatus },
+    ) => (
+      <Text type={getOlaStatusTextType(olaStatus)}>
+        {formatDate(value, DATE_TIME_FORMAT)}
+      </Text>
+    ),
     sorter: true,
   },
   {

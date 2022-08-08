@@ -13,10 +13,7 @@ import {
 } from 'modules/task/components/TaskList/constants/enums'
 import useGetTaskCounters from 'modules/task/components/TaskList/hooks/useGetTaskCounters'
 import useGetTaskList from 'modules/task/components/TaskList/hooks/useGetTaskList'
-import {
-  GetTaskListQueryArgsModel,
-  TaskListItemModel,
-} from 'modules/task/components/TaskList/models'
+import { GetTaskListQueryArgsModel } from 'modules/task/components/TaskList/models'
 import TaskDetails from 'modules/task/components/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { GetComponentProps } from 'rc-table/lib/interface'
@@ -26,6 +23,7 @@ import isArray from 'shared/utils/array/isArray'
 import FastFilter from '../FastFilter'
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskTable from '../TaskTable'
+import { TaskTableListItem } from '../TaskTable/interfaces'
 import {
   DEFAULT_PAGE_LIMIT,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
@@ -72,7 +70,7 @@ const TaskListPage: FC = () => {
   } = useGetTaskList(queryArgs)
 
   const [selectedTask, setSelectedTask] =
-    useState<MaybeNull<TaskListItemModel['id']>>(null)
+    useState<MaybeNull<TaskTableListItem['id']>>(null)
 
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
@@ -132,8 +130,8 @@ const TaskListPage: FC = () => {
     }
   }
 
-  const handleTableRowClick: GetComponentProps<TaskListItemModel> = useCallback(
-    (record: TaskListItemModel) => ({
+  const handleTableRowClick: GetComponentProps<TaskTableListItem> = useCallback(
+    (record: TaskTableListItem) => ({
       onClick: () => setSelectedTask(record.id),
     }),
     [setSelectedTask],
@@ -150,7 +148,7 @@ const TaskListPage: FC = () => {
 
   /** обработка изменений сортировки/пагинации в таблице */
   const handleChangeTable = useCallback<
-    NonNullable<TableProps<TaskListItemModel>['onChange']>
+    NonNullable<TableProps<TaskTableListItem>['onChange']>
   >((pagination, filters, sorter) => {
     const { field, order = SortDirectionsEnum.ascend } = isArray(sorter)
       ? sorter[0]
