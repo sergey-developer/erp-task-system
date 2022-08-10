@@ -1,4 +1,4 @@
-import { CheckCircleOutlined } from '@ant-design/icons'
+import { CheckCircleOutlined, QuestionCircleTwoTone } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
 import { MenuProps } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
@@ -109,13 +109,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       {
         key: 1,
         disabled: !taskStatus.isInProgress || !isAssignedToCurrentUser,
-        icon: <CheckCircleOutlined />,
+        icon: <CheckCircleOutlined className='fs-14' />,
         label: 'Выполнить заявку',
         onClick: toggleTaskResolutionModal,
       },
       {
         key: 2,
-        icon: <CheckCircleOutlined />,
+        icon: <QuestionCircleTwoTone className='fs-14' />,
         label: 'Запросить переклассификацию',
         onClick: toggleTaskReclassificationModal,
       },

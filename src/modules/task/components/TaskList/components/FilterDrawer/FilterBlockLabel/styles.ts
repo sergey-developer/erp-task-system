@@ -6,7 +6,7 @@ const { Title } = Typography
 
 export const ButtonStyled = styled(Button)`
   && {
-    color: ${({ theme }) => theme.colors.gray3};
+    color: ${({ theme }) => theme.colors.oldSilver};
   }
 `
 

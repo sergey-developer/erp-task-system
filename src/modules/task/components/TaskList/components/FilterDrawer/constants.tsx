@@ -1,6 +1,6 @@
 import React from 'react'
 
-import TaskStatus from 'components/TaskStatus'
+import TaskStatus from 'modules/task/components/TaskStatus'
 import { TaskStatusEnum } from 'modules/task/constants/enums'
 import { taskStatusDict } from 'modules/task/constants/taskStatus'
 import {

@@ -7,15 +7,12 @@ import { BUTTON_TEXT_CANCEL } from 'shared/constants/text'
 type BaseModalProps = ModalProps
 
 const BaseModal: FC<BaseModalProps> = ({ children, ...props }) => {
-  return (
-    <Modal
-      width={DEFAULT_MODAL_WIDTH}
-      cancelText={BUTTON_TEXT_CANCEL}
-      {...props}
-    >
-      {children}
-    </Modal>
-  )
+  return <Modal {...props}>{children}</Modal>
+}
+
+BaseModal.defaultProps = {
+  width: DEFAULT_MODAL_WIDTH,
+  cancelText: BUTTON_TEXT_CANCEL,
 }
 
 export default BaseModal

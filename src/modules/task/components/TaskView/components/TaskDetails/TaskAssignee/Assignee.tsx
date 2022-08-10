@@ -2,7 +2,7 @@ import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import UserAvatar from 'components/Avatars/UserAvatar'
-import TaskStatus from 'components/TaskStatus'
+import TaskStatus from 'modules/task/components/TaskStatus'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import { taskStatusDict } from 'modules/task/constants/taskStatus'
 

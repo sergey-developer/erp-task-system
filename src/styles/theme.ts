@@ -1,21 +1,26 @@
 import { DefaultTheme } from 'styled-components'
 
+/**
+  Названия цветов взяты с https://www.color-name.com
+ */
+
 const colors = {
   white: '#FFFFFF',
-  gray2: '#4F4F4F',
-  gray5: '#E0E0E0',
-  gray3: '#828282',
-  gray6: '#E8E8E8',
-  blue1: '#2F80ED',
-  red1: '#EB5757',
-  extraLightGray: '#FAFAFA',
-  lightGray: '#F0F2F5',
-  lightBlue: '#EEF5FE',
-}
+  darkLiver: '#4F4F4F',
+  chineseWhite: '#E0E0E0',
+  oldSilver: '#828282',
+  platinum: '#E8E8E8',
+  bleuDeFrance: '#2F80ED',
+  fireOpal: '#EB5757',
+  lotion: '#FAFAFA',
+  antiFlashWhite: '#F0F2F5',
+  aliceBlue: '#EEF5FE',
+  cosmicLatte: '#FFFBE6',
+} as const
 
 const shadows = {
   shadow1: 'box-shadow: 0px 2px 8px 0px #00000026;',
-}
+} as const
 
 const theme: DefaultTheme = {
   colors,

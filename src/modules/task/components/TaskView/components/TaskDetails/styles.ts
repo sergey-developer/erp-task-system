@@ -14,12 +14,12 @@ export const CardStyled = styled(Card)`
 
   && {
     border-radius: 4px;
-    border: 1px solid ${({ theme }) => theme.colors.gray5};
+    border: 1px solid ${({ theme }) => theme.colors.chineseWhite};
   }
 
   .ant-card-head {
     padding: 0;
-    background-color: ${({ theme }) => theme.colors.lightBlue};
+    background-color: ${({ theme }) => theme.colors.aliceBlue};
   }
 
   .ant-card-head-title {
@@ -36,7 +36,7 @@ export const CardStyled = styled(Card)`
 
 export const DividerStyled = styled(Divider)`
   && {
-    border-top: 1px solid ${({ theme }) => theme.colors.gray5};
+    border-top: 1px solid ${({ theme }) => theme.colors.chineseWhite};
     margin: 0;
   }
 `
