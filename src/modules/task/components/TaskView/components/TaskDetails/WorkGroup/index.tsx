@@ -104,15 +104,17 @@ const WorkGroup: FC<WorkGroupProps> = ({
         <Text>{workGroup?.name || 'I линия поддержки'}</Text>
       </Space>
 
-      <TaskSecondLineModal
-        id={id}
-        visible={isTaskSecondLineModalOpened}
-        onCancel={closeTaskSecondLineModal}
-        workGroupList={workGroupList}
-        workGroupListIsLoading={workGroupListIsLoading}
-        onTransfer={handleTransferTask}
-        transferTaskIsLoading={transferTaskIsLoading}
-      />
+      {isTaskSecondLineModalOpened && (
+        <TaskSecondLineModal
+          visible
+          id={id}
+          onCancel={closeTaskSecondLineModal}
+          workGroupList={workGroupList}
+          workGroupListIsLoading={workGroupListIsLoading}
+          onTransfer={handleTransferTask}
+          transferTaskIsLoading={transferTaskIsLoading}
+        />
+      )}
     </>
   )
 }

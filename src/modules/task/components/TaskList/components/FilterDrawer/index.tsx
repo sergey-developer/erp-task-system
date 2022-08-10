@@ -26,12 +26,12 @@ import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
 
 export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
   form: FormInstance<ExtendedFilterFormFields>
-  initialValues: ExtendedFilterFormFields
+  initialFormValues: ExtendedFilterFormFields
   onSubmit: (result: ExtendedFilterFormFields) => void
 }
 
 const FilterDrawer: FC<FilterDrawerProps> = (props) => {
-  const { form, initialValues, onClose, onSubmit, visible } = props
+  const { form, initialFormValues, onClose, onSubmit, visible } = props
 
   const breakpoints = useBreakpoint()
 
@@ -49,7 +49,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
     searchField: searchFieldValue,
   }
 
-  const valuesNotChanged = _isEqual(initialValues, formValues)
+  const valuesNotChanged = _isEqual(initialFormValues, formValues)
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
@@ -85,8 +85,9 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
       visible={visible}
     >
       <Form<ExtendedFilterFormFields>
+        layout='vertical'
         form={form}
-        initialValues={initialValues}
+        initialValues={initialFormValues}
         onFinish={onSubmit}
       >
         <FilterBlock withDivider>
@@ -94,7 +95,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
             Статус
           </FilterBlockLabel>
 
-          <Form.Item name='status' className='mb-0'>
+          <Form.Item name='status'>
             <CheckboxGroupStyled options={checkboxStatusOptions} />
           </Form.Item>
         </FilterBlock>
@@ -106,7 +107,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
             Период создания
           </FilterBlockLabel>
 
-          <Form.Item name='creationDateRange' className='mb-0'>
+          <Form.Item name='creationDateRange'>
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>
@@ -120,7 +121,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
                 Рабочая группа
               </FilterBlockLabel>
 
-              <Form.Item name='workGroupId' className='mb-0'>
+              <Form.Item name='workGroupId'>
                 <Select
                   disabled={workGroupListIsFetching}
                   fieldNames={workGroupListSelectFieldNames}
@@ -143,7 +144,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           <FilterBlockLabel
             onReset={() =>
               form.setFieldsValue({
-                searchField: initialValues.searchField,
+                searchField: initialFormValues.searchField,
                 searchValue: '',
               })
             }
@@ -161,7 +162,7 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item name='searchValue' className='mb-0'>
+          <Form.Item name='searchValue'>
             <Input placeholder='Ключевое слово' />
           </Form.Item>
         </FilterBlock>

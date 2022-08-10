@@ -47,25 +47,23 @@ const SignInPage: FC = () => {
             <Input.Password placeholder='••••••••' disabled={isLoading} />
           </Form.Item>
 
-          <Form.Item className='mb-0'>
-            <Space direction='vertical' $block>
-              <Button
-                type='primary'
-                htmlType='submit'
-                block
-                size='large'
-                loading={isLoading}
-              >
-                Войти
-              </Button>
+          <Space direction='vertical' $block>
+            <Button
+              type='primary'
+              htmlType='submit'
+              block
+              size='large'
+              loading={isLoading}
+            >
+              Войти
+            </Button>
 
-              <Link to={RoutesEnum.ForgotPassword}>
-                <Button type='link' block>
-                  Забыли пароль?
-                </Button>
-              </Link>
-            </Space>
-          </Form.Item>
+            <Link to={RoutesEnum.ForgotPassword}>
+              <Button type='link' block>
+                Забыли пароль?
+              </Button>
+            </Link>
+          </Space>
         </FormStyled>
       </Space>
     </CardStyled>

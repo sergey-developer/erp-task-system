@@ -3,22 +3,20 @@ import {
   Form,
   FormInstance,
   Input,
-  Modal,
   ModalProps,
   Space,
   Typography,
 } from 'antd'
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { FC } from 'react'
 
+import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
-import { DEFAULT_MODAL_WIDTH } from 'shared/constants/components'
-import { BUTTON_TEXT_CANCEL } from 'shared/constants/text'
 
 import { TaskResolutionFormFields } from './interfaces'
 import { TECH_RESOLUTION_RULES, USER_RESOLUTION_RULES } from './validation'
 
-const { Text } = Typography
+const { Text, Link } = Typography
 const { TextArea } = Input
 
 const buttonCommonProps: ButtonProps = {
@@ -27,64 +25,64 @@ const buttonCommonProps: ButtonProps = {
 
 export type TaskResolutionModalProps = Pick<
   ModalProps,
-  'visible' | 'title' | 'onCancel'
+  'visible' | 'onCancel'
 > &
-  Pick<TaskDetailsModel, 'type' | 'techResolution' | 'userResolution'> & {
+  Pick<
+    TaskDetailsModel,
+    'type' | 'techResolution' | 'userResolution' | 'recordId'
+  > & {
     isTaskResolving: boolean
-    onResolutionSubmit: (
+    onSubmit: (
       values: TaskResolutionFormFields,
       setFields: FormInstance['setFields'],
     ) => void
   }
 
-const TaskResolutionModal: FC<TaskResolutionModalProps> = (props) => {
-  const {
-    isTaskResolving,
-    onCancel,
-    onResolutionSubmit,
-    techResolution,
-    title,
-    type,
-    userResolution,
-    visible,
-  } = props
-
+const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
+  isTaskResolving,
+  onCancel,
+  onSubmit,
+  techResolution,
+  recordId,
+  type,
+  userResolution,
+  visible,
+}) => {
   const [form] = Form.useForm<TaskResolutionFormFields>()
 
   const taskType = useTaskType(type)
 
-  const initialFormValues: Partial<TaskResolutionFormFields> = useMemo(
-    () => ({ techResolution, userResolution }),
-    [userResolution, techResolution],
+  const initialFormValues: Partial<TaskResolutionFormFields> = {
+    techResolution,
+    userResolution,
+  }
+
+  const submitButtonProps: ButtonProps = {
+    ...buttonCommonProps,
+    disabled: isTaskResolving,
+    loading: isTaskResolving,
+    htmlType: 'submit',
+  }
+
+  const modalTitle = (
+    <Text>
+      Решение по заявке <Link>{recordId}</Link>
+    </Text>
   )
 
-  const submitButtonProps = useMemo<ButtonProps>(
-    () => ({
-      ...buttonCommonProps,
-      disabled: isTaskResolving,
-      loading: isTaskResolving,
-    }),
-    [isTaskResolving],
-  )
-
-  const handleFinish = useCallback(
-    async (values: TaskResolutionFormFields) => {
-      await onResolutionSubmit(values, form.setFields)
-    },
-    [form, onResolutionSubmit],
-  )
+  const handleFinish = async (values: TaskResolutionFormFields) => {
+    await onSubmit(values, form.setFields)
+  }
 
   return (
-    <Modal
-      title={title}
+    <BaseModal
+      title={modalTitle}
       visible={visible}
       onOk={form.submit}
-      onCancel={onCancel}
       okText='Выполнить заявку'
       okButtonProps={submitButtonProps}
-      cancelText={BUTTON_TEXT_CANCEL}
+      onCancel={onCancel}
       cancelButtonProps={buttonCommonProps}
-      width={DEFAULT_MODAL_WIDTH}
     >
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>
@@ -103,6 +101,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = (props) => {
           initialValues={initialFormValues}
           layout='vertical'
           onFinish={handleFinish}
+          requiredMark={false}
         >
           <Form.Item
             label='Техническое решение'
@@ -123,7 +122,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = (props) => {
           )}
         </Form>
       </Space>
-    </Modal>
+    </BaseModal>
   )
 }
 

@@ -1,11 +1,10 @@
-import { Modal, ModalProps, Select, Space, Typography } from 'antd'
+import { ModalProps, Select, Space, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
+import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/components/WorkGroupList/constants'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
-import { DEFAULT_MODAL_WIDTH } from 'shared/constants/components'
-import { BUTTON_TEXT_CANCEL } from 'shared/constants/text'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 const { Text, Link } = Typography
@@ -46,12 +45,10 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   }
 
   return (
-    <Modal
+    <BaseModal
       title={modalTitle}
-      width={DEFAULT_MODAL_WIDTH}
       visible={visible}
       okText={TRANSFER_BUTTON_TEXT}
-      cancelText={BUTTON_TEXT_CANCEL}
       onOk={handleClickTransfer}
       onCancel={onCancel}
       okButtonProps={{
@@ -85,7 +82,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           />
         </Space>
       </Space>
-    </Modal>
+    </BaseModal>
   )
 }
 

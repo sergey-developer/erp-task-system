@@ -2,7 +2,6 @@ import { ModalProps, Row } from 'antd'
 import React, { FC } from 'react'
 
 import CopyButton from 'components/Buttons/CopyButton'
-import { DEFAULT_MODAL_WIDTH } from 'shared/constants/components'
 
 import { ModalStyled } from './styles'
 
@@ -17,7 +16,6 @@ const CopyTextModal: FC<CopyTextModalProps> = (props) => {
   return (
     <ModalStyled
       visible={visible}
-      width={DEFAULT_MODAL_WIDTH}
       title={
         <Row className='mr-30' justify='space-between' align='middle'>
           <span>{title}</span>

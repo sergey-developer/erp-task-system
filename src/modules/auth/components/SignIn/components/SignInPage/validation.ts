@@ -1,8 +1,8 @@
 import { Rule } from 'rc-field-form/lib/interface'
+import { REQUIRED_FIELD_RULE } from 'shared/constants/validation'
 
 export const PASSWORD_RULES: Rule[] = [
-  { required: true, message: 'Обязательное поле', whitespace: true },
+  { ...REQUIRED_FIELD_RULE, whitespace: true },
 ]
-export const EMAIL_RULES: Rule[] = [
-  { required: true, message: 'Обязательное поле', type: 'email' },
-]
+
+export const EMAIL_RULES: Rule[] = [{ ...REQUIRED_FIELD_RULE, type: 'email' }]

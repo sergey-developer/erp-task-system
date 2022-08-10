@@ -291,11 +291,11 @@ const TaskListPage: FC = () => {
 
       {isFilterDrawerVisible && (
         <FilterDrawer
+          visible
           form={extendedFilterForm}
-          initialValues={initialExtendedFilterFormValues}
+          initialFormValues={initialExtendedFilterFormValues}
           onClose={toggleFilterDrawer}
           onSubmit={handleFilterDrawerSubmit}
-          visible={isFilterDrawerVisible}
         />
       )}
     </>
