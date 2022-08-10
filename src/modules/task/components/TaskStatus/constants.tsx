@@ -22,6 +22,6 @@ export const iconOrBadgeStatusMap: Record<
   [TaskStatusEnum.Awaiting]: <PauseCircleTwoTone />,
   [TaskStatusEnum.InReclassification]: <QuestionCircleTwoTone />,
   [TaskStatusEnum.Returned]: (
-    <RightCircleOutlined style={{ color: theme.colors.red1 }} />
+    <RightCircleOutlined style={{ color: theme.colors.fireOpal }} />
   ),
 }

@@ -12,7 +12,7 @@ export const CardStyled = styled(Card)`
 
 export const PageTitleStyled = styled(Typography.Title)`
   && {
-    color: ${(props) => props.theme.colors.blue1};
+    color: ${(props) => props.theme.colors.bleuDeFrance};
     text-align: center;
     margin-bottom: 48px;
   }

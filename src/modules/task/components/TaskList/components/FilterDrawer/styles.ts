@@ -47,7 +47,7 @@ export const DrawerStyled = styled(Drawer)<StyledBreakpointsProps>`
 
   .ant-drawer-body {
     padding: 0;
-    background-color: ${({ theme }) => theme.colors.extraLightGray};
+    background-color: ${({ theme }) => theme.colors.lotion};
   }
 `
 

@@ -2,7 +2,7 @@ import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
-import TaskStatus from 'components/TaskStatus'
+import TaskStatus from 'modules/task/components/TaskStatus'
 import {
   ASSIGNEE_WORD,
   OBJECT_WORD,

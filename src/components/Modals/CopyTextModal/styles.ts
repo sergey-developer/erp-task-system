@@ -3,6 +3,6 @@ import styled from 'styled-components'
 
 export const ModalStyled = styled(BaseModal)`
   .ant-modal-body {
-    border-top: 1px solid ${({ theme }) => theme.colors.gray5};
+    border-top: 1px solid ${({ theme }) => theme.colors.chineseWhite};
   }
 `

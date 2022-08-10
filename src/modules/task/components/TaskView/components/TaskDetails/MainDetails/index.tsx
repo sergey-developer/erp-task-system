@@ -1,6 +1,7 @@
 import { Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
+import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
@@ -11,6 +12,8 @@ import makeString from 'shared/utils/string/makeString'
 
 import { DetailContainerStyled } from '../styles'
 import { getTaskRemainingTime } from './utils'
+
+const { Text, Title } = Typography
 
 type MainDetailsProps = Pick<
   TaskDetailsModel,
@@ -67,54 +70,46 @@ const MainDetails: FC<MainDetailsProps> = ({
   return (
     <DetailContainerStyled>
       <Space direction='vertical' size='middle' $block>
-        <Space
-          split={
-            rawOlaNextBreachTime ? (
-              <Typography.Text type='secondary'>•</Typography.Text>
-            ) : null
-          }
-        >
-          <Typography.Text type='secondary' ellipsis className='break-text'>
+        <SeparatedText>
+          <Text type='secondary' ellipsis className='break-text'>
             {recordId}
-          </Typography.Text>
+          </Text>
 
           {rawOlaNextBreachTime && olaNextBreachTime}
-        </Space>
+        </SeparatedText>
 
         <Space direction='vertical' size={4}>
-          <Typography.Title level={4} ellipsis className='break-text mb-0'>
+          <Title level={4} ellipsis className='break-text mb-0'>
             {title}
-          </Typography.Title>
+          </Title>
 
-          <Typography.Text>
-            {formatDate(createdAt, DATE_TIME_FORMAT)}
-          </Typography.Text>
+          <Text>{formatDate(createdAt, DATE_TIME_FORMAT)}</Text>
         </Space>
 
         <Row justify='space-between'>
           <Col span={12}>
             <Space direction='vertical'>
-              <Typography.Text type='secondary'>Адрес</Typography.Text>
+              <Text type='secondary'>Адрес</Text>
 
-              <Typography.Text strong ellipsis className='break-text'>
+              <Text strong ellipsis className='break-text'>
                 {name}
-              </Typography.Text>
+              </Text>
 
               {address && (
-                <Typography.Text ellipsis className='break-text'>
+                <Text ellipsis className='break-text'>
                   {address}
-                </Typography.Text>
+                </Text>
               )}
             </Space>
           </Col>
 
           <Col span={10}>
             <Space direction='vertical'>
-              <Typography.Text type='secondary'>Заявитель</Typography.Text>
+              <Text type='secondary'>Заявитель</Text>
 
-              <Typography.Text strong ellipsis className='break-text'>
+              <Text strong ellipsis className='break-text'>
                 {contactService}
-              </Typography.Text>
+              </Text>
             </Space>
           </Col>
         </Row>

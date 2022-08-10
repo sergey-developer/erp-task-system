@@ -14,7 +14,7 @@ export const StyledTable: typeof Table = styled(Table)`
       flex-flow: column nowrap;
 
       .ant-table {
-        background-color: ${({ theme }) => theme.colors.lightGray};
+        background-color: ${({ theme }) => theme.colors.antiFlashWhite};
         flex: auto;
         overflow: hidden;
 
@@ -50,7 +50,7 @@ export const StyledTable: typeof Table = styled(Table)`
   }
   && .ant-table-thead {
     .ant-table-cell {
-      background-color: ${({ theme }) => theme.colors.lightGray};
+      background-color: ${({ theme }) => theme.colors.antiFlashWhite};
       &:before {
         display: none;
       }

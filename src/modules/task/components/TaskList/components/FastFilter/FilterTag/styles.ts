@@ -23,11 +23,11 @@ export const CheckableTagStyled = styled(
 
   &.ant-tag-checkable:active {
     ${({ theme, $disabled }) =>
-      $disabled ? `background-color: ${theme.colors.gray6};` : ''}
+      $disabled ? `background-color: ${theme.colors.platinum};` : ''}
   }
 
   &:not(.ant-tag-checkable-checked) {
-    background-color: ${({ theme }) => theme.colors.gray6};
+    background-color: ${({ theme }) => theme.colors.platinum};
     ${({ $disabled }) => ($disabled ? 'cursor: not-allowed;' : '')};
   }
 
