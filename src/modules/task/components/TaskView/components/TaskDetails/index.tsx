@@ -17,6 +17,9 @@ import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
+import TaskReclassificationModal, {
+  TaskReclassificationModalProps,
+} from '../TaskReclassificationModal'
 import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
@@ -75,6 +78,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const [isTaskResolutionModalOpened, { toggle: toggleTaskResolutionModal }] =
     useBoolean(false)
 
+  const [
+    isTaskReclassificationModalOpened,
+    { toggle: toggleTaskReclassificationModal },
+  ] = useBoolean(false)
+
   const {
     fn: resolveTask,
     state: { isLoading: isTaskResolving },
@@ -99,18 +107,29 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const menuItems = useMemo<MenuProps['items']>(
     () => [
       {
-        key: 3,
+        key: 1,
         disabled: !taskStatus.isInProgress || !isAssignedToCurrentUser,
         icon: <CheckCircleOutlined />,
         label: 'Выполнить заявку',
         onClick: toggleTaskResolutionModal,
       },
+      {
+        key: 2,
+        icon: <CheckCircleOutlined />,
+        label: 'Запросить переклассификацию',
+        onClick: toggleTaskReclassificationModal,
+      },
     ],
-    [taskStatus, isAssignedToCurrentUser, toggleTaskResolutionModal],
+    [
+      taskStatus.isInProgress,
+      isAssignedToCurrentUser,
+      toggleTaskResolutionModal,
+      toggleTaskReclassificationModal,
+    ],
   )
 
   const handleResolutionSubmit = useCallback<
-    TaskResolutionModalProps['onResolutionSubmit']
+    TaskResolutionModalProps['onSubmit']
   >(
     async (values, setFields) => {
       try {
@@ -132,6 +151,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     },
     [details, onTaskResolved, resolveTask],
   )
+
+  const handleReclassificationSubmit = useCallback<
+    TaskReclassificationModalProps['onSubmit']
+  >(async (values, setFields) => {
+    console.log({ values, setFields })
+  }, [])
 
   const handleUpdateTaskWorkGroup = useCallback(
     async (
@@ -207,14 +232,25 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               defaultTab={TaskDetailsTabsEnum.Description}
             />
 
-            <TaskResolutionModal
-              isTaskResolving={isTaskResolving}
-              onCancel={toggleTaskResolutionModal}
-              onResolutionSubmit={handleResolutionSubmit}
-              title={`Решение по заявке ${details.recordId}`}
-              type={details.type}
-              visible={isTaskResolutionModalOpened}
-            />
+            {isTaskResolutionModalOpened && (
+              <TaskResolutionModal
+                visible
+                isTaskResolving={isTaskResolving}
+                onCancel={toggleTaskResolutionModal}
+                onSubmit={handleResolutionSubmit}
+                recordId={details.recordId}
+                type={details.type}
+              />
+            )}
+
+            {isTaskReclassificationModalOpened && (
+              <TaskReclassificationModal
+                visible
+                recordId={details.recordId}
+                onSubmit={handleReclassificationSubmit}
+                onCancel={toggleTaskReclassificationModal}
+              />
+            )}
           </>
         )}
       </CardStyled>
