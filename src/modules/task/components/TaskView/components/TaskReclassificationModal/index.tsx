@@ -12,8 +12,8 @@ import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
+import { ReclassificationReasonEnum } from 'modules/task/constants/enums'
 
-import { ReclassificationReasonEnum } from '../../../../constants/enums'
 import { TaskReclassificationFormFields } from './interfaces'
 import { COMMENT_RULES, RECLASSIFICATION_REASON_RULES } from './validation'
 

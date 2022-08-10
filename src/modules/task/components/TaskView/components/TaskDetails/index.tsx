@@ -154,9 +154,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleReclassificationSubmit = useCallback<
     TaskReclassificationModalProps['onSubmit']
-  >(async (values, setFields) => {
-    console.log({ values, setFields })
-  }, [])
+  >(async (values, setFields) => {}, [])
 
   const handleUpdateTaskWorkGroup = useCallback(
     async (
