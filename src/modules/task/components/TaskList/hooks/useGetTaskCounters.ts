@@ -16,7 +16,6 @@ const useGetTaskCounters = () => {
 
   useEffect(() => {
     if (!state.isError) return
-
     const error = state.error as ErrorResponse
     const errorDetail = getErrorDetail(error)
     showMultipleErrorNotification(errorDetail)

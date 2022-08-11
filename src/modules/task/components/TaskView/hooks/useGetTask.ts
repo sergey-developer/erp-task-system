@@ -4,8 +4,9 @@ import { GetTaskQueryArgsModel } from 'modules/task/components/TaskView/models'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 import { taskApiPermissions } from '../permissions/task.permissions'
 
@@ -23,13 +24,14 @@ const useGetTask = (id: GetTaskQueryArgsModel) => {
 
     if (error.status === HttpStatusCodeEnum.NotFound) {
       showErrorNotification(`Заявка с идентификатором ${id} не найдена`)
-    }
-
-    if (
+    } else if (
       error.status === HttpStatusCodeEnum.BadRequest ||
       error.status! >= HttpStatusCodeEnum.ServerError
     ) {
       showErrorNotification(`Ошибка открытия заявки с идентификатором ${id}`)
+    } else {
+      const errorDetail = getErrorDetail(error)
+      showMultipleErrorNotification(errorDetail)
     }
   }, [id, state.error, state.isError])
 
