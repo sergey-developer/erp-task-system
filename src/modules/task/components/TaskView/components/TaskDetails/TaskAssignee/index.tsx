@@ -43,7 +43,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const taskStatus = useTaskStatus(status)
   const authenticatedUser = useAuthenticatedUser()
 
-  const selectedAssigneeIsCurrentAssignee = currentAssignee === selectedAssignee
+  const selectedAssigneeIsCurrentAssignee = selectedAssignee === currentAssignee
 
   const currentAssigneeIsAuthenticatedUser =
     useCheckUserAuthenticated(currentAssignee)
