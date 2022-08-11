@@ -17,7 +17,6 @@ const useLogin = () => {
 
   const fn = useCallback(
     async (fields: SignInFormFields) => {
-      // todo: добавить обработку ошибок
       const response = await mutation(fields).unwrap()
 
       authLocalStorageService.setAccessToken(response.access)
