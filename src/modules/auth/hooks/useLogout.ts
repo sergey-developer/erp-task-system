@@ -11,14 +11,14 @@ import { logout as logoutAction } from '../authSlice'
 
 const useLogout = () => {
   const dispatch = useDispatch()
-  const [logout] = useLogoutMutation()
+  const [mutation, state] = useLogoutMutation()
 
-  return useCallback(async () => {
+  const fn = useCallback(async () => {
     try {
       const refreshToken = authLocalStorageService.getRefreshToken()
 
       if (refreshToken) {
-        await logout({ refresh: refreshToken }).unwrap()
+        await mutation({ refresh: refreshToken }).unwrap()
 
         authLocalStorageService.removeRefreshToken()
         authLocalStorageService.removeAccessToken()
@@ -32,7 +32,9 @@ const useLogout = () => {
       const errorDetail = getErrorDetail(error)
       showMultipleErrorNotification(errorDetail)
     }
-  }, [dispatch, logout])
+  }, [dispatch, mutation])
+
+  return { fn, state }
 }
 
 export default useLogout
