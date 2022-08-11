@@ -1,6 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { Button, Space, Typography } from 'antd'
-import _debounce from 'lodash/debounce'
 import React, { FC } from 'react'
 
 import Permissions from 'components/Permissions'
@@ -9,7 +8,7 @@ import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/components/TaskView/permissions/taskWorkGroup.permissions'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
-import { DOUBLE_CLICK_DEBOUNCE_TIME } from 'shared/constants/common'
+import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
@@ -49,7 +48,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   const hasWorkGroup: boolean = !!workGroup
 
-  const handleOpenTaskSecondLineModal = _debounce(() => {
+  const handleOpenTaskSecondLineModal = useDebounceFn(() => {
     openTaskSecondLineModal()
 
     if (getWorkGroupListError) {
@@ -57,7 +56,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
         'Возникла ошибка при получении списка рабочих групп',
       )
     }
-  }, DOUBLE_CLICK_DEBOUNCE_TIME)
+  })
 
   const handleTransferTask = async (
     workGroup: WorkGroupListItemModel['id'],

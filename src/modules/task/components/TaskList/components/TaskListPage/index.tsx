@@ -17,6 +17,7 @@ import { GetTaskListQueryArgsModel } from 'modules/task/components/TaskList/mode
 import TaskDetails from 'modules/task/components/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { GetComponentProps } from 'rc-table/lib/interface'
+import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { Keys, MaybeNull } from 'shared/interfaces/utils'
 import isArray from 'shared/utils/array/isArray'
 
@@ -77,6 +78,8 @@ const TaskListPage: FC = () => {
   const [isFilterDrawerVisible, { toggle: toggleFilterDrawer }] =
     useBoolean(false)
 
+  const debouncedToggleFilterDrawer = useDebounceFn(toggleFilterDrawer)
+
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
 
@@ -115,7 +118,9 @@ const TaskListPage: FC = () => {
     }
   }
 
-  const handleTaskIdFilterSearch: SearchProps['onSearch'] = (value) => {
+  const handleTaskIdFilterSearch = useDebounceFn<
+    NonNullable<SearchProps['onSearch']>
+  >((value) => {
     if (value) {
       setAppliedFilterType(FilterTypeEnum.Search)
       triggerFilterChange({
@@ -135,7 +140,7 @@ const TaskListPage: FC = () => {
     }
 
     handleCloseTaskDetails()
-  }
+  })
 
   const handleTableRowClick: GetComponentProps<TaskTableListItem> = useCallback(
     (record: TaskTableListItem) => ({
@@ -204,11 +209,11 @@ const TaskListPage: FC = () => {
     }))
   }
 
-  const handleRefetchTaskList = () => {
+  const handleRefetchTaskList = useDebounceFn(() => {
     refetchTaskList()
     handleCloseTaskDetails()
     refetchTaskCounters()
-  }
+  })
 
   const searchFilterApplied: boolean =
     appliedFilterType === FilterTypeEnum.Search
@@ -233,7 +238,7 @@ const TaskListPage: FC = () => {
               <Col>
                 <Button
                   icon={<FilterTwoTone className='fs-18' />}
-                  onClick={toggleFilterDrawer}
+                  onClick={debouncedToggleFilterDrawer}
                   disabled={searchFilterApplied}
                 >
                   Фильтры

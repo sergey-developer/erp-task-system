@@ -11,6 +11,7 @@ import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import getTransferTaskSecondLineErrors from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineErrors'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
+import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { ErrorResponse, getErrorDetail } from 'shared/services/api'
@@ -78,10 +79,18 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const [isTaskResolutionModalOpened, { toggle: toggleTaskResolutionModal }] =
     useBoolean(false)
 
+  const debouncedToggleTaskResolutionModal = useDebounceFn(
+    toggleTaskResolutionModal,
+  )
+
   const [
     isTaskReclassificationModalOpened,
     { toggle: toggleTaskReclassificationModal },
   ] = useBoolean(false)
+
+  const debouncedToggleTaskReclassificationModal = useDebounceFn(
+    toggleTaskReclassificationModal,
+  )
 
   const {
     fn: resolveTask,
@@ -111,20 +120,20 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         disabled: !taskStatus.isInProgress || !isAssignedToCurrentUser,
         icon: <CheckCircleOutlined className='fs-14' />,
         label: 'Выполнить заявку',
-        onClick: toggleTaskResolutionModal,
+        onClick: debouncedToggleTaskResolutionModal,
       },
       {
         key: 2,
         icon: <QuestionCircleTwoTone className='fs-14' />,
         label: 'Запросить переклассификацию',
-        onClick: toggleTaskReclassificationModal,
+        onClick: debouncedToggleTaskReclassificationModal,
       },
     ],
     [
       taskStatus.isInProgress,
       isAssignedToCurrentUser,
-      toggleTaskResolutionModal,
-      toggleTaskReclassificationModal,
+      debouncedToggleTaskResolutionModal,
+      debouncedToggleTaskReclassificationModal,
     ],
   )
 
