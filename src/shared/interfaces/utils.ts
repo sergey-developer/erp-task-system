@@ -10,3 +10,5 @@ export type BooleanMap<Key extends string> = Record<Key, boolean>
 export type StringMap<Key extends string> = Record<Key, string>
 
 export type FCWithChildren<T = {}> = FC<PropsWithChildren<T>>
+
+export type AnyFn = (...args: any) => any
