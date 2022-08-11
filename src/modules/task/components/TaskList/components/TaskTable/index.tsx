@@ -2,11 +2,11 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { ColumnsType } from 'antd/es/table'
 import React, { FC, useMemo } from 'react'
 
-import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 import { SMART_SORT_DIRECTIONS_TO_SORT_FIELDS } from 'modules/task/components/TaskList/components/TaskListPage/constants'
 
 import { TABLE_COLUMNS } from './constants/columns'
 import { TaskTableListItem, TaskTableProps } from './interfaces'
+import { TableStyled } from './styles'
 import applySortingToColumn from './utils/applySortingToColumn'
 import applyWidthToColumn from './utils/applyWidthToColumn'
 
@@ -36,7 +36,7 @@ const TaskTable: FC<TaskTableProps> = ({
   )
 
   return (
-    <ParentSizedTable<TaskTableListItem>
+    <TableStyled<TaskTableListItem>
       dataSource={dataSource}
       columns={columns}
       pagination={pagination && { ...pagination, position: ['bottomCenter'] }}
