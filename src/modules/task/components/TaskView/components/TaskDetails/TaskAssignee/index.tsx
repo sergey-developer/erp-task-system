@@ -43,7 +43,10 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const taskStatus = useTaskStatus(status)
   const authenticatedUser = useAuthenticatedUser()
 
-  const assigneeIsAuthenticatedUser = useCheckUserAuthenticated(currentAssignee)
+  const selectedAssigneeIsCurrentAssignee = currentAssignee === selectedAssignee
+
+  const currentAssigneeIsAuthenticatedUser =
+    useCheckUserAuthenticated(currentAssignee)
 
   const selectedAssigneeIsAuthenticatedUser =
     useCheckUserAuthenticated(selectedAssignee)
@@ -81,10 +84,12 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
           loading={updateTaskAssigneeIsLoading}
           disabled={taskStatus.isClosed || taskStatus.isCompleted}
           onClick={
-            assigneeIsAuthenticatedUser ? undefined : handleAssignTaskOnMe
+            currentAssigneeIsAuthenticatedUser
+              ? undefined
+              : handleAssignTaskOnMe
           }
         >
-          {assigneeIsAuthenticatedUser
+          {currentAssigneeIsAuthenticatedUser
             ? 'Отказаться от заявки'
             : 'Назначить на себя'}
         </Button>
@@ -122,14 +127,14 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                   const authenticatedUserInWorkGroup: boolean =
                     id === authenticatedUser!.id
 
+                  const disabled =
+                    currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
+
                   return (
                     <SelectStyled.Option
                       key={id}
                       value={id}
-                      disabled={
-                        currentAssigneeInWorkGroup ||
-                        authenticatedUserInWorkGroup
-                      }
+                      disabled={disabled}
                     >
                       <Assignee
                         name={fullName}
@@ -148,7 +153,9 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                   onClick={handleClickAssignee}
                   loading={updateTaskAssigneeIsLoading}
                   disabled={
-                    !selectedAssignee || selectedAssigneeIsAuthenticatedUser
+                    !selectedAssignee ||
+                    selectedAssigneeIsAuthenticatedUser ||
+                    selectedAssigneeIsCurrentAssignee
                   }
                 >
                   Назначить
