@@ -96,6 +96,7 @@ const TaskListPage: FC = () => {
     setExtendedFilterFormValues(values)
     setFastFilterValue(null)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
+    handleCloseTaskDetails()
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
@@ -108,6 +109,10 @@ const TaskListPage: FC = () => {
     triggerFilterChange({
       filter: value,
     })
+
+    if (value !== fastFilterValue) {
+      handleCloseTaskDetails()
+    }
   }
 
   const handleTaskIdFilterSearch: SearchProps['onSearch'] = (value) => {
@@ -128,6 +133,8 @@ const TaskListPage: FC = () => {
 
       triggerFilterChange(prevFilter)
     }
+
+    handleCloseTaskDetails()
   }
 
   const handleTableRowClick: GetComponentProps<TaskTableListItem> = useCallback(
