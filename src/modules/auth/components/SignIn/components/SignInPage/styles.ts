@@ -4,27 +4,25 @@ import styled from 'styled-components'
 
 export const CardStyled = styled(Card)`
   && {
-    ${({ theme }) => theme.shadows.shadow1}
     border-radius: 4px;
-    padding: 54px 130px;
+    padding: 80px 153px 100px 153px;
+    ${({ theme }) => theme.shadows.shadow1}
+  }
+
+  .ant-card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
   }
 `
 
 export const PageTitleStyled = styled(Typography.Title)`
   && {
-    color: ${(props) => props.theme.colors.bleuDeFrance};
+    color: ${({ theme }) => theme.colors.bleuDeFrance};
     text-align: center;
-    margin-bottom: 48px;
-  }
-`
-
-export const FormTitleStyled = styled(Typography.Title)`
-  && {
-    margin-top: 24px;
   }
 `
 
 export const FormStyled: typeof Form = styled(Form)`
-  margin-top: 24px;
-  min-width: 300px;
+  width: 300px;
 `

@@ -1,4 +1,4 @@
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -9,14 +9,11 @@ import useLogin from 'modules/auth/hooks/useLogin'
 import { APP_NAME } from 'shared/constants/common'
 
 import { SignInFormFields } from './interfaces'
-import {
-  CardStyled,
-  FormStyled,
-  FormTitleStyled,
-  PageTitleStyled,
-} from './styles'
+import { CardStyled, FormStyled, PageTitleStyled } from './styles'
 import getLoginErrors from './utils/getLoginErrors'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
+
+const { Title } = Typography
 
 const SignInPage: FC = () => {
   const {
@@ -28,43 +25,52 @@ const SignInPage: FC = () => {
 
   return (
     <CardStyled>
-      <PageTitleStyled level={4}>{APP_NAME}</PageTitleStyled>
-      <FormTitleStyled level={5}>Авторизация</FormTitleStyled>
+      <Space direction='vertical' size='large'>
+        <Space direction='vertical' size={48} $block>
+          <PageTitleStyled level={4} className='mb-0'>
+            {APP_NAME}
+          </PageTitleStyled>
 
-      <Space direction='vertical'>
-        <ErrorList errors={loginErrors} />
+          <Title level={5} className='mb-0'>
+            Авторизация
+          </Title>
+        </Space>
 
-        <FormStyled<SignInFormFields>
-          onFinish={login}
-          layout='vertical'
-          requiredMark={false}
-        >
-          <Form.Item label='E-mail' name='email' rules={EMAIL_RULES}>
-            <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
-          </Form.Item>
+        <Space direction='vertical'>
+          <ErrorList errors={loginErrors} />
 
-          <Form.Item label='Пароль' name='password' rules={PASSWORD_RULES}>
-            <Input.Password placeholder='••••••••' disabled={isLoading} />
-          </Form.Item>
+          <FormStyled<SignInFormFields>
+            onFinish={login}
+            layout='vertical'
+            requiredMark={false}
+          >
+            <Form.Item label='E-mail' name='email' rules={EMAIL_RULES}>
+              <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
+            </Form.Item>
 
-          <Space direction='vertical' $block>
-            <Button
-              type='primary'
-              htmlType='submit'
-              block
-              size='large'
-              loading={isLoading}
-            >
-              Войти
-            </Button>
+            <Form.Item label='Пароль' name='password' rules={PASSWORD_RULES}>
+              <Input.Password placeholder='••••••••' disabled={isLoading} />
+            </Form.Item>
 
-            <Link to={RoutesEnum.ForgotPassword}>
-              <Button type='link' block>
-                Забыли пароль?
+            <Space direction='vertical' $block>
+              <Button
+                type='primary'
+                htmlType='submit'
+                block
+                size='large'
+                loading={isLoading}
+              >
+                Войти
               </Button>
-            </Link>
-          </Space>
-        </FormStyled>
+
+              <Link to={RoutesEnum.ForgotPassword}>
+                <Button type='link' block>
+                  Забыли пароль?
+                </Button>
+              </Link>
+            </Space>
+          </FormStyled>
+        </Space>
       </Space>
     </CardStyled>
   )
