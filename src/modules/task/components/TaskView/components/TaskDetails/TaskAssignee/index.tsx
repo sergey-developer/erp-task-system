@@ -70,7 +70,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
     setSelectedAssignee(authenticatedUser!.id)
   }
 
-  const handleClickAssignee = async () => {
+  const handleClickAssigneeButton = async () => {
     await updateTaskAssignee(selectedAssignee!)
   }
 
@@ -150,7 +150,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                 <Button
                   type='primary'
                   ghost
-                  onClick={handleClickAssignee}
+                  onClick={handleClickAssigneeButton}
                   loading={updateTaskAssigneeIsLoading}
                   disabled={
                     !selectedAssignee ||

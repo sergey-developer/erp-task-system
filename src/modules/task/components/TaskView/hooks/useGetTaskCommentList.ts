@@ -4,8 +4,9 @@ import { GetTaskCommentListQueryArgsModel } from 'modules/task/components/TaskVi
 import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 import { taskCommentListApiPermissions } from '../permissions/taskCommentList.permissions'
 
@@ -23,12 +24,13 @@ const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
 
     if (error.status === HttpStatusCodeEnum.NotFound) {
       showErrorNotification(`Заявка с идентификатором ${id} не найдена`)
-    }
-
-    if (error.status! >= HttpStatusCodeEnum.ServerError) {
+    } else if (error.status! >= HttpStatusCodeEnum.ServerError) {
       showErrorNotification(
         `Ошибка получения комментариев для заявки с идентификатором ${id}`,
       )
+    } else {
+      const errorDetail = getErrorDetail(error)
+      showMultipleErrorNotification(errorDetail)
     }
   }, [id, state.error, state.isError])
 
