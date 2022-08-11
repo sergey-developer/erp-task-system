@@ -38,11 +38,14 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
 }) => {
-  const [selectedAssignee, setSelectedAssignee] = useState(assignee?.id)
+  const currentAssignee = assignee?.id
+  const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
   const taskStatus = useTaskStatus(status)
   const authenticatedUser = useAuthenticatedUser()
 
-  const assigneeIsAuthenticatedUser =
+  const assigneeIsAuthenticatedUser = useCheckUserAuthenticated(currentAssignee)
+
+  const selectedAssigneeIsAuthenticatedUser =
     useCheckUserAuthenticated(selectedAssignee)
 
   const seniorEngineerFromWorkGroupIsAuthenticatedUser =
@@ -113,7 +116,8 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                 onSelect={setSelectedAssignee}
               >
                 {workGroupMembers.map(({ id, fullName }) => {
-                  const assigneeInWorkGroup: boolean = id === assignee?.id
+                  const currentAssigneeInWorkGroup: boolean =
+                    id === currentAssignee
 
                   const authenticatedUserInWorkGroup: boolean =
                     id === authenticatedUser!.id
@@ -123,7 +127,8 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                       key={id}
                       value={id}
                       disabled={
-                        assigneeInWorkGroup || authenticatedUserInWorkGroup
+                        currentAssigneeInWorkGroup ||
+                        authenticatedUserInWorkGroup
                       }
                     >
                       <Assignee
@@ -142,7 +147,9 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                   ghost
                   onClick={handleClickAssignee}
                   loading={updateTaskAssigneeIsLoading}
-                  disabled={!selectedAssignee}
+                  disabled={
+                    !selectedAssignee || selectedAssigneeIsAuthenticatedUser
+                  }
                 >
                   Назначить
                 </Button>
