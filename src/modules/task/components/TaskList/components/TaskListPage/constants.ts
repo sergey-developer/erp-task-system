@@ -6,7 +6,7 @@ import { Keys } from 'shared/interfaces/utils'
 import { TaskTableListItem } from '../TaskTable/interfaces'
 import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
 
-export const DEFAULT_PAGE_LIMIT = 15
+export const DEFAULT_PAGE_SIZE = 15
 
 export const DEFAULT_SEARCH_FIELD: Keys<SearchQueries> = 'searchByTitle'
 

@@ -26,7 +26,7 @@ import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskTable from '../TaskTable'
 import { TaskTableListItem } from '../TaskTable/interfaces'
 import {
-  DEFAULT_PAGE_LIMIT,
+  DEFAULT_PAGE_SIZE,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
   SORTED_FIELDS,
   SortDirectionsEnum,
@@ -59,7 +59,7 @@ const TaskListPage: FC = () => {
 
   const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgsModel>({
     filter: initialFastFilter,
-    limit: DEFAULT_PAGE_LIMIT,
+    limit: DEFAULT_PAGE_SIZE,
     offset: 0,
     sort: SortEnum.ByOlaAsc,
   })
