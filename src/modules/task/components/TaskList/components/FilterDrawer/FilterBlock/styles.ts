@@ -22,7 +22,7 @@ const wrapperBreakpointStyles: StyledBreakpointStyles = {
   `,
 }
 
-export const Wrapper = styled.div<StyledBreakpointsProps>`
+export const WrapperStyled = styled.div<StyledBreakpointsProps>`
   ${({ $breakpoints }) =>
     applyBreakpointStyles($breakpoints, wrapperBreakpointStyles)}
 `
