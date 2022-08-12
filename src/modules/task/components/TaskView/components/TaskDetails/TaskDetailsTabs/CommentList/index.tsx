@@ -1,7 +1,8 @@
 import { useBoolean } from 'ahooks'
-import { Button, Row, Space, Spin, Typography } from 'antd'
+import { Button, Row, Space, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
+import Spinner from 'components/Spinner'
 import useGetTaskCommentList from 'modules/task/components/TaskView/hooks/useGetTaskCommentList'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
@@ -59,7 +60,7 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
       </Row>
 
       {commentListIsFetching ? (
-        <Spin />
+        <Spinner />
       ) : !commentsExist ? (
         <Text>Комментариев пока нет</Text>
       ) : (
