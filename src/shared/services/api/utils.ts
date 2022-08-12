@@ -1,5 +1,8 @@
+import isArray from 'shared/utils/array/isArray'
+
 import { ErrorResponse, ValidationErrors } from './intefraces'
 
 export function getErrorDetail<T>(e: ErrorResponse<T>): ValidationErrors {
-  return e.data?.detail ?? []
+  const detail = e.data?.detail ?? []
+  return isArray(detail) ? detail : [detail]
 }

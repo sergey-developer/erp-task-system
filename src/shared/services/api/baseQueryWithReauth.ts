@@ -1,6 +1,9 @@
 import { Mutex } from 'async-mutex'
 
-import { logout, refreshToken } from 'modules/auth/authSlice'
+import {
+  logout as logoutAction,
+  refreshToken as refreshTokenAction,
+} from 'modules/auth/authSlice'
 import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
 import { RefreshTokenResponseModel } from 'modules/auth/models'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
@@ -39,36 +42,38 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       try {
-        const { refreshToken: refresh } = (api.getState() as RootState).auth
+        const { refreshToken } = (api.getState() as RootState).auth
 
-        const refreshResult = await query(
-          {
-            method: HttpMethodEnum.POST,
-            url: '/user/refresh',
-            data: {
-              refresh,
+        if (refreshToken) {
+          const refreshResult = await query(
+            {
+              method: HttpMethodEnum.POST,
+              url: '/user/refresh',
+              data: {
+                refresh: refreshToken,
+              },
             },
-          },
-          api,
-          extraOptions,
-        )
-
-        if (refreshResult.data) {
-          const refreshData = refreshResult.data as RefreshTokenResponseModel
-
-          authLocalStorageService.setAccessToken(refreshData.access)
-          authLocalStorageService.setRefreshToken(refreshData.refresh)
-
-          api.dispatch(
-            refreshToken({
-              ...refreshData,
-              user: parseJwt(refreshData.access),
-            } as RefreshTokenActionPayload),
+            api,
+            extraOptions,
           )
 
-          response = await query(args, api, extraOptions)
-        } else {
-          api.dispatch(logout())
+          if (refreshResult.data) {
+            const refreshData = refreshResult.data as RefreshTokenResponseModel
+
+            authLocalStorageService.setAccessToken(refreshData.access)
+            authLocalStorageService.setRefreshToken(refreshData.refresh)
+
+            api.dispatch(
+              refreshTokenAction({
+                ...refreshData,
+                user: parseJwt(refreshData.access),
+              } as RefreshTokenActionPayload),
+            )
+
+            response = await query(args, api, extraOptions)
+          } else {
+            api.dispatch(logoutAction())
+          }
         }
       } finally {
         release()
