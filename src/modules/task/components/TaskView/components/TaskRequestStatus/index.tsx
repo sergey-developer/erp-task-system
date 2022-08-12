@@ -1,5 +1,6 @@
 import { QuestionCircleTwoTone } from '@ant-design/icons'
 import { Button, Space, Typography } from 'antd'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
 import SeparatedText from 'components/SeparatedText'
@@ -29,8 +30,10 @@ const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
   actionText,
   onAction,
 }) => {
+  const breakpoints = useBreakpoint()
+
   return (
-    <WrapperStyled>
+    <WrapperStyled $breakpoints={breakpoints}>
       <Space size='middle' align='baseline'>
         <QuestionCircleTwoTone className='fs-18' />
 

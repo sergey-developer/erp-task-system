@@ -1,5 +1,6 @@
 import { Card, Divider } from 'antd'
 
+import { StyledBreakpointsProps } from 'shared/interfaces/breakpoints'
 import styled from 'styled-components'
 
 export const RootWrapperStyled = styled.div`
@@ -7,7 +8,7 @@ export const RootWrapperStyled = styled.div`
   height: 100%;
 `
 
-export const CardStyled = styled(Card)`
+export const CardStyled = styled(Card)<StyledBreakpointsProps>`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -23,7 +24,8 @@ export const CardStyled = styled(Card)`
   }
 
   .ant-card-head-title {
-    padding: 12px 20px 12px 30px;
+    padding: 12px 20px 12px
+      ${({ $breakpoints }) => ($breakpoints.xxl ? '30px' : '20px')};
   }
 
   .ant-card-body {
@@ -41,6 +43,6 @@ export const DividerStyled = styled(Divider)`
   }
 `
 
-export const DetailContainerStyled = styled.div`
-  padding: 20px 30px;
+export const DetailContainerStyled = styled.div<StyledBreakpointsProps>`
+  padding: 20px ${({ $breakpoints }) => ($breakpoints.xxl ? '30px' : '')};
 `

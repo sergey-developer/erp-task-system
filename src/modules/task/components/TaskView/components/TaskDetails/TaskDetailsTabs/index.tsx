@@ -1,4 +1,5 @@
 import { Tabs } from 'antd'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
@@ -20,8 +21,10 @@ export type TaskDetailsTabsProps = {
 }
 
 const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
+  const breakpoints = useBreakpoint()
+
   return (
-    <DetailContainerStyled>
+    <DetailContainerStyled $breakpoints={breakpoints}>
       <Tabs defaultActiveKey={defaultTab}>
         <TabPane
           tab={taskDetailsTabNames[TaskDetailsTabsEnum.Description]}

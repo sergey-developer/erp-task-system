@@ -1,4 +1,5 @@
 import { Col, Row } from 'antd'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
@@ -45,6 +46,8 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
 }) => {
+  const breakpoints = useBreakpoint()
+
   const workGroup = useMemo(
     () =>
       workGroupList.find(
@@ -55,7 +58,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   )
 
   return (
-    <DetailContainerStyled>
+    <DetailContainerStyled $breakpoints={breakpoints}>
       <Row justify='space-between'>
         <Col span={12}>
           <WorkGroup
