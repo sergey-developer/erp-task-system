@@ -18,7 +18,7 @@ const TaskComment: FC<TaskCommentProps> = ({ text, createdAt, author }) => {
         <Text type='secondary'>{createdAt}</Text>
       </SeparatedText>
 
-      <Paragraph className='mb-0'>{text}</Paragraph>
+      <Paragraph>{text}</Paragraph>
     </Space>
   )
 }
