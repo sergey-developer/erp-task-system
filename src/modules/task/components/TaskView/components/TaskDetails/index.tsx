@@ -1,6 +1,7 @@
 import { CheckCircleOutlined, QuestionCircleTwoTone } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
 import { MenuProps } from 'antd'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useCallback, useMemo } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
@@ -76,6 +77,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   refetchTask,
   refetchTaskList,
 }) => {
+  const breakpoints = useBreakpoint()
+
   const [isTaskResolutionModalOpened, { toggle: toggleTaskResolutionModal }] =
     useBoolean(false)
 
@@ -203,7 +206,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <RootWrapperStyled>
-      <CardStyled title={cardTitle} loading={taskIsLoading}>
+      <CardStyled
+        title={cardTitle}
+        loading={taskIsLoading}
+        $breakpoints={breakpoints}
+      >
         {details && (
           <>
             <MainDetails

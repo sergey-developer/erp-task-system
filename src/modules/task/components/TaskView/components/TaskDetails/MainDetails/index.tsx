@@ -1,4 +1,5 @@
 import { Col, Row, Typography } from 'antd'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 
 import SeparatedText from 'components/SeparatedText'
@@ -39,6 +40,8 @@ const MainDetails: FC<MainDetailsProps> = ({
   olaNextBreachTime: rawOlaNextBreachTime,
   olaEstimatedTime,
 }) => {
+  const breakpoints = useBreakpoint()
+
   const olaNextBreachTime = useMemo(() => {
     const olaStatus = getOlaStatusMap(rawOlaStatus)
 
@@ -68,7 +71,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   }, [olaEstimatedTime, rawOlaStatus, rawOlaNextBreachTime])
 
   return (
-    <DetailContainerStyled>
+    <DetailContainerStyled $breakpoints={breakpoints}>
       <Space direction='vertical' size='middle' $block>
         <SeparatedText>
           <Text type='secondary' ellipsis className='break-text'>
