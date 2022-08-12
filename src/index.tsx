@@ -1,4 +1,5 @@
-import { ConfigProvider as AntdConfigProvider } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
+import { ConfigProvider as AntdConfigProvider, Spin } from 'antd'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider as StoreProvider } from 'react-redux'
@@ -17,6 +18,7 @@ import reportWebVitals from './reportWebVitals'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 setupMoment()
+Spin.setDefaultIndicator(<LoadingOutlined />)
 
 root.render(
   <StoreProvider store={store}>

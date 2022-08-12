@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import Header from 'components/Header/PrivateHeader'
-import Spin from 'components/Spin'
+import Spinner from 'components/Spinner'
 
 import { ContentStyled } from './styles'
 
@@ -16,7 +16,7 @@ const PrivateLayout: FC = () => {
       <Header />
 
       <ContentStyled $breakpoints={breakpoints}>
-        <React.Suspense fallback={<Spin />}>
+        <React.Suspense fallback={<Spinner area='parent' size='large' />}>
           <Outlet />
         </React.Suspense>
       </ContentStyled>
