@@ -47,9 +47,7 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
   return (
     <Space direction='vertical' size='middle'>
       <Row justify='space-between'>
-        <Title className='mb-0' level={5}>
-          {title}
-        </Title>
+        <Title level={5}>{title}</Title>
 
         {commentsExist && isDisplayableCountExceed && (
           <Button type='link' onClick={toggleExpanded}>

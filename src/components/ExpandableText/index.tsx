@@ -26,7 +26,6 @@ const ExpandableText: FC<ExpandableTextProps> = ({
   return (
     <Space $block direction='vertical'>
       <Paragraph
-        className='mb-0'
         ellipsis={
           expanded
             ? false

@@ -12,11 +12,9 @@ type DescriptionProps = Pick<TaskDetailsModel, 'description'> & {
 const Description: FC<DescriptionProps> = ({ title, description }) => {
   return (
     <Space direction='vertical'>
-      <Title className='mb-0' level={5}>
-        {title}
-      </Title>
+      <Title level={5}>{title}</Title>
 
-      {description && <Paragraph className='mb-0'>{description}</Paragraph>}
+      {description && <Paragraph>{description}</Paragraph>}
     </Space>
   )
 }

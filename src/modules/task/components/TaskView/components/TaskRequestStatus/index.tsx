@@ -39,9 +39,7 @@ const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
 
         <Space direction='vertical' size='middle'>
           <Space direction='vertical'>
-            <Title level={5} className='mb-0'>
-              {title}
-            </Title>
+            <Title level={5}>{title}</Title>
 
             <Text>{description}</Text>
 

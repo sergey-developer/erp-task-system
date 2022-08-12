@@ -82,7 +82,7 @@ const MainDetails: FC<MainDetailsProps> = ({
         </SeparatedText>
 
         <Space direction='vertical' size={4}>
-          <Title level={4} ellipsis className='break-text mb-0'>
+          <Title level={4} ellipsis className='break-text'>
             {title}
           </Title>
 

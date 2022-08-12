@@ -27,13 +27,9 @@ const SignInPage: FC = () => {
     <CardStyled>
       <Space direction='vertical' size='large'>
         <Space direction='vertical' size={48} $block>
-          <PageTitleStyled level={4} className='mb-0'>
-            {APP_NAME}
-          </PageTitleStyled>
+          <PageTitleStyled level={4}>{APP_NAME}</PageTitleStyled>
 
-          <Title level={5} className='mb-0'>
-            Авторизация
-          </Title>
+          <Title level={5}>Авторизация</Title>
         </Space>
 
         <Space direction='vertical'>
