@@ -13,5 +13,6 @@ export const BadgeStyled = styled(Badge).attrs({
 `
 
 export const AvatarStyled = styled(Avatar)`
-  background-color: ${({ theme }) => theme.colors.bleuDeFrance};
+  ${({ theme, src }) =>
+    src ? '' : `background-color: ${theme.colors.bleuDeFrance};`}
 `
