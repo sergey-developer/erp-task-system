@@ -49,17 +49,32 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
         const { refreshToken } = (api.getState() as RootState).auth
 
         if (refreshToken) {
-          const refreshResult = await query(
-            {
-              method: HttpMethodEnum.POST,
-              url: '/user/refresh',
-              data: {
-                refresh: refreshToken,
+          let refreshResult
+
+          try {
+            refreshResult = await query(
+              {
+                method: HttpMethodEnum.POST,
+                url: '/user/refresh',
+                data: {
+                  refresh: refreshToken,
+                },
               },
-            },
-            api,
-            extraOptions,
-          )
+              api,
+              extraOptions,
+            )
+          } catch (exception) {
+            const error = exception as ErrorResponse
+
+            if (
+              error.status! >= HttpStatusCodeEnum.BadRequest &&
+              error.status! < HttpStatusCodeEnum.ServerError
+            ) {
+              api.dispatch(logoutAction())
+            }
+
+            throw error
+          }
 
           if (refreshResult.data) {
             const refreshData = refreshResult.data as RefreshTokenResponseModel
