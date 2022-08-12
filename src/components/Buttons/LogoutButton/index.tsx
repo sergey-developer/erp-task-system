@@ -12,6 +12,7 @@ const LogoutButton: FC = () => {
 
   return (
     <Button
+      className='btn-logout'
       ghost
       icon={<LogoutOutlined className='fs-18' />}
       onClick={logout}
