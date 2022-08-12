@@ -22,9 +22,13 @@ const query = baseQuery({
   apiVersion: 'v1',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken
+
     if (token) {
       headers['authorization'] = `Bearer ${token}`
+    } else {
+      delete headers['authorization']
     }
+
     return headers
   },
 })
