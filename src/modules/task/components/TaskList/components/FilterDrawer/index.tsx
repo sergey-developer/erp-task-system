@@ -30,9 +30,13 @@ export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
   onSubmit: (result: ExtendedFilterFormFields) => void
 }
 
-const FilterDrawer: FC<FilterDrawerProps> = (props) => {
-  const { form, initialFormValues, onClose, onSubmit, visible } = props
-
+const FilterDrawer: FC<FilterDrawerProps> = ({
+  form,
+  initialFormValues,
+  onClose,
+  onSubmit,
+  visible,
+}) => {
   const breakpoints = useBreakpoint()
 
   const statusValue = Form.useWatch('status', form)
@@ -91,9 +95,10 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
         onFinish={onSubmit}
       >
         <FilterBlock withDivider>
-          <FilterBlockLabel onReset={() => form.setFieldsValue({ status: [] })}>
-            Статус
-          </FilterBlockLabel>
+          <FilterBlockLabel
+            label='Статус'
+            onReset={() => form.setFieldsValue({ status: [] })}
+          />
 
           <Form.Item name='status'>
             <CheckboxGroupStyled options={checkboxStatusOptions} />
@@ -102,10 +107,9 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
 
         <FilterBlock withDivider>
           <FilterBlockLabel
+            label='Период создания'
             onReset={() => form.setFieldsValue({ creationDateRange: null })}
-          >
-            Период создания
-          </FilterBlockLabel>
+          />
 
           <Form.Item name='creationDateRange'>
             <RangePickerStyled allowClear={false} />
@@ -116,10 +120,9 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
           {() => (
             <FilterBlock withDivider>
               <FilterBlockLabel
+                label='Рабочая группа'
                 onReset={() => form.setFieldsValue({ workGroupId: undefined })}
-              >
-                Рабочая группа
-              </FilterBlockLabel>
+              />
 
               <Form.Item name='workGroupId'>
                 <Select
@@ -142,29 +145,32 @@ const FilterDrawer: FC<FilterDrawerProps> = (props) => {
 
         <FilterBlock withDivider={false}>
           <FilterBlockLabel
+            label='Поиск по столбцу'
             onReset={() =>
               form.setFieldsValue({
                 searchField: initialFormValues.searchField,
                 searchValue: '',
               })
             }
-          >
-            Поиск по столбцу
-          </FilterBlockLabel>
+          />
 
-          <Form.Item name='searchField'>
-            <Radio.Group>
-              {Object.entries(searchQueriesDictionary).map(([name, label]) => (
-                <Radio key={name} value={name}>
-                  {label}
-                </Radio>
-              ))}
-            </Radio.Group>
-          </Form.Item>
+          <Space direction='vertical' size='middle'>
+            <Form.Item name='searchField'>
+              <Radio.Group>
+                {Object.entries(searchQueriesDictionary).map(
+                  ([name, label]) => (
+                    <Radio key={name} value={name}>
+                      {label}
+                    </Radio>
+                  ),
+                )}
+              </Radio.Group>
+            </Form.Item>
 
-          <Form.Item name='searchValue'>
-            <Input placeholder='Ключевое слово' />
-          </Form.Item>
+            <Form.Item name='searchValue'>
+              <Input placeholder='Ключевое слово' />
+            </Form.Item>
+          </Space>
         </FilterBlock>
       </Form>
     </DrawerStyled>

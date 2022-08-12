@@ -1,21 +1,29 @@
+import { Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React from 'react'
 
 import { FCWithChildren } from 'shared/interfaces/utils'
 
-import { DividerStyled, Wrapper } from './styles'
+import { DividerStyled, WrapperStyled } from './styles'
 
-type Props = {
+type FilterBlockProps = {
   withDivider: boolean
 }
 
-const FilterBlock: FCWithChildren<Props> = (props) => {
-  const { children, withDivider } = props
+const FilterBlock: FCWithChildren<FilterBlockProps> = ({
+  children,
+  withDivider,
+}) => {
   const breakpoints = useBreakpoint()
 
   return (
     <>
-      <Wrapper $breakpoints={breakpoints}>{children}</Wrapper>
+      <WrapperStyled $breakpoints={breakpoints}>
+        <Space direction='vertical' size={30}>
+          {children}
+        </Space>
+      </WrapperStyled>
+
       {withDivider && <DividerStyled />}
     </>
   )

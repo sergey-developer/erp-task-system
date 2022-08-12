@@ -1,24 +1,22 @@
-import React from 'react'
+import { Button, Space, Typography } from 'antd'
+import React, { FC } from 'react'
 
-import { FCWithChildren } from 'shared/interfaces/utils'
+const { Title, Text } = Typography
 
-import { ButtonStyled, SpaceStyled, TitleStyled } from './styles'
-
-type Props = {
+type FilterBlockLabelProps = {
+  label: string
   onReset: () => void
 }
 
-const FilterBlockLabel: FCWithChildren<Props> = (props) => {
-  const { children, onReset } = props
-
+const FilterBlockLabel: FC<FilterBlockLabelProps> = ({ label, onReset }) => {
   return (
-    <SpaceStyled align='baseline' size={12}>
-      <TitleStyled level={4}>{children}</TitleStyled>
+    <Space align='baseline' size={12}>
+      <Title level={4}>{label}</Title>
 
-      <ButtonStyled onClick={onReset} type='text'>
-        Сбросить
-      </ButtonStyled>
-    </SpaceStyled>
+      <Button onClick={onReset} type='text'>
+        <Text type='secondary'>Сбросить</Text>
+      </Button>
+    </Space>
   )
 }
 
