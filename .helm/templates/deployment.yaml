@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: {{ .Values.global.werf.name }}
+  labels:
+    app: {{ .Values.global.werf.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.werf.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.werf.name }}
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.global.werf.name }}-dockerconfigjson
+      containers:
+      - name: {{ .Values.global.werf.name }}
+        image: {{ .Values.werf.image.itsm_frontend }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+       # resources:
+       #   limits:
+       #     cpu: 50m
+       #     memory: 100Mi
+       #   requests:
+       #     cpu: 25m
+       #     memory: 45Mi
