@@ -1,7 +1,7 @@
-import { TaskDetailsModel } from './taskDetails.model'
+import { BaseTaskMutationArgs } from 'modules/task/interfaces/baseTaskMutation'
 
-export type ResolveTaskMutationArgsModel = {
-  taskId: TaskDetailsModel['id']
-  techResolution?: string
-  userResolution?: string
-}
+export type ResolveTaskMutationArgsModel = BaseTaskMutationArgs &
+  Partial<{
+    techResolution: string
+    userResolution: string
+  }>

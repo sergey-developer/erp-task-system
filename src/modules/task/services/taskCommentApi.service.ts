@@ -21,5 +21,3 @@ const taskCommentApiService = api.injectEndpoints({
 })
 
 export const { useGetTaskCommentListQuery } = taskCommentApiService
-
-export default taskCommentApiService

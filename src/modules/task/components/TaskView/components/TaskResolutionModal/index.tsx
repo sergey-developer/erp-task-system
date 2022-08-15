@@ -1,12 +1,4 @@
-import {
-  ButtonProps,
-  Form,
-  FormInstance,
-  Input,
-  ModalProps,
-  Space,
-  Typography,
-} from 'antd'
+import { Form, FormInstance, Input, ModalProps, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
@@ -18,10 +10,6 @@ import { TECH_RESOLUTION_RULES, USER_RESOLUTION_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
-
-const buttonCommonProps: ButtonProps = {
-  size: 'large',
-}
 
 export type TaskResolutionModalProps = Pick<
   ModalProps,
@@ -57,13 +45,6 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     userResolution,
   }
 
-  const submitButtonProps: ButtonProps = {
-    ...buttonCommonProps,
-    disabled: isTaskResolving,
-    loading: isTaskResolving,
-    htmlType: 'submit',
-  }
-
   const modalTitle = (
     <Text>
       Решение по заявке <Link>{recordId}</Link>
@@ -78,11 +59,10 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     <BaseModal
       title={modalTitle}
       visible={visible}
+      confirmLoading={isTaskResolving}
       onOk={form.submit}
       okText='Выполнить заявку'
-      okButtonProps={submitButtonProps}
       onCancel={onCancel}
-      cancelButtonProps={buttonCommonProps}
     >
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>

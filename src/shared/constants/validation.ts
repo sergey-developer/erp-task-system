@@ -5,5 +5,5 @@ export const REQUIRED_FIELD_RULE: Rule = {
   message: 'Обязательное поле.',
 }
 
-export const TEXT_MAX_LENGHT_MSG =
+export const TEXT_MAX_LENGTH_MSG =
   'Убедитесь, что это значение содержит не более ${max} символов.'

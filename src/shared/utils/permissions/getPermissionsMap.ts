@@ -7,6 +7,12 @@ import {
 } from 'shared/interfaces/permissions'
 import { MaybeUndefined } from 'shared/interfaces/utils'
 
+/**
+ Proxy добавлен, чтобы при обращении к несуществующему пермишену, например "permissions.canUpdate",
+ не возвращался "undefined" т.к. если "canUpdate" будет undefined,
+ такая проверка - "!permissions.canUpdate" вернёт true
+ */
+
 const proxyHandler = {
   get(target: PermissionsMap, prop: PermissionsMapKey) {
     return prop in target ? target[prop] : false

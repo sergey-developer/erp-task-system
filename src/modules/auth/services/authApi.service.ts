@@ -15,7 +15,7 @@ const authApiService = api.injectEndpoints({
         data: queryArg,
       }),
     }),
-    logout: build.mutation<unknown, LogoutMutationArgsModel>({
+    logout: build.mutation<void, LogoutMutationArgsModel>({
       query: (queryArg) => ({
         url: '/user/logout',
         method: HttpMethodEnum.POST,
@@ -28,4 +28,3 @@ const authApiService = api.injectEndpoints({
 })
 
 export const { useLoginMutation, useLogoutMutation } = authApiService
-export default authApiService

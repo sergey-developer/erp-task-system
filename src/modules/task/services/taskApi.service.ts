@@ -49,41 +49,32 @@ const taskApiService = api.injectEndpoints({
         method: HttpMethodEnum.GET,
       }),
     }),
-    resolveTask: build.mutation<null, ResolveTaskMutationArgsModel>({
-      query: (queryArg) => {
-        const { taskId, ...body } = queryArg
-        return {
-          url: `/tasks/${taskId}/resolution/`,
-          method: HttpMethodEnum.POST,
-          data: body,
-        }
-      },
+    resolveTask: build.mutation<void, ResolveTaskMutationArgsModel>({
+      query: ({ taskId, ...body }) => ({
+        url: `/tasks/${taskId}/resolution/`,
+        method: HttpMethodEnum.POST,
+        data: body,
+      }),
     }),
     updateTaskWorkGroup: build.mutation<
       void,
       UpdateTaskWorkGroupMutationArgsModel
     >({
-      query: (queryArg) => {
-        const { taskId, ...body } = queryArg
-        return {
-          url: `/tasks/${taskId}/work-group/`,
-          method: HttpMethodEnum.POST,
-          data: body,
-        }
-      },
+      query: ({ taskId, ...body }) => ({
+        url: `/tasks/${taskId}/work-group/`,
+        method: HttpMethodEnum.POST,
+        data: body,
+      }),
     }),
     updateTaskAssignee: build.mutation<
       void,
       UpdateTaskAssigneeMutationArgsModel
     >({
-      query: (queryArg) => {
-        const { taskId, ...body } = queryArg
-        return {
-          url: `/tasks/${taskId}/assignee/`,
-          method: HttpMethodEnum.POST,
-          data: body,
-        }
-      },
+      query: ({ taskId, ...body }) => ({
+        url: `/tasks/${taskId}/assignee/`,
+        method: HttpMethodEnum.POST,
+        data: body,
+      }),
     }),
   }),
   overrideExisting: false,
@@ -97,5 +88,3 @@ export const {
   useUpdateTaskWorkGroupMutation,
   useGetTaskCountersQuery,
 } = taskApiService
-
-export default taskApiService

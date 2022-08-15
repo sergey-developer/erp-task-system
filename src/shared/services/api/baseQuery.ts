@@ -1,7 +1,8 @@
 import axios, { AxiosError } from 'axios'
+import _isPlainObject from 'lodash/isPlainObject'
 
 import { httpClientConfig } from 'configs/httpClient'
-import { HttpMethodEnum } from 'shared/constants/http'
+import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'
 
@@ -27,13 +28,22 @@ const baseQuery =
         headers,
       })
       return { data: response.data }
-    } catch (axiosError) {
-      let err = axiosError as AxiosError
+    } catch (exception) {
+      const error = exception as AxiosError
+      const status = error.response?.status
+      const errorData = error.response?.data
 
       return {
         error: {
-          status: err.response?.status,
-          data: err.response?.data || err.message,
+          status,
+          data: _isPlainObject(errorData)
+            ? errorData
+            : {
+                detail:
+                  status === HttpStatusCodeEnum.ServerError
+                    ? ['Неизвестная ошибка сервера']
+                    : error.message,
+              },
         },
       }
     }
