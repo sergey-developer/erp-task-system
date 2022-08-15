@@ -17,10 +17,10 @@ import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
+import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
-import handleSetFieldsErrors from '../../../../../../shared/utils/form/handleSetFieldsErrors'
 import TaskReclassificationModal, {
   TaskReclassificationModalProps,
 } from '../TaskReclassificationModal'
