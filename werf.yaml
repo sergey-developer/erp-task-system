@@ -1,0 +1,9 @@
+configVersion: 1
+project: itsm-frontend
+deploy:
+  namespace: "[[ env ]]"
+---
+image: itsm_frontend
+dockerfile: Dockerfile
+args:
+  REACT_APP_API_URL: https://itsm.bnvt.ru
