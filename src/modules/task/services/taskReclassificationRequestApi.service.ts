@@ -1,8 +1,8 @@
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
   GetTaskReclassificationRequestQueryArgsModel,
+  TaskReclassificationRequestModel,
 } from 'modules/task/components/TaskView/models'
-import { TaskReclassificationRequestModel } from 'modules/task/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { api } from 'shared/services/api'
 

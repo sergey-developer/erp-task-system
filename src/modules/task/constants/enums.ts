@@ -43,14 +43,6 @@ export enum TaskTypeEnum {
   RequestTask = 'REQUEST_TASK',
 }
 
-export enum CommentTypeEnum {
-  Common = 'COMMON',
-  Awaiting = 'AWAITING',
-  Reclassified = 'RECLASSIFIED',
-  Completed = 'COMPLETED',
-  System = 'SYSTEM',
-}
-
 export enum ResolutionCodeEnum {
   Success = 'SUCCESS',
   WorkAround = 'WORK_AROUND',

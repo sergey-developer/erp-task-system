@@ -16,8 +16,8 @@ const { Text, Title } = Typography
 type TaskRequestStatusProps = {
   user: Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>
   title: string
-  createdAt: Date
-  description: string
+  createdAt: string
+  comment: string
   actionText: string
   onAction: () => void
 }
@@ -25,7 +25,7 @@ type TaskRequestStatusProps = {
 const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
   user,
   title,
-  description,
+  comment,
   createdAt,
   actionText,
   onAction,
@@ -38,10 +38,10 @@ const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
         <QuestionCircleTwoTone className='fs-18' />
 
         <Space direction='vertical' size='middle'>
-          <Space direction='vertical'>
+          <Space direction='vertical' size={4}>
             <Title level={5}>{title}</Title>
 
-            <Text>{description}</Text>
+            <Text>{comment}</Text>
 
             <SeparatedText>
               <Text type='secondary'>{getShortUserName(user)}</Text>

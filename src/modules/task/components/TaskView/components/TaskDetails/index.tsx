@@ -23,6 +23,7 @@ import TaskReclassificationModal, {
   TaskReclassificationModalProps,
 } from '../TaskReclassificationModal'
 import { TaskReclassificationRequestFormErrors } from '../TaskReclassificationModal/interfaces'
+import TaskRequestStatus from '../TaskRequestStatus'
 import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
@@ -113,8 +114,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     data: reclassificationRequest,
     isFetching: reclassificationRequestIsFetching,
   } = useGetTaskReclassificationRequest(details?.id)
-
-  console.log({ reclassificationRequest, reclassificationRequestIsFetching })
 
   const {
     fn: createTaskReclassificationRequest,
@@ -220,6 +219,21 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         loading={taskIsLoading}
         $breakpoints={breakpoints}
       >
+        {reclassificationRequest && (
+          <>
+            <TaskRequestStatus
+              title='Запрошена переклассификация:'
+              comment={reclassificationRequest.comment.text}
+              createdAt={reclassificationRequest.createdAt}
+              user={reclassificationRequest.user}
+              actionText='Отменить запрос'
+              onAction={() => {}}
+            />
+
+            <DividerStyled />
+          </>
+        )}
+
         {details && (
           <>
             <MainDetails
