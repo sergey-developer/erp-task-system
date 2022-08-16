@@ -1,6 +1,9 @@
 import { PermissionsEnum } from 'shared/constants/permissions'
 import { UserRolesEnum } from 'shared/constants/roles'
-import { ObjectPermissionConfig } from 'shared/interfaces/permissions'
+import {
+  ObjectPermissionConfig,
+  UserPermissionConfig,
+} from 'shared/interfaces/permissions'
 
 export const taskAssigneePermissions: ObjectPermissionConfig<'select'> = {
   select: {
@@ -17,12 +20,9 @@ export const taskAssigneePermissions: ObjectPermissionConfig<'select'> = {
   },
 }
 
-export const taskAssigneeApiPermissions: ObjectPermissionConfig<'updateAssignee'> =
-  {
-    updateAssignee: {
-      [UserRolesEnum.Engineer]: [PermissionsEnum.CanUpdate],
-      [UserRolesEnum.SeniorEngineer]: [PermissionsEnum.CanUpdate],
-      [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanUpdate],
-      [UserRolesEnum.HeadOfDepartment]: [PermissionsEnum.CanUpdate],
-    },
-  }
+export const taskAssigneeApiPermissions: UserPermissionConfig = {
+  [UserRolesEnum.Engineer]: [PermissionsEnum.CanUpdate],
+  [UserRolesEnum.SeniorEngineer]: [PermissionsEnum.CanUpdate],
+  [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanUpdate],
+  [UserRolesEnum.HeadOfDepartment]: [PermissionsEnum.CanUpdate],
+}

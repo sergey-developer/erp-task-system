@@ -10,7 +10,7 @@ import { taskApiPermissions } from '../permissions/task.permissions'
 
 const useResolveTask = () => {
   const [mutation, state] = useResolveTaskMutation()
-  const permissions = useUserPermissions(taskApiPermissions.updateResolution)
+  const permissions = useUserPermissions(taskApiPermissions.taskResolution)
 
   const fn = useCallback(
     async (data: ResolveTaskMutationArgsModel) => {

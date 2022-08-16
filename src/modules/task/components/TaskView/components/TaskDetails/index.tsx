@@ -1,8 +1,6 @@
-import { CheckCircleOutlined, QuestionCircleTwoTone } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
-import { MenuProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { FC, useCallback } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import useCreateTaskReclassificationRequest from 'modules/task/components/TaskView/hooks/useCreateTaskReclassificationRequest'
@@ -11,7 +9,6 @@ import useUpdateTaskAssignee from 'modules/task/components/TaskView/hooks/useUpd
 import useUpdateTaskWorkGroup from 'modules/task/components/TaskView/hooks/useUpdateTaskWorkGroup'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import getTransferTaskSecondLineErrors from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineErrors'
-import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { AssigneeModel } from 'shared/interfaces/models'
@@ -21,6 +18,7 @@ import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
+import useGetTaskReclassificationRequest from '../../hooks/useGetTaskReclassificationRequest'
 import TaskReclassificationModal, {
   TaskReclassificationModalProps,
 } from '../TaskReclassificationModal'
@@ -81,7 +79,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   refetchTaskList,
 }) => {
   const breakpoints = useBreakpoint()
-  const taskStatus = useTaskStatus(details?.status)
   const isAssignedToCurrentUser = useCheckUserAuthenticated(
     details?.assignee?.id,
   )
@@ -113,6 +110,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   } = useResolveTask()
 
   const {
+    data: reclassificationRequest,
+    isFetching: reclassificationRequestIsFetching,
+  } = useGetTaskReclassificationRequest(details?.id)
+
+  console.log({ reclassificationRequest, reclassificationRequestIsFetching })
+
+  const {
     fn: createTaskReclassificationRequest,
     state: { isLoading: createTaskReclassificationRequestIsLoading },
   } = useCreateTaskReclassificationRequest()
@@ -126,30 +130,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     fn: updateTaskAssignee,
     state: { isLoading: updateTaskAssigneeIsLoading },
   } = useUpdateTaskAssignee()
-
-  const menuItems = useMemo<MenuProps['items']>(
-    () => [
-      {
-        key: 1,
-        disabled: !taskStatus.isInProgress || !isAssignedToCurrentUser,
-        icon: <CheckCircleOutlined className='fs-14' />,
-        label: 'Выполнить заявку',
-        onClick: debouncedOpenTaskResolutionModal,
-      },
-      {
-        key: 2,
-        icon: <QuestionCircleTwoTone className='fs-14' />,
-        label: 'Запросить переклассификацию',
-        onClick: debouncedOpenTaskReclassificationModal,
-      },
-    ],
-    [
-      taskStatus.isInProgress,
-      isAssignedToCurrentUser,
-      debouncedOpenTaskResolutionModal,
-      debouncedOpenTaskReclassificationModal,
-    ],
-  )
 
   const handleResolutionSubmit = useCallback<
     TaskResolutionModalProps['onSubmit']
@@ -221,8 +201,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [details, refetchTask, updateTaskAssignee],
   )
 
-  const cardTitle = details?.id && (
-    <CardTitle id={details.id} menuItems={menuItems} onClose={onClose} />
+  const cardTitle = !taskIsLoading && details && (
+    <CardTitle
+      id={details.id}
+      status={details.status}
+      olaStatus={details.olaStatus}
+      isAssignedToCurrentUser={isAssignedToCurrentUser}
+      onClose={onClose}
+      onClickExecuteTask={debouncedOpenTaskResolutionModal}
+      onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
+    />
   )
 
   return (

@@ -11,7 +11,7 @@ import showMultipleErrorNotification from 'shared/utils/notifications/showMultip
 import { taskApiPermissions } from '../permissions/task.permissions'
 
 const useGetTask = (id: GetTaskQueryArgsModel) => {
-  const permissions = useUserPermissions(taskApiPermissions.getTask)
+  const permissions = useUserPermissions(taskApiPermissions.task)
 
   const state = useGetTaskQuery(id, {
     skip: !permissions.canGet,

@@ -1,3 +1,3 @@
-export type BaseTaskMutationArgs = {
+export type BaseTaskRequestArgs = {
   taskId: number
 }

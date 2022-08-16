@@ -8,6 +8,7 @@ export * from './updateTaskAssignee.model'
 
 export * from './updateTaskWorkGroup.model'
 
+export * from './getTaskReclassificationRequest.model'
 export * from './createTaskReclassificationRequest.model'
 
 export * from './taskDetails.model'

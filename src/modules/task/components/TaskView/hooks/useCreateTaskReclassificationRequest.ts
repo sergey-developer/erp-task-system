@@ -13,7 +13,7 @@ import { taskReclassificationRequestApiPermissions } from '../permissions/taskRe
 const useCreateTaskReclassificationRequest = () => {
   const [mutation, state] = useCreateReclassificationRequestMutation()
   const permissions = useUserPermissions(
-    taskReclassificationRequestApiPermissions.createRequest,
+    taskReclassificationRequestApiPermissions,
   )
 
   const fn = useCallback(

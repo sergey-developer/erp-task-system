@@ -1,6 +1,6 @@
-import { BaseTaskMutationArgs } from 'modules/task/interfaces/baseTaskMutation'
+import { BaseTaskRequestArgs } from 'modules/task/interfaces/baseTaskMutation'
 
-export type ResolveTaskMutationArgsModel = BaseTaskMutationArgs &
+export type ResolveTaskMutationArgsModel = BaseTaskRequestArgs &
   Partial<{
     techResolution: string
     userResolution: string

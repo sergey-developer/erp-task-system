@@ -11,7 +11,7 @@ import showMultipleErrorNotification from 'shared/utils/notifications/showMultip
 import { taskCommentListApiPermissions } from '../permissions/taskCommentList.permissions'
 
 const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
-  const permissions = useUserPermissions(taskCommentListApiPermissions.getList)
+  const permissions = useUserPermissions(taskCommentListApiPermissions)
 
   const state = useGetTaskCommentListQuery(id, {
     skip: !permissions.canGet,

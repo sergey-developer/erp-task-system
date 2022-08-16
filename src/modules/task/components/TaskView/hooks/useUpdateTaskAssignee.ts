@@ -8,9 +8,7 @@ import { taskAssigneeApiPermissions } from '../permissions/taskAssignee.permissi
 
 const useUpdateTaskAssignee = () => {
   const [mutation, state] = useUpdateTaskAssigneeMutation()
-  const permissions = useUserPermissions(
-    taskAssigneeApiPermissions.updateAssignee,
-  )
+  const permissions = useUserPermissions(taskAssigneeApiPermissions)
 
   const fn = useCallback(
     async (data: UpdateTaskAssigneeMutationArgsModel) => {

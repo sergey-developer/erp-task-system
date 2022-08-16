@@ -8,7 +8,8 @@ export type TaskReclassificationRequestModel = {
   createdAt: string
   updatedAt: string
   reclassificationReason: ReclassificationReasonEnum
-  textComment: string
-  status: ReclassificationRequestStatusEnum
   task: number
+  status: ReclassificationRequestStatusEnum
+  externalComment?: string
+  externalId?: string
 }
