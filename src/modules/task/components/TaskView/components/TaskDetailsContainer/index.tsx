@@ -1,7 +1,9 @@
 import React, { FC, useEffect } from 'react'
 
 import { TaskListItemModel } from 'modules/task/components/TaskList/models'
+import useCreateTaskReclassificationRequest from 'modules/task/components/TaskView/hooks/useCreateTaskReclassificationRequest'
 import useGetTask from 'modules/task/components/TaskView/hooks/useGetTask'
+import useGetTaskReclassificationRequest from 'modules/task/components/TaskView/hooks/useGetTaskReclassificationRequest'
 import useGetWorkGroupList from 'modules/workGroup/components/WorkGroupList/hooks/useGetWorkGroupList'
 import { ErrorResponse } from 'shared/services/api'
 
@@ -21,11 +23,19 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   refetchTaskList,
 }) => {
   const {
-    data: task,
+    data: task = null,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
     refetch: refetchTask,
   } = useGetTask(taskId)
+
+  const { currentData: reclassificationRequest = null } =
+    useGetTaskReclassificationRequest(taskId)
+
+  const {
+    fn: createReclassificationRequest,
+    state: { isLoading: reclassificationRequestIsCreating },
+  } = useCreateTaskReclassificationRequest()
 
   const {
     data: workGroupList = [],
@@ -41,15 +51,18 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
 
   return (
     <TaskDetails
-      details={task || null}
+      details={task}
+      taskIsLoading={taskIsFetching}
+      refetchTask={refetchTask}
+      refetchTaskList={refetchTaskList}
+      reclassificationRequest={reclassificationRequest}
+      createReclassificationRequest={createReclassificationRequest}
+      reclassificationRequestIsCreating={reclassificationRequestIsCreating}
       onClose={onClose}
       onTaskResolved={onTaskResolved}
-      taskIsLoading={taskIsFetching}
       workGroupList={workGroupList}
       workGroupListIsLoading={workGroupListIsFetching}
       getWorkGroupListError={getWorkGroupListError as ErrorResponse}
-      refetchTask={refetchTask}
-      refetchTaskList={refetchTaskList}
     />
   )
 }

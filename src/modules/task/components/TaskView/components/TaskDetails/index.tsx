@@ -1,13 +1,17 @@
 import { useBoolean } from 'ahooks'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
+import _noop from 'lodash/noop'
 import React, { FC, useCallback } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
-import useCreateTaskReclassificationRequest from 'modules/task/components/TaskView/hooks/useCreateTaskReclassificationRequest'
 import useResolveTask from 'modules/task/components/TaskView/hooks/useResolveTask'
 import useUpdateTaskAssignee from 'modules/task/components/TaskView/hooks/useUpdateTaskAssignee'
 import useUpdateTaskWorkGroup from 'modules/task/components/TaskView/hooks/useUpdateTaskWorkGroup'
-import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
+import {
+  CreateTaskReclassificationRequestMutationArgsModel,
+  TaskDetailsModel,
+  TaskDetailsReclassificationRequestModel,
+} from 'modules/task/components/TaskView/models'
 import getTransferTaskSecondLineErrors from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineErrors'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
@@ -18,7 +22,6 @@ import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
-import useGetTaskReclassificationRequest from '../../hooks/useGetTaskReclassificationRequest'
 import TaskReclassificationModal, {
   TaskReclassificationModalProps,
 } from '../TaskReclassificationModal'
@@ -58,28 +61,50 @@ type TaskDetailsProps = {
       | 'olaNextBreachTime'
     >
   >
+
   taskIsLoading: boolean
+  refetchTask: () => void
+
+  refetchTaskList: () => void
+
+  reclassificationRequest: MaybeNull<TaskDetailsReclassificationRequestModel>
+  createReclassificationRequest: (
+    data: CreateTaskReclassificationRequestMutationArgsModel,
+  ) => Promise<void>
+  reclassificationRequestIsCreating: boolean
+
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
+
   onClose: () => void
   onTaskResolved: () => void
-  refetchTask: () => void
-  refetchTaskList: () => void
+
   getWorkGroupListError?: ErrorResponse
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
   details,
+
   taskIsLoading,
+  refetchTask,
+
+  refetchTaskList,
+
+  reclassificationRequest,
+  reclassificationRequestIsCreating,
+  createReclassificationRequest,
+
   workGroupList,
   workGroupListIsLoading,
   getWorkGroupListError,
+
   onClose,
   onTaskResolved,
-  refetchTask,
-  refetchTaskList,
 }) => {
   const breakpoints = useBreakpoint()
+
+  const reclassificationRequestExist = !!reclassificationRequest
+
   const isAssignedToCurrentUser = useCheckUserAuthenticated(
     details?.assignee?.id,
   )
@@ -111,16 +136,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   } = useResolveTask()
 
   const {
-    data: reclassificationRequest,
-    isFetching: reclassificationRequestIsFetching,
-  } = useGetTaskReclassificationRequest(details?.id)
-
-  const {
-    fn: createTaskReclassificationRequest,
-    state: { isLoading: createTaskReclassificationRequestIsLoading },
-  } = useCreateTaskReclassificationRequest()
-
-  const {
     fn: updateTaskWorkGroup,
     state: { isLoading: updateTaskWorkGroupIsLoading },
   } = useUpdateTaskWorkGroup()
@@ -150,7 +165,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   >(
     async (values, setFields) => {
       try {
-        await createTaskReclassificationRequest({
+        await createReclassificationRequest({
           taskId: details!.id,
           ...values,
         })
@@ -161,11 +176,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [
-      closeTaskReclassificationModal,
-      createTaskReclassificationRequest,
-      details,
-    ],
+    [closeTaskReclassificationModal, createReclassificationRequest, details],
   )
 
   const handleUpdateTaskWorkGroup = useCallback(
@@ -209,6 +220,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       onClose={onClose}
       onClickExecuteTask={debouncedOpenTaskResolutionModal}
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
+      reclassificationRequestExist={reclassificationRequestExist}
     />
   )
 
@@ -219,15 +231,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         loading={taskIsLoading}
         $breakpoints={breakpoints}
       >
-        {reclassificationRequest && (
+        {reclassificationRequestExist && (
           <>
             <TaskRequestStatus
               title='Запрошена переклассификация:'
-              comment={reclassificationRequest.comment.text}
-              createdAt={reclassificationRequest.createdAt}
-              user={reclassificationRequest.user}
+              comment={reclassificationRequest!.comment.text}
+              createdAt={reclassificationRequest!.createdAt}
+              user={reclassificationRequest!.user}
               actionText='Отменить запрос'
-              onAction={() => {}}
+              onAction={_noop}
             />
 
             <DividerStyled />
@@ -262,6 +274,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               transferTaskIsLoading={updateTaskWorkGroupIsLoading}
               updateTaskAssignee={handleUpdateTaskAssignee}
               updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
+              reclassificationRequestExist={reclassificationRequestExist}
             />
 
             <TaskDetailsTabs
@@ -284,7 +297,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               <TaskReclassificationModal
                 visible
                 recordId={details.recordId}
-                isLoading={createTaskReclassificationRequestIsLoading}
+                isLoading={reclassificationRequestIsCreating}
                 onSubmit={handleReclassificationRequestSubmit}
                 onCancel={closeTaskReclassificationModal}
               />

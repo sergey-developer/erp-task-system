@@ -27,6 +27,8 @@ type SecondaryDetailsProps = Pick<
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
 
+  reclassificationRequestExist: boolean
+
   getWorkGroupListError?: ErrorResponse
 }
 
@@ -45,6 +47,8 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
+
+  reclassificationRequestExist,
 }) => {
   const breakpoints = useBreakpoint()
 
@@ -70,6 +74,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             getWorkGroupListError={getWorkGroupListError}
             transferTask={transferTask}
             transferTaskIsLoading={transferTaskIsLoading}
+            reclassificationRequestExist={reclassificationRequestExist}
           />
         </Col>
 
@@ -81,6 +86,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             workGroupListIsLoading={workGroupListIsLoading}
             updateTaskAssignee={updateTaskAssignee}
             updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
+            reclassificationRequestExist={reclassificationRequestExist}
           />
         </Col>
       </Row>

@@ -8,10 +8,11 @@ export * from './updateTaskAssignee.model'
 
 export * from './updateTaskWorkGroup.model'
 
-export * from './taskReclassificationRequest.model'
 export * from './getTaskReclassificationRequest.model'
 export * from './createTaskReclassificationRequest.model'
 
 export * from './taskDetails.model'
 export * from './taskDetailsComment.model'
 export * from './taskDetailsWorkGroup.model'
+export * from './taskDetailsReclassificationRequest.model'
+export * from './taskDetailsReclassificationRequestComment.model'

@@ -1,9 +1,10 @@
 import { AxiosRequestHeaders } from 'axios'
+import _get from 'lodash/get'
 
 import { MaybeUndefined } from 'shared/interfaces/utils'
 
 const getContentType = (headers: MaybeUndefined<AxiosRequestHeaders>) => {
-  return headers ? headers['Content-Type'] || headers['content-type'] : ''
+  return _get(headers, 'Content-Type', '') || _get(headers, 'content-type', '')
 }
 
 export default getContentType

@@ -74,3 +74,7 @@ export enum SuspendReasonEnum {
   AwaitingNonItWork = 'AWAITING_NON_IT_WORK',
   AwaitingInformationFromFirstLine = 'AWAITING_INFORMATION_FROM_FIRST_LINE',
 }
+
+export enum TaskEndpointsTagsEnum {
+  TaskReclassificationRequest = 'TaskReclassificationRequest',
+}
