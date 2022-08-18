@@ -1,14 +1,17 @@
 import { useEffect } from 'react'
 
 import { GetTaskQueryArgsModel } from 'modules/task/components/TaskView/models'
+import { taskApiPermissions } from 'modules/task/components/TaskView/permissions/task.permissions'
+import {
+  getTaskNotFoundErrorMsg,
+  getTaskServerErrorMsg,
+} from 'modules/task/components/TaskView/utils/messages'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
-
-import { taskApiPermissions } from '../permissions/task.permissions'
 
 const useGetTask = (id: GetTaskQueryArgsModel) => {
   const permissions = useUserPermissions(taskApiPermissions.task)
@@ -23,12 +26,12 @@ const useGetTask = (id: GetTaskQueryArgsModel) => {
     const error = state.error as ErrorResponse
 
     if (error.status === HttpStatusCodeEnum.NotFound) {
-      showErrorNotification(`Заявка с идентификатором ${id} не найдена`)
+      showErrorNotification(getTaskNotFoundErrorMsg(id))
     } else if (
       error.status === HttpStatusCodeEnum.BadRequest ||
       error.status! >= HttpStatusCodeEnum.ServerError
     ) {
-      showErrorNotification(`Ошибка открытия заявки с идентификатором ${id}`)
+      showErrorNotification(getTaskServerErrorMsg(id))
     } else {
       const errorDetail = getErrorDetail(error)
       showMultipleErrorNotification(errorDetail)

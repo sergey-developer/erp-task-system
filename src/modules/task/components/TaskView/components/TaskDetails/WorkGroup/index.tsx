@@ -7,6 +7,7 @@ import TaskSecondLineModal from 'modules/task/components/TaskView/components/Tas
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/components/TaskView/permissions/taskWorkGroup.permissions'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
+import { GET_WORK_GROUP_LIST_SERVER_ERROR_MSG } from 'modules/workGroup/components/WorkGroupList/constants/messages'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
@@ -56,9 +57,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
     openTaskSecondLineModal()
 
     if (getWorkGroupListError) {
-      showErrorNotification(
-        'Возникла ошибка при получении списка рабочих групп',
-      )
+      showErrorNotification(GET_WORK_GROUP_LIST_SERVER_ERROR_MSG)
     }
   })
 
