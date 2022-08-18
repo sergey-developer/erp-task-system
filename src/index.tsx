@@ -6,7 +6,7 @@ import AppProvider from 'app/AppProvider'
 
 import reportWebVitals from './reportWebVitals'
 
-export const renderApp = () => {
+const renderApp = () => {
   const rootElementId = 'root'
   const rootElement = document.getElementById(rootElementId)
 

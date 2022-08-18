@@ -23,6 +23,7 @@ module.exports = {
       shared: resolvePath('./src/shared'),
       styles: resolvePath('./src/styles'),
       app: resolvePath('./src/app'),
+      tests: resolvePath('./src/tests'),
     },
   },
 }

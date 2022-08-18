@@ -1,4 +1,4 @@
-import { Rule } from 'rc-field-form/lib/interface'
+import { Rule } from 'rc-field-form/es/interface'
 
 export const REQUIRED_FIELD_RULE: Rule = {
   required: true,

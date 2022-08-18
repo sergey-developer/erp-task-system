@@ -1,5 +1,6 @@
+import { Rule } from 'rc-field-form/es/interface'
+
 import { ReclassificationReasonEnum } from 'modules/task/constants/enums'
-import { Rule } from 'rc-field-form/lib/interface'
 import {
   REQUIRED_FIELD_RULE,
   TEXT_MAX_LENGTH_MSG,

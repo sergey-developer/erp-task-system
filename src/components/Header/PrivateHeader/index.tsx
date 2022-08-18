@@ -1,8 +1,8 @@
 import { Col, Row, Space } from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import UserAvatar from 'components/Avatars/UserAvatar'
 import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
