@@ -23,7 +23,8 @@
       "components": ["components"],
       "state": ["state"],
       "shared": ["shared"],
-      "styles": ["styles"]
+      "styles": ["styles"],
+      "app": ["app"]
     }
   },
   "include": ["src"]
