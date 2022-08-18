@@ -1,4 +1,5 @@
 import path from 'path'
+
 const CracoAntDesignPlugin = require('craco-antd')
 
 const resolvePath = (p: string) => path.resolve(__dirname, p)
@@ -21,6 +22,7 @@ module.exports = {
       state: resolvePath('./src/state'),
       shared: resolvePath('./src/shared'),
       styles: resolvePath('./src/styles'),
+      app: resolvePath('./src/app'),
     },
   },
 }

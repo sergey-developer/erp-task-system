@@ -79,7 +79,8 @@
           "components",
           "state",
           "shared",
-          "styles"
+          "styles",
+          "app"
         ],
         "ignoredAliases": [],
         "bottomAliases": []
@@ -93,7 +94,8 @@
       "^modules(.*)$": "<rootDir>/src/modules/$1",
       "^components(.*)$": "<rootDir>/src/components/$1",
       "^state(.*)$": "<rootDir>/src/state/$1",
-      "^shared(.*)$": "<rootDir>/src/shared/$1"
+      "^shared(.*)$": "<rootDir>/src/shared/$1",
+      "^app(.*)$": "<rootDir>/src/app/$1"
     }
   },
   "browserslist": {
