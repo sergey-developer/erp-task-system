@@ -1,6 +1,6 @@
 import { ConfigProvider as AntdConfigProvider } from 'antd'
 import React from 'react'
-import { Provider as StoreProvider } from 'react-redux/es/exports'
+import { Provider as StoreProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
 import ruRU from 'antd/lib/locale/ru_RU'

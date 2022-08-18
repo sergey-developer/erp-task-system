@@ -1,4 +1,5 @@
-import { Rule } from 'rc-field-form/lib/interface'
+import { Rule } from 'rc-field-form/es/interface'
+
 import { REQUIRED_FIELD_RULE } from 'shared/constants/validation'
 
 export const PASSWORD_RULES: Rule[] = [

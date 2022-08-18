@@ -80,7 +80,8 @@
           "state",
           "shared",
           "styles",
-          "app"
+          "app",
+          "tests"
         ],
         "ignoredAliases": [],
         "bottomAliases": []

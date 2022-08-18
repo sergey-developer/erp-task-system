@@ -1,4 +1,5 @@
-import { TableProps } from 'antd/lib/table/Table'
+import { TableProps } from 'antd/es/table/Table'
+
 import { SortEnum } from 'modules/task/components/TaskList/constants/enums'
 import { TaskListItemModel } from 'modules/task/components/TaskList/models'
 

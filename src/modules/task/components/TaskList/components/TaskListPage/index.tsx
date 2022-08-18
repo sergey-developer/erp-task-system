@@ -5,6 +5,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
 import _isArray from 'lodash/isArray'
+import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useState } from 'react'
 
 import {
@@ -17,7 +18,6 @@ import useGetTaskList from 'modules/task/components/TaskList/hooks/useGetTaskLis
 import { GetTaskListQueryArgsModel } from 'modules/task/components/TaskList/models'
 import TaskDetails from 'modules/task/components/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
-import { GetComponentProps } from 'rc-table/lib/interface'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { Keys, MaybeNull } from 'shared/interfaces/utils'
 

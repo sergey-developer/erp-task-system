@@ -24,7 +24,8 @@
       "state": ["state"],
       "shared": ["shared"],
       "styles": ["styles"],
-      "app": ["app"]
+      "app": ["app"],
+      "tests": ["tests"]
     }
   },
   "include": ["src"]

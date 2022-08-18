@@ -1,8 +1,8 @@
 import { Skeleton, Space, Typography } from 'antd'
+import { CheckableTagProps } from 'antd/es/tag/CheckableTag'
 import _isNumber from 'lodash/isNumber'
 import React, { FC } from 'react'
 
-import { CheckableTagProps } from 'antd/lib/tag/CheckableTag'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import { CheckableTagStyled } from './styles'
