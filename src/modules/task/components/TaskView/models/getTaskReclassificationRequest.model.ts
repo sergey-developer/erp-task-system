@@ -1,4 +1,4 @@
-import { BaseTaskRequestArgs } from 'modules/task/interfaces/baseTaskMutation'
+import { BaseTaskRequestArgs } from 'modules/task/interfaces/baseTaskRequest'
 
 export type GetTaskReclassificationRequestQueryArgsModel =
   BaseTaskRequestArgs['taskId']
