@@ -12,21 +12,16 @@ import TaskDetails from '../TaskDetails'
 type TaskDetailsContainerProps = {
   taskId: TaskListItemModel['id']
   onClose: () => void
-  onTaskResolved: () => void
-  refetchTaskList: () => void
 }
 
 const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   onClose,
-  onTaskResolved,
   taskId,
-  refetchTaskList,
 }) => {
   const {
     data: task = null,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
-    refetch: refetchTask,
   } = useGetTask(taskId)
 
   const { currentData: reclassificationRequest = null } =
@@ -53,13 +48,10 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     <TaskDetails
       details={task}
       taskIsLoading={taskIsFetching}
-      refetchTask={refetchTask}
-      refetchTaskList={refetchTaskList}
       reclassificationRequest={reclassificationRequest}
       createReclassificationRequest={createReclassificationRequest}
       reclassificationRequestIsCreating={reclassificationRequestIsCreating}
       onClose={onClose}
-      onTaskResolved={onTaskResolved}
       workGroupList={workGroupList}
       workGroupListIsLoading={workGroupListIsFetching}
       getWorkGroupListError={getWorkGroupListError as ErrorResponse}

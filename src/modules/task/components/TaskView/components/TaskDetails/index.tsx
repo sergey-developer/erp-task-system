@@ -63,9 +63,6 @@ type TaskDetailsProps = {
   >
 
   taskIsLoading: boolean
-  refetchTask: () => void
-
-  refetchTaskList: () => void
 
   reclassificationRequest: MaybeNull<TaskDetailsReclassificationRequestModel>
   createReclassificationRequest: (
@@ -77,7 +74,6 @@ type TaskDetailsProps = {
   workGroupListIsLoading: boolean
 
   onClose: () => void
-  onTaskResolved: () => void
 
   getWorkGroupListError?: ErrorResponse
 }
@@ -86,9 +82,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   details,
 
   taskIsLoading,
-  refetchTask,
-
-  refetchTaskList,
 
   reclassificationRequest,
   reclassificationRequestIsCreating,
@@ -99,7 +92,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   getWorkGroupListError,
 
   onClose,
-  onTaskResolved,
 }) => {
   const breakpoints = useBreakpoint()
 
@@ -151,13 +143,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     async (values, setFields) => {
       try {
         await resolveTask({ taskId: details!.id, ...values })
-        onTaskResolved()
+        onClose()
       } catch (exception) {
         const error = exception as ErrorResponse<TaskResolutionFormErrors>
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [details, onTaskResolved, resolveTask],
+    [details, onClose, resolveTask],
   )
 
   const handleReclassificationRequestSubmit = useCallback<
@@ -188,7 +180,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         await updateTaskWorkGroup({ taskId: details!.id, workGroup })
         closeTaskSecondLineModal()
         onClose()
-        refetchTaskList()
       } catch (exception) {
         const errors = getTransferTaskSecondLineErrors(
           exception as ErrorResponse,
@@ -196,19 +187,18 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         showMultipleErrorNotification(errors)
       }
     },
-    [details, onClose, refetchTaskList, updateTaskWorkGroup],
+    [details, onClose, updateTaskWorkGroup],
   )
 
   const handleUpdateTaskAssignee = useCallback(
     async (assignee: AssigneeModel['id']) => {
       try {
         await updateTaskAssignee({ taskId: details!.id, assignee })
-        refetchTask()
       } catch {
         showErrorNotification('Невозможно изменить исполнителя')
       }
     },
-    [details, refetchTask, updateTaskAssignee],
+    [details, updateTaskAssignee],
   )
 
   const cardTitle = !taskIsLoading && details && (
