@@ -1,7 +1,6 @@
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { workGroupListApiPermissions } from 'modules/workGroup/components/WorkGroupList/permissions/workGroupList.permissions'
 import { useGetWorkGroupListQuery } from 'modules/workGroup/services/workGroupApi.service'
-
-import { workGroupListApiPermissions } from '../permissions/workGroupList.permissions'
 
 const useGetWorkGroupList = () => {
   const permissions = useUserPermissions(workGroupListApiPermissions.getList)

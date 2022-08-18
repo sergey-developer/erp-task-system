@@ -1,14 +1,14 @@
 import { useCallback, useEffect } from 'react'
 
+import { CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG } from 'modules/task/components/TaskView/constants/messages'
+import { CreateTaskReclassificationRequestMutationArgsModel } from 'modules/task/components/TaskView/models'
+import { taskReclassificationRequestApiPermissions } from 'modules/task/components/TaskView/permissions/taskReclassificationRequest.permissions'
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskReclassificationRequestApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { ErrorResponse, getErrorDetail } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
-
-import { CreateTaskReclassificationRequestMutationArgsModel } from '../models'
-import { taskReclassificationRequestApiPermissions } from '../permissions/taskReclassificationRequest.permissions'
 
 const useCreateTaskReclassificationRequest = () => {
   const [mutation, state] = useCreateReclassificationRequestMutation()
@@ -31,7 +31,7 @@ const useCreateTaskReclassificationRequest = () => {
 
     if (error.status === HttpStatusCodeEnum.NotFound) {
       showErrorNotification(
-        'Невозможно создать запрос на переклассификацию - заявка не найдена',
+        CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG,
       )
     } else {
       const errorDetail = getErrorDetail(error)

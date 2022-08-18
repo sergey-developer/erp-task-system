@@ -4,6 +4,7 @@ import _noop from 'lodash/noop'
 import React, { FC, useCallback } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
+import { UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG } from 'modules/task/components/TaskView/constants/messages'
 import useResolveTask from 'modules/task/components/TaskView/hooks/useResolveTask'
 import useUpdateTaskAssignee from 'modules/task/components/TaskView/hooks/useUpdateTaskAssignee'
 import useUpdateTaskWorkGroup from 'modules/task/components/TaskView/hooks/useUpdateTaskWorkGroup'
@@ -195,7 +196,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       try {
         await updateTaskAssignee({ taskId: details!.id, assignee })
       } catch {
-        showErrorNotification('Невозможно изменить исполнителя')
+        showErrorNotification(UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG)
       }
     },
     [details, updateTaskAssignee],

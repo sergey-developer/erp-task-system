@@ -15,7 +15,7 @@ import React, { FC } from 'react'
 
 import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/components/TaskList/permissions/extendedFilter.permissions'
-import { workGroupListSelectFieldNames } from 'modules/workGroup/components/WorkGroupList/constants'
+import { workGroupListSelectFieldNames } from 'modules/workGroup/components/WorkGroupList/constants/selectFieldNames'
 import useGetWorkGroupList from 'modules/workGroup/components/WorkGroupList/hooks/useGetWorkGroupList'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
