@@ -10,12 +10,12 @@ export type FieldsErrors<T> = {
   [key in Keys<T>]: ValidationErrors
 }
 
-export type Error<T> = FieldsErrors<T> & {
+export type ErrorData<T> = FieldsErrors<T> & {
   detail?: ValidationErrors
 }
 
 export type ErrorResponse<T = {}> = {
-  data: Error<T>
+  data: ErrorData<T>
   status: MaybeUndefined<number>
 }
 

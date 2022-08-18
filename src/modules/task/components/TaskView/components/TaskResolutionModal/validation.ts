@@ -1,7 +1,7 @@
 import { Rule } from 'rc-field-form/lib/interface'
 import {
   REQUIRED_FIELD_RULE,
-  TEXT_MAX_LENGHT_MSG,
+  TEXT_MAX_LENGTH_MSG,
 } from 'shared/constants/validation'
 
 const BASE_FIELD_RULES: Rule[] = [
@@ -11,7 +11,7 @@ const BASE_FIELD_RULES: Rule[] = [
   },
   {
     max: 500,
-    message: TEXT_MAX_LENGHT_MSG,
+    message: TEXT_MAX_LENGTH_MSG,
   },
 ]
 

@@ -4,6 +4,7 @@ import { Button, Col, Form, Row, Space, TableProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
+import _isArray from 'lodash/isArray'
 import React, { FC, useCallback, useState } from 'react'
 
 import {
@@ -19,7 +20,6 @@ import useUserRole from 'modules/user/hooks/useUserRole'
 import { GetComponentProps } from 'rc-table/lib/interface'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { Keys, MaybeNull } from 'shared/interfaces/utils'
-import isArray from 'shared/utils/array/isArray'
 
 import FastFilter from '../FastFilter'
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
@@ -162,7 +162,7 @@ const TaskListPage: FC = () => {
   const handleChangeTable = useCallback<
     NonNullable<TableProps<TaskTableListItem>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order = SortDirectionsEnum.ascend } = isArray(sorter)
+    const { field, order = SortDirectionsEnum.ascend } = _isArray(sorter)
       ? sorter[0]
       : sorter
 

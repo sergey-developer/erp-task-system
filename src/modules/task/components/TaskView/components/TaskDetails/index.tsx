@@ -1,27 +1,32 @@
-import { CheckCircleOutlined, QuestionCircleTwoTone } from '@ant-design/icons'
 import { useBoolean } from 'ahooks'
-import { MenuProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import React, { FC, useCallback, useMemo } from 'react'
+import _noop from 'lodash/noop'
+import React, { FC, useCallback } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import useResolveTask from 'modules/task/components/TaskView/hooks/useResolveTask'
 import useUpdateTaskAssignee from 'modules/task/components/TaskView/hooks/useUpdateTaskAssignee'
 import useUpdateTaskWorkGroup from 'modules/task/components/TaskView/hooks/useUpdateTaskWorkGroup'
-import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
+import {
+  CreateTaskReclassificationRequestMutationArgsModel,
+  TaskDetailsModel,
+  TaskDetailsReclassificationRequestModel,
+} from 'modules/task/components/TaskView/models'
 import getTransferTaskSecondLineErrors from 'modules/task/components/TaskView/utils/getTransferTaskSecondLineErrors'
-import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
-import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import { ErrorResponse } from 'shared/services/api'
+import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 import TaskReclassificationModal, {
   TaskReclassificationModalProps,
 } from '../TaskReclassificationModal'
+import { TaskReclassificationRequestFormErrors } from '../TaskReclassificationModal/interfaces'
+import TaskRequestStatus from '../TaskRequestStatus'
 import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
@@ -56,43 +61,73 @@ type TaskDetailsProps = {
       | 'olaNextBreachTime'
     >
   >
+
   taskIsLoading: boolean
+  refetchTask: () => void
+
+  refetchTaskList: () => void
+
+  reclassificationRequest: MaybeNull<TaskDetailsReclassificationRequestModel>
+  createReclassificationRequest: (
+    data: CreateTaskReclassificationRequestMutationArgsModel,
+  ) => Promise<void>
+  reclassificationRequestIsCreating: boolean
+
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
+
   onClose: () => void
   onTaskResolved: () => void
-  refetchTask: () => void
-  refetchTaskList: () => void
+
   getWorkGroupListError?: ErrorResponse
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
   details,
+
   taskIsLoading,
+  refetchTask,
+
+  refetchTaskList,
+
+  reclassificationRequest,
+  reclassificationRequestIsCreating,
+  createReclassificationRequest,
+
   workGroupList,
   workGroupListIsLoading,
   getWorkGroupListError,
+
   onClose,
   onTaskResolved,
-  refetchTask,
-  refetchTaskList,
 }) => {
   const breakpoints = useBreakpoint()
 
-  const [isTaskResolutionModalOpened, { toggle: toggleTaskResolutionModal }] =
-    useBoolean(false)
+  const reclassificationRequestExist = !!reclassificationRequest
 
-  const debouncedToggleTaskResolutionModal = useDebounceFn(
-    toggleTaskResolutionModal,
+  const isAssignedToCurrentUser = useCheckUserAuthenticated(
+    details?.assignee?.id,
+  )
+
+  const [
+    isTaskResolutionModalOpened,
+    { setTrue: openTaskResolutionModal, setFalse: closeTaskResolutionModal },
+  ] = useBoolean(false)
+
+  const debouncedOpenTaskResolutionModal = useDebounceFn(
+    openTaskResolutionModal,
   )
 
   const [
     isTaskReclassificationModalOpened,
-    { toggle: toggleTaskReclassificationModal },
+    {
+      setTrue: openTaskReclassificationModal,
+      setFalse: closeTaskReclassificationModal,
+    },
   ] = useBoolean(false)
 
-  const debouncedToggleTaskReclassificationModal = useDebounceFn(
-    toggleTaskReclassificationModal,
+  const debouncedOpenTaskReclassificationModal = useDebounceFn(
+    openTaskReclassificationModal,
   )
 
   const {
@@ -110,36 +145,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     state: { isLoading: updateTaskAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 
-  const taskStatus = useTaskStatus(details?.status)
-
-  const isAssignedToCurrentUser = useCheckUserAuthenticated(
-    details?.assignee?.id,
-  )
-
-  const menuItems = useMemo<MenuProps['items']>(
-    () => [
-      {
-        key: 1,
-        disabled: !taskStatus.isInProgress || !isAssignedToCurrentUser,
-        icon: <CheckCircleOutlined className='fs-14' />,
-        label: 'Выполнить заявку',
-        onClick: debouncedToggleTaskResolutionModal,
-      },
-      {
-        key: 2,
-        icon: <QuestionCircleTwoTone className='fs-14' />,
-        label: 'Запросить переклассификацию',
-        onClick: debouncedToggleTaskReclassificationModal,
-      },
-    ],
-    [
-      taskStatus.isInProgress,
-      isAssignedToCurrentUser,
-      debouncedToggleTaskResolutionModal,
-      debouncedToggleTaskReclassificationModal,
-    ],
-  )
-
   const handleResolutionSubmit = useCallback<
     TaskResolutionModalProps['onSubmit']
   >(
@@ -149,24 +154,30 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         onTaskResolved()
       } catch (exception) {
         const error = exception as ErrorResponse<TaskResolutionFormErrors>
-        const errorDetail = getErrorDetail(error)
-        showMultipleErrorNotification(errorDetail)
-
-        setFields([
-          {
-            name: 'techResolution',
-            errors: error.data.techResolution,
-          },
-          { name: 'userResolution', errors: error.data.userResolution },
-        ])
+        handleSetFieldsErrors(error, setFields)
       }
     },
     [details, onTaskResolved, resolveTask],
   )
 
-  const handleReclassificationSubmit = useCallback<
+  const handleReclassificationRequestSubmit = useCallback<
     TaskReclassificationModalProps['onSubmit']
-  >(async (values, setFields) => {}, [])
+  >(
+    async (values, setFields) => {
+      try {
+        await createReclassificationRequest({
+          taskId: details!.id,
+          ...values,
+        })
+        closeTaskReclassificationModal()
+      } catch (exception) {
+        const error =
+          exception as ErrorResponse<TaskReclassificationRequestFormErrors>
+        handleSetFieldsErrors(error, setFields)
+      }
+    },
+    [closeTaskReclassificationModal, createReclassificationRequest, details],
+  )
 
   const handleUpdateTaskWorkGroup = useCallback(
     async (
@@ -200,8 +211,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [details, refetchTask, updateTaskAssignee],
   )
 
-  const cardTitle = details?.id && (
-    <CardTitle id={details.id} menuItems={menuItems} onClose={onClose} />
+  const cardTitle = !taskIsLoading && details && (
+    <CardTitle
+      id={details.id}
+      status={details.status}
+      olaStatus={details.olaStatus}
+      isAssignedToCurrentUser={isAssignedToCurrentUser}
+      onClose={onClose}
+      onClickExecuteTask={debouncedOpenTaskResolutionModal}
+      onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
+      reclassificationRequestExist={reclassificationRequestExist}
+    />
   )
 
   return (
@@ -211,6 +231,21 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         loading={taskIsLoading}
         $breakpoints={breakpoints}
       >
+        {reclassificationRequestExist && (
+          <>
+            <TaskRequestStatus
+              title='Запрошена переклассификация:'
+              comment={reclassificationRequest!.comment.text}
+              createdAt={reclassificationRequest!.createdAt}
+              user={reclassificationRequest!.user}
+              actionText='Отменить запрос'
+              onAction={_noop}
+            />
+
+            <DividerStyled />
+          </>
+        )}
+
         {details && (
           <>
             <MainDetails
@@ -239,6 +274,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               transferTaskIsLoading={updateTaskWorkGroupIsLoading}
               updateTaskAssignee={handleUpdateTaskAssignee}
               updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
+              reclassificationRequestExist={reclassificationRequestExist}
             />
 
             <TaskDetailsTabs
@@ -250,7 +286,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               <TaskResolutionModal
                 visible
                 isTaskResolving={isTaskResolving}
-                onCancel={toggleTaskResolutionModal}
+                onCancel={closeTaskResolutionModal}
                 onSubmit={handleResolutionSubmit}
                 recordId={details.recordId}
                 type={details.type}
@@ -261,8 +297,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               <TaskReclassificationModal
                 visible
                 recordId={details.recordId}
-                onSubmit={handleReclassificationSubmit}
-                onCancel={toggleTaskReclassificationModal}
+                isLoading={reclassificationRequestIsCreating}
+                onSubmit={handleReclassificationRequestSubmit}
+                onCancel={closeTaskReclassificationModal}
               />
             )}
           </>

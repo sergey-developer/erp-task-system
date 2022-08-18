@@ -1,5 +1,4 @@
 import {
-  ButtonProps,
   Form,
   FormInstance,
   Input,
@@ -14,15 +13,11 @@ import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import { ReclassificationReasonEnum } from 'modules/task/constants/enums'
 
-import { TaskReclassificationFormFields } from './interfaces'
+import { TaskReclassificationRequestFormFields } from './interfaces'
 import { COMMENT_RULES, RECLASSIFICATION_REASON_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
-
-const buttonCommonProps: ButtonProps = {
-  size: 'large',
-}
 
 export type TaskReclassificationModalProps = Pick<
   ModalProps,
@@ -30,18 +25,20 @@ export type TaskReclassificationModalProps = Pick<
 > &
   Pick<TaskDetailsModel, 'recordId'> & {
     onSubmit: (
-      values: TaskReclassificationFormFields,
+      values: TaskReclassificationRequestFormFields,
       setFields: FormInstance['setFields'],
     ) => void
+    isLoading: boolean
   }
 
 const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
   visible,
-  onCancel,
   recordId,
+  isLoading,
+  onCancel,
   onSubmit,
 }) => {
-  const [form] = Form.useForm<TaskReclassificationFormFields>()
+  const [form] = Form.useForm<TaskReclassificationRequestFormFields>()
 
   const modalTitle = (
     <Text>
@@ -49,12 +46,9 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
     </Text>
   )
 
-  const submitButtonProps: ButtonProps = {
-    ...buttonCommonProps,
-    htmlType: 'submit',
-  }
-
-  const handleFinish = async (values: TaskReclassificationFormFields) => {
+  const handleFinish = async (
+    values: TaskReclassificationRequestFormFields,
+  ) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -62,13 +56,12 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
     <BaseModal
       visible={visible}
       title={modalTitle}
+      confirmLoading={isLoading}
       onOk={form.submit}
       okText='Запросить переклассификацию'
-      okButtonProps={submitButtonProps}
       onCancel={onCancel}
-      cancelButtonProps={buttonCommonProps}
     >
-      <Form<TaskReclassificationFormFields>
+      <Form<TaskReclassificationRequestFormFields>
         form={form}
         layout='vertical'
         onFinish={handleFinish}

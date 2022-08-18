@@ -30,6 +30,7 @@ export enum ReclassificationReasonEnum {
 }
 
 export enum ReclassificationRequestStatusEnum {
+  Created = 'CREATED',
   Approved = 'APPROVED',
   Denied = 'DENIED',
   InProgress = 'IN_PROGRESS',
@@ -40,14 +41,6 @@ export enum TaskTypeEnum {
   Request = 'REQUEST',
   IncidentTask = 'INCIDENT_TASK',
   RequestTask = 'REQUEST_TASK',
-}
-
-export enum CommentTypeEnum {
-  Common = 'COMMON',
-  Awaiting = 'AWAITING',
-  Reclassified = 'RECLASSIFIED',
-  Completed = 'COMPLETED',
-  System = 'SYSTEM',
 }
 
 export enum ResolutionCodeEnum {
@@ -80,4 +73,8 @@ export enum SuspendReasonEnum {
   AwaitingRelease = 'AWAITING_RELEASE',
   AwaitingNonItWork = 'AWAITING_NON_IT_WORK',
   AwaitingInformationFromFirstLine = 'AWAITING_INFORMATION_FROM_FIRST_LINE',
+}
+
+export enum TaskEndpointsTagsEnum {
+  TaskReclassificationRequest = 'TaskReclassificationRequest',
 }

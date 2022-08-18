@@ -1,8 +1,6 @@
+import { BaseTaskRequestArgs } from 'modules/task/interfaces/baseTaskRequest'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import { TaskDetailsModel } from './taskDetails.model'
-
-export type UpdateTaskWorkGroupMutationArgsModel = {
-  taskId: TaskDetailsModel['id']
+export type UpdateTaskWorkGroupMutationArgsModel = BaseTaskRequestArgs & {
   workGroup: MaybeNull<number>
 }

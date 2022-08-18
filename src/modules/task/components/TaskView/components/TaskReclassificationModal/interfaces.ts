@@ -1,7 +1,11 @@
+import { CreateTaskReclassificationRequestMutationArgsModel } from 'modules/task/components/TaskView/models/createTaskReclassificationRequest.model'
 import { FieldsErrors } from 'shared/services/api'
 
-type FormFields = { reclassificationReason: number; comment: string }
+type FormFields = Omit<
+  CreateTaskReclassificationRequestMutationArgsModel,
+  'taskId'
+>
 
-export type TaskReclassificationFormFields = Required<FormFields>
+export type TaskReclassificationRequestFormFields = Required<FormFields>
 
-export type TaskReclassificationFormErrors = FieldsErrors<FormFields>
+export type TaskReclassificationRequestFormErrors = FieldsErrors<FormFields>

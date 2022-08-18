@@ -1,9 +1,9 @@
 import { Skeleton, Space, Typography } from 'antd'
+import _isNumber from 'lodash/isNumber'
 import React, { FC } from 'react'
 
 import { CheckableTagProps } from 'antd/lib/tag/CheckableTag'
 import { MaybeNull } from 'shared/interfaces/utils'
-import isNumber from 'shared/utils/number/isNumber'
 
 import { CheckableTagStyled } from './styles'
 
@@ -35,7 +35,7 @@ const FilterTag: FC<FilterTagProps> = ({
       <Space>
         {text}
 
-        {isNumber(amount) && <Text type='secondary'>{amount}</Text>}
+        {_isNumber(amount) && <Text type='secondary'>{amount}</Text>}
       </Space>
     </CheckableTagStyled>
   )

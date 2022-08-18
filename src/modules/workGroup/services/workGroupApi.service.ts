@@ -16,4 +16,3 @@ const workGroupApiService = api.injectEndpoints({
 })
 
 export const { useGetWorkGroupListQuery } = workGroupApiService
-export default workGroupApiService

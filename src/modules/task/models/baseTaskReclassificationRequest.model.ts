@@ -3,12 +3,13 @@ import {
   ReclassificationRequestStatusEnum,
 } from 'modules/task/constants/enums'
 
-export type TaskReclassificationRequestModel = {
+export type BaseTaskReclassificationRequestModel = {
   id: number
   createdAt: string
   updatedAt: string
   reclassificationReason: ReclassificationReasonEnum
-  textComment: string
   status: ReclassificationRequestStatusEnum
   task: number
+  externalId?: string
+  externalComment?: string
 }

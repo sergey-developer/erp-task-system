@@ -26,6 +26,8 @@ type TaskAssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'status'> & {
 
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
+
+  reclassificationRequestExist: boolean
 }
 
 const TaskAssignee: FC<TaskAssigneeProps> = ({
@@ -37,6 +39,8 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
+
+  reclassificationRequestExist,
 }) => {
   const currentAssignee = assignee?.id
   const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
@@ -62,6 +66,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const canSelectAssignee: boolean =
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
+    !reclassificationRequestExist &&
     (seniorEngineerFromWorkGroupIsAuthenticatedUser ||
       headOfDepartmentFromWorkGroupIsAuthenticatedUser)
 
@@ -82,7 +87,11 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         <Button
           type='link'
           loading={updateTaskAssigneeIsLoading}
-          disabled={taskStatus.isClosed || taskStatus.isCompleted}
+          disabled={
+            taskStatus.isClosed ||
+            taskStatus.isCompleted ||
+            reclassificationRequestExist
+          }
           onClick={
             currentAssigneeIsAuthenticatedUser
               ? undefined
@@ -155,7 +164,8 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                   disabled={
                     !selectedAssignee ||
                     selectedAssigneeIsAuthenticatedUser ||
-                    selectedAssigneeIsCurrentAssignee
+                    selectedAssigneeIsCurrentAssignee ||
+                    reclassificationRequestExist
                   }
                 >
                   Назначить

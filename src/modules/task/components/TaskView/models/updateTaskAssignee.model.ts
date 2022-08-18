@@ -1,8 +1,6 @@
+import { BaseTaskRequestArgs } from 'modules/task/interfaces/baseTaskRequest'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import { TaskDetailsModel } from './taskDetails.model'
-
-export type UpdateTaskAssigneeMutationArgsModel = {
-  taskId: TaskDetailsModel['id']
+export type UpdateTaskAssigneeMutationArgsModel = BaseTaskRequestArgs & {
   assignee: MaybeNull<number>
 }

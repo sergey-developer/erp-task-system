@@ -1,6 +1,7 @@
 import { QuestionCircleTwoTone } from '@ant-design/icons'
 import { Button, Space, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
+import { EllipsisConfig } from 'antd/es/typography/Base'
 import React, { FC } from 'react'
 
 import SeparatedText from 'components/SeparatedText'
@@ -11,13 +12,15 @@ import formatDate from 'shared/utils/date/formatDate'
 
 import { WrapperStyled } from './styles'
 
-const { Text, Title } = Typography
+const { Text, Title, Paragraph } = Typography
+
+const commentEllipsisConfig: EllipsisConfig = { rows: 4, expandable: true }
 
 type TaskRequestStatusProps = {
   user: Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>
   title: string
-  createdAt: Date
-  description: string
+  createdAt: string
+  comment: string
   actionText: string
   onAction: () => void
 }
@@ -25,7 +28,7 @@ type TaskRequestStatusProps = {
 const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
   user,
   title,
-  description,
+  comment,
   createdAt,
   actionText,
   onAction,
@@ -38,10 +41,10 @@ const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
         <QuestionCircleTwoTone className='fs-18' />
 
         <Space direction='vertical' size='middle'>
-          <Space direction='vertical'>
+          <Space direction='vertical' size={4}>
             <Title level={5}>{title}</Title>
 
-            <Text>{description}</Text>
+            <Paragraph ellipsis={commentEllipsisConfig}>{comment}</Paragraph>
 
             <SeparatedText>
               <Text type='secondary'>{getShortUserName(user)}</Text>
