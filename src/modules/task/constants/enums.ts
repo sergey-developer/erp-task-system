@@ -76,5 +76,7 @@ export enum SuspendReasonEnum {
 }
 
 export enum TaskEndpointsTagsEnum {
+  Task = 'Task',
+  TaskList = 'TaskList',
   TaskReclassificationRequest = 'TaskReclassificationRequest',
 }
