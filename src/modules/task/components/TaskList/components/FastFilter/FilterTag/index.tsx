@@ -28,6 +28,7 @@ const FilterTag: FC<FilterTagProps> = ({
     <Skeleton.Button active={loading} size='small' shape='round' />
   ) : (
     <CheckableTagStyled
+      data-testid={`btn-filter-fast-${text}`}
       checked={checked}
       onChange={onChange}
       $disabled={disabled}

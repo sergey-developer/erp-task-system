@@ -232,6 +232,7 @@ const TaskListPage: FC = () => {
 
               <Col>
                 <Button
+                  data-testid='btn-filter-extended'
                   icon={<FilterTwoTone className='fs-18' />}
                   onClick={debouncedToggleFilterDrawer}
                   disabled={searchFilterApplied}

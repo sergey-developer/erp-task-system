@@ -40,16 +40,27 @@ const SignInPage: FC = () => {
             layout='vertical'
             requiredMark={false}
           >
-            <Form.Item label='E-mail' name='email' rules={EMAIL_RULES}>
+            <Form.Item
+              data-testid='field-email'
+              label='E-mail'
+              name='email'
+              rules={EMAIL_RULES}
+            >
               <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
             </Form.Item>
 
-            <Form.Item label='Пароль' name='password' rules={PASSWORD_RULES}>
+            <Form.Item
+              data-testid='field-password'
+              label='Пароль'
+              name='password'
+              rules={PASSWORD_RULES}
+            >
               <Input.Password placeholder='••••••••' disabled={isLoading} />
             </Form.Item>
 
             <Space direction='vertical' $block>
               <Button
+                data-testid='btn-submit'
                 type='primary'
                 htmlType='submit'
                 block
@@ -59,7 +70,10 @@ const SignInPage: FC = () => {
                 Войти
               </Button>
 
-              <Link to={RoutesEnum.ForgotPassword}>
+              <Link
+                data-testid='btn-forgot-password'
+                to={RoutesEnum.ForgotPassword}
+              >
                 <Button type='link' block>
                   Забыли пароль?
                 </Button>
