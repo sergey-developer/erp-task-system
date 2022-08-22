@@ -43,6 +43,6 @@ export const DividerStyled = styled(Divider)`
   }
 `
 
-export const DetailContainerStyled = styled.div<StyledBreakpointsProps>`
+export const DetailsContainerStyled = styled.div<StyledBreakpointsProps>`
   padding: 20px ${({ $breakpoints }) => ($breakpoints.xxl ? '30px' : '')};
 `

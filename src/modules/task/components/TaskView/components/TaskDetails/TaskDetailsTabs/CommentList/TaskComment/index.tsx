@@ -1,7 +1,7 @@
 import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import SeparatedText from 'components/SeparatedText'
+import SeparatedText from 'components/Texts/SeparatedText'
 import { TaskDetailsCommentModel } from 'modules/task/components/TaskView/models'
 
 const { Paragraph, Text } = Typography

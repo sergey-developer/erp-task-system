@@ -2,8 +2,8 @@ import { Col, Row, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 
-import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
+import SeparatedText from 'components/Texts/SeparatedText'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
@@ -11,7 +11,7 @@ import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 import makeString from 'shared/utils/string/makeString'
 
-import { DetailContainerStyled } from '../styles'
+import { DetailsContainerStyled } from '../styles'
 import { getTaskRemainingTime } from './utils'
 
 const { Text, Title } = Typography
@@ -71,7 +71,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   }, [olaEstimatedTime, rawOlaStatus, rawOlaNextBreachTime])
 
   return (
-    <DetailContainerStyled $breakpoints={breakpoints}>
+    <DetailsContainerStyled $breakpoints={breakpoints}>
       <Space direction='vertical' size='middle' $block>
         <SeparatedText>
           <Text type='secondary' ellipsis className='break-text'>
@@ -117,7 +117,7 @@ const MainDetails: FC<MainDetailsProps> = ({
           </Col>
         </Row>
       </Space>
-    </DetailContainerStyled>
+    </DetailsContainerStyled>
   )
 }
 
