@@ -1,7 +1,7 @@
 import { Button, Row, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
-import LabeledData from 'components/Fields/LabeledData'
+import LabeledData from 'components/LabeledData'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'

@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Button, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import LabeledData from 'components/Fields/LabeledData'
+import LabeledData from 'components/LabeledData'
 import Permissions from 'components/Permissions'
 import TaskSecondLineModal from 'modules/task/components/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'

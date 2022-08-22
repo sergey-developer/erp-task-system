@@ -2,7 +2,7 @@ import { Col, Row, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 
-import LabeledData from 'components/Fields/LabeledData'
+import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'

@@ -1,7 +1,7 @@
 import { Row, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import LabeledData from 'components/Fields/LabeledData'
+import LabeledData from 'components/LabeledData'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import formatDate from 'shared/utils/date/formatDate'

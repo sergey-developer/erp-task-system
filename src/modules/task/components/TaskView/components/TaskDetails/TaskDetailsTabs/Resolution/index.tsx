@@ -1,7 +1,7 @@
 import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import LabeledData from 'components/Fields/LabeledData'
+import LabeledData from 'components/LabeledData'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
 

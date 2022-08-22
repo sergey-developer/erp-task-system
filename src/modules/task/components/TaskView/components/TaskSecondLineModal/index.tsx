@@ -1,7 +1,7 @@
 import { ModalProps, Select, Space, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
-import LabeledData from 'components/Fields/LabeledData'
+import LabeledData from 'components/LabeledData'
 import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/components/WorkGroupList/constants/selectFieldNames'
