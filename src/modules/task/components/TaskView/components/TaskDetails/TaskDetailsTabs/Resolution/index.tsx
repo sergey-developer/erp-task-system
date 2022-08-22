@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 import LabeledData from 'components/LabeledData'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
+import { commonEllipsisConfig } from 'shared/constants/text'
 
 const { Title, Paragraph } = Typography
 
@@ -28,7 +29,9 @@ const Resolution: FC<ResolutionProps> = ({
 
       {!!techResolution && (
         <LabeledData label='Техническое решение'>
-          <Paragraph>{techResolution}</Paragraph>
+          <Paragraph ellipsis={commonEllipsisConfig}>
+            {techResolution}
+          </Paragraph>
         </LabeledData>
       )}
 
@@ -38,7 +41,9 @@ const Resolution: FC<ResolutionProps> = ({
         !taskType.isRequestTask
       ) && (
         <LabeledData label='Решение для пользователя'>
-          <Paragraph>{userResolution}</Paragraph>
+          <Paragraph ellipsis={commonEllipsisConfig}>
+            {userResolution}
+          </Paragraph>
         </LabeledData>
       )}
 
