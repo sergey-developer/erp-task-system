@@ -1,7 +1,7 @@
 import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import LabeledField from 'components/Fields/LabeledField'
+import LabeledData from 'components/Fields/LabeledData'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
 
@@ -27,9 +27,9 @@ const Resolution: FC<ResolutionProps> = ({
       <Title level={5}>{title}</Title>
 
       {!!techResolution && (
-        <LabeledField label='Техническое решение'>
+        <LabeledData label='Техническое решение'>
           <Paragraph>{techResolution}</Paragraph>
-        </LabeledField>
+        </LabeledData>
       )}
 
       {!!(
@@ -37,9 +37,9 @@ const Resolution: FC<ResolutionProps> = ({
         !taskType.isIncidentTask &&
         !taskType.isRequestTask
       ) && (
-        <LabeledField label='Решение для пользователя'>
+        <LabeledData label='Решение для пользователя'>
           <Paragraph>{userResolution}</Paragraph>
-        </LabeledField>
+        </LabeledData>
       )}
 
       {!techResolution && !userResolution && '—'}

@@ -1,6 +1,7 @@
 import { Button, Row, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
+import LabeledData from 'components/Fields/LabeledData'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
@@ -81,9 +82,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   return (
     <Space direction='vertical' $block>
-      <Space size='large'>
-        <Text type='secondary'>{ASSIGNEE_WORD}</Text>
-
+      <LabeledData label={ASSIGNEE_WORD} size='large' direction='horizontal'>
         <Button
           type='link'
           loading={updateTaskAssigneeIsLoading}
@@ -102,7 +101,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
             ? 'Отказаться от заявки'
             : 'Назначить на себя'}
         </Button>
-      </Space>
+      </LabeledData>
 
       <Permissions
         config={taskAssigneePermissions.select}

@@ -1,7 +1,7 @@
 import { Row, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import LabeledField from 'components/Fields/LabeledField'
+import LabeledData from 'components/Fields/LabeledData'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import formatDate from 'shared/utils/date/formatDate'
@@ -23,17 +23,17 @@ const JournalItem: FC<JournalItemProps> = () => {
       </Space>
 
       <Row justify='space-between'>
-        <LabeledField label='Тип'>
+        <LabeledData label='Тип'>
           <Text>Переназначение</Text>
-        </LabeledField>
+        </LabeledData>
 
-        <LabeledField label='Где добавлено'>
+        <LabeledData label='Где добавлено'>
           <Text>Х5</Text>
-        </LabeledField>
+        </LabeledData>
 
-        <LabeledField label='Кем добавлено'>
+        <LabeledData label='Кем добавлено'>
           <Text>Александров Александр Александрович</Text>
-        </LabeledField>
+        </LabeledData>
       </Row>
     </Space>
   )

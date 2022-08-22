@@ -2,6 +2,7 @@ import { Col, Row, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 
+import LabeledData from 'components/Fields/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
@@ -91,29 +92,25 @@ const MainDetails: FC<MainDetailsProps> = ({
 
         <Row justify='space-between'>
           <Col span={12}>
-            <Space direction='vertical'>
-              <Text type='secondary'>Адрес</Text>
-
+            <LabeledData label='Адрес'>
               <Text strong ellipsis className='break-text'>
                 {name}
               </Text>
 
-              {address && (
+              {!!address && (
                 <Text ellipsis className='break-text'>
                   {address}
                 </Text>
               )}
-            </Space>
+            </LabeledData>
           </Col>
 
           <Col span={10}>
-            <Space direction='vertical'>
-              <Text type='secondary'>Заявитель</Text>
-
+            <LabeledData label='Заявитель'>
               <Text strong ellipsis className='break-text'>
                 {contactService}
               </Text>
-            </Space>
+            </LabeledData>
           </Col>
         </Row>
       </Space>
