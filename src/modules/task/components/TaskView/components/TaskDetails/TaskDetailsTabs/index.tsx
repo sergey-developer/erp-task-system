@@ -4,10 +4,11 @@ import React, { FC } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 
-import { DetailContainerStyled } from '../styles'
+import { DetailsContainerStyled } from '../styles'
 import CommentList from './CommentList'
 import { TaskDetailsTabsEnum, taskDetailsTabNames } from './constants'
 import Description from './Description'
+import Journal from './Journal'
 import Resolution from './Resolution'
 
 const { TabPane } = Tabs
@@ -24,48 +25,63 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
   const breakpoints = useBreakpoint()
 
   return (
-    <DetailContainerStyled $breakpoints={breakpoints}>
-      <Tabs defaultActiveKey={defaultTab}>
-        <TabPane
-          tab={taskDetailsTabNames[TaskDetailsTabsEnum.Description]}
-          key={TaskDetailsTabsEnum.Description}
-        >
+    <Tabs defaultActiveKey={defaultTab} type='card'>
+      <TabPane
+        tab={taskDetailsTabNames[TaskDetailsTabsEnum.Description]}
+        key={TaskDetailsTabsEnum.Description}
+      >
+        <DetailsContainerStyled $breakpoints={breakpoints}>
           <Description
             title={taskDetailsTabNames[TaskDetailsTabsEnum.Description]}
             description={details.description}
           />
-        </TabPane>
+        </DetailsContainerStyled>
+      </TabPane>
 
-        <TabPane
-          tab={taskDetailsTabNames[TaskDetailsTabsEnum.Comments]}
-          key={TaskDetailsTabsEnum.Comments}
-        >
+      <TabPane
+        tab={taskDetailsTabNames[TaskDetailsTabsEnum.Comments]}
+        key={TaskDetailsTabsEnum.Comments}
+      >
+        <DetailsContainerStyled $breakpoints={breakpoints}>
           <CommentList
             title={taskDetailsTabNames[TaskDetailsTabsEnum.Comments]}
             taskId={details.id}
           />
-        </TabPane>
+        </DetailsContainerStyled>
+      </TabPane>
 
-        <TabPane
-          tab={taskDetailsTabNames[TaskDetailsTabsEnum.Resolution]}
-          key={TaskDetailsTabsEnum.Resolution}
-        >
+      <TabPane
+        tab={taskDetailsTabNames[TaskDetailsTabsEnum.Resolution]}
+        key={TaskDetailsTabsEnum.Resolution}
+      >
+        <DetailsContainerStyled $breakpoints={breakpoints}>
           <Resolution
             type={details.type}
             title={taskDetailsTabNames[TaskDetailsTabsEnum.Resolution]}
             techResolution={details.techResolution}
             userResolution={details.userResolution}
           />
-        </TabPane>
+        </DetailsContainerStyled>
+      </TabPane>
 
-        <TabPane
-          tab={taskDetailsTabNames[TaskDetailsTabsEnum.Tasks]}
-          key={TaskDetailsTabsEnum.Tasks}
-        >
-          Задания
-        </TabPane>
-      </Tabs>
-    </DetailContainerStyled>
+      <TabPane
+        tab={taskDetailsTabNames[TaskDetailsTabsEnum.Journal]}
+        key={TaskDetailsTabsEnum.Journal}
+      >
+        <DetailsContainerStyled $breakpoints={breakpoints}>
+          <Journal />
+        </DetailsContainerStyled>
+      </TabPane>
+
+      <TabPane
+        tab={taskDetailsTabNames[TaskDetailsTabsEnum.Tasks]}
+        key={TaskDetailsTabsEnum.Tasks}
+      >
+        <DetailsContainerStyled $breakpoints={breakpoints}>
+          <span>Задания</span>
+        </DetailsContainerStyled>
+      </TabPane>
+    </Tabs>
   )
 }
 
