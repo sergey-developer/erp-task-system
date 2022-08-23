@@ -1,7 +1,8 @@
-import { Row, Space, Typography } from 'antd'
+import { Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import LabeledData from 'components/LabeledData'
+import Space from 'components/Space'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import formatDate from 'shared/utils/date/formatDate'
@@ -12,13 +13,12 @@ type JournalItemProps = {}
 
 const JournalItem: FC<JournalItemProps> = () => {
   return (
-    <Space direction='vertical' size='middle'>
+    <Space direction='vertical' size='middle' $block>
       <Space direction='vertical'>
         <Text>{formatDate(Date.now(), DATE_TIME_FORMAT)}</Text>
 
         <Paragraph ellipsis={commonEllipsisConfig}>
-          Выполнено переназначение на исполнителя Константинопольский Константин
-          Константинович
+          Выполнено переназначение
         </Paragraph>
       </Space>
 

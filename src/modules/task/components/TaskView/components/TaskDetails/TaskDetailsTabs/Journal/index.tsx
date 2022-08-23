@@ -1,27 +1,37 @@
 import { DownloadOutlined } from '@ant-design/icons'
-import { Col, Divider, Row, Space } from 'antd'
+import { Col, Divider, Row } from 'antd'
 import React, { FC } from 'react'
+
+import Space from 'components/Space'
 
 import JournalItem from './JournalItem'
 
-type JournalProps = {}
+type JournalProps = {
+  data: Array<{}>
+}
 
-const Journal: FC<JournalProps> = () => {
+const Journal: FC<JournalProps> = ({ data }) => {
   return (
-    <Space direction='vertical'>
-      <Row justify='end'>
-        <DownloadOutlined />
-      </Row>
+    <Space direction='vertical' $block>
+      {!!data.length ? (
+        <>
+          <Row justify='end'>
+            <DownloadOutlined />
+          </Row>
 
-      <Row>
-        {[1, 1, 1].map((_, index, array) => (
-          <Col key={index} span={24}>
-            <JournalItem />
+          <Row>
+            {data.map((_, index, array) => (
+              <Col key={index} span={24}>
+                <JournalItem />
 
-            {index !== array.length - 1 && <Divider />}
-          </Col>
-        ))}
-      </Row>
+                {index !== array.length - 1 && <Divider />}
+              </Col>
+            ))}
+          </Row>
+        </>
+      ) : (
+        'Записей пока нет'
+      )}
     </Space>
   )
 }

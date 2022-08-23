@@ -69,7 +69,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
         key={TaskDetailsTabsEnum.Journal}
       >
         <DetailsContainerStyled $breakpoints={breakpoints}>
-          <Journal />
+          <Journal data={[{}, {}, {}]} />
         </DetailsContainerStyled>
       </TabPane>
 
