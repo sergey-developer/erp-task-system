@@ -1,1 +1,1 @@
-export const REQUIRED_FIELD_MSG = 'Обязательное поле.'
+export const REQUIRED_FIELD_MSG = 'Обязательное поле'
