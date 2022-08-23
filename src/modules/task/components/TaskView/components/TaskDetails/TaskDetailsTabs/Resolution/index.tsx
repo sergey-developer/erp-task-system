@@ -35,11 +35,7 @@ const Resolution: FC<ResolutionProps> = ({
         </LabeledData>
       )}
 
-      {!!(
-        userResolution &&
-        !taskType.isIncidentTask &&
-        !taskType.isRequestTask
-      ) && (
+      {!!userResolution && !taskType.isIncidentTask && !taskType.isRequestTask && (
         <LabeledData label='Решение для пользователя'>
           <Paragraph ellipsis={commonEllipsisConfig}>
             {userResolution}
