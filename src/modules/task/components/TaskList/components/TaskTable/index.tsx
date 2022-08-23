@@ -5,6 +5,7 @@ import React, { FC, useMemo } from 'react'
 import { SMART_SORT_DIRECTIONS_TO_SORT_FIELDS } from 'modules/task/components/TaskList/components/TaskListPage/constants'
 
 import { TABLE_COLUMNS } from './constants/columns'
+import { localeConfig } from './constants/locale'
 import { paginationConfig } from './constants/pagination'
 import { TaskTableListItem, TaskTableProps } from './interfaces'
 import { TableStyled } from './styles'
@@ -51,6 +52,7 @@ const TaskTable: FC<TaskTableProps> = ({
       onRow={onRow}
       onChange={onChange}
       showSorterTooltip={false}
+      locale={localeConfig}
     />
   )
 }

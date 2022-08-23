@@ -6,3 +6,7 @@ export const TableStyled: typeof ParentSizedTable = styled(ParentSizedTable)`
     padding: 3px;
   }
 `
+
+export const EmptyContentStyled = styled.div`
+  padding: 20px 0;
+`
