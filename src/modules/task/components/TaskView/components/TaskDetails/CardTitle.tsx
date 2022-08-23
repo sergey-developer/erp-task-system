@@ -33,17 +33,17 @@ const CardTitle: FC<CardTitleProps> = ({
   const taskOlaStatus = useTaskOlaStatus(olaStatus)
 
   const actionMenu = useMemo(() => {
-    const items = [
-      {
+    const items = []
+
+    if (taskStatus.isInProgress) {
+      items.push({
         key: 1,
-        disabled:
-          !(taskStatus.isInProgress || isAssignedToCurrentUser) ||
-          reclassificationRequestExist,
+        disabled: !isAssignedToCurrentUser || reclassificationRequestExist,
         icon: <CheckCircleOutlined className='fs-14' />,
         label: 'Выполнить заявку',
         onClick: onClickExecuteTask,
-      },
-    ]
+      })
+    }
 
     if (!taskOlaStatus.isHalfExpired) {
       items.push({

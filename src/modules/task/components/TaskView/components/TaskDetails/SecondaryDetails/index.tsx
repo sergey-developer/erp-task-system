@@ -7,7 +7,7 @@ import { WorkGroupListItemModel } from 'modules/workGroup/components/WorkGroupLi
 import { AssigneeModel } from 'shared/interfaces/models'
 import { ErrorResponse } from 'shared/services/api'
 
-import { DetailContainerStyled } from '../styles'
+import { DetailsContainerStyled } from '../styles'
 import TaskAssignee from '../TaskAssignee'
 import WorkGroup from '../WorkGroup'
 
@@ -62,7 +62,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   )
 
   return (
-    <DetailContainerStyled $breakpoints={breakpoints}>
+    <DetailsContainerStyled $breakpoints={breakpoints}>
       <Row justify='space-between'>
         <Col span={12}>
           <WorkGroup
@@ -90,7 +90,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           />
         </Col>
       </Row>
-    </DetailContainerStyled>
+    </DetailsContainerStyled>
   )
 }
 

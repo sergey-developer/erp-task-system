@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import { DetailContainerStyled } from '../TaskDetails/styles'
+import { DetailsContainerStyled } from '../TaskDetails/styles'
 
-export const WrapperStyled = styled(DetailContainerStyled)`
+export const WrapperStyled = styled(DetailsContainerStyled)`
   background-color: ${({ theme }) => theme.colors.cosmicLatte};
 `

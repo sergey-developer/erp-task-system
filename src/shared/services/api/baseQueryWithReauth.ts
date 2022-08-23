@@ -1,12 +1,10 @@
 import { Mutex } from 'async-mutex'
 
-import {
-  logout as logoutAction,
-  refreshToken as refreshTokenAction,
-} from 'modules/auth/authSlice'
+import { refreshToken as refreshTokenAction } from 'modules/auth/authSlice'
 import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
 import { RefreshTokenResponseModel } from 'modules/auth/models'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
+import logoutAndClearTokens from 'modules/auth/utils/logoutAndClearTokens'
 import parseJwt from 'modules/auth/utils/parseJwt'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/interfaces/utils'
@@ -70,7 +68,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
               error.status! >= HttpStatusCodeEnum.BadRequest &&
               error.status! < HttpStatusCodeEnum.ServerError
             ) {
-              api.dispatch(logoutAction())
+              logoutAndClearTokens(api.dispatch)
             }
 
             throw error
@@ -91,7 +89,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
 
             response = await query(args, api, extraOptions)
           } else {
-            api.dispatch(logoutAction())
+            logoutAndClearTokens(api.dispatch)
           }
         }
       } finally {

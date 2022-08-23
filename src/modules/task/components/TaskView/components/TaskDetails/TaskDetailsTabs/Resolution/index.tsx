@@ -1,10 +1,12 @@
-import { Typography } from 'antd'
+import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import LabeledData from 'components/LabeledData'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
+import { commonEllipsisConfig } from 'shared/constants/text'
 
-const { Title, Text, Paragraph } = Typography
+const { Title, Paragraph } = Typography
 
 type ResolutionProps = Pick<
   TaskDetailsModel,
@@ -21,36 +23,28 @@ const Resolution: FC<ResolutionProps> = ({
 }) => {
   const taskType = useTaskType(type)
 
-  const techResolutionContent = techResolution ? (
-    <>
-      <Text type='secondary'>Техническое решение</Text>
-      <Paragraph>{techResolution}</Paragraph>
-    </>
-  ) : null
-
-  const userResolutionContent =
-    userResolution && !taskType.isIncidentTask && !taskType.isRequestTask ? (
-      <>
-        <Text type='secondary'>Решение для пользователя</Text>
-        <Paragraph>{userResolution}</Paragraph>
-      </>
-    ) : null
-
-  const isResolutionVisible = !!techResolutionContent || !!userResolutionContent
-
   return (
-    <>
+    <Space direction='vertical' size='large'>
       <Title level={5}>{title}</Title>
 
-      {isResolutionVisible ? (
-        <>
-          {techResolutionContent}
-          {userResolutionContent}
-        </>
-      ) : (
-        '—'
+      {!!techResolution && (
+        <LabeledData label='Техническое решение'>
+          <Paragraph ellipsis={commonEllipsisConfig}>
+            {techResolution}
+          </Paragraph>
+        </LabeledData>
       )}
-    </>
+
+      {!!userResolution && !taskType.isIncidentTask && !taskType.isRequestTask && (
+        <LabeledData label='Решение для пользователя'>
+          <Paragraph ellipsis={commonEllipsisConfig}>
+            {userResolution}
+          </Paragraph>
+        </LabeledData>
+      )}
+
+      {!techResolution && !userResolution && '—'}
+    </Space>
   )
 }
 

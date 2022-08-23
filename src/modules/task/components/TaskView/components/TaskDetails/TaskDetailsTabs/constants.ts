@@ -3,6 +3,7 @@ export enum TaskDetailsTabsEnum {
   Comments = 'Comments',
   Resolution = 'Resolution',
   Description = 'Description',
+  Journal = 'Journal',
 }
 
 export const taskDetailsTabNames = {
@@ -10,4 +11,5 @@ export const taskDetailsTabNames = {
   [TaskDetailsTabsEnum.Comments]: 'Комментарии',
   [TaskDetailsTabsEnum.Resolution]: 'Решение',
   [TaskDetailsTabsEnum.Description]: 'Описание',
+  [TaskDetailsTabsEnum.Journal]: 'Журнал',
 } as const

@@ -2,6 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Button, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import LabeledData from 'components/LabeledData'
 import Permissions from 'components/Permissions'
 import TaskSecondLineModal from 'modules/task/components/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
@@ -70,9 +71,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
   return (
     <>
       <Space direction='vertical'>
-        <Space size='large'>
-          <Text type='secondary'>Рабочая группа</Text>
-
+        <LabeledData label='Рабочая группа' size='large' direction='horizontal'>
           <Permissions config={taskWorkGroupPermissions.transferFirstLineBtn}>
             {() =>
               hasWorkGroup ? (
@@ -103,7 +102,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
               )
             }
           </Permissions>
-        </Space>
+        </LabeledData>
 
         <Text>{workGroup?.name || 'I линия поддержки'}</Text>
       </Space>

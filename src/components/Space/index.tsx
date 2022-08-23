@@ -1,12 +1,12 @@
-import { Space as BaseSpace } from 'antd'
+import { Space as BaseSpace, SpaceProps as BaseSpaceProps } from 'antd'
 
 import styled from 'styled-components'
 
-type SpaceProps = { $block?: boolean }
-
 /**
- * Нужен для того, чтобы компонент Space из antd расширялся на ширину своего родителя
+ * Копия компонента Space, дополнительно принимающая prop "$block" для расширения на ширину своего родителя
  */
+
+type SpaceProps = BaseSpaceProps & { $block?: boolean }
 
 const Space = styled(BaseSpace)<SpaceProps>`
   ${({ $block }) => ($block ? 'width: 100%' : '')};

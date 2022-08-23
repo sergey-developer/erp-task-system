@@ -1,6 +1,7 @@
 import { ModalProps, Select, Space, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
+import LabeledData from 'components/LabeledData'
 import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/components/WorkGroupList/constants/selectFieldNames'
@@ -69,9 +70,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           </Text>
         </Space>
 
-        <Space direction='vertical'>
-          <Text type='secondary'>Рабочая группа</Text>
-
+        <LabeledData label='Рабочая группа'>
           <Select
             placeholder='Выберите рабочую группу'
             options={workGroupList}
@@ -80,7 +79,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
             fieldNames={workGroupListSelectFieldNames}
             onSelect={setSelectedWorkGroup}
           />
-        </Space>
+        </LabeledData>
       </Space>
     </BaseModal>
   )
