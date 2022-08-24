@@ -7,7 +7,7 @@ import JournalItem from './JournalItem'
 
 describe('Элемент журнала', () => {
   const fakeJournalItem: Omit<TaskJournalItemModel, 'id'> = {
-    createdAt: new Date().toString(),
+    createdAt: new Date().toISOString(),
     type: 'Переназначение',
     description: 'Выполнено переназначение',
     sourceSystem: 'Х5',

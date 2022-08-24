@@ -14,9 +14,10 @@ const LabeledData: FCWithChildren<LabeledDataProps> = ({
   label,
   size,
   direction,
+  ...props
 }) => {
   return (
-    <Space direction={direction} size={size}>
+    <Space direction={direction} size={size} {...props}>
       <Text type='secondary'>{label}</Text>
 
       {children}
