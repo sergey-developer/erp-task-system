@@ -17,7 +17,7 @@ const { TabPane } = Tabs
 const fakeJournal: TaskJournalModel = [
   {
     id: 1,
-    createdAt: new Date().toDateString(),
+    createdAt: new Date().toISOString(),
     type: 'Переназначение',
     description: 'Выполнено переназначение',
     sourceSystem: 'Х5',

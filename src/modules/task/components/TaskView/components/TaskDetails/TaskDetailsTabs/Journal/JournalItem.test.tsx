@@ -1,22 +1,16 @@
 import React from 'react'
 
-import { TaskJournalItemModel } from 'modules/task/components/TaskView/models/taskJournal.model'
 import { render, screen } from 'tests/test-utils'
 
-import JournalItem from './JournalItem'
+import JournalItem, { JournalItemProps } from './JournalItem'
 
 describe('Элемент журнала', () => {
-  const fakeJournalItem: Omit<TaskJournalItemModel, 'id'> = {
+  const fakeJournalItem: JournalItemProps = {
     createdAt: new Date().toISOString(),
     type: 'Переназначение',
     description: 'Выполнено переназначение',
     sourceSystem: 'Х5',
-    author: {
-      id: 1,
-      firstName: 'Александр',
-      lastName: 'Александров',
-      middleName: 'Александрович',
-    },
+    author: 'Александров Александр Александрович',
   }
 
   test('Отображается корректно со всеми данными', () => {
@@ -30,11 +24,11 @@ describe('Элемент журнала', () => {
       />,
     )
 
-    expect(screen.getByTestId('journal-createdAt')).toBeInTheDocument()
-    expect(screen.getByTestId('journal-description')).toBeInTheDocument()
-    expect(screen.getByTestId('journal-type')).toBeInTheDocument()
-    expect(screen.getByTestId('journal-sourceSystem')).toBeInTheDocument()
-    expect(screen.getByTestId('journal-author')).toBeInTheDocument()
+    expect(screen.getByText(fakeJournalItem.createdAt)).toBeInTheDocument()
+    expect(screen.getByText(fakeJournalItem.description)).toBeInTheDocument()
+    expect(screen.getByText(fakeJournalItem.type)).toBeInTheDocument()
+    expect(screen.getByText(fakeJournalItem.sourceSystem)).toBeInTheDocument()
+    expect(screen.getByText(fakeJournalItem.author!)).toBeInTheDocument()
   })
 
   test('Не отображает автора если не передать его', () => {
@@ -48,6 +42,6 @@ describe('Элемент журнала', () => {
       />,
     )
 
-    expect(screen.queryByTestId('journal-author')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('journalItem-author')).not.toBeInTheDocument()
   })
 })
