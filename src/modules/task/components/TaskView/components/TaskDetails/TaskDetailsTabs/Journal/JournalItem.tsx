@@ -23,22 +23,29 @@ const JournalItem: FC<JournalItemProps> = ({
   return (
     <Space direction='vertical' size='middle' $block>
       <Space direction='vertical'>
-        <Text>{formatDate(createdAt, DATE_TIME_FORMAT)}</Text>
+        <Text data-testid='journal-createdAt'>
+          {formatDate(createdAt, DATE_TIME_FORMAT)}
+        </Text>
 
-        <Paragraph ellipsis={commonEllipsisConfig}>{description}</Paragraph>
+        <Paragraph
+          data-testid='journal-description'
+          ellipsis={commonEllipsisConfig}
+        >
+          {description}
+        </Paragraph>
       </Space>
 
       <Row justify='space-between'>
-        <LabeledData label='Тип'>
+        <LabeledData data-testid='journal-type' label='Тип'>
           <Text>{type}</Text>
         </LabeledData>
 
-        <LabeledData label='Где добавлено'>
+        <LabeledData data-testid='journal-sourceSystem' label='Где добавлено'>
           <Text>{sourceSystem}</Text>
         </LabeledData>
 
         {author && (
-          <LabeledData label='Кем добавлено'>
+          <LabeledData data-testid='journal-author' label='Кем добавлено'>
             <Text>{getFullUserName(author)}</Text>
           </LabeledData>
         )}
