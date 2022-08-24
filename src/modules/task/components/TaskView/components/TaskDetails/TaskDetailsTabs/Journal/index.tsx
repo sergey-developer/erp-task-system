@@ -3,11 +3,13 @@ import { Col, Divider, Row } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
+import { TaskJournalModel } from 'modules/task/components/TaskView/models/taskJournal.model'
 
+import { NO_DATA_MSG } from './constants'
 import JournalItem from './JournalItem'
 
 type JournalProps = {
-  data: Array<{}>
+  data: TaskJournalModel
 }
 
 const Journal: FC<JournalProps> = ({ data }) => {
@@ -20,17 +22,27 @@ const Journal: FC<JournalProps> = ({ data }) => {
           </Row>
 
           <Row>
-            {data.map((_, index, array) => (
-              <Col key={index} span={24}>
-                <JournalItem />
+            {data.map((item, index, array) => {
+              const isLastItem: boolean = index === array.length - 1
 
-                {index !== array.length - 1 && <Divider />}
-              </Col>
-            ))}
+              return (
+                <Col key={item.id} span={24}>
+                  <JournalItem
+                    createdAt={item.createdAt}
+                    type={item.type}
+                    author={item.author}
+                    description={item.description}
+                    sourceSystem={item.sourceSystem}
+                  />
+
+                  {!isLastItem && <Divider />}
+                </Col>
+              )
+            })}
           </Row>
         </>
       ) : (
-        'Записей пока нет'
+        NO_DATA_MSG
       )}
     </Space>
   )
