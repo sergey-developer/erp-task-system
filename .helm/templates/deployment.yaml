@@ -31,10 +31,10 @@ spec:
           httpGet:
             path: /
             port: http
-       # resources:
-       #   limits:
-       #     cpu: 50m
-       #     memory: 100Mi
-       #   requests:
-       #     cpu: 25m
-       #     memory: 45Mi
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 25m
+            memory: 45Mi
