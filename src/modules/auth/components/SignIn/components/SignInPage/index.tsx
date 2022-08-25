@@ -46,7 +46,11 @@ const SignInPage: FC = () => {
               name='email'
               rules={EMAIL_RULES}
             >
-              <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
+              <Input
+                data-testid='input-email'
+                placeholder='ober@obermeister.ru'
+                disabled={isLoading}
+              />
             </Form.Item>
 
             <Form.Item
@@ -55,7 +59,11 @@ const SignInPage: FC = () => {
               name='password'
               rules={PASSWORD_RULES}
             >
-              <Input.Password placeholder='••••••••' disabled={isLoading} />
+              <Input.Password
+                data-testid='input-password'
+                placeholder='••••••••'
+                disabled={isLoading}
+              />
             </Form.Item>
 
             <Space direction='vertical' $block>

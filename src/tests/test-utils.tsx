@@ -25,7 +25,11 @@ const renderInRoute = (
   options?: Omit<RenderOptions, 'wrapper'>,
 ) => {
   window.history.pushState({}, '', route)
-  return renderInAppProvider(ui, options)
+
+  return {
+    checkRouteChanged: (): boolean => window.location.pathname !== route,
+    ...renderInAppProvider(ui, options),
+  }
 }
 
 export * from '@testing-library/react'

@@ -6,7 +6,9 @@ export const PASSWORD_RULES: Rule[] = [
   { ...REQUIRED_FIELD_RULE, whitespace: true },
 ]
 
+export const INCORRECT_EMAIL_MSG = 'Введён не корректный email'
+
 export const EMAIL_RULES: Rule[] = [
   REQUIRED_FIELD_RULE,
-  { type: 'email', message: 'Введён не корректный email' },
+  { type: 'email', message: INCORRECT_EMAIL_MSG },
 ]
