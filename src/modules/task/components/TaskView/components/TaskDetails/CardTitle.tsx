@@ -10,6 +10,7 @@ import React, { FC, useMemo } from 'react'
 import { TaskDetailsModel } from 'modules/task/components/TaskView/models'
 import useTaskOlaStatus from 'modules/task/hooks/useTaskOlaStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
+import useUserRole from 'modules/user/hooks/useUserRole'
 
 type CardTitleProps = Pick<TaskDetailsModel, 'id' | 'status' | 'olaStatus'> & {
   isAssignedToCurrentUser: boolean
@@ -31,6 +32,7 @@ const CardTitle: FC<CardTitleProps> = ({
 }) => {
   const taskStatus = useTaskStatus(status)
   const taskOlaStatus = useTaskOlaStatus(olaStatus)
+  const { isEngineerRole } = useUserRole()
 
   const actionMenu = useMemo(() => {
     const items = []
@@ -48,10 +50,11 @@ const CardTitle: FC<CardTitleProps> = ({
     if (!taskOlaStatus.isHalfExpired) {
       items.push({
         key: 2,
-        disabled: !(
-          (taskStatus.isNew || taskStatus.isAppointed) &&
-          taskOlaStatus.isNotExpired
-        ),
+        disabled:
+          !(
+            (taskStatus.isNew || taskStatus.isAppointed) &&
+            taskOlaStatus.isNotExpired
+          ) || isEngineerRole,
         icon: <QuestionCircleTwoTone className='fs-14' />,
         label: reclassificationRequestExist
           ? 'Отменить переклассификацию'
@@ -65,6 +68,7 @@ const CardTitle: FC<CardTitleProps> = ({
     return <Menu items={items} />
   }, [
     isAssignedToCurrentUser,
+    isEngineerRole,
     onClickExecuteTask,
     onClickRequestReclassification,
     reclassificationRequestExist,
