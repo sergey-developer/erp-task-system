@@ -27,5 +27,3 @@ window.matchMedia = (query) => ({
   removeEventListener: jest.fn(),
   dispatchEvent: jest.fn(),
 })
-
-// globalThis.IS_REACT_ACT_ENVIRONMENT = true

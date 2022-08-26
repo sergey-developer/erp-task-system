@@ -1,7 +1,7 @@
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 
-import { env } from 'configs/env'
+import makeString from 'shared/utils/string/makeString'
 
 import { apiPath, currentApiVersion } from './constants'
 import { ApiVersionUnion, ErrorResponse, ValidationErrors } from './intefraces'
@@ -11,11 +11,11 @@ export function getErrorDetail<T>(e: ErrorResponse<T>): ValidationErrors {
   return _isArray(detail) ? detail : _isString(detail) ? [detail] : []
 }
 
-export const getApiUrl = (
+export const getRelativeApiUrl = (
   apiVersion: ApiVersionUnion = currentApiVersion,
-): string => `${env.get('apiUrl')}${apiPath}/${apiVersion}`
+): string => makeString('/', apiPath, apiVersion)
 
-export const makeApiUrl = (
+export const makeRelativeApiUrl = (
   path: string,
   apiVersion: ApiVersionUnion = currentApiVersion,
-): string => `${getApiUrl(apiVersion)}/${path}`
+): string => makeString('', getRelativeApiUrl(apiVersion), path)

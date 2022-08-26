@@ -5,8 +5,8 @@ import PublicLayout from 'components/Layout/PublicLayout'
 
 import { RoutesEnum } from './constants'
 
-const SignInPage = React.lazy(
-  () => import('modules/auth/components/SignIn/components/SignInPage'),
+const LoginPage = React.lazy(
+  () => import('modules/auth/components/Login/components/LoginPage'),
 )
 
 const ForgotPasswordPage = React.lazy(
@@ -23,11 +23,11 @@ export default [
     children: [
       {
         index: true,
-        element: <Navigate to={RoutesEnum.SignIn} />,
+        element: <Navigate to={RoutesEnum.Login} />,
       },
       {
-        path: RoutesEnum.SignIn,
-        element: <SignInPage />,
+        path: RoutesEnum.Login,
+        element: <LoginPage />,
       },
       {
         path: RoutesEnum.ForgotPassword,
@@ -35,7 +35,7 @@ export default [
       },
       {
         path: RoutesEnum.NotFound,
-        element: <Navigate to={RoutesEnum.SignIn} replace />,
+        element: <Navigate to={RoutesEnum.Login} replace />,
       },
     ],
   },

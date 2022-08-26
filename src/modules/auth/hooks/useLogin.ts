@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
 import { login as loginAction } from 'modules/auth/authSlice'
-import { SignInFormFields } from 'modules/auth/components/SignIn/components/SignInPage/interfaces'
+import { LoginFormFields } from 'modules/auth/components/Login/components/LoginPage/interfaces'
 import { IUseLoginMutationResult } from 'modules/auth/interfaces'
 import { useLoginMutation } from 'modules/auth/services/authApi.service'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
@@ -16,7 +16,7 @@ const useLogin = () => {
   const [mutation, state] = useLoginMutation<IUseLoginMutationResult>()
 
   const fn = useCallback(
-    async (fields: SignInFormFields) => {
+    async (fields: LoginFormFields) => {
       const response = await mutation(fields).unwrap()
 
       authLocalStorageService.setAccessToken(response.access)

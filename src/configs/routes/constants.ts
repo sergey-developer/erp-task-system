@@ -1,6 +1,6 @@
 export enum RoutesEnum {
   Root = '/',
-  SignIn = '/signIn',
+  Login = '/login',
   ForgotPassword = '/forgotPassword',
   RecoveryPassword = '/recoveryPassword',
   TaskList = '/tasks/view',

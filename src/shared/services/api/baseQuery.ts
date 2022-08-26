@@ -1,12 +1,10 @@
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import _isPlainObject from 'lodash/isPlainObject'
 
-import { httpClientConfig } from 'configs/httpClient'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 
+import httpClient from './httpClient'
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'
-
-const httpClient = axios.create(httpClientConfig)
 
 const baseQuery =
   ({

@@ -8,14 +8,14 @@ import { RoutesEnum } from 'configs/routes'
 import useLogin from 'modules/auth/hooks/useLogin'
 import { APP_NAME } from 'shared/constants/common'
 
-import { SignInFormFields } from './interfaces'
+import { LoginFormFields } from './interfaces'
 import { CardStyled, FormStyled, PageTitleStyled } from './styles'
 import getLoginErrors from './utils/getLoginErrors'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
 const { Title } = Typography
 
-const SignInPage: FC = () => {
+const LoginPage: FC = () => {
   const {
     fn: login,
     state: { isLoading, error: loginErrorResponse },
@@ -35,7 +35,7 @@ const SignInPage: FC = () => {
         <Space direction='vertical'>
           <ErrorList errors={loginErrors} />
 
-          <FormStyled<SignInFormFields>
+          <FormStyled<LoginFormFields>
             onFinish={login}
             layout='vertical'
             requiredMark={false}
@@ -94,4 +94,4 @@ const SignInPage: FC = () => {
   )
 }
 
-export default SignInPage
+export default LoginPage
