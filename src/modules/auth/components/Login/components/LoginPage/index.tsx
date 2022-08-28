@@ -23,6 +23,12 @@ const LoginPage: FC = () => {
 
   const loginErrors = getLoginErrors(loginErrorResponse)
 
+  const handleSubmit = async (values: LoginFormFields) => {
+    try {
+      await login(values)
+    } catch {}
+  }
+
   return (
     <CardStyled>
       <Space direction='vertical' size='large'>
@@ -36,7 +42,7 @@ const LoginPage: FC = () => {
           <ErrorList errors={loginErrors} />
 
           <FormStyled<LoginFormFields>
-            onFinish={login}
+            onFinish={handleSubmit}
             layout='vertical'
             requiredMark={false}
           >

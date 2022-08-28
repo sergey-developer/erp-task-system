@@ -4,8 +4,8 @@ import setupApi from '__tests__/setupApi'
 import { render, renderInRoute, screen, within } from '__tests__/utils'
 import { RoutesEnum } from 'configs/routes'
 import LoginPage from 'modules/auth/components/Login/components/LoginPage'
-import { INCORRECT_EMAIL_MSG } from 'modules/auth/components/Login/components/LoginPage/validation'
 import {
+  INCORRECT_EMAIL_MSG,
   LOGIN_BAD_REQUEST_ERROR_MSG,
   LOGIN_WRONG_DATA_ERROR_MSG,
 } from 'modules/auth/components/Login/constants/messages'

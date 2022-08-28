@@ -1,12 +1,11 @@
 import { Rule } from 'rc-field-form/es/interface'
 
+import { INCORRECT_EMAIL_MSG } from 'modules/auth/components/Login/constants/messages'
 import { REQUIRED_FIELD_RULE } from 'shared/constants/validation'
 
 export const PASSWORD_RULES: Rule[] = [
   { ...REQUIRED_FIELD_RULE, whitespace: true },
 ]
-
-export const INCORRECT_EMAIL_MSG = 'Введён не корректный email'
 
 export const EMAIL_RULES: Rule[] = [
   REQUIRED_FIELD_RULE,
