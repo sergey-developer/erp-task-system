@@ -19,3 +19,4 @@ export const successLoginResponse: LoginResponseModel = {
 }
 
 export const btnLoadingClass = 'ant-btn-loading'
+export const validatingStatusClass = 'ant-form-item-is-validating'

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import setupApi from '__tests__/setupApi'
-import { render, renderInRoute, screen, waitFor, within } from '__tests__/utils'
+import { render, renderInRoute, screen, within } from '__tests__/utils'
 import { RoutesEnum } from 'configs/routes'
 import LoginPage from 'modules/auth/components/Login/components/LoginPage'
 import { INCORRECT_EMAIL_MSG } from 'modules/auth/components/Login/components/LoginPage/validation'
@@ -16,7 +16,6 @@ import { REQUIRED_FIELD_MSG } from 'shared/constants/messages'
 import {
   CORRECT_EMAIL,
   CORRECT_PASSWORD,
-  INCORRECT_EMAIL,
   successLoginResponse,
 } from './constants'
 import {
@@ -27,15 +26,17 @@ import {
 } from './mocks'
 import {
   getEmailField,
-  getEmailInput,
   getPasswordField,
-  getPasswordInput,
-  getSubmitBtn,
   userClickSubmitButton,
-  userFillFieldsCorrectly,
-  userFillFieldsIncorrectly,
+  userEntersCorrectEmail,
+  userEntersCorrectPassword,
+  userEntersIncorrectEmail,
+  userEntersNotExistingEmail,
+  userEntersWrongPassword,
   waitFinishLoading,
+  waitFinishValidating,
   waitStartLoading,
+  waitStartValidating,
 } from './utils'
 
 setupApi()
@@ -43,15 +44,13 @@ setupApi()
 describe('Страница авторизации', () => {
   test('Пользователь может ввести email', async () => {
     const { user } = render(<LoginPage />)
-    const emailInput = getEmailInput()
-    await user.type(emailInput, CORRECT_EMAIL)
+    const emailInput = await userEntersCorrectEmail(user)
     expect(emailInput).toHaveValue(CORRECT_EMAIL)
   })
 
   test('Пользователь может ввести пароль', async () => {
     const { user } = render(<LoginPage />)
-    const passwordInput = getPasswordInput()
-    await user.type(passwordInput, CORRECT_PASSWORD)
+    const passwordInput = await userEntersCorrectPassword(user)
     expect(passwordInput).toHaveValue(CORRECT_PASSWORD)
   })
 
@@ -59,11 +58,8 @@ describe('Страница авторизации', () => {
     const { user } = render(<LoginPage />)
 
     const emailField = getEmailField()
-    const emailInput = getEmailInput()
-    const submitBtn = getSubmitBtn()
-
-    await user.type(emailInput, INCORRECT_EMAIL)
-    await user.click(submitBtn)
+    await userEntersIncorrectEmail(user)
+    await userClickSubmitButton(user)
 
     expect(
       await within(emailField).findByText(INCORRECT_EMAIL_MSG),
@@ -77,20 +73,12 @@ describe('Страница авторизации', () => {
         RoutesEnum.Login,
       )
 
-      const validatingStatusClass = 'ant-form-item-is-validating'
       const emailField = getEmailField()
       const passwordField = getPasswordField()
-      const submitBtn = getSubmitBtn()
 
-      await user.click(submitBtn)
-
-      await waitFor(() => {
-        expect(emailField).toHaveClass(validatingStatusClass)
-      })
-
-      await waitFor(() => {
-        expect(passwordField).toHaveClass(validatingStatusClass)
-      })
+      await userClickSubmitButton(user)
+      await waitStartValidating(emailField, passwordField)
+      await waitFinishValidating(emailField, passwordField)
 
       expect(checkRouteChanged()).toBe(false)
     })
@@ -100,9 +88,8 @@ describe('Страница авторизации', () => {
 
       const emailField = getEmailField()
       const passwordField = getPasswordField()
-      const submitBtn = getSubmitBtn()
 
-      await user.click(submitBtn)
+      await userClickSubmitButton(user)
 
       expect(
         await within(emailField).findByText(REQUIRED_FIELD_MSG),
@@ -128,7 +115,8 @@ describe('Страница авторизации', () => {
           RoutesEnum.Login,
         )
 
-        await userFillFieldsCorrectly(user)
+        await userEntersCorrectEmail(user)
+        await userEntersCorrectPassword(user)
         const submitBtn = await userClickSubmitButton(user)
         await waitStartLoading(submitBtn)
         await waitFinishLoading(submitBtn)
@@ -141,7 +129,8 @@ describe('Страница авторизации', () => {
 
         const { user } = render(<LoginPage />)
 
-        await userFillFieldsCorrectly(user)
+        await userEntersCorrectEmail(user)
+        await userEntersCorrectPassword(user)
         const submitBtn = await userClickSubmitButton(user)
         await waitStartLoading(submitBtn)
         await waitFinishLoading(submitBtn)
@@ -156,7 +145,8 @@ describe('Страница авторизации', () => {
 
         const { user } = render(<LoginPage />)
 
-        await userFillFieldsCorrectly(user)
+        await userEntersCorrectEmail(user)
+        await userEntersCorrectPassword(user)
         const submitBtn = await userClickSubmitButton(user)
         await waitStartLoading(submitBtn)
         await waitFinishLoading(submitBtn)
@@ -176,7 +166,8 @@ describe('Страница авторизации', () => {
           RoutesEnum.Login,
         )
 
-        await userFillFieldsIncorrectly(user)
+        await userEntersNotExistingEmail(user)
+        await userEntersWrongPassword(user)
         const submitBtn = await userClickSubmitButton(user)
         await waitStartLoading(submitBtn)
         await waitFinishLoading(submitBtn)
@@ -190,7 +181,8 @@ describe('Страница авторизации', () => {
 
           const { user } = render(<LoginPage />)
 
-          await userFillFieldsIncorrectly(user)
+          await userEntersNotExistingEmail(user)
+          await userEntersWrongPassword(user)
           const submitBtn = await userClickSubmitButton(user)
           await waitStartLoading(submitBtn)
           await waitFinishLoading(submitBtn)
@@ -207,7 +199,8 @@ describe('Страница авторизации', () => {
 
           const { user } = render(<LoginPage />)
 
-          await userFillFieldsIncorrectly(user)
+          await userEntersNotExistingEmail(user)
+          await userEntersWrongPassword(user)
           const submitBtn = await userClickSubmitButton(user)
           await waitStartLoading(submitBtn)
           await waitFinishLoading(submitBtn)
@@ -224,7 +217,8 @@ describe('Страница авторизации', () => {
 
           const { user } = render(<LoginPage />)
 
-          await userFillFieldsIncorrectly(user)
+          await userEntersNotExistingEmail(user)
+          await userEntersWrongPassword(user)
           const submitBtn = await userClickSubmitButton(user)
           await waitStartLoading(submitBtn)
           await waitFinishLoading(submitBtn)
