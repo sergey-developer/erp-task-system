@@ -24,11 +24,9 @@ describe('Элемент журнала', () => {
       />,
     )
 
-    expect(screen.getByText(fakeJournalItem.createdAt)).toBeInTheDocument()
-    expect(screen.getByText(fakeJournalItem.description)).toBeInTheDocument()
-    expect(screen.getByText(fakeJournalItem.type)).toBeInTheDocument()
-    expect(screen.getByText(fakeJournalItem.sourceSystem)).toBeInTheDocument()
-    expect(screen.getByText(fakeJournalItem.author!)).toBeInTheDocument()
+    Object.values(fakeJournalItem).forEach((item) => {
+      expect(screen.getByText(item!)).toBeInTheDocument()
+    })
   })
 
   test('Не отображает автора если не передать его', () => {
