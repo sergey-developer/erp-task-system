@@ -40,7 +40,7 @@ const baseQuery =
             : {
                 detail:
                   status === HttpStatusCodeEnum.ServerError
-                    ? [UNKNOWN_SERVER_ERROR_MSG]
+                    ? UNKNOWN_SERVER_ERROR_MSG
                     : error.message,
               },
         },
