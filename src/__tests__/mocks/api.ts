@@ -1,7 +1,7 @@
-import axiosMockAdapter from 'axios-mock-adapter'
+import { setupServer } from 'msw/node'
 
-import httpClient from 'shared/services/api/httpClient'
+export const API_RESPONSE_DELAY = 800
 
-const api = new axiosMockAdapter(httpClient, { delayResponse: 1000 })
+const api = setupServer()
 
 export default api

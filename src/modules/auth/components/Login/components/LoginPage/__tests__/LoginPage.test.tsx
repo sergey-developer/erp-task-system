@@ -21,6 +21,7 @@ import {
 } from './constants'
 import {
   mockLoginBadRequestError,
+  mockLoginServerError,
   mockLoginSuccess,
   mockLoginUnauthorizedError,
 } from './mocks'
@@ -176,50 +177,61 @@ describe('Страница авторизации', () => {
         )
 
         await userFillFieldsIncorrectly(user)
-        await userClickSubmitButton(user)
+        const submitBtn = await userClickSubmitButton(user)
+        await waitStartLoading(submitBtn)
+        await waitFinishLoading(submitBtn)
 
         expect(checkRouteChanged()).toBe(false)
       })
 
       describe(`Если код ошибки "${HttpStatusCodeEnum.BadRequest}"`, () => {
-        test(`Показывается ошибка - ${LOGIN_BAD_REQUEST_ERROR_MSG}`, async () => {
+        test(`В форме показывается ошибка - ${LOGIN_BAD_REQUEST_ERROR_MSG}`, async () => {
           mockLoginBadRequestError()
 
-          const { user, debug } = render(<LoginPage />)
+          const { user } = render(<LoginPage />)
 
           await userFillFieldsIncorrectly(user)
           const submitBtn = await userClickSubmitButton(user)
+          await waitStartLoading(submitBtn)
+          await waitFinishLoading(submitBtn)
 
           expect(
             await screen.findByText(LOGIN_BAD_REQUEST_ERROR_MSG),
           ).toBeInTheDocument()
-
-          // await waitFor(() => {
-          //   expect(submitBtn).not.toHaveClass('ant-btn-loading')
-          // })
-
-          debug()
         })
       })
 
       describe(`Если код ошибки "${HttpStatusCodeEnum.Unauthorized}"`, () => {
-        test(`Показывается ошибка - ${LOGIN_WRONG_DATA_ERROR_MSG}`, async () => {
+        test(`В форме показывается ошибка - ${LOGIN_WRONG_DATA_ERROR_MSG}`, async () => {
           mockLoginUnauthorizedError()
 
-          const { user, debug } = render(<LoginPage />)
+          const { user } = render(<LoginPage />)
 
           await userFillFieldsIncorrectly(user)
           const submitBtn = await userClickSubmitButton(user)
+          await waitStartLoading(submitBtn)
+          await waitFinishLoading(submitBtn)
 
           expect(
             await screen.findByText(LOGIN_WRONG_DATA_ERROR_MSG),
           ).toBeInTheDocument()
+        })
+      })
 
-          // await waitFor(() => {
-          //   expect(submitBtn).not.toHaveClass('ant-btn-loading')
-          // })
+      describe('Если любой другой код ошибки', () => {
+        test('В форме показывается ошибка', async () => {
+          mockLoginServerError()
 
-          debug()
+          const { user } = render(<LoginPage />)
+
+          await userFillFieldsIncorrectly(user)
+          const submitBtn = await userClickSubmitButton(user)
+          await waitStartLoading(submitBtn)
+          await waitFinishLoading(submitBtn)
+
+          expect(await screen.findAllByTestId('error-list-item')).toHaveLength(
+            1,
+          )
         })
       })
     })

@@ -17,13 +17,15 @@ const useLogin = () => {
 
   const fn = useCallback(
     async (fields: LoginFormFields) => {
-      const response = await mutation(fields).unwrap()
+      try {
+        const response = await mutation(fields).unwrap()
 
-      authLocalStorageService.setAccessToken(response.access)
-      authLocalStorageService.setRefreshToken(response.refresh)
+        authLocalStorageService.setAccessToken(response.access)
+        authLocalStorageService.setRefreshToken(response.refresh)
 
-      dispatch(loginAction({ user: parseJwt(response.access), ...response }))
-      navigate(RoutesEnum.Root)
+        dispatch(loginAction({ user: parseJwt(response.access), ...response }))
+        navigate(RoutesEnum.Root)
+      } catch {}
     },
     [dispatch, mutation, navigate],
   )

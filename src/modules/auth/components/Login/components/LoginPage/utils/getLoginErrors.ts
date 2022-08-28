@@ -11,7 +11,7 @@ const getLoginErrors = (
   error: MaybeUndefined<ErrorResponse<LoginMutationArgsModel>>,
 ): Array<string> => {
   const errorMessages: Array<string> = []
-  console.log(error)
+
   if (!error) return errorMessages
 
   switch (error.status) {
