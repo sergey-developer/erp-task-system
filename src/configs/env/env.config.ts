@@ -1,3 +1,6 @@
+import { Keys } from 'shared/interfaces/utils'
+
+import commonConfig from './common.config'
 import developmentConfig, { DevelopmentKeysUnion } from './development.config'
 import { ConfigType, EnvUnion, ParsedValueUnion } from './interfaces'
 import productionConfig, { ProductionKeysUnion } from './production.config'
@@ -20,6 +23,7 @@ type ValidatedConfigType = Record<string, ParsedValueUnion>
 
 interface IEnvConfig {
   isDevelopment: boolean
+  isProduction: boolean
   get<T extends ParsedValueUnion>(key: ConfigKeysUnion): T
 }
 
@@ -38,14 +42,16 @@ class EnvConfig implements IEnvConfig {
   }
 
   private constructor(configs: ConfigsType) {
-    const env = process.env.NODE_ENV
+    const env = commonConfig.env as Keys<ConfigsType>
     const rawConfig = configs[env] || configs.development
 
     this.config = this.validate(rawConfig)
     this.isDevelopment = env === 'development'
+    this.isProduction = env === 'production'
   }
 
   public readonly isDevelopment: boolean
+  public readonly isProduction: boolean
 
   public static getInstance = (configs: ConfigsType): EnvConfig => {
     if (!EnvConfig.instance) {
