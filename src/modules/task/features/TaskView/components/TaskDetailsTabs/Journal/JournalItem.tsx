@@ -4,14 +4,14 @@ import React, { FC } from 'react'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import { TaskJournalItemModel } from 'modules/task/features/TaskView/models/taskJournal.model'
-import getFullUserName from 'modules/user/utils/getFullUserName'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
-import formatDate from 'shared/utils/date/formatDate'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 const { Text, Paragraph } = Typography
 
-type JournalItemProps = Omit<TaskJournalItemModel, 'id'>
+export type JournalItemProps = Omit<TaskJournalItemModel, 'id' | 'author'> & {
+  author: MaybeNull<string>
+}
 
 const JournalItem: FC<JournalItemProps> = ({
   createdAt,
@@ -19,11 +19,12 @@ const JournalItem: FC<JournalItemProps> = ({
   type,
   description,
   author,
+  ...props
 }) => {
   return (
-    <Space direction='vertical' size='middle' $block>
+    <Space direction='vertical' size='middle' $block {...props}>
       <Space direction='vertical'>
-        <Text>{formatDate(createdAt, DATE_TIME_FORMAT)}</Text>
+        <Text>{createdAt}</Text>
 
         <Paragraph ellipsis={commonEllipsisConfig}>{description}</Paragraph>
       </Space>
@@ -38,8 +39,8 @@ const JournalItem: FC<JournalItemProps> = ({
         </LabeledData>
 
         {author && (
-          <LabeledData label='Кем добавлено'>
-            <Text>{getFullUserName(author)}</Text>
+          <LabeledData data-testid='journalItem-author' label='Кем добавлено'>
+            <Text>{author}</Text>
           </LabeledData>
         )}
       </Row>

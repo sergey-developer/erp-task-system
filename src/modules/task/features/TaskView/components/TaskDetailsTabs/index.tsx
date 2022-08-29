@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { TaskJournalModel } from 'modules/task/features/TaskView/models/taskJournal.model'
 
-import { DetailsContainerStyled } from '../styles'
+import { DetailsContainerStyled } from '../TaskDetails/styles'
 import CommentList from './CommentList'
 import { TaskDetailsTabsEnum, taskDetailsTabNames } from './constants'
 import Description from './Description'
@@ -17,7 +17,7 @@ const { TabPane } = Tabs
 const fakeJournal: TaskJournalModel = [
   {
     id: 1,
-    createdAt: new Date().toDateString(),
+    createdAt: new Date().toISOString(),
     type: 'Переназначение',
     description: 'Выполнено переназначение',
     sourceSystem: 'Х5',
