@@ -7,8 +7,10 @@ import Space from 'components/Space'
 import { RoutesEnum } from 'configs/routes'
 import useLogin from 'modules/auth/hooks/useLogin'
 import { APP_NAME } from 'shared/constants/common'
+import { ErrorResponse } from 'shared/services/api'
+import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
-import { LoginFormFields } from './interfaces'
+import { LoginFormErrors, LoginFormFields } from './interfaces'
 import { CardStyled, FormStyled, PageTitleStyled } from './styles'
 import getLoginErrors from './utils/getLoginErrors'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
@@ -16,6 +18,8 @@ import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 const { Title } = Typography
 
 const LoginPage: FC = () => {
+  const [form] = Form.useForm<LoginFormFields>()
+
   const {
     fn: login,
     state: { isLoading, error: loginErrorResponse },
@@ -26,7 +30,10 @@ const LoginPage: FC = () => {
   const handleSubmit = async (values: LoginFormFields) => {
     try {
       await login(values)
-    } catch {}
+    } catch (exception) {
+      const error = exception as ErrorResponse<LoginFormErrors>
+      handleSetFieldsErrors(error, form.setFields)
+    }
   }
 
   return (
@@ -42,6 +49,7 @@ const LoginPage: FC = () => {
           <ErrorList errors={loginErrors} />
 
           <FormStyled<LoginFormFields>
+            form={form}
             onFinish={handleSubmit}
             layout='vertical'
             requiredMark={false}
