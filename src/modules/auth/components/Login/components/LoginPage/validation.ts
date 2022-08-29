@@ -1,5 +1,6 @@
 import { Rule } from 'rc-field-form/es/interface'
 
+import { INCORRECT_EMAIL_MSG } from 'modules/auth/components/Login/constants/messages'
 import { REQUIRED_FIELD_RULE } from 'shared/constants/validation'
 
 export const PASSWORD_RULES: Rule[] = [
@@ -8,5 +9,5 @@ export const PASSWORD_RULES: Rule[] = [
 
 export const EMAIL_RULES: Rule[] = [
   REQUIRED_FIELD_RULE,
-  { type: 'email', message: 'Введён не корректный email' },
+  { type: 'email', message: INCORRECT_EMAIL_MSG },
 ]

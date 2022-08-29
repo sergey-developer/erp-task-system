@@ -1,12 +1,11 @@
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import _isPlainObject from 'lodash/isPlainObject'
 
-import { httpClientConfig } from 'configs/httpClient'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
+import { UNKNOWN_SERVER_ERROR_MSG } from 'shared/constants/messages'
 
+import httpClient from './httpClient'
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'
-
-const httpClient = axios.create(httpClientConfig)
 
 const baseQuery =
   ({
@@ -41,7 +40,7 @@ const baseQuery =
             : {
                 detail:
                   status === HttpStatusCodeEnum.ServerError
-                    ? ['Неизвестная ошибка сервера']
+                    ? UNKNOWN_SERVER_ERROR_MSG
                     : error.message,
               },
         },

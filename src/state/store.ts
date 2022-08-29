@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import { env } from 'configs/env'
-import { api } from 'shared/services/api'
+import { apiService } from 'shared/services/api'
 
 import { rootReducer } from './rootReducer'
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware().concat(apiService.middleware),
   devTools: env.isDevelopment,
 })
 

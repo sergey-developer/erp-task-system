@@ -11,13 +11,14 @@ import { MaybeUndefined } from 'shared/interfaces/utils'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
+import { apiPath, currentApiVersion } from './constants'
 import { CustomBaseQueryFn, ErrorResponse } from './intefraces'
 
 const mutex = new Mutex()
 
 const query = baseQuery({
-  apiPath: '/api',
-  apiVersion: 'v1',
+  apiPath: apiPath,
+  apiVersion: currentApiVersion,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken
 

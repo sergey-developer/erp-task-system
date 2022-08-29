@@ -1,3 +1,4 @@
+import { UserRolesEnum } from 'shared/constants/roles'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
 
@@ -6,7 +7,11 @@ import {
   LoginResponseModel,
   RefreshTokenResponseModel,
 } from './models'
-import { JwtPayload } from './utils/parseJwt'
+
+export type JwtPayload = {
+  userId: number
+  userRole: UserRolesEnum
+}
 
 export type AuthenticatedUser = JwtPayload
 

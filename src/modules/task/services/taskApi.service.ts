@@ -13,9 +13,9 @@ import {
 } from 'modules/task/components/TaskView/models'
 import { TaskEndpointsTagsEnum } from 'modules/task/constants/enums'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { api } from 'shared/services/api'
+import { apiService } from 'shared/services/api'
 
-const taskApiService = api
+const taskApiService = apiService
   .enhanceEndpoints({
     addTagTypes: [TaskEndpointsTagsEnum.Task, TaskEndpointsTagsEnum.TaskList],
   })

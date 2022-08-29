@@ -8,20 +8,26 @@ import { RoutesEnum } from 'configs/routes'
 import useLogin from 'modules/auth/hooks/useLogin'
 import { APP_NAME } from 'shared/constants/common'
 
-import { SignInFormFields } from './interfaces'
+import { LoginFormFields } from './interfaces'
 import { CardStyled, FormStyled, PageTitleStyled } from './styles'
 import getLoginErrors from './utils/getLoginErrors'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
 const { Title } = Typography
 
-const SignInPage: FC = () => {
+const LoginPage: FC = () => {
   const {
     fn: login,
     state: { isLoading, error: loginErrorResponse },
   } = useLogin()
 
   const loginErrors = getLoginErrors(loginErrorResponse)
+
+  const handleSubmit = async (values: LoginFormFields) => {
+    try {
+      await login(values)
+    } catch {}
+  }
 
   return (
     <CardStyled>
@@ -35,8 +41,8 @@ const SignInPage: FC = () => {
         <Space direction='vertical'>
           <ErrorList errors={loginErrors} />
 
-          <FormStyled<SignInFormFields>
-            onFinish={login}
+          <FormStyled<LoginFormFields>
+            onFinish={handleSubmit}
             layout='vertical'
             requiredMark={false}
           >
@@ -46,7 +52,11 @@ const SignInPage: FC = () => {
               name='email'
               rules={EMAIL_RULES}
             >
-              <Input placeholder='ober@obermeister.ru' disabled={isLoading} />
+              <Input
+                data-testid='input-email'
+                placeholder='ober@obermeister.ru'
+                disabled={isLoading}
+              />
             </Form.Item>
 
             <Form.Item
@@ -55,7 +65,11 @@ const SignInPage: FC = () => {
               name='password'
               rules={PASSWORD_RULES}
             >
-              <Input.Password placeholder='••••••••' disabled={isLoading} />
+              <Input.Password
+                data-testid='input-password'
+                placeholder='••••••••'
+                disabled={isLoading}
+              />
             </Form.Item>
 
             <Space direction='vertical' $block>
@@ -86,4 +100,4 @@ const SignInPage: FC = () => {
   )
 }
 
-export default SignInPage
+export default LoginPage
