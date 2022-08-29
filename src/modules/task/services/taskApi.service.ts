@@ -1,17 +1,17 @@
-import { GetTaskListTransformedResponse } from 'modules/task/components/TaskList/interfaces'
+import { TaskEndpointsTagsEnum } from 'modules/task/constants/enums'
+import { GetTaskListTransformedResponse } from 'modules/task/features/TaskList/interfaces'
 import {
   GetTaskCountersResponseModel,
   GetTaskListQueryArgsModel,
   GetTaskListResponseModel,
-} from 'modules/task/components/TaskList/models'
+} from 'modules/task/features/TaskList/models'
 import {
   GetTaskQueryArgsModel,
   GetTaskResponseModel,
   ResolveTaskMutationArgsModel,
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskWorkGroupMutationArgsModel,
-} from 'modules/task/components/TaskView/models'
-import { TaskEndpointsTagsEnum } from 'modules/task/constants/enums'
+} from 'modules/task/features/TaskView/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 

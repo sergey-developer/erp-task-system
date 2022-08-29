@@ -1,4 +1,4 @@
-import { GetWorkGroupListResponseModel } from 'modules/workGroup/components/WorkGroupList/models'
+import { GetWorkGroupListResponseModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 

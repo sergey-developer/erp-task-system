@@ -6,13 +6,13 @@ import PublicLayout from 'components/Layout/PublicLayout'
 import { RoutesEnum } from './constants'
 
 const LoginPage = React.lazy(
-  () => import('modules/auth/components/Login/components/LoginPage'),
+  () => import('modules/auth/features/Login/components/LoginPage'),
 )
 
 const ForgotPasswordPage = React.lazy(
   () =>
     import(
-      'modules/auth/components/ForgotPassword/components/ForgotPasswordPage'
+      'modules/auth/features/ForgotPassword/components/ForgotPasswordPage'
     ),
 )
 
