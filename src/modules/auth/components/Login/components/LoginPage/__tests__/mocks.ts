@@ -7,8 +7,8 @@ import { makeAbsoluteApiUrl } from 'shared/services/api'
 import { successLoginResponse } from './constants'
 
 const mockLogin =
-  (mock: ResponseResolver<MockedRequest, RestContext>) => () => {
-    api.use(rest.post(makeAbsoluteApiUrl('/user/auth'), mock))
+  (resolver: ResponseResolver<MockedRequest, RestContext>) => () => {
+    api.use(rest.post(makeAbsoluteApiUrl('/user/auth'), resolver))
   }
 
 export const mockLoginSuccess = mockLogin((req, res, ctx) => {
