@@ -1,3 +1,4 @@
+import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import {
   LoginMutationArgsModel,
   LoginResponseModel,
@@ -10,14 +11,14 @@ const authApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation<LoginResponseModel, LoginMutationArgsModel>({
       query: (queryArg) => ({
-        url: '/user/auth',
+        url: AuthEndpointsEnum.Login,
         method: HttpMethodEnum.POST,
         data: queryArg,
       }),
     }),
     logout: build.mutation<void, LogoutMutationArgsModel>({
       query: (queryArg) => ({
-        url: '/user/logout',
+        url: AuthEndpointsEnum.Logout,
         method: HttpMethodEnum.POST,
         data: queryArg,
       }),

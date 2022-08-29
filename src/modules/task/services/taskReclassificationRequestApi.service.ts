@@ -4,6 +4,10 @@ import {
   GetTaskReclassificationRequestQueryArgsModel,
   TaskDetailsReclassificationRequestModel,
 } from 'modules/task/features/TaskView/models'
+import {
+  getCreateTaskReclassificationRequestUrl,
+  getTaskReclassificationRequestUrl,
+} from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
@@ -18,7 +22,7 @@ const taskReclassificationRequestApiService = apiService
         CreateTaskReclassificationRequestMutationArgsModel
       >({
         query: ({ taskId, ...body }) => ({
-          url: `/tasks/${taskId}/reclassification-requests/`,
+          url: getCreateTaskReclassificationRequestUrl(taskId),
           method: HttpMethodEnum.POST,
           data: body,
         }),
@@ -29,7 +33,7 @@ const taskReclassificationRequestApiService = apiService
         GetTaskReclassificationRequestQueryArgsModel
       >({
         query: (taskId) => ({
-          url: `/tasks/${taskId}/reclassification-request/`,
+          url: getTaskReclassificationRequestUrl(taskId),
           method: HttpMethodEnum.GET,
         }),
         providesTags: [TaskEndpointsTagsEnum.TaskReclassificationRequest],
