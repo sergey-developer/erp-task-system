@@ -1,5 +1,5 @@
 import { BaseTaskModel } from 'modules/task/models'
-import { WorkgroupListItemModel } from 'modules/workgroup/features/WorkgroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 
 import { TaskListCommentModel } from './taskListComment.model'
@@ -9,5 +9,5 @@ export type TaskListItemModel = BaseTaskModel & {
   assignee: Pick<AssigneeModel, 'id' | 'firstName' | 'lastName' | 'middleName'>
   comment: TaskListCommentModel
   reclassificationRequest: TaskListReclassificationRequestModel
-  workGroup: WorkgroupListItemModel
+  workGroup: WorkGroupListItemModel
 }

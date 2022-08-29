@@ -11,7 +11,7 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions/taskAssignee.permissions'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import getFullUserName from 'modules/user/utils/getFullUserName'
-import { WorkgroupListItemModel } from 'modules/workgroup/features/WorkgroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 
 import Assignee from './Assignee'
@@ -22,7 +22,7 @@ const { Text } = Typography
 const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
 
 type TaskAssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'status'> & {
-  workGroup?: WorkgroupListItemModel
+  workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>

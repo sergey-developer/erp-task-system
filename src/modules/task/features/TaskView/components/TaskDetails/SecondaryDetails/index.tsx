@@ -3,7 +3,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import { WorkgroupListItemModel } from 'modules/workgroup/features/WorkgroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { ErrorResponse } from 'shared/services/api'
 
@@ -15,11 +15,11 @@ type SecondaryDetailsProps = Pick<
   TaskDetailsModel,
   'id' | 'workGroup' | 'assignee' | 'status'
 > & {
-  workGroupList: Array<WorkgroupListItemModel>
+  workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
 
   transferTask: (
-    workGroup: WorkgroupListItemModel['id'],
+    workGroup: WorkGroupListItemModel['id'],
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
   transferTaskIsLoading: boolean
