@@ -1,6 +1,6 @@
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { WorkgroupListItemModel } from 'modules/workgroup/features/WorkgroupList/models'
 
 export type TaskDetailsWorkGroupModel = Pick<
-  WorkGroupListItemModel,
+  WorkgroupListItemModel,
   'id' | 'name'
 >

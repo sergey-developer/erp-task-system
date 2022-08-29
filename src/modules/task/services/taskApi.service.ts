@@ -1,3 +1,4 @@
+import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import { TaskEndpointsTagsEnum } from 'modules/task/constants/enums'
 import { GetTaskListTransformedResponse } from 'modules/task/features/TaskList/interfaces'
 import {
@@ -26,7 +27,7 @@ const taskApiService = apiService
         GetTaskListQueryArgsModel
       >({
         query: (data) => ({
-          url: '/tasks',
+          url: TaskEndpointsEnum.TaskList,
           method: HttpMethodEnum.GET,
           params: data,
         }),
@@ -46,13 +47,13 @@ const taskApiService = apiService
       }),
       getTaskCounters: build.query<GetTaskCountersResponseModel, null>({
         query: () => ({
-          url: '/tasks/counters',
+          url: TaskEndpointsEnum.TaskCounters,
           method: HttpMethodEnum.GET,
         }),
       }),
       getTask: build.query<GetTaskResponseModel, GetTaskQueryArgsModel>({
         query: (id) => ({
-          url: `/tasks/${id}`,
+          url: TaskEndpointsEnum.Task.replace(':id', String(id)),
           method: HttpMethodEnum.GET,
         }),
         providesTags: (result, error) =>
@@ -60,7 +61,7 @@ const taskApiService = apiService
       }),
       resolveTask: build.mutation<void, ResolveTaskMutationArgsModel>({
         query: ({ taskId, ...body }) => ({
-          url: `/tasks/${taskId}/resolution/`,
+          url: TaskEndpointsEnum.ResolveTask.replace(':id', String(taskId)),
           method: HttpMethodEnum.POST,
           data: body,
         }),
@@ -72,7 +73,7 @@ const taskApiService = apiService
         UpdateTaskWorkGroupMutationArgsModel
       >({
         query: ({ taskId, ...body }) => ({
-          url: `/tasks/${taskId}/work-group/`,
+          url: TaskEndpointsEnum.TaskWorkGroup.replace(':id', String(taskId)),
           method: HttpMethodEnum.POST,
           data: body,
         }),
@@ -84,7 +85,7 @@ const taskApiService = apiService
         UpdateTaskAssigneeMutationArgsModel
       >({
         query: ({ taskId, ...body }) => ({
-          url: `/tasks/${taskId}/assignee/`,
+          url: TaskEndpointsEnum.TaskAssignee.replace(':id', String(taskId)),
           method: HttpMethodEnum.POST,
           data: body,
         }),

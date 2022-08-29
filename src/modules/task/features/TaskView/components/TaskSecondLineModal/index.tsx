@@ -4,8 +4,8 @@ import React, { FC, useState } from 'react'
 import LabeledData from 'components/LabeledData'
 import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { workGroupListSelectFieldNames } from 'modules/workgroup/features/WorkgroupList/constants/selectFieldNames'
+import { WorkgroupListItemModel } from 'modules/workgroup/features/WorkgroupList/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 const { Text, Link } = Typography
@@ -14,11 +14,11 @@ const TRANSFER_BUTTON_TEXT: string = 'Перевести заявку'
 
 type TaskSecondLineModalProps = Pick<ModalProps, 'visible' | 'onCancel'> &
   Pick<TaskDetailsModel, 'id'> & {
-    workGroupList: Array<WorkGroupListItemModel>
+    workGroupList: Array<WorkgroupListItemModel>
     workGroupListIsLoading: boolean
 
     transferTaskIsLoading: boolean
-    onTransfer: (value: WorkGroupListItemModel['id']) => void
+    onTransfer: (value: WorkgroupListItemModel['id']) => void
   }
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
@@ -33,7 +33,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   transferTaskIsLoading,
 }) => {
   const [selectedWorkGroup, setSelectedWorkGroup] =
-    useState<MaybeNull<WorkGroupListItemModel['id']>>(null)
+    useState<MaybeNull<WorkgroupListItemModel['id']>>(null)
 
   const modalTitle = (
     <Text>

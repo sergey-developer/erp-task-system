@@ -14,7 +14,7 @@ import {
   TaskDetailsReclassificationRequestModel,
 } from 'modules/task/features/TaskView/models'
 import getTransferTaskSecondLineErrors from 'modules/task/features/TaskView/utils/getTransferTaskSecondLineErrors'
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { WorkgroupListItemModel } from 'modules/workgroup/features/WorkgroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -71,7 +71,7 @@ type TaskDetailsProps = {
   ) => Promise<void>
   reclassificationRequestIsCreating: boolean
 
-  workGroupList: Array<WorkGroupListItemModel>
+  workGroupList: Array<WorkgroupListItemModel>
   workGroupListIsLoading: boolean
 
   onClose: () => void
@@ -174,7 +174,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleUpdateTaskWorkGroup = useCallback(
     async (
-      workGroup: WorkGroupListItemModel['id'],
+      workGroup: WorkgroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
       try {

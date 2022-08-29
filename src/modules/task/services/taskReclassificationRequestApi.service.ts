@@ -1,3 +1,4 @@
+import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import { TaskEndpointsTagsEnum } from 'modules/task/constants/enums'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
@@ -18,7 +19,10 @@ const taskReclassificationRequestApiService = apiService
         CreateTaskReclassificationRequestMutationArgsModel
       >({
         query: ({ taskId, ...body }) => ({
-          url: `/tasks/${taskId}/reclassification-requests/`,
+          url: TaskEndpointsEnum.CreateReclassificationRequest.replace(
+            ':id',
+            String(taskId),
+          ),
           method: HttpMethodEnum.POST,
           data: body,
         }),
@@ -29,7 +33,10 @@ const taskReclassificationRequestApiService = apiService
         GetTaskReclassificationRequestQueryArgsModel
       >({
         query: (taskId) => ({
-          url: `/tasks/${taskId}/reclassification-request/`,
+          url: TaskEndpointsEnum.GetReclassificationRequest.replace(
+            ':id',
+            String(taskId),
+          ),
           method: HttpMethodEnum.GET,
         }),
         providesTags: [TaskEndpointsTagsEnum.TaskReclassificationRequest],

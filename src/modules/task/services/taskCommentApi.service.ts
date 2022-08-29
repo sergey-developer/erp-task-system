@@ -1,3 +1,4 @@
+import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import {
   GetTaskCommentListQueryArgsModel,
   GetTaskCommentListResponseModel,
@@ -12,7 +13,7 @@ const taskCommentApiService = apiService.injectEndpoints({
       GetTaskCommentListQueryArgsModel
     >({
       query: (id) => ({
-        url: `/tasks/${id}/comments`,
+        url: TaskEndpointsEnum.TaskCommentList.replace(':id', String(id)),
         method: HttpMethodEnum.GET,
       }),
     }),

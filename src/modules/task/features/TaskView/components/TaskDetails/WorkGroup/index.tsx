@@ -8,8 +8,8 @@ import TaskSecondLineModal from 'modules/task/features/TaskView/components/TaskS
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/features/TaskView/permissions/taskWorkGroup.permissions'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
-import { GET_WORK_GROUP_LIST_SERVER_ERROR_MSG } from 'modules/workGroup/features/WorkGroupList/constants/messages'
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { GET_WORK_GROUP_LIST_SERVER_ERROR_MSG } from 'modules/workgroup/features/WorkgroupList/constants/messages'
+import { WorkgroupListItemModel } from 'modules/workgroup/features/WorkgroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
@@ -17,11 +17,11 @@ import showErrorNotification from 'shared/utils/notifications/showErrorNotificat
 const { Text } = Typography
 
 type WorkGroupProps = Pick<TaskDetailsModel, 'id' | 'workGroup' | 'status'> & {
-  workGroupList: Array<WorkGroupListItemModel>
+  workGroupList: Array<WorkgroupListItemModel>
   workGroupListIsLoading: boolean
 
   transferTask: (
-    workGroup: WorkGroupListItemModel['id'],
+    workGroup: WorkgroupListItemModel['id'],
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
   transferTaskIsLoading: boolean
@@ -63,7 +63,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
   })
 
   const handleTransferTask = async (
-    workGroup: WorkGroupListItemModel['id'],
+    workGroup: WorkgroupListItemModel['id'],
   ): Promise<void> => {
     await transferTask(workGroup, closeTaskSecondLineModal)
   }
