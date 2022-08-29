@@ -1,15 +1,15 @@
-import { StorageKeys } from 'shared/constants/storage'
+import { StorageKeysEnum } from 'shared/constants/storage'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-const setItem = (key: StorageKeys, value: string): void => {
+const setItem = (key: StorageKeysEnum, value: string): void => {
   localStorage.setItem(key, value)
 }
 
-const removeItem = (key: StorageKeys): void => {
+const removeItem = (key: StorageKeysEnum): void => {
   localStorage.removeItem(key)
 }
 
-const getItem = (key: StorageKeys): MaybeNull<string> => {
+const getItem = (key: StorageKeysEnum): MaybeNull<string> => {
   return localStorage.getItem(key)
 }
 
