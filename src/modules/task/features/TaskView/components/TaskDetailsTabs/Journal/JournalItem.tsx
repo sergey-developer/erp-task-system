@@ -4,8 +4,6 @@ import React, { FC } from 'react'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import { TaskJournalItemModel } from 'modules/task/features/TaskView/models/taskJournal.model'
-import getFullUserName from 'modules/user/utils/getFullUserName'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { MaybeNull } from 'shared/interfaces/utils'
 
