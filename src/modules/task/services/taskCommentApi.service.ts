@@ -1,18 +1,19 @@
 import {
   GetTaskCommentListQueryArgsModel,
   GetTaskCommentListResponseModel,
-} from 'modules/task/components/TaskView/models'
+} from 'modules/task/features/TaskView/models'
+import { getTaskCommentListUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { api } from 'shared/services/api'
+import { apiService } from 'shared/services/api'
 
-const taskCommentApiService = api.injectEndpoints({
+const taskCommentApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
     getTaskCommentList: build.query<
       GetTaskCommentListResponseModel,
       GetTaskCommentListQueryArgsModel
     >({
       query: (id) => ({
-        url: `/tasks/${id}/comments`,
+        url: getTaskCommentListUrl(id),
         method: HttpMethodEnum.GET,
       }),
     }),

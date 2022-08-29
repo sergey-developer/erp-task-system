@@ -7,6 +7,9 @@ export enum HttpMethodEnum {
 }
 
 export enum HttpStatusCodeEnum {
+  // 2**
+  Ok = 200,
+  Created = 201,
   // 4**
   BadRequest = 400,
   Unauthorized = 401,

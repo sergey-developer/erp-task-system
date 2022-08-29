@@ -1,11 +1,6 @@
 import { camelizeKeys } from 'humps'
 
-import { UserRolesEnum } from 'shared/constants/roles'
-
-export type JwtPayload = {
-  userId: number
-  userRole: UserRolesEnum
-}
+import { JwtPayload } from '../interfaces'
 
 const parseJwt = (token: string): JwtPayload => {
   const base64Url = token.split('.')[1]
