@@ -2,7 +2,7 @@ import api from '__tests__/mocks/api'
 import { apiService } from 'shared/services/api'
 import store from 'state/store'
 
-const setupApi = () => {
+const setupApiTests = () => {
   beforeAll(() => {
     api.listen()
   })
@@ -17,4 +17,4 @@ const setupApi = () => {
   })
 }
 
-export default setupApi
+export default setupApiTests

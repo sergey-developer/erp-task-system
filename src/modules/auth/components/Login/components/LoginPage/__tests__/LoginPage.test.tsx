@@ -1,7 +1,12 @@
 import React from 'react'
 
-import setupApi from '__tests__/setupApi'
-import { render, renderInRoute, screen, within } from '__tests__/utils'
+import {
+  render,
+  renderInRoute,
+  screen,
+  setupApiTests,
+  within,
+} from '__tests__/utils'
 import { RoutesEnum } from 'configs/routes'
 import LoginPage from 'modules/auth/components/Login/components/LoginPage'
 import {
@@ -40,7 +45,7 @@ import {
   waitStartValidating,
 } from './utils'
 
-setupApi()
+setupApiTests()
 
 describe('Страница авторизации', () => {
   test('Пользователь может ввести email', async () => {
