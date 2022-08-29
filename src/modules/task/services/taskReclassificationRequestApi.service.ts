@@ -1,9 +1,9 @@
+import { TaskEndpointsTagsEnum } from 'modules/task/constants/enums'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
   GetTaskReclassificationRequestQueryArgsModel,
   TaskDetailsReclassificationRequestModel,
-} from 'modules/task/components/TaskView/models'
-import { TaskEndpointsTagsEnum } from 'modules/task/constants/enums'
+} from 'modules/task/features/TaskView/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
