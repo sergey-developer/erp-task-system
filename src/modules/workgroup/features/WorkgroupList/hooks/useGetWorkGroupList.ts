@@ -2,7 +2,7 @@ import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { workgroupListApiPermissions } from 'modules/workgroup/features/WorkgroupList/permissions/workgroupList.permissions'
 import { useGetWorkgroupListQuery } from 'modules/workgroup/services/workgroupApi.service'
 
-const useGetWorkgroupList = () => {
+const useGetWorkGroupList = () => {
   const permissions = useUserPermissions(workgroupListApiPermissions.getList)
 
   return useGetWorkgroupListQuery(null, {
@@ -10,4 +10,4 @@ const useGetWorkgroupList = () => {
   })
 }
 
-export default useGetWorkgroupList
+export default useGetWorkGroupList

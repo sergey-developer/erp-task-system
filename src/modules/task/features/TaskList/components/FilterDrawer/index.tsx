@@ -16,7 +16,7 @@ import React, { FC } from 'react'
 import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions/extendedFilter.permissions'
 import { workGroupListSelectFieldNames } from 'modules/workgroup/features/WorkgroupList/constants/selectFieldNames'
-import useGetWorkgroupList from 'modules/workgroup/features/WorkgroupList/hooks/useGetWorkgroupList'
+import useGetWorkGroupList from 'modules/workgroup/features/WorkgroupList/hooks/useGetWorkGroupList'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
 import { checkboxStatusOptions, searchQueriesDictionary } from './constants'
@@ -56,7 +56,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
   const valuesNotChanged = _isEqual(initialFormValues, formValues)
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
-    useGetWorkgroupList()
+    useGetWorkGroupList()
 
   const handleResetAll = () => {
     form.resetFields()

@@ -4,7 +4,7 @@ import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useCreateTaskReclassificationRequest'
 import useGetTask from 'modules/task/features/TaskView/hooks/useGetTask'
 import useGetTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useGetTaskReclassificationRequest'
-import useGetWorkgroupList from 'modules/workgroup/features/WorkgroupList/hooks/useGetWorkgroupList'
+import useGetWorkGroupList from 'modules/workgroup/features/WorkgroupList/hooks/useGetWorkGroupList'
 import { ErrorResponse } from 'shared/services/api'
 
 import TaskDetails from '../TaskDetails'
@@ -36,7 +36,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     data: workGroupList = [],
     isFetching: workGroupListIsFetching,
     error: getWorkGroupListError,
-  } = useGetWorkgroupList()
+  } = useGetWorkGroupList()
 
   useEffect(() => {
     if (isGetTaskError) {
