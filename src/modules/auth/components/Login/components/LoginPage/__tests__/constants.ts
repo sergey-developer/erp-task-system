@@ -8,10 +8,10 @@ export const CORRECT_PASSWORD = 'correct-password'
 export const WRONG_PASSWORD = 'wrong-password'
 
 export const CORRECT_ACCESS_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2xlIjoiQURNSU4ifQ._dHw0q0cMhOG_Y4KPpjzkpgYwGuyl3GAvFXZrSWhYl4'
 
 export const CORRECT_REFRESH_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkphY2sgRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.lzqnhucjESt_hUIOcGsau-Q7XAZ5HJvWQWwjie59x1s'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJSb2xlIjoiQURNSU4ifQ.kCB1hsZQH5YGs4mGTVBUESoq5MHWSDGk7dj74E7lfVw'
 
 export const successLoginResponse: LoginResponseModel = {
   access: CORRECT_ACCESS_TOKEN,

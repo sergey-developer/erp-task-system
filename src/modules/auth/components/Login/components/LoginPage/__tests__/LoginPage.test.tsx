@@ -12,6 +12,7 @@ import {
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { REQUIRED_FIELD_MSG } from 'shared/constants/messages'
+import store from 'state/store'
 
 import {
   CORRECT_EMAIL,
@@ -103,10 +104,6 @@ describe('Страница авторизации', () => {
 
   describe('Если заполнить поля и нажать кнопку "Войти"', () => {
     describe('При успешном запросе', () => {
-      afterEach(() => {
-        localStorage.clear()
-      })
-
       test('Пользователь покидает страницу авторизации', async () => {
         mockLoginSuccess()
 
@@ -124,23 +121,45 @@ describe('Страница авторизации', () => {
         expect(checkRouteChanged()).toBe(true)
       })
 
-      test('В localStorage сохраняется access token', async () => {
-        mockLoginSuccess()
+      describe('В localStorage сохраняется', () => {
+        afterEach(() => {
+          localStorage.clear()
+        })
 
-        const { user } = render(<LoginPage />)
+        test('access token', async () => {
+          mockLoginSuccess()
 
-        await userEntersCorrectEmail(user)
-        await userEntersCorrectPassword(user)
-        const submitBtn = await userClickSubmitButton(user)
-        await waitStartLoading(submitBtn)
-        await waitFinishLoading(submitBtn)
+          const { user } = render(<LoginPage />)
 
-        expect(authLocalStorageService.getAccessToken()).toBe(
-          successLoginResponse.access,
-        )
+          await userEntersCorrectEmail(user)
+          await userEntersCorrectPassword(user)
+          const submitBtn = await userClickSubmitButton(user)
+          await waitStartLoading(submitBtn)
+          await waitFinishLoading(submitBtn)
+
+          expect(authLocalStorageService.getAccessToken()).toBe(
+            successLoginResponse.access,
+          )
+        })
+
+        test('refresh token', async () => {
+          mockLoginSuccess()
+
+          const { user } = render(<LoginPage />)
+
+          await userEntersCorrectEmail(user)
+          await userEntersCorrectPassword(user)
+          const submitBtn = await userClickSubmitButton(user)
+          await waitStartLoading(submitBtn)
+          await waitFinishLoading(submitBtn)
+
+          expect(authLocalStorageService.getRefreshToken()).toBe(
+            successLoginResponse.refresh,
+          )
+        })
       })
 
-      test('В localStorage сохраняется refresh token', async () => {
+      test('данные сохраняются в store', async () => {
         mockLoginSuccess()
 
         const { user } = render(<LoginPage />)
@@ -151,9 +170,11 @@ describe('Страница авторизации', () => {
         await waitStartLoading(submitBtn)
         await waitFinishLoading(submitBtn)
 
-        expect(authLocalStorageService.getRefreshToken()).toBe(
-          successLoginResponse.refresh,
-        )
+        const authState = store.getState().auth
+        expect(authState.user).not.toBe(null)
+        expect(authState.accessToken).toBe(successLoginResponse.access)
+        expect(authState.refreshToken).toBe(successLoginResponse.refresh)
+        expect(authState.isAuthenticated).toBe(true)
       })
     })
 

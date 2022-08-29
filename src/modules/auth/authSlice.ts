@@ -8,7 +8,7 @@ import {
 import authLocalStorageService from './services/authLocalStorage.service'
 import parseJwt from './utils/parseJwt'
 
-function getInitialState(): IAuthSliceState {
+export const getInitialState = (): IAuthSliceState => {
   const accessToken = authLocalStorageService.getAccessToken()
   const refreshToken = authLocalStorageService.getRefreshToken()
 
