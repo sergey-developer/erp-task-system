@@ -23,6 +23,8 @@ import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
+import TaskDetailsTabs from '../TaskDetailsTabs'
+import { TaskDetailsTabsEnum } from '../TaskDetailsTabs/constants'
 import TaskReclassificationModal, {
   TaskReclassificationModalProps,
 } from '../TaskReclassificationModal'
@@ -36,8 +38,6 @@ import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
-import TaskDetailsTabs from './TaskDetailsTabs'
-import { TaskDetailsTabsEnum } from './TaskDetailsTabs/constants'
 
 type TaskDetailsProps = {
   details: MaybeNull<

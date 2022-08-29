@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from 'tests/test-utils'
+import { render, screen } from '__tests__/utils'
 
 import JournalItem, { JournalItemProps } from './JournalItem'
 

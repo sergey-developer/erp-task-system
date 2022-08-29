@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { TaskJournalModel } from 'modules/task/features/TaskView/models/taskJournal.model'
 
-import { DetailsContainerStyled } from '../styles'
+import { DetailsContainerStyled } from '../TaskDetails/styles'
 import CommentList from './CommentList'
 import { TaskDetailsTabsEnum, taskDetailsTabNames } from './constants'
 import Description from './Description'

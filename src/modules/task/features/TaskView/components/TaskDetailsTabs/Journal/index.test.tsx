@@ -1,5 +1,5 @@
-import { TaskJournalModel } from 'modules/task/components/TaskView/models/taskJournal.model'
-import { render, screen } from 'tests/test-utils'
+import { render, screen } from '__tests__/utils'
+import { TaskJournalModel } from 'modules/task/features/TaskView/models/taskJournal.model'
 
 import { NO_DATA_MSG } from './constants'
 import Journal from './index'
