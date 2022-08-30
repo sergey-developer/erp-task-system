@@ -6,9 +6,9 @@ import { taskReclassificationRequestApiPermissions } from 'modules/task/features
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskReclassificationRequestApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
-import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 const useCreateTaskReclassificationRequest = () => {
   const [mutation, state] = useCreateReclassificationRequestMutation()
@@ -34,8 +34,7 @@ const useCreateTaskReclassificationRequest = () => {
         CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG,
       )
     } else {
-      const errorDetail = getErrorDetail(error)
-      showMultipleErrorNotification(errorDetail)
+      showErrorNotification(UNKNOWN_ERROR_MSG)
     }
   }, [state.error, state.isError])
 

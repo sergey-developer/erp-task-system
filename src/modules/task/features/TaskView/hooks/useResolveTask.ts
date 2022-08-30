@@ -2,9 +2,9 @@ import { useCallback, useEffect } from 'react'
 
 import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { ErrorResponse, getErrorDetail } from 'shared/services/api'
-import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
+import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
+import { RESOLVE_TASK_COMMON_ERROR_MSG } from '../constants/messages'
 import { ResolveTaskMutationArgsModel } from '../models'
 import { taskApiPermissions } from '../permissions/task.permissions'
 
@@ -23,9 +23,8 @@ const useResolveTask = () => {
 
   useEffect(() => {
     if (!state.isError) return
-    const error = state.error as ErrorResponse
-    const errorDetail = getErrorDetail(error)
-    showMultipleErrorNotification(errorDetail)
+
+    showErrorNotification(RESOLVE_TASK_COMMON_ERROR_MSG)
   }, [state.error, state.isError])
 
   return { fn, state }

@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { useGetTaskListQuery } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { ErrorResponse, getErrorDetail } from 'shared/services/api'
-import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 import { GetTaskListQueryArgsModel } from '../models'
 import { taskListApiPermissions } from '../permissions/taskList.permissions'
@@ -17,9 +17,8 @@ const useGetTaskList = (filter: GetTaskListQueryArgsModel) => {
 
   useEffect(() => {
     if (!state.isError) return
-    const error = state.error as ErrorResponse
-    const errorDetail = getErrorDetail(error)
-    showMultipleErrorNotification(errorDetail)
+
+    showErrorNotification(UNKNOWN_ERROR_MSG)
   }, [state.error, state.isError])
 
   return state

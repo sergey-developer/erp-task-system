@@ -9,9 +9,9 @@ import {
 import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
-import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
   const permissions = useUserPermissions(taskCommentListApiPermissions)
@@ -27,11 +27,10 @@ const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
 
     if (error.status === HttpStatusCodeEnum.NotFound) {
       showErrorNotification(getTaskNotFoundErrorMsg(id))
-    } else if (error.status! >= HttpStatusCodeEnum.ServerError) {
+    } else if (error.status >= HttpStatusCodeEnum.ServerError) {
       showErrorNotification(getTaskCommentListServerErrorMsg(id))
     } else {
-      const errorDetail = getErrorDetail(error)
-      showMultipleErrorNotification(errorDetail)
+      showErrorNotification(UNKNOWN_ERROR_MSG)
     }
   }, [id, state.error, state.isError])
 
