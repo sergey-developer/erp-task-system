@@ -5,8 +5,8 @@ import { ErrorResponse } from 'shared/services/api'
 
 import getFieldsErrors from './getFieldsErrors'
 
-const handleSetFieldsErrors = <T extends object>(
-  error: ErrorResponse<T>,
+const handleSetFieldsErrors = <T extends ErrorResponse>(
+  error: T,
   setter: FormInstance['setFields'],
 ) => {
   if (error.status === HttpStatusCodeEnum.BadRequest) {

@@ -67,8 +67,8 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
             const error = exception as ErrorResponse
 
             if (
-              error.status! >= HttpStatusCodeEnum.BadRequest &&
-              error.status! < HttpStatusCodeEnum.ServerError
+              error.status >= HttpStatusCodeEnum.BadRequest &&
+              error.status < HttpStatusCodeEnum.ServerError
             ) {
               logoutAndClearTokens(api.dispatch)
             }

@@ -5,7 +5,6 @@ import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView
 import useGetTask from 'modules/task/features/TaskView/hooks/useGetTask'
 import useGetTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useGetTaskReclassificationRequest'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
-import { ErrorResponse } from 'shared/services/api'
 
 import TaskDetails from '../TaskDetails'
 
@@ -32,11 +31,8 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     state: { isLoading: reclassificationRequestIsCreating },
   } = useCreateTaskReclassificationRequest()
 
-  const {
-    data: workGroupList = [],
-    isFetching: workGroupListIsFetching,
-    error: getWorkGroupListError,
-  } = useGetWorkGroupList()
+  const { data: workGroupList = [], isFetching: workGroupListIsFetching } =
+    useGetWorkGroupList()
 
   useEffect(() => {
     if (isGetTaskError) {
@@ -54,7 +50,6 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       onClose={onClose}
       workGroupList={workGroupList}
       workGroupListIsLoading={workGroupListIsFetching}
-      getWorkGroupListError={getWorkGroupListError as ErrorResponse}
     />
   )
 }
