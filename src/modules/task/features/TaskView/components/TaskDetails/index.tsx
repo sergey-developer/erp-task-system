@@ -71,8 +71,6 @@ type TaskDetailsProps = {
   workGroupListIsLoading: boolean
 
   onClose: () => void
-
-  getWorkGroupListError?: ErrorResponse
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
@@ -86,7 +84,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   workGroupList,
   workGroupListIsLoading,
-  getWorkGroupListError,
 
   onClose,
 }) => {
@@ -245,7 +242,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               workGroup={details.workGroup}
               workGroupList={workGroupList}
               workGroupListIsLoading={workGroupListIsLoading}
-              getWorkGroupListError={getWorkGroupListError}
               transferTask={handleUpdateTaskWorkGroup}
               transferTaskIsLoading={updateTaskWorkGroupIsLoading}
               updateTaskAssignee={handleUpdateTaskAssignee}

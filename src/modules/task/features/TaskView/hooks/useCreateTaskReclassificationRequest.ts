@@ -33,7 +33,7 @@ const useCreateTaskReclassificationRequest = () => {
       showErrorNotification(
         CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG,
       )
-    } else {
+    } else if (error.status !== HttpStatusCodeEnum.BadRequest) {
       showErrorNotification(UNKNOWN_ERROR_MSG)
     }
   }, [state.error, state.isError])

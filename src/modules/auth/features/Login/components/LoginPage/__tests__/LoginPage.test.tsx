@@ -249,9 +249,7 @@ describe('Страница авторизации', () => {
           await waitStartLoading(submitBtn)
           await waitFinishLoading(submitBtn)
 
-          expect(await screen.findAllByTestId('error-list-item')).toHaveLength(
-            1,
-          )
+          expect(await screen.findByTestId('login-error')).toBeInTheDocument()
         })
       })
     })

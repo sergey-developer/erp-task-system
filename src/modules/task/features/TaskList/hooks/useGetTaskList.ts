@@ -19,7 +19,7 @@ const useGetTaskList = (filter: GetTaskListQueryArgsModel) => {
     if (!state.isError) return
 
     showErrorNotification(UNKNOWN_ERROR_MSG)
-  }, [state.error, state.isError])
+  }, [state.isError])
 
   return state
 }
