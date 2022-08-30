@@ -1,15 +1,19 @@
 import React from 'react'
 
 import { render, screen } from '__tests__/utils'
+import {
+  TaskJournalSourceEnum,
+  TaskJournalType,
+} from 'modules/task/features/TaskView/models/taskJournal.model'
 
 import JournalItem, { JournalItemProps } from './JournalItem'
 
 describe('Элемент журнала', () => {
   const fakeJournalItem: JournalItemProps = {
+    type: TaskJournalType.StatusChange,
     createdAt: new Date().toISOString(),
-    type: 'Переназначение',
     description: 'Выполнено переназначение',
-    sourceSystem: 'Х5',
+    sourceSystem: TaskJournalSourceEnum.X5,
     author: 'Александров Александр Александрович',
   }
 

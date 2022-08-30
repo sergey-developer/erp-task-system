@@ -9,7 +9,10 @@ import { MaybeNull } from 'shared/interfaces/utils'
 
 const { Text, Paragraph } = Typography
 
-export type JournalItemProps = Omit<TaskJournalItemModel, 'id' | 'author'> & {
+export type JournalItemProps = Pick<
+  TaskJournalItemModel,
+  'type' | 'createdAt' | 'description' | 'sourceSystem'
+> & {
   author: MaybeNull<string>
 }
 
