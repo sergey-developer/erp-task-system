@@ -1,4 +1,18 @@
+/**
+ * TaskStatusEnum будет меняться
+ */
 export enum TaskStatusEnum {
+  New = 'NEW',
+  Appointed = 'APPOINTED',
+  InProgress = 'IN_PROGRESS',
+  Completed = 'COMPLETED',
+  Awaiting = 'AWAITING',
+  InReclassification = 'IN_RECLASSIFICATION',
+  Returned = 'RETURNED',
+  Closed = 'CLOSED',
+}
+
+export enum TaskExtendedStatusEnum {
   New = 'NEW',
   Appointed = 'APPOINTED',
   InProgress = 'IN_PROGRESS',

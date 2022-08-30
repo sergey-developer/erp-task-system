@@ -16,7 +16,7 @@ export type TaskTableListItem = Pick<
   | 'comment'
   | 'createdAt'
   | 'status'
-  | 'reclassificationRequest'
+  | 'extendedStatus'
 >
 
 export type TaskTableProps = Pick<
