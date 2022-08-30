@@ -6,7 +6,7 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/enums'
 
-import { badgeStatusMap, iconStatusMap } from './constants'
+import { badgeByStatusMap, iconByStatusMap } from './constants'
 import { BadgeStyled } from './styles'
 
 type TaskStatusProps = {
@@ -21,8 +21,8 @@ const TaskStatus: FC<TaskStatusProps> = ({
   status: taskStatus,
   extendedStatus,
 }) => {
-  const icon = iconStatusMap[extendedStatus || taskStatus]
-  const badge = badgeStatusMap[taskStatus]
+  const icon = iconByStatusMap[extendedStatus || taskStatus]
+  const badge = badgeByStatusMap[taskStatus]
 
   return value || badge || icon ? (
     <Space>

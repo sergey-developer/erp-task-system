@@ -9,7 +9,7 @@ import React, { ReactElement } from 'react'
 import { TaskStatusEnum } from 'modules/task/constants/enums'
 import theme from 'styles/theme'
 
-export const badgeStatusMap: Partial<
+export const badgeByStatusMap: Partial<
   Record<
     TaskStatusEnum,
     Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
@@ -21,7 +21,7 @@ export const badgeStatusMap: Partial<
   [TaskStatusEnum.Completed]: 'success',
 }
 
-export const iconStatusMap: Partial<Record<TaskStatusEnum, ReactElement>> = {
+export const iconByStatusMap: Partial<Record<TaskStatusEnum, ReactElement>> = {
   [TaskStatusEnum.Awaiting]: <PauseCircleTwoTone />,
   [TaskStatusEnum.InReclassification]: <QuestionCircleTwoTone />,
   [TaskStatusEnum.Returned]: (
