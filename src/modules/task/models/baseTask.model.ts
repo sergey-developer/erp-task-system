@@ -1,6 +1,7 @@
 import {
   ResolutionCodeEnum,
   SuspendReasonEnum,
+  TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
@@ -28,6 +29,7 @@ export type BaseTaskModel = {
   isSlaBreached: boolean
   isOlaBreached: boolean
   olaStatus: TaskOlaStatusEnum
+  extendedStatus: TaskExtendedStatusEnum
 
   olaNextBreachTime?: MaybeNull<string>
   description?: string

@@ -21,7 +21,9 @@ const { Text } = Typography
 export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
   {
     key: 'noop',
-    render: (value: string, { status }) => <TaskStatus status={status} />,
+    render: (value: string, { status, extendedStatus }) => (
+      <TaskStatus status={status} extendedStatus={extendedStatus} />
+    ),
     align: 'center',
   },
   {
