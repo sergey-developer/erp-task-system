@@ -2,20 +2,19 @@ import { Button, Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import ErrorList from 'components/Error/ErrorList'
 import Space from 'components/Space'
 import { RoutesEnum } from 'configs/routes'
-import useLogin from 'modules/auth/hooks/useLogin'
+import useLogin from 'modules/auth/features/Login/hooks/useLogin'
 import { APP_NAME } from 'shared/constants/common'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
-import { LoginFormErrors, LoginFormFields } from './interfaces'
+import { LoginFormFields } from './interfaces'
 import { CardStyled, FormStyled, PageTitleStyled } from './styles'
-import getLoginErrors from './utils/getLoginErrors'
+import getLoginError from './utils/getLoginError'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
-const { Title } = Typography
+const { Text, Title } = Typography
 
 const LoginPage: FC = () => {
   const [form] = Form.useForm<LoginFormFields>()
@@ -25,13 +24,15 @@ const LoginPage: FC = () => {
     state: { isLoading, error: loginErrorResponse },
   } = useLogin()
 
-  const loginErrors = getLoginErrors(loginErrorResponse)
+  const loginError = getLoginError(
+    loginErrorResponse as ErrorResponse<LoginFormFields>,
+  )
 
   const handleSubmit = async (values: LoginFormFields) => {
     try {
       await login(values)
     } catch (exception) {
-      const error = exception as ErrorResponse<LoginFormErrors>
+      const error = exception as ErrorResponse<LoginFormFields>
       handleSetFieldsErrors(error, form.setFields)
     }
   }
@@ -46,7 +47,11 @@ const LoginPage: FC = () => {
         </Space>
 
         <Space direction='vertical'>
-          <ErrorList errors={loginErrors} />
+          {loginError && (
+            <Text data-testid='login-error' type='danger'>
+              {loginError}
+            </Text>
+          )}
 
           <FormStyled<LoginFormFields>
             form={form}

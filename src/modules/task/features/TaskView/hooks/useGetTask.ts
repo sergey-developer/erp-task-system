@@ -9,9 +9,9 @@ import {
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import { ErrorResponse } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
-import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 const useGetTask = (id: GetTaskQueryArgsModel) => {
   const permissions = useUserPermissions(taskApiPermissions.task)
@@ -29,12 +29,11 @@ const useGetTask = (id: GetTaskQueryArgsModel) => {
       showErrorNotification(getTaskNotFoundErrorMsg(id))
     } else if (
       error.status === HttpStatusCodeEnum.BadRequest ||
-      error.status! >= HttpStatusCodeEnum.ServerError
+      error.status >= HttpStatusCodeEnum.ServerError
     ) {
       showErrorNotification(getTaskServerErrorMsg(id))
     } else {
-      const errorDetail = getErrorDetail(error)
-      showMultipleErrorNotification(errorDetail)
+      showErrorNotification(UNKNOWN_ERROR_MSG)
     }
   }, [id, state.error, state.isError])
 

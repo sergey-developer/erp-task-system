@@ -4,7 +4,6 @@ import _noop from 'lodash/noop'
 import React, { FC, useCallback } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
-import { UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import useResolveTask from 'modules/task/features/TaskView/hooks/useResolveTask'
 import useUpdateTaskAssignee from 'modules/task/features/TaskView/hooks/useUpdateTaskAssignee'
 import useUpdateTaskWorkGroup from 'modules/task/features/TaskView/hooks/useUpdateTaskWorkGroup'
@@ -13,15 +12,12 @@ import {
   TaskDetailsModel,
   TaskDetailsReclassificationRequestModel,
 } from 'modules/task/features/TaskView/models'
-import getTransferTaskSecondLineErrors from 'modules/task/features/TaskView/utils/getTransferTaskSecondLineErrors'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
-import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 import TaskDetailsTabs from '../TaskDetailsTabs'
 import { TaskDetailsTabsEnum } from '../TaskDetailsTabs/constants'
@@ -75,8 +71,6 @@ type TaskDetailsProps = {
   workGroupListIsLoading: boolean
 
   onClose: () => void
-
-  getWorkGroupListError?: ErrorResponse
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
@@ -90,7 +84,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   workGroupList,
   workGroupListIsLoading,
-  getWorkGroupListError,
 
   onClose,
 }) => {
@@ -177,27 +170,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
-      try {
-        await updateTaskWorkGroup({ taskId: details!.id, workGroup })
-        closeTaskSecondLineModal()
-        onClose()
-      } catch (exception) {
-        const errors = getTransferTaskSecondLineErrors(
-          exception as ErrorResponse,
-        )
-        showMultipleErrorNotification(errors)
-      }
+      await updateTaskWorkGroup({ taskId: details!.id, workGroup })
+      closeTaskSecondLineModal()
+      onClose()
     },
     [details, onClose, updateTaskWorkGroup],
   )
 
   const handleUpdateTaskAssignee = useCallback(
     async (assignee: AssigneeModel['id']) => {
-      try {
-        await updateTaskAssignee({ taskId: details!.id, assignee })
-      } catch {
-        showErrorNotification(UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG)
-      }
+      await updateTaskAssignee({ taskId: details!.id, assignee })
     },
     [details, updateTaskAssignee],
   )
@@ -260,7 +242,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               workGroup={details.workGroup}
               workGroupList={workGroupList}
               workGroupListIsLoading={workGroupListIsLoading}
-              getWorkGroupListError={getWorkGroupListError}
               transferTask={handleUpdateTaskWorkGroup}
               transferTaskIsLoading={updateTaskWorkGroupIsLoading}
               updateTaskAssignee={handleUpdateTaskAssignee}

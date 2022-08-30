@@ -5,7 +5,6 @@ import React, { FC, useMemo } from 'react'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { AssigneeModel } from 'shared/interfaces/models'
-import { ErrorResponse } from 'shared/services/api'
 
 import { DetailsContainerStyled } from '../styles'
 import TaskAssignee from '../TaskAssignee'
@@ -28,8 +27,6 @@ type SecondaryDetailsProps = Pick<
   updateTaskAssigneeIsLoading: boolean
 
   reclassificationRequestExist: boolean
-
-  getWorkGroupListError?: ErrorResponse
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
@@ -40,7 +37,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   workGroup: taskDetailsWorkGroup,
   workGroupList,
   workGroupListIsLoading,
-  getWorkGroupListError,
 
   transferTask,
   transferTaskIsLoading,
@@ -71,7 +67,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             workGroup={workGroup}
             workGroupList={workGroupList}
             workGroupListIsLoading={workGroupListIsLoading}
-            getWorkGroupListError={getWorkGroupListError}
             transferTask={transferTask}
             transferTaskIsLoading={transferTaskIsLoading}
             reclassificationRequestExist={reclassificationRequestExist}

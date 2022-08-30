@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { RoutesEnum } from 'configs/routes'
 import { login as loginAction } from 'modules/auth/authSlice'
 import { LoginFormFields } from 'modules/auth/features/Login/components/LoginPage/interfaces'
-import { IUseLoginMutationResult } from 'modules/auth/interfaces'
 import { useLoginMutation } from 'modules/auth/services/authApi.service'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import parseJwt from 'modules/auth/utils/parseJwt'
@@ -13,7 +12,7 @@ import useDispatch from 'shared/hooks/useDispatch'
 const useLogin = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [mutation, state] = useLoginMutation<IUseLoginMutationResult>()
+  const [mutation, state] = useLoginMutation()
 
   const fn = useCallback(
     async (fields: LoginFormFields) => {

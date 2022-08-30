@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 import _isPlainObject from 'lodash/isPlainObject'
 
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
-import { UNKNOWN_SERVER_ERROR_MSG } from 'shared/constants/messages'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import httpClient from './httpClient'
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'
@@ -29,7 +29,7 @@ const baseQuery =
       return { data: response.data }
     } catch (exception) {
       const error = exception as AxiosError
-      const status = error.response?.status
+      const status = error.response?.status || HttpStatusCodeEnum.ServerError
       const errorData = error.response?.data
 
       return {
@@ -37,12 +37,7 @@ const baseQuery =
           status,
           data: _isPlainObject(errorData)
             ? errorData
-            : {
-                detail:
-                  status === HttpStatusCodeEnum.ServerError
-                    ? UNKNOWN_SERVER_ERROR_MSG
-                    : error.message,
-              },
+            : { detail: UNKNOWN_ERROR_MSG },
         },
       }
     }

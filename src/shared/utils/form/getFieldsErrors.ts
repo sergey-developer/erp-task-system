@@ -8,11 +8,12 @@ type FieldData = Pick<BaseFieldData, 'name' | 'errors'>
 const getFieldsErrors = <T extends ErrorData<T>>(data: T): Array<FieldData> => {
   return Object.keys(data).reduce<Array<FieldData>>((acc, key) => {
     const fieldName = key as Keys<T>
+    const fieldValue = data[fieldName]
 
-    if (fieldName !== 'detail') {
+    if (fieldName !== 'detail' && fieldValue) {
       acc.push({
         name: fieldName as string,
-        errors: data[fieldName],
+        errors: fieldValue,
       })
     }
 
