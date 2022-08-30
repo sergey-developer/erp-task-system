@@ -2,7 +2,7 @@ import { StringMap } from 'shared/interfaces/utils'
 
 import { TaskStatusEnum } from './enums'
 
-export const taskStatusDict: StringMap<TaskStatusEnum> = {
+export const taskStatusDict: Partial<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.New]: 'Ожидает выполнения',
   [TaskStatusEnum.Appointed]: 'Назначено',
   [TaskStatusEnum.InProgress]: 'В работе',
@@ -10,5 +10,4 @@ export const taskStatusDict: StringMap<TaskStatusEnum> = {
   [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.InReclassification]: 'На переклассификации',
   [TaskStatusEnum.Returned]: 'Возврат заявителем',
-  [TaskStatusEnum.Closed]: '',
 }

@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-export const BadgeWrapperStyled = styled.div<{ isBadge: boolean }>`
+export const BadgeWrapperStyled = styled.div<{ $isBadge: boolean }>`
   display: flex;
-  align-items: ${({ isBadge }) => (isBadge ? 'baseline' : 'center')};
+  align-items: ${({ $isBadge }) => ($isBadge ? 'baseline' : 'center')};
   gap: 8px;
 
   & > :first-child {
