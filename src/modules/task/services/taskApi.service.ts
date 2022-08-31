@@ -9,6 +9,8 @@ import {
   GetTaskListResponseModel,
 } from 'modules/task/features/TaskList/models'
 import {
+  GetTaskJournalQueryArgsModel,
+  GetTaskJournalResponseModel,
   GetTaskQueryArgsModel,
   GetTaskResponseModel,
   ResolveTaskMutationArgsModel,
@@ -18,6 +20,7 @@ import {
 import {
   getResolveTaskUrl,
   getTaskAssigneeUrl,
+  getTaskJournalUrl,
   getTaskUrl,
   getTaskWorkGroupUrl,
 } from 'modules/task/utils/apiUrls'
@@ -100,6 +103,15 @@ const taskApiService = apiService
         invalidatesTags: (result, error) =>
           error ? [] : [TaskEndpointsTagsEnum.Task],
       }),
+      getTaskJournal: build.query<
+        GetTaskJournalResponseModel,
+        GetTaskJournalQueryArgsModel
+      >({
+        query: (taskId) => ({
+          url: getTaskJournalUrl(taskId),
+          method: HttpMethodEnum.GET,
+        }),
+      }),
     }),
     overrideExisting: false,
   })
@@ -111,4 +123,5 @@ export const {
   useUpdateTaskAssigneeMutation,
   useUpdateTaskWorkGroupMutation,
   useGetTaskCountersQuery,
+  useGetTaskJournalQuery,
 } = taskApiService

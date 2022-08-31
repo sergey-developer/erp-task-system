@@ -2,13 +2,18 @@ import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
 } from 'modules/task/constants/enums'
+import { TaskJournalEntryModel } from 'modules/task/features/TaskView/models'
 
-import { JournalProps } from '../index'
 import { JournalEntryProps } from '../JournalEntry'
 
-export const emptyJournal: JournalProps['data'] = []
+type FakeJournalEntry = Omit<
+  TaskJournalEntryModel,
+  'updatedAt' | 'recordId' | 'task'
+>
 
-export const fakeJournal: JournalProps['data'] = [
+export const emptyJournal: Array<FakeJournalEntry> = []
+
+export const fakeJournal: Array<FakeJournalEntry> = [
   {
     id: 1,
     createdAt: new Date().toISOString(),

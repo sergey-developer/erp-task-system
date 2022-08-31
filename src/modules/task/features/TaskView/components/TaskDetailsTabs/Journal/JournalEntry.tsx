@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
-import { TaskJournalEntryModel } from 'modules/task/features/TaskView/models/taskJournal.model'
+import { TaskJournalEntryModel } from 'modules/task/features/TaskView/models'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { MaybeNull } from 'shared/interfaces/utils'
 

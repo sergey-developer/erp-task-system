@@ -2,6 +2,9 @@ export * from './getTask.model'
 
 export * from './resolveTask.model'
 
+export * from './taskJournal.model'
+export * from './getTaskJournal.model'
+
 export * from './getTaskCommentList.model'
 
 export * from './updateTaskAssignee.model'

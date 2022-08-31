@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Button, Row, Space, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import Spinner from 'components/Spinner'
+import LoadableData from 'components/LoadableData'
 import useGetTaskCommentList from 'modules/task/features/TaskView/hooks/useGetTaskCommentList'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
@@ -59,11 +59,10 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
         )}
       </Row>
 
-      {commentListIsFetching ? (
-        <Spinner />
-      ) : !commentsExist ? (
-        <Text>Комментариев пока нет</Text>
-      ) : (
+      <LoadableData
+        isLoading={commentListIsFetching}
+        noContent={!commentsExist && <Text>Комментариев пока нет</Text>}
+      >
         <Space size='large' direction='vertical'>
           {displayableComments.map((comment) => (
             <TaskComment
@@ -74,7 +73,7 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
             />
           ))}
         </Space>
-      )}
+      </LoadableData>
     </Space>
   )
 }

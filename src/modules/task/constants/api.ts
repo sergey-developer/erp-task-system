@@ -8,6 +8,7 @@ export enum TaskEndpointsEnum {
   TaskCommentList = '/tasks/:id/comments',
   CreateReclassificationRequest = '/tasks/:id/reclassification-requests/',
   GetReclassificationRequest = '/tasks/:id/reclassification-request/',
+  TaskJournal = '/tasks/:id/journal/',
 }
 
 export enum TaskEndpointsTagsEnum {

@@ -3,7 +3,6 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import { TaskJournalModel } from 'modules/task/features/TaskView/models/taskJournal.model'
 
 import { DetailsContainerStyled } from '../TaskDetails/styles'
 import CommentList from './CommentList'
@@ -13,22 +12,6 @@ import Journal from './Journal'
 import Resolution from './Resolution'
 
 const { TabPane } = Tabs
-
-const fakeJournal: TaskJournalModel = [
-  {
-    id: 1,
-    createdAt: new Date().toISOString(),
-    type: 'Переназначение',
-    description: 'Выполнено переназначение',
-    sourceSystem: 'Х5',
-    author: {
-      id: 1,
-      firstName: 'Александр',
-      lastName: 'Александров',
-      middleName: 'Александрович',
-    },
-  },
-]
 
 type TaskDetailsTabsProps = {
   details: Pick<
@@ -86,7 +69,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
         key={TaskDetailsTabsEnum.Journal}
       >
         <DetailsContainerStyled $breakpoints={breakpoints}>
-          <Journal data={fakeJournal} />
+          <Journal taskId={details.id} />
         </DetailsContainerStyled>
       </TabPane>
 

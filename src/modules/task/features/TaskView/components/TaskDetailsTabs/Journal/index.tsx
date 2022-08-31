@@ -1,10 +1,12 @@
 import { DownloadOutlined } from '@ant-design/icons'
 import { Col, Divider, Row, Typography } from 'antd'
+import _isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
+import LoadableData from 'components/LoadableData'
 import Space from 'components/Space'
 import { journalEntryTypeDict } from 'modules/task/constants/dict'
-import { TaskJournalEntryModel } from 'modules/task/features/TaskView/models/taskJournal.model'
+import useGetTaskJournal from 'modules/task/features/TaskView/hooks/useGetTaskJournal'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
@@ -14,44 +16,45 @@ import JournalEntry from './JournalEntry'
 
 const { Text } = Typography
 
-export type JournalProps = {
-  data: Array<Omit<TaskJournalEntryModel, 'recordId' | 'task' | 'updatedAt'>>
+type JournalProps = {
+  taskId: number
 }
 
-const Journal: FC<JournalProps> = ({ data }) => {
+const Journal: FC<JournalProps> = ({ taskId }) => {
+  const { data = [], isFetching } = useGetTaskJournal(taskId)
+
   return (
-    <Space direction='vertical' $block>
-      {!!data.length ? (
-        <>
-          <Row justify='end'>
-            <DownloadOutlined data-testid='journal-icon-download' />
-          </Row>
+    <LoadableData
+      isLoading={isFetching}
+      noContent={_isEmpty(data) && <Text>{NO_DATA_MSG}</Text>}
+    >
+      <Space direction='vertical' $block>
+        <Row justify='end'>
+          <DownloadOutlined data-testid='journal-icon-download' />
+        </Row>
 
-          <Row>
-            {data.map((item, index, array) => {
-              const isLastItem: boolean = index === array.length - 1
+        <Row>
+          {data.map((item, index, array) => {
+            const isLastItem: boolean = index === array.length - 1
 
-              return (
-                <Col key={item.id} span={24}>
-                  <JournalEntry
-                    data-testid='journalEntry'
-                    createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
-                    type={journalEntryTypeDict[item.type]}
-                    author={item.author ? getFullUserName(item.author) : null}
-                    description={item.description}
-                    sourceSystem={item.sourceSystem}
-                  />
+            return (
+              <Col key={item.id} span={24}>
+                <JournalEntry
+                  data-testid='journalEntry'
+                  createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
+                  type={journalEntryTypeDict[item.type]}
+                  author={item.author ? getFullUserName(item.author) : null}
+                  description={item.description}
+                  sourceSystem={item.sourceSystem}
+                />
 
-                  {!isLastItem && <Divider />}
-                </Col>
-              )
-            })}
-          </Row>
-        </>
-      ) : (
-        <Text>{NO_DATA_MSG}</Text>
-      )}
-    </Space>
+                {!isLastItem && <Divider />}
+              </Col>
+            )
+          })}
+        </Row>
+      </Space>
+    </LoadableData>
   )
 }
 
