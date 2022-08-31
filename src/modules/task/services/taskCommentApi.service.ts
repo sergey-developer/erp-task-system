@@ -14,7 +14,7 @@ const taskCommentApiService = apiService.injectEndpoints({
     >({
       query: (id) => ({
         url: getTaskCommentListUrl(id),
-        method: HttpMethodEnum.GET,
+        method: HttpMethodEnum.Get,
       }),
     }),
   }),

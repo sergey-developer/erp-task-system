@@ -1,9 +1,9 @@
 export enum HttpMethodEnum {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  DELETE = 'DELETE',
+  Get = 'get',
+  Post = 'post',
+  Put = 'put',
+  Patch = 'patch',
+  Delete = 'delete',
 }
 
 export enum HttpStatusCodeEnum {

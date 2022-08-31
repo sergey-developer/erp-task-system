@@ -5,16 +5,26 @@ import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 
 import { FakeJournalResponse } from './constants'
 
-const mockGetJournal = getRequestMocker(
-  HttpMethodEnum.GET,
+const getJournalMocker = getRequestMocker(
+  HttpMethodEnum.Get,
   getTaskJournalUrl(FAKE_ID),
 )
 
-export const mockGetJournalSuccess = (response: FakeJournalResponse) =>
-  mockGetJournal((req, res, ctx) =>
+export const mockGetJournalSuccess = (response: FakeJournalResponse) => {
+  const mockGetJournal = getJournalMocker((req, res, ctx) =>
     res.once(
       ctx.status(HttpStatusCodeEnum.Ok),
       ctx.json(response),
       ctx.delay(API_RESPONSE_DELAY),
     ),
-  )()
+  )
+
+  mockGetJournal()
+}
+
+export const mockGetJournalServerError = getJournalMocker((req, res, ctx) =>
+  res.once(
+    ctx.status(HttpStatusCodeEnum.ServerError),
+    ctx.delay(API_RESPONSE_DELAY),
+  ),
+)

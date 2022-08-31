@@ -1,12 +1,8 @@
-import { MockedRequest, ResponseResolver, RestContext, rest } from 'msw'
-
-import api from '__tests__/mocks/api'
+import { getRequestMocker } from '__tests__/mocks/request'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
-import { makeAbsoluteApiUrl } from 'shared/services/api'
+import { HttpMethodEnum } from 'shared/constants/http'
 
-export const mockRefreshToken =
-  (resolver: ResponseResolver<MockedRequest, RestContext>) => () => {
-    api.use(
-      rest.post(makeAbsoluteApiUrl(AuthEndpointsEnum.RefreshToken), resolver),
-    )
-  }
+export const refreshTokenMocker = getRequestMocker(
+  HttpMethodEnum.Post,
+  AuthEndpointsEnum.RefreshToken,
+)

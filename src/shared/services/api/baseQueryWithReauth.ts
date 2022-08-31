@@ -54,7 +54,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           try {
             refreshResult = await query(
               {
-                method: HttpMethodEnum.POST,
+                method: HttpMethodEnum.Post,
                 url: AuthEndpointsEnum.RefreshToken,
                 data: {
                   refresh: refreshToken,

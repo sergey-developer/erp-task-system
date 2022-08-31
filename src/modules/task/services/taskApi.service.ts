@@ -39,7 +39,7 @@ const taskApiService = apiService
       >({
         query: (data) => ({
           url: TaskEndpointsEnum.TaskList,
-          method: HttpMethodEnum.GET,
+          method: HttpMethodEnum.Get,
           params: data,
         }),
         // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
@@ -59,13 +59,13 @@ const taskApiService = apiService
       getTaskCounters: build.query<GetTaskCountersResponseModel, null>({
         query: () => ({
           url: TaskEndpointsEnum.TaskCounters,
-          method: HttpMethodEnum.GET,
+          method: HttpMethodEnum.Get,
         }),
       }),
       getTask: build.query<GetTaskResponseModel, GetTaskQueryArgsModel>({
         query: (id) => ({
           url: getTaskUrl(id),
-          method: HttpMethodEnum.GET,
+          method: HttpMethodEnum.Get,
         }),
         providesTags: (result, error) =>
           error ? [] : [TaskEndpointsTagsEnum.Task],
@@ -73,7 +73,7 @@ const taskApiService = apiService
       resolveTask: build.mutation<void, ResolveTaskMutationArgsModel>({
         query: ({ taskId, ...body }) => ({
           url: getResolveTaskUrl(taskId),
-          method: HttpMethodEnum.POST,
+          method: HttpMethodEnum.Post,
           data: body,
         }),
         invalidatesTags: (result, error) =>
@@ -85,7 +85,7 @@ const taskApiService = apiService
       >({
         query: ({ taskId, ...body }) => ({
           url: getTaskWorkGroupUrl(taskId),
-          method: HttpMethodEnum.POST,
+          method: HttpMethodEnum.Post,
           data: body,
         }),
         invalidatesTags: (result, error) =>
@@ -97,7 +97,7 @@ const taskApiService = apiService
       >({
         query: ({ taskId, ...body }) => ({
           url: getTaskAssigneeUrl(taskId),
-          method: HttpMethodEnum.POST,
+          method: HttpMethodEnum.Post,
           data: body,
         }),
         invalidatesTags: (result, error) =>
@@ -109,7 +109,7 @@ const taskApiService = apiService
       >({
         query: (taskId) => ({
           url: getTaskJournalUrl(taskId),
-          method: HttpMethodEnum.GET,
+          method: HttpMethodEnum.Get,
         }),
       }),
     }),

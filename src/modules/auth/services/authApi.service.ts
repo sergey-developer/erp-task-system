@@ -12,14 +12,14 @@ const authApiService = apiService.injectEndpoints({
     login: build.mutation<LoginResponseModel, LoginMutationArgsModel>({
       query: (queryArg) => ({
         url: AuthEndpointsEnum.Login,
-        method: HttpMethodEnum.POST,
+        method: HttpMethodEnum.Post,
         data: queryArg,
       }),
     }),
     logout: build.mutation<void, LogoutMutationArgsModel>({
       query: (queryArg) => ({
         url: AuthEndpointsEnum.Logout,
-        method: HttpMethodEnum.POST,
+        method: HttpMethodEnum.Post,
         data: queryArg,
       }),
     }),

@@ -1,5 +1,6 @@
 import { FAKE_ID } from '__tests__/constants'
 import { render, screen, setupApiTests } from '__tests__/utils'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import { NO_DATA_MSG } from '../constants'
 import Journal from '../index'
@@ -7,7 +8,7 @@ import {
   getEmptyJournalResponseSuccess,
   getJournalResponseSuccess,
 } from './constants'
-import { mockGetJournalSuccess } from './mocks'
+import { mockGetJournalServerError, mockGetJournalSuccess } from './mocks'
 import { waitFinishLoading, waitStartLoading } from './utils'
 
 setupApiTests()
@@ -42,7 +43,7 @@ describe('Страница отображения журнала', () => {
       })
 
       describe('Не отображает', () => {
-        test(`Текст - "${NO_DATA_MSG}"`, async () => {
+        test(`Текст "${NO_DATA_MSG}"`, async () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_ID} />)
@@ -56,7 +57,7 @@ describe('Страница отображения журнала', () => {
 
     describe('Если нет записей', () => {
       describe('Отображает', () => {
-        test(`Текст - "${NO_DATA_MSG}"`, async () => {
+        test(`Текст "${NO_DATA_MSG}"`, async () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_ID} />)
@@ -91,6 +92,30 @@ describe('Страница отображения журнала', () => {
             screen.queryByTestId('journal-icon-download'),
           ).not.toBeInTheDocument()
         })
+      })
+    })
+  })
+
+  describe('При не успешном запросе журнала', () => {
+    describe('Отображает', () => {
+      test(`Ошибку "${UNKNOWN_ERROR_MSG}"`, async () => {
+        mockGetJournalServerError()
+
+        render(<Journal taskId={FAKE_ID} />)
+        await waitStartLoading()
+        await waitFinishLoading()
+
+        expect(await screen.findByText(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
+      })
+
+      test(`Текст "${NO_DATA_MSG}"`, async () => {
+        mockGetJournalServerError()
+
+        render(<Journal taskId={FAKE_ID} />)
+        await waitStartLoading()
+        await waitFinishLoading()
+
+        expect(await screen.findByText(NO_DATA_MSG)).toBeInTheDocument()
       })
     })
   })

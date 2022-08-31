@@ -1,14 +1,17 @@
 import { API_RESPONSE_DELAY } from '__tests__/constants'
 import { getRequestMocker } from '__tests__/mocks/request'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
-import { mockRefreshToken } from 'modules/auth/features/RefreshToken/__tests__/mocks'
+import { refreshTokenMocker } from 'modules/auth/features/RefreshToken/__tests__/mocks'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 
 import { loginResponseSuccess } from './constants'
 
-const mockLogin = getRequestMocker(HttpMethodEnum.POST, AuthEndpointsEnum.Login)
+const loginMocker = getRequestMocker(
+  HttpMethodEnum.Post,
+  AuthEndpointsEnum.Login,
+)
 
-export const mockLoginSuccess = mockLogin((req, res, ctx) =>
+export const mockLoginSuccess = loginMocker((req, res, ctx) =>
   res.once(
     ctx.status(HttpStatusCodeEnum.Ok),
     ctx.json(loginResponseSuccess),
@@ -16,7 +19,7 @@ export const mockLoginSuccess = mockLogin((req, res, ctx) =>
   ),
 )
 
-export const mockLoginBadRequestError = mockLogin((req, res, ctx) =>
+export const mockLoginBadRequestError = loginMocker((req, res, ctx) =>
   res.once(
     ctx.status(HttpStatusCodeEnum.BadRequest),
     ctx.delay(API_RESPONSE_DELAY),
@@ -24,22 +27,22 @@ export const mockLoginBadRequestError = mockLogin((req, res, ctx) =>
 )
 
 export const mockLoginUnauthorizedError = () => {
-  const doMockLogin = mockLogin((req, res, ctx) =>
+  const mockLogin = loginMocker((req, res, ctx) =>
     res.once(
       ctx.status(HttpStatusCodeEnum.Unauthorized),
       ctx.delay(API_RESPONSE_DELAY),
     ),
   )
 
-  const doMockRefreshToken = mockRefreshToken((req, res, ctx) =>
+  const mockRefreshToken = refreshTokenMocker((req, res, ctx) =>
     res.once(ctx.status(HttpStatusCodeEnum.Ok)),
   )
 
-  doMockLogin()
-  doMockRefreshToken()
+  mockLogin()
+  mockRefreshToken()
 }
 
-export const mockLoginServerError = mockLogin((req, res, ctx) =>
+export const mockLoginServerError = loginMocker((req, res, ctx) =>
   res.once(
     ctx.status(HttpStatusCodeEnum.ServerError),
     ctx.delay(API_RESPONSE_DELAY),
