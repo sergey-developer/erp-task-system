@@ -3,18 +3,19 @@ import { Col, Divider, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
-import { TaskJournalModel } from 'modules/task/features/TaskView/models/taskJournal.model'
+import { journalEntryTypeDict } from 'modules/task/constants/dict'
+import { TaskJournalEntryModel } from 'modules/task/features/TaskView/models/taskJournal.model'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
 import { NO_DATA_MSG } from './constants'
-import JournalItem from './JournalItem'
+import JournalEntry from './JournalEntry'
 
 const { Text } = Typography
 
-type JournalProps = {
-  data: TaskJournalModel
+export type JournalProps = {
+  data: Array<Omit<TaskJournalEntryModel, 'recordId' | 'task' | 'updatedAt'>>
 }
 
 const Journal: FC<JournalProps> = ({ data }) => {
@@ -32,10 +33,10 @@ const Journal: FC<JournalProps> = ({ data }) => {
 
               return (
                 <Col key={item.id} span={24}>
-                  <JournalItem
-                    data-testid='journalItem'
+                  <JournalEntry
+                    data-testid='journalEntry'
                     createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
-                    type={item.type}
+                    type={journalEntryTypeDict[item.type]}
                     author={item.author ? getFullUserName(item.author) : null}
                     description={item.description}
                     sourceSystem={item.sourceSystem}

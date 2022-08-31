@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { taskStatusDict } from 'modules/task/constants/dict'
 import { TaskStatusEnum } from 'modules/task/constants/enums'
-import { taskStatusDict } from 'modules/task/constants/taskStatus'
 import {
   ASSIGNEE_WORD,
   OBJECT_WORD,

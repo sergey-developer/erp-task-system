@@ -1,46 +1,15 @@
 import { render, screen } from '__tests__/utils'
-import { TaskJournalModel } from 'modules/task/features/TaskView/models/taskJournal.model'
 
-import { NO_DATA_MSG } from './constants'
-import Journal from './index'
+import { NO_DATA_MSG } from '../constants'
+import Journal from '../index'
+import { emptyJournal, fakeJournal } from './constants'
 
 describe('Журнал', () => {
-  const emptyJournal: TaskJournalModel = []
-
-  const fakeJournal: TaskJournalModel = [
-    {
-      id: 1,
-      createdAt: new Date().toISOString(),
-      type: 'Переназначение 1',
-      description: 'Выполнено переназначение 1',
-      sourceSystem: 'Х5',
-      author: {
-        id: 1,
-        firstName: 'Александр 1',
-        lastName: 'Александров 1',
-        middleName: 'Александрович 1',
-      },
-    },
-    {
-      id: 2,
-      createdAt: new Date().toISOString(),
-      type: 'Переназначение 2',
-      description: 'Выполнено переназначение 2',
-      sourceSystem: 'Х5',
-      author: {
-        id: 2,
-        firstName: 'Александр 2',
-        lastName: 'Александров 2',
-        middleName: 'Александрович 2',
-      },
-    },
-  ]
-
   describe('Если есть записи', () => {
     test('Отображает записи', () => {
       render(<Journal data={fakeJournal} />)
 
-      expect(screen.getAllByTestId('journalItem')).toHaveLength(
+      expect(screen.getAllByTestId('journalEntry')).toHaveLength(
         fakeJournal.length,
       )
     })
@@ -66,7 +35,7 @@ describe('Журнал', () => {
     test('Не отображает записи', () => {
       render(<Journal data={emptyJournal} />)
 
-      expect(screen.queryAllByTestId('journalItem')).toHaveLength(
+      expect(screen.queryAllByTestId('journalEntry')).toHaveLength(
         emptyJournal.length,
       )
     })

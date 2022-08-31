@@ -1,5 +1,7 @@
-import { TaskEndpointsEnum } from 'modules/task/constants/api'
-import { TaskEndpointsTagsEnum } from 'modules/task/constants/enums'
+import {
+  TaskEndpointsEnum,
+  TaskEndpointsTagsEnum,
+} from 'modules/task/constants/api'
 import { GetTaskListTransformedResponse } from 'modules/task/features/TaskList/interfaces'
 import {
   GetTaskCountersResponseModel,
