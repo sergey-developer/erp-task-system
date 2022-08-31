@@ -1,5 +1,5 @@
-import { FAKE_ID } from '__tests__/constants'
-import { render, screen, setupApiTests } from '__tests__/utils'
+import { FAKE_ID } from '__tests/constants'
+import { render, screen, setupApiTests } from '__tests/utils'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import { NO_DATA_MSG } from '../constants'

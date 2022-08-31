@@ -25,7 +25,7 @@
       "shared": ["shared"],
       "styles": ["styles"],
       "app": ["app"],
-      "__tests__": ["__tests__"]
+      "_tests": ["_tests"]
     }
   },
   "include": ["src"]

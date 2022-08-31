@@ -1,4 +1,4 @@
-import { screen, waitFor } from '__tests__/utils'
+import { screen, waitFor } from '__tests/utils'
 
 export const waitStartLoading = async () => {
   await waitFor(() => {

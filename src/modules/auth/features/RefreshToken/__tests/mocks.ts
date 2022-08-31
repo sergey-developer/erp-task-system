@@ -1,4 +1,4 @@
-import { getRequestMocker } from '__tests__/mocks/request'
+import { getRequestMocker } from '__tests/mocks/request'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { HttpMethodEnum } from 'shared/constants/http'
 

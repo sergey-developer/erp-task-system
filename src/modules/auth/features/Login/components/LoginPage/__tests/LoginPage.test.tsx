@@ -6,7 +6,7 @@ import {
   screen,
   setupApiTests,
   within,
-} from '__tests__/utils'
+} from '__tests/utils'
 import { RoutesEnum } from 'configs/routes'
 import LoginPage from 'modules/auth/features/Login/components/LoginPage'
 import {

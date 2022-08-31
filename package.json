@@ -82,7 +82,7 @@
           "shared",
           "styles",
           "app",
-          "__tests__"
+          "_tests"
         ],
         "ignoredAliases": [],
         "bottomAliases": []

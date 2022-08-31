@@ -1,7 +1,7 @@
-import { API_RESPONSE_DELAY } from '__tests__/constants'
-import { getRequestMocker } from '__tests__/mocks/request'
+import { API_RESPONSE_DELAY } from '__tests/constants'
+import { getRequestMocker } from '__tests/mocks/request'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
-import { refreshTokenMocker } from 'modules/auth/features/RefreshToken/__tests__/mocks'
+import { refreshTokenMocker } from 'modules/auth/features/RefreshToken/__tests/mocks'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 
 import { loginResponseSuccess } from './constants'
