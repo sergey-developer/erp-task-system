@@ -257,6 +257,7 @@ const TaskListPage: FC = () => {
               <Col>
                 <Space align='end' size='middle'>
                   <Button
+                    data-testid='btn-reload-taskList'
                     icon={<SyncOutlined />}
                     onClick={handleRefetchTaskList}
                   >

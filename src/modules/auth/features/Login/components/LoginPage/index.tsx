@@ -98,7 +98,7 @@ const LoginPage: FC = () => {
               </Button>
 
               <Link
-                data-testid='btn-forgot-password'
+                data-testid='btn-forgotPassword'
                 to={RoutesEnum.ForgotPassword}
               >
                 <Button type='link' block>

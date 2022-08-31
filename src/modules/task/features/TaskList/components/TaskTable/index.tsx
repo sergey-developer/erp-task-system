@@ -39,6 +39,7 @@ const TaskTable: FC<TaskTableProps> = ({
 
   return (
     <TableStyled<TaskTableListItem>
+      data-testid='table-taskList'
       dataSource={dataSource}
       columns={columns}
       pagination={
