@@ -1,51 +1,97 @@
-import { render, screen } from '__tests__/utils'
+import { FAKE_ID } from '__tests__/constants'
+import { render, screen, setupApiTests } from '__tests__/utils'
 
 import { NO_DATA_MSG } from '../constants'
 import Journal from '../index'
-import { emptyJournal, fakeJournal } from './constants'
+import {
+  getEmptyJournalResponseSuccess,
+  getJournalResponseSuccess,
+} from './constants'
+import { mockGetJournalSuccess } from './mocks'
+import { waitFinishLoading, waitStartLoading } from './utils'
 
-describe('Журнал', () => {
-  describe('Если есть записи', () => {
-    test('Отображает записи', () => {
-      render(<Journal data={fakeJournal} />)
+setupApiTests()
 
-      expect(screen.getAllByTestId('journalEntry')).toHaveLength(
-        fakeJournal.length,
-      )
+describe('Страница отображения журнала', () => {
+  describe('При успешном запросе журнала', () => {
+    describe('Если есть записи', () => {
+      describe('Отображает', () => {
+        test('Записи', async () => {
+          mockGetJournalSuccess(getJournalResponseSuccess)
+
+          render(<Journal taskId={FAKE_ID} />)
+          await waitStartLoading()
+          await waitFinishLoading()
+
+          expect(screen.getAllByTestId('journalEntry')).toHaveLength(
+            getJournalResponseSuccess.length,
+          )
+        })
+
+        test('Кнопку экспорта', async () => {
+          mockGetJournalSuccess(getJournalResponseSuccess)
+
+          render(<Journal taskId={FAKE_ID} />)
+          await waitStartLoading()
+          await waitFinishLoading()
+
+          expect(
+            screen.getByTestId('journal-icon-download'),
+          ).toBeInTheDocument()
+        })
+      })
+
+      describe('Не отображает', () => {
+        test(`Текст - "${NO_DATA_MSG}"`, async () => {
+          mockGetJournalSuccess(getJournalResponseSuccess)
+
+          render(<Journal taskId={FAKE_ID} />)
+          await waitStartLoading()
+          await waitFinishLoading()
+
+          expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
+        })
+      })
     })
 
-    test('Отображает кнопку экспорта', () => {
-      render(<Journal data={fakeJournal} />)
+    describe('Если нет записей', () => {
+      describe('Отображает', () => {
+        test(`Текст - "${NO_DATA_MSG}"`, async () => {
+          mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
-      expect(screen.getByTestId('journal-icon-download')).toBeInTheDocument()
-    })
+          render(<Journal taskId={FAKE_ID} />)
+          await waitStartLoading()
+          await waitFinishLoading()
 
-    test(`Не отображает текст - "${NO_DATA_MSG}"`, () => {
-      render(<Journal data={fakeJournal} />)
-      expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
-    })
-  })
+          expect(screen.getByText(NO_DATA_MSG)).toBeInTheDocument()
+        })
+      })
 
-  describe('Если нет записей', () => {
-    test(`Отображает текст - "${NO_DATA_MSG}"`, () => {
-      render(<Journal data={emptyJournal} />)
-      expect(screen.getByText(NO_DATA_MSG)).toBeInTheDocument()
-    })
+      describe('Не отображает', () => {
+        test('Записи', async () => {
+          mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
-    test('Не отображает записи', () => {
-      render(<Journal data={emptyJournal} />)
+          render(<Journal taskId={FAKE_ID} />)
+          await waitStartLoading()
+          await waitFinishLoading()
 
-      expect(screen.queryAllByTestId('journalEntry')).toHaveLength(
-        emptyJournal.length,
-      )
-    })
+          expect(screen.queryAllByTestId('journalEntry')).toHaveLength(
+            getEmptyJournalResponseSuccess.length,
+          )
+        })
 
-    test('Не отображает кнопку экспорта', () => {
-      render(<Journal data={emptyJournal} />)
+        test('Кнопку экспорта', async () => {
+          mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
-      expect(
-        screen.queryByTestId('journal-icon-download'),
-      ).not.toBeInTheDocument()
+          render(<Journal taskId={FAKE_ID} />)
+          await waitStartLoading()
+          await waitFinishLoading()
+
+          expect(
+            screen.queryByTestId('journal-icon-download'),
+          ).not.toBeInTheDocument()
+        })
+      })
     })
   })
 })

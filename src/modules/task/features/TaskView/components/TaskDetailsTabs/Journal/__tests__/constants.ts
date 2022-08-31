@@ -11,9 +11,11 @@ type FakeJournalEntry = Omit<
   'updatedAt' | 'recordId' | 'task'
 >
 
-export const emptyJournal: Array<FakeJournalEntry> = []
+export type FakeJournalResponse = Array<FakeJournalEntry>
 
-export const fakeJournal: Array<FakeJournalEntry> = [
+export const getEmptyJournalResponseSuccess: FakeJournalResponse = []
+
+export const getJournalResponseSuccess: FakeJournalResponse = [
   {
     id: 1,
     createdAt: new Date().toISOString(),
