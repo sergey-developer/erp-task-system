@@ -33,7 +33,6 @@ const Journal: FC<JournalProps> = ({ data }) => {
               return (
                 <Col key={item.id} span={24}>
                   <JournalItem
-                    data-testid='journalItem'
                     createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
                     type={item.type}
                     author={item.author ? getFullUserName(item.author) : null}
