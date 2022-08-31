@@ -1,4 +1,4 @@
-import { TaskEndpointsTagsEnum } from 'modules/task/constants/enums'
+import { TaskEndpointsTagsEnum } from 'modules/task/constants/api'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
   GetTaskReclassificationRequestQueryArgsModel,

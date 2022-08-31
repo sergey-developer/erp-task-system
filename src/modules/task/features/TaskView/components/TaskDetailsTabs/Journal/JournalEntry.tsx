@@ -3,17 +3,21 @@ import React, { FC } from 'react'
 
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
-import { TaskJournalItemModel } from 'modules/task/features/TaskView/models/taskJournal.model'
+import { TaskJournalEntryModel } from 'modules/task/features/TaskView/models'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 const { Text, Paragraph } = Typography
 
-export type JournalItemProps = Omit<TaskJournalItemModel, 'id' | 'author'> & {
+export type JournalEntryProps = Pick<
+  TaskJournalEntryModel,
+  'createdAt' | 'description' | 'sourceSystem'
+> & {
+  type: string
   author: MaybeNull<string>
 }
 
-const JournalItem: FC<JournalItemProps> = ({
+const JournalEntry: FC<JournalEntryProps> = ({
   createdAt,
   sourceSystem,
   type,
@@ -38,7 +42,7 @@ const JournalItem: FC<JournalItemProps> = ({
         </LabeledData>
 
         {author && (
-          <LabeledData data-testid='journalItem-author' label='Кем добавлено'>
+          <LabeledData data-testid='journalEntry-author' label='Кем добавлено'>
             <Text>{author}</Text>
           </LabeledData>
         )}
@@ -47,4 +51,4 @@ const JournalItem: FC<JournalItemProps> = ({
   )
 }
 
-export default JournalItem
+export default JournalEntry
