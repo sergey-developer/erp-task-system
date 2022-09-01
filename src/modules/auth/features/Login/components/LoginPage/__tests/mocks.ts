@@ -1,5 +1,10 @@
-import { API_RESPONSE_DELAY } from '__tests/constants'
-import { getRequestMocker } from '__tests/mocks/request'
+import {
+  getBadRequestErrorMocker,
+  getRequestMocker,
+  getServerErrorMocker,
+  getUnauthorizedErrorMocker,
+} from '__tests/mocks/request'
+import { getResponseResolver } from '__tests/mocks/response'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { refreshTokenMocker } from 'modules/auth/features/RefreshToken/__tests/mocks'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
@@ -11,40 +16,24 @@ const loginMocker = getRequestMocker(
   AuthEndpointsEnum.Login,
 )
 
-export const mockLoginSuccess = loginMocker((req, res, ctx) =>
-  res.once(
-    ctx.status(HttpStatusCodeEnum.Ok),
-    ctx.json(loginResponseSuccess),
-    ctx.delay(API_RESPONSE_DELAY),
-  ),
+export const mockLoginSuccess = loginMocker(
+  getResponseResolver({
+    status: HttpStatusCodeEnum.Ok,
+    body: loginResponseSuccess,
+  }),
 )
 
-export const mockLoginBadRequestError = loginMocker((req, res, ctx) =>
-  res.once(
-    ctx.status(HttpStatusCodeEnum.BadRequest),
-    ctx.delay(API_RESPONSE_DELAY),
-  ),
-)
+export const mockLoginBadRequestError = getBadRequestErrorMocker(loginMocker)
 
 export const mockLoginUnauthorizedError = () => {
-  const mockLogin = loginMocker((req, res, ctx) =>
-    res.once(
-      ctx.status(HttpStatusCodeEnum.Unauthorized),
-      ctx.delay(API_RESPONSE_DELAY),
-    ),
-  )
+  const mockLogin = getUnauthorizedErrorMocker(loginMocker)
 
-  const mockRefreshToken = refreshTokenMocker((req, res, ctx) =>
-    res.once(ctx.status(HttpStatusCodeEnum.Ok)),
+  const mockRefreshToken = refreshTokenMocker(
+    getResponseResolver({ status: HttpStatusCodeEnum.Ok }),
   )
 
   mockLogin()
   mockRefreshToken()
 }
 
-export const mockLoginServerError = loginMocker((req, res, ctx) =>
-  res.once(
-    ctx.status(HttpStatusCodeEnum.ServerError),
-    ctx.delay(API_RESPONSE_DELAY),
-  ),
-)
+export const mockLoginServerError = getServerErrorMocker(loginMocker)
