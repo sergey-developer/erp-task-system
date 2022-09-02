@@ -1,6 +1,5 @@
 import { FAKE_ID } from '__tests/constants'
-import { render, screen, setupApiTests } from '__tests/utils'
-import { within } from '@testing-library/react'
+import { render, screen, setupApiTests, within } from '__tests/utils'
 import { getTaskJournalCsvUrl } from 'modules/task/utils/apiUrls'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
