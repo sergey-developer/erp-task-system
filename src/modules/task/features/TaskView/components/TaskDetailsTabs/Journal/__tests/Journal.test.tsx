@@ -1,5 +1,7 @@
 import { FAKE_ID } from '__tests/constants'
 import { render, screen, setupApiTests } from '__tests/utils'
+import { within } from '@testing-library/react'
+import { getTaskJournalCsvUrl } from 'modules/task/utils/apiUrls'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import { NO_DATA_MSG } from '../constants'
@@ -9,7 +11,7 @@ import {
   getJournalResponseSuccess,
 } from './constants'
 import { mockGetJournalServerError, mockGetJournalSuccess } from './mocks'
-import { waitFinishLoading, waitStartLoading } from './utils'
+import { getDownloadButton, waitFinishLoading, waitStartLoading } from './utils'
 
 setupApiTests()
 
@@ -29,14 +31,20 @@ describe('Страница отображения журнала', () => {
           )
         })
 
-        test('Кнопку экспорта', async () => {
+        test('Кнопку экспорта в csv', async () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_ID} />)
           await waitStartLoading()
           await waitFinishLoading()
 
-          expect(screen.getByTestId('journal-btn-download')).toBeInTheDocument()
+          const downloadButton = getDownloadButton()
+
+          expect(downloadButton).toBeInTheDocument()
+
+          expect(
+            within(downloadButton).getByTestId('journal-icon-download'),
+          ).toBeInTheDocument()
         })
       })
 
@@ -49,6 +57,32 @@ describe('Страница отображения журнала', () => {
           await waitFinishLoading()
 
           expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
+        })
+      })
+
+      describe('Кнопка экспорта в csv', () => {
+        test('Валидна для экспорта заявки', async () => {
+          mockGetJournalSuccess(getJournalResponseSuccess)
+
+          render(<Journal taskId={FAKE_ID} />)
+
+          await waitStartLoading()
+          await waitFinishLoading()
+
+          const downloadButton = getDownloadButton()
+
+          expect(downloadButton).toBeEnabled()
+          expect(downloadButton.tagName.toLowerCase()).toBe('a')
+
+          expect(downloadButton).toHaveAttribute(
+            'href',
+            getTaskJournalCsvUrl(FAKE_ID),
+          )
+
+          expect(downloadButton).toHaveAttribute(
+            'download',
+            `csv-заявка-${FAKE_ID}`,
+          )
         })
       })
     })
@@ -79,7 +113,7 @@ describe('Страница отображения журнала', () => {
           )
         })
 
-        test('Кнопку экспорта', async () => {
+        test('Кнопку экспорта в csv', async () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_ID} />)
@@ -88,6 +122,10 @@ describe('Страница отображения журнала', () => {
 
           expect(
             screen.queryByTestId('journal-btn-download'),
+          ).not.toBeInTheDocument()
+
+          expect(
+            screen.queryByTestId('journal-icon-download'),
           ).not.toBeInTheDocument()
         })
       })
