@@ -36,9 +36,7 @@ describe('Страница отображения журнала', () => {
           await waitStartLoading()
           await waitFinishLoading()
 
-          expect(
-            screen.getByTestId('journal-icon-download'),
-          ).toBeInTheDocument()
+          expect(screen.getByTestId('journal-btn-download')).toBeInTheDocument()
         })
       })
 
@@ -89,7 +87,7 @@ describe('Страница отображения журнала', () => {
           await waitFinishLoading()
 
           expect(
-            screen.queryByTestId('journal-icon-download'),
+            screen.queryByTestId('journal-btn-download'),
           ).not.toBeInTheDocument()
         })
       })

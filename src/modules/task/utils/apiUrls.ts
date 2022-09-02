@@ -25,3 +25,6 @@ export const getTaskReclassificationRequestUrl = (taskId: number): string =>
 
 export const getTaskJournalUrl = (taskId: number): string =>
   TaskEndpointsEnum.TaskJournal.replace(':id', String(taskId))
+
+export const getTaskJournalCsvUrl = (taskId: number): string =>
+  TaskEndpointsEnum.TaskJournalCsv.replace(':id', String(taskId))
