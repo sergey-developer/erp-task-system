@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from '__tests__/utils'
+import { render, screen } from '__tests/utils'
 
 import JournalEntry from '../JournalEntry'
 import { fakeJournalEntry } from './constants'

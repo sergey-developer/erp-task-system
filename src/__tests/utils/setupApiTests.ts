@@ -1,4 +1,4 @@
-import api from '__tests__/mocks/api'
+import api from '__tests/mocks/api'
 import { apiService } from 'shared/services/api'
 import store from 'state/store'
 

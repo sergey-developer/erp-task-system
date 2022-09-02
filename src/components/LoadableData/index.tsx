@@ -12,9 +12,10 @@ const LoadableData: FCWithChildren<LoadableDataProps> = ({
   children,
   noContent,
   isLoading,
+  ...props
 }) => {
   return isLoading ? (
-    <Spinner />
+    <Spinner {...props} />
   ) : !isLoading && noContent ? (
     <>{noContent}</>
   ) : (

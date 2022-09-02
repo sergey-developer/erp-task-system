@@ -8,7 +8,7 @@ const workGroupApiService = apiService.injectEndpoints({
     getWorkGroupList: build.query<GetWorkGroupListResponseModel, null>({
       query: () => ({
         url: WorkGroupEndpointsEnum.WorkGroupList,
-        method: HttpMethodEnum.GET,
+        method: HttpMethodEnum.Get,
       }),
       keepUnusedDataFor: 30,
     }),

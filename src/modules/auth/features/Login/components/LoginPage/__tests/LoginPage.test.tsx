@@ -6,7 +6,7 @@ import {
   screen,
   setupApiTests,
   within,
-} from '__tests__/utils'
+} from '__tests/utils'
 import { RoutesEnum } from 'configs/routes'
 import LoginPage from 'modules/auth/features/Login/components/LoginPage'
 import {
@@ -22,7 +22,7 @@ import store from 'state/store'
 import {
   CORRECT_EMAIL,
   CORRECT_PASSWORD,
-  successLoginResponse,
+  loginResponseSuccess,
 } from './constants'
 import {
   mockLoginBadRequestError,
@@ -143,7 +143,7 @@ describe('Страница авторизации', () => {
           await waitFinishLoading(submitBtn)
 
           expect(authLocalStorageService.getAccessToken()).toBe(
-            successLoginResponse.access,
+            loginResponseSuccess.access,
           )
         })
 
@@ -159,7 +159,7 @@ describe('Страница авторизации', () => {
           await waitFinishLoading(submitBtn)
 
           expect(authLocalStorageService.getRefreshToken()).toBe(
-            successLoginResponse.refresh,
+            loginResponseSuccess.refresh,
           )
         })
       })
@@ -177,8 +177,8 @@ describe('Страница авторизации', () => {
 
         const authState = store.getState().auth
         expect(authState.user).not.toBe(null)
-        expect(authState.accessToken).toBe(successLoginResponse.access)
-        expect(authState.refreshToken).toBe(successLoginResponse.refresh)
+        expect(authState.accessToken).toBe(loginResponseSuccess.access)
+        expect(authState.refreshToken).toBe(loginResponseSuccess.refresh)
         expect(authState.isAuthenticated).toBe(true)
       })
     })

@@ -25,7 +25,7 @@ const JournalEntry: FC<JournalEntryProps> = ({
   author,
 }) => {
   return (
-    <Space data-testid='journalItem' direction='vertical' size='middle' $block>
+    <Space data-testid='journalEntry' direction='vertical' size='middle' $block>
       <Space direction='vertical'>
         <Text>{createdAt}</Text>
 

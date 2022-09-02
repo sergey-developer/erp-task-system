@@ -1,4 +1,4 @@
-import { screen, waitFor } from '__tests__/utils'
+import { screen, waitFor } from '__tests/utils'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {

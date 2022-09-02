@@ -23,7 +23,7 @@ const taskReclassificationRequestApiService = apiService
       >({
         query: ({ taskId, ...body }) => ({
           url: getCreateTaskReclassificationRequestUrl(taskId),
-          method: HttpMethodEnum.POST,
+          method: HttpMethodEnum.Post,
           data: body,
         }),
         invalidatesTags: [TaskEndpointsTagsEnum.TaskReclassificationRequest],
@@ -34,7 +34,7 @@ const taskReclassificationRequestApiService = apiService
       >({
         query: (taskId) => ({
           url: getTaskReclassificationRequestUrl(taskId),
-          method: HttpMethodEnum.GET,
+          method: HttpMethodEnum.Get,
         }),
         providesTags: [TaskEndpointsTagsEnum.TaskReclassificationRequest],
       }),

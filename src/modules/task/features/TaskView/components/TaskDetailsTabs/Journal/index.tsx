@@ -25,6 +25,7 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
 
   return (
     <LoadableData
+      data-testid='spinner-journal'
       isLoading={isFetching}
       noContent={_isEmpty(data) && <Text>{NO_DATA_MSG}</Text>}
     >
@@ -40,7 +41,6 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
             return (
               <Col key={item.id} span={24}>
                 <JournalEntry
-                  data-testid='journalEntry'
                   createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
                   type={journalEntryTypeDict[item.type]}
                   author={item.author ? getFullUserName(item.author) : null}
