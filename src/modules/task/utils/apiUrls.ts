@@ -1,30 +1,36 @@
-import { TaskEndpointsEnum } from '../constants/api'
+import { generatePath } from 'react-router-dom'
+
+import { TaskEndpointsEnum } from 'modules/task/constants/api'
 
 export const getTaskUrl = (taskId: number): string =>
-  TaskEndpointsEnum.Task.replace(':id', String(taskId))
+  generatePath(TaskEndpointsEnum.Task, { id: String(taskId) })
 
 export const getResolveTaskUrl = (taskId: number): string =>
-  TaskEndpointsEnum.ResolveTask.replace(':id', String(taskId))
+  generatePath(TaskEndpointsEnum.ResolveTask, { id: String(taskId) })
 
 export const getTaskWorkGroupUrl = (taskId: number): string =>
-  TaskEndpointsEnum.TaskWorkGroup.replace(':id', String(taskId))
+  generatePath(TaskEndpointsEnum.TaskWorkGroup, { id: String(taskId) })
 
 export const getTaskAssigneeUrl = (taskId: number): string =>
-  TaskEndpointsEnum.TaskAssignee.replace(':id', String(taskId))
+  generatePath(TaskEndpointsEnum.TaskAssignee, { id: String(taskId) })
 
 export const getTaskCommentListUrl = (taskId: number): string =>
-  TaskEndpointsEnum.TaskCommentList.replace(':id', String(taskId))
+  generatePath(TaskEndpointsEnum.TaskCommentList, { id: String(taskId) })
 
 export const getCreateTaskReclassificationRequestUrl = (
   taskId: number,
 ): string =>
-  TaskEndpointsEnum.CreateReclassificationRequest.replace(':id', String(taskId))
+  generatePath(TaskEndpointsEnum.CreateReclassificationRequest, {
+    id: String(taskId),
+  })
 
 export const getTaskReclassificationRequestUrl = (taskId: number): string =>
-  TaskEndpointsEnum.GetReclassificationRequest.replace(':id', String(taskId))
+  generatePath(TaskEndpointsEnum.GetReclassificationRequest, {
+    id: String(taskId),
+  })
 
 export const getTaskJournalUrl = (taskId: number): string =>
-  TaskEndpointsEnum.TaskJournal.replace(':id', String(taskId))
+  generatePath(TaskEndpointsEnum.TaskJournal, { id: String(taskId) })
 
 export const getTaskJournalCsvUrl = (taskId: number): string =>
-  TaskEndpointsEnum.TaskJournalCsv.replace(':id', String(taskId))
+  generatePath(TaskEndpointsEnum.TaskJournalCsv, { id: String(taskId) })
