@@ -9,6 +9,7 @@ export enum TaskEndpointsEnum {
   CreateReclassificationRequest = '/tasks/:id/reclassification-requests/',
   GetReclassificationRequest = '/tasks/:id/reclassification-request/',
   TaskJournal = '/tasks/:id/journal/',
+  TaskJournalCsv = '/tasks/:id/journal/csv/',
 }
 
 export enum TaskEndpointsTagsEnum {

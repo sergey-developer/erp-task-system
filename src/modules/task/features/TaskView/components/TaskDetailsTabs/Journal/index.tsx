@@ -1,5 +1,5 @@
 import { DownloadOutlined } from '@ant-design/icons'
-import { Col, Divider, Row, Typography } from 'antd'
+import { Button, Col, Divider, Row, Typography } from 'antd'
 import _isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
@@ -7,6 +7,7 @@ import LoadableData from 'components/LoadableData'
 import Space from 'components/Space'
 import { journalEntryTypeDict } from 'modules/task/constants/dict'
 import useGetTaskJournal from 'modules/task/features/TaskView/hooks/useGetTaskJournal'
+import { getTaskJournalCsvUrl } from 'modules/task/utils/apiUrls'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
@@ -31,7 +32,13 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
     >
       <Space direction='vertical' $block>
         <Row justify='end'>
-          <DownloadOutlined data-testid='journal-icon-download' />
+          <Button
+            data-testid='journal-btn-download'
+            type='link'
+            href={getTaskJournalCsvUrl(taskId)}
+            download={`csv-заявка-${taskId}`}
+            icon={<DownloadOutlined style={{ color: 'black' }} />}
+          />
         </Row>
 
         <Row>
