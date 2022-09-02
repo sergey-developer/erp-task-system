@@ -187,13 +187,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const cardTitle = !taskIsLoading && details && (
     <CardTitle
       id={details.id}
+      type={details.type}
       status={details.status}
       olaStatus={details.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
+      reclassificationRequestExist={reclassificationRequestExist}
       onClose={onClose}
       onClickExecuteTask={debouncedOpenTaskResolutionModal}
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
-      reclassificationRequestExist={reclassificationRequestExist}
     />
   )
 

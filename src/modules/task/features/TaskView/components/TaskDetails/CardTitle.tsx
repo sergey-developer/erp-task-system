@@ -10,9 +10,13 @@ import React, { FC, useMemo } from 'react'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useTaskOlaStatus from 'modules/task/hooks/useTaskOlaStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
+import useTaskType from 'modules/task/hooks/useTaskType'
 import useUserRole from 'modules/user/hooks/useUserRole'
 
-type CardTitleProps = Pick<TaskDetailsModel, 'id' | 'status' | 'olaStatus'> & {
+type CardTitleProps = Pick<
+  TaskDetailsModel,
+  'id' | 'status' | 'olaStatus' | 'type'
+> & {
   isAssignedToCurrentUser: boolean
   reclassificationRequestExist: boolean
   onClickExecuteTask: () => void
@@ -22,14 +26,16 @@ type CardTitleProps = Pick<TaskDetailsModel, 'id' | 'status' | 'olaStatus'> & {
 
 const CardTitle: FC<CardTitleProps> = ({
   id,
+  type,
+  status,
+  olaStatus,
+  isAssignedToCurrentUser,
+  reclassificationRequestExist,
   onClose,
   onClickExecuteTask,
   onClickRequestReclassification,
-  isAssignedToCurrentUser,
-  status,
-  olaStatus,
-  reclassificationRequestExist,
 }) => {
+  const taskType = useTaskType(type)
   const taskStatus = useTaskStatus(status)
   const taskOlaStatus = useTaskOlaStatus(olaStatus)
   const { isEngineerRole } = useUserRole()
@@ -54,7 +60,10 @@ const CardTitle: FC<CardTitleProps> = ({
           !(
             (taskStatus.isNew || taskStatus.isAppointed) &&
             taskOlaStatus.isNotExpired
-          ) || isEngineerRole,
+          ) ||
+          taskType.isRequestTask ||
+          taskType.isIncidentTask ||
+          isEngineerRole,
         icon: <QuestionCircleTwoTone className='fs-14' />,
         label: reclassificationRequestExist
           ? 'Отменить переклассификацию'
@@ -77,6 +86,8 @@ const CardTitle: FC<CardTitleProps> = ({
     taskStatus.isAppointed,
     taskStatus.isInProgress,
     taskStatus.isNew,
+    taskType.isIncidentTask,
+    taskType.isRequestTask,
   ])
 
   return (
