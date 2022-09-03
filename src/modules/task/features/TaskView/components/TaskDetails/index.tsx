@@ -9,6 +9,7 @@ import useUpdateTaskAssignee from 'modules/task/features/TaskView/hooks/useUpdat
 import useUpdateTaskWorkGroup from 'modules/task/features/TaskView/hooks/useUpdateTaskWorkGroup'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
+  TakeTaskMutationArgsModel,
   TaskDetailsModel,
   TaskDetailsReclassificationRequestModel,
 } from 'modules/task/features/TaskView/models'
@@ -68,6 +69,9 @@ type TaskDetailsProps = {
   ) => Promise<void>
   reclassificationRequestIsCreating: boolean
 
+  takeTask: (data: TakeTaskMutationArgsModel) => Promise<void>
+  takeTaskIsLoading: boolean
+
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
 
@@ -78,6 +82,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   details,
 
   taskIsLoading,
+  takeTask,
+  takeTaskIsLoading,
 
   reclassificationRequest,
   reclassificationRequestIsCreating,
@@ -137,14 +143,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   >(
     async (values, setFields) => {
       try {
-        await resolveTask({ taskId: details!.id, ...values })
+        await resolveTask({ taskId: details?.id!, ...values })
         onClose()
       } catch (exception) {
         const error = exception as ErrorResponse<TaskResolutionFormErrors>
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [details, onClose, resolveTask],
+    [details?.id, onClose, resolveTask],
   )
 
   const handleReclassificationRequestSubmit = useCallback<
@@ -153,7 +159,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     async (values, setFields) => {
       try {
         await createReclassificationRequest({
-          taskId: details!.id,
+          taskId: details?.id!,
           ...values,
         })
         closeTaskReclassificationModal()
@@ -163,7 +169,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [closeTaskReclassificationModal, createReclassificationRequest, details],
+    [
+      closeTaskReclassificationModal,
+      createReclassificationRequest,
+      details?.id,
+    ],
   )
 
   const handleUpdateTaskWorkGroup = useCallback(
@@ -171,18 +181,26 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
-      await updateTaskWorkGroup({ taskId: details!.id, workGroup })
+      await updateTaskWorkGroup({ taskId: details?.id!, workGroup })
       closeTaskSecondLineModal()
       onClose()
     },
-    [details, onClose, updateTaskWorkGroup],
+    [details?.id, onClose, updateTaskWorkGroup],
   )
 
   const handleUpdateTaskAssignee = useCallback(
     async (assignee: AssigneeModel['id']) => {
-      await updateTaskAssignee({ taskId: details!.id, assignee })
+      await updateTaskAssignee({ taskId: details?.id!, assignee })
     },
-    [details, updateTaskAssignee],
+    [details?.id, updateTaskAssignee],
+  )
+
+  const handleTakeTask = useDebounceFn(
+    async () => {
+      await takeTask({ taskId: details?.id! })
+    },
+    undefined,
+    [details?.id, takeTask],
   )
 
   const cardTitle = !taskIsLoading && details && (
@@ -250,6 +268,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               updateTaskAssignee={handleUpdateTaskAssignee}
               updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
               reclassificationRequestExist={reclassificationRequestExist}
+              takeTask={handleTakeTask}
+              takeTaskIsLoading={takeTaskIsLoading}
             />
 
             <TaskDetailsTabs

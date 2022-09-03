@@ -1,4 +1,5 @@
 import { Button, Row, Typography } from 'antd'
+import { DebouncedFunc } from 'lodash'
 import React, { FC, useState } from 'react'
 
 import LabeledData from 'components/LabeledData'
@@ -32,6 +33,9 @@ type TaskAssigneeProps = Pick<
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
 
+  takeTask: DebouncedFunc<() => Promise<void>>
+  takeTaskIsLoading: boolean
+
   reclassificationRequestExist: boolean
 }
 
@@ -46,6 +50,9 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
+
+  takeTask,
+  takeTaskIsLoading,
 
   reclassificationRequestExist,
 }) => {
@@ -91,6 +98,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
     <Button
       type='primary'
       ghost
+      loading={takeTaskIsLoading}
       disabled={
         !(
           taskStatus.isNew &&
@@ -98,6 +106,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
           !extendedTaskStatus.isInReclassification
         )
       }
+      onClick={takeTask}
     >
       Взять в работу
     </Button>

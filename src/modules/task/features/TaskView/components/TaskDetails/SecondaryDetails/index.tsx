@@ -1,5 +1,6 @@
 import { Col, Row } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
+import { DebouncedFunc } from 'lodash'
 import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
@@ -23,6 +24,9 @@ type SecondaryDetailsProps = Pick<
   ) => Promise<void>
   transferTaskIsLoading: boolean
 
+  takeTask: DebouncedFunc<() => Promise<void>>
+  takeTaskIsLoading: boolean
+
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
 
@@ -42,6 +46,9 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   transferTask,
   transferTaskIsLoading,
+
+  takeTask,
+  takeTaskIsLoading,
 
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
@@ -84,6 +91,8 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             workGroupListIsLoading={workGroupListIsLoading}
             updateTaskAssignee={updateTaskAssignee}
             updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
+            takeTask={takeTask}
+            takeTaskIsLoading={takeTaskIsLoading}
             reclassificationRequestExist={reclassificationRequestExist}
           />
         </Col>
