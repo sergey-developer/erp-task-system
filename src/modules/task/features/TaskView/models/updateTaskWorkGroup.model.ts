@@ -1,4 +1,4 @@
-import { BaseTaskRequestArgs } from 'modules/task/interfaces/baseTaskRequest'
+import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type UpdateTaskWorkGroupMutationArgsModel = BaseTaskRequestArgs & {
