@@ -49,6 +49,7 @@ type TaskDetailsProps = {
       | 'workGroup'
       | 'assignee'
       | 'status'
+      | 'extendedStatus'
       | 'type'
       | 'techResolution'
       | 'userResolution'
@@ -239,6 +240,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             <SecondaryDetails
               id={details.id}
               status={details.status}
+              extendedStatus={details.extendedStatus}
               assignee={details.assignee}
               workGroup={details.workGroup}
               workGroupList={workGroupList}

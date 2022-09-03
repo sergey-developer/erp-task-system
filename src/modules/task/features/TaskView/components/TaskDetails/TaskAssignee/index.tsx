@@ -9,6 +9,7 @@ import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthentica
 import { ASSIGNEE_WORD } from 'modules/task/constants/words'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions/taskAssignee.permissions'
+import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
@@ -21,7 +22,10 @@ const { Text } = Typography
 
 const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
 
-type TaskAssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'status'> & {
+type TaskAssigneeProps = Pick<
+  TaskDetailsModel,
+  'assignee' | 'status' | 'extendedStatus'
+> & {
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
@@ -32,8 +36,10 @@ type TaskAssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'status'> & {
 }
 
 const TaskAssignee: FC<TaskAssigneeProps> = ({
-  status,
   assignee,
+
+  status,
+  extendedStatus,
 
   workGroup,
   workGroupListIsLoading,
@@ -46,6 +52,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const currentAssignee = assignee?.id
   const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
   const taskStatus = useTaskStatus(status)
+  const extendedTaskStatus = useTaskExtendedStatus(extendedStatus)
   const authenticatedUser = useAuthenticatedUser()
 
   const selectedAssigneeIsCurrentAssignee = selectedAssignee === currentAssignee
@@ -80,6 +87,22 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
     await updateTaskAssignee(selectedAssignee!)
   }
 
+  const takeTaskButton = (
+    <Button
+      type='primary'
+      ghost
+      disabled={
+        !(
+          taskStatus.isNew &&
+          (currentAssigneeIsAuthenticatedUser || !currentAssignee) &&
+          !extendedTaskStatus.isInReclassification
+        )
+      }
+    >
+      Взять в работу
+    </Button>
+  )
+
   return (
     <Space direction='vertical' $block>
       <LabeledData label={ASSIGNEE_WORD} size='large' direction='horizontal'>
@@ -110,16 +133,20 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         {({ canView, canEdit }) =>
           canView && !canEdit ? (
             assignee ? (
-              <Assignee
-                name={getFullUserName(assignee)}
-                status={status}
-                assignee={assignee}
-              />
+              <Space direction='vertical' size='middle' $block>
+                <Assignee
+                  name={getFullUserName(assignee)}
+                  status={status}
+                  assignee={assignee}
+                />
+
+                <Row justify='end'>{takeTaskButton}</Row>
+              </Space>
             ) : (
               <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
             )
           ) : canView && canEdit && canSelectAssignee ? (
-            <Space direction='vertical' $block>
+            <Space direction='vertical' size='middle' $block>
               <SelectStyled
                 defaultValue={selectedAssignee}
                 loading={workGroupListIsLoading}
@@ -154,7 +181,9 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                 })}
               </SelectStyled>
 
-              <Row justify='end'>
+              <Row justify='space-between'>
+                {takeTaskButton}
+
                 <Button
                   type='primary'
                   ghost
