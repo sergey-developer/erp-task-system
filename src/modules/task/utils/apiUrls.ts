@@ -8,6 +8,9 @@ export const getTaskUrl = (taskId: number): string =>
 export const getResolveTaskUrl = (taskId: number): string =>
   generatePath(TaskEndpointsEnum.ResolveTask, { id: String(taskId) })
 
+export const getTakeTaskUrl = (taskId: number): string =>
+  generatePath(TaskEndpointsEnum.TakeTask, { id: String(taskId) })
+
 export const getTaskWorkGroupUrl = (taskId: number): string =>
   generatePath(TaskEndpointsEnum.TaskWorkGroup, { id: String(taskId) })
 

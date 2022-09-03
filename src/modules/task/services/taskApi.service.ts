@@ -14,11 +14,13 @@ import {
   GetTaskQueryArgsModel,
   GetTaskResponseModel,
   ResolveTaskMutationArgsModel,
+  TakeTaskMutationArgsModel,
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskWorkGroupMutationArgsModel,
 } from 'modules/task/features/TaskView/models'
 import {
   getResolveTaskUrl,
+  getTakeTaskUrl,
   getTaskAssigneeUrl,
   getTaskJournalUrl,
   getTaskUrl,
@@ -79,6 +81,14 @@ const taskApiService = apiService
         invalidatesTags: (result, error) =>
           error ? [] : [TaskEndpointsTagsEnum.TaskList],
       }),
+      takeTask: build.mutation<void, TakeTaskMutationArgsModel>({
+        query: ({ taskId }) => ({
+          url: getTakeTaskUrl(taskId),
+          method: HttpMethodEnum.Post,
+        }),
+        invalidatesTags: (result, error) =>
+          error ? [] : [TaskEndpointsTagsEnum.Task],
+      }),
       updateTaskWorkGroup: build.mutation<
         void,
         UpdateTaskWorkGroupMutationArgsModel
@@ -124,4 +134,5 @@ export const {
   useUpdateTaskWorkGroupMutation,
   useGetTaskCountersQuery,
   useGetTaskJournalQuery,
+  useTakeTaskMutation,
 } = taskApiService

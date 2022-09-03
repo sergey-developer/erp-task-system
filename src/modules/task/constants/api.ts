@@ -3,6 +3,7 @@ export enum TaskEndpointsEnum {
   TaskCounters = '/tasks/counters',
   Task = '/tasks/:id',
   ResolveTask = '/tasks/:id/resolution/',
+  TakeTask = '/tasks/:id/execution/',
   TaskWorkGroup = '/tasks/:id/work-group/',
   TaskAssignee = '/tasks/:id/assignee/',
   TaskCommentList = '/tasks/:id/comments',

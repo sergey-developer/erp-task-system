@@ -4,6 +4,7 @@ import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useCreateTaskReclassificationRequest'
 import useGetTask from 'modules/task/features/TaskView/hooks/useGetTask'
 import useGetTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useGetTaskReclassificationRequest'
+import useTakeTask from 'modules/task/features/TaskView/hooks/useTakeTask'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'
@@ -31,6 +32,11 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     state: { isLoading: reclassificationRequestIsCreating },
   } = useCreateTaskReclassificationRequest()
 
+  const {
+    fn: takeTask,
+    state: { isLoading: takeTaskIsLoading },
+  } = useTakeTask()
+
   const { data: workGroupList = [], isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
 
@@ -47,6 +53,8 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       reclassificationRequest={reclassificationRequest}
       createReclassificationRequest={createReclassificationRequest}
       reclassificationRequestIsCreating={reclassificationRequestIsCreating}
+      takeTask={takeTask}
+      takeTaskIsLoading={takeTaskIsLoading}
       onClose={onClose}
       workGroupList={workGroupList}
       workGroupListIsLoading={workGroupListIsFetching}

@@ -2,6 +2,8 @@ export * from './getTask.model'
 
 export * from './resolveTask.model'
 
+export * from './takeTask.model'
+
 export * from './taskJournal.model'
 export * from './getTaskJournal.model'
 
