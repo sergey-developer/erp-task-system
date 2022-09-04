@@ -8,7 +8,7 @@ import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 import { ErrorResponse } from 'shared/services/api'
-import isEqual from 'shared/utils/common/isEqual'
+import { isEqual, isNotEqual } from 'shared/utils/common/isEqual'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 const useCreateTaskReclassificationRequest = () => {
@@ -34,7 +34,7 @@ const useCreateTaskReclassificationRequest = () => {
       showErrorNotification(
         CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG,
       )
-    } else if (!isEqual(error.status, HttpStatusCodeEnum.BadRequest)) {
+    } else if (isNotEqual(error.status, HttpStatusCodeEnum.BadRequest)) {
       showErrorNotification(UNKNOWN_ERROR_MSG)
     }
   }, [state.error, state.isError])

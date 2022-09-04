@@ -17,7 +17,7 @@ import {
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { REQUIRED_FIELD_MSG } from 'shared/constants/messages'
-import store from 'state/store'
+import { setupStore } from 'state/store'
 
 import {
   CORRECT_EMAIL,
@@ -166,8 +166,9 @@ describe('Страница авторизации', () => {
 
       test('данные сохраняются в store', async () => {
         mockLoginSuccess()
+        const store = setupStore()
 
-        const { user } = render(<LoginPage />)
+        const { user } = render(<LoginPage />, { store })
 
         await userEntersCorrectEmail(user)
         await userEntersCorrectPassword(user)
@@ -176,6 +177,7 @@ describe('Страница авторизации', () => {
         await waitFinishLoading(submitBtn)
 
         const authState = store.getState().auth
+
         expect(authState.user).not.toBe(null)
         expect(authState.accessToken).toBe(loginResponseSuccess.access)
         expect(authState.refreshToken).toBe(loginResponseSuccess.refresh)

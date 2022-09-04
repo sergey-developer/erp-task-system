@@ -5,15 +5,16 @@
 
 import { ReactElement } from 'react'
 
-import { RenderOptions } from '@testing-library/react'
 import { RoutesEnum } from 'configs/routes'
 
-import renderInAppProvider from './renderInAppProvider'
+import renderInAppProvider, {
+  RenderInAppProviderOptions,
+} from './renderInAppProvider'
 
 const renderInRoute = (
   ui: ReactElement,
   route: RoutesEnum,
-  options?: Omit<RenderOptions, 'wrapper'>,
+  options?: RenderInAppProviderOptions,
 ) => {
   window.history.pushState({}, '', route)
 

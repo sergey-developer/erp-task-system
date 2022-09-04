@@ -1,3 +1,7 @@
+import {
+  CORRECT_ACCESS_TOKEN,
+  CORRECT_REFRESH_TOKEN,
+} from '__tests/constants/auth'
 import { LoginResponseModel } from 'modules/auth/models'
 
 export const CORRECT_EMAIL = 'correct@mail.ru'
@@ -6,12 +10,6 @@ export const NOT_EXISTING_EMAIL = 'not-exist@mail.ru'
 
 export const CORRECT_PASSWORD = 'correct-password'
 export const WRONG_PASSWORD = 'wrong-password'
-
-export const CORRECT_ACCESS_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2xlIjoiQURNSU4ifQ._dHw0q0cMhOG_Y4KPpjzkpgYwGuyl3GAvFXZrSWhYl4'
-
-export const CORRECT_REFRESH_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJSb2xlIjoiQURNSU4ifQ.kCB1hsZQH5YGs4mGTVBUESoq5MHWSDGk7dj74E7lfVw'
 
 export const loginResponseSuccess: LoginResponseModel = {
   access: CORRECT_ACCESS_TOKEN,

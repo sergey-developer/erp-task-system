@@ -23,7 +23,7 @@ type WorkGroupProps = Pick<TaskDetailsModel, 'id' | 'workGroup' | 'status'> & {
   ) => Promise<void>
   transferTaskIsLoading: boolean
 
-  reclassificationRequestExist: boolean
+  hasReclassificationRequest: boolean
 }
 
 const WorkGroup: FC<WorkGroupProps> = ({
@@ -37,7 +37,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
   transferTask,
   transferTaskIsLoading,
 
-  reclassificationRequestExist,
+  hasReclassificationRequest,
 }) => {
   const [
     isTaskSecondLineModalOpened,
@@ -65,7 +65,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
           <Permissions config={taskWorkGroupPermissions.transferFirstLineBtn}>
             {() =>
               hasWorkGroup ? (
-                <Button type='link' disabled={reclassificationRequestExist}>
+                <Button type='link' disabled={hasReclassificationRequest}>
                   Вернуть на I линию
                 </Button>
               ) : null
@@ -84,7 +84,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
                       taskStatus.isNew ||
                       taskStatus.isInProgress ||
                       taskStatus.isAwaiting
-                    ) || reclassificationRequestExist
+                    ) || hasReclassificationRequest
                   }
                 >
                   Перевести на II линию

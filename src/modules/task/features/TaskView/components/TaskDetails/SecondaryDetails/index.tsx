@@ -1,6 +1,5 @@
 import { Col, Row } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import { DebouncedFunc } from 'lodash'
 import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
@@ -24,13 +23,13 @@ type SecondaryDetailsProps = Pick<
   ) => Promise<void>
   transferTaskIsLoading: boolean
 
-  takeTask: DebouncedFunc<() => Promise<void>>
+  takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
 
   updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
 
-  reclassificationRequestExist: boolean
+  hasReclassificationRequest: boolean
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
@@ -53,7 +52,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   updateTaskAssignee,
   updateTaskAssigneeIsLoading,
 
-  reclassificationRequestExist,
+  hasReclassificationRequest,
 }) => {
   const breakpoints = useBreakpoint()
 
@@ -78,7 +77,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             workGroupListIsLoading={workGroupListIsLoading}
             transferTask={transferTask}
             transferTaskIsLoading={transferTaskIsLoading}
-            reclassificationRequestExist={reclassificationRequestExist}
+            hasReclassificationRequest={hasReclassificationRequest}
           />
         </Col>
 
@@ -93,7 +92,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
             takeTask={takeTask}
             takeTaskIsLoading={takeTaskIsLoading}
-            reclassificationRequestExist={reclassificationRequestExist}
+            hasReclassificationRequest={hasReclassificationRequest}
           />
         </Col>
       </Row>

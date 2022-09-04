@@ -96,7 +96,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 }) => {
   const breakpoints = useBreakpoint()
 
-  const reclassificationRequestExist = !!reclassificationRequest
+  const hasReclassificationRequest = !!reclassificationRequest
 
   const isAssignedToCurrentUser = useCheckUserAuthenticated(
     details?.assignee?.id,
@@ -195,13 +195,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [details?.id, updateTaskAssignee],
   )
 
-  const handleTakeTask = useDebounceFn(
-    async () => {
-      await takeTask({ taskId: details?.id! })
-    },
-    undefined,
-    [details?.id, takeTask],
-  )
+  const debouncedTakeTask = useDebounceFn(takeTask)
+
+  const handleTakeTask = useCallback(async () => {
+    await debouncedTakeTask({ taskId: details?.id! })
+  }, [debouncedTakeTask, details?.id])
 
   const cardTitle = !taskIsLoading && details && (
     <CardTitle
@@ -210,7 +208,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       status={details.status}
       olaStatus={details.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
-      reclassificationRequestExist={reclassificationRequestExist}
+      hasReclassificationRequest={hasReclassificationRequest}
       onClose={onClose}
       onClickExecuteTask={debouncedOpenTaskResolutionModal}
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
@@ -224,7 +222,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         loading={taskIsLoading}
         $breakpoints={breakpoints}
       >
-        {reclassificationRequestExist && (
+        {hasReclassificationRequest && (
           <>
             <TaskRequestStatus
               title='Запрошена переклассификация:'
@@ -267,7 +265,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               transferTaskIsLoading={updateTaskWorkGroupIsLoading}
               updateTaskAssignee={handleUpdateTaskAssignee}
               updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
-              reclassificationRequestExist={reclassificationRequestExist}
+              hasReclassificationRequest={hasReclassificationRequest}
               takeTask={handleTakeTask}
               takeTaskIsLoading={takeTaskIsLoading}
             />

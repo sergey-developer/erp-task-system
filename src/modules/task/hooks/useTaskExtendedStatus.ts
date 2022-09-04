@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { TaskExtendedStatusEnum } from 'modules/task/constants/enums'
 import { BooleanMap, Keys } from 'shared/interfaces/utils'
-import isEqual from 'shared/utils/common/isEqual'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 const useTaskExtendedStatus = (
   status: TaskExtendedStatusEnum,
