@@ -14,7 +14,7 @@ type FakeJournalEntry = Omit<
 
 export type FakeJournalResponse = Array<FakeJournalEntry>
 
-export const FAKE_JOURNAL_ID = generateId()
+export const FAKE_TASK_ID = generateId()
 
 export const getEmptyJournalResponseSuccess: FakeJournalResponse = []
 
