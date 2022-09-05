@@ -1,14 +1,13 @@
 import { getRequestMocker, getServerErrorMocker } from '__tests/mocks/request'
 import { getResponseResolver } from '__tests/mocks/response'
-import { generateId } from '__tests/utils'
 import { getTaskJournalUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 
-import { FakeJournalResponse } from './constants'
+import { FAKE_JOURNAL_ID, FakeJournalResponse } from './constants'
 
 const getJournalMocker = getRequestMocker(
   HttpMethodEnum.Get,
-  getTaskJournalUrl(generateId()),
+  getTaskJournalUrl(FAKE_JOURNAL_ID),
 )
 
 export const mockGetJournalSuccess = (response: FakeJournalResponse) => {

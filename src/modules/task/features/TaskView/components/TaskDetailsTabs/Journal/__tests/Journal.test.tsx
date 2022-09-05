@@ -1,9 +1,10 @@
-import { generateId, render, screen, setupApiTests } from '__tests/utils'
+import { render, screen, setupApiTests } from '__tests/utils'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import { NO_DATA_MSG } from '../constants'
 import Journal from '../index'
 import {
+  FAKE_JOURNAL_ID,
   getEmptyJournalResponseSuccess,
   getJournalResponseSuccess,
 } from './constants'
@@ -19,7 +20,7 @@ describe('Страница отображения журнала', () => {
         test('Записи', async () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
-          render(<Journal taskId={generateId()} />)
+          render(<Journal taskId={FAKE_JOURNAL_ID} />)
           await waitStartLoading()
           await waitFinishLoading()
 
@@ -31,7 +32,7 @@ describe('Страница отображения журнала', () => {
         test('Кнопку экспорта', async () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
-          render(<Journal taskId={generateId()} />)
+          render(<Journal taskId={FAKE_JOURNAL_ID} />)
           await waitStartLoading()
           await waitFinishLoading()
 
@@ -43,7 +44,7 @@ describe('Страница отображения журнала', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
-          render(<Journal taskId={generateId()} />)
+          render(<Journal taskId={FAKE_JOURNAL_ID} />)
           await waitStartLoading()
           await waitFinishLoading()
 
@@ -57,7 +58,7 @@ describe('Страница отображения журнала', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
-          render(<Journal taskId={generateId()} />)
+          render(<Journal taskId={FAKE_JOURNAL_ID} />)
           await waitStartLoading()
           await waitFinishLoading()
 
@@ -69,7 +70,7 @@ describe('Страница отображения журнала', () => {
         test('Записи', async () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
-          render(<Journal taskId={generateId()} />)
+          render(<Journal taskId={FAKE_JOURNAL_ID} />)
           await waitStartLoading()
           await waitFinishLoading()
 
@@ -81,7 +82,7 @@ describe('Страница отображения журнала', () => {
         test('Кнопку экспорта', async () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
-          render(<Journal taskId={generateId()} />)
+          render(<Journal taskId={FAKE_JOURNAL_ID} />)
           await waitStartLoading()
           await waitFinishLoading()
 
@@ -98,7 +99,7 @@ describe('Страница отображения журнала', () => {
       test(`Ошибку "${UNKNOWN_ERROR_MSG}"`, async () => {
         mockGetJournalServerError()
 
-        render(<Journal taskId={generateId()} />)
+        render(<Journal taskId={FAKE_JOURNAL_ID} />)
         await waitStartLoading()
         await waitFinishLoading()
 
@@ -108,7 +109,7 @@ describe('Страница отображения журнала', () => {
       test(`Текст "${NO_DATA_MSG}"`, async () => {
         mockGetJournalServerError()
 
-        render(<Journal taskId={generateId()} />)
+        render(<Journal taskId={FAKE_JOURNAL_ID} />)
         await waitStartLoading()
         await waitFinishLoading()
 

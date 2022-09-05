@@ -1,3 +1,4 @@
+import { generateId } from '__tests/utils'
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
@@ -12,6 +13,8 @@ type FakeJournalEntry = Omit<
 >
 
 export type FakeJournalResponse = Array<FakeJournalEntry>
+
+export const FAKE_JOURNAL_ID = generateId()
 
 export const getEmptyJournalResponseSuccess: FakeJournalResponse = []
 
