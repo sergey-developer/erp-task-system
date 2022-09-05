@@ -2,7 +2,7 @@ import { BaseUserModel } from 'modules/user/models'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-export type AssigneeModel = BaseUserModel & {
+export type TaskAssigneeModel = BaseUserModel & {
   role: UserRolesEnum
   email: string
   lastLogin?: MaybeNull<string>

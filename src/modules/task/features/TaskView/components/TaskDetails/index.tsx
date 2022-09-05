@@ -13,9 +13,9 @@ import {
   TaskDetailsModel,
   TaskDetailsReclassificationRequestModel,
 } from 'modules/task/features/TaskView/models'
+import { TaskAssigneeModel } from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
-import { AssigneeModel } from 'shared/interfaces/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
@@ -189,7 +189,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   )
 
   const handleUpdateTaskAssignee = useCallback(
-    async (assignee: AssigneeModel['id']) => {
+    async (assignee: TaskAssigneeModel['id']) => {
       await updateTaskAssignee({ taskId: details?.id!, assignee })
     },
     [details?.id, updateTaskAssignee],

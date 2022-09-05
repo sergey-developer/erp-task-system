@@ -11,9 +11,9 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions/taskAssignee.permissions'
 import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
+import { TaskAssigneeModel } from 'modules/task/models'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
-import { AssigneeModel } from 'shared/interfaces/models'
 
 import Assignee from './Assignee'
 import { SelectStyled } from './styles'
@@ -29,7 +29,7 @@ export type TaskAssigneeProps = Pick<
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
-  updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
+  updateTaskAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
 
   takeTask: () => Promise<void>

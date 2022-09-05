@@ -3,8 +3,8 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskAssigneeModel } from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
-import { AssigneeModel } from 'shared/interfaces/models'
 
 import { DetailsContainerStyled } from '../styles'
 import TaskAssignee from '../TaskAssignee'
@@ -26,7 +26,7 @@ type SecondaryDetailsProps = Pick<
   takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
 
-  updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
+  updateTaskAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
 
   hasReclassificationRequest: boolean
