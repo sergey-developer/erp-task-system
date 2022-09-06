@@ -21,7 +21,7 @@ const renderApp = () => {
     </AppProvider>,
   )
 }
-
+console.log(123)
 renderApp()
 
 // If you want to start measuring performance in your app, pass a function
