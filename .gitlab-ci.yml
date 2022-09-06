@@ -1,15 +1,30 @@
 stages:
+  - test
   - build
   - deploy
   - cleanup
 
-before_script:
-  - source "$(~/bin/trdl use werf 1.2 stable)"
-  - type werf && source $(werf ci-env gitlab --as-file)
-  - export WERF_SECRET_KEY=$WERF_SECRET_KEY
+Tests:
+  stage: test
+  image: node:18-buster
+  script:
+    - export REACT_APP_API_URL=http://localhost:3000
+    - export REACT_APP_ENVIRONMENT=test
+    - export CI=true
+    - yarn install
+    - yarn test
+  only:
+    - rc
+  tags:
+    - docker
+
 
 Build and Publish:
   stage: build
+  before_script:
+    - source "$(~/bin/trdl use werf 1.2 stable)"
+    - type werf && source $(werf ci-env gitlab --as-file)
+    - export WERF_SECRET_KEY=$WERF_SECRET_KEY
   script:
     - werf build
   except: [schedules]
@@ -21,6 +36,10 @@ Build and Publish:
 
 Deploy to Develop:
   stage: deploy
+  before_script:
+    - source "$(~/bin/trdl use werf 1.2 stable)"
+    - type werf && source $(werf ci-env gitlab --as-file)
+    - export WERF_SECRET_KEY=$WERF_SECRET_KEY
   script:
     - werf converge --env=itsm-develop --kube-context="default/dev" --skip-build --secret-values=.helm/dev-secret-values.yaml
   dependencies:
@@ -33,6 +52,10 @@ Deploy to Develop:
 
 Cleanup:
   stage: cleanup
+  before_script:
+    - source "$(~/bin/trdl use werf 1.2 stable)"
+    - type werf && source $(werf ci-env gitlab --as-file)
+    - export WERF_SECRET_KEY=$WERF_SECRET_KEY
   script:
     - werf cleanup --kube-context="default/dev"
   only: [schedules]
