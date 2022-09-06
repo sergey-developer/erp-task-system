@@ -6,7 +6,7 @@ stages:
 
 Tests:
   stage: test
-  image: node:18-buster
+  image: node:18-alpine
   script:
     - export REACT_APP_API_URL=http://localhost:3000
     - export REACT_APP_ENVIRONMENT=test
