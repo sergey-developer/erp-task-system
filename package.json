@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "install:dev": "yarn install & husky install",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "genapi": "npx @rtk-query/codegen-openapi ./tools/api/openapi.config.ts",
-    "prepare": "husky install"
+    "genapi": "npx @rtk-query/codegen-openapi ./tools/api/openapi.config.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
