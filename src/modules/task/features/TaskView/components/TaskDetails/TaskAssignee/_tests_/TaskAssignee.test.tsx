@@ -1,5 +1,6 @@
-import { generateId, render } from '__tests/utils'
-import { getStoreWithAuth } from '__tests/utils/auth'
+import { getTaskAssignee, getWorkGroup } from '_fixtures_'
+import { generateId, render } from '_tests_/utils'
+import { getStoreWithAuth } from '_tests_/utils/auth'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
@@ -9,12 +10,7 @@ import { UserRolesEnum } from 'shared/constants/roles'
 import { asyncNoop } from 'shared/utils/common/noop'
 
 import TaskAssignee, { TaskAssigneeProps } from '../index'
-import {
-  getAssignee,
-  getTakeTaskButton,
-  getWorkGroup,
-  queryTakeTaskButton,
-} from './utils'
+import { getTakeTaskButton, queryTakeTaskButton } from './utils'
 
 describe('Блок "Исполнитель заявки"', () => {
   describe('Кнопка "Взять в работу"', () => {
@@ -64,7 +60,7 @@ describe('Блок "Исполнитель заявки"', () => {
         render(
           <TaskAssignee
             {...propsForUserCanNotSelectAssignee}
-            assignee={getAssignee()}
+            assignee={getTaskAssignee()}
           />,
           { store },
         )
@@ -81,7 +77,7 @@ describe('Блок "Исполнитель заявки"', () => {
         render(
           <TaskAssignee
             {...propsForUserCanNotSelectAssignee}
-            assignee={getAssignee()}
+            assignee={getTaskAssignee()}
           />,
           { store },
         )
@@ -241,7 +237,7 @@ describe('Блок "Исполнитель заявки"', () => {
       > = {
         status: TaskStatusEnum.New,
         extendedStatus: TaskExtendedStatusEnum.New,
-        assignee: getAssignee(),
+        assignee: getTaskAssignee(),
       }
 
       describe('Если все условия соблюдены', () => {

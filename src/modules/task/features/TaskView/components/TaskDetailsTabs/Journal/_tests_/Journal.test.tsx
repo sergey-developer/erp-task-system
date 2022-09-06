@@ -1,4 +1,4 @@
-import { render, screen, setupApiTests } from '__tests/utils'
+import { render, screen, setupApiTests } from '_tests_/utils'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import { NO_DATA_MSG } from '../constants'

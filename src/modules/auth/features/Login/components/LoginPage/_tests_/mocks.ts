@@ -3,10 +3,10 @@ import {
   getRequestMocker,
   getServerErrorMocker,
   getUnauthorizedErrorMocker,
-} from '__tests/mocks/request'
-import { getResponseResolver } from '__tests/mocks/response'
+} from '_tests_/mocks/request'
+import { getResponseResolver } from '_tests_/mocks/response'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
-import { refreshTokenMocker } from 'modules/auth/features/RefreshToken/__tests/mocks'
+import { refreshTokenMocker } from 'modules/auth/features/RefreshToken/_tests_/mocks'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 
 import { loginResponseSuccess } from './constants'

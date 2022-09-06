@@ -1,5 +1,5 @@
-import { getRequestMocker, getServerErrorMocker } from '__tests/mocks/request'
-import { getResponseResolver } from '__tests/mocks/response'
+import { getRequestMocker, getServerErrorMocker } from '_tests_/mocks/request'
+import { getResponseResolver } from '_tests_/mocks/response'
 import { getTaskJournalUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 

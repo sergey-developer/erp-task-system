@@ -1,7 +1,7 @@
 import {
   CORRECT_ACCESS_TOKEN,
   CORRECT_REFRESH_TOKEN,
-} from '__tests/constants/auth'
+} from '_tests_/constants/auth'
 import { AuthSliceState, AuthenticatedUser } from 'modules/auth/interfaces'
 
 type GetAuthStateConfig = { user: AuthenticatedUser } & Partial<

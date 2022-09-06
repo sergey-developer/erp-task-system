@@ -1,8 +1,8 @@
 import _curry from 'lodash/curry'
 import { rest } from 'msw'
 
-import api from '__tests/mocks/api'
-import { ResponseResolver, getResponseResolver } from '__tests/mocks/response'
+import api from '_tests_/mocks/api'
+import { ResponseResolver, getResponseResolver } from '_tests_/mocks/response'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 import { makeAbsoluteApiUrl } from 'shared/services/api'
 

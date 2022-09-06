@@ -25,7 +25,8 @@
       "shared": ["shared"],
       "styles": ["styles"],
       "app": ["app"],
-      "_tests": ["_tests"]
+      "_tests_": ["_tests_"],
+      "_fixtures_": ["_fixtures_"]
     }
   },
   "include": ["src"]

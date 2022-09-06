@@ -1,7 +1,7 @@
 import {
   CORRECT_ACCESS_TOKEN,
   CORRECT_REFRESH_TOKEN,
-} from '__tests/constants/auth'
+} from '_tests_/constants/auth'
 import { LoginResponseModel } from 'modules/auth/models'
 
 export const CORRECT_EMAIL = 'correct@mail.ru'
