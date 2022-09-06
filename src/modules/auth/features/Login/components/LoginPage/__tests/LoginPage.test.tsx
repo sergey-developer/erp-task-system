@@ -86,7 +86,7 @@ describe('Страница авторизации', () => {
       await waitStartValidating(emailField, passwordField)
       await waitFinishValidating(emailField, passwordField)
 
-      expect(checkRouteChanged()).toBe(false)
+      expect(checkRouteChanged()).toBe(true)
     })
 
     test('Появляются ошибки под обязательными полями', async () => {
