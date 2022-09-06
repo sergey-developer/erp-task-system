@@ -9,3 +9,6 @@ export const waitFinishLoading = async () => {
     expect(screen.queryByTestId('spinner-journal')).not.toBeInTheDocument()
   })
 }
+
+export const getDownloadButton = () =>
+  screen.getByTestId('journal-btn-download')

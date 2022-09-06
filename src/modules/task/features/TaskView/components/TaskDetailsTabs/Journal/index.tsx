@@ -37,7 +37,12 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
             type='link'
             href={getTaskJournalCsvUrl(taskId)}
             download={`csv-заявка-${taskId}`}
-            icon={<DownloadOutlined style={{ color: 'black' }} />}
+            icon={
+              <DownloadOutlined
+                data-testid='journal-icon-download'
+                style={{ color: 'black' }}
+              />
+            }
           />
         </Row>
 
