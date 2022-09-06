@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo 'i am going to run lint-staged'
+echo 'i am going to run lint-staged!'
 yarn lint-staged
-echo 'lint-staged was finished'
+echo 'lint-staged was finished!'
