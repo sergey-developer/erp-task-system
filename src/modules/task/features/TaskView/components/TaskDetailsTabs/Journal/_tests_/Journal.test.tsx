@@ -3,8 +3,8 @@ import {
   getJournalResponseSuccess,
 } from '_fixtures_/task'
 import { render, screen, setupApiTests, within } from '_tests_/utils'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 import { getTaskJournalCsvUrl } from 'modules/task/utils/apiUrls'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import { NO_DATA_MSG } from '../constants'
 import Journal from '../index'
@@ -63,7 +63,7 @@ describe('Страница отображения журнала', () => {
         test('Валидна для экспорта заявки', async () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
-          render(<Journal taskId={FAKE_ID} />)
+          render(<Journal taskId={FAKE_TASK_ID} />)
 
           await waitStartLoading()
           await waitFinishLoading()
@@ -75,12 +75,12 @@ describe('Страница отображения журнала', () => {
 
           expect(downloadButton).toHaveAttribute(
             'href',
-            getTaskJournalCsvUrl(FAKE_ID),
+            getTaskJournalCsvUrl(FAKE_TASK_ID),
           )
 
           expect(downloadButton).toHaveAttribute(
             'download',
-            `csv-заявка-${FAKE_ID}`,
+            `csv-заявка-${FAKE_TASK_ID}`,
           )
         })
       })
