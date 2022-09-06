@@ -61,12 +61,12 @@
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,json,css}": [
-      "test",
       "prettier --write"
     ]
   },
   "husky": {
     "hooks": {
+      "pre-push": "yarn run test",
       "pre-commit": "lint-staged"
     }
   },
