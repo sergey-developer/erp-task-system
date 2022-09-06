@@ -61,9 +61,9 @@
     ]
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx,json,css}": [
-      "eslint",
-      "prettier --write"
+    "src/**/*.{ts,tsx,json,css,less}": [
+      "prettier --write",
+      "eslint"
     ]
   },
   "importSort": {
