@@ -8,6 +8,7 @@ const useDebounceFn = <T extends AnyFn>(
   fn: T,
   delay: number = DOUBLE_CLICK_DEBOUNCE_TIME,
   deps: DependencyList = [],
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 ) => useCallback(_debounce(fn, delay), [fn, delay, ...deps])
 
 export default useDebounceFn

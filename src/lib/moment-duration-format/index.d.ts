@@ -2,6 +2,7 @@
  1. Не удалять импорт import * as moment from 'moment'
  2. Типы скопированы из @types/moment-duration-format т.к. почему-то ts их не видит автоматически
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as moment from 'moment'
 
 declare module 'moment' {
