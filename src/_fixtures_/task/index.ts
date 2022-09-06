@@ -1,2 +1,2 @@
-export * from './workGroup'
+export * from './taskJournal'
 export * from './taskAssignee'

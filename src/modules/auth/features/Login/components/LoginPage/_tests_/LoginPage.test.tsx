@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { loginResponseSuccess } from '_fixtures_/auth'
+import { CORRECT_EMAIL, CORRECT_PASSWORD } from '_tests_/constants/auth'
 import {
   render,
   renderInRoute,
@@ -19,11 +21,6 @@ import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { REQUIRED_FIELD_MSG } from 'shared/constants/messages'
 import { setupStore } from 'state/store'
 
-import {
-  CORRECT_EMAIL,
-  CORRECT_PASSWORD,
-  loginResponseSuccess,
-} from './constants'
 import {
   mockLoginBadRequestError,
   mockLoginServerError,

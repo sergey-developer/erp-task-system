@@ -1,3 +1,4 @@
+import { loginResponseSuccess } from '_fixtures_/auth'
 import {
   getBadRequestErrorMocker,
   getRequestMocker,
@@ -8,8 +9,6 @@ import { getResponseResolver } from '_tests_/mocks/response'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { refreshTokenMocker } from 'modules/auth/features/RefreshToken/_tests_/mocks'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
-
-import { loginResponseSuccess } from './constants'
 
 const loginMocker = getRequestMocker(
   HttpMethodEnum.Post,

@@ -1,13 +1,13 @@
+import {
+  getEmptyJournalResponseSuccess,
+  getJournalResponseSuccess,
+} from '_fixtures_/task'
 import { render, screen, setupApiTests } from '_tests_/utils'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import { NO_DATA_MSG } from '../constants'
 import Journal from '../index'
-import {
-  FAKE_TASK_ID,
-  getEmptyJournalResponseSuccess,
-  getJournalResponseSuccess,
-} from './constants'
+import { FAKE_TASK_ID } from './constants'
 import { mockGetJournalServerError, mockGetJournalSuccess } from './mocks'
 import { waitFinishLoading, waitStartLoading } from './utils'
 

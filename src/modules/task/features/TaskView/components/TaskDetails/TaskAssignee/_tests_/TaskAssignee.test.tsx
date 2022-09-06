@@ -1,4 +1,5 @@
-import { getTaskAssignee, getWorkGroup } from '_fixtures_'
+import { getTaskAssignee } from '_fixtures_/task'
+import { getWorkGroup } from '_fixtures_/workGroup'
 import { generateId, render } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import {

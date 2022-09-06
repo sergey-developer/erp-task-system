@@ -1,15 +1,15 @@
-import { screen, waitFor } from '_tests_/utils'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import {
   CORRECT_EMAIL,
   CORRECT_PASSWORD,
   INCORRECT_EMAIL,
   NOT_EXISTING_EMAIL,
   WRONG_PASSWORD,
-  btnLoadingClass,
-  validatingStatusClass,
-} from './constants'
+} from '_tests_/constants/auth'
+import { screen, waitFor } from '_tests_/utils'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+const btnLoadingClass = 'ant-btn-loading'
+const validatingStatusClass = 'ant-form-item-is-validating'
 
 export const getEmailField = () => screen.getByTestId('field-email')
 export const getEmailInput = () => screen.getByTestId('input-email')
