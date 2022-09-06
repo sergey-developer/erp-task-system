@@ -5,7 +5,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --watchAll=false",
     "eject": "craco eject",
     "genapi": "npx @rtk-query/codegen-openapi ./tools/api/openapi.config.ts",
     "prepare": "husky install"
