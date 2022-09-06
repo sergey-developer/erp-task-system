@@ -10,13 +10,13 @@ import {
   Space,
 } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import _isEqual from 'lodash/isEqual'
 import React, { FC } from 'react'
 
 import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions/extendedFilter.permissions'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
 import { checkboxStatusOptions, searchQueriesDictionary } from './constants'
@@ -53,7 +53,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
     searchField: searchFieldValue,
   }
 
-  const valuesNotChanged = _isEqual(initialFormValues, formValues)
+  const valuesNotChanged = isEqual(initialFormValues, formValues)
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()

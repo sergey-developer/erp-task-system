@@ -10,7 +10,7 @@ export type JwtPayload = {
 
 export type AuthenticatedUser = JwtPayload
 
-export interface IAuthSliceState {
+export type AuthSliceState = {
   user: MaybeNull<AuthenticatedUser>
   accessToken: MaybeNull<string>
   refreshToken: MaybeNull<string>

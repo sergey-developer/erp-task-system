@@ -14,5 +14,3 @@ export type FCWithChildren<T = {}> = FC<PropsWithChildren<T>>
 export type AnyFn = (...args: any) => any
 
 export type NumOrStr = number | string
-
-export type Primitive = Nullable<string | number | boolean | symbol | bigint>

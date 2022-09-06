@@ -79,7 +79,8 @@
           "shared",
           "styles",
           "app",
-          "_tests"
+          "_tests_",
+          "_fixtures_"
         ],
         "ignoredAliases": [],
         "bottomAliases": []

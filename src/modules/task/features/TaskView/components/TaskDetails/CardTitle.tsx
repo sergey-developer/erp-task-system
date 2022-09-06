@@ -18,7 +18,7 @@ type CardTitleProps = Pick<
   'id' | 'status' | 'olaStatus' | 'type'
 > & {
   isAssignedToCurrentUser: boolean
-  reclassificationRequestExist: boolean
+  hasReclassificationRequest: boolean
   onClickExecuteTask: () => void
   onClickRequestReclassification: () => void
   onClose: () => void
@@ -30,7 +30,7 @@ const CardTitle: FC<CardTitleProps> = ({
   status,
   olaStatus,
   isAssignedToCurrentUser,
-  reclassificationRequestExist,
+  hasReclassificationRequest,
   onClose,
   onClickExecuteTask,
   onClickRequestReclassification,
@@ -46,7 +46,7 @@ const CardTitle: FC<CardTitleProps> = ({
     if (taskStatus.isInProgress) {
       items.push({
         key: 1,
-        disabled: !isAssignedToCurrentUser || reclassificationRequestExist,
+        disabled: !isAssignedToCurrentUser || hasReclassificationRequest,
         icon: <CheckCircleOutlined className='fs-14' />,
         label: 'Выполнить заявку',
         onClick: onClickExecuteTask,
@@ -65,10 +65,10 @@ const CardTitle: FC<CardTitleProps> = ({
           taskType.isIncidentTask ||
           isEngineerRole,
         icon: <QuestionCircleTwoTone className='fs-14' />,
-        label: reclassificationRequestExist
+        label: hasReclassificationRequest
           ? 'Отменить переклассификацию'
           : 'Запросить переклассификацию',
-        onClick: reclassificationRequestExist
+        onClick: hasReclassificationRequest
           ? _noop
           : onClickRequestReclassification,
       })
@@ -80,7 +80,7 @@ const CardTitle: FC<CardTitleProps> = ({
     isEngineerRole,
     onClickExecuteTask,
     onClickRequestReclassification,
-    reclassificationRequestExist,
+    hasReclassificationRequest,
     taskOlaStatus.isHalfExpired,
     taskOlaStatus.isNotExpired,
     taskStatus.isAppointed,

@@ -1,5 +1,4 @@
 import { Button, Row, Typography } from 'antd'
-import { DebouncedFunc } from 'lodash'
 import React, { FC, useState } from 'react'
 
 import LabeledData from 'components/LabeledData'
@@ -12,9 +11,9 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions/taskAssignee.permissions'
 import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
+import { TaskAssigneeModel } from 'modules/task/models'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
-import { AssigneeModel } from 'shared/interfaces/models'
 
 import Assignee from './Assignee'
 import { SelectStyled } from './styles'
@@ -23,20 +22,20 @@ const { Text } = Typography
 
 const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
 
-type TaskAssigneeProps = Pick<
+export type TaskAssigneeProps = Pick<
   TaskDetailsModel,
   'assignee' | 'status' | 'extendedStatus'
 > & {
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
-  updateTaskAssignee: (assignee: AssigneeModel['id']) => Promise<void>
+  updateTaskAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateTaskAssigneeIsLoading: boolean
 
-  takeTask: DebouncedFunc<() => Promise<void>>
+  takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
 
-  reclassificationRequestExist: boolean
+  hasReclassificationRequest: boolean
 }
 
 const TaskAssignee: FC<TaskAssigneeProps> = ({
@@ -54,7 +53,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   takeTask,
   takeTaskIsLoading,
 
-  reclassificationRequestExist,
+  hasReclassificationRequest,
 }) => {
   const currentAssignee = assignee?.id
   const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
@@ -81,7 +80,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const canSelectAssignee: boolean =
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
-    !reclassificationRequestExist &&
+    !hasReclassificationRequest &&
     (seniorEngineerFromWorkGroupIsAuthenticatedUser ||
       headOfDepartmentFromWorkGroupIsAuthenticatedUser)
 
@@ -96,6 +95,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   const takeTaskButton = (
     <Button
+      data-testid='btn-takeTask'
       type='primary'
       ghost
       loading={takeTaskIsLoading}
@@ -121,7 +121,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
           disabled={
             taskStatus.isClosed ||
             taskStatus.isCompleted ||
-            reclassificationRequestExist
+            hasReclassificationRequest
           }
           onClick={
             currentAssigneeIsAuthenticatedUser
@@ -202,7 +202,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                     !selectedAssignee ||
                     selectedAssigneeIsAuthenticatedUser ||
                     selectedAssigneeIsCurrentAssignee ||
-                    reclassificationRequestExist
+                    hasReclassificationRequest
                   }
                 >
                   Назначить

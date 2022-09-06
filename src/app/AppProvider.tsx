@@ -6,11 +6,18 @@ import { BrowserRouter } from 'react-router-dom'
 import ruRU from 'antd/lib/locale/ru_RU'
 import ErrorBoundary from 'components/Error/ErrorBoundary'
 import { FCWithChildren } from 'shared/interfaces/utils'
-import store from 'state/store'
+import appStore, { AppStore } from 'state/store'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import theme from 'styles/theme'
 
-const AppProvider: FCWithChildren = ({ children }) => {
+type AppProviderProps = {
+  store?: AppStore
+}
+
+const AppProvider: FCWithChildren<AppProviderProps> = ({
+  children,
+  store = appStore,
+}) => {
   return (
     <StoreProvider store={store}>
       <AntdConfigProvider locale={ruRU}>
