@@ -3,7 +3,7 @@ import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 
 import { env } from 'configs/env'
-import { HttpStatusCodeEnum } from 'shared/constants/http'
+import { HttpCodeEnum } from 'shared/constants/http'
 import { isEqual } from 'shared/utils/common/isEqual'
 import makeString from 'shared/utils/string/makeString'
 
@@ -37,19 +37,19 @@ export const makeAbsoluteApiUrl = (
 export const isServerRangeError = (error: ErrorResponse): boolean =>
   _inRange(
     error.status,
-    HttpStatusCodeEnum.ServerError,
-    HttpStatusCodeEnum.InvalidSSLCertificate,
+    HttpCodeEnum.ServerError,
+    HttpCodeEnum.InvalidSSLCertificate,
   )
 
 export const isClientRangeError = (error: ErrorResponse): boolean =>
   _inRange(
     error.status,
-    HttpStatusCodeEnum.BadRequest,
-    HttpStatusCodeEnum.ClientClosedRequest,
+    HttpCodeEnum.BadRequest,
+    HttpCodeEnum.ClientClosedRequest,
   )
 
 export const isNotFoundError = (error: ErrorResponse): boolean =>
-  isEqual(error.status, HttpStatusCodeEnum.NotFound)
+  isEqual(error.status, HttpCodeEnum.NotFound)
 
 export const isBadRequestError = (error: ErrorResponse): boolean =>
-  isEqual(error.status, HttpStatusCodeEnum.BadRequest)
+  isEqual(error.status, HttpCodeEnum.BadRequest)

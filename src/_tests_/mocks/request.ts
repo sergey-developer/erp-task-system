@@ -3,7 +3,7 @@ import { rest } from 'msw'
 
 import api from '_tests_/mocks/api'
 import { ResponseResolver, getResponseResolver } from '_tests_/mocks/response'
-import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
+import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 import { makeAbsoluteApiUrl } from 'shared/services/api'
 
 export type AddMockFn = () => void
@@ -27,16 +27,14 @@ export const getRequestMocker = _curry(
 export const getServerErrorMocker = (
   requestMocker: PartialAppliedRequestMocker,
 ): AddMockFn =>
-  requestMocker(getResponseResolver({ status: HttpStatusCodeEnum.ServerError }))
+  requestMocker(getResponseResolver({ status: HttpCodeEnum.ServerError }))
 
 export const getUnauthorizedErrorMocker = (
   requestMocker: PartialAppliedRequestMocker,
 ): AddMockFn =>
-  requestMocker(
-    getResponseResolver({ status: HttpStatusCodeEnum.Unauthorized }),
-  )
+  requestMocker(getResponseResolver({ status: HttpCodeEnum.Unauthorized }))
 
 export const getBadRequestErrorMocker = (
   requestMocker: PartialAppliedRequestMocker,
 ): AddMockFn =>
-  requestMocker(getResponseResolver({ status: HttpStatusCodeEnum.BadRequest }))
+  requestMocker(getResponseResolver({ status: HttpCodeEnum.BadRequest }))

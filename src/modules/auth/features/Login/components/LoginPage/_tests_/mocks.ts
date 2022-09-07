@@ -8,7 +8,7 @@ import {
 import { getResponseResolver } from '_tests_/mocks/response'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { refreshTokenMocker } from 'modules/auth/features/RefreshToken/_tests_/mocks'
-import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
+import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 
 const loginMocker = getRequestMocker(
   HttpMethodEnum.Post,
@@ -17,7 +17,7 @@ const loginMocker = getRequestMocker(
 
 export const mockLoginSuccess = loginMocker(
   getResponseResolver({
-    status: HttpStatusCodeEnum.Ok,
+    status: HttpCodeEnum.Ok,
     body: loginResponseSuccess,
   }),
 )
@@ -28,7 +28,7 @@ export const mockLoginUnauthorizedError = () => {
   const mockLogin = getUnauthorizedErrorMocker(loginMocker)
 
   const mockRefreshToken = refreshTokenMocker(
-    getResponseResolver({ status: HttpStatusCodeEnum.Ok }),
+    getResponseResolver({ status: HttpCodeEnum.Ok }),
   )
 
   mockLogin()

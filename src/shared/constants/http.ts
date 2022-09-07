@@ -6,7 +6,7 @@ export enum HttpMethodEnum {
   Delete = 'delete',
 }
 
-export enum HttpStatusCodeEnum {
+export enum HttpCodeEnum {
   // 2**
   Ok = 200,
   Created = 201,

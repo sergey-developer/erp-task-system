@@ -2,7 +2,7 @@ import { getRequestMocker, getServerErrorMocker } from '_tests_/mocks/request'
 import { getResponseResolver } from '_tests_/mocks/response'
 import { TaskJournalModel } from 'modules/task/features/TaskView/models'
 import { getTaskJournalUrl } from 'modules/task/utils/apiUrls'
-import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
+import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 
 import { FAKE_TASK_ID } from './constants'
 
@@ -14,7 +14,7 @@ const getJournalMocker = getRequestMocker(
 export const mockGetJournalSuccess = (response: TaskJournalModel) => {
   const mockGetJournal = getJournalMocker(
     getResponseResolver({
-      status: HttpStatusCodeEnum.Ok,
+      status: HttpCodeEnum.Ok,
       body: response,
     }),
   )

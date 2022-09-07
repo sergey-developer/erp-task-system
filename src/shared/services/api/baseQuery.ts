@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios'
 import _isPlainObject from 'lodash/isPlainObject'
 
-import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
+import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import httpClient from './httpClient'
@@ -29,7 +29,7 @@ const baseQuery =
       return { data: response.data }
     } catch (exception) {
       const error = exception as AxiosError
-      const status = error.response?.status || HttpStatusCodeEnum.ServerError
+      const status = error.response?.status || HttpCodeEnum.ServerError
       const errorData = error.response?.data
 
       return {
