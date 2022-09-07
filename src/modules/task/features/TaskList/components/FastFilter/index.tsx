@@ -2,6 +2,7 @@ import { Space } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import { FastFilterEnum } from 'modules/task/features/TaskList/constants/enums'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import { fastFilterNamesDict } from './constants'
 import FilterTag from './FilterTag'
@@ -37,7 +38,7 @@ const FastFilter: FC<FastFilterProps> = ({
       {filters.map(({ amount, text, value }) => (
         <FilterTag
           key={value}
-          checked={disabled ? false : selectedFilter === value}
+          checked={disabled ? false : isEqual(selectedFilter, value)}
           onChange={disabled ? undefined : () => onChange(value)}
           text={text}
           amount={amount}

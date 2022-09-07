@@ -20,6 +20,7 @@ import TaskDetails from 'modules/task/features/TaskView/components/TaskDetailsCo
 import useUserRole from 'modules/user/hooks/useUserRole'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { Keys, MaybeNull } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import FastFilter from '../FastFilter'
 import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
@@ -129,12 +130,14 @@ const TaskListPage: FC = () => {
     } else {
       setAppliedFilterType(previousAppliedFilterType!)
 
-      const prevFilter =
-        previousAppliedFilterType === FilterTypeEnum.Extended
-          ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
-          : previousAppliedFilterType === FilterTypeEnum.Fast
-          ? { filter: fastFilterValue }
-          : {}
+      const prevFilter = isEqual(
+        previousAppliedFilterType,
+        FilterTypeEnum.Extended,
+      )
+        ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
+        : isEqual(previousAppliedFilterType, FilterTypeEnum.Fast)
+        ? { filter: fastFilterValue }
+        : {}
 
       triggerFilterChange(prevFilter)
     }
@@ -210,8 +213,10 @@ const TaskListPage: FC = () => {
     refetchTaskCounters()
   })
 
-  const searchFilterApplied: boolean =
-    appliedFilterType === FilterTypeEnum.Search
+  const searchFilterApplied: boolean = isEqual(
+    appliedFilterType,
+    FilterTypeEnum.Search,
+  )
 
   return (
     <>

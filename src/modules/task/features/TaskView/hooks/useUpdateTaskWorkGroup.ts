@@ -5,6 +5,7 @@ import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 import { ErrorResponse } from 'shared/services/api'
+import { isEqual } from 'shared/utils/common/isEqual'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 import { UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG } from '../constants/messages'
@@ -30,7 +31,7 @@ const useUpdateTaskWorkGroup = () => {
     const error = state.error as ErrorResponse
 
     if (
-      error.status === HttpStatusCodeEnum.NotFound ||
+      isEqual(error.status, HttpStatusCodeEnum.NotFound) ||
       error.status >= HttpStatusCodeEnum.ServerError
     ) {
       showErrorNotification(UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG)

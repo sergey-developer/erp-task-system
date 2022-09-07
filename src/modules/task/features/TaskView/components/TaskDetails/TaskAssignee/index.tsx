@@ -14,6 +14,7 @@ import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { TaskAssigneeModel } from 'modules/task/models'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import Assignee from './Assignee'
 import { SelectStyled } from './styles'
@@ -61,7 +62,10 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const extendedTaskStatus = useTaskExtendedStatus(extendedStatus)
   const authenticatedUser = useAuthenticatedUser()
 
-  const selectedAssigneeIsCurrentAssignee = selectedAssignee === currentAssignee
+  const selectedAssigneeIsCurrentAssignee = isEqual(
+    selectedAssignee,
+    currentAssignee,
+  )
 
   const currentAssigneeIsAuthenticatedUser =
     useCheckUserAuthenticated(currentAssignee)
@@ -165,11 +169,15 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                 onSelect={setSelectedAssignee}
               >
                 {workGroupMembers.map(({ id, fullName }) => {
-                  const currentAssigneeInWorkGroup: boolean =
-                    id === currentAssignee
+                  const currentAssigneeInWorkGroup: boolean = isEqual(
+                    id,
+                    currentAssignee,
+                  )
 
-                  const authenticatedUserInWorkGroup: boolean =
-                    id === authenticatedUser!.id
+                  const authenticatedUserInWorkGroup: boolean = isEqual(
+                    id,
+                    authenticatedUser!.id,
+                  )
 
                   const disabled =
                     currentAssigneeInWorkGroup || authenticatedUserInWorkGroup

@@ -1,4 +1,7 @@
+import _isUndefined from 'lodash/isUndefined'
+
 import { Keys } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import commonConfig from './common.config'
 import developmentConfig, { DevelopmentKeysUnion } from './development.config'
@@ -33,7 +36,7 @@ class EnvConfig implements IEnvConfig {
 
   private validate = (config: ConfigType): ValidatedConfigType => {
     for (const [key, value] of Object.entries(config)) {
-      if (value === undefined) {
+      if (_isUndefined(value)) {
         throw new Error(`Missing key "${key}" in process.env`)
       }
     }
@@ -46,8 +49,8 @@ class EnvConfig implements IEnvConfig {
     const rawConfig = configs[env] || configs.development
 
     this.config = this.validate(rawConfig)
-    this.isDevelopment = env === 'development'
-    this.isProduction = env === 'production'
+    this.isDevelopment = isEqual(env, 'development')
+    this.isProduction = isEqual(env, 'production')
   }
 
   public readonly isDevelopment: boolean
