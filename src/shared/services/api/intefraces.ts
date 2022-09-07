@@ -34,8 +34,8 @@ export type CustomBaseQueryFn = BaseQueryFn<{
 export type ApiVersionUnion = 'v1'
 
 export type CustomBaseQueryConfig = {
+  basePath: string
   apiVersion: ApiVersionUnion
-  apiPath: string
   prepareHeaders?: (
     headers: AxiosRequestHeaders,
     api: Pick<
