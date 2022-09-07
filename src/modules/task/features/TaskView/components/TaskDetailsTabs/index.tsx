@@ -3,12 +3,13 @@ import React, { FC } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 
-import CommentList from './CommentList'
 import { TaskDetailsTabsEnum, taskDetailsTabNames } from './constants'
 import Description from './Description'
-import Journal from './Journal'
 import Resolution from './Resolution'
 import TabWrapper from './TabWrapper'
+
+const Journal = React.lazy(() => import('./Journal'))
+const CommentList = React.lazy(() => import('./CommentList'))
 
 const { TabPane } = Tabs
 
