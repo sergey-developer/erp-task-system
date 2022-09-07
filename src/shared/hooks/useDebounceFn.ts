@@ -1,3 +1,4 @@
+import debounce from 'lodash/debounce'
 import { DependencyList, useCallback } from 'react'
 
 import { DOUBLE_CLICK_DEBOUNCE_TIME } from 'shared/constants/common'
@@ -8,6 +9,6 @@ const useDebounceFn = <T extends AnyFn>(
   delay: number = DOUBLE_CLICK_DEBOUNCE_TIME,
   deps: DependencyList = [],
   // eslint-disable-next-line react-hooks/exhaustive-deps
-) => useCallback(_debounce(fn, delay), [fn, delay, ...deps])
+) => useCallback(debounce(fn, delay), [fn, delay, ...deps])
 
 export default useDebounceFn
