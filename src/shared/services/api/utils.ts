@@ -16,22 +16,25 @@ export function getErrorDetail<T>(e: ErrorResponse<T>): ValidationErrors {
 }
 
 export const getRelativeApiUrl = (
+  basePath: string = apiPath,
   apiVersion: ApiVersionUnion = currentApiVersion,
-): string => makeString('/', apiPath, apiVersion)
+): string => makeString('/', basePath, apiVersion)
 
 export const makeRelativeApiUrl = (
   path: string,
+  basePath: string = apiPath,
   apiVersion: ApiVersionUnion = currentApiVersion,
-): string => makeString('', getRelativeApiUrl(apiVersion), path)
+): string => makeString('', getRelativeApiUrl(basePath, apiVersion), path)
 
 export const makeAbsoluteApiUrl = (
   path: string,
+  basePath: string = apiPath,
   apiVersion: ApiVersionUnion = currentApiVersion,
 ): string =>
   makeString(
     '',
     env.get<string>('apiUrl'),
-    makeRelativeApiUrl(path, apiVersion),
+    makeRelativeApiUrl(path, basePath, apiVersion),
   )
 
 export const isServerRangeError = (error: ErrorResponse): boolean =>

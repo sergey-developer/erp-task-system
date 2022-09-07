@@ -19,7 +19,7 @@ import { isClientRangeError, isUnauthorizedError } from './utils'
 const mutex = new Mutex()
 
 const query = baseQuery({
-  apiPath: apiPath,
+  basePath: apiPath,
   apiVersion: currentApiVersion,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken

@@ -6,12 +6,13 @@ import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import httpClient from './httpClient'
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'
+import { makeRelativeApiUrl } from './utils'
 
 const baseQuery =
   ({
-    prepareHeaders,
+    basePath,
     apiVersion,
-    apiPath,
+    prepareHeaders,
   }: CustomBaseQueryConfig): CustomBaseQueryFn =>
   async ({ url, method = HttpMethodEnum.Get, data, params }, api) => {
     const headers = prepareHeaders
@@ -20,7 +21,7 @@ const baseQuery =
 
     try {
       const response = await httpClient({
-        url: `${apiPath}/${apiVersion}${url}`,
+        url: makeRelativeApiUrl(url, basePath, apiVersion),
         method,
         data,
         params,
