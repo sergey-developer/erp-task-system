@@ -7,15 +7,14 @@ import { RefreshTokenResponseModel } from 'modules/auth/models'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import logoutAndClearTokens from 'modules/auth/utils/logoutAndClearTokens'
 import parseJwt from 'modules/auth/utils/parseJwt'
-import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/interfaces/utils'
-import { isEqual } from 'shared/utils/common/isEqual'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
 import { apiPath, currentApiVersion } from './constants'
 import { CustomBaseQueryFn, ErrorResponse } from './intefraces'
-import { isClientRangeError } from './utils'
+import { isClientRangeError, isUnauthorizedError } from './utils'
 
 const mutex = new Mutex()
 
@@ -44,7 +43,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   let response = await query(args, api, extraOptions)
   const error = response.error as MaybeUndefined<ErrorResponse>
 
-  if (isEqual(error?.status, HttpCodeEnum.Unauthorized)) {
+  if (error && isUnauthorizedError(error)) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       try {

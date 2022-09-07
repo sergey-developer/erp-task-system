@@ -16,7 +16,7 @@ import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions/extendedFilter.permissions'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
-import { isEqual } from 'shared/utils/common/isEqual'
+import { isEqualDeep } from 'shared/utils/common/isEqual'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
 import { checkboxStatusOptions, searchQueriesDictionary } from './constants'
@@ -53,7 +53,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
     searchField: searchFieldValue,
   }
 
-  const valuesNotChanged = isEqual(initialFormValues, formValues)
+  const valuesNotChanged = isEqualDeep(initialFormValues, formValues)
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()

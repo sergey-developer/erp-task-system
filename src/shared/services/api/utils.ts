@@ -1,6 +1,6 @@
-import _inRange from 'lodash/inRange'
-import _isArray from 'lodash/isArray'
-import _isString from 'lodash/isString'
+import inRange from 'lodash/inRange'
+import isArray from 'lodash/isArray'
+import isString from 'lodash/isString'
 
 import { env } from 'configs/env'
 import { HttpCodeEnum } from 'shared/constants/http'
@@ -12,7 +12,7 @@ import { ApiVersionUnion, ErrorResponse, ValidationErrors } from './intefraces'
 
 export function getErrorDetail<T>(e: ErrorResponse<T>): ValidationErrors {
   const detail = e.data?.detail
-  return _isArray(detail) ? detail : _isString(detail) ? [detail] : []
+  return isArray(detail) ? detail : isString(detail) ? [detail] : []
 }
 
 export const getRelativeApiUrl = (
@@ -35,14 +35,14 @@ export const makeAbsoluteApiUrl = (
   )
 
 export const isServerRangeError = (error: ErrorResponse): boolean =>
-  _inRange(
+  inRange(
     error.status,
     HttpCodeEnum.ServerError,
     HttpCodeEnum.InvalidSSLCertificate,
   )
 
 export const isClientRangeError = (error: ErrorResponse): boolean =>
-  _inRange(
+  inRange(
     error.status,
     HttpCodeEnum.BadRequest,
     HttpCodeEnum.ClientClosedRequest,
@@ -53,3 +53,6 @@ export const isNotFoundError = (error: ErrorResponse): boolean =>
 
 export const isBadRequestError = (error: ErrorResponse): boolean =>
   isEqual(error.status, HttpCodeEnum.BadRequest)
+
+export const isUnauthorizedError = (error: ErrorResponse): boolean =>
+  isEqual(error.status, HttpCodeEnum.Unauthorized)

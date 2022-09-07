@@ -2,16 +2,17 @@ import { useMemo } from 'react'
 
 import { TaskTypeEnum } from 'modules/task/constants/enums'
 import { BooleanMap, Keys } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 const useTaskType = (
   type: TaskTypeEnum,
 ): BooleanMap<`is${Keys<typeof TaskTypeEnum>}`> => {
   return useMemo(
     () => ({
-      isIncident: type === TaskTypeEnum.Incident,
-      isIncidentTask: type === TaskTypeEnum.IncidentTask,
-      isRequest: type === TaskTypeEnum.Request,
-      isRequestTask: type === TaskTypeEnum.RequestTask,
+      isIncident: isEqual(type, TaskTypeEnum.Incident),
+      isIncidentTask: isEqual(type, TaskTypeEnum.IncidentTask),
+      isRequest: isEqual(type, TaskTypeEnum.Request),
+      isRequestTask: isEqual(type, TaskTypeEnum.RequestTask),
     }),
     [type],
   )

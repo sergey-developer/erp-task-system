@@ -1,6 +1,6 @@
 import { useBoolean } from 'ahooks'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import _noop from 'lodash/noop'
+import noop from 'lodash/noop'
 import React, { FC, useCallback } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
@@ -230,7 +230,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               createdAt={reclassificationRequest!.createdAt}
               user={reclassificationRequest!.user}
               actionText='Отменить запрос'
-              onAction={_noop}
+              onAction={noop}
             />
 
             <DividerStyled />

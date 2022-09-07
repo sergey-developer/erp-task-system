@@ -1,6 +1,6 @@
 import { DownloadOutlined } from '@ant-design/icons'
 import { Button, Col, Divider, Row, Typography } from 'antd'
-import _isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
 import LoadableData from 'components/LoadableData'
@@ -28,7 +28,7 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
     <LoadableData
       data-testid='spinner-journal'
       isLoading={isFetching}
-      noContent={_isEmpty(data) && <Text>{NO_DATA_MSG}</Text>}
+      noContent={isEmpty(data) && <Text>{NO_DATA_MSG}</Text>}
     >
       <Space direction='vertical' $block>
         <Row justify='end'>

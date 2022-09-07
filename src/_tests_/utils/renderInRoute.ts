@@ -6,6 +6,7 @@
 import { ReactElement } from 'react'
 
 import { RoutesEnum } from 'configs/routes'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import renderInAppProvider, {
   RenderInAppProviderOptions,
@@ -19,7 +20,7 @@ const renderInRoute = (
   window.history.pushState({}, '', route)
 
   return {
-    checkRouteChanged: (): boolean => window.location.pathname !== route,
+    checkRouteChanged: (): boolean => !isEqual(window.location.pathname, route),
     ...renderInAppProvider(ui, options),
   }
 }

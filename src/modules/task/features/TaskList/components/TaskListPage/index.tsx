@@ -4,7 +4,7 @@ import { Button, Col, Form, Row, Space, TableProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import { camelize } from 'humps'
-import _isArray from 'lodash/isArray'
+import isArray from 'lodash/isArray'
 import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useState } from 'react'
 
@@ -114,7 +114,7 @@ const TaskListPage: FC = () => {
       filter: value,
     })
 
-    if (value !== fastFilterValue) {
+    if (!isEqual(value, fastFilterValue)) {
       handleCloseTaskDetails()
     }
   }
@@ -160,7 +160,7 @@ const TaskListPage: FC = () => {
   const handleChangeTable = useCallback<
     NonNullable<TableProps<TaskTableListItem>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order = SortDirectionsEnum.ascend } = _isArray(sorter)
+    const { field, order = SortDirectionsEnum.ascend } = isArray(sorter)
       ? sorter[0]
       : sorter
 
