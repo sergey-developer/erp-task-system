@@ -9,6 +9,7 @@ import logoutAndClearTokens from 'modules/auth/utils/logoutAndClearTokens'
 import parseJwt from 'modules/auth/utils/parseJwt'
 import { HttpMethodEnum, HttpStatusCodeEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
@@ -42,7 +43,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   let response = await query(args, api, extraOptions)
   const error = response.error as MaybeUndefined<ErrorResponse>
 
-  if (error?.status === HttpStatusCodeEnum.Unauthorized) {
+  if (isEqual(error?.status, HttpStatusCodeEnum.Unauthorized)) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       try {

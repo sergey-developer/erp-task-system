@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { BaseUserModel } from 'modules/user/models'
 import { MaybeUndefined } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import useAuthenticatedUser from './useAuthenticatedUser'
 
@@ -15,7 +16,7 @@ const useCheckUserAuthenticated = (
   const authenticatedUser = useAuthenticatedUser()
 
   return useMemo(() => {
-    return authenticatedUser?.id === userId
+    return isEqual(authenticatedUser?.id, userId)
   }, [authenticatedUser, userId])
 }
 

@@ -11,6 +11,7 @@ import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 import { ErrorResponse } from 'shared/services/api'
+import { isEqual } from 'shared/utils/common/isEqual'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 const useGetTask = (id: GetTaskQueryArgsModel) => {
@@ -25,10 +26,10 @@ const useGetTask = (id: GetTaskQueryArgsModel) => {
 
     const error = state.error as ErrorResponse
 
-    if (error.status === HttpStatusCodeEnum.NotFound) {
+    if (isEqual(error.status, HttpStatusCodeEnum.NotFound)) {
       showErrorNotification(getTaskNotFoundErrorMsg(id))
     } else if (
-      error.status === HttpStatusCodeEnum.BadRequest ||
+      isEqual(error.status, HttpStatusCodeEnum.BadRequest) ||
       error.status >= HttpStatusCodeEnum.ServerError
     ) {
       showErrorNotification(getTaskServerErrorMsg(id))

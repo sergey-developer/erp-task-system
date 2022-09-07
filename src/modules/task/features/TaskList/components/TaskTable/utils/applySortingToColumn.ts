@@ -2,6 +2,7 @@ import { ColumnsType } from 'antd/es/table'
 import { SorterResult } from 'antd/es/table/interface'
 
 import { MaybeUndefined } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import { TaskTableListItem } from '../interfaces'
 
@@ -11,7 +12,7 @@ const applySortingToColumn = (
 ): ColumnsType<TaskTableListItem> => {
   if (!sorterResult) return columns
   return columns.map((field) => {
-    if (field.key === sorterResult.columnKey) {
+    if (isEqual(field.key, sorterResult.columnKey)) {
       return {
         ...field,
         sortOrder: sorterResult.order,
