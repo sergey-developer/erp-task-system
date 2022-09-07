@@ -1,4 +1,3 @@
-import _debounce from 'lodash/debounce'
 import { DependencyList, useCallback } from 'react'
 
 import { DOUBLE_CLICK_DEBOUNCE_TIME } from 'shared/constants/common'

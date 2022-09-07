@@ -3,21 +3,20 @@ import { useMemo } from 'react'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { BooleanMap, Keys } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 
-type UseUserRoleResult = BooleanMap<`is${Keys<typeof UserRolesEnum>}Role`>
-
-const useUserRole = (): UseUserRoleResult => {
+const useUserRole = (): BooleanMap<`is${Keys<typeof UserRolesEnum>}Role`> => {
   const user = useAuthenticatedUser()
 
   return useMemo(() => {
     const role = user?.role
 
     return {
-      isFirstLineSupportRole: role === UserRolesEnum.FirstLineSupport,
-      isEngineerRole: role === UserRolesEnum.Engineer,
-      isSeniorEngineerRole: role === UserRolesEnum.SeniorEngineer,
-      isHeadOfDepartmentRole: role === UserRolesEnum.HeadOfDepartment,
-      isAdminRole: role === UserRolesEnum.Admin,
+      isFirstLineSupportRole: isEqual(role, UserRolesEnum.FirstLineSupport),
+      isEngineerRole: isEqual(role, UserRolesEnum.Engineer),
+      isSeniorEngineerRole: isEqual(role, UserRolesEnum.SeniorEngineer),
+      isHeadOfDepartmentRole: isEqual(role, UserRolesEnum.HeadOfDepartment),
+      isAdminRole: isEqual(role, UserRolesEnum.Admin),
     }
   }, [user?.role])
 }

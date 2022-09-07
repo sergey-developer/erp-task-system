@@ -9,6 +9,7 @@ import {
 } from 'modules/task/constants/words'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import { Keys, StringMap } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import { SearchQueries } from '../TaskListPage/interfaces'
 
@@ -19,7 +20,7 @@ export const searchQueriesDictionary: StringMap<Keys<SearchQueries>> = {
 }
 
 export const checkboxStatusOptions = Object.values(TaskStatusEnum)
-  .filter((status) => status !== TaskStatusEnum.Closed)
+  .filter((status) => !isEqual(status, TaskStatusEnum.Closed))
   .map((taskStatus) => ({
     label: (
       <TaskStatus status={taskStatus} value={taskStatusDict[taskStatus]} />

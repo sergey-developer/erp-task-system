@@ -4,7 +4,7 @@ import {
   QuestionCircleTwoTone,
 } from '@ant-design/icons'
 import { Button, Dropdown, Menu, Row, Space, Typography } from 'antd'
-import _noop from 'lodash/noop'
+import noop from 'lodash/noop'
 import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
@@ -69,7 +69,7 @@ const CardTitle: FC<CardTitleProps> = ({
           ? 'Отменить переклассификацию'
           : 'Запросить переклассификацию',
         onClick: hasReclassificationRequest
-          ? _noop
+          ? noop
           : onClickRequestReclassification,
       })
     }

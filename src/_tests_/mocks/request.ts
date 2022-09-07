@@ -1,4 +1,4 @@
-import _curry from 'lodash/curry'
+import curry from 'lodash/curry'
 import { rest } from 'msw'
 
 import api from '_tests_/mocks/api'
@@ -12,7 +12,7 @@ export type PartialAppliedRequestMocker = (
   resolver: ResponseResolver,
 ) => AddMockFn
 
-export const getRequestMocker = _curry(
+export const getRequestMocker = curry(
   (
     method: HttpMethodEnum,
     url: string,

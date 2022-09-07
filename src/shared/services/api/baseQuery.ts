@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import _isPlainObject from 'lodash/isPlainObject'
+import isPlainObject from 'lodash/isPlainObject'
 
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
@@ -35,7 +35,7 @@ const baseQuery =
       return {
         error: {
           status,
-          data: _isPlainObject(errorData)
+          data: isPlainObject(errorData)
             ? errorData
             : { detail: UNKNOWN_ERROR_MSG },
         },

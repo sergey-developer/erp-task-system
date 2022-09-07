@@ -1,4 +1,4 @@
-import _isUndefined from 'lodash/isUndefined'
+import isUndefined from 'lodash/isUndefined'
 
 import { Keys } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
@@ -36,7 +36,7 @@ class EnvConfig implements IEnvConfig {
 
   private validate = (config: ConfigType): ValidatedConfigType => {
     for (const [key, value] of Object.entries(config)) {
-      if (_isUndefined(value)) {
+      if (isUndefined(value)) {
         throw new Error(`Missing key "${key}" in process.env`)
       }
     }

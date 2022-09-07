@@ -1,5 +1,4 @@
-import _isEqual from 'lodash/isEqual'
-import _negate from 'lodash/negate'
+import _isEqualDeep from 'lodash/isEqual'
 
-export const isEqual = _isEqual
-export const isNotEqual = _negate(isEqual)
+export const isEqualDeep = _isEqualDeep
+export const isEqual = (value1: any, value2: any): boolean => value1 === value2
