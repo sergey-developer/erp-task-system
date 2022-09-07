@@ -1,8 +1,6 @@
 import { FormInstance } from 'antd'
 
-import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ErrorResponse } from 'shared/services/api'
-import { isEqual } from 'shared/utils/common/isEqual'
+import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 
 import getFieldsErrors from './getFieldsErrors'
 
@@ -10,7 +8,7 @@ const handleSetFieldsErrors = <T extends ErrorResponse>(
   error: T,
   setter: FormInstance['setFields'],
 ) => {
-  if (isEqual(error.status, HttpStatusCodeEnum.BadRequest)) {
+  if (isBadRequestError(error)) {
     setter(getFieldsErrors(error.data))
   }
 }

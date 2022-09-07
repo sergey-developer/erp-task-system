@@ -1,7 +1,10 @@
+import _inRange from 'lodash/inRange'
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 
 import { env } from 'configs/env'
+import { HttpStatusCodeEnum } from 'shared/constants/http'
+import { isEqual } from 'shared/utils/common/isEqual'
 import makeString from 'shared/utils/string/makeString'
 
 import { apiPath, currentApiVersion } from './constants'
@@ -30,3 +33,23 @@ export const makeAbsoluteApiUrl = (
     env.get<string>('apiUrl'),
     makeRelativeApiUrl(path, apiVersion),
   )
+
+export const isServerRangeError = (code: number): boolean =>
+  _inRange(
+    code,
+    HttpStatusCodeEnum.ServerError,
+    HttpStatusCodeEnum.InvalidSSLCertificate,
+  )
+
+export const isClientRangeError = (code: number): boolean =>
+  _inRange(
+    code,
+    HttpStatusCodeEnum.BadRequest,
+    HttpStatusCodeEnum.ClientClosedRequest,
+  )
+
+export const isNotFoundError = (error: ErrorResponse): boolean =>
+  isEqual(error.status, HttpStatusCodeEnum.NotFound)
+
+export const isBadRequestError = (error: ErrorResponse): boolean =>
+  isEqual(error.status, HttpStatusCodeEnum.BadRequest)

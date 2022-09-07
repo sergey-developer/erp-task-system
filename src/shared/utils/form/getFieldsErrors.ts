@@ -2,6 +2,7 @@ import { FieldData as BaseFieldData } from 'rc-field-form/es/interface'
 
 import { Keys } from 'shared/interfaces/utils'
 import { ErrorData } from 'shared/services/api'
+import { isNotEqual } from 'shared/utils/common/isEqual'
 
 type FieldData = Pick<BaseFieldData, 'name' | 'errors'>
 
@@ -10,7 +11,7 @@ const getFieldsErrors = <T extends ErrorData<T>>(data: T): Array<FieldData> => {
     const fieldName = key as Keys<T>
     const fieldValue = data[fieldName]
 
-    if (fieldName !== 'detail' && fieldValue) {
+    if (isNotEqual(fieldName, 'detail') && fieldValue) {
       acc.push({
         name: fieldName as string,
         errors: fieldValue,

@@ -8,10 +8,13 @@ import {
 } from 'modules/task/features/TaskView/utils/messages'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
-import { ErrorResponse } from 'shared/services/api'
-import { isEqual } from 'shared/utils/common/isEqual'
+import {
+  ErrorResponse,
+  isBadRequestError,
+  isNotFoundError,
+  isServerRangeError,
+} from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 const useGetTask = (id: GetTaskQueryArgsModel) => {
@@ -26,12 +29,9 @@ const useGetTask = (id: GetTaskQueryArgsModel) => {
 
     const error = state.error as ErrorResponse
 
-    if (isEqual(error.status, HttpStatusCodeEnum.NotFound)) {
+    if (isNotFoundError(error)) {
       showErrorNotification(getTaskNotFoundErrorMsg(id))
-    } else if (
-      isEqual(error.status, HttpStatusCodeEnum.BadRequest) ||
-      error.status >= HttpStatusCodeEnum.ServerError
-    ) {
+    } else if (isBadRequestError(error) || isServerRangeError(error.status)) {
       showErrorNotification(getTaskServerErrorMsg(id))
     } else {
       showErrorNotification(UNKNOWN_ERROR_MSG)

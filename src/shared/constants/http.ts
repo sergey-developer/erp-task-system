@@ -14,6 +14,8 @@ export enum HttpStatusCodeEnum {
   BadRequest = 400,
   Unauthorized = 401,
   NotFound = 404,
+  ClientClosedRequest = 499,
   // 5**
   ServerError = 500,
+  InvalidSSLCertificate = 526,
 }

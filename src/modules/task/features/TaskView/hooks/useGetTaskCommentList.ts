@@ -8,10 +8,12 @@ import {
 } from 'modules/task/features/TaskView/utils/messages'
 import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { HttpStatusCodeEnum } from 'shared/constants/http'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
-import { ErrorResponse } from 'shared/services/api'
-import { isEqual } from 'shared/utils/common/isEqual'
+import {
+  ErrorResponse,
+  isNotFoundError,
+  isServerRangeError,
+} from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
@@ -26,9 +28,9 @@ const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
 
     const error = state.error as ErrorResponse
 
-    if (isEqual(error.status, HttpStatusCodeEnum.NotFound)) {
+    if (isNotFoundError(error)) {
       showErrorNotification(getTaskNotFoundErrorMsg(id))
-    } else if (error.status >= HttpStatusCodeEnum.ServerError) {
+    } else if (isServerRangeError(error.status)) {
       showErrorNotification(getTaskCommentListServerErrorMsg(id))
     } else {
       showErrorNotification(UNKNOWN_ERROR_MSG)

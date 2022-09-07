@@ -15,6 +15,7 @@ import { RootState } from 'state/store'
 import baseQuery from './baseQuery'
 import { apiPath, currentApiVersion } from './constants'
 import { CustomBaseQueryFn, ErrorResponse } from './intefraces'
+import { isClientRangeError } from './utils'
 
 const mutex = new Mutex()
 
@@ -67,10 +68,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           } catch (exception) {
             const error = exception as ErrorResponse
 
-            if (
-              error.status >= HttpStatusCodeEnum.BadRequest &&
-              error.status < HttpStatusCodeEnum.ServerError
-            ) {
+            if (isClientRangeError(error.status)) {
               logoutAndClearTokens(api.dispatch)
             }
 
