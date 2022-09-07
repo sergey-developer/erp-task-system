@@ -31,7 +31,7 @@ const useGetTask = (id: GetTaskQueryArgsModel) => {
 
     if (isNotFoundError(error)) {
       showErrorNotification(getTaskNotFoundErrorMsg(id))
-    } else if (isBadRequestError(error) || isServerRangeError(error.status)) {
+    } else if (isBadRequestError(error) || isServerRangeError(error)) {
       showErrorNotification(getTaskServerErrorMsg(id))
     } else {
       showErrorNotification(UNKNOWN_ERROR_MSG)

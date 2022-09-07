@@ -30,7 +30,7 @@ const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
 
     if (isNotFoundError(error)) {
       showErrorNotification(getTaskNotFoundErrorMsg(id))
-    } else if (isServerRangeError(error.status)) {
+    } else if (isServerRangeError(error)) {
       showErrorNotification(getTaskCommentListServerErrorMsg(id))
     } else {
       showErrorNotification(UNKNOWN_ERROR_MSG)

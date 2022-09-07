@@ -34,16 +34,16 @@ export const makeAbsoluteApiUrl = (
     makeRelativeApiUrl(path, apiVersion),
   )
 
-export const isServerRangeError = (code: number): boolean =>
+export const isServerRangeError = (error: ErrorResponse): boolean =>
   _inRange(
-    code,
+    error.status,
     HttpStatusCodeEnum.ServerError,
     HttpStatusCodeEnum.InvalidSSLCertificate,
   )
 
-export const isClientRangeError = (code: number): boolean =>
+export const isClientRangeError = (error: ErrorResponse): boolean =>
   _inRange(
-    code,
+    error.status,
     HttpStatusCodeEnum.BadRequest,
     HttpStatusCodeEnum.ClientClosedRequest,
   )

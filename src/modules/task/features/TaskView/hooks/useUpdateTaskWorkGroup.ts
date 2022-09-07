@@ -32,7 +32,7 @@ const useUpdateTaskWorkGroup = () => {
 
     const error = state.error as ErrorResponse
 
-    if (isNotFoundError(error) || isServerRangeError(error.status)) {
+    if (isNotFoundError(error) || isServerRangeError(error)) {
       showErrorNotification(UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG)
     } else {
       showErrorNotification(UNKNOWN_ERROR_MSG)

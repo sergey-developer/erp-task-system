@@ -68,7 +68,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           } catch (exception) {
             const error = exception as ErrorResponse
 
-            if (isClientRangeError(error.status)) {
+            if (isClientRangeError(error)) {
               logoutAndClearTokens(api.dispatch)
             }
 
