@@ -2,8 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { HttpStatusCodeEnum } from 'shared/constants/http'
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 import { RESOLVE_TASK_COMMON_ERROR_MSG } from '../constants/messages'
@@ -28,7 +27,7 @@ const useResolveTask = () => {
 
     const error = state.error as ErrorResponse
 
-    if (error.status !== HttpStatusCodeEnum.BadRequest) {
+    if (!isBadRequestError(error)) {
       showErrorNotification(RESOLVE_TASK_COMMON_ERROR_MSG)
     }
   }, [state.error, state.isError])

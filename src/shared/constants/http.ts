@@ -6,7 +6,7 @@ export enum HttpMethodEnum {
   Delete = 'delete',
 }
 
-export enum HttpStatusCodeEnum {
+export enum HttpCodeEnum {
   // 2**
   Ok = 200,
   Created = 201,
@@ -14,6 +14,8 @@ export enum HttpStatusCodeEnum {
   BadRequest = 400,
   Unauthorized = 401,
   NotFound = 404,
+  ClientClosedRequest = 499,
   // 5**
   ServerError = 500,
+  InvalidSSLCertificate = 526,
 }

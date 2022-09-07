@@ -17,7 +17,7 @@ import {
   LOGIN_WRONG_DATA_ERROR_MSG,
 } from 'modules/auth/features/Login/constants/messages'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
-import { HttpStatusCodeEnum } from 'shared/constants/http'
+import { HttpCodeEnum } from 'shared/constants/http'
 import { REQUIRED_FIELD_MSG } from 'shared/constants/messages'
 import { setupStore } from 'state/store'
 
@@ -200,7 +200,7 @@ describe('Страница авторизации', () => {
         expect(checkRouteChanged()).toBe(false)
       })
 
-      describe(`Если код ошибки "${HttpStatusCodeEnum.BadRequest}"`, () => {
+      describe(`Если код ошибки "${HttpCodeEnum.BadRequest}"`, () => {
         test(`В форме показывается ошибка - ${LOGIN_BAD_REQUEST_ERROR_MSG}`, async () => {
           mockLoginBadRequestError()
 
@@ -218,7 +218,7 @@ describe('Страница авторизации', () => {
         })
       })
 
-      describe(`Если код ошибки "${HttpStatusCodeEnum.Unauthorized}"`, () => {
+      describe(`Если код ошибки "${HttpCodeEnum.Unauthorized}"`, () => {
         test(`В форме показывается ошибка - ${LOGIN_WRONG_DATA_ERROR_MSG}`, async () => {
           mockLoginUnauthorizedError()
 

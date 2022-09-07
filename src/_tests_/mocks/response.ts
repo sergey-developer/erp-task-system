@@ -6,12 +6,12 @@ import {
 } from 'msw'
 
 import { API_RESPONSE_DELAY } from '_tests_/constants/api'
-import { HttpStatusCodeEnum } from 'shared/constants/http'
+import { HttpCodeEnum } from 'shared/constants/http'
 
 export type ResponseResolver = BaseResponseResolver<MockedRequest, RestContext>
 
 export type ResponseResolverOptions = {
-  status: HttpStatusCodeEnum
+  status: HttpCodeEnum
   body?: any
   once?: boolean
   delay?: number
