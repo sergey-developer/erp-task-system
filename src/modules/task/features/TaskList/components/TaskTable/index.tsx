@@ -19,6 +19,7 @@ const TaskTable: FC<TaskTableProps> = ({
   onChange,
   onRow,
   pagination,
+  rowClassName,
 }) => {
   const breakpoints = useBreakpoint()
 
@@ -40,6 +41,7 @@ const TaskTable: FC<TaskTableProps> = ({
   return (
     <TableStyled<TaskTableListItem>
       data-testid='table-taskList'
+      rowClassName={rowClassName}
       dataSource={dataSource}
       columns={columns}
       pagination={
