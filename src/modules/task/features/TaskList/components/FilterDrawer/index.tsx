@@ -40,7 +40,10 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
   const breakpoints = useBreakpoint()
 
   const statusValue = Form.useWatch('status', form)
-  const creationDateRangeValue = Form.useWatch('creationDateRange', form)
+  const olaNextBreachTimeRangeValue = Form.useWatch(
+    'olaNextBreachTimeRange',
+    form,
+  )
   const workGroupIdValue = Form.useWatch('workGroupId', form)
   const searchFieldValue = Form.useWatch('searchField', form)
   const searchValueValue = Form.useWatch('searchValue', form)
@@ -48,7 +51,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
   const formValues: ExtendedFilterFormFields = {
     searchValue: searchValueValue,
     status: statusValue,
-    creationDateRange: creationDateRangeValue,
+    olaNextBreachTimeRange: olaNextBreachTimeRangeValue,
     workGroupId: workGroupIdValue,
     searchField: searchFieldValue,
   }
@@ -107,11 +110,13 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
 
         <FilterBlock withDivider>
           <FilterBlockLabel
-            label='Период создания'
-            onReset={() => form.setFieldsValue({ creationDateRange: null })}
+            label='Период выполнения'
+            onReset={() =>
+              form.setFieldsValue({ olaNextBreachTimeRange: null })
+            }
           />
 
-          <Form.Item name='creationDateRange'>
+          <Form.Item name='olaNextBreachTimeRange'>
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>

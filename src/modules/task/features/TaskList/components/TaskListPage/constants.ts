@@ -57,7 +57,7 @@ export const SMART_SORT_DIRECTIONS_TO_SORT_FIELDS: Record<
 }
 
 export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
-  creationDateRange: null,
+  olaNextBreachTimeRange: null,
   searchField: DEFAULT_SEARCH_FIELD,
   searchValue: '',
   status: [],

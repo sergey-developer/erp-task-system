@@ -8,4 +8,5 @@ export const REQUIRED_FIELD_RULE: Rule = {
 }
 
 export const TEXT_MAX_LENGTH_MSG =
+  // eslint-disable-next-line no-template-curly-in-string
   'Убедитесь, что это значение содержит не более ${max} символов'
