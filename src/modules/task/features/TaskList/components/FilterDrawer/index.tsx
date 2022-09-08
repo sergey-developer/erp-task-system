@@ -40,7 +40,10 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
   const breakpoints = useBreakpoint()
 
   const statusValue = Form.useWatch('status', form)
-  const creationDateRangeValue = Form.useWatch('creationDateRange', form)
+  const olaNextBreachTimeRangeValue = Form.useWatch(
+    'olaNextBreachTimeRange',
+    form,
+  )
   const workGroupIdValue = Form.useWatch('workGroupId', form)
   const searchFieldValue = Form.useWatch('searchField', form)
   const searchValueValue = Form.useWatch('searchValue', form)
@@ -48,7 +51,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
   const formValues: ExtendedFilterFormFields = {
     searchValue: searchValueValue,
     status: statusValue,
-    creationDateRange: creationDateRangeValue,
+    olaNextBreachTimeRange: olaNextBreachTimeRangeValue,
     workGroupId: workGroupIdValue,
     searchField: searchFieldValue,
   }
@@ -60,6 +63,10 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
 
   const handleResetAll = () => {
     form.resetFields()
+  }
+
+  const resetFields = (values: Partial<ExtendedFilterFormFields>) => () => {
+    form.setFieldsValue(values)
   }
 
   return (
@@ -97,7 +104,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
         <FilterBlock withDivider>
           <FilterBlockLabel
             label='Статус'
-            onReset={() => form.setFieldsValue({ status: [] })}
+            onReset={resetFields({ status: [] })}
           />
 
           <Form.Item name='status'>
@@ -107,11 +114,11 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
 
         <FilterBlock withDivider>
           <FilterBlockLabel
-            label='Период создания'
-            onReset={() => form.setFieldsValue({ creationDateRange: null })}
+            label='Период выполнения'
+            onReset={resetFields({ olaNextBreachTimeRange: null })}
           />
 
-          <Form.Item name='creationDateRange'>
+          <Form.Item name='olaNextBreachTimeRange'>
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>
@@ -121,7 +128,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
             <FilterBlock withDivider>
               <FilterBlockLabel
                 label='Рабочая группа'
-                onReset={() => form.setFieldsValue({ workGroupId: undefined })}
+                onReset={resetFields({ workGroupId: undefined })}
               />
 
               <Form.Item name='workGroupId'>
@@ -146,12 +153,10 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
         <FilterBlock withDivider={false}>
           <FilterBlockLabel
             label='Поиск по столбцу'
-            onReset={() =>
-              form.setFieldsValue({
-                searchField: initialFormValues.searchField,
-                searchValue: '',
-              })
-            }
+            onReset={resetFields({
+              searchField: initialFormValues.searchField,
+              searchValue: '',
+            })}
           />
 
           <Space direction='vertical' size='middle'>

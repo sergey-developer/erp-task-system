@@ -12,16 +12,19 @@ import { ExtendedFilterFormFields, ExtendedFilterQueries } from './interfaces'
 export const mapExtendedFilterFormFieldsToQueries = (
   fields: ExtendedFilterFormFields,
 ): ExtendedFilterQueries => {
-  const { creationDateRange, searchField, searchValue, status, workGroupId } =
-    fields
+  const {
+    olaNextBreachTimeRange,
+    searchField,
+    searchValue,
+    status,
+    workGroupId,
+  } = fields
 
   return {
-    dateFrom: creationDateRange
-      ? creationDateRange[0].format(DATE_FILTER_FORMAT)
-      : undefined,
-    dateTo: creationDateRange
-      ? creationDateRange[1].format(DATE_FILTER_FORMAT)
-      : undefined,
+    ...(olaNextBreachTimeRange && {
+      dateFrom: olaNextBreachTimeRange[0].format(DATE_FILTER_FORMAT),
+      dateTo: olaNextBreachTimeRange[1].format(DATE_FILTER_FORMAT),
+    }),
     status,
     [searchField]: searchValue || undefined,
     workGroupId: workGroupId ? parseInt(workGroupId) : undefined,

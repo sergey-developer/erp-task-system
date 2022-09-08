@@ -26,7 +26,7 @@ export type TaskIdFilterQueries = {
 }
 
 export type ExtendedFilterFormFields = {
-  creationDateRange: MaybeNull<[Moment, Moment]>
+  olaNextBreachTimeRange: MaybeNull<[Moment, Moment]>
   searchField: Keys<SearchQueries>
   searchValue: string
   status: TaskStatusEnum[]
