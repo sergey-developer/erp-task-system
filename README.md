@@ -45,7 +45,6 @@
 2. Создать файл `.env.development`
    - `REACT_APP_API_URL={url}`
    - `REACT_APP_ENVIRONMENT=development`
-   - `REACT_APP_SWAGGER_SCHEMA_URL={schema url}`
 3. Установить зависимости `yarn install:dev`
 4. Запустить приложение `yarn start`
 5. Приложение запускается по умолчанию на `http://localhost:3000`
@@ -69,10 +68,6 @@
 
 ## Архитектура
 TODO
-
-## Автоматическая генерация типов и методов АПИ
-производится командой `yarn genapi` на основе OpenApi схемы
-URL схемы необходимо задать в локальном .env, переменная `REACT_APP_SWAGGER_SCHEMA_URL`
 
 ## Сборка проекта
 Этим занимается [webpack](https://webpack.js.org/), конфиг которого настраивается с помощью [craco](https://www.npmjs.com/package/@craco/craco), файл `craco.config.ts`.

@@ -7,8 +7,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject",
-    "genapi": "npx @rtk-query/codegen-openapi ./tools/api/openapi.config.ts"
+    "eject": "craco eject"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -33,7 +32,6 @@
     "web-vitals": "^2.1.0"
   },
   "devDependencies": {
-    "@rtk-query/codegen-openapi": "^1.0.0-alpha.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.4.3",
