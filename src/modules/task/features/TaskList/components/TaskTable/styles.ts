@@ -5,6 +5,10 @@ export const TableStyled: typeof ParentSizedTable = styled(ParentSizedTable)`
   .ant-table-cell {
     padding: 3px;
   }
+
+  .ant-table-cell-row-hover {
+    background: unset !important;
+  }
 `
 
 export const EmptyContentStyled = styled.div`

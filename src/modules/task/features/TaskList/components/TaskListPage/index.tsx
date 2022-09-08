@@ -218,6 +218,9 @@ const TaskListPage: FC = () => {
     FilterTypeEnum.Search,
   )
 
+  const getTableRowClassName = (record: TaskTableListItem): string =>
+    isEqual(record.id, selectedTask) ? 'table-row--selected' : ''
+
   return (
     <>
       <RowWrapStyled gutter={[0, 40]}>
@@ -280,6 +283,7 @@ const TaskListPage: FC = () => {
           <RowStyled>
             <Col span={selectedTask ? (breakpoints.xxl ? 15 : 12) : 24}>
               <TaskTable
+                rowClassName={getTableRowClassName}
                 sorting={queryArgs.sort}
                 onRow={handleTableRowClick}
                 dataSource={taskListResponse?.results}

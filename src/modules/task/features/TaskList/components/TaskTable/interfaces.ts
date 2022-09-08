@@ -21,7 +21,12 @@ export type TaskTableListItem = Pick<
 
 export type TaskTableProps = Pick<
   TableProps<TaskTableListItem>,
-  'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
+  | 'dataSource'
+  | 'loading'
+  | 'onChange'
+  | 'pagination'
+  | 'onRow'
+  | 'rowClassName'
 > & {
   sorting?: SortEnum
 }
