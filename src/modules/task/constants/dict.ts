@@ -10,6 +10,7 @@ export const taskStatusDict: Partial<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.Returned]: 'Возврат заявителем',
   [TaskStatusEnum.Completed]: 'Выполнено',
+  [TaskStatusEnum.Closed]: 'Закрыта',
 }
 
 export const taskExtendedStatusDict: StringMap<TaskStatusEnum> = {
