@@ -1,4 +1,4 @@
-import { UpOutlined } from '@ant-design/icons'
+import UpOutlined from '@ant-design/icons/UpOutlined'
 
 const UpIcon = UpOutlined
 

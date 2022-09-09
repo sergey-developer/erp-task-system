@@ -1,4 +1,4 @@
-import { EnvironmentOutlined } from '@ant-design/icons'
+import EnvironmentOutlined from '@ant-design/icons/EnvironmentOutlined'
 
 const MapPointIcon = EnvironmentOutlined
 
