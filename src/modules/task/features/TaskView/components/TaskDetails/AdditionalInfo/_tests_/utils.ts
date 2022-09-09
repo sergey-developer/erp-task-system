@@ -12,5 +12,4 @@ export const queryAdditionalInfoContent = () =>
 export const userClickExpandButton = async (user: UserEvent) => {
   const button = getExpandButton()
   await user.click(button)
-  return button
 }

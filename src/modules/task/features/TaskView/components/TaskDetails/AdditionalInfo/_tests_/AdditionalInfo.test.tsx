@@ -10,14 +10,14 @@ import {
 
 describe('Блок дополнительной информации', () => {
   describe('Не отображается', () => {
-    test(`Если не нажать на кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}"`, () => {
+    test(`Если не нажать кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}"`, () => {
       render(<AdditionalInfo />)
 
       const additionalInfoContent = queryAdditionalInfoContent()
       expect(additionalInfoContent).not.toBeInTheDocument()
     })
 
-    test(`Если нажать на кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}" дважды`, async () => {
+    test(`Если нажать кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}" дважды`, async () => {
       const { user } = render(<AdditionalInfo />)
 
       await userClickExpandButton(user)
@@ -29,7 +29,7 @@ describe('Блок дополнительной информации', () => {
   })
 
   describe('Отображается', () => {
-    test(`Если нажать на кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}" один раз`, async () => {
+    test(`Если нажать кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}" один раз`, async () => {
       const { user } = render(<AdditionalInfo />)
 
       await userClickExpandButton(user)
