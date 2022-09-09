@@ -1,7 +1,8 @@
 import { Card, Divider } from 'antd'
 
 import { StyledBreakpointsProps } from 'shared/interfaces/breakpoints'
-import styled from 'styled-components'
+import { Keys } from 'shared/interfaces/utils'
+import styled, { DefaultTheme } from 'styled-components'
 
 export const RootWrapperStyled = styled.div`
   padding: 0 0 8px 8px;
@@ -43,6 +44,22 @@ export const DividerStyled = styled(Divider)`
   }
 `
 
-export const DetailsContainerStyled = styled.div<StyledBreakpointsProps>`
-  padding: 20px ${({ $breakpoints }) => ($breakpoints.xxl ? '30px' : '')};
+export type DetailsContainerStyledProps = StyledBreakpointsProps & {
+  $bgColor?: Extract<Keys<DefaultTheme['colors']>, 'lotion'>
+  $disablePadding?: 'horizontal' | 'vertical'
+}
+
+export const DetailsContainerStyled = styled.div<DetailsContainerStyledProps>`
+  padding-top: ${({ $disablePadding }) =>
+    $disablePadding === 'vertical' ? '0' : '20'}px;
+  padding-bottom: ${({ $disablePadding }) =>
+    $disablePadding === 'vertical' ? '0' : '20'}px;
+
+  padding-left: ${({ $breakpoints, $disablePadding }) =>
+    $disablePadding === 'horizontal' ? '0' : $breakpoints.xxl ? '20' : '30'}px;
+  padding-right: ${({ $breakpoints, $disablePadding }) =>
+    $disablePadding === 'horizontal' ? '0' : $breakpoints.xxl ? '20' : '30'}px;
+
+  ${({ $bgColor, theme }) =>
+    $bgColor ? `background-color: ${theme.colors[$bgColor]}` : ''}
 `

@@ -3,13 +3,26 @@ import React from 'react'
 
 import { FCWithChildren } from 'shared/interfaces/utils'
 
-import { DetailsContainerStyled } from './styles'
+import { DetailsContainerStyled, DetailsContainerStyledProps } from './styles'
 
-const DetailsWrapper: FCWithChildren = ({ children }) => {
+export type DetailsWrapperProps = {
+  bgColor?: DetailsContainerStyledProps['$bgColor']
+  disablePadding?: DetailsContainerStyledProps['$disablePadding']
+}
+
+const DetailsWrapper: FCWithChildren<DetailsWrapperProps> = ({
+  children,
+  bgColor,
+  disablePadding,
+}) => {
   const breakpoints = useBreakpoint()
 
   return (
-    <DetailsContainerStyled $breakpoints={breakpoints}>
+    <DetailsContainerStyled
+      $breakpoints={breakpoints}
+      $bgColor={bgColor}
+      $disablePadding={disablePadding}
+    >
       {children}
     </DetailsContainerStyled>
   )
