@@ -112,7 +112,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
       }
       onClick={takeTask}
     >
-      Взять в работу
+      В работу
     </Button>
   )
 

@@ -14,7 +14,7 @@ import TaskAssignee, { TaskAssigneeProps } from '../index'
 import { getTakeTaskButton, queryTakeTaskButton } from './utils'
 
 describe('Блок "Исполнитель заявки"', () => {
-  describe('Кнопка "Взять в работу"', () => {
+  describe('Кнопка "В работу"', () => {
     const baseProps: Pick<
       TaskAssigneeProps,
       | 'takeTask'
