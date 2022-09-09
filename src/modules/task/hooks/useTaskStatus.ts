@@ -17,6 +17,7 @@ const useTaskStatus = (
       isInReclassification: isEqual(status, TaskStatusEnum.InReclassification),
       isReturned: isEqual(status, TaskStatusEnum.Returned),
       isClosed: isEqual(status, TaskStatusEnum.Closed),
+      isOverdue: isEqual(status, TaskStatusEnum.Overdue),
     }),
     [status],
   )

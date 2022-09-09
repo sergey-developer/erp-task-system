@@ -10,6 +10,7 @@ export enum TaskStatusEnum {
   InReclassification = 'IN_RECLASSIFICATION',
   Returned = 'RETURNED',
   Closed = 'CLOSED',
+  Overdue = 'OVERDUE',
 }
 
 export enum TaskExtendedStatusEnum {
