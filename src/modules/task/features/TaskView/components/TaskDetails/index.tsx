@@ -31,6 +31,7 @@ import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
 import { TaskResolutionFormErrors } from '../TaskResolutionModal/interfaces'
+import AdditionalInfo from './AdditionalInfo'
 import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
@@ -250,6 +251,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               olaEstimatedTime={details.olaEstimatedTime}
               olaNextBreachTime={details.olaNextBreachTime}
             />
+
+            <AdditionalInfo />
 
             <DividerStyled />
 
