@@ -202,6 +202,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     await debouncedTakeTask({ taskId: details?.id! })
   }, [debouncedTakeTask, details?.id])
 
+  const debouncedOnClose = useDebounceFn(onClose)
+
   const cardTitle = !taskIsLoading && details && (
     <CardTitle
       id={details.id}
@@ -210,7 +212,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       olaStatus={details.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
       hasReclassificationRequest={hasReclassificationRequest}
-      onClose={onClose}
+      onClose={debouncedOnClose}
       onClickExecuteTask={debouncedOpenTaskResolutionModal}
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
     />
