@@ -16,6 +16,7 @@ import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions/extendedFilter.permissions'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
+import { Keys } from 'shared/interfaces/utils'
 import { isEqualDeep } from 'shared/utils/common/isEqual'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
@@ -61,12 +62,8 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
 
-  const handleResetAll = () => {
-    form.resetFields()
-  }
-
-  const resetFields = (values: Partial<ExtendedFilterFormFields>) => () => {
-    form.setFieldsValue(values)
+  const resetFields = (fields?: Keys<ExtendedFilterFormFields>[]) => () => {
+    form.resetFields(fields)
   }
 
   return (
@@ -75,7 +72,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
       footer={
         <Row justify='end'>
           <Space>
-            <Button onClick={handleResetAll} disabled={valuesNotChanged}>
+            <Button onClick={resetFields()} disabled={valuesNotChanged}>
               Сбросить все
             </Button>
 
@@ -102,10 +99,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
         onFinish={onSubmit}
       >
         <FilterBlock withDivider>
-          <FilterBlockLabel
-            label='Статус'
-            onReset={resetFields({ status: [] })}
-          />
+          <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
 
           <Form.Item name='status'>
             <CheckboxGroupStyled options={checkboxStatusOptions} />
@@ -115,7 +109,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
         <FilterBlock withDivider>
           <FilterBlockLabel
             label='Период выполнения'
-            onReset={resetFields({ olaNextBreachTimeRange: null })}
+            onReset={resetFields(['olaNextBreachTimeRange'])}
           />
 
           <Form.Item name='olaNextBreachTimeRange'>
@@ -128,7 +122,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
             <FilterBlock withDivider>
               <FilterBlockLabel
                 label='Рабочая группа'
-                onReset={resetFields({ workGroupId: undefined })}
+                onReset={resetFields(['workGroupId'])}
               />
 
               <Form.Item name='workGroupId'>
@@ -153,10 +147,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
         <FilterBlock withDivider={false}>
           <FilterBlockLabel
             label='Поиск по столбцу'
-            onReset={resetFields({
-              searchField: initialFormValues.searchField,
-              searchValue: '',
-            })}
+            onReset={resetFields(['searchField', 'searchValue'])}
           />
 
           <Space direction='vertical' size='middle'>
