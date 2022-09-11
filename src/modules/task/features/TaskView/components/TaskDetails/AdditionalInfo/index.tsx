@@ -23,11 +23,7 @@ const AdditionalInfo: FC = () => {
               Дополнительная информация
             </Text>
 
-            {expanded ? (
-              <UpIcon className='fs-10' />
-            ) : (
-              <DownIcon className='fs-10' />
-            )}
+            {expanded ? <UpIcon $size='small' /> : <DownIcon $size='small' />}
           </Button>
         </DetailsWrapper>
 
@@ -52,7 +48,7 @@ const AdditionalInfo: FC = () => {
                 </Space>
 
                 <Space align='start'>
-                  <MapPointIcon />
+                  <MapPointIcon $size='large' />
 
                   <Text strong underline>
                     Камчатский край, г. Петропавловск-Камчатский

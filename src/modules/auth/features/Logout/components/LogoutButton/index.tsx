@@ -1,7 +1,7 @@
-import { LogoutOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import React, { FC } from 'react'
 
+import { LogoutIcon } from 'components/Icons'
 import useLogout from 'modules/auth/features/Logout/hooks/useLogout'
 
 const LogoutButton: FC = () => {
@@ -14,7 +14,7 @@ const LogoutButton: FC = () => {
     <Button
       data-testid='btn-logout'
       ghost
-      icon={<LogoutOutlined className='fs-18' />}
+      icon={<LogoutIcon $size='large' />}
       onClick={logout}
       loading={isLoading}
     />

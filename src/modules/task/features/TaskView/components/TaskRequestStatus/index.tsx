@@ -1,8 +1,8 @@
-import { QuestionCircleTwoTone } from '@ant-design/icons'
 import { Button, Space, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
+import { QuestionCircleIcon } from 'components/Icons'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { BaseUserModel } from 'modules/user/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
@@ -36,7 +36,7 @@ const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
   return (
     <WrapperStyled $breakpoints={breakpoints}>
       <Space size='middle' align='baseline'>
-        <QuestionCircleTwoTone className='fs-18' />
+        <QuestionCircleIcon $size='large' />
 
         <Space direction='vertical' size='middle'>
           <Space direction='vertical' size={4}>

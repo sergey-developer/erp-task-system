@@ -1,5 +1,4 @@
-import { TeamOutlined } from '@ant-design/icons'
-
+import { TeamIcon } from 'components/Icons'
 import { RoutesEnum } from 'configs/routes'
 
 import { NavMenuItem } from './interfaces'
@@ -7,7 +6,7 @@ import { NavMenuItem } from './interfaces'
 const navMenuHeadOfDepartmentConfig: Array<NavMenuItem> = [
   {
     key: RoutesEnum.WorkingGroups,
-    icon: TeamOutlined,
+    icon: TeamIcon,
     link: RoutesEnum.WorkingGroups,
     text: 'Рабочие группы',
   },

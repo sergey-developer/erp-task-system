@@ -1,12 +1,12 @@
-import {
-  CheckCircleOutlined,
-  CloseOutlined,
-  QuestionCircleTwoTone,
-} from '@ant-design/icons'
 import { Button, Dropdown, Menu, Row, Space, Typography } from 'antd'
 import noop from 'lodash/noop'
 import React, { FC, useMemo } from 'react'
 
+import {
+  CheckCircleIcon,
+  CloseIcon,
+  QuestionCircleIcon,
+} from 'components/Icons'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useTaskOlaStatus from 'modules/task/hooks/useTaskOlaStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
@@ -47,7 +47,7 @@ const CardTitle: FC<CardTitleProps> = ({
       items.push({
         key: 1,
         disabled: !isAssignedToCurrentUser || hasReclassificationRequest,
-        icon: <CheckCircleOutlined className='fs-14' />,
+        icon: <CheckCircleIcon />,
         label: 'Выполнить заявку',
         onClick: onClickExecuteTask,
       })
@@ -64,7 +64,7 @@ const CardTitle: FC<CardTitleProps> = ({
           taskType.isRequestTask ||
           taskType.isIncidentTask ||
           isEngineerRole,
-        icon: <QuestionCircleTwoTone className='fs-14' />,
+        icon: <QuestionCircleIcon />,
         label: hasReclassificationRequest
           ? 'Отменить переклассификацию'
           : 'Запросить переклассификацию',
@@ -97,7 +97,7 @@ const CardTitle: FC<CardTitleProps> = ({
       <Space>
         <Dropdown.Button overlay={actionMenu} type='text' />
 
-        <Button type='text' icon={<CloseOutlined />} onClick={onClose} />
+        <Button type='text' icon={<CloseIcon />} onClick={onClose} />
       </Space>
     </Row>
   )
