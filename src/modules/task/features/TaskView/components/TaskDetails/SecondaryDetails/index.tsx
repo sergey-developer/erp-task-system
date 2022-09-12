@@ -27,8 +27,8 @@ type SecondaryDetailsProps = Pick<
   takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
 
-  updateTaskAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
-  updateTaskAssigneeIsLoading: boolean
+  updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
+  updateAssigneeIsLoading: boolean
 
   hasReclassificationRequest: boolean
 }
@@ -50,8 +50,8 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   takeTask,
   takeTaskIsLoading,
 
-  updateTaskAssignee,
-  updateTaskAssigneeIsLoading,
+  updateAssignee,
+  updateAssigneeIsLoading,
 
   hasReclassificationRequest,
 }) => {
@@ -88,8 +88,8 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             assignee={assignee}
             workGroup={workGroup}
             workGroupListIsLoading={workGroupListIsLoading}
-            updateTaskAssignee={updateTaskAssignee}
-            updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
+            updateAssignee={updateAssignee}
+            updateAssigneeIsLoading={updateAssigneeIsLoading}
             takeTask={takeTask}
             takeTaskIsLoading={takeTaskIsLoading}
             hasReclassificationRequest={hasReclassificationRequest}

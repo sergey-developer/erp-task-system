@@ -4,14 +4,14 @@ import noop from 'lodash/noop'
 import React, { FC, useCallback } from 'react'
 
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
-import useResolveTask from 'modules/task/features/TaskView/hooks/useResolveTask'
-import useUpdateTaskAssignee from 'modules/task/features/TaskView/hooks/useUpdateTaskAssignee'
-import useUpdateTaskWorkGroup from 'modules/task/features/TaskView/hooks/useUpdateTaskWorkGroup'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
+  ResolveTaskMutationArgsModel,
   TakeTaskMutationArgsModel,
   TaskDetailsModel,
   TaskDetailsReclassificationRequestModel,
+  UpdateTaskAssigneeMutationArgsModel,
+  UpdateTaskWorkGroupMutationArgsModel,
 } from 'modules/task/features/TaskView/models'
 import { TaskAssigneeModel } from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
@@ -73,8 +73,16 @@ type TaskDetailsProps = {
   takeTask: (data: TakeTaskMutationArgsModel) => Promise<void>
   takeTaskIsLoading: boolean
 
+  resolveTask: (data: ResolveTaskMutationArgsModel) => Promise<void>
+  isTaskResolving: boolean
+
+  updateAssignee: (data: UpdateTaskAssigneeMutationArgsModel) => Promise<void>
+  updateAssigneeIsLoading: boolean
+
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
+  updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgsModel) => Promise<void>
+  updateWorkGroupIsLoading: boolean
 
   onClose: () => void
 }
@@ -85,6 +93,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   taskIsLoading,
   takeTask,
   takeTaskIsLoading,
+  resolveTask,
+  isTaskResolving,
 
   reclassificationRequest,
   reclassificationRequestIsCreating,
@@ -92,6 +102,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   workGroupList,
   workGroupListIsLoading,
+  updateWorkGroup,
+  updateWorkGroupIsLoading,
+
+  updateAssignee,
+  updateAssigneeIsLoading,
 
   onClose,
 }) => {
@@ -123,21 +138,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const debouncedOpenTaskReclassificationModal = useDebounceFn(
     openTaskReclassificationModal,
   )
-
-  const {
-    fn: resolveTask,
-    state: { isLoading: isTaskResolving },
-  } = useResolveTask()
-
-  const {
-    fn: updateTaskWorkGroup,
-    state: { isLoading: updateTaskWorkGroupIsLoading },
-  } = useUpdateTaskWorkGroup()
-
-  const {
-    fn: updateTaskAssignee,
-    state: { isLoading: updateTaskAssigneeIsLoading },
-  } = useUpdateTaskAssignee()
 
   const handleResolutionSubmit = useCallback<
     TaskResolutionModalProps['onSubmit']
@@ -177,23 +177,23 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     ],
   )
 
-  const handleUpdateTaskWorkGroup = useCallback(
+  const handleUpdateWorkGroup = useCallback(
     async (
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
-      await updateTaskWorkGroup({ taskId: details?.id!, workGroup })
+      await updateWorkGroup({ taskId: details?.id!, workGroup })
       closeTaskSecondLineModal()
       onClose()
     },
-    [details?.id, onClose, updateTaskWorkGroup],
+    [details?.id, onClose, updateWorkGroup],
   )
 
-  const handleUpdateTaskAssignee = useCallback(
+  const handleUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
-      await updateTaskAssignee({ taskId: details?.id!, assignee })
+      await updateAssignee({ taskId: details?.id!, assignee })
     },
-    [details?.id, updateTaskAssignee],
+    [details?.id, updateAssignee],
   )
 
   const debouncedTakeTask = useDebounceFn(takeTask)
@@ -266,10 +266,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               workGroup={details.workGroup}
               workGroupList={workGroupList}
               workGroupListIsLoading={workGroupListIsLoading}
-              transferTask={handleUpdateTaskWorkGroup}
-              transferTaskIsLoading={updateTaskWorkGroupIsLoading}
-              updateTaskAssignee={handleUpdateTaskAssignee}
-              updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
+              transferTask={handleUpdateWorkGroup}
+              transferTaskIsLoading={updateWorkGroupIsLoading}
+              updateAssignee={handleUpdateAssignee}
+              updateAssigneeIsLoading={updateAssigneeIsLoading}
               hasReclassificationRequest={hasReclassificationRequest}
               takeTask={handleTakeTask}
               takeTaskIsLoading={takeTaskIsLoading}

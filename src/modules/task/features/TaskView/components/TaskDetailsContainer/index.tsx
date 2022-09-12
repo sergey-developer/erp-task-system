@@ -4,7 +4,10 @@ import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useCreateTaskReclassificationRequest'
 import useGetTask from 'modules/task/features/TaskView/hooks/useGetTask'
 import useGetTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useGetTaskReclassificationRequest'
+import useResolveTask from 'modules/task/features/TaskView/hooks/useResolveTask'
 import useTakeTask from 'modules/task/features/TaskView/hooks/useTakeTask'
+import useUpdateTaskAssignee from 'modules/task/features/TaskView/hooks/useUpdateTaskAssignee'
+import useUpdateTaskWorkGroup from 'modules/task/features/TaskView/hooks/useUpdateTaskWorkGroup'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'
@@ -40,6 +43,21 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   const { data: workGroupList = [], isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
 
+  const {
+    fn: resolveTask,
+    state: { isLoading: isTaskResolving },
+  } = useResolveTask()
+
+  const {
+    fn: updateWorkGroup,
+    state: { isLoading: updateWorkGroupIsLoading },
+  } = useUpdateTaskWorkGroup()
+
+  const {
+    fn: updateAssignee,
+    state: { isLoading: updateAssigneeIsLoading },
+  } = useUpdateTaskAssignee()
+
   useEffect(() => {
     if (isGetTaskError) {
       onClose()
@@ -50,14 +68,20 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     <TaskDetails
       details={task}
       taskIsLoading={taskIsFetching}
+      takeTask={takeTask}
+      takeTaskIsLoading={takeTaskIsLoading}
+      resolveTask={resolveTask}
+      isTaskResolving={isTaskResolving}
+      updateAssignee={updateAssignee}
+      updateAssigneeIsLoading={updateAssigneeIsLoading}
       reclassificationRequest={reclassificationRequest}
       createReclassificationRequest={createReclassificationRequest}
       reclassificationRequestIsCreating={reclassificationRequestIsCreating}
-      takeTask={takeTask}
-      takeTaskIsLoading={takeTaskIsLoading}
-      onClose={onClose}
       workGroupList={workGroupList}
       workGroupListIsLoading={workGroupListIsFetching}
+      updateWorkGroup={updateWorkGroup}
+      updateWorkGroupIsLoading={updateWorkGroupIsLoading}
+      onClose={onClose}
     />
   )
 }
