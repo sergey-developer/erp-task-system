@@ -145,11 +145,13 @@ const TaskListPage: FC = () => {
     handleCloseTaskDetails()
   })
 
+  const debouncedSetSelectedTask = useDebounceFn(setSelectedTask)
+
   const handleTableRowClick: GetComponentProps<TaskTableListItem> = useCallback(
     (record: TaskTableListItem) => ({
-      onClick: () => setSelectedTask(record.id),
+      onClick: () => debouncedSetSelectedTask(record.id),
     }),
-    [setSelectedTask],
+    [debouncedSetSelectedTask],
   )
 
   const handleCloseTaskDetails = useCallback(() => {
