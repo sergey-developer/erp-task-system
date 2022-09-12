@@ -1,7 +1,7 @@
-import { CopyOutlined } from '@ant-design/icons'
 import { Button, ButtonProps } from 'antd'
 import React, { FC } from 'react'
 
+import { CopyIcon } from 'components/Icons'
 import useClipboard from 'shared/hooks/useClipboard'
 
 type CopyButtonProps = ButtonProps & {
@@ -18,7 +18,7 @@ const CopyButton: FC<CopyButtonProps> = ({ value, onClick, ...props }) => {
 
   return (
     <Button
-      icon={clipboard.copied ? null : <CopyOutlined />}
+      icon={clipboard.copied ? null : <CopyIcon />}
       onClick={handleClick}
       {...props}
     >

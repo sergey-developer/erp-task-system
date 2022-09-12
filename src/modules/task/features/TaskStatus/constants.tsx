@@ -1,13 +1,12 @@
-import {
-  PauseCircleTwoTone,
-  QuestionCircleTwoTone,
-  RightCircleOutlined,
-} from '@ant-design/icons'
 import { BadgeProps } from 'antd'
 import React, { ReactElement } from 'react'
 
+import {
+  PauseCircleIcon,
+  QuestionCircleIcon,
+  RightCircleIcon,
+} from 'components/Icons'
 import { TaskStatusEnum } from 'modules/task/constants/enums'
-import theme from 'styles/theme'
 
 export const badgeByStatusMap: Partial<
   Record<
@@ -22,9 +21,7 @@ export const badgeByStatusMap: Partial<
 }
 
 export const iconByStatusMap: Partial<Record<TaskStatusEnum, ReactElement>> = {
-  [TaskStatusEnum.Awaiting]: <PauseCircleTwoTone />,
-  [TaskStatusEnum.InReclassification]: <QuestionCircleTwoTone />,
-  [TaskStatusEnum.Returned]: (
-    <RightCircleOutlined style={{ color: theme.colors.fireOpal }} />
-  ),
+  [TaskStatusEnum.Awaiting]: <PauseCircleIcon />,
+  [TaskStatusEnum.InReclassification]: <QuestionCircleIcon />,
+  [TaskStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
 }

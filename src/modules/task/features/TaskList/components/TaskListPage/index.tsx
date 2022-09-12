@@ -1,4 +1,3 @@
-import { FilterTwoTone, SyncOutlined } from '@ant-design/icons'
 import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, Row, Space, TableProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
@@ -8,6 +7,7 @@ import isArray from 'lodash/isArray'
 import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useState } from 'react'
 
+import { FilterIcon, SyncIcon } from 'components/Icons'
 import {
   FastFilterEnum,
   FilterTypeEnum,
@@ -241,7 +241,7 @@ const TaskListPage: FC = () => {
               <Col>
                 <Button
                   data-testid='btn-filter-extended'
-                  icon={<FilterTwoTone className='fs-18' />}
+                  icon={<FilterIcon $size='large' />}
                   onClick={debouncedToggleFilterDrawer}
                   disabled={searchFilterApplied}
                 >
@@ -266,7 +266,7 @@ const TaskListPage: FC = () => {
                 <Space align='end' size='middle'>
                   <Button
                     data-testid='btn-reload-taskList'
-                    icon={<SyncOutlined />}
+                    icon={<SyncIcon />}
                     onClick={handleRefetchTaskList}
                   >
                     Обновить заявки
