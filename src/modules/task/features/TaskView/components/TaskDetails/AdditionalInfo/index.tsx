@@ -7,6 +7,7 @@ import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 
 import DetailsWrapper from '../DetailsWrapper'
+import { ADDITIONAL_INFO_BUTTON_TEXT } from './constants'
 import { ContainerStyled } from './styles'
 
 const { Text } = Typography
@@ -18,9 +19,9 @@ const AdditionalInfo: FC = () => {
     <ContainerStyled $hasMarginBottom={!expanded}>
       <Space direction='vertical' size='middle' $block>
         <DetailsWrapper disablePadding='vertical'>
-          <Button type='text' onClick={toggleExpand}>
+          <Button data-testid='btn-expand' type='text' onClick={toggleExpand}>
             <Text type='secondary' underline>
-              Дополнительная информация
+              {ADDITIONAL_INFO_BUTTON_TEXT}
             </Text>
 
             {expanded ? <UpIcon $size='small' /> : <DownIcon $size='small' />}
@@ -28,7 +29,10 @@ const AdditionalInfo: FC = () => {
         </DetailsWrapper>
 
         {expanded && (
-          <DetailsWrapper bgColor='lotion'>
+          <DetailsWrapper
+            data-testid='additional-info-content'
+            bgColor='lotion'
+          >
             <Space direction='vertical' size={30} $block>
               <Row justify='space-between'>
                 <Space size={37}>

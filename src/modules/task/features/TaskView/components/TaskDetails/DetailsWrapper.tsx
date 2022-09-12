@@ -14,6 +14,7 @@ const DetailsWrapper: FCWithChildren<DetailsWrapperProps> = ({
   children,
   bgColor,
   disablePadding,
+  ...props
 }) => {
   const breakpoints = useBreakpoint()
 
@@ -22,6 +23,7 @@ const DetailsWrapper: FCWithChildren<DetailsWrapperProps> = ({
       $breakpoints={breakpoints}
       $bgColor={bgColor}
       $disablePadding={disablePadding}
+      {...props}
     >
       {children}
     </DetailsContainerStyled>
