@@ -54,8 +54,8 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   } = useUpdateTaskWorkGroup()
 
   const {
-    fn: updateTaskAssignee,
-    state: { isLoading: updateTaskAssigneeIsLoading },
+    fn: updateAssignee,
+    state: { isLoading: updateAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 
   useEffect(() => {
@@ -72,8 +72,8 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       takeTaskIsLoading={takeTaskIsLoading}
       resolveTask={resolveTask}
       isTaskResolving={isTaskResolving}
-      updateTaskAssignee={updateTaskAssignee}
-      updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
+      updateAssignee={updateAssignee}
+      updateAssigneeIsLoading={updateAssigneeIsLoading}
       reclassificationRequest={reclassificationRequest}
       createReclassificationRequest={createReclassificationRequest}
       reclassificationRequestIsCreating={reclassificationRequestIsCreating}

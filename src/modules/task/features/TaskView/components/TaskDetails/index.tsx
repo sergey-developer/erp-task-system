@@ -76,10 +76,8 @@ type TaskDetailsProps = {
   resolveTask: (data: ResolveTaskMutationArgsModel) => Promise<void>
   isTaskResolving: boolean
 
-  updateTaskAssignee: (
-    data: UpdateTaskAssigneeMutationArgsModel,
-  ) => Promise<void>
-  updateTaskAssigneeIsLoading: boolean
+  updateAssignee: (data: UpdateTaskAssigneeMutationArgsModel) => Promise<void>
+  updateAssigneeIsLoading: boolean
 
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
@@ -107,8 +105,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   updateWorkGroup,
   updateWorkGroupIsLoading,
 
-  updateTaskAssignee,
-  updateTaskAssigneeIsLoading,
+  updateAssignee,
+  updateAssigneeIsLoading,
 
   onClose,
 }) => {
@@ -179,7 +177,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     ],
   )
 
-  const handleUpdateTaskWorkGroup = useCallback(
+  const handleUpdateWorkGroup = useCallback(
     async (
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
@@ -191,11 +189,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [details?.id, onClose, updateWorkGroup],
   )
 
-  const handleUpdateTaskAssignee = useCallback(
+  const handleUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
-      await updateTaskAssignee({ taskId: details?.id!, assignee })
+      await updateAssignee({ taskId: details?.id!, assignee })
     },
-    [details?.id, updateTaskAssignee],
+    [details?.id, updateAssignee],
   )
 
   const debouncedTakeTask = useDebounceFn(takeTask)
@@ -268,10 +266,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               workGroup={details.workGroup}
               workGroupList={workGroupList}
               workGroupListIsLoading={workGroupListIsLoading}
-              transferTask={handleUpdateTaskWorkGroup}
+              transferTask={handleUpdateWorkGroup}
               transferTaskIsLoading={updateWorkGroupIsLoading}
-              updateTaskAssignee={handleUpdateTaskAssignee}
-              updateTaskAssigneeIsLoading={updateTaskAssigneeIsLoading}
+              updateAssignee={handleUpdateAssignee}
+              updateAssigneeIsLoading={updateAssigneeIsLoading}
               hasReclassificationRequest={hasReclassificationRequest}
               takeTask={handleTakeTask}
               takeTaskIsLoading={takeTaskIsLoading}

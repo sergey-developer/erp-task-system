@@ -30,8 +30,8 @@ export type TaskAssigneeProps = Pick<
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
-  updateTaskAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
-  updateTaskAssigneeIsLoading: boolean
+  updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
+  updateAssigneeIsLoading: boolean
 
   takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
@@ -48,8 +48,8 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   workGroup,
   workGroupListIsLoading,
 
-  updateTaskAssignee,
-  updateTaskAssigneeIsLoading,
+  updateAssignee,
+  updateAssigneeIsLoading,
 
   takeTask,
   takeTaskIsLoading,
@@ -88,13 +88,13 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
     (seniorEngineerFromWorkGroupIsAuthenticatedUser ||
       headOfDepartmentFromWorkGroupIsAuthenticatedUser)
 
-  const handleAssignTaskOnMe = async () => {
-    await updateTaskAssignee(authenticatedUser!.id)
+  const handleAssignOnMe = async () => {
+    await updateAssignee(authenticatedUser!.id)
     setSelectedAssignee(authenticatedUser!.id)
   }
 
   const handleClickAssigneeButton = async () => {
-    await updateTaskAssignee(selectedAssignee!)
+    await updateAssignee(selectedAssignee!)
   }
 
   const takeTaskButton = (
@@ -121,16 +121,14 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
       <LabeledData label={ASSIGNEE_WORD} size='large' direction='horizontal'>
         <Button
           type='link'
-          loading={updateTaskAssigneeIsLoading}
+          loading={updateAssigneeIsLoading}
           disabled={
             taskStatus.isClosed ||
             taskStatus.isCompleted ||
             hasReclassificationRequest
           }
           onClick={
-            currentAssigneeIsAuthenticatedUser
-              ? undefined
-              : handleAssignTaskOnMe
+            currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
           }
         >
           {currentAssigneeIsAuthenticatedUser
@@ -163,7 +161,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
               <SelectStyled
                 defaultValue={selectedAssignee}
                 loading={workGroupListIsLoading}
-                disabled={updateTaskAssigneeIsLoading}
+                disabled={updateAssigneeIsLoading}
                 bordered={false}
                 placeholder={assignee ? null : ASSIGNEE_NOT_SET_TEXT}
                 onSelect={setSelectedAssignee}
@@ -205,7 +203,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                   type='primary'
                   ghost
                   onClick={handleClickAssigneeButton}
-                  loading={updateTaskAssigneeIsLoading}
+                  loading={updateAssigneeIsLoading}
                   disabled={
                     !selectedAssignee ||
                     selectedAssigneeIsAuthenticatedUser ||
