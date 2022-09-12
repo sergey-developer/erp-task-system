@@ -1,4 +1,3 @@
-import { SyncOutlined } from '@ant-design/icons'
 import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, Row, Space, TableProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
@@ -8,7 +7,7 @@ import isArray from 'lodash/isArray'
 import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useState } from 'react'
 
-import { FilterIcon } from 'components/Icons'
+import { FilterIcon, SyncIcon } from 'components/Icons'
 import {
   FastFilterEnum,
   FilterTypeEnum,
@@ -267,7 +266,7 @@ const TaskListPage: FC = () => {
                 <Space align='end' size='middle'>
                   <Button
                     data-testid='btn-reload-taskList'
-                    icon={<SyncOutlined />}
+                    icon={<SyncIcon />}
                     onClick={handleRefetchTaskList}
                   >
                     Обновить заявки

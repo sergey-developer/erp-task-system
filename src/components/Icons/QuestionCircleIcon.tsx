@@ -1,4 +1,4 @@
-import QuestionCircleTwoTone from '@ant-design/icons/QuestionCircleTwoTone'
+import { QuestionCircleTwoTone } from '@ant-design/icons'
 
 import styled from 'styled-components'
 

@@ -6,6 +6,7 @@ import { DefaultTheme } from 'styled-components'
 
 const colors = {
   white: '#FFFFFF',
+  black: '#000000',
   darkLiver: '#4F4F4F',
   chineseWhite: '#E0E0E0',
   oldSilver: '#828282',

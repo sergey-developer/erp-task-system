@@ -1,4 +1,4 @@
-import LogoutOutlined from '@ant-design/icons/LogoutOutlined'
+import { LogoutOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 

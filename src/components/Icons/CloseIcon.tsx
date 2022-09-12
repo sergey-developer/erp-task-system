@@ -1,4 +1,4 @@
-import CloseOutlined from '@ant-design/icons/CloseOutlined'
+import { CloseOutlined } from '@ant-design/icons'
 
 const CloseIcon = CloseOutlined
 

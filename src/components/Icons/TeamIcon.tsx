@@ -1,4 +1,4 @@
-import TeamOutlined from '@ant-design/icons/TeamOutlined'
+import { TeamOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 

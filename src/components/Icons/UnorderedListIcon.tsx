@@ -1,4 +1,4 @@
-import UnorderedListOutlined from '@ant-design/icons/UnorderedListOutlined'
+import { UnorderedListOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 

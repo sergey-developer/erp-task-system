@@ -13,6 +13,6 @@ export const fontSizeStyles = css<Pick<IconProps, '$size'>>`
       : ''}px !important;
 `
 
-const colorStyles = css<Pick<IconProps, '$color'>>`
+export const colorStyles = css<Pick<IconProps, '$color'>>`
   ${({ theme, $color }) => ($color ? `color: ${theme.colors[$color]};` : '')}
 `

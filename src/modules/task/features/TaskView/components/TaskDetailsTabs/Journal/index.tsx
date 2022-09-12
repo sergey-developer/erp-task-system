@@ -1,8 +1,8 @@
-import { DownloadOutlined } from '@ant-design/icons'
 import { Button, Col, Divider, Row, Typography } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
+import { DownloadIcon } from 'components/Icons'
 import LoadableData from 'components/LoadableData'
 import Space from 'components/Space'
 import { journalEntryTypeDict } from 'modules/task/constants/dict'
@@ -38,9 +38,9 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
             href={getTaskJournalCsvUrl(taskId)}
             download={`csv-заявка-${taskId}`}
             icon={
-              <DownloadOutlined
+              <DownloadIcon
                 data-testid='journal-icon-download'
-                style={{ color: 'black' }}
+                $color='black'
               />
             }
           />

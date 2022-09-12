@@ -1,4 +1,4 @@
-import UpOutlined from '@ant-design/icons/UpOutlined'
+import { UpOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 

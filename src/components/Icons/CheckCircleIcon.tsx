@@ -1,4 +1,4 @@
-import CheckCircleOutlined from '@ant-design/icons/CheckCircleOutlined'
+import { CheckCircleOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 

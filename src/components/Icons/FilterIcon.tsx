@@ -1,4 +1,4 @@
-import FilterTwoTone from '@ant-design/icons/FilterTwoTone'
+import { FilterTwoTone } from '@ant-design/icons'
 
 import styled from 'styled-components'
 
