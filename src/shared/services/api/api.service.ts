@@ -5,7 +5,6 @@ import { CACHE_TIME_LIFE } from './constants'
 
 const apiService = createApi({
   baseQuery: baseQueryWithReauth,
-  refetchOnFocus: true,
   refetchOnReconnect: true,
   keepUnusedDataFor: CACHE_TIME_LIFE,
   endpoints: () => ({}),
