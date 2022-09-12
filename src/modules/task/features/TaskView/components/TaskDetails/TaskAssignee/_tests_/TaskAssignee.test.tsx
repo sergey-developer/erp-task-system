@@ -19,15 +19,15 @@ describe('Блок "Исполнитель заявки"', () => {
       TaskAssigneeProps,
       | 'takeTask'
       | 'takeTaskIsLoading'
-      | 'updateTaskAssignee'
-      | 'updateTaskAssigneeIsLoading'
+      | 'updateAssignee'
+      | 'updateAssigneeIsLoading'
       | 'extendedStatus'
       | 'workGroupListIsLoading'
     > = {
       takeTask: asyncNoop,
       takeTaskIsLoading: false,
-      updateTaskAssignee: asyncNoop,
-      updateTaskAssigneeIsLoading: false,
+      updateAssignee: asyncNoop,
+      updateAssigneeIsLoading: false,
       workGroupListIsLoading: false,
       extendedStatus: TaskExtendedStatusEnum.New,
     }
