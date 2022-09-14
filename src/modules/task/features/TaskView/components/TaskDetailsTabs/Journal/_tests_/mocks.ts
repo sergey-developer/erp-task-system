@@ -1,14 +1,23 @@
 import { getRequestMocker, getServerErrorMocker } from '_tests_/mocks/request'
 import { getResponseResolver } from '_tests_/mocks/response'
+import { generateId } from '_tests_/utils'
 import { TaskJournalModel } from 'modules/task/features/TaskView/models'
-import { getTaskJournalUrl } from 'modules/task/utils/apiUrls'
+import {
+  getTaskJournalCsvUrl,
+  getTaskJournalUrl,
+} from 'modules/task/utils/apiUrls'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 
-import { FAKE_TASK_ID } from './constants'
+export const FAKE_TASK_ID = generateId()
 
 const getJournalMocker = getRequestMocker(
   HttpMethodEnum.Get,
   getTaskJournalUrl(FAKE_TASK_ID),
+)
+
+const getJournalCsvMocker = getRequestMocker(
+  HttpMethodEnum.Get,
+  getTaskJournalCsvUrl(FAKE_TASK_ID),
 )
 
 export const mockGetJournalSuccess = (response: TaskJournalModel) => {
@@ -21,5 +30,12 @@ export const mockGetJournalSuccess = (response: TaskJournalModel) => {
 
   mockGetJournal()
 }
+
+export const mockGetJournalCsvSuccess = getJournalCsvMocker(
+  getResponseResolver({
+    status: HttpCodeEnum.Ok,
+    body: '',
+  }),
+)
 
 export const mockGetJournalServerError = getServerErrorMocker(getJournalMocker)

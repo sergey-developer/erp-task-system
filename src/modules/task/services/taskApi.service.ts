@@ -9,6 +9,8 @@ import {
   GetTaskListResponseModel,
 } from 'modules/task/features/TaskList/models'
 import {
+  GetTaskJournalCsvQueryArgsModel,
+  GetTaskJournalCsvResponseModel,
   GetTaskJournalQueryArgsModel,
   GetTaskJournalResponseModel,
   GetTaskQueryArgsModel,
@@ -22,6 +24,7 @@ import {
   getResolveTaskUrl,
   getTakeTaskUrl,
   getTaskAssigneeUrl,
+  getTaskJournalCsvUrl,
   getTaskJournalUrl,
   getTaskUrl,
   getTaskWorkGroupUrl,
@@ -122,6 +125,15 @@ const taskApiService = apiService
           method: HttpMethodEnum.Get,
         }),
       }),
+      getTaskJournalCsv: build.query<
+        GetTaskJournalCsvResponseModel,
+        GetTaskJournalCsvQueryArgsModel
+      >({
+        query: (taskId) => ({
+          url: getTaskJournalCsvUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
     }),
     overrideExisting: false,
   })
@@ -134,5 +146,6 @@ export const {
   useUpdateTaskWorkGroupMutation,
   useGetTaskCountersQuery,
   useGetTaskJournalQuery,
+  useLazyGetTaskJournalCsvQuery,
   useTakeTaskMutation,
 } = taskApiService

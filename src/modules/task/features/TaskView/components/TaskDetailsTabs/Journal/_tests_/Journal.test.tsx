@@ -3,13 +3,15 @@ import {
   getJournalResponseSuccess,
 } from '_fixtures_/task'
 import { render, screen, setupApiTests, within } from '_tests_/utils'
-import { getTaskJournalCsvUrl } from 'modules/task/utils/apiUrls'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
 import { NO_DATA_MSG } from '../constants'
 import Journal from '../index'
-import { FAKE_TASK_ID } from './constants'
-import { mockGetJournalServerError, mockGetJournalSuccess } from './mocks'
+import {
+  FAKE_TASK_ID,
+  mockGetJournalServerError,
+  mockGetJournalSuccess,
+} from './mocks'
 import { getDownloadButton, waitFinishLoading, waitStartLoading } from './utils'
 
 setupApiTests()
@@ -60,7 +62,18 @@ describe('Страница отображения журнала', () => {
       })
 
       describe('Кнопка экспорта в csv', () => {
-        test('Валидна для экспорта заявки', async () => {
+        // window.URL.createObjectURL = jest.fn()
+        // window.URL.revokeObjectURL = jest.fn()
+
+        // const createObjectURL = window.URL.createObjectURL as jest.Mock
+        // const revokeObjectURL = window.URL.revokeObjectURL as jest.Mock
+
+        // afterEach(() => {
+        //   URL.createObjectURL.mockReset()
+        //   URL.revokeObjectURL.mockReset()
+        // })
+
+        test('Активна', async () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_TASK_ID} />)
@@ -69,21 +82,36 @@ describe('Страница отображения журнала', () => {
           await waitFinishLoading()
 
           const downloadButton = getDownloadButton()
-
           expect(downloadButton).toBeEnabled()
-          expect(downloadButton.tagName.toLowerCase()).toBe('a')
-
-          expect(downloadButton).toHaveAttribute(
-            'href',
-            getTaskJournalCsvUrl(FAKE_TASK_ID),
-          )
-
-          expect(downloadButton).toHaveAttribute(
-            'download',
-            `csv-заявка-${FAKE_TASK_ID}`,
-          )
         })
+
+        // test('Вызывает обработчик при клике', async () => {
+        //   mockGetJournalSuccess(getJournalResponseSuccess)
+        //   mockGetJournalCsvSuccess()
+        //
+        //   const { user } = render(<Journal taskId={FAKE_TASK_ID} />)
+        //
+        //   await waitStartLoading()
+        //   await waitFinishLoading()
+        //
+        //   const downloadButton = getDownloadButton()
+        //   const downloadButtonSpy = jest.spyOn(downloadButton, 'click')
+        //
+        //   await user.click(downloadButton)
+        //
+        //   await waitFor(() => {
+        //     expect(downloadButtonSpy).toBeCalled()
+        //   })
+        // })
       })
+
+      // describe('Если нажать на кнопку экспорта в csv', () => {
+      //   describe('При успешном запросе', () => {
+      //     mockGetJournalCsvSuccess()
+      //
+      //     // test('')
+      //   })
+      // })
     })
 
     describe('Если нет записей', () => {
