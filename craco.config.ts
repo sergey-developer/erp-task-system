@@ -27,6 +27,10 @@ module.exports = {
     },
   ],
   // babel: {
+  //   plugins: ['babel-plugin-jsx-remove-data-test-id'],
+  // },
+
+  // babel: {
   //   presets: [],
   //   plugins: [...whenProd(() => [new babelJsxPlugin()], [])],
   // },
