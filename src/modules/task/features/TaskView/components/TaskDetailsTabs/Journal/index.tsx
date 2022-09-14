@@ -7,13 +7,18 @@ import LoadableData from 'components/LoadableData'
 import Space from 'components/Space'
 import { journalEntryTypeDict } from 'modules/task/constants/dict'
 import useGetTaskJournal from 'modules/task/features/TaskView/hooks/useGetTaskJournal'
-import { getTaskJournalCsvUrl } from 'modules/task/utils/apiUrls'
+import useGetTaskJournalCsv from 'modules/task/features/TaskView/hooks/useGetTaskJournalCsv'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import {
+  clickDownloadLink,
+  makeDownloadLink,
+} from 'shared/utils/common/downloadLink'
 import formatDate from 'shared/utils/date/formatDate'
 
 import { NO_DATA_MSG } from './constants'
 import JournalEntry from './JournalEntry'
+import { getJournalCsvFilename } from './utils'
 
 const { Text } = Typography
 
@@ -22,21 +27,39 @@ type JournalProps = {
 }
 
 const Journal: FC<JournalProps> = ({ taskId }) => {
-  const { data = [], isFetching } = useGetTaskJournal(taskId)
+  const { data: journal = [], isFetching: journalIsFetching } =
+    useGetTaskJournal(taskId)
+
+  const {
+    fn: getJournalCsv,
+    state: { isFetching: journalCsvIsFetching },
+  } = useGetTaskJournalCsv()
+
+  const handleGetJournalCsv = async () => {
+    const journalCsv = await getJournalCsv(taskId)
+
+    const downloadLink = makeDownloadLink(
+      journalCsv,
+      'text/csv',
+      getJournalCsvFilename(taskId),
+    )
+
+    clickDownloadLink(downloadLink)
+  }
 
   return (
     <LoadableData
       data-testid='spinner-journal'
-      isLoading={isFetching}
-      noContent={isEmpty(data) && <Text>{NO_DATA_MSG}</Text>}
+      isLoading={journalIsFetching}
+      noContent={isEmpty(journal) && <Text>{NO_DATA_MSG}</Text>}
     >
       <Space direction='vertical' $block>
         <Row justify='end'>
           <Button
             data-testid='journal-btn-download'
             type='link'
-            href={getTaskJournalCsvUrl(taskId)}
-            download={`csv-заявка-${taskId}`}
+            onClick={handleGetJournalCsv}
+            loading={journalCsvIsFetching}
             icon={
               <DownloadIcon
                 data-testid='journal-icon-download'
@@ -47,7 +70,7 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
         </Row>
 
         <Row>
-          {data.map((item, index, array) => {
+          {journal.map((item, index, array) => {
             const isLastItem: boolean = index === array.length - 1
 
             return (
