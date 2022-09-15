@@ -1,39 +1,27 @@
 import path from 'path'
 
-// import babelJsxPlugin from 'babel-plugin-jsx-remove-data-test-id'
+import { when } from '@craco/craco'
 
-// const rewireBabelLoader = require('craco-babel-loader')
-const rewireBabelLoader = require('craco-babel-loader-plugin')
-const CracoAntDesignPlugin = require('craco-antd')
-// const babelJsxPlugin = require('babel-plugin-jsx-remove-data-test-id')
+require('react-scripts/config/env')
+
+const CracoAntdPlugin = require('craco-antd')
 
 const resolvePath = (p: string) => path.resolve(__dirname, p)
 
 module.exports = {
   plugins: [
     {
-      plugin: CracoAntDesignPlugin,
+      plugin: CracoAntdPlugin,
       options: {
         customizeThemeLessPath: resolvePath('src/styles/customTheme.less'),
       },
     },
-    {
-      plugin: rewireBabelLoader,
-      options: {
-        includes: [
-          resolvePath('node_modules/babel-plugin-jsx-remove-data-test-id'),
-        ],
-      },
-    },
   ],
-  // babel: {
-  //   plugins: ['babel-plugin-jsx-remove-data-test-id'],
-  // },
-
-  // babel: {
-  //   presets: [],
-  //   plugins: [...whenProd(() => [new babelJsxPlugin()], [])],
-  // },
+  ...when(process.env.REACT_APP_ENVIRONMENT === 'production', () => ({
+    babel: {
+      plugins: ['babel-plugin-jsx-remove-data-test-id'],
+    },
+  })),
   webpack: {
     alias: {
       lib: resolvePath('src/lib'),

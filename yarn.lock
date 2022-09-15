@@ -1121,15 +1121,6 @@
     semver "^7.3.2"
     webpack-merge "^4.2.2"
 
-"@craco/craco@^5.9.0":
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/@craco/craco/-/craco-5.9.0.tgz#dcd34330b558596a4841374743071b7fa041dce9"
-  integrity sha512-2Q8gIB4W0/nPiUxr9iAKUhGsFlXYN0/wngUdK1VWtfV2NtBv+yllNn2AjieaLbttgpQinuOYmDU65vocC0NMDg==
-  dependencies:
-    cross-spawn "^7.0.0"
-    lodash "^4.17.15"
-    webpack-merge "^4.2.2"
-
 "@cspotcode/source-map-consumer@0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-consumer/-/source-map-consumer-0.8.0.tgz#33bf4b7b39c178821606f669bbc447a6a629786b"
@@ -3865,18 +3856,6 @@ craco-antd@^2.0.0:
     babel-plugin-import "1.13.5"
     craco-less "2.0.0"
     less-vars-to-js "1.3.0"
-
-craco-babel-loader-plugin@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/craco-babel-loader-plugin/-/craco-babel-loader-plugin-1.0.3.tgz#722b9d81a82bad9b7a7c5f66b32815cbc68a9aca"
-  integrity sha512-hnLK2MgihdrMkizZ51RaiI2MbBbI7g0GX05/D+lR95AIrUhv1+pNjbYpabpCgySw2+WZ9M6VVsWp4N4j+4jP0w==
-  dependencies:
-    "@craco/craco" "^5.9.0"
-
-craco-babel-loader@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/craco-babel-loader/-/craco-babel-loader-1.0.3.tgz#9939113b2019815dc1f5cbab279b6309848bd389"
-  integrity sha512-kkXRwI8ieNO5ypmBz6NPz/4f5xQ/qFnI0g6O6ztkGpi/TEfMJQ65sZP3vYRJaHqfAx/V7YGxcSjkgA7U1thXJw==
 
 craco-less@2.0.0:
   version "2.0.0"
