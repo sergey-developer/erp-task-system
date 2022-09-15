@@ -4,6 +4,7 @@ import {
 } from '_fixtures_/task'
 import { render, screen, setupApiTests, within } from '_tests_/utils'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import { NO_DATA_MSG } from '../constants'
 import Journal from '../index'
@@ -24,8 +25,6 @@ import {
 } from './utils'
 
 setupApiTests()
-
-jest.mock('shared/utils/common/downloadLink')
 
 describe('Страница отображения журнала', () => {
   describe('При успешном запросе журнала', () => {
@@ -85,6 +84,12 @@ describe('Страница отображения журнала', () => {
       })
 
       describe('При успешной загрузке csv', () => {
+        const makeDownloadLinkSpy = jest.spyOn(downloadLink, 'makeDownloadLink')
+        const clickDownloadLinkSpy = jest.spyOn(
+          downloadLink,
+          'clickDownloadLink',
+        )
+
         test('Не показывает сообщение об ошибке', async () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
           mockGetJournalCsvSuccess()
@@ -99,12 +104,21 @@ describe('Страница отображения журнала', () => {
           await waitStartLoadingJournalCsv(downloadButton)
           await waitFinishLoadingJournalCsv(downloadButton)
 
+          expect(makeDownloadLinkSpy).toBeCalledTimes(1)
+          expect(clickDownloadLinkSpy).toBeCalledTimes(1)
+
           const notification = screen.queryByText(UNKNOWN_ERROR_MSG)
           expect(notification).not.toBeInTheDocument()
         })
       })
 
       describe('При не успешной загрузке csv', () => {
+        const makeDownloadLinkSpy = jest.spyOn(downloadLink, 'makeDownloadLink')
+        const clickDownloadLinkSpy = jest.spyOn(
+          downloadLink,
+          'clickDownloadLink',
+        )
+
         test('Показывает сообщение об ошибке', async () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
           mockGetJournalCsvServerError()
@@ -118,6 +132,9 @@ describe('Страница отображения журнала', () => {
 
           await waitStartLoadingJournalCsv(downloadButton)
           await waitFinishLoadingJournalCsv(downloadButton)
+
+          expect(makeDownloadLinkSpy).not.toBeCalled()
+          expect(clickDownloadLinkSpy).not.toBeCalled()
 
           const notification = screen.getByText(UNKNOWN_ERROR_MSG)
           expect(notification).toBeInTheDocument()
