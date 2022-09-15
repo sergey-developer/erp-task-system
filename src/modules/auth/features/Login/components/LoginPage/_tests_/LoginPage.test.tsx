@@ -7,6 +7,8 @@ import {
   renderInRoute,
   screen,
   setupApiTests,
+  waitFinishLoadingByButton,
+  waitStartLoadingByButton,
   within,
 } from '_tests_/utils'
 import { RoutesEnum } from 'configs/routes'
@@ -36,9 +38,7 @@ import {
   userEntersIncorrectEmail,
   userEntersNotExistingEmail,
   userEntersWrongPassword,
-  waitFinishLoading,
   waitFinishValidating,
-  waitStartLoading,
   waitStartValidating,
 } from './utils'
 
@@ -117,8 +117,8 @@ describe('Страница авторизации', () => {
         await userEntersCorrectEmail(user)
         await userEntersCorrectPassword(user)
         const submitBtn = await userClickSubmitButton(user)
-        await waitStartLoading(submitBtn)
-        await waitFinishLoading(submitBtn)
+        await waitStartLoadingByButton(submitBtn)
+        await waitFinishLoadingByButton(submitBtn)
 
         expect(checkRouteChanged()).toBe(true)
       })
@@ -136,8 +136,8 @@ describe('Страница авторизации', () => {
           await userEntersCorrectEmail(user)
           await userEntersCorrectPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoading(submitBtn)
-          await waitFinishLoading(submitBtn)
+          await waitStartLoadingByButton(submitBtn)
+          await waitFinishLoadingByButton(submitBtn)
 
           expect(authLocalStorageService.getAccessToken()).toBe(
             loginResponseSuccess.access,
@@ -152,8 +152,8 @@ describe('Страница авторизации', () => {
           await userEntersCorrectEmail(user)
           await userEntersCorrectPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoading(submitBtn)
-          await waitFinishLoading(submitBtn)
+          await waitStartLoadingByButton(submitBtn)
+          await waitFinishLoadingByButton(submitBtn)
 
           expect(authLocalStorageService.getRefreshToken()).toBe(
             loginResponseSuccess.refresh,
@@ -170,8 +170,8 @@ describe('Страница авторизации', () => {
         await userEntersCorrectEmail(user)
         await userEntersCorrectPassword(user)
         const submitBtn = await userClickSubmitButton(user)
-        await waitStartLoading(submitBtn)
-        await waitFinishLoading(submitBtn)
+        await waitStartLoadingByButton(submitBtn)
+        await waitFinishLoadingByButton(submitBtn)
 
         const authState = store.getState().auth
 
@@ -194,8 +194,8 @@ describe('Страница авторизации', () => {
         await userEntersNotExistingEmail(user)
         await userEntersWrongPassword(user)
         const submitBtn = await userClickSubmitButton(user)
-        await waitStartLoading(submitBtn)
-        await waitFinishLoading(submitBtn)
+        await waitStartLoadingByButton(submitBtn)
+        await waitFinishLoadingByButton(submitBtn)
 
         expect(checkRouteChanged()).toBe(false)
       })
@@ -209,8 +209,8 @@ describe('Страница авторизации', () => {
           await userEntersNotExistingEmail(user)
           await userEntersWrongPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoading(submitBtn)
-          await waitFinishLoading(submitBtn)
+          await waitStartLoadingByButton(submitBtn)
+          await waitFinishLoadingByButton(submitBtn)
 
           expect(
             await screen.findByText(LOGIN_BAD_REQUEST_ERROR_MSG),
@@ -227,8 +227,8 @@ describe('Страница авторизации', () => {
           await userEntersNotExistingEmail(user)
           await userEntersWrongPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoading(submitBtn)
-          await waitFinishLoading(submitBtn)
+          await waitStartLoadingByButton(submitBtn)
+          await waitFinishLoadingByButton(submitBtn)
 
           expect(
             await screen.findByText(LOGIN_WRONG_DATA_ERROR_MSG),
@@ -245,8 +245,8 @@ describe('Страница авторизации', () => {
           await userEntersNotExistingEmail(user)
           await userEntersWrongPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoading(submitBtn)
-          await waitFinishLoading(submitBtn)
+          await waitStartLoadingByButton(submitBtn)
+          await waitFinishLoadingByButton(submitBtn)
 
           expect(await screen.findByTestId('login-error')).toBeInTheDocument()
         })
