@@ -1,15 +1,12 @@
 import { notification } from 'antd'
 import { ArgsProps as NotificationProps } from 'antd/es/notification'
 
-import { ERROR_NOTIFICATION_DURATION } from 'shared/constants/notification'
-
 const showErrorNotification = (
   error: string,
-  options: Omit<NotificationProps, 'message' | 'duration'> = {},
+  options: Omit<NotificationProps, 'message'> = {},
 ): void => {
   notification.error({
     message: error,
-    duration: ERROR_NOTIFICATION_DURATION,
     ...options,
   })
 }
