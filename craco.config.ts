@@ -2,6 +2,11 @@ import path from 'path'
 
 import { when } from '@craco/craco'
 
+/**
+  Нужно для парсинга `*.env` файлов и записи их в `process.env`
+  `create-react-app` это делает автоматически, но это происходит,
+  после того как запускается `craco` на основе этого конфига
+ */
 require('react-scripts/config/env')
 
 const CracoAntdPlugin = require('craco-antd')
