@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { RoutesEnum } from 'configs/routes'
-import { login as loginAction } from 'modules/auth/authSlice'
+import { login as loginAction } from 'modules/auth/auth.slice'
 import { LoginFormFields } from 'modules/auth/features/Login/components/LoginPage/interfaces'
 import { useLoginMutation } from 'modules/auth/services/authApi.service'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'

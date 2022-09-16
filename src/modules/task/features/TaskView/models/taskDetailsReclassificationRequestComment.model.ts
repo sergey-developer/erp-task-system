@@ -1,5 +1,5 @@
 import { BaseTaskCommentModel, TaskAttachmentModel } from 'modules/task/models'
-import { CommentAuthorModel } from 'shared/interfaces/models'
+import { CommentAuthorModel } from 'shared/models'
 
 export type TaskDetailsReclassificationRequestCommentModel =
   BaseTaskCommentModel & {
