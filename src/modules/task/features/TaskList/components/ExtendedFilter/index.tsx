@@ -20,18 +20,18 @@ import { Keys } from 'shared/interfaces/utils'
 import { isEqualDeep } from 'shared/utils/common/isEqual'
 
 import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
-import { checkboxStatusOptions, searchQueriesDictionary } from './constants'
+import { checkboxStatusOptions, searchQueriesDict } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
 
-export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
+export type ExtendedFilterProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
   form: FormInstance<ExtendedFilterFormFields>
   initialFormValues: ExtendedFilterFormFields
   onSubmit: (result: ExtendedFilterFormFields) => void
 }
 
-const FilterDrawer: FC<FilterDrawerProps> = ({
+const ExtendedFilter: FC<ExtendedFilterProps> = ({
   form,
   initialFormValues,
   onClose,
@@ -68,6 +68,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
 
   return (
     <DrawerStyled
+      data-testid='filter-extended'
       $breakpoints={breakpoints}
       footer={
         <Row justify='end'>
@@ -99,7 +100,11 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
         onFinish={onSubmit}
       >
         <FilterBlock withDivider>
-          <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
+          <FilterBlockLabel
+            data-testid='filter-extended-label-status'
+            label='Статус'
+            onReset={resetFields(['status'])}
+          />
 
           <Form.Item name='status'>
             <CheckboxGroupStyled options={checkboxStatusOptions} />
@@ -108,6 +113,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
 
         <FilterBlock withDivider>
           <FilterBlockLabel
+            data-testid='filter-extended-label-execution-period'
             label='Период выполнения'
             onReset={resetFields(['olaNextBreachTimeRange'])}
           />
@@ -146,6 +152,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
 
         <FilterBlock withDivider={false}>
           <FilterBlockLabel
+            data-testid='filter-extended-label-search-by-column'
             label='Поиск по столбцу'
             onReset={resetFields(['searchField', 'searchValue'])}
           />
@@ -153,13 +160,11 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
           <Space direction='vertical' size='middle'>
             <Form.Item name='searchField'>
               <Radio.Group>
-                {Object.entries(searchQueriesDictionary).map(
-                  ([name, label]) => (
-                    <Radio key={name} value={name}>
-                      {label}
-                    </Radio>
-                  ),
-                )}
+                {Object.entries(searchQueriesDict).map(([name, label]) => (
+                  <Radio key={name} value={name}>
+                    {label}
+                  </Radio>
+                ))}
               </Radio.Group>
             </Form.Item>
 
@@ -173,4 +178,4 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
   )
 }
 
-export default FilterDrawer
+export default ExtendedFilter

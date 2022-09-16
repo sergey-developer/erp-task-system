@@ -8,9 +8,13 @@ type FilterBlockLabelProps = {
   onReset: () => void
 }
 
-const FilterBlockLabel: FC<FilterBlockLabelProps> = ({ label, onReset }) => {
+const FilterBlockLabel: FC<FilterBlockLabelProps> = ({
+  label,
+  onReset,
+  ...props
+}) => {
   return (
-    <Space align='baseline' size={12}>
+    <Space align='baseline' size={12} {...props}>
       <Title level={4}>{label}</Title>
 
       <Button onClick={onReset} type='text'>
