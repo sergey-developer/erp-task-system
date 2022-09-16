@@ -1,6 +1,6 @@
 import { Mutex } from 'async-mutex'
 
-import { refreshToken as refreshTokenAction } from 'modules/auth/authSlice'
+import { refreshToken as refreshTokenAction } from 'modules/auth/auth.slice'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
 import { RefreshTokenResponseModel } from 'modules/auth/models'

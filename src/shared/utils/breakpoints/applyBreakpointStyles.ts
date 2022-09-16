@@ -6,7 +6,7 @@ import {
 import { SimpleInterpolation } from 'styled-components'
 
 /**
- @param breakpoints - результат вызова хука из `ant.design` - `useBreakpoint`
+ @param breakpoints - результат вызова хука `useBreakpoint` из `antd`
  @param styles - последовательность ключей должна быть от большего расширения к меньшему, например:
  `{ xxl, xl, ...etc }` т.к. при наибольшем расширении (`xxl`), остальные поля в параметре `breakpoints`
  будут со значением `true`
