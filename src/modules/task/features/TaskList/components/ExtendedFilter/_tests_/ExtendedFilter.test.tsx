@@ -166,16 +166,19 @@ describe('Расширенный фильтр', () => {
         />,
       )
 
-      Object.entries(searchQueriesDict).forEach(([key, value]) => {
-        const radioButton = getRadioButton(value)
-        expect(radioButton.value).toBe(key)
-      })
+      const searchByTitle = getRadioButton(searchQueriesDict.searchByTitle)
+      const searchByName = getRadioButton(searchQueriesDict.searchByName)
+      const searchByAssignee = getRadioButton(
+        searchQueriesDict.searchByAssignee,
+      )
 
-      expect(getRadioButton(searchQueriesDict.searchByTitle)).toBeChecked()
-      expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
-      expect(
-        getRadioButton(searchQueriesDict.searchByAssignee),
-      ).not.toBeChecked()
+      expect(searchByTitle.value).toBe('searchByTitle')
+      expect(searchByName.value).toBe('searchByName')
+      expect(searchByAssignee.value).toBe('searchByAssignee')
+
+      expect(searchByTitle).toBeChecked()
+      expect(searchByName).not.toBeChecked()
+      expect(searchByAssignee).not.toBeChecked()
 
       const searchInput = screen.getByPlaceholderText('Ключевое слово')
       expect(searchInput).not.toHaveValue()
