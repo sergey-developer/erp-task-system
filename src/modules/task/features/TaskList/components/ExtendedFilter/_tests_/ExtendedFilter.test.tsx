@@ -4,8 +4,15 @@ import { render, screen } from '_tests_/utils'
 import { taskStatusDict } from 'modules/task/constants/dict'
 
 import { initialExtendedFilterFormValues } from '../../TaskListPage/constants'
+import { searchQueriesDict } from '../constants'
 import ExtendedFilter, { ExtendedFilterProps } from '../index'
-import { getCheckbox, getCloseButton, getFilterBlockLabel } from './utils'
+import {
+  getApplyButton,
+  getCheckbox,
+  getCloseButton,
+  getRadioButton,
+  getResetAllButton,
+} from './utils'
 
 const ExtendedFilterWrapper = (props: Omit<ExtendedFilterProps, 'form'>) => {
   const [form] = Form.useForm()
@@ -36,7 +43,7 @@ describe('Расширенный фильтр', () => {
     expect(filter).toBeInTheDocument()
   })
 
-  test('Не отображается если нужные данные не переданы', () => {
+  test('Не отображается если не передать нужные данные', () => {
     render(
       <ExtendedFilterWrapper
         visible={false}
@@ -66,6 +73,7 @@ describe('Расширенный фильтр', () => {
 
       expect(title).toBeInTheDocument()
       expect(closeButton).toBeInTheDocument()
+      expect(closeButton).toBeEnabled()
     })
 
     test('footer', () => {
@@ -78,13 +86,8 @@ describe('Расширенный фильтр', () => {
         />,
       )
 
-      const applyButton = screen.getByRole('button', { name: 'Применить' })
-      const resetAllButton = screen.getByRole('button', {
-        name: 'Сбросить все',
-      })
-
-      expect(applyButton).toBeInTheDocument()
-      expect(resetAllButton).toBeInTheDocument()
+      expect(getApplyButton()).toBeInTheDocument()
+      expect(getResetAllButton()).toBeInTheDocument()
     })
 
     describe('Фильтр по', () => {
@@ -98,17 +101,11 @@ describe('Расширенный фильтр', () => {
           />,
         )
 
-        const { title, resetButton } = getFilterBlockLabel(
-          'filter-extended-label-status',
-          'Статус',
-        )
-
-        expect(title).toBeInTheDocument()
-        expect(resetButton).toBeInTheDocument()
-
         Object.entries(taskStatusDict).forEach(([status, statusText]) => {
           const checkbox = getCheckbox(new RegExp(statusText))
           expect(checkbox).toBeInTheDocument()
+          expect(checkbox).toBeEnabled()
+          expect(checkbox).not.toBeChecked()
           expect(checkbox.value).toBe(status)
         })
       })
@@ -123,33 +120,84 @@ describe('Расширенный фильтр', () => {
           />,
         )
 
-        const { title, resetButton } = getFilterBlockLabel(
-          'filter-extended-label-execution-period',
-          'Период выполнения',
-        )
+        const startDateField = screen.getByPlaceholderText('Начальная дата')
+        const endDateField = screen.getByPlaceholderText('Конечная дата')
 
-        expect(title).toBeInTheDocument()
-        expect(resetButton).toBeInTheDocument()
+        expect(startDateField).toBeInTheDocument()
+        expect(startDateField).toBeEnabled()
+        expect(startDateField).not.toHaveValue()
+
+        expect(endDateField).toBeInTheDocument()
+        expect(endDateField).toBeEnabled()
+        expect(endDateField).not.toHaveValue()
+      })
+    })
+  })
+
+  // то что выше сделать как написано ниже
+
+  describe('По столбцу', () => {
+    test('Отображается корректно', () => {
+      render(
+        <ExtendedFilterWrapper
+          visible
+          onClose={onClose}
+          onSubmit={onSubmit}
+          initialFormValues={initialExtendedFilterFormValues}
+        />,
+      )
+
+      Object.values(searchQueriesDict).forEach((value) => {
+        const radioButton = getRadioButton(value)
+        expect(radioButton).toBeInTheDocument()
       })
 
-      test('Столбцу', () => {
-        render(
-          <ExtendedFilterWrapper
-            visible
-            onClose={onClose}
-            onSubmit={onSubmit}
-            initialFormValues={initialExtendedFilterFormValues}
-          />,
-        )
+      const searchInput = screen.getByPlaceholderText('Ключевое слово')
+      expect(searchInput).toBeInTheDocument()
+    })
 
-        const { title, resetButton } = getFilterBlockLabel(
-          'filter-extended-label-search-by-column',
-          'Поиск по столбцу',
-        )
+    test('Имеет корректные значения по умолчанию', () => {
+      render(
+        <ExtendedFilterWrapper
+          visible
+          onClose={onClose}
+          onSubmit={onSubmit}
+          initialFormValues={initialExtendedFilterFormValues}
+        />,
+      )
 
-        expect(title).toBeInTheDocument()
-        expect(resetButton).toBeInTheDocument()
+      Object.entries(searchQueriesDict).forEach(([key, value]) => {
+        const radioButton = getRadioButton(value)
+        expect(radioButton.value).toBe(key)
       })
+
+      expect(getRadioButton(searchQueriesDict.searchByTitle)).toBeChecked()
+      expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
+      expect(
+        getRadioButton(searchQueriesDict.searchByAssignee),
+      ).not.toBeChecked()
+
+      const searchInput = screen.getByPlaceholderText('Ключевое слово')
+      expect(searchInput).not.toHaveValue()
+    })
+
+    test('Все поля доступны для редактирования', () => {
+      render(
+        <ExtendedFilterWrapper
+          visible
+          onClose={onClose}
+          onSubmit={onSubmit}
+          initialFormValues={initialExtendedFilterFormValues}
+        />,
+      )
+
+      Object.values(searchQueriesDict).forEach((value) => {
+        const radioButton = getRadioButton(value)
+        expect(radioButton).toBeEnabled()
+      })
+
+      const searchInput = screen.getByPlaceholderText('Ключевое слово')
+      expect(searchInput).toBeEnabled()
     })
   })
 })

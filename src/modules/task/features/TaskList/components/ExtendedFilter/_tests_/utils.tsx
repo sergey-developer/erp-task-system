@@ -1,21 +1,18 @@
-import { screen, within } from '_tests_/utils'
+import { screen } from '_tests_/utils'
 
 export const getCloseButton = (): HTMLButtonElement =>
   screen.getByRole('button', { name: 'Close' })
 
+export const getApplyButton = (): HTMLButtonElement =>
+  screen.getByRole('button', { name: 'Применить' })
+
+export const getResetAllButton = (): HTMLButtonElement =>
+  screen.getByRole('button', {
+    name: 'Сбросить все',
+  })
+
 export const getCheckbox = (name: RegExp): HTMLInputElement =>
   screen.getByRole('checkbox', { name })
 
-export const getFilterBlockLabel = (containerTestId: string, label: string) => {
-  const filterBlockLabel = screen.getByTestId(containerTestId)
-
-  const title = within(filterBlockLabel).getByRole('heading', {
-    name: label,
-  })
-
-  const resetButton = within(filterBlockLabel).getByRole('button', {
-    name: 'Сбросить',
-  })
-
-  return { title, resetButton }
-}
+export const getRadioButton = (name: string): HTMLInputElement =>
+  screen.getByRole('radio', { name })

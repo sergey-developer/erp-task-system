@@ -1,19 +1,15 @@
 import { Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import React from 'react'
-
-import { FCWithChildren } from 'shared/interfaces/utils'
+import React, { FC, ReactNode } from 'react'
 
 import { DividerStyled, WrapperStyled } from './styles'
 
 type FilterBlockProps = {
+  children: ReactNode
   withDivider: boolean
 }
 
-const FilterBlock: FCWithChildren<FilterBlockProps> = ({
-  children,
-  withDivider,
-}) => {
+const FilterBlock: FC<FilterBlockProps> = ({ children, withDivider }) => {
   const breakpoints = useBreakpoint()
 
   return (

@@ -94,17 +94,14 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
       visible={visible}
     >
       <Form<ExtendedFilterFormFields>
+        data-testid='filter-extended-form'
         layout='vertical'
         form={form}
         initialValues={initialFormValues}
         onFinish={onSubmit}
       >
         <FilterBlock withDivider>
-          <FilterBlockLabel
-            data-testid='filter-extended-label-status'
-            label='Статус'
-            onReset={resetFields(['status'])}
-          />
+          <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
 
           <Form.Item name='status'>
             <CheckboxGroupStyled options={checkboxStatusOptions} />
@@ -113,7 +110,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
         <FilterBlock withDivider>
           <FilterBlockLabel
-            data-testid='filter-extended-label-execution-period'
             label='Период выполнения'
             onReset={resetFields(['olaNextBreachTimeRange'])}
           />
@@ -152,7 +148,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
         <FilterBlock withDivider={false}>
           <FilterBlockLabel
-            data-testid='filter-extended-label-search-by-column'
             label='Поиск по столбцу'
             onReset={resetFields(['searchField', 'searchValue'])}
           />
