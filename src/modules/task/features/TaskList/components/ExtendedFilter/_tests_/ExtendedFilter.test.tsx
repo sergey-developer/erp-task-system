@@ -1,8 +1,19 @@
 import { Form } from 'antd'
 
-import { generateId, render, screen, waitFor, within } from '_tests_/utils'
+import { getWorkGroupList } from '_fixtures_/workGroup'
+import {
+  generateId,
+  getOpenedSelect,
+  render,
+  screen,
+  setupApiTests,
+  userOpenSelect,
+  waitFinishLoadingBySelect,
+  within,
+} from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import { taskStatusDict } from 'modules/task/constants/dict'
+import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 
 import { initialExtendedFilterFormValues } from '../../TaskListPage/constants'
@@ -23,6 +34,8 @@ import {
 
 const onClose = jest.fn()
 const onSubmit = jest.fn()
+
+setupApiTests()
 
 const ExtendedFilterWrapper = (props: Pick<ExtendedFilterProps, 'visible'>) => {
   const [form] = Form.useForm()
@@ -93,7 +106,7 @@ describe('Расширенный фильтр', () => {
   })
 
   describe('По статусу', () => {
-    test('Отображается корректно', () => {
+    test('Отображается', () => {
       render(<ExtendedFilterWrapper visible />)
 
       Object.values(taskStatusDict).forEach((statusText) => {
@@ -123,7 +136,7 @@ describe('Расширенный фильтр', () => {
   })
 
   describe('По периоду выполнения', () => {
-    test('Отображается корректно', () => {
+    test('Отображается', () => {
       render(<ExtendedFilterWrapper visible />)
 
       const startDateField = getStartDateField()
@@ -155,7 +168,7 @@ describe('Расширенный фильтр', () => {
   })
 
   describe('По столбцу', () => {
-    test('Отображается корректно', () => {
+    test('Отображается', () => {
       render(<ExtendedFilterWrapper visible />)
 
       Object.values(searchQueriesDict).forEach((value) => {
@@ -204,6 +217,8 @@ describe('Расширенный фильтр', () => {
   describe('По рабочей группе', () => {
     describe(`Для роли ${UserRolesEnum.FirstLineSupport}`, () => {
       test('Не отображается', () => {
+        mockGetWorkGroupListSuccess([])
+
         const store = getStoreWithAuth({
           userId: generateId(),
           userRole: UserRolesEnum.FirstLineSupport,
@@ -231,7 +246,9 @@ describe('Расширенный фильтр', () => {
     })
 
     describe(`Для роли ${UserRolesEnum.SeniorEngineer}`, () => {
-      test('Отображается корректно', () => {
+      test('Отображается', async () => {
+        mockGetWorkGroupListSuccess([])
+
         const store = getStoreWithAuth({
           userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
@@ -240,46 +257,16 @@ describe('Расширенный фильтр', () => {
         render(<ExtendedFilterWrapper visible />, { store })
 
         const workGroupField = getWorkGroupField()
+        await waitFinishLoadingBySelect(workGroupField)
 
         expect(workGroupField).toBeInTheDocument()
-        expect(
-          within(workGroupField).getByRole('combobox', { expanded: false }),
-        ).toBeInTheDocument()
-      })
-
-      test('Имеет корректные значения по умолчанию', () => {
-        const store = getStoreWithAuth({
-          userId: generateId(),
-          userRole: UserRolesEnum.SeniorEngineer,
-        })
-
-        render(<ExtendedFilterWrapper visible />, { store })
-
-        const workGroupField = getWorkGroupField()
-
-        expect(
-          within(workGroupField).getByText('Рабочая группа'),
-        ).toBeInTheDocument()
-      })
-
-      test('Доступен для редактирования', async () => {
-        const store = getStoreWithAuth({
-          userId: generateId(),
-          userRole: UserRolesEnum.SeniorEngineer,
-        })
-
-        render(<ExtendedFilterWrapper visible />, { store })
-
-        const workGroupField = getWorkGroupField()
-
-        await waitFor(() => {
-          expect(within(workGroupField).getByRole('combobox')).toBeEnabled()
-        })
       })
     })
 
     describe(`Для роли ${UserRolesEnum.HeadOfDepartment}`, () => {
-      test('Отображается корректно', () => {
+      test('Отображается', async () => {
+        mockGetWorkGroupListSuccess([])
+
         const store = getStoreWithAuth({
           userId: generateId(),
           userRole: UserRolesEnum.HeadOfDepartment,
@@ -288,22 +275,25 @@ describe('Расширенный фильтр', () => {
         render(<ExtendedFilterWrapper visible />, { store })
 
         const workGroupField = getWorkGroupField()
+        await waitFinishLoadingBySelect(workGroupField)
 
         expect(workGroupField).toBeInTheDocument()
-        expect(
-          within(workGroupField).getByRole('combobox', { expanded: false }),
-        ).toBeInTheDocument()
       })
+    })
 
-      test('Имеет корректные значения по умолчанию', () => {
+    describe('Для роли с которой отображается', () => {
+      test('Имеет корректные значения по умолчанию', async () => {
+        mockGetWorkGroupListSuccess(getWorkGroupList())
+
         const store = getStoreWithAuth({
           userId: generateId(),
-          userRole: UserRolesEnum.HeadOfDepartment,
+          userRole: UserRolesEnum.SeniorEngineer,
         })
 
         render(<ExtendedFilterWrapper visible />, { store })
 
         const workGroupField = getWorkGroupField()
+        await waitFinishLoadingBySelect(workGroupField)
 
         expect(
           within(workGroupField).getByText('Рабочая группа'),
@@ -311,18 +301,61 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Доступен для редактирования', async () => {
+        mockGetWorkGroupListSuccess([])
+
         const store = getStoreWithAuth({
           userId: generateId(),
-          userRole: UserRolesEnum.HeadOfDepartment,
+          userRole: UserRolesEnum.SeniorEngineer,
         })
 
         render(<ExtendedFilterWrapper visible />, { store })
 
         const workGroupField = getWorkGroupField()
+        await waitFinishLoadingBySelect(workGroupField)
 
-        await waitFor(() => {
-          expect(within(workGroupField).getByRole('combobox')).toBeEnabled()
+        expect(within(workGroupField).getByRole('combobox')).toBeEnabled()
+      })
+
+      test('Открывается', async () => {
+        mockGetWorkGroupListSuccess([])
+
+        const store = getStoreWithAuth({
+          userId: generateId(),
+          userRole: UserRolesEnum.SeniorEngineer,
         })
+
+        const { user } = render(<ExtendedFilterWrapper visible />, {
+          store,
+        })
+
+        const workGroupField = getWorkGroupField()
+
+        await waitFinishLoadingBySelect(workGroupField)
+        await userOpenSelect(user, workGroupField)
+
+        const openedSelect = getOpenedSelect(workGroupField)
+        expect(openedSelect).toBeInTheDocument()
+      })
+
+      test('После открытия отображается список', async () => {
+        const mockedWorkGroupList = getWorkGroupList()
+        mockGetWorkGroupListSuccess(mockedWorkGroupList)
+
+        const store = getStoreWithAuth({
+          userId: generateId(),
+          userRole: UserRolesEnum.SeniorEngineer,
+        })
+
+        const { user } = render(<ExtendedFilterWrapper visible />, {
+          store,
+        })
+
+        const workGroupField = getWorkGroupField()
+        await waitFinishLoadingBySelect(workGroupField)
+        await userOpenSelect(user, workGroupField)
+
+        const workGroupOption = screen.getByText(mockedWorkGroupList[0].name)
+        expect(workGroupOption).toBeInTheDocument()
       })
     })
   })

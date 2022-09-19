@@ -40,6 +40,9 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 }) => {
   const breakpoints = useBreakpoint()
 
+  const { data: workGroupList, isFetching: workGroupListIsFetching } =
+    useGetWorkGroupList()
+
   const statusValue = Form.useWatch('status', form)
   const olaNextBreachTimeRangeValue = Form.useWatch(
     'olaNextBreachTimeRange',
@@ -58,9 +61,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   }
 
   const valuesNotChanged = isEqualDeep(initialFormValues, formValues)
-
-  const { data: workGroupList, isFetching: workGroupListIsFetching } =
-    useGetWorkGroupList()
 
   const resetFields = (fields?: Keys<ExtendedFilterFormFields>[]) => () => {
     form.resetFields(fields)
@@ -128,9 +128,8 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
               <Form.Item name='workGroupId'>
                 <Select
-                  open
-                  virtual={false}
                   data-testid='filter-extended-select-work-group'
+                  virtual={false}
                   disabled={workGroupListIsFetching}
                   fieldNames={workGroupListSelectFieldNames}
                   loading={workGroupListIsFetching}
