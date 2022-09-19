@@ -8,7 +8,6 @@ import {
 import { screen, waitFor } from '_tests_/utils'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const btnLoadingClass = 'ant-btn-loading'
 const validatingStatusClass = 'ant-form-item-is-validating'
 
 export const getEmailField = () => screen.getByTestId('field-email')
@@ -90,18 +89,6 @@ export const waitFinishValidating = async (
 
   await waitFor(() => {
     expect(passwordField).not.toHaveClass(validatingStatusClass)
-  })
-}
-
-export const waitStartLoading = async (submitBtn: HTMLElement) => {
-  await waitFor(() => {
-    expect(submitBtn).toHaveClass(btnLoadingClass)
-  })
-}
-
-export const waitFinishLoading = async (submitBtn: HTMLElement) => {
-  await waitFor(() => {
-    expect(submitBtn).not.toHaveClass(btnLoadingClass)
   })
 }
 

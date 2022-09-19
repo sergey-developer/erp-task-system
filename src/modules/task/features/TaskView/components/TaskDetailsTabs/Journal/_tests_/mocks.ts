@@ -1,4 +1,8 @@
-import { getRequestMocker, getServerErrorMocker } from '_tests_/mocks/request'
+import {
+  getRequestMocker,
+  getServerErrorMocker,
+  getSuccessMocker,
+} from '_tests_/mocks/request'
 import { getResponseResolver } from '_tests_/mocks/response'
 import { generateId } from '_tests_/utils'
 import { TaskJournalModel } from 'modules/task/features/TaskView/models'
@@ -31,11 +35,9 @@ export const mockGetJournalSuccess = (response: TaskJournalModel) => {
   mockGetJournal()
 }
 
-export const mockGetJournalCsvSuccess = getJournalCsvMocker(
-  getResponseResolver({
-    status: HttpCodeEnum.Ok,
-    body: '',
-  }),
-)
+export const mockGetJournalCsvSuccess = getSuccessMocker(getJournalCsvMocker)
+
+export const mockGetJournalCsvServerError =
+  getServerErrorMocker(getJournalCsvMocker)
 
 export const mockGetJournalServerError = getServerErrorMocker(getJournalMocker)
