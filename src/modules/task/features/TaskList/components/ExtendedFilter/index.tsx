@@ -94,7 +94,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
       visible={visible}
     >
       <Form<ExtendedFilterFormFields>
-        data-testid='filter-extended-form'
         layout='vertical'
         form={form}
         initialValues={initialFormValues}
@@ -129,6 +128,9 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
               <Form.Item name='workGroupId'>
                 <Select
+                  open
+                  virtual={false}
+                  data-testid='filter-extended-select-work-group'
                   disabled={workGroupListIsFetching}
                   fieldNames={workGroupListSelectFieldNames}
                   loading={workGroupListIsFetching}

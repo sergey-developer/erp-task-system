@@ -159,6 +159,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
           ) : canView && canEdit && canSelectAssignee ? (
             <Space direction='vertical' size='middle' $block>
               <SelectStyled
+                virtual={false}
                 defaultValue={selectedAssignee}
                 loading={workGroupListIsLoading}
                 disabled={updateAssigneeIsLoading}

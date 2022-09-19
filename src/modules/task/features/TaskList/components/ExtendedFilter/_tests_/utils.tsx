@@ -16,3 +16,18 @@ export const getCheckbox = (name: RegExp): HTMLInputElement =>
 
 export const getRadioButton = (name: string): HTMLInputElement =>
   screen.getByRole('radio', { name })
+
+export const getStartDateField = (): HTMLInputElement =>
+  screen.getByPlaceholderText('Начальная дата')
+
+export const getEndDateField = (): HTMLInputElement =>
+  screen.getByPlaceholderText('Конечная дата')
+
+export const getKeywordField = (): HTMLInputElement =>
+  screen.getByPlaceholderText('Ключевое слово')
+
+export const getWorkGroupField = () =>
+  screen.getByTestId('filter-extended-select-work-group')
+
+export const queryWorkGroupField = () =>
+  screen.queryByTestId('filter-extended-select-work-group')
