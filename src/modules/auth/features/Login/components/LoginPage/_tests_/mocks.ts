@@ -3,6 +3,7 @@ import {
   getBadRequestErrorMocker,
   getRequestMocker,
   getServerErrorMocker,
+  getSuccessMocker,
   getUnauthorizedErrorMocker,
 } from '_tests_/mocks/request'
 import { getResponseResolver } from '_tests_/mocks/response'
@@ -26,10 +27,7 @@ export const mockLoginBadRequestError = getBadRequestErrorMocker(loginMocker)
 
 export const mockLoginUnauthorizedError = () => {
   const mockLogin = getUnauthorizedErrorMocker(loginMocker)
-
-  const mockRefreshToken = refreshTokenMocker(
-    getResponseResolver({ status: HttpCodeEnum.Ok }),
-  )
+  const mockRefreshToken = getSuccessMocker(refreshTokenMocker)
 
   mockLogin()
   mockRefreshToken()
