@@ -14,7 +14,6 @@ import {
   userOpenSelect,
   userSearchInSelect,
   waitFinishLoadingBySelect,
-  within,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import { taskStatusDict } from 'modules/task/constants/dict'
@@ -408,7 +407,7 @@ describe('Расширенный фильтр', () => {
         expect(selectedOption).not.toBeInTheDocument()
       })
 
-      test('Доступен для редактирования', async () => {
+      test('Доступен для редактирования после загрузки списка', async () => {
         mockGetWorkGroupListSuccess([])
 
         const store = getStoreWithAuth({
@@ -421,49 +420,8 @@ describe('Расширенный фильтр', () => {
         const workGroupField = getWorkGroupField()
         await waitFinishLoadingBySelect(workGroupField)
 
-        expect(within(workGroupField).getByRole('combobox')).toBeEnabled()
-      })
-
-      test('Открывается', async () => {
-        mockGetWorkGroupListSuccess([])
-
-        const store = getStoreWithAuth({
-          userId: generateId(),
-          userRole: UserRolesEnum.SeniorEngineer,
-        })
-
-        const { user } = render(<ExtendedFilterWrapper visible />, {
-          store,
-        })
-
-        const workGroupField = getWorkGroupField()
-
-        await waitFinishLoadingBySelect(workGroupField)
-        await userOpenSelect(user, workGroupField)
-
-        const openedSelect = getSelect(workGroupField, { expanded: true })
-        expect(openedSelect).toBeInTheDocument()
-      })
-
-      test('После открытия отображается список', async () => {
-        const mockedWorkGroupList = getWorkGroupList()
-        mockGetWorkGroupListSuccess(mockedWorkGroupList)
-
-        const store = getStoreWithAuth({
-          userId: generateId(),
-          userRole: UserRolesEnum.SeniorEngineer,
-        })
-
-        const { user } = render(<ExtendedFilterWrapper visible />, {
-          store,
-        })
-
-        const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
-        await userOpenSelect(user, workGroupField)
-
-        const workGroupOption = screen.getByText(mockedWorkGroupList[0].name)
-        expect(workGroupOption).toBeInTheDocument()
+        const select = getSelect(workGroupField)
+        expect(select).toBeEnabled()
       })
 
       test('Можно выбрать рабочую группу из списка', async () => {
@@ -492,31 +450,6 @@ describe('Расширенный фильтр', () => {
         expect(selectedOption).toBeVisible()
       })
 
-      test('Список скрывается после выбора рабочей группы', async () => {
-        const mockedWorkGroupList = getWorkGroupList()
-        const mockedWorkGroupListItem = mockedWorkGroupList[0]
-        mockGetWorkGroupListSuccess(mockedWorkGroupList)
-
-        const store = getStoreWithAuth({
-          userId: generateId(),
-          userRole: UserRolesEnum.SeniorEngineer,
-        })
-
-        const { user } = render(<ExtendedFilterWrapper visible />, {
-          store,
-        })
-
-        const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
-        await userOpenSelect(user, workGroupField)
-
-        const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
-        await user.click(workGroupOption)
-
-        const closedSelect = getSelect(workGroupField, { expanded: false })
-        expect(closedSelect).toBeInTheDocument()
-      })
-
       test('Можно сбросить выбранное значение', async () => {
         const mockedWorkGroupList = getWorkGroupList()
         const mockedWorkGroupListItem = mockedWorkGroupList[0]
@@ -537,6 +470,7 @@ describe('Расширенный фильтр', () => {
 
         const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
         await user.click(workGroupOption)
+
         await userClickResetButton(user, 'filter-extended-work-group')
 
         const selectedOption = getSelectedOption(workGroupField)
