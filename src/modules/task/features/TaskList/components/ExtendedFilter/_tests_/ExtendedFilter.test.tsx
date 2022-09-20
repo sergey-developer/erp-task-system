@@ -37,6 +37,7 @@ import {
   getStartDateField,
   getWorkGroupField,
   queryWorkGroupField,
+  userClickResetAllButton,
   userClickResetButton,
 } from './utils'
 
@@ -114,6 +115,16 @@ describe('Расширенный фильтр', () => {
       expect(applyButton).toBeInTheDocument()
       expect(resetAllButton).toBeInTheDocument()
     })
+
+    test('Кнопки не активны если значения фильтров не менялись', () => {
+      render(<ExtendedFilterWrapper visible />)
+
+      const applyButton = getApplyButton()
+      const resetAllButton = getResetAllButton()
+
+      expect(applyButton).not.toBeEnabled()
+      expect(resetAllButton).not.toBeEnabled()
+    })
   })
 
   describe('По статусу', () => {
@@ -157,7 +168,7 @@ describe('Расширенный фильтр', () => {
       }
     })
 
-    test('Можно сбросить значения', async () => {
+    test('Кнопка "Сбросить" сбрасывает значения', async () => {
       const { user } = render(<ExtendedFilterWrapper visible />)
 
       for await (const statusText of taskStatusDictValues) {
@@ -172,7 +183,49 @@ describe('Расширенный фильтр', () => {
         expect(checkbox).not.toBeChecked()
       })
     })
+
+    test('Кнопка "Сбросить всё" сбрасывает значения', async () => {
+      const { user } = render(<ExtendedFilterWrapper visible />)
+
+      for await (const statusText of taskStatusDictValues) {
+        const checkbox = getCheckbox(new RegExp(statusText))
+        await user.click(checkbox)
+      }
+
+      await userClickResetAllButton(user)
+
+      taskStatusDictValues.forEach((statusText) => {
+        const checkbox = getCheckbox(new RegExp(statusText))
+        expect(checkbox).not.toBeChecked()
+      })
+    })
+
+    test('Кнопка "Сбросить всё" активна после выбора статуса', async () => {
+      const { user } = render(<ExtendedFilterWrapper visible />)
+
+      const resetAllButton = getResetAllButton()
+      expect(resetAllButton).not.toBeEnabled()
+
+      const checkbox = getCheckbox(new RegExp(taskStatusDict.NEW!))
+      await user.click(checkbox)
+
+      expect(resetAllButton).toBeEnabled()
+    })
+
+    test('Кнопка "Применить" активна после выбора статуса', async () => {
+      const { user } = render(<ExtendedFilterWrapper visible />)
+
+      const applyButton = getApplyButton()
+      expect(applyButton).not.toBeEnabled()
+
+      const checkbox = getCheckbox(new RegExp(taskStatusDict.APPOINTED!))
+      await user.click(checkbox)
+
+      expect(applyButton).toBeEnabled()
+    })
   })
+
+  // дописать в тесты ниже то что выше с кнопками футера
 
   describe('По периоду выполнения', () => {
     test('Отображается', () => {
@@ -222,7 +275,7 @@ describe('Расширенный фильтр', () => {
       expect(endDateField).toHaveDisplayValue(formattedDate)
     })
 
-    test('Можно сбросить значения', async () => {
+    test('Кнопка "Сбросить" сбрасывает значения', async () => {
       const { user } = render(<ExtendedFilterWrapper visible />)
 
       await user.click(getStartDateField())
@@ -308,7 +361,7 @@ describe('Расширенный фильтр', () => {
       }
     })
 
-    test('Можно сбросить значения', async () => {
+    test('Кнопка "Сбросить" сбрасывает значения', async () => {
       const { user } = render(<ExtendedFilterWrapper visible />)
 
       const keyword = generateName()
@@ -450,7 +503,7 @@ describe('Расширенный фильтр', () => {
         expect(selectedOption).toBeVisible()
       })
 
-      test('Можно сбросить выбранное значение', async () => {
+      test('Кнопка "Сбросить" сбрасывает выбранное значение', async () => {
         const mockedWorkGroupList = getWorkGroupList()
         const mockedWorkGroupListItem = mockedWorkGroupList[0]
         mockGetWorkGroupListSuccess(mockedWorkGroupList)

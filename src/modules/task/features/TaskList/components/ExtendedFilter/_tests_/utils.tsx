@@ -46,3 +46,8 @@ export const userClickResetButton = async (
   const button = getResetButton(containerTestId)
   await user.click(button)
 }
+
+export const userClickResetAllButton = async (user: UserEvent) => {
+  const button = getResetAllButton()
+  await user.click(button)
+}
