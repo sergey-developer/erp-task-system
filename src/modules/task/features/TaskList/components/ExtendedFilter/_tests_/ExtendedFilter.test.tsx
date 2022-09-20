@@ -168,60 +168,64 @@ describe('Расширенный фильтр', () => {
       }
     })
 
-    test('Кнопка "Сбросить" сбрасывает значения', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+    describe('Сбрасывает значения', () => {
+      test('Кнопка "Сбросить"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
 
-      for await (const statusText of taskStatusDictValues) {
-        const checkbox = getCheckbox(new RegExp(statusText))
-        await user.click(checkbox)
-      }
+        for await (const statusText of taskStatusDictValues) {
+          const checkbox = getCheckbox(new RegExp(statusText))
+          await user.click(checkbox)
+        }
 
-      await userClickResetButton(user, 'filter-extended-status')
+        await userClickResetButton(user, 'filter-extended-status')
 
-      taskStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckbox(new RegExp(statusText))
-        expect(checkbox).not.toBeChecked()
+        taskStatusDictValues.forEach((statusText) => {
+          const checkbox = getCheckbox(new RegExp(statusText))
+          expect(checkbox).not.toBeChecked()
+        })
+      })
+
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
+
+        for await (const statusText of taskStatusDictValues) {
+          const checkbox = getCheckbox(new RegExp(statusText))
+          await user.click(checkbox)
+        }
+
+        await userClickResetAllButton(user)
+
+        taskStatusDictValues.forEach((statusText) => {
+          const checkbox = getCheckbox(new RegExp(statusText))
+          expect(checkbox).not.toBeChecked()
+        })
       })
     })
 
-    test('Кнопка "Сбросить всё" сбрасывает значения', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+    describe('Становится активна после выбора статуса', () => {
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
 
-      for await (const statusText of taskStatusDictValues) {
-        const checkbox = getCheckbox(new RegExp(statusText))
+        const resetAllButton = getResetAllButton()
+        expect(resetAllButton).not.toBeEnabled()
+
+        const checkbox = getCheckbox(new RegExp(taskStatusDict.NEW!))
         await user.click(checkbox)
-      }
 
-      await userClickResetAllButton(user)
-
-      taskStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckbox(new RegExp(statusText))
-        expect(checkbox).not.toBeChecked()
+        expect(resetAllButton).toBeEnabled()
       })
-    })
 
-    test('Кнопка "Сбросить всё" активна после выбора статуса', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+      test('Кнопка "Применить"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
 
-      const resetAllButton = getResetAllButton()
-      expect(resetAllButton).not.toBeEnabled()
+        const applyButton = getApplyButton()
+        expect(applyButton).not.toBeEnabled()
 
-      const checkbox = getCheckbox(new RegExp(taskStatusDict.NEW!))
-      await user.click(checkbox)
+        const checkbox = getCheckbox(new RegExp(taskStatusDict.APPOINTED!))
+        await user.click(checkbox)
 
-      expect(resetAllButton).toBeEnabled()
-    })
-
-    test('Кнопка "Применить" активна после выбора статуса', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
-
-      const applyButton = getApplyButton()
-      expect(applyButton).not.toBeEnabled()
-
-      const checkbox = getCheckbox(new RegExp(taskStatusDict.APPOINTED!))
-      await user.click(checkbox)
-
-      expect(applyButton).toBeEnabled()
+        expect(applyButton).toBeEnabled()
+      })
     })
   })
 
