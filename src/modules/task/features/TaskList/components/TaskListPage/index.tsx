@@ -23,6 +23,11 @@ import { Keys, MaybeNull } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import ExtendedFilter, { ExtendedFilterProps } from '../ExtendedFilter'
+import { initialExtendedFilterFormValues } from '../ExtendedFilter/constants'
+import {
+  ExtendedFilterFormFields,
+  ExtendedFilterQueries,
+} from '../ExtendedFilter/interfaces'
 import FastFilter from '../FastFilter'
 import TaskTable from '../TaskTable'
 import { TaskTableListItem } from '../TaskTable/interfaces'
@@ -32,14 +37,8 @@ import {
   SORTED_FIELDS,
   SortDirectionsEnum,
   SortedFieldsEnum,
-  initialExtendedFilterFormValues,
 } from './constants'
-import {
-  ExtendedFilterFormFields,
-  ExtendedFilterQueries,
-  FastFilterQueries,
-  TaskIdFilterQueries,
-} from './interfaces'
+import { FastFilterQueries, TaskIdFilterQueries } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'
 

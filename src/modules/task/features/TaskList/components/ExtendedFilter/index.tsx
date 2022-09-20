@@ -19,10 +19,10 @@ import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/
 import { Keys } from 'shared/interfaces/utils'
 import { isEqualDeep } from 'shared/utils/common/isEqual'
 
-import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
 import { checkboxStatusOptions, searchQueriesDict } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
+import { ExtendedFilterFormFields } from './interfaces'
 import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
 
 export type ExtendedFilterProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
@@ -99,7 +99,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         initialValues={initialFormValues}
         onFinish={onSubmit}
       >
-        <FilterBlock withDivider>
+        <FilterBlock withDivider data-testid='filter-extended-status'>
           <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
 
           <Form.Item name='status'>
@@ -107,7 +107,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock withDivider>
+        <FilterBlock withDivider data-testid='filter-extended-execution-period'>
           <FilterBlockLabel
             label='Период выполнения'
             onReset={resetFields(['olaNextBreachTimeRange'])}
@@ -120,7 +120,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
         <Permissions config={extendedFilterPermissions.workGroup}>
           {() => (
-            <FilterBlock withDivider>
+            <FilterBlock withDivider data-testid='filter-extended-work-group'>
               <FilterBlockLabel
                 label='Рабочая группа'
                 onReset={resetFields(['workGroupId'])}
@@ -128,7 +128,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
               <Form.Item name='workGroupId'>
                 <Select
-                  data-testid='filter-extended-select-work-group'
+                  data-testid='filter-extended-work-group-select'
                   virtual={false}
                   disabled={workGroupListIsFetching}
                   fieldNames={workGroupListSelectFieldNames}
@@ -147,7 +147,10 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           )}
         </Permissions>
 
-        <FilterBlock withDivider={false}>
+        <FilterBlock
+          withDivider={false}
+          data-testid='filter-extended-search-by-column'
+        >
           <FilterBlockLabel
             label='Поиск по столбцу'
             onReset={resetFields(['searchField', 'searchValue'])}

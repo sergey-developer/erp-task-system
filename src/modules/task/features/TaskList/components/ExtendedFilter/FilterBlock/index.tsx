@@ -9,12 +9,16 @@ type FilterBlockProps = {
   withDivider: boolean
 }
 
-const FilterBlock: FC<FilterBlockProps> = ({ children, withDivider }) => {
+const FilterBlock: FC<FilterBlockProps> = ({
+  children,
+  withDivider,
+  ...props
+}) => {
   const breakpoints = useBreakpoint()
 
   return (
     <>
-      <WrapperStyled $breakpoints={breakpoints}>
+      <WrapperStyled $breakpoints={breakpoints} {...props}>
         <Space direction='vertical' size={30}>
           {children}
         </Space>

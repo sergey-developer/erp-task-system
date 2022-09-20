@@ -1,4 +1,6 @@
 import { screen } from '_tests_/utils'
+import { within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const getCloseButton = (): HTMLButtonElement =>
   screen.getByRole('button', { name: 'Close' })
@@ -27,7 +29,20 @@ export const getKeywordField = (): HTMLInputElement =>
   screen.getByPlaceholderText('Ключевое слово')
 
 export const getWorkGroupField = () =>
-  screen.getByTestId('filter-extended-select-work-group')
+  screen.getByTestId('filter-extended-work-group-select')
 
 export const queryWorkGroupField = () =>
-  screen.queryByTestId('filter-extended-select-work-group')
+  screen.queryByTestId('filter-extended-work-group-select')
+
+export const getResetButton = (containerTestId: string) => {
+  const container = screen.getByTestId(containerTestId)
+  return within(container).getByRole('button', { name: 'Сбросить' })
+}
+
+export const userClickResetButton = async (
+  user: UserEvent,
+  containerTestId: string,
+) => {
+  const button = getResetButton(containerTestId)
+  await user.click(button)
+}
