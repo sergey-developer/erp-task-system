@@ -3,16 +3,27 @@ import {
   getJournalResponseSuccess,
 } from '_fixtures_/task'
 import { render, screen, setupApiTests, within } from '_tests_/utils'
+import { waitFor } from '@testing-library/react'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import { NO_DATA_MSG } from '../constants'
 import Journal from '../index'
 import {
   FAKE_TASK_ID,
+  mockGetJournalCsvServerError,
+  mockGetJournalCsvSuccess,
   mockGetJournalServerError,
   mockGetJournalSuccess,
 } from './mocks'
-import { getDownloadButton, waitFinishLoading, waitStartLoading } from './utils'
+import {
+  getDownloadButton,
+  userClickDownloadButton,
+  waitFinishLoadingJournal,
+  waitFinishLoadingJournalCsv,
+  waitStartLoadingJournal,
+  waitStartLoadingJournalCsv,
+} from './utils'
 
 setupApiTests()
 
@@ -24,8 +35,8 @@ describe('Страница отображения журнала', () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_TASK_ID} />)
-          await waitStartLoading()
-          await waitFinishLoading()
+          await waitStartLoadingJournal()
+          await waitFinishLoadingJournal()
 
           expect(screen.getAllByTestId('journalEntry')).toHaveLength(
             getJournalResponseSuccess.length,
@@ -36,8 +47,8 @@ describe('Страница отображения журнала', () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_TASK_ID} />)
-          await waitStartLoading()
-          await waitFinishLoading()
+          await waitStartLoadingJournal()
+          await waitFinishLoadingJournal()
 
           const downloadButton = getDownloadButton()
 
@@ -54,64 +65,84 @@ describe('Страница отображения журнала', () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_TASK_ID} />)
-          await waitStartLoading()
-          await waitFinishLoading()
+          await waitStartLoadingJournal()
+          await waitFinishLoadingJournal()
 
           expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
         })
       })
 
-      describe('Кнопка экспорта в csv', () => {
-        // window.URL.createObjectURL = jest.fn()
-        // window.URL.revokeObjectURL = jest.fn()
+      test('Кнопка экспорта в csv активна', async () => {
+        mockGetJournalSuccess(getJournalResponseSuccess)
 
-        // const createObjectURL = window.URL.createObjectURL as jest.Mock
-        // const revokeObjectURL = window.URL.revokeObjectURL as jest.Mock
+        render(<Journal taskId={FAKE_TASK_ID} />)
 
-        // afterEach(() => {
-        //   URL.createObjectURL.mockReset()
-        //   URL.revokeObjectURL.mockReset()
-        // })
+        await waitStartLoadingJournal()
+        await waitFinishLoadingJournal()
 
-        test('Активна', async () => {
-          mockGetJournalSuccess(getJournalResponseSuccess)
-
-          render(<Journal taskId={FAKE_TASK_ID} />)
-
-          await waitStartLoading()
-          await waitFinishLoading()
-
-          const downloadButton = getDownloadButton()
-          expect(downloadButton).toBeEnabled()
-        })
-
-        // test('Вызывает обработчик при клике', async () => {
-        //   mockGetJournalSuccess(getJournalResponseSuccess)
-        //   mockGetJournalCsvSuccess()
-        //
-        //   const { user } = render(<Journal taskId={FAKE_TASK_ID} />)
-        //
-        //   await waitStartLoading()
-        //   await waitFinishLoading()
-        //
-        //   const downloadButton = getDownloadButton()
-        //   const downloadButtonSpy = jest.spyOn(downloadButton, 'click')
-        //
-        //   await user.click(downloadButton)
-        //
-        //   await waitFor(() => {
-        //     expect(downloadButtonSpy).toBeCalled()
-        //   })
-        // })
+        const downloadButton = getDownloadButton()
+        expect(downloadButton).toBeEnabled()
       })
 
-      // describe('Если нажать на кнопку экспорта в csv', () => {
-      //   describe('При успешном запросе', () => {
-      //     mockGetJournalCsvSuccess()
-      //
-      //     // test('')
-      //   })
-      // })
+      describe('При успешной загрузке csv', () => {
+        const makeDownloadLinkSpy = jest.spyOn(downloadLink, 'makeDownloadLink')
+        const clickDownloadLinkSpy = jest.spyOn(
+          downloadLink,
+          'clickDownloadLink',
+        )
+
+        test('Не показывает сообщение об ошибке', async () => {
+          mockGetJournalSuccess(getJournalResponseSuccess)
+          mockGetJournalCsvSuccess()
+
+          const { user } = render(<Journal taskId={FAKE_TASK_ID} />)
+
+          await waitStartLoadingJournal()
+          await waitFinishLoadingJournal()
+
+          const downloadButton = await userClickDownloadButton(user)
+
+          await waitStartLoadingJournalCsv(downloadButton)
+          await waitFinishLoadingJournalCsv(downloadButton)
+
+          expect(makeDownloadLinkSpy).toBeCalledTimes(1)
+          expect(clickDownloadLinkSpy).toBeCalledTimes(1)
+
+          const notification = screen.queryByText(UNKNOWN_ERROR_MSG)
+          expect(notification).not.toBeInTheDocument()
+        })
+      })
+
+      describe('При не успешной загрузке csv', () => {
+        const makeDownloadLinkSpy = jest.spyOn(downloadLink, 'makeDownloadLink')
+        const clickDownloadLinkSpy = jest.spyOn(
+          downloadLink,
+          'clickDownloadLink',
+        )
+
+        test('Показывает сообщение об ошибке', async () => {
+          mockGetJournalSuccess(getJournalResponseSuccess)
+          mockGetJournalCsvServerError()
+
+          const { user } = render(<Journal taskId={FAKE_TASK_ID} />)
+
+          await waitStartLoadingJournal()
+          await waitFinishLoadingJournal()
+
+          const downloadButton = await userClickDownloadButton(user)
+
+          await waitStartLoadingJournalCsv(downloadButton)
+          await waitFinishLoadingJournalCsv(downloadButton)
+
+          expect(makeDownloadLinkSpy).not.toBeCalled()
+          expect(clickDownloadLinkSpy).not.toBeCalled()
+
+          await waitFor(() => {
+            const notification = screen.getByText(UNKNOWN_ERROR_MSG)
+            expect(notification).toBeInTheDocument()
+          })
+        })
+      })
     })
 
     describe('Если нет записей', () => {
@@ -120,8 +151,8 @@ describe('Страница отображения журнала', () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_TASK_ID} />)
-          await waitStartLoading()
-          await waitFinishLoading()
+          await waitStartLoadingJournal()
+          await waitFinishLoadingJournal()
 
           expect(screen.getByText(NO_DATA_MSG)).toBeInTheDocument()
         })
@@ -132,8 +163,8 @@ describe('Страница отображения журнала', () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_TASK_ID} />)
-          await waitStartLoading()
-          await waitFinishLoading()
+          await waitStartLoadingJournal()
+          await waitFinishLoadingJournal()
 
           expect(screen.queryAllByTestId('journalEntry')).toHaveLength(
             getEmptyJournalResponseSuccess.length,
@@ -144,8 +175,8 @@ describe('Страница отображения журнала', () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
           render(<Journal taskId={FAKE_TASK_ID} />)
-          await waitStartLoading()
-          await waitFinishLoading()
+          await waitStartLoadingJournal()
+          await waitFinishLoadingJournal()
 
           expect(
             screen.queryByTestId('journal-btn-download'),
@@ -165,8 +196,8 @@ describe('Страница отображения журнала', () => {
         mockGetJournalServerError()
 
         render(<Journal taskId={FAKE_TASK_ID} />)
-        await waitStartLoading()
-        await waitFinishLoading()
+        await waitStartLoadingJournal()
+        await waitFinishLoadingJournal()
 
         expect(await screen.findByText(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
       })
@@ -175,8 +206,8 @@ describe('Страница отображения журнала', () => {
         mockGetJournalServerError()
 
         render(<Journal taskId={FAKE_TASK_ID} />)
-        await waitStartLoading()
-        await waitFinishLoading()
+        await waitStartLoadingJournal()
+        await waitFinishLoadingJournal()
 
         expect(await screen.findByText(NO_DATA_MSG)).toBeInTheDocument()
       })

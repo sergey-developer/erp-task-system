@@ -27,3 +27,6 @@ window.matchMedia = (query) => ({
   removeEventListener: jest.fn(),
   dispatchEvent: jest.fn(),
 })
+
+window.URL.createObjectURL = jest.fn()
+window.URL.revokeObjectURL = jest.fn()

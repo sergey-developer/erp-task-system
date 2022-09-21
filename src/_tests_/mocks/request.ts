@@ -24,6 +24,10 @@ export const getRequestMocker = curry(
   },
 )
 
+export const getSuccessMocker = (
+  requestMocker: PartialAppliedRequestMocker,
+): AddMockFn => requestMocker(getResponseResolver({ status: HttpCodeEnum.Ok }))
+
 export const getServerErrorMocker = (
   requestMocker: PartialAppliedRequestMocker,
 ): AddMockFn =>

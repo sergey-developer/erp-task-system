@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Row, Typography } from 'antd'
+import { Button, Col, Divider, Row } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
@@ -20,8 +20,6 @@ import { NO_DATA_MSG } from './constants'
 import JournalEntry from './JournalEntry'
 import { getJournalCsvFilename } from './utils'
 
-const { Text } = Typography
-
 type JournalProps = {
   taskId: number
 }
@@ -36,22 +34,24 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
   } = useGetTaskJournalCsv()
 
   const handleGetJournalCsv = async () => {
-    const journalCsv = await getJournalCsv(taskId)
+    try {
+      const journalCsv = await getJournalCsv(taskId)
 
-    const downloadLink = makeDownloadLink(
-      journalCsv,
-      'text/csv',
-      getJournalCsvFilename(taskId),
-    )
+      const downloadLink = makeDownloadLink(
+        journalCsv,
+        'text/csv',
+        getJournalCsvFilename(taskId),
+      )
 
-    clickDownloadLink(downloadLink)
+      clickDownloadLink(downloadLink)
+    } catch {}
   }
 
   return (
     <LoadableData
       data-testid='spinner-journal'
       isLoading={journalIsFetching}
-      noContent={isEmpty(journal) && <Text>{NO_DATA_MSG}</Text>}
+      noContent={isEmpty(journal) && NO_DATA_MSG}
     >
       <Space direction='vertical' $block>
         <Row justify='end'>
