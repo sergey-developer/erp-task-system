@@ -1,7 +1,7 @@
 export * from '@testing-library/react'
 
 export * from './common'
-export * from './select'
+export * from './selectField'
 export * from './waitLoading'
 
 export { default as render } from './renderInAppProvider'
