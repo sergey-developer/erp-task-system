@@ -9,10 +9,6 @@ const getResetButton = (): HTMLButtonElement =>
   screen.getByRole('button', { name: 'Сбросить' })
 
 describe('FilterBlockLabel', () => {
-  afterEach(() => {
-    onReset.mockReset()
-  })
-
   test('Заголовок отображается корректно', () => {
     render(<FilterBlockLabel label={labelText} onReset={onReset} />)
 

@@ -1,12 +1,10 @@
+import { screen, within } from '_tests_/utils'
 import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import { screen, within } from './index'
-
-export const getSelect = (container: HTMLElement, opts?: ByRoleOptions) => {
-  return within(container).getByRole('combobox', opts)
-}
+export const getSelect = (container: HTMLElement, opts?: ByRoleOptions) =>
+  within(container).getByRole('combobox', opts)
 
 export const userOpenSelect = async (
   user: UserEvent,
