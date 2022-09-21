@@ -3,6 +3,7 @@ import {
   getJournalResponseSuccess,
 } from '_fixtures_/task'
 import { render, screen, setupApiTests, within } from '_tests_/utils'
+import { waitFor } from '@testing-library/react'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
@@ -136,8 +137,10 @@ describe('Страница отображения журнала', () => {
           expect(makeDownloadLinkSpy).not.toBeCalled()
           expect(clickDownloadLinkSpy).not.toBeCalled()
 
-          const notification = screen.getByText(UNKNOWN_ERROR_MSG)
-          expect(notification).toBeInTheDocument()
+          await waitFor(() => {
+            const notification = screen.getByText(UNKNOWN_ERROR_MSG)
+            expect(notification).toBeInTheDocument()
+          })
         })
       })
     })
