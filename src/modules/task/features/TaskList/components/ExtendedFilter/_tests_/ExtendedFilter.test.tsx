@@ -202,7 +202,7 @@ describe('Расширенный фильтр', () => {
       })
     })
 
-    describe('Становится активна после выбора статуса', () => {
+    describe('Становится активна после заполнения полей', () => {
       test('Кнопка "Сбросить всё"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
@@ -228,8 +228,6 @@ describe('Расширенный фильтр', () => {
       })
     })
   })
-
-  // дописать в тесты ниже то что выше с кнопками футера
 
   describe('По периоду выполнения', () => {
     test('Отображается', () => {
@@ -315,7 +313,7 @@ describe('Расширенный фильтр', () => {
       })
     })
 
-    describe('Становится активна после выбора дат', () => {
+    describe('Становится активна после заполнения полей', () => {
       test('Кнопка "Сбросить всё"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
@@ -420,17 +418,60 @@ describe('Расширенный фильтр', () => {
       }
     })
 
-    test('Кнопка "Сбросить" сбрасывает значения', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+    describe('Сбрасывает значения', () => {
+      test('Кнопка "Сбросить"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
 
-      const keyword = generateName()
-      await user.type(getKeywordField(), keyword)
-      await user.click(getRadioButton(searchQueriesDict.searchByName))
+        const keyword = generateName()
+        await user.type(getKeywordField(), keyword)
+        await user.click(getRadioButton(searchQueriesDict.searchByName))
 
-      await userClickResetButton(user, 'filter-extended-search-by-column')
+        await userClickResetButton(user, 'filter-extended-search-by-column')
 
-      expect(getKeywordField()).not.toHaveDisplayValue(keyword)
-      expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
+        expect(getKeywordField()).not.toHaveDisplayValue(keyword)
+        expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
+      })
+
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
+
+        const keyword = generateName()
+        await user.type(getKeywordField(), keyword)
+        await user.click(getRadioButton(searchQueriesDict.searchByName))
+
+        await userClickResetAllButton(user)
+
+        expect(getKeywordField()).not.toHaveDisplayValue(keyword)
+        expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
+      })
+    })
+
+    describe('Становится активна после заполнения полей', () => {
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
+
+        const resetAllButton = getResetAllButton()
+        expect(resetAllButton).not.toBeEnabled()
+
+        const keyword = generateName()
+        await user.type(getKeywordField(), keyword)
+        await user.click(getRadioButton(searchQueriesDict.searchByName))
+
+        expect(resetAllButton).toBeEnabled()
+      })
+
+      test('Кнопка "Применить"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
+
+        const applyButton = getApplyButton()
+        expect(applyButton).not.toBeEnabled()
+
+        const keyword = generateName()
+        await user.type(getKeywordField(), keyword)
+        await user.click(getRadioButton(searchQueriesDict.searchByName))
+
+        expect(applyButton).toBeEnabled()
+      })
     })
   })
 
@@ -562,33 +603,6 @@ describe('Расширенный фильтр', () => {
         expect(selectedOption).toBeVisible()
       })
 
-      test('Кнопка "Сбросить" сбрасывает выбранное значение', async () => {
-        const mockedWorkGroupList = getWorkGroupList()
-        const mockedWorkGroupListItem = mockedWorkGroupList[0]
-        mockGetWorkGroupListSuccess(mockedWorkGroupList)
-
-        const store = getStoreWithAuth({
-          userId: generateId(),
-          userRole: UserRolesEnum.SeniorEngineer,
-        })
-
-        const { user } = render(<ExtendedFilterWrapper visible />, {
-          store,
-        })
-
-        const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
-        await userOpenSelect(user, workGroupField)
-
-        const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
-        await user.click(workGroupOption)
-
-        await userClickResetButton(user, 'filter-extended-work-group')
-
-        const selectedOption = getSelectedOption(workGroupField)
-        expect(selectedOption).not.toBeInTheDocument()
-      })
-
       test('Поиск по списку работает', async () => {
         const mockedWorkGroupList = getWorkGroupList(2)
         const mockedWorkGroupListItem1 = mockedWorkGroupList[0]
@@ -618,6 +632,118 @@ describe('Расширенный фильтр', () => {
 
         expect(option1).toBeInTheDocument()
         expect(option2).not.toBeInTheDocument()
+      })
+
+      describe('Сбрасывает значения', () => {
+        test('Кнопка "Сбросить"', async () => {
+          const mockedWorkGroupList = getWorkGroupList()
+          const mockedWorkGroupListItem = mockedWorkGroupList[0]
+          mockGetWorkGroupListSuccess(mockedWorkGroupList)
+
+          const store = getStoreWithAuth({
+            userId: generateId(),
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
+
+          const { user } = render(<ExtendedFilterWrapper visible />, {
+            store,
+          })
+
+          const workGroupField = getWorkGroupField()
+          await waitFinishLoadingBySelect(workGroupField)
+          await userOpenSelect(user, workGroupField)
+
+          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
+          await user.click(workGroupOption)
+
+          await userClickResetButton(user, 'filter-extended-work-group')
+
+          const selectedOption = getSelectedOption(workGroupField)
+          expect(selectedOption).not.toBeInTheDocument()
+        })
+
+        test('Кнопка "Сбросить всё"', async () => {
+          const mockedWorkGroupList = getWorkGroupList()
+          const mockedWorkGroupListItem = mockedWorkGroupList[0]
+          mockGetWorkGroupListSuccess(mockedWorkGroupList)
+
+          const store = getStoreWithAuth({
+            userId: generateId(),
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
+
+          const { user } = render(<ExtendedFilterWrapper visible />, {
+            store,
+          })
+
+          const workGroupField = getWorkGroupField()
+          await waitFinishLoadingBySelect(workGroupField)
+          await userOpenSelect(user, workGroupField)
+
+          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
+          await user.click(workGroupOption)
+
+          await userClickResetAllButton(user)
+
+          const selectedOption = getSelectedOption(workGroupField)
+          expect(selectedOption).not.toBeInTheDocument()
+        })
+      })
+
+      describe('Становится активна после заполнения полей', () => {
+        test('Кнопка "Сбросить всё"', async () => {
+          const mockedWorkGroupList = getWorkGroupList()
+          const mockedWorkGroupListItem = mockedWorkGroupList[0]
+          mockGetWorkGroupListSuccess(mockedWorkGroupList)
+
+          const store = getStoreWithAuth({
+            userId: generateId(),
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
+
+          const { user } = render(<ExtendedFilterWrapper visible />, {
+            store,
+          })
+
+          const resetAllButton = getResetAllButton()
+          expect(resetAllButton).not.toBeEnabled()
+
+          const workGroupField = getWorkGroupField()
+          await waitFinishLoadingBySelect(workGroupField)
+          await userOpenSelect(user, workGroupField)
+
+          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
+          await user.click(workGroupOption)
+
+          expect(resetAllButton).toBeEnabled()
+        })
+
+        test('Кнопка "Применить"', async () => {
+          const mockedWorkGroupList = getWorkGroupList()
+          const mockedWorkGroupListItem = mockedWorkGroupList[0]
+          mockGetWorkGroupListSuccess(mockedWorkGroupList)
+
+          const store = getStoreWithAuth({
+            userId: generateId(),
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
+
+          const { user } = render(<ExtendedFilterWrapper visible />, {
+            store,
+          })
+
+          const applyButton = getApplyButton()
+          expect(applyButton).not.toBeEnabled()
+
+          const workGroupField = getWorkGroupField()
+          await waitFinishLoadingBySelect(workGroupField)
+          await userOpenSelect(user, workGroupField)
+
+          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
+          await user.click(workGroupOption)
+
+          expect(applyButton).toBeEnabled()
+        })
       })
     })
   })
