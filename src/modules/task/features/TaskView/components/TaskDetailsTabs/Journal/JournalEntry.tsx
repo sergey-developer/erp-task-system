@@ -1,4 +1,4 @@
-import { Row, Typography } from 'antd'
+import { Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import LabeledData from 'components/LabeledData'
@@ -7,7 +7,9 @@ import { TaskJournalEntryModel } from 'modules/task/features/TaskView/models'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { MaybeNull } from 'shared/interfaces/utils'
 
-const { Text, Paragraph } = Typography
+import { Description } from './styles'
+
+const { Text } = Typography
 
 export type JournalEntryProps = Pick<
   TaskJournalEntryModel,
@@ -27,24 +29,33 @@ const JournalEntry: FC<JournalEntryProps> = ({
   return (
     <Space data-testid='journalEntry' direction='vertical' size='middle' $block>
       <Space direction='vertical'>
-        <Text>{createdAt}</Text>
+        <Text strong>{createdAt}</Text>
 
-        <Paragraph ellipsis={commonEllipsisConfig}>{description}</Paragraph>
+        <Description ellipsis={commonEllipsisConfig}>{description}</Description>
       </Space>
 
-      <Row justify='space-between'>
-        <LabeledData label='Тип'>
-          <Text>{type}</Text>
-        </LabeledData>
+      <Row>
+        <Col span={8}>
+          <LabeledData label='Тип'>
+            <Text>{type}</Text>
+          </LabeledData>
+        </Col>
 
-        <LabeledData label='Где добавлено'>
-          <Text>{sourceSystem}</Text>
-        </LabeledData>
+        <Col span={8}>
+          <LabeledData label='Где добавлено'>
+            <Text>{sourceSystem}</Text>
+          </LabeledData>
+        </Col>
 
         {author && (
-          <LabeledData data-testid='journalEntry-author' label='Кем добавлено'>
-            <Text>{author}</Text>
-          </LabeledData>
+          <Col span={8}>
+            <LabeledData
+              data-testid='journalEntry-author'
+              label='Кем добавлено'
+            >
+              <Text>{author}</Text>
+            </LabeledData>
+          </Col>
         )}
       </Row>
     </Space>
