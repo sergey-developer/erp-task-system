@@ -279,21 +279,76 @@ describe('Расширенный фильтр', () => {
       expect(endDateField).toHaveDisplayValue(formattedDate)
     })
 
-    test('Кнопка "Сбросить" сбрасывает значения', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+    describe('Сбрасывает значения', () => {
+      test('Кнопка "Сбросить"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
 
-      await user.click(getStartDateField())
+        await user.click(getStartDateField())
 
-      const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
-      const calendarCell = screen.getByTitle(formattedDate)
+        const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
+        const calendarCell = screen.getByTitle(formattedDate)
 
-      await user.click(calendarCell)
-      await user.click(calendarCell)
+        await user.click(calendarCell)
+        await user.click(calendarCell)
 
-      await userClickResetButton(user, 'filter-extended-execution-period')
+        await userClickResetButton(user, 'filter-extended-execution-period')
 
-      expect(getStartDateField()).not.toHaveDisplayValue(formattedDate)
-      expect(getEndDateField()).not.toHaveDisplayValue(formattedDate)
+        expect(getStartDateField()).not.toHaveDisplayValue(formattedDate)
+        expect(getEndDateField()).not.toHaveDisplayValue(formattedDate)
+      })
+
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
+
+        await user.click(getStartDateField())
+
+        const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
+        const calendarCell = screen.getByTitle(formattedDate)
+
+        await user.click(calendarCell)
+        await user.click(calendarCell)
+
+        await userClickResetAllButton(user)
+
+        expect(getStartDateField()).not.toHaveDisplayValue(formattedDate)
+        expect(getEndDateField()).not.toHaveDisplayValue(formattedDate)
+      })
+    })
+
+    describe('Становится активна после выбора дат', () => {
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
+
+        const resetAllButton = getResetAllButton()
+        expect(resetAllButton).not.toBeEnabled()
+
+        await user.click(getStartDateField())
+
+        const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
+        const calendarCell = screen.getByTitle(formattedDate)
+
+        await user.click(calendarCell)
+        await user.click(calendarCell)
+
+        expect(resetAllButton).toBeEnabled()
+      })
+
+      test('Кнопка "Применить"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
+
+        const applyButton = getApplyButton()
+        expect(applyButton).not.toBeEnabled()
+
+        await user.click(getStartDateField())
+
+        const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
+        const calendarCell = screen.getByTitle(formattedDate)
+
+        await user.click(calendarCell)
+        await user.click(calendarCell)
+
+        expect(applyButton).toBeEnabled()
+      })
     })
   })
 
