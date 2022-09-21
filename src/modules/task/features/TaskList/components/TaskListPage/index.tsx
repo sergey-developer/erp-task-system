@@ -74,8 +74,13 @@ const TaskListPage: FC = () => {
   const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskTableListItem['id']>>(null)
 
-  const [previouslySelectedTasks, { add: addPreviouslySelectedTask }] =
-    useSet<TaskTableListItem['id']>()
+  const [
+    tasksAdditionalInfoExpanded,
+    {
+      add: addTaskAdditionalInfoExpanded,
+      remove: removeTaskAdditionalInfoExpanded,
+    },
+  ] = useSet<TaskTableListItem['id']>()
 
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
@@ -148,18 +153,13 @@ const TaskListPage: FC = () => {
     handleCloseTaskDetails()
   })
 
-  const debouncedTableRowClick = useDebounceFn(
-    (taskId: TaskTableListItem['id']) => {
-      setSelectedTask(taskId)
-      addPreviouslySelectedTask(taskId)
-    },
-  )
+  const debouncedSetSelectedTask = useDebounceFn(setSelectedTask)
 
   const handleTableRowClick: GetComponentProps<TaskTableListItem> = useCallback(
     (record: TaskTableListItem) => ({
-      onClick: () => debouncedTableRowClick(record.id),
+      onClick: () => debouncedSetSelectedTask(record.id),
     }),
-    [debouncedTableRowClick],
+    [debouncedSetSelectedTask],
   )
 
   const handleCloseTaskDetails = useCallback(() => {
@@ -222,6 +222,15 @@ const TaskListPage: FC = () => {
     handleCloseTaskDetails()
     refetchTaskCounters()
   })
+
+  const onExpandAdditionalInfo = useCallback(
+    (taskId: number, expanded: boolean) => {
+      expanded
+        ? addTaskAdditionalInfoExpanded(taskId)
+        : removeTaskAdditionalInfoExpanded(taskId)
+    },
+    [addTaskAdditionalInfoExpanded, removeTaskAdditionalInfoExpanded],
+  )
 
   const searchFilterApplied: boolean = isEqual(
     appliedFilterType,
@@ -307,9 +316,10 @@ const TaskListPage: FC = () => {
               <Col span={breakpoints.xxl ? 9 : 12}>
                 <TaskDetails
                   taskId={selectedTask}
-                  additionalInfoExpanded={previouslySelectedTasks.has(
+                  additionalInfoExpanded={tasksAdditionalInfoExpanded.has(
                     selectedTask,
                   )}
+                  onExpandAdditionalInfo={onExpandAdditionalInfo}
                   onClose={handleCloseTaskDetails}
                 />
               </Col>

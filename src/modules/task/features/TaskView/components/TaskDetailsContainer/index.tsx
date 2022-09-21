@@ -14,13 +14,19 @@ import TaskDetails from '../TaskDetails'
 
 type TaskDetailsContainerProps = {
   taskId: TaskListItemModel['id']
+
   additionalInfoExpanded: boolean
+  onExpandAdditionalInfo: (taskId: number, expanded: boolean) => void
+
   onClose: () => void
 }
 
 const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   taskId,
+
   additionalInfoExpanded,
+  onExpandAdditionalInfo,
+
   onClose,
 }) => {
   const {
@@ -84,6 +90,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       updateWorkGroup={updateWorkGroup}
       updateWorkGroupIsLoading={updateWorkGroupIsLoading}
       additionalInfoExpanded={additionalInfoExpanded}
+      onExpandAdditionalInfo={onExpandAdditionalInfo}
       onClose={onClose}
     />
   )

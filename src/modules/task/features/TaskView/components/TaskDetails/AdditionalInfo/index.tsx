@@ -5,6 +5,7 @@ import React, { FC } from 'react'
 import { DownIcon, MapPointIcon, UpIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
+import useDebounceFn from 'shared/hooks/useDebounceFn'
 
 import DetailsWrapper from '../DetailsWrapper'
 import { ADDITIONAL_INFO_BUTTON_TEXT } from './constants'
@@ -13,17 +14,26 @@ import { ContainerStyled } from './styles'
 const { Text } = Typography
 
 type AdditionalInfoProps = {
+  onExpand?: (expanded: boolean) => void
   defaultExpanded?: boolean
 }
 
-const AdditionalInfo: FC<AdditionalInfoProps> = ({ defaultExpanded }) => {
+const AdditionalInfo: FC<AdditionalInfoProps> = ({
+  defaultExpanded,
+  onExpand,
+}) => {
   const [expanded, { toggle: toggleExpand }] = useBoolean(defaultExpanded)
+
+  const handleExpand = useDebounceFn(() => {
+    toggleExpand()
+    onExpand && onExpand(!expanded)
+  })
 
   return (
     <ContainerStyled $hasMarginBottom={!expanded}>
       <Space direction='vertical' size='middle' $block>
         <DetailsWrapper disablePadding='vertical'>
-          <Button data-testid='btn-expand' type='text' onClick={toggleExpand}>
+          <Button data-testid='btn-expand' type='text' onClick={handleExpand}>
             <Text type='secondary' underline>
               {ADDITIONAL_INFO_BUTTON_TEXT}
             </Text>
