@@ -12,8 +12,12 @@ import { ContainerStyled } from './styles'
 
 const { Text } = Typography
 
-const AdditionalInfo: FC = () => {
-  const [expanded, { toggle: toggleExpand }] = useBoolean(false)
+type AdditionalInfoProps = {
+  defaultExpanded?: boolean
+}
+
+const AdditionalInfo: FC<AdditionalInfoProps> = ({ defaultExpanded }) => {
+  const [expanded, { toggle: toggleExpand }] = useBoolean(defaultExpanded)
 
   return (
     <ContainerStyled $hasMarginBottom={!expanded}>
@@ -129,6 +133,10 @@ const AdditionalInfo: FC = () => {
       </Space>
     </ContainerStyled>
   )
+}
+
+AdditionalInfo.defaultProps = {
+  defaultExpanded: false,
 }
 
 export default AdditionalInfo

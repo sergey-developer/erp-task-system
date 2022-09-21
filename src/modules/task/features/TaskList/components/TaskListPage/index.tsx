@@ -1,4 +1,4 @@
-import { useBoolean, usePrevious } from 'ahooks'
+import { useBoolean, usePrevious, useSet } from 'ahooks'
 import { Button, Col, Form, Row, Space, TableProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
@@ -74,6 +74,9 @@ const TaskListPage: FC = () => {
   const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskTableListItem['id']>>(null)
 
+  const [previouslySelectedTasks, { add: addPreviouslySelectedTask }] =
+    useSet<TaskTableListItem['id']>()
+
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
   const [isFilterDrawerVisible, { toggle: toggleFilterDrawer }] =
@@ -145,13 +148,18 @@ const TaskListPage: FC = () => {
     handleCloseTaskDetails()
   })
 
-  const debouncedSetSelectedTask = useDebounceFn(setSelectedTask)
+  const debouncedTableRowClick = useDebounceFn(
+    (taskId: TaskTableListItem['id']) => {
+      setSelectedTask(taskId)
+      addPreviouslySelectedTask(taskId)
+    },
+  )
 
   const handleTableRowClick: GetComponentProps<TaskTableListItem> = useCallback(
     (record: TaskTableListItem) => ({
-      onClick: () => debouncedSetSelectedTask(record.id),
+      onClick: () => debouncedTableRowClick(record.id),
     }),
-    [debouncedSetSelectedTask],
+    [debouncedTableRowClick],
   )
 
   const handleCloseTaskDetails = useCallback(() => {
@@ -299,6 +307,9 @@ const TaskListPage: FC = () => {
               <Col span={breakpoints.xxl ? 9 : 12}>
                 <TaskDetails
                   taskId={selectedTask}
+                  additionalInfoExpanded={previouslySelectedTasks.has(
+                    selectedTask,
+                  )}
                   onClose={handleCloseTaskDetails}
                 />
               </Col>

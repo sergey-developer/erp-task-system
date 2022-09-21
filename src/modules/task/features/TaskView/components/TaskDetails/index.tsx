@@ -84,6 +84,8 @@ type TaskDetailsProps = {
   updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgsModel) => Promise<void>
   updateWorkGroupIsLoading: boolean
 
+  additionalInfoExpanded: boolean
+
   onClose: () => void
 }
 
@@ -107,6 +109,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   updateAssignee,
   updateAssigneeIsLoading,
+
+  additionalInfoExpanded,
 
   onClose,
 }) => {
@@ -254,7 +258,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               olaNextBreachTime={details.olaNextBreachTime}
             />
 
-            <AdditionalInfo />
+            <AdditionalInfo defaultExpanded={additionalInfoExpanded} />
 
             <DividerStyled />
 
