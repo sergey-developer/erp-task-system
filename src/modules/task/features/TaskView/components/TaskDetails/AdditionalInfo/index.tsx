@@ -8,7 +8,6 @@ import Space from 'components/Space'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 
 import DetailsWrapper from '../DetailsWrapper'
-import { ADDITIONAL_INFO_BUTTON_TEXT } from './constants'
 import { ContainerStyled } from './styles'
 
 const { Text } = Typography
@@ -19,15 +18,15 @@ type AdditionalInfoProps = {
 }
 
 const AdditionalInfo: FC<AdditionalInfoProps> = ({
-  defaultExpanded,
   onExpand,
+  defaultExpanded,
 }) => {
   const [expanded, { toggle: toggleExpand }] = useBoolean(defaultExpanded)
 
   const handleExpand = useDebounceFn(() => {
     toggleExpand()
     onExpand && onExpand(!expanded)
-  })
+  }, [onExpand])
 
   return (
     <ContainerStyled $hasMarginBottom={!expanded}>
@@ -35,7 +34,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
         <DetailsWrapper disablePadding='vertical'>
           <Button data-testid='btn-expand' type='text' onClick={handleExpand}>
             <Text type='secondary' underline>
-              {ADDITIONAL_INFO_BUTTON_TEXT}
+              Дополнительная информация
             </Text>
 
             {expanded ? <UpIcon $size='small' /> : <DownIcon $size='small' />}

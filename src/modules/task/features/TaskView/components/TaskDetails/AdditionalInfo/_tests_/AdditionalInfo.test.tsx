@@ -1,6 +1,6 @@
 import { render } from '_tests_/utils'
+import { waitFor } from '@testing-library/react'
 
-import { ADDITIONAL_INFO_BUTTON_TEXT } from '../constants'
 import AdditionalInfo from '../index'
 import {
   getAdditionalInfoContent,
@@ -9,32 +9,61 @@ import {
 } from './utils'
 
 describe('Блок дополнительной информации', () => {
-  describe('Не отображается', () => {
-    test(`Если не нажать кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}"`, () => {
-      render(<AdditionalInfo />)
+  describe('Информация может быть по умолчанию', () => {
+    test('Открыта', () => {
+      render(<AdditionalInfo defaultExpanded />)
 
-      const additionalInfoContent = queryAdditionalInfoContent()
-      expect(additionalInfoContent).not.toBeInTheDocument()
+      const additionalInfoContent = getAdditionalInfoContent()
+      expect(additionalInfoContent).toBeInTheDocument()
     })
 
-    test(`Если нажать кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}" дважды`, async () => {
-      const { user } = render(<AdditionalInfo />)
-
-      await userClickExpandButton(user)
-      await userClickExpandButton(user)
+    test('Скрыта', () => {
+      render(<AdditionalInfo defaultExpanded={false} />)
 
       const additionalInfoContent = queryAdditionalInfoContent()
       expect(additionalInfoContent).not.toBeInTheDocument()
     })
   })
 
-  describe('Отображается', () => {
-    test(`Если нажать кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}" один раз`, async () => {
+  describe('Если нажать кнопку "Дополнительная информация"', () => {
+    test('Информация отображается', async () => {
       const { user } = render(<AdditionalInfo />)
 
       await userClickExpandButton(user)
-      const additionalInfoContent = getAdditionalInfoContent()
-      expect(additionalInfoContent).toBeInTheDocument()
+
+      await waitFor(() => {
+        const additionalInfoContent = getAdditionalInfoContent()
+        expect(additionalInfoContent).toBeInTheDocument()
+      })
+    })
+
+    test('callback "onExpand" вызывается', async () => {
+      const onExpand = jest.fn()
+      const defaultExpanded = false
+
+      const { user } = render(
+        <AdditionalInfo
+          onExpand={onExpand}
+          defaultExpanded={defaultExpanded}
+        />,
+      )
+
+      await userClickExpandButton(user)
+
+      await waitFor(() => {
+        expect(onExpand).toBeCalledTimes(1)
+      })
+
+      expect(onExpand).toBeCalledWith(!defaultExpanded)
+    })
+  })
+
+  describe('Если не нажать кнопку "Дополнительная информация"', () => {
+    test('Информация не отображается', () => {
+      render(<AdditionalInfo />)
+
+      const additionalInfoContent = queryAdditionalInfoContent()
+      expect(additionalInfoContent).not.toBeInTheDocument()
     })
   })
 })

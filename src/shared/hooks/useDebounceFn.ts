@@ -6,8 +6,8 @@ import { AnyFn } from 'shared/interfaces/utils'
 
 const useDebounceFn = <T extends AnyFn>(
   fn: T,
-  delay: number = DOUBLE_CLICK_DEBOUNCE_TIME,
   deps: DependencyList = [],
+  delay: number = DOUBLE_CLICK_DEBOUNCE_TIME,
   // eslint-disable-next-line react-hooks/exhaustive-deps
 ) => useCallback(debounce(fn, delay), [fn, delay, ...deps])
 
