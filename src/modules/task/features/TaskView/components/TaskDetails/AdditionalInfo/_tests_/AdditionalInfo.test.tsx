@@ -1,5 +1,4 @@
-import { render } from '_tests_/utils'
-import { waitFor } from '@testing-library/react'
+import { render, waitFor } from '_tests_/utils'
 
 import AdditionalInfo from '../index'
 import {
