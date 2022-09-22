@@ -36,6 +36,17 @@ describe('Блок дополнительной информации', () => {
       })
     })
 
+    test('И информация открыта по умолчанию, то она скрывается', async () => {
+      const { user } = render(<AdditionalInfo defaultExpanded />)
+
+      await userClickExpandButton(user)
+
+      await waitFor(() => {
+        const additionalInfoContent = queryAdditionalInfoContent()
+        expect(additionalInfoContent).not.toBeInTheDocument()
+      })
+    })
+
     test('callback "onExpand" вызывается', async () => {
       const onExpand = jest.fn()
       const defaultExpanded = false
