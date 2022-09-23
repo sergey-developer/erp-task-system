@@ -1,27 +1,31 @@
-import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import { DownIcon, MapPointIcon, UpIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
+import useDebounceFn from 'shared/hooks/useDebounceFn'
 
 import DetailsWrapper from '../DetailsWrapper'
-import { ADDITIONAL_INFO_BUTTON_TEXT } from './constants'
 import { ContainerStyled } from './styles'
 
 const { Text } = Typography
 
-const AdditionalInfo: FC = () => {
-  const [expanded, { toggle: toggleExpand }] = useBoolean(false)
+type AdditionalInfoProps = {
+  expanded: boolean
+  onExpand: () => void
+}
+
+const AdditionalInfo: FC<AdditionalInfoProps> = ({ expanded, onExpand }) => {
+  const handleExpand = useDebounceFn(onExpand)
 
   return (
     <ContainerStyled $hasMarginBottom={!expanded}>
       <Space direction='vertical' size='middle' $block>
         <DetailsWrapper disablePadding='vertical'>
-          <Button data-testid='btn-expand' type='text' onClick={toggleExpand}>
+          <Button type='text' onClick={handleExpand}>
             <Text type='secondary' underline>
-              {ADDITIONAL_INFO_BUTTON_TEXT}
+              Дополнительная информация
             </Text>
 
             {expanded ? <UpIcon $size='small' /> : <DownIcon $size='small' />}

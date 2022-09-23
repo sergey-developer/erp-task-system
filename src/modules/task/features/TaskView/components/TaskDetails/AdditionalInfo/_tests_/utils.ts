@@ -1,7 +1,8 @@
 import { screen } from '_tests_/utils'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getExpandButton = () => screen.getByTestId('btn-expand')
+export const getExpandButton = () =>
+  screen.getByRole('button', { name: /Дополнительная информация/ })
 
 export const getAdditionalInfoContent = () =>
   screen.getByTestId('additional-info-content')

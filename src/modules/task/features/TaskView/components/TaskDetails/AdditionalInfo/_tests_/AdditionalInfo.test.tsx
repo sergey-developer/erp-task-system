@@ -1,6 +1,5 @@
-import { render } from '_tests_/utils'
+import { render, waitFor } from '_tests_/utils'
 
-import { ADDITIONAL_INFO_BUTTON_TEXT } from '../constants'
 import AdditionalInfo from '../index'
 import {
   getAdditionalInfoContent,
@@ -8,33 +7,40 @@ import {
   userClickExpandButton,
 } from './utils'
 
-describe('Блок дополнительной информации', () => {
-  describe('Не отображается', () => {
-    test(`Если не нажать кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}"`, () => {
-      render(<AdditionalInfo />)
+const onExpand = jest.fn()
 
-      const additionalInfoContent = queryAdditionalInfoContent()
-      expect(additionalInfoContent).not.toBeInTheDocument()
+describe('Блок дополнительной информации', () => {
+  describe('Может быть по умолчанию', () => {
+    test('Открыт', () => {
+      render(<AdditionalInfo expanded onExpand={onExpand} />)
+
+      const additionalInfoContent = getAdditionalInfoContent()
+      expect(additionalInfoContent).toBeInTheDocument()
     })
 
-    test(`Если нажать кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}" дважды`, async () => {
-      const { user } = render(<AdditionalInfo />)
-
-      await userClickExpandButton(user)
-      await userClickExpandButton(user)
+    test('Скрыт', () => {
+      render(<AdditionalInfo expanded={false} onExpand={onExpand} />)
 
       const additionalInfoContent = queryAdditionalInfoContent()
       expect(additionalInfoContent).not.toBeInTheDocument()
     })
   })
 
-  describe('Отображается', () => {
-    test(`Если нажать кнопку "${ADDITIONAL_INFO_BUTTON_TEXT}" один раз`, async () => {
-      const { user } = render(<AdditionalInfo />)
+  describe('Если нажать кнопку "Дополнительная информация"', () => {
+    afterEach(() => {
+      onExpand.mockReset()
+    })
+
+    test('callback "onExpand" вызывается', async () => {
+      const { user } = render(
+        <AdditionalInfo expanded={false} onExpand={onExpand} />,
+      )
 
       await userClickExpandButton(user)
-      const additionalInfoContent = getAdditionalInfoContent()
-      expect(additionalInfoContent).toBeInTheDocument()
+
+      await waitFor(() => {
+        expect(onExpand).toBeCalledTimes(1)
+      })
     })
   })
 })

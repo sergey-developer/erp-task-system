@@ -74,6 +74,11 @@ const TaskListPage: FC = () => {
   const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskTableListItem['id']>>(null)
 
+  const [
+    taskAdditionalInfoExpanded,
+    { toggle: toggleTaskAdditionalInfoExpanded },
+  ] = useBoolean(false)
+
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
   const [isFilterDrawerVisible, { toggle: toggleFilterDrawer }] =
@@ -299,6 +304,8 @@ const TaskListPage: FC = () => {
               <Col span={breakpoints.xxl ? 9 : 12}>
                 <TaskDetails
                   taskId={selectedTask}
+                  additionalInfoExpanded={taskAdditionalInfoExpanded}
+                  onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
                   onClose={handleCloseTaskDetails}
                 />
               </Col>
