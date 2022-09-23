@@ -25,11 +25,12 @@ const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
 
 export type TaskAssigneeProps = Pick<
   TaskDetailsModel,
-  'assignee' | 'status' | 'extendedStatus'
+  'status' | 'extendedStatus'
 > & {
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
+  assignee?: TaskDetailsModel['assignee']
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
 
