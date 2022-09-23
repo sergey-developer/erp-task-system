@@ -5,6 +5,11 @@ import React, { FC } from 'react'
 import { DownIcon, MapPointIcon, UpIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
+import {
+  taskImpactMap,
+  taskPriorityMap,
+  taskSeverityMap,
+} from 'modules/task/constants/dictionary'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import valueOr from 'shared/utils/common/valueOr'
@@ -135,9 +140,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
               </Row>
 
               <LabeledData label='Наименование группы поддержки Х5'>
-                <Text strong={!!supportGroup?.name}>
-                  {valueOrHyphen(supportGroup?.name)}
-                </Text>
+                <Text strong>{valueOrHyphen(supportGroup?.name)}</Text>
               </LabeledData>
 
               <Row align='middle'>
@@ -146,22 +149,22 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
 
                 <Col span={18}>
-                  <Row>
+                  <Row gutter={20}>
                     <Col span={8}>
-                      <LabeledData label='Уровень 1'>
-                        <Text>Мониторинг</Text>
+                      <LabeledData label='Уровень 1' block>
+                        <Text>{productClassifier1}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
-                      <LabeledData label='Уровень 2'>
-                        <Text>Инфраструктурные события</Text>
+                      <LabeledData label='Уровень 2' block>
+                        <Text>{productClassifier2}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
                       <LabeledData label='Уровень 3' block>
-                        <Text>Алерт</Text>
+                        <Text>{productClassifier3}</Text>
                       </LabeledData>
                     </Col>
                   </Row>
@@ -172,7 +175,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 <Col span={6}>
                   <LabeledData label='Приоритет заявки' size={0}>
                     <LabeledData label='Вес:' direction='horizontal'>
-                      <Text>87</Text>
+                      <Text>{valueOrHyphen(weight)}</Text>
                     </LabeledData>
                   </LabeledData>
                 </Col>
@@ -181,19 +184,19 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                   <Row>
                     <Col span={8}>
                       <LabeledData label='Влияние'>
-                        <Text>1-всеохватывающее/ широкое</Text>
+                        <Text>{taskImpactMap.get(initialImpact)}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
                       <LabeledData label='Срочность'>
-                        <Text>2-высокая</Text>
+                        <Text>{taskSeverityMap.get(severity)}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
                       <LabeledData label='Приоритет'>
-                        <Text>1-критический</Text>
+                        <Text>{taskPriorityMap.get(priorityCode)}</Text>
                       </LabeledData>
                     </Col>
                   </Row>

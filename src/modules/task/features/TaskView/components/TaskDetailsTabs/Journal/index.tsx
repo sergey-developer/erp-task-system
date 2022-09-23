@@ -5,7 +5,6 @@ import React, { FC } from 'react'
 import { DownloadIcon } from 'components/Icons'
 import LoadableData from 'components/LoadableData'
 import Space from 'components/Space'
-import { journalEntryTypeDict } from 'modules/task/constants/dict'
 import useGetTaskJournal from 'modules/task/features/TaskView/hooks/useGetTaskJournal'
 import useGetTaskJournalCsv from 'modules/task/features/TaskView/hooks/useGetTaskJournalCsv'
 import getFullUserName from 'modules/user/utils/getFullUserName'
@@ -16,7 +15,7 @@ import {
 } from 'shared/utils/common/downloadLink'
 import formatDate from 'shared/utils/date/formatDate'
 
-import { NO_DATA_MSG } from './constants'
+import { NO_DATA_MSG, journalEntryTypeDict } from './constants'
 import JournalEntry from './JournalEntry'
 import { getJournalCsvFilename } from './utils'
 
