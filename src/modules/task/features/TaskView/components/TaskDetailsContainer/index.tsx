@@ -16,7 +16,7 @@ type TaskDetailsContainerProps = {
   taskId: TaskListItemModel['id']
 
   additionalInfoExpanded: boolean
-  onExpandAdditionalInfo: (taskId: number, expanded: boolean) => void
+  onExpandAdditionalInfo: () => void
 
   onClose: () => void
 }

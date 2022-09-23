@@ -7,19 +7,19 @@ import {
   userClickExpandButton,
 } from './utils'
 
+const onExpand = jest.fn()
+
 describe('Блок дополнительной информации', () => {
-  describe('Информация может быть по умолчанию', () => {
-    test('Открыта', () => {
-      // @ts-ignore
-      render(<AdditionalInfo defaultExpanded />)
+  describe('Может быть по умолчанию', () => {
+    test('Открыт', () => {
+      render(<AdditionalInfo expanded onExpand={onExpand} />)
 
       const additionalInfoContent = getAdditionalInfoContent()
       expect(additionalInfoContent).toBeInTheDocument()
     })
 
-    test('Скрыта', () => {
-      // @ts-ignore
-      render(<AdditionalInfo defaultExpanded={false} />)
+    test('Скрыт', () => {
+      render(<AdditionalInfo expanded={false} onExpand={onExpand} />)
 
       const additionalInfoContent = queryAdditionalInfoContent()
       expect(additionalInfoContent).not.toBeInTheDocument()
@@ -27,40 +27,13 @@ describe('Блок дополнительной информации', () => {
   })
 
   describe('Если нажать кнопку "Дополнительная информация"', () => {
-    test('Информация отображается', async () => {
-      // @ts-ignore
-      const { user } = render(<AdditionalInfo />)
-
-      await userClickExpandButton(user)
-
-      await waitFor(() => {
-        const additionalInfoContent = getAdditionalInfoContent()
-        expect(additionalInfoContent).toBeInTheDocument()
-      })
-    })
-
-    test('И информация открыта по умолчанию, то она скрывается', async () => {
-      // @ts-ignore
-      const { user } = render(<AdditionalInfo defaultExpanded />)
-
-      await userClickExpandButton(user)
-
-      await waitFor(() => {
-        const additionalInfoContent = queryAdditionalInfoContent()
-        expect(additionalInfoContent).not.toBeInTheDocument()
-      })
+    afterEach(() => {
+      onExpand.mockReset()
     })
 
     test('callback "onExpand" вызывается', async () => {
-      const onExpand = jest.fn()
-      const defaultExpanded = false
-
       const { user } = render(
-        // @ts-ignore
-        <AdditionalInfo
-          onExpand={onExpand}
-          defaultExpanded={defaultExpanded}
-        />,
+        <AdditionalInfo expanded={false} onExpand={onExpand} />,
       )
 
       await userClickExpandButton(user)
@@ -68,18 +41,6 @@ describe('Блок дополнительной информации', () => {
       await waitFor(() => {
         expect(onExpand).toBeCalledTimes(1)
       })
-
-      expect(onExpand).toBeCalledWith(!defaultExpanded)
-    })
-  })
-
-  describe('Если не нажать кнопку "Дополнительная информация"', () => {
-    test('Информация не отображается', () => {
-      // @ts-ignore
-      render(<AdditionalInfo />)
-
-      const additionalInfoContent = queryAdditionalInfoContent()
-      expect(additionalInfoContent).not.toBeInTheDocument()
     })
   })
 })

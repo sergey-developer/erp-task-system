@@ -99,7 +99,7 @@ type TaskDetailsProps = {
   updateWorkGroupIsLoading: boolean
 
   additionalInfoExpanded: boolean
-  onExpandAdditionalInfo: (taskId: number, expanded: boolean) => void
+  onExpandAdditionalInfo: () => void
 
   onClose: () => void
 }
@@ -224,13 +224,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const debouncedOnClose = useDebounceFn(onClose)
 
-  const handleExpandAdditionalInfo = useCallback(
-    (expanded: boolean) => {
-      onExpandAdditionalInfo(details?.id!, expanded)
-    },
-    [details?.id, onExpandAdditionalInfo],
-  )
-
   const cardTitle = !taskIsLoading && details && (
     <CardTitle
       id={details.id}
@@ -295,8 +288,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               productClassifier1={details.productClassifier1}
               productClassifier2={details.productClassifier2}
               productClassifier3={details.productClassifier3}
-              onExpand={handleExpandAdditionalInfo}
-              defaultExpanded={additionalInfoExpanded}
+              expanded={additionalInfoExpanded}
+              onExpand={onExpandAdditionalInfo}
             />
 
             <DividerStyled />
