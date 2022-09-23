@@ -4,11 +4,6 @@ import React, { FC } from 'react'
 import { DownIcon, MapPointIcon, UpIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
-import {
-  taskImpactMap,
-  taskPriorityMap,
-  taskSeverityMap,
-} from 'modules/task/constants/dictionary'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import valueOr from 'shared/utils/common/valueOr'
@@ -17,26 +12,30 @@ import valueOrHyphen from 'shared/utils/common/valueOrHyphen'
 import DetailsWrapper from '../DetailsWrapper'
 import { ContainerStyled } from './styles'
 
-const { Text } = Typography
+const { Text, Link } = Typography
 
-type AdditionalInfoProps = Pick<
+export type AdditionalInfoProps = Pick<
   TaskDetailsModel,
-  | 'initialImpact'
-  | 'severity'
-  | 'priorityCode'
   | 'weight'
   | 'address'
   | 'company'
   | 'email'
   | 'sapId'
   | 'contactType'
-  | 'supportGroup'
   | 'productClassifier1'
   | 'productClassifier2'
   | 'productClassifier3'
+  | 'longitude'
+  | 'latitude'
 > & {
+  impact: string
+  severity: string
+  priority: string
+
   expanded: boolean
   onExpand: () => void
+
+  supportGroup?: string
 }
 
 const AdditionalInfo: FC<AdditionalInfoProps> = ({
@@ -46,13 +45,15 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   company,
   address,
   severity,
-  priorityCode,
+  priority,
+  impact,
   contactType,
   supportGroup,
-  initialImpact,
   productClassifier1,
   productClassifier2,
   productClassifier3,
+  longitude,
+  latitude,
   expanded,
   onExpand,
 }) => {
@@ -126,15 +127,20 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                   <Space align='start'>
                     <MapPointIcon $size='large' />
 
-                    <Text strong={!!address} underline={!!address}>
-                      {valueOr(address, 'Отсутствует')}
-                    </Text>
+                    <Link
+                      href={`https://yandex.ru/maps/?pt=${longitude},${latitude}&z=18&l=map`}
+                      target='_blank'
+                    >
+                      <Text strong={!!address} underline={!!address}>
+                        {valueOr(address, 'Отсутствует')}
+                      </Text>
+                    </Link>
                   </Space>
                 </Col>
               </Row>
 
               <LabeledData label='Наименование группы поддержки Х5'>
-                <Text strong>{valueOrHyphen(supportGroup?.name)}</Text>
+                <Text strong>{valueOrHyphen(supportGroup)}</Text>
               </LabeledData>
 
               <Row align='middle'>
@@ -178,19 +184,19 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                   <Row>
                     <Col span={8}>
                       <LabeledData label='Влияние'>
-                        <Text>{taskImpactMap.get(initialImpact)}</Text>
+                        <Text>{impact}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
                       <LabeledData label='Срочность'>
-                        <Text>{taskSeverityMap.get(severity)}</Text>
+                        <Text>{severity}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
                       <LabeledData label='Приоритет'>
-                        <Text>{taskPriorityMap.get(priorityCode)}</Text>
+                        <Text>{priority}</Text>
                       </LabeledData>
                     </Col>
                   </Row>

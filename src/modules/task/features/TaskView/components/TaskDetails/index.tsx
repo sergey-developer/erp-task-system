@@ -6,6 +6,11 @@ import React, { FC, useCallback } from 'react'
 import Spinner from 'components/Spinner'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import {
+  taskImpactMap,
+  taskPriorityMap,
+  taskSeverityMap,
+} from 'modules/task/constants/dictionary'
+import {
   CreateTaskReclassificationRequestMutationArgsModel,
   ResolveTaskMutationArgsModel,
   TakeTaskMutationArgsModel,
@@ -280,11 +285,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               weight={details.weight}
               address={details.address}
               company={details.company}
-              severity={details.severity}
               contactType={details.contactType}
-              priorityCode={details.priorityCode}
-              supportGroup={details.supportGroup}
-              initialImpact={details.initialImpact}
+              severity={taskSeverityMap.get(details.severity)!}
+              priority={taskPriorityMap.get(details.priorityCode)!}
+              impact={taskImpactMap.get(details.initialImpact)!}
+              supportGroup={details.supportGroup?.name}
               productClassifier1={details.productClassifier1}
               productClassifier2={details.productClassifier2}
               productClassifier3={details.productClassifier3}
