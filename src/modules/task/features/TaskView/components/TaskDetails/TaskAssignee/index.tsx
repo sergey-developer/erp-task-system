@@ -25,11 +25,12 @@ const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
 
 export type TaskAssigneeProps = Pick<
   TaskDetailsModel,
-  'assignee' | 'status' | 'extendedStatus'
+  'status' | 'extendedStatus'
 > & {
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
+  assignee?: TaskDetailsModel['assignee']
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
 
@@ -143,19 +144,19 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
       >
         {({ canView, canEdit }) =>
           canView && !canEdit ? (
-            assignee ? (
-              <Space direction='vertical' size='middle' $block>
+            <Space direction='vertical' size='middle' $block>
+              {assignee ? (
                 <Assignee
                   name={getFullUserName(assignee)}
                   status={status}
                   assignee={assignee}
                 />
+              ) : (
+                <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
+              )}
 
-                <Row justify='end'>{takeTaskButton}</Row>
-              </Space>
-            ) : (
-              <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
-            )
+              <Row justify='end'>{takeTaskButton}</Row>
+            </Space>
           ) : canView && canEdit && canSelectAssignee ? (
             <Space direction='vertical' size='middle' $block>
               <SelectStyled

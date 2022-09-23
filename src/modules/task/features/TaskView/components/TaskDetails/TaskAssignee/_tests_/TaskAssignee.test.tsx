@@ -35,10 +35,9 @@ describe('Блок "Исполнитель заявки"', () => {
     const propsForUserCanSelectAssignee: typeof baseProps &
       Pick<
         TaskAssigneeProps,
-        'assignee' | 'status' | 'hasReclassificationRequest' | 'workGroup'
+        'status' | 'hasReclassificationRequest' | 'workGroup'
       > = {
       ...baseProps,
-      assignee: null,
       workGroup: getWorkGroup(),
       status: TaskStatusEnum.New,
       hasReclassificationRequest: false,
@@ -52,36 +51,28 @@ describe('Блок "Исполнитель заявки"', () => {
     }
 
     describe('Отображается для пользователя с ролью', () => {
-      test(`${UserRolesEnum.FirstLineSupport} если у заявки есть исполнитель`, () => {
+      test(`${UserRolesEnum.FirstLineSupport}`, () => {
         const store = getStoreWithAuth({
           userId: generateId(),
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        render(
-          <TaskAssignee
-            {...propsForUserCanNotSelectAssignee}
-            assignee={getTaskAssignee()}
-          />,
-          { store },
-        )
+        render(<TaskAssignee {...propsForUserCanNotSelectAssignee} />, {
+          store,
+        })
 
         expect(getTakeTaskButton()).toBeInTheDocument()
       })
 
-      test(`${UserRolesEnum.Engineer} если у заявки есть исполнитель`, () => {
+      test(`${UserRolesEnum.Engineer}`, () => {
         const store = getStoreWithAuth({
           userId: generateId(),
           userRole: UserRolesEnum.Engineer,
         })
 
-        render(
-          <TaskAssignee
-            {...propsForUserCanNotSelectAssignee}
-            assignee={getTaskAssignee()}
-          />,
-          { store },
-        )
+        render(<TaskAssignee {...propsForUserCanNotSelectAssignee} />, {
+          store,
+        })
 
         expect(getTakeTaskButton()).toBeInTheDocument()
       })
@@ -120,40 +111,6 @@ describe('Блок "Исполнитель заявки"', () => {
     })
 
     describe('Не отображается для пользователя с ролью', () => {
-      test(`${UserRolesEnum.FirstLineSupport} если у заявки нет исполнителя`, () => {
-        const store = getStoreWithAuth({
-          userId: generateId(),
-          userRole: UserRolesEnum.FirstLineSupport,
-        })
-
-        render(
-          <TaskAssignee
-            {...propsForUserCanNotSelectAssignee}
-            assignee={null}
-          />,
-          { store },
-        )
-
-        expect(queryTakeTaskButton()).not.toBeInTheDocument()
-      })
-
-      test(`${UserRolesEnum.Engineer} если у заявки нет исполнителя`, () => {
-        const store = getStoreWithAuth({
-          userId: generateId(),
-          userRole: UserRolesEnum.Engineer,
-        })
-
-        render(
-          <TaskAssignee
-            {...propsForUserCanNotSelectAssignee}
-            assignee={null}
-          />,
-          { store },
-        )
-
-        expect(queryTakeTaskButton()).not.toBeInTheDocument()
-      })
-
       describe('С которой можно выбирать исполнителя', () => {
         describe('Если заявка в статусе', () => {
           test(`${TaskStatusEnum.Closed}`, () => {
@@ -212,10 +169,27 @@ describe('Блок "Исполнитель заявки"', () => {
           expect(queryTakeTaskButton()).not.toBeInTheDocument()
         })
 
-        test('Если старший инженер или начальник отдела из рабочий группы не является авторизованным пользователем', () => {
+        test('Если старший инженер из рабочий группы не является авторизованным пользователем', () => {
           const store = getStoreWithAuth({
             userId: generateId(),
             userRole: UserRolesEnum.SeniorEngineer,
+          })
+
+          render(
+            <TaskAssignee
+              {...propsForUserCanSelectAssignee}
+              workGroup={getWorkGroup()}
+            />,
+            { store },
+          )
+
+          expect(queryTakeTaskButton()).not.toBeInTheDocument()
+        })
+
+        test('Если начальник отдела из рабочий группы не является авторизованным пользователем', () => {
+          const store = getStoreWithAuth({
+            userId: generateId(),
+            userRole: UserRolesEnum.HeadOfDepartment,
           })
 
           render(
