@@ -1,18 +1,15 @@
 import { SpinProps } from 'antd'
 import React, { FC } from 'react'
 
-import { SpinnerArea, SpinnerStyled } from './styles'
+import { SpinnerStyled } from './styles'
 
-type SpinnerProps = SpinProps & {
-  area?: SpinnerArea
+export type SpinnerProps = SpinProps & {
+  area?: 'block' | 'parent'
+  offsetTop?: number
 }
 
-const Spinner: FC<SpinnerProps> = ({ area, ...props }) => {
-  return <SpinnerStyled $area={area!} {...props} />
-}
-
-Spinner.defaultProps = {
-  area: 'self',
+const Spinner: FC<SpinnerProps> = ({ area, offsetTop, ...props }) => {
+  return <SpinnerStyled $area={area} $offsetTop={offsetTop} {...props} />
 }
 
 export default Spinner

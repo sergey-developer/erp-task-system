@@ -10,6 +10,7 @@ import {
 describe('Блок дополнительной информации', () => {
   describe('Информация может быть по умолчанию', () => {
     test('Открыта', () => {
+      // @ts-ignore
       render(<AdditionalInfo defaultExpanded />)
 
       const additionalInfoContent = getAdditionalInfoContent()
@@ -17,6 +18,7 @@ describe('Блок дополнительной информации', () => {
     })
 
     test('Скрыта', () => {
+      // @ts-ignore
       render(<AdditionalInfo defaultExpanded={false} />)
 
       const additionalInfoContent = queryAdditionalInfoContent()
@@ -26,6 +28,7 @@ describe('Блок дополнительной информации', () => {
 
   describe('Если нажать кнопку "Дополнительная информация"', () => {
     test('Информация отображается', async () => {
+      // @ts-ignore
       const { user } = render(<AdditionalInfo />)
 
       await userClickExpandButton(user)
@@ -37,6 +40,7 @@ describe('Блок дополнительной информации', () => {
     })
 
     test('И информация открыта по умолчанию, то она скрывается', async () => {
+      // @ts-ignore
       const { user } = render(<AdditionalInfo defaultExpanded />)
 
       await userClickExpandButton(user)
@@ -52,6 +56,7 @@ describe('Блок дополнительной информации', () => {
       const defaultExpanded = false
 
       const { user } = render(
+        // @ts-ignore
         <AdditionalInfo
           onExpand={onExpand}
           defaultExpanded={defaultExpanded}
@@ -70,6 +75,7 @@ describe('Блок дополнительной информации', () => {
 
   describe('Если не нажать кнопку "Дополнительная информация"', () => {
     test('Информация не отображается', () => {
+      // @ts-ignore
       render(<AdditionalInfo />)
 
       const additionalInfoContent = queryAdditionalInfoContent()

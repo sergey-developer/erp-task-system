@@ -5,6 +5,7 @@ import React, { FC } from 'react'
 import { DownIcon, MapPointIcon, UpIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
+import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 
 import DetailsWrapper from '../DetailsWrapper'
@@ -12,12 +13,40 @@ import { ContainerStyled } from './styles'
 
 const { Text } = Typography
 
-type AdditionalInfoProps = {
+type AdditionalInfoProps = Pick<
+  TaskDetailsModel,
+  | 'initialImpact'
+  | 'severity'
+  | 'priorityCode'
+  | 'weight'
+  | 'address'
+  | 'company'
+  | 'email'
+  | 'sapId'
+  | 'contactType'
+  | 'supportGroup'
+  | 'productClassifier1'
+  | 'productClassifier2'
+  | 'productClassifier3'
+> & {
   onExpand?: (expanded: boolean) => void
   defaultExpanded?: boolean
 }
 
 const AdditionalInfo: FC<AdditionalInfoProps> = ({
+  email,
+  sapId,
+  weight,
+  company,
+  address,
+  severity,
+  priorityCode,
+  contactType,
+  supportGroup,
+  initialImpact,
+  productClassifier1,
+  productClassifier2,
+  productClassifier3,
   onExpand,
   defaultExpanded,
 }) => {
@@ -47,35 +76,43 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
             bgColor='lotion'
           >
             <Space direction='vertical' size={30} $block>
-              <Row justify='space-between'>
-                <Space size={37}>
-                  <Space direction='vertical'>
-                    <Text type='secondary'>Компания</Text>
-                    <Text type='secondary'>Формат магазина</Text>
-                    <Text type='secondary'>SAP ID</Text>
-                    <Text type='secondary'>Email</Text>
+              <Row justify='space-between' wrap={false}>
+                {(company || contactType || sapId || true) && (
+                  <Space size={37}>
+                    <Space direction='vertical'>
+                      {true && <Text type='secondary'>Компания</Text>}
+
+                      {true && <Text type='secondary'>Формат магазина</Text>}
+
+                      {true && <Text type='secondary'>SAP ID</Text>}
+                      {true && <Text type='secondary'>Email</Text>}
+                    </Space>
+
+                    <Space direction='vertical'>
+                      {true && <Text strong>ТС5</Text>}
+                      {true && <Text strong>discounter</Text>}
+                      {true && <Text strong>5015</Text>}
+                      {true && <Text strong>SV-828-dir@x5.ru</Text>}
+                    </Space>
                   </Space>
+                )}
 
-                  <Space direction='vertical'>
-                    <Text strong>ТС5</Text>
-                    <Text strong>discounter</Text>
-                    <Text strong>5015</Text>
-                    <Text strong>SV-828-dir@x5.ru</Text>
+                {true && (
+                  <Space align='start'>
+                    <MapPointIcon $size='large' />
+
+                    <Text strong underline>
+                      Камчатский край, г. Петропавловск-Камчатский
+                    </Text>
                   </Space>
-                </Space>
-
-                <Space align='start'>
-                  <MapPointIcon $size='large' />
-
-                  <Text strong underline>
-                    Камчатский край, г. Петропавловск-Камчатский
-                  </Text>
-                </Space>
+                )}
               </Row>
 
-              <LabeledData label='Наименование группы поддержки Х5'>
-                <Text strong>Группа БД</Text>
-              </LabeledData>
+              {supportGroup && (
+                <LabeledData label='Наименование группы поддержки Х5'>
+                  <Text strong>{supportGroup.name}</Text>
+                </LabeledData>
+              )}
 
               <Row align='middle'>
                 <Col span={6}>
