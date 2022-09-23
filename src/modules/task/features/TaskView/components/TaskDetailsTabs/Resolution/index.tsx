@@ -43,7 +43,7 @@ const Resolution: FC<ResolutionProps> = ({
         </LabeledData>
       )}
 
-      {!techResolution && !userResolution && '—'}
+      {!techResolution && !userResolution && '-'}
     </Space>
   )
 }

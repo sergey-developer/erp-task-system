@@ -7,6 +7,8 @@ import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
+import valueOr from 'shared/utils/common/valueOr'
+import valueOrHyphen from 'shared/utils/common/valueOrHyphen'
 
 import DetailsWrapper from '../DetailsWrapper'
 import { ContainerStyled } from './styles'
@@ -76,43 +78,67 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
             bgColor='lotion'
           >
             <Space direction='vertical' size={30} $block>
-              <Row justify='space-between' wrap={false}>
-                {(company || contactType || sapId || true) && (
-                  <Space size={37}>
-                    <Space direction='vertical'>
-                      {true && <Text type='secondary'>Компания</Text>}
+              <Row gutter={60}>
+                <Col span={12}>
+                  <Space direction='vertical' $block>
+                    <Row>
+                      <Col span={12}>
+                        <Text type='secondary'>Компания</Text>
+                      </Col>
 
-                      {true && <Text type='secondary'>Формат магазина</Text>}
+                      <Col span={12}>
+                        <Text strong>{valueOrHyphen(company)}</Text>
+                      </Col>
+                    </Row>
 
-                      {true && <Text type='secondary'>SAP ID</Text>}
-                      {true && <Text type='secondary'>Email</Text>}
-                    </Space>
+                    <Row>
+                      <Col span={12}>
+                        <Text type='secondary'>Формат магазина</Text>
+                      </Col>
 
-                    <Space direction='vertical'>
-                      {true && <Text strong>ТС5</Text>}
-                      {true && <Text strong>discounter</Text>}
-                      {true && <Text strong>5015</Text>}
-                      {true && <Text strong>SV-828-dir@x5.ru</Text>}
-                    </Space>
+                      <Col span={12}>
+                        <Text strong>{valueOrHyphen(contactType)}</Text>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col span={12}>
+                        <Text type='secondary'>SAP ID</Text>
+                      </Col>
+
+                      <Col span={12}>
+                        <Text strong>{valueOrHyphen(sapId)}</Text>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col span={12}>
+                        <Text type='secondary'>Email</Text>
+                      </Col>
+
+                      <Col span={12}>
+                        <Text strong>{valueOrHyphen(email)}</Text>
+                      </Col>
+                    </Row>
                   </Space>
-                )}
+                </Col>
 
-                {true && (
+                <Col span={12}>
                   <Space align='start'>
                     <MapPointIcon $size='large' />
 
-                    <Text strong underline>
-                      Камчатский край, г. Петропавловск-Камчатский
+                    <Text strong={!!address} underline={!!address}>
+                      {valueOr(address, 'Отсутствует')}
                     </Text>
                   </Space>
-                )}
+                </Col>
               </Row>
 
-              {supportGroup && (
-                <LabeledData label='Наименование группы поддержки Х5'>
-                  <Text strong>{supportGroup.name}</Text>
-                </LabeledData>
-              )}
+              <LabeledData label='Наименование группы поддержки Х5'>
+                <Text strong={!!supportGroup?.name}>
+                  {valueOrHyphen(supportGroup?.name)}
+                </Text>
+              </LabeledData>
 
               <Row align='middle'>
                 <Col span={6}>
