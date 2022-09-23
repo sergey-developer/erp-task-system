@@ -143,19 +143,19 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
       >
         {({ canView, canEdit }) =>
           canView && !canEdit ? (
-            assignee ? (
-              <Space direction='vertical' size='middle' $block>
+            <Space direction='vertical' size='middle' $block>
+              {assignee ? (
                 <Assignee
                   name={getFullUserName(assignee)}
                   status={status}
                   assignee={assignee}
                 />
+              ) : (
+                <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
+              )}
 
-                <Row justify='end'>{takeTaskButton}</Row>
-              </Space>
-            ) : (
-              <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
-            )
+              <Row justify='end'>{takeTaskButton}</Row>
+            </Space>
           ) : canView && canEdit && canSelectAssignee ? (
             <Space direction='vertical' size='middle' $block>
               <SelectStyled
