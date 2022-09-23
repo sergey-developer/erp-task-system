@@ -1,4 +1,4 @@
-import { useBoolean, usePrevious, useSet } from 'ahooks'
+import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, Row, Space, TableProps } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
@@ -75,12 +75,9 @@ const TaskListPage: FC = () => {
     useState<MaybeNull<TaskTableListItem['id']>>(null)
 
   const [
-    tasksAdditionalInfoExpanded,
-    {
-      add: addTaskAdditionalInfoExpanded,
-      remove: removeTaskAdditionalInfoExpanded,
-    },
-  ] = useSet<TaskTableListItem['id']>()
+    taskAdditionalInfoExpanded,
+    { toggle: toggleTaskAdditionalInfoExpanded },
+  ] = useBoolean(false)
 
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
@@ -223,15 +220,6 @@ const TaskListPage: FC = () => {
     refetchTaskCounters()
   })
 
-  const onExpandAdditionalInfo = useCallback(
-    (taskId: number, expanded: boolean) => {
-      expanded
-        ? addTaskAdditionalInfoExpanded(taskId)
-        : removeTaskAdditionalInfoExpanded(taskId)
-    },
-    [addTaskAdditionalInfoExpanded, removeTaskAdditionalInfoExpanded],
-  )
-
   const searchFilterApplied: boolean = isEqual(
     appliedFilterType,
     FilterTypeEnum.Search,
@@ -316,10 +304,8 @@ const TaskListPage: FC = () => {
               <Col span={breakpoints.xxl ? 9 : 12}>
                 <TaskDetails
                   taskId={selectedTask}
-                  additionalInfoExpanded={tasksAdditionalInfoExpanded.has(
-                    selectedTask,
-                  )}
-                  onExpandAdditionalInfo={onExpandAdditionalInfo}
+                  additionalInfoExpanded={taskAdditionalInfoExpanded}
+                  onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
                   onClose={handleCloseTaskDetails}
                 />
               </Col>

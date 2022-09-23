@@ -1,4 +1,3 @@
-import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
@@ -13,26 +12,18 @@ import { ContainerStyled } from './styles'
 const { Text } = Typography
 
 type AdditionalInfoProps = {
-  onExpand?: (expanded: boolean) => void
-  defaultExpanded?: boolean
+  expanded: boolean
+  onExpand: () => void
 }
 
-const AdditionalInfo: FC<AdditionalInfoProps> = ({
-  onExpand,
-  defaultExpanded,
-}) => {
-  const [expanded, { toggle: toggleExpand }] = useBoolean(defaultExpanded)
-
-  const handleExpand = useDebounceFn(() => {
-    toggleExpand()
-    onExpand && onExpand(!expanded)
-  }, [onExpand])
+const AdditionalInfo: FC<AdditionalInfoProps> = ({ expanded, onExpand }) => {
+  const handleExpand = useDebounceFn(onExpand)
 
   return (
     <ContainerStyled $hasMarginBottom={!expanded}>
       <Space direction='vertical' size='middle' $block>
         <DetailsWrapper disablePadding='vertical'>
-          <Button data-testid='btn-expand' type='text' onClick={handleExpand}>
+          <Button type='text' onClick={handleExpand}>
             <Text type='secondary' underline>
               Дополнительная информация
             </Text>
@@ -142,10 +133,6 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
       </Space>
     </ContainerStyled>
   )
-}
-
-AdditionalInfo.defaultProps = {
-  defaultExpanded: false,
 }
 
 export default AdditionalInfo
