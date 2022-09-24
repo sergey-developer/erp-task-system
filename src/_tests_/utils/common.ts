@@ -1,28 +1,22 @@
-import { screen, waitFor } from '_tests_/utils'
 import getRandomInt from 'shared/utils/common/getRandomInt'
 
+const names1 = ['Blue', 'Green', 'Red', 'Orange', 'Violet', 'Indigo', 'Yellow']
+const names2 = [
+  'One',
+  'Two',
+  'Three',
+  'Four',
+  'Five',
+  'Six',
+  'Seven',
+  'Eight',
+  'Nine',
+  'Zero',
+]
+
+export const generateName = () =>
+  names1[Math.floor(Math.random() * names1.length)] +
+  ' ' +
+  names2[Math.floor(Math.random() * names2.length)]
+
 export const generateId = getRandomInt
-
-const btnLoadingClass = 'ant-btn-loading'
-
-export const waitStartLoadingByButton = async (button: HTMLElement) => {
-  await waitFor(() => {
-    expect(button).toHaveClass(btnLoadingClass)
-  })
-}
-
-export const waitFinishLoadingByButton = async (button: HTMLElement) => {
-  await waitFor(() => {
-    expect(button).not.toHaveClass(btnLoadingClass)
-  })
-}
-
-export const waitStartLoadingBySpinner = (testId: string) => async () => {
-  expect(await screen.findByTestId(testId)).toBeInTheDocument()
-}
-
-export const waitFinishLoadingBySpinner = (testId: string) => async () => {
-  await waitFor(() => {
-    expect(screen.queryByTestId(testId)).not.toBeInTheDocument()
-  })
-}

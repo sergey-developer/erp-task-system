@@ -1,14 +1,10 @@
 import { SorterResult } from 'antd/es/table/interface'
 
 import { SortEnum } from 'modules/task/features/TaskList/constants/enums'
-import { Keys } from 'shared/interfaces/utils'
 
 import { TaskTableListItem } from '../TaskTable/interfaces'
-import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
 
 export const DEFAULT_PAGE_SIZE = 15
-
-export const DEFAULT_SEARCH_FIELD: Keys<SearchQueries> = 'searchByTitle'
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 
@@ -54,12 +50,4 @@ export const SMART_SORT_DIRECTIONS_TO_SORT_FIELDS: Record<
     columnKey: SortedFieldsEnum.createdAt,
     order: SortDirectionsEnum.ascend,
   },
-}
-
-export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
-  olaNextBreachTimeRange: null,
-  searchField: DEFAULT_SEARCH_FIELD,
-  searchValue: '',
-  status: [],
-  workGroupId: undefined,
 }

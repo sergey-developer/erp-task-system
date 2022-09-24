@@ -1,5 +1,8 @@
+import {
+  ExtendedFilterFormFields,
+  ExtendedFilterQueries,
+} from '../ExtendedFilter/interfaces'
 import { DATE_FILTER_FORMAT } from './constants'
-import { ExtendedFilterFormFields, ExtendedFilterQueries } from './interfaces'
 
 /**
  * Преобразует объект с полями формы расширенной фильтрации в объект с

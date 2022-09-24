@@ -10,11 +10,21 @@ import {
 import TaskStatus from 'modules/task/features/TaskStatus'
 import { Keys, StringMap } from 'shared/interfaces/utils'
 
-import { SearchQueries } from '../TaskListPage/interfaces'
+import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
 
-export const searchQueriesDictionary: StringMap<Keys<SearchQueries>> = {
-  searchByTitle: THEME_WORD,
+export const DEFAULT_SEARCH_FIELD: Keys<SearchQueries> = 'searchByTitle'
+
+export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
+  olaNextBreachTimeRange: null,
+  searchField: DEFAULT_SEARCH_FIELD,
+  searchValue: '',
+  status: [],
+  workGroupId: undefined,
+}
+
+export const searchQueriesDict: StringMap<Keys<SearchQueries>> = {
   searchByName: OBJECT_WORD,
+  searchByTitle: THEME_WORD,
   searchByAssignee: ASSIGNEE_WORD,
 }
 

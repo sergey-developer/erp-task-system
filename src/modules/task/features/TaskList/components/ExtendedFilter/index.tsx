@@ -19,19 +19,19 @@ import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/
 import { Keys } from 'shared/interfaces/utils'
 import { isEqualDeep } from 'shared/utils/common/isEqual'
 
-import { ExtendedFilterFormFields } from '../TaskListPage/interfaces'
-import { checkboxStatusOptions, searchQueriesDictionary } from './constants'
+import { checkboxStatusOptions, searchQueriesDict } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
+import { ExtendedFilterFormFields } from './interfaces'
 import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
 
-export type FilterDrawerProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
+export type ExtendedFilterProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
   form: FormInstance<ExtendedFilterFormFields>
   initialFormValues: ExtendedFilterFormFields
   onSubmit: (result: ExtendedFilterFormFields) => void
 }
 
-const FilterDrawer: FC<FilterDrawerProps> = ({
+const ExtendedFilter: FC<ExtendedFilterProps> = ({
   form,
   initialFormValues,
   onClose,
@@ -39,6 +39,9 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
   visible,
 }) => {
   const breakpoints = useBreakpoint()
+
+  const { data: workGroupList, isFetching: workGroupListIsFetching } =
+    useGetWorkGroupList()
 
   const statusValue = Form.useWatch('status', form)
   const olaNextBreachTimeRangeValue = Form.useWatch(
@@ -59,15 +62,13 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
 
   const valuesNotChanged = isEqualDeep(initialFormValues, formValues)
 
-  const { data: workGroupList, isFetching: workGroupListIsFetching } =
-    useGetWorkGroupList()
-
   const resetFields = (fields?: Keys<ExtendedFilterFormFields>[]) => () => {
     form.resetFields(fields)
   }
 
   return (
     <DrawerStyled
+      data-testid='filter-extended'
       $breakpoints={breakpoints}
       footer={
         <Row justify='end'>
@@ -98,7 +99,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
         initialValues={initialFormValues}
         onFinish={onSubmit}
       >
-        <FilterBlock withDivider>
+        <FilterBlock withDivider data-testid='filter-extended-status'>
           <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
 
           <Form.Item name='status'>
@@ -106,7 +107,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock withDivider>
+        <FilterBlock withDivider data-testid='filter-extended-execution-period'>
           <FilterBlockLabel
             label='Период выполнения'
             onReset={resetFields(['olaNextBreachTimeRange'])}
@@ -119,7 +120,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
 
         <Permissions config={extendedFilterPermissions.workGroup}>
           {() => (
-            <FilterBlock withDivider>
+            <FilterBlock withDivider data-testid='filter-extended-work-group'>
               <FilterBlockLabel
                 label='Рабочая группа'
                 onReset={resetFields(['workGroupId'])}
@@ -127,6 +128,8 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
 
               <Form.Item name='workGroupId'>
                 <Select
+                  data-testid='filter-extended-work-group-select'
+                  virtual={false}
                   disabled={workGroupListIsFetching}
                   fieldNames={workGroupListSelectFieldNames}
                   loading={workGroupListIsFetching}
@@ -144,7 +147,10 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
           )}
         </Permissions>
 
-        <FilterBlock withDivider={false}>
+        <FilterBlock
+          withDivider={false}
+          data-testid='filter-extended-search-by-column'
+        >
           <FilterBlockLabel
             label='Поиск по столбцу'
             onReset={resetFields(['searchField', 'searchValue'])}
@@ -153,13 +159,11 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
           <Space direction='vertical' size='middle'>
             <Form.Item name='searchField'>
               <Radio.Group>
-                {Object.entries(searchQueriesDictionary).map(
-                  ([name, label]) => (
-                    <Radio key={name} value={name}>
-                      {label}
-                    </Radio>
-                  ),
-                )}
+                {Object.entries(searchQueriesDict).map(([name, label]) => (
+                  <Radio key={name} value={name}>
+                    {label}
+                  </Radio>
+                ))}
               </Radio.Group>
             </Form.Item>
 
@@ -173,4 +177,4 @@ const FilterDrawer: FC<FilterDrawerProps> = ({
   )
 }
 
-export default FilterDrawer
+export default ExtendedFilter
