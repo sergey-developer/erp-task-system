@@ -1,19 +1,21 @@
 import { render, waitFor } from '_tests_/utils'
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import { Keys } from 'shared/interfaces/utils'
 
 import AdditionalInfo, { AdditionalInfoProps } from '../index'
 import {
   getAdditionalInfoContent,
+  getAddress,
+  getAddressIcon,
   queryAdditionalInfoContent,
   userClickExpandButton,
 } from './utils'
 
-const onExpand = jest.fn()
-
-const baseProps: Pick<AdditionalInfoProps, 'expanded' | 'onExpand'> = {
+const baseProps: Pick<AdditionalInfoProps, 'expanded'> & {
+  onExpand: jest.MockedFn<AdditionalInfoProps['onExpand']>
+} = {
   expanded: false,
-  onExpand,
+  onExpand: jest.fn(),
 }
 
 const requiredProps: Pick<
@@ -33,10 +35,10 @@ const requiredProps: Pick<
   productClassifier3: 'productClassifier3',
 }
 
-const getNotRequiredProps = (): Omit<
+const notRequiredProps: Omit<
   AdditionalInfoProps,
   Keys<typeof baseProps> | Keys<typeof requiredProps>
-> => ({
+> = {
   email: 'email',
   sapId: 'sapId',
   weight: 1,
@@ -44,7 +46,7 @@ const getNotRequiredProps = (): Omit<
   address: 'address',
   contactType: 'contactType',
   supportGroup: 'supportGroup',
-})
+}
 
 describe('Блок дополнительной информации', () => {
   describe('Может быть по умолчанию', () => {
@@ -65,7 +67,7 @@ describe('Блок дополнительной информации', () => {
 
   describe('Если нажать кнопку "Дополнительная информация"', () => {
     afterEach(() => {
-      onExpand.mockReset()
+      baseProps.onExpand.mockReset()
     })
 
     test('callback "onExpand" вызывается', async () => {
@@ -76,7 +78,7 @@ describe('Блок дополнительной информации', () => {
       await userClickExpandButton(user)
 
       await waitFor(() => {
-        expect(onExpand).toBeCalledTimes(1)
+        expect(baseProps.onExpand).toBeCalledTimes(1)
       })
     })
   })
@@ -90,9 +92,7 @@ describe('Блок дополнительной информации', () => {
   })
 
   describe('Не обязательные поля', () => {
-    test('Отображаются если их передать', () => {
-      const notRequiredProps = getNotRequiredProps()
-
+    test('Отображаются если они присутствуют', () => {
       render(
         <AdditionalInfo
           {...baseProps}
@@ -102,18 +102,76 @@ describe('Блок дополнительной информации', () => {
         />,
       )
 
-      Object.values(notRequiredProps).forEach((prop) => {
-        expect(screen.getByText(prop)).toBeInTheDocument()
+      Object.values(notRequiredProps).forEach((propValue) => {
+        expect(screen.getByText(propValue)).toBeInTheDocument()
       })
     })
 
-    test('Если не передать поле "Адрес", вместо него отображается текст "Отсутствует"', () => {
-      const notRequiredProps = getNotRequiredProps()
-      delete notRequiredProps.address
+    describe('Поле "Адрес"', () => {
+      describe('Если присутствует', () => {
+        test('Является корректной ссылкой', () => {
+          render(
+            <AdditionalInfo
+              {...baseProps}
+              {...requiredProps}
+              expanded
+              address={notRequiredProps.address}
+            />,
+          )
 
-      render(<AdditionalInfo {...baseProps} {...requiredProps} expanded />)
+          const address = getAddress()
 
-      expect(screen.getByText('Отсутствует')).toBeInTheDocument()
+          const link = within(address).getByRole('link', {
+            name: notRequiredProps.address,
+          })
+
+          expect(link).toBeInTheDocument()
+          expect(link).toHaveAttribute('href')
+          expect(link).toHaveAttribute('target', '_blank')
+        })
+
+        test('Иконка отображается', () => {
+          render(
+            <AdditionalInfo
+              {...baseProps}
+              {...requiredProps}
+              expanded
+              address={notRequiredProps.address}
+            />,
+          )
+
+          const icon = getAddressIcon(getAddress())
+          expect(icon).toBeInTheDocument()
+        })
+      })
+
+      describe('Если отсутствует', () => {
+        test('Вместо него отображается текст "Отсутствует"', () => {
+          render(<AdditionalInfo {...baseProps} {...requiredProps} expanded />)
+
+          const address = getAddress()
+          expect(within(address).getByText('Отсутствует')).toBeInTheDocument()
+        })
+
+        test('Не является ссылкой', () => {
+          render(<AdditionalInfo {...baseProps} {...requiredProps} expanded />)
+
+          const address = getAddress()
+
+          const link = within(address).queryByRole('link', {
+            name: 'Отсутствует',
+          })
+
+          expect(link).not.toBeInTheDocument()
+        })
+
+        test('Иконка отображается', () => {
+          render(<AdditionalInfo {...baseProps} {...requiredProps} expanded />)
+
+          const icon = getAddressIcon(getAddress())
+          expect(icon).toBeInTheDocument()
+        })
+      })
     })
   })
 })

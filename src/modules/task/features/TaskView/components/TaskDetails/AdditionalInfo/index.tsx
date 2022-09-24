@@ -11,6 +11,7 @@ import valueOrHyphen from 'shared/utils/common/valueOrHyphen'
 
 import DetailsWrapper from '../DetailsWrapper'
 import { ContainerStyled } from './styles'
+import { makeYandexMapLink } from './utils'
 
 const { Text, Link } = Typography
 
@@ -124,11 +125,15 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
 
                 <Col span={12}>
-                  <Space align='start'>
+                  <Space align='start' data-testid='additional-info-address'>
                     <MapPointIcon $size='large' />
 
                     <Link
-                      href={`https://yandex.ru/maps/?pt=${longitude},${latitude}&z=18&l=map`}
+                      href={
+                        !!address
+                          ? makeYandexMapLink({ longitude, latitude })
+                          : undefined
+                      }
                       target='_blank'
                     >
                       <Text strong={!!address} underline={!!address}>
