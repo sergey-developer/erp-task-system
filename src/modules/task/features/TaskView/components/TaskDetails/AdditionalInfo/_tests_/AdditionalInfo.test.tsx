@@ -1,8 +1,8 @@
 import { render, waitFor } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
-import { Keys } from 'shared/interfaces/utils'
 
-import AdditionalInfo, { AdditionalInfoProps } from '../index'
+import AdditionalInfo from '../index'
+import { baseProps, notRequiredProps, requiredProps } from './constants'
 import {
   getAdditionalInfoContent,
   getAddress,
@@ -10,43 +10,6 @@ import {
   queryAdditionalInfoContent,
   userClickExpandButton,
 } from './utils'
-
-const baseProps: Pick<AdditionalInfoProps, 'expanded'> & {
-  onExpand: jest.MockedFn<AdditionalInfoProps['onExpand']>
-} = {
-  expanded: false,
-  onExpand: jest.fn(),
-}
-
-const requiredProps: Pick<
-  AdditionalInfoProps,
-  | 'priority'
-  | 'severity'
-  | 'impact'
-  | 'productClassifier1'
-  | 'productClassifier2'
-  | 'productClassifier3'
-> = {
-  severity: 'severity',
-  priority: 'priority',
-  impact: 'impact',
-  productClassifier1: 'productClassifier1',
-  productClassifier2: 'productClassifier2',
-  productClassifier3: 'productClassifier3',
-}
-
-const notRequiredProps: Omit<
-  AdditionalInfoProps,
-  Keys<typeof baseProps> | Keys<typeof requiredProps>
-> = {
-  email: 'email',
-  sapId: 'sapId',
-  weight: 1,
-  company: 'company',
-  address: 'address',
-  contactType: 'contactType',
-  supportGroup: 'supportGroup',
-}
 
 describe('Блок дополнительной информации', () => {
   describe('Может быть по умолчанию', () => {
