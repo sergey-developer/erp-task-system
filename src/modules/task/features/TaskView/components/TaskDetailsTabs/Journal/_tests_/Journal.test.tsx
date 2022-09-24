@@ -26,7 +26,7 @@ import {
 
 setupApiTests()
 
-describe('Журнал задачи', () => {
+describe('Страница отображения журнала', () => {
   describe('При успешном запросе журнала', () => {
     describe('Если есть записи', () => {
       describe('Отображает', () => {
@@ -136,7 +136,7 @@ describe('Журнал задачи', () => {
           expect(makeDownloadLinkSpy).not.toBeCalled()
           expect(clickDownloadLinkSpy).not.toBeCalled()
 
-          const notification = await screen.findByText(UNKNOWN_ERROR_MSG)
+          const notification = screen.getByText(UNKNOWN_ERROR_MSG)
           expect(notification).toBeInTheDocument()
         })
       })
@@ -196,8 +196,7 @@ describe('Журнал задачи', () => {
         await waitStartLoadingJournal()
         await waitFinishLoadingJournal()
 
-        const notification = await screen.findByText(UNKNOWN_ERROR_MSG)
-        expect(notification).toBeInTheDocument()
+        expect(await screen.findByText(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
       })
 
       test(`Текст "${NO_DATA_MSG}"`, async () => {
