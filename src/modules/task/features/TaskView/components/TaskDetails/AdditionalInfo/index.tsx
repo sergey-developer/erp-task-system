@@ -26,8 +26,8 @@ export type AdditionalInfoProps = Pick<
   | 'productClassifier1'
   | 'productClassifier2'
   | 'productClassifier3'
-  | 'longitude'
   | 'latitude'
+  | 'longitude'
 > & {
   impact: string
   severity: string
@@ -53,8 +53,8 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   productClassifier1,
   productClassifier2,
   productClassifier3,
-  longitude,
   latitude,
+  longitude,
   expanded,
   onExpand,
 }) => {

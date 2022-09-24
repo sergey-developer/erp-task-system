@@ -78,6 +78,8 @@ type TaskDetailsProps = {
       | 'productClassifier1'
       | 'productClassifier2'
       | 'productClassifier3'
+      | 'latitude'
+      | 'longitude'
     >
   >
 
@@ -293,6 +295,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               productClassifier1={details.productClassifier1}
               productClassifier2={details.productClassifier2}
               productClassifier3={details.productClassifier3}
+              latitude={details.latitude}
+              longitude={details.longitude}
               expanded={additionalInfoExpanded}
               onExpand={onExpandAdditionalInfo}
             />
