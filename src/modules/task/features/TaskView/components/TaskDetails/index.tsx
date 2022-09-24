@@ -253,7 +253,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         $breakpoints={breakpoints}
       >
         {hasReclassificationRequest && (
-          <React.Suspense fallback={<Spinner area='block' offsetTop={10} />}>
+          <React.Suspense
+            fallback={<Spinner area='block' offset={['top', 10]} />}
+          >
             <TaskRequestStatus
               title='Запрошена переклассификация:'
               comment={reclassificationRequest!.comment.text}

@@ -5,11 +5,11 @@ import { SpinnerStyled } from './styles'
 
 export type SpinnerProps = SpinProps & {
   area?: 'block' | 'parent'
-  offsetTop?: number
+  offset?: ['top', number]
 }
 
-const Spinner: FC<SpinnerProps> = ({ area, offsetTop, ...props }) => {
-  return <SpinnerStyled $area={area} $offsetTop={offsetTop} {...props} />
+const Spinner: FC<SpinnerProps> = ({ area, offset, ...props }) => {
+  return <SpinnerStyled $area={area} $offset={offset} {...props} />
 }
 
 export default Spinner

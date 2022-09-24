@@ -23,8 +23,14 @@ const areaStyles: Record<
 
 export const SpinnerStyled = styled(Spin)<{
   $area?: SpinnerProps['area']
-  $offsetTop?: SpinnerProps['offsetTop']
+  $offset?: SpinnerProps['offset']
 }>`
   ${({ $area }) => ($area ? areaStyles[$area] : '')}
-  ${({ $offsetTop }) => ($offsetTop ? `margin-top: ${$offsetTop}px` : '')}
+
+  ${({ $offset }) => {
+    if (!$offset) return ''
+
+    const [direction, value] = $offset
+    return `margin-${direction}: ${value}px;`
+  }}
 `
