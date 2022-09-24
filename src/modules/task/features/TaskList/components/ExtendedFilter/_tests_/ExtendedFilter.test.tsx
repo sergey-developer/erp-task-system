@@ -16,7 +16,7 @@ import {
   waitFinishLoadingBySelect,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
-import { taskStatusDict } from 'modules/task/constants/dict'
+import { taskStatusDict } from 'modules/task/constants/dictionary'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 import formatDate from 'shared/utils/date/formatDate'
@@ -209,7 +209,7 @@ describe('Расширенный фильтр', () => {
         const resetAllButton = getResetAllButton()
         expect(resetAllButton).not.toBeEnabled()
 
-        const checkbox = getCheckbox(new RegExp(taskStatusDict.NEW!))
+        const checkbox = getCheckbox(new RegExp(taskStatusDict.NEW))
         await user.click(checkbox)
 
         expect(resetAllButton).toBeEnabled()
@@ -221,7 +221,7 @@ describe('Расширенный фильтр', () => {
         const applyButton = getApplyButton()
         expect(applyButton).not.toBeEnabled()
 
-        const checkbox = getCheckbox(new RegExp(taskStatusDict.APPOINTED!))
+        const checkbox = getCheckbox(new RegExp(taskStatusDict.APPOINTED))
         await user.click(checkbox)
 
         expect(applyButton).toBeEnabled()

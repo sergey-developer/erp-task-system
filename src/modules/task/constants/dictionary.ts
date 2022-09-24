@@ -1,7 +1,7 @@
 import { TaskStatusEnum } from 'modules/task/constants/enums'
 import { StringMap } from 'shared/interfaces/utils'
 
-export const taskStatusDict: Partial<StringMap<TaskStatusEnum>> = {
+export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.New]: 'Ожидает выполнения',
   [TaskStatusEnum.Appointed]: 'Назначено',
   [TaskStatusEnum.InProgress]: 'В работе',
@@ -13,7 +13,9 @@ export const taskStatusDict: Partial<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.Overdue]: 'Просроченные',
 }
 
-export const taskExtendedStatusDict: Partial<StringMap<TaskStatusEnum>> = {
+export const taskExtendedStatusDict: Readonly<
+  StringMap<Exclude<TaskStatusEnum, TaskStatusEnum.Overdue>>
+> = {
   [TaskStatusEnum.New]: 'Новая',
   [TaskStatusEnum.Appointed]: 'Назначена',
   [TaskStatusEnum.InProgress]: 'В работе',
