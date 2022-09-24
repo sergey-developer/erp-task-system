@@ -22,8 +22,13 @@ import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { Keys, MaybeNull } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
+import ExtendedFilter, { ExtendedFilterProps } from '../ExtendedFilter'
+import { initialExtendedFilterFormValues } from '../ExtendedFilter/constants'
+import {
+  ExtendedFilterFormFields,
+  ExtendedFilterQueries,
+} from '../ExtendedFilter/interfaces'
 import FastFilter from '../FastFilter'
-import FilterDrawer, { FilterDrawerProps } from '../FilterDrawer'
 import TaskTable from '../TaskTable'
 import { TaskTableListItem } from '../TaskTable/interfaces'
 import {
@@ -32,14 +37,8 @@ import {
   SORTED_FIELDS,
   SortDirectionsEnum,
   SortedFieldsEnum,
-  initialExtendedFilterFormValues,
 } from './constants'
-import {
-  ExtendedFilterFormFields,
-  ExtendedFilterQueries,
-  FastFilterQueries,
-  TaskIdFilterQueries,
-} from './interfaces'
+import { FastFilterQueries, TaskIdFilterQueries } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
@@ -81,10 +80,12 @@ const TaskListPage: FC = () => {
 
   const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
 
-  const [isFilterDrawerVisible, { toggle: toggleFilterDrawer }] =
+  const [isExtendedFilterOpened, { toggle: toggleExtendedFilterOpened }] =
     useBoolean(false)
 
-  const debouncedToggleFilterDrawer = useDebounceFn(toggleFilterDrawer)
+  const debouncedToggleExtendedFilterOpened = useDebounceFn(
+    toggleExtendedFilterOpened,
+  )
 
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
@@ -99,9 +100,11 @@ const TaskListPage: FC = () => {
   const previousAppliedFilterType =
     usePrevious<typeof appliedFilterType>(appliedFilterType)
 
-  const handleFilterDrawerSubmit: FilterDrawerProps['onSubmit'] = (values) => {
+  const handleExtendedFilterSubmit: ExtendedFilterProps['onSubmit'] = (
+    values,
+  ) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
-    toggleFilterDrawer()
+    toggleExtendedFilterOpened()
     setExtendedFilterFormValues(values)
     setFastFilterValue(null)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
@@ -249,7 +252,7 @@ const TaskListPage: FC = () => {
                 <Button
                   data-testid='btn-filter-extended'
                   icon={<FilterIcon $size='large' />}
-                  onClick={debouncedToggleFilterDrawer}
+                  onClick={debouncedToggleExtendedFilterOpened}
                   disabled={searchFilterApplied}
                 >
                   Фильтры
@@ -314,13 +317,13 @@ const TaskListPage: FC = () => {
         </ColFlexStyled>
       </RowWrapStyled>
 
-      {isFilterDrawerVisible && (
-        <FilterDrawer
+      {isExtendedFilterOpened && (
+        <ExtendedFilter
           visible
           form={extendedFilterForm}
           initialFormValues={initialExtendedFilterFormValues}
-          onClose={toggleFilterDrawer}
-          onSubmit={handleFilterDrawerSubmit}
+          onClose={toggleExtendedFilterOpened}
+          onSubmit={handleExtendedFilterSubmit}
         />
       )}
     </>
