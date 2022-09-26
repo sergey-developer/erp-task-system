@@ -1,5 +1,4 @@
-import { screen } from '_tests_/utils'
-import { within } from '@testing-library/react'
+import { screen, within } from '_tests_/utils'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const getCloseButton = (): HTMLButtonElement =>
@@ -24,6 +23,20 @@ export const getStartDateField = (): HTMLInputElement =>
 
 export const getEndDateField = (): HTMLInputElement =>
   screen.getByPlaceholderText('Конечная дата')
+
+export const userFillExecuteBeforeField = async (user: UserEvent) => {
+  const startDateField = getStartDateField()
+  const endDateField = getEndDateField()
+
+  const startDateValue = '2022-09-10'
+  const endDateValue = '2022-09-11'
+
+  await user.type(startDateField, startDateValue)
+  await user.type(endDateField, endDateValue)
+  await user.tab()
+
+  return { startDateField, startDateValue, endDateField, endDateValue }
+}
 
 export const getKeywordField = (): HTMLInputElement =>
   screen.getByPlaceholderText('Ключевое слово')

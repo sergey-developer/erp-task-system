@@ -19,7 +19,6 @@ import { getStoreWithAuth } from '_tests_/utils/auth'
 import { taskStatusDict } from 'modules/task/constants/dict'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
-import formatDate from 'shared/utils/date/formatDate'
 
 import {
   initialExtendedFilterFormValues,
@@ -39,6 +38,7 @@ import {
   queryWorkGroupField,
   userClickResetAllButton,
   userClickResetButton,
+  userFillExecuteBeforeField,
 } from './utils'
 
 const onClose = jest.fn()
@@ -66,7 +66,6 @@ const ExtendedFilterWrapper = (props: Pick<ExtendedFilterProps, 'visible'>) => {
 describe('Расширенный фильтр', () => {
   afterEach(() => {
     onClose.mockReset()
-    onSubmit.mockReset()
   })
 
   test('Отображается при передаче нужных данных', () => {
@@ -263,53 +262,36 @@ describe('Расширенный фильтр', () => {
     test('Можно выбрать даты', async () => {
       const { user } = render(<ExtendedFilterWrapper visible />)
 
-      const startDateField = getStartDateField()
-      const endDateField = getEndDateField()
-      await user.click(startDateField)
+      const { startDateField, startDateValue, endDateField, endDateValue } =
+        await userFillExecuteBeforeField(user)
 
-      const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
-      const calendarCell = screen.getByTitle(formattedDate)
-
-      await user.click(calendarCell)
-      await user.click(calendarCell)
-
-      expect(startDateField).toHaveDisplayValue(formattedDate)
-      expect(endDateField).toHaveDisplayValue(formattedDate)
+      expect(startDateField).toHaveDisplayValue(startDateValue)
+      expect(endDateField).toHaveDisplayValue(endDateValue)
     })
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
-        await user.click(getStartDateField())
-
-        const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
-        const calendarCell = screen.getByTitle(formattedDate)
-
-        await user.click(calendarCell)
-        await user.click(calendarCell)
+        const { startDateValue, endDateValue } =
+          await userFillExecuteBeforeField(user)
 
         await userClickResetButton(user, 'filter-extended-execution-period')
 
-        expect(getStartDateField()).not.toHaveDisplayValue(formattedDate)
-        expect(getEndDateField()).not.toHaveDisplayValue(formattedDate)
+        expect(getStartDateField()).not.toHaveDisplayValue(startDateValue)
+        expect(getEndDateField()).not.toHaveDisplayValue(endDateValue)
       })
 
       test('Кнопка "Сбросить всё"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
-        await user.click(getStartDateField())
-
-        const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
-        const calendarCell = screen.getByTitle(formattedDate)
-
-        await user.click(calendarCell)
-        await user.click(calendarCell)
+        const { startDateValue, endDateValue } =
+          await userFillExecuteBeforeField(user)
 
         await userClickResetAllButton(user)
 
-        expect(getStartDateField()).not.toHaveDisplayValue(formattedDate)
-        expect(getEndDateField()).not.toHaveDisplayValue(formattedDate)
+        expect(getStartDateField()).not.toHaveDisplayValue(startDateValue)
+        expect(getEndDateField()).not.toHaveDisplayValue(endDateValue)
       })
     })
 
@@ -320,13 +302,7 @@ describe('Расширенный фильтр', () => {
         const resetAllButton = getResetAllButton()
         expect(resetAllButton).not.toBeEnabled()
 
-        await user.click(getStartDateField())
-
-        const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
-        const calendarCell = screen.getByTitle(formattedDate)
-
-        await user.click(calendarCell)
-        await user.click(calendarCell)
+        await userFillExecuteBeforeField(user)
 
         expect(resetAllButton).toBeEnabled()
       })
@@ -337,13 +313,7 @@ describe('Расширенный фильтр', () => {
         const applyButton = getApplyButton()
         expect(applyButton).not.toBeEnabled()
 
-        await user.click(getStartDateField())
-
-        const formattedDate = formatDate(new Date(), 'YYYY-MM-DD')
-        const calendarCell = screen.getByTitle(formattedDate)
-
-        await user.click(calendarCell)
-        await user.click(calendarCell)
+        await userFillExecuteBeforeField(user)
 
         expect(applyButton).toBeEnabled()
       })
