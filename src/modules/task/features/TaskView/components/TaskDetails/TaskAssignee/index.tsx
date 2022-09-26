@@ -99,7 +99,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   const takeTaskButton = (
     <Button
-      data-testid='btn-takeTask'
       type='primary'
       ghost
       loading={takeTaskIsLoading}
