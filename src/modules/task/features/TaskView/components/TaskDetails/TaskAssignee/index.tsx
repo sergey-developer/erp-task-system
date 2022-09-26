@@ -85,7 +85,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const canSelectAssignee: boolean =
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
-    !hasReclassificationRequest &&
     (seniorEngineerFromWorkGroupIsAuthenticatedUser ||
       headOfDepartmentFromWorkGroupIsAuthenticatedUser)
 
@@ -157,64 +156,70 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
               <Row justify='end'>{takeTaskButton}</Row>
             </Space>
-          ) : canView && canEdit && canSelectAssignee ? (
+          ) : canView && canEdit ? (
             <Space direction='vertical' size='middle' $block>
-              <SelectStyled
-                virtual={false}
-                defaultValue={selectedAssignee}
-                loading={workGroupListIsLoading}
-                disabled={updateAssigneeIsLoading}
-                bordered={false}
-                placeholder={assignee ? null : ASSIGNEE_NOT_SET_TEXT}
-                onSelect={setSelectedAssignee}
-              >
-                {workGroupMembers.map(({ id, fullName }) => {
-                  const currentAssigneeInWorkGroup: boolean = isEqual(
-                    id,
-                    currentAssignee,
-                  )
+              {canSelectAssignee ? (
+                <SelectStyled
+                  virtual={false}
+                  defaultValue={selectedAssignee}
+                  loading={workGroupListIsLoading}
+                  disabled={updateAssigneeIsLoading}
+                  bordered={false}
+                  placeholder={assignee ? null : ASSIGNEE_NOT_SET_TEXT}
+                  onSelect={setSelectedAssignee}
+                >
+                  {workGroupMembers.map(({ id, fullName }) => {
+                    const currentAssigneeInWorkGroup: boolean = isEqual(
+                      id,
+                      currentAssignee,
+                    )
 
-                  const authenticatedUserInWorkGroup: boolean = isEqual(
-                    id,
-                    authenticatedUser!.id,
-                  )
+                    const authenticatedUserInWorkGroup: boolean = isEqual(
+                      id,
+                      authenticatedUser!.id,
+                    )
 
-                  const disabled =
-                    currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
+                    const disabled =
+                      currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
 
-                  return (
-                    <SelectStyled.Option
-                      key={id}
-                      value={id}
-                      disabled={disabled}
-                    >
-                      <Assignee
-                        name={fullName}
-                        status={status}
-                        assignee={assignee}
-                      />
-                    </SelectStyled.Option>
-                  )
-                })}
-              </SelectStyled>
+                    return (
+                      <SelectStyled.Option
+                        key={id}
+                        value={id}
+                        disabled={disabled}
+                      >
+                        <Assignee
+                          name={fullName}
+                          status={status}
+                          assignee={assignee}
+                        />
+                      </SelectStyled.Option>
+                    )
+                  })}
+                </SelectStyled>
+              ) : (
+                <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
+              )}
 
-              <Row justify='space-between'>
+              <Row justify={canSelectAssignee ? 'space-between' : 'end'}>
                 {takeTaskButton}
 
-                <Button
-                  type='primary'
-                  ghost
-                  onClick={handleClickAssigneeButton}
-                  loading={updateAssigneeIsLoading}
-                  disabled={
-                    !selectedAssignee ||
-                    selectedAssigneeIsAuthenticatedUser ||
-                    selectedAssigneeIsCurrentAssignee ||
-                    hasReclassificationRequest
-                  }
-                >
-                  Назначить
-                </Button>
+                {canSelectAssignee && (
+                  <Button
+                    type='primary'
+                    ghost
+                    onClick={handleClickAssigneeButton}
+                    loading={updateAssigneeIsLoading}
+                    disabled={
+                      !selectedAssignee ||
+                      selectedAssigneeIsAuthenticatedUser ||
+                      selectedAssigneeIsCurrentAssignee ||
+                      hasReclassificationRequest
+                    }
+                  >
+                    Назначить
+                  </Button>
+                )}
               </Row>
             </Space>
           ) : (
