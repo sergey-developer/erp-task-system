@@ -5,6 +5,7 @@ import React, { FC, useMemo } from 'react'
 import {
   CheckCircleIcon,
   CloseIcon,
+  MenuIcon,
   QuestionCircleIcon,
 } from 'components/Icons'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
@@ -95,7 +96,9 @@ const CardTitle: FC<CardTitleProps> = ({
       <Typography.Text>{id}</Typography.Text>
 
       <Space>
-        <Dropdown.Button overlay={actionMenu} type='text' />
+        <Dropdown overlay={actionMenu}>
+          <Button type='text' icon={<MenuIcon />} />
+        </Dropdown>
 
         <Button type='text' icon={<CloseIcon />} onClick={onClose} />
       </Space>
