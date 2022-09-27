@@ -1,5 +1,4 @@
 import { getTaskAssignee } from '_fixtures_/task'
-import { getWorkGroup } from '_fixtures_/workGroup'
 import { generateId, render } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import {
@@ -11,43 +10,31 @@ import { UserRolesEnum } from 'shared/constants/roles'
 import { asyncNoop } from 'shared/utils/common/noop'
 
 import TaskAssignee, { TaskAssigneeProps } from '../index'
-import { getTakeTaskButton, queryTakeTaskButton } from './utils'
+import { getTakeTaskButton } from './utils'
 
 describe('Блок "Исполнитель заявки"', () => {
   describe('Кнопка "В работу"', () => {
-    const baseProps: Pick<
-      TaskAssigneeProps,
-      | 'takeTask'
-      | 'takeTaskIsLoading'
-      | 'updateAssignee'
-      | 'updateAssigneeIsLoading'
-      | 'extendedStatus'
-      | 'workGroupListIsLoading'
+    const baseProps: Readonly<
+      Pick<
+        TaskAssigneeProps,
+        | 'takeTask'
+        | 'takeTaskIsLoading'
+        | 'updateAssignee'
+        | 'updateAssigneeIsLoading'
+        | 'status'
+        | 'extendedStatus'
+        | 'workGroupListIsLoading'
+        | 'hasReclassificationRequest'
+      >
     > = {
       takeTask: asyncNoop,
       takeTaskIsLoading: false,
       updateAssignee: asyncNoop,
       updateAssigneeIsLoading: false,
       workGroupListIsLoading: false,
-      extendedStatus: TaskExtendedStatusEnum.New,
-    }
-
-    const propsForUserCanSelectAssignee: typeof baseProps &
-      Pick<
-        TaskAssigneeProps,
-        'status' | 'hasReclassificationRequest' | 'workGroup'
-      > = {
-      ...baseProps,
-      workGroup: getWorkGroup(),
-      status: TaskStatusEnum.New,
       hasReclassificationRequest: false,
-    }
-
-    const propsForUserCanNotSelectAssignee: typeof baseProps &
-      Pick<TaskAssigneeProps, 'status' | 'hasReclassificationRequest'> = {
-      ...baseProps,
-      status: TaskStatusEnum.Closed,
-      hasReclassificationRequest: true,
+      status: TaskStatusEnum.New,
+      extendedStatus: TaskExtendedStatusEnum.New,
     }
 
     describe('Отображается для пользователя с ролью', () => {
@@ -57,7 +44,7 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        render(<TaskAssignee {...propsForUserCanNotSelectAssignee} />, {
+        render(<TaskAssignee {...baseProps} />, {
           store,
         })
 
@@ -70,145 +57,39 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.Engineer,
         })
 
-        render(<TaskAssignee {...propsForUserCanNotSelectAssignee} />, {
+        render(<TaskAssignee {...baseProps} />, {
           store,
         })
 
         expect(getTakeTaskButton()).toBeInTheDocument()
       })
 
-      test(`${UserRolesEnum.SeniorEngineer} если он может выбирать исполнителя`, () => {
-        const authenticatedUserId = generateId()
-
+      test(`${UserRolesEnum.SeniorEngineer}`, () => {
         const store = getStoreWithAuth({
-          userId: authenticatedUserId,
+          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        propsForUserCanSelectAssignee.workGroup!.seniorEngineer.id =
-          authenticatedUserId
-
-        render(<TaskAssignee {...propsForUserCanSelectAssignee} />, { store })
+        render(<TaskAssignee {...baseProps} />, { store })
 
         expect(getTakeTaskButton()).toBeInTheDocument()
       })
 
-      test(`${UserRolesEnum.HeadOfDepartment} если он может выбирать исполнителя`, () => {
-        const authenticatedUserId = generateId()
-
+      test(`${UserRolesEnum.HeadOfDepartment}`, () => {
         const store = getStoreWithAuth({
-          userId: authenticatedUserId,
+          userId: generateId(),
           userRole: UserRolesEnum.HeadOfDepartment,
         })
 
-        propsForUserCanSelectAssignee.workGroup!.groupLead.id =
-          authenticatedUserId
-
-        render(<TaskAssignee {...propsForUserCanSelectAssignee} />, { store })
+        render(<TaskAssignee {...baseProps} />, { store })
 
         expect(getTakeTaskButton()).toBeInTheDocument()
-      })
-    })
-
-    describe('Не отображается для пользователя с ролью', () => {
-      describe('С которой можно выбирать исполнителя', () => {
-        describe('Если заявка в статусе', () => {
-          test(`${TaskStatusEnum.Closed}`, () => {
-            const authenticatedUserId = generateId()
-
-            const store = getStoreWithAuth({
-              userId: authenticatedUserId,
-              userRole: UserRolesEnum.SeniorEngineer,
-            })
-
-            propsForUserCanSelectAssignee.status = TaskStatusEnum.Closed
-            propsForUserCanSelectAssignee.workGroup!.seniorEngineer.id =
-              authenticatedUserId
-
-            render(<TaskAssignee {...propsForUserCanSelectAssignee} />, {
-              store,
-            })
-
-            expect(queryTakeTaskButton()).not.toBeInTheDocument()
-          })
-
-          test(`${TaskStatusEnum.Completed}`, () => {
-            const authenticatedUserId = generateId()
-
-            const store = getStoreWithAuth({
-              userId: authenticatedUserId,
-              userRole: UserRolesEnum.SeniorEngineer,
-            })
-
-            propsForUserCanSelectAssignee.status = TaskStatusEnum.Completed
-            propsForUserCanSelectAssignee.workGroup!.seniorEngineer.id =
-              authenticatedUserId
-
-            render(<TaskAssignee {...propsForUserCanSelectAssignee} />, {
-              store,
-            })
-
-            expect(queryTakeTaskButton()).not.toBeInTheDocument()
-          })
-        })
-
-        test('Если для заявки создан запрос на переклассификацию', () => {
-          const authenticatedUserId = generateId()
-
-          const store = getStoreWithAuth({
-            userId: authenticatedUserId,
-            userRole: UserRolesEnum.SeniorEngineer,
-          })
-
-          propsForUserCanSelectAssignee.hasReclassificationRequest = true
-          propsForUserCanSelectAssignee.workGroup!.seniorEngineer.id =
-            authenticatedUserId
-
-          render(<TaskAssignee {...propsForUserCanSelectAssignee} />, { store })
-
-          expect(queryTakeTaskButton()).not.toBeInTheDocument()
-        })
-
-        test('Если старший инженер из рабочий группы не является авторизованным пользователем', () => {
-          const store = getStoreWithAuth({
-            userId: generateId(),
-            userRole: UserRolesEnum.SeniorEngineer,
-          })
-
-          render(
-            <TaskAssignee
-              {...propsForUserCanSelectAssignee}
-              workGroup={getWorkGroup()}
-            />,
-            { store },
-          )
-
-          expect(queryTakeTaskButton()).not.toBeInTheDocument()
-        })
-
-        test('Если начальник отдела из рабочий группы не является авторизованным пользователем', () => {
-          const store = getStoreWithAuth({
-            userId: generateId(),
-            userRole: UserRolesEnum.HeadOfDepartment,
-          })
-
-          render(
-            <TaskAssignee
-              {...propsForUserCanSelectAssignee}
-              workGroup={getWorkGroup()}
-            />,
-            { store },
-          )
-
-          expect(queryTakeTaskButton()).not.toBeInTheDocument()
-        })
       })
     })
 
     describe('Не активна', () => {
-      const activeBtnProps: Pick<
-        TaskDetailsModel,
-        'status' | 'extendedStatus' | 'assignee'
+      const activeBtnProps: Readonly<
+        Pick<TaskDetailsModel, 'status' | 'extendedStatus' | 'assignee'>
       > = {
         status: TaskStatusEnum.New,
         extendedStatus: TaskExtendedStatusEnum.New,
@@ -222,12 +103,11 @@ describe('Блок "Исполнитель заявки"', () => {
             userRole: UserRolesEnum.FirstLineSupport,
           })
 
-          activeBtnProps.status = TaskStatusEnum.Awaiting
-
           render(
             <TaskAssignee
-              {...propsForUserCanNotSelectAssignee}
+              {...baseProps}
               {...activeBtnProps}
+              status={TaskStatusEnum.Awaiting}
             />,
             { store },
           )
@@ -235,36 +115,13 @@ describe('Блок "Исполнитель заявки"', () => {
           expect(getTakeTaskButton()).toBeDisabled()
         })
 
-        test('Но исполнитель заявки не является авторизованным пользователем', async () => {
+        test('Но исполнитель заявки назначен и не является авторизованным пользователем', async () => {
           const store = getStoreWithAuth({
             userId: generateId(),
             userRole: UserRolesEnum.FirstLineSupport,
           })
 
-          render(
-            <TaskAssignee
-              {...propsForUserCanNotSelectAssignee}
-              {...activeBtnProps}
-            />,
-            { store },
-          )
-
-          expect(getTakeTaskButton()).toBeDisabled()
-        })
-
-        test('Но исполнитель заявки назначен', async () => {
-          const store = getStoreWithAuth({
-            userId: generateId(),
-            userRole: UserRolesEnum.FirstLineSupport,
-          })
-
-          render(
-            <TaskAssignee
-              {...propsForUserCanNotSelectAssignee}
-              {...activeBtnProps}
-            />,
-            { store },
-          )
+          render(<TaskAssignee {...baseProps} {...activeBtnProps} />, { store })
 
           expect(getTakeTaskButton()).toBeDisabled()
         })
@@ -275,13 +132,11 @@ describe('Блок "Исполнитель заявки"', () => {
             userRole: UserRolesEnum.FirstLineSupport,
           })
 
-          activeBtnProps.extendedStatus =
-            TaskExtendedStatusEnum.InReclassification
-
           render(
             <TaskAssignee
-              {...propsForUserCanNotSelectAssignee}
+              {...baseProps}
               {...activeBtnProps}
+              extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
             { store },
           )
