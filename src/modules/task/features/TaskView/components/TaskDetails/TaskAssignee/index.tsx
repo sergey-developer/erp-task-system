@@ -196,6 +196,12 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                     )
                   })}
                 </SelectStyled>
+              ) : assignee ? (
+                <Assignee
+                  name={getFullUserName(assignee)}
+                  status={status}
+                  assignee={assignee}
+                />
               ) : (
                 <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
               )}
