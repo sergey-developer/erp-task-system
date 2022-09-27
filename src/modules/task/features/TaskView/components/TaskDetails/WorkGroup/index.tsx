@@ -1,13 +1,15 @@
 import { useBoolean } from 'ahooks'
-import { Button, Space, Typography } from 'antd'
+import { Button, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import LabeledData from 'components/LabeledData'
 import Permissions from 'components/Permissions'
+import Space from 'components/Space'
 import TaskSecondLineModal from 'modules/task/features/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/features/TaskView/permissions/taskWorkGroup.permissions'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
+import useUserRole from 'modules/user/hooks/useUserRole'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 
@@ -39,6 +41,8 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   hasReclassificationRequest,
 }) => {
+  const { isFirstLineSupportRole } = useUserRole()
+
   const [
     isTaskSecondLineModalOpened,
     { setTrue: openTaskSecondLineModal, setFalse: closeTaskSecondLineModal },
@@ -60,7 +64,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   return (
     <>
-      <Space direction='vertical'>
+      <Space direction='vertical' $block>
         <LabeledData label='Рабочая группа' size='large' direction='horizontal'>
           <Permissions config={taskWorkGroupPermissions.transferFirstLineBtn}>
             {() =>
@@ -94,7 +98,9 @@ const WorkGroup: FC<WorkGroupProps> = ({
           </Permissions>
         </LabeledData>
 
-        <Text>{workGroup?.name || 'I линия поддержки'}</Text>
+        <Text>
+          {isFirstLineSupportRole ? 'I линия поддержки' : workGroup?.name}
+        </Text>
       </Space>
 
       {isTaskSecondLineModalOpened && (
