@@ -4,7 +4,7 @@ import { SortEnum } from 'modules/task/features/TaskList/constants/enums'
 
 import { TaskTableListItem } from '../TaskTable/interfaces'
 
-export const DEFAULT_PAGE_SIZE = 15
+export const DEFAULT_PAGE_SIZE = 100
 
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 
