@@ -51,8 +51,14 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async (values: TaskResolutionFormFields) => {
-    await onSubmit(values, form.setFields)
+  const handleFinish = async ({
+    techResolution,
+    userResolution,
+  }: TaskResolutionFormFields) => {
+    await onSubmit(
+      { techResolution, userResolution: userResolution || undefined },
+      form.setFields,
+    )
   }
 
   return (

@@ -1,8 +1,9 @@
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { FieldsErrors } from 'shared/services/api'
 
-type FormFields = Pick<TaskDetailsModel, 'techResolution' | 'userResolution'>
+export type TaskResolutionFormFields = Pick<
+  TaskDetailsModel,
+  'techResolution' | 'userResolution'
+>
 
-export type TaskResolutionFormFields = Required<FormFields>
-
-export type TaskResolutionFormErrors = FieldsErrors<FormFields>
+export type TaskResolutionFormErrors = FieldsErrors<TaskResolutionFormFields>
