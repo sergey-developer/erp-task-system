@@ -21,7 +21,7 @@ import { SelectStyled } from './styles'
 
 const { Text } = Typography
 
-const ASSIGNEE_NOT_SET_TEXT: string = 'Не назначен'
+const NOT_ASSIGNED_TEXT: string = 'Не назначен'
 
 export type TaskAssigneeProps = Pick<
   TaskDetailsModel,
@@ -150,7 +150,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                   assignee={assignee}
                 />
               ) : (
-                <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
+                <Text>{NOT_ASSIGNED_TEXT}</Text>
               )}
 
               <Row justify='end'>{takeTaskButton}</Row>
@@ -164,7 +164,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                   loading={workGroupListIsLoading}
                   disabled={updateAssigneeIsLoading}
                   bordered={false}
-                  placeholder={assignee ? null : ASSIGNEE_NOT_SET_TEXT}
+                  placeholder={assignee ? null : NOT_ASSIGNED_TEXT}
                   onSelect={setSelectedAssignee}
                 >
                   {workGroupMembers.map(({ id, fullName }) => {
@@ -196,8 +196,14 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                     )
                   })}
                 </SelectStyled>
+              ) : assignee ? (
+                <Assignee
+                  name={getFullUserName(assignee)}
+                  status={status}
+                  assignee={assignee}
+                />
               ) : (
-                <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
+                <Text>{NOT_ASSIGNED_TEXT}</Text>
               )}
 
               <Row justify={canSelectAssignee ? 'space-between' : 'end'}>
@@ -222,7 +228,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
               </Row>
             </Space>
           ) : (
-            <Text>{ASSIGNEE_NOT_SET_TEXT}</Text>
+            <Text>{NOT_ASSIGNED_TEXT}</Text>
           )
         }
       </Permissions>
