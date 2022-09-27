@@ -4,19 +4,60 @@ import React, { FC } from 'react'
 import { DownIcon, MapPointIcon, UpIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
+import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
+import valueOr from 'shared/utils/common/valueOr'
+import valueOrHyphen from 'shared/utils/common/valueOrHyphen'
 
 import DetailsWrapper from '../DetailsWrapper'
 import { ContainerStyled } from './styles'
+import { makeYandexMapLink } from './utils'
 
-const { Text } = Typography
+const { Text, Link } = Typography
 
-type AdditionalInfoProps = {
+export type AdditionalInfoProps = Pick<
+  TaskDetailsModel,
+  | 'weight'
+  | 'address'
+  | 'company'
+  | 'email'
+  | 'sapId'
+  | 'contactType'
+  | 'productClassifier1'
+  | 'productClassifier2'
+  | 'productClassifier3'
+  | 'latitude'
+  | 'longitude'
+> & {
+  impact: string
+  severity: string
+  priority: string
+
   expanded: boolean
   onExpand: () => void
+
+  supportGroup?: string
 }
 
-const AdditionalInfo: FC<AdditionalInfoProps> = ({ expanded, onExpand }) => {
+const AdditionalInfo: FC<AdditionalInfoProps> = ({
+  email,
+  sapId,
+  weight,
+  company,
+  address,
+  severity,
+  priority,
+  impact,
+  contactType,
+  supportGroup,
+  productClassifier1,
+  productClassifier2,
+  productClassifier3,
+  latitude,
+  longitude,
+  expanded,
+  onExpand,
+}) => {
   const handleExpand = useDebounceFn(onExpand)
 
   return (
@@ -38,34 +79,73 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({ expanded, onExpand }) => {
             bgColor='lotion'
           >
             <Space direction='vertical' size={30} $block>
-              <Row justify='space-between'>
-                <Space size={37}>
-                  <Space direction='vertical'>
-                    <Text type='secondary'>Компания</Text>
-                    <Text type='secondary'>Формат магазина</Text>
-                    <Text type='secondary'>SAP ID</Text>
-                    <Text type='secondary'>Email</Text>
+              <Row gutter={60}>
+                <Col span={12}>
+                  <Space direction='vertical' $block>
+                    <Row>
+                      <Col span={12}>
+                        <Text type='secondary'>Компания</Text>
+                      </Col>
+
+                      <Col span={12}>
+                        <Text strong>{valueOrHyphen(company)}</Text>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col span={12}>
+                        <Text type='secondary'>Формат магазина</Text>
+                      </Col>
+
+                      <Col span={12}>
+                        <Text strong>{valueOrHyphen(contactType)}</Text>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col span={12}>
+                        <Text type='secondary'>SAP ID</Text>
+                      </Col>
+
+                      <Col span={12}>
+                        <Text strong>{valueOrHyphen(sapId)}</Text>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col span={12}>
+                        <Text type='secondary'>Email</Text>
+                      </Col>
+
+                      <Col span={12}>
+                        <Text strong>{valueOrHyphen(email)}</Text>
+                      </Col>
+                    </Row>
                   </Space>
+                </Col>
 
-                  <Space direction='vertical'>
-                    <Text strong>ТС5</Text>
-                    <Text strong>discounter</Text>
-                    <Text strong>5015</Text>
-                    <Text strong>SV-828-dir@x5.ru</Text>
+                <Col span={12}>
+                  <Space align='start' data-testid='additional-info-address'>
+                    <MapPointIcon $size='large' />
+
+                    <Link
+                      href={
+                        !!address
+                          ? makeYandexMapLink({ longitude, latitude })
+                          : undefined
+                      }
+                      target='_blank'
+                    >
+                      <Text strong={!!address} underline={!!address}>
+                        {valueOr(address, 'Отсутствует')}
+                      </Text>
+                    </Link>
                   </Space>
-                </Space>
-
-                <Space align='start'>
-                  <MapPointIcon $size='large' />
-
-                  <Text strong underline>
-                    Камчатский край, г. Петропавловск-Камчатский
-                  </Text>
-                </Space>
+                </Col>
               </Row>
 
               <LabeledData label='Наименование группы поддержки Х5'>
-                <Text strong>Группа БД</Text>
+                <Text strong>{valueOrHyphen(supportGroup)}</Text>
               </LabeledData>
 
               <Row align='middle'>
@@ -74,22 +154,22 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({ expanded, onExpand }) => {
                 </Col>
 
                 <Col span={18}>
-                  <Row>
+                  <Row gutter={20}>
                     <Col span={8}>
-                      <LabeledData label='Уровень 1'>
-                        <Text>Мониторинг</Text>
+                      <LabeledData label='Уровень 1' block>
+                        <Text>{productClassifier1}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
-                      <LabeledData label='Уровень 2'>
-                        <Text>Инфраструктурные события</Text>
+                      <LabeledData label='Уровень 2' block>
+                        <Text>{productClassifier2}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
                       <LabeledData label='Уровень 3' block>
-                        <Text>Алерт</Text>
+                        <Text>{productClassifier3}</Text>
                       </LabeledData>
                     </Col>
                   </Row>
@@ -100,7 +180,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({ expanded, onExpand }) => {
                 <Col span={6}>
                   <LabeledData label='Приоритет заявки' size={0}>
                     <LabeledData label='Вес:' direction='horizontal'>
-                      <Text>87</Text>
+                      <Text>{valueOrHyphen(weight)}</Text>
                     </LabeledData>
                   </LabeledData>
                 </Col>
@@ -109,19 +189,19 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({ expanded, onExpand }) => {
                   <Row>
                     <Col span={8}>
                       <LabeledData label='Влияние'>
-                        <Text>1-всеохватывающее/ широкое</Text>
+                        <Text>{impact}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
                       <LabeledData label='Срочность'>
-                        <Text>2-высокая</Text>
+                        <Text>{severity}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
                       <LabeledData label='Приоритет'>
-                        <Text>1-критический</Text>
+                        <Text>{priority}</Text>
                       </LabeledData>
                     </Col>
                   </Row>

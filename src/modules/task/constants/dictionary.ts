@@ -1,8 +1,7 @@
+import { TaskStatusEnum } from 'modules/task/constants/enums'
 import { StringMap } from 'shared/interfaces/utils'
 
-import { TaskJournalTypeEnum, TaskStatusEnum } from './enums'
-
-export const taskStatusDict: Partial<StringMap<TaskStatusEnum>> = {
+export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.New]: 'Ожидает выполнения',
   [TaskStatusEnum.Appointed]: 'Назначено',
   [TaskStatusEnum.InProgress]: 'В работе',
@@ -14,7 +13,9 @@ export const taskStatusDict: Partial<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.Overdue]: 'Просроченные',
 }
 
-export const taskExtendedStatusDict: Partial<StringMap<TaskStatusEnum>> = {
+export const taskExtendedStatusDict: Readonly<
+  StringMap<Exclude<TaskStatusEnum, TaskStatusEnum.Overdue>>
+> = {
   [TaskStatusEnum.New]: 'Новая',
   [TaskStatusEnum.Appointed]: 'Назначена',
   [TaskStatusEnum.InProgress]: 'В работе',
@@ -25,15 +26,23 @@ export const taskExtendedStatusDict: Partial<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.Closed]: 'Закрыта',
 }
 
-export const journalEntryTypeDict: StringMap<TaskJournalTypeEnum> = {
-  [TaskJournalTypeEnum.InternalCommunication]: 'Внутренняя коммуникация',
-  [TaskJournalTypeEnum.ExternalCommunication]: 'Внешняя коммуникация',
-  [TaskJournalTypeEnum.Awaiting]: 'Перевод в ожидание',
-  [TaskJournalTypeEnum.StatusChange]: 'Изменение статуса',
-  [TaskJournalTypeEnum.Reclassified]: 'Переклассификация',
-  [TaskJournalTypeEnum.AssigneeChange]: 'Переназначение',
-  [TaskJournalTypeEnum.TechMessage]: 'Техническое сообщение',
-  [TaskJournalTypeEnum.Job]: 'Задания',
-  [TaskJournalTypeEnum.Attachment]: 'Вложение',
-  [TaskJournalTypeEnum.Other]: 'Другое',
-}
+export const taskImpactMap = new Map([
+  [1, '1-всеохватывающее/широкое'],
+  [2, '2-значительное/большое'],
+  [3, '3-умеренное/ограниченное'],
+  [4, '4-малое/локализованное'],
+])
+
+export const taskSeverityMap = new Map([
+  [1, '1-критическая'],
+  [2, '2-высокая'],
+  [3, '3-средняя'],
+  [4, '4-низкая'],
+])
+
+export const taskPriorityMap = new Map([
+  [1, '1-критический'],
+  [2, '2-высокий'],
+  [3, '3-средний'],
+  [4, '4-низкий'],
+])

@@ -30,6 +30,9 @@ export type BaseTaskModel = {
   isOlaBreached: boolean
   olaStatus: TaskOlaStatusEnum
   extendedStatus: TaskExtendedStatusEnum
+  initialImpact: number
+  severity: number
+  priorityCode: number
 
   olaNextBreachTime?: MaybeNull<string>
   description?: string
@@ -37,9 +40,7 @@ export type BaseTaskModel = {
   parentInteractionExternalId?: string
   parentInteractionPortalExternalId?: string
   parentTaskExternalId?: string
-  priorityCode?: MaybeNull<number>
   slaNextBreachAt?: MaybeNull<string>
-  severity?: MaybeNull<number>
   isPendingUpdate?: MaybeNull<boolean>
   resolutionCode?: ResolutionCodeEnum
   techResolution?: string
@@ -55,6 +56,5 @@ export type BaseTaskModel = {
   state?: string
   zipCode?: string
   parentTask?: MaybeNull<number>
-  initialImpact?: MaybeNull<number>
   isReturned?: boolean
 }

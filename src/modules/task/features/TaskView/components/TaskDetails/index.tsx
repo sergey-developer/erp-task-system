@@ -3,7 +3,13 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
 import React, { FC, useCallback } from 'react'
 
+import Spinner from 'components/Spinner'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
+import {
+  taskImpactMap,
+  taskPriorityMap,
+  taskSeverityMap,
+} from 'modules/task/constants/dictionary'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
   ResolveTaskMutationArgsModel,
@@ -26,7 +32,6 @@ import TaskReclassificationModal, {
   TaskReclassificationModalProps,
 } from '../TaskReclassificationModal'
 import { TaskReclassificationRequestFormErrors } from '../TaskReclassificationModal/interfaces'
-import TaskRequestStatus from '../TaskRequestStatus'
 import TaskResolutionModal, {
   TaskResolutionModalProps,
 } from '../TaskResolutionModal'
@@ -36,6 +41,8 @@ import CardTitle from './CardTitle'
 import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
+
+const TaskRequestStatus = React.lazy(() => import('../TaskRequestStatus'))
 
 type TaskDetailsProps = {
   details: MaybeNull<
@@ -59,6 +66,20 @@ type TaskDetailsProps = {
       | 'olaStatus'
       | 'olaEstimatedTime'
       | 'olaNextBreachTime'
+      | 'initialImpact'
+      | 'severity'
+      | 'priorityCode'
+      | 'weight'
+      | 'company'
+      | 'email'
+      | 'sapId'
+      | 'supportGroup'
+      | 'contactType'
+      | 'productClassifier1'
+      | 'productClassifier2'
+      | 'productClassifier3'
+      | 'latitude'
+      | 'longitude'
     >
   >
 
@@ -232,7 +253,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         $breakpoints={breakpoints}
       >
         {hasReclassificationRequest && (
-          <>
+          <React.Suspense
+            fallback={<Spinner area='block' offset={['top', 10]} />}
+          >
             <TaskRequestStatus
               title='Запрошена переклассификация:'
               comment={reclassificationRequest!.comment.text}
@@ -243,7 +266,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             />
 
             <DividerStyled />
-          </>
+          </React.Suspense>
         )}
 
         {details && (
@@ -261,6 +284,21 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             />
 
             <AdditionalInfo
+              email={details.email}
+              sapId={details.sapId}
+              weight={details.weight}
+              address={details.address}
+              company={details.company}
+              contactType={details.contactType}
+              severity={taskSeverityMap.get(details.severity)!}
+              priority={taskPriorityMap.get(details.priorityCode)!}
+              impact={taskImpactMap.get(details.initialImpact)!}
+              supportGroup={details.supportGroup?.name}
+              productClassifier1={details.productClassifier1}
+              productClassifier2={details.productClassifier2}
+              productClassifier3={details.productClassifier3}
+              latitude={details.latitude}
+              longitude={details.longitude}
               expanded={additionalInfoExpanded}
               onExpand={onExpandAdditionalInfo}
             />

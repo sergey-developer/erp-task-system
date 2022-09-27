@@ -2,12 +2,16 @@ import { Spin } from 'antd'
 
 import styled, { FlattenSimpleInterpolation, css } from 'styled-components'
 
-export type SpinnerArea = 'self' | 'parent' | 'default'
+import { SpinnerProps } from './index'
 
-const areaStyles: Record<SpinnerArea, FlattenSimpleInterpolation | string> = {
-  self: css`
+const areaStyles: Record<
+  NonNullable<SpinnerProps['area']>,
+  FlattenSimpleInterpolation | string
+> = {
+  block: css`
+    width: 100%;
     display: flex;
-    width: max-content;
+    justify-content: center;
   `,
   parent: css`
     height: 100%;
@@ -15,11 +19,18 @@ const areaStyles: Record<SpinnerArea, FlattenSimpleInterpolation | string> = {
     justify-content: center;
     align-items: center;
   `,
-  default: '',
 }
 
 export const SpinnerStyled = styled(Spin)<{
-  $area: SpinnerArea
+  $area?: SpinnerProps['area']
+  $offset?: SpinnerProps['offset']
 }>`
-  ${({ $area }) => areaStyles[$area]}
+  ${({ $area }) => ($area ? areaStyles[$area] : '')}
+
+  ${({ $offset }) => {
+    if (!$offset) return ''
+
+    const [direction, value] = $offset
+    return `margin-${direction}: ${value}px;`
+  }}
 `

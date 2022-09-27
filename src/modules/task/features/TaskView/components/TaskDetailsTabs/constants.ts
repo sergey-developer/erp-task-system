@@ -1,3 +1,5 @@
+import { StringMap } from 'shared/interfaces/utils'
+
 export enum TaskDetailsTabsEnum {
   Tasks = 'Tasks',
   Comments = 'Comments',
@@ -6,10 +8,11 @@ export enum TaskDetailsTabsEnum {
   Journal = 'Journal',
 }
 
-export const taskDetailsTabNames = {
-  [TaskDetailsTabsEnum.Tasks]: 'Задания',
-  [TaskDetailsTabsEnum.Comments]: 'Комментарии',
-  [TaskDetailsTabsEnum.Resolution]: 'Решение',
-  [TaskDetailsTabsEnum.Description]: 'Описание',
-  [TaskDetailsTabsEnum.Journal]: 'Журнал',
-} as const
+export const taskDetailsTabNamesDict: Readonly<StringMap<TaskDetailsTabsEnum>> =
+  {
+    [TaskDetailsTabsEnum.Tasks]: 'Задания',
+    [TaskDetailsTabsEnum.Comments]: 'Комментарии',
+    [TaskDetailsTabsEnum.Resolution]: 'Решение',
+    [TaskDetailsTabsEnum.Description]: 'Описание',
+    [TaskDetailsTabsEnum.Journal]: 'Журнал',
+  }
