@@ -3,6 +3,7 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { isEqual } from 'shared/utils/common/isEqual'
+import formatDate from 'shared/utils/date/formatDate'
 
 import {
   ExtendedFilterFormFields,
@@ -33,10 +34,10 @@ export const mapExtendedFilterFormFieldsToQueries = (
 
   return {
     completeAtFrom: completeAt?.[0]
-      ? completeAt[0].format(DATE_FILTER_FORMAT)
+      ? formatDate(completeAt[0], DATE_FILTER_FORMAT)
       : undefined,
     completeAtTo: completeAt?.[1]
-      ? completeAt[1].format(DATE_FILTER_FORMAT)
+      ? formatDate(completeAt[1], DATE_FILTER_FORMAT)
       : undefined,
 
     isAssigned: isAssigned as TaskExtraStatusEnum[],
