@@ -12,8 +12,13 @@ export const getResetAllButton = (): HTMLButtonElement =>
     name: 'Сбросить все',
   })
 
-export const getCheckbox = (name: RegExp): HTMLInputElement =>
-  screen.getByRole('checkbox', { name })
+export const getStatusContainer = () =>
+  screen.getByTestId('filter-extended-status')
+
+export const getCheckboxIn = (
+  container: HTMLElement,
+  name: RegExp,
+): HTMLInputElement => within(container).getByRole('checkbox', { name })
 
 export const getRadioButton = (name: string): HTMLInputElement =>
   screen.getByRole('radio', { name })
@@ -47,16 +52,11 @@ export const getWorkGroupField = () =>
 export const queryWorkGroupField = () =>
   screen.queryByTestId('filter-extended-work-group-select')
 
-export const getResetButton = (containerTestId: string) => {
-  const container = screen.getByTestId(containerTestId)
-  return within(container).getByRole('button', { name: 'Сбросить' })
-}
-
-export const userClickResetButton = async (
+export const userClickResetButtonIn = async (
   user: UserEvent,
-  containerTestId: string,
+  container: HTMLElement,
 ) => {
-  const button = getResetButton(containerTestId)
+  const button = within(container).getByRole('button', { name: 'Сбросить' })
   await user.click(button)
 }
 

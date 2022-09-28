@@ -7,11 +7,12 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 
+import { FastFilterEnum } from '../TaskList/constants/common'
 import { badgeByStatusMap, iconByStatusMap } from './constants'
 import { BadgeStyled } from './styles'
 
 type TaskStatusProps = {
-  status: TaskStatusEnum | TaskExtraStatusEnum
+  status: TaskStatusEnum | TaskExtraStatusEnum | FastFilterEnum
   extendedStatus?: TaskExtendedStatusEnum
 
   text?: string
@@ -22,8 +23,12 @@ const TaskStatus: FC<TaskStatusProps> = ({
   status: taskStatus,
   extendedStatus,
 }) => {
-  const icon = iconByStatusMap[extendedStatus || (taskStatus as TaskStatusEnum)]
-  const badge = badgeByStatusMap[taskStatus]
+  const badge = badgeByStatusMap[taskStatus as keyof typeof badgeByStatusMap]
+
+  const icon =
+    iconByStatusMap[
+      extendedStatus || (taskStatus as keyof typeof iconByStatusMap)
+    ]
 
   if (!text && !badge && !icon) return null
 

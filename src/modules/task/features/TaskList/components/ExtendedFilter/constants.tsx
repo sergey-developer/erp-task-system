@@ -15,6 +15,7 @@ import TaskStatus from 'modules/task/features/TaskStatus'
 import { StringMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
+import { FastFilterEnum } from '../../constants/common'
 import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
 
 export const DEFAULT_SEARCH_FIELD: keyof SearchQueries = 'searchByTitle'
@@ -48,4 +49,13 @@ export const checkboxStatusOptions: Array<CheckboxOptionType> = [
       label: <TaskStatus status={status} text={taskStatusDict[status]} />,
       value: status,
     })),
+  {
+    label: (
+      <TaskStatus
+        status={FastFilterEnum.Overdue}
+        text={taskStatusDict[FastFilterEnum.Overdue]}
+      />
+    ),
+    value: FastFilterEnum.Overdue,
+  },
 ]

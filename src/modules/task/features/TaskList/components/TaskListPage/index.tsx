@@ -19,7 +19,7 @@ import { GetTaskListQueryArgsModel } from 'modules/task/features/TaskList/models
 import TaskDetails from 'modules/task/features/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import ExtendedFilter, { ExtendedFilterProps } from '../ExtendedFilter'
@@ -91,7 +91,7 @@ const TaskListPage: FC = () => {
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
 
   const [fastFilterValue, setFastFilterValue] =
-    useState<MaybeNull<FastFilterEnum>>(initialFastFilter)
+    useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
 
   const [appliedFilterType, setAppliedFilterType] = useState<
     MaybeNull<FilterTypeEnum>
@@ -106,7 +106,7 @@ const TaskListPage: FC = () => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     toggleExtendedFilterOpened()
     setExtendedFilterFormValues(values)
-    setFastFilterValue(null)
+    setFastFilterValue(undefined)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
     handleCloseTaskDetails()
   }
@@ -204,8 +204,8 @@ const TaskListPage: FC = () => {
     setQueryArgs((prev) => ({
       ...prev,
       offset: 0,
-      dateFrom: undefined,
-      dateTo: undefined,
+      completeAtFrom: undefined,
+      completeAtTo: undefined,
       filter: undefined,
       status: undefined,
       searchByAssignee: undefined,
