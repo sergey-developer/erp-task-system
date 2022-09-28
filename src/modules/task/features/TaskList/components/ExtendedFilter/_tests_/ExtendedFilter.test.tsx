@@ -228,7 +228,7 @@ describe('Расширенный фильтр', () => {
     })
   })
 
-  describe('По периоду выполнения', () => {
+  describe('Выполнить до', () => {
     test('Отображается', () => {
       render(<ExtendedFilterWrapper visible />)
 
@@ -276,7 +276,7 @@ describe('Расширенный фильтр', () => {
         const { startDateValue, endDateValue } =
           await userFillExecuteBeforeField(user)
 
-        await userClickResetButton(user, 'filter-extended-execution-period')
+        await userClickResetButton(user, 'filter-extended-complete-at')
 
         expect(getStartDateField()).not.toHaveDisplayValue(startDateValue)
         expect(getEndDateField()).not.toHaveDisplayValue(endDateValue)

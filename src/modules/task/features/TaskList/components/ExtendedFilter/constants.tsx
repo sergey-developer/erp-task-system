@@ -20,7 +20,7 @@ import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
 export const DEFAULT_SEARCH_FIELD: keyof SearchQueries = 'searchByTitle'
 
 export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
-  olaNextBreachTimeRange: null,
+  completeAt: null,
   searchField: DEFAULT_SEARCH_FIELD,
   searchValue: '',
   status: [],

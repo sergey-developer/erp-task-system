@@ -13,15 +13,15 @@ export type SearchQueries = Partial<{
 }>
 
 export type ExtendedFilterQueries = {
-  dateFrom?: string
-  dateTo?: string
+  completeAtFrom?: string
+  completeAtTo?: string
   status?: TaskStatusEnum[]
   isAssigned?: TaskExtraStatusEnum[]
   workGroupId?: number
 } & SearchQueries
 
 export type ExtendedFilterFormFields = {
-  olaNextBreachTimeRange: MaybeNull<[Moment, Moment]>
+  completeAt: MaybeNull<[Moment, Moment]>
   searchField: keyof SearchQueries
   searchValue: string
   status: Array<TaskStatusEnum | TaskExtraStatusEnum>
