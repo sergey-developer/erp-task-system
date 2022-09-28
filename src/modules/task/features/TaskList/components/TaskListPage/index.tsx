@@ -204,8 +204,8 @@ const TaskListPage: FC = () => {
     setQueryArgs((prev) => ({
       ...prev,
       offset: 0,
-      dateFrom: undefined,
-      dateTo: undefined,
+      completeAtFrom: undefined,
+      completeAtTo: undefined,
       filter: undefined,
       status: undefined,
       searchByAssignee: undefined,
