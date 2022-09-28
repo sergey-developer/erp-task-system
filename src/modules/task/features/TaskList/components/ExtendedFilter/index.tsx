@@ -16,7 +16,6 @@ import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions/extendedFilter.permissions'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
-import { Keys } from 'shared/interfaces/utils'
 import { isEqualDeep } from 'shared/utils/common/isEqual'
 
 import { checkboxStatusOptions, searchQueriesDict } from './constants'
@@ -62,9 +61,10 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
   const valuesNotChanged = isEqualDeep(initialFormValues, formValues)
 
-  const resetFields = (fields?: Keys<ExtendedFilterFormFields>[]) => () => {
-    form.resetFields(fields)
-  }
+  const resetFields =
+    (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
+      form.resetFields(fields)
+    }
 
   return (
     <DrawerStyled

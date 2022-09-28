@@ -2,6 +2,7 @@ import { BadgeProps } from 'antd'
 import React, { ReactElement } from 'react'
 
 import {
+  CheckCircleIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
   RightCircleIcon,
@@ -27,4 +28,5 @@ export const iconByStatusMap: Partial<Record<TaskStatusEnum, ReactElement>> = {
   [TaskStatusEnum.Awaiting]: <PauseCircleIcon />,
   [TaskStatusEnum.InReclassification]: <QuestionCircleIcon />,
   [TaskStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
+  [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
 }

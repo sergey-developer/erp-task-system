@@ -4,7 +4,7 @@ import { DefaultTheme } from 'styled-components'
   Названия цветов взяты с https://www.color-name.com
  */
 
-const colors = {
+const colors: DefaultTheme['colors'] = {
   white: '#FFFFFF',
   black: '#000000',
   darkLiver: '#4F4F4F',
@@ -17,9 +17,10 @@ const colors = {
   antiFlashWhite: '#F0F2F5',
   aliceBlue: '#EEF5FE',
   cosmicLatte: '#FFFBE6',
+  crayola: '#27AE60',
 } as const
 
-const shadows = {
+const shadows: DefaultTheme['shadows'] = {
   shadow1: 'box-shadow: 0px 2px 8px 0px #00000026;',
 } as const
 

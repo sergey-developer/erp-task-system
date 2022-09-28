@@ -14,6 +14,7 @@ export const taskStatusDict: Readonly<
   [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.InReclassification]: 'На переклассификации',
   [TaskStatusEnum.Returned]: 'Возврат заявителем',
+  [TaskStatusEnum.Closed]: 'Закрытые',
 }
 
 export const taskImpactMap = new Map([

@@ -1,7 +1,6 @@
 import { Card, Divider } from 'antd'
 
 import { StyledBreakpointsProps } from 'shared/interfaces/breakpoints'
-import { Keys } from 'shared/interfaces/utils'
 import styled, { DefaultTheme } from 'styled-components'
 
 export const RootWrapperStyled = styled.div`
@@ -45,7 +44,7 @@ export const DividerStyled = styled(Divider)`
 `
 
 export type DetailsContainerStyledProps = StyledBreakpointsProps & {
-  $bgColor?: Extract<Keys<DefaultTheme['colors']>, 'lotion'>
+  $bgColor?: Extract<keyof DefaultTheme['colors'], 'lotion'>
   $disablePadding?: 'horizontal' | 'vertical'
 }
 

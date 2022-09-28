@@ -48,7 +48,7 @@ const CardTitle: FC<CardTitleProps> = ({
       items.push({
         key: 1,
         disabled: !isAssignedToCurrentUser || hasReclassificationRequest,
-        icon: <CheckCircleIcon />,
+        icon: <CheckCircleIcon $color='crayola' />,
         label: 'Выполнить заявку',
         onClick: onClickExecuteTask,
       })

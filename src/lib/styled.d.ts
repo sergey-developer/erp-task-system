@@ -15,6 +15,7 @@ declare module 'styled-components' {
       antiFlashWhite: string
       aliceBlue: string
       cosmicLatte: string
+      crayola: string
     }
     shadows: {
       shadow1: string

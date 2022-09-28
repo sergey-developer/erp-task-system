@@ -4,7 +4,7 @@ import {
   TaskExtraStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
-import { Keys, MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
+import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 
 export type SearchQueries = Partial<{
   searchByAssignee: string
@@ -22,7 +22,7 @@ export type ExtendedFilterQueries = {
 
 export type ExtendedFilterFormFields = {
   olaNextBreachTimeRange: MaybeNull<[Moment, Moment]>
-  searchField: Keys<SearchQueries>
+  searchField: keyof SearchQueries
   searchValue: string
   status: Array<TaskStatusEnum | TaskExtraStatusEnum>
   workGroupId: MaybeUndefined<string>
