@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
 import { TaskStatusEnum } from 'modules/task/constants/common'
-import { BooleanMap, Keys, MaybeUndefined } from 'shared/interfaces/utils'
+import { BooleanMap, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 const useTaskStatus = (
   status: MaybeUndefined<TaskStatusEnum>,
-): BooleanMap<`is${Keys<typeof TaskStatusEnum>}`> => {
+): BooleanMap<`is${keyof typeof TaskStatusEnum}`> => {
   return useMemo(
     () => ({
       isNew: isEqual(status, TaskStatusEnum.New),

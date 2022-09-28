@@ -19,7 +19,7 @@ import { GetTaskListQueryArgsModel } from 'modules/task/features/TaskList/models
 import TaskDetails from 'modules/task/features/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
-import { Keys, MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import ExtendedFilter, { ExtendedFilterProps } from '../ExtendedFilter'
@@ -184,7 +184,7 @@ const TaskListPage: FC = () => {
       newQueryArgs.sort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
           ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
-              key as Keys<typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS>
+              key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
             ]
           : undefined
     }

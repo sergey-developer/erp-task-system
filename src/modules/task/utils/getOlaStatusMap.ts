@@ -1,10 +1,10 @@
 import { TaskOlaStatusEnum } from 'modules/task/constants/common'
-import { BooleanMap, Keys } from 'shared/interfaces/utils'
+import { BooleanMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 const getOlaStatusMap = (
   olaStatus: TaskOlaStatusEnum,
-): BooleanMap<`is${Keys<typeof TaskOlaStatusEnum>}`> => ({
+): BooleanMap<`is${keyof typeof TaskOlaStatusEnum}`> => ({
   isExpired: isEqual(olaStatus, TaskOlaStatusEnum.Expired),
   isHalfExpired: isEqual(olaStatus, TaskOlaStatusEnum.HalfExpired),
   isNotExpired: isEqual(olaStatus, TaskOlaStatusEnum.NotExpired),

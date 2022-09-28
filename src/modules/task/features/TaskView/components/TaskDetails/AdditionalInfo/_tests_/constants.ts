@@ -1,5 +1,3 @@
-import { Keys } from 'shared/interfaces/utils'
-
 import { AdditionalInfoProps } from '../index'
 
 export const baseProps: Readonly<
@@ -31,7 +29,7 @@ export const requiredProps: Readonly<
 }
 
 export const notRequiredProps: Readonly<
-  Omit<AdditionalInfoProps, Keys<typeof baseProps> | Keys<typeof requiredProps>>
+  Omit<AdditionalInfoProps, keyof typeof baseProps | keyof typeof requiredProps>
 > = {
   email: 'email',
   sapId: 'sapId',

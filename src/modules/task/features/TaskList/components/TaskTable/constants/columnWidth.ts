@@ -1,22 +1,18 @@
-import { Keys } from 'shared/interfaces/utils'
-
 import { TaskTableListItem } from '../interfaces'
 
 export type AllColumnWidthMap =
   | 'noop'
-  | Keys<
-      Pick<
-        TaskTableListItem,
-        | 'id'
-        | 'recordId'
-        | 'name'
-        | 'title'
-        | 'assignee'
-        | 'workGroup'
-        | 'olaNextBreachTime'
-        | 'comment'
-        | 'createdAt'
-      >
+  | keyof Pick<
+      TaskTableListItem,
+      | 'id'
+      | 'recordId'
+      | 'name'
+      | 'title'
+      | 'assignee'
+      | 'workGroup'
+      | 'olaNextBreachTime'
+      | 'comment'
+      | 'createdAt'
     >
 
 export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {

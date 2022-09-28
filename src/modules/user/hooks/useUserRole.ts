@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import { UserRolesEnum } from 'shared/constants/roles'
-import { BooleanMap, Keys } from 'shared/interfaces/utils'
+import { BooleanMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-const useUserRole = (): BooleanMap<`is${Keys<typeof UserRolesEnum>}Role`> => {
+const useUserRole = (): BooleanMap<`is${keyof typeof UserRolesEnum}Role`> => {
   const user = useAuthenticatedUser()
 
   return useMemo(() => {

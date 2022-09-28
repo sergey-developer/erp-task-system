@@ -12,12 +12,12 @@ import {
   THEME_WORD,
 } from 'modules/task/constants/words'
 import TaskStatus from 'modules/task/features/TaskStatus'
-import { Keys, StringMap } from 'shared/interfaces/utils'
+import { StringMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
 
-export const DEFAULT_SEARCH_FIELD: Keys<SearchQueries> = 'searchByTitle'
+export const DEFAULT_SEARCH_FIELD: keyof SearchQueries = 'searchByTitle'
 
 export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
   olaNextBreachTimeRange: null,
@@ -27,23 +27,22 @@ export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
   workGroupId: undefined,
 }
 
-export const searchQueriesDict: StringMap<Keys<SearchQueries>> = {
+export const searchQueriesDict: StringMap<keyof SearchQueries> = {
   searchByName: OBJECT_WORD,
   searchByTitle: THEME_WORD,
   searchByAssignee: ASSIGNEE_WORD,
 }
 
 export const checkboxStatusOptions: Array<CheckboxOptionType> = [
-  ...Object.values(TaskExtraStatusEnum).map((value) => ({
-    label: <TaskStatus status={value} text={taskStatusDict[value]} />,
-    value,
+  ...Object.values(TaskExtraStatusEnum).map((status) => ({
+    label: <TaskStatus status={status} text={taskStatusDict[status]} />,
+    value: status,
   })),
   ...Object.values(TaskStatusEnum)
     .filter(
       (status) =>
         !isEqual(status, TaskStatusEnum.New) &&
-        !isEqual(status, TaskStatusEnum.Appointed) &&
-        !isEqual(status, TaskStatusEnum.Closed),
+        !isEqual(status, TaskStatusEnum.Appointed),
     )
     .map((status) => ({
       label: <TaskStatus status={status} text={taskStatusDict[status]} />,

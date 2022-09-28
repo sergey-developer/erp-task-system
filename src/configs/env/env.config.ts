@@ -1,6 +1,5 @@
 import isUndefined from 'lodash/isUndefined'
 
-import { Keys } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import commonConfig from './common.config'
@@ -45,7 +44,7 @@ class EnvConfig implements IEnvConfig {
   }
 
   private constructor(configs: ConfigsType) {
-    const env = commonConfig.env as Keys<ConfigsType>
+    const env = commonConfig.env as keyof ConfigsType
     const rawConfig = configs[env] || configs.development
 
     this.config = this.validate(rawConfig)
