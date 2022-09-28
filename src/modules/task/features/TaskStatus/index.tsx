@@ -3,34 +3,37 @@ import React, { FC } from 'react'
 
 import {
   TaskExtendedStatusEnum,
+  TaskExtraStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/enums'
+} from 'modules/task/constants/common'
 
 import { badgeByStatusMap, iconByStatusMap } from './constants'
 import { BadgeStyled } from './styles'
 
 type TaskStatusProps = {
-  status: TaskStatusEnum
-
-  value?: string
+  status: TaskStatusEnum | TaskExtraStatusEnum
   extendedStatus?: TaskExtendedStatusEnum
+
+  text?: string
 }
 
 const TaskStatus: FC<TaskStatusProps> = ({
-  value,
+  text,
   status: taskStatus,
   extendedStatus,
 }) => {
-  const icon = iconByStatusMap[extendedStatus || taskStatus]
+  const icon = iconByStatusMap[extendedStatus || (taskStatus as TaskStatusEnum)]
   const badge = badgeByStatusMap[taskStatus]
 
-  return value || badge || icon ? (
+  if (!text && !badge && !icon) return null
+
+  return (
     <Space>
       {icon ? icon : badge ? <BadgeStyled status={badge} /> : null}
 
-      {value}
+      {text}
     </Space>
-  ) : null
+  )
 }
 
 export default TaskStatus

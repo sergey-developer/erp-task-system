@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { TaskStatusEnum } from 'modules/task/constants/enums'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 import { BooleanMap, Keys, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
@@ -17,7 +17,6 @@ const useTaskStatus = (
       isInReclassification: isEqual(status, TaskStatusEnum.InReclassification),
       isReturned: isEqual(status, TaskStatusEnum.Returned),
       isClosed: isEqual(status, TaskStatusEnum.Closed),
-      isOverdue: isEqual(status, TaskStatusEnum.Overdue),
     }),
     [status],
   )

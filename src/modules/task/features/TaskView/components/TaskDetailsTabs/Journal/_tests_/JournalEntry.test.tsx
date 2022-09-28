@@ -4,7 +4,7 @@ import { render, screen } from '_tests_/utils'
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
-} from 'modules/task/constants/enums'
+} from 'modules/task/constants/common'
 
 import JournalEntry, { JournalEntryProps } from '../JournalEntry'
 

@@ -1,4 +1,4 @@
-import { FastFilterEnum } from 'modules/task/features/TaskList/constants/enums'
+import { FastFilterEnum } from 'modules/task/features/TaskList/constants/common'
 import { StringMap } from 'shared/interfaces/utils'
 
 export const fastFilterNamesDict: StringMap<FastFilterEnum> = {

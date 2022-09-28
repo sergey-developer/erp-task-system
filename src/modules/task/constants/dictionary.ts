@@ -1,29 +1,19 @@
-import { TaskStatusEnum } from 'modules/task/constants/enums'
+import {
+  TaskExtraStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import { StringMap } from 'shared/interfaces/utils'
 
-export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
-  [TaskStatusEnum.New]: 'Ожидает выполнения',
-  [TaskStatusEnum.Appointed]: 'Назначено',
-  [TaskStatusEnum.InProgress]: 'В работе',
-  [TaskStatusEnum.InReclassification]: 'На переклассификации',
-  [TaskStatusEnum.Awaiting]: 'В ожидании',
-  [TaskStatusEnum.Returned]: 'Возврат заявителем',
-  [TaskStatusEnum.Completed]: 'Выполнено',
-  [TaskStatusEnum.Closed]: 'Закрыта',
-  [TaskStatusEnum.Overdue]: 'Просроченные',
-}
-
-export const taskExtendedStatusDict: Readonly<
-  StringMap<Exclude<TaskStatusEnum, TaskStatusEnum.Overdue>>
+export const taskStatusDict: Readonly<
+  Partial<StringMap<TaskStatusEnum | TaskExtraStatusEnum>>
 > = {
-  [TaskStatusEnum.New]: 'Новая',
-  [TaskStatusEnum.Appointed]: 'Назначена',
+  [TaskExtraStatusEnum.Assigned]: 'Есть назначенный',
+  [TaskExtraStatusEnum.NotAssigned]: 'Без назначенного',
   [TaskStatusEnum.InProgress]: 'В работе',
-  [TaskStatusEnum.InReclassification]: 'На переклассификации',
+  [TaskStatusEnum.Completed]: 'Выполнено',
   [TaskStatusEnum.Awaiting]: 'В ожидании',
-  [TaskStatusEnum.Returned]: 'Возвращена',
-  [TaskStatusEnum.Completed]: 'Выполнена',
-  [TaskStatusEnum.Closed]: 'Закрыта',
+  [TaskStatusEnum.InReclassification]: 'На переклассификации',
+  [TaskStatusEnum.Returned]: 'Возврат заявителем',
 }
 
 export const taskImpactMap = new Map([

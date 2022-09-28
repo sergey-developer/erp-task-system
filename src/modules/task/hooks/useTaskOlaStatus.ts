@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { TaskOlaStatusEnum } from 'modules/task/constants/enums'
+import { TaskOlaStatusEnum } from 'modules/task/constants/common'
 import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
 
 const useTaskOlaStatus = (

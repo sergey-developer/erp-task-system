@@ -6,16 +6,19 @@ import {
   QuestionCircleIcon,
   RightCircleIcon,
 } from 'components/Icons'
-import { TaskStatusEnum } from 'modules/task/constants/enums'
+import {
+  TaskExtraStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 
 export const badgeByStatusMap: Partial<
   Record<
-    TaskStatusEnum,
+    TaskStatusEnum | TaskExtraStatusEnum,
     Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
   >
 > = {
-  [TaskStatusEnum.New]: 'default',
-  [TaskStatusEnum.Appointed]: 'default',
+  [TaskExtraStatusEnum.Assigned]: 'default',
+  [TaskExtraStatusEnum.NotAssigned]: 'default',
   [TaskStatusEnum.InProgress]: 'warning',
   [TaskStatusEnum.Completed]: 'success',
 }

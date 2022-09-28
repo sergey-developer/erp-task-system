@@ -1,7 +1,7 @@
 import {
   ReclassificationReasonEnum,
   ReclassificationRequestStatusEnum,
-} from 'modules/task/constants/enums'
+} from 'modules/task/constants/common'
 
 export type BaseTaskReclassificationRequestModel = {
   id: number

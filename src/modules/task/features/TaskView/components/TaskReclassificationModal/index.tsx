@@ -10,7 +10,7 @@ import {
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
-import { ReclassificationReasonEnum } from 'modules/task/constants/enums'
+import { ReclassificationReasonEnum } from 'modules/task/constants/common'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 
 import { TaskReclassificationRequestFormFields } from './interfaces'

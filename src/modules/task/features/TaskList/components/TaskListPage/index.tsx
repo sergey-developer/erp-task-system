@@ -12,7 +12,7 @@ import {
   FastFilterEnum,
   FilterTypeEnum,
   SortEnum,
-} from 'modules/task/features/TaskList/constants/enums'
+} from 'modules/task/features/TaskList/constants/common'
 import useGetTaskCounters from 'modules/task/features/TaskList/hooks/useGetTaskCounters'
 import useGetTaskList from 'modules/task/features/TaskList/hooks/useGetTaskList'
 import { GetTaskListQueryArgsModel } from 'modules/task/features/TaskList/models'

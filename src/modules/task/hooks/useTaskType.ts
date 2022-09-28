@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { TaskTypeEnum } from 'modules/task/constants/enums'
+import { TaskTypeEnum } from 'modules/task/constants/common'
 import { BooleanMap, Keys } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 

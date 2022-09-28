@@ -1,6 +1,9 @@
 import { Moment } from 'moment/moment'
 
-import { TaskStatusEnum } from 'modules/task/constants/enums'
+import {
+  TaskExtraStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import { Keys, MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 
 export type SearchQueries = Partial<{
@@ -13,6 +16,7 @@ export type ExtendedFilterQueries = {
   dateFrom?: string
   dateTo?: string
   status?: TaskStatusEnum[]
+  isAssigned?: TaskExtraStatusEnum[]
   workGroupId?: number
 } & SearchQueries
 
@@ -20,6 +24,6 @@ export type ExtendedFilterFormFields = {
   olaNextBreachTimeRange: MaybeNull<[Moment, Moment]>
   searchField: Keys<SearchQueries>
   searchValue: string
-  status: TaskStatusEnum[]
+  status: Array<TaskStatusEnum | TaskExtraStatusEnum>
   workGroupId: MaybeUndefined<string>
 }

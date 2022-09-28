@@ -1,7 +1,7 @@
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
-} from 'modules/task/constants/enums'
+} from 'modules/task/constants/common'
 import { TaskJournalModel } from 'modules/task/features/TaskView/models'
 
 export const getEmptyJournalResponseSuccess: TaskJournalModel = []
