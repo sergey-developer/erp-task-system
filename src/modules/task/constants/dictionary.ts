@@ -4,8 +4,16 @@ import {
 } from 'modules/task/constants/common'
 import { StringMap } from 'shared/interfaces/utils'
 
+import { FastFilterEnum } from '../features/TaskList/constants/common'
+
 export const taskStatusDict: Readonly<
-  Partial<StringMap<TaskStatusEnum | TaskExtraStatusEnum>>
+  Partial<
+    StringMap<
+      | TaskStatusEnum
+      | TaskExtraStatusEnum
+      | Extract<FastFilterEnum, FastFilterEnum.Overdue>
+    >
+  >
 > = {
   [TaskExtraStatusEnum.Assigned]: 'Есть назначенный',
   [TaskExtraStatusEnum.NotAssigned]: 'Без назначенного',
@@ -15,6 +23,7 @@ export const taskStatusDict: Readonly<
   [TaskStatusEnum.InReclassification]: 'На переклассификации',
   [TaskStatusEnum.Returned]: 'Возврат заявителем',
   [TaskStatusEnum.Closed]: 'Закрытые',
+  [FastFilterEnum.Overdue]: 'Просроченные',
 }
 
 export const taskImpactMap = new Map([

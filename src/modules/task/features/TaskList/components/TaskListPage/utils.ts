@@ -5,6 +5,7 @@ import {
 import { isEqual } from 'shared/utils/common/isEqual'
 import formatDate from 'shared/utils/date/formatDate'
 
+import { FastFilterEnum } from '../../constants/common'
 import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
@@ -30,7 +31,11 @@ export const mapExtendedFilterFormFieldsToQueries = (
       isEqual(s, TaskExtraStatusEnum.NotAssigned),
   )
 
-  const statusResult = status.filter((s) => !isAssigned.includes(s))
+  const filter = status.filter((s) => isEqual(s, FastFilterEnum.Overdue))
+
+  const statusResult = status.filter(
+    (s) => !isAssigned.includes(s) && !filter.includes(s),
+  )
 
   return {
     completeAtFrom: completeAt?.[0]
@@ -40,8 +45,9 @@ export const mapExtendedFilterFormFieldsToQueries = (
       ? formatDate(completeAt[1], DATE_FILTER_FORMAT)
       : undefined,
 
-    isAssigned: isAssigned as TaskExtraStatusEnum[],
     status: statusResult as TaskStatusEnum[],
+    filter: filter[0] as FastFilterEnum,
+    isAssigned: isAssigned as TaskExtraStatusEnum[],
     [searchField]: searchValue || undefined,
     workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
   }

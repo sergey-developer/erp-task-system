@@ -1,8 +1,7 @@
 import { FastFilterEnum } from 'modules/task/features/TaskList/constants/common'
-import { MaybeNull } from 'shared/interfaces/utils'
 
 export type FastFilterQueries = {
-  filter?: MaybeNull<FastFilterEnum>
+  filter?: FastFilterEnum
 }
 
 export type TaskIdFilterQueries = {

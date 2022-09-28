@@ -27,17 +27,18 @@ import {
 import ExtendedFilter, { ExtendedFilterProps } from '../index'
 import {
   getApplyButton,
-  getCheckbox,
+  getCheckboxIn,
   getCloseButton,
   getEndDateField,
   getKeywordField,
   getRadioButton,
   getResetAllButton,
   getStartDateField,
+  getStatusContainer,
   getWorkGroupField,
   queryWorkGroupField,
   userClickResetAllButton,
-  userClickResetButton,
+  userClickResetButtonIn,
   userFillExecuteBeforeField,
 } from './utils'
 
@@ -132,8 +133,10 @@ describe('Расширенный фильтр', () => {
     test('Отображается', () => {
       render(<ExtendedFilterWrapper visible />)
 
+      const container = getStatusContainer()
+
       taskStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckbox(new RegExp(statusText))
+        const checkbox = getCheckboxIn(container, new RegExp(statusText))
         expect(checkbox).toBeInTheDocument()
       })
     })
@@ -141,8 +144,10 @@ describe('Расширенный фильтр', () => {
     test('Имеет корректные значения по умолчанию', () => {
       render(<ExtendedFilterWrapper visible />)
 
+      const container = getStatusContainer()
+
       Object.entries(taskStatusDict).forEach(([status, statusText]) => {
-        const checkbox = getCheckbox(new RegExp(statusText))
+        const checkbox = getCheckboxIn(container, new RegExp(statusText))
         expect(checkbox).not.toBeChecked()
         expect(checkbox.value).toBe(status)
       })
@@ -151,8 +156,10 @@ describe('Расширенный фильтр', () => {
     test('Доступен для редактирования', () => {
       render(<ExtendedFilterWrapper visible />)
 
+      const container = getStatusContainer()
+
       taskStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckbox(new RegExp(statusText))
+        const checkbox = getCheckboxIn(container, new RegExp(statusText))
         expect(checkbox).toBeEnabled()
       })
     })
@@ -160,8 +167,10 @@ describe('Расширенный фильтр', () => {
     test('Можно выбрать любой статус', async () => {
       const { user } = render(<ExtendedFilterWrapper visible />)
 
+      const container = getStatusContainer()
+
       for await (const statusText of taskStatusDictValues) {
-        const checkbox = getCheckbox(new RegExp(statusText))
+        const checkbox = getCheckboxIn(container, new RegExp(statusText))
         await user.click(checkbox)
         expect(checkbox).toBeChecked()
       }
@@ -171,15 +180,17 @@ describe('Расширенный фильтр', () => {
       test('Кнопка "Сбросить"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
+        const container = getStatusContainer()
+
         for await (const statusText of taskStatusDictValues) {
-          const checkbox = getCheckbox(new RegExp(statusText))
+          const checkbox = getCheckboxIn(container, new RegExp(statusText))
           await user.click(checkbox)
         }
 
-        await userClickResetButton(user, 'filter-extended-status')
+        await userClickResetButtonIn(user, container)
 
         taskStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckbox(new RegExp(statusText))
+          const checkbox = getCheckboxIn(container, new RegExp(statusText))
           expect(checkbox).not.toBeChecked()
         })
       })
@@ -187,15 +198,17 @@ describe('Расширенный фильтр', () => {
       test('Кнопка "Сбросить всё"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
+        const container = getStatusContainer()
+
         for await (const statusText of taskStatusDictValues) {
-          const checkbox = getCheckbox(new RegExp(statusText))
+          const checkbox = getCheckboxIn(container, new RegExp(statusText))
           await user.click(checkbox)
         }
 
         await userClickResetAllButton(user)
 
         taskStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckbox(new RegExp(statusText))
+          const checkbox = getCheckboxIn(container, new RegExp(statusText))
           expect(checkbox).not.toBeChecked()
         })
       })
@@ -208,7 +221,13 @@ describe('Расширенный фильтр', () => {
         const resetAllButton = getResetAllButton()
         expect(resetAllButton).not.toBeEnabled()
 
-        const checkbox = getCheckbox(new RegExp(taskStatusDict.AWAITING!))
+        const container = getStatusContainer()
+
+        const checkbox = getCheckboxIn(
+          container,
+          new RegExp(taskStatusDict.AWAITING!),
+        )
+
         await user.click(checkbox)
 
         expect(resetAllButton).toBeEnabled()
@@ -220,7 +239,13 @@ describe('Расширенный фильтр', () => {
         const applyButton = getApplyButton()
         expect(applyButton).not.toBeEnabled()
 
-        const checkbox = getCheckbox(new RegExp(taskStatusDict.RETURNED!))
+        const container = getStatusContainer()
+
+        const checkbox = getCheckboxIn(
+          container,
+          new RegExp(taskStatusDict.RETURNED!),
+        )
+
         await user.click(checkbox)
 
         expect(applyButton).toBeEnabled()
@@ -276,7 +301,8 @@ describe('Расширенный фильтр', () => {
         const { startDateValue, endDateValue } =
           await userFillExecuteBeforeField(user)
 
-        await userClickResetButton(user, 'filter-extended-complete-at')
+        const container = screen.getByTestId('filter-extended-complete-at')
+        await userClickResetButtonIn(user, container)
 
         expect(getStartDateField()).not.toHaveDisplayValue(startDateValue)
         expect(getEndDateField()).not.toHaveDisplayValue(endDateValue)
@@ -396,7 +422,8 @@ describe('Расширенный фильтр', () => {
         await user.type(getKeywordField(), keyword)
         await user.click(getRadioButton(searchQueriesDict.searchByName))
 
-        await userClickResetButton(user, 'filter-extended-search-by-column')
+        const container = screen.getByTestId('filter-extended-search-by-column')
+        await userClickResetButtonIn(user, container)
 
         expect(getKeywordField()).not.toHaveDisplayValue(keyword)
         expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
@@ -626,7 +653,8 @@ describe('Расширенный фильтр', () => {
           const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
           await user.click(workGroupOption)
 
-          await userClickResetButton(user, 'filter-extended-work-group')
+          const container = screen.getByTestId('filter-extended-work-group')
+          await userClickResetButtonIn(user, container)
 
           const selectedOption = getSelectedOption(workGroupField)
           expect(selectedOption).not.toBeInTheDocument()
