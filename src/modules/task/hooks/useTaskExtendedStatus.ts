@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { TaskExtendedStatusEnum } from 'modules/task/constants/enums'
+import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import { BooleanMap, Keys } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
@@ -10,7 +10,6 @@ const useTaskExtendedStatus = (
   return useMemo(
     () => ({
       isNew: isEqual(status, TaskExtendedStatusEnum.New),
-      isAppointed: isEqual(status, TaskExtendedStatusEnum.Appointed),
       isAwaiting: isEqual(status, TaskExtendedStatusEnum.Awaiting),
       isClosed: isEqual(status, TaskExtendedStatusEnum.Closed),
       isCompleted: isEqual(status, TaskExtendedStatusEnum.Completed),

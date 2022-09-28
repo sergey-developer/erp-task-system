@@ -21,7 +21,7 @@ const Assignee: FC<AssigneeProps> = ({ assignee, status, name }) => {
         <Text className='break-text'>{name}</Text>
 
         {assignee && status && (
-          <TaskStatus status={status} value={taskStatusDict[status]} />
+          <TaskStatus status={status} text={taskStatusDict[status]} />
         )}
       </Space>
     </Space>

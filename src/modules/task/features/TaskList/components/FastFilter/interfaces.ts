@@ -1,4 +1,4 @@
-import { FastFilterEnum } from 'modules/task/features/TaskList/constants/enums'
+import { FastFilterEnum } from 'modules/task/features/TaskList/constants/common'
 import { GetTaskCountersResponseModel } from 'modules/task/features/TaskList/models'
 import { MaybeUndefined, Nullable } from 'shared/interfaces/utils'
 

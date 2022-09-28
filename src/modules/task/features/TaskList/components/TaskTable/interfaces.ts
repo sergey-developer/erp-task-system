@@ -1,6 +1,6 @@
 import { TableProps } from 'antd/es/table/Table'
 
-import { SortEnum } from 'modules/task/features/TaskList/constants/enums'
+import { SortEnum } from 'modules/task/features/TaskList/constants/common'
 import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 
 export type TaskTableListItem = Pick<

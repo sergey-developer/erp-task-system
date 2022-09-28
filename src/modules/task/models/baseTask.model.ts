@@ -5,7 +5,7 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/enums'
+} from 'modules/task/constants/common'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type BaseTaskModel = {

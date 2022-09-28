@@ -4,7 +4,7 @@ import { getStoreWithAuth } from '_tests_/utils/auth'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/enums'
+} from 'modules/task/constants/common'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { asyncNoop } from 'shared/utils/common/noop'

@@ -1,6 +1,3 @@
-/**
- * TaskStatusEnum будет меняться
- */
 export enum TaskStatusEnum {
   New = 'NEW',
   Appointed = 'APPOINTED',
@@ -10,12 +7,10 @@ export enum TaskStatusEnum {
   InReclassification = 'IN_RECLASSIFICATION',
   Returned = 'RETURNED',
   Closed = 'CLOSED',
-  Overdue = 'OVERDUE',
 }
 
 export enum TaskExtendedStatusEnum {
   New = 'NEW',
-  Appointed = 'APPOINTED',
   InProgress = 'IN_PROGRESS',
   Completed = 'COMPLETED',
   Awaiting = 'AWAITING',
@@ -106,4 +101,9 @@ export enum SuspendReasonEnum {
   AwaitingRelease = 'AWAITING_RELEASE',
   AwaitingNonItWork = 'AWAITING_NON_IT_WORK',
   AwaitingInformationFromFirstLine = 'AWAITING_INFORMATION_FROM_FIRST_LINE',
+}
+
+export enum TaskExtraStatusEnum {
+  Assigned = 'True',
+  NotAssigned = 'False',
 }

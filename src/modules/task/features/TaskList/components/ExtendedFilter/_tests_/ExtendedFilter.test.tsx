@@ -208,7 +208,7 @@ describe('Расширенный фильтр', () => {
         const resetAllButton = getResetAllButton()
         expect(resetAllButton).not.toBeEnabled()
 
-        const checkbox = getCheckbox(new RegExp(taskStatusDict.NEW))
+        const checkbox = getCheckbox(new RegExp(taskStatusDict.AWAITING!))
         await user.click(checkbox)
 
         expect(resetAllButton).toBeEnabled()
@@ -220,7 +220,7 @@ describe('Расширенный фильтр', () => {
         const applyButton = getApplyButton()
         expect(applyButton).not.toBeEnabled()
 
-        const checkbox = getCheckbox(new RegExp(taskStatusDict.APPOINTED))
+        const checkbox = getCheckbox(new RegExp(taskStatusDict.RETURNED!))
         await user.click(checkbox)
 
         expect(applyButton).toBeEnabled()
