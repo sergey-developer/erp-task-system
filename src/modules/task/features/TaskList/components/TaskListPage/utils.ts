@@ -3,6 +3,7 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { isEqual } from 'shared/utils/common/isEqual'
+import formatDate from 'shared/utils/date/formatDate'
 
 import {
   ExtendedFilterFormFields,
@@ -21,13 +22,8 @@ import { DATE_FILTER_FORMAT } from './constants'
 export const mapExtendedFilterFormFieldsToQueries = (
   fields: ExtendedFilterFormFields,
 ): ExtendedFilterQueries => {
-  const {
-    olaNextBreachTimeRange,
-    searchField,
-    searchValue,
-    status,
-    workGroupId,
-  } = fields
+  const { completeAt, searchField, searchValue, status, workGroupId } = fields
+
   const isAssigned = status.filter(
     (s) =>
       isEqual(s, TaskExtraStatusEnum.Assigned) ||
@@ -37,10 +33,12 @@ export const mapExtendedFilterFormFieldsToQueries = (
   const statusResult = status.filter((s) => !isAssigned.includes(s))
 
   return {
-    ...(olaNextBreachTimeRange && {
-      dateFrom: olaNextBreachTimeRange[0].format(DATE_FILTER_FORMAT),
-      dateTo: olaNextBreachTimeRange[1].format(DATE_FILTER_FORMAT),
-    }),
+    completeAtFrom: completeAt?.[0]
+      ? formatDate(completeAt[0], DATE_FILTER_FORMAT)
+      : undefined,
+    completeAtTo: completeAt?.[1]
+      ? formatDate(completeAt[1], DATE_FILTER_FORMAT)
+      : undefined,
 
     isAssigned: isAssigned as TaskExtraStatusEnum[],
     status: statusResult as TaskStatusEnum[],

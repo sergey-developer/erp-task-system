@@ -43,10 +43,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
     useGetWorkGroupList()
 
   const statusValue = Form.useWatch('status', form)
-  const olaNextBreachTimeRangeValue = Form.useWatch(
-    'olaNextBreachTimeRange',
-    form,
-  )
+  const completeAtValue = Form.useWatch('completeAt', form)
   const workGroupIdValue = Form.useWatch('workGroupId', form)
   const searchFieldValue = Form.useWatch('searchField', form)
   const searchValueValue = Form.useWatch('searchValue', form)
@@ -54,7 +51,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   const formValues: ExtendedFilterFormFields = {
     searchValue: searchValueValue,
     status: statusValue,
-    olaNextBreachTimeRange: olaNextBreachTimeRangeValue,
+    completeAt: completeAtValue,
     workGroupId: workGroupIdValue,
     searchField: searchFieldValue,
   }
@@ -107,13 +104,13 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock withDivider data-testid='filter-extended-execution-period'>
+        <FilterBlock withDivider data-testid='filter-extended-complete-at'>
           <FilterBlockLabel
-            label='Период выполнения'
-            onReset={resetFields(['olaNextBreachTimeRange'])}
+            label='Выполнить до'
+            onReset={resetFields(['completeAt'])}
           />
 
-          <Form.Item name='olaNextBreachTimeRange'>
+          <Form.Item name='completeAt'>
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>
