@@ -172,6 +172,11 @@ const TaskListPage: FC = () => {
       limit: pagination.pageSize!,
     }
 
+    /**
+     * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
+     * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
+     * при изначальной реализации
+     */
     if (sorter) {
       const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
 
