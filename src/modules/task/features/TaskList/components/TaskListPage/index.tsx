@@ -16,6 +16,7 @@ import useGetTaskList from 'modules/task/features/TaskList/hooks/useGetTaskList'
 import { GetTaskListQueryArgsModel } from 'modules/task/features/TaskList/models'
 import TaskDetails from 'modules/task/features/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
+import { SortOrderEnum } from 'shared/constants/sort'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
@@ -58,7 +59,7 @@ const TaskListPage: FC = () => {
     filter: initialFastFilter,
     limit: DEFAULT_PAGE_SIZE,
     offset: 0,
-    sort: getSort('workGroup', 'descend'),
+    sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
   })
 
   const {
@@ -171,7 +172,7 @@ const TaskListPage: FC = () => {
       offset: (pagination.current! - 1) * pagination.pageSize!,
       limit: pagination.pageSize!,
     }
-
+    // вынести код сортировки в отдельный обработчик
     /**
      * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
      * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
@@ -183,7 +184,7 @@ const TaskListPage: FC = () => {
       if (columnKey && columnKey in sortableFieldToSortValues) {
         newQueryArgs.sort = getSort(
           columnKey as SortableFieldKey,
-          order || 'ascend',
+          order || SortOrderEnum.Ascend,
         )
       }
     }
