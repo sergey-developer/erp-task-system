@@ -8,6 +8,7 @@ const setup = () => {
 
   notification.config({
     duration: ERROR_NOTIFICATION_DURATION,
+    top: 50,
   })
 }
 

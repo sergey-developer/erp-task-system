@@ -2,9 +2,9 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { ColumnsType } from 'antd/es/table'
 import React, { FC, useMemo } from 'react'
 
-import { SMART_SORT_DIRECTIONS_TO_SORT_FIELDS } from 'modules/task/features/TaskList/components/TaskListPage/constants'
+import { sortableFieldConfig } from 'modules/task/features/TaskList/components/TaskListPage/constants'
 
-import { TABLE_COLUMNS } from './constants/columns'
+import { tableColumns } from './constants/columns'
 import { localeConfig } from './constants/locale'
 import { paginationConfig } from './constants/pagination'
 import { TaskTableListItem, TaskTableProps } from './interfaces'
@@ -26,11 +26,11 @@ const TaskTable: FC<TaskTableProps> = ({
   const sortedColumns: ColumnsType<TaskTableListItem> = useMemo(() => {
     const sorterResult =
       (sorting &&
-        sorting in SMART_SORT_DIRECTIONS_TO_SORT_FIELDS &&
-        SMART_SORT_DIRECTIONS_TO_SORT_FIELDS[sorting]) ||
+        sorting in sortableFieldConfig &&
+        sortableFieldConfig[sorting]) ||
       undefined
 
-    return applySortingToColumn(TABLE_COLUMNS, sorterResult)
+    return applySortingToColumn(tableColumns, sorterResult)
   }, [sorting])
 
   const columns: ColumnsType<TaskTableListItem> = useMemo(

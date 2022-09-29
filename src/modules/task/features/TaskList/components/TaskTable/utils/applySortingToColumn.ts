@@ -11,6 +11,7 @@ const applySortingToColumn = (
   sorterResult: MaybeUndefined<SorterResult<TaskTableListItem>>,
 ): ColumnsType<TaskTableListItem> => {
   if (!sorterResult) return columns
+
   return columns.map((field) => {
     if (isEqual(field.key, sorterResult.columnKey)) {
       return {

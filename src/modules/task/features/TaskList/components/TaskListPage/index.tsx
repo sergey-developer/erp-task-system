@@ -11,7 +11,7 @@ import { FilterIcon, SyncIcon } from 'components/Icons'
 import {
   FastFilterEnum,
   FilterTypeEnum,
-  SortEnum,
+  SortableFieldKeysEnum,
 } from 'modules/task/features/TaskList/constants/common'
 import useGetTaskCounters from 'modules/task/features/TaskList/hooks/useGetTaskCounters'
 import useGetTaskList from 'modules/task/features/TaskList/hooks/useGetTaskList'
@@ -34,9 +34,9 @@ import { TaskTableListItem } from '../TaskTable/interfaces'
 import {
   DEFAULT_PAGE_SIZE,
   SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
-  SORTED_FIELDS,
   SortDirectionsEnum,
-  SortedFieldsEnum,
+  SortableFieldsEnum,
+  sortableFields,
 } from './constants'
 import { FastFilterQueries, TaskIdFilterQueries } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
@@ -61,7 +61,7 @@ const TaskListPage: FC = () => {
     filter: initialFastFilter,
     limit: DEFAULT_PAGE_SIZE,
     offset: 0,
-    sort: SortEnum.ByOlaAsc,
+    sort: SortableFieldKeysEnum.ByOlaAsc,
   })
 
   const {
@@ -170,7 +170,7 @@ const TaskListPage: FC = () => {
   const handleChangeTable = useCallback<
     NonNullable<TableProps<TaskTableListItem>['onChange']>
   >((pagination, filters, sorter) => {
-    const { field, order = SortDirectionsEnum.ascend } = isArray(sorter)
+    const { field, order = SortDirectionsEnum.Ascend } = isArray(sorter)
       ? sorter[0]
       : sorter
 
@@ -179,7 +179,7 @@ const TaskListPage: FC = () => {
       limit: pagination.pageSize!,
     }
 
-    if (SORTED_FIELDS.includes(field as SortedFieldsEnum)) {
+    if (sortableFields.includes(field as SortableFieldsEnum)) {
       const key = camelize(`${field}_${order}`)
       newQueryArgs.sort =
         key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS

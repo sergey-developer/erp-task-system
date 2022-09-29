@@ -23,6 +23,8 @@ export const badgeByStatusMap: Partial<
 > = {
   [TaskExtraStatusEnum.Assigned]: 'default',
   [TaskExtraStatusEnum.NotAssigned]: 'default',
+  [TaskStatusEnum.New]: 'default',
+  [TaskStatusEnum.Appointed]: 'default',
   [TaskStatusEnum.InProgress]: 'warning',
   [TaskStatusEnum.Completed]: 'success',
 }

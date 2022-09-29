@@ -1,6 +1,6 @@
 import { TableProps } from 'antd/es/table/Table'
 
-import { SortEnum } from 'modules/task/features/TaskList/constants/common'
+import { SortableFieldKeysEnum } from 'modules/task/features/TaskList/constants/common'
 import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 
 export type TaskTableListItem = Pick<
@@ -28,5 +28,5 @@ export type TaskTableProps = Pick<
   | 'onRow'
   | 'rowClassName'
 > & {
-  sorting?: SortEnum
+  sorting?: SortableFieldKeysEnum
 }

@@ -1,6 +1,6 @@
 import { SorterResult } from 'antd/es/table/interface'
 
-import { SortEnum } from 'modules/task/features/TaskList/constants/common'
+import { SortableFieldKeysEnum } from 'modules/task/features/TaskList/constants/common'
 
 import { TaskTableListItem } from '../TaskTable/interfaces'
 
@@ -9,45 +9,145 @@ export const DEFAULT_PAGE_SIZE = 100
 export const DATE_FILTER_FORMAT = 'YYYY[-]MM[-]DD'
 
 export enum SortDirectionsEnum {
-  ascend = 'ascend',
-  descend = 'descend',
+  Ascend = 'ascend',
+  Descend = 'descend',
 }
 
-export enum SortedFieldsEnum {
-  olaNextBreachTime = 'olaNextBreachTime',
+export enum SortableFieldsEnum {
+  id = 'id',
+  name = 'name',
+  title = 'title',
+  comment = 'comment',
+  assignee = 'assignee',
+  recordId = 'recordId',
+  workGroup = 'workGroup',
   createdAt = 'createdAt',
+  olaNextBreachTime = 'olaNextBreachTime',
 }
 
-export const SORTED_FIELDS = [
-  SortedFieldsEnum.olaNextBreachTime,
-  SortedFieldsEnum.createdAt,
+export const sortableFields = [
+  SortableFieldsEnum.id,
+  SortableFieldsEnum.name,
+  SortableFieldsEnum.title,
+  SortableFieldsEnum.comment,
+  SortableFieldsEnum.recordId,
+  SortableFieldsEnum.assignee,
+  SortableFieldsEnum.workGroup,
+  SortableFieldsEnum.createdAt,
+  SortableFieldsEnum.olaNextBreachTime,
 ]
 
 export const SMART_SORT_TO_FIELD_SORT_DIRECTIONS = {
-  olaNextBreachTimeDescend: SortEnum.ByOlaDesc,
-  olaNextBreachTimeAscend: SortEnum.ByOlaAsc,
-  createdAtDescend: SortEnum.ByCreatedDateDesc,
-  createdAtAscend: SortEnum.ByCreatedDateAsc,
+  idAscend: SortableFieldKeysEnum.ByIdAsc,
+  idDescend: SortableFieldKeysEnum.ByIdDesc,
+
+  nameAscend: SortableFieldKeysEnum.ByNameAsc,
+  nameDescend: SortableFieldKeysEnum.ByNameDesc,
+
+  titleAscend: SortableFieldKeysEnum.ByTitleAsc,
+  titleDescend: SortableFieldKeysEnum.ByTitleDesc,
+
+  commentAscend: SortableFieldKeysEnum.ByCommentAsc,
+  commentDescend: SortableFieldKeysEnum.ByCommentDesc,
+
+  assigneeAscend: SortableFieldKeysEnum.ByAssigneeAsc,
+  assigneeDescend: SortableFieldKeysEnum.ByAssigneeDesc,
+
+  workGroupAscend: SortableFieldKeysEnum.ByWorkGroupAsc,
+  workGroupDescend: SortableFieldKeysEnum.ByWorkGroupDesc,
+
+  recordIdAscend: SortableFieldKeysEnum.ByRecordIdAsc,
+  recordIdDescend: SortableFieldKeysEnum.ByRecordIdDesc,
+
+  createdAtAscend: SortableFieldKeysEnum.ByCreatedDateAsc,
+  createdAtDescend: SortableFieldKeysEnum.ByCreatedDateDesc,
+
+  olaNextBreachTimeAscend: SortableFieldKeysEnum.ByOlaAsc,
+  olaNextBreachTimeDescend: SortableFieldKeysEnum.ByOlaDesc,
 }
 
-export const SMART_SORT_DIRECTIONS_TO_SORT_FIELDS: Record<
-  SortEnum,
+export const sortableFieldConfig: Record<
+  SortableFieldKeysEnum,
   SorterResult<TaskTableListItem>
 > = {
-  [SortEnum.ByOlaDesc]: {
-    columnKey: SortedFieldsEnum.olaNextBreachTime,
-    order: SortDirectionsEnum.descend,
+  [SortableFieldKeysEnum.ByIdAsc]: {
+    columnKey: SortableFieldsEnum.id,
+    order: SortDirectionsEnum.Ascend,
   },
-  [SortEnum.ByOlaAsc]: {
-    columnKey: SortedFieldsEnum.olaNextBreachTime,
-    order: SortDirectionsEnum.ascend,
+  [SortableFieldKeysEnum.ByIdDesc]: {
+    columnKey: SortableFieldsEnum.id,
+    order: SortDirectionsEnum.Descend,
   },
-  [SortEnum.ByCreatedDateDesc]: {
-    columnKey: SortedFieldsEnum.createdAt,
-    order: SortDirectionsEnum.descend,
+
+  [SortableFieldKeysEnum.ByOlaAsc]: {
+    columnKey: SortableFieldsEnum.olaNextBreachTime,
+    order: SortDirectionsEnum.Ascend,
   },
-  [SortEnum.ByCreatedDateAsc]: {
-    columnKey: SortedFieldsEnum.createdAt,
-    order: SortDirectionsEnum.ascend,
+  [SortableFieldKeysEnum.ByOlaDesc]: {
+    columnKey: SortableFieldsEnum.olaNextBreachTime,
+    order: SortDirectionsEnum.Descend,
+  },
+
+  [SortableFieldKeysEnum.ByNameAsc]: {
+    columnKey: SortableFieldsEnum.name,
+    order: SortDirectionsEnum.Ascend,
+  },
+  [SortableFieldKeysEnum.ByNameDesc]: {
+    columnKey: SortableFieldsEnum.name,
+    order: SortDirectionsEnum.Descend,
+  },
+
+  [SortableFieldKeysEnum.ByTitleAsc]: {
+    columnKey: SortableFieldsEnum.title,
+    order: SortDirectionsEnum.Ascend,
+  },
+  [SortableFieldKeysEnum.ByTitleDesc]: {
+    columnKey: SortableFieldsEnum.title,
+    order: SortDirectionsEnum.Descend,
+  },
+
+  [SortableFieldKeysEnum.ByCommentAsc]: {
+    columnKey: SortableFieldsEnum.comment,
+    order: SortDirectionsEnum.Ascend,
+  },
+  [SortableFieldKeysEnum.ByCommentDesc]: {
+    columnKey: SortableFieldsEnum.comment,
+    order: SortDirectionsEnum.Descend,
+  },
+
+  [SortableFieldKeysEnum.ByAssigneeAsc]: {
+    columnKey: SortableFieldsEnum.assignee,
+    order: SortDirectionsEnum.Ascend,
+  },
+  [SortableFieldKeysEnum.ByAssigneeDesc]: {
+    columnKey: SortableFieldsEnum.assignee,
+    order: SortDirectionsEnum.Descend,
+  },
+
+  [SortableFieldKeysEnum.ByWorkGroupAsc]: {
+    columnKey: SortableFieldsEnum.workGroup,
+    order: SortDirectionsEnum.Ascend,
+  },
+  [SortableFieldKeysEnum.ByWorkGroupDesc]: {
+    columnKey: SortableFieldsEnum.workGroup,
+    order: SortDirectionsEnum.Descend,
+  },
+
+  [SortableFieldKeysEnum.ByRecordIdAsc]: {
+    columnKey: SortableFieldsEnum.recordId,
+    order: SortDirectionsEnum.Ascend,
+  },
+  [SortableFieldKeysEnum.ByRecordIdDesc]: {
+    columnKey: SortableFieldsEnum.recordId,
+    order: SortDirectionsEnum.Descend,
+  },
+
+  [SortableFieldKeysEnum.ByCreatedDateAsc]: {
+    columnKey: SortableFieldsEnum.createdAt,
+    order: SortDirectionsEnum.Ascend,
+  },
+  [SortableFieldKeysEnum.ByCreatedDateDesc]: {
+    columnKey: SortableFieldsEnum.createdAt,
+    order: SortDirectionsEnum.Descend,
   },
 }

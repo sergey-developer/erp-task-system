@@ -1,4 +1,4 @@
-import { SortEnum } from 'modules/task/features/TaskList/constants/common'
+import { SortableFieldKeysEnum } from 'modules/task/features/TaskList/constants/common'
 import { PaginatedListResponseModel } from 'shared/models'
 
 import { ExtendedFilterQueries } from '../components/ExtendedFilter/interfaces'
@@ -15,7 +15,7 @@ export type GetTaskListQueryArgsModel = {
   hideAwaitingTask?: boolean
   limit: number
   offset: number
-  sort?: SortEnum
+  sort?: SortableFieldKeysEnum
   userId?: number
 } & ExtendedFilterQueries &
   FastFilterQueries &

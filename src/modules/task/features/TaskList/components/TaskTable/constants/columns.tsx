@@ -18,7 +18,7 @@ import { TaskTableListItem } from '../interfaces'
 
 const { Text } = Typography
 
-export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
+export const tableColumns: ColumnsType<TaskTableListItem> = [
   {
     key: 'noop',
     render: (value: string, { status, extendedStatus }) => (
@@ -30,23 +30,27 @@ export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
     title: 'Заявка',
     dataIndex: 'id',
     key: 'id',
+    sorter: true,
   },
   {
     title: 'Внеш.номер',
     dataIndex: 'recordId',
     key: 'recordId',
+    sorter: true,
   },
   {
     title: OBJECT_WORD,
     dataIndex: 'name',
     key: 'name',
     ellipsis: true,
+    sorter: true,
   },
   {
     title: THEME_WORD,
     dataIndex: 'title',
     key: 'title',
     ellipsis: true,
+    sorter: true,
   },
   {
     title: ASSIGNEE_WORD,
@@ -55,6 +59,7 @@ export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
     render: (value: MaybeNull<TaskTableListItem['assignee']>) =>
       value ? getShortUserName(value) : '',
     ellipsis: true,
+    sorter: true,
   },
   {
     title: 'Рабочая группа',
@@ -63,6 +68,7 @@ export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
     render: (value: MaybeNull<TaskTableListItem['workGroup']>) =>
       value && value.name,
     ellipsis: true,
+    sorter: true,
   },
   {
     title: 'Выполнить до',
@@ -83,6 +89,7 @@ export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
     dataIndex: 'comment',
     key: 'comment',
     ellipsis: true,
+    sorter: true,
   },
   {
     title: 'Дата создания',
