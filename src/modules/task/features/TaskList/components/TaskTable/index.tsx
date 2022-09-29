@@ -1,21 +1,18 @@
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import { ColumnsType } from 'antd/es/table'
-import React, { FC, useMemo } from 'react'
-
-import { sortableFieldConfig } from 'modules/task/features/TaskList/components/TaskListPage/constants'
+import React, { FC } from 'react'
 
 import { tableColumns } from './constants/columns'
 import { localeConfig } from './constants/locale'
 import { paginationConfig } from './constants/pagination'
 import { TaskTableListItem, TaskTableProps } from './interfaces'
 import { TableStyled } from './styles'
-import applySortingToColumn from './utils/applySortingToColumn'
+import applySortToColumn from './utils/applySortToColumn'
 import applyWidthToColumn from './utils/applyWidthToColumn'
 
 const TaskTable: FC<TaskTableProps> = ({
   dataSource,
   loading,
-  sorting,
+  sort,
   onChange,
   onRow,
   pagination,
@@ -23,20 +20,10 @@ const TaskTable: FC<TaskTableProps> = ({
 }) => {
   const breakpoints = useBreakpoint()
 
-  const sortedColumns: ColumnsType<TaskTableListItem> = useMemo(() => {
-    const sorterResult =
-      (sorting &&
-        sorting in sortableFieldConfig &&
-        sortableFieldConfig[sorting]) ||
-      undefined
-
-    return applySortingToColumn(tableColumns, sorterResult)
-  }, [sorting])
-
-  const columns: ColumnsType<TaskTableListItem> = useMemo(
-    () => applyWidthToColumn(sortedColumns, breakpoints),
-    [breakpoints, sortedColumns],
-  )
+  const columns = tableColumns.map((col) => {
+    const sortedColumn = sort ? applySortToColumn(col, sort) : col
+    return applyWidthToColumn(sortedColumn, breakpoints)
+  })
 
   return (
     <TableStyled<TaskTableListItem>
