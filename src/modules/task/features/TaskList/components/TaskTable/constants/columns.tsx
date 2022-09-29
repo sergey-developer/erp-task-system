@@ -12,6 +12,7 @@ import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { MaybeNull } from 'shared/interfaces/utils'
+import valueOr from 'shared/utils/common/valueOr'
 import formatDate from 'shared/utils/date/formatDate'
 
 import { TaskTableListItem } from '../interfaces'
@@ -61,7 +62,7 @@ export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
     dataIndex: 'workGroup',
     key: 'workGroup',
     render: (value: MaybeNull<TaskTableListItem['workGroup']>) =>
-      value && value.name,
+      valueOr(value?.name, 'I линия поддержки'),
     ellipsis: true,
   },
   {

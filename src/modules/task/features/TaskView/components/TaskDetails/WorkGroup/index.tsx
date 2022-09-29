@@ -9,9 +9,9 @@ import TaskSecondLineModal from 'modules/task/features/TaskView/components/TaskS
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/features/TaskView/permissions/taskWorkGroup.permissions'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
-import useUserRole from 'modules/user/hooks/useUserRole'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
+import valueOr from 'shared/utils/common/valueOr'
 
 const { Text } = Typography
 
@@ -41,8 +41,6 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   hasReclassificationRequest,
 }) => {
-  const { isFirstLineSupportRole } = useUserRole()
-
   const [
     isTaskSecondLineModalOpened,
     { setTrue: openTaskSecondLineModal, setFalse: closeTaskSecondLineModal },
@@ -98,9 +96,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
           </Permissions>
         </LabeledData>
 
-        <Text>
-          {isFirstLineSupportRole ? 'I линия поддержки' : workGroup?.name}
-        </Text>
+        <Text>{valueOr(workGroup?.name, 'I линия поддержки')}</Text>
       </Space>
 
       {isTaskSecondLineModalOpened && (
