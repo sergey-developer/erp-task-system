@@ -1,5 +1,5 @@
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 
 import { tableColumns } from './constants/columns'
 import { localeConfig } from './constants/locale'
@@ -20,10 +20,14 @@ const TaskTable: FC<TaskTableProps> = ({
 }) => {
   const breakpoints = useBreakpoint()
 
-  const columns = tableColumns.map((col) => {
-    const sortedColumn = sort ? applySortToColumn(col, sort) : col
-    return applyWidthToColumn(sortedColumn, breakpoints)
-  })
+  const columns = useMemo(
+    () =>
+      tableColumns.map((col) => {
+        const sortedColumn = sort ? applySortToColumn(col, sort) : col
+        return applyWidthToColumn(sortedColumn, breakpoints)
+      }),
+    [breakpoints, sort],
+  )
 
   return (
     <TableStyled<TaskTableListItem>

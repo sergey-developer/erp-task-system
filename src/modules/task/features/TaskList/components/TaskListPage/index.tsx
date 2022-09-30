@@ -1,7 +1,16 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Form, Row, Space, TableProps } from 'antd'
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+  Space,
+  TablePaginationConfig,
+  TableProps,
+} from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
+import { SorterResult } from 'antd/es/table/interface'
 import isArray from 'lodash/isArray'
 import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useState } from 'react'
@@ -164,15 +173,9 @@ const TaskListPage: FC = () => {
     setSelectedTask(null)
   }, [setSelectedTask])
 
-  /** обработка изменений сортировки/пагинации в таблице */
-  const handleChangeTable = useCallback<
-    NonNullable<TableProps<TaskTableListItem>['onChange']>
-  >((pagination, _, sorter) => {
-    const newQueryArgs: Partial<GetTaskListQueryArgsModel> = {
-      offset: (pagination.current! - 1) * pagination.pageSize!,
-      limit: pagination.pageSize!,
-    }
-    // вынести код сортировки в отдельный обработчик
+  const handleTableSort = (
+    sorter: SorterResult<TaskTableListItem> | SorterResult<TaskTableListItem>[],
+  ) => {
     /**
      * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
      * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
@@ -182,17 +185,30 @@ const TaskListPage: FC = () => {
       const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
 
       if (columnKey && columnKey in sortableFieldToSortValues) {
-        newQueryArgs.sort = getSort(
-          columnKey as SortableFieldKey,
-          order || SortOrderEnum.Ascend,
-        )
+        setQueryArgs((prevState) => ({
+          ...prevState,
+          sort: getSort(
+            columnKey as SortableFieldKey,
+            order || SortOrderEnum.Ascend,
+          ),
+        }))
       }
     }
+  }
 
-    setQueryArgs((state) => ({
-      ...state,
-      ...newQueryArgs,
+  const handleTablePagination = (pagination: TablePaginationConfig) => {
+    setQueryArgs((prevState) => ({
+      ...prevState,
+      offset: (pagination.current! - 1) * pagination.pageSize!,
+      limit: pagination.pageSize!,
     }))
+  }
+
+  const handleChangeTable = useCallback<
+    NonNullable<TableProps<TaskTableListItem>['onChange']>
+  >((pagination, _, sorter) => {
+    handleTableSort(sorter)
+    handleTablePagination(pagination)
   }, [])
 
   const triggerFilterChange = (
