@@ -11,10 +11,3 @@ export enum FastFilterEnum {
   Overdue = 'OVERDUE',
   Closed = 'CLOSED',
 }
-
-export enum SortEnum {
-  ByCreatedDateAsc = 'created_at',
-  ByCreatedDateDesc = '-created_at',
-  ByOlaAsc = 'ola_next_breach_time',
-  ByOlaDesc = '-ola_next_breach_time',
-}

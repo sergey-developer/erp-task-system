@@ -19,7 +19,7 @@ import { TaskTableListItem } from '../interfaces'
 
 const { Text } = Typography
 
-export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
+export const tableColumns: ColumnsType<TaskTableListItem> = [
   {
     key: 'noop',
     render: (value: string, { status, extendedStatus }) => (
@@ -28,47 +28,53 @@ export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
     align: 'center',
   },
   {
-    title: 'Заявка',
-    dataIndex: 'id',
     key: 'id',
+    dataIndex: 'id',
+    title: 'Заявка',
+    sorter: true,
   },
   {
-    title: 'Внеш.номер',
-    dataIndex: 'recordId',
     key: 'recordId',
+    dataIndex: 'recordId',
+    title: 'Внеш.номер',
+    sorter: true,
   },
   {
-    title: OBJECT_WORD,
-    dataIndex: 'name',
     key: 'name',
+    dataIndex: 'name',
+    title: OBJECT_WORD,
     ellipsis: true,
+    sorter: true,
   },
   {
-    title: THEME_WORD,
-    dataIndex: 'title',
     key: 'title',
+    dataIndex: 'title',
+    title: THEME_WORD,
     ellipsis: true,
+    sorter: true,
   },
   {
-    title: ASSIGNEE_WORD,
-    dataIndex: 'assignee',
     key: 'assignee',
+    dataIndex: 'assignee',
+    title: ASSIGNEE_WORD,
     render: (value: MaybeNull<TaskTableListItem['assignee']>) =>
       value ? getShortUserName(value) : '',
     ellipsis: true,
+    sorter: true,
   },
   {
-    title: 'Рабочая группа',
-    dataIndex: 'workGroup',
     key: 'workGroup',
+    dataIndex: 'workGroup',
+    title: 'Рабочая группа',
     render: (value: MaybeNull<TaskTableListItem['workGroup']>) =>
       valueOr(value?.name, 'I линия поддержки'),
     ellipsis: true,
+    sorter: true,
   },
   {
-    title: 'Выполнить до',
-    dataIndex: 'olaNextBreachTime',
     key: 'olaNextBreachTime',
+    dataIndex: 'olaNextBreachTime',
+    title: 'Выполнить до',
     render: (
       value: MaybeNull<TaskTableListItem['olaNextBreachTime']>,
       { olaStatus },
@@ -80,15 +86,16 @@ export const TABLE_COLUMNS: ColumnsType<TaskTableListItem> = [
     sorter: true,
   },
   {
-    title: 'Комментарий',
-    dataIndex: 'comment',
     key: 'comment',
+    dataIndex: 'comment',
+    title: 'Комментарий',
     ellipsis: true,
+    sorter: true,
   },
   {
-    title: 'Дата создания',
-    dataIndex: 'createdAt',
     key: 'createdAt',
+    dataIndex: 'createdAt',
+    title: 'Дата создания',
     render: (value) => formatDate(value, DATE_TIME_FORMAT),
     sorter: true,
   },

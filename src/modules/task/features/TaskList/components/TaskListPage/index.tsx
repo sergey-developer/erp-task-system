@@ -1,8 +1,16 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Form, Row, Space, TableProps } from 'antd'
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+  Space,
+  TablePaginationConfig,
+  TableProps,
+} from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
-import { camelize } from 'humps'
+import { SorterResult } from 'antd/es/table/interface'
 import isArray from 'lodash/isArray'
 import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useState } from 'react'
@@ -11,13 +19,13 @@ import { FilterIcon, SyncIcon } from 'components/Icons'
 import {
   FastFilterEnum,
   FilterTypeEnum,
-  SortEnum,
 } from 'modules/task/features/TaskList/constants/common'
 import useGetTaskCounters from 'modules/task/features/TaskList/hooks/useGetTaskCounters'
 import useGetTaskList from 'modules/task/features/TaskList/hooks/useGetTaskList'
 import { GetTaskListQueryArgsModel } from 'modules/task/features/TaskList/models'
 import TaskDetails from 'modules/task/features/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
+import { SortOrderEnum } from 'shared/constants/sort'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
@@ -30,14 +38,13 @@ import {
 } from '../ExtendedFilter/interfaces'
 import FastFilter from '../FastFilter'
 import TaskTable from '../TaskTable'
-import { TaskTableListItem } from '../TaskTable/interfaces'
 import {
-  DEFAULT_PAGE_SIZE,
-  SMART_SORT_TO_FIELD_SORT_DIRECTIONS,
-  SORTED_FIELDS,
-  SortDirectionsEnum,
-  SortedFieldsEnum,
-} from './constants'
+  SortableField,
+  sortableFieldToSortValues,
+} from '../TaskTable/constants/sort'
+import { TaskTableListItem } from '../TaskTable/interfaces'
+import getSort from '../TaskTable/utils/getSort'
+import { DEFAULT_PAGE_SIZE } from './constants'
 import { FastFilterQueries, TaskIdFilterQueries } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'
@@ -61,7 +68,7 @@ const TaskListPage: FC = () => {
     filter: initialFastFilter,
     limit: DEFAULT_PAGE_SIZE,
     offset: 0,
-    sort: SortEnum.ByOlaAsc,
+    sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
   })
 
   const {
@@ -166,33 +173,42 @@ const TaskListPage: FC = () => {
     setSelectedTask(null)
   }, [setSelectedTask])
 
-  /** обработка изменений сортировки/пагинации в таблице */
-  const handleChangeTable = useCallback<
-    NonNullable<TableProps<TaskTableListItem>['onChange']>
-  >((pagination, filters, sorter) => {
-    const { field, order = SortDirectionsEnum.ascend } = isArray(sorter)
-      ? sorter[0]
-      : sorter
+  const handleTableSort = (
+    sorter: SorterResult<TaskTableListItem> | SorterResult<TaskTableListItem>[],
+  ) => {
+    /**
+     * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
+     * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
+     * при изначальной реализации
+     */
+    if (sorter) {
+      const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
 
-    const newQueryArgs: Partial<GetTaskListQueryArgsModel> = {
+      if (columnKey && columnKey in sortableFieldToSortValues) {
+        setQueryArgs((prevState) => ({
+          ...prevState,
+          sort: getSort(
+            columnKey as SortableField,
+            order || SortOrderEnum.Ascend,
+          ),
+        }))
+      }
+    }
+  }
+
+  const handleTablePagination = (pagination: TablePaginationConfig) => {
+    setQueryArgs((prevState) => ({
+      ...prevState,
       offset: (pagination.current! - 1) * pagination.pageSize!,
       limit: pagination.pageSize!,
-    }
-
-    if (SORTED_FIELDS.includes(field as SortedFieldsEnum)) {
-      const key = camelize(`${field}_${order}`)
-      newQueryArgs.sort =
-        key in SMART_SORT_TO_FIELD_SORT_DIRECTIONS
-          ? SMART_SORT_TO_FIELD_SORT_DIRECTIONS[
-              key as keyof typeof SMART_SORT_TO_FIELD_SORT_DIRECTIONS
-            ]
-          : undefined
-    }
-
-    setQueryArgs((state) => ({
-      ...state,
-      ...newQueryArgs,
     }))
+  }
+
+  const handleChangeTable = useCallback<
+    NonNullable<TableProps<TaskTableListItem>['onChange']>
+  >((pagination, _, sorter) => {
+    handleTableSort(sorter)
+    handleTablePagination(pagination)
   }, [])
 
   const triggerFilterChange = (
@@ -294,7 +310,7 @@ const TaskListPage: FC = () => {
             <Col span={selectedTask ? (breakpoints.xxl ? 15 : 12) : 24}>
               <TaskTable
                 rowClassName={getTableRowClassName}
-                sorting={queryArgs.sort}
+                sort={queryArgs.sort}
                 onRow={handleTableRowClick}
                 dataSource={taskListResponse?.results}
                 loading={taskListIsFetching}

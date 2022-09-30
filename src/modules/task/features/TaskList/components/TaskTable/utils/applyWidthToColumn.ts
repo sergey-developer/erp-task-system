@@ -12,22 +12,20 @@ import {
 import { TaskTableListItem } from '../interfaces'
 
 const applyWidthToColumn = (
-  columns: ColumnsType<TaskTableListItem>,
+  column: ColumnsType<TaskTableListItem>[number],
   breakpoints: ScreenMap,
-): ColumnsType<TaskTableListItem> => {
-  return columns.map((col) => {
-    const colBreakpointWidth: MaybeUndefined<number> = breakpoints.xxl
-      ? xxlColumnWidthMap[col.key as XxlColumnWidthMap]
-      : undefined
+): ColumnsType<TaskTableListItem>[number] => {
+  const colBreakpointWidth: MaybeUndefined<number> = breakpoints.xxl
+    ? xxlColumnWidthMap[column.key as XxlColumnWidthMap]
+    : undefined
 
-    const colWidth =
-      colBreakpointWidth || defaultColumnWidthMap[col.key as AllColumnWidthMap]
+  const colWidth =
+    colBreakpointWidth || defaultColumnWidthMap[column.key as AllColumnWidthMap]
 
-    return {
-      ...col,
-      width: colWidth,
-    }
-  })
+  return {
+    ...column,
+    width: colWidth,
+  }
 }
 
 export default applyWidthToColumn
