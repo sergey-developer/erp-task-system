@@ -126,7 +126,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               <Form.Item name='workGroupId'>
                 <Select
                   data-testid='filter-extended-work-group-select'
-                  virtual={false}
                   disabled={workGroupListIsFetching}
                   fieldNames={workGroupListSelectFieldNames}
                   loading={workGroupListIsFetching}

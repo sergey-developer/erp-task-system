@@ -159,7 +159,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
             <Space direction='vertical' size='middle' $block>
               {canSelectAssignee ? (
                 <SelectStyled
-                  virtual={false}
                   defaultValue={selectedAssignee}
                   loading={workGroupListIsLoading}
                   disabled={updateAssigneeIsLoading}
