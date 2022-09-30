@@ -1,7 +1,7 @@
-import { FastFilterItemProps } from '../FastFilterItem'
+import { FilterTagProps } from '../FilterTag'
 
 export const requiredProps: Pick<
-  FastFilterItemProps,
+  FilterTagProps,
   'text' | 'checked' | 'amount'
 > = {
   text: 'text',

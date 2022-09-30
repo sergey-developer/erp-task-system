@@ -1,31 +1,31 @@
 import { render, within } from '_tests_/utils'
 
-import FastFilterItem from '../FastFilterItem'
+import FilterTag from '../FilterTag'
 import { filterCheckedClass, requiredProps } from './constants'
-import { getFilterContainer, getFilterItem } from './utils'
+import { getFilterTag, getFilterTagContainer } from './utils'
 
-describe('FastFilterItem', () => {
+describe('FilterTag', () => {
   test('Отображает состояние загрузки', () => {
-    render(<FastFilterItem {...requiredProps} loading />)
+    render(<FilterTag {...requiredProps} loading />)
 
-    const container = getFilterContainer()
+    const container = getFilterTagContainer()
     const skeleton = container.querySelector('.ant-skeleton-active')
 
     expect(skeleton).toBeInTheDocument()
   })
 
   test('Отображает текст', () => {
-    render(<FastFilterItem {...requiredProps} />)
+    render(<FilterTag {...requiredProps} />)
 
-    const container = getFilterContainer()
+    const container = getFilterTagContainer()
     expect(within(container).getByText(requiredProps.text)).toBeInTheDocument()
   })
 
   describe('Количество', () => {
     test('Отображается если оно присутствует (включая "0")', () => {
-      render(<FastFilterItem {...requiredProps} />)
+      render(<FilterTag {...requiredProps} />)
 
-      const container = getFilterContainer()
+      const container = getFilterTagContainer()
 
       expect(
         within(container).getByText(requiredProps.amount!),
@@ -33,9 +33,9 @@ describe('FastFilterItem', () => {
     })
 
     test('Не отображается если оно отсутствует', () => {
-      render(<FastFilterItem {...requiredProps} amount={null} />)
+      render(<FilterTag {...requiredProps} amount={null} />)
 
-      const container = getFilterContainer()
+      const container = getFilterTagContainer()
 
       expect(
         within(container).queryByText(requiredProps.amount!),
@@ -44,16 +44,16 @@ describe('FastFilterItem', () => {
   })
 
   test('Можно сделать выбранным', () => {
-    render(<FastFilterItem {...requiredProps} checked />)
+    render(<FilterTag {...requiredProps} checked />)
 
-    const filter = getFilterItem()
+    const filter = getFilterTag()
     expect(filter).toHaveClass(filterCheckedClass)
   })
 
   test('Можно сделать не выбранным', () => {
-    render(<FastFilterItem {...requiredProps} checked={false} />)
+    render(<FilterTag {...requiredProps} checked={false} />)
 
-    const filter = getFilterItem()
+    const filter = getFilterTag()
     expect(filter).not.toHaveClass(filterCheckedClass)
   })
 
@@ -66,14 +66,10 @@ describe('FastFilterItem', () => {
 
     test('Вызывается если элемент активный', async () => {
       const { user } = render(
-        <FastFilterItem
-          {...requiredProps}
-          disabled={false}
-          onChange={onChange}
-        />,
+        <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
       )
 
-      const filter = getFilterItem()
+      const filter = getFilterTag()
       await user.click(filter)
 
       expect(onChange).toBeCalledTimes(1)
@@ -81,10 +77,10 @@ describe('FastFilterItem', () => {
 
     test('Не вызывается если элемент не активный', async () => {
       const { user } = render(
-        <FastFilterItem {...requiredProps} disabled onChange={onChange} />,
+        <FilterTag {...requiredProps} disabled onChange={onChange} />,
       )
 
-      const filter = getFilterItem()
+      const filter = getFilterTag()
       await user.click(filter)
 
       expect(onChange).not.toBeCalled()

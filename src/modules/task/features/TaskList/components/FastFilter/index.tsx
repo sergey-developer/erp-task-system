@@ -5,7 +5,7 @@ import { FastFilterEnum } from 'modules/task/features/TaskList/constants/common'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import { fastFilterNamesDict } from './constants'
-import FastFilterItem from './FastFilterItem'
+import FastFilterItem from './FilterTag'
 import { FastFilterProps, FilterItem } from './interfaces'
 
 const FastFilter: FC<FastFilterProps> = ({
