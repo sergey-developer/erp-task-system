@@ -11,13 +11,14 @@ import { taskReclassificationRequestApiPermissions } from '../permissions/taskRe
 
 const useGetTaskReclassificationRequest = (
   taskId: GetTaskReclassificationRequestQueryArgsModel,
+  options?: Partial<{ skip: boolean }>,
 ) => {
   const permissions = useUserPermissions(
     taskReclassificationRequestApiPermissions,
   )
 
   const state = useGetReclassificationRequestQuery(taskId, {
-    skip: !permissions.canGet,
+    skip: !permissions.canGet || options?.skip,
   })
 
   useEffect(() => {
