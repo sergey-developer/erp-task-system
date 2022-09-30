@@ -36,11 +36,11 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     isError: isGetTaskError,
   } = useGetTask(taskId)
 
-  const extendedTaskStatus = useTaskExtendedStatus(task?.extendedStatus)
+  const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
 
   const { currentData: reclassificationRequest = null } =
     useGetTaskReclassificationRequest(taskId, {
-      skip: !extendedTaskStatus.isInReclassification,
+      skip: !taskExtendedStatus.isInReclassification,
     })
 
   const {
