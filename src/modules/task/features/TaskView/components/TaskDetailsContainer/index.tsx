@@ -8,6 +8,7 @@ import useResolveTask from 'modules/task/features/TaskView/hooks/useResolveTask'
 import useTakeTask from 'modules/task/features/TaskView/hooks/useTakeTask'
 import useUpdateTaskAssignee from 'modules/task/features/TaskView/hooks/useUpdateTaskAssignee'
 import useUpdateTaskWorkGroup from 'modules/task/features/TaskView/hooks/useUpdateTaskWorkGroup'
+import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'
@@ -35,8 +36,12 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     isError: isGetTaskError,
   } = useGetTask(taskId)
 
+  const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
+
   const { currentData: reclassificationRequest = null } =
-    useGetTaskReclassificationRequest(taskId)
+    useGetTaskReclassificationRequest(taskId, {
+      skip: !taskExtendedStatus.isInReclassification,
+    })
 
   const {
     fn: createReclassificationRequest,

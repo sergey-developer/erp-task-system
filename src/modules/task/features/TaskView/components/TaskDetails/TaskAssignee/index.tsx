@@ -60,7 +60,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const currentAssignee = assignee?.id
   const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
   const taskStatus = useTaskStatus(status)
-  const extendedTaskStatus = useTaskExtendedStatus(extendedStatus)
+  const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const authenticatedUser = useAuthenticatedUser()
 
   const selectedAssigneeIsCurrentAssignee = isEqual(
@@ -106,7 +106,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         !(
           taskStatus.isNew &&
           (currentAssigneeIsAuthenticatedUser || !currentAssignee) &&
-          !extendedTaskStatus.isInReclassification
+          !taskExtendedStatus.isInReclassification
         )
       }
       onClick={takeTask}
