@@ -5,7 +5,7 @@ import { FastFilterEnum } from 'modules/task/features/TaskList/constants/common'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import { fastFilterNamesDict } from './constants'
-import FilterTag from './FilterTag'
+import FastFilterItem from './FastFilterItem'
 import { FastFilterProps, FilterItem } from './interfaces'
 
 const FastFilter: FC<FastFilterProps> = ({
@@ -19,15 +19,15 @@ const FastFilter: FC<FastFilterProps> = ({
   const filters: Array<FilterItem> = useMemo(() => {
     const counters = (data || {}) as NonNullable<typeof data>
 
-    return Object.values(FastFilterEnum).map((fastFilterKey) => {
+    return Object.values(FastFilterEnum).map((fastFilter) => {
       const taskCounterKey =
-        fastFilterKey.toLowerCase() as Lowercase<FastFilterEnum>
+        fastFilter.toLowerCase() as Lowercase<FastFilterEnum>
 
       const taskCounterValue = isError ? null : counters[taskCounterKey]
 
       return {
-        text: fastFilterNamesDict[fastFilterKey],
-        value: fastFilterKey,
+        text: fastFilterNamesDict[fastFilter],
+        value: fastFilter,
         amount: taskCounterValue,
       }
     })
@@ -36,10 +36,10 @@ const FastFilter: FC<FastFilterProps> = ({
   return (
     <Space wrap>
       {filters.map(({ amount, text, value }) => (
-        <FilterTag
+        <FastFilterItem
           key={value}
-          checked={disabled ? false : isEqual(selectedFilter, value)}
-          onChange={disabled ? undefined : () => onChange(value)}
+          checked={isEqual(selectedFilter, value)}
+          onChange={() => onChange(value)}
           text={text}
           amount={amount}
           loading={isLoading}
