@@ -72,7 +72,6 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
 
         <LabeledData label='Рабочая группа'>
           <Select
-            virtual={false}
             placeholder='Выберите рабочую группу'
             options={workGroupList}
             loading={workGroupListIsLoading}

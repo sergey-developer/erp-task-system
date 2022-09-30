@@ -65,7 +65,6 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
         form={form}
         layout='vertical'
         onFinish={handleFinish}
-        requiredMark={false}
       >
         <Form.Item
           label='Причина переклассификации'

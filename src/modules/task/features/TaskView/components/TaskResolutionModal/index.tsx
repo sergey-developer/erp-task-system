@@ -87,7 +87,6 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
           initialValues={initialFormValues}
           layout='vertical'
           onFinish={handleFinish}
-          requiredMark={false}
         >
           <Form.Item
             label='Техническое решение'

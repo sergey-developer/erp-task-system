@@ -57,7 +57,6 @@ const LoginPage: FC = () => {
             form={form}
             onFinish={handleSubmit}
             layout='vertical'
-            requiredMark={false}
           >
             <Form.Item
               data-testid='field-email'

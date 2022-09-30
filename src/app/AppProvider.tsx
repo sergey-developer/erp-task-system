@@ -1,10 +1,9 @@
-import { ConfigProvider as AntdConfigProvider } from 'antd'
 import React from 'react'
 import { Provider as StoreProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
-import ruRU from 'antd/lib/locale/ru_RU'
 import ErrorBoundary from 'components/Error/ErrorBoundary'
+import AntdConfigProvider from 'lib/antd/ConfigProvider'
 import { FCWithChildren } from 'shared/interfaces/utils'
 import appStore, { AppStore } from 'state/store'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
@@ -20,7 +19,7 @@ const AppProvider: FCWithChildren<AppProviderProps> = ({
 }) => {
   return (
     <StoreProvider store={store}>
-      <AntdConfigProvider locale={ruRU}>
+      <AntdConfigProvider>
         <StyledThemeProvider theme={theme}>
           <ErrorBoundary>
             <BrowserRouter>{children}</BrowserRouter>
