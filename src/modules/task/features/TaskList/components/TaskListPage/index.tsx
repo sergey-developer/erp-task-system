@@ -39,7 +39,7 @@ import {
 import FastFilter from '../FastFilter'
 import TaskTable from '../TaskTable'
 import {
-  SortableFieldKey,
+  SortableField,
   sortableFieldToSortValues,
 } from '../TaskTable/constants/sort'
 import { TaskTableListItem } from '../TaskTable/interfaces'
@@ -188,7 +188,7 @@ const TaskListPage: FC = () => {
         setQueryArgs((prevState) => ({
           ...prevState,
           sort: getSort(
-            columnKey as SortableFieldKey,
+            columnKey as SortableField,
             order || SortOrderEnum.Ascend,
           ),
         }))

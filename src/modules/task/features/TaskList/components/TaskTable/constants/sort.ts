@@ -15,7 +15,7 @@ export type DescendSortValue = `-${AscendSortValue}`
 
 export type SortValue = AscendSortValue | DescendSortValue
 
-export type SortableFieldKey = keyof Pick<
+export type SortableField = keyof Pick<
   TaskTableListItem,
   | 'id'
   | 'name'
@@ -29,7 +29,7 @@ export type SortableFieldKey = keyof Pick<
 >
 
 export const sortableFieldToSortValues: Record<
-  SortableFieldKey,
+  SortableField,
   [AscendSortValue, DescendSortValue]
 > = {
   id: ['id', '-id'],
@@ -45,13 +45,12 @@ export const sortableFieldToSortValues: Record<
 
 export const sortValueToSortableField = Object.keys(
   sortableFieldToSortValues,
-).reduce((acc, key) => {
-  const sortableFieldKey = key as SortableFieldKey
-  const [ascendValue, descendValue] =
-    sortableFieldToSortValues[sortableFieldKey]
+).reduce((acc, field) => {
+  const sortableField = field as SortableField
+  const [ascendValue, descendValue] = sortableFieldToSortValues[sortableField]
 
-  acc[ascendValue] = sortableFieldKey
-  acc[descendValue] = sortableFieldKey
+  acc[ascendValue] = sortableField
+  acc[descendValue] = sortableField
 
   return acc
-}, {} as Record<SortValue, SortableFieldKey>)
+}, {} as Record<SortValue, SortableField>)

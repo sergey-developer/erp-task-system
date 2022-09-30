@@ -4,12 +4,12 @@ import { SortOrderEnum } from 'shared/constants/sort'
 
 import {
   SortValue,
-  SortableFieldKey,
+  SortableField,
   sortableFieldToSortValues,
 } from '../constants/sort'
 
-const getSort = (fieldKey: SortableFieldKey, order: SortOrder): SortValue => {
-  const [ascendValue, descendValue] = sortableFieldToSortValues[fieldKey]
+const getSort = (field: SortableField, order: SortOrder): SortValue => {
+  const [ascendValue, descendValue] = sortableFieldToSortValues[field]
   return order === SortOrderEnum.Descend ? descendValue : ascendValue
 }
 
