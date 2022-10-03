@@ -24,21 +24,25 @@ const FilterTag: FC<FilterTagProps> = ({
   loading,
   disabled,
 }) => {
-  return loading ? (
-    <Skeleton.Button active={loading} size='small' shape='round' />
-  ) : (
-    <CheckableTagStyled
-      data-testid={`btn-filter-fast-${text}`}
-      checked={checked}
-      onChange={onChange}
-      $disabled={disabled}
-    >
-      <Space>
-        {text}
+  return (
+    <div data-testid='filter-fast-tag-container'>
+      {loading ? (
+        <Skeleton.Button active={loading} size='small' shape='round' />
+      ) : (
+        <CheckableTagStyled
+          data-testid='checkable-tag'
+          checked={disabled ? false : checked}
+          onChange={disabled ? undefined : onChange}
+          $disabled={disabled}
+        >
+          <Space>
+            {text}
 
-        {isNumber(amount) && <Text type='secondary'>{amount}</Text>}
-      </Space>
-    </CheckableTagStyled>
+            {isNumber(amount) && <Text type='secondary'>{amount}</Text>}
+          </Space>
+        </CheckableTagStyled>
+      )}
+    </div>
   )
 }
 
