@@ -6,11 +6,6 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
-import {
-  ASSIGNEE_WORD,
-  OBJECT_WORD,
-  THEME_WORD,
-} from 'modules/task/constants/words'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import { StringMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
@@ -29,9 +24,9 @@ export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
 }
 
 export const searchQueriesDict: StringMap<keyof SearchQueries> = {
-  searchByName: OBJECT_WORD,
-  searchByTitle: THEME_WORD,
-  searchByAssignee: ASSIGNEE_WORD,
+  searchByName: 'Объект',
+  searchByTitle: 'Тема',
+  searchByAssignee: 'Исполнитель',
 }
 
 export const checkboxStatusOptions: Array<CheckboxOptionType> = [

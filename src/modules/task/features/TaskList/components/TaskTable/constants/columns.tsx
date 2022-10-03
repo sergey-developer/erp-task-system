@@ -2,11 +2,6 @@ import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
-import {
-  ASSIGNEE_WORD,
-  OBJECT_WORD,
-  THEME_WORD,
-} from 'modules/task/constants/words'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import getShortUserName from 'modules/user/utils/getShortUserName'
@@ -42,21 +37,21 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
   {
     key: 'name',
     dataIndex: 'name',
-    title: OBJECT_WORD,
+    title: 'Объект',
     ellipsis: true,
     sorter: true,
   },
   {
     key: 'title',
     dataIndex: 'title',
-    title: THEME_WORD,
+    title: 'Тема',
     ellipsis: true,
     sorter: true,
   },
   {
     key: 'assignee',
     dataIndex: 'assignee',
-    title: ASSIGNEE_WORD,
+    title: 'Исполнитель',
     render: (value: MaybeNull<TaskTableListItem['assignee']>) =>
       value ? getShortUserName(value) : '',
     ellipsis: true,
@@ -66,7 +61,7 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
     key: 'workGroup',
     dataIndex: 'workGroup',
     title: 'Рабочая группа',
-    render: (value: MaybeNull<TaskTableListItem['workGroup']>) =>
+    render: (value: TaskTableListItem['workGroup']) =>
       valueOr(value?.name, 'I линия поддержки'),
     ellipsis: true,
     sorter: true,
