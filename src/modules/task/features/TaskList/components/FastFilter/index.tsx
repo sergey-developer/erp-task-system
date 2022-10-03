@@ -5,7 +5,7 @@ import { FastFilterEnum } from 'modules/task/features/TaskList/constants/common'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import { fastFilterNamesDict } from './constants'
-import FastFilterItem from './FilterTag'
+import FilterTag from './FilterTag'
 import { FastFilterProps, FilterItem } from './interfaces'
 
 const FastFilter: FC<FastFilterProps> = ({
@@ -36,7 +36,7 @@ const FastFilter: FC<FastFilterProps> = ({
   return (
     <Space wrap>
       {filters.map(({ amount, text, value }) => (
-        <FastFilterItem
+        <FilterTag
           key={value}
           checked={isEqual(selectedFilter, value)}
           onChange={() => onChange(value)}
