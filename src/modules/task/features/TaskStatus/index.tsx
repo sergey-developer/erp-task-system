@@ -33,7 +33,7 @@ const TaskStatus: FC<TaskStatusProps> = ({
   if (!text && !badge && !icon) return null
 
   return (
-    <Space>
+    <Space data-testid='task-status'>
       {icon ? icon : badge ? <BadgeStyled status={badge} /> : null}
 
       {text}

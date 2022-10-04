@@ -1,39 +1,21 @@
-import { getTaskTableItem } from '_fixtures_/task'
 import { render, screen, within } from '_tests_/utils'
-import { TaskStatusEnum } from 'modules/task/constants/common'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import { Nullable } from 'shared/interfaces/utils'
 import formatDate from 'shared/utils/date/formatDate'
 
-import TaskTable from './index'
-import { TaskTableProps } from './interfaces'
-
-const columnWithSortingClass = 'ant-table-column-has-sorters'
-
-const getTable = (): HTMLElement => screen.getByTestId('table-task-list')
-
-const getColumnTitle = (container: HTMLElement, title: string): HTMLElement =>
-  within(container).getByText(title)
-
-const getColumnTitleContainer = (
-  container: HTMLElement,
-  title: string,
-): Nullable<HTMLElement> => {
-  // eslint-disable-next-line testing-library/no-node-access
-  return getColumnTitle(container, title).parentElement?.parentElement
-}
-
-const taskTableItem = getTaskTableItem({
-  status: TaskStatusEnum.InReclassification,
-})
-
-const baseProps: Readonly<TaskTableProps> = {
-  dataSource: [taskTableItem],
-}
+import TaskTable from '../index'
+import { baseProps, columnWithSortingClass, taskTableItem } from './constants'
+import { getColumnTitle, getColumnTitleContainer, getTable } from './utils'
 
 describe('Таблица заявок', () => {
-  // todo: describe('Колонка "Статус заявки"', () => {})
+  describe('Колонка "Статус заявки"', () => {
+    test('Отображает значение', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const status = screen.getByTestId('task-status')
+      expect(status).toBeInTheDocument()
+    })
+  })
 
   describe('Колонка "Заявка"', () => {
     test('Отображает заголовок', () => {
@@ -244,7 +226,15 @@ describe('Таблица заявок', () => {
       expect(getColumnTitle(table, 'Комментарий')).toBeInTheDocument()
     })
 
-    // todo: test('Отображает значение', () => {})
+    test('Отображает значение', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const table = getTable()
+
+      expect(
+        within(table).getByText(taskTableItem.comment!.text),
+      ).toBeInTheDocument()
+    })
 
     test('Имеет сортировку', async () => {
       render(<TaskTable {...baseProps} />)

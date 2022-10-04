@@ -17,7 +17,7 @@ const { Text } = Typography
 export const tableColumns: ColumnsType<TaskTableListItem> = [
   {
     key: 'noop',
-    render: (value: string, { status, extendedStatus }) => (
+    render: (_, { status, extendedStatus }) => (
       <TaskStatus status={status} extendedStatus={extendedStatus} />
     ),
     align: 'center',
@@ -86,12 +86,14 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
     title: 'Комментарий',
     ellipsis: true,
     sorter: true,
+    render: (value: TaskTableListItem['comment']) => value?.text,
   },
   {
     key: 'createdAt',
     dataIndex: 'createdAt',
     title: 'Дата создания',
-    render: (value) => formatDate(value, DATE_TIME_FORMAT),
+    render: (value: TaskTableListItem['createdAt']) =>
+      formatDate(value, DATE_TIME_FORMAT),
     sorter: true,
   },
 ]

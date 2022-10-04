@@ -10,7 +10,7 @@ export type TaskListItemModel = BaseTaskModel & {
     TaskAssigneeModel,
     'id' | 'firstName' | 'lastName' | 'middleName'
   >
-  comment: TaskListCommentModel
+  comment: MaybeNull<TaskListCommentModel>
   reclassificationRequest: TaskListReclassificationRequestModel
   workGroup: MaybeNull<WorkGroupListItemModel>
 }
