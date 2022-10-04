@@ -3,9 +3,20 @@ import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
+import { paginationConfig } from '../constants/pagination'
 import TaskTable from '../index'
-import { baseProps, columnWithSortingClass, taskTableItem } from './constants'
-import { getColumnTitle, getColumnTitleContainer, getTable } from './utils'
+import {
+  baseProps,
+  columnWithSortingClass,
+  paginationProps,
+  taskTableItem,
+} from './constants'
+import {
+  getColumnTitle,
+  getColumnTitleContainer,
+  getPaginationContainer,
+  getTable,
+} from './utils'
 
 describe('Таблица заявок', () => {
   describe('Колонка "Статус заявки"', () => {
@@ -166,7 +177,12 @@ describe('Таблица заявок', () => {
     })
 
     test('Отображает резервный текст если оно отсутствует', () => {
-      render(<TaskTable dataSource={[{ ...taskTableItem, workGroup: null }]} />)
+      render(
+        <TaskTable
+          {...baseProps}
+          dataSource={[{ ...taskTableItem, workGroup: null }]}
+        />,
+      )
 
       const table = getTable()
       expect(within(table).getByText('I линия поддержки')).toBeInTheDocument()
@@ -276,6 +292,79 @@ describe('Таблица заявок', () => {
       )
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+    })
+  })
+
+  describe('Пагинация', () => {
+    test('Отображается', () => {
+      render(<TaskTable {...baseProps} pagination={paginationProps} />)
+
+      const pagination = getPaginationContainer()
+
+      expect(pagination).toBeInTheDocument()
+      expect(pagination).toHaveClass('ant-table-pagination')
+    })
+
+    test('Кнопки переключения страниц отображаются', () => {
+      render(<TaskTable {...baseProps} pagination={paginationProps} />)
+
+      const pagination = getPaginationContainer()
+      const page1 = within(pagination).getByRole('listitem', { name: '1' })
+      const page2 = within(pagination).getByRole('listitem', { name: '2' })
+
+      expect(page1).toBeInTheDocument()
+      expect(page2).toBeInTheDocument()
+    })
+
+    test('Кнопки "Вперед" и "Назад" отображаются', () => {
+      render(<TaskTable {...baseProps} pagination={paginationProps} />)
+
+      const pagination = getPaginationContainer()
+
+      const nextButton = within(pagination).getByRole('listitem', {
+        name: 'Вперед',
+      })
+      const prevButton = within(pagination).getByRole('listitem', {
+        name: 'Назад',
+      })
+
+      expect(prevButton).toBeInTheDocument()
+      expect(nextButton).toBeInTheDocument()
+    })
+
+    test('Отображается корректный размер страницы по умолчанию', () => {
+      render(<TaskTable {...baseProps} pagination={paginationProps} />)
+
+      const pagination = getPaginationContainer()
+      const defaultPageSize = within(pagination).getByTitle('100 / стр.')
+
+      expect(defaultPageSize).toBeInTheDocument()
+      expect(defaultPageSize).toHaveClass('ant-select-selection-item')
+    })
+
+    test('Отображаются корректные варианты размера страницы', async () => {
+      const { user } = render(
+        <TaskTable {...baseProps} pagination={paginationProps} />,
+      )
+
+      const pagination = getPaginationContainer()
+      const currentPageSizeButton = within(pagination).getByRole('combobox', {
+        expanded: false,
+      })
+
+      await user.click(currentPageSizeButton)
+
+      const pageSizeOptionsContainer = pagination.querySelector(
+        '.rc-virtual-list',
+      ) as HTMLElement
+
+      paginationConfig.pageSizeOptions.forEach((pageSize) => {
+        const option = within(pageSizeOptionsContainer).getByText(
+          `${pageSize} / стр.`,
+        )
+
+        expect(option).toBeInTheDocument()
+      })
     })
   })
 })

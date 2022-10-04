@@ -15,3 +15,5 @@ export const getColumnTitleContainer = (
   // eslint-disable-next-line testing-library/no-node-access
   return getColumnTitle(container, title).parentElement?.parentElement
 }
+
+export const getPaginationContainer = () => screen.getByRole('list')

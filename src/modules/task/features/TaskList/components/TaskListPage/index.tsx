@@ -312,10 +312,10 @@ const TaskListPage: FC = () => {
                 rowClassName={getTableRowClassName}
                 sort={queryArgs.sort}
                 onRow={handleTableRowClick}
-                dataSource={taskListResponse?.results}
+                dataSource={taskListResponse?.results || []}
                 loading={taskListIsFetching}
                 onChange={handleChangeTable}
-                pagination={taskListResponse?.pagination}
+                pagination={taskListResponse?.pagination || false}
               />
             </Col>
 
