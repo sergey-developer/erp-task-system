@@ -1,5 +1,6 @@
 import { BaseTaskModel, TaskAssigneeModel } from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 import { TaskListCommentModel } from './taskListComment.model'
 import { TaskListReclassificationRequestModel } from './taskListReclassificationRequest.model'
@@ -9,7 +10,7 @@ export type TaskListItemModel = BaseTaskModel & {
     TaskAssigneeModel,
     'id' | 'firstName' | 'lastName' | 'middleName'
   >
-  comment: TaskListCommentModel
+  comment: MaybeNull<TaskListCommentModel>
   reclassificationRequest: TaskListReclassificationRequestModel
-  workGroup: WorkGroupListItemModel
+  workGroup: MaybeNull<WorkGroupListItemModel>
 }

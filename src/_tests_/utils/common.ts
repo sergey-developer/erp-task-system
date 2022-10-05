@@ -1,22 +1,15 @@
-import getRandomInt from 'shared/utils/common/getRandomInt'
+import Chance from 'chance'
 
-const names1 = ['Blue', 'Green', 'Red', 'Orange', 'Violet', 'Indigo', 'Yellow']
-const names2 = [
-  'One',
-  'Two',
-  'Three',
-  'Four',
-  'Five',
-  'Six',
-  'Seven',
-  'Eight',
-  'Nine',
-  'Zero',
-]
+const chance = new Chance()
 
-export const generateName = () =>
-  names1[Math.floor(Math.random() * names1.length)] +
-  ' ' +
-  names2[Math.floor(Math.random() * names2.length)]
+export const generateId = chance.natural.bind(chance)
 
-export const generateId = getRandomInt
+export const generateEmail = chance.email.bind(chance)
+
+export const generateName = chance.name.bind(chance)
+export const generateWord = chance.word.bind(chance)
+export const generateString = chance.string.bind(chance)
+export const generateSentence = chance.sentence.bind(chance)
+
+export const generateDate = chance.date.bind(chance)
+export const generateDateString = () => generateDate().toISOString()

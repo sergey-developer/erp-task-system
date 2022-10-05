@@ -6,7 +6,6 @@ import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
-import { ASSIGNEE_WORD } from 'modules/task/constants/words'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions/taskAssignee.permissions'
 import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
@@ -117,7 +116,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   return (
     <Space direction='vertical' $block>
-      <LabeledData label={ASSIGNEE_WORD} size='large' direction='horizontal'>
+      <LabeledData label='Исполнитель' size='large' direction='horizontal'>
         <Button
           type='link'
           loading={updateAssigneeIsLoading}

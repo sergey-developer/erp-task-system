@@ -20,14 +20,16 @@ export type TaskTableListItem = Pick<
   | 'extendedStatus'
 >
 
-export type TaskTableProps = Pick<
-  TableProps<TaskTableListItem>,
-  | 'dataSource'
-  | 'loading'
-  | 'onChange'
-  | 'pagination'
-  | 'onRow'
-  | 'rowClassName'
+export type TaskTableProps = Required<
+  Pick<
+    TableProps<TaskTableListItem>,
+    | 'dataSource'
+    | 'loading'
+    | 'onChange'
+    | 'pagination'
+    | 'onRow'
+    | 'rowClassName'
+  >
 > & {
   sort?: SortValue
 }

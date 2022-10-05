@@ -15,7 +15,7 @@ export type GetTaskListQueryArgsModel = {
   hideAwaitingTask?: boolean
   limit: number
   offset: number
-  sort?: SortValue
+  sort: SortValue
   userId?: number
 } & ExtendedFilterQueries &
   FastFilterQueries &
