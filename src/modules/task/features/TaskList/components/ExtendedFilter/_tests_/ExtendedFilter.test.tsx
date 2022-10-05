@@ -134,7 +134,7 @@ describe('Расширенный фильтр', () => {
   })
 
   describe('По статусу', () => {
-    jest.setTimeout(15000)
+    jest.setTimeout(20000)
 
     test('Отображается', () => {
       render(<ExtendedFilterWrapper visible />)
