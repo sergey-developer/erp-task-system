@@ -18,7 +18,12 @@ import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGr
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
 import { isEqualDeep } from 'shared/utils/common/isEqual'
 
-import { checkboxStatusOptions, searchQueriesDict } from './constants'
+import {
+  checkboxExtraStatusOptions,
+  checkboxFilterStatusOptions,
+  checkboxStatusOptions,
+  searchQueriesDict,
+} from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
 import { ExtendedFilterFormFields } from './interfaces'
@@ -43,6 +48,8 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
     useGetWorkGroupList()
 
   const statusValue = Form.useWatch('status', form)
+  const extraStatusValue = Form.useWatch('extraStatus', form)
+  const filterStatusValue = Form.useWatch('filterStatus', form)
   const completeAtValue = Form.useWatch('completeAt', form)
   const workGroupIdValue = Form.useWatch('workGroupId', form)
   const searchFieldValue = Form.useWatch('searchField', form)
@@ -51,12 +58,14 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   const formValues: ExtendedFilterFormFields = {
     searchValue: searchValueValue,
     status: statusValue,
+    extraStatus: extraStatusValue,
+    filterStatus: filterStatusValue,
     completeAt: completeAtValue,
     workGroupId: workGroupIdValue,
     searchField: searchFieldValue,
   }
 
-  const valuesNotChanged = isEqualDeep(initialFormValues, formValues)
+  const isValuesNotChanged = isEqualDeep(initialFormValues, formValues)
 
   const resetFields =
     (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
@@ -70,14 +79,14 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
       footer={
         <Row justify='end'>
           <Space>
-            <Button onClick={resetFields()} disabled={valuesNotChanged}>
+            <Button onClick={resetFields()} disabled={isValuesNotChanged}>
               Сбросить все
             </Button>
 
             <Button
               type='primary'
               onClick={form.submit}
-              disabled={valuesNotChanged}
+              disabled={isValuesNotChanged}
             >
               Применить
             </Button>
@@ -97,10 +106,21 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         onFinish={onSubmit}
       >
         <FilterBlock withDivider data-testid='filter-extended-status'>
-          <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
+          <FilterBlockLabel
+            label='Статус'
+            onReset={resetFields(['status', 'extraStatus', 'filterStatus'])}
+          />
+
+          <Form.Item name='extraStatus'>
+            <CheckboxGroupStyled options={checkboxExtraStatusOptions} />
+          </Form.Item>
 
           <Form.Item name='status'>
             <CheckboxGroupStyled options={checkboxStatusOptions} />
+          </Form.Item>
+
+          <Form.Item name='filterStatus'>
+            <CheckboxGroupStyled options={checkboxFilterStatusOptions} />
           </Form.Item>
         </FilterBlock>
 

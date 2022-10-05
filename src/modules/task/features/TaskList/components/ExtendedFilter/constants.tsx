@@ -28,6 +28,8 @@ export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
   searchField: DEFAULT_SEARCH_FIELD,
   searchValue: '',
   status: [],
+  extraStatus: [],
+  filterStatus: [],
   workGroupId: undefined,
 }
 
@@ -37,7 +39,40 @@ export const searchQueriesDict: StringMap<keyof SearchQueries> = {
   searchByAssignee: 'Исполнитель',
 }
 
-export const checkboxStatusOptions: Array<CheckboxOptionType> = [
+export const checkboxExtraStatusOptions: Array<CheckboxOptionType> =
+  Object.values(TaskExtraStatusEnum).map((status) => ({
+    label: (
+      <TaskExtraStatus status={status} text={taskExtraStatusDict[status]} />
+    ),
+    value: status,
+  }))
+
+export const checkboxFilterStatusOptions: Array<CheckboxOptionType> = [
+  {
+    label: (
+      <TaskFilterStatus
+        status={FastFilterEnum.Overdue}
+        text={taskFilterStatusDict[FastFilterEnum.Overdue]}
+      />
+    ),
+    value: FastFilterEnum.Overdue,
+  },
+]
+
+export const checkboxStatusOptions: Array<CheckboxOptionType> = Object.values(
+  TaskStatusEnum,
+)
+  .filter(
+    (status) =>
+      !isEqual(status, TaskStatusEnum.New) &&
+      !isEqual(status, TaskStatusEnum.Appointed),
+  )
+  .map((status) => ({
+    label: <TaskStatus status={status} text={taskStatusDict[status]} />,
+    value: status,
+  }))
+
+export const checkboxStatusOptions2: Array<CheckboxOptionType> = [
   ...Object.values(TaskExtraStatusEnum).map((status) => ({
     label: (
       <TaskExtraStatus status={status} text={taskExtraStatusDict[status]} />

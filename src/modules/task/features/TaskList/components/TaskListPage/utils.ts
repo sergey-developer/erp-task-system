@@ -1,11 +1,5 @@
-import {
-  TaskExtraStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
-import { isEqual } from 'shared/utils/common/isEqual'
 import formatDate from 'shared/utils/date/formatDate'
 
-import { FastFilterEnum } from '../../constants/common'
 import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
@@ -23,19 +17,15 @@ import { DATE_FILTER_FORMAT } from './constants'
 export const mapExtendedFilterFormFieldsToQueries = (
   fields: ExtendedFilterFormFields,
 ): ExtendedFilterQueries => {
-  const { completeAt, searchField, searchValue, status, workGroupId } = fields
-
-  const isAssigned = status.filter(
-    (s) =>
-      isEqual(s, TaskExtraStatusEnum.Assigned) ||
-      isEqual(s, TaskExtraStatusEnum.NotAssigned),
-  )
-
-  const filter = status.filter((s) => isEqual(s, FastFilterEnum.Overdue))
-
-  const statusResult = status.filter(
-    (s) => !isAssigned.includes(s) && !filter.includes(s),
-  )
+  const {
+    completeAt,
+    searchField,
+    searchValue,
+    status,
+    extraStatus,
+    filterStatus,
+    workGroupId,
+  } = fields
 
   return {
     completeAtFrom: completeAt?.[0]
@@ -45,9 +35,9 @@ export const mapExtendedFilterFormFieldsToQueries = (
       ? formatDate(completeAt[1], DATE_FILTER_FORMAT)
       : undefined,
 
-    status: statusResult as TaskStatusEnum[],
-    filter: filter[0] as FastFilterEnum,
-    isAssigned: isAssigned as TaskExtraStatusEnum[],
+    status,
+    filter: filterStatus,
+    isAssigned: extraStatus,
     [searchField]: searchValue || undefined,
     workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
   }
