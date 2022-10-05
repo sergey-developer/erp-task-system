@@ -5,14 +5,13 @@ import { TaskTableProps } from '../interfaces'
 
 export const columnWithSortingClass = 'ant-table-column-has-sorters'
 
-export const baseProps: Readonly<TaskTableProps> = {
+export const baseProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   dataSource: [getTaskTableItem()],
   loading: false,
   onRow: jest.fn(),
   onChange: jest.fn(),
   pagination: false,
   rowClassName: '',
-  sort: 'ola_next_breach_time',
 }
 
 export const paginationProps: TaskTableProps['pagination'] = {

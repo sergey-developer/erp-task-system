@@ -31,5 +31,5 @@ export type TaskTableProps = Required<
     | 'rowClassName'
   >
 > & {
-  sort: SortValue
+  sort?: SortValue
 }

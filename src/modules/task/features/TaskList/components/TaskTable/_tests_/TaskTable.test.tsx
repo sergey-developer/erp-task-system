@@ -3,6 +3,7 @@ import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
+import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { paginationConfig } from '../constants/pagination'
 import TaskTable from '../index'
 import {
@@ -14,8 +15,14 @@ import {
 import {
   getColumnTitle,
   getColumnTitleContainer,
+  getPageButton,
+  getPageSizeOption,
+  getPageSizeOptionsContainer,
   getPaginationContainer,
+  getPaginationNextButton,
+  getPaginationPrevButton,
   getTable,
+  userOpenPageSizeOptions,
 } from './utils'
 
 describe('Таблица заявок', () => {
@@ -51,6 +58,15 @@ describe('Таблица заявок', () => {
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
     })
+
+    test('Не имеет сортировки по умолчанию', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const table = getTable()
+      const columnTitleContainer = getColumnTitleContainer(table, 'Заявка')
+
+      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+    })
   })
 
   describe('Колонка "Внешний номер"', () => {
@@ -78,6 +94,15 @@ describe('Таблица заявок', () => {
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
     })
+
+    test('Не имеет сортировки по умолчанию', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const table = getTable()
+      const columnTitleContainer = getColumnTitleContainer(table, 'Внеш.номер')
+
+      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+    })
   })
 
   describe('Колонка "Объект"', () => {
@@ -103,6 +128,15 @@ describe('Таблица заявок', () => {
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
     })
+
+    test('Не имеет сортировки по умолчанию', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const table = getTable()
+      const columnTitleContainer = getColumnTitleContainer(table, 'Объект')
+
+      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+    })
   })
 
   describe('Колонка "Тема"', () => {
@@ -127,6 +161,15 @@ describe('Таблица заявок', () => {
       const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+    })
+
+    test('Не имеет сортировки по умолчанию', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const table = getTable()
+      const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
+
+      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
     })
   })
 
@@ -155,6 +198,15 @@ describe('Таблица заявок', () => {
       const columnTitleContainer = getColumnTitleContainer(table, 'Исполнитель')
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+    })
+
+    test('Не имеет сортировки по умолчанию', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const table = getTable()
+      const columnTitleContainer = getColumnTitleContainer(table, 'Исполнитель')
+
+      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
     })
   })
 
@@ -199,6 +251,18 @@ describe('Таблица заявок', () => {
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
     })
+
+    test('Не имеет сортировки по умолчанию', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const table = getTable()
+      const columnTitleContainer = getColumnTitleContainer(
+        table,
+        'Рабочая группа',
+      )
+
+      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+    })
   })
 
   describe('Колонка "Выполнить до"', () => {
@@ -232,6 +296,18 @@ describe('Таблица заявок', () => {
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
     })
+
+    test('Имеет сортировку по умолчанию', () => {
+      render(<TaskTable {...baseProps} sort='ola_next_breach_time' />)
+
+      const table = getTable()
+      const columnTitleContainer = getColumnTitleContainer(
+        table,
+        'Выполнить до',
+      )
+
+      expect(columnTitleContainer).toHaveAttribute('aria-sort', 'ascending')
+    })
   })
 
   describe('Колонка "Комментарий"', () => {
@@ -259,6 +335,15 @@ describe('Таблица заявок', () => {
       const columnTitleContainer = getColumnTitleContainer(table, 'Комментарий')
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+    })
+
+    test('Не имеет сортировки по умолчанию', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const table = getTable()
+      const columnTitleContainer = getColumnTitleContainer(table, 'Комментарий')
+
+      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
     })
   })
 
@@ -293,6 +378,18 @@ describe('Таблица заявок', () => {
 
       expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
     })
+
+    test('Не имеет сортировки по умолчанию', () => {
+      render(<TaskTable {...baseProps} />)
+
+      const table = getTable()
+      const columnTitleContainer = getColumnTitleContainer(
+        table,
+        'Дата создания',
+      )
+
+      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+    })
   })
 
   describe('Пагинация', () => {
@@ -309,11 +406,11 @@ describe('Таблица заявок', () => {
       render(<TaskTable {...baseProps} pagination={paginationProps} />)
 
       const pagination = getPaginationContainer()
-      const page1 = within(pagination).getByRole('listitem', { name: '1' })
-      const page2 = within(pagination).getByRole('listitem', { name: '2' })
+      const page1Button = getPageButton(pagination, '1')
+      const page2Button = getPageButton(pagination, '2')
 
-      expect(page1).toBeInTheDocument()
-      expect(page2).toBeInTheDocument()
+      expect(page1Button).toBeInTheDocument()
+      expect(page2Button).toBeInTheDocument()
     })
 
     test('Кнопки "Вперед" и "Назад" отображаются', () => {
@@ -336,7 +433,7 @@ describe('Таблица заявок', () => {
       render(<TaskTable {...baseProps} pagination={paginationProps} />)
 
       const pagination = getPaginationContainer()
-      const defaultPageSize = within(pagination).getByTitle('100 / стр.')
+      const defaultPageSize = getPageSizeOption(pagination, DEFAULT_PAGE_SIZE)
 
       expect(defaultPageSize).toBeInTheDocument()
       expect(defaultPageSize).toHaveClass('ant-select-selection-item')
@@ -348,23 +445,90 @@ describe('Таблица заявок', () => {
       )
 
       const pagination = getPaginationContainer()
-      const currentPageSizeButton = within(pagination).getByRole('combobox', {
-        expanded: false,
-      })
 
-      await user.click(currentPageSizeButton)
+      await userOpenPageSizeOptions(user, pagination)
 
-      const pageSizeOptionsContainer = pagination.querySelector(
-        '.rc-virtual-list',
-      ) as HTMLElement
+      const pageSizeOptionsContainer = getPageSizeOptionsContainer(pagination)
 
       paginationConfig.pageSizeOptions.forEach((pageSize) => {
-        const option = within(pageSizeOptionsContainer).getByText(
-          `${pageSize} / стр.`,
-        )
-
+        const option = getPageSizeOption(pageSizeOptionsContainer, pageSize)
         expect(option).toBeInTheDocument()
       })
     })
+
+    test('При изменении размера страницы вызывается обработчик', async () => {
+      const onChange = jest.fn()
+
+      const { user } = render(
+        <TaskTable
+          {...baseProps}
+          pagination={paginationProps}
+          onChange={onChange}
+        />,
+      )
+
+      const pagination = getPaginationContainer()
+
+      await userOpenPageSizeOptions(user, pagination)
+
+      const pageSizeOptionsContainer = getPageSizeOptionsContainer(pagination)
+      const pageSize = paginationConfig.pageSizeOptions[0]
+      const pageSizeOption = getPageSizeOption(
+        pageSizeOptionsContainer,
+        pageSize,
+      )
+
+      await user.click(pageSizeOption)
+
+      expect(onChange).toBeCalledTimes(1)
+    })
+
+    test('При изменении страницы вызывается обработчик', async () => {
+      const onChange = jest.fn()
+
+      const { user } = render(
+        <TaskTable
+          {...baseProps}
+          pagination={paginationProps}
+          onChange={onChange}
+        />,
+      )
+
+      const pagination = getPaginationContainer()
+      const nextButton = getPaginationNextButton(pagination)
+      const prevButton = getPaginationPrevButton(pagination)
+      const page2Button = getPageButton(pagination, '2')
+
+      await user.click(nextButton)
+      expect(onChange).toBeCalled()
+
+      await user.click(prevButton)
+      expect(onChange).toBeCalled()
+
+      await user.click(page2Button)
+      expect(onChange).toBeCalled()
+    })
+  })
+
+  test('При клике на строку вызывается обработчик', async () => {
+    const onRow = jest.fn()
+    const { user } = render(<TaskTable {...baseProps} onRow={onRow} />)
+
+    const row = screen.getByRole('row')
+    await user.click(row)
+
+    expect(onRow).toBeCalled()
+  })
+
+  test('При клике на сортировку вызывается обработчик', async () => {
+    const onChange = jest.fn()
+    const { user } = render(<TaskTable {...baseProps} onChange={onChange} />)
+
+    const table = getTable()
+    const columnTitleContainer = getColumnTitleContainer(table, 'Дата создания')
+
+    await user.click(columnTitleContainer!)
+
+    expect(onChange).toBeCalledTimes(1)
   })
 })
