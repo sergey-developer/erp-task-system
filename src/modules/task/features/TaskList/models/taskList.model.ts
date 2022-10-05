@@ -11,6 +11,7 @@ export type TaskListItemModel = BaseTaskModel & {
     'id' | 'firstName' | 'lastName' | 'middleName'
   >
   comment: MaybeNull<TaskListCommentModel>
+  lastComment: string
   reclassificationRequest: TaskListReclassificationRequestModel
   workGroup: MaybeNull<WorkGroupListItemModel>
 }

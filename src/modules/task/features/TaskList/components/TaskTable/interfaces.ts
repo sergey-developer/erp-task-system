@@ -14,7 +14,7 @@ export type TaskTableListItem = Pick<
   | 'workGroup'
   | 'olaNextBreachTime'
   | 'olaStatus'
-  | 'comment'
+  | 'lastComment'
   | 'createdAt'
   | 'status'
   | 'extendedStatus'
