@@ -1,6 +1,5 @@
 import { screen, within } from '_tests_/utils'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { Nullable } from 'shared/interfaces/utils'
 
 export const getTable = (): HTMLElement => screen.getByTestId('table-task-list')
 
@@ -12,9 +11,9 @@ export const getColumnTitle = (
 export const getColumnTitleContainer = (
   container: HTMLElement,
   title: string,
-): Nullable<HTMLElement> => {
+): HTMLElement => {
   // eslint-disable-next-line testing-library/no-node-access
-  return getColumnTitle(container, title).parentElement?.parentElement
+  return getColumnTitle(container, title).parentElement?.parentElement!
 }
 
 export const getPaginationContainer = () => screen.getByRole('list')

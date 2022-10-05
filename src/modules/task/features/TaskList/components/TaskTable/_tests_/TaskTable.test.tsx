@@ -527,7 +527,7 @@ describe('Таблица заявок', () => {
     const table = getTable()
     const columnTitleContainer = getColumnTitleContainer(table, 'Дата создания')
 
-    await user.click(columnTitleContainer!)
+    await user.click(columnTitleContainer)
 
     expect(onChange).toBeCalledTimes(1)
   })
