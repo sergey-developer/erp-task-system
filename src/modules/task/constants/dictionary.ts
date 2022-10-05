@@ -1,4 +1,5 @@
 import {
+  TaskExtendedStatusEnum,
   TaskExtraStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
@@ -6,25 +7,33 @@ import { StringMap } from 'shared/interfaces/utils'
 
 import { FastFilterEnum } from '../features/TaskList/constants/common'
 
-export const taskStatusDict: Readonly<
-  Partial<
-    StringMap<
-      | TaskStatusEnum
-      | TaskExtraStatusEnum
-      | Extract<FastFilterEnum, FastFilterEnum.Overdue>
-    >
-  >
+export const taskExtendedStatusToTaskStatus: Partial<
+  Record<TaskExtendedStatusEnum, TaskStatusEnum>
 > = {
-  [TaskExtraStatusEnum.Assigned]: 'Есть назначенный',
-  [TaskExtraStatusEnum.NotAssigned]: 'Без назначенного',
+  [TaskExtendedStatusEnum.Awaiting]: TaskStatusEnum.Awaiting,
+  [TaskExtendedStatusEnum.Returned]: TaskStatusEnum.Returned,
+  [TaskExtendedStatusEnum.InReclassification]:
+    TaskStatusEnum.InReclassification,
+}
+
+export const taskStatusDict: Readonly<Partial<StringMap<TaskStatusEnum>>> = {
   [TaskStatusEnum.InProgress]: 'В работе',
   [TaskStatusEnum.Completed]: 'Выполнено',
   [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.InReclassification]: 'На переклассификации',
   [TaskStatusEnum.Returned]: 'Возврат заявителем',
   [TaskStatusEnum.Closed]: 'Закрытые',
-  [FastFilterEnum.Overdue]: 'Просроченные',
 }
+
+export const taskExtraStatusDict: Readonly<StringMap<TaskExtraStatusEnum>> = {
+  [TaskExtraStatusEnum.Assigned]: 'Есть назначенный',
+  [TaskExtraStatusEnum.NotAssigned]: 'Без назначенного',
+}
+
+export const taskFilterStatusDict: Readonly<StringMap<FastFilterEnum.Overdue>> =
+  {
+    [FastFilterEnum.Overdue]: 'Просроченные',
+  }
 
 export const taskImpactMap = new Map([
   [1, '1-всеохватывающее/широкое'],
