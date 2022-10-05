@@ -11,7 +11,7 @@ export type AllColumnWidthMap =
       | 'assignee'
       | 'workGroup'
       | 'olaNextBreachTime'
-      | 'comment'
+      | 'lastComment'
       | 'createdAt'
     >
 
@@ -24,7 +24,7 @@ export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
   assignee: 110,
   workGroup: 130,
   olaNextBreachTime: 105,
-  comment: 160,
+  lastComment: 160,
   createdAt: 105,
 }
 
@@ -38,6 +38,6 @@ export const xxlColumnWidthMap: Record<XxlColumnWidthMap, number> = {
   assignee: 140,
   workGroup: 140,
   olaNextBreachTime: 140,
-  comment: 200,
+  lastComment: 200,
   createdAt: 140,
 }

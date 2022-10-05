@@ -20,7 +20,7 @@ export type SortableField = keyof Pick<
   | 'id'
   | 'name'
   | 'title'
-  | 'comment'
+  | 'lastComment'
   | 'assignee'
   | 'recordId'
   | 'workGroup'
@@ -35,7 +35,7 @@ export const sortableFieldToSortValues: Record<
   id: ['id', '-id'],
   name: ['name', '-name'],
   title: ['title', '-title'],
-  comment: ['last_comment_text', '-last_comment_text'],
+  lastComment: ['last_comment_text', '-last_comment_text'],
   assignee: ['assignee__last_name', '-assignee__last_name'],
   recordId: ['record_id', '-record_id'],
   workGroup: ['work_group__name', '-work_group__name'],
