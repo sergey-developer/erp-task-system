@@ -22,8 +22,8 @@ export const mapExtendedFilterFormFieldsToQueries = (
     searchField,
     searchValue,
     status,
-    extraStatus,
-    filterStatus,
+    isAssigned,
+    filter,
     workGroupId,
   } = fields
 
@@ -36,8 +36,8 @@ export const mapExtendedFilterFormFieldsToQueries = (
       : undefined,
 
     status,
-    filter: filterStatus,
-    isAssigned: extraStatus,
+    filter,
+    isAssigned,
     [searchField]: searchValue || undefined,
     workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
   }

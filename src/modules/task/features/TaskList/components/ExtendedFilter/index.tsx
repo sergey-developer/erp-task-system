@@ -48,8 +48,8 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
     useGetWorkGroupList()
 
   const statusValue = Form.useWatch('status', form)
-  const extraStatusValue = Form.useWatch('extraStatus', form)
-  const filterStatusValue = Form.useWatch('filterStatus', form)
+  const isAssignedValue = Form.useWatch('isAssigned', form)
+  const filterValue = Form.useWatch('filter', form)
   const completeAtValue = Form.useWatch('completeAt', form)
   const workGroupIdValue = Form.useWatch('workGroupId', form)
   const searchFieldValue = Form.useWatch('searchField', form)
@@ -58,8 +58,8 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   const formValues: ExtendedFilterFormFields = {
     searchValue: searchValueValue,
     status: statusValue,
-    extraStatus: extraStatusValue,
-    filterStatus: filterStatusValue,
+    isAssigned: isAssignedValue,
+    filter: filterValue,
     completeAt: completeAtValue,
     workGroupId: workGroupIdValue,
     searchField: searchFieldValue,
@@ -108,20 +108,24 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         <FilterBlock withDivider data-testid='filter-extended-status'>
           <FilterBlockLabel
             label='Статус'
-            onReset={resetFields(['status', 'extraStatus', 'filterStatus'])}
+            onReset={resetFields(['status', 'isAssigned', 'filter'])}
           />
 
-          <Form.Item name='extraStatus'>
-            <CheckboxGroupStyled options={checkboxExtraStatusOptions} />
-          </Form.Item>
+          <Space direction='vertical' size={20}>
+            <Form.Item name='isAssigned'>
+              <CheckboxGroupStyled options={checkboxExtraStatusOptions} />
+            </Form.Item>
 
-          <Form.Item name='status'>
-            <CheckboxGroupStyled options={checkboxStatusOptions} />
-          </Form.Item>
+            <Space direction='vertical' size={15}>
+              <Form.Item name='status'>
+                <CheckboxGroupStyled options={checkboxStatusOptions} />
+              </Form.Item>
 
-          <Form.Item name='filterStatus'>
-            <CheckboxGroupStyled options={checkboxFilterStatusOptions} />
-          </Form.Item>
+              <Form.Item name='filter'>
+                <CheckboxGroupStyled options={checkboxFilterStatusOptions} />
+              </Form.Item>
+            </Space>
+          </Space>
         </FilterBlock>
 
         <FilterBlock withDivider data-testid='filter-extended-complete-at'>

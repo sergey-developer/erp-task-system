@@ -28,8 +28,8 @@ export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
   searchField: DEFAULT_SEARCH_FIELD,
   searchValue: '',
   status: [],
-  extraStatus: [],
-  filterStatus: [],
+  isAssigned: [],
+  filter: undefined,
   workGroupId: undefined,
 }
 
@@ -71,31 +71,3 @@ export const checkboxStatusOptions: Array<CheckboxOptionType> = Object.values(
     label: <TaskStatus status={status} text={taskStatusDict[status]} />,
     value: status,
   }))
-
-export const checkboxStatusOptions2: Array<CheckboxOptionType> = [
-  ...Object.values(TaskExtraStatusEnum).map((status) => ({
-    label: (
-      <TaskExtraStatus status={status} text={taskExtraStatusDict[status]} />
-    ),
-    value: status,
-  })),
-  ...Object.values(TaskStatusEnum)
-    .filter(
-      (status) =>
-        !isEqual(status, TaskStatusEnum.New) &&
-        !isEqual(status, TaskStatusEnum.Appointed),
-    )
-    .map((status) => ({
-      label: <TaskStatus status={status} text={taskStatusDict[status]} />,
-      value: status,
-    })),
-  {
-    label: (
-      <TaskFilterStatus
-        status={FastFilterEnum.Overdue}
-        text={taskFilterStatusDict[FastFilterEnum.Overdue]}
-      />
-    ),
-    value: FastFilterEnum.Overdue,
-  },
-]

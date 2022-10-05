@@ -28,7 +28,7 @@ export type ExtendedFilterFormFields = {
   searchField: keyof SearchQueries
   searchValue: string
   status: Array<TaskStatusEnum>
-  extraStatus: Array<TaskExtraStatusEnum>
-  filterStatus: FastFilterEnum
+  isAssigned: Array<TaskExtraStatusEnum>
+  filter: MaybeUndefined<FastFilterEnum>
   workGroupId: MaybeUndefined<string>
 }
