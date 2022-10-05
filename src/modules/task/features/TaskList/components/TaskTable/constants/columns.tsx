@@ -84,7 +84,7 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
     sorter: true,
   },
   {
-    key: 'comment',
+    key: 'lastComment',
     dataIndex: 'lastComment',
     title: 'Комментарий',
     ellipsis: true,
