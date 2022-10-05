@@ -324,7 +324,7 @@ describe('Таблица заявок', () => {
       const table = getTable()
 
       expect(
-        within(table).getByText(taskTableItem.comment!.text),
+        within(table).getByText(taskTableItem.lastComment),
       ).toBeInTheDocument()
     })
 

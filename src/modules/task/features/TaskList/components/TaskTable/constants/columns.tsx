@@ -85,11 +85,11 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
   },
   {
     key: 'comment',
-    dataIndex: 'comment',
+    dataIndex: 'lastComment',
     title: 'Комментарий',
     ellipsis: true,
     sorter: true,
-    render: (value: TaskTableListItem['comment']) => value?.text,
+    render: (value: TaskTableListItem['lastComment']) => value,
   },
   {
     key: 'createdAt',

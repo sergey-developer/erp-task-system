@@ -14,7 +14,6 @@ import { TaskTableListItem } from 'modules/task/features/TaskList/components/Tas
 
 import { getWorkGroup } from '../workGroup'
 import { getTaskAssignee } from './taskAssignee'
-import { getTaskListComment } from './taskList'
 
 export const getTaskTableItem = (
   props?: Partial<
@@ -27,7 +26,7 @@ export const getTaskTableItem = (
   workGroup: getWorkGroup(),
   createdAt: generateDateString(),
   recordId: generateString(),
-  comment: getTaskListComment(),
+  lastComment: generateWord(),
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.Awaiting,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
