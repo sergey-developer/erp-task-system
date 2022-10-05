@@ -5,8 +5,16 @@ import {
   TaskExtraStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
-import { taskStatusDict } from 'modules/task/constants/dictionary'
-import TaskStatus from 'modules/task/features/TaskStatus'
+import {
+  taskExtraStatusDict,
+  taskFilterStatusDict,
+  taskStatusDict,
+} from 'modules/task/constants/dictionary'
+import {
+  TaskExtraStatus,
+  TaskFilterStatus,
+  TaskStatus,
+} from 'modules/task/features/TaskStatus'
 import { StringMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
@@ -31,7 +39,9 @@ export const searchQueriesDict: StringMap<keyof SearchQueries> = {
 
 export const checkboxStatusOptions: Array<CheckboxOptionType> = [
   ...Object.values(TaskExtraStatusEnum).map((status) => ({
-    label: <TaskStatus status={status} text={taskStatusDict[status]} />,
+    label: (
+      <TaskExtraStatus status={status} text={taskExtraStatusDict[status]} />
+    ),
     value: status,
   })),
   ...Object.values(TaskStatusEnum)
@@ -46,9 +56,9 @@ export const checkboxStatusOptions: Array<CheckboxOptionType> = [
     })),
   {
     label: (
-      <TaskStatus
+      <TaskFilterStatus
         status={FastFilterEnum.Overdue}
-        text={taskStatusDict[FastFilterEnum.Overdue]}
+        text={taskFilterStatusDict[FastFilterEnum.Overdue]}
       />
     ),
     value: FastFilterEnum.Overdue,

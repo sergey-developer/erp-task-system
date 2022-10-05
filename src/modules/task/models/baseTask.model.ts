@@ -30,9 +30,9 @@ export type BaseTaskModel = {
   isOlaBreached: boolean
   olaStatus: TaskOlaStatusEnum
   extendedStatus: TaskExtendedStatusEnum
-  initialImpact: number
-  severity: number
-  priorityCode: number
+  initialImpact: 1 | 2 | 3 | 4
+  severity: 1 | 2 | 3 | 4
+  priorityCode: 1 | 2 | 3 | 4
 
   olaNextBreachTime?: MaybeNull<string>
   description?: string

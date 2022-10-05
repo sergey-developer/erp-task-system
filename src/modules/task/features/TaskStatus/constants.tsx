@@ -15,29 +15,33 @@ import {
 
 import { FastFilterEnum } from '../TaskList/constants/common'
 
-export const badgeByStatusMap: Partial<
+export const badgeByTaskStatus: Partial<
   Record<
-    TaskStatusEnum | TaskExtraStatusEnum,
+    TaskStatusEnum,
     Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
   >
 > = {
-  [TaskExtraStatusEnum.Assigned]: 'default',
-  [TaskExtraStatusEnum.NotAssigned]: 'default',
   [TaskStatusEnum.New]: 'default',
   [TaskStatusEnum.Appointed]: 'default',
   [TaskStatusEnum.InProgress]: 'warning',
   [TaskStatusEnum.Completed]: 'success',
 }
 
-export const iconByStatusMap: Partial<
-  Record<
-    TaskStatusEnum | Extract<FastFilterEnum, FastFilterEnum.Overdue>,
-    ReactElement
-  >
+export const badgeByTaskExtraStatus: Record<
+  TaskExtraStatusEnum,
+  Extract<BadgeProps['status'], 'default'>
 > = {
+  [TaskExtraStatusEnum.Assigned]: 'default',
+  [TaskExtraStatusEnum.NotAssigned]: 'default',
+}
+
+export const iconByTaskStatus: Partial<Record<TaskStatusEnum, ReactElement>> = {
   [TaskStatusEnum.Awaiting]: <PauseCircleIcon />,
   [TaskStatusEnum.InReclassification]: <QuestionCircleIcon />,
   [TaskStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
   [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
+}
+
+export const iconByFilter: Record<FastFilterEnum.Overdue, ReactElement> = {
   [FastFilterEnum.Overdue]: <HistoryIcon $color='fireOpal' />,
 }
