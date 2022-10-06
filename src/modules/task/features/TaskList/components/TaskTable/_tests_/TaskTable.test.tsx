@@ -30,7 +30,7 @@ describe('Таблица заявок', () => {
     test('Отображает значение', () => {
       render(<TaskTable {...baseProps} />)
 
-      const status = screen.getByTestId('task-status')
+      const status = screen.getByTestId(`badge-status-warning`)
       expect(status).toBeInTheDocument()
     })
   })

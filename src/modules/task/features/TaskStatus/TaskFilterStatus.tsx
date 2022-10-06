@@ -13,7 +13,7 @@ const TaskFilterStatus: FC<TaskFilterStatusProps> = ({ text, status }) => {
   const icon = iconByFilter[status]
 
   return (
-    <Space data-testid='task-status'>
+    <Space>
       {icon}
 
       {text}

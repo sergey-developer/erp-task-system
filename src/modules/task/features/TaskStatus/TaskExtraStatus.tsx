@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import { TaskExtraStatusEnum } from 'modules/task/constants/common'
 
-import { badgeByTaskExtraStatus } from './constants'
+import { badgeNameByTaskExtraStatus } from './constants'
 import { BadgeStyled } from './styles'
 
 type TaskExtraStatusProps = {
@@ -12,11 +12,14 @@ type TaskExtraStatusProps = {
 }
 
 const TaskExtraStatus: FC<TaskExtraStatusProps> = ({ text, status }) => {
-  const badge = badgeByTaskExtraStatus[status]
+  const badgeName = badgeNameByTaskExtraStatus[status]
 
   return (
-    <Space data-testid='task-status'>
-      <BadgeStyled status={badge} />
+    <Space>
+      <BadgeStyled
+        data-testid={`badge-status-${badgeName}`}
+        status={badgeName}
+      />
 
       {text}
     </Space>
