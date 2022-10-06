@@ -1,4 +1,8 @@
-import { render, screen, within } from '_tests_/utils'
+import { getIconByName, render, screen, within } from '_tests_/utils'
+import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
@@ -10,7 +14,7 @@ import {
   baseProps,
   columnWithSortingClass,
   paginationProps,
-  taskTableItem,
+  taskTableItemFromBaseProps,
 } from './constants'
 import {
   getColumnTitle,
@@ -27,11 +31,57 @@ import {
 
 describe('Таблица заявок', () => {
   describe('Колонка "Статус заявки"', () => {
-    test('Отображает значение', () => {
-      render(<TaskTable {...baseProps} />)
+    describe('Отображает значение для расширенного статуса', () => {
+      test(`${TaskExtendedStatusEnum.Awaiting}`, () => {
+        render(
+          <TaskTable
+            {...baseProps}
+            dataSource={[
+              {
+                ...taskTableItemFromBaseProps,
+                status: TaskStatusEnum.New,
+                extendedStatus: TaskExtendedStatusEnum.Awaiting,
+              },
+            ]}
+          />,
+        )
 
-      const status = screen.getByTestId(`badge-status-warning`)
-      expect(status).toBeInTheDocument()
+        expect(getIconByName('pause-circle')).toBeInTheDocument()
+      })
+
+      test(`${TaskExtendedStatusEnum.Returned}`, () => {
+        render(
+          <TaskTable
+            {...baseProps}
+            dataSource={[
+              {
+                ...taskTableItemFromBaseProps,
+                status: TaskStatusEnum.New,
+                extendedStatus: TaskExtendedStatusEnum.Returned,
+              },
+            ]}
+          />,
+        )
+
+        expect(getIconByName('right-circle')).toBeInTheDocument()
+      })
+
+      test(`${TaskExtendedStatusEnum.InReclassification}`, () => {
+        render(
+          <TaskTable
+            {...baseProps}
+            dataSource={[
+              {
+                ...taskTableItemFromBaseProps,
+                status: TaskStatusEnum.New,
+                extendedStatus: TaskExtendedStatusEnum.InReclassification,
+              },
+            ]}
+          />,
+        )
+
+        expect(getIconByName('question-circle')).toBeInTheDocument()
+      })
     })
   })
 
@@ -47,7 +97,9 @@ describe('Таблица заявок', () => {
       render(<TaskTable {...baseProps} />)
 
       const table = getTable()
-      expect(within(table).getByText(taskTableItem.id)).toBeInTheDocument()
+      expect(
+        within(table).getByText(taskTableItemFromBaseProps.id),
+      ).toBeInTheDocument()
     })
 
     test('Имеет сортировку', async () => {
@@ -82,7 +134,7 @@ describe('Таблица заявок', () => {
 
       const table = getTable()
       expect(
-        within(table).getByText(taskTableItem.recordId),
+        within(table).getByText(taskTableItemFromBaseProps.recordId),
       ).toBeInTheDocument()
     })
 
@@ -117,7 +169,9 @@ describe('Таблица заявок', () => {
       render(<TaskTable {...baseProps} />)
 
       const table = getTable()
-      expect(within(table).getByText(taskTableItem.name)).toBeInTheDocument()
+      expect(
+        within(table).getByText(taskTableItemFromBaseProps.name),
+      ).toBeInTheDocument()
     })
 
     test('Имеет сортировку', async () => {
@@ -151,7 +205,9 @@ describe('Таблица заявок', () => {
       render(<TaskTable {...baseProps} />)
 
       const table = getTable()
-      expect(within(table).getByText(taskTableItem.title)).toBeInTheDocument()
+      expect(
+        within(table).getByText(taskTableItemFromBaseProps.title),
+      ).toBeInTheDocument()
     })
 
     test('Имеет сортировку', async () => {
@@ -187,7 +243,9 @@ describe('Таблица заявок', () => {
       const table = getTable()
 
       expect(
-        within(table).getByText(getShortUserName(taskTableItem.assignee)),
+        within(table).getByText(
+          getShortUserName(taskTableItemFromBaseProps.assignee),
+        ),
       ).toBeInTheDocument()
     })
 
@@ -224,7 +282,7 @@ describe('Таблица заявок', () => {
       const table = getTable()
 
       expect(
-        within(table).getByText(taskTableItem.workGroup!.name),
+        within(table).getByText(taskTableItemFromBaseProps.workGroup!.name),
       ).toBeInTheDocument()
     })
 
@@ -232,7 +290,7 @@ describe('Таблица заявок', () => {
       render(
         <TaskTable
           {...baseProps}
-          dataSource={[{ ...taskTableItem, workGroup: null }]}
+          dataSource={[{ ...taskTableItemFromBaseProps, workGroup: null }]}
         />,
       )
 
@@ -280,7 +338,10 @@ describe('Таблица заявок', () => {
 
       expect(
         within(table).getByText(
-          formatDate(taskTableItem.olaNextBreachTime, DATE_TIME_FORMAT),
+          formatDate(
+            taskTableItemFromBaseProps.olaNextBreachTime,
+            DATE_TIME_FORMAT,
+          ),
         ),
       ).toBeInTheDocument()
     })
@@ -324,7 +385,7 @@ describe('Таблица заявок', () => {
       const table = getTable()
 
       expect(
-        within(table).getByText(taskTableItem.lastComment),
+        within(table).getByText(taskTableItemFromBaseProps.lastComment),
       ).toBeInTheDocument()
     })
 
@@ -362,7 +423,7 @@ describe('Таблица заявок', () => {
 
       expect(
         within(table).getByText(
-          formatDate(taskTableItem.createdAt, DATE_TIME_FORMAT),
+          formatDate(taskTableItemFromBaseProps.createdAt, DATE_TIME_FORMAT),
         ),
       ).toBeInTheDocument()
     })

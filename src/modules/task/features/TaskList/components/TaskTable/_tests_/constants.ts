@@ -25,4 +25,4 @@ export const paginationProps: TaskTableProps['pagination'] = {
   total: 120,
 }
 
-export const taskTableItem = baseProps.dataSource![0]
+export const taskTableItemFromBaseProps = baseProps.dataSource![0]
