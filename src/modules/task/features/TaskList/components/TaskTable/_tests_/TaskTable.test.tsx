@@ -30,426 +30,446 @@ import {
 } from './utils'
 
 describe('Таблица заявок', () => {
-  describe('Колонка "Статус заявки"', () => {
-    describe('Отображает значение для расширенного статуса', () => {
-      test(`${TaskExtendedStatusEnum.Awaiting}`, () => {
-        render(
-          <TaskTable
-            {...baseProps}
-            dataSource={[
-              {
-                ...taskTableItemFromBaseProps,
-                status: TaskStatusEnum.New,
-                extendedStatus: TaskExtendedStatusEnum.Awaiting,
-              },
-            ]}
-          />,
-        )
+  describe('Колонка', () => {
+    describe('Статус заявки', () => {
+      describe('Отображает значение для расширенного статуса', () => {
+        test(`${TaskExtendedStatusEnum.Awaiting}`, () => {
+          render(
+            <TaskTable
+              {...baseProps}
+              dataSource={[
+                {
+                  ...taskTableItemFromBaseProps,
+                  status: TaskStatusEnum.New,
+                  extendedStatus: TaskExtendedStatusEnum.Awaiting,
+                },
+              ]}
+            />,
+          )
 
-        expect(getIconByName('pause-circle')).toBeInTheDocument()
+          expect(getIconByName('pause-circle')).toBeInTheDocument()
+        })
+
+        test(`${TaskExtendedStatusEnum.Returned}`, () => {
+          render(
+            <TaskTable
+              {...baseProps}
+              dataSource={[
+                {
+                  ...taskTableItemFromBaseProps,
+                  status: TaskStatusEnum.New,
+                  extendedStatus: TaskExtendedStatusEnum.Returned,
+                },
+              ]}
+            />,
+          )
+
+          expect(getIconByName('right-circle')).toBeInTheDocument()
+        })
+
+        test(`${TaskExtendedStatusEnum.InReclassification}`, () => {
+          render(
+            <TaskTable
+              {...baseProps}
+              dataSource={[
+                {
+                  ...taskTableItemFromBaseProps,
+                  status: TaskStatusEnum.New,
+                  extendedStatus: TaskExtendedStatusEnum.InReclassification,
+                },
+              ]}
+            />,
+          )
+
+          expect(getIconByName('question-circle')).toBeInTheDocument()
+        })
+      })
+    })
+
+    describe('Заявка', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        expect(getColumnTitle(table, 'Заявка')).toBeInTheDocument()
       })
 
-      test(`${TaskExtendedStatusEnum.Returned}`, () => {
-        render(
-          <TaskTable
-            {...baseProps}
-            dataSource={[
-              {
-                ...taskTableItemFromBaseProps,
-                status: TaskStatusEnum.New,
-                extendedStatus: TaskExtendedStatusEnum.Returned,
-              },
-            ]}
-          />,
-        )
+      test('Отображает значение', () => {
+        render(<TaskTable {...baseProps} />)
 
-        expect(getIconByName('right-circle')).toBeInTheDocument()
+        const table = getTable()
+        expect(
+          within(table).getByText(taskTableItemFromBaseProps.id),
+        ).toBeInTheDocument()
       })
 
-      test(`${TaskExtendedStatusEnum.InReclassification}`, () => {
-        render(
-          <TaskTable
-            {...baseProps}
-            dataSource={[
-              {
-                ...taskTableItemFromBaseProps,
-                status: TaskStatusEnum.New,
-                extendedStatus: TaskExtendedStatusEnum.InReclassification,
-              },
-            ]}
-          />,
-        )
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...baseProps} />)
 
-        expect(getIconByName('question-circle')).toBeInTheDocument()
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(table, 'Заявка')
+
+        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      })
+
+      test('Не имеет сортировки по умолчанию', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(table, 'Заявка')
+
+        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
       })
     })
-  })
 
-  describe('Колонка "Заявка"', () => {
-    test('Отображает заголовок', () => {
-      render(<TaskTable {...baseProps} />)
+    describe('Внешний номер', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...baseProps} />)
 
-      const table = getTable()
-      expect(getColumnTitle(table, 'Заявка')).toBeInTheDocument()
+        const table = getTable()
+        expect(getColumnTitle(table, 'Внеш.номер')).toBeInTheDocument()
+      })
+
+      test('Отображает значение', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        expect(
+          within(table).getByText(taskTableItemFromBaseProps.recordId),
+        ).toBeInTheDocument()
+      })
+
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Внеш.номер',
+        )
+
+        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      })
+
+      test('Не имеет сортировки по умолчанию', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Внеш.номер',
+        )
+
+        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+      })
     })
 
-    test('Отображает значение', () => {
-      render(<TaskTable {...baseProps} />)
+    describe('Объект', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...baseProps} />)
 
-      const table = getTable()
-      expect(
-        within(table).getByText(taskTableItemFromBaseProps.id),
-      ).toBeInTheDocument()
+        const table = getTable()
+        expect(getColumnTitle(table, 'Объект')).toBeInTheDocument()
+      })
+
+      test('Отображает значение', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        expect(
+          within(table).getByText(taskTableItemFromBaseProps.name),
+        ).toBeInTheDocument()
+      })
+
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(table, 'Объект')
+
+        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      })
+
+      test('Не имеет сортировки по умолчанию', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(table, 'Объект')
+
+        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+      })
     })
 
-    test('Имеет сортировку', async () => {
-      render(<TaskTable {...baseProps} />)
+    describe('Тема', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...baseProps} />)
 
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Заявка')
+        const table = getTable()
+        expect(getColumnTitle(table, 'Тема')).toBeInTheDocument()
+      })
 
-      expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      test('Отображает значение', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        expect(
+          within(table).getByText(taskTableItemFromBaseProps.title),
+        ).toBeInTheDocument()
+      })
+
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
+
+        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      })
+
+      test('Не имеет сортировки по умолчанию', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
+
+        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+      })
     })
 
-    test('Не имеет сортировки по умолчанию', () => {
-      render(<TaskTable {...baseProps} />)
+    describe('Исполнитель', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...baseProps} />)
 
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Заявка')
+        const table = getTable()
+        expect(getColumnTitle(table, 'Исполнитель')).toBeInTheDocument()
+      })
 
-      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
-    })
-  })
+      test('Отображает значение', () => {
+        render(<TaskTable {...baseProps} />)
 
-  describe('Колонка "Внешний номер"', () => {
-    test('Отображает заголовок', () => {
-      render(<TaskTable {...baseProps} />)
+        const table = getTable()
 
-      const table = getTable()
-      expect(getColumnTitle(table, 'Внеш.номер')).toBeInTheDocument()
-    })
-
-    test('Отображает значение', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      expect(
-        within(table).getByText(taskTableItemFromBaseProps.recordId),
-      ).toBeInTheDocument()
-    })
-
-    test('Имеет сортировку', async () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Внеш.номер')
-
-      expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
-    })
-
-    test('Не имеет сортировки по умолчанию', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Внеш.номер')
-
-      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
-    })
-  })
-
-  describe('Колонка "Объект"', () => {
-    test('Отображает заголовок', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      expect(getColumnTitle(table, 'Объект')).toBeInTheDocument()
-    })
-
-    test('Отображает значение', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      expect(
-        within(table).getByText(taskTableItemFromBaseProps.name),
-      ).toBeInTheDocument()
-    })
-
-    test('Имеет сортировку', async () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Объект')
-
-      expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
-    })
-
-    test('Не имеет сортировки по умолчанию', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Объект')
-
-      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
-    })
-  })
-
-  describe('Колонка "Тема"', () => {
-    test('Отображает заголовок', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      expect(getColumnTitle(table, 'Тема')).toBeInTheDocument()
-    })
-
-    test('Отображает значение', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      expect(
-        within(table).getByText(taskTableItemFromBaseProps.title),
-      ).toBeInTheDocument()
-    })
-
-    test('Имеет сортировку', async () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
-
-      expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
-    })
-
-    test('Не имеет сортировки по умолчанию', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
-
-      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
-    })
-  })
-
-  describe('Колонка "Исполнитель"', () => {
-    test('Отображает заголовок', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      expect(getColumnTitle(table, 'Исполнитель')).toBeInTheDocument()
-    })
-
-    test('Отображает значение', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-
-      expect(
-        within(table).getByText(
-          getShortUserName(taskTableItemFromBaseProps.assignee),
-        ),
-      ).toBeInTheDocument()
-    })
-
-    test('Имеет сортировку', async () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Исполнитель')
-
-      expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
-    })
-
-    test('Не имеет сортировки по умолчанию', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Исполнитель')
-
-      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
-    })
-  })
-
-  describe('Колонка "Рабочая группа"', () => {
-    test('Отображает заголовок', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      expect(getColumnTitle(table, 'Рабочая группа')).toBeInTheDocument()
-    })
-
-    test('Отображает значение если оно присутствует', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-
-      expect(
-        within(table).getByText(taskTableItemFromBaseProps.workGroup!.name),
-      ).toBeInTheDocument()
-    })
-
-    test('Отображает резервный текст если оно отсутствует', () => {
-      render(
-        <TaskTable
-          {...baseProps}
-          dataSource={[{ ...taskTableItemFromBaseProps, workGroup: null }]}
-        />,
-      )
-
-      const table = getTable()
-      expect(within(table).getByText('I линия поддержки')).toBeInTheDocument()
-    })
-
-    test('Имеет сортировку', async () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(
-        table,
-        'Рабочая группа',
-      )
-
-      expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
-    })
-
-    test('Не имеет сортировки по умолчанию', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(
-        table,
-        'Рабочая группа',
-      )
-
-      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
-    })
-  })
-
-  describe('Колонка "Выполнить до"', () => {
-    test('Отображает заголовок', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      expect(getColumnTitle(table, 'Выполнить до')).toBeInTheDocument()
-    })
-
-    test('Отображает значение', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-
-      expect(
-        within(table).getByText(
-          formatDate(
-            taskTableItemFromBaseProps.olaNextBreachTime,
-            DATE_TIME_FORMAT,
+        expect(
+          within(table).getByText(
+            getShortUserName(taskTableItemFromBaseProps.assignee),
           ),
-        ),
-      ).toBeInTheDocument()
+        ).toBeInTheDocument()
+      })
+
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Исполнитель',
+        )
+
+        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      })
+
+      test('Не имеет сортировки по умолчанию', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Исполнитель',
+        )
+
+        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+      })
     })
 
-    test('Имеет сортировку', async () => {
-      render(<TaskTable {...baseProps} />)
+    describe('Рабочая группа', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...baseProps} />)
 
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(
-        table,
-        'Выполнить до',
-      )
+        const table = getTable()
+        expect(getColumnTitle(table, 'Рабочая группа')).toBeInTheDocument()
+      })
 
-      expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      test('Отображает значение если оно присутствует', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+
+        expect(
+          within(table).getByText(taskTableItemFromBaseProps.workGroup!.name),
+        ).toBeInTheDocument()
+      })
+
+      test('Отображает резервный текст если оно отсутствует', () => {
+        render(
+          <TaskTable
+            {...baseProps}
+            dataSource={[{ ...taskTableItemFromBaseProps, workGroup: null }]}
+          />,
+        )
+
+        const table = getTable()
+        expect(within(table).getByText('I линия поддержки')).toBeInTheDocument()
+      })
+
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Рабочая группа',
+        )
+
+        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      })
+
+      test('Не имеет сортировки по умолчанию', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Рабочая группа',
+        )
+
+        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+      })
     })
 
-    test('Имеет сортировку по умолчанию', () => {
-      render(<TaskTable {...baseProps} sort='ola_next_breach_time' />)
+    describe('Выполнить до', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...baseProps} />)
 
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(
-        table,
-        'Выполнить до',
-      )
+        const table = getTable()
+        expect(getColumnTitle(table, 'Выполнить до')).toBeInTheDocument()
+      })
 
-      expect(columnTitleContainer).toHaveAttribute('aria-sort', 'ascending')
-    })
-  })
+      test('Отображает значение', () => {
+        render(<TaskTable {...baseProps} />)
 
-  describe('Колонка "Комментарий"', () => {
-    test('Отображает заголовок', () => {
-      render(<TaskTable {...baseProps} />)
+        const table = getTable()
 
-      const table = getTable()
-      expect(getColumnTitle(table, 'Комментарий')).toBeInTheDocument()
-    })
+        expect(
+          within(table).getByText(
+            formatDate(
+              taskTableItemFromBaseProps.olaNextBreachTime,
+              DATE_TIME_FORMAT,
+            ),
+          ),
+        ).toBeInTheDocument()
+      })
 
-    test('Отображает значение', () => {
-      render(<TaskTable {...baseProps} />)
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...baseProps} />)
 
-      const table = getTable()
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Выполнить до',
+        )
 
-      expect(
-        within(table).getByText(taskTableItemFromBaseProps.lastComment),
-      ).toBeInTheDocument()
-    })
+        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      })
 
-    test('Имеет сортировку', async () => {
-      render(<TaskTable {...baseProps} />)
+      test('Имеет сортировку по умолчанию', () => {
+        render(<TaskTable {...baseProps} sort='ola_next_breach_time' />)
 
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Комментарий')
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Выполнить до',
+        )
 
-      expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
-    })
-
-    test('Не имеет сортировки по умолчанию', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(table, 'Комментарий')
-
-      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
-    })
-  })
-
-  describe('Колонка "Дата создания"', () => {
-    test('Отображает заголовок', () => {
-      render(<TaskTable {...baseProps} />)
-
-      const table = getTable()
-      expect(getColumnTitle(table, 'Дата создания')).toBeInTheDocument()
+        expect(columnTitleContainer).toHaveAttribute('aria-sort', 'ascending')
+      })
     })
 
-    test('Отображает значение', () => {
-      render(<TaskTable {...baseProps} />)
+    describe('Комментарий', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...baseProps} />)
 
-      const table = getTable()
+        const table = getTable()
+        expect(getColumnTitle(table, 'Комментарий')).toBeInTheDocument()
+      })
 
-      expect(
-        within(table).getByText(
-          formatDate(taskTableItemFromBaseProps.createdAt, DATE_TIME_FORMAT),
-        ),
-      ).toBeInTheDocument()
+      test('Отображает значение', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+
+        expect(
+          within(table).getByText(taskTableItemFromBaseProps.lastComment),
+        ).toBeInTheDocument()
+      })
+
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Комментарий',
+        )
+
+        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      })
+
+      test('Не имеет сортировки по умолчанию', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Комментарий',
+        )
+
+        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+      })
     })
 
-    test('Имеет сортировку', async () => {
-      render(<TaskTable {...baseProps} />)
+    describe('Дата создания', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...baseProps} />)
 
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(
-        table,
-        'Дата создания',
-      )
+        const table = getTable()
+        expect(getColumnTitle(table, 'Дата создания')).toBeInTheDocument()
+      })
 
-      expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
-    })
+      test('Отображает значение', () => {
+        render(<TaskTable {...baseProps} />)
 
-    test('Не имеет сортировки по умолчанию', () => {
-      render(<TaskTable {...baseProps} />)
+        const table = getTable()
 
-      const table = getTable()
-      const columnTitleContainer = getColumnTitleContainer(
-        table,
-        'Дата создания',
-      )
+        expect(
+          within(table).getByText(
+            formatDate(taskTableItemFromBaseProps.createdAt, DATE_TIME_FORMAT),
+          ),
+        ).toBeInTheDocument()
+      })
 
-      expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Дата создания',
+        )
+
+        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+      })
+
+      test('Не имеет сортировки по умолчанию', () => {
+        render(<TaskTable {...baseProps} />)
+
+        const table = getTable()
+        const columnTitleContainer = getColumnTitleContainer(
+          table,
+          'Дата создания',
+        )
+
+        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+      })
     })
   })
 
@@ -568,6 +588,19 @@ describe('Таблица заявок', () => {
 
       await user.click(page2Button)
       expect(onChange).toBeCalled()
+    })
+  })
+
+  describe('Если список заявок пуст', () => {
+    test('Отображается соответствующий текст', () => {
+      render(<TaskTable {...baseProps} dataSource={[]} />)
+
+      const table = getTable()
+      const emptyContent = within(table).getByText(
+        'По заданным параметрам фильтрации ни одна заявка не найдена',
+      )
+
+      expect(emptyContent).toBeInTheDocument()
     })
   })
 

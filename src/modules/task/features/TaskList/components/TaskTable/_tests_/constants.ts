@@ -1,5 +1,4 @@
 import { getTaskTableItem } from '_fixtures_/task'
-import { TaskStatusEnum } from 'modules/task/constants/common'
 
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { TaskTableProps } from '../interfaces'
@@ -7,11 +6,7 @@ import { TaskTableProps } from '../interfaces'
 export const columnWithSortingClass = 'ant-table-column-has-sorters'
 
 export const baseProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
-  dataSource: [
-    getTaskTableItem({
-      status: TaskStatusEnum.InProgress,
-    }),
-  ],
+  dataSource: [getTaskTableItem()],
   loading: false,
   onRow: jest.fn(),
   onChange: jest.fn(),
