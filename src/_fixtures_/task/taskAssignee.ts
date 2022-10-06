@@ -10,5 +10,5 @@ export const getTaskAssignee = (
   lastName: generateWord(),
   middleName: generateWord(),
   email: generateEmail(),
-  role: props?.role || UserRolesEnum.Engineer,
+  role: props?.role || UserRolesEnum.FirstLineSupport,
 })
