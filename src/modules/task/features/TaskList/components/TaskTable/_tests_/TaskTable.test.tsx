@@ -604,6 +604,13 @@ describe('Таблица заявок', () => {
     })
   })
 
+  test('Отображает состояние загрузки', () => {
+    render(<TaskTable {...baseProps} dataSource={[]} loading />)
+
+    const spinner = screen.getByRole('img', { name: 'loading' })
+    expect(spinner).toBeInTheDocument()
+  })
+
   test('При клике на строку вызывается обработчик', async () => {
     const onRow = jest.fn()
     const { user } = render(<TaskTable {...baseProps} onRow={onRow} />)
