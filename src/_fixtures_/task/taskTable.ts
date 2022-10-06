@@ -28,7 +28,7 @@ export const getTaskTableItem = (
   recordId: generateString(),
   lastComment: generateWord(),
   status: props?.status || TaskStatusEnum.New,
-  extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.Awaiting,
+  extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   assignee: getTaskAssignee(),
   olaNextBreachTime: generateDateString(),

@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import { TaskStatusEnum } from 'modules/task/constants/common'
 
-import { badgeByTaskStatus, iconByTaskStatus } from './constants'
+import { badgeNameByTaskStatus, iconByTaskStatus } from './constants'
 import { BadgeStyled } from './styles'
 
 type TaskStatusProps = {
@@ -12,14 +12,21 @@ type TaskStatusProps = {
 }
 
 const TaskStatus: FC<TaskStatusProps> = ({ text, status }) => {
-  const badge = badgeByTaskStatus[status]
+  const badgeName = badgeNameByTaskStatus[status]
   const icon = iconByTaskStatus[status]
 
-  if (!text && !badge && !icon) return null
+  if (!text && !badgeName && !icon) return null
 
   return (
-    <Space data-testid='task-status'>
-      {icon ? icon : badge ? <BadgeStyled status={badge} /> : null}
+    <Space>
+      {icon ? (
+        icon
+      ) : badgeName ? (
+        <BadgeStyled
+          data-testid={`badge-status-${badgeName}`}
+          status={badgeName}
+        />
+      ) : null}
 
       {text}
     </Space>
