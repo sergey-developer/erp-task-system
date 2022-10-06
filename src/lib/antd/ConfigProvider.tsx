@@ -9,6 +9,10 @@ import {
   TEXT_MAX_LENGTH_MSG,
 } from 'shared/constants/messages'
 
+import setupAntd from './setup'
+
+setupAntd()
+
 const globalFormConfig: BaseConfigProviderProps['form'] = {
   colon: false,
   requiredMark: false,
