@@ -4,10 +4,13 @@ import { BrowserRouter } from 'react-router-dom'
 
 import ErrorBoundary from 'components/Error/ErrorBoundary'
 import AntdConfigProvider from 'lib/antd/ConfigProvider'
+import setupMoment from 'lib/moment/setup'
 import { FCWithChildren } from 'shared/interfaces/utils'
 import appStore, { AppStore } from 'state/store'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import theme from 'styles/theme'
+
+setupMoment()
 
 type AppProviderProps = {
   store?: AppStore
