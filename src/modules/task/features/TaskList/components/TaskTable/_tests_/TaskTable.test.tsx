@@ -607,7 +607,7 @@ describe('Таблица заявок', () => {
   test('Отображает состояние загрузки', () => {
     render(<TaskTable {...baseProps} dataSource={[]} loading />)
 
-    const spinner = screen.getByRole('img', { name: 'loading' })
+    const spinner = getIconByName('loading')
     expect(spinner).toBeInTheDocument()
   })
 
