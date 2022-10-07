@@ -16,11 +16,6 @@ import {
   waitFinishLoadingBySelect,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
-import {
-  taskExtraStatusDict,
-  taskFilterStatusDict,
-  taskStatusDict,
-} from 'modules/task/constants/dictionary'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 
@@ -29,6 +24,13 @@ import {
   searchQueriesDict,
 } from '../constants'
 import ExtendedFilter, { ExtendedFilterProps } from '../index'
+import {
+  searchQueriesDictValues,
+  taskExtraStatusDictValues,
+  taskFilterStatusDictValues,
+  taskStatusDictValues,
+  taskStatusExtendedFilterDict,
+} from './constants'
 import {
   getApplyButton,
   getCheckboxIn,
@@ -49,11 +51,6 @@ import {
 const onClose = jest.fn()
 const onSubmit = jest.fn()
 
-const taskStatusDictValues = Object.values(taskStatusDict)
-const taskExtraStatusDictValues = Object.values(taskExtraStatusDict)
-const taskFilterStatusDictValues = Object.values(taskFilterStatusDict)
-const searchQueriesDictValues = Object.values(searchQueriesDict)
-
 setupApiTests()
 
 const ExtendedFilterWrapper = (props: Pick<ExtendedFilterProps, 'visible'>) => {
@@ -71,10 +68,6 @@ const ExtendedFilterWrapper = (props: Pick<ExtendedFilterProps, 'visible'>) => {
 }
 
 describe('Расширенный фильтр', () => {
-  afterEach(() => {
-    onClose.mockReset()
-  })
-
   test('Отображается при передаче нужных данных', () => {
     render(<ExtendedFilterWrapper visible />)
 
@@ -162,11 +155,13 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      Object.entries(taskStatusDict).forEach(([status, statusText]) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        expect(checkbox).not.toBeChecked()
-        expect(checkbox.value).toBe(status)
-      })
+      Object.entries(taskStatusExtendedFilterDict).forEach(
+        ([status, statusText]) => {
+          const checkbox = getCheckboxIn(container, new RegExp(statusText))
+          expect(checkbox).not.toBeChecked()
+          expect(checkbox.value).toBe(status)
+        },
+      )
     })
 
     test('Доступен для редактирования', () => {
@@ -303,7 +298,7 @@ describe('Расширенный фильтр', () => {
 
         const checkbox = getCheckboxIn(
           container,
-          new RegExp(taskStatusDict.AWAITING!),
+          new RegExp(taskStatusExtendedFilterDict.AWAITING!),
         )
 
         await user.click(checkbox)
@@ -321,7 +316,7 @@ describe('Расширенный фильтр', () => {
 
         const checkbox = getCheckboxIn(
           container,
-          new RegExp(taskStatusDict.RETURNED!),
+          new RegExp(taskStatusExtendedFilterDict.RETURNED!),
         )
 
         await user.click(checkbox)
