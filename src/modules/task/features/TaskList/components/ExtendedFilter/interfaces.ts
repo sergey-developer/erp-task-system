@@ -1,11 +1,9 @@
 import { Moment } from 'moment/moment'
 
-import {
-  TaskAssignedEnum,
-  TaskOverdueEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
+
+import { TaskAssignedEnum, TaskOverdueEnum } from './constants'
 
 export type SearchQueries = Partial<{
   searchByAssignee: string

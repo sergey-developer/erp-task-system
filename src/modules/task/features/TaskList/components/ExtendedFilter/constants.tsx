@@ -1,17 +1,23 @@
 import { CheckboxOptionType } from 'antd'
 import React from 'react'
 
-import {
-  TaskAssignedEnum,
-  TaskOverdueEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import { StringMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
+
+export enum TaskAssignedEnum {
+  Assigned = 'True',
+  NotAssigned = 'False',
+}
+
+export enum TaskOverdueEnum {
+  Overdue = 'True',
+  NotOverdue = 'False',
+}
 
 export const DEFAULT_SEARCH_FIELD: keyof SearchQueries = 'searchByTitle'
 
