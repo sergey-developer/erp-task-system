@@ -1,8 +1,8 @@
 import { getIconByName, render, screen } from '_tests_/utils'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 
-import { badgeNameByTaskStatus, iconByTaskStatus } from '../constants'
-import TaskStatus from '../TaskStatus'
+import { badgeNameByTaskStatus, iconByTaskStatus } from './constants'
+import TaskStatus from './index'
 
 describe('TaskStatus', () => {
   describe('Получение иконки работает корректно для статуса', () => {

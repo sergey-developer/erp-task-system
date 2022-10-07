@@ -224,6 +224,7 @@ const TaskListPage: FC = () => {
       completeAtTo: undefined,
       filter: undefined,
       status: undefined,
+      isOverdue: undefined,
       isAssigned: undefined,
       searchByAssignee: undefined,
       searchByName: undefined,

@@ -16,13 +16,12 @@ import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions/extendedFilter.permissions'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
-import { isEqualDeep } from 'shared/utils/common/isEqual'
 
 import {
-  checkboxExtraStatusOptions,
-  checkboxFilterStatusOptions,
-  checkboxStatusOptions,
-  searchQueriesDict,
+  searchQueriesOptions,
+  taskAssignedOptions,
+  taskOverdueOptions,
+  taskStatusOptions,
 } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
@@ -47,26 +46,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
 
-  const statusValue = Form.useWatch('status', form)
-  const isAssignedValue = Form.useWatch('isAssigned', form)
-  const filterValue = Form.useWatch('filter', form)
-  const completeAtValue = Form.useWatch('completeAt', form)
-  const workGroupIdValue = Form.useWatch('workGroupId', form)
-  const searchFieldValue = Form.useWatch('searchField', form)
-  const searchValueValue = Form.useWatch('searchValue', form)
-
-  const formValues: ExtendedFilterFormFields = {
-    searchValue: searchValueValue,
-    status: statusValue,
-    isAssigned: isAssignedValue,
-    filter: filterValue,
-    completeAt: completeAtValue,
-    workGroupId: workGroupIdValue,
-    searchField: searchFieldValue,
-  }
-
-  const isValuesNotChanged = isEqualDeep(initialFormValues, formValues)
-
   const resetFields =
     (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
       form.resetFields(fields)
@@ -79,15 +58,9 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
       footer={
         <Row justify='end'>
           <Space>
-            <Button onClick={resetFields()} disabled={isValuesNotChanged}>
-              Сбросить все
-            </Button>
+            <Button onClick={resetFields()}>Сбросить все</Button>
 
-            <Button
-              type='primary'
-              onClick={form.submit}
-              disabled={isValuesNotChanged}
-            >
+            <Button type='primary' onClick={form.submit}>
               Применить
             </Button>
           </Space>
@@ -106,26 +79,33 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         onFinish={onSubmit}
       >
         <FilterBlock withDivider data-testid='filter-extended-status'>
+          <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
+
+          <Form.Item name='status'>
+            <CheckboxGroupStyled options={taskStatusOptions} />
+          </Form.Item>
+        </FilterBlock>
+
+        <FilterBlock withDivider data-testid='filter-extended-is-assigned'>
           <FilterBlockLabel
-            label='Статус'
-            onReset={resetFields(['status', 'isAssigned', 'filter'])}
+            label='Назначенный'
+            onReset={resetFields(['isAssigned'])}
           />
 
-          <Space direction='vertical' size={20}>
-            <Form.Item name='isAssigned'>
-              <CheckboxGroupStyled options={checkboxExtraStatusOptions} />
-            </Form.Item>
+          <Form.Item name='isAssigned'>
+            <Radio.Group options={taskAssignedOptions} />
+          </Form.Item>
+        </FilterBlock>
 
-            <Space direction='vertical' size={15}>
-              <Form.Item name='status'>
-                <CheckboxGroupStyled options={checkboxStatusOptions} />
-              </Form.Item>
+        <FilterBlock withDivider data-testid='filter-extended-is-overdue'>
+          <FilterBlockLabel
+            label='Просрочено'
+            onReset={resetFields(['isOverdue'])}
+          />
 
-              <Form.Item name='filter'>
-                <CheckboxGroupStyled options={checkboxFilterStatusOptions} />
-              </Form.Item>
-            </Space>
-          </Space>
+          <Form.Item name='isOverdue'>
+            <Radio.Group options={taskOverdueOptions} />
+          </Form.Item>
         </FilterBlock>
 
         <FilterBlock withDivider data-testid='filter-extended-complete-at'>
@@ -178,13 +158,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
           <Space direction='vertical' size='middle'>
             <Form.Item name='searchField'>
-              <Radio.Group>
-                {Object.entries(searchQueriesDict).map(([name, label]) => (
-                  <Radio key={name} value={name}>
-                    {label}
-                  </Radio>
-                ))}
-              </Radio.Group>
+              <Radio.Group options={searchQueriesOptions} />
             </Form.Item>
 
             <Form.Item name='searchValue'>

@@ -103,7 +103,12 @@ export enum SuspendReasonEnum {
   AwaitingInformationFromFirstLine = 'AWAITING_INFORMATION_FROM_FIRST_LINE',
 }
 
-export enum TaskExtraStatusEnum {
+export enum TaskAssignedEnum {
   Assigned = 'True',
   NotAssigned = 'False',
+}
+
+export enum TaskOverdueEnum {
+  Overdue = 'True',
+  NotOverdue = 'False',
 }

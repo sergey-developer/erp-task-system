@@ -22,23 +22,28 @@ import { UserRolesEnum } from 'shared/constants/roles'
 import {
   initialExtendedFilterFormValues,
   searchQueriesDict,
+  taskAssignedDict,
+  taskOverdueDict,
+  taskStatusExtendedFilterDict,
 } from '../constants'
 import ExtendedFilter, { ExtendedFilterProps } from '../index'
 import {
   searchQueriesDictValues,
-  taskExtraStatusDictValues,
-  taskFilterStatusDictValues,
-  taskStatusExtendedFilterDict,
+  taskAssignedDictValues,
+  taskOverdueDictValues,
   taskStatusExtendedFilterDictValues,
 } from './constants'
 import {
   getApplyButton,
+  getAssignedContainer,
   getCheckboxIn,
   getCloseButton,
   getEndDateField,
   getKeywordField,
-  getRadioButton,
+  getOverdueContainer,
+  getRadioButtonIn,
   getResetAllButton,
+  getSearchByColumnContainer,
   getStartDateField,
   getStatusContainer,
   getWorkGroupField,
@@ -115,37 +120,25 @@ describe('Расширенный фильтр', () => {
       expect(resetAllButton).toBeInTheDocument()
     })
 
-    test('Кнопки не активны если значения фильтров не менялись', () => {
+    test('Кнопки активны', () => {
       render(<ExtendedFilterWrapper visible />)
 
       const applyButton = getApplyButton()
       const resetAllButton = getResetAllButton()
 
-      expect(applyButton).not.toBeEnabled()
-      expect(resetAllButton).not.toBeEnabled()
+      expect(applyButton).toBeEnabled()
+      expect(resetAllButton).toBeEnabled()
     })
   })
 
-  describe('По статусу', () => {
-    jest.setTimeout(20000)
-
+  describe('Статус', () => {
     test('Отображается', () => {
       render(<ExtendedFilterWrapper visible />)
 
       const container = getStatusContainer()
 
-      taskStatusExtendedFilterDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        expect(checkbox).toBeInTheDocument()
-      })
-
-      taskExtraStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        expect(checkbox).toBeInTheDocument()
-      })
-
-      taskFilterStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
+      taskStatusExtendedFilterDictValues.forEach((value) => {
+        const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeInTheDocument()
       })
     })
@@ -155,13 +148,11 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      Object.entries(taskStatusExtendedFilterDict).forEach(
-        ([status, statusText]) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-          expect(checkbox.value).toBe(status)
-        },
-      )
+      Object.entries(taskStatusExtendedFilterDict).forEach(([value, text]) => {
+        const checkbox = getCheckboxIn(container, { name: new RegExp(text) })
+        expect(checkbox).not.toBeChecked()
+        expect(checkbox.value).toBe(value)
+      })
     })
 
     test('Доступен для редактирования', () => {
@@ -169,41 +160,19 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      taskStatusExtendedFilterDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        expect(checkbox).toBeEnabled()
-      })
-
-      taskExtraStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        expect(checkbox).toBeEnabled()
-      })
-
-      taskFilterStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
+      taskStatusExtendedFilterDictValues.forEach((value) => {
+        const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeEnabled()
       })
     })
 
-    test('Можно выбрать любой статус', async () => {
+    test('Можно выбрать любое значение', async () => {
       const { user } = render(<ExtendedFilterWrapper visible />)
 
       const container = getStatusContainer()
 
-      for await (const statusText of taskStatusExtendedFilterDictValues) {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        await user.click(checkbox)
-        expect(checkbox).toBeChecked()
-      }
-
-      for await (const statusText of taskExtraStatusDictValues) {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        await user.click(checkbox)
-        expect(checkbox).toBeChecked()
-      }
-
-      for await (const statusText of taskFilterStatusDictValues) {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
+      for await (const value of taskStatusExtendedFilterDictValues) {
+        const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         await user.click(checkbox)
         expect(checkbox).toBeChecked()
       }
@@ -215,35 +184,15 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const statusText of taskStatusExtendedFilterDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          await user.click(checkbox)
-        }
-
-        for await (const statusText of taskExtraStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          await user.click(checkbox)
-        }
-
-        for await (const statusText of taskFilterStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
+        for await (const value of taskStatusExtendedFilterDictValues) {
+          const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetButtonIn(user, container)
 
-        taskStatusExtendedFilterDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-        })
-
-        taskExtraStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-        })
-
-        taskFilterStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
+        taskStatusExtendedFilterDictValues.forEach((value) => {
+          const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })
       })
@@ -253,75 +202,197 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const statusText of taskStatusExtendedFilterDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          await user.click(checkbox)
-        }
-
-        for await (const statusText of taskExtraStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          await user.click(checkbox)
-        }
-
-        for await (const statusText of taskFilterStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
+        for await (const value of taskStatusExtendedFilterDictValues) {
+          const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetAllButton(user)
 
-        taskStatusExtendedFilterDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-        })
-
-        taskExtraStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-        })
-
-        taskFilterStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
+        taskStatusExtendedFilterDictValues.forEach((value) => {
+          const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })
       })
     })
+  })
 
-    describe('Становится активна после заполнения полей', () => {
+  describe('Назначенный', () => {
+    test('Отображается', () => {
+      render(<ExtendedFilterWrapper visible />)
+
+      const container = getAssignedContainer()
+
+      taskAssignedDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        expect(radioButton).toBeInTheDocument()
+      })
+    })
+
+    test('Имеет корректные значения по умолчанию', () => {
+      render(<ExtendedFilterWrapper visible />)
+
+      const container = getAssignedContainer()
+
+      Object.entries(taskAssignedDict).forEach(([value, text]) => {
+        const radioButton = getRadioButtonIn(container, { name: text })
+        expect(radioButton).not.toBeChecked()
+        expect(radioButton.value).toBe(value)
+      })
+    })
+
+    test('Доступен для редактирования', () => {
+      render(<ExtendedFilterWrapper visible />)
+
+      const container = getAssignedContainer()
+
+      taskAssignedDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        expect(radioButton).toBeEnabled()
+      })
+    })
+
+    test('Можно выбрать любое значение', async () => {
+      const { user } = render(<ExtendedFilterWrapper visible />)
+
+      const container = getAssignedContainer()
+
+      for await (const value of taskAssignedDictValues) {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        await user.click(radioButton)
+        expect(radioButton).toBeChecked()
+      }
+    })
+
+    describe('Сбрасывает значение', () => {
+      test('Кнопка "Сбросить"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
+
+        const container = getAssignedContainer()
+
+        await user.click(
+          getRadioButtonIn(container, {
+            name: taskAssignedDict.False,
+          }),
+        )
+
+        await userClickResetButtonIn(user, container)
+
+        expect(
+          getRadioButtonIn(container, {
+            name: taskAssignedDict.False,
+          }),
+        ).not.toBeChecked()
+      })
+
       test('Кнопка "Сбросить всё"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
-        const resetAllButton = getResetAllButton()
-        expect(resetAllButton).not.toBeEnabled()
+        const container = getAssignedContainer()
 
-        const container = getStatusContainer()
-
-        const checkbox = getCheckboxIn(
-          container,
-          new RegExp(taskStatusExtendedFilterDict.AWAITING!),
+        await user.click(
+          getRadioButtonIn(container, {
+            name: taskAssignedDict.True,
+          }),
         )
 
-        await user.click(checkbox)
+        await userClickResetAllButton(user)
 
-        expect(resetAllButton).toBeEnabled()
+        expect(
+          getRadioButtonIn(container, {
+            name: taskAssignedDict.True,
+          }),
+        ).not.toBeChecked()
       })
+    })
+  })
 
-      test('Кнопка "Применить"', async () => {
+  describe('Просрочено', () => {
+    test('Отображается', () => {
+      render(<ExtendedFilterWrapper visible />)
+
+      const container = getOverdueContainer()
+
+      taskOverdueDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        expect(radioButton).toBeInTheDocument()
+      })
+    })
+
+    test('Имеет корректные значения по умолчанию', () => {
+      render(<ExtendedFilterWrapper visible />)
+
+      const container = getOverdueContainer()
+
+      Object.entries(taskOverdueDict).forEach(([value, text]) => {
+        const radioButton = getRadioButtonIn(container, { name: text })
+        expect(radioButton).not.toBeChecked()
+        expect(radioButton.value).toBe(value)
+      })
+    })
+
+    test('Доступен для редактирования', () => {
+      render(<ExtendedFilterWrapper visible />)
+
+      const container = getOverdueContainer()
+
+      taskOverdueDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        expect(radioButton).toBeEnabled()
+      })
+    })
+
+    test('Можно выбрать любое значение', async () => {
+      const { user } = render(<ExtendedFilterWrapper visible />)
+
+      const container = getOverdueContainer()
+
+      for await (const value of taskOverdueDictValues) {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        await user.click(radioButton)
+        expect(radioButton).toBeChecked()
+      }
+    })
+
+    describe('Сбрасывает значение', () => {
+      test('Кнопка "Сбросить"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
-        const applyButton = getApplyButton()
-        expect(applyButton).not.toBeEnabled()
+        const container = getOverdueContainer()
 
-        const container = getStatusContainer()
-
-        const checkbox = getCheckboxIn(
-          container,
-          new RegExp(taskStatusExtendedFilterDict.RETURNED!),
+        await user.click(
+          getRadioButtonIn(container, {
+            name: taskOverdueDict.False,
+          }),
         )
 
-        await user.click(checkbox)
+        await userClickResetButtonIn(user, container)
 
-        expect(applyButton).toBeEnabled()
+        expect(
+          getRadioButtonIn(container, {
+            name: taskOverdueDict.False,
+          }),
+        ).not.toBeChecked()
+      })
+
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilterWrapper visible />)
+
+        const container = getOverdueContainer()
+
+        await user.click(
+          getRadioButtonIn(container, {
+            name: taskOverdueDict.True,
+          }),
+        )
+
+        await userClickResetAllButton(user)
+
+        expect(
+          getRadioButtonIn(container, {
+            name: taskOverdueDict.True,
+          }),
+        ).not.toBeChecked()
       })
     })
   })
@@ -393,38 +464,16 @@ describe('Расширенный фильтр', () => {
         expect(getEndDateField()).not.toHaveDisplayValue(endDateValue)
       })
     })
-
-    describe('Становится активна после заполнения полей', () => {
-      test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const resetAllButton = getResetAllButton()
-        expect(resetAllButton).not.toBeEnabled()
-
-        await userFillExecuteBeforeField(user)
-
-        expect(resetAllButton).toBeEnabled()
-      })
-
-      test('Кнопка "Применить"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const applyButton = getApplyButton()
-        expect(applyButton).not.toBeEnabled()
-
-        await userFillExecuteBeforeField(user)
-
-        expect(applyButton).toBeEnabled()
-      })
-    })
   })
 
   describe('По столбцу', () => {
     test('Отображается', () => {
       render(<ExtendedFilterWrapper visible />)
 
-      searchQueriesDictValues.forEach((searchFieldName) => {
-        const radioButton = getRadioButton(searchFieldName)
+      const container = getSearchByColumnContainer()
+
+      searchQueriesDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
         expect(radioButton).toBeInTheDocument()
       })
 
@@ -435,13 +484,19 @@ describe('Расширенный фильтр', () => {
     test('Имеет корректные значения по умолчанию', () => {
       render(<ExtendedFilterWrapper visible />)
 
-      const searchByNameButton = getRadioButton(searchQueriesDict.searchByName)
-      const searchByTitleButton = getRadioButton(
-        searchQueriesDict.searchByTitle,
-      )
-      const searchByAssigneeButton = getRadioButton(
-        searchQueriesDict.searchByAssignee,
-      )
+      const container = getSearchByColumnContainer()
+
+      const searchByNameButton = getRadioButtonIn(container, {
+        name: searchQueriesDict.searchByName,
+      })
+
+      const searchByTitleButton = getRadioButtonIn(container, {
+        name: searchQueriesDict.searchByTitle,
+      })
+
+      const searchByAssigneeButton = getRadioButtonIn(container, {
+        name: searchQueriesDict.searchByAssignee,
+      })
 
       expect(searchByNameButton.value).toBe('searchByName')
       expect(searchByTitleButton.value).toBe('searchByTitle')
@@ -458,8 +513,10 @@ describe('Расширенный фильтр', () => {
     test('Доступен для редактирования', () => {
       render(<ExtendedFilterWrapper visible />)
 
-      searchQueriesDictValues.forEach((searchFieldName) => {
-        const radioButton = getRadioButton(searchFieldName)
+      const container = getSearchByColumnContainer()
+
+      searchQueriesDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
         expect(radioButton).toBeEnabled()
       })
 
@@ -480,8 +537,10 @@ describe('Расширенный фильтр', () => {
     test('Можно выбрать любой столбец', async () => {
       const { user } = render(<ExtendedFilterWrapper visible />)
 
-      for await (const searchFieldName of searchQueriesDictValues) {
-        const radioButton = getRadioButton(searchFieldName)
+      const container = getSearchByColumnContainer()
+
+      for await (const value of searchQueriesDictValues) {
+        const radioButton = getRadioButtonIn(container, { name: value })
         await user.click(radioButton)
         expect(radioButton).toBeChecked()
       }
@@ -491,56 +550,41 @@ describe('Расширенный фильтр', () => {
       test('Кнопка "Сбросить"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
+        const container = getSearchByColumnContainer()
+
         const keyword = generateName()
         await user.type(getKeywordField(), keyword)
-        await user.click(getRadioButton(searchQueriesDict.searchByName))
 
-        const container = screen.getByTestId('filter-extended-search-by-column')
+        await user.click(
+          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+        )
+
         await userClickResetButtonIn(user, container)
 
         expect(getKeywordField()).not.toHaveDisplayValue(keyword)
-        expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
+        expect(
+          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+        ).not.toBeChecked()
       })
 
       test('Кнопка "Сбросить всё"', async () => {
         const { user } = render(<ExtendedFilterWrapper visible />)
 
+        const container = getSearchByColumnContainer()
+
         const keyword = generateName()
         await user.type(getKeywordField(), keyword)
-        await user.click(getRadioButton(searchQueriesDict.searchByName))
+
+        await user.click(
+          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+        )
 
         await userClickResetAllButton(user)
 
         expect(getKeywordField()).not.toHaveDisplayValue(keyword)
-        expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
-      })
-    })
-
-    describe('Становится активна после заполнения полей', () => {
-      test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const resetAllButton = getResetAllButton()
-        expect(resetAllButton).not.toBeEnabled()
-
-        const keyword = generateName()
-        await user.type(getKeywordField(), keyword)
-        await user.click(getRadioButton(searchQueriesDict.searchByName))
-
-        expect(resetAllButton).toBeEnabled()
-      })
-
-      test('Кнопка "Применить"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const applyButton = getApplyButton()
-        expect(applyButton).not.toBeEnabled()
-
-        const keyword = generateName()
-        await user.type(getKeywordField(), keyword)
-        await user.click(getRadioButton(searchQueriesDict.searchByName))
-
-        expect(applyButton).toBeEnabled()
+        expect(
+          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+        ).not.toBeChecked()
       })
     })
   })
@@ -758,62 +802,6 @@ describe('Расширенный фильтр', () => {
 
           const selectedOption = getSelectedOption(workGroupField)
           expect(selectedOption).not.toBeInTheDocument()
-        })
-      })
-
-      describe('Становится активна после заполнения полей', () => {
-        test('Кнопка "Сбросить всё"', async () => {
-          const mockedWorkGroupList = getWorkGroupList()
-          const mockedWorkGroupListItem = mockedWorkGroupList[0]
-          mockGetWorkGroupListSuccess(mockedWorkGroupList)
-
-          const store = getStoreWithAuth({
-            userId: generateId(),
-            userRole: UserRolesEnum.SeniorEngineer,
-          })
-
-          const { user } = render(<ExtendedFilterWrapper visible />, {
-            store,
-          })
-
-          const resetAllButton = getResetAllButton()
-          expect(resetAllButton).not.toBeEnabled()
-
-          const workGroupField = getWorkGroupField()
-          await waitFinishLoadingBySelect(workGroupField)
-          await userOpenSelect(user, workGroupField)
-
-          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
-          await user.click(workGroupOption)
-
-          expect(resetAllButton).toBeEnabled()
-        })
-
-        test('Кнопка "Применить"', async () => {
-          const mockedWorkGroupList = getWorkGroupList()
-          const mockedWorkGroupListItem = mockedWorkGroupList[0]
-          mockGetWorkGroupListSuccess(mockedWorkGroupList)
-
-          const store = getStoreWithAuth({
-            userId: generateId(),
-            userRole: UserRolesEnum.SeniorEngineer,
-          })
-
-          const { user } = render(<ExtendedFilterWrapper visible />, {
-            store,
-          })
-
-          const applyButton = getApplyButton()
-          expect(applyButton).not.toBeEnabled()
-
-          const workGroupField = getWorkGroupField()
-          await waitFinishLoadingBySelect(workGroupField)
-          await userOpenSelect(user, workGroupField)
-
-          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
-          await user.click(workGroupOption)
-
-          expect(applyButton).toBeEnabled()
         })
       })
     })

@@ -1,12 +1,9 @@
 import {
   TaskExtendedStatusEnum,
-  TaskExtraStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { BaseTaskModel } from 'modules/task/models'
 import { StringMap } from 'shared/interfaces/utils'
-
-import { FastFilterEnum } from '../features/TaskList/constants/common'
 
 export const taskExtendedStatusToTaskStatus: Partial<
   Record<TaskExtendedStatusEnum, TaskStatusEnum>
@@ -26,16 +23,6 @@ export const taskStatusDict: Readonly<Partial<StringMap<TaskStatusEnum>>> = {
   [TaskStatusEnum.Returned]: 'Возврат заявителем',
   [TaskStatusEnum.Closed]: 'Закрытые',
 }
-
-export const taskExtraStatusDict: Readonly<StringMap<TaskExtraStatusEnum>> = {
-  [TaskExtraStatusEnum.Assigned]: 'Есть назначенный',
-  [TaskExtraStatusEnum.NotAssigned]: 'Без назначенного',
-}
-
-export const taskFilterStatusDict: Readonly<StringMap<FastFilterEnum.Overdue>> =
-  {
-    [FastFilterEnum.Overdue]: 'Просроченные',
-  }
 
 export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> =
   new Map([
