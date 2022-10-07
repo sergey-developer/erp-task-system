@@ -18,6 +18,7 @@ export const taskExtendedStatusToTaskStatus: Partial<
 }
 
 export const taskStatusDict: Readonly<Partial<StringMap<TaskStatusEnum>>> = {
+  [TaskStatusEnum.New]: 'Новая',
   [TaskStatusEnum.InProgress]: 'В работе',
   [TaskStatusEnum.Completed]: 'Выполнено',
   [TaskStatusEnum.Awaiting]: 'В ожидании',
