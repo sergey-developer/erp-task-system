@@ -1,7 +1,10 @@
 import { render, within } from '_tests_/utils'
 
 import FilterTag from '../FilterTag'
-import { filterCheckedClass, requiredProps } from './constants'
+import {
+  filterCheckedClass,
+  filterTagRequiredProps as requiredProps,
+} from './constants'
 import { getFilterTag, getFilterTagContainer } from './utils'
 
 describe('FilterTag', () => {
