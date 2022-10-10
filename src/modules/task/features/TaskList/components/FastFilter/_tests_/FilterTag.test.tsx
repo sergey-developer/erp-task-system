@@ -7,7 +7,7 @@ import {
 } from './constants'
 import { getFilterTag, getFilterTagContainer, waitStartLoading } from './utils'
 
-describe('FilterTag', () => {
+describe('Элемент быстрого фильтра', () => {
   test('Отображает состояние загрузки', () => {
     render(<FilterTag {...requiredProps} loading />)
 
@@ -53,6 +53,13 @@ describe('FilterTag', () => {
 
   test('Можно сделать не выбранным', () => {
     render(<FilterTag {...requiredProps} checked={false} />)
+
+    const filter = getFilterTag()
+    expect(filter).not.toHaveClass(filterCheckedClass)
+  })
+
+  test('Если элемент не активный, он перестаёт быть выбранным', () => {
+    render(<FilterTag {...requiredProps} checked disabled />)
 
     const filter = getFilterTag()
     expect(filter).not.toHaveClass(filterCheckedClass)

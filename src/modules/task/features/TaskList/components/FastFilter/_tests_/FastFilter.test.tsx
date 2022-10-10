@@ -3,7 +3,11 @@ import { render, screen } from '_tests_/utils'
 import { FastFilterEnum } from '../../../constants/common'
 import { fastFilterNamesDict } from '../constants'
 import FastFilter from '../index'
-import { filterRequiredProps as requiredProps } from './constants'
+import {
+  filterCheckedClass,
+  filterRequiredProps as requiredProps,
+} from './constants'
+import { getFirstFilterTag } from './utils'
 
 describe('Быстрый фильтр', () => {
   test('Отображается с правильными названиями', () => {
@@ -40,5 +44,14 @@ describe('Быстрый фильтр', () => {
     await user.click(filterName)
 
     expect(requiredProps.onChange).toHaveBeenCalledWith(FastFilterEnum.Free)
+  })
+
+  test('Правильно определяет выбранный элемент', () => {
+    render(
+      <FastFilter {...requiredProps} selectedFilter={FastFilterEnum.All} />,
+    )
+
+    const filterTag = getFirstFilterTag()
+    expect(filterTag).toHaveClass(filterCheckedClass)
   })
 })

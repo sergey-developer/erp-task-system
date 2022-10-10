@@ -4,6 +4,8 @@ export const getFilterContainer = () => screen.getByTestId('filter-fast')
 
 export const getFilterTag = () => screen.getByTestId('checkable-tag')
 
+export const getFirstFilterTag = () => screen.getAllByTestId('checkable-tag')[0]
+
 export const getFilterTagByTextIn = (container: HTMLElement, text: string) =>
   within(container).getByText(text)
 
