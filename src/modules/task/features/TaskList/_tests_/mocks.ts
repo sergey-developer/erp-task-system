@@ -1,6 +1,9 @@
 import { getTaskListItem } from '_fixtures_/task'
 import { getRequestMocker } from '_tests_/mocks/request'
-import { getResponseResolver } from '_tests_/mocks/response'
+import {
+  ResponseResolverOptions,
+  getResponseResolver,
+} from '_tests_/mocks/response'
 import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 
@@ -21,6 +24,7 @@ const getTaskCountersMocker = getRequestMocker(
 
 export const mockGetTaskListSuccess = (
   taskList: GetTaskListResponseModel['results'] = [getTaskListItem()],
+  options: Partial<Pick<ResponseResolverOptions, 'once'>> = {},
 ) => {
   const response: GetTaskListResponseModel = {
     results: taskList,
@@ -33,6 +37,7 @@ export const mockGetTaskListSuccess = (
     getResponseResolver({
       status: HttpCodeEnum.Ok,
       body: response,
+      ...options,
     }),
   )
 

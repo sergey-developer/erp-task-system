@@ -612,7 +612,9 @@ describe('Таблица заявок', () => {
 
   test('Отображает состояние загрузки', () => {
     render(<TaskTable {...baseProps} dataSource={[]} loading />)
-    waitStartLoadingByIcon()
+
+    const table = getTable()
+    waitStartLoadingByIcon(table)
   })
 
   test('При клике на строку вызывается обработчик', async () => {
