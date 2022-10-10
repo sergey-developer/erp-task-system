@@ -1,4 +1,9 @@
-import { screen, waitFor } from '_tests_/utils'
+import {
+  getIconByNameIn,
+  queryIconByNameIn,
+  screen,
+  waitFor,
+} from '_tests_/utils'
 
 const btnLoadingClass = 'ant-btn-loading'
 
@@ -29,5 +34,16 @@ export const waitFinishLoadingBySelect = async (container: HTMLElement) => {
     expect(
       container.querySelector('.ant-select-arrow-loading'),
     ).not.toBeInTheDocument()
+  })
+}
+
+export const waitStartLoadingByIcon = (container: HTMLElement) => {
+  const icon = getIconByNameIn(container, 'loading')
+  expect(icon).toBeInTheDocument()
+}
+
+export const waitFinishLoadingByIcon = async (container: HTMLElement) => {
+  await waitFor(() => {
+    expect(queryIconByNameIn(container, 'loading')).not.toBeInTheDocument()
   })
 }

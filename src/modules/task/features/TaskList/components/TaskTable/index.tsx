@@ -5,7 +5,7 @@ import { tableColumns } from './constants/columns'
 import { localeConfig } from './constants/common'
 import { paginationConfig } from './constants/pagination'
 import { TaskTableListItem, TaskTableProps } from './interfaces'
-import { TableStyled } from './styles'
+import { TableStyled, TableWrapperStyled } from './styles'
 import applySortToColumn from './utils/applySortToColumn'
 import applyWidthToColumn from './utils/applyWidthToColumn'
 
@@ -30,24 +30,25 @@ const TaskTable: FC<TaskTableProps> = ({
   )
 
   return (
-    <TableStyled<TaskTableListItem>
-      data-testid='table-task-list'
-      rowClassName={rowClassName}
-      dataSource={dataSource}
-      columns={columns}
-      pagination={
-        pagination && {
-          ...pagination,
-          ...paginationConfig,
+    <TableWrapperStyled data-testid='table-task-list'>
+      <TableStyled<TaskTableListItem>
+        rowClassName={rowClassName}
+        dataSource={dataSource}
+        columns={columns}
+        pagination={
+          pagination && {
+            ...pagination,
+            ...paginationConfig,
+          }
         }
-      }
-      loading={loading}
-      rowKey='id'
-      onRow={onRow}
-      onChange={onChange}
-      showSorterTooltip={false}
-      locale={localeConfig}
-    />
+        loading={loading}
+        rowKey='id'
+        onRow={onRow}
+        onChange={onChange}
+        showSorterTooltip={false}
+        locale={localeConfig}
+      />
+    </TableWrapperStyled>
   )
 }
 

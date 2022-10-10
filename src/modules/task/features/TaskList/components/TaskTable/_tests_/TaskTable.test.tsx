@@ -1,4 +1,10 @@
-import { getIconByName, render, screen, within } from '_tests_/utils'
+import {
+  getIconByName,
+  render,
+  screen,
+  waitStartLoadingByIcon,
+  within,
+} from '_tests_/utils'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
@@ -607,8 +613,8 @@ describe('Таблица заявок', () => {
   test('Отображает состояние загрузки', () => {
     render(<TaskTable {...baseProps} dataSource={[]} loading />)
 
-    const spinner = getIconByName('loading')
-    expect(spinner).toBeInTheDocument()
+    const table = getTable()
+    waitStartLoadingByIcon(table)
   })
 
   test('При клике на строку вызывается обработчик', async () => {

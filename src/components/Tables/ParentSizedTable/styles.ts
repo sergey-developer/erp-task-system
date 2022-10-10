@@ -2,7 +2,7 @@ import { Table } from 'antd'
 
 import styled from 'styled-components'
 
-export const StyledTable: typeof Table = styled(Table)`
+export const TableStyled: typeof Table = styled(Table)`
   height: 100%;
 
   .ant-spin-nested-loading {

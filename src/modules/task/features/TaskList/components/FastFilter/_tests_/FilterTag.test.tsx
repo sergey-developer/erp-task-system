@@ -5,16 +5,14 @@ import {
   filterCheckedClass,
   filterTagRequiredProps as requiredProps,
 } from './constants'
-import { getFilterTag, getFilterTagContainer } from './utils'
+import { getFilterTag, getFilterTagContainer, waitStartLoading } from './utils'
 
 describe('FilterTag', () => {
   test('Отображает состояние загрузки', () => {
     render(<FilterTag {...requiredProps} loading />)
 
     const container = getFilterTagContainer()
-    const skeleton = container.querySelector('.ant-skeleton-active')
-
-    expect(skeleton).toBeInTheDocument()
+    waitStartLoading(container)
   })
 
   test('Отображает текст', () => {

@@ -3,7 +3,6 @@ import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import { TaskListCommentModel } from './taskListComment.model'
-import { TaskListReclassificationRequestModel } from './taskListReclassificationRequest.model'
 
 export type TaskListItemModel = BaseTaskModel & {
   assignee: Pick<
@@ -12,6 +11,5 @@ export type TaskListItemModel = BaseTaskModel & {
   >
   comment: MaybeNull<TaskListCommentModel>
   lastComment: string
-  reclassificationRequest: TaskListReclassificationRequestModel
   workGroup: MaybeNull<WorkGroupListItemModel>
 }
