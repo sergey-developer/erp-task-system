@@ -2,7 +2,6 @@ import {
   Button,
   DrawerProps,
   Form,
-  FormInstance,
   Input,
   Radio,
   Row,
@@ -10,7 +9,7 @@ import {
   Space,
 } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions/extendedFilter.permissions'
@@ -29,65 +28,44 @@ import FilterBlockLabel from './FilterBlockLabel'
 import { ExtendedFilterFormFields } from './interfaces'
 import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
 
-export type ExtendedFilterProps = Pick<DrawerProps, 'onClose' | 'visible'> & {
-  form: FormInstance<ExtendedFilterFormFields>
+export type ExtendedFilterProps = Pick<DrawerProps, 'onClose'> & {
+  formValues: ExtendedFilterFormFields
   initialFormValues: ExtendedFilterFormFields
   onSubmit: (result: ExtendedFilterFormFields) => void
 }
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({
-  form,
+  formValues,
   initialFormValues,
   onClose,
   onSubmit,
-  visible,
 }) => {
+  const [form] = Form.useForm<ExtendedFilterFormFields>()
   const breakpoints = useBreakpoint()
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
-
-  const statusValue = Form.useWatch('status', form)
-  const isAssignedValue = Form.useWatch('isAssigned', form)
-  const filterValue = Form.useWatch('filter', form)
-  const completeAtValue = Form.useWatch('completeAt', form)
-  const workGroupIdValue = Form.useWatch('workGroupId', form)
-  const searchFieldValue = Form.useWatch('searchField', form)
-  const searchValueValue = Form.useWatch('searchValue', form)
-
-  const formValues: ExtendedFilterFormFields = {
-    searchValue: searchValueValue,
-    status: statusValue,
-    isAssigned: isAssignedValue,
-    filter: filterValue,
-    completeAt: completeAtValue,
-    workGroupId: workGroupIdValue,
-    searchField: searchFieldValue,
-  }
-
-  const isValuesNotChanged = isEqualDeep(initialFormValues, formValues)
 
   const resetFields =
     (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
       form.resetFields(fields)
     }
 
+  useEffect(() => {
+    if (!isEqualDeep(initialFormValues, formValues)) {
+      form.setFieldsValue(formValues)
+    }
+  }, [form, formValues, initialFormValues])
+
   return (
     <DrawerStyled
-      data-testid='filter-extended'
       $breakpoints={breakpoints}
       footer={
         <Row justify='end'>
           <Space>
-            <Button onClick={resetFields()} disabled={isValuesNotChanged}>
-              Сбросить все
-            </Button>
+            <Button onClick={resetFields()}>Сбросить все</Button>
 
-            <Button
-              type='primary'
-              onClick={form.submit}
-              disabled={isValuesNotChanged}
-            >
+            <Button type='primary' onClick={form.submit}>
               Применить
             </Button>
           </Space>
@@ -97,7 +75,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
       placement='left'
       width={breakpoints.xxl ? 500 : 380}
       onClose={onClose}
-      visible={visible}
+      visible
     >
       <Form<ExtendedFilterFormFields>
         layout='vertical'

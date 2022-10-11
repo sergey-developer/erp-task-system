@@ -37,6 +37,9 @@ export const taskFilterStatusDict: Readonly<StringMap<FastFilterEnum.Overdue>> =
     [FastFilterEnum.Overdue]: 'Просроченные',
   }
 
+export const taskStatusExtendedFilterDict = { ...taskStatusDict }
+delete taskStatusExtendedFilterDict.NEW
+
 export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> =
   new Map([
     [1, '1-всеохватывающее/широкое'],
