@@ -1,12 +1,9 @@
 import { Moment } from 'moment/moment'
 
-import {
-  TaskExtraStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 
-import { FastFilterEnum } from '../../constants/common'
+import { TaskAssignedEnum, TaskOverdueEnum } from './constants'
 
 export type SearchQueries = Partial<{
   searchByAssignee: string
@@ -18,8 +15,8 @@ export type ExtendedFilterQueries = {
   completeAtFrom?: string
   completeAtTo?: string
   status?: Array<TaskStatusEnum>
-  filter?: FastFilterEnum
-  isAssigned?: Array<TaskExtraStatusEnum>
+  isOverdue?: Array<TaskOverdueEnum>
+  isAssigned?: Array<TaskAssignedEnum>
   workGroupId?: number
 } & SearchQueries
 
@@ -28,7 +25,7 @@ export type ExtendedFilterFormFields = {
   searchField: keyof SearchQueries
   searchValue: string
   status: Array<TaskStatusEnum>
-  isAssigned: Array<TaskExtraStatusEnum>
-  filter: MaybeUndefined<FastFilterEnum>
+  isOverdue: Array<TaskOverdueEnum>
+  isAssigned: Array<TaskAssignedEnum>
   workGroupId: MaybeUndefined<string>
 }

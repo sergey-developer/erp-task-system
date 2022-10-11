@@ -19,23 +19,30 @@ import { taskStatusExtendedFilterDict } from 'modules/task/constants/dictionary'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 
-import { searchQueriesDict } from '../constants'
+import {
+  searchQueriesDict,
+  taskAssignedDict,
+  taskOverdueDict,
+} from '../constants'
 import ExtendedFilter from '../index'
 import {
   requiredProps,
   searchQueriesDictValues,
-  taskExtraStatusDictValues,
-  taskFilterStatusDictValues,
+  taskAssignedDictValues,
+  taskOverdueDictValues,
   taskStatusExtendedFilterDictValues,
 } from './constants'
 import {
   getApplyButton,
+  getAssignedContainer,
   getCheckboxIn,
   getCloseButton,
   getEndDateField,
   getKeywordField,
-  getRadioButton,
+  getOverdueContainer,
+  getRadioButtonIn,
   getResetAllButton,
+  getSearchByColumnContainer,
   getStartDateField,
   getStatusContainer,
   getWorkGroupField,
@@ -92,26 +99,14 @@ describe('Расширенный фильтр', () => {
     })
   })
 
-  describe('По статусу', () => {
-    jest.setTimeout(20000)
-
+  describe('Статус', () => {
     test('Отображается', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
       const container = getStatusContainer()
 
-      taskStatusExtendedFilterDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        expect(checkbox).toBeInTheDocument()
-      })
-
-      taskExtraStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        expect(checkbox).toBeInTheDocument()
-      })
-
-      taskFilterStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
+      taskStatusExtendedFilterDictValues.forEach((value) => {
+        const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeInTheDocument()
       })
     })
@@ -121,13 +116,11 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      Object.entries(taskStatusExtendedFilterDict).forEach(
-        ([status, statusText]) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-          expect(checkbox.value).toBe(status)
-        },
-      )
+      Object.entries(taskStatusExtendedFilterDict).forEach(([value, text]) => {
+        const checkbox = getCheckboxIn(container, { name: new RegExp(text) })
+        expect(checkbox).not.toBeChecked()
+        expect(checkbox.value).toBe(value)
+      })
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
@@ -142,10 +135,11 @@ describe('Расширенный фильтр', () => {
       )
 
       const container = getStatusContainer()
-      const checkbox = getCheckboxIn(
-        container,
-        new RegExp(taskStatusExtendedFilterDict[TaskStatusEnum.InProgress]!),
-      )
+      const checkbox = getCheckboxIn(container, {
+        name: new RegExp(
+          taskStatusExtendedFilterDict[TaskStatusEnum.InProgress]!,
+        ),
+      })
 
       expect(checkbox).toBeChecked()
     })
@@ -155,41 +149,19 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      taskStatusExtendedFilterDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        expect(checkbox).toBeEnabled()
-      })
-
-      taskExtraStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        expect(checkbox).toBeEnabled()
-      })
-
-      taskFilterStatusDictValues.forEach((statusText) => {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
+      taskStatusExtendedFilterDictValues.forEach((value) => {
+        const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeEnabled()
       })
     })
 
-    test('Можно выбрать любой статус', async () => {
+    test('Можно выбрать любое значение', async () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       const container = getStatusContainer()
 
-      for await (const statusText of taskStatusExtendedFilterDictValues) {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        await user.click(checkbox)
-        expect(checkbox).toBeChecked()
-      }
-
-      for await (const statusText of taskExtraStatusDictValues) {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
-        await user.click(checkbox)
-        expect(checkbox).toBeChecked()
-      }
-
-      for await (const statusText of taskFilterStatusDictValues) {
-        const checkbox = getCheckboxIn(container, new RegExp(statusText))
+      for await (const value of taskStatusExtendedFilterDictValues) {
+        const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         await user.click(checkbox)
         expect(checkbox).toBeChecked()
       }
@@ -201,35 +173,15 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const statusText of taskStatusExtendedFilterDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          await user.click(checkbox)
-        }
-
-        for await (const statusText of taskExtraStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          await user.click(checkbox)
-        }
-
-        for await (const statusText of taskFilterStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
+        for await (const value of taskStatusExtendedFilterDictValues) {
+          const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetButtonIn(user, container)
 
-        taskStatusExtendedFilterDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-        })
-
-        taskExtraStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-        })
-
-        taskFilterStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
+        taskStatusExtendedFilterDictValues.forEach((value) => {
+          const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })
       })
@@ -239,37 +191,197 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const statusText of taskStatusExtendedFilterDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          await user.click(checkbox)
-        }
-
-        for await (const statusText of taskExtraStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          await user.click(checkbox)
-        }
-
-        for await (const statusText of taskFilterStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
+        for await (const value of taskStatusExtendedFilterDictValues) {
+          const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetAllButton(user)
 
-        taskStatusExtendedFilterDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
+        taskStatusExtendedFilterDictValues.forEach((value) => {
+          const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })
+      })
+    })
+  })
 
-        taskExtraStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-        })
+  describe('Назначенный', () => {
+    test('Отображается', () => {
+      render(<ExtendedFilter {...requiredProps} />)
 
-        taskFilterStatusDictValues.forEach((statusText) => {
-          const checkbox = getCheckboxIn(container, new RegExp(statusText))
-          expect(checkbox).not.toBeChecked()
-        })
+      const container = getAssignedContainer()
+
+      taskAssignedDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        expect(radioButton).toBeInTheDocument()
+      })
+    })
+
+    test('Имеет корректные значения по умолчанию', () => {
+      render(<ExtendedFilter {...requiredProps} />)
+
+      const container = getAssignedContainer()
+
+      Object.entries(taskAssignedDict).forEach(([value, text]) => {
+        const radioButton = getRadioButtonIn(container, { name: text })
+        expect(radioButton).not.toBeChecked()
+        expect(radioButton.value).toBe(value)
+      })
+    })
+
+    test('Доступен для редактирования', () => {
+      render(<ExtendedFilter {...requiredProps} />)
+
+      const container = getAssignedContainer()
+
+      taskAssignedDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        expect(radioButton).toBeEnabled()
+      })
+    })
+
+    test('Можно выбрать любое значение', async () => {
+      const { user } = render(<ExtendedFilter {...requiredProps} />)
+
+      const container = getAssignedContainer()
+
+      for await (const value of taskAssignedDictValues) {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        await user.click(radioButton)
+        expect(radioButton).toBeChecked()
+      }
+    })
+
+    describe('Сбрасывает значение', () => {
+      test('Кнопка "Сбросить"', async () => {
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
+
+        const container = getAssignedContainer()
+
+        await user.click(
+          getRadioButtonIn(container, {
+            name: taskAssignedDict.False,
+          }),
+        )
+
+        await userClickResetButtonIn(user, container)
+
+        expect(
+          getRadioButtonIn(container, {
+            name: taskAssignedDict.False,
+          }),
+        ).not.toBeChecked()
+      })
+
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
+
+        const container = getAssignedContainer()
+
+        await user.click(
+          getRadioButtonIn(container, {
+            name: taskAssignedDict.True,
+          }),
+        )
+
+        await userClickResetAllButton(user)
+
+        expect(
+          getRadioButtonIn(container, {
+            name: taskAssignedDict.True,
+          }),
+        ).not.toBeChecked()
+      })
+    })
+  })
+
+  describe('Просрочено', () => {
+    test('Отображается', () => {
+      render(<ExtendedFilter {...requiredProps} />)
+
+      const container = getOverdueContainer()
+
+      taskOverdueDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        expect(radioButton).toBeInTheDocument()
+      })
+    })
+
+    test('Имеет корректные значения по умолчанию', () => {
+      render(<ExtendedFilter {...requiredProps} />)
+
+      const container = getOverdueContainer()
+
+      Object.entries(taskOverdueDict).forEach(([value, text]) => {
+        const radioButton = getRadioButtonIn(container, { name: text })
+        expect(radioButton).not.toBeChecked()
+        expect(radioButton.value).toBe(value)
+      })
+    })
+
+    test('Доступен для редактирования', () => {
+      render(<ExtendedFilter {...requiredProps} />)
+
+      const container = getOverdueContainer()
+
+      taskOverdueDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        expect(radioButton).toBeEnabled()
+      })
+    })
+
+    test('Можно выбрать любое значение', async () => {
+      const { user } = render(<ExtendedFilter {...requiredProps} />)
+
+      const container = getOverdueContainer()
+
+      for await (const value of taskOverdueDictValues) {
+        const radioButton = getRadioButtonIn(container, { name: value })
+        await user.click(radioButton)
+        expect(radioButton).toBeChecked()
+      }
+    })
+
+    describe('Сбрасывает значение', () => {
+      test('Кнопка "Сбросить"', async () => {
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
+
+        const container = getOverdueContainer()
+
+        await user.click(
+          getRadioButtonIn(container, {
+            name: taskOverdueDict.False,
+          }),
+        )
+
+        await userClickResetButtonIn(user, container)
+
+        expect(
+          getRadioButtonIn(container, {
+            name: taskOverdueDict.False,
+          }),
+        ).not.toBeChecked()
+      })
+
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
+
+        const container = getOverdueContainer()
+
+        await user.click(
+          getRadioButtonIn(container, {
+            name: taskOverdueDict.True,
+          }),
+        )
+
+        await userClickResetAllButton(user)
+
+        expect(
+          getRadioButtonIn(container, {
+            name: taskOverdueDict.True,
+          }),
+        ).not.toBeChecked()
       })
     })
   })
@@ -347,8 +459,10 @@ describe('Расширенный фильтр', () => {
     test('Отображается', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
-      searchQueriesDictValues.forEach((searchFieldName) => {
-        const radioButton = getRadioButton(searchFieldName)
+      const container = getSearchByColumnContainer()
+
+      searchQueriesDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
         expect(radioButton).toBeInTheDocument()
       })
 
@@ -359,13 +473,19 @@ describe('Расширенный фильтр', () => {
     test('Имеет корректные значения по умолчанию', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
-      const searchByNameButton = getRadioButton(searchQueriesDict.searchByName)
-      const searchByTitleButton = getRadioButton(
-        searchQueriesDict.searchByTitle,
-      )
-      const searchByAssigneeButton = getRadioButton(
-        searchQueriesDict.searchByAssignee,
-      )
+      const container = getSearchByColumnContainer()
+
+      const searchByNameButton = getRadioButtonIn(container, {
+        name: searchQueriesDict.searchByName,
+      })
+
+      const searchByTitleButton = getRadioButtonIn(container, {
+        name: searchQueriesDict.searchByTitle,
+      })
+
+      const searchByAssigneeButton = getRadioButtonIn(container, {
+        name: searchQueriesDict.searchByAssignee,
+      })
 
       expect(searchByNameButton.value).toBe('searchByName')
       expect(searchByTitleButton.value).toBe('searchByTitle')
@@ -382,8 +502,10 @@ describe('Расширенный фильтр', () => {
     test('Доступен для редактирования', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
-      searchQueriesDictValues.forEach((searchFieldName) => {
-        const radioButton = getRadioButton(searchFieldName)
+      const container = getSearchByColumnContainer()
+
+      searchQueriesDictValues.forEach((value) => {
+        const radioButton = getRadioButtonIn(container, { name: value })
         expect(radioButton).toBeEnabled()
       })
 
@@ -404,8 +526,10 @@ describe('Расширенный фильтр', () => {
     test('Можно выбрать любой столбец', async () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
-      for await (const searchFieldName of searchQueriesDictValues) {
-        const radioButton = getRadioButton(searchFieldName)
+      const container = getSearchByColumnContainer()
+
+      for await (const value of searchQueriesDictValues) {
+        const radioButton = getRadioButtonIn(container, { name: value })
         await user.click(radioButton)
         expect(radioButton).toBeChecked()
       }
@@ -415,28 +539,41 @@ describe('Расширенный фильтр', () => {
       test('Кнопка "Сбросить"', async () => {
         const { user } = render(<ExtendedFilter {...requiredProps} />)
 
+        const container = getSearchByColumnContainer()
+
         const keyword = generateName()
         await user.type(getKeywordField(), keyword)
-        await user.click(getRadioButton(searchQueriesDict.searchByName))
 
-        const container = screen.getByTestId('filter-extended-search-by-column')
+        await user.click(
+          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+        )
+
         await userClickResetButtonIn(user, container)
 
         expect(getKeywordField()).not.toHaveDisplayValue(keyword)
-        expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
+        expect(
+          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+        ).not.toBeChecked()
       })
 
       test('Кнопка "Сбросить всё"', async () => {
         const { user } = render(<ExtendedFilter {...requiredProps} />)
 
+        const container = getSearchByColumnContainer()
+
         const keyword = generateName()
         await user.type(getKeywordField(), keyword)
-        await user.click(getRadioButton(searchQueriesDict.searchByName))
+
+        await user.click(
+          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+        )
 
         await userClickResetAllButton(user)
 
         expect(getKeywordField()).not.toHaveDisplayValue(keyword)
-        expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
+        expect(
+          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+        ).not.toBeChecked()
       })
     })
   })

@@ -1,4 +1,5 @@
 import { screen, within } from '_tests_/utils'
+import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const getCloseButton = (): HTMLButtonElement =>
@@ -15,13 +16,24 @@ export const getResetAllButton = (): HTMLButtonElement =>
 export const getStatusContainer = () =>
   screen.getByTestId('filter-extended-status')
 
+export const getAssignedContainer = () =>
+  screen.getByTestId('filter-extended-is-assigned')
+
+export const getOverdueContainer = () =>
+  screen.getByTestId('filter-extended-is-overdue')
+
+export const getSearchByColumnContainer = () =>
+  screen.getByTestId('filter-extended-search-by-column')
+
 export const getCheckboxIn = (
   container: HTMLElement,
-  name: RegExp,
-): HTMLInputElement => within(container).getByRole('checkbox', { name })
+  options: ByRoleOptions,
+): HTMLInputElement => within(container).getByRole('checkbox', options)
 
-export const getRadioButton = (name: string): HTMLInputElement =>
-  screen.getByRole('radio', { name })
+export const getRadioButtonIn = (
+  container: HTMLElement,
+  options: ByRoleOptions,
+): HTMLInputElement => within(container).getByRole('radio', options)
 
 export const getStartDateField = (): HTMLInputElement =>
   screen.getByPlaceholderText('Начальная дата')

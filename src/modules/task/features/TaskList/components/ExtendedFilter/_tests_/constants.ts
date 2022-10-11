@@ -1,20 +1,17 @@
 import {
-  taskExtraStatusDict,
-  taskFilterStatusDict,
-  taskStatusExtendedFilterDict,
-} from 'modules/task/constants/dictionary'
-
-import {
   initialExtendedFilterFormValues,
   searchQueriesDict,
+  taskAssignedDict,
+  taskOverdueDict,
+  taskStatusExtendedFilterDict,
 } from '../constants'
 import { ExtendedFilterProps } from '../index'
 
 export const taskStatusExtendedFilterDictValues = Object.values(
   taskStatusExtendedFilterDict,
 )
-export const taskExtraStatusDictValues = Object.values(taskExtraStatusDict)
-export const taskFilterStatusDictValues = Object.values(taskFilterStatusDict)
+export const taskOverdueDictValues = Object.values(taskOverdueDict)
+export const taskAssignedDictValues = Object.values(taskAssignedDict)
 export const searchQueriesDictValues = Object.values(searchQueriesDict)
 
 export const requiredProps: ExtendedFilterProps = {
