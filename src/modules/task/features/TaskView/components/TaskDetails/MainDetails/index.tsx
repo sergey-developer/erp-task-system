@@ -46,7 +46,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   olaEstimatedTime,
 }) => {
   const breakpoints = useBreakpoint()
-  console.log({ contactPhone, portablePhone })
+
   const olaNextBreachTime = useMemo(() => {
     const olaStatus = getOlaStatusMap(rawOlaStatus)
 
