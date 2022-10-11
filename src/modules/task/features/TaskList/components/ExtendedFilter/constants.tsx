@@ -7,7 +7,7 @@ import TaskStatus from 'modules/task/features/TaskStatus'
 import { StringMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
+import { ExtendedFilterFormFields, SearchFields } from './interfaces'
 
 export enum TaskAssignedEnum {
   Assigned = 'True',
@@ -19,7 +19,7 @@ export enum TaskOverdueEnum {
   NotOverdue = 'False',
 }
 
-export const DEFAULT_SEARCH_FIELD: keyof SearchQueries = 'searchByTitle'
+export const DEFAULT_SEARCH_FIELD: keyof SearchFields = 'searchByTitle'
 
 export const initialExtendedFilterFormValues: Readonly<ExtendedFilterFormFields> =
   {
@@ -32,7 +32,7 @@ export const initialExtendedFilterFormValues: Readonly<ExtendedFilterFormFields>
     workGroupId: undefined,
   }
 
-export const searchQueriesDict: Readonly<StringMap<keyof SearchQueries>> = {
+export const searchFieldDict: Readonly<StringMap<keyof SearchFields>> = {
   searchByName: 'Объект',
   searchByTitle: 'Тема',
   searchByAssignee: 'Исполнитель',
@@ -51,11 +51,11 @@ export const taskOverdueDict: Readonly<StringMap<TaskOverdueEnum>> = {
 export const taskStatusExtendedFilterDict = { ...taskStatusDict }
 delete taskStatusExtendedFilterDict.NEW
 
-export const searchQueriesOptions: Array<CheckboxOptionType> = Object.keys(
-  searchQueriesDict,
-).map((searchQueryName) => ({
-  label: searchQueriesDict[searchQueryName as keyof SearchQueries],
-  value: searchQueryName,
+export const searchFieldOptions: Array<CheckboxOptionType> = Object.keys(
+  searchFieldDict,
+).map((searchField) => ({
+  label: searchFieldDict[searchField as keyof SearchFields],
+  value: searchField,
 }))
 
 export const taskAssignedOptions: Array<CheckboxOptionType> = Object.values(
