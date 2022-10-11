@@ -3,7 +3,7 @@ import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
 import { taskExtendedStatusToTaskStatus } from 'modules/task/constants/dictionary'
-import { TaskStatus } from 'modules/task/features/TaskStatus'
+import TaskStatus from 'modules/task/features/TaskStatus'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'

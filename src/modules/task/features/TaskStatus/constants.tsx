@@ -3,17 +3,11 @@ import React, { ReactElement } from 'react'
 
 import {
   CheckCircleIcon,
-  HistoryIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
   RightCircleIcon,
 } from 'components/Icons'
-import {
-  TaskExtraStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
-
-import { FastFilterEnum } from '../TaskList/constants/common'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 
 export const badgeNameByTaskStatus: Partial<
   Record<
@@ -32,16 +26,4 @@ export const iconByTaskStatus: Partial<Record<TaskStatusEnum, ReactElement>> = {
   [TaskStatusEnum.InReclassification]: <QuestionCircleIcon />,
   [TaskStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
   [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
-}
-
-export const badgeNameByTaskExtraStatus: Record<
-  TaskExtraStatusEnum,
-  Extract<BadgeProps['status'], 'default'>
-> = {
-  [TaskExtraStatusEnum.Assigned]: 'default',
-  [TaskExtraStatusEnum.NotAssigned]: 'default',
-}
-
-export const iconByFilter: Record<FastFilterEnum.Overdue, ReactElement> = {
-  [FastFilterEnum.Overdue]: <HistoryIcon $color='fireOpal' />,
 }

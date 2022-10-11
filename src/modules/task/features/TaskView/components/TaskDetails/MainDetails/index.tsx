@@ -28,6 +28,8 @@ type MainDetailsProps = Pick<
   | 'olaStatus'
   | 'olaNextBreachTime'
   | 'olaEstimatedTime'
+  | 'contactPhone'
+  | 'portablePhone'
 >
 
 const MainDetails: FC<MainDetailsProps> = ({
@@ -37,6 +39,8 @@ const MainDetails: FC<MainDetailsProps> = ({
   name,
   address,
   contactService,
+  contactPhone,
+  portablePhone,
   olaStatus: rawOlaStatus,
   olaNextBreachTime: rawOlaNextBreachTime,
   olaEstimatedTime,
@@ -110,6 +114,10 @@ const MainDetails: FC<MainDetailsProps> = ({
               <Text strong ellipsis className='break-text'>
                 {contactService}
               </Text>
+
+              <Text>{contactPhone}</Text>
+
+              <Text>{portablePhone}</Text>
             </LabeledData>
           </Col>
         </Row>

@@ -2,7 +2,6 @@ import { useBoolean, usePrevious } from 'ahooks'
 import {
   Button,
   Col,
-  Form,
   Row,
   Space,
   TablePaginationConfig,
@@ -85,14 +84,8 @@ const TaskListPage: FC = () => {
     { toggle: toggleTaskAdditionalInfoExpanded },
   ] = useBoolean(false)
 
-  const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
-
-  const [isExtendedFilterOpened, { toggle: toggleExtendedFilterOpened }] =
+  const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] =
     useBoolean(false)
-
-  const debouncedToggleExtendedFilterOpened = useDebounceFn(
-    toggleExtendedFilterOpened,
-  )
 
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
@@ -107,11 +100,15 @@ const TaskListPage: FC = () => {
   const previousAppliedFilterType =
     usePrevious<typeof appliedFilterType>(appliedFilterType)
 
+  const debouncedToggleOpenExtendedFilter = useDebounceFn(
+    toggleOpenExtendedFilter,
+  )
+
   const handleExtendedFilterSubmit: ExtendedFilterProps['onSubmit'] = (
     values,
   ) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
-    toggleExtendedFilterOpened()
+    toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
     setFastFilterValue(undefined)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
@@ -122,7 +119,6 @@ const TaskListPage: FC = () => {
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilterValue(value)
 
-    extendedFilterForm.resetFields()
     setExtendedFilterFormValues(initialExtendedFilterFormValues)
 
     triggerFilterChange({
@@ -217,13 +213,14 @@ const TaskListPage: FC = () => {
       | FastFilterQueries
       | TaskIdFilterQueries,
   ) => {
+    // рефакторить
     setQueryArgs((prev) => ({
       ...prev,
       offset: 0,
       completeAtFrom: undefined,
       completeAtTo: undefined,
-      filter: undefined,
       status: undefined,
+      isOverdue: undefined,
       isAssigned: undefined,
       searchByAssignee: undefined,
       searchByName: undefined,
@@ -269,7 +266,7 @@ const TaskListPage: FC = () => {
                 <Button
                   data-testid='btn-filter-extended'
                   icon={<FilterIcon $size='large' />}
-                  onClick={debouncedToggleExtendedFilterOpened}
+                  onClick={debouncedToggleOpenExtendedFilter}
                   disabled={searchFilterApplied}
                 >
                   Фильтры
@@ -336,10 +333,9 @@ const TaskListPage: FC = () => {
 
       {isExtendedFilterOpened && (
         <ExtendedFilter
-          visible
-          form={extendedFilterForm}
+          formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
-          onClose={toggleExtendedFilterOpened}
+          onClose={debouncedToggleOpenExtendedFilter}
           onSubmit={handleExtendedFilterSubmit}
         />
       )}
