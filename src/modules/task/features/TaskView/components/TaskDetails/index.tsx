@@ -55,6 +55,8 @@ type TaskDetailsProps = {
       | 'name'
       | 'address'
       | 'contactService'
+      | 'contactPhone'
+      | 'portablePhone'
       | 'workGroup'
       | 'assignee'
       | 'status'
@@ -278,6 +280,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               name={details.name}
               address={details.address}
               contactService={details.contactService}
+              contactPhone={details.contactPhone}
+              portablePhone={details.portablePhone}
               olaStatus={details.olaStatus}
               olaEstimatedTime={details.olaEstimatedTime}
               olaNextBreachTime={details.olaNextBreachTime}
