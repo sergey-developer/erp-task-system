@@ -34,6 +34,8 @@ export type BaseTaskModel = {
   severity: 1 | 2 | 3 | 4
   priorityCode: 1 | 2 | 3 | 4
 
+  contactPhone?: string
+  portablePhone?: string
   olaNextBreachTime?: MaybeNull<string>
   description?: string
   parentExternalId?: string
