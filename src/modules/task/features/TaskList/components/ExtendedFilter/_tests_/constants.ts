@@ -1,6 +1,6 @@
 import {
   initialExtendedFilterFormValues,
-  searchQueriesDict,
+  searchFieldDict,
   taskAssignedDict,
   taskOverdueDict,
   taskStatusExtendedFilterDict,
@@ -12,7 +12,7 @@ export const taskStatusExtendedFilterDictValues = Object.values(
 )
 export const taskOverdueDictValues = Object.values(taskOverdueDict)
 export const taskAssignedDictValues = Object.values(taskAssignedDict)
-export const searchQueriesDictValues = Object.values(searchQueriesDict)
+export const searchFieldDictValues = Object.values(searchFieldDict)
 
 export const requiredProps: ExtendedFilterProps = {
   formValues: initialExtendedFilterFormValues,

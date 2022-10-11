@@ -20,14 +20,14 @@ import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGrou
 import { UserRolesEnum } from 'shared/constants/roles'
 
 import {
-  searchQueriesDict,
+  searchFieldDict,
   taskAssignedDict,
   taskOverdueDict,
 } from '../constants'
 import ExtendedFilter from '../index'
 import {
   requiredProps,
-  searchQueriesDictValues,
+  searchFieldDictValues,
   taskAssignedDictValues,
   taskOverdueDictValues,
   taskStatusExtendedFilterDictValues,
@@ -462,7 +462,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getSearchByColumnContainer()
 
-      searchQueriesDictValues.forEach((value) => {
+      searchFieldDictValues.forEach((value) => {
         const radioButton = getRadioButtonIn(container, { name: value })
         expect(radioButton).toBeInTheDocument()
       })
@@ -477,15 +477,15 @@ describe('Расширенный фильтр', () => {
       const container = getSearchByColumnContainer()
 
       const searchByNameButton = getRadioButtonIn(container, {
-        name: searchQueriesDict.searchByName,
+        name: searchFieldDict.searchByName,
       })
 
       const searchByTitleButton = getRadioButtonIn(container, {
-        name: searchQueriesDict.searchByTitle,
+        name: searchFieldDict.searchByTitle,
       })
 
       const searchByAssigneeButton = getRadioButtonIn(container, {
-        name: searchQueriesDict.searchByAssignee,
+        name: searchFieldDict.searchByAssignee,
       })
 
       expect(searchByNameButton.value).toBe('searchByName')
@@ -505,7 +505,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getSearchByColumnContainer()
 
-      searchQueriesDictValues.forEach((value) => {
+      searchFieldDictValues.forEach((value) => {
         const radioButton = getRadioButtonIn(container, { name: value })
         expect(radioButton).toBeEnabled()
       })
@@ -529,7 +529,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getSearchByColumnContainer()
 
-      for await (const value of searchQueriesDictValues) {
+      for await (const value of searchFieldDictValues) {
         const radioButton = getRadioButtonIn(container, { name: value })
         await user.click(radioButton)
         expect(radioButton).toBeChecked()
@@ -546,14 +546,14 @@ describe('Расширенный фильтр', () => {
         await user.type(getKeywordField(), keyword)
 
         await user.click(
-          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+          getRadioButtonIn(container, { name: searchFieldDict.searchByName }),
         )
 
         await userClickResetButtonIn(user, container)
 
         expect(getKeywordField()).not.toHaveDisplayValue(keyword)
         expect(
-          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+          getRadioButtonIn(container, { name: searchFieldDict.searchByName }),
         ).not.toBeChecked()
       })
 
@@ -566,14 +566,14 @@ describe('Расширенный фильтр', () => {
         await user.type(getKeywordField(), keyword)
 
         await user.click(
-          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+          getRadioButtonIn(container, { name: searchFieldDict.searchByName }),
         )
 
         await userClickResetAllButton(user)
 
         expect(getKeywordField()).not.toHaveDisplayValue(keyword)
         expect(
-          getRadioButtonIn(container, { name: searchQueriesDict.searchByName }),
+          getRadioButtonIn(container, { name: searchFieldDict.searchByName }),
         ).not.toBeChecked()
       })
     })

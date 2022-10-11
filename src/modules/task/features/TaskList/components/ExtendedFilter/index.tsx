@@ -18,7 +18,7 @@ import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/
 import { isEqualDeep } from 'shared/utils/common/isEqual'
 
 import {
-  searchQueriesOptions,
+  searchFieldOptions,
   taskAssignedOptions,
   taskOverdueOptions,
   taskStatusOptions,
@@ -163,7 +163,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
           <Space direction='vertical' size='middle'>
             <Form.Item name='searchField'>
-              <Radio.Group options={searchQueriesOptions} />
+              <Radio.Group options={searchFieldOptions} />
             </Form.Item>
 
             <Form.Item name='searchValue'>
