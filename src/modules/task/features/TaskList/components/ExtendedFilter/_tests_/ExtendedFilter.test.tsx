@@ -1,5 +1,3 @@
-import { Form } from 'antd'
-
 import { getWorkGroupList } from '_fixtures_/workGroup'
 import {
   generateId,
@@ -16,19 +14,18 @@ import {
   waitFinishLoadingBySelect,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
+import { TaskStatusEnum } from 'modules/task/constants/common'
+import { taskStatusExtendedFilterDict } from 'modules/task/constants/dictionary'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 
+import { searchQueriesDict } from '../constants'
+import ExtendedFilter from '../index'
 import {
-  initialExtendedFilterFormValues,
-  searchQueriesDict,
-} from '../constants'
-import ExtendedFilter, { ExtendedFilterProps } from '../index'
-import {
+  requiredProps,
   searchQueriesDictValues,
   taskExtraStatusDictValues,
   taskFilterStatusDictValues,
-  taskStatusExtendedFilterDict,
   taskStatusExtendedFilterDictValues,
 } from './constants'
 import {
@@ -48,43 +45,12 @@ import {
   userFillExecuteBeforeField,
 } from './utils'
 
-const onClose = jest.fn()
-const onSubmit = jest.fn()
-
 setupApiTests()
 
-const ExtendedFilterWrapper = (props: Pick<ExtendedFilterProps, 'visible'>) => {
-  const [form] = Form.useForm()
-
-  return (
-    <ExtendedFilter
-      form={form}
-      onClose={onClose}
-      onSubmit={onSubmit}
-      initialFormValues={initialExtendedFilterFormValues}
-      {...props}
-    />
-  )
-}
-
 describe('Расширенный фильтр', () => {
-  test('Отображается при передаче нужных данных', () => {
-    render(<ExtendedFilterWrapper visible />)
-
-    const filter = screen.getByTestId('filter-extended')
-    expect(filter).toBeInTheDocument()
-  })
-
-  test('Не отображается если не передать нужные данные', () => {
-    render(<ExtendedFilterWrapper visible={false} />)
-
-    const filter = screen.queryByTestId('filter-extended')
-    expect(filter).not.toBeInTheDocument()
-  })
-
   describe('Header', () => {
     test('Корректно отображается', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       const title = screen.getByText('Фильтры')
       const closeButton = getCloseButton()
@@ -94,19 +60,19 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Кнопка закрытия кликабельна', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+      const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       const closeButton = getCloseButton()
       expect(closeButton).toBeEnabled()
 
       await user.click(closeButton)
-      expect(onClose).toBeCalledTimes(1)
+      expect(requiredProps.onClose).toBeCalledTimes(1)
     })
   })
 
   describe('Footer', () => {
     test('Корректно отображается', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       const applyButton = getApplyButton()
       const resetAllButton = getResetAllButton()
@@ -115,14 +81,14 @@ describe('Расширенный фильтр', () => {
       expect(resetAllButton).toBeInTheDocument()
     })
 
-    test('Кнопки не активны если значения фильтров не менялись', () => {
-      render(<ExtendedFilterWrapper visible />)
+    test('Кнопки активны', () => {
+      render(<ExtendedFilter {...requiredProps} />)
 
       const applyButton = getApplyButton()
       const resetAllButton = getResetAllButton()
 
-      expect(applyButton).not.toBeEnabled()
-      expect(resetAllButton).not.toBeEnabled()
+      expect(applyButton).toBeEnabled()
+      expect(resetAllButton).toBeEnabled()
     })
   })
 
@@ -130,7 +96,7 @@ describe('Расширенный фильтр', () => {
     jest.setTimeout(20000)
 
     test('Отображается', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       const container = getStatusContainer()
 
@@ -151,7 +117,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       const container = getStatusContainer()
 
@@ -164,8 +130,28 @@ describe('Расширенный фильтр', () => {
       )
     })
 
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      render(
+        <ExtendedFilter
+          {...requiredProps}
+          formValues={{
+            ...requiredProps.formValues,
+            status: [TaskStatusEnum.InProgress],
+          }}
+        />,
+      )
+
+      const container = getStatusContainer()
+      const checkbox = getCheckboxIn(
+        container,
+        new RegExp(taskStatusExtendedFilterDict[TaskStatusEnum.InProgress]!),
+      )
+
+      expect(checkbox).toBeChecked()
+    })
+
     test('Доступен для редактирования', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       const container = getStatusContainer()
 
@@ -186,7 +172,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любой статус', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+      const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       const container = getStatusContainer()
 
@@ -211,7 +197,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
 
         const container = getStatusContainer()
 
@@ -249,7 +235,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
 
         const container = getStatusContainer()
 
@@ -286,49 +272,11 @@ describe('Расширенный фильтр', () => {
         })
       })
     })
-
-    describe('Становится активна после заполнения полей', () => {
-      test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const resetAllButton = getResetAllButton()
-        expect(resetAllButton).not.toBeEnabled()
-
-        const container = getStatusContainer()
-
-        const checkbox = getCheckboxIn(
-          container,
-          new RegExp(taskStatusExtendedFilterDict.AWAITING!),
-        )
-
-        await user.click(checkbox)
-
-        expect(resetAllButton).toBeEnabled()
-      })
-
-      test('Кнопка "Применить"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const applyButton = getApplyButton()
-        expect(applyButton).not.toBeEnabled()
-
-        const container = getStatusContainer()
-
-        const checkbox = getCheckboxIn(
-          container,
-          new RegExp(taskStatusExtendedFilterDict.RETURNED!),
-        )
-
-        await user.click(checkbox)
-
-        expect(applyButton).toBeEnabled()
-      })
-    })
   })
 
   describe('Выполнить до', () => {
     test('Отображается', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       const startDateField = getStartDateField()
       const endDateField = getEndDateField()
@@ -338,7 +286,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       const startDateField = getStartDateField()
       const endDateField = getEndDateField()
@@ -348,7 +296,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       const startDateField = getStartDateField()
       const endDateField = getEndDateField()
@@ -358,7 +306,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать даты', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+      const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       const { startDateField, startDateValue, endDateField, endDateValue } =
         await userFillExecuteBeforeField(user)
@@ -369,7 +317,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
 
         const { startDateValue, endDateValue } =
           await userFillExecuteBeforeField(user)
@@ -382,7 +330,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
 
         const { startDateValue, endDateValue } =
           await userFillExecuteBeforeField(user)
@@ -393,35 +341,11 @@ describe('Расширенный фильтр', () => {
         expect(getEndDateField()).not.toHaveDisplayValue(endDateValue)
       })
     })
-
-    describe('Становится активна после заполнения полей', () => {
-      test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const resetAllButton = getResetAllButton()
-        expect(resetAllButton).not.toBeEnabled()
-
-        await userFillExecuteBeforeField(user)
-
-        expect(resetAllButton).toBeEnabled()
-      })
-
-      test('Кнопка "Применить"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const applyButton = getApplyButton()
-        expect(applyButton).not.toBeEnabled()
-
-        await userFillExecuteBeforeField(user)
-
-        expect(applyButton).toBeEnabled()
-      })
-    })
   })
 
   describe('По столбцу', () => {
     test('Отображается', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       searchQueriesDictValues.forEach((searchFieldName) => {
         const radioButton = getRadioButton(searchFieldName)
@@ -433,7 +357,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       const searchByNameButton = getRadioButton(searchQueriesDict.searchByName)
       const searchByTitleButton = getRadioButton(
@@ -456,7 +380,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
-      render(<ExtendedFilterWrapper visible />)
+      render(<ExtendedFilter {...requiredProps} />)
 
       searchQueriesDictValues.forEach((searchFieldName) => {
         const radioButton = getRadioButton(searchFieldName)
@@ -468,7 +392,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно ввести ключевое слово', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+      const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       const keywordField = getKeywordField()
       const keyword = generateName()
@@ -478,7 +402,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любой столбец', async () => {
-      const { user } = render(<ExtendedFilterWrapper visible />)
+      const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       for await (const searchFieldName of searchQueriesDictValues) {
         const radioButton = getRadioButton(searchFieldName)
@@ -489,7 +413,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
 
         const keyword = generateName()
         await user.type(getKeywordField(), keyword)
@@ -503,7 +427,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
+        const { user } = render(<ExtendedFilter {...requiredProps} />)
 
         const keyword = generateName()
         await user.type(getKeywordField(), keyword)
@@ -513,34 +437,6 @@ describe('Расширенный фильтр', () => {
 
         expect(getKeywordField()).not.toHaveDisplayValue(keyword)
         expect(getRadioButton(searchQueriesDict.searchByName)).not.toBeChecked()
-      })
-    })
-
-    describe('Становится активна после заполнения полей', () => {
-      test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const resetAllButton = getResetAllButton()
-        expect(resetAllButton).not.toBeEnabled()
-
-        const keyword = generateName()
-        await user.type(getKeywordField(), keyword)
-        await user.click(getRadioButton(searchQueriesDict.searchByName))
-
-        expect(resetAllButton).toBeEnabled()
-      })
-
-      test('Кнопка "Применить"', async () => {
-        const { user } = render(<ExtendedFilterWrapper visible />)
-
-        const applyButton = getApplyButton()
-        expect(applyButton).not.toBeEnabled()
-
-        const keyword = generateName()
-        await user.type(getKeywordField(), keyword)
-        await user.click(getRadioButton(searchQueriesDict.searchByName))
-
-        expect(applyButton).toBeEnabled()
       })
     })
   })
@@ -555,7 +451,7 @@ describe('Расширенный фильтр', () => {
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        render(<ExtendedFilterWrapper visible />, { store })
+        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = queryWorkGroupField()
         expect(workGroupField).not.toBeInTheDocument()
@@ -569,7 +465,7 @@ describe('Расширенный фильтр', () => {
           userRole: UserRolesEnum.Engineer,
         })
 
-        render(<ExtendedFilterWrapper visible />, { store })
+        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = queryWorkGroupField()
         expect(workGroupField).not.toBeInTheDocument()
@@ -585,7 +481,7 @@ describe('Расширенный фильтр', () => {
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        render(<ExtendedFilterWrapper visible />, { store })
+        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = getWorkGroupField()
         await waitFinishLoadingBySelect(workGroupField)
@@ -603,7 +499,7 @@ describe('Расширенный фильтр', () => {
           userRole: UserRolesEnum.HeadOfDepartment,
         })
 
-        render(<ExtendedFilterWrapper visible />, { store })
+        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = getWorkGroupField()
         await waitFinishLoadingBySelect(workGroupField)
@@ -621,7 +517,7 @@ describe('Расширенный фильтр', () => {
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        render(<ExtendedFilterWrapper visible />, { store })
+        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = getWorkGroupField()
         await waitFinishLoadingBySelect(workGroupField)
@@ -638,7 +534,7 @@ describe('Расширенный фильтр', () => {
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        render(<ExtendedFilterWrapper visible />, { store })
+        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = getWorkGroupField()
         await waitFinishLoadingBySelect(workGroupField)
@@ -657,7 +553,7 @@ describe('Расширенный фильтр', () => {
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        const { user } = render(<ExtendedFilterWrapper visible />, {
+        const { user } = render(<ExtendedFilter {...requiredProps} />, {
           store,
         })
 
@@ -684,7 +580,7 @@ describe('Расширенный фильтр', () => {
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        const { user } = render(<ExtendedFilterWrapper visible />, {
+        const { user } = render(<ExtendedFilter {...requiredProps} />, {
           store,
         })
 
@@ -715,7 +611,7 @@ describe('Расширенный фильтр', () => {
             userRole: UserRolesEnum.SeniorEngineer,
           })
 
-          const { user } = render(<ExtendedFilterWrapper visible />, {
+          const { user } = render(<ExtendedFilter {...requiredProps} />, {
             store,
           })
 
@@ -743,7 +639,7 @@ describe('Расширенный фильтр', () => {
             userRole: UserRolesEnum.SeniorEngineer,
           })
 
-          const { user } = render(<ExtendedFilterWrapper visible />, {
+          const { user } = render(<ExtendedFilter {...requiredProps} />, {
             store,
           })
 
@@ -758,62 +654,6 @@ describe('Расширенный фильтр', () => {
 
           const selectedOption = getSelectedOption(workGroupField)
           expect(selectedOption).not.toBeInTheDocument()
-        })
-      })
-
-      describe('Становится активна после заполнения полей', () => {
-        test('Кнопка "Сбросить всё"', async () => {
-          const mockedWorkGroupList = getWorkGroupList()
-          const mockedWorkGroupListItem = mockedWorkGroupList[0]
-          mockGetWorkGroupListSuccess(mockedWorkGroupList)
-
-          const store = getStoreWithAuth({
-            userId: generateId(),
-            userRole: UserRolesEnum.SeniorEngineer,
-          })
-
-          const { user } = render(<ExtendedFilterWrapper visible />, {
-            store,
-          })
-
-          const resetAllButton = getResetAllButton()
-          expect(resetAllButton).not.toBeEnabled()
-
-          const workGroupField = getWorkGroupField()
-          await waitFinishLoadingBySelect(workGroupField)
-          await userOpenSelect(user, workGroupField)
-
-          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
-          await user.click(workGroupOption)
-
-          expect(resetAllButton).toBeEnabled()
-        })
-
-        test('Кнопка "Применить"', async () => {
-          const mockedWorkGroupList = getWorkGroupList()
-          const mockedWorkGroupListItem = mockedWorkGroupList[0]
-          mockGetWorkGroupListSuccess(mockedWorkGroupList)
-
-          const store = getStoreWithAuth({
-            userId: generateId(),
-            userRole: UserRolesEnum.SeniorEngineer,
-          })
-
-          const { user } = render(<ExtendedFilterWrapper visible />, {
-            store,
-          })
-
-          const applyButton = getApplyButton()
-          expect(applyButton).not.toBeEnabled()
-
-          const workGroupField = getWorkGroupField()
-          await waitFinishLoadingBySelect(workGroupField)
-          await userOpenSelect(user, workGroupField)
-
-          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
-          await user.click(workGroupOption)
-
-          expect(applyButton).toBeEnabled()
         })
       })
     })
