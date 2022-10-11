@@ -135,10 +135,11 @@ describe('Расширенный фильтр', () => {
       )
 
       const container = getStatusContainer()
-      const checkbox = getCheckboxIn(
-        container,
-        new RegExp(taskStatusExtendedFilterDict[TaskStatusEnum.InProgress]!),
-      )
+      const checkbox = getCheckboxIn(container, {
+        name: new RegExp(
+          taskStatusExtendedFilterDict[TaskStatusEnum.InProgress]!,
+        ),
+      })
 
       expect(checkbox).toBeChecked()
     })
