@@ -24,6 +24,9 @@ export const taskStatusDict: Readonly<Partial<StringMap<TaskStatusEnum>>> = {
   [TaskStatusEnum.Closed]: 'Закрытые',
 }
 
+export const taskStatusExtendedFilterDict = { ...taskStatusDict }
+delete taskStatusExtendedFilterDict.NEW
+
 export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> =
   new Map([
     [1, '1-всеохватывающее/широкое'],
