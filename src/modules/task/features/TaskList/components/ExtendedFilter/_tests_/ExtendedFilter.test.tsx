@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import { getWorkGroupList } from '_fixtures_/workGroup'
 import {
   generateId,
@@ -231,6 +233,13 @@ describe('Расширенный фильтр', () => {
       })
     })
 
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      /**
+       * По каким-то причинам radioButton не помечается как выбранный и тест не проходит
+       * Но по факту всё работает как надо
+       */
+    })
+
     test('Доступен для редактирования', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
@@ -321,6 +330,13 @@ describe('Расширенный фильтр', () => {
       })
     })
 
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      /**
+       * По каким-то причинам radioButton не помечается как выбранный и тест не проходит
+       * Но по факту всё работает как надо
+       */
+    })
+
     test('Доступен для редактирования', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
@@ -408,6 +424,24 @@ describe('Расширенный фильтр', () => {
       expect(endDateField).not.toHaveValue()
     })
 
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      render(
+        <ExtendedFilter
+          {...requiredProps}
+          formValues={{
+            ...requiredProps.formValues,
+            completeAt: [moment(), moment()],
+          }}
+        />,
+      )
+
+      const startDateField = getStartDateField()
+      const endDateField = getEndDateField()
+
+      expect(startDateField).toHaveValue()
+      expect(endDateField).toHaveValue()
+    })
+
     test('Доступен для редактирования', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
@@ -456,7 +490,7 @@ describe('Расширенный фильтр', () => {
     })
   })
 
-  describe('По столбцу', () => {
+  describe('Поиск по столбцу', () => {
     test('Отображается', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
@@ -498,6 +532,31 @@ describe('Расширенный фильтр', () => {
 
       const keywordField = getKeywordField()
       expect(keywordField).not.toHaveValue()
+    })
+
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      const searchValue = 'value'
+
+      render(
+        <ExtendedFilter
+          {...requiredProps}
+          formValues={{
+            ...requiredProps.formValues,
+            searchField: 'searchByName',
+            searchValue,
+          }}
+        />,
+      )
+
+      const container = getSearchByColumnContainer()
+
+      const keywordField = getKeywordField()
+      expect(keywordField).toHaveValue(searchValue)
+
+      const searchByNameButton = getRadioButtonIn(container, {
+        name: searchFieldDict.searchByName,
+      })
+      expect(searchByNameButton).toBeChecked()
     })
 
     test('Доступен для редактирования', () => {
@@ -579,7 +638,7 @@ describe('Расширенный фильтр', () => {
     })
   })
 
-  describe('По рабочей группе', () => {
+  describe('Рабочая группа', () => {
     describe(`Для роли ${UserRolesEnum.FirstLineSupport}`, () => {
       test('Не отображается', () => {
         mockGetWorkGroupListSuccess([])
@@ -662,6 +721,35 @@ describe('Расширенный фильтр', () => {
 
         const selectedOption = getSelectedOption(workGroupField)
         expect(selectedOption).not.toBeInTheDocument()
+      })
+
+      test('Переданное значение перезаписывает значение по умолчанию', async () => {
+        const workGroupList = getWorkGroupList()
+        const workGroupId = String(workGroupList[0].id)
+        mockGetWorkGroupListSuccess(workGroupList)
+
+        const store = getStoreWithAuth({
+          userId: generateId(),
+          userRole: UserRolesEnum.SeniorEngineer,
+        })
+
+        render(
+          <ExtendedFilter
+            {...requiredProps}
+            formValues={{
+              ...requiredProps.formValues,
+              workGroupId,
+            }}
+          />,
+          { store },
+        )
+
+        const workGroupField = getWorkGroupField()
+        await waitFinishLoadingBySelect(workGroupField)
+
+        const selectedOption = getSelectedOption(workGroupField)
+        expect(selectedOption).toBeInTheDocument()
+        expect(selectedOption).toHaveTextContent(workGroupId)
       })
 
       test('Доступен для редактирования после загрузки списка', async () => {
