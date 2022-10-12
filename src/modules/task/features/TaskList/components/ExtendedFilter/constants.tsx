@@ -3,7 +3,7 @@ import React from 'react'
 
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
-import TaskStatus from 'modules/task/features/TaskStatus'
+import TaskStatus from 'modules/task/features/TaskStatus/index'
 import { StringMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
