@@ -16,6 +16,7 @@ Tests:
   only:
     - rc
     - task-20338
+    - master
   tags:
     - docker
 
@@ -31,6 +32,8 @@ Build and Publish:
   except: [schedules]
   only:
     - task-20338
+    - rc
+    - master
   tags:
     - werf
 
