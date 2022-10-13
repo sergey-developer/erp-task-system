@@ -111,7 +111,7 @@ const TaskListPage: FC = () => {
     toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
     setFastFilterValue(undefined)
-    triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
+    triggerFilterChange({...mapExtendedFilterFormFieldsToQueries(values), filter: undefined})
     handleCloseTaskDetails()
   }
 
