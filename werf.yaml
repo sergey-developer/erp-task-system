@@ -6,5 +6,13 @@ deploy:
 image: itsm_frontend
 dockerfile: Dockerfile
 args:
-  REACT_APP_API_URL: https://itsm.bnvt.ru
+{{ if eq .Env "dev" }}
+  REACT_APP_API_URL: https://dev.itsm.bnvt.ru
   REACT_APP_ENVIRONMENT: development
+{{ else if eq .Env "stage" }}
+  REACT_APP_API_URL: https://stage.itsm.bnvt.ru
+  REACT_APP_ENVIRONMENT: stage
+{{ end }}
+
+
+
