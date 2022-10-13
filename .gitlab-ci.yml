@@ -15,7 +15,6 @@ Tests:
     - yarn test
   only:
     - rc
-    - task-20338
     - master
   tags:
     - docker
@@ -31,7 +30,6 @@ Build and Publish:
     - werf build
   except: [schedules]
   only:
-    - task-20338
     - rc
     - master
   tags:
@@ -39,7 +37,6 @@ Build and Publish:
 
 .base_deploy: &base_deploy
   stage: deploy
-  when: manual
   needs: ["Build and Publish"]
   dependencies:
     - Build and Publish
@@ -59,8 +56,7 @@ Deploy to Develop:
     env: dev
     kube_context: default/dev
   only:
-    - task-20338
-    - rc
+    - develop
 
 Deploy to Staging:
   <<: *base_deploy
@@ -68,7 +64,6 @@ Deploy to Staging:
     env: stage
     kube_context: default/dev
   only:
-    - task-20338
     - rc
 
 Cleanup:
