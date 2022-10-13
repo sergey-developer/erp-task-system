@@ -1,4 +1,5 @@
-import UserRoles from 'shared/constants/roles'
+import { UserRolesEnum } from 'shared/constants/roles'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import { NavMenuItem } from '../interfaces'
 import navMenuAdminConfig from '../navMenu.admin.config'
@@ -6,28 +7,18 @@ import navMenuCommonConfig from '../navMenu.common.config'
 import navMenuHeadOfDepartmentConfig from '../navMenu.headOfDepartment.config'
 import navMenuSeniorEngineerConfig from '../navMenu.seniorEngineer.config'
 
-const getNavMenuConfig = (role: UserRoles): Array<NavMenuItem> => {
-  switch (role) {
-    case UserRoles.FirstLineSupport: {
-      return navMenuCommonConfig
-    }
+const getNavMenuConfig = (role: UserRolesEnum): Array<NavMenuItem> => {
+  if (isEqual(role, UserRolesEnum.FirstLineSupport)) return navMenuCommonConfig
 
-    case UserRoles.SeniorEngineer: {
-      return [...navMenuCommonConfig, ...navMenuSeniorEngineerConfig]
-    }
+  if (isEqual(role, UserRolesEnum.SeniorEngineer))
+    return [...navMenuCommonConfig, ...navMenuSeniorEngineerConfig]
 
-    case UserRoles.HeadOfDepartment: {
-      return [...navMenuCommonConfig, ...navMenuHeadOfDepartmentConfig]
-    }
+  if (isEqual(role, UserRolesEnum.HeadOfDepartment))
+    return [...navMenuCommonConfig, ...navMenuHeadOfDepartmentConfig]
 
-    case UserRoles.Admin: {
-      return navMenuAdminConfig
-    }
+  if (isEqual(role, UserRolesEnum.Admin)) return navMenuAdminConfig
 
-    default: {
-      return navMenuCommonConfig
-    }
-  }
+  return navMenuCommonConfig
 }
 
 export default getNavMenuConfig

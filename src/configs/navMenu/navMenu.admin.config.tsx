@@ -1,5 +1,4 @@
-import { ToolOutlined } from '@ant-design/icons'
-
+import { ToolIcon } from 'components/Icons'
 import { RoutesEnum } from 'configs/routes'
 
 import { NavMenuItem } from './interfaces'
@@ -7,7 +6,7 @@ import { NavMenuItem } from './interfaces'
 const navMenuAdminConfig: Array<NavMenuItem> = [
   {
     key: RoutesEnum.AdminPanel,
-    icon: ToolOutlined,
+    icon: ToolIcon,
     link: RoutesEnum.AdminPanel,
     text: 'Админ-панель',
   },

@@ -1,0 +1,18 @@
+configVersion: 1
+project: itsm-frontend
+deploy:
+  namespace: "[[ env ]]"
+---
+image: itsm_frontend
+dockerfile: Dockerfile
+args:
+{{ if eq .Env "dev" }}
+  REACT_APP_API_URL: https://dev.itsm.bnvt.ru
+  REACT_APP_ENVIRONMENT: development
+{{ else if eq .Env "stage" }}
+  REACT_APP_API_URL: https://stage.itsm.bnvt.ru
+  REACT_APP_ENVIRONMENT: stage
+{{ end }}
+
+
+

@@ -1,53 +1,65 @@
-import { Col, Layout, Row } from 'antd'
-import React, { FC } from 'react'
+import { Col, Row, Space } from 'antd'
+import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
-import Avatar from 'components/Avatar'
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
+import UserAvatar from 'components/Avatars/UserAvatar'
 import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 import { getNavMenuConfig } from 'configs/navMenu/utils'
-import UserRoles from 'shared/constants/roles'
+import LogoutButton from 'modules/auth/features/Logout/components/LogoutButton'
+import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useMatchedRoute from 'shared/hooks/useMatchedRoute'
 
-const { Header } = Layout
-
-const mockedRole = UserRoles.FirstLineSupport
-
-const menuItems: NavMenuProps['items'] = getNavMenuConfig(mockedRole).map(
-  ({ key, icon: Icon, link, text }) => ({
-    key,
-    label: <Link to={link}>{text}</Link>,
-    icon: <Icon className='font-s-18' />,
-  }),
-)
-const menuItemsKeys = menuItems.map(({ key }) => key)
+import { HeaderStyled } from './styles'
 
 const PrivateHeader: FC = () => {
-  const matchedRoute = useMatchedRoute(menuItemsKeys)
+  const breakpoints = useBreakpoint()
+  const user = useAuthenticatedUser()
+
+  const navMenu = useMemo(() => {
+    const userRole = user?.role
+
+    const items: NavMenuProps['items'] = userRole
+      ? getNavMenuConfig(userRole).map(({ key, icon: Icon, link, text }) => ({
+          key,
+          label: <Link to={link}>{text}</Link>,
+          icon: <Icon $size='large' />,
+        }))
+      : []
+
+    const itemsKeys = items.map(({ key }) => key)
+
+    return { items, itemsKeys }
+  }, [user?.role])
+
+  const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
   const activeNavKey = matchedRoute?.pathnameBase
   const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
 
   return (
-    <Header>
+    <HeaderStyled $breakpoints={breakpoints}>
       <Row justify='space-between' align='middle'>
         <Col span={4}>
           <Logo />
         </Col>
 
         <Col span={18}>
-          <NavMenu selectedKeys={navMenuSelectedKeys} items={menuItems} />
+          <NavMenu selectedKeys={navMenuSelectedKeys} items={navMenu.items} />
         </Col>
 
         <Col span={2}>
-          <Row justify='end' align='middle'>
-            <NotificationCounter />
-
-            <Avatar className='margin-l-20' />
+          <Row justify='end'>
+            <Space size='large'>
+              <NotificationCounter />
+              <UserAvatar size='large' dot />
+              <LogoutButton />
+            </Space>
           </Row>
         </Col>
       </Row>
-    </Header>
+    </HeaderStyled>
   )
 }
 

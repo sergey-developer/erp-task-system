@@ -1,16 +1,26 @@
-import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
-import { ErrorResponse } from 'shared/services/api'
+import { UserRolesEnum } from 'shared/constants/roles'
+import { MaybeNull } from 'shared/interfaces/utils'
 
-import { LoginApiArg } from './models'
+import { LoginResponseModel, RefreshTokenResponseModel } from './models'
 
-export interface IAuthSliceState {
-  user: unknown
+export type JwtPayload = {
+  userId: number
+  userRole: UserRolesEnum
+}
+
+export type AuthenticatedUser = JwtPayload
+
+export type AuthSliceState = {
+  user: MaybeNull<AuthenticatedUser>
   accessToken: MaybeNull<string>
   refreshToken: MaybeNull<string>
   isAuthenticated: boolean
 }
 
-export interface IUseLoginMutationResult {
-  error: MaybeUndefined<ErrorResponse<LoginApiArg>>
-  isLoading: boolean
+export type LoginActionPayload = LoginResponseModel & {
+  user: JwtPayload
+}
+
+export type RefreshTokenActionPayload = RefreshTokenResponseModel & {
+  user: JwtPayload
 }

@@ -1,5 +1,5 @@
-import { MenuProps } from 'antd/lib/menu'
-import { ItemType } from 'antd/lib/menu/hooks/useItems'
+import { MenuProps } from 'antd/es/menu'
+import { ItemType } from 'antd/es/menu/hooks/useItems'
 import React, { FC } from 'react'
 
 import { MenuStyled } from './styles'

@@ -1,17 +1,16 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
-import baseQueryWithReauth from './baseQueryWithReauth'
-import { CACHE_TIME } from './constants'
+import { env } from 'configs/env'
 
-const apiV1 = createApi({
+import baseQueryWithReauth from './baseQueryWithReauth'
+import { CACHE_TIME_LIFE } from './constants'
+
+const apiService = createApi({
   baseQuery: baseQueryWithReauth,
-  keepUnusedDataFor: CACHE_TIME,
-  endpoints: (build) => ({
-    testRetrieve: build.query<unknown, void>({
-      query: () => ({ url: '/test/' }),
-    }),
-  }),
+  refetchOnFocus: env.isProduction,
+  refetchOnReconnect: env.isProduction,
+  keepUnusedDataFor: CACHE_TIME_LIFE,
+  endpoints: () => ({}),
 })
 
-export default apiV1
-export const { useLazyTestRetrieveQuery } = apiV1
+export default apiService

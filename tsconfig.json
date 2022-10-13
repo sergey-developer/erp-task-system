@@ -17,12 +17,16 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
+      "lib": ["lib"],
       "configs": ["configs"],
       "modules": ["modules"],
       "components": ["components"],
       "state": ["state"],
       "shared": ["shared"],
-      "styles": ["styles"]
+      "styles": ["styles"],
+      "app": ["app"],
+      "_tests_": ["_tests_"],
+      "_fixtures_": ["_fixtures_"]
     }
   },
   "include": ["src"]

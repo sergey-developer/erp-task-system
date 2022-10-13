@@ -1,52 +1,44 @@
-import { BaseQueryApi } from '@reduxjs/toolkit/src/query/baseQueryTypes'
-import axios, { AxiosError, AxiosRequestHeaders } from 'axios'
+import { AxiosError } from 'axios'
+import isPlainObject from 'lodash/isPlainObject'
 
-import { httpClientConfig } from 'configs/httpClient'
-import MethodEnums from 'shared/constants/http'
+import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
 
-import { CustomBaseQueryFn } from './intefraces'
-
-type CustomBaseQueryConfig = {
-  apiVersion: string
-  apiPath: string
-  prepareHeaders?: (
-    headers: AxiosRequestHeaders,
-    api: Pick<
-      BaseQueryApi,
-      'getState' | 'extra' | 'endpoint' | 'type' | 'forced'
-    >,
-  ) => AxiosRequestHeaders
-}
-
-const httpClient = axios.create(httpClientConfig)
+import httpClient from './httpClient'
+import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'
+import { makeRelativeApiUrl } from './utils'
 
 const baseQuery =
   ({
-    prepareHeaders,
+    basePath,
     apiVersion,
-    apiPath,
+    prepareHeaders,
   }: CustomBaseQueryConfig): CustomBaseQueryFn =>
-  async ({ url, method = MethodEnums.GET, data, params }, api) => {
+  async ({ url, method = HttpMethodEnum.Get, data, params }, api) => {
     const headers = prepareHeaders
       ? prepareHeaders(httpClient.defaults.headers.common, api)
       : undefined
 
     try {
-      const result = await httpClient({
-        url: `${apiPath}${apiVersion}${url}`,
+      const response = await httpClient({
+        url: makeRelativeApiUrl(url, basePath, apiVersion),
         method,
         data,
         params,
         headers,
       })
-      return { data: result.data }
-    } catch (axiosError) {
-      let err = axiosError as AxiosError
+      return { data: response.data }
+    } catch (exception) {
+      const error = exception as AxiosError
+      const status = error.response?.status || HttpCodeEnum.ServerError
+      const errorData = error.response?.data
 
       return {
         error: {
-          status: err.response?.status,
-          data: err.response?.data || err.message,
+          status,
+          data: isPlainObject(errorData)
+            ? errorData
+            : { detail: UNKNOWN_ERROR_MSG },
         },
       }
     }

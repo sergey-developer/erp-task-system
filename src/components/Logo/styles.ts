@@ -7,8 +7,4 @@ export const LogoStyled = styled(Typography.Title).attrs({
 })`
   display: inline-block;
   cursor: pointer;
-
-  && {
-    margin-bottom: 0;
-  }
 `
