@@ -16,30 +16,31 @@ Tests:
   only:
     - rc
     - master
+    - develop
+    - task-20338
   tags:
     - docker
 
 
-Build and Publish:
+.base_build: &base_build
   stage: build
   before_script:
     - source "$(~/bin/trdl use werf 1.2 stable)"
     - type werf && source $(werf ci-env gitlab --as-file)
     - export WERF_SECRET_KEY=$WERF_SECRET_KEY
   script:
-    - werf build
+    - werf build --env=$env
   except: [schedules]
   only:
     - rc
     - master
+    - develop
+    - task-20338
   tags:
     - werf
 
 .base_deploy: &base_deploy
   stage: deploy
-  needs: ["Build and Publish"]
-  dependencies:
-    - Build and Publish
   before_script:
     - source "$(~/bin/trdl use werf 1.2 stable)"
     - type werf && source $(werf ci-env gitlab --as-file)
@@ -50,16 +51,37 @@ Build and Publish:
   tags: [werf]
 
 
+Build for Develop:
+  <<: *base_build
+  variables:
+    env: dev
+  only:
+    - develop
+    - task-20338
+
+Build for Staging:
+  <<: *base_build
+  variables:
+    env: stage
+  only:
+    - rc
+
+
 Deploy to Develop:
   <<: *base_deploy
+  dependencies:
+    - Build for Develop
   variables:
     env: dev
     kube_context: default/dev
   only:
     - develop
+    - task-20338
 
 Deploy to Staging:
   <<: *base_deploy
+  dependencies:
+    - Build for Staging
   variables:
     env: stage
     kube_context: default/dev
