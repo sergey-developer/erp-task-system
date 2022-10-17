@@ -95,8 +95,8 @@ const MainDetails: FC<MainDetailsProps> = ({
           <Text>{formatDate(createdAt, DATE_TIME_FORMAT)}</Text>
         </Space>
 
-        <Row>
-          <Col span={12}>
+        <Row justify='space-between'>
+          <Col span={11}>
             <LabeledData label='Адрес' block>
               <Text strong ellipsis>
                 {name}
@@ -106,7 +106,7 @@ const MainDetails: FC<MainDetailsProps> = ({
             </LabeledData>
           </Col>
 
-          <Col span={12}>
+          <Col span={11}>
             <LabeledData label='Заявитель' block>
               <Text strong>{contactService}</Text>
 
