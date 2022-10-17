@@ -17,7 +17,7 @@ import {
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import { TaskStatusEnum } from 'modules/task/constants/common'
-import { taskStatusExtendedFilterDict } from 'modules/task/constants/dictionary'
+import { taskStatusDict } from 'modules/task/constants/dictionary'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 
@@ -32,7 +32,7 @@ import {
   searchFieldDictValues,
   taskAssignedDictValues,
   taskOverdueDictValues,
-  taskStatusExtendedFilterDictValues,
+  taskStatusDictValues,
 } from './constants'
 import {
   getApplyButton,
@@ -108,7 +108,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      taskStatusExtendedFilterDictValues.forEach((value) => {
+      taskStatusDictValues.forEach((value) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeInTheDocument()
       })
@@ -119,7 +119,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      Object.entries(taskStatusExtendedFilterDict).forEach(([value, text]) => {
+      Object.entries(taskStatusDict).forEach(([value, text]) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(text) })
         expect(checkbox).not.toBeChecked()
         expect(checkbox.value).toBe(value)
@@ -139,9 +139,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
       const checkbox = getCheckboxIn(container, {
-        name: new RegExp(
-          taskStatusExtendedFilterDict[TaskStatusEnum.InProgress]!,
-        ),
+        name: new RegExp(taskStatusDict[TaskStatusEnum.InProgress]!),
       })
 
       expect(checkbox).toBeChecked()
@@ -152,7 +150,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      taskStatusExtendedFilterDictValues.forEach((value) => {
+      taskStatusDictValues.forEach((value) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeEnabled()
       })
@@ -163,7 +161,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      for await (const value of taskStatusExtendedFilterDictValues) {
+      for await (const value of taskStatusDictValues) {
         const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         await user.click(checkbox)
         expect(checkbox).toBeChecked()
@@ -176,14 +174,14 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const value of taskStatusExtendedFilterDictValues) {
+        for await (const value of taskStatusDictValues) {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetButtonIn(user, container)
 
-        taskStatusExtendedFilterDictValues.forEach((value) => {
+        taskStatusDictValues.forEach((value) => {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })
@@ -194,14 +192,14 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const value of taskStatusExtendedFilterDictValues) {
+        for await (const value of taskStatusDictValues) {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetAllButton(user)
 
-        taskStatusExtendedFilterDictValues.forEach((value) => {
+        taskStatusDictValues.forEach((value) => {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })

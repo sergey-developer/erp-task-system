@@ -48,9 +48,6 @@ export const taskOverdueDict: Readonly<StringMap<TaskOverdueEnum>> = {
   [TaskOverdueEnum.NotOverdue]: 'Нет',
 }
 
-export const taskStatusExtendedFilterDict = { ...taskStatusDict }
-delete taskStatusExtendedFilterDict.NEW
-
 export const searchFieldOptions: Array<CheckboxOptionType> = Object.keys(
   searchFieldDict,
 ).map((searchField) => ({
@@ -75,11 +72,7 @@ export const taskOverdueOptions: Array<CheckboxOptionType> = Object.values(
 export const taskStatusOptions: Array<CheckboxOptionType> = Object.values(
   TaskStatusEnum,
 )
-  .filter(
-    (status) =>
-      !isEqual(status, TaskStatusEnum.New) &&
-      !isEqual(status, TaskStatusEnum.Appointed),
-  )
+  .filter((status) => !isEqual(status, TaskStatusEnum.Appointed))
   .map((status) => ({
     label: <TaskStatus status={status} text={taskStatusDict[status]} />,
     value: status,
