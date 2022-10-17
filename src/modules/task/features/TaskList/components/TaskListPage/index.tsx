@@ -213,12 +213,12 @@ const TaskListPage: FC = () => {
       | FastFilterQueries
       | TaskIdFilterQueries,
   ) => {
-    // рефакторить
-    setQueryArgs((prev) => ({
-      ...prev,
+    setQueryArgs((prevState) => ({
+      ...prevState,
       offset: 0,
       completeAtFrom: undefined,
       completeAtTo: undefined,
+      filter: undefined,
       status: undefined,
       isOverdue: undefined,
       isAssigned: undefined,

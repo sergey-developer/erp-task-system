@@ -1,8 +1,7 @@
 import { useBoolean } from 'ahooks'
-import { Button, Typography } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import LabeledData from 'components/LabeledData'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 import TaskSecondLineModal from 'modules/task/features/TaskView/components/TaskSecondLineModal'
@@ -63,38 +62,46 @@ const WorkGroup: FC<WorkGroupProps> = ({
   return (
     <>
       <Space direction='vertical' $block>
-        <LabeledData label='Рабочая группа' size='large' direction='horizontal'>
-          <Permissions config={taskWorkGroupPermissions.transferFirstLineBtn}>
-            {() =>
-              hasWorkGroup ? (
-                <Button type='link' disabled={hasReclassificationRequest}>
-                  Вернуть на I линию
-                </Button>
-              ) : null
-            }
-          </Permissions>
+        <Row justify='space-between'>
+          <Col>
+            <Text type='secondary'>Рабочая группа</Text>
+          </Col>
 
-          <Permissions config={taskWorkGroupPermissions.transferSecondLineBtn}>
-            {() =>
-              hasWorkGroup ? null : (
-                <Button
-                  type='link'
-                  onClick={debouncedOpenTaskSecondLineModal}
-                  loading={transferTaskIsLoading}
-                  disabled={
-                    !(
-                      taskStatus.isNew ||
-                      taskStatus.isInProgress ||
-                      taskStatus.isAwaiting
-                    ) || hasReclassificationRequest
-                  }
-                >
-                  Перевести на II линию
-                </Button>
-              )
-            }
-          </Permissions>
-        </LabeledData>
+          <Col>
+            <Permissions config={taskWorkGroupPermissions.transferFirstLineBtn}>
+              {() =>
+                hasWorkGroup ? (
+                  <Button type='link' disabled={hasReclassificationRequest}>
+                    Вернуть на I линию
+                  </Button>
+                ) : null
+              }
+            </Permissions>
+
+            <Permissions
+              config={taskWorkGroupPermissions.transferSecondLineBtn}
+            >
+              {() =>
+                hasWorkGroup ? null : (
+                  <Button
+                    type='link'
+                    onClick={debouncedOpenTaskSecondLineModal}
+                    loading={transferTaskIsLoading}
+                    disabled={
+                      !(
+                        taskStatus.isNew ||
+                        taskStatus.isInProgress ||
+                        taskStatus.isAwaiting
+                      ) || hasReclassificationRequest
+                    }
+                  >
+                    Перевести на II линию
+                  </Button>
+                )
+              }
+            </Permissions>
+          </Col>
+        </Row>
 
         <Text>{valueOr(workGroup?.name, 'I линия поддержки')}</Text>
       </Space>

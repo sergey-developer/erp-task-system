@@ -1,7 +1,6 @@
-import { Button, Row, Typography } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
-import LabeledData from 'components/LabeledData'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
@@ -116,24 +115,30 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   return (
     <Space direction='vertical' $block>
-      <LabeledData label='Исполнитель' size='large' direction='horizontal'>
-        <Button
-          type='link'
-          loading={updateAssigneeIsLoading}
-          disabled={
-            taskStatus.isClosed ||
-            taskStatus.isCompleted ||
-            hasReclassificationRequest
-          }
-          onClick={
-            currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
-          }
-        >
-          {currentAssigneeIsAuthenticatedUser
-            ? 'Отказаться от заявки'
-            : 'Назначить на себя'}
-        </Button>
-      </LabeledData>
+      <Row justify='space-between'>
+        <Col>
+          <Text type='secondary'>Исполнитель</Text>
+        </Col>
+
+        <Col>
+          <Button
+            type='link'
+            loading={updateAssigneeIsLoading}
+            disabled={
+              taskStatus.isClosed ||
+              taskStatus.isCompleted ||
+              hasReclassificationRequest
+            }
+            onClick={
+              currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
+            }
+          >
+            {currentAssigneeIsAuthenticatedUser
+              ? 'Отказаться от заявки'
+              : 'Назначить на себя'}
+          </Button>
+        </Col>
+      </Row>
 
       <Permissions
         config={taskAssigneePermissions.select}

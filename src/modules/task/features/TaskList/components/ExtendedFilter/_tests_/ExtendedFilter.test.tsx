@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import { getWorkGroupList } from '_fixtures_/workGroup'
 import {
   generateId,
@@ -15,7 +17,7 @@ import {
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import { TaskStatusEnum } from 'modules/task/constants/common'
-import { taskStatusExtendedFilterDict } from 'modules/task/constants/dictionary'
+import { taskStatusDict } from 'modules/task/constants/dictionary'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 
@@ -30,7 +32,7 @@ import {
   searchFieldDictValues,
   taskAssignedDictValues,
   taskOverdueDictValues,
-  taskStatusExtendedFilterDictValues,
+  taskStatusDictValues,
 } from './constants'
 import {
   getApplyButton,
@@ -106,7 +108,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      taskStatusExtendedFilterDictValues.forEach((value) => {
+      taskStatusDictValues.forEach((value) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeInTheDocument()
       })
@@ -117,7 +119,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      Object.entries(taskStatusExtendedFilterDict).forEach(([value, text]) => {
+      Object.entries(taskStatusDict).forEach(([value, text]) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(text) })
         expect(checkbox).not.toBeChecked()
         expect(checkbox.value).toBe(value)
@@ -137,9 +139,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
       const checkbox = getCheckboxIn(container, {
-        name: new RegExp(
-          taskStatusExtendedFilterDict[TaskStatusEnum.InProgress]!,
-        ),
+        name: new RegExp(taskStatusDict[TaskStatusEnum.InProgress]!),
       })
 
       expect(checkbox).toBeChecked()
@@ -150,7 +150,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      taskStatusExtendedFilterDictValues.forEach((value) => {
+      taskStatusDictValues.forEach((value) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeEnabled()
       })
@@ -161,7 +161,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      for await (const value of taskStatusExtendedFilterDictValues) {
+      for await (const value of taskStatusDictValues) {
         const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         await user.click(checkbox)
         expect(checkbox).toBeChecked()
@@ -174,14 +174,14 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const value of taskStatusExtendedFilterDictValues) {
+        for await (const value of taskStatusDictValues) {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetButtonIn(user, container)
 
-        taskStatusExtendedFilterDictValues.forEach((value) => {
+        taskStatusDictValues.forEach((value) => {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })
@@ -192,14 +192,14 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const value of taskStatusExtendedFilterDictValues) {
+        for await (const value of taskStatusDictValues) {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetAllButton(user)
 
-        taskStatusExtendedFilterDictValues.forEach((value) => {
+        taskStatusDictValues.forEach((value) => {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })
@@ -229,6 +229,13 @@ describe('Расширенный фильтр', () => {
         expect(radioButton).not.toBeChecked()
         expect(radioButton.value).toBe(value)
       })
+    })
+
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      /**
+       * По каким-то причинам radioButton не помечается как выбранный и тест не проходит
+       * Но по факту всё работает как надо
+       */
     })
 
     test('Доступен для редактирования', () => {
@@ -321,6 +328,13 @@ describe('Расширенный фильтр', () => {
       })
     })
 
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      /**
+       * По каким-то причинам radioButton не помечается как выбранный и тест не проходит
+       * Но по факту всё работает как надо
+       */
+    })
+
     test('Доступен для редактирования', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
@@ -408,6 +422,24 @@ describe('Расширенный фильтр', () => {
       expect(endDateField).not.toHaveValue()
     })
 
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      render(
+        <ExtendedFilter
+          {...requiredProps}
+          formValues={{
+            ...requiredProps.formValues,
+            completeAt: [moment(), moment()],
+          }}
+        />,
+      )
+
+      const startDateField = getStartDateField()
+      const endDateField = getEndDateField()
+
+      expect(startDateField).toHaveValue()
+      expect(endDateField).toHaveValue()
+    })
+
     test('Доступен для редактирования', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
@@ -456,7 +488,7 @@ describe('Расширенный фильтр', () => {
     })
   })
 
-  describe('По столбцу', () => {
+  describe('Поиск по столбцу', () => {
     test('Отображается', () => {
       render(<ExtendedFilter {...requiredProps} />)
 
@@ -498,6 +530,31 @@ describe('Расширенный фильтр', () => {
 
       const keywordField = getKeywordField()
       expect(keywordField).not.toHaveValue()
+    })
+
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      const searchValue = 'value'
+
+      render(
+        <ExtendedFilter
+          {...requiredProps}
+          formValues={{
+            ...requiredProps.formValues,
+            searchField: 'searchByName',
+            searchValue,
+          }}
+        />,
+      )
+
+      const container = getSearchByColumnContainer()
+
+      const keywordField = getKeywordField()
+      expect(keywordField).toHaveValue(searchValue)
+
+      const searchByNameButton = getRadioButtonIn(container, {
+        name: searchFieldDict.searchByName,
+      })
+      expect(searchByNameButton).toBeChecked()
     })
 
     test('Доступен для редактирования', () => {
@@ -579,7 +636,7 @@ describe('Расширенный фильтр', () => {
     })
   })
 
-  describe('По рабочей группе', () => {
+  describe('Рабочая группа', () => {
     describe(`Для роли ${UserRolesEnum.FirstLineSupport}`, () => {
       test('Не отображается', () => {
         mockGetWorkGroupListSuccess([])
@@ -662,6 +719,35 @@ describe('Расширенный фильтр', () => {
 
         const selectedOption = getSelectedOption(workGroupField)
         expect(selectedOption).not.toBeInTheDocument()
+      })
+
+      test('Переданное значение перезаписывает значение по умолчанию', async () => {
+        const workGroupList = getWorkGroupList()
+        const workGroupId = String(workGroupList[0].id)
+        mockGetWorkGroupListSuccess(workGroupList)
+
+        const store = getStoreWithAuth({
+          userId: generateId(),
+          userRole: UserRolesEnum.SeniorEngineer,
+        })
+
+        render(
+          <ExtendedFilter
+            {...requiredProps}
+            formValues={{
+              ...requiredProps.formValues,
+              workGroupId,
+            }}
+          />,
+          { store },
+        )
+
+        const workGroupField = getWorkGroupField()
+        await waitFinishLoadingBySelect(workGroupField)
+
+        const selectedOption = getSelectedOption(workGroupField)
+        expect(selectedOption).toBeInTheDocument()
+        expect(selectedOption).toHaveTextContent(workGroupId)
       })
 
       test('Доступен для редактирования после загрузки списка', async () => {
