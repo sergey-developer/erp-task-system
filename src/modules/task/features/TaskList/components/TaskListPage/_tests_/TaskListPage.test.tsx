@@ -84,5 +84,7 @@ describe('Страница реестра заявок', () => {
       const taskTable = getTaskTable()
       await waitStartLoadingByIcon(taskTable)
     })
+
+    test('Сбрасывается если применён "Расширенный фильтр"', () => {})
   })
 })
