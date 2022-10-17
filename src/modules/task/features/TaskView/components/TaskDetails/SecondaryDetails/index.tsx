@@ -67,7 +67,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   return (
     <DetailsContainerStyled $breakpoints={breakpoints}>
-      <Row justify='space-between'>
+      <Row>
         <Col span={12}>
           <WorkGroup
             id={id}
@@ -81,7 +81,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           />
         </Col>
 
-        <Col span={10}>
+        <Col span={12}>
           <TaskAssignee
             status={status}
             extendedStatus={extendedStatus}

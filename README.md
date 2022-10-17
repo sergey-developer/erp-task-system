@@ -126,7 +126,6 @@
     - `rootReducer`
     - `store`
   - `styles` Глобальные стили приложения
-    - `common` Общие стили
     - `customize.antd` Кастомизация стилей `antd`
     - `customTheme` Переопределение переменных `antd`
     - `table` Стили таблиц
