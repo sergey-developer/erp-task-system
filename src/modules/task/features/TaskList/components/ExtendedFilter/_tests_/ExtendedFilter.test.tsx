@@ -55,7 +55,7 @@ import {
 } from './utils'
 
 setupApiTests()
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 
 describe('Расширенный фильтр', () => {
   describe('Header', () => {
