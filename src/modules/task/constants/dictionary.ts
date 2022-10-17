@@ -15,7 +15,7 @@ export const taskExtendedStatusToTaskStatus: Partial<
 }
 
 export const taskStatusDict: Readonly<Partial<StringMap<TaskStatusEnum>>> = {
-  [TaskStatusEnum.New]: 'Новая',
+  [TaskStatusEnum.New]: 'Новые',
   [TaskStatusEnum.InProgress]: 'В работе',
   [TaskStatusEnum.Completed]: 'Выполнено',
   [TaskStatusEnum.Awaiting]: 'В ожидании',
@@ -23,9 +23,6 @@ export const taskStatusDict: Readonly<Partial<StringMap<TaskStatusEnum>>> = {
   [TaskStatusEnum.Returned]: 'Возврат заявителем',
   [TaskStatusEnum.Closed]: 'Закрытые',
 }
-
-export const taskStatusExtendedFilterDict = { ...taskStatusDict }
-delete taskStatusExtendedFilterDict.NEW
 
 export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> =
   new Map([
