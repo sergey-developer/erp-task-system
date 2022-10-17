@@ -79,7 +79,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
             bgColor='lotion'
           >
             <Space direction='vertical' size={30} $block>
-              <Row gutter={60}>
+              <Row gutter={15}>
                 <Col span={12}>
                   <Space direction='vertical' $block>
                     <Row>
@@ -125,28 +125,30 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
 
                 <Col span={12}>
-                  <Space align='start' data-testid='additional-info-address'>
-                    <MapPointIcon $size='large' />
+                  <Space direction='vertical' size='large'>
+                    <Space align='start' data-testid='additional-info-address'>
+                      <MapPointIcon $size='large' />
 
-                    <Link
-                      href={
-                        !!address
-                          ? makeYandexMapLink({ longitude, latitude })
-                          : undefined
-                      }
-                      target='_blank'
-                    >
-                      <Text strong={!!address} underline={!!address}>
-                        {valueOr(address, 'Отсутствует')}
-                      </Text>
-                    </Link>
+                      <Link
+                        href={
+                          !!address
+                            ? makeYandexMapLink({ longitude, latitude })
+                            : undefined
+                        }
+                        target='_blank'
+                      >
+                        <Text strong={!!address} underline={!!address}>
+                          {valueOr(address, 'Отсутствует')}
+                        </Text>
+                      </Link>
+                    </Space>
+
+                    <LabeledData label='Наименование группы поддержки Х5'>
+                      <Text strong>{valueOrHyphen(supportGroup)}</Text>
+                    </LabeledData>
                   </Space>
                 </Col>
               </Row>
-
-              <LabeledData label='Наименование группы поддержки Х5'>
-                <Text strong>{valueOrHyphen(supportGroup)}</Text>
-              </LabeledData>
 
               <Row align='middle'>
                 <Col span={6}>

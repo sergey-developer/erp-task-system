@@ -115,7 +115,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   )
 
   return (
-    <Space direction='vertical' $block>
+    <Space direction='vertical'>
       <LabeledData label='Исполнитель' size='large' direction='horizontal'>
         <Button
           type='link'
