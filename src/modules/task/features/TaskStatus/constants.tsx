@@ -16,7 +16,6 @@ export const badgeNameByTaskStatus: Partial<
   >
 > = {
   [TaskStatusEnum.New]: 'default',
-  [TaskStatusEnum.Appointed]: 'default',
   [TaskStatusEnum.InProgress]: 'warning',
   [TaskStatusEnum.Completed]: 'success',
 }
