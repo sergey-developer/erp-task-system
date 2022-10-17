@@ -186,7 +186,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
 
                 <Col span={18}>
-                  <Row>
+                  <Row gutter={20}>
                     <Col span={8}>
                       <LabeledData label='Влияние'>
                         <Text>{impact}</Text>
