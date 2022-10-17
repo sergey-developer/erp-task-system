@@ -79,52 +79,52 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
             bgColor='lotion'
           >
             <Space direction='vertical' size={30} $block>
-              <Row gutter={15}>
-                <Col span={12}>
+              <Row justify='space-between'>
+                <Col span={11}>
                   <Space direction='vertical' $block>
-                    <Row>
-                      <Col span={12}>
+                    <Row justify='space-between'>
+                      <Col span={11}>
                         <Text type='secondary'>Компания</Text>
                       </Col>
 
-                      <Col span={12}>
+                      <Col span={11}>
                         <Text strong>{valueOrHyphen(company)}</Text>
                       </Col>
                     </Row>
 
-                    <Row>
-                      <Col span={12}>
+                    <Row justify='space-between'>
+                      <Col span={11}>
                         <Text type='secondary'>Формат магазина</Text>
                       </Col>
 
-                      <Col span={12}>
+                      <Col span={11}>
                         <Text strong>{valueOrHyphen(contactType)}</Text>
                       </Col>
                     </Row>
 
-                    <Row>
-                      <Col span={12}>
+                    <Row justify='space-between'>
+                      <Col span={11}>
                         <Text type='secondary'>SAP ID</Text>
                       </Col>
 
-                      <Col span={12}>
+                      <Col span={11}>
                         <Text strong>{valueOrHyphen(sapId)}</Text>
                       </Col>
                     </Row>
 
-                    <Row>
-                      <Col span={12}>
+                    <Row justify='space-between'>
+                      <Col span={11}>
                         <Text type='secondary'>Email</Text>
                       </Col>
 
-                      <Col span={12}>
+                      <Col span={11}>
                         <Text strong>{valueOrHyphen(email)}</Text>
                       </Col>
                     </Row>
                   </Space>
                 </Col>
 
-                <Col span={12}>
+                <Col span={11}>
                   <Space direction='vertical' size='large'>
                     <Space align='start' data-testid='additional-info-address'>
                       <MapPointIcon $size='large' />
@@ -150,8 +150,8 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
               </Row>
 
-              <Row align='middle'>
-                <Col span={6}>
+              <Row align='middle' justify='space-between'>
+                <Col span={5}>
                   <Text type='secondary'>Категория заявки</Text>
                 </Col>
 
@@ -178,8 +178,8 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
               </Row>
 
-              <Row align='bottom'>
-                <Col span={6}>
+              <Row align='bottom' justify='space-between'>
+                <Col span={5}>
                   <LabeledData label='Приоритет заявки' size={0}>
                     <LabeledData label='Вес:' direction='horizontal'>
                       <Text>{valueOrHyphen(weight)}</Text>
