@@ -41,11 +41,6 @@ describe('TaskStatus', () => {
       expect(badgeName).toBe('default')
     })
 
-    test(`${TaskStatusEnum.Appointed}`, () => {
-      const badgeName = badgeNameByTaskStatus[TaskStatusEnum.Appointed]
-      expect(badgeName).toBe('default')
-    })
-
     test(`${TaskStatusEnum.InProgress}`, () => {
       const badgeName = badgeNameByTaskStatus[TaskStatusEnum.InProgress]
       expect(badgeName).toBe('warning')
@@ -60,13 +55,6 @@ describe('TaskStatus', () => {
   describe('Отображается для статуса', () => {
     test(`${TaskStatusEnum.New}`, () => {
       render(<TaskStatus status={TaskStatusEnum.New} />)
-
-      const badge = screen.getByTestId('badge-status-default')
-      expect(badge).toBeInTheDocument()
-    })
-
-    test(`${TaskStatusEnum.Appointed}`, () => {
-      render(<TaskStatus status={TaskStatusEnum.Appointed} />)
 
       const badge = screen.getByTestId('badge-status-default')
       expect(badge).toBeInTheDocument()

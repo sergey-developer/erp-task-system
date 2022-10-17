@@ -5,7 +5,6 @@ import { TaskStatusEnum } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 import { StringMap } from 'shared/interfaces/utils'
-import { isEqual } from 'shared/utils/common/isEqual'
 
 import { ExtendedFilterFormFields, SearchFields } from './interfaces'
 
@@ -71,9 +70,7 @@ export const taskOverdueOptions: Array<CheckboxOptionType> = Object.values(
 
 export const taskStatusOptions: Array<CheckboxOptionType> = Object.values(
   TaskStatusEnum,
-)
-  .filter((status) => !isEqual(status, TaskStatusEnum.Appointed))
-  .map((status) => ({
-    label: <TaskStatus status={status} text={taskStatusDict[status]} />,
-    value: status,
-  }))
+).map((status) => ({
+  label: <TaskStatus status={status} text={taskStatusDict[status]} />,
+  value: status,
+}))
