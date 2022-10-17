@@ -98,11 +98,9 @@ const MainDetails: FC<MainDetailsProps> = ({
         <Row justify='space-between'>
           <Col span={11}>
             <LabeledData label='Адрес' block>
-              <Text strong ellipsis>
-                {name}
-              </Text>
+              <Text strong>{name}</Text>
 
-              {!!address && <Text ellipsis>{address}</Text>}
+              {!!address && <Text>{address}</Text>}
             </LabeledData>
           </Col>
 
