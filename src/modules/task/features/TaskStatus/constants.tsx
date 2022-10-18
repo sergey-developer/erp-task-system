@@ -7,12 +7,17 @@ import {
   QuestionCircleIcon,
   RightCircleIcon,
 } from 'components/Icons'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 
-export const badgeNameByTaskStatus: Partial<
-  Record<
-    TaskStatusEnum,
-    Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
+export const badgeByTaskStatus: Readonly<
+  Partial<
+    Record<
+      TaskStatusEnum,
+      Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
+    >
   >
 > = {
   [TaskStatusEnum.New]: 'default',
@@ -20,9 +25,24 @@ export const badgeNameByTaskStatus: Partial<
   [TaskStatusEnum.Completed]: 'success',
 }
 
-export const iconByTaskStatus: Partial<Record<TaskStatusEnum, ReactElement>> = {
-  [TaskStatusEnum.Awaiting]: <PauseCircleIcon />,
-  [TaskStatusEnum.InReclassification]: <QuestionCircleIcon />,
-  [TaskStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
-  [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
+export const badgeByTaskExtendedStatus: Readonly<
+  Partial<
+    Record<
+      TaskExtendedStatusEnum,
+      Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
+    >
+  >
+> = {
+  [TaskExtendedStatusEnum.New]: 'default',
+  [TaskExtendedStatusEnum.InProgress]: 'warning',
+  [TaskExtendedStatusEnum.Completed]: 'success',
+}
+
+export const iconByTaskExtendedStatus: Readonly<
+  Partial<Record<TaskExtendedStatusEnum, ReactElement>>
+> = {
+  [TaskExtendedStatusEnum.Awaiting]: <PauseCircleIcon />,
+  [TaskExtendedStatusEnum.InReclassification]: <QuestionCircleIcon />,
+  [TaskExtendedStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
+  [TaskExtendedStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
 }

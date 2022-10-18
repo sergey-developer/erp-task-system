@@ -2,9 +2,6 @@ export enum TaskStatusEnum {
   New = 'NEW',
   InProgress = 'IN_PROGRESS',
   Completed = 'COMPLETED',
-  Awaiting = 'AWAITING',
-  InReclassification = 'IN_RECLASSIFICATION',
-  Returned = 'RETURNED',
   Closed = 'CLOSED',
 }
 

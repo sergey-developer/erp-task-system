@@ -1,8 +1,12 @@
 import { CheckboxOptionType } from 'antd'
 import React from 'react'
 
-import { TaskStatusEnum } from 'modules/task/constants/common'
-import { taskStatusDict } from 'modules/task/constants/dictionary'
+import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
+import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
+import {
+  badgeByTaskExtendedStatus,
+  iconByTaskExtendedStatus,
+} from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 import { StringMap } from 'shared/interfaces/utils'
 
@@ -68,9 +72,14 @@ export const taskOverdueOptions: Array<CheckboxOptionType> = Object.values(
   value: status,
 }))
 
-export const taskStatusOptions: Array<CheckboxOptionType> = Object.values(
-  TaskStatusEnum,
-).map((status) => ({
-  label: <TaskStatus status={status} text={taskStatusDict[status]} />,
-  value: status,
-}))
+export const taskExtendedStatusOptions: Array<CheckboxOptionType> =
+  Object.values(TaskExtendedStatusEnum).map((status) => ({
+    label: (
+      <TaskStatus
+        icon={iconByTaskExtendedStatus[status]}
+        badge={badgeByTaskExtendedStatus[status]}
+        text={taskExtendedStatusDict[status]}
+      />
+    ),
+    value: status,
+  }))

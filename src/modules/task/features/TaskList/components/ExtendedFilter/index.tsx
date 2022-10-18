@@ -20,8 +20,8 @@ import { isEqualDeep } from 'shared/utils/common/isEqual'
 import {
   searchFieldOptions,
   taskAssignedOptions,
+  taskExtendedStatusOptions,
   taskOverdueOptions,
-  taskStatusOptions,
 } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
@@ -87,7 +87,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
 
           <Form.Item name='status'>
-            <CheckboxGroupStyled options={taskStatusOptions} />
+            <CheckboxGroupStyled options={taskExtendedStatusOptions} />
           </Form.Item>
         </FilterBlock>
 

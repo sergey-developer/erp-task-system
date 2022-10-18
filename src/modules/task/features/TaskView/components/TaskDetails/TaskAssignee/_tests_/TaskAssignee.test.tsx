@@ -107,7 +107,7 @@ describe('Блок "Исполнитель заявки"', () => {
             <TaskAssignee
               {...baseProps}
               {...activeBtnProps}
-              status={TaskStatusEnum.Awaiting}
+              status={TaskStatusEnum.InProgress}
             />,
             { store },
           )
