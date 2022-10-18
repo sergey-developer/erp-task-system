@@ -4,9 +4,9 @@ import React, { FC } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
+import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { TaskResolutionFormFields } from './interfaces'
-import { TECH_RESOLUTION_RULES, USER_RESOLUTION_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -91,7 +91,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
           <Form.Item
             label='Техническое решение'
             name='techResolution'
-            rules={TECH_RESOLUTION_RULES}
+            rules={BASE_LONG_TEXT_RULES}
           >
             <TextArea placeholder='Расскажите о работах на объекте' />
           </Form.Item>
@@ -100,7 +100,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
             <Form.Item
               label='Решение для пользователя'
               name='userResolution'
-              rules={USER_RESOLUTION_RULES}
+              rules={BASE_LONG_TEXT_RULES}
             >
               <TextArea placeholder='Расскажите заявителю о решении' />
             </Form.Item>

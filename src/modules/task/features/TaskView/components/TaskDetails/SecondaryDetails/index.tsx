@@ -13,7 +13,7 @@ import WorkGroup from '../WorkGroup'
 
 type SecondaryDetailsProps = Pick<
   TaskDetailsModel,
-  'id' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
+  'id' | 'recordId' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
 > & {
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
@@ -35,6 +35,8 @@ type SecondaryDetailsProps = Pick<
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   id,
+  recordId,
+
   assignee,
 
   status,
@@ -71,6 +73,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
         <Col span={11}>
           <WorkGroup
             id={id}
+            recordId={recordId}
             status={status}
             extendedStatus={extendedStatus}
             workGroup={workGroup}

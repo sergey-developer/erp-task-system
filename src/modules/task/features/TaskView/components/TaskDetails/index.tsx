@@ -311,6 +311,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
             <SecondaryDetails
               id={details.id}
+              recordId={details.recordId}
               status={details.status}
               extendedStatus={details.extendedStatus}
               assignee={details.assignee}
