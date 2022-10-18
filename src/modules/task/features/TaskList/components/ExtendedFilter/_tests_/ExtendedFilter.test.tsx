@@ -17,7 +17,7 @@ import {
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import { TaskStatusEnum } from 'modules/task/constants/common'
-import { taskStatusDict } from 'modules/task/constants/dictionary'
+import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 
@@ -119,7 +119,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      Object.entries(taskStatusDict).forEach(([value, text]) => {
+      Object.entries(taskExtendedStatusDict).forEach(([value, text]) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(text) })
         expect(checkbox).not.toBeChecked()
         expect(checkbox.value).toBe(value)
@@ -139,7 +139,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
       const checkbox = getCheckboxIn(container, {
-        name: new RegExp(taskStatusDict[TaskStatusEnum.InProgress]!),
+        name: new RegExp(taskExtendedStatusDict[TaskStatusEnum.InProgress]!),
       })
 
       expect(checkbox).toBeChecked()
