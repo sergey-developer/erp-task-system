@@ -7,6 +7,7 @@ import Space from 'components/Space'
 import TaskSecondLineModal from 'modules/task/features/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/features/TaskView/permissions/taskWorkGroup.permissions'
+import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
@@ -14,7 +15,10 @@ import valueOr from 'shared/utils/common/valueOr'
 
 const { Text } = Typography
 
-type WorkGroupProps = Pick<TaskDetailsModel, 'id' | 'workGroup' | 'status'> & {
+type WorkGroupProps = Pick<
+  TaskDetailsModel,
+  'id' | 'workGroup' | 'status' | 'extendedStatus'
+> & {
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
 
@@ -30,7 +34,9 @@ type WorkGroupProps = Pick<TaskDetailsModel, 'id' | 'workGroup' | 'status'> & {
 const WorkGroup: FC<WorkGroupProps> = ({
   id,
   workGroup,
+
   status,
+  extendedStatus,
 
   workGroupList,
   workGroupListIsLoading,
@@ -46,6 +52,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
   ] = useBoolean(false)
 
   const taskStatus = useTaskStatus(status)
+  const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
 
   const hasWorkGroup: boolean = !!workGroup
 
@@ -91,7 +98,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
                       !(
                         taskStatus.isNew ||
                         taskStatus.isInProgress ||
-                        taskStatus.isAwaiting
+                        taskExtendedStatus.isAwaiting
                       ) || hasReclassificationRequest
                     }
                   >
