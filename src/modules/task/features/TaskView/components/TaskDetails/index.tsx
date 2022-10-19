@@ -97,7 +97,7 @@ type TaskDetailsProps = {
   createReclassificationRequest: (
     data: CreateTaskReclassificationRequestMutationArgsModel,
   ) => Promise<void>
-  reclassificationRequestIsCreating: boolean
+  createReclassificationRequestIsLoading: boolean
 
   takeTask: (data: TakeTaskMutationArgsModel) => Promise<void>
   takeTaskIsLoading: boolean
@@ -132,7 +132,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   reclassificationRequest,
   createReclassificationRequest,
-  reclassificationRequestIsCreating,
+  createReclassificationRequestIsLoading,
 
   workGroupList,
   workGroupListIsLoading,
@@ -377,7 +377,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             {isTaskReclassificationModalOpened && (
               <TaskReclassificationModal
                 recordId={details.recordId}
-                isLoading={reclassificationRequestIsCreating}
+                isLoading={createReclassificationRequestIsLoading}
                 onSubmit={handleReclassificationRequestSubmit}
                 onCancel={closeTaskReclassificationModal}
               />

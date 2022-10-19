@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { GetTaskCommentListQueryArgsModel } from 'modules/task/features/TaskView/models'
-import { taskCommentListApiPermissions } from 'modules/task/features/TaskView/permissions/taskCommentList.permissions'
+import { taskCommentApiPermissions } from 'modules/task/features/TaskView/permissions/taskComment.permissions'
 import {
   getTaskCommentListServerErrorMsg,
   getTaskNotFoundErrorMsg,
@@ -17,10 +17,10 @@ import {
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
-  const permissions = useUserPermissions(taskCommentListApiPermissions)
+  const permissions = useUserPermissions(taskCommentApiPermissions)
 
   const state = useGetTaskCommentListQuery(id, {
-    skip: !permissions.canGet,
+    skip: !permissions.canGetList,
   })
 
   useEffect(() => {

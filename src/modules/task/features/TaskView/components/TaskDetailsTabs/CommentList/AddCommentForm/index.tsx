@@ -4,16 +4,20 @@ import { FC } from 'react'
 import Space from 'components/Space'
 import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
 
+import { AddCommentFormFields, AddCommentFormProps } from './interfaces'
+
 const { TextArea } = Input
 
-type AddCommentFormProps = {
-  isLoading: boolean
-}
+const AddCommentForm: FC<AddCommentFormProps> = ({ onSubmit, isLoading }) => {
+  const [form] = Form.useForm<AddCommentFormFields>()
 
-const AddCommentForm: FC<AddCommentFormProps> = ({ isLoading }) => {
+  const handleFinish = async (values: AddCommentFormFields) => {
+    await onSubmit(values, form.setFields)
+  }
+
   return (
     <Space direction='vertical' size='middle' $block>
-      <Form layout='vertical'>
+      <Form<AddCommentFormFields> layout='vertical' onFinish={handleFinish}>
         <Form.Item name='comment' rules={BASE_LONG_TEXT_RULES}>
           <TextArea
             placeholder='Дополните информацию о заявке'

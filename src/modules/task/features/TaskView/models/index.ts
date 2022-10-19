@@ -8,6 +8,7 @@ export * from './taskJournal.model'
 export * from './getTaskJournal.model'
 export * from './getTaskJournalCsv.model'
 
+export * from './createTaskComment.model'
 export * from './getTaskCommentList.model'
 
 export * from './updateTaskAssignee.model'

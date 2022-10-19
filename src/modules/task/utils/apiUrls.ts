@@ -17,8 +17,8 @@ export const getTaskWorkGroupUrl = (taskId: number): string =>
 export const getTaskAssigneeUrl = (taskId: number): string =>
   generatePath(TaskEndpointsEnum.TaskAssignee, { id: String(taskId) })
 
-export const getTaskCommentListUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.TaskCommentList, { id: String(taskId) })
+export const getTaskCommentUrl = (taskId: number): string =>
+  generatePath(TaskEndpointsEnum.TaskComment, { id: String(taskId) })
 
 export const getCreateTaskReclassificationRequestUrl = (
   taskId: number,

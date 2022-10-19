@@ -46,7 +46,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
 
   const {
     fn: createReclassificationRequest,
-    state: { isLoading: reclassificationRequestIsCreating },
+    state: { isLoading: createReclassificationRequestIsLoading },
   } = useCreateTaskReclassificationRequest()
 
   const {
@@ -95,7 +95,9 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       updateAssigneeIsLoading={updateAssigneeIsLoading}
       reclassificationRequest={reclassificationRequest}
       createReclassificationRequest={createReclassificationRequest}
-      reclassificationRequestIsCreating={reclassificationRequestIsCreating}
+      createReclassificationRequestIsLoading={
+        createReclassificationRequestIsLoading
+      }
       workGroupList={workGroupList}
       workGroupListIsLoading={workGroupListIsFetching}
       updateWorkGroup={updateWorkGroup}
