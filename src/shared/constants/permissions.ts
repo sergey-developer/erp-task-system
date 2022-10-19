@@ -5,4 +5,5 @@ export enum PermissionsEnum {
   CanGet = 'CanGet',
   CanCreate = 'CanCreate',
   CanUpdate = 'CanUpdate',
+  CanDelete = 'CanDelete',
 }

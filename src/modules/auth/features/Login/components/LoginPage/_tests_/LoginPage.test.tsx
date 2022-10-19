@@ -22,7 +22,7 @@ import { HttpCodeEnum } from 'shared/constants/http'
 import {
   INCORRECT_EMAIL_MSG,
   REQUIRED_FIELD_MSG,
-} from 'shared/constants/messages'
+} from 'shared/constants/validation'
 import { setupStore } from 'state/store'
 
 import {

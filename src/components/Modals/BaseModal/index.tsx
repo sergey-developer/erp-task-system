@@ -19,6 +19,7 @@ const BaseModal: FC<BaseModalProps> = ({
   children,
   okButtonProps: initialOkButtonProps,
   cancelButtonProps: initialCancelButtonProps,
+  destroyOnClose,
   ...props
 }) => {
   const okButtonProps = useMemo(
@@ -38,6 +39,7 @@ const BaseModal: FC<BaseModalProps> = ({
     <Modal
       okButtonProps={okButtonProps}
       cancelButtonProps={cancelButtonProps}
+      destroyOnClose={destroyOnClose}
       {...props}
     >
       {children}
@@ -48,6 +50,7 @@ const BaseModal: FC<BaseModalProps> = ({
 BaseModal.defaultProps = {
   width: DEFAULT_MODAL_WIDTH,
   cancelText: BUTTON_TEXT_CANCEL,
+  destroyOnClose: true,
 }
 
 export default BaseModal

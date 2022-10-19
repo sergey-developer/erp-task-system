@@ -5,7 +5,7 @@ import { CreateTaskReclassificationRequestMutationArgsModel } from 'modules/task
 import { taskReclassificationRequestApiPermissions } from 'modules/task/features/TaskView/permissions/taskReclassificationRequest.permissions'
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskReclassificationRequestApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import {
   ErrorResponse,
   isBadRequestError,

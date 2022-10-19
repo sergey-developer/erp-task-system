@@ -4,34 +4,32 @@ import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { TaskAssigneeModel } from 'modules/task/models'
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import { DetailsContainerStyled } from '../styles'
 import TaskAssignee from '../TaskAssignee'
-import WorkGroup from '../WorkGroup'
+import WorkGroup, { WorkGroupProps } from '../WorkGroup'
 
 type SecondaryDetailsProps = Pick<
   TaskDetailsModel,
   'id' | 'recordId' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
-> & {
-  workGroupList: Array<WorkGroupListItemModel>
-  workGroupListIsLoading: boolean
+> &
+  Pick<
+    WorkGroupProps,
+    | 'workGroupList'
+    | 'workGroupListIsLoading'
+    | 'transferTaskToFirstLine'
+    | 'transferTaskToFirstLineIsLoading'
+    | 'transferTaskToSecondLine'
+    | 'transferTaskToSecondLineIsLoading'
+    | 'hasReclassificationRequest'
+  > & {
+    takeTask: () => Promise<void>
+    takeTaskIsLoading: boolean
 
-  transferTask: (
-    workGroup: WorkGroupListItemModel['id'],
-    closeTaskSecondLineModal: () => void,
-  ) => Promise<void>
-  transferTaskIsLoading: boolean
-
-  takeTask: () => Promise<void>
-  takeTaskIsLoading: boolean
-
-  updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
-  updateAssigneeIsLoading: boolean
-
-  hasReclassificationRequest: boolean
-}
+    updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
+    updateAssigneeIsLoading: boolean
+  }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   id,
@@ -46,8 +44,10 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   workGroupList,
   workGroupListIsLoading,
 
-  transferTask,
-  transferTaskIsLoading,
+  transferTaskToFirstLine,
+  transferTaskToFirstLineIsLoading,
+  transferTaskToSecondLine,
+  transferTaskToSecondLineIsLoading,
 
   takeTask,
   takeTaskIsLoading,
@@ -79,8 +79,12 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             workGroup={workGroup}
             workGroupList={workGroupList}
             workGroupListIsLoading={workGroupListIsLoading}
-            transferTask={transferTask}
-            transferTaskIsLoading={transferTaskIsLoading}
+            transferTaskToFirstLine={transferTaskToFirstLine}
+            transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
+            transferTaskToSecondLine={transferTaskToSecondLine}
+            transferTaskToSecondLineIsLoading={
+              transferTaskToSecondLineIsLoading
+            }
             hasReclassificationRequest={hasReclassificationRequest}
           />
         </Col>

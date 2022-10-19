@@ -12,24 +12,24 @@ const { Text, Link } = Typography
 
 const OK_BUTTON_TEXT: string = 'Перевести заявку'
 
-type TaskSecondLineModalProps = Pick<ModalProps, 'onCancel'> &
+export type TaskSecondLineModalProps = Pick<ModalProps, 'onCancel'> &
   Pick<TaskDetailsModel, 'id'> & {
     workGroupList: Array<WorkGroupListItemModel>
     workGroupListIsLoading: boolean
 
-    transferTaskIsLoading: boolean
-    onTransfer: (value: WorkGroupListItemModel['id']) => void
+    isLoading: boolean
+    onSubmit: (value: WorkGroupListItemModel['id']) => Promise<void>
   }
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
-  onCancel,
 
   workGroupList,
   workGroupListIsLoading,
 
-  onTransfer,
-  transferTaskIsLoading,
+  isLoading,
+  onSubmit,
+  onCancel,
 }) => {
   const [selectedWorkGroup, setSelectedWorkGroup] =
     useState<MaybeNull<WorkGroupListItemModel['id']>>(null)
@@ -40,17 +40,17 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
     </Text>
   )
 
-  const handleClickTransfer = () => {
-    selectedWorkGroup && onTransfer(selectedWorkGroup)
+  const handleFinish = () => {
+    selectedWorkGroup && onSubmit(selectedWorkGroup)
   }
 
   return (
     <BaseModal
       visible
       title={modalTitle}
-      confirmLoading={transferTaskIsLoading}
+      confirmLoading={isLoading}
       okText={OK_BUTTON_TEXT}
-      onOk={handleClickTransfer}
+      onOk={handleFinish}
       onCancel={onCancel}
       okButtonProps={{
         disabled: !selectedWorkGroup,
@@ -74,7 +74,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
             placeholder='Выберите рабочую группу'
             options={workGroupList}
             loading={workGroupListIsLoading}
-            disabled={transferTaskIsLoading}
+            disabled={isLoading}
             fieldNames={workGroupListSelectFieldNames}
             onSelect={setSelectedWorkGroup}
           />

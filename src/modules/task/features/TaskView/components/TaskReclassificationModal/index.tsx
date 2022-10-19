@@ -20,10 +20,7 @@ import { RECLASSIFICATION_REASON_RULES } from './validation'
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-export type TaskReclassificationModalProps = Pick<
-  ModalProps,
-  'visible' | 'onCancel'
-> &
+export type TaskReclassificationModalProps = Pick<ModalProps, 'onCancel'> &
   Pick<TaskDetailsModel, 'recordId'> & {
     onSubmit: (
       values: TaskReclassificationRequestFormFields,
@@ -33,7 +30,6 @@ export type TaskReclassificationModalProps = Pick<
   }
 
 const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
-  visible,
   recordId,
   isLoading,
   onCancel,
@@ -55,7 +51,7 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
 
   return (
     <BaseModal
-      visible={visible}
+      visible
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}
@@ -66,6 +62,7 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
         form={form}
         layout='vertical'
         onFinish={handleFinish}
+        preserve={false}
       >
         <Form.Item
           label='Причина переклассификации'

@@ -11,15 +11,12 @@ import { TaskResolutionFormFields } from './interfaces'
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-export type TaskResolutionModalProps = Pick<
-  ModalProps,
-  'visible' | 'onCancel'
-> &
+export type TaskResolutionModalProps = Pick<ModalProps, 'onCancel'> &
   Pick<
     TaskDetailsModel,
     'type' | 'techResolution' | 'userResolution' | 'recordId'
   > & {
-    isTaskResolving: boolean
+    isLoading: boolean
     onSubmit: (
       values: TaskResolutionFormFields,
       setFields: FormInstance['setFields'],
@@ -27,14 +24,13 @@ export type TaskResolutionModalProps = Pick<
   }
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
-  isTaskResolving,
+  isLoading,
   onCancel,
   onSubmit,
   techResolution,
   recordId,
   type,
   userResolution,
-  visible,
 }) => {
   const [form] = Form.useForm<TaskResolutionFormFields>()
 
@@ -63,9 +59,9 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
 
   return (
     <BaseModal
+      visible
       title={modalTitle}
-      visible={visible}
-      confirmLoading={isTaskResolving}
+      confirmLoading={isLoading}
       onOk={form.submit}
       okText='Выполнить заявку'
       onCancel={onCancel}
@@ -87,13 +83,17 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
           initialValues={initialFormValues}
           layout='vertical'
           onFinish={handleFinish}
+          preserve={false}
         >
           <Form.Item
             label='Техническое решение'
             name='techResolution'
             rules={BASE_LONG_TEXT_RULES}
           >
-            <TextArea placeholder='Расскажите о работах на объекте' />
+            <TextArea
+              placeholder='Расскажите о работах на объекте'
+              disabled={isLoading}
+            />
           </Form.Item>
 
           {!taskType.isIncidentTask && !taskType.isRequestTask && (
@@ -102,7 +102,10 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
               name='userResolution'
               rules={BASE_LONG_TEXT_RULES}
             >
-              <TextArea placeholder='Расскажите заявителю о решении' />
+              <TextArea
+                placeholder='Расскажите заявителю о решении'
+                disabled={isLoading}
+              />
             </Form.Item>
           )}
         </Form>

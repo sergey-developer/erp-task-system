@@ -54,6 +54,7 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
           form={form}
           layout='vertical'
           onFinish={handleFinish}
+          preserve={false}
         >
           <Form.Item
             name='description'

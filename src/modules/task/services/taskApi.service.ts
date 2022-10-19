@@ -9,6 +9,7 @@ import {
   GetTaskListResponseModel,
 } from 'modules/task/features/TaskList/models'
 import {
+  DeleteTaskWorkGroupMutationArgsModel,
   GetTaskJournalCsvQueryArgsModel,
   GetTaskJournalCsvResponseModel,
   GetTaskJournalQueryArgsModel,
@@ -104,6 +105,18 @@ const taskApiService = apiService
         invalidatesTags: (result, error) =>
           error ? [] : [TaskEndpointsTagsEnum.TaskList],
       }),
+      deleteTaskWorkGroup: build.mutation<
+        void,
+        DeleteTaskWorkGroupMutationArgsModel
+      >({
+        query: ({ taskId, ...body }) => ({
+          url: getTaskWorkGroupUrl(taskId),
+          method: HttpMethodEnum.Delete,
+          data: body,
+        }),
+        invalidatesTags: (result, error) =>
+          error ? [] : [TaskEndpointsTagsEnum.TaskList],
+      }),
       updateTaskAssignee: build.mutation<
         void,
         UpdateTaskAssigneeMutationArgsModel
@@ -144,6 +157,7 @@ export const {
   useResolveTaskMutation,
   useUpdateTaskAssigneeMutation,
   useUpdateTaskWorkGroupMutation,
+  useDeleteTaskWorkGroupMutation,
   useGetTaskCountersQuery,
   useGetTaskJournalQuery,
   useLazyGetTaskJournalCsvQuery,
