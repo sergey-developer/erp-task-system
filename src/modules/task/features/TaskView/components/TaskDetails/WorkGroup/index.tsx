@@ -114,7 +114,9 @@ const WorkGroup: FC<WorkGroupProps> = ({
           <Col>
             <Permissions config={taskWorkGroupPermissions.transferFirstLineBtn}>
               {() =>
-                hasWorkGroup ? (
+                hasWorkGroup &&
+                !taskStatus.isClosed &&
+                !taskStatus.isCompleted ? (
                   <Button
                     type='link'
                     onClick={debouncedToggleOpenTaskFirstLineModal}
