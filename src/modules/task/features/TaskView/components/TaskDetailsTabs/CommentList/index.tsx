@@ -1,14 +1,16 @@
 import { useBoolean } from 'ahooks'
-import { Button, Row, Space, Typography } from 'antd'
+import { Button, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import LoadableData from 'components/LoadableData'
+import Space from 'components/Space'
 import useGetTaskCommentList from 'modules/task/features/TaskView/hooks/useGetTaskCommentList'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
+import AddCommentForm from './AddCommentForm'
 import TaskComment from './TaskComment'
 
 const { Title, Text } = Typography
@@ -46,7 +48,7 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
       : modifiedCommentList.slice(0, DEFAULT_DISPLAYABLE_COUNT)
 
   return (
-    <Space direction='vertical' size='middle'>
+    <Space direction='vertical' size='large' $block>
       <Row justify='space-between'>
         <Title level={5}>{title}</Title>
 
@@ -58,6 +60,8 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
           </Button>
         )}
       </Row>
+
+      <AddCommentForm isLoading={false} />
 
       <LoadableData
         isLoading={commentListIsFetching}
