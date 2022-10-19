@@ -120,6 +120,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
                   <Button
                     type='link'
                     onClick={debouncedToggleOpenTaskFirstLineModal}
+                    loading={transferTaskToFirstLineIsLoading}
                     disabled={hasReclassificationRequest}
                   >
                     Вернуть на I линию

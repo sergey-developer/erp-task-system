@@ -19,7 +19,6 @@ const BaseModal: FC<BaseModalProps> = ({
   children,
   okButtonProps: initialOkButtonProps,
   cancelButtonProps: initialCancelButtonProps,
-  destroyOnClose,
   ...props
 }) => {
   const okButtonProps = useMemo(
@@ -39,7 +38,6 @@ const BaseModal: FC<BaseModalProps> = ({
     <Modal
       okButtonProps={okButtonProps}
       cancelButtonProps={cancelButtonProps}
-      destroyOnClose={destroyOnClose}
       {...props}
     >
       {children}
