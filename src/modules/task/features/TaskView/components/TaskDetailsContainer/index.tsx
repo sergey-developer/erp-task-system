@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react'
 
 import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useCreateTaskReclassificationRequest'
+import useDeleteTaskWorkGroup from 'modules/task/features/TaskView/hooks/useDeleteTaskWorkGroup'
 import useGetTask from 'modules/task/features/TaskView/hooks/useGetTask'
 import useGetTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useGetTaskReclassificationRequest'
 import useResolveTask from 'modules/task/features/TaskView/hooks/useResolveTask'
@@ -19,7 +20,7 @@ type TaskDetailsContainerProps = {
   additionalInfoExpanded: boolean
   onExpandAdditionalInfo: () => void
 
-  onClose: () => void
+  closeTaskDetails: () => void
 }
 
 const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
@@ -28,7 +29,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   additionalInfoExpanded,
   onExpandAdditionalInfo,
 
-  onClose,
+  closeTaskDetails,
 }) => {
   const {
     data: task = null,
@@ -67,15 +68,20 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   } = useUpdateTaskWorkGroup()
 
   const {
+    fn: deleteWorkGroup,
+    state: { isLoading: deleteWorkGroupIsLoading },
+  } = useDeleteTaskWorkGroup()
+
+  const {
     fn: updateAssignee,
     state: { isLoading: updateAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 
   useEffect(() => {
     if (isGetTaskError) {
-      onClose()
+      closeTaskDetails()
     }
-  }, [isGetTaskError, onClose])
+  }, [isGetTaskError, closeTaskDetails])
 
   return (
     <TaskDetails
@@ -94,9 +100,11 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       workGroupListIsLoading={workGroupListIsFetching}
       updateWorkGroup={updateWorkGroup}
       updateWorkGroupIsLoading={updateWorkGroupIsLoading}
+      deleteWorkGroup={deleteWorkGroup}
+      deleteWorkGroupIsLoading={deleteWorkGroupIsLoading}
       additionalInfoExpanded={additionalInfoExpanded}
       onExpandAdditionalInfo={onExpandAdditionalInfo}
-      onClose={onClose}
+      closeTaskDetails={closeTaskDetails}
     />
   )
 }

@@ -13,6 +13,7 @@ export * from './getTaskCommentList.model'
 export * from './updateTaskAssignee.model'
 
 export * from './updateTaskWorkGroup.model'
+export * from './deleteTaskWorkGroup.model'
 
 export * from './getTaskReclassificationRequest.model'
 export * from './createTaskReclassificationRequest.model'

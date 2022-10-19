@@ -4,7 +4,10 @@ import React, { FC } from 'react'
 import UserAvatar from 'components/Avatars/UserAvatar'
 import Space from 'components/Space'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
-import { iconByTaskStatus, badgeByTaskStatus } from 'modules/task/features/TaskStatus/constants'
+import {
+  badgeByTaskStatus,
+  iconByTaskStatus,
+} from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 

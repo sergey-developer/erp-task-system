@@ -323,7 +323,7 @@ const TaskListPage: FC = () => {
                   taskId={selectedTask}
                   additionalInfoExpanded={taskAdditionalInfoExpanded}
                   onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
-                  onClose={handleCloseTaskDetails}
+                  closeTaskDetails={handleCloseTaskDetails}
                 />
               </Col>
             )}

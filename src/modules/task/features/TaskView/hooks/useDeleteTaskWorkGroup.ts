@@ -1,30 +1,31 @@
 import { useCallback, useEffect } from 'react'
 
-import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
+import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import {
   ErrorResponse,
+  getErrorDetail,
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
-import { UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG } from '../constants/messages'
-import { UpdateTaskWorkGroupMutationArgsModel } from '../models'
+import { DeleteTaskWorkGroupMutationArgsModel } from '../models'
 import { taskWorkGroupApiPermissions } from '../permissions/taskWorkGroup.permissions'
 
-const useUpdateTaskWorkGroup = () => {
-  const [mutation, state] = useUpdateTaskWorkGroupMutation()
+const useDeleteTaskWorkGroup = () => {
+  const [mutation, state] = useDeleteTaskWorkGroupMutation()
   const permissions = useUserPermissions(taskWorkGroupApiPermissions)
 
   const fn = useCallback(
-    async (data: UpdateTaskWorkGroupMutationArgsModel) => {
-      if (!permissions.canUpdate) return
+    async (data: DeleteTaskWorkGroupMutationArgsModel) => {
+      if (!permissions.canDelete) return
 
       await mutation(data).unwrap()
     },
-    [mutation, permissions.canUpdate],
+    [mutation, permissions.canDelete],
   )
 
   useEffect(() => {
@@ -33,7 +34,7 @@ const useUpdateTaskWorkGroup = () => {
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error) || isServerRangeError(error)) {
-      showErrorNotification(UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG)
+      showMultipleErrorNotification(getErrorDetail(error))
     } else {
       showErrorNotification(UNKNOWN_ERROR_MSG)
     }
@@ -42,4 +43,4 @@ const useUpdateTaskWorkGroup = () => {
   return { fn, state }
 }
 
-export default useUpdateTaskWorkGroup
+export default useDeleteTaskWorkGroup

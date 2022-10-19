@@ -4,22 +4,19 @@ import React, { FC } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
+import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { TaskResolutionFormFields } from './interfaces'
-import { TECH_RESOLUTION_RULES, USER_RESOLUTION_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-export type TaskResolutionModalProps = Pick<
-  ModalProps,
-  'visible' | 'onCancel'
-> &
+export type TaskResolutionModalProps = Pick<ModalProps, 'onCancel'> &
   Pick<
     TaskDetailsModel,
     'type' | 'techResolution' | 'userResolution' | 'recordId'
   > & {
-    isTaskResolving: boolean
+    isLoading: boolean
     onSubmit: (
       values: TaskResolutionFormFields,
       setFields: FormInstance['setFields'],
@@ -27,14 +24,13 @@ export type TaskResolutionModalProps = Pick<
   }
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
-  isTaskResolving,
+  isLoading,
   onCancel,
   onSubmit,
   techResolution,
   recordId,
   type,
   userResolution,
-  visible,
 }) => {
   const [form] = Form.useForm<TaskResolutionFormFields>()
 
@@ -63,9 +59,9 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
 
   return (
     <BaseModal
+      visible
       title={modalTitle}
-      visible={visible}
-      confirmLoading={isTaskResolving}
+      confirmLoading={isLoading}
       onOk={form.submit}
       okText='Выполнить заявку'
       onCancel={onCancel}
@@ -87,22 +83,29 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
           initialValues={initialFormValues}
           layout='vertical'
           onFinish={handleFinish}
+          preserve={false}
         >
           <Form.Item
             label='Техническое решение'
             name='techResolution'
-            rules={TECH_RESOLUTION_RULES}
+            rules={BASE_LONG_TEXT_RULES}
           >
-            <TextArea placeholder='Расскажите о работах на объекте' />
+            <TextArea
+              placeholder='Расскажите о работах на объекте'
+              disabled={isLoading}
+            />
           </Form.Item>
 
           {!taskType.isIncidentTask && !taskType.isRequestTask && (
             <Form.Item
               label='Решение для пользователя'
               name='userResolution'
-              rules={USER_RESOLUTION_RULES}
+              rules={BASE_LONG_TEXT_RULES}
             >
-              <TextArea placeholder='Расскажите заявителю о решении' />
+              <TextArea
+                placeholder='Расскажите заявителю о решении'
+                disabled={isLoading}
+              />
             </Form.Item>
           )}
         </Form>

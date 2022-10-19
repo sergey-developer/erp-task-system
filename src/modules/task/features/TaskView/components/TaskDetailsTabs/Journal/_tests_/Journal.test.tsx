@@ -3,7 +3,7 @@ import {
   getJournalResponseSuccess,
 } from '_fixtures_/task'
 import { render, screen, setupApiTests, within } from '_tests_/utils'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import { NO_DATA_MSG } from '../constants'

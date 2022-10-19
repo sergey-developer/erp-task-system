@@ -1,10 +1,17 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Row, Typography } from 'antd'
+import { Button, Col, FormInstance, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import ModalFallback from 'components/Modals/ModalFallback'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
-import TaskSecondLineModal from 'modules/task/features/TaskView/components/TaskSecondLineModal'
+import {
+  TaskFirstLineFormFields,
+  TaskFirstLineModalProps,
+} from 'modules/task/features/TaskView/components/TaskFirstLineModal/interfaces'
+import TaskSecondLineModal, {
+  TaskSecondLineModalProps,
+} from 'modules/task/features/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/features/TaskView/permissions/taskWorkGroup.permissions'
 import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
@@ -13,26 +20,39 @@ import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import valueOr from 'shared/utils/common/valueOr'
 
+const TaskFirstLineModal = React.lazy(
+  () => import('modules/task/features/TaskView/components/TaskFirstLineModal'),
+)
+
 const { Text } = Typography
 
-type WorkGroupProps = Pick<
+export type WorkGroupProps = Pick<
   TaskDetailsModel,
-  'id' | 'workGroup' | 'status' | 'extendedStatus'
+  'id' | 'recordId' | 'workGroup' | 'status' | 'extendedStatus'
 > & {
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
 
-  transferTask: (
+  transferTaskToFirstLine: (
+    values: TaskFirstLineFormFields,
+    setFields: FormInstance['setFields'],
+    closeTaskFirstLineModal: () => void,
+  ) => Promise<void>
+  transferTaskToFirstLineIsLoading: boolean
+
+  transferTaskToSecondLine: (
     workGroup: WorkGroupListItemModel['id'],
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
-  transferTaskIsLoading: boolean
+  transferTaskToSecondLineIsLoading: boolean
 
   hasReclassificationRequest: boolean
 }
 
 const WorkGroup: FC<WorkGroupProps> = ({
   id,
+  recordId,
+
   workGroup,
 
   status,
@@ -41,14 +61,19 @@ const WorkGroup: FC<WorkGroupProps> = ({
   workGroupList,
   workGroupListIsLoading,
 
-  transferTask,
-  transferTaskIsLoading,
+  transferTaskToFirstLine,
+  transferTaskToFirstLineIsLoading,
+  transferTaskToSecondLine,
+  transferTaskToSecondLineIsLoading,
 
   hasReclassificationRequest,
 }) => {
+  const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] =
+    useBoolean(false)
+
   const [
     isTaskSecondLineModalOpened,
-    { setTrue: openTaskSecondLineModal, setFalse: closeTaskSecondLineModal },
+    { toggle: toggleOpenTaskSecondLineModal },
   ] = useBoolean(false)
 
   const taskStatus = useTaskStatus(status)
@@ -56,15 +81,27 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   const hasWorkGroup: boolean = !!workGroup
 
-  const debouncedOpenTaskSecondLineModal = useDebounceFn(
-    openTaskSecondLineModal,
+  const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(
+    toggleOpenTaskSecondLineModal,
   )
 
-  const handleTransferTask = async (
-    workGroup: WorkGroupListItemModel['id'],
-  ): Promise<void> => {
-    await transferTask(workGroup, closeTaskSecondLineModal)
-  }
+  const debouncedToggleOpenTaskFirstLineModal = useDebounceFn(
+    toggleOpenTaskFirstLineModal,
+  )
+
+  const handleTransferTaskToSecondLine: TaskSecondLineModalProps['onSubmit'] =
+    async (workGroup) => {
+      await transferTaskToSecondLine(workGroup, toggleOpenTaskSecondLineModal)
+    }
+
+  const handleTransferTaskToFirstLine: TaskFirstLineModalProps['onSubmit'] =
+    async (values, setFields) => {
+      await transferTaskToFirstLine(
+        values,
+        setFields,
+        toggleOpenTaskFirstLineModal,
+      )
+    }
 
   return (
     <>
@@ -77,8 +114,15 @@ const WorkGroup: FC<WorkGroupProps> = ({
           <Col>
             <Permissions config={taskWorkGroupPermissions.transferFirstLineBtn}>
               {() =>
-                hasWorkGroup ? (
-                  <Button type='link' disabled={hasReclassificationRequest}>
+                hasWorkGroup &&
+                !taskStatus.isClosed &&
+                !taskStatus.isCompleted ? (
+                  <Button
+                    type='link'
+                    onClick={debouncedToggleOpenTaskFirstLineModal}
+                    loading={transferTaskToFirstLineIsLoading}
+                    disabled={hasReclassificationRequest}
+                  >
                     Вернуть на I линию
                   </Button>
                 ) : null
@@ -92,8 +136,8 @@ const WorkGroup: FC<WorkGroupProps> = ({
                 hasWorkGroup ? null : (
                   <Button
                     type='link'
-                    onClick={debouncedOpenTaskSecondLineModal}
-                    loading={transferTaskIsLoading}
+                    onClick={debouncedToggleOpenTaskSecondLineModal}
+                    loading={transferTaskToSecondLineIsLoading}
                     disabled={
                       !(
                         taskStatus.isNew ||
@@ -115,14 +159,31 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
       {isTaskSecondLineModalOpened && (
         <TaskSecondLineModal
-          visible
           id={id}
-          onCancel={closeTaskSecondLineModal}
+          onCancel={debouncedToggleOpenTaskSecondLineModal}
           workGroupList={workGroupList}
           workGroupListIsLoading={workGroupListIsLoading}
-          onTransfer={handleTransferTask}
-          transferTaskIsLoading={transferTaskIsLoading}
+          onSubmit={handleTransferTaskToSecondLine}
+          isLoading={transferTaskToSecondLineIsLoading}
         />
+      )}
+
+      {isTaskFirstLineModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              visible={isTaskFirstLineModalOpened}
+              onCancel={toggleOpenTaskFirstLineModal}
+            />
+          }
+        >
+          <TaskFirstLineModal
+            recordId={recordId}
+            isLoading={transferTaskToFirstLineIsLoading}
+            onSubmit={handleTransferTaskToFirstLine}
+            onCancel={debouncedToggleOpenTaskFirstLineModal}
+          />
+        </React.Suspense>
       )}
     </>
   )
