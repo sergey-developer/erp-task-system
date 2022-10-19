@@ -49,6 +49,6 @@ export const iconByTaskExtendedStatus: Readonly<
 
 export const iconByTaskStatus: Readonly<
   Partial<Record<TaskStatusEnum, ReactElement>>
-  > = {
+> = {
   [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
 }
