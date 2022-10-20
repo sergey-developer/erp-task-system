@@ -14,11 +14,11 @@ import showErrorNotification from 'shared/utils/notifications/showErrorNotificat
 import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
 import { DeleteTaskWorkGroupMutationArgsModel } from '../models'
-import { taskWorkGroupApiPermissions } from '../permissions/taskWorkGroup.permissions'
+import { taskWorkGroupApiPermissions } from '../permissions'
 
 const useDeleteTaskWorkGroup = () => {
-  const [mutation, state] = useDeleteTaskWorkGroupMutation()
   const permissions = useUserPermissions(taskWorkGroupApiPermissions)
+  const [mutation, state] = useDeleteTaskWorkGroupMutation()
 
   const fn = useCallback(
     async (data: DeleteTaskWorkGroupMutationArgsModel) => {

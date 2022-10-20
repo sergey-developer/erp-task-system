@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
+import { taskResolutionApiPermissions } from 'modules/task/features/TaskView/permissions'
 import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
@@ -7,11 +8,10 @@ import showErrorNotification from 'shared/utils/notifications/showErrorNotificat
 
 import { RESOLVE_TASK_COMMON_ERROR_MSG } from '../constants/messages'
 import { ResolveTaskMutationArgsModel } from '../models'
-import { taskApiPermissions } from '../permissions/task.permissions'
 
 const useResolveTask = () => {
+  const permissions = useUserPermissions(taskResolutionApiPermissions)
   const [mutation, state] = useResolveTaskMutation()
-  const permissions = useUserPermissions(taskApiPermissions.taskResolution)
 
   const fn = useCallback(
     async (data: ResolveTaskMutationArgsModel) => {

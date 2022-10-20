@@ -12,11 +12,11 @@ import showErrorNotification from 'shared/utils/notifications/showErrorNotificat
 
 import { UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG } from '../constants/messages'
 import { UpdateTaskWorkGroupMutationArgsModel } from '../models'
-import { taskWorkGroupApiPermissions } from '../permissions/taskWorkGroup.permissions'
+import { taskWorkGroupApiPermissions } from '../permissions'
 
 const useUpdateTaskWorkGroup = () => {
-  const [mutation, state] = useUpdateTaskWorkGroupMutation()
   const permissions = useUserPermissions(taskWorkGroupApiPermissions)
+  const [mutation, state] = useUpdateTaskWorkGroupMutation()
 
   const fn = useCallback(
     async (data: UpdateTaskWorkGroupMutationArgsModel) => {

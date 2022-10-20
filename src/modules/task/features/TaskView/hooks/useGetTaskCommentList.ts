@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { GetTaskCommentListQueryArgsModel } from 'modules/task/features/TaskView/models'
-import { taskCommentApiPermissions } from 'modules/task/features/TaskView/permissions/taskComment.permissions'
+import { taskCommentApiPermissions } from 'modules/task/features/TaskView/permissions'
 import {
   getTaskCommentListServerErrorMsg,
   getTaskNotFoundErrorMsg,
