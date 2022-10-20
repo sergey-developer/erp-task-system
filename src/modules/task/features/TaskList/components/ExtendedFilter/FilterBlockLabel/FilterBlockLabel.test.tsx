@@ -1,12 +1,11 @@
-import { render, screen } from '_tests_/utils'
+import { getButton, render, screen } from '_tests_/utils'
 
 import FilterBlockLabel from './index'
 
 const labelText = 'label'
 const onReset = jest.fn()
 
-const getResetButton = (): HTMLButtonElement =>
-  screen.getByRole('button', { name: 'Сбросить' })
+const getResetButton = () => getButton('Сбросить')
 
 describe('FilterBlockLabel', () => {
   test('Заголовок отображается корректно', () => {
