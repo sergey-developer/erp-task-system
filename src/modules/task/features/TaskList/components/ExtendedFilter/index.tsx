@@ -12,7 +12,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useEffect } from 'react'
 
 import Permissions from 'components/Permissions'
-import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions/extendedFilter.permissions'
+import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
 import { isEqualDeep } from 'shared/utils/common/isEqual'

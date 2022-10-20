@@ -12,11 +12,11 @@ import {
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 import { CreateTaskCommentMutationArgsModel } from '../models'
-import { taskCommentApiPermissions } from '../permissions/taskComment.permissions'
+import { taskCommentApiPermissions } from '../permissions'
 
 const useCreateTaskComment = () => {
-  const [mutation, state] = useCreateTaskCommentMutation()
   const permissions = useUserPermissions(taskCommentApiPermissions)
+  const [mutation, state] = useCreateTaskCommentMutation()
 
   const fn = useCallback(
     async (data: CreateTaskCommentMutationArgsModel) => {

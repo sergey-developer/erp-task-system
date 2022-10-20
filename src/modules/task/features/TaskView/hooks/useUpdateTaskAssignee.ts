@@ -6,11 +6,11 @@ import showErrorNotification from 'shared/utils/notifications/showErrorNotificat
 
 import { UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG } from '../constants/messages'
 import { UpdateTaskAssigneeMutationArgsModel } from '../models'
-import { taskAssigneeApiPermissions } from '../permissions/taskAssignee.permissions'
+import { taskAssigneeApiPermissions } from '../permissions'
 
 const useUpdateTaskAssignee = () => {
-  const [mutation, state] = useUpdateTaskAssigneeMutation()
   const permissions = useUserPermissions(taskAssigneeApiPermissions)
+  const [mutation, state] = useUpdateTaskAssigneeMutation()
 
   const fn = useCallback(
     async (data: UpdateTaskAssigneeMutationArgsModel) => {

@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import { CreateTaskReclassificationRequestMutationArgsModel } from 'modules/task/features/TaskView/models'
-import { taskReclassificationRequestApiPermissions } from 'modules/task/features/TaskView/permissions/taskReclassificationRequest.permissions'
+import { taskReclassificationRequestApiPermissions } from 'modules/task/features/TaskView/permissions'
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskReclassificationRequestApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
@@ -14,10 +14,10 @@ import {
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 const useCreateTaskReclassificationRequest = () => {
-  const [mutation, state] = useCreateReclassificationRequestMutation()
   const permissions = useUserPermissions(
     taskReclassificationRequestApiPermissions,
   )
+  const [mutation, state] = useCreateReclassificationRequestMutation()
 
   const fn = useCallback(
     async (data: CreateTaskReclassificationRequestMutationArgsModel) => {

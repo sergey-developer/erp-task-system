@@ -7,7 +7,7 @@ import { ErrorResponse, isNotFoundError } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 import { GetTaskReclassificationRequestQueryArgsModel } from '../models'
-import { taskReclassificationRequestApiPermissions } from '../permissions/taskReclassificationRequest.permissions'
+import { taskReclassificationRequestApiPermissions } from '../permissions'
 
 const useGetTaskReclassificationRequest = (
   taskId: GetTaskReclassificationRequestQueryArgsModel,
