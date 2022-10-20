@@ -1,41 +1,38 @@
 import { useCallback, useEffect } from 'react'
 
-import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
+import { useCreateTaskCommentMutation } from 'modules/task/services/taskCommentApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import {
   ErrorResponse,
-  getErrorDetail,
   isBadRequestError,
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
-import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
 
-import { DeleteTaskWorkGroupMutationArgsModel } from '../models'
-import { taskWorkGroupApiPermissions } from '../permissions/taskWorkGroup.permissions'
+import { CreateTaskCommentMutationArgsModel } from '../models'
+import { taskCommentApiPermissions } from '../permissions/taskComment.permissions'
 
-const useDeleteTaskWorkGroup = () => {
-  const [mutation, state] = useDeleteTaskWorkGroupMutation()
-  const permissions = useUserPermissions(taskWorkGroupApiPermissions)
+const useCreateTaskComment = () => {
+  const [mutation, state] = useCreateTaskCommentMutation()
+  const permissions = useUserPermissions(taskCommentApiPermissions)
 
   const fn = useCallback(
-    async (data: DeleteTaskWorkGroupMutationArgsModel) => {
-      if (!permissions.canDelete) return
+    async (data: CreateTaskCommentMutationArgsModel) => {
+      if (!permissions.canCreate) return
 
       await mutation(data).unwrap()
     },
-    [mutation, permissions.canDelete],
+    [mutation, permissions.canCreate],
   )
 
   useEffect(() => {
     if (!state.isError) return
-
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error) || isServerRangeError(error)) {
-      showMultipleErrorNotification(getErrorDetail(error))
+      showErrorNotification('Возникла ошибка при добавлении комментария')
     } else if (!isBadRequestError(error)) {
       showErrorNotification(UNKNOWN_ERROR_MSG)
     }
@@ -44,4 +41,4 @@ const useDeleteTaskWorkGroup = () => {
   return { fn, state }
 }
 
-export default useDeleteTaskWorkGroup
+export default useCreateTaskComment

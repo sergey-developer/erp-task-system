@@ -1,16 +1,23 @@
 import { useBoolean } from 'ahooks'
 import { Button, Row, Typography } from 'antd'
-import React, { FC, useMemo } from 'react'
+import React, { FC, useCallback, useMemo } from 'react'
 
 import LoadableData from 'components/LoadableData'
 import Space from 'components/Space'
+import useCreateTaskComment from 'modules/task/features/TaskView/hooks/useCreateTaskComment'
 import useGetTaskCommentList from 'modules/task/features/TaskView/hooks/useGetTaskCommentList'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import { ErrorResponse } from 'shared/services/api'
 import formatDate from 'shared/utils/date/formatDate'
+import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
 import AddCommentForm from './AddCommentForm'
+import {
+  AddCommentFormErrors,
+  AddCommentFormProps,
+} from './AddCommentForm/interfaces'
 import TaskComment from './TaskComment'
 
 const { Title, Text } = Typography
@@ -22,10 +29,27 @@ type CommentListProps = {
 }
 
 const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
+  const {
+    fn: createComment,
+    state: { isLoading: createCommentIsLoading },
+  } = useCreateTaskComment()
+
   const { data: commentList = [], isFetching: commentListIsFetching } =
     useGetTaskCommentList(taskId)
 
   const [expanded, { toggle: toggleExpanded }] = useBoolean(false)
+
+  const handleCreateComment = useCallback<AddCommentFormProps['onSubmit']>(
+    async (values, setFields) => {
+      try {
+        await createComment({ taskId, ...values })
+      } catch (exception) {
+        const error = exception as ErrorResponse<AddCommentFormErrors>
+        handleSetFieldsErrors(error, setFields)
+      }
+    },
+    [createComment, taskId],
+  )
 
   const modifiedCommentList = useMemo(
     () =>
@@ -61,7 +85,10 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
         )}
       </Row>
 
-      <AddCommentForm isLoading={false} />
+      <AddCommentForm
+        onSubmit={handleCreateComment}
+        isLoading={createCommentIsLoading}
+      />
 
       <LoadableData
         isLoading={commentListIsFetching}
