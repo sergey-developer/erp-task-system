@@ -19,6 +19,24 @@ const taskCommentApiService = apiService.injectEndpoints({
         method: HttpMethodEnum.Post,
         body: payload,
       }),
+      onQueryStarted: async (
+        { taskId, comment },
+        { dispatch, queryFulfilled },
+      ) => {
+        try {
+          const { data: newComment } = await queryFulfilled
+
+          dispatch(
+            apiService.util.updateQueryData(
+              'getTaskCommentList' as never,
+              taskId as never,
+              (commentList: GetTaskCommentListResponseModel) => {
+                commentList.unshift(newComment)
+              },
+            ),
+          )
+        } catch {}
+      },
     }),
     getTaskCommentList: build.query<
       GetTaskCommentListResponseModel,
