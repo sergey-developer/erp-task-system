@@ -10,7 +10,6 @@ import {
   REQUIRED_FIELD_MSG,
   TEXT_MAX_LENGTH_MSG,
 } from 'shared/constants/validation'
-import { asyncNoop } from 'shared/utils/common/noop'
 
 import AddCommentForm from '../index'
 import { AddCommentFormProps } from '../interfaces'
@@ -18,7 +17,7 @@ import { getComment, getSubmitButton } from './utils'
 
 const baseProps: Readonly<AddCommentFormProps> = {
   isLoading: false,
-  onSubmit: asyncNoop,
+  onSubmit: jest.fn(),
 }
 
 jest.setTimeout(10000)
@@ -103,11 +102,23 @@ describe('Форма добавления комментария', () => {
       expect(submitButton).toBeEnabled()
     })
 
-    test('Не активна в процессе загрузки', async () => {
+    test('Отображает процесс загрузки', async () => {
       render(<AddCommentForm {...baseProps} isLoading />)
 
       const submitButton = getSubmitButton()
       await waitStartLoadingByButton(submitButton)
     })
+  })
+
+  test('Форма отправляется корректно', async () => {
+    const { user } = render(<AddCommentForm {...baseProps} />)
+
+    const comment = getComment()
+    const submitButton = getSubmitButton()
+
+    await user.type(comment, generateWord())
+    await user.click(submitButton)
+
+    expect(baseProps.onSubmit).toHaveBeenCalledTimes(1)
   })
 })
