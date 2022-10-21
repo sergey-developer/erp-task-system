@@ -12,11 +12,11 @@ import { ErrorData, makeAbsoluteApiUrl } from 'shared/services/api'
 
 export type AddMockFn = () => void
 
-export type PartialAppliedRequestMocker = (
+export type PartialAppliedRequestMockFn = (
   resolver: ResponseResolver,
 ) => AddMockFn
 
-export const getRequestMocker = curry(
+export const getRequestMockFn = curry(
   (
     method: HttpMethodEnum,
     url: string,
@@ -28,41 +28,41 @@ export const getRequestMocker = curry(
   },
 )
 
-export const getSuccessMocker = (
-  requestMocker: PartialAppliedRequestMocker,
+export const getSuccessMockFn = (
+  requestMockFn: PartialAppliedRequestMockFn,
   responseOptions: Omit<ResponseResolverOptions, 'status'> = {},
 ): AddMockFn =>
-  requestMocker(
+  requestMockFn(
     getResponseResolver({ status: HttpCodeEnum.Ok, ...responseOptions }),
   )
 
-export const getServerErrorMocker = <T extends object = {}>(
-  requestMocker: PartialAppliedRequestMocker,
+export const getServerErrorMockFn = <T extends object = {}>(
+  requestMockFn: PartialAppliedRequestMockFn,
   responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
 ): AddMockFn =>
-  requestMocker(
+  requestMockFn(
     getResponseResolver({
       status: HttpCodeEnum.ServerError,
       ...responseOptions,
     }),
   )
 
-export const getUnauthorizedErrorMocker = <T extends object = {}>(
-  requestMocker: PartialAppliedRequestMocker,
+export const getUnauthorizedErrorMockFn = <T extends object = {}>(
+  requestMockFn: PartialAppliedRequestMockFn,
   responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
 ): AddMockFn =>
-  requestMocker(
+  requestMockFn(
     getResponseResolver({
       status: HttpCodeEnum.Unauthorized,
       ...responseOptions,
     }),
   )
 
-export const getBadRequestErrorMocker = <T extends object = {}>(
-  requestMocker: PartialAppliedRequestMocker,
+export const getBadRequestErrorMockFn = <T extends object = {}>(
+  requestMockFn: PartialAppliedRequestMockFn,
   responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
 ): AddMockFn =>
-  requestMocker(
+  requestMockFn(
     getResponseResolver({
       status: HttpCodeEnum.BadRequest,
       ...responseOptions,

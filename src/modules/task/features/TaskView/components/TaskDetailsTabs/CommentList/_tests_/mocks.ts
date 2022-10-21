@@ -1,7 +1,7 @@
 import {
-  getBadRequestErrorMocker,
-  getRequestMocker,
-  getSuccessMocker,
+  getBadRequestErrorMockFn,
+  getRequestMockFn,
+  getSuccessMockFn,
 } from '_tests_/mocks/request'
 import {
   CreateTaskCommentResponseModel,
@@ -16,12 +16,12 @@ import { baseProps } from './constants'
 
 const taskCommentUrl = getTaskCommentUrl(baseProps.taskId)
 
-const getTaskCommentListMocker = getRequestMocker(
+const getTaskCommentListMockFn = getRequestMockFn(
   HttpMethodEnum.Get,
   taskCommentUrl,
 )
 
-const createTaskCommentMocker = getRequestMocker(
+const createTaskCommentMockFn = getRequestMockFn(
   HttpMethodEnum.Post,
   taskCommentUrl,
 )
@@ -29,7 +29,7 @@ const createTaskCommentMocker = getRequestMocker(
 export const mockGetTaskCommentListSuccess = (
   response: GetTaskCommentListResponseModel,
 ) => {
-  const mockGetTaskCommentList = getSuccessMocker(getTaskCommentListMocker, {
+  const mockGetTaskCommentList = getSuccessMockFn(getTaskCommentListMockFn, {
     body: response,
   })
 
@@ -39,7 +39,7 @@ export const mockGetTaskCommentListSuccess = (
 export const mockCreateTaskCommentSuccess = (
   response: CreateTaskCommentResponseModel,
 ) => {
-  const mockCreateTaskComment = getSuccessMocker(createTaskCommentMocker, {
+  const mockCreateTaskComment = getSuccessMockFn(createTaskCommentMockFn, {
     body: response,
   })
 
@@ -47,6 +47,6 @@ export const mockCreateTaskCommentSuccess = (
 }
 
 export const mockCreateTaskCommentBadRequestError =
-  getBadRequestErrorMocker<CreateCommentFormErrors>(createTaskCommentMocker, {
+  getBadRequestErrorMockFn<CreateCommentFormErrors>(createTaskCommentMockFn, {
     body: { comment: [REQUIRED_FIELD_MSG] },
   })

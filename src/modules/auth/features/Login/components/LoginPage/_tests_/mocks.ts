@@ -1,32 +1,32 @@
 import { loginResponseSuccess } from '_fixtures_/auth'
 import {
-  getBadRequestErrorMocker,
-  getRequestMocker,
-  getServerErrorMocker,
-  getSuccessMocker,
-  getUnauthorizedErrorMocker,
+  getBadRequestErrorMockFn,
+  getRequestMockFn,
+  getServerErrorMockFn,
+  getSuccessMockFn,
+  getUnauthorizedErrorMockFn,
 } from '_tests_/mocks/request'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
-import { refreshTokenMocker } from 'modules/auth/features/RefreshToken/_tests_/mocks'
+import { refreshTokenMockFn } from 'modules/auth/features/RefreshToken/_tests_/mocks'
 import { HttpMethodEnum } from 'shared/constants/http'
 
-const loginMocker = getRequestMocker(
+const loginMockFn = getRequestMockFn(
   HttpMethodEnum.Post,
   AuthEndpointsEnum.Login,
 )
 
-export const mockLoginSuccess = getSuccessMocker(loginMocker, {
+export const mockLoginSuccess = getSuccessMockFn(loginMockFn, {
   body: loginResponseSuccess,
 })
 
-export const mockLoginBadRequestError = getBadRequestErrorMocker(loginMocker)
+export const mockLoginBadRequestError = getBadRequestErrorMockFn(loginMockFn)
 
 export const mockLoginUnauthorizedError = () => {
-  const mockLogin = getUnauthorizedErrorMocker(loginMocker)
-  const mockRefreshToken = getSuccessMocker(refreshTokenMocker)
+  const mockLogin = getUnauthorizedErrorMockFn(loginMockFn)
+  const mockRefreshToken = getSuccessMockFn(refreshTokenMockFn)
 
   mockLogin()
   mockRefreshToken()
 }
 
-export const mockLoginServerError = getServerErrorMocker(loginMocker)
+export const mockLoginServerError = getServerErrorMockFn(loginMockFn)

@@ -11,9 +11,9 @@ import { apiPath, currentApiVersion } from './constants'
 import { ApiVersionUnion, ErrorResponse, ValidationErrors } from './intefraces'
 
 export function getErrorDetail<T extends object>(
-  e: ErrorResponse<T>,
+  error: ErrorResponse<T>,
 ): ValidationErrors {
-  const detail = e.data?.detail
+  const detail = error.data?.detail
   return isArray(detail) ? detail : isString(detail) ? [detail] : []
 }
 
