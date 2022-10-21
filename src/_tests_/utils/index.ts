@@ -1,6 +1,6 @@
 export * from '@testing-library/react'
 
-export * from './generateFake'
+export * from './fakeGenerator'
 export * from './fields/select'
 export * from './loading'
 export * from './validating'
