@@ -1,6 +1,11 @@
-import { getButton, screen } from '_tests_/utils'
+import { getButtonIn, screen, within } from '_tests_/utils'
 
-export const getComment = () =>
-  screen.getByPlaceholderText('Дополните информацию о заявке')
+export const getFormContainer = () => screen.getByTestId('form-add-comment')
 
-export const getSubmitButton = () => getButton(/Опубликовать комментарий/)
+export const getCommentInput = () =>
+  within(getFormContainer()).getByPlaceholderText(
+    'Дополните информацию о заявке',
+  )
+
+export const getSubmitButton = () =>
+  getButtonIn(getFormContainer(), /Опубликовать комментарий/)

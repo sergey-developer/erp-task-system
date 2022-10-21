@@ -12,13 +12,8 @@ import {
 } from 'shared/constants/validation'
 
 import AddCommentForm from '../index'
-import { AddCommentFormProps } from '../interfaces'
-import { getComment, getSubmitButton } from './utils'
-
-const baseProps: Readonly<AddCommentFormProps> = {
-  isLoading: false,
-  onSubmit: jest.fn(),
-}
+import { baseProps } from './constants'
+import { getCommentInput, getSubmitButton } from './utils'
 
 jest.setTimeout(10000)
 
@@ -27,37 +22,37 @@ describe('Форма добавления комментария', () => {
     test('Отображается корректно', () => {
       render(<AddCommentForm {...baseProps} />)
 
-      const comment = getComment()
+      const commentInput = getCommentInput()
 
-      expect(comment).toBeInTheDocument()
-      expect(comment).not.toHaveValue()
-      expect(comment).toBeEnabled()
+      expect(commentInput).toBeInTheDocument()
+      expect(commentInput).not.toHaveValue()
+      expect(commentInput).toBeEnabled()
     })
 
     test('Не активно в процессе загрузки', () => {
       render(<AddCommentForm {...baseProps} isLoading />)
 
-      const comment = getComment()
-      expect(comment).toBeDisabled()
+      const commentInput = getCommentInput()
+      expect(commentInput).toBeDisabled()
     })
 
     test('Можно ввести комментарий', async () => {
       const { user } = render(<AddCommentForm {...baseProps} />)
 
-      const comment = getComment()
+      const commentInput = getCommentInput()
       const commentText = generateWord()
-      await user.type(comment, commentText)
+      await user.type(commentInput, commentText)
 
-      expect(comment).toHaveValue(commentText)
+      expect(commentInput).toHaveValue(commentText)
     })
 
     describe('Отображает ошибку', () => {
       test('Если превысить лимит символов', async () => {
         const { user } = render(<AddCommentForm {...baseProps} />)
 
-        const comment = getComment()
+        const commentInput = getCommentInput()
         const commentText = generateWord({ length: 501 })
-        await user.type(comment, commentText)
+        await user.type(commentInput, commentText)
 
         const errorMessage = await screen.findByText(
           TEXT_MAX_LENGTH_MSG.replace(
@@ -73,8 +68,8 @@ describe('Форма добавления комментария', () => {
       test('Если ввести только пробелы', async () => {
         const { user } = render(<AddCommentForm {...baseProps} />)
 
-        const comment = getComment()
-        await user.type(comment, ' ')
+        const commentInput = getCommentInput()
+        await user.type(commentInput, ' ')
 
         const errorMessage = await screen.findByText(FIELD_CAN_NOT_BE_EMPTY_MSG)
         expect(errorMessage).toBeInTheDocument()
@@ -110,13 +105,13 @@ describe('Форма добавления комментария', () => {
     })
   })
 
-  test('Форма отправляется корректно', async () => {
+  test('Обработчик отправки формы вызывается корректно', async () => {
     const { user } = render(<AddCommentForm {...baseProps} />)
 
-    const comment = getComment()
+    const commentInput = getCommentInput()
     const submitButton = getSubmitButton()
 
-    await user.type(comment, generateWord())
+    await user.type(commentInput, generateWord())
     await user.click(submitButton)
 
     expect(baseProps.onSubmit).toHaveBeenCalledTimes(1)

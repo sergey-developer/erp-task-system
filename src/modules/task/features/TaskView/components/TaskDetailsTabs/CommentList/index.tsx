@@ -23,20 +23,20 @@ import TaskComment from './TaskComment'
 const { Title, Text } = Typography
 const DEFAULT_DISPLAYABLE_COUNT: number = 3
 
-type CommentListProps = {
+export type CommentListProps = {
   title: string
   taskId: TaskDetailsModel['id']
 }
 
 const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
+  const { data: commentList = [], isFetching: commentListIsFetching } =
+    useGetTaskCommentList(taskId)
+
   const {
     fn: createComment,
     state: { isLoading: createCommentIsLoading },
   } = useCreateTaskComment()
-
-  const { data: commentList = [], isFetching: commentListIsFetching } =
-    useGetTaskCommentList(taskId)
-
+  console.log(commentList)
   const [expanded, { toggle: toggleExpanded }] = useBoolean(false)
 
   const handleCreateComment = useCallback<AddCommentFormProps['onSubmit']>(

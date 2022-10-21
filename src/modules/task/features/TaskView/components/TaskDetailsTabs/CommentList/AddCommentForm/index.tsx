@@ -16,8 +16,17 @@ const AddCommentForm: FC<AddCommentFormProps> = ({ onSubmit, isLoading }) => {
   }
 
   return (
-    <Space direction='vertical' size='middle' $block>
-      <Form<AddCommentFormFields> layout='vertical' onFinish={handleFinish}>
+    <Space
+      data-testid='form-add-comment'
+      direction='vertical'
+      size='middle'
+      $block
+    >
+      <Form<AddCommentFormFields>
+        form={form}
+        layout='vertical'
+        onFinish={handleFinish}
+      >
         <Form.Item name='comment' rules={BASE_LONG_TEXT_RULES}>
           <TextArea
             placeholder='Дополните информацию о заявке'
