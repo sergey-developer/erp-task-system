@@ -1,7 +1,6 @@
-import { getRequestMocker } from '_tests_/mocks/request'
-import { getResponseResolver } from '_tests_/mocks/response'
+import { getRequestMocker, getSuccessMocker } from '_tests_/mocks/request'
 import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
-import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import { WorkGroupListItemModel } from '../models'
 
@@ -13,12 +12,9 @@ const getWorkGroupListMocker = getRequestMocker(
 export const mockGetWorkGroupListSuccess = (
   response: WorkGroupListItemModel[],
 ) => {
-  const mockGetWorkGroupList = getWorkGroupListMocker(
-    getResponseResolver({
-      status: HttpCodeEnum.Ok,
-      body: response,
-    }),
-  )
+  const mockGetWorkGroupList = getSuccessMocker(getWorkGroupListMocker, {
+    body: response,
+  })
 
   mockGetWorkGroupList()
 }

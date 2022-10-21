@@ -2,7 +2,8 @@ export * from '@testing-library/react'
 
 export * from './generateFake'
 export * from './fields/select'
-export * from './waitLoading'
+export * from './loading'
+export * from './validating'
 export * from './icon'
 export * from './button'
 

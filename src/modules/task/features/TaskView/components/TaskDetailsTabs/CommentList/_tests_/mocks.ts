@@ -1,12 +1,17 @@
-import { getRequestMocker } from '_tests_/mocks/request'
-import { getResponseResolver } from '_tests_/mocks/response'
+import {
+  getBadRequestErrorMocker,
+  getRequestMocker,
+  getSuccessMocker,
+} from '_tests_/mocks/request'
 import {
   CreateTaskCommentResponseModel,
   GetTaskCommentListResponseModel,
 } from 'modules/task/features/TaskView/models'
 import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
-import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
+import { HttpMethodEnum } from 'shared/constants/http'
+import { REQUIRED_FIELD_MSG } from 'shared/constants/validation'
 
+import { CreateCommentFormErrors } from '../AddCommentForm/interfaces'
 import { baseProps } from './constants'
 
 const taskCommentUrl = getTaskCommentUrl(baseProps.taskId)
@@ -24,12 +29,9 @@ const createTaskCommentMocker = getRequestMocker(
 export const mockGetTaskCommentListSuccess = (
   response: GetTaskCommentListResponseModel,
 ) => {
-  const mockGetTaskCommentList = getTaskCommentListMocker(
-    getResponseResolver({
-      status: HttpCodeEnum.Ok,
-      body: response,
-    }),
-  )
+  const mockGetTaskCommentList = getSuccessMocker(getTaskCommentListMocker, {
+    body: response,
+  })
 
   mockGetTaskCommentList()
 }
@@ -37,12 +39,14 @@ export const mockGetTaskCommentListSuccess = (
 export const mockCreateTaskCommentSuccess = (
   response: CreateTaskCommentResponseModel,
 ) => {
-  const mockCreateTaskComment = createTaskCommentMocker(
-    getResponseResolver({
-      status: HttpCodeEnum.Ok,
-      body: response,
-    }),
-  )
+  const mockCreateTaskComment = getSuccessMocker(createTaskCommentMocker, {
+    body: response,
+  })
 
   mockCreateTaskComment()
 }
+
+export const mockCreateTaskCommentBadRequestError =
+  getBadRequestErrorMocker<CreateCommentFormErrors>(createTaskCommentMocker, {
+    body: { comment: [REQUIRED_FIELD_MSG] },
+  })

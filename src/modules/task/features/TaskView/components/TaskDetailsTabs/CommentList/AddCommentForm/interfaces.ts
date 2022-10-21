@@ -2,16 +2,16 @@ import { FormInstance } from 'antd'
 
 import { FieldsErrors } from 'shared/services/api'
 
-export type AddCommentFormFields = {
+export type CreateCommentFormFields = {
   comment: string
 }
 
-export type AddCommentFormErrors = FieldsErrors<AddCommentFormFields>
+export type CreateCommentFormErrors = FieldsErrors<CreateCommentFormFields>
 
-export type AddCommentFormProps = {
+export type CreateCommentFormProps = {
   onSubmit: (
-    values: AddCommentFormFields,
-    setFields: FormInstance['setFields'],
+    values: CreateCommentFormFields,
+    setFields: FormInstance,
   ) => Promise<void>
   isLoading: boolean
 }

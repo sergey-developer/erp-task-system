@@ -1,5 +1,5 @@
 import { getTaskAssignee } from '_fixtures_/task'
-import { generateId, render } from '_tests_/utils'
+import { render } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import {
   TaskExtendedStatusEnum,
@@ -40,7 +40,6 @@ describe('Блок "Исполнитель заявки"', () => {
     describe('Отображается для пользователя с ролью', () => {
       test(`${UserRolesEnum.FirstLineSupport}`, () => {
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
@@ -53,7 +52,6 @@ describe('Блок "Исполнитель заявки"', () => {
 
       test(`${UserRolesEnum.Engineer}`, () => {
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.Engineer,
         })
 
@@ -66,7 +64,6 @@ describe('Блок "Исполнитель заявки"', () => {
 
       test(`${UserRolesEnum.SeniorEngineer}`, () => {
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -77,7 +74,6 @@ describe('Блок "Исполнитель заявки"', () => {
 
       test(`${UserRolesEnum.HeadOfDepartment}`, () => {
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.HeadOfDepartment,
         })
 
@@ -117,7 +113,6 @@ describe('Блок "Исполнитель заявки"', () => {
 
         test('Но исполнитель заявки назначен и не является авторизованным пользователем', async () => {
           const store = getStoreWithAuth({
-            userId: generateId(),
             userRole: UserRolesEnum.FirstLineSupport,
           })
 

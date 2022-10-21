@@ -3,8 +3,8 @@ import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const getCloseButton = () => getButton('Close')
-export const getApplyButton = () => getButton('Применить')
-export const getResetAllButton = () => getButton('Сбросить все')
+export const getApplyButton = () => getButton(/Применить/i)
+export const getResetAllButton = () => getButton(/Сбросить все/i)
 
 export const getStatusContainer = () =>
   screen.getByTestId('filter-extended-status')

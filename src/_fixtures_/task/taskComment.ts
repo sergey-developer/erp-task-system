@@ -4,7 +4,7 @@ import { TaskCommentTypeEnum } from 'modules/task/constants/common'
 import { TaskDetailsCommentModel } from 'modules/task/features/TaskView/models'
 
 export const getTaskComment = (
-  data?: Partial<TaskDetailsCommentModel>,
+  data?: Partial<Pick<TaskDetailsCommentModel, 'text'>>,
 ): TaskDetailsCommentModel => ({
   id: generateId(),
   taskId: generateId(),

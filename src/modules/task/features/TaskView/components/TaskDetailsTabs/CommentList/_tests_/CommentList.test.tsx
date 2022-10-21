@@ -1,14 +1,19 @@
 import { getTaskComment } from '_fixtures_/task'
 import {
-  generateId,
+  generateWord,
   render,
   setupApiTests,
   waitFinishLoadingByButton,
+  waitFinishValidating,
+  waitFor,
+  waitStartLoadingByButton,
+  within,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { REQUIRED_FIELD_MSG } from 'shared/constants/validation'
 
 import {
+  getCommentField,
   getCommentInput,
   getFormContainer,
   getSubmitButton,
@@ -16,9 +21,11 @@ import {
 import CommentList from '../index'
 import { baseProps } from './constants'
 import {
+  mockCreateTaskCommentBadRequestError,
   mockCreateTaskCommentSuccess,
   mockGetTaskCommentListSuccess,
 } from './mocks'
+import { getFirstComment } from './utils'
 
 setupApiTests()
 
@@ -31,30 +38,81 @@ describe('Список комментариев заявки', () => {
       expect(formContainer).toBeInTheDocument()
     })
 
-    test('Корректно добавляет комментарий в список', async () => {
-      const taskComment1 = getTaskComment()
-      const taskComment2 = getTaskComment({ text: taskComment1.text })
+    describe('При успешном запросе', () => {
+      test('Корректно добавляет комментарий в список', async () => {
+        const newComment = getTaskComment()
+        mockCreateTaskCommentSuccess(newComment)
+        mockGetTaskCommentListSuccess([getTaskComment()])
 
-      mockGetTaskCommentListSuccess([taskComment2])
-      mockCreateTaskCommentSuccess(taskComment1)
+        const store = getStoreWithAuth()
 
-      const store = getStoreWithAuth({
-        userId: generateId(),
-        userRole: UserRolesEnum.FirstLineSupport,
+        const { user } = render(<CommentList {...baseProps} />, { store })
+
+        const submitButton = getSubmitButton()
+        const commentField = getCommentField()
+        const commentInput = getCommentInput()
+
+        await user.type(commentInput, newComment.text)
+        await waitFinishValidating(commentField)
+
+        await user.click(submitButton)
+        await waitStartLoadingByButton(submitButton)
+        await waitFinishLoadingByButton(submitButton)
+
+        const firstComment = getFirstComment()
+        const newCommentText = within(firstComment).getByText(newComment.text)
+
+        expect(newCommentText).toBeInTheDocument()
       })
 
-      const { user } = render(<CommentList {...baseProps} />, { store })
+      test('Сбрасывает значения полей', async () => {
+        const newComment = getTaskComment()
+        mockCreateTaskCommentSuccess(newComment)
+        mockGetTaskCommentListSuccess([])
 
-      const submitButton = getSubmitButton()
-      const commentInput = getCommentInput()
+        const store = getStoreWithAuth()
 
-      await user.type(commentInput, taskComment1.text)
-      await user.click(submitButton)
+        const { user } = render(<CommentList {...baseProps} />, { store })
 
-      await waitFinishLoadingByButton(submitButton)
+        const submitButton = getSubmitButton()
+        const commentField = getCommentField()
+        const commentInput = getCommentInput()
 
-      // const comments = screen.getAllByText(taskComment1.text)
-      // screen.debug()
+        await user.type(commentInput, newComment.text)
+        await waitFinishValidating(commentField)
+
+        await user.click(submitButton)
+        await waitStartLoadingByButton(submitButton)
+        await waitFinishLoadingByButton(submitButton)
+
+        expect(getCommentInput()).not.toHaveValue()
+      })
+    })
+
+    describe('При не успешном запросе', () => {
+      test('Корректно обрабатывается ошибка - 400', async () => {
+        mockGetTaskCommentListSuccess([])
+        mockCreateTaskCommentBadRequestError()
+
+        const store = getStoreWithAuth()
+        const { user } = render(<CommentList {...baseProps} />, { store })
+
+        const submitButton = getSubmitButton()
+        const commentField = getCommentField()
+        const commentInput = getCommentInput()
+
+        await user.type(commentInput, generateWord())
+        await waitFinishValidating(commentField)
+
+        await user.click(submitButton)
+        await waitStartLoadingByButton(submitButton)
+        await waitFinishLoadingByButton(submitButton)
+
+        await waitFor(() => {
+          const errorMsg = within(commentField).getByText(REQUIRED_FIELD_MSG)
+          expect(errorMsg).toBeInTheDocument()
+        })
+      })
     })
   })
 })

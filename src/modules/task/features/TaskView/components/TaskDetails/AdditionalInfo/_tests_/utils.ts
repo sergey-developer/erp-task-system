@@ -2,7 +2,7 @@ import { getButton, screen } from '_tests_/utils'
 import { within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getExpandButton = () => getButton(/Дополнительная информация/)
+export const getExpandButton = () => getButton(/Дополнительная информация/i)
 
 export const getAdditionalInfoContent = () =>
   screen.getByTestId('additional-info-content')

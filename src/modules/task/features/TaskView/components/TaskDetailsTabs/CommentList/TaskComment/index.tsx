@@ -12,7 +12,7 @@ type TaskCommentProps = Pick<TaskDetailsCommentModel, 'createdAt' | 'text'> & {
 
 const TaskComment: FC<TaskCommentProps> = ({ text, createdAt, author }) => {
   return (
-    <Space direction='vertical'>
+    <Space data-testid='task-comment' direction='vertical'>
       <SeparatedText>
         <Text type='secondary'>{author}</Text>
         <Text type='secondary'>{createdAt}</Text>

@@ -2,9 +2,13 @@ import curry from 'lodash/curry'
 import { rest } from 'msw'
 
 import api from '_tests_/mocks/api'
-import { ResponseResolver, getResponseResolver } from '_tests_/mocks/response'
+import {
+  ResponseResolver,
+  ResponseResolverOptions,
+  getResponseResolver,
+} from '_tests_/mocks/response'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
-import { makeAbsoluteApiUrl } from 'shared/services/api'
+import { ErrorData, makeAbsoluteApiUrl } from 'shared/services/api'
 
 export type AddMockFn = () => void
 
@@ -26,19 +30,41 @@ export const getRequestMocker = curry(
 
 export const getSuccessMocker = (
   requestMocker: PartialAppliedRequestMocker,
-): AddMockFn => requestMocker(getResponseResolver({ status: HttpCodeEnum.Ok }))
-
-export const getServerErrorMocker = (
-  requestMocker: PartialAppliedRequestMocker,
+  responseOptions: Omit<ResponseResolverOptions, 'status'> = {},
 ): AddMockFn =>
-  requestMocker(getResponseResolver({ status: HttpCodeEnum.ServerError }))
+  requestMocker(
+    getResponseResolver({ status: HttpCodeEnum.Ok, ...responseOptions }),
+  )
 
-export const getUnauthorizedErrorMocker = (
+export const getServerErrorMocker = <T extends object = {}>(
   requestMocker: PartialAppliedRequestMocker,
+  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
 ): AddMockFn =>
-  requestMocker(getResponseResolver({ status: HttpCodeEnum.Unauthorized }))
+  requestMocker(
+    getResponseResolver({
+      status: HttpCodeEnum.ServerError,
+      ...responseOptions,
+    }),
+  )
 
-export const getBadRequestErrorMocker = (
+export const getUnauthorizedErrorMocker = <T extends object = {}>(
   requestMocker: PartialAppliedRequestMocker,
+  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
 ): AddMockFn =>
-  requestMocker(getResponseResolver({ status: HttpCodeEnum.BadRequest }))
+  requestMocker(
+    getResponseResolver({
+      status: HttpCodeEnum.Unauthorized,
+      ...responseOptions,
+    }),
+  )
+
+export const getBadRequestErrorMocker = <T extends object = {}>(
+  requestMocker: PartialAppliedRequestMocker,
+  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
+): AddMockFn =>
+  requestMocker(
+    getResponseResolver({
+      status: HttpCodeEnum.BadRequest,
+      ...responseOptions,
+    }),
+  )

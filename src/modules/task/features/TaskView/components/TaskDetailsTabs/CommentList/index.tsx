@@ -13,10 +13,10 @@ import { ErrorResponse } from 'shared/services/api'
 import formatDate from 'shared/utils/date/formatDate'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
-import AddCommentForm from './AddCommentForm'
+import CreateCommentForm from './AddCommentForm'
 import {
-  AddCommentFormErrors,
-  AddCommentFormProps,
+  CreateCommentFormErrors,
+  CreateCommentFormProps,
 } from './AddCommentForm/interfaces'
 import TaskComment from './TaskComment'
 
@@ -36,16 +36,17 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
     fn: createComment,
     state: { isLoading: createCommentIsLoading },
   } = useCreateTaskComment()
-  console.log(commentList)
+
   const [expanded, { toggle: toggleExpanded }] = useBoolean(false)
 
-  const handleCreateComment = useCallback<AddCommentFormProps['onSubmit']>(
-    async (values, setFields) => {
+  const handleCreateComment = useCallback<CreateCommentFormProps['onSubmit']>(
+    async (values, form) => {
       try {
         await createComment({ taskId, ...values })
+        form.resetFields()
       } catch (exception) {
-        const error = exception as ErrorResponse<AddCommentFormErrors>
-        handleSetFieldsErrors(error, setFields)
+        const error = exception as ErrorResponse<CreateCommentFormErrors>
+        handleSetFieldsErrors(error, form.setFields)
       }
     },
     [createComment, taskId],
@@ -85,7 +86,7 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
         )}
       </Row>
 
-      <AddCommentForm
+      <CreateCommentForm
         onSubmit={handleCreateComment}
         isLoading={createCommentIsLoading}
       />

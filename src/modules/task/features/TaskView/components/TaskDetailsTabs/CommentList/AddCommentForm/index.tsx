@@ -4,30 +4,37 @@ import { FC } from 'react'
 import Space from 'components/Space'
 import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
 
-import { AddCommentFormFields, AddCommentFormProps } from './interfaces'
+import { CreateCommentFormFields, CreateCommentFormProps } from './interfaces'
 
 const { TextArea } = Input
 
-const AddCommentForm: FC<AddCommentFormProps> = ({ onSubmit, isLoading }) => {
-  const [form] = Form.useForm<AddCommentFormFields>()
+const CreateCommentForm: FC<CreateCommentFormProps> = ({
+  onSubmit,
+  isLoading,
+}) => {
+  const [form] = Form.useForm<CreateCommentFormFields>()
 
-  const handleFinish = async (values: AddCommentFormFields) => {
-    await onSubmit(values, form.setFields)
+  const handleFinish = async (values: CreateCommentFormFields) => {
+    await onSubmit(values, form)
   }
 
   return (
     <Space
-      data-testid='form-add-comment'
+      data-testid='form-create-comment'
       direction='vertical'
       size='middle'
       $block
     >
-      <Form<AddCommentFormFields>
+      <Form<CreateCommentFormFields>
         form={form}
         layout='vertical'
         onFinish={handleFinish}
       >
-        <Form.Item name='comment' rules={BASE_LONG_TEXT_RULES}>
+        <Form.Item
+          data-testid='field-comment'
+          name='comment'
+          rules={BASE_LONG_TEXT_RULES}
+        >
           <TextArea
             placeholder='Дополните информацию о заявке'
             disabled={isLoading}
@@ -42,4 +49,4 @@ const AddCommentForm: FC<AddCommentFormProps> = ({ onSubmit, isLoading }) => {
   )
 }
 
-export default AddCommentForm
+export default CreateCommentForm
