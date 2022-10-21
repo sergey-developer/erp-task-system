@@ -11,7 +11,7 @@ export type CreateCommentFormErrors = FieldsErrors<CreateCommentFormFields>
 export type CreateCommentFormProps = {
   onSubmit: (
     values: CreateCommentFormFields,
-    setFields: FormInstance,
+    form: FormInstance,
   ) => Promise<void>
   isLoading: boolean
 }
