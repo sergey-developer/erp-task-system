@@ -17,7 +17,7 @@ import {
   getCommentInput,
   getFormContainer,
   getSubmitButton,
-} from '../AddCommentForm/_tests_/utils'
+} from '../CreateCommentForm/_tests_/utils'
 import CommentList from '../index'
 import { baseProps } from './constants'
 import {

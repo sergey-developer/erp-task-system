@@ -13,11 +13,11 @@ import { ErrorResponse } from 'shared/services/api'
 import formatDate from 'shared/utils/date/formatDate'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
-import CreateCommentForm from './AddCommentForm'
+import CreateCommentForm from './CreateCommentForm'
 import {
   CreateCommentFormErrors,
   CreateCommentFormProps,
-} from './AddCommentForm/interfaces'
+} from './CreateCommentForm/interfaces'
 import TaskComment from './TaskComment'
 
 const { Title, Text } = Typography

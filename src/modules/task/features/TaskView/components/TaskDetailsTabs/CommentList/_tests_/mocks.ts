@@ -11,7 +11,7 @@ import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { REQUIRED_FIELD_MSG } from 'shared/constants/validation'
 
-import { CreateCommentFormErrors } from '../AddCommentForm/interfaces'
+import { CreateCommentFormErrors } from '../CreateCommentForm/interfaces'
 import { baseProps } from './constants'
 
 const taskCommentUrl = getTaskCommentUrl(baseProps.taskId)
