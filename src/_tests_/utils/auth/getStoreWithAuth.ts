@@ -5,14 +5,13 @@ import { setupStore } from 'state/store'
 
 import getAuthState from './getAuthState'
 
-const getStoreWithAuth = (authenticatedUser?: Partial<AuthenticatedUser>) =>
+const getStoreWithAuth = (user?: Partial<AuthenticatedUser>) =>
   setupStore({
     preloadedState: {
       auth: getAuthState({
         user: {
-          userId: authenticatedUser?.userId || generateId(),
-          userRole:
-            authenticatedUser?.userRole || UserRolesEnum.FirstLineSupport,
+          userId: user?.userId || generateId(),
+          userRole: user?.userRole || UserRolesEnum.FirstLineSupport,
         },
       }),
     },
