@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
 import { DownloadIcon } from 'components/Icons'
-import LoadableData from 'components/LoadableData'
+import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import useGetTaskJournal from 'modules/task/features/TaskView/hooks/useGetTaskJournal'
 import useGetTaskJournalCsv from 'modules/task/features/TaskView/hooks/useGetTaskJournalCsv'
@@ -49,7 +49,7 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
   }
 
   return (
-    <LoadableData data-testid='spinner-journal' isLoading={journalIsFetching}>
+    <LoadingArea data-testid='spinner-journal' isLoading={journalIsFetching}>
       <Space direction='vertical' $block>
         {!journalIsFetching && isEmpty(journal) ? (
           <Text>{NO_DATA_MSG}</Text>
@@ -92,7 +92,7 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
           </>
         )}
       </Space>
-    </LoadableData>
+    </LoadingArea>
   )
 }
 

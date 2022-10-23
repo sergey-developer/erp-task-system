@@ -3,11 +3,11 @@ import React from 'react'
 import Spinner, { SpinnerProps } from 'components/Spinner'
 import { FCWithChildren } from 'shared/interfaces/utils'
 
-type LoadableDataProps = SpinnerProps & {
+type LoadingAreaProps = SpinnerProps & {
   isLoading: boolean
 }
 
-const LoadableData: FCWithChildren<LoadableDataProps> = ({
+const LoadingArea: FCWithChildren<LoadingAreaProps> = ({
   children,
   isLoading,
   ...props
@@ -15,4 +15,4 @@ const LoadableData: FCWithChildren<LoadableDataProps> = ({
   return isLoading ? <Spinner {...props} /> : <>{children}</>
 }
 
-export default LoadableData
+export default LoadingArea
