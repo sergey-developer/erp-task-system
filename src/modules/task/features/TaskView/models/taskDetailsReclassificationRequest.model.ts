@@ -1,10 +1,10 @@
-import { BaseTaskReclassificationRequestModel } from 'modules/task/models'
 import { BaseUserModel } from 'modules/user/models'
 
-import { TaskDetailsReclassificationRequestCommentModel } from './taskDetailsReclassificationRequestComment.model'
+import { TaskCommentModel } from './taskComment.model'
 
-export type TaskDetailsReclassificationRequestModel =
-  BaseTaskReclassificationRequestModel & {
-    comment: TaskDetailsReclassificationRequestCommentModel
-    user: Omit<BaseUserModel, 'avatar'>
-  }
+export type TaskDetailsReclassificationRequestModel = {
+  id: number
+  createdAt: string
+  comment: TaskCommentModel
+  user: Omit<BaseUserModel, 'avatar'>
+}

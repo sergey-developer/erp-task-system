@@ -2,11 +2,11 @@ import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import SeparatedText from 'components/Texts/SeparatedText'
-import { TaskDetailsCommentModel } from 'modules/task/features/TaskView/models'
+import { TaskCommentModel } from 'modules/task/features/TaskView/models'
 
 const { Paragraph, Text } = Typography
 
-type TaskCommentProps = Pick<TaskDetailsCommentModel, 'createdAt' | 'text'> & {
+type TaskCommentProps = Pick<TaskCommentModel, 'createdAt' | 'text'> & {
   author: string
 }
 
