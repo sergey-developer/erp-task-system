@@ -10,31 +10,17 @@ import {
   GetTaskListResponseModel,
 } from 'modules/task/features/TaskList/models'
 import {
-  DeleteTaskWorkGroupMutationArgsModel,
-  DeleteTaskWorkGroupResponseModel,
-  GetTaskJournalCsvQueryArgsModel,
-  GetTaskJournalCsvResponseModel,
-  GetTaskJournalQueryArgsModel,
-  GetTaskJournalResponseModel,
   GetTaskQueryArgsModel,
   GetTaskResponseModel,
   ResolveTaskMutationArgsModel,
   ResolveTaskResponseModel,
   TakeTaskMutationArgsModel,
   TakeTaskResponseModel,
-  UpdateTaskAssigneeMutationArgsModel,
-  UpdateTaskAssigneeResponseModel,
-  UpdateTaskWorkGroupMutationArgsModel,
-  UpdateTaskWorkGroupResponseModel,
 } from 'modules/task/features/TaskView/models'
 import {
   getResolveTaskUrl,
   getTakeTaskUrl,
-  getTaskAssigneeUrl,
-  getTaskJournalCsvUrl,
-  getTaskJournalUrl,
   getTaskUrl,
-  getTaskWorkGroupUrl,
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
@@ -108,60 +94,6 @@ const taskApiService = apiService
         invalidatesTags: (result, error) =>
           error ? [] : [TaskEndpointsTagsEnum.Task],
       }),
-      updateTaskWorkGroup: build.mutation<
-        UpdateTaskWorkGroupResponseModel,
-        UpdateTaskWorkGroupMutationArgsModel
-      >({
-        query: ({ taskId, ...body }) => ({
-          url: getTaskWorkGroupUrl(taskId),
-          method: HttpMethodEnum.Post,
-          data: body,
-        }),
-        invalidatesTags: (result, error) =>
-          error ? [] : [TaskEndpointsTagsEnum.TaskList],
-      }),
-      deleteTaskWorkGroup: build.mutation<
-        DeleteTaskWorkGroupResponseModel,
-        DeleteTaskWorkGroupMutationArgsModel
-      >({
-        query: ({ taskId, ...body }) => ({
-          url: getTaskWorkGroupUrl(taskId),
-          method: HttpMethodEnum.Delete,
-          data: body,
-        }),
-        invalidatesTags: (result, error) =>
-          error ? [] : [TaskEndpointsTagsEnum.TaskList],
-      }),
-      updateTaskAssignee: build.mutation<
-        UpdateTaskAssigneeResponseModel,
-        UpdateTaskAssigneeMutationArgsModel
-      >({
-        query: ({ taskId, ...body }) => ({
-          url: getTaskAssigneeUrl(taskId),
-          method: HttpMethodEnum.Post,
-          data: body,
-        }),
-        invalidatesTags: (result, error) =>
-          error ? [] : [TaskEndpointsTagsEnum.Task],
-      }),
-      getTaskJournal: build.query<
-        GetTaskJournalResponseModel,
-        GetTaskJournalQueryArgsModel
-      >({
-        query: (taskId) => ({
-          url: getTaskJournalUrl(taskId),
-          method: HttpMethodEnum.Get,
-        }),
-      }),
-      getTaskJournalCsv: build.query<
-        GetTaskJournalCsvResponseModel,
-        GetTaskJournalCsvQueryArgsModel
-      >({
-        query: (taskId) => ({
-          url: getTaskJournalCsvUrl(taskId),
-          method: HttpMethodEnum.Get,
-        }),
-      }),
     }),
     overrideExisting: false,
   })
@@ -170,11 +102,8 @@ export const {
   useGetTaskQuery,
   useGetTaskListQuery,
   useResolveTaskMutation,
-  useUpdateTaskAssigneeMutation,
-  useUpdateTaskWorkGroupMutation,
-  useDeleteTaskWorkGroupMutation,
   useGetTaskCountersQuery,
-  useGetTaskJournalQuery,
-  useLazyGetTaskJournalCsvQuery,
   useTakeTaskMutation,
 } = taskApiService
+
+export default taskApiService

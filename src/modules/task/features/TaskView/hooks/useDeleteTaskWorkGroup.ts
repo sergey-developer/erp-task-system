@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
+import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import {

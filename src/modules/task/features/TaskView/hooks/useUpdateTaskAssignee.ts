@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskApi.service'
+import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskAssigneeApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
