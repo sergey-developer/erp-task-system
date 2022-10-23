@@ -4,6 +4,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
 import React, { FC, useCallback } from 'react'
 
+import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import {
@@ -34,13 +35,9 @@ import {
   TaskFirstLineFormErrors,
   TaskFirstLineFormFields,
 } from '../TaskFirstLineModal/interfaces'
-import TaskReclassificationModal, {
-  TaskReclassificationModalProps,
-} from '../TaskReclassificationModal'
+import { TaskReclassificationModalProps } from '../TaskReclassificationModal'
 import { TaskReclassificationRequestFormErrors } from '../TaskReclassificationModal/interfaces'
-import TaskResolutionModal, {
-  TaskResolutionModalProps,
-} from '../TaskResolutionModal'
+import { TaskResolutionModalProps } from '../TaskResolutionModal'
 import { TaskResolutionFormErrors } from '../TaskResolutionModal/interfaces'
 import AdditionalInfo from './AdditionalInfo'
 import CardTitle from './CardTitle'
@@ -49,6 +46,10 @@ import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const TaskRequestStatus = React.lazy(() => import('../TaskRequestStatus'))
+const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
+const TaskReclassificationModal = React.lazy(
+  () => import('../TaskReclassificationModal'),
+)
 
 type TaskDetailsProps = {
   details: MaybeNull<
@@ -363,24 +364,42 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             />
 
             {isTaskResolutionModalOpened && (
-              <TaskResolutionModal
-                type={details.type}
-                recordId={details.recordId}
-                techResolution={details.techResolution}
-                userResolution={details.userResolution}
-                isLoading={isTaskResolving}
-                onCancel={closeTaskResolutionModal}
-                onSubmit={handleResolutionSubmit}
-              />
+              <React.Suspense
+                fallback={
+                  <ModalFallback
+                    visible={isTaskResolutionModalOpened}
+                    onCancel={closeTaskResolutionModal}
+                  />
+                }
+              >
+                <TaskResolutionModal
+                  type={details.type}
+                  recordId={details.recordId}
+                  techResolution={details.techResolution}
+                  userResolution={details.userResolution}
+                  isLoading={isTaskResolving}
+                  onCancel={closeTaskResolutionModal}
+                  onSubmit={handleResolutionSubmit}
+                />
+              </React.Suspense>
             )}
 
             {isTaskReclassificationModalOpened && (
-              <TaskReclassificationModal
-                recordId={details.recordId}
-                isLoading={createReclassificationRequestIsLoading}
-                onSubmit={handleReclassificationRequestSubmit}
-                onCancel={closeTaskReclassificationModal}
-              />
+              <React.Suspense
+                fallback={
+                  <ModalFallback
+                    visible={isTaskReclassificationModalOpened}
+                    onCancel={closeTaskReclassificationModal}
+                  />
+                }
+              >
+                <TaskReclassificationModal
+                  recordId={details.recordId}
+                  isLoading={createReclassificationRequestIsLoading}
+                  onSubmit={handleReclassificationRequestSubmit}
+                  onCancel={closeTaskReclassificationModal}
+                />
+              </React.Suspense>
             )}
           </>
         )}
