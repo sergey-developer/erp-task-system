@@ -38,13 +38,13 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
       </TabPane>
 
       <TabPane
-        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Comments]}
-        key={TaskDetailsTabsEnum.Comments}
+        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.CommentList]}
+        key={TaskDetailsTabsEnum.CommentList}
       >
         <DetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
             <CommentListTab
-              title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Comments]}
+              title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.CommentList]}
               taskId={details.id}
             />
           </React.Suspense>
@@ -77,8 +77,8 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
       </TabPane>
 
       <TabPane
-        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Tasks]}
-        key={TaskDetailsTabsEnum.Tasks}
+        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.TaskList]}
+        key={TaskDetailsTabsEnum.TaskList}
       >
         <DetailsWrapper>
           <span>Задания</span>

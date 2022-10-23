@@ -10,9 +10,10 @@ import {
   getTaskReclassificationRequestUrl,
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
 
-const taskReclassificationRequestApiService = apiService
+import taskApiService from './taskApi.service'
+
+const taskReclassificationRequestApiService = taskApiService
   .enhanceEndpoints({
     addTagTypes: [TaskEndpointsTagsEnum.TaskReclassificationRequest],
   })
