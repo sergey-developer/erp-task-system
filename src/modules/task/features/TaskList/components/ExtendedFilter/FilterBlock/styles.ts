@@ -1,17 +1,9 @@
-import { Divider } from 'antd'
-
 import {
   StyledBreakpointStyles,
   StyledBreakpointsProps,
 } from 'shared/interfaces/breakpoints'
 import applyBreakpointStyles from 'shared/utils/breakpoints/applyBreakpointStyles'
 import styled, { css } from 'styled-components'
-
-export const DividerStyled = styled(Divider)`
-  && {
-    margin: 0;
-  }
-`
 
 const wrapperBreakpointStyles: StyledBreakpointStyles = {
   xxl: css`

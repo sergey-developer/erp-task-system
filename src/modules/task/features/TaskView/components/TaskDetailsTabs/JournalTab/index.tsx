@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Row, Typography } from 'antd'
+import { Button, Row, Typography } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
@@ -7,16 +7,13 @@ import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import useGetTaskJournal from 'modules/task/features/TaskView/hooks/useGetTaskJournal'
 import useGetTaskJournalCsv from 'modules/task/features/TaskView/hooks/useGetTaskJournalCsv'
-import getFullUserName from 'modules/user/utils/getFullUserName'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import {
   clickDownloadLink,
   makeDownloadLink,
 } from 'shared/utils/common/downloadLink'
-import formatDate from 'shared/utils/date/formatDate'
 
-import { NO_DATA_MSG, journalEntryTypeDict } from './constants'
-import JournalEntry from './JournalEntry'
+import { NO_DATA_MSG } from './constants'
+import Journal from './Journal'
 import { getJournalCsvFilename } from './utils'
 
 const { Text } = Typography
@@ -70,25 +67,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
               />
             </Row>
 
-            <Row>
-              {journal.map((item, index, array) => {
-                const isLastItem: boolean = index === array.length - 1
-
-                return (
-                  <Col key={item.id} span={24}>
-                    <JournalEntry
-                      createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
-                      type={journalEntryTypeDict[item.type]}
-                      author={item.author ? getFullUserName(item.author) : null}
-                      description={item.description}
-                      sourceSystem={item.sourceSystem}
-                    />
-
-                    {!isLastItem && <Divider />}
-                  </Col>
-                )
-              })}
-            </Row>
+            <Journal data={journal} />
           </>
         )}
       </Space>
