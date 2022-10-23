@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Button, Row, Typography } from 'antd'
 import React, { FC, useCallback, useMemo } from 'react'
 
-import LoadableData from 'components/LoadableData'
+import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import useCreateTaskComment from 'modules/task/features/TaskView/hooks/useCreateTaskComment'
 import useGetTaskCommentList from 'modules/task/features/TaskView/hooks/useGetTaskCommentList'
@@ -90,21 +90,22 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
         isLoading={createCommentIsLoading}
       />
 
-      <LoadableData
-        isLoading={commentListIsFetching}
-        noContent={!commentsExist && <Text>Комментариев пока нет</Text>}
-      >
+      <LoadingArea isLoading={commentListIsFetching}>
         <Space size='large' direction='vertical'>
-          {displayableComments.map((comment) => (
-            <TaskComment
-              key={comment.id}
-              text={comment.text}
-              author={comment.author}
-              createdAt={comment.createdAt}
-            />
-          ))}
+          {!commentListIsFetching && !commentsExist ? (
+            <Text>Комментариев пока нет</Text>
+          ) : (
+            displayableComments.map((comment) => (
+              <TaskComment
+                key={comment.id}
+                text={comment.text}
+                author={comment.author}
+                createdAt={comment.createdAt}
+              />
+            ))
+          )}
         </Space>
-      </LoadableData>
+      </LoadingArea>
     </Space>
   )
 }
