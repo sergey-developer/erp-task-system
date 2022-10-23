@@ -46,25 +46,10 @@ export enum TaskJournalSourceEnum {
   ITSM = 'ITSM',
 }
 
-export enum TaskCommentTypeEnum {
-  Common = 'COMMON',
-  Awaiting = 'AWAITING',
-  Reclassified = 'RECLASSIFIED',
-  Completed = 'COMPLETED',
-  System = 'SYSTEM',
-}
-
 export enum ReclassificationReasonEnum {
   WrongClassification = 'WRONG_CLASSIFICATION',
   WrongSupportGroup = 'WRONG_SUPPORT_GROUP',
   DivideTask = 'DIVIDE_TASK',
-}
-
-export enum ReclassificationRequestStatusEnum {
-  Created = 'CREATED',
-  Approved = 'APPROVED',
-  Denied = 'DENIED',
-  InProgress = 'IN_PROGRESS',
 }
 
 export enum TaskTypeEnum {
