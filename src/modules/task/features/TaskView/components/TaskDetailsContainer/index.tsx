@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 
 import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useCreateTaskReclassificationRequest'
@@ -77,12 +77,6 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     state: { isLoading: updateAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 
-  useEffect(() => {
-    if (isGetTaskError) {
-      closeTaskDetails()
-    }
-  }, [isGetTaskError, closeTaskDetails])
-
   return (
     <TaskDetails
       details={task}
@@ -107,6 +101,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       additionalInfoExpanded={additionalInfoExpanded}
       onExpandAdditionalInfo={onExpandAdditionalInfo}
       closeTaskDetails={closeTaskDetails}
+      isGetTaskError={isGetTaskError}
     />
   )
 }

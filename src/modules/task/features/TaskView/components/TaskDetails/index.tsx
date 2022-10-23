@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { FormInstance } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
-import React, { FC, useCallback } from 'react'
+import React, { FC, useCallback, useEffect } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
@@ -120,6 +120,8 @@ type TaskDetailsProps = {
   onExpandAdditionalInfo: () => void
 
   closeTaskDetails: () => void
+
+  isGetTaskError: boolean
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
@@ -149,6 +151,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   onExpandAdditionalInfo,
 
   closeTaskDetails,
+
+  isGetTaskError,
 }) => {
   const breakpoints = useBreakpoint()
 
@@ -178,6 +182,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const debouncedOpenTaskReclassificationModal = useDebounceFn(
     openTaskReclassificationModal,
   )
+
+  useEffect(() => {
+    if (isGetTaskError) closeTaskDetails()
+  }, [isGetTaskError, closeTaskDetails])
 
   const handleResolutionSubmit = useCallback<
     TaskResolutionModalProps['onSubmit']
