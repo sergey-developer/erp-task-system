@@ -90,19 +90,20 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
         isLoading={createCommentIsLoading}
       />
 
-      <LoadableData
-        isLoading={commentListIsFetching}
-        noContent={!commentsExist && <Text>Комментариев пока нет</Text>}
-      >
+      <LoadableData isLoading={commentListIsFetching}>
         <Space size='large' direction='vertical'>
-          {displayableComments.map((comment) => (
-            <TaskComment
-              key={comment.id}
-              text={comment.text}
-              author={comment.author}
-              createdAt={comment.createdAt}
-            />
-          ))}
+          {!commentListIsFetching && !commentsExist ? (
+            <Text>Комментариев пока нет</Text>
+          ) : (
+            displayableComments.map((comment) => (
+              <TaskComment
+                key={comment.id}
+                text={comment.text}
+                author={comment.author}
+                createdAt={comment.createdAt}
+              />
+            ))
+          )}
         </Space>
       </LoadableData>
     </Space>

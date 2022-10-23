@@ -1,26 +1,18 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 
-import Spinner from 'components/Spinner'
+import Spinner, { SpinnerProps } from 'components/Spinner'
 import { FCWithChildren } from 'shared/interfaces/utils'
 
-type LoadableDataProps = {
+type LoadableDataProps = SpinnerProps & {
   isLoading: boolean
-  noContent?: ReactNode
 }
 
 const LoadableData: FCWithChildren<LoadableDataProps> = ({
   children,
-  noContent,
   isLoading,
   ...props
 }) => {
-  return isLoading ? (
-    <Spinner {...props} />
-  ) : !isLoading && noContent ? (
-    <>{noContent}</>
-  ) : (
-    <>{children}</>
-  )
+  return isLoading ? <Spinner {...props} /> : <>{children}</>
 }
 
 export default LoadableData

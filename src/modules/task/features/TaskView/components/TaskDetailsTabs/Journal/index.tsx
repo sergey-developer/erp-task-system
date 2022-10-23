@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Row } from 'antd'
+import { Button, Col, Divider, Row, Typography } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
@@ -18,6 +18,8 @@ import formatDate from 'shared/utils/date/formatDate'
 import { NO_DATA_MSG, journalEntryTypeDict } from './constants'
 import JournalEntry from './JournalEntry'
 import { getJournalCsvFilename } from './utils'
+
+const { Text } = Typography
 
 type JournalProps = {
   taskId: number
@@ -47,46 +49,48 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
   }
 
   return (
-    <LoadableData
-      data-testid='spinner-journal'
-      isLoading={journalIsFetching}
-      noContent={isEmpty(journal) && NO_DATA_MSG}
-    >
+    <LoadableData data-testid='spinner-journal' isLoading={journalIsFetching}>
       <Space direction='vertical' $block>
-        <Row justify='end'>
-          <Button
-            data-testid='journal-btn-download'
-            type='link'
-            onClick={handleGetJournalCsv}
-            loading={journalCsvIsFetching}
-            icon={
-              <DownloadIcon
-                data-testid='journal-icon-download'
-                $color='black'
+        {!journalIsFetching && isEmpty(journal) ? (
+          <Text>{NO_DATA_MSG}</Text>
+        ) : (
+          <>
+            <Row justify='end'>
+              <Button
+                data-testid='journal-btn-download'
+                type='link'
+                onClick={handleGetJournalCsv}
+                loading={journalCsvIsFetching}
+                icon={
+                  <DownloadIcon
+                    data-testid='journal-icon-download'
+                    $color='black'
+                  />
+                }
               />
-            }
-          />
-        </Row>
+            </Row>
 
-        <Row>
-          {journal.map((item, index, array) => {
-            const isLastItem: boolean = index === array.length - 1
+            <Row>
+              {journal.map((item, index, array) => {
+                const isLastItem: boolean = index === array.length - 1
 
-            return (
-              <Col key={item.id} span={24}>
-                <JournalEntry
-                  createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
-                  type={journalEntryTypeDict[item.type]}
-                  author={item.author ? getFullUserName(item.author) : null}
-                  description={item.description}
-                  sourceSystem={item.sourceSystem}
-                />
+                return (
+                  <Col key={item.id} span={24}>
+                    <JournalEntry
+                      createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
+                      type={journalEntryTypeDict[item.type]}
+                      author={item.author ? getFullUserName(item.author) : null}
+                      description={item.description}
+                      sourceSystem={item.sourceSystem}
+                    />
 
-                {!isLastItem && <Divider />}
-              </Col>
-            )
-          })}
-        </Row>
+                    {!isLastItem && <Divider />}
+                  </Col>
+                )
+              })}
+            </Row>
+          </>
+        )}
       </Space>
     </LoadableData>
   )
