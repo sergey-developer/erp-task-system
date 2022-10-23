@@ -21,11 +21,11 @@ import { getJournalCsvFilename } from './utils'
 
 const { Text } = Typography
 
-type JournalProps = {
+type JournalTabProps = {
   taskId: number
 }
 
-const Journal: FC<JournalProps> = ({ taskId }) => {
+const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
   const { data: journal = [], isFetching: journalIsFetching } =
     useGetTaskJournal(taskId)
 
@@ -96,4 +96,4 @@ const Journal: FC<JournalProps> = ({ taskId }) => {
   )
 }
 
-export default Journal
+export default JournalTab

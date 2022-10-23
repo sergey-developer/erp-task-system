@@ -23,12 +23,12 @@ import TaskComment from './TaskComment'
 const { Title, Text } = Typography
 const DEFAULT_DISPLAYABLE_COUNT: number = 3
 
-type CommentListProps = {
+type CommentListTabProps = {
   title: string
   taskId: TaskDetailsModel['id']
 }
 
-const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
+const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
   const {
     fn: createComment,
     state: { isLoading: createCommentIsLoading },
@@ -110,4 +110,4 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
   )
 }
 
-export default CommentList
+export default CommentListTab
