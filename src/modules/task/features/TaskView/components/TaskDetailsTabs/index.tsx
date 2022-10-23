@@ -6,11 +6,11 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 
 import DetailsWrapper from '../TaskDetails/DetailsWrapper'
 import { TaskDetailsTabsEnum, taskDetailsTabNamesDict } from './constants'
-import Description from './Description'
-import Resolution from './Resolution'
+import DescriptionTab from './DescriptionTab'
+import ResolutionTab from './ResolutionTab'
 
-const Journal = React.lazy(() => import('./Journal'))
-const CommentList = React.lazy(() => import('./CommentList'))
+const JournalTab = React.lazy(() => import('./JournalTab'))
+const CommentListTab = React.lazy(() => import('./CommentListTab'))
 
 const { TabPane } = Tabs
 
@@ -30,7 +30,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
         key={TaskDetailsTabsEnum.Description}
       >
         <DetailsWrapper>
-          <Description
+          <DescriptionTab
             title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Description]}
             description={details.description}
           />
@@ -43,7 +43,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
       >
         <DetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <CommentList
+            <CommentListTab
               title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Comments]}
               taskId={details.id}
             />
@@ -56,7 +56,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
         key={TaskDetailsTabsEnum.Resolution}
       >
         <DetailsWrapper>
-          <Resolution
+          <ResolutionTab
             type={details.type}
             title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Resolution]}
             techResolution={details.techResolution}
@@ -71,7 +71,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
       >
         <DetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <Journal taskId={details.id} />
+            <JournalTab taskId={details.id} />
           </React.Suspense>
         </DetailsWrapper>
       </TabPane>
