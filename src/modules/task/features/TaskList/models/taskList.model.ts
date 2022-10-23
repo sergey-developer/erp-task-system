@@ -8,5 +8,5 @@ export type TaskListItemModel = BaseTaskModel & {
     'id' | 'firstName' | 'lastName' | 'middleName'
   >
   lastComment: string
-  workGroup: MaybeNull<WorkGroupListItemModel>
+  workGroup: MaybeNull<Pick<WorkGroupListItemModel, 'id' | 'name'>>
 }

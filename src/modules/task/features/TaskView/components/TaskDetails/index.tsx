@@ -18,7 +18,7 @@ import {
   ResolveTaskMutationArgsModel,
   TakeTaskMutationArgsModel,
   TaskDetailsModel,
-  TaskDetailsReclassificationRequestModel,
+  TaskReclassificationRequestModel,
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskWorkGroupMutationArgsModel,
 } from 'modules/task/features/TaskView/models'
@@ -94,7 +94,7 @@ type TaskDetailsProps = {
 
   taskIsLoading: boolean
 
-  reclassificationRequest: MaybeNull<TaskDetailsReclassificationRequestModel>
+  reclassificationRequest: MaybeNull<TaskReclassificationRequestModel>
   createReclassificationRequest: (
     data: CreateTaskReclassificationRequestMutationArgsModel,
   ) => Promise<void>

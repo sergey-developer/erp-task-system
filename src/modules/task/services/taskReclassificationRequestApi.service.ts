@@ -2,7 +2,7 @@ import { TaskEndpointsTagsEnum } from 'modules/task/constants/api'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
   GetTaskReclassificationRequestQueryArgsModel,
-  TaskDetailsReclassificationRequestModel,
+  GetTaskReclassificationRequestResponseModel,
 } from 'modules/task/features/TaskView/models'
 import {
   getCreateTaskReclassificationRequestUrl,
@@ -29,7 +29,7 @@ const taskReclassificationRequestApiService = apiService
         invalidatesTags: [TaskEndpointsTagsEnum.TaskReclassificationRequest],
       }),
       getReclassificationRequest: build.query<
-        TaskDetailsReclassificationRequestModel,
+        GetTaskReclassificationRequestResponseModel,
         GetTaskReclassificationRequestQueryArgsModel
       >({
         query: (taskId) => ({
