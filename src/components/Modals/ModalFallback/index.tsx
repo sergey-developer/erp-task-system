@@ -10,8 +10,8 @@ const ModalFallback: FC<ModalFallbackProps> = (props) => {
   return (
     <Modal
       width={DEFAULT_MODAL_WIDTH}
-      {...props}
       destroyOnClose
+      {...props}
       footer={null}
       maskClosable={false}
     >

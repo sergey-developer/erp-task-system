@@ -9,9 +9,7 @@ import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
 } from 'modules/task/features/TaskView/components/TaskFirstLineModal/interfaces'
-import TaskSecondLineModal, {
-  TaskSecondLineModalProps,
-} from 'modules/task/features/TaskView/components/TaskSecondLineModal'
+import { TaskSecondLineModalProps } from 'modules/task/features/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/features/TaskView/permissions/taskWorkGroup.permissions'
 import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
@@ -22,6 +20,10 @@ import valueOr from 'shared/utils/common/valueOr'
 
 const TaskFirstLineModal = React.lazy(
   () => import('modules/task/features/TaskView/components/TaskFirstLineModal'),
+)
+
+const TaskSecondLineModal = React.lazy(
+  () => import('modules/task/features/TaskView/components/TaskSecondLineModal'),
 )
 
 const { Text } = Typography
@@ -157,17 +159,6 @@ const WorkGroup: FC<WorkGroupProps> = ({
         <Text>{valueOr(workGroup?.name, 'I линия поддержки')}</Text>
       </Space>
 
-      {isTaskSecondLineModalOpened && (
-        <TaskSecondLineModal
-          id={id}
-          onCancel={debouncedToggleOpenTaskSecondLineModal}
-          workGroupList={workGroupList}
-          workGroupListIsLoading={workGroupListIsLoading}
-          onSubmit={handleTransferTaskToSecondLine}
-          isLoading={transferTaskToSecondLineIsLoading}
-        />
-      )}
-
       {isTaskFirstLineModalOpened && (
         <React.Suspense
           fallback={
@@ -182,6 +173,26 @@ const WorkGroup: FC<WorkGroupProps> = ({
             isLoading={transferTaskToFirstLineIsLoading}
             onSubmit={handleTransferTaskToFirstLine}
             onCancel={debouncedToggleOpenTaskFirstLineModal}
+          />
+        </React.Suspense>
+      )}
+
+      {isTaskSecondLineModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              visible={isTaskSecondLineModalOpened}
+              onCancel={toggleOpenTaskSecondLineModal}
+            />
+          }
+        >
+          <TaskSecondLineModal
+            id={id}
+            onCancel={debouncedToggleOpenTaskSecondLineModal}
+            workGroupList={workGroupList}
+            workGroupListIsLoading={workGroupListIsLoading}
+            onSubmit={handleTransferTaskToSecondLine}
+            isLoading={transferTaskToSecondLineIsLoading}
           />
         </React.Suspense>
       )}
