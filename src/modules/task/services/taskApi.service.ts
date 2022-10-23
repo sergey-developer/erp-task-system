@@ -4,12 +4,14 @@ import {
 } from 'modules/task/constants/api'
 import { GetTaskListTransformedResponse } from 'modules/task/features/TaskList/interfaces'
 import {
+  GetTaskCountersQueryArgsModel,
   GetTaskCountersResponseModel,
   GetTaskListQueryArgsModel,
   GetTaskListResponseModel,
 } from 'modules/task/features/TaskList/models'
 import {
   DeleteTaskWorkGroupMutationArgsModel,
+  DeleteTaskWorkGroupResponseModel,
   GetTaskJournalCsvQueryArgsModel,
   GetTaskJournalCsvResponseModel,
   GetTaskJournalQueryArgsModel,
@@ -17,9 +19,13 @@ import {
   GetTaskQueryArgsModel,
   GetTaskResponseModel,
   ResolveTaskMutationArgsModel,
+  ResolveTaskResponseModel,
   TakeTaskMutationArgsModel,
+  TakeTaskResponseModel,
   UpdateTaskAssigneeMutationArgsModel,
+  UpdateTaskAssigneeResponseModel,
   UpdateTaskWorkGroupMutationArgsModel,
+  UpdateTaskWorkGroupResponseModel,
 } from 'modules/task/features/TaskView/models'
 import {
   getResolveTaskUrl,
@@ -43,10 +49,10 @@ const taskApiService = apiService
         GetTaskListTransformedResponse,
         GetTaskListQueryArgsModel
       >({
-        query: (data) => ({
+        query: (filter) => ({
           url: TaskEndpointsEnum.TaskList,
           method: HttpMethodEnum.Get,
-          params: data,
+          params: filter,
         }),
         // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
         transformResponse: (response: GetTaskListResponseModel, meta, arg) => {
@@ -62,21 +68,27 @@ const taskApiService = apiService
         providesTags: (result, error) =>
           error ? [] : [TaskEndpointsTagsEnum.TaskList],
       }),
-      getTaskCounters: build.query<GetTaskCountersResponseModel, null>({
+      getTaskCounters: build.query<
+        GetTaskCountersResponseModel,
+        GetTaskCountersQueryArgsModel
+      >({
         query: () => ({
           url: TaskEndpointsEnum.TaskCounters,
           method: HttpMethodEnum.Get,
         }),
       }),
       getTask: build.query<GetTaskResponseModel, GetTaskQueryArgsModel>({
-        query: (id) => ({
-          url: getTaskUrl(id),
+        query: (taskId) => ({
+          url: getTaskUrl(taskId),
           method: HttpMethodEnum.Get,
         }),
         providesTags: (result, error) =>
           error ? [] : [TaskEndpointsTagsEnum.Task],
       }),
-      resolveTask: build.mutation<void, ResolveTaskMutationArgsModel>({
+      resolveTask: build.mutation<
+        ResolveTaskResponseModel,
+        ResolveTaskMutationArgsModel
+      >({
         query: ({ taskId, ...body }) => ({
           url: getResolveTaskUrl(taskId),
           method: HttpMethodEnum.Post,
@@ -85,7 +97,10 @@ const taskApiService = apiService
         invalidatesTags: (result, error) =>
           error ? [] : [TaskEndpointsTagsEnum.TaskList],
       }),
-      takeTask: build.mutation<void, TakeTaskMutationArgsModel>({
+      takeTask: build.mutation<
+        TakeTaskResponseModel,
+        TakeTaskMutationArgsModel
+      >({
         query: ({ taskId }) => ({
           url: getTakeTaskUrl(taskId),
           method: HttpMethodEnum.Post,
@@ -94,7 +109,7 @@ const taskApiService = apiService
           error ? [] : [TaskEndpointsTagsEnum.Task],
       }),
       updateTaskWorkGroup: build.mutation<
-        void,
+        UpdateTaskWorkGroupResponseModel,
         UpdateTaskWorkGroupMutationArgsModel
       >({
         query: ({ taskId, ...body }) => ({
@@ -106,7 +121,7 @@ const taskApiService = apiService
           error ? [] : [TaskEndpointsTagsEnum.TaskList],
       }),
       deleteTaskWorkGroup: build.mutation<
-        void,
+        DeleteTaskWorkGroupResponseModel,
         DeleteTaskWorkGroupMutationArgsModel
       >({
         query: ({ taskId, ...body }) => ({
@@ -118,7 +133,7 @@ const taskApiService = apiService
           error ? [] : [TaskEndpointsTagsEnum.TaskList],
       }),
       updateTaskAssignee: build.mutation<
-        void,
+        UpdateTaskAssigneeResponseModel,
         UpdateTaskAssigneeMutationArgsModel
       >({
         query: ({ taskId, ...body }) => ({

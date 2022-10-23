@@ -1,6 +1,7 @@
 import { TaskEndpointsTagsEnum } from 'modules/task/constants/api'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
+  CreateTaskReclassificationRequestResponseModel,
   GetTaskReclassificationRequestQueryArgsModel,
   GetTaskReclassificationRequestResponseModel,
 } from 'modules/task/features/TaskView/models'
@@ -18,7 +19,7 @@ const taskReclassificationRequestApiService = apiService
   .injectEndpoints({
     endpoints: (build) => ({
       createReclassificationRequest: build.mutation<
-        void,
+        CreateTaskReclassificationRequestResponseModel,
         CreateTaskReclassificationRequestMutationArgsModel
       >({
         query: ({ taskId, ...body }) => ({

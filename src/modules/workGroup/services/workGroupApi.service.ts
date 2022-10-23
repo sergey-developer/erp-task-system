@@ -1,11 +1,17 @@
 import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
-import { GetWorkGroupListResponseModel } from 'modules/workGroup/features/WorkGroupList/models'
+import {
+  GetWorkGroupListQueryArgsModel,
+  GetWorkGroupListResponseModel,
+} from 'modules/workGroup/features/WorkGroupList/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
 const workGroupApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
-    getWorkGroupList: build.query<GetWorkGroupListResponseModel, null>({
+    getWorkGroupList: build.query<
+      GetWorkGroupListResponseModel,
+      GetWorkGroupListQueryArgsModel
+    >({
       query: () => ({
         url: WorkGroupEndpointsEnum.WorkGroupList,
         method: HttpMethodEnum.Get,
