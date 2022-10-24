@@ -16,5 +16,4 @@ export enum TaskEndpointsEnum {
 export enum TaskEndpointsTagsEnum {
   Task = 'Task',
   TaskList = 'TaskList',
-  TaskReclassificationRequest = 'TaskReclassificationRequest',
 }
