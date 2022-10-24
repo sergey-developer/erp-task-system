@@ -1,5 +1,7 @@
 import {
   getBadRequestErrorMockFn,
+  getForbiddenErrorMockFn,
+  getNotFoundErrorMockFn,
   getRequestMockFn,
   getSuccessMockFn,
 } from '_tests_/mocks/request'
@@ -50,3 +52,11 @@ export const mockCreateTaskCommentBadRequestError =
   getBadRequestErrorMockFn<CreateCommentFormErrors>(createTaskCommentMockFn, {
     body: { comment: [REQUIRED_FIELD_MSG] },
   })
+
+export const mockCreateTaskCommentNotFoundError = getNotFoundErrorMockFn(
+  createTaskCommentMockFn,
+)
+
+export const mockCreateTaskCommentForbiddenError = getForbiddenErrorMockFn(
+  createTaskCommentMockFn,
+)
