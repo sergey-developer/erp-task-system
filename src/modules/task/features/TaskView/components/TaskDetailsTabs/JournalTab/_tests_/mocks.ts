@@ -1,43 +1,36 @@
 import {
-  getRequestMocker,
-  getServerErrorMocker,
-  getSuccessMocker,
+  getRequestMockFn,
+  getServerErrorMockFn,
+  getSuccessMockFn,
 } from '_tests_/mocks/request'
-import { getResponseResolver } from '_tests_/mocks/response'
 import { generateId } from '_tests_/utils'
 import { TaskJournalModel } from 'modules/task/features/TaskView/models'
 import {
   getTaskJournalCsvUrl,
   getTaskJournalUrl,
 } from 'modules/task/utils/apiUrls'
-import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 export const FAKE_TASK_ID = generateId()
 
-const getJournalMocker = getRequestMocker(
+const getJournalMockFn = getRequestMockFn(
   HttpMethodEnum.Get,
   getTaskJournalUrl(FAKE_TASK_ID),
 )
 
-const getJournalCsvMocker = getRequestMocker(
+const getJournalCsvMockFn = getRequestMockFn(
   HttpMethodEnum.Get,
   getTaskJournalCsvUrl(FAKE_TASK_ID),
 )
 
 export const mockGetJournalSuccess = (response: TaskJournalModel) => {
-  const mockGetJournal = getJournalMocker(
-    getResponseResolver({
-      status: HttpCodeEnum.Ok,
-      body: response,
-    }),
-  )
-
+  const mockGetJournal = getSuccessMockFn(getJournalMockFn, { body: response })
   mockGetJournal()
 }
 
-export const mockGetJournalCsvSuccess = getSuccessMocker(getJournalCsvMocker)
+export const mockGetJournalCsvSuccess = getSuccessMockFn(getJournalCsvMockFn)
 
 export const mockGetJournalCsvServerError =
-  getServerErrorMocker(getJournalCsvMocker)
+  getServerErrorMockFn(getJournalCsvMockFn)
 
-export const mockGetJournalServerError = getServerErrorMocker(getJournalMocker)
+export const mockGetJournalServerError = getServerErrorMockFn(getJournalMockFn)

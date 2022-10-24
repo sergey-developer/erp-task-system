@@ -2,7 +2,6 @@ import moment from 'moment'
 
 import { getWorkGroupList } from '_fixtures_/workGroup'
 import {
-  generateId,
   generateName,
   getSelect,
   getSelectOption,
@@ -642,7 +641,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess([])
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
@@ -656,7 +654,6 @@ describe('Расширенный фильтр', () => {
     describe(`Для роли ${UserRolesEnum.Engineer}`, () => {
       test('Не отображается', () => {
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.Engineer,
         })
 
@@ -672,7 +669,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess([])
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -690,7 +686,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess([])
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.HeadOfDepartment,
         })
 
@@ -708,7 +703,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess(getWorkGroupList())
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -727,7 +721,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess(workGroupList)
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -754,7 +747,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess([])
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -773,7 +765,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess(mockedWorkGroupList)
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -800,7 +791,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess(mockedWorkGroupList)
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -831,7 +821,6 @@ describe('Расширенный фильтр', () => {
           mockGetWorkGroupListSuccess(mockedWorkGroupList)
 
           const store = getStoreWithAuth({
-            userId: generateId(),
             userRole: UserRolesEnum.SeniorEngineer,
           })
 
@@ -859,7 +848,6 @@ describe('Расширенный фильтр', () => {
           mockGetWorkGroupListSuccess(mockedWorkGroupList)
 
           const store = getStoreWithAuth({
-            userId: generateId(),
             userRole: UserRolesEnum.SeniorEngineer,
           })
 

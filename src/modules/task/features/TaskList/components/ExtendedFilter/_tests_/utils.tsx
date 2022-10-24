@@ -1,17 +1,10 @@
-import { screen, within } from '_tests_/utils'
+import { getButton, screen, within } from '_tests_/utils'
 import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getCloseButton = (): HTMLButtonElement =>
-  screen.getByRole('button', { name: 'Close' })
-
-export const getApplyButton = (): HTMLButtonElement =>
-  screen.getByRole('button', { name: 'Применить' })
-
-export const getResetAllButton = (): HTMLButtonElement =>
-  screen.getByRole('button', {
-    name: 'Сбросить все',
-  })
+export const getCloseButton = () => getButton('Close')
+export const getApplyButton = () => getButton(/Применить/i)
+export const getResetAllButton = () => getButton(/Сбросить все/i)
 
 export const getStatusContainer = () =>
   screen.getByTestId('filter-extended-status')

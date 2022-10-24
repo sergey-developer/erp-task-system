@@ -10,39 +10,40 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
-import AddCommentForm from './AddCommentForm'
-import {
-  AddCommentFormErrors,
-  AddCommentFormProps,
-} from './AddCommentForm/interfaces'
 import CommentList from './CommentList'
+import CreateCommentForm from './CreateCommentForm'
+import {
+  CreateCommentFormErrors,
+  CreateCommentFormProps,
+} from './CreateCommentForm/interfaces'
 
 const { Title } = Typography
 const DEFAULT_DISPLAYABLE_COUNT: number = 3
 
-type CommentListTabProps = {
+export type CommentListTabProps = {
   title: string
   taskId: TaskDetailsModel['id']
 }
 
 const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
+  const { data: commentList = [], isFetching: commentListIsFetching } =
+    useGetTaskCommentList(taskId)
+
   const {
     fn: createComment,
     state: { isLoading: createCommentIsLoading },
   } = useCreateTaskComment()
 
-  const { data: commentList = [], isFetching: commentListIsFetching } =
-    useGetTaskCommentList(taskId)
-
   const [expanded, { toggle: toggleExpanded }] = useBoolean(false)
 
-  const handleCreateComment = useCallback<AddCommentFormProps['onSubmit']>(
-    async (values, setFields) => {
+  const handleCreateComment = useCallback<CreateCommentFormProps['onSubmit']>(
+    async (values, form) => {
       try {
         await createComment({ taskId, ...values })
+        form.resetFields()
       } catch (exception) {
-        const error = exception as ErrorResponse<AddCommentFormErrors>
-        handleSetFieldsErrors(error, setFields)
+        const error = exception as ErrorResponse<CreateCommentFormErrors>
+        handleSetFieldsErrors(error, form.setFields)
       }
     },
     [createComment, taskId],
@@ -70,7 +71,7 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
         )}
       </Row>
 
-      <AddCommentForm
+      <CreateCommentForm
         onSubmit={handleCreateComment}
         isLoading={createCommentIsLoading}
       />

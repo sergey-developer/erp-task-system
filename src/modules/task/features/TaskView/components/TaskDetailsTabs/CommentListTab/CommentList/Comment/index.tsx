@@ -13,7 +13,7 @@ type CommentProps = Pick<TaskCommentModel, 'createdAt' | 'text'> & {
 
 const Comment: FC<CommentProps> = ({ text, createdAt, author }) => {
   return (
-    <Space direction='vertical' $block>
+    <Space data-testid='task-comment' direction='vertical' $block>
       <SeparatedText>
         <Text type='secondary'>{author}</Text>
         <Text type='secondary'>{createdAt}</Text>
