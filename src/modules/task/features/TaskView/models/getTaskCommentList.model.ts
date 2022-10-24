@@ -1,5 +1,5 @@
+import { TaskCommentModel } from './taskComment.model'
 import { TaskDetailsModel } from './taskDetails.model'
-import { TaskDetailsCommentModel } from './taskDetailsComment.model'
 
 export type GetTaskCommentListQueryArgsModel = TaskDetailsModel['id']
-export type GetTaskCommentListResponseModel = Array<TaskDetailsCommentModel>
+export type GetTaskCommentListResponseModel = Array<TaskCommentModel>

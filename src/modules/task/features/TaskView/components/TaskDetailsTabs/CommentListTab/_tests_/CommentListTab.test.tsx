@@ -18,7 +18,7 @@ import {
   getFormContainer,
   getSubmitButton,
 } from '../CreateCommentForm/_tests_/utils'
-import CommentList from '../index'
+import CommentListTab from '../index'
 import { baseProps } from './constants'
 import {
   mockCreateTaskCommentBadRequestError,
@@ -29,10 +29,10 @@ import { getFirstComment } from './utils'
 
 setupApiTests()
 
-describe('Список комментариев заявки', () => {
+describe('Вкладка списка комментариев заявки', () => {
   describe('Форма добавления заявки', () => {
     test('Отображается', () => {
-      render(<CommentList {...baseProps} />)
+      render(<CommentListTab {...baseProps} />)
 
       const formContainer = getFormContainer()
       expect(formContainer).toBeInTheDocument()
@@ -46,7 +46,7 @@ describe('Список комментариев заявки', () => {
 
         const store = getStoreWithAuth()
 
-        const { user } = render(<CommentList {...baseProps} />, { store })
+        const { user } = render(<CommentListTab {...baseProps} />, { store })
 
         const submitButton = getSubmitButton()
         const commentField = getCommentField()
@@ -72,7 +72,7 @@ describe('Список комментариев заявки', () => {
 
         const store = getStoreWithAuth()
 
-        const { user } = render(<CommentList {...baseProps} />, { store })
+        const { user } = render(<CommentListTab {...baseProps} />, { store })
 
         const submitButton = getSubmitButton()
         const commentField = getCommentField()
@@ -95,7 +95,7 @@ describe('Список комментариев заявки', () => {
         mockCreateTaskCommentBadRequestError()
 
         const store = getStoreWithAuth()
-        const { user } = render(<CommentList {...baseProps} />, { store })
+        const { user } = render(<CommentListTab {...baseProps} />, { store })
 
         const submitButton = getSubmitButton()
         const commentField = getCommentField()

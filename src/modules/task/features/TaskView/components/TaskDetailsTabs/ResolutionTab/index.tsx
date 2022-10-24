@@ -8,14 +8,14 @@ import { commonEllipsisConfig } from 'shared/constants/text'
 
 const { Title, Paragraph } = Typography
 
-type ResolutionProps = Pick<
+type ResolutionTabProps = Pick<
   TaskDetailsModel,
   'type' | 'techResolution' | 'userResolution'
 > & {
   title: string
 }
 
-const Resolution: FC<ResolutionProps> = ({
+const ResolutionTab: FC<ResolutionTabProps> = ({
   type,
   title,
   userResolution,
@@ -48,4 +48,4 @@ const Resolution: FC<ResolutionProps> = ({
   )
 }
 
-export default Resolution
+export default ResolutionTab

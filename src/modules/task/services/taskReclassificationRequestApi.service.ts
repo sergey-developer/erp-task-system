@@ -1,24 +1,26 @@
 import { TaskEndpointsTagsEnum } from 'modules/task/constants/api'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
+  CreateTaskReclassificationRequestResponseModel,
   GetTaskReclassificationRequestQueryArgsModel,
-  TaskDetailsReclassificationRequestModel,
+  GetTaskReclassificationRequestResponseModel,
 } from 'modules/task/features/TaskView/models'
 import {
   getCreateTaskReclassificationRequestUrl,
   getTaskReclassificationRequestUrl,
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
 
-const taskReclassificationRequestApiService = apiService
+import taskApiService from './taskApi.service'
+
+const taskReclassificationRequestApiService = taskApiService
   .enhanceEndpoints({
     addTagTypes: [TaskEndpointsTagsEnum.TaskReclassificationRequest],
   })
   .injectEndpoints({
     endpoints: (build) => ({
       createReclassificationRequest: build.mutation<
-        void,
+        CreateTaskReclassificationRequestResponseModel,
         CreateTaskReclassificationRequestMutationArgsModel
       >({
         query: ({ taskId, ...body }) => ({
@@ -29,7 +31,7 @@ const taskReclassificationRequestApiService = apiService
         invalidatesTags: [TaskEndpointsTagsEnum.TaskReclassificationRequest],
       }),
       getReclassificationRequest: build.query<
-        TaskDetailsReclassificationRequestModel,
+        GetTaskReclassificationRequestResponseModel,
         GetTaskReclassificationRequestQueryArgsModel
       >({
         query: (taskId) => ({

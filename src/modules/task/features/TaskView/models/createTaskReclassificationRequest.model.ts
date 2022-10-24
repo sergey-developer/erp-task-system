@@ -6,3 +6,5 @@ export type CreateTaskReclassificationRequestMutationArgsModel =
     comment: string
     reclassificationReason: ReclassificationReasonEnum
   }
+
+export type CreateTaskReclassificationRequestResponseModel = void

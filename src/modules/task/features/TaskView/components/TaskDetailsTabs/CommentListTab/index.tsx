@@ -1,34 +1,31 @@
 import { useBoolean } from 'ahooks'
 import { Button, Row, Typography } from 'antd'
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { FC, useCallback } from 'react'
 
-import LoadableData from 'components/LoadableData'
+import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import useCreateTaskComment from 'modules/task/features/TaskView/hooks/useCreateTaskComment'
 import useGetTaskCommentList from 'modules/task/features/TaskView/hooks/useGetTaskCommentList'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import getShortUserName from 'modules/user/utils/getShortUserName'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { ErrorResponse } from 'shared/services/api'
-import formatDate from 'shared/utils/date/formatDate'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
+import CommentList from './CommentList'
 import CreateCommentForm from './CreateCommentForm'
 import {
   CreateCommentFormErrors,
   CreateCommentFormProps,
 } from './CreateCommentForm/interfaces'
-import TaskComment from './TaskComment'
 
-const { Title, Text } = Typography
+const { Title } = Typography
 const DEFAULT_DISPLAYABLE_COUNT: number = 3
 
-export type CommentListProps = {
+export type CommentListTabProps = {
   title: string
   taskId: TaskDetailsModel['id']
 }
 
-const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
+const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
   const { data: commentList = [], isFetching: commentListIsFetching } =
     useGetTaskCommentList(taskId)
 
@@ -52,36 +49,24 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
     [createComment, taskId],
   )
 
-  const modifiedCommentList = useMemo(
-    () =>
-      commentList.map((comment) => ({
-        ...comment,
-        author: getShortUserName(comment.author),
-        createdAt: formatDate(comment.createdAt, DATE_TIME_FORMAT),
-      })),
-    [commentList],
-  )
-
-  const commentsExist: boolean = !!modifiedCommentList.length
-
   const isDisplayableCountExceed: boolean =
-    modifiedCommentList.length > DEFAULT_DISPLAYABLE_COUNT
+    commentList.length > DEFAULT_DISPLAYABLE_COUNT
 
   const displayableComments =
     isDisplayableCountExceed && expanded
-      ? modifiedCommentList
-      : modifiedCommentList.slice(0, DEFAULT_DISPLAYABLE_COUNT)
+      ? commentList
+      : commentList.slice(0, DEFAULT_DISPLAYABLE_COUNT)
 
   return (
     <Space direction='vertical' size='large' $block>
       <Row justify='space-between'>
         <Title level={5}>{title}</Title>
 
-        {commentsExist && isDisplayableCountExceed && (
+        {!!commentList.length && isDisplayableCountExceed && (
           <Button type='link' onClick={toggleExpanded}>
             {expanded
               ? 'Скрыть комментарии'
-              : `Отобразить все комментарии: ${modifiedCommentList.length}`}
+              : `Отобразить все комментарии: ${commentList.length}`}
           </Button>
         )}
       </Row>
@@ -91,23 +76,14 @@ const CommentList: FC<CommentListProps> = ({ title, taskId }) => {
         isLoading={createCommentIsLoading}
       />
 
-      <LoadableData
-        isLoading={commentListIsFetching}
-        noContent={!commentsExist && <Text>Комментариев пока нет</Text>}
-      >
-        <Space size='large' direction='vertical'>
-          {displayableComments.map((comment) => (
-            <TaskComment
-              key={comment.id}
-              text={comment.text}
-              author={comment.author}
-              createdAt={comment.createdAt}
-            />
-          ))}
-        </Space>
-      </LoadableData>
+      <LoadingArea isLoading={commentListIsFetching}>
+        <CommentList
+          isLoading={commentListIsFetching}
+          data={displayableComments}
+        />
+      </LoadingArea>
     </Space>
   )
 }
 
-export default CommentList
+export default CommentListTab

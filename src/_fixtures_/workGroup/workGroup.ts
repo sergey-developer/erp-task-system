@@ -13,5 +13,4 @@ export const getWorkGroup = ({
   members: [{ id: generateId(), fullName: generateName() }],
   seniorEngineer: { id: seniorEngineerId, fullName: generateName() },
   groupLead: { id: groupLeadId, fullName: generateName() },
-  engineers: [{ id: generateId(), fullName: generateName() }],
 })

@@ -1,8 +1,8 @@
 import { generateId, generateWord } from '_tests_/utils'
 
-import { CommentListProps } from '../index'
+import { CommentListTabProps } from '../index'
 
-export const baseProps: CommentListProps = {
+export const baseProps: CommentListTabProps = {
   title: generateWord(),
   taskId: generateId(),
 }

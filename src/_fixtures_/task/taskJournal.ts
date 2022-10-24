@@ -19,8 +19,6 @@ export const getJournalResponseSuccess: TaskJournalModel = [
       lastName: 'Александров 1',
       middleName: 'Александрович 1',
     },
-    task: 1,
-    updatedAt: new Date().toISOString(),
   },
   {
     id: 2,
@@ -34,7 +32,5 @@ export const getJournalResponseSuccess: TaskJournalModel = [
       lastName: 'Александров 2',
       middleName: 'Александрович 2',
     },
-    task: 1,
-    updatedAt: new Date().toISOString(),
   },
 ]
