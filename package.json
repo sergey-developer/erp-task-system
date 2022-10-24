@@ -80,8 +80,8 @@
           "shared",
           "styles",
           "app",
-          "_tests_",
-          "_fixtures_"
+          "fixtures",
+          "_tests_"
         ],
         "ignoredAliases": [],
         "bottomAliases": []

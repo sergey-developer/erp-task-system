@@ -1,6 +1,6 @@
-import { getTaskAssignee } from '_fixtures_/task'
 import { render } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
+import { getTaskAssignee } from 'fixtures/task'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,

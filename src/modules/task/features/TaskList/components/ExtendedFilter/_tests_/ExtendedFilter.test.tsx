@@ -1,6 +1,5 @@
 import moment from 'moment'
 
-import { getWorkGroupList } from '_fixtures_/workGroup'
 import {
   generateName,
   getSelect,
@@ -15,6 +14,7 @@ import {
   waitFinishLoadingBySelect,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
+import { getWorkGroupList } from 'fixtures/workGroup'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'

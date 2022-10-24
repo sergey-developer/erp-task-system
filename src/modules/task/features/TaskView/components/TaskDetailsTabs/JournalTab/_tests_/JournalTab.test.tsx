@@ -1,8 +1,8 @@
+import { render, screen, setupApiTests, within } from '_tests_/utils'
 import {
   getEmptyJournalResponseSuccess,
   getJournalResponseSuccess,
-} from '_fixtures_/task'
-import { render, screen, setupApiTests, within } from '_tests_/utils'
+} from 'fixtures/task'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
