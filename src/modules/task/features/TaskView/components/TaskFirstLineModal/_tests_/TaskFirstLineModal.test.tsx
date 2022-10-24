@@ -1,5 +1,18 @@
-import { generateString, render, screen } from '_tests_/utils'
+import {
+  generateString,
+  generateWord,
+  getButtonIn,
+  render,
+  screen,
+  waitStartLoadingByButton,
+} from '_tests_/utils'
 import { within } from '@testing-library/react'
+import {
+  DEFAULT_LONG_TEXT_LENGTH,
+  FIELD_CAN_NOT_BE_EMPTY_MSG,
+  REQUIRED_FIELD_MSG,
+  TEXT_MAX_LENGTH_MSG,
+} from 'shared/constants/validation'
 
 import TaskFirstLineModal from '../index'
 import { TaskFirstLineModalProps } from '../interfaces'
@@ -18,7 +31,19 @@ const getDescription = () =>
     name: 'Причина возврата',
   })
 
-describe('Модалка перевода запроса на первую линию', () => {
+const getSubmitButton = () => getButtonIn(getModal(), /Вернуть заявку/i)
+const getCancelButton = () => getButtonIn(getModal(), /Отменить/i)
+
+jest.setTimeout(10000)
+
+describe('Модальное окно перевода запроса на первую линию', () => {
+  test('Отображается корректно', () => {
+    render(<TaskFirstLineModal {...baseProps} />)
+
+    const modal = getModal()
+    expect(modal).toBeInTheDocument()
+  })
+
   test('Заголовок отображается корректно', () => {
     render(<TaskFirstLineModal {...baseProps} />)
 
@@ -26,6 +51,21 @@ describe('Модалка перевода запроса на первую ли�
     const recordId = within(modal).getByText(baseProps.recordId)
 
     expect(recordId).toBeInTheDocument()
+  })
+
+  test('Текст отображается корректно', () => {
+    render(<TaskFirstLineModal {...baseProps} />)
+
+    const modal = getModal()
+    const text1 = within(modal).getByText(
+      /Укажите причину возврата. Нажмите кнопку «Вернуть заявку»/i,
+    )
+    const text2 = within(modal).getByText(
+      /Заявка исчезнет из вашей очереди заявок. Просмотр заявки и работа с ней будут недоступны/i,
+    )
+
+    expect(text1).toBeInTheDocument()
+    expect(text2).toBeInTheDocument()
   })
 
   describe('Форма перевода заявки', () => {
@@ -38,6 +78,119 @@ describe('Модалка перевода запроса на первую ли�
         expect(description).toBeInTheDocument()
         expect(description).toBeEnabled()
         expect(description).not.toHaveValue()
+      })
+
+      test('Не активно при загрузке', () => {
+        render(<TaskFirstLineModal {...baseProps} isLoading />)
+
+        const description = getDescription()
+        expect(description).toBeDisabled()
+      })
+
+      test('Можно ввести значение', async () => {
+        const { user } = render(<TaskFirstLineModal {...baseProps} />)
+
+        const description = getDescription()
+        const descriptionText = generateWord()
+        await user.type(description, descriptionText)
+
+        expect(description).toHaveValue(descriptionText)
+      })
+
+      describe('Отображается ошибка', () => {
+        test('Если ввести только пробелы', async () => {
+          const { user } = render(<TaskFirstLineModal {...baseProps} />)
+
+          const description = getDescription()
+
+          await user.type(description, ' ')
+
+          const errorMessage = await screen.findByText(
+            FIELD_CAN_NOT_BE_EMPTY_MSG,
+          )
+          expect(errorMessage).toBeInTheDocument()
+        })
+
+        test('Если превысить лимит символов', async () => {
+          const { user } = render(<TaskFirstLineModal {...baseProps} />)
+
+          const description = getDescription()
+          const descriptionText = generateWord({
+            length: DEFAULT_LONG_TEXT_LENGTH + 1,
+          })
+
+          await user.type(description, descriptionText)
+
+          const errorMessage = await screen.findByText(
+            TEXT_MAX_LENGTH_MSG.replace(
+              // eslint-disable-next-line no-template-curly-in-string
+              '${max}',
+              String(DEFAULT_LONG_TEXT_LENGTH),
+            ),
+          )
+
+          expect(errorMessage).toBeInTheDocument()
+        })
+
+        test('Если не заполнить поле и нажать кнопку отправки', async () => {
+          const { user } = render(<TaskFirstLineModal {...baseProps} />)
+
+          const submitButton = getSubmitButton()
+          await user.click(submitButton)
+
+          const errorMessage = await screen.findByText(REQUIRED_FIELD_MSG)
+          expect(errorMessage).toBeInTheDocument()
+        })
+      })
+    })
+
+    describe('Кнопка отправки', () => {
+      test('Отображается корректно', () => {
+        render(<TaskFirstLineModal {...baseProps} />)
+
+        const submitButton = getSubmitButton()
+
+        expect(submitButton).toBeInTheDocument()
+        expect(submitButton).toBeEnabled()
+      })
+
+      test('Отображает процесс загрузки', async () => {
+        render(<TaskFirstLineModal {...baseProps} isLoading />)
+
+        const submitButton = getSubmitButton()
+        await waitStartLoadingByButton(submitButton)
+      })
+
+      test('Обработчик вызывается корректно', async () => {
+        const { user } = render(<TaskFirstLineModal {...baseProps} />)
+
+        const description = getDescription()
+        const submitButton = getSubmitButton()
+
+        await user.type(description, generateWord())
+        await user.click(submitButton)
+
+        expect(baseProps.onSubmit).toHaveBeenCalledTimes(1)
+      })
+    })
+
+    describe('Кнопка отмены', () => {
+      test('Отображается корректно', () => {
+        render(<TaskFirstLineModal {...baseProps} />)
+
+        const cancelButton = getCancelButton()
+
+        expect(cancelButton).toBeInTheDocument()
+        expect(cancelButton).toBeEnabled()
+      })
+
+      test('Обработчик вызывается корректно', async () => {
+        const { user } = render(<TaskFirstLineModal {...baseProps} />)
+
+        const cancelButton = getCancelButton()
+        await user.click(cancelButton)
+
+        expect(baseProps.onCancel).toHaveBeenCalledTimes(1)
       })
     })
   })
