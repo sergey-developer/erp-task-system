@@ -1,4 +1,4 @@
-import { Button, Row, Typography } from 'antd'
+import { Button, Row } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
@@ -12,11 +12,8 @@ import {
   makeDownloadLink,
 } from 'shared/utils/common/downloadLink'
 
-import { NO_DATA_MSG } from './constants'
 import Journal from './Journal'
 import { getJournalCsvFilename } from './utils'
-
-const { Text } = Typography
 
 type JournalTabProps = {
   taskId: number
@@ -48,28 +45,24 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
   return (
     <LoadingArea data-testid='spinner-journal' isLoading={journalIsFetching}>
       <Space direction='vertical' $block>
-        {!journalIsFetching && isEmpty(journal) ? (
-          <Text>{NO_DATA_MSG}</Text>
-        ) : (
-          <>
-            <Row justify='end'>
-              <Button
-                data-testid='journal-btn-download'
-                type='link'
-                onClick={handleGetJournalCsv}
-                loading={journalCsvIsFetching}
-                icon={
-                  <DownloadIcon
-                    data-testid='journal-icon-download'
-                    $color='black'
-                  />
-                }
-              />
-            </Row>
-
-            <Journal data={journal} />
-          </>
+        {!journalIsFetching && !isEmpty(journal) && (
+          <Row justify='end'>
+            <Button
+              data-testid='journal-btn-download'
+              type='link'
+              onClick={handleGetJournalCsv}
+              loading={journalCsvIsFetching}
+              icon={
+                <DownloadIcon
+                  data-testid='journal-icon-download'
+                  $color='black'
+                />
+              }
+            />
+          </Row>
         )}
+
+        <Journal data={journal} isLoading={journalIsFetching} />
       </Space>
     </LoadingArea>
   )

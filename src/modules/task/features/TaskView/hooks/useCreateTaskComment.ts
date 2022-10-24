@@ -11,6 +11,7 @@ import {
 } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
+import { CREATE_TASK_COMMENT_ERROR_MSG } from '../constants/messages'
 import { CreateTaskCommentMutationArgsModel } from '../models'
 import { taskCommentApiPermissions } from '../permissions'
 
@@ -32,7 +33,7 @@ const useCreateTaskComment = () => {
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error) || isServerRangeError(error)) {
-      showErrorNotification('Возникла ошибка при добавлении комментария')
+      showErrorNotification(CREATE_TASK_COMMENT_ERROR_MSG)
     } else if (!isBadRequestError(error)) {
       showErrorNotification(UNKNOWN_ERROR_MSG)
     }

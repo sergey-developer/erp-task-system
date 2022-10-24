@@ -68,3 +68,25 @@ export const getBadRequestErrorMockFn = <T extends object = {}>(
       ...responseOptions,
     }),
   )
+
+export const getNotFoundErrorMockFn = <T extends object = {}>(
+  requestMockFn: PartialAppliedRequestMockFn,
+  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
+): AddMockFn =>
+  requestMockFn(
+    getResponseResolver({
+      status: HttpCodeEnum.NotFound,
+      ...responseOptions,
+    }),
+  )
+
+export const getForbiddenErrorMockFn = <T extends object = {}>(
+  requestMockFn: PartialAppliedRequestMockFn,
+  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
+): AddMockFn =>
+  requestMockFn(
+    getResponseResolver({
+      status: HttpCodeEnum.Forbidden,
+      ...responseOptions,
+    }),
+  )

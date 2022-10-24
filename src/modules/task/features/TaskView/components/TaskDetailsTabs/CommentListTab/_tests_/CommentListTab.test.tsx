@@ -2,6 +2,7 @@ import { getTaskComment } from '_fixtures_/task'
 import {
   generateWord,
   render,
+  screen,
   setupApiTests,
   waitFinishLoadingByButton,
   waitFinishValidating,
@@ -10,7 +11,11 @@ import {
   within,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
-import { REQUIRED_FIELD_MSG } from 'shared/constants/validation'
+import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
+import {
+  REQUIRED_FIELD_MSG,
+  UNKNOWN_ERROR_MSG,
+} from 'shared/constants/validation'
 
 import {
   getCommentField,
@@ -22,6 +27,8 @@ import CommentListTab from '../index'
 import { baseProps } from './constants'
 import {
   mockCreateTaskCommentBadRequestError,
+  mockCreateTaskCommentForbiddenError,
+  mockCreateTaskCommentNotFoundError,
   mockCreateTaskCommentSuccess,
   mockGetTaskCommentListSuccess,
 } from './mocks'
@@ -44,9 +51,9 @@ describe('Вкладка списка комментариев заявки', ()
         mockCreateTaskCommentSuccess(newComment)
         mockGetTaskCommentListSuccess([getTaskComment()])
 
-        const store = getStoreWithAuth()
-
-        const { user } = render(<CommentListTab {...baseProps} />, { store })
+        const { user } = render(<CommentListTab {...baseProps} />, {
+          store: getStoreWithAuth(),
+        })
 
         const submitButton = getSubmitButton()
         const commentField = getCommentField()
@@ -70,9 +77,9 @@ describe('Вкладка списка комментариев заявки', ()
         mockCreateTaskCommentSuccess(newComment)
         mockGetTaskCommentListSuccess([])
 
-        const store = getStoreWithAuth()
-
-        const { user } = render(<CommentListTab {...baseProps} />, { store })
+        const { user } = render(<CommentListTab {...baseProps} />, {
+          store: getStoreWithAuth(),
+        })
 
         const submitButton = getSubmitButton()
         const commentField = getCommentField()
@@ -90,12 +97,13 @@ describe('Вкладка списка комментариев заявки', ()
     })
 
     describe('При не успешном запросе', () => {
-      test('Корректно обрабатывается ошибка - 400', async () => {
+      test('Корректно обрабатывается ошибка 400', async () => {
         mockGetTaskCommentListSuccess([])
         mockCreateTaskCommentBadRequestError()
 
-        const store = getStoreWithAuth()
-        const { user } = render(<CommentListTab {...baseProps} />, { store })
+        const { user } = render(<CommentListTab {...baseProps} />, {
+          store: getStoreWithAuth(),
+        })
 
         const submitButton = getSubmitButton()
         const commentField = getCommentField()
@@ -112,6 +120,52 @@ describe('Вкладка списка комментариев заявки', ()
           const errorMsg = within(commentField).getByText(REQUIRED_FIELD_MSG)
           expect(errorMsg).toBeInTheDocument()
         })
+      })
+
+      test('Корректно обрабатывается ошибка 404', async () => {
+        mockGetTaskCommentListSuccess([])
+        mockCreateTaskCommentNotFoundError()
+
+        const { user } = render(<CommentListTab {...baseProps} />, {
+          store: getStoreWithAuth(),
+        })
+
+        const submitButton = getSubmitButton()
+        const commentField = getCommentField()
+        const commentInput = getCommentInput()
+
+        await user.type(commentInput, generateWord())
+        await waitFinishValidating(commentField)
+
+        await user.click(submitButton)
+        await waitStartLoadingByButton(submitButton)
+        await waitFinishLoadingByButton(submitButton)
+
+        const errorMsg = screen.getByText(CREATE_TASK_COMMENT_ERROR_MSG)
+        expect(errorMsg).toBeInTheDocument()
+      })
+
+      test('Корректно обрабатывается неизвестная ошибка', async () => {
+        mockGetTaskCommentListSuccess([])
+        mockCreateTaskCommentForbiddenError()
+
+        const { user } = render(<CommentListTab {...baseProps} />, {
+          store: getStoreWithAuth(),
+        })
+
+        const submitButton = getSubmitButton()
+        const commentField = getCommentField()
+        const commentInput = getCommentInput()
+
+        await user.type(commentInput, generateWord())
+        await waitFinishValidating(commentField)
+
+        await user.click(submitButton)
+        await waitStartLoadingByButton(submitButton)
+        await waitFinishLoadingByButton(submitButton)
+
+        const errorMsg = screen.getByText(UNKNOWN_ERROR_MSG)
+        expect(errorMsg).toBeInTheDocument()
       })
     })
   })
