@@ -1,4 +1,3 @@
-import { getTaskComment } from '_fixtures_/task'
 import {
   generateWord,
   render,
@@ -11,6 +10,7 @@ import {
   within,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
+import { getTaskComment } from 'fixtures/task'
 import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import {
   REQUIRED_FIELD_MSG,
@@ -141,7 +141,7 @@ describe('Вкладка списка комментариев заявки', ()
         await waitStartLoadingByButton(submitButton)
         await waitFinishLoadingByButton(submitButton)
 
-        const errorMsg = screen.getByText(CREATE_TASK_COMMENT_ERROR_MSG)
+        const errorMsg = await screen.findByText(CREATE_TASK_COMMENT_ERROR_MSG)
         expect(errorMsg).toBeInTheDocument()
       })
 
@@ -164,7 +164,7 @@ describe('Вкладка списка комментариев заявки', ()
         await waitStartLoadingByButton(submitButton)
         await waitFinishLoadingByButton(submitButton)
 
-        const errorMsg = screen.getByText(UNKNOWN_ERROR_MSG)
+        const errorMsg = await screen.findByText(UNKNOWN_ERROR_MSG)
         expect(errorMsg).toBeInTheDocument()
       })
     })

@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { loginResponseSuccess } from '_fixtures_/auth'
 import { CORRECT_EMAIL, CORRECT_PASSWORD } from '_tests_/constants/auth'
 import {
   render,
@@ -12,6 +11,7 @@ import {
   within,
 } from '_tests_/utils'
 import { RoutesEnum } from 'configs/routes'
+import { loginResponseSuccess } from 'fixtures/auth'
 import LoginPage from 'modules/auth/features/Login/components/LoginPage'
 import {
   LOGIN_BAD_REQUEST_ERROR_MSG,

@@ -1,4 +1,3 @@
-import { loginResponseSuccess } from '_fixtures_/auth'
 import {
   getBadRequestErrorMockFn,
   getRequestMockFn,
@@ -6,6 +5,7 @@ import {
   getSuccessMockFn,
   getUnauthorizedErrorMockFn,
 } from '_tests_/mocks/request'
+import { loginResponseSuccess } from 'fixtures/auth'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { refreshTokenMockFn } from 'modules/auth/features/RefreshToken/_tests_/mocks'
 import { HttpMethodEnum } from 'shared/constants/http'

@@ -1,4 +1,4 @@
-import { getTaskTableItem } from '_fixtures_/task'
+import { getTaskTableItem } from 'fixtures/task'
 
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { TaskTableProps } from '../interfaces'
