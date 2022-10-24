@@ -1,7 +1,5 @@
 import {
-  generateString,
   generateWord,
-  getButtonIn,
   render,
   screen,
   waitStartLoadingByButton,
@@ -15,24 +13,13 @@ import {
 } from 'shared/constants/validation'
 
 import TaskFirstLineModal from '../index'
-import { TaskFirstLineModalProps } from '../interfaces'
-
-const baseProps: TaskFirstLineModalProps = {
-  recordId: generateString(),
-  isLoading: false,
-  onSubmit: jest.fn(),
-  onCancel: jest.fn(),
-}
-
-const getModal = () => screen.getByTestId('modal-task-first-line')
-
-const getDescription = () =>
-  within(getModal()).getByRole('textbox', {
-    name: 'Причина возврата',
-  })
-
-const getSubmitButton = () => getButtonIn(getModal(), /Вернуть заявку/i)
-const getCancelButton = () => getButtonIn(getModal(), /Отменить/i)
+import { baseProps } from './constants'
+import {
+  getCancelButton,
+  getDescription,
+  getModal,
+  getSubmitButton,
+} from './utils'
 
 jest.setTimeout(10000)
 
