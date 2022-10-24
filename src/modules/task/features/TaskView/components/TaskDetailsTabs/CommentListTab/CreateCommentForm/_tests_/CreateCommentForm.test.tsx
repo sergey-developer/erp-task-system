@@ -51,7 +51,9 @@ describe('Форма добавления комментария', () => {
         const { user } = render(<CreateCommentForm {...baseProps} />)
 
         const commentInput = getCommentInput()
-        const commentText = generateWord({ length: 501 })
+        const commentText = generateWord({
+          length: DEFAULT_LONG_TEXT_LENGTH + 1,
+        })
         await user.type(commentInput, commentText)
 
         const errorMessage = await screen.findByText(
