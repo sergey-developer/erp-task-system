@@ -1,4 +1,5 @@
-import { render, screen, setupApiTests, within } from '_tests_/utils'
+import { render, setupApiTests } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 import {
   getEmptyJournalResponseSuccess,
   getJournalResponseSuccess,

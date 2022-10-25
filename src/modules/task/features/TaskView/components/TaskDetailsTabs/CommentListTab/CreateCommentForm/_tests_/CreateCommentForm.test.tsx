@@ -1,9 +1,5 @@
-import {
-  generateWord,
-  render,
-  screen,
-  waitStartLoadingByButton,
-} from '_tests_/utils'
+import { generateWord, render, waitStartLoadingByButton } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 import {
   DEFAULT_LONG_TEXT_LENGTH,
   FIELD_CAN_NOT_BE_EMPTY_MSG,
@@ -115,7 +111,7 @@ describe('Форма добавления комментария', () => {
       await user.type(commentInput, generateWord())
       await user.click(submitButton)
 
-      expect(baseProps.onSubmit).toHaveBeenCalledTimes(1)
+      expect(baseProps.onSubmit).toBeCalledTimes(1)
     })
   })
 })

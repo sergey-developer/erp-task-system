@@ -1,6 +1,6 @@
 import api from '_tests_/mocks/api'
 
-const setupApiTests = () => {
+export const setupApiTests = () => {
   beforeAll(() => {
     api.listen()
   })
@@ -13,5 +13,3 @@ const setupApiTests = () => {
     api.close()
   })
 }
-
-export default setupApiTests

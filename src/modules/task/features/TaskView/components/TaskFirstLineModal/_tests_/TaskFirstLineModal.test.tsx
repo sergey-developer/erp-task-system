@@ -1,10 +1,5 @@
-import {
-  generateWord,
-  render,
-  screen,
-  waitStartLoadingByButton,
-} from '_tests_/utils'
-import { within } from '@testing-library/react'
+import { generateWord, render, waitStartLoadingByButton } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 import {
   DEFAULT_LONG_TEXT_LENGTH,
   FIELD_CAN_NOT_BE_EMPTY_MSG,
@@ -16,7 +11,7 @@ import TaskFirstLineModal from '../index'
 import { baseProps } from './constants'
 import {
   getCancelButton,
-  getDescription,
+  getDescriptionField,
   getModal,
   getSubmitButton,
 } from './utils'
@@ -60,7 +55,7 @@ describe('Модальное окно перевода запроса на пе�
       test('Отображается корректно', () => {
         render(<TaskFirstLineModal {...baseProps} />)
 
-        const description = getDescription()
+        const description = getDescriptionField()
 
         expect(description).toBeInTheDocument()
         expect(description).toBeEnabled()
@@ -70,14 +65,14 @@ describe('Модальное окно перевода запроса на пе�
       test('Не активно при загрузке', () => {
         render(<TaskFirstLineModal {...baseProps} isLoading />)
 
-        const description = getDescription()
+        const description = getDescriptionField()
         expect(description).toBeDisabled()
       })
 
       test('Можно ввести значение', async () => {
         const { user } = render(<TaskFirstLineModal {...baseProps} />)
 
-        const description = getDescription()
+        const description = getDescriptionField()
         const descriptionText = generateWord()
         await user.type(description, descriptionText)
 
@@ -88,7 +83,7 @@ describe('Модальное окно перевода запроса на пе�
         test('Если ввести только пробелы', async () => {
           const { user } = render(<TaskFirstLineModal {...baseProps} />)
 
-          const description = getDescription()
+          const description = getDescriptionField()
 
           await user.type(description, ' ')
 
@@ -101,7 +96,7 @@ describe('Модальное окно перевода запроса на пе�
         test('Если превысить лимит символов', async () => {
           const { user } = render(<TaskFirstLineModal {...baseProps} />)
 
-          const description = getDescription()
+          const description = getDescriptionField()
           const descriptionText = generateWord({
             length: DEFAULT_LONG_TEXT_LENGTH + 1,
           })
@@ -151,13 +146,13 @@ describe('Модальное окно перевода запроса на пе�
       test('Обработчик вызывается корректно', async () => {
         const { user } = render(<TaskFirstLineModal {...baseProps} />)
 
-        const description = getDescription()
+        const description = getDescriptionField()
         const submitButton = getSubmitButton()
 
         await user.type(description, generateWord())
         await user.click(submitButton)
 
-        expect(baseProps.onSubmit).toHaveBeenCalledTimes(1)
+        expect(baseProps.onSubmit).toBeCalledTimes(1)
       })
     })
 
@@ -177,7 +172,7 @@ describe('Модальное окно перевода запроса на пе�
         const cancelButton = getCancelButton()
         await user.click(cancelButton)
 
-        expect(baseProps.onCancel).toHaveBeenCalledTimes(1)
+        expect(baseProps.onCancel).toBeCalledTimes(1)
       })
     })
   })

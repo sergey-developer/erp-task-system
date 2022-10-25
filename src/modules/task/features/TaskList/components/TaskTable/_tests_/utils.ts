@@ -1,4 +1,4 @@
-import { screen, within } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const getTable = (): HTMLElement => screen.getByTestId('table-task-list')

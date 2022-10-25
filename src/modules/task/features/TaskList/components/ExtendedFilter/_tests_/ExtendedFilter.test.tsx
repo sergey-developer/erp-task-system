@@ -7,13 +7,13 @@ import {
   getSelectedOption,
   querySelectOption,
   render,
-  screen,
   setupApiTests,
   userOpenSelect,
   userSearchInSelect,
   waitFinishLoadingBySelect,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
+import { screen } from '@testing-library/react'
 import { getWorkGroupList } from 'fixtures/workGroup'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'

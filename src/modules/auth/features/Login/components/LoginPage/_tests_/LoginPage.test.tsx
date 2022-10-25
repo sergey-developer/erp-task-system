@@ -4,12 +4,11 @@ import { CORRECT_EMAIL, CORRECT_PASSWORD } from '_tests_/constants/auth'
 import {
   render,
   renderInRoute,
-  screen,
   setupApiTests,
   waitFinishLoadingByButton,
   waitStartLoadingByButton,
-  within,
 } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 import { RoutesEnum } from 'configs/routes'
 import { loginResponseSuccess } from 'fixtures/auth'
 import LoginPage from 'modules/auth/features/Login/components/LoginPage'

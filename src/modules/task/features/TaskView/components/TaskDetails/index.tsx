@@ -287,6 +287,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   return (
     <RootWrapperStyled>
       <CardStyled
+        data-testid='task-details'
         title={cardTitle}
         loading={taskIsLoading}
         $breakpoints={breakpoints}

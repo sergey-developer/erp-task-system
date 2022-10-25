@@ -1,4 +1,5 @@
-import { getButtonIn, screen, within } from '_tests_/utils'
+import { getButtonIn } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 
 export const getFormContainer = () => screen.getByTestId('form-create-comment')
 

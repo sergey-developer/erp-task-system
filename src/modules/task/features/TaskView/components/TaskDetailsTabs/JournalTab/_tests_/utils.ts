@@ -1,10 +1,10 @@
 import {
-  screen,
   waitFinishLoadingByButton,
   waitFinishLoadingBySpinner,
   waitStartLoadingByButton,
   waitStartLoadingBySpinner,
 } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const waitStartLoadingJournal =

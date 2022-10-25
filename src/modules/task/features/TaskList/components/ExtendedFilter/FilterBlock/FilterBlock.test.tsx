@@ -1,4 +1,5 @@
-import { render, screen } from '_tests_/utils'
+import { render } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 
 import FilterBlock from './index'
 

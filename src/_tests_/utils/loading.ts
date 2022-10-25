@@ -1,4 +1,4 @@
-import { screen, waitFor } from '_tests_/utils'
+import { screen, waitFor } from '@testing-library/react'
 
 const btnLoadingClass = 'ant-btn-loading'
 
@@ -29,5 +29,11 @@ export const waitFinishLoadingBySelect = async (container: HTMLElement) => {
     expect(
       container.querySelector('.ant-select-arrow-loading'),
     ).not.toBeInTheDocument()
+  })
+}
+
+export const waitFinishLoadingByCard = async (card: HTMLElement) => {
+  await waitFor(() => {
+    expect(card).not.toHaveClass('ant-card-loading')
   })
 }

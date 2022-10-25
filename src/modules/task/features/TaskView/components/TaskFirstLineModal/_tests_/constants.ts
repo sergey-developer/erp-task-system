@@ -1,9 +1,9 @@
-import { generateString } from '_tests_/utils'
+import { generateWord } from '_tests_/utils'
 
 import { TaskFirstLineModalProps } from '../interfaces'
 
 export const baseProps: TaskFirstLineModalProps = {
-  recordId: generateString(),
+  recordId: generateWord(),
   isLoading: false,
   onSubmit: jest.fn(),
   onCancel: jest.fn(),

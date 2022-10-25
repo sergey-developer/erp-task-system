@@ -2,7 +2,6 @@ import {
   generateDateString,
   generateId,
   generateName,
-  generateString,
   generateWord,
 } from '_tests_/utils'
 import {
@@ -25,7 +24,7 @@ export const getTaskTableItem = (
   title: generateWord(),
   workGroup: getWorkGroup(),
   createdAt: generateDateString(),
-  recordId: generateString(),
+  recordId: generateWord(),
   lastComment: generateWord(),
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,

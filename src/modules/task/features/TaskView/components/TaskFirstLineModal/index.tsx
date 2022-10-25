@@ -58,6 +58,7 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
           preserve={false}
         >
           <Form.Item
+            data-testid='field-description'
             name='description'
             label='Причина возврата'
             rules={BASE_LONG_TEXT_RULES}
