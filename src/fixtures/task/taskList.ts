@@ -1,14 +1,11 @@
 import {
-  generateBoolean,
   generateDateString,
   generateId,
   generateInteger,
-  generateSentence,
   generateString,
   generateWord,
 } from '_tests_/utils'
 import {
-  TaskCommentTypeEnum,
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
@@ -43,7 +40,6 @@ export const getTaskListItem = (
     max: 4,
   }) as TaskListItemModel['initialImpact'],
   createdAt: generateDateString(),
-  updatedAt: generateDateString(),
   recordId: generateString(),
   workGroup: getWorkGroup(),
   title: generateWord(),
@@ -51,23 +47,5 @@ export const getTaskListItem = (
   productClassifier1: generateString(),
   productClassifier2: generateString(),
   productClassifier3: generateString(),
-  businessOperation: generateString(),
   contactService: generateString(),
-  supportingService: generateString(),
-  itService: generateString(),
-  isFailure: generateBoolean(),
-  isMass: generateBoolean(),
-  isOlaBreached: generateBoolean(),
-  isSlaBreached: generateBoolean(),
-  comment: null,
-})
-
-export const getTaskListComment = (): TaskListItemModel['comment'] => ({
-  id: generateId(),
-  type: TaskCommentTypeEnum.Common,
-  task: generateId(),
-  author: generateId(),
-  text: generateSentence(),
-  createdAt: generateDateString(),
-  updatedAt: generateDateString(),
 })
