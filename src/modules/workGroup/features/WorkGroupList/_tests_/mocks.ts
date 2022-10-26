@@ -10,7 +10,7 @@ const getWorkGroupListMockFn = getRequestMockFn(
 )
 
 export const mockGetWorkGroupListSuccess = (
-  response: WorkGroupListItemModel[],
+  response?: WorkGroupListItemModel[],
 ) => {
   const mockGetWorkGroupList = getSuccessMockFn(getWorkGroupListMockFn, {
     body: response,

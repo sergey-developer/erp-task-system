@@ -32,10 +32,9 @@ export const mockGetJournalServerError = <T extends object>(
   taskId: number,
   response?: ErrorData<T>,
 ) => {
-  const mockGetJournal = getServerErrorMockFn<ErrorData<T>>(
-    getGetJournalMockFn(taskId),
-    { body: response },
-  )
+  const mockGetJournal = getServerErrorMockFn(getGetJournalMockFn(taskId), {
+    body: response,
+  })
 
   mockGetJournal()
 }
