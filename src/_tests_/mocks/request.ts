@@ -8,7 +8,7 @@ import {
   getResponseResolver,
 } from '_tests_/mocks/response'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData, makeAbsoluteApiUrl } from 'shared/services/api'
+import { makeAbsoluteApiUrl } from 'shared/services/api'
 
 export type AddMockFn = () => void
 
@@ -36,9 +36,9 @@ export const getSuccessMockFn = (
     getResponseResolver({ status: HttpCodeEnum.Ok, ...responseOptions }),
   )
 
-export const getServerErrorMockFn = <T extends object = {}>(
+export const getServerErrorMockFn = (
   requestMockFn: PartialAppliedRequestMockFn,
-  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
+  responseOptions: Omit<ResponseResolverOptions, 'status'> = {},
 ): AddMockFn =>
   requestMockFn(
     getResponseResolver({
@@ -47,9 +47,9 @@ export const getServerErrorMockFn = <T extends object = {}>(
     }),
   )
 
-export const getUnauthorizedErrorMockFn = <T extends object = {}>(
+export const getUnauthorizedErrorMockFn = (
   requestMockFn: PartialAppliedRequestMockFn,
-  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
+  responseOptions: Omit<ResponseResolverOptions, 'status'> = {},
 ): AddMockFn =>
   requestMockFn(
     getResponseResolver({
@@ -58,9 +58,9 @@ export const getUnauthorizedErrorMockFn = <T extends object = {}>(
     }),
   )
 
-export const getBadRequestErrorMockFn = <T extends object = {}>(
+export const getBadRequestErrorMockFn = (
   requestMockFn: PartialAppliedRequestMockFn,
-  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
+  responseOptions: Omit<ResponseResolverOptions, 'status'> = {},
 ): AddMockFn =>
   requestMockFn(
     getResponseResolver({
@@ -69,9 +69,9 @@ export const getBadRequestErrorMockFn = <T extends object = {}>(
     }),
   )
 
-export const getNotFoundErrorMockFn = <T extends object = {}>(
+export const getNotFoundErrorMockFn = (
   requestMockFn: PartialAppliedRequestMockFn,
-  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
+  responseOptions: Omit<ResponseResolverOptions, 'status'> = {},
 ): AddMockFn =>
   requestMockFn(
     getResponseResolver({
@@ -80,9 +80,9 @@ export const getNotFoundErrorMockFn = <T extends object = {}>(
     }),
   )
 
-export const getForbiddenErrorMockFn = <T extends object = {}>(
+export const getForbiddenErrorMockFn = (
   requestMockFn: PartialAppliedRequestMockFn,
-  responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
+  responseOptions: Omit<ResponseResolverOptions, 'status'> = {},
 ): AddMockFn =>
   requestMockFn(
     getResponseResolver({

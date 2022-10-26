@@ -6,6 +6,7 @@ import {
   mockLoginServerError,
   mockLoginSuccess,
   mockLoginUnauthorizedError,
+  mockRefreshTokenSuccess,
 } from '_tests_/mocks/api'
 import {
   loadingFinishedByButton,
@@ -222,6 +223,7 @@ describe('Страница авторизации', () => {
       describe(`Если код ошибки "${HttpCodeEnum.Unauthorized}"`, () => {
         test(`В форме показывается ошибка - ${LOGIN_WRONG_DATA_ERROR_MSG}`, async () => {
           mockLoginUnauthorizedError()
+          mockRefreshTokenSuccess()
 
           const { user } = render(<LoginPage />)
 

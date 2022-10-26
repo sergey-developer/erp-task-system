@@ -12,9 +12,7 @@ export const mockGetTaskCommentListSuccess = (
 ) => {
   const mockGetTaskCommentList = getSuccessMockFn(
     getGetTaskCommentListMockFn(taskId),
-    {
-      body: response,
-    },
+    { body: response },
   )
 
   mockGetTaskCommentList()
