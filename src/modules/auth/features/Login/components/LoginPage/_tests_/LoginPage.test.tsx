@@ -1,7 +1,13 @@
 import React from 'react'
 
-import { loginResponseSuccess } from '_fixtures_/auth'
 import { CORRECT_EMAIL, CORRECT_PASSWORD } from '_tests_/constants/auth'
+import {
+  mockLoginBadRequestError,
+  mockLoginServerError,
+  mockLoginSuccess,
+  mockLoginUnauthorizedError,
+  mockRefreshTokenSuccess,
+} from '_tests_/mocks/api'
 import {
   render,
   renderInRoute,
@@ -12,6 +18,7 @@ import {
   within,
 } from '_tests_/utils'
 import { RoutesEnum } from 'configs/routes'
+import { loginResponseSuccess } from 'fixtures/auth'
 import LoginPage from 'modules/auth/features/Login/components/LoginPage'
 import {
   LOGIN_BAD_REQUEST_ERROR_MSG,
@@ -22,15 +29,9 @@ import { HttpCodeEnum } from 'shared/constants/http'
 import {
   INCORRECT_EMAIL_MSG,
   REQUIRED_FIELD_MSG,
-} from 'shared/constants/messages'
+} from 'shared/constants/validation'
 import { setupStore } from 'state/store'
 
-import {
-  mockLoginBadRequestError,
-  mockLoginServerError,
-  mockLoginSuccess,
-  mockLoginUnauthorizedError,
-} from './mocks'
 import {
   getEmailField,
   getPasswordField,
@@ -109,7 +110,7 @@ describe('Страница авторизации', () => {
   describe('Если заполнить поля и нажать кнопку "Войти"', () => {
     describe('При успешном запросе', () => {
       test('Пользователь покидает страницу авторизации', async () => {
-        mockLoginSuccess()
+        mockLoginSuccess(loginResponseSuccess)
 
         const { user, checkRouteChanged } = renderInRoute(
           <LoginPage />,
@@ -131,7 +132,7 @@ describe('Страница авторизации', () => {
         })
 
         test('access token', async () => {
-          mockLoginSuccess()
+          mockLoginSuccess(loginResponseSuccess)
 
           const { user } = render(<LoginPage />)
 
@@ -147,7 +148,7 @@ describe('Страница авторизации', () => {
         })
 
         test('refresh token', async () => {
-          mockLoginSuccess()
+          mockLoginSuccess(loginResponseSuccess)
 
           const { user } = render(<LoginPage />)
 
@@ -164,7 +165,7 @@ describe('Страница авторизации', () => {
       })
 
       test('данные сохраняются в store', async () => {
-        mockLoginSuccess()
+        mockLoginSuccess(loginResponseSuccess)
         const store = setupStore()
 
         const { user } = render(<LoginPage />, { store })
@@ -223,6 +224,7 @@ describe('Страница авторизации', () => {
       describe(`Если код ошибки "${HttpCodeEnum.Unauthorized}"`, () => {
         test(`В форме показывается ошибка - ${LOGIN_WRONG_DATA_ERROR_MSG}`, async () => {
           mockLoginUnauthorizedError()
+          mockRefreshTokenSuccess()
 
           const { user } = render(<LoginPage />)
 

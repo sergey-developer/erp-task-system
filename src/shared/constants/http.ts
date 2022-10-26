@@ -13,6 +13,7 @@ export enum HttpCodeEnum {
   // 4**
   BadRequest = 400,
   Unauthorized = 401,
+  Forbidden = 403,
   NotFound = 404,
   ClientClosedRequest = 499,
   // 5**

@@ -1,9 +1,11 @@
 export * from '@testing-library/react'
 
-export * from './common'
+export * from './fakeGenerator'
+export * from './fields/select'
+export * from './loading'
+export * from './validating'
 export * from './icon'
-export * from './fields'
-export * from './waitLoading'
+export * from './button'
 
 export { default as render } from './renderInAppProvider'
 export { default as renderInRoute } from './renderInRoute'

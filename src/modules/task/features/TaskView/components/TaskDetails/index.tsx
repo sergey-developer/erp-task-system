@@ -1,8 +1,10 @@
 import { useBoolean } from 'ahooks'
+import { FormInstance } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
-import React, { FC, useCallback } from 'react'
+import React, { FC, useCallback, useEffect } from 'react'
 
+import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import {
@@ -12,10 +14,11 @@ import {
 } from 'modules/task/constants/dictionary'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
+  DeleteTaskWorkGroupMutationArgsModel,
   ResolveTaskMutationArgsModel,
   TakeTaskMutationArgsModel,
   TaskDetailsModel,
-  TaskDetailsReclassificationRequestModel,
+  TaskReclassificationRequestModel,
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskWorkGroupMutationArgsModel,
 } from 'modules/task/features/TaskView/models'
@@ -28,13 +31,13 @@ import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
 import TaskDetailsTabs from '../TaskDetailsTabs'
 import { TaskDetailsTabsEnum } from '../TaskDetailsTabs/constants'
-import TaskReclassificationModal, {
-  TaskReclassificationModalProps,
-} from '../TaskReclassificationModal'
+import {
+  TaskFirstLineFormErrors,
+  TaskFirstLineFormFields,
+} from '../TaskFirstLineModal/interfaces'
+import { TaskReclassificationModalProps } from '../TaskReclassificationModal'
 import { TaskReclassificationRequestFormErrors } from '../TaskReclassificationModal/interfaces'
-import TaskResolutionModal, {
-  TaskResolutionModalProps,
-} from '../TaskResolutionModal'
+import { TaskResolutionModalProps } from '../TaskResolutionModal'
 import { TaskResolutionFormErrors } from '../TaskResolutionModal/interfaces'
 import AdditionalInfo from './AdditionalInfo'
 import CardTitle from './CardTitle'
@@ -43,6 +46,10 @@ import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const TaskRequestStatus = React.lazy(() => import('../TaskRequestStatus'))
+const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
+const TaskReclassificationModal = React.lazy(
+  () => import('../TaskReclassificationModal'),
+)
 
 type TaskDetailsProps = {
   details: MaybeNull<
@@ -87,11 +94,11 @@ type TaskDetailsProps = {
 
   taskIsLoading: boolean
 
-  reclassificationRequest: MaybeNull<TaskDetailsReclassificationRequestModel>
+  reclassificationRequest: MaybeNull<TaskReclassificationRequestModel>
   createReclassificationRequest: (
     data: CreateTaskReclassificationRequestMutationArgsModel,
   ) => Promise<void>
-  reclassificationRequestIsCreating: boolean
+  createReclassificationRequestIsLoading: boolean
 
   takeTask: (data: TakeTaskMutationArgsModel) => Promise<void>
   takeTaskIsLoading: boolean
@@ -106,11 +113,15 @@ type TaskDetailsProps = {
   workGroupListIsLoading: boolean
   updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgsModel) => Promise<void>
   updateWorkGroupIsLoading: boolean
+  deleteWorkGroup: (data: DeleteTaskWorkGroupMutationArgsModel) => Promise<void>
+  deleteWorkGroupIsLoading: boolean
 
   additionalInfoExpanded: boolean
   onExpandAdditionalInfo: () => void
 
-  onClose: () => void
+  closeTaskDetails: () => void
+
+  isGetTaskError: boolean
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
@@ -123,13 +134,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   isTaskResolving,
 
   reclassificationRequest,
-  reclassificationRequestIsCreating,
   createReclassificationRequest,
+  createReclassificationRequestIsLoading,
 
   workGroupList,
   workGroupListIsLoading,
   updateWorkGroup,
   updateWorkGroupIsLoading,
+  deleteWorkGroup,
+  deleteWorkGroupIsLoading,
 
   updateAssignee,
   updateAssigneeIsLoading,
@@ -137,7 +150,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   additionalInfoExpanded,
   onExpandAdditionalInfo,
 
-  onClose,
+  closeTaskDetails,
+
+  isGetTaskError,
 }) => {
   const breakpoints = useBreakpoint()
 
@@ -168,19 +183,23 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     openTaskReclassificationModal,
   )
 
+  useEffect(() => {
+    if (isGetTaskError) closeTaskDetails()
+  }, [isGetTaskError, closeTaskDetails])
+
   const handleResolutionSubmit = useCallback<
     TaskResolutionModalProps['onSubmit']
   >(
     async (values, setFields) => {
       try {
         await resolveTask({ taskId: details?.id!, ...values })
-        onClose()
+        closeTaskDetails()
       } catch (exception) {
         const error = exception as ErrorResponse<TaskResolutionFormErrors>
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [details?.id, onClose, resolveTask],
+    [details?.id, closeTaskDetails, resolveTask],
   )
 
   const handleReclassificationRequestSubmit = useCallback<
@@ -206,16 +225,34 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     ],
   )
 
-  const handleUpdateWorkGroup = useCallback(
+  const handleTransferTaskToSecondLine = useCallback(
     async (
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
       await updateWorkGroup({ taskId: details?.id!, workGroup })
       closeTaskSecondLineModal()
-      onClose()
+      closeTaskDetails()
     },
-    [details?.id, onClose, updateWorkGroup],
+    [details?.id, closeTaskDetails, updateWorkGroup],
+  )
+
+  const handleTransferTaskToFirstLine = useCallback(
+    async (
+      values: TaskFirstLineFormFields,
+      setFields: FormInstance['setFields'],
+      closeTaskFirstLineModal: () => void,
+    ) => {
+      try {
+        await deleteWorkGroup({ taskId: details?.id!, ...values })
+        closeTaskFirstLineModal()
+        closeTaskDetails()
+      } catch (exception) {
+        const error = exception as ErrorResponse<TaskFirstLineFormErrors>
+        handleSetFieldsErrors(error, setFields)
+      }
+    },
+    [closeTaskDetails, deleteWorkGroup, details?.id],
   )
 
   const handleUpdateAssignee = useCallback(
@@ -231,7 +268,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     await debouncedTakeTask({ taskId: details?.id! })
   }, [debouncedTakeTask, details?.id])
 
-  const debouncedOnClose = useDebounceFn(onClose)
+  const debouncedCloseTaskDetails = useDebounceFn(closeTaskDetails)
 
   const cardTitle = !taskIsLoading && details && (
     <CardTitle
@@ -241,7 +278,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       olaStatus={details.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
       hasReclassificationRequest={hasReclassificationRequest}
-      onClose={debouncedOnClose}
+      onClose={debouncedCloseTaskDetails}
       onClickExecuteTask={debouncedOpenTaskResolutionModal}
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
     />
@@ -256,7 +293,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       >
         {hasReclassificationRequest && (
           <React.Suspense
-            fallback={<Spinner area='block' offset={['top', 10]} />}
+            fallback={<Spinner dimension='block' offset={['top', 10]} />}
           >
             <TaskRequestStatus
               title='Запрошена переклассификация:'
@@ -311,14 +348,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
             <SecondaryDetails
               id={details.id}
+              recordId={details.recordId}
               status={details.status}
               extendedStatus={details.extendedStatus}
               assignee={details.assignee}
               workGroup={details.workGroup}
               workGroupList={workGroupList}
               workGroupListIsLoading={workGroupListIsLoading}
-              transferTask={handleUpdateWorkGroup}
-              transferTaskIsLoading={updateWorkGroupIsLoading}
+              transferTaskToFirstLine={handleTransferTaskToFirstLine}
+              transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
+              transferTaskToSecondLine={handleTransferTaskToSecondLine}
+              transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
               updateAssignee={handleUpdateAssignee}
               updateAssigneeIsLoading={updateAssigneeIsLoading}
               hasReclassificationRequest={hasReclassificationRequest}
@@ -332,24 +372,42 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             />
 
             {isTaskResolutionModalOpened && (
-              <TaskResolutionModal
-                visible
-                isTaskResolving={isTaskResolving}
-                onCancel={closeTaskResolutionModal}
-                onSubmit={handleResolutionSubmit}
-                recordId={details.recordId}
-                type={details.type}
-              />
+              <React.Suspense
+                fallback={
+                  <ModalFallback
+                    visible={isTaskResolutionModalOpened}
+                    onCancel={closeTaskResolutionModal}
+                  />
+                }
+              >
+                <TaskResolutionModal
+                  type={details.type}
+                  recordId={details.recordId}
+                  techResolution={details.techResolution}
+                  userResolution={details.userResolution}
+                  isLoading={isTaskResolving}
+                  onCancel={closeTaskResolutionModal}
+                  onSubmit={handleResolutionSubmit}
+                />
+              </React.Suspense>
             )}
 
             {isTaskReclassificationModalOpened && (
-              <TaskReclassificationModal
-                visible
-                recordId={details.recordId}
-                isLoading={reclassificationRequestIsCreating}
-                onSubmit={handleReclassificationRequestSubmit}
-                onCancel={closeTaskReclassificationModal}
-              />
+              <React.Suspense
+                fallback={
+                  <ModalFallback
+                    visible={isTaskReclassificationModalOpened}
+                    onCancel={closeTaskReclassificationModal}
+                  />
+                }
+              >
+                <TaskReclassificationModal
+                  recordId={details.recordId}
+                  isLoading={createReclassificationRequestIsLoading}
+                  onSubmit={handleReclassificationRequestSubmit}
+                  onCancel={closeTaskReclassificationModal}
+                />
+              </React.Suspense>
             )}
           </>
         )}

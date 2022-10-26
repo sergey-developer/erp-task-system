@@ -2,7 +2,10 @@ import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
-import { taskExtendedStatusToTaskStatus } from 'modules/task/constants/dictionary'
+import {
+  badgeByTaskStatus,
+  iconByTaskExtendedStatus,
+} from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import getShortUserName from 'modules/user/utils/getShortUserName'
@@ -20,7 +23,8 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
     key: 'noop',
     render: (_, { status, extendedStatus }) => (
       <TaskStatus
-        status={taskExtendedStatusToTaskStatus[extendedStatus] || status}
+        icon={iconByTaskExtendedStatus[extendedStatus]}
+        badge={badgeByTaskStatus[status]}
       />
     ),
     align: 'center',

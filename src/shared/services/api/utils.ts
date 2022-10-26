@@ -10,8 +10,10 @@ import makeString from 'shared/utils/string/makeString'
 import { apiPath, currentApiVersion } from './constants'
 import { ApiVersionUnion, ErrorResponse, ValidationErrors } from './intefraces'
 
-export function getErrorDetail<T>(e: ErrorResponse<T>): ValidationErrors {
-  const detail = e.data?.detail
+export function getErrorDetail<T extends object>(
+  error: ErrorResponse<T>,
+): ValidationErrors {
+  const detail = error.data?.detail
   return isArray(detail) ? detail : isString(detail) ? [detail] : []
 }
 

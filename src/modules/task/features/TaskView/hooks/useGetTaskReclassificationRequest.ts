@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 
 import { useGetReclassificationRequestQuery } from 'modules/task/services/taskReclassificationRequestApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import { ErrorResponse, isNotFoundError } from 'shared/services/api'
 import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
 
 import { GetTaskReclassificationRequestQueryArgsModel } from '../models'
-import { taskReclassificationRequestApiPermissions } from '../permissions/taskReclassificationRequest.permissions'
+import { taskReclassificationRequestApiPermissions } from '../permissions'
 
 const useGetTaskReclassificationRequest = (
   taskId: GetTaskReclassificationRequestQueryArgsModel,

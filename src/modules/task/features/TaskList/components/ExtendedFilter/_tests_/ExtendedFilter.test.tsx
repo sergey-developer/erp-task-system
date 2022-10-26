@@ -1,8 +1,6 @@
 import moment from 'moment'
 
-import { getWorkGroupList } from '_fixtures_/workGroup'
 import {
-  generateId,
   generateName,
   getSelect,
   getSelectOption,
@@ -16,8 +14,9 @@ import {
   waitFinishLoadingBySelect,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
+import { getWorkGroupList } from 'fixtures/workGroup'
 import { TaskStatusEnum } from 'modules/task/constants/common'
-import { taskStatusDict } from 'modules/task/constants/dictionary'
+import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 
@@ -31,8 +30,8 @@ import {
   requiredProps,
   searchFieldDictValues,
   taskAssignedDictValues,
+  taskExtendedStatusDictValues,
   taskOverdueDictValues,
-  taskStatusDictValues,
 } from './constants'
 import {
   getApplyButton,
@@ -108,7 +107,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      taskStatusDictValues.forEach((value) => {
+      taskExtendedStatusDictValues.forEach((value) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeInTheDocument()
       })
@@ -119,7 +118,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      Object.entries(taskStatusDict).forEach(([value, text]) => {
+      Object.entries(taskExtendedStatusDict).forEach(([value, text]) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(text) })
         expect(checkbox).not.toBeChecked()
         expect(checkbox.value).toBe(value)
@@ -139,7 +138,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
       const checkbox = getCheckboxIn(container, {
-        name: new RegExp(taskStatusDict[TaskStatusEnum.InProgress]!),
+        name: new RegExp(taskExtendedStatusDict[TaskStatusEnum.InProgress]!),
       })
 
       expect(checkbox).toBeChecked()
@@ -150,7 +149,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      taskStatusDictValues.forEach((value) => {
+      taskExtendedStatusDictValues.forEach((value) => {
         const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         expect(checkbox).toBeEnabled()
       })
@@ -161,7 +160,7 @@ describe('Расширенный фильтр', () => {
 
       const container = getStatusContainer()
 
-      for await (const value of taskStatusDictValues) {
+      for await (const value of taskExtendedStatusDictValues) {
         const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
         await user.click(checkbox)
         expect(checkbox).toBeChecked()
@@ -174,14 +173,14 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const value of taskStatusDictValues) {
+        for await (const value of taskExtendedStatusDictValues) {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetButtonIn(user, container)
 
-        taskStatusDictValues.forEach((value) => {
+        taskExtendedStatusDictValues.forEach((value) => {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })
@@ -192,14 +191,14 @@ describe('Расширенный фильтр', () => {
 
         const container = getStatusContainer()
 
-        for await (const value of taskStatusDictValues) {
+        for await (const value of taskExtendedStatusDictValues) {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           await user.click(checkbox)
         }
 
         await userClickResetAllButton(user)
 
-        taskStatusDictValues.forEach((value) => {
+        taskExtendedStatusDictValues.forEach((value) => {
           const checkbox = getCheckboxIn(container, { name: new RegExp(value) })
           expect(checkbox).not.toBeChecked()
         })
@@ -642,7 +641,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess([])
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
@@ -656,7 +654,6 @@ describe('Расширенный фильтр', () => {
     describe(`Для роли ${UserRolesEnum.Engineer}`, () => {
       test('Не отображается', () => {
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.Engineer,
         })
 
@@ -672,7 +669,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess([])
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -690,7 +686,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess([])
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.HeadOfDepartment,
         })
 
@@ -708,7 +703,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess(getWorkGroupList())
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -727,7 +721,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess(workGroupList)
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -754,7 +747,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess([])
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -773,7 +765,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess(mockedWorkGroupList)
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -800,7 +791,6 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess(mockedWorkGroupList)
 
         const store = getStoreWithAuth({
-          userId: generateId(),
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
@@ -831,7 +821,6 @@ describe('Расширенный фильтр', () => {
           mockGetWorkGroupListSuccess(mockedWorkGroupList)
 
           const store = getStoreWithAuth({
-            userId: generateId(),
             userRole: UserRolesEnum.SeniorEngineer,
           })
 
@@ -859,7 +848,6 @@ describe('Расширенный фильтр', () => {
           mockGetWorkGroupListSuccess(mockedWorkGroupList)
 
           const store = getStoreWithAuth({
-            userId: generateId(),
             userRole: UserRolesEnum.SeniorEngineer,
           })
 
