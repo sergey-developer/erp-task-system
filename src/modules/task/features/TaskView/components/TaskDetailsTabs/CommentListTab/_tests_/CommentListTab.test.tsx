@@ -15,7 +15,7 @@ import {
   render,
   setupApiTests,
   setupNotifications,
-  waitFinishValidating,
+  validatingFinished,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import { screen, within } from '@testing-library/react'
@@ -64,7 +64,7 @@ describe('Вкладка списка комментариев заявки', ()
           const commentInput = getCommentInput()
 
           await user.type(commentInput, newComment.text)
-          await waitFinishValidating(commentField)
+          await validatingFinished(commentField)
 
           await user.click(submitButton)
           await loadingStartedByButton(submitButton)
@@ -90,7 +90,7 @@ describe('Вкладка списка комментариев заявки', ()
           const commentInput = getCommentInput()
 
           await user.type(commentInput, newComment.text)
-          await waitFinishValidating(commentField)
+          await validatingFinished(commentField)
 
           await user.click(submitButton)
           await loadingStartedByButton(submitButton)
@@ -123,7 +123,7 @@ describe('Вкладка списка комментариев заявки', ()
           const commentInput = getCommentInput()
 
           await user.type(commentInput, generateWord())
-          await waitFinishValidating(commentField)
+          await validatingFinished(commentField)
 
           await user.click(submitButton)
           await loadingStartedByButton(submitButton)
@@ -148,7 +148,7 @@ describe('Вкладка списка комментариев заявки', ()
           const commentInput = getCommentInput()
 
           await user.type(commentInput, generateWord())
-          await waitFinishValidating(commentField)
+          await validatingFinished(commentField)
 
           await user.click(submitButton)
           await loadingStartedByButton(submitButton)
@@ -173,7 +173,7 @@ describe('Вкладка списка комментариев заявки', ()
           const commentInput = getCommentInput()
 
           await user.type(commentInput, generateWord())
-          await waitFinishValidating(commentField)
+          await validatingFinished(commentField)
 
           await user.click(submitButton)
           await loadingStartedByButton(submitButton)
@@ -198,7 +198,7 @@ describe('Вкладка списка комментариев заявки', ()
           const commentInput = getCommentInput()
 
           await user.type(commentInput, generateWord())
-          await waitFinishValidating(commentField)
+          await validatingFinished(commentField)
 
           await user.click(submitButton)
           await loadingStartedByButton(submitButton)

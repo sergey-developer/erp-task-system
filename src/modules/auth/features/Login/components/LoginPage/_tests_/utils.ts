@@ -6,8 +6,8 @@ import {
   WRONG_PASSWORD,
 } from '_tests_/constants/auth'
 import {
-  waitFinishValidating as baseWaitFinishValidating,
-  waitStartValidating as baseWaitStartValidating,
+  validatingFinished as baseValidatingFinished,
+  validatingStarted as baseValidatingStarted,
 } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
@@ -68,20 +68,20 @@ export const userEntersWrongPassword = async (
   return userEntersPassword(user, WRONG_PASSWORD)
 }
 
-export const waitStartValidating = async (
+export const validatingStarted = async (
   emailField: HTMLElement,
   passwordField: HTMLElement,
 ) => {
-  await baseWaitStartValidating(emailField)
-  await baseWaitStartValidating(passwordField)
+  await baseValidatingStarted(emailField)
+  await baseValidatingStarted(passwordField)
 }
 
-export const waitFinishValidating = async (
+export const validatingFinished = async (
   emailField: HTMLElement,
   passwordField: HTMLElement,
 ) => {
-  await baseWaitFinishValidating(emailField)
-  await baseWaitFinishValidating(passwordField)
+  await baseValidatingFinished(emailField)
+  await baseValidatingFinished(passwordField)
 }
 
 export const userClickSubmitButton = async (

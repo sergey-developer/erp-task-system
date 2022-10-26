@@ -39,12 +39,12 @@ export const loadingFinishedByCard = async (card: HTMLElement) => {
   })
 }
 
-export const waitStartLoadingByIcon = (container: HTMLElement) => {
+export const loadingStartedByIcon = (container: HTMLElement) => {
   const icon = getIconByNameIn(container, 'loading')
   expect(icon).toBeInTheDocument()
 }
 
-export const waitFinishLoadingByIcon = async (container: HTMLElement) => {
+export const loadingFinishedByIcon = async (container: HTMLElement) => {
   await waitFor(() => {
     expect(queryIconByNameIn(container, 'loading')).not.toBeInTheDocument()
   })

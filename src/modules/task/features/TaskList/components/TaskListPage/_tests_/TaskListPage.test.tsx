@@ -1,8 +1,8 @@
 import {
   generateId,
+  loadingStartedByIcon,
   render,
   setupApiTests,
-  waitStartLoadingByIcon,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import {
@@ -16,8 +16,8 @@ import {
   getFilterContainer,
   getFilterTagByTextIn,
   getFirstFilterTagContainer,
-  waitFinishLoading as waitFinishFilterLoading,
-  waitStartLoading as waitStartFilterLoading,
+  loadingFinished as waitFinishFilterLoading,
+  loadingStarted as waitStartFilterLoading,
 } from '../../FastFilter/_tests_/utils'
 import { fastFilterNamesDict } from '../../FastFilter/constants'
 import { getTable as getTaskTable } from '../../TaskTable/_tests_/utils'
@@ -82,7 +82,7 @@ describe('Страница реестра заявок', () => {
       await user.click(filterTag)
 
       const taskTable = getTaskTable()
-      await waitStartLoadingByIcon(taskTable)
+      await loadingStartedByIcon(taskTable)
     })
 
     test('Сбрасывается если применён "Расширенный фильтр"', () => {})

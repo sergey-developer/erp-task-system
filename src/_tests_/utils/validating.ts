@@ -2,13 +2,13 @@ import { waitFor } from '@testing-library/react'
 
 const validatingStatusClass = 'ant-form-item-is-validating'
 
-export const waitStartValidating = async (field: HTMLElement) => {
+export const validatingStarted = async (field: HTMLElement) => {
   await waitFor(() => {
     expect(field).toHaveClass(validatingStatusClass)
   })
 }
 
-export const waitFinishValidating = async (field: HTMLElement) => {
+export const validatingFinished = async (field: HTMLElement) => {
   await waitFor(() => {
     expect(field).not.toHaveClass(validatingStatusClass)
   })

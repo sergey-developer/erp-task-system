@@ -1,4 +1,4 @@
-import { getIconByName, render, waitStartLoadingByIcon } from '_tests_/utils'
+import { getIconByName, loadingStartedByIcon, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import {
   TaskExtendedStatusEnum,
@@ -609,7 +609,7 @@ describe('Таблица заявок', () => {
     render(<TaskTable {...baseProps} dataSource={[]} loading />)
 
     const table = getTable()
-    waitStartLoadingByIcon(table)
+    loadingStartedByIcon(table)
   })
 
   test('При клике на строку вызывается обработчик', async () => {

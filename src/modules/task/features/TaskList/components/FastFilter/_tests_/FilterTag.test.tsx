@@ -3,7 +3,7 @@ import { within } from '@testing-library/react'
 
 import FilterTag from '../FilterTag'
 import { filterCheckedClass, requiredProps } from './constants'
-import { getFilterTag, getFilterTagContainer, waitStartLoading } from './utils'
+import { getFilterTag, getFilterTagContainer, loadingStarted } from './utils'
 
 describe('FilterTag', () => {
   test('Отображает состояние загрузки', () => {
@@ -14,7 +14,7 @@ describe('FilterTag', () => {
     const skeleton = container.querySelector('.ant-skeleton-active')
 
     expect(skeleton).toBeInTheDocument()
-    waitStartLoading(container)
+    loadingStarted(container)
   })
 
   test('Отображает текст', () => {

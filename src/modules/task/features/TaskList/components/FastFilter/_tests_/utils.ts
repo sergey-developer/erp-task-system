@@ -13,12 +13,12 @@ export const getFilterTagContainer = () =>
 export const getFirstFilterTagContainer = () =>
   screen.getAllByTestId('filter-fast-tag-container')[0]
 
-export const waitStartLoading = (container: HTMLElement) => {
+export const loadingStarted = (container: HTMLElement) => {
   const skeleton = container.querySelector('.ant-skeleton-active')
   expect(skeleton).toBeInTheDocument()
 }
 
-export const waitFinishLoading = async (container: HTMLElement) => {
+export const loadingFinished = async (container: HTMLElement) => {
   await waitFor(() => {
     const skeleton = container.querySelector('.ant-skeleton-active')
     expect(skeleton).not.toBeInTheDocument()

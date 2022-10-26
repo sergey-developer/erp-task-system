@@ -2,7 +2,6 @@ import {
   generateDateString,
   generateId,
   generateInteger,
-  generateString,
   generateWord,
 } from '_tests_/utils'
 import {
@@ -11,7 +10,10 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/common'
-import { TaskListItemModel } from 'modules/task/features/TaskList/models'
+import {
+  GetTaskListResponseModel,
+  TaskListItemModel,
+} from 'modules/task/features/TaskList/models'
 
 import { getWorkGroup } from '../workGroup'
 import { getTaskAssignee } from './taskAssignee'
@@ -40,12 +42,21 @@ export const getTaskListItem = (
     max: 4,
   }) as TaskListItemModel['initialImpact'],
   createdAt: generateDateString(),
-  recordId: generateString(),
+  recordId: generateWord(),
   workGroup: getWorkGroup(),
   title: generateWord(),
   name: generateWord(),
-  productClassifier1: generateString(),
-  productClassifier2: generateString(),
-  productClassifier3: generateString(),
-  contactService: generateString(),
+  productClassifier1: generateWord(),
+  productClassifier2: generateWord(),
+  productClassifier3: generateWord(),
+  contactService: generateWord(),
+})
+
+export const getGetTaskListResponse = (
+  taskList: GetTaskListResponseModel['results'],
+): GetTaskListResponseModel => ({
+  results: taskList,
+  count: taskList.length,
+  next: null,
+  previous: null,
 })
