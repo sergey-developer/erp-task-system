@@ -10,10 +10,6 @@ describe('FilterTag', () => {
     render(<FilterTag {...requiredProps} loading />)
 
     const container = getFilterTagContainer()
-    // eslint-disable-next-line testing-library/no-node-access
-    const skeleton = container.querySelector('.ant-skeleton-active')
-
-    expect(skeleton).toBeInTheDocument()
     loadingStarted(container)
   })
 
