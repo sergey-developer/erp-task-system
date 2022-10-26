@@ -1,4 +1,10 @@
-import { render, setupApiTests } from '_tests_/utils'
+import {
+  mockGetJournalCsvServerError,
+  mockGetJournalCsvSuccess,
+  mockGetJournalServerError,
+  mockGetJournalSuccess,
+} from '_tests_/mocks/api'
+import { generateId, render, setupApiTests } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import {
   getEmptyJournalResponseSuccess,
@@ -8,14 +14,7 @@ import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import { NO_DATA_MSG } from '../constants'
-import JournalTab from '../index'
-import {
-  FAKE_TASK_ID,
-  mockGetJournalCsvServerError,
-  mockGetJournalCsvSuccess,
-  mockGetJournalServerError,
-  mockGetJournalSuccess,
-} from './mocks'
+import JournalTab, { JournalTabProps } from '../index'
 import {
   getDownloadButton,
   journalCsvLoadingFinished,
@@ -27,14 +26,19 @@ import {
 
 setupApiTests()
 
+const requiredProps: JournalTabProps = {
+  taskId: generateId(),
+}
+
 describe('Вкладка журнала задачи', () => {
   describe('При успешном запросе журнала', () => {
     describe('Если есть записи', () => {
       describe('Отображает', () => {
         test('Записи', async () => {
-          mockGetJournalSuccess(getJournalResponseSuccess)
+          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
 
-          render(<JournalTab taskId={FAKE_TASK_ID} />)
+          render(<JournalTab {...requiredProps} />)
+
           await journalLoadingStarted()
           await journalLoadingFinished()
 
@@ -44,9 +48,10 @@ describe('Вкладка журнала задачи', () => {
         })
 
         test('Кнопку экспорта в csv', async () => {
-          mockGetJournalSuccess(getJournalResponseSuccess)
+          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
 
-          render(<JournalTab taskId={FAKE_TASK_ID} />)
+          render(<JournalTab {...requiredProps} />)
+
           await journalLoadingStarted()
           await journalLoadingFinished()
 
@@ -62,9 +67,10 @@ describe('Вкладка журнала задачи', () => {
 
       describe('Не отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
-          mockGetJournalSuccess(getJournalResponseSuccess)
+          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
 
-          render(<JournalTab taskId={FAKE_TASK_ID} />)
+          render(<JournalTab {...requiredProps} />)
+
           await journalLoadingStarted()
           await journalLoadingFinished()
 
@@ -73,9 +79,9 @@ describe('Вкладка журнала задачи', () => {
       })
 
       test('Кнопка экспорта в csv активна', async () => {
-        mockGetJournalSuccess(getJournalResponseSuccess)
+        mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
 
-        render(<JournalTab taskId={FAKE_TASK_ID} />)
+        render(<JournalTab {...requiredProps} />)
 
         await journalLoadingStarted()
         await journalLoadingFinished()
@@ -92,10 +98,10 @@ describe('Вкладка журнала задачи', () => {
         )
 
         test('Не показывает сообщение об ошибке', async () => {
-          mockGetJournalSuccess(getJournalResponseSuccess)
-          mockGetJournalCsvSuccess()
+          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+          mockGetJournalCsvSuccess(requiredProps.taskId)
 
-          const { user } = render(<JournalTab taskId={FAKE_TASK_ID} />)
+          const { user } = render(<JournalTab {...requiredProps} />)
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -121,10 +127,10 @@ describe('Вкладка журнала задачи', () => {
         )
 
         test('Показывает сообщение об ошибке', async () => {
-          mockGetJournalSuccess(getJournalResponseSuccess)
-          mockGetJournalCsvServerError()
+          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+          mockGetJournalCsvServerError(requiredProps.taskId)
 
-          const { user } = render(<JournalTab taskId={FAKE_TASK_ID} />)
+          const { user } = render(<JournalTab {...requiredProps} />)
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -146,9 +152,13 @@ describe('Вкладка журнала задачи', () => {
     describe('Если нет записей', () => {
       describe('Отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
-          mockGetJournalSuccess(getEmptyJournalResponseSuccess)
+          mockGetJournalSuccess(
+            requiredProps.taskId,
+            getEmptyJournalResponseSuccess,
+          )
 
-          render(<JournalTab taskId={FAKE_TASK_ID} />)
+          render(<JournalTab {...requiredProps} />)
+
           await journalLoadingStarted()
           await journalLoadingFinished()
 
@@ -158,9 +168,13 @@ describe('Вкладка журнала задачи', () => {
 
       describe('Не отображает', () => {
         test('Записи', async () => {
-          mockGetJournalSuccess(getEmptyJournalResponseSuccess)
+          mockGetJournalSuccess(
+            requiredProps.taskId,
+            getEmptyJournalResponseSuccess,
+          )
 
-          render(<JournalTab taskId={FAKE_TASK_ID} />)
+          render(<JournalTab {...requiredProps} />)
+
           await journalLoadingStarted()
           await journalLoadingFinished()
 
@@ -170,9 +184,13 @@ describe('Вкладка журнала задачи', () => {
         })
 
         test('Кнопку экспорта в csv', async () => {
-          mockGetJournalSuccess(getEmptyJournalResponseSuccess)
+          mockGetJournalSuccess(
+            requiredProps.taskId,
+            getEmptyJournalResponseSuccess,
+          )
 
-          render(<JournalTab taskId={FAKE_TASK_ID} />)
+          render(<JournalTab {...requiredProps} />)
+
           await journalLoadingStarted()
           await journalLoadingFinished()
 
@@ -191,9 +209,10 @@ describe('Вкладка журнала задачи', () => {
   describe('При не успешном запросе журнала', () => {
     describe('Отображает', () => {
       test(`Ошибку "${UNKNOWN_ERROR_MSG}"`, async () => {
-        mockGetJournalServerError()
+        mockGetJournalServerError(requiredProps.taskId)
 
-        render(<JournalTab taskId={FAKE_TASK_ID} />)
+        render(<JournalTab {...requiredProps} />)
+
         await journalLoadingStarted()
         await journalLoadingFinished()
 
@@ -202,9 +221,10 @@ describe('Вкладка журнала задачи', () => {
       })
 
       test(`Текст "${NO_DATA_MSG}"`, async () => {
-        mockGetJournalServerError()
+        mockGetJournalServerError(requiredProps.taskId)
 
-        render(<JournalTab taskId={FAKE_TASK_ID} />)
+        render(<JournalTab {...requiredProps} />)
+
         await journalLoadingStarted()
         await journalLoadingFinished()
 

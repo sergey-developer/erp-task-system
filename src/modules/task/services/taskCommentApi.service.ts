@@ -19,7 +19,7 @@ const taskCommentApiService = taskApiService.injectEndpoints({
       query: ({ taskId, ...payload }) => ({
         url: getTaskCommentUrl(taskId),
         method: HttpMethodEnum.Post,
-        body: payload,
+        data: payload,
       }),
       onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
         try {
