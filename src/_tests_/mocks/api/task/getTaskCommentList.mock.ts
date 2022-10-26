@@ -25,9 +25,7 @@ export const mockGetTaskCommentListSuccess = (
 ) => {
   const mockGetTaskCommentList = getSuccessMockFn(
     getGetTaskCommentListMockFn(taskId),
-    {
-      body: response,
-    },
+    { body: response },
   )
 
   mockGetTaskCommentList()
@@ -39,9 +37,7 @@ export const mockCreateTaskCommentSuccess = (
 ) => {
   const mockCreateTaskComment = getSuccessMockFn(
     getCreateTaskCommentMockFn(taskId),
-    {
-      body: response,
-    },
+    { body: response },
   )
 
   mockCreateTaskComment()
@@ -51,11 +47,9 @@ export const mockCreateTaskCommentBadRequestError = <T extends object>(
   taskId: number,
   response?: ErrorData<T>,
 ) => {
-  const mockCreateTaskComment = getBadRequestErrorMockFn<ErrorData<T>>(
+  const mockCreateTaskComment = getBadRequestErrorMockFn(
     getCreateTaskCommentMockFn(taskId),
-    {
-      body: response,
-    },
+    { body: response },
   )
 
   mockCreateTaskComment()
@@ -67,9 +61,7 @@ export const mockCreateTaskCommentNotFoundError = <T extends object>(
 ) => {
   const mockCreateTaskComment = getNotFoundErrorMockFn(
     getCreateTaskCommentMockFn(taskId),
-    {
-      body: response,
-    },
+    { body: response },
   )
 
   mockCreateTaskComment()
@@ -81,9 +73,7 @@ export const mockCreateTaskCommentForbiddenError = <T extends object>(
 ) => {
   const mockCreateTaskComment = getForbiddenErrorMockFn(
     getCreateTaskCommentMockFn(taskId),
-    {
-      body: response,
-    },
+    { body: response },
   )
 
   mockCreateTaskComment()

@@ -24,7 +24,7 @@ export const mockLoginSuccess = (response: LoginResponseModel) => {
 export const mockLoginBadRequestError = <T extends object>(
   response?: ErrorData<T>,
 ) => {
-  const mockLogin = getBadRequestErrorMockFn<ErrorData<T>>(getLoginMockFn(), {
+  const mockLogin = getBadRequestErrorMockFn(getLoginMockFn(), {
     body: response,
   })
 
@@ -34,7 +34,7 @@ export const mockLoginBadRequestError = <T extends object>(
 export const mockLoginUnauthorizedError = <T extends object>(
   response?: ErrorData<T>,
 ) => {
-  const mockLogin = getUnauthorizedErrorMockFn<ErrorData<T>>(getLoginMockFn(), {
+  const mockLogin = getUnauthorizedErrorMockFn(getLoginMockFn(), {
     body: response,
   })
 
@@ -44,7 +44,7 @@ export const mockLoginUnauthorizedError = <T extends object>(
 export const mockLoginServerError = <T extends object>(
   response?: ErrorData<T>,
 ) => {
-  const mockLogin = getServerErrorMockFn<ErrorData<T>>(getLoginMockFn(), {
+  const mockLogin = getServerErrorMockFn(getLoginMockFn(), {
     body: response,
   })
 
