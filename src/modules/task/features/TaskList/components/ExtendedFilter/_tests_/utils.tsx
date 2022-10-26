@@ -1,5 +1,6 @@
-import { getButton, screen, within } from '_tests_/utils'
+import { getButton } from '_tests_/utils'
 import { ByRoleOptions } from '@testing-library/dom/types/queries'
+import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const getCloseButton = () => getButton('Close')

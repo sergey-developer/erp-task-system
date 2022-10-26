@@ -4,21 +4,21 @@ import {
   mockCreateTaskCommentBadRequestError,
   mockCreateTaskCommentForbiddenError,
   mockCreateTaskCommentNotFoundError,
+  mockCreateTaskCommentServerError,
   mockCreateTaskCommentSuccess,
   mockGetTaskCommentListSuccess,
 } from '_tests_/mocks/api'
 import {
   generateWord,
+  loadingFinishedByButton,
+  loadingStartedByButton,
   render,
-  screen,
   setupApiTests,
-  waitFinishLoadingByButton,
+  setupNotifications,
   waitFinishValidating,
-  waitFor,
-  waitStartLoadingByButton,
-  within,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
+import { screen, within } from '@testing-library/react'
 import { getTaskComment } from 'fixtures/task'
 import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
@@ -41,143 +41,172 @@ setupApiTests()
 
 describe('Вкладка списка комментариев заявки', () => {
   describe('Форма добавления заявки', () => {
-    test('Отображается', () => {
-      render(<CommentListTab {...baseProps} />)
+    describe('Роль - любая', () => {
+      test('Отображается', () => {
+        render(<CommentListTab {...baseProps} />)
 
-      const formContainer = getFormContainer()
-      expect(formContainer).toBeInTheDocument()
-    })
-
-    describe('При успешном запросе', () => {
-      test('Корректно добавляет комментарий в список', async () => {
-        const newComment = getTaskComment()
-        mockCreateTaskCommentSuccess(baseProps.taskId, newComment)
-        mockGetTaskCommentListSuccess(baseProps.taskId, [getTaskComment()])
-
-        const { user } = render(<CommentListTab {...baseProps} />, {
-          store: getStoreWithAuth(),
-        })
-
-        const submitButton = getSubmitButton()
-        const commentField = getCommentField()
-        const commentInput = getCommentInput()
-
-        await user.type(commentInput, newComment.text)
-        await waitFinishValidating(commentField)
-
-        await user.click(submitButton)
-        await waitStartLoadingByButton(submitButton)
-        await waitFinishLoadingByButton(submitButton)
-
-        const firstComment = getFirstComment()
-        const newCommentText = within(firstComment).getByText(newComment.text)
-
-        expect(newCommentText).toBeInTheDocument()
+        const formContainer = getFormContainer()
+        expect(formContainer).toBeInTheDocument()
       })
 
-      test('Сбрасывает значения полей', async () => {
-        const newComment = getTaskComment()
-        mockCreateTaskCommentSuccess(baseProps.taskId, newComment)
-        mockGetTaskCommentListSuccess(baseProps.taskId, [])
+      describe('При успешном запросе', () => {
+        test('Корректно добавляет комментарий в список', async () => {
+          const newComment = getTaskComment()
+          mockCreateTaskCommentSuccess(baseProps.taskId, newComment)
+          mockGetTaskCommentListSuccess(baseProps.taskId, [getTaskComment()])
 
-        const { user } = render(<CommentListTab {...baseProps} />, {
-          store: getStoreWithAuth(),
+          const { user } = render(<CommentListTab {...baseProps} />, {
+            store: getStoreWithAuth(),
+          })
+
+          const submitButton = getSubmitButton()
+          const commentField = getCommentField()
+          const commentInput = getCommentInput()
+
+          await user.type(commentInput, newComment.text)
+          await waitFinishValidating(commentField)
+
+          await user.click(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
+
+          const firstComment = getFirstComment()
+          const newCommentText = within(firstComment).getByText(newComment.text)
+
+          expect(newCommentText).toBeInTheDocument()
         })
 
-        const submitButton = getSubmitButton()
-        const commentField = getCommentField()
-        const commentInput = getCommentInput()
+        test('Сбрасывает значения полей', async () => {
+          const newComment = getTaskComment()
+          mockCreateTaskCommentSuccess(baseProps.taskId, newComment)
+          mockGetTaskCommentListSuccess(baseProps.taskId, [])
 
-        await user.type(commentInput, newComment.text)
-        await waitFinishValidating(commentField)
+          const { user } = render(<CommentListTab {...baseProps} />, {
+            store: getStoreWithAuth(),
+          })
 
-        await user.click(submitButton)
-        await waitStartLoadingByButton(submitButton)
-        await waitFinishLoadingByButton(submitButton)
+          const submitButton = getSubmitButton()
+          const commentField = getCommentField()
+          const commentInput = getCommentInput()
 
-        expect(getCommentInput()).not.toHaveValue()
+          await user.type(commentInput, newComment.text)
+          await waitFinishValidating(commentField)
+
+          await user.click(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
+
+          expect(getCommentInput()).not.toHaveValue()
+        })
       })
-    })
 
-    describe('При не успешном запросе', () => {
-      test('Корректно обрабатывается ошибка 400', async () => {
-        mockGetTaskCommentListSuccess(baseProps.taskId, [])
+      describe('При не успешном запросе', () => {
+        setupNotifications()
 
-        const badRequestErrorResponse: CreateCommentFormErrors = {
-          comment: [generateWord()],
-        }
-        mockCreateTaskCommentBadRequestError<CreateCommentFormFields>(
-          baseProps.taskId,
-          badRequestErrorResponse,
-        )
+        test('Корректно обрабатывается ошибка 400', async () => {
+          mockGetTaskCommentListSuccess(baseProps.taskId, [])
 
-        const { user } = render(<CommentListTab {...baseProps} />, {
-          store: getStoreWithAuth(),
-        })
+          const badRequestErrorResponse: CreateCommentFormErrors = {
+            comment: [generateWord()],
+          }
+          mockCreateTaskCommentBadRequestError<CreateCommentFormFields>(
+            baseProps.taskId,
+            badRequestErrorResponse,
+          )
 
-        const submitButton = getSubmitButton()
-        const commentField = getCommentField()
-        const commentInput = getCommentInput()
+          const { user } = render(<CommentListTab {...baseProps} />, {
+            store: getStoreWithAuth(),
+          })
 
-        await user.type(commentInput, generateWord())
-        await waitFinishValidating(commentField)
+          const submitButton = getSubmitButton()
+          const commentField = getCommentField()
+          const commentInput = getCommentInput()
 
-        await user.click(submitButton)
-        await waitStartLoadingByButton(submitButton)
-        await waitFinishLoadingByButton(submitButton)
+          await user.type(commentInput, generateWord())
+          await waitFinishValidating(commentField)
 
-        await waitFor(() => {
-          const errorMsg = within(commentField).getByText(
+          await user.click(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
+
+          const errorMsg = await within(commentField).findByText(
             head(badRequestErrorResponse.comment)!,
           )
           expect(errorMsg).toBeInTheDocument()
         })
-      })
 
-      test('Корректно обрабатывается ошибка 404', async () => {
-        mockGetTaskCommentListSuccess(baseProps.taskId, [])
-        mockCreateTaskCommentNotFoundError(baseProps.taskId)
+        test('Корректно обрабатывается ошибка 404', async () => {
+          mockGetTaskCommentListSuccess(baseProps.taskId, [])
+          mockCreateTaskCommentNotFoundError(baseProps.taskId)
 
-        const { user } = render(<CommentListTab {...baseProps} />, {
-          store: getStoreWithAuth(),
+          const { user } = render(<CommentListTab {...baseProps} />, {
+            store: getStoreWithAuth(),
+          })
+
+          const submitButton = getSubmitButton()
+          const commentField = getCommentField()
+          const commentInput = getCommentInput()
+
+          await user.type(commentInput, generateWord())
+          await waitFinishValidating(commentField)
+
+          await user.click(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
+
+          const errorMsg = await screen.findByText(
+            CREATE_TASK_COMMENT_ERROR_MSG,
+          )
+          expect(errorMsg).toBeInTheDocument()
         })
 
-        const submitButton = getSubmitButton()
-        const commentField = getCommentField()
-        const commentInput = getCommentInput()
+        test('Корректно обрабатывается ошибка 500', async () => {
+          mockGetTaskCommentListSuccess(baseProps.taskId, [])
+          mockCreateTaskCommentServerError(baseProps.taskId)
 
-        await user.type(commentInput, generateWord())
-        await waitFinishValidating(commentField)
+          const { user } = render(<CommentListTab {...baseProps} />, {
+            store: getStoreWithAuth(),
+          })
 
-        await user.click(submitButton)
-        await waitStartLoadingByButton(submitButton)
-        await waitFinishLoadingByButton(submitButton)
+          const submitButton = getSubmitButton()
+          const commentField = getCommentField()
+          const commentInput = getCommentInput()
 
-        const errorMsg = await screen.findByText(CREATE_TASK_COMMENT_ERROR_MSG)
-        expect(errorMsg).toBeInTheDocument()
-      })
+          await user.type(commentInput, generateWord())
+          await waitFinishValidating(commentField)
 
-      test('Корректно обрабатывается неизвестная ошибка', async () => {
-        mockGetTaskCommentListSuccess(baseProps.taskId, [])
-        mockCreateTaskCommentForbiddenError(baseProps.taskId)
+          await user.click(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
 
-        const { user } = render(<CommentListTab {...baseProps} />, {
-          store: getStoreWithAuth(),
+          const errorMsg = await screen.findByText(
+            CREATE_TASK_COMMENT_ERROR_MSG,
+          )
+          expect(errorMsg).toBeInTheDocument()
         })
 
-        const submitButton = getSubmitButton()
-        const commentField = getCommentField()
-        const commentInput = getCommentInput()
+        test('Корректно обрабатывается неизвестная ошибка', async () => {
+          mockGetTaskCommentListSuccess(baseProps.taskId, [])
+          mockCreateTaskCommentForbiddenError(baseProps.taskId)
 
-        await user.type(commentInput, generateWord())
-        await waitFinishValidating(commentField)
+          const { user } = render(<CommentListTab {...baseProps} />, {
+            store: getStoreWithAuth(),
+          })
 
-        await user.click(submitButton)
-        await waitStartLoadingByButton(submitButton)
-        await waitFinishLoadingByButton(submitButton)
+          const submitButton = getSubmitButton()
+          const commentField = getCommentField()
+          const commentInput = getCommentInput()
 
-        const errorMsg = await screen.findByText(UNKNOWN_ERROR_MSG)
-        expect(errorMsg).toBeInTheDocument()
+          await user.type(commentInput, generateWord())
+          await waitFinishValidating(commentField)
+
+          await user.click(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
+
+          const errorMsg = await screen.findByText(UNKNOWN_ERROR_MSG)
+          expect(errorMsg).toBeInTheDocument()
+        })
       })
     })
   })

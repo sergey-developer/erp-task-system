@@ -1,10 +1,5 @@
-import {
-  getIconByName,
-  render,
-  screen,
-  waitStartLoadingByIcon,
-  within,
-} from '_tests_/utils'
+import { getIconByName, render, waitStartLoadingByIcon } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,

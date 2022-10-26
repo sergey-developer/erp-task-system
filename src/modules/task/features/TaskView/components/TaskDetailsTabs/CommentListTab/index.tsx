@@ -18,7 +18,7 @@ import {
 } from './CreateCommentForm/interfaces'
 
 const { Title } = Typography
-const DEFAULT_DISPLAYABLE_COUNT: number = 3
+const DISPLAYABLE_COUNT: number = 3
 
 export type CommentListTabProps = {
   title: string
@@ -50,12 +50,12 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
   )
 
   const isDisplayableCountExceed: boolean =
-    commentList.length > DEFAULT_DISPLAYABLE_COUNT
+    commentList.length > DISPLAYABLE_COUNT
 
   const displayableComments =
     isDisplayableCountExceed && expanded
       ? commentList
-      : commentList.slice(0, DEFAULT_DISPLAYABLE_COUNT)
+      : commentList.slice(0, DISPLAYABLE_COUNT)
 
   return (
     <Space direction='vertical' size='large' $block>

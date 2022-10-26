@@ -1,4 +1,5 @@
-import { getButton, render, screen } from '_tests_/utils'
+import { getButton, render } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 
 import FilterBlockLabel from './index'
 

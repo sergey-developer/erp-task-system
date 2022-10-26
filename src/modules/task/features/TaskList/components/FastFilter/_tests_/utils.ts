@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '_tests_/utils'
+import { screen, waitFor, within } from '@testing-library/react'
 
 export const getFilterContainer = () => screen.getByTestId('filter-fast')
 

@@ -1,4 +1,4 @@
-import { screen, within } from './index'
+import { screen, within } from '@testing-library/react'
 
 export const getIconByName = (name: string) => screen.getByRole('img', { name })
 

@@ -1,4 +1,4 @@
-import { waitFor } from '_tests_/utils'
+import { waitFor } from '@testing-library/react'
 
 const validatingStatusClass = 'ant-form-item-is-validating'
 
