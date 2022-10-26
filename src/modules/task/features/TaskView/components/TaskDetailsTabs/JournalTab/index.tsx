@@ -15,7 +15,7 @@ import {
 import Journal from './Journal'
 import { getJournalCsvFilename } from './utils'
 
-type JournalTabProps = {
+export type JournalTabProps = {
   taskId: number
 }
 

@@ -1,4 +1,4 @@
-import api from '_tests_/mocks/api'
+import { api } from '_tests_/mocks/api'
 
 const setupApiTests = () => {
   beforeAll(() => {

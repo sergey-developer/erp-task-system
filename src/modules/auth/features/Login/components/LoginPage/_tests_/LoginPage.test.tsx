@@ -2,6 +2,12 @@ import React from 'react'
 
 import { CORRECT_EMAIL, CORRECT_PASSWORD } from '_tests_/constants/auth'
 import {
+  mockLoginBadRequestError,
+  mockLoginServerError,
+  mockLoginSuccess,
+  mockLoginUnauthorizedError,
+} from '_tests_/mocks/api'
+import {
   render,
   renderInRoute,
   screen,
@@ -25,12 +31,6 @@ import {
 } from 'shared/constants/validation'
 import { setupStore } from 'state/store'
 
-import {
-  mockLoginBadRequestError,
-  mockLoginServerError,
-  mockLoginSuccess,
-  mockLoginUnauthorizedError,
-} from './mocks'
 import {
   getEmailField,
   getPasswordField,
@@ -109,7 +109,7 @@ describe('Страница авторизации', () => {
   describe('Если заполнить поля и нажать кнопку "Войти"', () => {
     describe('При успешном запросе', () => {
       test('Пользователь покидает страницу авторизации', async () => {
-        mockLoginSuccess()
+        mockLoginSuccess(loginResponseSuccess)
 
         const { user, checkRouteChanged } = renderInRoute(
           <LoginPage />,
@@ -131,7 +131,7 @@ describe('Страница авторизации', () => {
         })
 
         test('access token', async () => {
-          mockLoginSuccess()
+          mockLoginSuccess(loginResponseSuccess)
 
           const { user } = render(<LoginPage />)
 
@@ -147,7 +147,7 @@ describe('Страница авторизации', () => {
         })
 
         test('refresh token', async () => {
-          mockLoginSuccess()
+          mockLoginSuccess(loginResponseSuccess)
 
           const { user } = render(<LoginPage />)
 
@@ -164,7 +164,7 @@ describe('Страница авторизации', () => {
       })
 
       test('данные сохраняются в store', async () => {
-        mockLoginSuccess()
+        mockLoginSuccess(loginResponseSuccess)
         const store = setupStore()
 
         const { user } = render(<LoginPage />, { store })
