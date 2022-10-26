@@ -7,8 +7,8 @@ import {
   mockDeleteTaskWorkGroupServerError,
   mockDeleteTaskWorkGroupSuccess,
   mockGetTaskSuccess,
-} from '_tests_/mocks/task'
-import { mockGetWorkGroupListSuccess } from '_tests_/mocks/workGroup'
+  mockGetWorkGroupListSuccess,
+} from '_tests_/mocks/api'
 import {
   generateWord,
   loadingFinishedByButton,

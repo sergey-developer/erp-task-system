@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   generateName,
   getSelect,
@@ -17,7 +18,6 @@ import { screen } from '@testing-library/react'
 import { getWorkGroupList } from 'fixtures/workGroup'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
-import { mockGetWorkGroupListSuccess } from 'modules/workGroup/features/WorkGroupList/_tests_/mocks'
 import { UserRolesEnum } from 'shared/constants/roles'
 
 import {
