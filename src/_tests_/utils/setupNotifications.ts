@@ -1,7 +1,11 @@
 import { notification } from 'antd'
 
+import { act } from '@testing-library/react'
+
 export const setupNotifications = () => {
-  afterEach(() => {
-    notification.destroy()
+  afterEach(async () => {
+    await act(() => {
+      notification.destroy()
+    })
   })
 }

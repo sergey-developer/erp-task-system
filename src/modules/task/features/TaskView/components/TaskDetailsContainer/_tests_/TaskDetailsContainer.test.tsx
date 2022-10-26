@@ -37,7 +37,6 @@ import {
 import { requiredProps } from './constants'
 
 setupApiTests()
-setupNotifications()
 
 describe('Контейнер детальной карточки заявки', () => {
   describe('Перевод заявки на 1-ю линию', () => {
@@ -86,6 +85,8 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       describe('При не успешном запросе', () => {
+        setupNotifications()
+
         test('Корректно обрабатывается ошибка 400', async () => {
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
@@ -312,6 +313,8 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       describe('При не успешном запросе', () => {
+        setupNotifications()
+
         test('Корректно обрабатывается ошибка 400', async () => {
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])

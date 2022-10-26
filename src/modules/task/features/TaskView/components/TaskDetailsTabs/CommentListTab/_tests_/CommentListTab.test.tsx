@@ -34,7 +34,6 @@ import {
 import { getFirstComment } from './utils'
 
 setupApiTests()
-setupNotifications()
 
 describe('Вкладка списка комментариев заявки', () => {
   describe('Форма добавления заявки', () => {
@@ -98,6 +97,8 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       describe('При не успешном запросе', () => {
+        setupNotifications()
+
         test('Корректно обрабатывается ошибка 400', async () => {
           const badRequestErrorResponse = { comment: [generateWord()] }
           mockCreateTaskCommentBadRequestError(badRequestErrorResponse)
