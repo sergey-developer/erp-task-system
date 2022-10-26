@@ -58,7 +58,7 @@ export const getUnauthorizedErrorMockFn = <T extends object = {}>(
     }),
   )
 
-export const getBadRequestErrorMockFn = <T extends object = {}>(
+export const getBadRequestErrorMockFn = <T extends Record<any, any> = {}>(
   requestMockFn: PartialAppliedRequestMockFn,
   responseOptions: Omit<ResponseResolverOptions<ErrorData<T>>, 'status'> = {},
 ): AddMockFn =>
