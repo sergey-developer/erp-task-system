@@ -8,11 +8,11 @@ export type FieldsErrors<T> = {
   [key in keyof T]: ValidationErrors
 }
 
-export type ErrorData<T extends Record<string, any> = {}> = FieldsErrors<T> & {
+export type ErrorData<T extends object = {}> = FieldsErrors<T> & {
   detail?: ValidationErrors
 }
 
-export type ErrorResponse<T extends Record<string, any> = {}> = {
+export type ErrorResponse<T extends object = {}> = {
   data: ErrorData<T>
   status: number
 }

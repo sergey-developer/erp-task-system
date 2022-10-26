@@ -47,7 +47,7 @@ export const mockCreateTaskCommentSuccess = (
   mockCreateTaskComment()
 }
 
-export const mockCreateTaskCommentBadRequestError = <T>(
+export const mockCreateTaskCommentBadRequestError = <T extends object>(
   taskId: number,
   response?: ErrorData<T>,
 ) => {
@@ -61,7 +61,7 @@ export const mockCreateTaskCommentBadRequestError = <T>(
   mockCreateTaskComment()
 }
 
-export const mockCreateTaskCommentNotFoundError = <T>(
+export const mockCreateTaskCommentNotFoundError = <T extends object>(
   taskId: number,
   response?: ErrorData<T>,
 ) => {
@@ -75,7 +75,7 @@ export const mockCreateTaskCommentNotFoundError = <T>(
   mockCreateTaskComment()
 }
 
-export const mockCreateTaskCommentForbiddenError = <T>(
+export const mockCreateTaskCommentForbiddenError = <T extends object>(
   taskId: number,
   response?: ErrorData<T>,
 ) => {
