@@ -10,7 +10,7 @@ import { DetailsContainerStyled } from '../styles'
 import TaskAssignee from '../TaskAssignee'
 import WorkGroup, { WorkGroupProps } from '../WorkGroup'
 
-type SecondaryDetailsProps = Pick<
+export type SecondaryDetailsProps = Pick<
   TaskDetailsModel,
   'id' | 'recordId' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
 > &
@@ -68,7 +68,10 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   )
 
   return (
-    <DetailsContainerStyled $breakpoints={breakpoints}>
+    <DetailsContainerStyled
+      data-testid='task-details-secondary'
+      $breakpoints={breakpoints}
+    >
       <Row justify='space-between'>
         <Col span={11}>
           <WorkGroup

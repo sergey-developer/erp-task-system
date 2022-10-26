@@ -9,7 +9,7 @@ const getWorkGroupListMockFn = getRequestMockFn(
 )
 
 export const mockGetWorkGroupListSuccess = (
-  response: GetWorkGroupListResponseModel,
+  response?: GetWorkGroupListResponseModel,
 ) => {
   const mockGetWorkGroupList = getSuccessMockFn(getWorkGroupListMockFn, {
     body: response,

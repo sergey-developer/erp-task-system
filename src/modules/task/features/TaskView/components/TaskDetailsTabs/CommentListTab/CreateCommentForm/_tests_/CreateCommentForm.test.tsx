@@ -1,4 +1,4 @@
-import { generateWord, render, waitStartLoadingByButton } from '_tests_/utils'
+import { generateWord, loadingStartedByButton, render } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 import {
   DEFAULT_LONG_TEXT_LENGTH,
@@ -99,7 +99,7 @@ describe('Форма добавления комментария', () => {
       render(<CreateCommentForm {...baseProps} isLoading />)
 
       const submitButton = getSubmitButton()
-      await waitStartLoadingByButton(submitButton)
+      await loadingStartedByButton(submitButton)
     })
 
     test('Обработчик вызывается корректно', async () => {

@@ -2,12 +2,12 @@ import head from 'lodash/head'
 
 import {
   generateWord,
+  loadingFinishedByButton,
+  loadingStartedByButton,
   render,
   setupApiTests,
   setupNotifications,
-  waitFinishLoadingByButton,
   waitFinishValidating,
-  waitStartLoadingByButton,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import { screen, within } from '@testing-library/react'
@@ -64,8 +64,8 @@ describe('Вкладка списка комментариев заявки', ()
           await waitFinishValidating(commentField)
 
           await user.click(submitButton)
-          await waitStartLoadingByButton(submitButton)
-          await waitFinishLoadingByButton(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
 
           const firstComment = getFirstComment()
           const newCommentText = within(firstComment).getByText(newComment.text)
@@ -90,8 +90,8 @@ describe('Вкладка списка комментариев заявки', ()
           await waitFinishValidating(commentField)
 
           await user.click(submitButton)
-          await waitStartLoadingByButton(submitButton)
-          await waitFinishLoadingByButton(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
 
           expect(getCommentInput()).not.toHaveValue()
         })
@@ -115,8 +115,8 @@ describe('Вкладка списка комментариев заявки', ()
           await waitFinishValidating(commentField)
 
           await user.click(submitButton)
-          await waitStartLoadingByButton(submitButton)
-          await waitFinishLoadingByButton(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
 
           const errorMsg = await within(commentField).findByText(
             head(badRequestErrorResponse.comment)!,
@@ -140,8 +140,8 @@ describe('Вкладка списка комментариев заявки', ()
           await waitFinishValidating(commentField)
 
           await user.click(submitButton)
-          await waitStartLoadingByButton(submitButton)
-          await waitFinishLoadingByButton(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
 
           const errorMsg = await screen.findByText(
             CREATE_TASK_COMMENT_ERROR_MSG,
@@ -165,8 +165,8 @@ describe('Вкладка списка комментариев заявки', ()
           await waitFinishValidating(commentField)
 
           await user.click(submitButton)
-          await waitStartLoadingByButton(submitButton)
-          await waitFinishLoadingByButton(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
 
           const errorMsg = await screen.findByText(
             CREATE_TASK_COMMENT_ERROR_MSG,
@@ -190,8 +190,8 @@ describe('Вкладка списка комментариев заявки', ()
           await waitFinishValidating(commentField)
 
           await user.click(submitButton)
-          await waitStartLoadingByButton(submitButton)
-          await waitFinishLoadingByButton(submitButton)
+          await loadingStartedByButton(submitButton)
+          await loadingFinishedByButton(submitButton)
 
           const errorMsg = await screen.findByText(UNKNOWN_ERROR_MSG)
           expect(errorMsg).toBeInTheDocument()

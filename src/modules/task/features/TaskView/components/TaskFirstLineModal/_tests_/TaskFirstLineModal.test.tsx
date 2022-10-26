@@ -1,4 +1,4 @@
-import { generateWord, render, waitStartLoadingByButton } from '_tests_/utils'
+import { generateWord, loadingStartedByButton, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import {
   DEFAULT_LONG_TEXT_LENGTH,
@@ -140,7 +140,7 @@ describe('Модальное окно перевода запроса на пе�
         render(<TaskFirstLineModal {...baseProps} isLoading />)
 
         const submitButton = getSubmitButton()
-        await waitStartLoadingByButton(submitButton)
+        await loadingStartedByButton(submitButton)
       })
 
       test('Обработчик вызывается корректно', async () => {

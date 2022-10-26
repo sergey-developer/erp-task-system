@@ -5,6 +5,8 @@ export const getModal = () => screen.getByTestId('modal-task-first-line')
 
 export const queryModal = () => screen.queryByTestId('modal-task-first-line')
 
+export const findModal = () => screen.findByTestId('modal-task-first-line')
+
 export const getDescriptionField = () =>
   within(getModal()).getByRole('textbox', {
     name: 'Причина возврата',

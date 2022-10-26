@@ -18,11 +18,11 @@ import {
 } from './mocks'
 import {
   getDownloadButton,
+  journalCsvLoadingFinished,
+  journalCsvLoadingStarted,
+  journalLoadingFinished,
+  journalLoadingStarted,
   userClickDownloadButton,
-  waitFinishLoadingJournal,
-  waitFinishLoadingJournalCsv,
-  waitStartLoadingJournal,
-  waitStartLoadingJournalCsv,
 } from './utils'
 
 setupApiTests()
@@ -35,8 +35,8 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
           render(<JournalTab taskId={FAKE_TASK_ID} />)
-          await waitStartLoadingJournal()
-          await waitFinishLoadingJournal()
+          await journalLoadingStarted()
+          await journalLoadingFinished()
 
           expect(screen.getAllByTestId('journalEntry')).toHaveLength(
             getJournalResponseSuccess.length,
@@ -47,8 +47,8 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
           render(<JournalTab taskId={FAKE_TASK_ID} />)
-          await waitStartLoadingJournal()
-          await waitFinishLoadingJournal()
+          await journalLoadingStarted()
+          await journalLoadingFinished()
 
           const downloadButton = getDownloadButton()
 
@@ -65,8 +65,8 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(getJournalResponseSuccess)
 
           render(<JournalTab taskId={FAKE_TASK_ID} />)
-          await waitStartLoadingJournal()
-          await waitFinishLoadingJournal()
+          await journalLoadingStarted()
+          await journalLoadingFinished()
 
           expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
         })
@@ -77,8 +77,8 @@ describe('Вкладка журнала задачи', () => {
 
         render(<JournalTab taskId={FAKE_TASK_ID} />)
 
-        await waitStartLoadingJournal()
-        await waitFinishLoadingJournal()
+        await journalLoadingStarted()
+        await journalLoadingFinished()
 
         const downloadButton = getDownloadButton()
         expect(downloadButton).toBeEnabled()
@@ -97,13 +97,13 @@ describe('Вкладка журнала задачи', () => {
 
           const { user } = render(<JournalTab taskId={FAKE_TASK_ID} />)
 
-          await waitStartLoadingJournal()
-          await waitFinishLoadingJournal()
+          await journalLoadingStarted()
+          await journalLoadingFinished()
 
           const downloadButton = await userClickDownloadButton(user)
 
-          await waitStartLoadingJournalCsv(downloadButton)
-          await waitFinishLoadingJournalCsv(downloadButton)
+          await journalCsvLoadingStarted(downloadButton)
+          await journalCsvLoadingFinished(downloadButton)
 
           expect(makeDownloadLinkSpy).toBeCalledTimes(1)
           expect(clickDownloadLinkSpy).toBeCalledTimes(1)
@@ -126,13 +126,13 @@ describe('Вкладка журнала задачи', () => {
 
           const { user } = render(<JournalTab taskId={FAKE_TASK_ID} />)
 
-          await waitStartLoadingJournal()
-          await waitFinishLoadingJournal()
+          await journalLoadingStarted()
+          await journalLoadingFinished()
 
           const downloadButton = await userClickDownloadButton(user)
 
-          await waitStartLoadingJournalCsv(downloadButton)
-          await waitFinishLoadingJournalCsv(downloadButton)
+          await journalCsvLoadingStarted(downloadButton)
+          await journalCsvLoadingFinished(downloadButton)
 
           expect(makeDownloadLinkSpy).not.toBeCalled()
           expect(clickDownloadLinkSpy).not.toBeCalled()
@@ -149,8 +149,8 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
           render(<JournalTab taskId={FAKE_TASK_ID} />)
-          await waitStartLoadingJournal()
-          await waitFinishLoadingJournal()
+          await journalLoadingStarted()
+          await journalLoadingFinished()
 
           expect(screen.getByText(NO_DATA_MSG)).toBeInTheDocument()
         })
@@ -161,8 +161,8 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
           render(<JournalTab taskId={FAKE_TASK_ID} />)
-          await waitStartLoadingJournal()
-          await waitFinishLoadingJournal()
+          await journalLoadingStarted()
+          await journalLoadingFinished()
 
           expect(screen.queryAllByTestId('journalEntry')).toHaveLength(
             getEmptyJournalResponseSuccess.length,
@@ -173,8 +173,8 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(getEmptyJournalResponseSuccess)
 
           render(<JournalTab taskId={FAKE_TASK_ID} />)
-          await waitStartLoadingJournal()
-          await waitFinishLoadingJournal()
+          await journalLoadingStarted()
+          await journalLoadingFinished()
 
           expect(
             screen.queryByTestId('journal-btn-download'),
@@ -194,8 +194,8 @@ describe('Вкладка журнала задачи', () => {
         mockGetJournalServerError()
 
         render(<JournalTab taskId={FAKE_TASK_ID} />)
-        await waitStartLoadingJournal()
-        await waitFinishLoadingJournal()
+        await journalLoadingStarted()
+        await journalLoadingFinished()
 
         const notification = await screen.findByText(UNKNOWN_ERROR_MSG)
         expect(notification).toBeInTheDocument()
@@ -205,8 +205,8 @@ describe('Вкладка журнала задачи', () => {
         mockGetJournalServerError()
 
         render(<JournalTab taskId={FAKE_TASK_ID} />)
-        await waitStartLoadingJournal()
-        await waitFinishLoadingJournal()
+        await journalLoadingStarted()
+        await journalLoadingFinished()
 
         expect(await screen.findByText(NO_DATA_MSG)).toBeInTheDocument()
       })

@@ -5,12 +5,12 @@ import {
   getSelect,
   getSelectOption,
   getSelectedOption,
+  loadingFinishedBySelect,
   querySelectOption,
   render,
   setupApiTests,
   userOpenSelect,
   userSearchInSelect,
-  waitFinishLoadingBySelect,
 } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import { screen } from '@testing-library/react'
@@ -675,7 +675,7 @@ describe('Расширенный фильтр', () => {
         render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
+        await loadingFinishedBySelect(workGroupField)
 
         expect(workGroupField).toBeInTheDocument()
       })
@@ -692,7 +692,7 @@ describe('Расширенный фильтр', () => {
         render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
+        await loadingFinishedBySelect(workGroupField)
 
         expect(workGroupField).toBeInTheDocument()
       })
@@ -709,7 +709,7 @@ describe('Расширенный фильтр', () => {
         render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
+        await loadingFinishedBySelect(workGroupField)
 
         const selectedOption = getSelectedOption(workGroupField)
         expect(selectedOption).not.toBeInTheDocument()
@@ -736,7 +736,7 @@ describe('Расширенный фильтр', () => {
         )
 
         const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
+        await loadingFinishedBySelect(workGroupField)
 
         const selectedOption = getSelectedOption(workGroupField)
         expect(selectedOption).toBeInTheDocument()
@@ -753,7 +753,7 @@ describe('Расширенный фильтр', () => {
         render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
+        await loadingFinishedBySelect(workGroupField)
 
         const select = getSelect(workGroupField)
         expect(select).toBeEnabled()
@@ -773,7 +773,7 @@ describe('Расширенный фильтр', () => {
         })
 
         const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
+        await loadingFinishedBySelect(workGroupField)
         await userOpenSelect(user, workGroupField)
 
         const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
@@ -799,7 +799,7 @@ describe('Расширенный фильтр', () => {
         })
 
         const workGroupField = getWorkGroupField()
-        await waitFinishLoadingBySelect(workGroupField)
+        await loadingFinishedBySelect(workGroupField)
         await userOpenSelect(user, workGroupField)
         await userSearchInSelect(
           user,
@@ -829,7 +829,7 @@ describe('Расширенный фильтр', () => {
           })
 
           const workGroupField = getWorkGroupField()
-          await waitFinishLoadingBySelect(workGroupField)
+          await loadingFinishedBySelect(workGroupField)
           await userOpenSelect(user, workGroupField)
 
           const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
@@ -856,7 +856,7 @@ describe('Расширенный фильтр', () => {
           })
 
           const workGroupField = getWorkGroupField()
-          await waitFinishLoadingBySelect(workGroupField)
+          await loadingFinishedBySelect(workGroupField)
           await userOpenSelect(user, workGroupField)
 
           const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)

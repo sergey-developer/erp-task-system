@@ -1,17 +1,16 @@
 import {
-  waitFinishLoadingByButton,
-  waitFinishLoadingBySpinner,
-  waitStartLoadingByButton,
-  waitStartLoadingBySpinner,
+  loadingFinishedByButton,
+  loadingFinishedBySpinner,
+  loadingStartedByButton,
+  loadingStartedBySpinner,
 } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const waitStartLoadingJournal =
-  waitStartLoadingBySpinner('spinner-journal')
+export const journalLoadingStarted = loadingStartedBySpinner('spinner-journal')
 
-export const waitFinishLoadingJournal =
-  waitFinishLoadingBySpinner('spinner-journal')
+export const journalLoadingFinished =
+  loadingFinishedBySpinner('spinner-journal')
 
 export const getDownloadButton = () =>
   screen.getByTestId('journal-btn-download')
@@ -24,5 +23,5 @@ export const userClickDownloadButton = async (
   return button
 }
 
-export const waitStartLoadingJournalCsv = waitStartLoadingByButton
-export const waitFinishLoadingJournalCsv = waitFinishLoadingByButton
+export const journalCsvLoadingStarted = loadingStartedByButton
+export const journalCsvLoadingFinished = loadingFinishedByButton

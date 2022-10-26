@@ -51,7 +51,7 @@ const TaskReclassificationModal = React.lazy(
   () => import('../TaskReclassificationModal'),
 )
 
-type TaskDetailsProps = {
+export type TaskDetailsProps = {
   details: MaybeNull<
     Pick<
       TaskDetailsModel,

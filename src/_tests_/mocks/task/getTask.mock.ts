@@ -11,7 +11,7 @@ const getTaskMockFn = (taskId: GetTaskQueryArgsModel) =>
 
 export const mockGetTaskSuccess = (
   taskId: GetTaskQueryArgsModel,
-  response: GetTaskResponseModel,
+  response?: GetTaskResponseModel,
 ) => {
   const mockGetTask = getSuccessMockFn(getTaskMockFn(taskId), {
     body: response,

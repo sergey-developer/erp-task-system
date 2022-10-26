@@ -3,6 +3,7 @@ import Chance from 'chance'
 const chance = new Chance()
 
 export const generateId = chance.natural.bind(chance)
+export const generateIdStr = () => String(generateId())
 
 export const generateEmail = chance.email.bind(chance)
 
