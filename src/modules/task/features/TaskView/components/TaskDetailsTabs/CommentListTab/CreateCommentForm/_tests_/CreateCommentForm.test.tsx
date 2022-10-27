@@ -1,9 +1,5 @@
-import {
-  generateWord,
-  render,
-  screen,
-  waitStartLoadingByButton,
-} from '_tests_/utils'
+import { generateWord, loadingStartedByButton, render } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 import {
   DEFAULT_LONG_TEXT_LENGTH,
   FIELD_CAN_NOT_BE_EMPTY_MSG,
@@ -29,14 +25,14 @@ describe('Форма добавления комментария', () => {
       expect(commentInput).toBeEnabled()
     })
 
-    test('Не активно в процессе загрузки', () => {
+    test('Не активно при загрузке', () => {
       render(<CreateCommentForm {...baseProps} isLoading />)
 
       const commentInput = getCommentInput()
       expect(commentInput).toBeDisabled()
     })
 
-    test('Можно ввести комментарий', async () => {
+    test('Можно ввести значение', async () => {
       const { user } = render(<CreateCommentForm {...baseProps} />)
 
       const commentInput = getCommentInput()
@@ -89,7 +85,7 @@ describe('Форма добавления комментария', () => {
     })
   })
 
-  describe('Кнопка отправки комментария', () => {
+  describe('Кнопка отправки', () => {
     test('Отображается корректно', () => {
       render(<CreateCommentForm {...baseProps} />)
 
@@ -103,19 +99,19 @@ describe('Форма добавления комментария', () => {
       render(<CreateCommentForm {...baseProps} isLoading />)
 
       const submitButton = getSubmitButton()
-      await waitStartLoadingByButton(submitButton)
+      await loadingStartedByButton(submitButton)
     })
-  })
 
-  test('Обработчик отправки формы вызывается корректно', async () => {
-    const { user } = render(<CreateCommentForm {...baseProps} />)
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(<CreateCommentForm {...baseProps} />)
 
-    const commentInput = getCommentInput()
-    const submitButton = getSubmitButton()
+      const commentInput = getCommentInput()
+      const submitButton = getSubmitButton()
 
-    await user.type(commentInput, generateWord())
-    await user.click(submitButton)
+      await user.type(commentInput, generateWord())
+      await user.click(submitButton)
 
-    expect(baseProps.onSubmit).toHaveBeenCalledTimes(1)
+      expect(baseProps.onSubmit).toBeCalledTimes(1)
+    })
   })
 })

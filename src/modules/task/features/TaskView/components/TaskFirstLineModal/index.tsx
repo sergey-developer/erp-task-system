@@ -31,6 +31,7 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
 
   return (
     <BaseModal
+      data-testid='modal-task-first-line'
       visible
       title={modalTitle}
       confirmLoading={isLoading}
@@ -57,6 +58,7 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
           preserve={false}
         >
           <Form.Item
+            data-testid='field-description'
             name='description'
             label='Причина возврата'
             rules={BASE_LONG_TEXT_RULES}

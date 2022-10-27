@@ -1,4 +1,5 @@
-import { render, within } from '_tests_/utils'
+import { render } from '_tests_/utils'
+import { within } from '@testing-library/react'
 
 import FilterTag from '../FilterTag'
 import { filterCheckedClass, requiredProps } from './constants'
@@ -9,6 +10,7 @@ describe('FilterTag', () => {
     render(<FilterTag {...requiredProps} loading />)
 
     const container = getFilterTagContainer()
+    // eslint-disable-next-line testing-library/no-node-access
     const skeleton = container.querySelector('.ant-skeleton-active')
 
     expect(skeleton).toBeInTheDocument()

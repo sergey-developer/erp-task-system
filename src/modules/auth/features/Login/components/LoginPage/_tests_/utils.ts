@@ -8,8 +8,8 @@ import {
 import {
   waitFinishValidating as baseWaitFinishValidating,
   waitStartValidating as baseWaitStartValidating,
-  screen,
 } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const getEmailField = () => screen.getByTestId('field-email')

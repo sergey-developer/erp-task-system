@@ -1,8 +1,7 @@
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
+import { GetWorkGroupListResponseModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { HttpMethodEnum } from 'shared/constants/http'
-
-import { WorkGroupListItemModel } from '../models'
 
 const getWorkGroupListMockFn = getRequestMockFn(
   HttpMethodEnum.Get,
@@ -10,7 +9,7 @@ const getWorkGroupListMockFn = getRequestMockFn(
 )
 
 export const mockGetWorkGroupListSuccess = (
-  response?: WorkGroupListItemModel[],
+  response?: GetWorkGroupListResponseModel,
 ) => {
   const mockGetWorkGroupList = getSuccessMockFn(getWorkGroupListMockFn, {
     body: response,

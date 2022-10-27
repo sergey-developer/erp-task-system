@@ -14,7 +14,7 @@ import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/
 
 import TaskDetails from '../TaskDetails'
 
-type TaskDetailsContainerProps = {
+export type TaskDetailsContainerProps = {
   taskId: TaskListItemModel['id']
 
   additionalInfoExpanded: boolean

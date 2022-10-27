@@ -51,7 +51,7 @@ const TaskReclassificationModal = React.lazy(
   () => import('../TaskReclassificationModal'),
 )
 
-type TaskDetailsProps = {
+export type TaskDetailsProps = {
   details: MaybeNull<
     Pick<
       TaskDetailsModel,
@@ -287,6 +287,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   return (
     <RootWrapperStyled>
       <CardStyled
+        data-testid='task-details'
         title={cardTitle}
         loading={taskIsLoading}
         $breakpoints={breakpoints}

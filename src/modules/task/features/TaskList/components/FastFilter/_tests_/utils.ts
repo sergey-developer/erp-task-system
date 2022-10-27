@@ -1,4 +1,4 @@
-import { screen } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 
 export const getFilterTag = () => screen.getByTestId('checkable-tag')
 

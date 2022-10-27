@@ -107,7 +107,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   return (
     <>
-      <Space direction='vertical' $block>
+      <Space data-testid='task-work-group' direction='vertical' $block>
         <Row justify='space-between'>
           <Col>
             <Text type='secondary'>Рабочая группа</Text>

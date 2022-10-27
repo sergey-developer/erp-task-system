@@ -1,4 +1,4 @@
-import { generateEmail, generateString } from '_tests_/utils'
+import { generateEmail, generateWord } from '_tests_/utils'
 
 import { AdditionalInfoProps } from '../index'
 
@@ -22,22 +22,22 @@ export const requiredProps: Readonly<
     | 'productClassifier3'
   >
 > = {
-  severity: generateString(),
-  priority: generateString(),
-  impact: generateString(),
-  productClassifier1: generateString(),
-  productClassifier2: generateString(),
-  productClassifier3: generateString(),
+  severity: generateWord(),
+  priority: generateWord(),
+  impact: generateWord(),
+  productClassifier1: generateWord(),
+  productClassifier2: generateWord(),
+  productClassifier3: generateWord(),
 }
 
 export const notRequiredProps: Readonly<
   Omit<AdditionalInfoProps, keyof typeof baseProps | keyof typeof requiredProps>
 > = {
   email: generateEmail(),
-  sapId: generateString(),
+  sapId: generateWord(),
   weight: 1,
-  company: generateString(),
-  address: generateString(),
-  contactType: generateString(),
-  supportGroup: generateString(),
+  company: generateWord(),
+  address: generateWord(),
+  contactType: generateWord(),
+  supportGroup: generateWord(),
 }
