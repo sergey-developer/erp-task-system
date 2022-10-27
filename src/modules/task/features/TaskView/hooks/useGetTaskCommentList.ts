@@ -14,7 +14,7 @@ import {
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
   const permissions = useUserPermissions(taskCommentApiPermissions)
