@@ -1,25 +1,11 @@
 import {
-  generateId,
-  loadingStartedByIcon,
-  render,
-  setupApiTests,
-} from '_tests_/utils'
-import { getStoreWithAuth } from '_tests_/utils/auth'
-import {
   mockGetTaskCountersSuccess,
   mockGetTaskListSuccess,
-} from 'modules/task/features/TaskList/_tests_/mocks'
+} from '_tests_/mocks/api'
+import { generateId, render, setupApiTests } from '_tests_/utils'
+import { getStoreWithAuth } from '_tests_/utils/auth'
 import { UserRolesEnum } from 'shared/constants/roles'
 
-import { FastFilterEnum } from '../../../constants/common'
-import {
-  getFilterContainer,
-  getFilterTagByTextIn,
-  getFirstFilterTagContainer,
-  loadingFinished as waitFinishFilterLoading,
-  loadingStarted as waitStartFilterLoading,
-} from '../../FastFilter/_tests_/utils'
-import { fastFilterNamesDict } from '../../FastFilter/constants'
 import { getTable as getTaskTable } from '../../TaskTable/_tests_/utils'
 import TaskListPage from '../index'
 
@@ -43,48 +29,48 @@ describe('Страница реестра заявок', () => {
     })
   })
 
-  describe('Быстрый фильтр', () => {
-    test('Отображается', async () => {
-      mockGetTaskListSuccess()
-      mockGetTaskCountersSuccess()
-
-      const store = getStoreWithAuth({
-        userId: generateId(),
-        userRole: UserRolesEnum.FirstLineSupport,
-      })
-
-      render(<TaskListPage />, { store })
-
-      const fastFilter = getFilterContainer()
-      expect(fastFilter).toBeInTheDocument()
-    })
-
-    test('При смене фильтра заявки запрашиваются снова', async () => {
-      mockGetTaskListSuccess(undefined, { once: false })
-      mockGetTaskCountersSuccess()
-
-      const store = getStoreWithAuth({
-        userId: generateId(),
-        userRole: UserRolesEnum.FirstLineSupport,
-      })
-
-      const { user } = render(<TaskListPage />, { store })
-
-      const filterTagContainer = getFirstFilterTagContainer()
-      await waitStartFilterLoading(filterTagContainer)
-      await waitFinishFilterLoading(filterTagContainer)
-
-      const filterTag = getFilterTagByTextIn(
-        getFilterContainer(),
-        fastFilterNamesDict[FastFilterEnum.Free],
-      )
-
-      await user.click(filterTag)
-
-      const taskTable = getTaskTable()
-      await loadingStartedByIcon(taskTable)
-    })
-
-    test('Сбрасывается если применён "Расширенный фильтр"', () => {})
-  })
+  // describe('Быстрый фильтр', () => {
+  //   test('Отображается', async () => {
+  //     mockGetTaskListSuccess()
+  //     mockGetTaskCountersSuccess()
+  //
+  //     const store = getStoreWithAuth({
+  //       userId: generateId(),
+  //       userRole: UserRolesEnum.FirstLineSupport,
+  //     })
+  //
+  //     render(<TaskListPage />, { store })
+  //
+  //     const fastFilter = getFilterContainer()
+  //     expect(fastFilter).toBeInTheDocument()
+  //   })
+  //
+  //   test('При смене фильтра заявки запрашиваются снова', async () => {
+  //     mockGetTaskListSuccess()
+  //     mockGetTaskCountersSuccess()
+  //
+  //     const store = getStoreWithAuth({
+  //       userId: generateId(),
+  //       userRole: UserRolesEnum.FirstLineSupport,
+  //     })
+  //
+  //     const { user } = render(<TaskListPage />, { store })
+  //
+  //     const filterTagContainer = getFirstFilterTagContainer()
+  //     await waitStartFilterLoading(filterTagContainer)
+  //     await waitFinishFilterLoading(filterTagContainer)
+  //
+  //     const filterTag = getFilterTagByTextIn(
+  //       getFilterContainer(),
+  //       fastFilterNamesDict[FastFilterEnum.Free],
+  //     )
+  //
+  //     await user.click(filterTag)
+  //
+  //     const taskTable = getTaskTable()
+  //     await loadingStartedByIcon(taskTable)
+  //   })
+  //
+  //   test('Сбрасывается если применён "Расширенный фильтр"', () => {})
+  // })
 })
