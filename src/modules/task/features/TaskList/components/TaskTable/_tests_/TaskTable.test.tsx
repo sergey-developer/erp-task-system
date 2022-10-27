@@ -32,7 +32,60 @@ import {
 describe('Таблица заявок', () => {
   describe('Колонка', () => {
     describe('Статус заявки', () => {
-      describe('Отображает значение для расширенного статуса', () => {
+      describe('Отображает значение по статусу заявки', () => {
+        test(`${TaskStatusEnum.New}`, () => {
+          render(
+            <TaskTable
+              {...requiredProps}
+              dataSource={[
+                {
+                  ...firstTaskTableItem,
+                  status: TaskStatusEnum.New,
+                },
+              ]}
+            />,
+          )
+
+          const badge = screen.getByTestId('badge-status-default')
+          expect(badge).toBeInTheDocument()
+        })
+
+        test(`${TaskStatusEnum.InProgress}`, () => {
+          render(
+            <TaskTable
+              {...requiredProps}
+              dataSource={[
+                {
+                  ...firstTaskTableItem,
+                  status: TaskStatusEnum.InProgress,
+                },
+              ]}
+            />,
+          )
+
+          const badge = screen.getByTestId('badge-status-warning')
+          expect(badge).toBeInTheDocument()
+        })
+
+        test(`${TaskStatusEnum.Completed}`, () => {
+          render(
+            <TaskTable
+              {...requiredProps}
+              dataSource={[
+                {
+                  ...firstTaskTableItem,
+                  status: TaskStatusEnum.Completed,
+                },
+              ]}
+            />,
+          )
+
+          const badge = screen.getByTestId('badge-status-success')
+          expect(badge).toBeInTheDocument()
+        })
+      })
+
+      describe('Отображает значение по расширенному статусу заявки', () => {
         test(`${TaskExtendedStatusEnum.Awaiting}`, () => {
           render(
             <TaskTable
