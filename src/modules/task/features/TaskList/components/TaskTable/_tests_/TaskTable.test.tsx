@@ -12,10 +12,10 @@ import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { paginationConfig } from '../constants/pagination'
 import TaskTable from '../index'
 import {
-  baseProps,
   columnWithSortingClass,
+  firstTaskTableItem,
   paginationProps,
-  taskTableItemFromBaseProps,
+  requiredProps,
 } from './constants'
 import {
   getColumnTitle,
@@ -33,14 +33,67 @@ import {
 describe('Таблица заявок', () => {
   describe('Колонка', () => {
     describe('Статус заявки', () => {
-      describe('Отображает значение для расширенного статуса', () => {
+      describe('Отображает значение по статусу заявки', () => {
+        test(`${TaskStatusEnum.New}`, () => {
+          render(
+            <TaskTable
+              {...requiredProps}
+              dataSource={[
+                {
+                  ...firstTaskTableItem,
+                  status: TaskStatusEnum.New,
+                },
+              ]}
+            />,
+          )
+
+          const badge = screen.getByTestId('badge-status-default')
+          expect(badge).toBeInTheDocument()
+        })
+
+        test(`${TaskStatusEnum.InProgress}`, () => {
+          render(
+            <TaskTable
+              {...requiredProps}
+              dataSource={[
+                {
+                  ...firstTaskTableItem,
+                  status: TaskStatusEnum.InProgress,
+                },
+              ]}
+            />,
+          )
+
+          const badge = screen.getByTestId('badge-status-warning')
+          expect(badge).toBeInTheDocument()
+        })
+
+        test(`${TaskStatusEnum.Completed}`, () => {
+          render(
+            <TaskTable
+              {...requiredProps}
+              dataSource={[
+                {
+                  ...firstTaskTableItem,
+                  status: TaskStatusEnum.Completed,
+                },
+              ]}
+            />,
+          )
+
+          const badge = screen.getByTestId('badge-status-success')
+          expect(badge).toBeInTheDocument()
+        })
+      })
+
+      describe('Отображает значение по расширенному статусу заявки', () => {
         test(`${TaskExtendedStatusEnum.Awaiting}`, () => {
           render(
             <TaskTable
-              {...baseProps}
+              {...requiredProps}
               dataSource={[
                 {
-                  ...taskTableItemFromBaseProps,
+                  ...firstTaskTableItem,
                   status: TaskStatusEnum.New,
                   extendedStatus: TaskExtendedStatusEnum.Awaiting,
                 },
@@ -54,10 +107,10 @@ describe('Таблица заявок', () => {
         test(`${TaskExtendedStatusEnum.Returned}`, () => {
           render(
             <TaskTable
-              {...baseProps}
+              {...requiredProps}
               dataSource={[
                 {
-                  ...taskTableItemFromBaseProps,
+                  ...firstTaskTableItem,
                   status: TaskStatusEnum.New,
                   extendedStatus: TaskExtendedStatusEnum.Returned,
                 },
@@ -71,10 +124,10 @@ describe('Таблица заявок', () => {
         test(`${TaskExtendedStatusEnum.InReclassification}`, () => {
           render(
             <TaskTable
-              {...baseProps}
+              {...requiredProps}
               dataSource={[
                 {
-                  ...taskTableItemFromBaseProps,
+                  ...firstTaskTableItem,
                   status: TaskStatusEnum.New,
                   extendedStatus: TaskExtendedStatusEnum.InReclassification,
                 },
@@ -84,28 +137,45 @@ describe('Таблица заявок', () => {
 
           expect(getIconByName('question-circle')).toBeInTheDocument()
         })
+
+        test(`${TaskExtendedStatusEnum.Closed}`, () => {
+          render(
+            <TaskTable
+              {...requiredProps}
+              dataSource={[
+                {
+                  ...firstTaskTableItem,
+                  status: TaskStatusEnum.New,
+                  extendedStatus: TaskExtendedStatusEnum.Closed,
+                },
+              ]}
+            />,
+          )
+
+          expect(getIconByName('check-circle')).toBeInTheDocument()
+        })
       })
     })
 
     describe('Заявка', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(getColumnTitle(table, 'Заявка')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(
-          within(table).getByText(taskTableItemFromBaseProps.id),
+          within(table).getByText(firstTaskTableItem.id),
         ).toBeInTheDocument()
       })
 
       test('Имеет сортировку', async () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(table, 'Заявка')
@@ -114,7 +184,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Не имеет сортировки по умолчанию', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(table, 'Заявка')
@@ -125,23 +195,23 @@ describe('Таблица заявок', () => {
 
     describe('Внешний номер', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(getColumnTitle(table, 'Внеш.номер')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(
-          within(table).getByText(taskTableItemFromBaseProps.recordId),
+          within(table).getByText(firstTaskTableItem.recordId),
         ).toBeInTheDocument()
       })
 
       test('Имеет сортировку', async () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -153,7 +223,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Не имеет сортировки по умолчанию', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -167,23 +237,23 @@ describe('Таблица заявок', () => {
 
     describe('Объект', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(getColumnTitle(table, 'Объект')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(
-          within(table).getByText(taskTableItemFromBaseProps.name),
+          within(table).getByText(firstTaskTableItem.name),
         ).toBeInTheDocument()
       })
 
       test('Имеет сортировку', async () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(table, 'Объект')
@@ -192,7 +262,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Не имеет сортировки по умолчанию', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(table, 'Объект')
@@ -203,23 +273,23 @@ describe('Таблица заявок', () => {
 
     describe('Тема', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(getColumnTitle(table, 'Тема')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(
-          within(table).getByText(taskTableItemFromBaseProps.title),
+          within(table).getByText(firstTaskTableItem.title),
         ).toBeInTheDocument()
       })
 
       test('Имеет сортировку', async () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
@@ -228,7 +298,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Не имеет сортировки по умолчанию', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
@@ -239,26 +309,26 @@ describe('Таблица заявок', () => {
 
     describe('Исполнитель', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(getColumnTitle(table, 'Исполнитель')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
 
         expect(
           within(table).getByText(
-            getShortUserName(taskTableItemFromBaseProps.assignee),
+            getShortUserName(firstTaskTableItem.assignee),
           ),
         ).toBeInTheDocument()
       })
 
       test('Имеет сортировку', async () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -270,7 +340,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Не имеет сортировки по умолчанию', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -284,27 +354,27 @@ describe('Таблица заявок', () => {
 
     describe('Рабочая группа', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(getColumnTitle(table, 'Рабочая группа')).toBeInTheDocument()
       })
 
       test('Отображает значение если оно присутствует', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
 
         expect(
-          within(table).getByText(taskTableItemFromBaseProps.workGroup!.name),
+          within(table).getByText(firstTaskTableItem.workGroup!.name),
         ).toBeInTheDocument()
       })
 
       test('Отображает резервный текст если оно отсутствует', () => {
         render(
           <TaskTable
-            {...baseProps}
-            dataSource={[{ ...taskTableItemFromBaseProps, workGroup: null }]}
+            {...requiredProps}
+            dataSource={[{ ...firstTaskTableItem, workGroup: null }]}
           />,
         )
 
@@ -313,7 +383,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Имеет сортировку', async () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -325,7 +395,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Не имеет сортировки по умолчанию', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -339,29 +409,26 @@ describe('Таблица заявок', () => {
 
     describe('Выполнить до', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(getColumnTitle(table, 'Выполнить до')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
 
         expect(
           within(table).getByText(
-            formatDate(
-              taskTableItemFromBaseProps.olaNextBreachTime,
-              DATE_TIME_FORMAT,
-            ),
+            formatDate(firstTaskTableItem.olaNextBreachTime, DATE_TIME_FORMAT),
           ),
         ).toBeInTheDocument()
       })
 
       test('Имеет сортировку', async () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -373,7 +440,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Имеет сортировку по умолчанию', () => {
-        render(<TaskTable {...baseProps} sort='ola_next_breach_time' />)
+        render(<TaskTable {...requiredProps} sort='ola_next_breach_time' />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -387,24 +454,24 @@ describe('Таблица заявок', () => {
 
     describe('Комментарий', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(getColumnTitle(table, 'Комментарий')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
 
         expect(
-          within(table).getByText(taskTableItemFromBaseProps.lastComment),
+          within(table).getByText(firstTaskTableItem.lastComment),
         ).toBeInTheDocument()
       })
 
       test('Имеет сортировку', async () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -416,7 +483,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Не имеет сортировки по умолчанию', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -430,26 +497,26 @@ describe('Таблица заявок', () => {
 
     describe('Дата создания', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         expect(getColumnTitle(table, 'Дата создания')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
 
         expect(
           within(table).getByText(
-            formatDate(taskTableItemFromBaseProps.createdAt, DATE_TIME_FORMAT),
+            formatDate(firstTaskTableItem.createdAt, DATE_TIME_FORMAT),
           ),
         ).toBeInTheDocument()
       })
 
       test('Имеет сортировку', async () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -461,7 +528,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Не имеет сортировки по умолчанию', () => {
-        render(<TaskTable {...baseProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         const table = getTable()
         const columnTitleContainer = getColumnTitleContainer(
@@ -476,7 +543,7 @@ describe('Таблица заявок', () => {
 
   describe('Пагинация', () => {
     test('Отображается', () => {
-      render(<TaskTable {...baseProps} pagination={paginationProps} />)
+      render(<TaskTable {...requiredProps} pagination={paginationProps} />)
 
       const pagination = getPaginationContainer()
 
@@ -485,7 +552,7 @@ describe('Таблица заявок', () => {
     })
 
     test('Кнопки переключения страниц отображаются', () => {
-      render(<TaskTable {...baseProps} pagination={paginationProps} />)
+      render(<TaskTable {...requiredProps} pagination={paginationProps} />)
 
       const pagination = getPaginationContainer()
       const page1Button = getPageButton(pagination, '1')
@@ -496,7 +563,7 @@ describe('Таблица заявок', () => {
     })
 
     test('Кнопки "Вперед" и "Назад" отображаются', () => {
-      render(<TaskTable {...baseProps} pagination={paginationProps} />)
+      render(<TaskTable {...requiredProps} pagination={paginationProps} />)
 
       const pagination = getPaginationContainer()
 
@@ -512,7 +579,7 @@ describe('Таблица заявок', () => {
     })
 
     test('Отображается корректный размер страницы по умолчанию', () => {
-      render(<TaskTable {...baseProps} pagination={paginationProps} />)
+      render(<TaskTable {...requiredProps} pagination={paginationProps} />)
 
       const pagination = getPaginationContainer()
       const defaultPageSize = getPageSizeOption(pagination, DEFAULT_PAGE_SIZE)
@@ -523,7 +590,7 @@ describe('Таблица заявок', () => {
 
     test('Отображаются корректные варианты размера страницы', async () => {
       const { user } = render(
-        <TaskTable {...baseProps} pagination={paginationProps} />,
+        <TaskTable {...requiredProps} pagination={paginationProps} />,
       )
 
       const pagination = getPaginationContainer()
@@ -543,7 +610,7 @@ describe('Таблица заявок', () => {
 
       const { user } = render(
         <TaskTable
-          {...baseProps}
+          {...requiredProps}
           pagination={paginationProps}
           onChange={onChange}
         />,
@@ -570,7 +637,7 @@ describe('Таблица заявок', () => {
 
       const { user } = render(
         <TaskTable
-          {...baseProps}
+          {...requiredProps}
           pagination={paginationProps}
           onChange={onChange}
         />,
@@ -594,7 +661,7 @@ describe('Таблица заявок', () => {
 
   describe('Если список заявок пуст', () => {
     test('Отображается соответствующий текст', () => {
-      render(<TaskTable {...baseProps} dataSource={[]} />)
+      render(<TaskTable {...requiredProps} dataSource={[]} />)
 
       const table = getTable()
       const emptyContent = within(table).getByText(
@@ -606,7 +673,7 @@ describe('Таблица заявок', () => {
   })
 
   test('Отображает состояние загрузки', () => {
-    render(<TaskTable {...baseProps} dataSource={[]} loading />)
+    render(<TaskTable {...requiredProps} dataSource={[]} loading />)
 
     const table = getTable()
     loadingStartedByIcon(table)
@@ -614,7 +681,7 @@ describe('Таблица заявок', () => {
 
   test('При клике на строку вызывается обработчик', async () => {
     const onRow = jest.fn()
-    const { user } = render(<TaskTable {...baseProps} onRow={onRow} />)
+    const { user } = render(<TaskTable {...requiredProps} onRow={onRow} />)
 
     const row = screen.getByRole('row')
     await user.click(row)
@@ -624,7 +691,9 @@ describe('Таблица заявок', () => {
 
   test('При клике на сортировку вызывается обработчик', async () => {
     const onChange = jest.fn()
-    const { user } = render(<TaskTable {...baseProps} onChange={onChange} />)
+    const { user } = render(
+      <TaskTable {...requiredProps} onChange={onChange} />,
+    )
 
     const table = getTable()
     const columnTitleContainer = getColumnTitleContainer(table, 'Дата создания')

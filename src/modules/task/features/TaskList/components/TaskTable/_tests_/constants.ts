@@ -1,3 +1,5 @@
+import head from 'lodash/head'
+
 import { getTaskTableItem } from 'fixtures/task'
 
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
@@ -5,7 +7,7 @@ import { TaskTableProps } from '../interfaces'
 
 export const columnWithSortingClass = 'ant-table-column-has-sorters'
 
-export const baseProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
+export const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   dataSource: [getTaskTableItem()],
   loading: false,
   onRow: jest.fn(),
@@ -14,10 +16,10 @@ export const baseProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   rowClassName: '',
 }
 
-export const paginationProps: TaskTableProps['pagination'] = {
+export const paginationProps: Readonly<TaskTableProps['pagination']> = {
   current: 1,
   pageSize: DEFAULT_PAGE_SIZE,
   total: 120,
 }
 
-export const taskTableItemFromBaseProps = baseProps.dataSource![0]
+export const firstTaskTableItem = head(requiredProps.dataSource)!
