@@ -10,8 +10,10 @@ import {
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
-import showMultipleErrorNotification from 'shared/utils/notifications/showMultipleErrorNotification'
+import {
+  showErrorNotification,
+  showMultipleErrorNotification,
+} from 'shared/utils/notifications'
 
 import { DeleteTaskWorkGroupMutationArgsModel } from '../models'
 import { taskWorkGroupApiPermissions } from '../permissions'
