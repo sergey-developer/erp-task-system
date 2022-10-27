@@ -15,7 +15,7 @@ import {
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 const useGetTask = (id: GetTaskQueryArgsModel) => {
   const permissions = useUserPermissions(taskApiPermissions)

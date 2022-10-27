@@ -61,3 +61,6 @@ export const isBadRequestError = (error: ErrorResponse): boolean =>
 
 export const isUnauthorizedError = (error: ErrorResponse): boolean =>
   isEqual(error.status, HttpCodeEnum.Unauthorized)
+
+export const isForbiddenError = (error: ErrorResponse): boolean =>
+  isEqual(error.status, HttpCodeEnum.Forbidden)

@@ -11,7 +11,7 @@ import {
   isBadRequestError,
   isNotFoundError,
 } from 'shared/services/api'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 const useCreateTaskReclassificationRequest = () => {
   const permissions = useUserPermissions(

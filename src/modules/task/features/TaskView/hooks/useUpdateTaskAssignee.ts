@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskAssigneeApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG } from '../constants/messages'
 import { UpdateTaskAssigneeMutationArgsModel } from '../models'
