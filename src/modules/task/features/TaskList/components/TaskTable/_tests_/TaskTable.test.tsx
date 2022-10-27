@@ -18,8 +18,8 @@ import {
   requiredProps,
 } from './constants'
 import {
-  getColumnTitle,
-  getColumnTitleContainer,
+  getColText,
+  getHeadCol,
   getPageButton,
   getPageSizeOption,
   getPageSizeOptionsContainer,
@@ -27,8 +27,16 @@ import {
   getPaginationNextButton,
   getPaginationPrevButton,
   getTable,
+  userClickHeadCol,
+  userClickRow,
   userOpenPageSizeOptions,
 } from './utils'
+
+const onChange = jest.fn()
+
+afterEach(() => {
+  onChange.mockReset()
+})
 
 describe('Таблица заявок', () => {
   describe('Колонка', () => {
@@ -161,7 +169,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        expect(getColumnTitle('Заявка')).toBeInTheDocument()
+        expect(getColText('Заявка')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -176,15 +184,24 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Заявка')
-        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+        const headCol = getHeadCol('Заявка')
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Заявка')
-        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+        const headCol = getHeadCol('Заявка')
+        expect(headCol).not.toHaveAttribute('aria-sort')
+      })
+
+      test('При клике на заголовок вызывается обработчик', async () => {
+        const { user } = render(
+          <TaskTable {...requiredProps} onChange={onChange} />,
+        )
+
+        await userClickHeadCol(user, 'Заявка')
+        expect(onChange).toBeCalledTimes(1)
       })
     })
 
@@ -192,7 +209,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        expect(getColumnTitle('Внеш.номер')).toBeInTheDocument()
+        expect(getColText('Внеш.номер')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -207,15 +224,24 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Внеш.номер')
-        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+        const headCol = getHeadCol('Внеш.номер')
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Внеш.номер')
-        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+        const headCol = getHeadCol('Внеш.номер')
+        expect(headCol).not.toHaveAttribute('aria-sort')
+      })
+
+      test('При клике на заголовок вызывается обработчик', async () => {
+        const { user } = render(
+          <TaskTable {...requiredProps} onChange={onChange} />,
+        )
+
+        await userClickHeadCol(user, 'Внеш.номер')
+        expect(onChange).toBeCalledTimes(1)
       })
     })
 
@@ -223,7 +249,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        expect(getColumnTitle('Объект')).toBeInTheDocument()
+        expect(getColText('Объект')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -238,15 +264,24 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Объект')
-        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+        const headCol = getHeadCol('Объект')
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Объект')
-        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+        const headCol = getHeadCol('Объект')
+        expect(headCol).not.toHaveAttribute('aria-sort')
+      })
+
+      test('При клике на заголовок вызывается обработчик', async () => {
+        const { user } = render(
+          <TaskTable {...requiredProps} onChange={onChange} />,
+        )
+
+        await userClickHeadCol(user, 'Объект')
+        expect(onChange).toBeCalledTimes(1)
       })
     })
 
@@ -254,7 +289,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        expect(getColumnTitle('Тема')).toBeInTheDocument()
+        expect(getColText('Тема')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -269,15 +304,24 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Тема')
-        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+        const headCol = getHeadCol('Тема')
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Тема')
-        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+        const headCol = getHeadCol('Тема')
+        expect(headCol).not.toHaveAttribute('aria-sort')
+      })
+
+      test('При клике на заголовок вызывается обработчик', async () => {
+        const { user } = render(
+          <TaskTable {...requiredProps} onChange={onChange} />,
+        )
+
+        await userClickHeadCol(user, 'Тема')
+        expect(onChange).toBeCalledTimes(1)
       })
     })
 
@@ -285,7 +329,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        expect(getColumnTitle('Исполнитель')).toBeInTheDocument()
+        expect(getColText('Исполнитель')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -303,15 +347,24 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Исполнитель')
-        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+        const headCol = getHeadCol('Исполнитель')
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Исполнитель')
-        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+        const headCol = getHeadCol('Исполнитель')
+        expect(headCol).not.toHaveAttribute('aria-sort')
+      })
+
+      test('При клике на заголовок вызывается обработчик', async () => {
+        const { user } = render(
+          <TaskTable {...requiredProps} onChange={onChange} />,
+        )
+
+        await userClickHeadCol(user, 'Исполнитель')
+        expect(onChange).toBeCalledTimes(1)
       })
     })
 
@@ -319,7 +372,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        expect(getColumnTitle('Рабочая группа')).toBeInTheDocument()
+        expect(getColText('Рабочая группа')).toBeInTheDocument()
       })
 
       test('Отображает значение если оно присутствует', () => {
@@ -347,15 +400,24 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Рабочая группа')
-        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+        const headCol = getHeadCol('Рабочая группа')
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Рабочая группа')
-        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+        const headCol = getHeadCol('Рабочая группа')
+        expect(headCol).not.toHaveAttribute('aria-sort')
+      })
+
+      test('При клике на заголовок вызывается обработчик', async () => {
+        const { user } = render(
+          <TaskTable {...requiredProps} onChange={onChange} />,
+        )
+
+        await userClickHeadCol(user, 'Рабочая группа')
+        expect(onChange).toBeCalledTimes(1)
       })
     })
 
@@ -363,7 +425,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        expect(getColumnTitle('Выполнить до')).toBeInTheDocument()
+        expect(getColText('Выполнить до')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -381,15 +443,24 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Выполнить до')
-        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+        const headCol = getHeadCol('Выполнить до')
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
-      test('Имеет сортировку по умолчанию', () => {
+      test('Имеет корректное значение сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} sort='ola_next_breach_time' />)
 
-        const columnTitleContainer = getColumnTitleContainer('Выполнить до')
-        expect(columnTitleContainer).toHaveAttribute('aria-sort', 'ascending')
+        const headCol = getHeadCol('Выполнить до')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+      })
+
+      test('При клике на заголовок вызывается обработчик', async () => {
+        const { user } = render(
+          <TaskTable {...requiredProps} onChange={onChange} />,
+        )
+
+        await userClickHeadCol(user, 'Выполнить до')
+        expect(onChange).toBeCalledTimes(1)
       })
     })
 
@@ -397,7 +468,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        expect(getColumnTitle('Комментарий')).toBeInTheDocument()
+        expect(getColText('Комментарий')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -413,15 +484,24 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Комментарий')
-        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+        const headCol = getHeadCol('Комментарий')
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Комментарий')
-        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+        const headCol = getHeadCol('Комментарий')
+        expect(headCol).not.toHaveAttribute('aria-sort')
+      })
+
+      test('При клике на заголовок вызывается обработчик', async () => {
+        const { user } = render(
+          <TaskTable {...requiredProps} onChange={onChange} />,
+        )
+
+        await userClickHeadCol(user, 'Комментарий')
+        expect(onChange).toBeCalledTimes(1)
       })
     })
 
@@ -429,7 +509,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        expect(getColumnTitle('Дата создания')).toBeInTheDocument()
+        expect(getColText('Дата создания')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -447,15 +527,24 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Дата создания')
-        expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
+        const headCol = getHeadCol('Дата создания')
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const columnTitleContainer = getColumnTitleContainer('Дата создания')
-        expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
+        const headCol = getHeadCol('Дата создания')
+        expect(headCol).not.toHaveAttribute('aria-sort')
+      })
+
+      test('При клике на заголовок вызывается обработчик', async () => {
+        const { user } = render(
+          <TaskTable {...requiredProps} onChange={onChange} />,
+        )
+
+        await userClickHeadCol(user, 'Дата создания')
+        expect(onChange).toBeCalledTimes(1)
       })
     })
   })
@@ -473,28 +562,47 @@ describe('Таблица заявок', () => {
     test('Кнопки переключения страниц отображаются', () => {
       render(<TaskTable {...requiredProps} pagination={paginationProps} />)
 
-      const pagination = getPaginationContainer()
-      const page1Button = getPageButton(pagination, '1')
-      const page2Button = getPageButton(pagination, '2')
+      const page1Button = getPageButton('1')
+      const page2Button = getPageButton('2')
 
       expect(page1Button).toBeInTheDocument()
       expect(page2Button).toBeInTheDocument()
     })
 
-    test('Кнопки "Вперед" и "Назад" отображаются', () => {
-      render(<TaskTable {...requiredProps} pagination={paginationProps} />)
+    describe('Кнопки "Вперед" и "Назад" отображаются корректно', () => {
+      test('Если элементов больше чем установленный размер страницы', () => {
+        render(<TaskTable {...requiredProps} pagination={paginationProps} />)
 
-      const pagination = getPaginationContainer()
+        const nextButton = getPaginationNextButton()
+        const prevButton = getPaginationPrevButton()
 
-      const nextButton = within(pagination).getByRole('listitem', {
-        name: 'Вперед',
+        expect(prevButton).toBeInTheDocument()
+        expect(prevButton).toBeDisabled()
+
+        expect(nextButton).toBeInTheDocument()
+        expect(nextButton).toBeEnabled()
       })
-      const prevButton = within(pagination).getByRole('listitem', {
-        name: 'Назад',
-      })
 
-      expect(prevButton).toBeInTheDocument()
-      expect(nextButton).toBeInTheDocument()
+      test('Если количество элементов равно установленному размеру страницы', () => {
+        render(
+          <TaskTable
+            {...requiredProps}
+            pagination={{
+              ...paginationProps,
+              total: paginationProps.pageSize,
+            }}
+          />,
+        )
+
+        const nextButton = getPaginationNextButton()
+        const prevButton = getPaginationPrevButton()
+
+        expect(prevButton).toBeInTheDocument()
+        expect(prevButton).toBeDisabled()
+
+        expect(nextButton).toBeInTheDocument()
+        expect(nextButton).toBeDisabled()
+      })
     })
 
     test('Отображается корректный размер страницы по умолчанию', () => {
@@ -525,8 +633,6 @@ describe('Таблица заявок', () => {
     })
 
     test('При изменении размера страницы вызывается обработчик', async () => {
-      const onChange = jest.fn()
-
       const { user } = render(
         <TaskTable
           {...requiredProps}
@@ -552,8 +658,6 @@ describe('Таблица заявок', () => {
     })
 
     test('При изменении страницы вызывается обработчик', async () => {
-      const onChange = jest.fn()
-
       const { user } = render(
         <TaskTable
           {...requiredProps}
@@ -562,10 +666,9 @@ describe('Таблица заявок', () => {
         />,
       )
 
-      const pagination = getPaginationContainer()
-      const nextButton = getPaginationNextButton(pagination)
-      const prevButton = getPaginationPrevButton(pagination)
-      const page2Button = getPageButton(pagination, '2')
+      const nextButton = getPaginationNextButton()
+      const prevButton = getPaginationPrevButton()
+      const page2Button = getPageButton('2')
 
       await user.click(nextButton)
       expect(onChange).toBeCalled()
@@ -592,7 +695,7 @@ describe('Таблица заявок', () => {
   })
 
   test('Отображает состояние загрузки', () => {
-    render(<TaskTable {...requiredProps} dataSource={[]} loading />)
+    render(<TaskTable {...requiredProps} loading />)
 
     const table = getTable()
     loadingStartedByIconIn(table)
@@ -602,21 +705,8 @@ describe('Таблица заявок', () => {
     const onRow = jest.fn()
     const { user } = render(<TaskTable {...requiredProps} onRow={onRow} />)
 
-    const row = screen.getByRole('row')
-    await user.click(row)
+    await userClickRow(user, firstTaskTableItem.id)
 
     expect(onRow).toBeCalled()
-  })
-
-  test('При клике на сортировку вызывается обработчик', async () => {
-    const onChange = jest.fn()
-    const { user } = render(
-      <TaskTable {...requiredProps} onChange={onChange} />,
-    )
-
-    const columnTitleContainer = getColumnTitleContainer('Дата создания')
-    await user.click(columnTitleContainer)
-
-    expect(onChange).toBeCalledTimes(1)
   })
 })

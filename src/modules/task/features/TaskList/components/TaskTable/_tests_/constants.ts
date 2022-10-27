@@ -1,3 +1,4 @@
+import { TablePaginationConfig } from 'antd'
 import head from 'lodash/head'
 
 import { getTaskTableItem } from 'fixtures/task'
@@ -16,10 +17,12 @@ export const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   rowClassName: '',
 }
 
-export const paginationProps: Readonly<TaskTableProps['pagination']> = {
+export const paginationProps: Readonly<
+  Required<Pick<TablePaginationConfig, 'current' | 'pageSize' | 'total'>>
+> = {
   current: 1,
   pageSize: DEFAULT_PAGE_SIZE,
-  total: 120,
+  total: DEFAULT_PAGE_SIZE + 1,
 }
 
 export const firstTaskTableItem = head(requiredProps.dataSource)!

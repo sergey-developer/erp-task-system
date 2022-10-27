@@ -10,5 +10,5 @@ export const generateWord = chance.word.bind(chance)
 export const generateDate = chance.date.bind(chance)
 export const generateDateString = () => generateDate().toISOString()
 
-export const generateId = () => generateInteger({ min: 1, max: 1000 })
+export const generateId = generateInteger
 export const generateIdStr = () => String(generateId())

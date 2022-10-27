@@ -3,40 +3,45 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const getTable = () => screen.getByTestId('table-task-list')
 
-export const getFirstRow = () => {
+export const getRow = (id: number) => {
   const table = getTable()
-  return table.querySelector('.ant-table-row')
+  return table.querySelector(`[data-row-key='${id}']`)
 }
 
-export const userClickFirstRow = async (user: UserEvent) => {
-  const row = getFirstRow()
+export const userClickRow = async (user: UserEvent, id: number) => {
+  const row = getRow(id)
   await user.click(row!)
 
   return row
 }
 
-export const getColumnTitle = (title: string) =>
-  within(getTable()).getByText(title)
+export const getColText = (text: string) => within(getTable()).getByText(text)
 
-export const getColumnTitleContainer = (title: string) => {
-  // eslint-disable-next-line testing-library/no-node-access
-  return getColumnTitle(title).parentElement?.parentElement!
+export const getHeadCol = (text: string) => {
+  return getColText(text).parentElement?.parentElement!
 }
 
-export const getPaginationContainer = () => screen.getByRole('list')
+export const userClickHeadCol = async (user: UserEvent, text: string) => {
+  const col = getHeadCol(text)
+  await user.click(col)
 
-export const getPaginationNextButton = (container: HTMLElement) =>
-  within(container).getByRole('listitem', {
-    name: 'Вперед',
+  return col
+}
+
+export const getPaginationContainer = () => within(getTable()).getByRole('list')
+
+export const getPaginationNextButton = () =>
+  within(getPaginationContainer()).getByRole('button', {
+    name: 'right',
   })
 
-export const getPaginationPrevButton = (container: HTMLElement) =>
-  within(container).getByRole('listitem', {
-    name: 'Назад',
+export const getPaginationPrevButton = () =>
+  within(getPaginationContainer()).getByRole('button', {
+    name: 'left',
   })
 
-export const getPageButton = (container: HTMLElement, pageNumber: string) =>
-  within(container).getByRole('listitem', { name: pageNumber })
+export const getPageButton = (pageNumber: string) =>
+  within(getPaginationContainer()).getByRole('listitem', { name: pageNumber })
 
 export const getPageSizeOptionsContainer = (container: HTMLElement) =>
   container.querySelector('.rc-virtual-list') as HTMLElement

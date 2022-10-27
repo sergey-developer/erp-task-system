@@ -1,3 +1,5 @@
+import times from 'lodash/times'
+
 import {
   generateDateString,
   generateId,
@@ -51,6 +53,9 @@ export const getTaskListItem = (
   productClassifier3: generateWord(),
   contactService: generateWord(),
 })
+
+export const getTaskList = (length: number = 1): Array<TaskListItemModel> =>
+  times(length, () => getTaskListItem())
 
 export const getGetTaskListResponse = (
   taskList: GetTaskListResponseModel['results'],
