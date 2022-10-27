@@ -1,12 +1,19 @@
 import {
   mockGetTaskCountersSuccess,
   mockGetTaskListSuccess,
+  mockGetTaskSuccess,
+  mockGetWorkGroupListSuccess,
 } from '_tests_/mocks/api'
-import { generateId, render, setupApiTests } from '_tests_/utils'
+import { loadingFinishedByIconIn, render, setupApiTests } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { waitFor } from '@testing-library/react'
+import { getGetTaskListResponse, getTaskListItem } from 'fixtures/task'
 
-import { getTable as getTaskTable } from '../../TaskTable/_tests_/utils'
+import { findTaskDetails } from '../../../../TaskView/components/TaskDetails/_tests_/utils'
+import {
+  getTable as getTaskTable,
+  userClickFirstRow as userClickFirstTableRow,
+} from '../../TaskTable/_tests_/utils'
 import TaskListPage from '../index'
 
 setupApiTests()
@@ -14,18 +21,56 @@ setupApiTests()
 describe('Страница реестра заявок', () => {
   describe('Таблица заявок', () => {
     test('Отображается', async () => {
-      mockGetTaskListSuccess()
       mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess()
 
-      const store = getStoreWithAuth({
-        userId: generateId(),
-        userRole: UserRolesEnum.FirstLineSupport,
-      })
-
-      render(<TaskListPage />, { store })
+      render(<TaskListPage />, { store: getStoreWithAuth() })
 
       const taskTable = getTaskTable()
+      await loadingFinishedByIconIn(taskTable)
+
       expect(taskTable).toBeInTheDocument()
+    })
+
+    describe('При клике на строку', () => {
+      test('Добавляется нужный класс для её выделения', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetWorkGroupListSuccess()
+
+        const taskListItem = getTaskListItem()
+        mockGetTaskListSuccess(getGetTaskListResponse([taskListItem]))
+        mockGetTaskSuccess(taskListItem.id)
+
+        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+        const taskTable = getTaskTable()
+        await loadingFinishedByIconIn(taskTable)
+
+        const row = await userClickFirstTableRow(user)
+
+        await waitFor(() => {
+          expect(row).toHaveClass('table-row--selected')
+        })
+      })
+
+      test('Открывается карточка заявки', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetWorkGroupListSuccess()
+
+        const taskListItem = getTaskListItem()
+        mockGetTaskListSuccess(getGetTaskListResponse([taskListItem]))
+        mockGetTaskSuccess(taskListItem.id)
+
+        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+        const taskTable = getTaskTable()
+        await loadingFinishedByIconIn(taskTable)
+
+        await userClickFirstTableRow(user)
+
+        const taskDetails = await findTaskDetails()
+        expect(taskDetails).toBeInTheDocument()
+      })
     })
   })
 
@@ -68,7 +113,7 @@ describe('Страница реестра заявок', () => {
   //     await user.click(filterTag)
   //
   //     const taskTable = getTaskTable()
-  //     await loadingStartedByIcon(taskTable)
+  //     await loadingStartedByIconIn(taskTable)
   //   })
   //
   //   test('Сбрасывается если применён "Расширенный фильтр"', () => {})

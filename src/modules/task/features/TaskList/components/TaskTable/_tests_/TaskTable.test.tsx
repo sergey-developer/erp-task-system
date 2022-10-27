@@ -1,4 +1,4 @@
-import { getIconByName, loadingStartedByIcon, render } from '_tests_/utils'
+import { getIconByName, loadingStartedByIconIn, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import {
   TaskExtendedStatusEnum,
@@ -161,8 +161,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        expect(getColumnTitle(table, 'Заявка')).toBeInTheDocument()
+        expect(getColumnTitle('Заявка')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -177,18 +176,14 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(table, 'Заявка')
-
+        const columnTitleContainer = getColumnTitleContainer('Заявка')
         expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(table, 'Заявка')
-
+        const columnTitleContainer = getColumnTitleContainer('Заявка')
         expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
       })
     })
@@ -197,8 +192,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        expect(getColumnTitle(table, 'Внеш.номер')).toBeInTheDocument()
+        expect(getColumnTitle('Внеш.номер')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -213,24 +207,14 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Внеш.номер',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Внеш.номер')
         expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Внеш.номер',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Внеш.номер')
         expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
       })
     })
@@ -239,8 +223,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        expect(getColumnTitle(table, 'Объект')).toBeInTheDocument()
+        expect(getColumnTitle('Объект')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -255,18 +238,14 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(table, 'Объект')
-
+        const columnTitleContainer = getColumnTitleContainer('Объект')
         expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(table, 'Объект')
-
+        const columnTitleContainer = getColumnTitleContainer('Объект')
         expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
       })
     })
@@ -275,8 +254,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        expect(getColumnTitle(table, 'Тема')).toBeInTheDocument()
+        expect(getColumnTitle('Тема')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -291,18 +269,14 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
-
+        const columnTitleContainer = getColumnTitleContainer('Тема')
         expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(table, 'Тема')
-
+        const columnTitleContainer = getColumnTitleContainer('Тема')
         expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
       })
     })
@@ -311,8 +285,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        expect(getColumnTitle(table, 'Исполнитель')).toBeInTheDocument()
+        expect(getColumnTitle('Исполнитель')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -330,24 +303,14 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Исполнитель',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Исполнитель')
         expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Исполнитель',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Исполнитель')
         expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
       })
     })
@@ -356,8 +319,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        expect(getColumnTitle(table, 'Рабочая группа')).toBeInTheDocument()
+        expect(getColumnTitle('Рабочая группа')).toBeInTheDocument()
       })
 
       test('Отображает значение если оно присутствует', () => {
@@ -385,24 +347,14 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Рабочая группа',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Рабочая группа')
         expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Рабочая группа',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Рабочая группа')
         expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
       })
     })
@@ -411,8 +363,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        expect(getColumnTitle(table, 'Выполнить до')).toBeInTheDocument()
+        expect(getColumnTitle('Выполнить до')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -430,24 +381,14 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Выполнить до',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Выполнить до')
         expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
       })
 
       test('Имеет сортировку по умолчанию', () => {
         render(<TaskTable {...requiredProps} sort='ola_next_breach_time' />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Выполнить до',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Выполнить до')
         expect(columnTitleContainer).toHaveAttribute('aria-sort', 'ascending')
       })
     })
@@ -456,8 +397,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        expect(getColumnTitle(table, 'Комментарий')).toBeInTheDocument()
+        expect(getColumnTitle('Комментарий')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -473,24 +413,14 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Комментарий',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Комментарий')
         expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Комментарий',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Комментарий')
         expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
       })
     })
@@ -499,8 +429,7 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        expect(getColumnTitle(table, 'Дата создания')).toBeInTheDocument()
+        expect(getColumnTitle('Дата создания')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -518,24 +447,14 @@ describe('Таблица заявок', () => {
       test('Имеет сортировку', async () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Дата создания',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Дата создания')
         expect(columnTitleContainer).toHaveClass(columnWithSortingClass)
       })
 
       test('Не имеет сортировки по умолчанию', () => {
         render(<TaskTable {...requiredProps} />)
 
-        const table = getTable()
-        const columnTitleContainer = getColumnTitleContainer(
-          table,
-          'Дата создания',
-        )
-
+        const columnTitleContainer = getColumnTitleContainer('Дата создания')
         expect(columnTitleContainer).not.toHaveAttribute('aria-sort')
       })
     })
@@ -676,7 +595,7 @@ describe('Таблица заявок', () => {
     render(<TaskTable {...requiredProps} dataSource={[]} loading />)
 
     const table = getTable()
-    loadingStartedByIcon(table)
+    loadingStartedByIconIn(table)
   })
 
   test('При клике на строку вызывается обработчик', async () => {
@@ -695,9 +614,7 @@ describe('Таблица заявок', () => {
       <TaskTable {...requiredProps} onChange={onChange} />,
     )
 
-    const table = getTable()
-    const columnTitleContainer = getColumnTitleContainer(table, 'Дата создания')
-
+    const columnTitleContainer = getColumnTitleContainer('Дата создания')
     await user.click(columnTitleContainer)
 
     expect(onChange).toBeCalledTimes(1)

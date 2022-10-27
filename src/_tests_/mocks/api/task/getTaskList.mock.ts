@@ -9,7 +9,6 @@ const getGetTaskListMockFn = () =>
 export const mockGetTaskListSuccess = (response?: GetTaskListResponseModel) => {
   const mockGetTaskList = getSuccessMockFn(getGetTaskListMockFn(), {
     body: response,
-    once: false,
   })
 
   mockGetTaskList()

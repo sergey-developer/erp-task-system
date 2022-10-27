@@ -1,19 +1,26 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getTable = (): HTMLElement => screen.getByTestId('table-task-list')
+export const getTable = () => screen.getByTestId('table-task-list')
 
-export const getColumnTitle = (
-  container: HTMLElement,
-  title: string,
-): HTMLElement => within(container).getByText(title)
+export const getFirstRow = () => {
+  const table = getTable()
+  return table.querySelector('.ant-table-row')
+}
 
-export const getColumnTitleContainer = (
-  container: HTMLElement,
-  title: string,
-): HTMLElement => {
+export const userClickFirstRow = async (user: UserEvent) => {
+  const row = getFirstRow()
+  await user.click(row!)
+
+  return row
+}
+
+export const getColumnTitle = (title: string) =>
+  within(getTable()).getByText(title)
+
+export const getColumnTitleContainer = (title: string) => {
   // eslint-disable-next-line testing-library/no-node-access
-  return getColumnTitle(container, title).parentElement?.parentElement!
+  return getColumnTitle(title).parentElement?.parentElement!
 }
 
 export const getPaginationContainer = () => screen.getByRole('list')
