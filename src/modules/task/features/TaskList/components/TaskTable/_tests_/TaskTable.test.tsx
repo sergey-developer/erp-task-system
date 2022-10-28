@@ -42,6 +42,26 @@ afterEach(() => {
 })
 
 describe('Таблица заявок', () => {
+  test('Отображается корректно', () => {
+    const tableItems = [getTaskTableItem(), getTaskTableItem()]
+    render(<TaskTable {...requiredProps} dataSource={tableItems} />)
+
+    const table = getTable()
+
+    expect(table).toBeInTheDocument()
+    tableItems.forEach((item) => {
+      const row = getRow(item.id)
+      expect(row).toBeInTheDocument()
+    })
+  })
+
+  test('Отображает состояние загрузки', () => {
+    render(<TaskTable {...requiredProps} loading />)
+
+    const table = getTable()
+    loadingStartedByIconIn(table)
+  })
+
   describe('Колонка', () => {
     describe('Статус заявки', () => {
       describe('Отображает значение по статусу заявки', () => {
@@ -645,7 +665,6 @@ describe('Таблица заявок', () => {
       )
 
       await userChangePageSize(user, paginationConfig.pageSizeOptions[0])
-
       expect(onChange).toBeCalledTimes(1)
     })
 
@@ -673,19 +692,6 @@ describe('Таблица заявок', () => {
     })
   })
 
-  test('Отображается корректно', () => {
-    const tableItems = [getTaskTableItem(), getTaskTableItem()]
-    render(<TaskTable {...requiredProps} dataSource={tableItems} />)
-
-    const table = getTable()
-
-    expect(table).toBeInTheDocument()
-    tableItems.forEach((item) => {
-      const row = getRow(item.id)
-      expect(row).toBeInTheDocument()
-    })
-  })
-
   describe('Если список заявок пуст', () => {
     test('Отображается соответствующий текст', () => {
       render(<TaskTable {...requiredProps} dataSource={[]} />)
@@ -699,19 +705,11 @@ describe('Таблица заявок', () => {
     })
   })
 
-  test('Отображает состояние загрузки', () => {
-    render(<TaskTable {...requiredProps} loading />)
-
-    const table = getTable()
-    loadingStartedByIconIn(table)
-  })
-
   test('При клике на строку вызывается обработчик', async () => {
     const onRow = jest.fn()
     const { user } = render(<TaskTable {...requiredProps} onRow={onRow} />)
 
     await userClickRow(user, firstTaskTableItem.id)
-
     expect(onRow).toBeCalled()
   })
 })

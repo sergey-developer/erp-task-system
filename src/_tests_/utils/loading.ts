@@ -1,4 +1,4 @@
-import { getIconByNameIn, queryIconByNameIn } from '_tests_/utils'
+import { findIconByNameIn, queryIconByNameIn } from '_tests_/utils'
 import { screen, waitFor } from '@testing-library/react'
 
 const btnLoadingClass = 'ant-btn-loading'
@@ -39,8 +39,8 @@ export const loadingFinishedByCard = async (card: HTMLElement) => {
   })
 }
 
-export const loadingStartedByIconIn = (container: HTMLElement) => {
-  const icon = getIconByNameIn(container, 'loading')
+export const loadingStartedByIconIn = async (container: HTMLElement) => {
+  const icon = await findIconByNameIn(container, 'loading')
   expect(icon).toBeInTheDocument()
 }
 

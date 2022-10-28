@@ -19,8 +19,9 @@ export const loadingStarted = (container: HTMLElement) => {
 }
 
 export const loadingFinished = async (container: HTMLElement) => {
+  const skeleton = container.querySelector('.ant-skeleton-active')
+
   await waitFor(() => {
-    const skeleton = container.querySelector('.ant-skeleton-active')
     expect(skeleton).not.toBeInTheDocument()
   })
 }

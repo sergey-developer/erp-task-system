@@ -31,16 +31,28 @@ import {
 import { paginationConfig } from '../../TaskTable/constants/pagination'
 import { DEFAULT_PAGE_SIZE } from '../constants'
 import TaskListPage from '../index'
+import {
+  getExtendedFilterButton,
+  getSearchButton,
+  getSearchClearButton,
+  getSearchInput,
+  getTaskListPage,
+  userFillSearchInput,
+} from './utils'
 
 setupApiTests()
 
 describe('Страница реестра заявок', () => {
+  test('Отображается', () => {
+    render(<TaskListPage />)
+
+    const page = getTaskListPage()
+    expect(page).toBeInTheDocument()
+  })
+
   describe('Таблица заявок', () => {
     test('Отображается', async () => {
-      mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess()
-
-      render(<TaskListPage />, { store: getStoreWithAuth() })
+      render(<TaskListPage />)
 
       const taskTable = getTaskTable()
       expect(taskTable).toBeInTheDocument()
@@ -243,87 +255,178 @@ describe('Страница реестра заявок', () => {
     })
 
     describe('Пагинация', () => {
-      test('При клике на кнопку "Вперед" отправляется запрос', async () => {
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess({
-          once: false,
-          body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
+      describe('Отправляется запрос', () => {
+        test('При клике на кнопку "Вперед"', async () => {
+          mockGetTaskCountersSuccess()
+          mockGetTaskListSuccess({
+            once: false,
+            body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
+          })
+
+          const { user } = render(<TaskListPage />, {
+            store: getStoreWithAuth(),
+          })
+
+          const taskTable = getTaskTable()
+          await loadingFinishedByIconIn(taskTable)
+
+          const nextButton = getTablePaginationNextButton()
+          await user.click(nextButton)
+
+          await loadingStartedByIconIn(taskTable)
         })
+
+        test('При клике на кнопку "Назад"', async () => {
+          mockGetTaskCountersSuccess()
+          mockGetTaskListSuccess({
+            once: false,
+            body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
+          })
+
+          const { user } = render(<TaskListPage />, {
+            store: getStoreWithAuth(),
+          })
+
+          const taskTable = getTaskTable()
+          await loadingFinishedByIconIn(taskTable)
+
+          const nextButton = getTablePaginationNextButton()
+          await user.click(nextButton)
+
+          await loadingFinishedByIconIn(taskTable)
+
+          const prevButton = getTablePaginationPrevButton()
+          await user.click(prevButton)
+
+          await loadingStartedByIconIn(taskTable)
+        })
+
+        test('При переходе на след. страницу', async () => {
+          mockGetTaskCountersSuccess()
+          mockGetTaskListSuccess({
+            once: false,
+            body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
+          })
+
+          const { user } = render(<TaskListPage />, {
+            store: getStoreWithAuth(),
+          })
+
+          const taskTable = getTaskTable()
+          await loadingFinishedByIconIn(taskTable)
+
+          const pageButton = getPaginationPageButton('2')
+          await user.click(pageButton)
+
+          await loadingStartedByIconIn(taskTable)
+        })
+
+        test('При смене размера страницы', async () => {
+          mockGetTaskCountersSuccess()
+          mockGetTaskListSuccess({
+            once: false,
+            body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
+          })
+
+          const { user } = render(<TaskListPage />, {
+            store: getStoreWithAuth(),
+          })
+
+          const taskTable = getTaskTable()
+          await loadingFinishedByIconIn(taskTable)
+
+          await userChangePageSize(user, paginationConfig.pageSizeOptions[0])
+          await loadingStartedByIconIn(taskTable)
+        })
+      })
+    })
+  })
+
+  describe('Поиск заявки по номеру', () => {
+    test('Поле поиска отображается корректно', () => {
+      render(<TaskListPage />)
+
+      const searchInput = getSearchInput()
+
+      expect(searchInput).toBeInTheDocument()
+      expect(searchInput).toBeEnabled()
+      expect(searchInput).not.toHaveValue()
+    })
+
+    test('Можно ввести значение', async () => {
+      const { user } = render(<TaskListPage />)
+
+      const { searchInput, searchValue } = await userFillSearchInput(user)
+      expect(searchInput).toHaveValue(searchValue)
+    })
+
+    test('Можно очистить значение', async () => {
+      const { user } = render(<TaskListPage />)
+
+      const { searchInput } = await userFillSearchInput(user)
+      await user.click(getSearchClearButton())
+
+      expect(searchInput).not.toHaveValue()
+    })
+
+    describe('Отправляется запрос', () => {
+      test('При нажатии на кнопку поиска', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({ once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth(),
         })
 
         const taskTable = getTaskTable()
-        await loadingFinishedByIconIn(taskTable)
 
-        const nextButton = getTablePaginationNextButton()
-        await user.click(nextButton)
-
+        await userFillSearchInput(user)
+        await user.click(getSearchButton())
         await loadingStartedByIconIn(taskTable)
       })
 
-      test('При клике на кнопку "Назад" отправляется запрос', async () => {
+      test('При нажатии клавиши "Enter"', async () => {
         mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess({
-          once: false,
-          body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
-        })
+        mockGetTaskListSuccess({ once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth(),
         })
 
         const taskTable = getTaskTable()
-        await loadingFinishedByIconIn(taskTable)
-
-        const nextButton = getTablePaginationNextButton()
-        await user.click(nextButton)
-
-        await loadingFinishedByIconIn(taskTable)
-
-        const prevButton = getTablePaginationPrevButton()
-        await user.click(prevButton)
-
+        await userFillSearchInput(user, true)
         await loadingStartedByIconIn(taskTable)
       })
+    })
 
-      test('При переходе на след. страницу отправляется запрос', async () => {
+    describe('После применения', () => {
+      test('Недоступен расширенный фильтр', async () => {
         mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess({
-          once: false,
-          body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
-        })
+        mockGetTaskListSuccess({ once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth(),
         })
 
-        const taskTable = getTaskTable()
-        await loadingFinishedByIconIn(taskTable)
+        await userFillSearchInput(user, true)
 
-        const pageButton = getPaginationPageButton('2')
-        await user.click(pageButton)
+        const extendedFilterButton = getExtendedFilterButton()
 
-        await loadingStartedByIconIn(taskTable)
+        await waitFor(() => {
+          expect(extendedFilterButton).toBeDisabled()
+        })
       })
 
-      test('При смене размера страницы отправляется запрос', async () => {
+      test('Недоступен быстрый фильтр', async () => {
         mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess({
-          once: false,
-          body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
-        })
+        mockGetTaskListSuccess({ once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth(),
         })
 
-        const taskTable = getTaskTable()
-        await loadingFinishedByIconIn(taskTable)
-
-        await userChangePageSize(user, paginationConfig.pageSizeOptions[0])
-        await loadingStartedByIconIn(taskTable)
+        await userFillSearchInput(user, true)
+        // ...
       })
     })
   })

@@ -247,7 +247,7 @@ const TaskListPage: FC = () => {
 
   return (
     <>
-      <RowWrapStyled gutter={[0, 40]}>
+      <RowWrapStyled data-testid='page-task-list' gutter={[0, 40]}>
         <Row justify='space-between' align='bottom'>
           <Col span={13}>
             <Row align='middle' gutter={[30, 30]}>
@@ -264,7 +264,6 @@ const TaskListPage: FC = () => {
 
               <Col>
                 <Button
-                  data-testid='btn-filter-extended'
                   icon={<FilterIcon $size='large' />}
                   onClick={debouncedToggleOpenExtendedFilter}
                   disabled={searchFilterApplied}
