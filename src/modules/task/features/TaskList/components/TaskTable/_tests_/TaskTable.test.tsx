@@ -8,7 +8,7 @@ import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
-import { getTaskStatus } from '../../../../TaskStatus/TaskStatus.test'
+import { getTaskStatus } from '../../../../TaskStatus/_tests_/utils'
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { paginationConfig } from '../constants/pagination'
 import TaskTable from '../index'

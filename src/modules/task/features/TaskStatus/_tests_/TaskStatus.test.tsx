@@ -1,7 +1,6 @@
-import { BadgeProps } from 'antd'
 import React from 'react'
 
-import { getIconByName, getIconByNameIn, render } from '_tests_/utils'
+import { getIconByName, render } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 import {
   TaskExtendedStatusEnum,
@@ -13,25 +12,15 @@ import {
   badgeByTaskStatus,
   iconByTaskExtendedStatus,
   iconByTaskStatus,
-} from './constants'
-import TaskStatus from './index'
-import { BadgeStyled } from './styles'
-
-export const getTaskStatus = (status: string) =>
-  screen.getByTestId(`task-status-${status}`)
-
-export const queryTaskStatus = (status: string) =>
-  screen.queryByTestId(`task-status-${status}`)
-
-export const getTaskStatusIcon = (status: string, name: string) =>
-  getIconByNameIn(getTaskStatus(status), name)
-
-export const queryTaskStatusBadge = (
-  status: string,
-  badgeStatus: BadgeProps['status'],
-) =>
-  // eslint-disable-next-line testing-library/no-node-access
-  getTaskStatus(status).querySelector(`.ant-badge-status-${badgeStatus}`)
+} from '../constants'
+import TaskStatus from '../index'
+import { BadgeStyled } from '../styles'
+import {
+  getTaskStatus,
+  getTaskStatusIcon,
+  queryTaskStatus,
+  queryTaskStatusBadge,
+} from './utils'
 
 describe('Получение значка работает корректно по статусу заявки', () => {
   test(`${TaskStatusEnum.New}`, () => {
