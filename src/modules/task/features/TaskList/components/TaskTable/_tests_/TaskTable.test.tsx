@@ -8,6 +8,7 @@ import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
+import { getTaskStatus } from '../../../../TaskStatus/_tests_/utils'
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { paginationConfig } from '../constants/pagination'
 import TaskTable from '../index'
@@ -47,8 +48,8 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const badge = screen.getByTestId('badge-status-default')
-          expect(badge).toBeInTheDocument()
+          const status = getTaskStatus(TaskStatusEnum.New)
+          expect(status).toBeInTheDocument()
         })
 
         test(`${TaskStatusEnum.InProgress}`, () => {
@@ -64,8 +65,8 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const badge = screen.getByTestId('badge-status-warning')
-          expect(badge).toBeInTheDocument()
+          const status = getTaskStatus(TaskStatusEnum.InProgress)
+          expect(status).toBeInTheDocument()
         })
 
         test(`${TaskStatusEnum.Completed}`, () => {
@@ -81,8 +82,8 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const badge = screen.getByTestId('badge-status-success')
-          expect(badge).toBeInTheDocument()
+          const status = getTaskStatus(TaskStatusEnum.Completed)
+          expect(status).toBeInTheDocument()
         })
       })
 
@@ -101,7 +102,8 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          expect(getIconByName('pause-circle')).toBeInTheDocument()
+          const status = getTaskStatus(TaskExtendedStatusEnum.Awaiting)
+          expect(status).toBeInTheDocument()
         })
 
         test(`${TaskExtendedStatusEnum.Returned}`, () => {
@@ -118,7 +120,8 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          expect(getIconByName('right-circle')).toBeInTheDocument()
+          const status = getTaskStatus(TaskExtendedStatusEnum.Returned)
+          expect(status).toBeInTheDocument()
         })
 
         test(`${TaskExtendedStatusEnum.InReclassification}`, () => {
@@ -135,7 +138,10 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          expect(getIconByName('question-circle')).toBeInTheDocument()
+          const status = getTaskStatus(
+            TaskExtendedStatusEnum.InReclassification,
+          )
+          expect(status).toBeInTheDocument()
         })
 
         test(`${TaskExtendedStatusEnum.Closed}`, () => {
@@ -152,7 +158,8 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          expect(getIconByName('check-circle')).toBeInTheDocument()
+          const status = getTaskStatus(TaskExtendedStatusEnum.Closed)
+          expect(status).toBeInTheDocument()
         })
       })
     })

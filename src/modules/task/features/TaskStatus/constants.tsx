@@ -1,4 +1,3 @@
-import { BadgeProps } from 'antd'
 import React, { ReactElement } from 'react'
 
 import {
@@ -12,30 +11,28 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 
+import { BadgeStyled } from './styles'
+
 export const badgeByTaskStatus: Readonly<
-  Partial<
-    Record<
-      TaskStatusEnum,
-      Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
-    >
-  >
+  Partial<Record<TaskStatusEnum, ReactElement>>
 > = {
-  [TaskStatusEnum.New]: 'default',
-  [TaskStatusEnum.InProgress]: 'warning',
-  [TaskStatusEnum.Completed]: 'success',
+  [TaskStatusEnum.New]: <BadgeStyled status='default' />,
+  [TaskStatusEnum.InProgress]: <BadgeStyled status='warning' />,
+  [TaskStatusEnum.Completed]: <BadgeStyled status='success' />,
+}
+
+export const iconByTaskStatus: Readonly<
+  Partial<Record<TaskStatusEnum, ReactElement>>
+> = {
+  [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
 }
 
 export const badgeByTaskExtendedStatus: Readonly<
-  Partial<
-    Record<
-      TaskExtendedStatusEnum,
-      Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
-    >
-  >
+  Partial<Record<TaskExtendedStatusEnum, ReactElement>>
 > = {
-  [TaskExtendedStatusEnum.New]: 'default',
-  [TaskExtendedStatusEnum.InProgress]: 'warning',
-  [TaskExtendedStatusEnum.Completed]: 'success',
+  [TaskExtendedStatusEnum.New]: <BadgeStyled status='default' />,
+  [TaskExtendedStatusEnum.InProgress]: <BadgeStyled status='warning' />,
+  [TaskExtendedStatusEnum.Completed]: <BadgeStyled status='success' />,
 }
 
 export const iconByTaskExtendedStatus: Readonly<
@@ -45,10 +42,4 @@ export const iconByTaskExtendedStatus: Readonly<
   [TaskExtendedStatusEnum.InReclassification]: <QuestionCircleIcon />,
   [TaskExtendedStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
   [TaskExtendedStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
-}
-
-export const iconByTaskStatus: Readonly<
-  Partial<Record<TaskStatusEnum, ReactElement>>
-> = {
-  [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
 }

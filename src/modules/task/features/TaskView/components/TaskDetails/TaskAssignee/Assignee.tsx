@@ -27,6 +27,7 @@ const Assignee: FC<AssigneeProps> = ({ assignee, status, name }) => {
 
         {assignee && status && (
           <TaskStatus
+            status={status}
             text={taskStatusDict[status]}
             icon={iconByTaskStatus[status]}
             badge={badgeByTaskStatus[status]}
