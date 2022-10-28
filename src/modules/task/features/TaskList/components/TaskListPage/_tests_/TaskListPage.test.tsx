@@ -20,12 +20,15 @@ import {
 
 import { findTaskDetails } from '../../../../TaskView/components/TaskDetails/_tests_/utils'
 import {
+  getPaginationPageButton,
   getPaginationNextButton as getTablePaginationNextButton,
   getPaginationPrevButton as getTablePaginationPrevButton,
   getTable as getTaskTable,
+  userChangePageSize,
   userClickHeadCol as userClickTableHeadCol,
   userClickRow as userClickTableRow,
 } from '../../TaskTable/_tests_/utils'
+import { paginationConfig } from '../../TaskTable/constants/pagination'
 import { DEFAULT_PAGE_SIZE } from '../constants'
 import TaskListPage from '../index'
 
@@ -40,8 +43,6 @@ describe('Страница реестра заявок', () => {
       render(<TaskListPage />, { store: getStoreWithAuth() })
 
       const taskTable = getTaskTable()
-      await loadingFinishedByIconIn(taskTable)
-
       expect(taskTable).toBeInTheDocument()
     })
 
@@ -284,6 +285,44 @@ describe('Страница реестра заявок', () => {
         const prevButton = getTablePaginationPrevButton()
         await user.click(prevButton)
 
+        await loadingStartedByIconIn(taskTable)
+      })
+
+      test('При переходе на след. страницу отправляется запрос', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({
+          once: false,
+          body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
+        })
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        const taskTable = getTaskTable()
+        await loadingFinishedByIconIn(taskTable)
+
+        const pageButton = getPaginationPageButton('2')
+        await user.click(pageButton)
+
+        await loadingStartedByIconIn(taskTable)
+      })
+
+      test('При смене размера страницы отправляется запрос', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({
+          once: false,
+          body: getGetTaskListResponse(getTaskList(DEFAULT_PAGE_SIZE + 1)),
+        })
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        const taskTable = getTaskTable()
+        await loadingFinishedByIconIn(taskTable)
+
+        await userChangePageSize(user, paginationConfig.pageSizeOptions[0])
         await loadingStartedByIconIn(taskTable)
       })
     })

@@ -1,5 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { NumOrStr } from 'shared/interfaces/utils'
 
 export const getTable = () => screen.getByTestId('table-task-list')
 
@@ -40,16 +41,14 @@ export const getPaginationPrevButton = () =>
     name: 'left',
   })
 
-export const getPageButton = (pageNumber: string) =>
+export const getPaginationPageButton = (pageNumber: string) =>
   within(getPaginationContainer()).getByRole('listitem', { name: pageNumber })
 
 export const getPageSizeOptionsContainer = (container: HTMLElement) =>
   container.querySelector('.rc-virtual-list') as HTMLElement
 
-export const getPageSizeOption = (
-  container: HTMLElement,
-  pageSize: string | number,
-) => within(container).getByText(`${pageSize} / стр.`)
+export const getPageSizeOption = (container: HTMLElement, pageSize: NumOrStr) =>
+  within(container).getByText(`${pageSize} / стр.`)
 
 export const userOpenPageSizeOptions = async (
   user: UserEvent,
@@ -60,4 +59,17 @@ export const userOpenPageSizeOptions = async (
   })
 
   await user.click(button)
+}
+
+export const userChangePageSize = async (
+  user: UserEvent,
+  pageSize: NumOrStr,
+) => {
+  const pagination = getPaginationContainer()
+  await userOpenPageSizeOptions(user, pagination)
+  const pageSizeOption = getPageSizeOption(
+    getPageSizeOptionsContainer(pagination),
+    pageSize,
+  )
+  await user.click(pageSizeOption)
 }

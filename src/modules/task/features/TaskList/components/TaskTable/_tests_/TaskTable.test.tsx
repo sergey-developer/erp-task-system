@@ -1,5 +1,6 @@
 import { getIconByName, loadingStartedByIconIn, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
+import { getTaskTableItem } from 'fixtures/task'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
@@ -20,13 +21,15 @@ import {
 import {
   getColText,
   getHeadCol,
-  getPageButton,
   getPageSizeOption,
   getPageSizeOptionsContainer,
   getPaginationContainer,
   getPaginationNextButton,
+  getPaginationPageButton,
   getPaginationPrevButton,
+  getRow,
   getTable,
+  userChangePageSize,
   userClickHeadCol,
   userClickRow,
   userOpenPageSizeOptions,
@@ -562,8 +565,8 @@ describe('Таблица заявок', () => {
     test('Кнопки переключения страниц отображаются', () => {
       render(<TaskTable {...requiredProps} pagination={paginationProps} />)
 
-      const page1Button = getPageButton('1')
-      const page2Button = getPageButton('2')
+      const page1Button = getPaginationPageButton('1')
+      const page2Button = getPaginationPageButton('2')
 
       expect(page1Button).toBeInTheDocument()
       expect(page2Button).toBeInTheDocument()
@@ -641,18 +644,7 @@ describe('Таблица заявок', () => {
         />,
       )
 
-      const pagination = getPaginationContainer()
-
-      await userOpenPageSizeOptions(user, pagination)
-
-      const pageSizeOptionsContainer = getPageSizeOptionsContainer(pagination)
-      const pageSize = paginationConfig.pageSizeOptions[0]
-      const pageSizeOption = getPageSizeOption(
-        pageSizeOptionsContainer,
-        pageSize,
-      )
-
-      await user.click(pageSizeOption)
+      await userChangePageSize(user, paginationConfig.pageSizeOptions[0])
 
       expect(onChange).toBeCalledTimes(1)
     })
@@ -668,7 +660,7 @@ describe('Таблица заявок', () => {
 
       const nextButton = getPaginationNextButton()
       const prevButton = getPaginationPrevButton()
-      const page2Button = getPageButton('2')
+      const page2Button = getPaginationPageButton('2')
 
       await user.click(nextButton)
       expect(onChange).toBeCalled()
@@ -678,6 +670,19 @@ describe('Таблица заявок', () => {
 
       await user.click(page2Button)
       expect(onChange).toBeCalled()
+    })
+  })
+
+  test('Отображается корректно', () => {
+    const tableItems = [getTaskTableItem(), getTaskTableItem()]
+    render(<TaskTable {...requiredProps} dataSource={tableItems} />)
+
+    const table = getTable()
+
+    expect(table).toBeInTheDocument()
+    tableItems.forEach((item) => {
+      const row = getRow(item.id)
+      expect(row).toBeInTheDocument()
     })
   })
 
