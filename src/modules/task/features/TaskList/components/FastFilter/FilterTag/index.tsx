@@ -25,15 +25,15 @@ const FilterTag: FC<FilterTagProps> = ({
   disabled,
 }) => {
   return (
-    <div data-testid='filter-fast-tag-container'>
+    <div data-testid='filter-tag'>
       {loading ? (
         <Skeleton.Button active={loading} size='small' shape='round' />
       ) : (
         <CheckableTagStyled
           data-testid='checkable-tag'
+          className={disabled ? 'ant-tag-checkable--disabled' : undefined}
           checked={disabled ? false : checked}
           onChange={disabled ? undefined : onChange}
-          $disabled={disabled}
         >
           <Space>
             {text}

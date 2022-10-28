@@ -19,6 +19,7 @@ import {
 } from 'fixtures/task'
 
 import { findTaskDetails } from '../../../../TaskView/components/TaskDetails/_tests_/utils'
+import { getAllCheckableTag } from '../../FastFilter/_tests_/utils'
 import {
   getPaginationPageButton,
   getPaginationNextButton as getTablePaginationNextButton,
@@ -410,10 +411,8 @@ describe('Страница реестра заявок', () => {
 
         await userFillSearchInput(user, true)
 
-        const extendedFilterButton = getExtendedFilterButton()
-
         await waitFor(() => {
-          expect(extendedFilterButton).toBeDisabled()
+          expect(getExtendedFilterButton()).toBeDisabled()
         })
       })
 
@@ -426,7 +425,13 @@ describe('Страница реестра заявок', () => {
         })
 
         await userFillSearchInput(user, true)
-        // ...
+        const fastFilters = getAllCheckableTag()
+
+        for await (const filter of fastFilters) {
+          await waitFor(() => {
+            expect(filter).toHaveClass('ant-tag-checkable--disabled')
+          })
+        }
       })
     })
   })
