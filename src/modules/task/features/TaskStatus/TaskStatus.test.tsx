@@ -1,4 +1,7 @@
-import { getIconByName, render } from '_tests_/utils'
+import { BadgeProps } from 'antd'
+import React from 'react'
+
+import { getIconByName, getIconByNameIn, render } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 import {
   TaskExtendedStatusEnum,
@@ -9,42 +12,79 @@ import {
   badgeByTaskExtendedStatus,
   badgeByTaskStatus,
   iconByTaskExtendedStatus,
+  iconByTaskStatus,
 } from './constants'
 import TaskStatus from './index'
+import { BadgeStyled } from './styles'
 
-describe('Получение названия значка работает корректно по статусу заявки', () => {
+export const getTaskStatus = (status: string) =>
+  screen.getByTestId(`task-status-${status}`)
+
+export const queryTaskStatus = (status: string) =>
+  screen.queryByTestId(`task-status-${status}`)
+
+export const getTaskStatusIcon = (status: string, name: string) =>
+  getIconByNameIn(getTaskStatus(status), name)
+
+export const queryTaskStatusBadge = (
+  status: string,
+  badgeStatus: BadgeProps['status'],
+) =>
+  // eslint-disable-next-line testing-library/no-node-access
+  getTaskStatus(status).querySelector(`.ant-badge-status-${badgeStatus}`)
+
+describe('Получение значка работает корректно по статусу заявки', () => {
   test(`${TaskStatusEnum.New}`, () => {
-    const badgeName = badgeByTaskStatus[TaskStatusEnum.New]
-    expect(badgeName).toBe('default')
+    const badge = badgeByTaskStatus[TaskStatusEnum.New]
+    render(badge!)
+
+    expect(badge).toEqual(<BadgeStyled status='default' />)
   })
 
   test(`${TaskStatusEnum.InProgress}`, () => {
-    const badgeName = badgeByTaskStatus[TaskStatusEnum.InProgress]
-    expect(badgeName).toBe('warning')
+    const badge = badgeByTaskStatus[TaskStatusEnum.InProgress]
+    render(badge!)
+
+    expect(badge).toEqual(<BadgeStyled status='warning' />)
   })
 
   test(`${TaskStatusEnum.Completed}`, () => {
-    const badgeName = badgeByTaskStatus[TaskStatusEnum.Completed]
-    expect(badgeName).toBe('success')
+    const badge = badgeByTaskStatus[TaskStatusEnum.Completed]
+    render(badge!)
+
+    expect(badge).toEqual(<BadgeStyled status='success' />)
   })
 })
 
-describe('Получение названия значка работает корректно по расширенному статусу заявки', () => {
+describe('Получение значка работает корректно по расширенному статусу заявки', () => {
   test(`${TaskExtendedStatusEnum.New}`, () => {
-    const badgeName = badgeByTaskExtendedStatus[TaskExtendedStatusEnum.New]
-    expect(badgeName).toBe('default')
+    const badge = badgeByTaskExtendedStatus[TaskExtendedStatusEnum.New]
+    render(badge!)
+
+    expect(badge).toEqual(<BadgeStyled status='default' />)
   })
 
   test(`${TaskExtendedStatusEnum.InProgress}`, () => {
-    const badgeName =
-      badgeByTaskExtendedStatus[TaskExtendedStatusEnum.InProgress]
-    expect(badgeName).toBe('warning')
+    const badge = badgeByTaskExtendedStatus[TaskExtendedStatusEnum.InProgress]
+    render(badge!)
+
+    expect(badge).toEqual(<BadgeStyled status='warning' />)
   })
 
   test(`${TaskExtendedStatusEnum.Completed}`, () => {
-    const badgeName =
-      badgeByTaskExtendedStatus[TaskExtendedStatusEnum.Completed]
-    expect(badgeName).toBe('success')
+    const badge = badgeByTaskExtendedStatus[TaskExtendedStatusEnum.Completed]
+    render(badge!)
+
+    expect(badge).toEqual(<BadgeStyled status='success' />)
+  })
+})
+
+describe('Получение иконки работает корректно по статусу заявки', () => {
+  test(`${TaskStatusEnum.Closed}`, () => {
+    const icon = iconByTaskStatus[TaskStatusEnum.Closed]
+    render(icon!)
+
+    expect(getIconByName('check-circle')).toBeInTheDocument()
   })
 })
 
@@ -83,50 +123,83 @@ describe('TaskStatus', () => {
   test('Отображает значок', () => {
     render(
       <TaskStatus
+        status={TaskExtendedStatusEnum.Completed}
         badge={badgeByTaskExtendedStatus[TaskExtendedStatusEnum.Completed]}
       />,
     )
 
-    const badge = screen.getByTestId('badge-status-success')
+    const status = getTaskStatus(TaskExtendedStatusEnum.Completed)
+    const badge = queryTaskStatusBadge(
+      TaskExtendedStatusEnum.Completed,
+      'success',
+    )
+
+    expect(status).toBeInTheDocument()
     expect(badge).toBeInTheDocument()
   })
 
   test('Отображает иконку', () => {
     render(
       <TaskStatus
+        status={TaskExtendedStatusEnum.Awaiting}
         icon={iconByTaskExtendedStatus[TaskExtendedStatusEnum.Awaiting]}
       />,
     )
 
-    expect(getIconByName('pause-circle')).toBeInTheDocument()
+    const status = getTaskStatus(TaskExtendedStatusEnum.Awaiting)
+    const icon = getTaskStatusIcon(
+      TaskExtendedStatusEnum.Awaiting,
+      'pause-circle',
+    )
+
+    expect(status).toBeInTheDocument()
+    expect(icon).toBeInTheDocument()
   })
 
   test('Отображается текст', () => {
     const text = 'text'
-    render(<TaskStatus text={text} />)
+    render(<TaskStatus status={text} text={text} />)
 
     expect(screen.getByText(text)).toBeInTheDocument()
   })
 
-  test('Если передать название значка и иконку, отображает только иконку', () => {
+  test('Если передать значок и иконку, отображает только иконку', () => {
+    const iconByStatus =
+      iconByTaskExtendedStatus[TaskExtendedStatusEnum.Awaiting]
+
+    const badgeByStatus =
+      badgeByTaskExtendedStatus[TaskExtendedStatusEnum.Completed]
+
     render(
       <TaskStatus
-        icon={iconByTaskExtendedStatus[TaskExtendedStatusEnum.Awaiting]}
-        badge={badgeByTaskExtendedStatus[TaskExtendedStatusEnum.Completed]}
+        status={
+          iconByStatus
+            ? TaskExtendedStatusEnum.Awaiting
+            : TaskExtendedStatusEnum.Completed
+        }
+        icon={iconByStatus}
+        badge={badgeByStatus}
       />,
     )
 
-    const icon = getIconByName('pause-circle')
-    const badge = screen.queryByTestId('badge-status-success')
+    const icon = getTaskStatusIcon(
+      TaskExtendedStatusEnum.Awaiting,
+      'pause-circle',
+    )
+    const badge = queryTaskStatusBadge(
+      TaskExtendedStatusEnum.Awaiting,
+      'success',
+    )
 
     expect(icon).toBeInTheDocument()
     expect(badge).not.toBeInTheDocument()
   })
 
-  test('Не отображается, если не передать текст, иконку и название значка', () => {
-    render(<TaskStatus />)
+  test('Не отображается, если не передать текст, иконку и значок', () => {
+    const fakeStatus = 'status'
+    render(<TaskStatus status={fakeStatus} />)
 
-    const status = screen.queryByTestId('task-status')
+    const status = queryTaskStatus(fakeStatus)
     expect(status).not.toBeInTheDocument()
   })
 })

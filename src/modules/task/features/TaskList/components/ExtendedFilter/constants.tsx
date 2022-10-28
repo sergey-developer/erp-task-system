@@ -76,6 +76,7 @@ export const taskExtendedStatusOptions: Array<CheckboxOptionType> =
   Object.values(TaskExtendedStatusEnum).map((status) => ({
     label: (
       <TaskStatus
+        status={status}
         icon={iconByTaskExtendedStatus[status]}
         badge={badgeByTaskExtendedStatus[status]}
         text={taskExtendedStatusDict[status]}
