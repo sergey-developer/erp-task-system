@@ -13,7 +13,7 @@ export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
 }
 
 export const taskExtendedStatusDict: Readonly<
-  StringMap<TaskExtendedStatusEnum>
+  Partial<StringMap<TaskExtendedStatusEnum>>
 > = {
   [TaskExtendedStatusEnum.New]: 'Новые',
   [TaskExtendedStatusEnum.InProgress]: 'В работе',

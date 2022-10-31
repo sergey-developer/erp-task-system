@@ -9,6 +9,7 @@ import {
 } from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 import { StringMap } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import { ExtendedFilterFormFields, SearchFields } from './interfaces'
 
@@ -73,14 +74,18 @@ export const taskOverdueOptions: Array<CheckboxOptionType> = Object.values(
 }))
 
 export const taskExtendedStatusOptions: Array<CheckboxOptionType> =
-  Object.values(TaskExtendedStatusEnum).map((status) => ({
-    label: (
-      <TaskStatus
-        status={status}
-        icon={iconByTaskExtendedStatus[status]}
-        badge={badgeByTaskExtendedStatus[status]}
-        text={taskExtendedStatusDict[status]}
-      />
-    ),
-    value: status,
-  }))
+  Object.values(TaskExtendedStatusEnum)
+    .filter(
+      (status) => !isEqual(status, TaskExtendedStatusEnum.FirstLineReturned),
+    )
+    .map((status) => ({
+      label: (
+        <TaskStatus
+          status={status}
+          icon={iconByTaskExtendedStatus[status]}
+          badge={badgeByTaskExtendedStatus[status]}
+          text={taskExtendedStatusDict[status]}
+        />
+      ),
+      value: status,
+    }))

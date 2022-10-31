@@ -106,6 +106,14 @@ describe('Получение иконки работает корректно п
 
     expect(getIconByName('check-circle')).toBeInTheDocument()
   })
+
+  test(`${TaskExtendedStatusEnum.FirstLineReturned}`, () => {
+    const icon =
+      iconByTaskExtendedStatus[TaskExtendedStatusEnum.FirstLineReturned]
+    render(icon!)
+
+    expect(getIconByName('exclamation-circle')).toBeInTheDocument()
+  })
 })
 
 describe('TaskStatus', () => {

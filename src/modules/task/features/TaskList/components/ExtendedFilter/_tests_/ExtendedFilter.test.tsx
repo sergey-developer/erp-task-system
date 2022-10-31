@@ -16,7 +16,7 @@ import {
 import { getStoreWithAuth } from '_tests_/utils/auth'
 import { screen } from '@testing-library/react'
 import { getWorkGroupList } from 'fixtures/workGroup'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import { UserRolesEnum } from 'shared/constants/roles'
 
@@ -131,14 +131,16 @@ describe('Расширенный фильтр', () => {
           {...requiredProps}
           formValues={{
             ...requiredProps.formValues,
-            status: [TaskStatusEnum.InProgress],
+            status: [TaskExtendedStatusEnum.InProgress],
           }}
         />,
       )
 
       const container = getStatusContainer()
       const checkbox = getCheckboxIn(container, {
-        name: new RegExp(taskExtendedStatusDict[TaskStatusEnum.InProgress]!),
+        name: new RegExp(
+          taskExtendedStatusDict[TaskExtendedStatusEnum.InProgress]!,
+        ),
       })
 
       expect(checkbox).toBeChecked()
