@@ -7,7 +7,8 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "lint": "eslint ./src"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
