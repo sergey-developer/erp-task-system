@@ -21,12 +21,18 @@ const { Text } = Typography
 export const tableColumns: ColumnsType<TaskTableListItem> = [
   {
     key: 'noop',
-    render: (_, { status, extendedStatus }) => (
-      <TaskStatus
-        icon={iconByTaskExtendedStatus[extendedStatus]}
-        badge={badgeByTaskStatus[status]}
-      />
-    ),
+    render: (_, { status, extendedStatus }) => {
+      const icon = iconByTaskExtendedStatus[extendedStatus]
+      const badge = badgeByTaskStatus[status]
+
+      return (
+        <TaskStatus
+          status={icon ? extendedStatus : status}
+          icon={icon}
+          badge={badge}
+        />
+      )
+    },
     align: 'center',
   },
   {

@@ -21,6 +21,7 @@
 - [yarn test](https://create-react-app.dev/docs/getting-started/#npm-test-or-yarn-test) Запускает тесты используя watch mode
 - [yarn build](https://create-react-app.dev/docs/production-build/) Собирает production версию приложения
 - [yarn eject](https://create-react-app.dev/docs/available-scripts/#npm-run-eject) Команда из create-react-app
+- `yarn lint` Запускает встроенный в CRA линтер
 
 ## Настройка проекта
 
