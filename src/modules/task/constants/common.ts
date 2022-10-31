@@ -13,6 +13,7 @@ export enum TaskExtendedStatusEnum {
   InReclassification = 'IN_RECLASSIFICATION',
   Returned = 'RETURNED',
   Closed = 'CLOSED',
+  FirstLineReturned = 'FIRST_LINE_RETURNED',
 }
 
 export enum TaskOlaStatusEnum {
