@@ -11,10 +11,7 @@ export const getColumnTitle = (
 export const getColumnTitleContainer = (
   container: HTMLElement,
   title: string,
-): HTMLElement => {
-  // eslint-disable-next-line testing-library/no-node-access
-  return getColumnTitle(container, title).parentElement?.parentElement!
-}
+): HTMLElement => getColumnTitle(container, title).parentElement?.parentElement!
 
 export const getPaginationContainer = () => screen.getByRole('list')
 
