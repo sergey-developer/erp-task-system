@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 
-export const getFilterContainer = () => screen.getByTestId('filter-fast')
+export const getFastFilter = () => screen.getByTestId('filter-fast')
 
 export const getFilterTag = () => screen.getByTestId('filter-tag')
 

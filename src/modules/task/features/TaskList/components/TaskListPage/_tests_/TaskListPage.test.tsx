@@ -21,33 +21,13 @@ import {
 } from 'fixtures/task'
 
 import { findTaskDetails } from '../../../../TaskView/components/TaskDetails/_tests_/utils'
-import {
-  getAllCheckableTag,
-  getAllFilterTag,
-} from '../../FastFilter/_tests_/utils'
-import {
-  getPaginationPageButton,
-  getPaginationNextButton as getTablePaginationNextButton,
-  getPaginationPrevButton as getTablePaginationPrevButton,
-  getTable as getTaskTable,
-  userChangePageSize,
-  userClickHeadCol as userClickTableHeadCol,
-  userClickRow as userClickTableRow,
-} from '../../TaskTable/_tests_/utils'
+import * as extendedFilterUtils from '../../ExtendedFilter/_tests_/utils'
+import * as fastFilterUtils from '../../FastFilter/_tests_/utils'
+import * as taskTableUtils from '../../TaskTable/_tests_/utils'
 import { paginationConfig } from '../../TaskTable/constants/pagination'
 import { DEFAULT_PAGE_SIZE } from '../constants'
 import TaskListPage from '../index'
-import {
-  getCreateTaskButton,
-  getExtendedFilterButton,
-  getReloadListButton,
-  getSearchButton,
-  getSearchClearButton,
-  getSearchInput,
-  getTaskListPage,
-  userClickReloadListButton,
-  userFillSearchInput,
-} from './utils'
+import * as utils from './utils'
 
 setupApiTests()
 
@@ -55,20 +35,37 @@ describe('Страница реестра заявок', () => {
   test('Отображается', () => {
     render(<TaskListPage />)
 
-    const page = getTaskListPage()
+    const page = utils.getTaskListPage()
     expect(page).toBeInTheDocument()
   })
 
-  test('Отображает быстрые фильтры', () => {})
+  describe('Быстрые фильтры', () => {
+    test('Отображаются корректно', () => {
+      render(<TaskListPage />)
+
+      const fastFilter = fastFilterUtils.getFastFilter()
+      expect(fastFilter).toBeInTheDocument()
+    })
+  })
 
   describe('Кнопка расширенных фильтров', () => {
     test('Отображается корректно', () => {
       render(<TaskListPage />)
 
-      const button = getExtendedFilterButton()
+      const button = utils.getExtendedFilterButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
+    })
+
+    test('Открывает расширенный фильтр', async () => {
+      mockGetWorkGroupListSuccess()
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await user.click(utils.getExtendedFilterButton())
+
+      expect(extendedFilterUtils.getExtendedFilter()).toBeInTheDocument()
     })
   })
 
@@ -76,7 +73,7 @@ describe('Страница реестра заявок', () => {
     test('Поле поиска отображается корректно', () => {
       render(<TaskListPage />)
 
-      const searchInput = getSearchInput()
+      const searchInput = utils.getSearchInput()
 
       expect(searchInput).toBeInTheDocument()
       expect(searchInput).toBeEnabled()
@@ -86,15 +83,15 @@ describe('Страница реестра заявок', () => {
     test('Можно ввести значение', async () => {
       const { user } = render(<TaskListPage />)
 
-      const { searchInput, searchValue } = await userFillSearchInput(user)
+      const { searchInput, searchValue } = await utils.userFillSearchInput(user)
       expect(searchInput).toHaveValue(searchValue)
     })
 
     test('Можно очистить значение', async () => {
       const { user } = render(<TaskListPage />)
 
-      const { searchInput } = await userFillSearchInput(user)
-      await user.click(getSearchClearButton())
+      const { searchInput } = await utils.userFillSearchInput(user)
+      await user.click(utils.getSearchClearButton())
 
       expect(searchInput).not.toHaveValue()
     })
@@ -108,10 +105,10 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth(),
         })
 
-        const taskTable = getTaskTable()
+        const taskTable = taskTableUtils.getTable()
 
-        await userFillSearchInput(user)
-        await user.click(getSearchButton())
+        await utils.userFillSearchInput(user)
+        await user.click(utils.getSearchButton())
         await loadingStartedByIconIn(taskTable)
       })
 
@@ -123,8 +120,8 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth(),
         })
 
-        const taskTable = getTaskTable()
-        await userFillSearchInput(user, true)
+        const taskTable = taskTableUtils.getTable()
+        await utils.userFillSearchInput(user, true)
         await loadingStartedByIconIn(taskTable)
       })
     })
@@ -138,10 +135,10 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth(),
         })
 
-        await userFillSearchInput(user, true)
+        await utils.userFillSearchInput(user, true)
 
         await waitFor(() => {
-          expect(getExtendedFilterButton()).toBeDisabled()
+          expect(utils.getExtendedFilterButton()).toBeDisabled()
         })
       })
 
@@ -153,10 +150,10 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth(),
         })
 
-        await userFillSearchInput(user, true)
+        await utils.userFillSearchInput(user, true)
 
         await waitFor(() => {
-          getAllCheckableTag().forEach((tag) => {
+          fastFilterUtils.getAllCheckableTag().forEach((tag) => {
             expect(tag).toHaveClass('ant-tag-checkable--disabled')
           })
         })
@@ -168,7 +165,7 @@ describe('Страница реестра заявок', () => {
     test('Отображается корректно', () => {
       render(<TaskListPage />)
 
-      const button = getReloadListButton()
+      const button = utils.getReloadListButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -182,9 +179,9 @@ describe('Страница реестра заявок', () => {
         store: getStoreWithAuth(),
       })
 
-      const taskTable = getTaskTable()
+      const taskTable = taskTableUtils.getTable()
       await loadingFinishedByIconIn(taskTable)
-      await userClickReloadListButton(user)
+      await utils.userClickReloadListButton(user)
 
       await loadingStartedByIconIn(taskTable)
     })
@@ -197,12 +194,12 @@ describe('Страница реестра заявок', () => {
         store: getStoreWithAuth(),
       })
 
-      const filterTags = getAllFilterTag()
+      const filterTags = fastFilterUtils.getAllFilterTag()
       for await (const fastFilter of filterTags) {
         await loadingFinishedBySkeletonIn(fastFilter)
       }
 
-      await userClickReloadListButton(user)
+      await utils.userClickReloadListButton(user)
 
       for await (const fastFilter of filterTags) {
         await loadingStartedBySkeletonIn(fastFilter)
@@ -222,13 +219,13 @@ describe('Страница реестра заявок', () => {
 
       const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
-      const taskTable = getTaskTable()
+      const taskTable = taskTableUtils.getTable()
       await loadingFinishedByIconIn(taskTable)
 
-      await userClickTableRow(user, taskListItem.id)
+      await taskTableUtils.userClickRow(user, taskListItem.id)
 
       const taskDetails = await findTaskDetails()
-      await userClickReloadListButton(user)
+      await utils.userClickReloadListButton(user)
 
       await waitFor(() => {
         expect(taskDetails).not.toBeInTheDocument()
@@ -240,7 +237,7 @@ describe('Страница реестра заявок', () => {
     test('Отображается корректно', () => {
       render(<TaskListPage />)
 
-      const button = getCreateTaskButton()
+      const button = utils.getCreateTaskButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -251,7 +248,7 @@ describe('Страница реестра заявок', () => {
     test('Отображается', async () => {
       render(<TaskListPage />)
 
-      const taskTable = getTaskTable()
+      const taskTable = taskTableUtils.getTable()
       expect(taskTable).toBeInTheDocument()
     })
 
@@ -266,10 +263,10 @@ describe('Страница реестра заявок', () => {
 
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
-        const taskTable = getTaskTable()
+        const taskTable = taskTableUtils.getTable()
         await loadingFinishedByIconIn(taskTable)
 
-        const row = await userClickTableRow(user, taskListItem.id)
+        const row = await taskTableUtils.userClickRow(user, taskListItem.id)
 
         await waitFor(() => {
           expect(row).toHaveClass('table-row--selected')
@@ -286,10 +283,10 @@ describe('Страница реестра заявок', () => {
 
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
-        const taskTable = getTaskTable()
+        const taskTable = taskTableUtils.getTable()
         await loadingFinishedByIconIn(taskTable)
 
-        await userClickTableRow(user, taskListItem.id)
+        await taskTableUtils.userClickRow(user, taskListItem.id)
 
         const taskDetails = await findTaskDetails()
         expect(taskDetails).toBeInTheDocument()
@@ -306,10 +303,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userClickTableHeadCol(user, 'Заявка')
+          await taskTableUtils.userClickHeadCol(user, 'Заявка')
           await loadingStartedByIconIn(taskTable)
         })
       })
@@ -323,10 +320,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userClickTableHeadCol(user, 'Внеш.номер')
+          await taskTableUtils.userClickHeadCol(user, 'Внеш.номер')
           await loadingStartedByIconIn(taskTable)
         })
       })
@@ -340,10 +337,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userClickTableHeadCol(user, 'Объект')
+          await taskTableUtils.userClickHeadCol(user, 'Объект')
           await loadingStartedByIconIn(taskTable)
         })
       })
@@ -357,10 +354,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userClickTableHeadCol(user, 'Тема')
+          await taskTableUtils.userClickHeadCol(user, 'Тема')
           await loadingStartedByIconIn(taskTable)
         })
       })
@@ -374,10 +371,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userClickTableHeadCol(user, 'Исполнитель')
+          await taskTableUtils.userClickHeadCol(user, 'Исполнитель')
           await loadingStartedByIconIn(taskTable)
         })
       })
@@ -391,10 +388,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userClickTableHeadCol(user, 'Рабочая группа')
+          await taskTableUtils.userClickHeadCol(user, 'Рабочая группа')
           await loadingStartedByIconIn(taskTable)
         })
       })
@@ -408,10 +405,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userClickTableHeadCol(user, 'Выполнить до')
+          await taskTableUtils.userClickHeadCol(user, 'Выполнить до')
           await loadingStartedByIconIn(taskTable)
         })
       })
@@ -425,10 +422,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userClickTableHeadCol(user, 'Комментарий')
+          await taskTableUtils.userClickHeadCol(user, 'Комментарий')
           await loadingStartedByIconIn(taskTable)
         })
       })
@@ -442,10 +439,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userClickTableHeadCol(user, 'Дата создания')
+          await taskTableUtils.userClickHeadCol(user, 'Дата создания')
           await loadingStartedByIconIn(taskTable)
         })
       })
@@ -464,10 +461,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          const nextButton = getTablePaginationNextButton()
+          const nextButton = taskTableUtils.getPaginationNextButton()
           await user.click(nextButton)
 
           await loadingStartedByIconIn(taskTable)
@@ -484,15 +481,15 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          const nextButton = getTablePaginationNextButton()
+          const nextButton = taskTableUtils.getPaginationNextButton()
           await user.click(nextButton)
 
           await loadingFinishedByIconIn(taskTable)
 
-          const prevButton = getTablePaginationPrevButton()
+          const prevButton = taskTableUtils.getPaginationPrevButton()
           await user.click(prevButton)
 
           await loadingStartedByIconIn(taskTable)
@@ -509,10 +506,10 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          const pageButton = getPaginationPageButton('2')
+          const pageButton = taskTableUtils.getPaginationPageButton('2')
           await user.click(pageButton)
 
           await loadingStartedByIconIn(taskTable)
@@ -529,16 +526,39 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
-          const taskTable = getTaskTable()
+          const taskTable = taskTableUtils.getTable()
           await loadingFinishedByIconIn(taskTable)
 
-          await userChangePageSize(user, paginationConfig.pageSizeOptions[0])
+          await taskTableUtils.userChangePageSize(
+            user,
+            paginationConfig.pageSizeOptions[0],
+          )
           await loadingStartedByIconIn(taskTable)
         })
       })
     })
   })
 
+  describe('Расширенный фильтр', () => {
+    test('Можно закрыть', async () => {
+      mockGetWorkGroupListSuccess()
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await user.click(utils.getExtendedFilterButton())
+
+      const extendedFilter = await extendedFilterUtils.findExtendedFilter()
+      expect(extendedFilter).toBeInTheDocument()
+
+      await user.click(extendedFilterUtils.getCloseButton())
+
+      await waitFor(() => {
+        expect(extendedFilter).not.toBeInTheDocument()
+      })
+    })
+  })
   // describe('Быстрый фильтр', () => {
   //   test('Отображается', async () => {
   //     mockGetTaskListSuccess()
@@ -577,7 +597,7 @@ describe('Страница реестра заявок', () => {
   //
   //     await user.click(filterTag)
   //
-  //     const taskTable = getTaskTable()
+  //     const taskTable = taskTableUtils.getTable()
   //     await loadingStartedByIconIn(taskTable)
   //   })
   //

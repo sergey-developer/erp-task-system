@@ -24,7 +24,7 @@ export const getCreateTaskButton = () =>
   getButtonIn(getTaskListPage(), /создать заявку/i)
 
 export const getExtendedFilterButton = () =>
-  getButtonIn(getTaskListPage(), /фильтры/i)
+  getButtonIn(getTaskListPage(), /filter/)
 
 export const userFillSearchInput = async (
   user: UserEvent,

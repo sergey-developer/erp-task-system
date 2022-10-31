@@ -1,10 +1,16 @@
-import { getButton } from '_tests_/utils'
+import { getButton, getButtonIn } from '_tests_/utils'
 import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getCloseButton = () => getButton('Close')
+export const getExtendedFilter = () => screen.getByTestId('filter-extended')
+
+export const findExtendedFilter = () => screen.findByTestId('filter-extended')
+
+export const getCloseButton = () => getButtonIn(getExtendedFilter(), /close/i)
+
 export const getApplyButton = () => getButton(/Применить/i)
+
 export const getResetAllButton = () => getButton(/Сбросить все/i)
 
 export const getStatusContainer = () =>
@@ -21,13 +27,13 @@ export const getSearchByColumnContainer = () =>
 
 export const getCheckboxIn = (
   container: HTMLElement,
-  options: ByRoleOptions,
-): HTMLInputElement => within(container).getByRole('checkbox', options)
+  name: ByRoleOptions['name'],
+): HTMLInputElement => within(container).getByRole('checkbox', { name })
 
 export const getRadioButtonIn = (
   container: HTMLElement,
-  options: ByRoleOptions,
-): HTMLInputElement => within(container).getByRole('radio', options)
+  name: ByRoleOptions['name'],
+): HTMLInputElement => within(container).getByRole('radio', { name })
 
 export const getStartDateField = (): HTMLInputElement =>
   screen.getByPlaceholderText('Начальная дата')
@@ -62,11 +68,13 @@ export const userClickResetButtonIn = async (
   user: UserEvent,
   container: HTMLElement,
 ) => {
-  const button = within(container).getByRole('button', { name: 'Сбросить' })
+  const button = getButtonIn(container, /сбросить/i)
   await user.click(button)
+  return button
 }
 
 export const userClickResetAllButton = async (user: UserEvent) => {
   const button = getResetAllButton()
   await user.click(button)
+  return button
 }
