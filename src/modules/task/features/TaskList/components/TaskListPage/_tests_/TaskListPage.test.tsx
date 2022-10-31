@@ -33,7 +33,9 @@ import { paginationConfig } from '../../TaskTable/constants/pagination'
 import { DEFAULT_PAGE_SIZE } from '../constants'
 import TaskListPage from '../index'
 import {
+  getCreateTaskButton,
   getExtendedFilterButton,
+  getReloadListButton,
   getSearchButton,
   getSearchClearButton,
   getSearchInput,
@@ -433,6 +435,46 @@ describe('Страница реестра заявок', () => {
           })
         }
       })
+    })
+  })
+
+  describe('Кнопка обновления заявок', () => {
+    test('Отображается корректно', () => {
+      render(<TaskListPage />)
+
+      const button = getReloadListButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Перезагружает заявки и счётчик заявок', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+      mockGetTaskListSuccess({ once: false })
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth(),
+      })
+
+      const taskTable = getTaskTable()
+      await loadingFinishedByIconIn(taskTable)
+
+      const button = getReloadListButton()
+      await user.click(button)
+
+      await loadingStartedByIconIn(taskTable)
+      //...
+    })
+  })
+
+  describe('Кнопка создания заявки', () => {
+    test('Отображается корректно', () => {
+      render(<TaskListPage />)
+
+      const button = getCreateTaskButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
     })
   })
 

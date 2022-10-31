@@ -7,10 +7,18 @@ export const getTaskListPage = () => screen.getByTestId('page-task-list')
 export const getSearchInput = () =>
   within(getTaskListPage()).getByPlaceholderText('Искать заявку по номеру')
 
-export const getSearchButton = () => getButtonIn(getTaskListPage(), 'search')
+export const getSearchButton = () => getButtonIn(getTaskListPage(), /search/)
 
 export const getSearchClearButton = () =>
   getButtonIn(getTaskListPage(), 'close-circle')
+
+export const getReloadListButton = () => getButtonIn(getTaskListPage(), /sync/)
+
+export const getCreateTaskButton = () =>
+  getButtonIn(getTaskListPage(), /создать заявку/i)
+
+export const getExtendedFilterButton = () =>
+  getButtonIn(getTaskListPage(), /фильтры/i)
 
 export const userFillSearchInput = async (
   user: UserEvent,
@@ -26,6 +34,3 @@ export const userFillSearchInput = async (
 
   return { searchInput, searchValue }
 }
-
-export const getExtendedFilterButton = () =>
-  getButtonIn(getTaskListPage(), /Фильтры/i)

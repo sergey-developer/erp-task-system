@@ -3,15 +3,18 @@ import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import { GetTaskCountersResponseModel } from 'modules/task/features/TaskList/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 
+import { ResponseResolverOptions } from '../../response'
+
 const getGetTaskCountersMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, TaskEndpointsEnum.TaskCounters)
 
 export const mockGetTaskCountersSuccess = (
-  response?: GetTaskCountersResponseModel,
+  options?: Partial<ResponseResolverOptions<GetTaskCountersResponseModel>>,
 ) => {
-  const mockGetTaskCounters = getSuccessMockFn(getGetTaskCountersMockFn(), {
-    body: response,
-  })
+  const mockGetTaskCounters = getSuccessMockFn(
+    getGetTaskCountersMockFn(),
+    options,
+  )
 
   mockGetTaskCounters()
 }

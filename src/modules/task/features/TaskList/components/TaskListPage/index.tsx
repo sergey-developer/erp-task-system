@@ -287,11 +287,7 @@ const TaskListPage: FC = () => {
 
               <Col>
                 <Space align='end' size='middle'>
-                  <Button
-                    data-testid='btn-reload-taskList'
-                    icon={<SyncIcon />}
-                    onClick={handleRefetchTaskList}
-                  >
+                  <Button icon={<SyncIcon />} onClick={handleRefetchTaskList}>
                     Обновить заявки
                   </Button>
 
