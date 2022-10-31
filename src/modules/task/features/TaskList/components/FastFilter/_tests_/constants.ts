@@ -5,7 +5,7 @@ export const requiredProps: Pick<
   'text' | 'checked' | 'amount'
 > = {
   text: 'text',
-  amount: 0,
+  amount: 1,
   checked: false,
 }
 

@@ -1,44 +1,35 @@
-import { render } from '_tests_/utils'
-import { within } from '@testing-library/react'
+import { loadingStartedBySkeletonIn, render } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 
 import FilterTag from '../FilterTag'
 import { filterCheckedClass, requiredProps } from './constants'
-import { getCheckableTag, getFilterTag, loadingStarted } from './utils'
+import { getCheckableTag, getFilterTag } from './utils'
 
 describe('FilterTag', () => {
   test('Отображает состояние загрузки', () => {
     render(<FilterTag {...requiredProps} loading />)
 
-    const container = getFilterTag()
-    loadingStarted(container)
+    loadingStartedBySkeletonIn(getFilterTag())
   })
 
   test('Отображает текст', () => {
     render(<FilterTag {...requiredProps} />)
 
-    const container = getFilterTag()
-    expect(within(container).getByText(requiredProps.text)).toBeInTheDocument()
+    expect(screen.getByText(requiredProps.text)).toBeInTheDocument()
   })
 
   describe('Количество', () => {
     test('Отображается если оно присутствует (включая "0")', () => {
-      render(<FilterTag {...requiredProps} />)
+      const amount = 0
+      render(<FilterTag {...requiredProps} amount={amount} />)
 
-      const container = getFilterTag()
-
-      expect(
-        within(container).getByText(requiredProps.amount!),
-      ).toBeInTheDocument()
+      expect(screen.getByText(amount)).toBeInTheDocument()
     })
 
     test('Не отображается если оно отсутствует', () => {
       render(<FilterTag {...requiredProps} amount={null} />)
 
-      const container = getFilterTag()
-
-      expect(
-        within(container).queryByText(requiredProps.amount!),
-      ).not.toBeInTheDocument()
+      expect(screen.queryByText(requiredProps.amount!)).not.toBeInTheDocument()
     })
   })
 
@@ -56,7 +47,7 @@ describe('FilterTag', () => {
     expect(filter).not.toHaveClass(filterCheckedClass)
   })
 
-  describe('"onChange"', () => {
+  describe('Обработчик изменения', () => {
     const onChange = jest.fn()
 
     afterEach(() => {

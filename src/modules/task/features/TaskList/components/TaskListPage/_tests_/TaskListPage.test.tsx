@@ -6,7 +6,9 @@ import {
 } from '_tests_/mocks/api'
 import {
   loadingFinishedByIconIn,
+  loadingFinishedBySkeletonIn,
   loadingStartedByIconIn,
+  loadingStartedBySkeletonIn,
   render,
   setupApiTests,
 } from '_tests_/utils'
@@ -19,7 +21,10 @@ import {
 } from 'fixtures/task'
 
 import { findTaskDetails } from '../../../../TaskView/components/TaskDetails/_tests_/utils'
-import { getAllCheckableTag } from '../../FastFilter/_tests_/utils'
+import {
+  getAllCheckableTag,
+  getAllFilterTag,
+} from '../../FastFilter/_tests_/utils'
 import {
   getPaginationPageButton,
   getPaginationNextButton as getTablePaginationNextButton,
@@ -40,6 +45,7 @@ import {
   getSearchClearButton,
   getSearchInput,
   getTaskListPage,
+  userClickReloadListButton,
   userFillSearchInput,
 } from './utils'
 
@@ -51,6 +57,194 @@ describe('Страница реестра заявок', () => {
 
     const page = getTaskListPage()
     expect(page).toBeInTheDocument()
+  })
+
+  test('Отображает быстрые фильтры', () => {})
+
+  describe('Кнопка расширенных фильтров', () => {
+    test('Отображается корректно', () => {
+      render(<TaskListPage />)
+
+      const button = getExtendedFilterButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+  })
+
+  describe('Поиск заявки по номеру', () => {
+    test('Поле поиска отображается корректно', () => {
+      render(<TaskListPage />)
+
+      const searchInput = getSearchInput()
+
+      expect(searchInput).toBeInTheDocument()
+      expect(searchInput).toBeEnabled()
+      expect(searchInput).not.toHaveValue()
+    })
+
+    test('Можно ввести значение', async () => {
+      const { user } = render(<TaskListPage />)
+
+      const { searchInput, searchValue } = await userFillSearchInput(user)
+      expect(searchInput).toHaveValue(searchValue)
+    })
+
+    test('Можно очистить значение', async () => {
+      const { user } = render(<TaskListPage />)
+
+      const { searchInput } = await userFillSearchInput(user)
+      await user.click(getSearchClearButton())
+
+      expect(searchInput).not.toHaveValue()
+    })
+
+    describe('Отправляется запрос', () => {
+      test('При нажатии на кнопку поиска', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({ once: false })
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        const taskTable = getTaskTable()
+
+        await userFillSearchInput(user)
+        await user.click(getSearchButton())
+        await loadingStartedByIconIn(taskTable)
+      })
+
+      test('При нажатии клавиши "Enter"', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({ once: false })
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        const taskTable = getTaskTable()
+        await userFillSearchInput(user, true)
+        await loadingStartedByIconIn(taskTable)
+      })
+    })
+
+    describe('После применения', () => {
+      test('Недоступен расширенный фильтр', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({ once: false })
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        await userFillSearchInput(user, true)
+
+        await waitFor(() => {
+          expect(getExtendedFilterButton()).toBeDisabled()
+        })
+      })
+
+      test('Недоступен быстрый фильтр', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({ once: false })
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        await userFillSearchInput(user, true)
+
+        await waitFor(() => {
+          getAllCheckableTag().forEach((tag) => {
+            expect(tag).toHaveClass('ant-tag-checkable--disabled')
+          })
+        })
+      })
+    })
+  })
+
+  describe('Кнопка обновления заявок', () => {
+    test('Отображается корректно', () => {
+      render(<TaskListPage />)
+
+      const button = getReloadListButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Перезагружает заявки', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+      mockGetTaskListSuccess({ once: false })
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth(),
+      })
+
+      const taskTable = getTaskTable()
+      await loadingFinishedByIconIn(taskTable)
+      await userClickReloadListButton(user)
+
+      await loadingStartedByIconIn(taskTable)
+    })
+
+    test('Перезагружает количество заявок для быстрых фильтров', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+      mockGetTaskListSuccess({ once: false })
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth(),
+      })
+
+      const filterTags = getAllFilterTag()
+      for await (const fastFilter of filterTags) {
+        await loadingFinishedBySkeletonIn(fastFilter)
+      }
+
+      await userClickReloadListButton(user)
+
+      for await (const fastFilter of filterTags) {
+        await loadingStartedBySkeletonIn(fastFilter)
+      }
+    })
+
+    test('Закрывает карточку заявки', async () => {
+      mockGetWorkGroupListSuccess()
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = getTaskListItem()
+      mockGetTaskListSuccess({
+        body: getGetTaskListResponse([taskListItem]),
+        once: false,
+      })
+      mockGetTaskSuccess(taskListItem.id)
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      const taskTable = getTaskTable()
+      await loadingFinishedByIconIn(taskTable)
+
+      await userClickTableRow(user, taskListItem.id)
+
+      const taskDetails = await findTaskDetails()
+      await userClickReloadListButton(user)
+
+      await waitFor(() => {
+        expect(taskDetails).not.toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Кнопка создания заявки', () => {
+    test('Отображается корректно', () => {
+      render(<TaskListPage />)
+
+      const button = getCreateTaskButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
   })
 
   describe('Таблица заявок', () => {
@@ -342,139 +536,6 @@ describe('Страница реестра заявок', () => {
           await loadingStartedByIconIn(taskTable)
         })
       })
-    })
-  })
-
-  describe('Поиск заявки по номеру', () => {
-    test('Поле поиска отображается корректно', () => {
-      render(<TaskListPage />)
-
-      const searchInput = getSearchInput()
-
-      expect(searchInput).toBeInTheDocument()
-      expect(searchInput).toBeEnabled()
-      expect(searchInput).not.toHaveValue()
-    })
-
-    test('Можно ввести значение', async () => {
-      const { user } = render(<TaskListPage />)
-
-      const { searchInput, searchValue } = await userFillSearchInput(user)
-      expect(searchInput).toHaveValue(searchValue)
-    })
-
-    test('Можно очистить значение', async () => {
-      const { user } = render(<TaskListPage />)
-
-      const { searchInput } = await userFillSearchInput(user)
-      await user.click(getSearchClearButton())
-
-      expect(searchInput).not.toHaveValue()
-    })
-
-    describe('Отправляется запрос', () => {
-      test('При нажатии на кнопку поиска', async () => {
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess({ once: false })
-
-        const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth(),
-        })
-
-        const taskTable = getTaskTable()
-
-        await userFillSearchInput(user)
-        await user.click(getSearchButton())
-        await loadingStartedByIconIn(taskTable)
-      })
-
-      test('При нажатии клавиши "Enter"', async () => {
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess({ once: false })
-
-        const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth(),
-        })
-
-        const taskTable = getTaskTable()
-        await userFillSearchInput(user, true)
-        await loadingStartedByIconIn(taskTable)
-      })
-    })
-
-    describe('После применения', () => {
-      test('Недоступен расширенный фильтр', async () => {
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess({ once: false })
-
-        const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth(),
-        })
-
-        await userFillSearchInput(user, true)
-
-        await waitFor(() => {
-          expect(getExtendedFilterButton()).toBeDisabled()
-        })
-      })
-
-      test('Недоступен быстрый фильтр', async () => {
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess({ once: false })
-
-        const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth(),
-        })
-
-        await userFillSearchInput(user, true)
-        const fastFilters = getAllCheckableTag()
-
-        for await (const filter of fastFilters) {
-          await waitFor(() => {
-            expect(filter).toHaveClass('ant-tag-checkable--disabled')
-          })
-        }
-      })
-    })
-  })
-
-  describe('Кнопка обновления заявок', () => {
-    test('Отображается корректно', () => {
-      render(<TaskListPage />)
-
-      const button = getReloadListButton()
-
-      expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
-    })
-
-    test('Перезагружает заявки и счётчик заявок', async () => {
-      mockGetTaskCountersSuccess({ once: false })
-      mockGetTaskListSuccess({ once: false })
-
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth(),
-      })
-
-      const taskTable = getTaskTable()
-      await loadingFinishedByIconIn(taskTable)
-
-      const button = getReloadListButton()
-      await user.click(button)
-
-      await loadingStartedByIconIn(taskTable)
-      //...
-    })
-  })
-
-  describe('Кнопка создания заявки', () => {
-    test('Отображается корректно', () => {
-      render(<TaskListPage />)
-
-      const button = getCreateTaskButton()
-
-      expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
     })
   })
 

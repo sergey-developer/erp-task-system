@@ -14,6 +14,12 @@ export const getSearchClearButton = () =>
 
 export const getReloadListButton = () => getButtonIn(getTaskListPage(), /sync/)
 
+export const userClickReloadListButton = async (user: UserEvent) => {
+  const button = getReloadListButton()
+  await user.click(button)
+  return button
+}
+
 export const getCreateTaskButton = () =>
   getButtonIn(getTaskListPage(), /создать заявку/i)
 

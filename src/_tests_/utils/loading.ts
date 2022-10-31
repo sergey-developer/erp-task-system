@@ -49,3 +49,19 @@ export const loadingFinishedByIconIn = async (container: HTMLElement) => {
     expect(queryIconByNameIn(container, 'loading')).not.toBeInTheDocument()
   })
 }
+
+export const loadingStartedBySkeletonIn =
+  (container: HTMLElement) => async () => {
+    await waitFor(() => {
+      const skeleton = container.querySelector('.ant-skeleton-active')
+      expect(skeleton).toBeInTheDocument()
+    })
+  }
+
+export const loadingFinishedBySkeletonIn =
+  (container: HTMLElement) => async () => {
+    await waitFor(() => {
+      const skeleton = container.querySelector('.ant-skeleton-active')
+      expect(skeleton).not.toBeInTheDocument()
+    })
+  }

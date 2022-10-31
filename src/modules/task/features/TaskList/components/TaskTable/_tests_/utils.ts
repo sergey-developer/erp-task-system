@@ -4,10 +4,8 @@ import { NumOrStr } from 'shared/interfaces/utils'
 
 export const getTable = () => screen.getByTestId('table-task-list')
 
-export const getRow = (id: number) => {
-  const table = getTable()
-  return table.querySelector(`[data-row-key='${id}']`)
-}
+export const getRow = (id: number) =>
+  getTable().querySelector(`[data-row-key='${id}']`)
 
 export const userClickRow = async (user: UserEvent, id: number) => {
   const row = getRow(id)
