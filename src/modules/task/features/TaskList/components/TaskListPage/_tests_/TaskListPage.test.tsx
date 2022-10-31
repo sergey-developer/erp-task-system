@@ -19,9 +19,12 @@ import {
   getTaskList,
   getTaskListItem,
 } from 'fixtures/task'
+import { UserRolesEnum } from 'shared/constants/roles'
 
 import { findTaskDetails } from '../../../../TaskView/components/TaskDetails/_tests_/utils'
+import { FastFilterEnum } from '../../../constants/common'
 import * as extendedFilterUtils from '../../ExtendedFilter/_tests_/utils'
+import * as fastFilterConstants from '../../FastFilter/_tests_/constants'
 import * as fastFilterUtils from '../../FastFilter/_tests_/utils'
 import * as taskTableUtils from '../../TaskTable/_tests_/utils'
 import { paginationConfig } from '../../TaskTable/constants/pagination'
@@ -39,12 +42,65 @@ describe('Страница реестра заявок', () => {
     expect(page).toBeInTheDocument()
   })
 
-  describe('Быстрые фильтры', () => {
-    test('Отображаются корректно', () => {
+  describe('Быстрый фильтр', () => {
+    test('Отображается корректно', () => {
       render(<TaskListPage />)
 
       const fastFilter = fastFilterUtils.getFastFilter()
       expect(fastFilter).toBeInTheDocument()
+    })
+
+    // продолжить...
+    describe('Имеет корректное значение по умолчанию', () => {
+      test('Роль - первая линия поддержки', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess()
+
+        render(<TaskListPage />, {
+          store: getStoreWithAuth({ userRole: UserRolesEnum.FirstLineSupport }),
+        })
+
+        await fastFilterUtils.loadingFinished()
+
+        const tag = fastFilterUtils.getCheckableTag(FastFilterEnum.All)
+        expect(tag).toHaveClass(fastFilterConstants.filterCheckedClass)
+      })
+
+      test('Роль - инженер', () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess()
+
+        render(<TaskListPage />, {
+          store: getStoreWithAuth({ userRole: UserRolesEnum.Engineer }),
+        })
+
+        const tag = fastFilterUtils.getCheckableTag(FastFilterEnum.Mine)
+        expect(tag).toHaveClass(fastFilterConstants.filterCheckedClass)
+      })
+
+      test('Роль - старший инженер', () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess()
+
+        render(<TaskListPage />, {
+          store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
+        })
+
+        const tag = fastFilterUtils.getCheckableTag(FastFilterEnum.All)
+        expect(tag).toHaveClass(fastFilterConstants.filterCheckedClass)
+      })
+
+      test('Роль - глава отдела', () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess()
+
+        render(<TaskListPage />, {
+          store: getStoreWithAuth({ userRole: UserRolesEnum.HeadOfDepartment }),
+        })
+
+        const tag = fastFilterUtils.getCheckableTag(FastFilterEnum.All)
+        expect(tag).toHaveClass(fastFilterConstants.filterCheckedClass)
+      })
     })
   })
 
@@ -153,8 +209,10 @@ describe('Страница реестра заявок', () => {
         await utils.userFillSearchInput(user, true)
 
         await waitFor(() => {
-          fastFilterUtils.getAllCheckableTag().forEach((tag) => {
-            expect(tag).toHaveClass('ant-tag-checkable--disabled')
+          Object.values(FastFilterEnum).forEach((filter) => {
+            expect(fastFilterUtils.getCheckableTag(filter)).toHaveClass(
+              'ant-tag-checkable--disabled',
+            )
           })
         })
       })

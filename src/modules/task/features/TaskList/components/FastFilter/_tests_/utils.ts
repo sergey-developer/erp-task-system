@@ -1,4 +1,7 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { loadingFinishedBySkeletonIn } from '_tests_/utils'
+import { screen } from '@testing-library/react'
+
+import { FastFilterEnum } from '../../../constants/common'
 
 export const getFastFilter = () => screen.getByTestId('filter-fast')
 
@@ -6,20 +9,11 @@ export const getFilterTag = () => screen.getByTestId('filter-tag')
 
 export const getAllFilterTag = () => screen.getAllByTestId('filter-tag')
 
-export const getCheckableTag = () => screen.getByTestId('checkable-tag')
+export const getCheckableTag = (value: FastFilterEnum) =>
+  screen.getByTestId(`checkable-tag-${value}`)
 
-export const getAllCheckableTag = () => screen.getAllByTestId('checkable-tag')
-
-export const getFilterTagByTextIn = (container: HTMLElement, text: string) =>
-  within(container).getByText(text)
-
-export const getFirstFilterTagContainer = () =>
-  screen.getAllByTestId('filter-tag')[0]
-
-export const loadingFinished = async (container: HTMLElement) => {
-  const skeleton = container.querySelector('.ant-skeleton-active')
-
-  await waitFor(() => {
-    expect(skeleton).not.toBeInTheDocument()
-  })
+export const loadingFinished = async () => {
+  for await (const fastFilter of getAllFilterTag()) {
+    await loadingFinishedBySkeletonIn(fastFilter)
+  }
 }

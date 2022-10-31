@@ -1,10 +1,12 @@
+import { FastFilterEnum } from '../../../constants/common'
 import { FilterTagProps } from '../FilterTag'
 
 export const requiredProps: Pick<
   FilterTagProps,
-  'text' | 'checked' | 'amount'
+  'text' | 'checked' | 'amount' | 'value'
 > = {
   text: 'text',
+  value: FastFilterEnum.All,
   amount: 1,
   checked: false,
 }

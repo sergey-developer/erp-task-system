@@ -36,14 +36,14 @@ describe('FilterTag', () => {
   test('Можно сделать выбранным', () => {
     render(<FilterTag {...requiredProps} checked />)
 
-    const filter = getCheckableTag()
+    const filter = getCheckableTag(requiredProps.value)
     expect(filter).toHaveClass(filterCheckedClass)
   })
 
   test('Можно сделать не выбранным', () => {
     render(<FilterTag {...requiredProps} checked={false} />)
 
-    const filter = getCheckableTag()
+    const filter = getCheckableTag(requiredProps.value)
     expect(filter).not.toHaveClass(filterCheckedClass)
   })
 
@@ -59,7 +59,7 @@ describe('FilterTag', () => {
         <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
       )
 
-      const filter = getCheckableTag()
+      const filter = getCheckableTag(requiredProps.value)
       await user.click(filter)
 
       expect(onChange).toBeCalledTimes(1)
@@ -70,7 +70,7 @@ describe('FilterTag', () => {
         <FilterTag {...requiredProps} disabled onChange={onChange} />,
       )
 
-      const filter = getCheckableTag()
+      const filter = getCheckableTag(requiredProps.value)
       await user.click(filter)
 
       expect(onChange).not.toBeCalled()
