@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 
 import {
   CheckCircleIcon,
+  ExclamationCircleIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
   RightCircleIcon,
@@ -42,4 +43,7 @@ export const iconByTaskExtendedStatus: Readonly<
   [TaskExtendedStatusEnum.InReclassification]: <QuestionCircleIcon />,
   [TaskExtendedStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
   [TaskExtendedStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
+  [TaskExtendedStatusEnum.FirstLineReturned]: (
+    <ExclamationCircleIcon $color='fireOpal' />
+  ),
 }

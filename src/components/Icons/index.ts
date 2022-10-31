@@ -15,6 +15,7 @@ export { default as LoadingIcon } from './LoadingIcon'
 export { default as DownloadIcon } from './DownloadIcon'
 export { default as MapPointIcon } from './MapPointIcon'
 export { default as UnorderedListIcon } from './UnorderedListIcon'
+export { default as ExclamationCircleIcon } from './ExclamationCircleIcon'
 
 export { default as CheckCircleIcon } from './CheckCircleIcon'
 export { default as PauseCircleIcon } from './PauseCircleIcon'
