@@ -1,6 +1,9 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { NumOrStr } from 'shared/interfaces/utils'
 
 import { FastFilterEnum } from '../../../constants/common'
+import { filterCheckedClass } from './constants'
 
 export const getFastFilter = () => screen.getByTestId('filter-fast')
 
@@ -8,13 +11,45 @@ export const getFilterTag = () => screen.getByTestId('filter-tag')
 
 export const getAllFilterTag = () => screen.getAllByTestId('filter-tag')
 
-export const getCheckableTag = (value: FastFilterEnum) =>
-  screen.getByTestId(`checkable-tag-${value}`)
+export const getCheckableTag = (filter: FastFilterEnum) =>
+  screen.getByTestId(`checkable-tag-${filter}`)
+
+export const getByTextInCheckableTag = (
+  filter: FastFilterEnum,
+  text: NumOrStr,
+) => within(getCheckableTag(filter)).getByText(text)
+
+export const userChangeFilter = async (
+  user: UserEvent,
+  filter: FastFilterEnum,
+) => {
+  const tag = getCheckableTag(filter)
+  await user.click(tag)
+  return tag
+}
+
+export const expectFilterChecked = (filter: HTMLElement) => {
+  expect(filter).toHaveClass(filterCheckedClass)
+}
+
+export const expectFilterNotChecked = (filter: HTMLElement) => {
+  expect(filter).not.toHaveClass(filterCheckedClass)
+}
+
+export const loadingStarted = async () => {
+  await waitFor(() => {
+    getAllFilterTag().forEach((tag) => {
+      // loadingStartedBySkeletonIn(tag)
+      const skeleton = tag.querySelector('.ant-skeleton-active')
+      expect(skeleton).toBeInTheDocument()
+    })
+  })
+}
 
 export const loadingFinished = async () => {
   await waitFor(() => {
     getAllFilterTag().forEach((tag) => {
-      // eslint-disable-next-line testing-library/no-node-access
+      // loadingFinishedBySkeletonIn(tag)
       const skeleton = tag.querySelector('.ant-skeleton-active')
       expect(skeleton).not.toBeInTheDocument()
     })

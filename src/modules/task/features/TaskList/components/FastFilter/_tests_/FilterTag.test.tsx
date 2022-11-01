@@ -2,14 +2,14 @@ import { loadingStartedBySkeletonIn, render } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 
 import FilterTag from '../FilterTag'
-import { filterCheckedClass, requiredProps } from './constants'
-import { getCheckableTag, getFilterTag } from './utils'
+import { requiredProps } from './constants'
+import * as testUtils from './utils'
 
 describe('FilterTag', () => {
   test('Отображает состояние загрузки', () => {
     render(<FilterTag {...requiredProps} loading />)
 
-    loadingStartedBySkeletonIn(getFilterTag())
+    loadingStartedBySkeletonIn(testUtils.getFilterTag())
   })
 
   test('Отображает текст', () => {
@@ -36,15 +36,17 @@ describe('FilterTag', () => {
   test('Можно сделать выбранным', () => {
     render(<FilterTag {...requiredProps} checked />)
 
-    const filter = getCheckableTag(requiredProps.value)
-    expect(filter).toHaveClass(filterCheckedClass)
+    testUtils.expectFilterChecked(
+      testUtils.getCheckableTag(requiredProps.value),
+    )
   })
 
   test('Можно сделать не выбранным', () => {
     render(<FilterTag {...requiredProps} checked={false} />)
 
-    const filter = getCheckableTag(requiredProps.value)
-    expect(filter).not.toHaveClass(filterCheckedClass)
+    testUtils.expectFilterNotChecked(
+      testUtils.getCheckableTag(requiredProps.value),
+    )
   })
 
   describe('Обработчик изменения', () => {
@@ -59,7 +61,7 @@ describe('FilterTag', () => {
         <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
       )
 
-      const filter = getCheckableTag(requiredProps.value)
+      const filter = testUtils.getCheckableTag(requiredProps.value)
       await user.click(filter)
 
       expect(onChange).toBeCalledTimes(1)
@@ -70,7 +72,7 @@ describe('FilterTag', () => {
         <FilterTag {...requiredProps} disabled onChange={onChange} />,
       )
 
-      const filter = getCheckableTag(requiredProps.value)
+      const filter = testUtils.getCheckableTag(requiredProps.value)
       await user.click(filter)
 
       expect(onChange).not.toBeCalled()

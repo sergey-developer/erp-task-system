@@ -26,6 +26,12 @@ export const getCreateTaskButton = () =>
 export const getExtendedFilterButton = () =>
   getButtonIn(getTaskListPage(), /filter/)
 
+export const userOpenExtendedFilter = async (user: UserEvent) => {
+  const extendedFilterButton = getExtendedFilterButton()
+  await user.click(extendedFilterButton)
+  return extendedFilterButton
+}
+
 export const userFillSearchInput = async (
   user: UserEvent,
   pressEnter: boolean = false,

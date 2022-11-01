@@ -1,17 +1,16 @@
 import { getButton, getButtonIn } from '_tests_/utils'
-import { ByRoleOptions } from '@testing-library/dom/types/queries'
-import { screen, within } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getExtendedFilter = () => screen.getByTestId('filter-extended')
+export const getFilter = () => screen.getByTestId('filter-extended')
 
-export const findExtendedFilter = () => screen.findByTestId('filter-extended')
+export const findFilter = () => screen.findByTestId('filter-extended')
 
-export const getCloseButton = () => getButtonIn(getExtendedFilter(), /close/i)
+export const getCloseButton = () => getButtonIn(getFilter(), /close/i)
 
-export const getApplyButton = () => getButton(/Применить/i)
+export const getApplyButton = () => getButtonIn(getFilter(), /применить/i)
 
-export const getResetAllButton = () => getButton(/Сбросить все/i)
+export const getResetAllButton = () => getButton(/сбросить все/i)
 
 export const getStatusContainer = () =>
   screen.getByTestId('filter-extended-status')
@@ -24,16 +23,6 @@ export const getOverdueContainer = () =>
 
 export const getSearchByColumnContainer = () =>
   screen.getByTestId('filter-extended-search-by-column')
-
-export const getCheckboxIn = (
-  container: HTMLElement,
-  name: ByRoleOptions['name'],
-): HTMLInputElement => within(container).getByRole('checkbox', { name })
-
-export const getRadioButtonIn = (
-  container: HTMLElement,
-  name: ByRoleOptions['name'],
-): HTMLInputElement => within(container).getByRole('radio', { name })
 
 export const getStartDateField = (): HTMLInputElement =>
   screen.getByPlaceholderText('Начальная дата')
@@ -75,6 +64,18 @@ export const userClickResetButtonIn = async (
 
 export const userClickResetAllButton = async (user: UserEvent) => {
   const button = getResetAllButton()
+  await user.click(button)
+  return button
+}
+
+export const userCloseFilter = async (user: UserEvent) => {
+  const button = getCloseButton()
+  await user.click(button)
+  return button
+}
+
+export const userApplyFilter = async (user: UserEvent) => {
+  const button = getApplyButton()
   await user.click(button)
   return button
 }

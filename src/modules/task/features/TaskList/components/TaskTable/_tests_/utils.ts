@@ -1,3 +1,4 @@
+import { loadingFinishedByIconIn, loadingStartedByIconIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { NumOrStr } from 'shared/interfaces/utils'
@@ -70,4 +71,16 @@ export const userChangePageSize = async (
     pageSize,
   )
   await user.click(pageSizeOption)
+}
+
+export const loadingStarted = async () => {
+  const taskTable = getTable()
+  await loadingStartedByIconIn(taskTable)
+  return taskTable
+}
+
+export const loadingFinished = async () => {
+  const taskTable = getTable()
+  await loadingFinishedByIconIn(taskTable)
+  return taskTable
 }
