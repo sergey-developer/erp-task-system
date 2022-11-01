@@ -1,5 +1,4 @@
-import { loadingFinishedBySkeletonIn } from '_tests_/utils'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import { FastFilterEnum } from '../../../constants/common'
 
@@ -13,7 +12,11 @@ export const getCheckableTag = (value: FastFilterEnum) =>
   screen.getByTestId(`checkable-tag-${value}`)
 
 export const loadingFinished = async () => {
-  for await (const fastFilter of getAllFilterTag()) {
-    await loadingFinishedBySkeletonIn(fastFilter)
-  }
+  await waitFor(() => {
+    getAllFilterTag().forEach((tag) => {
+      // eslint-disable-next-line testing-library/no-node-access
+      const skeleton = tag.querySelector('.ant-skeleton-active')
+      expect(skeleton).not.toBeInTheDocument()
+    })
+  })
 }

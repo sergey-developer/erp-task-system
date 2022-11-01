@@ -50,7 +50,6 @@ describe('Страница реестра заявок', () => {
       expect(fastFilter).toBeInTheDocument()
     })
 
-    // продолжить...
     describe('Имеет корректное значение по умолчанию', () => {
       test('Роль - первая линия поддержки', async () => {
         mockGetTaskCountersSuccess()
@@ -66,7 +65,7 @@ describe('Страница реестра заявок', () => {
         expect(tag).toHaveClass(fastFilterConstants.filterCheckedClass)
       })
 
-      test('Роль - инженер', () => {
+      test('Роль - инженер', async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -74,11 +73,13 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.Engineer }),
         })
 
+        await fastFilterUtils.loadingFinished()
+
         const tag = fastFilterUtils.getCheckableTag(FastFilterEnum.Mine)
         expect(tag).toHaveClass(fastFilterConstants.filterCheckedClass)
       })
 
-      test('Роль - старший инженер', () => {
+      test('Роль - старший инженер', async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -86,11 +87,13 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
         })
 
+        await fastFilterUtils.loadingFinished()
+
         const tag = fastFilterUtils.getCheckableTag(FastFilterEnum.All)
         expect(tag).toHaveClass(fastFilterConstants.filterCheckedClass)
       })
 
-      test('Роль - глава отдела', () => {
+      test('Роль - глава отдела', async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -98,10 +101,33 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.HeadOfDepartment }),
         })
 
+        await fastFilterUtils.loadingFinished()
+
         const tag = fastFilterUtils.getCheckableTag(FastFilterEnum.All)
         expect(tag).toHaveClass(fastFilterConstants.filterCheckedClass)
       })
     })
+
+    test('При смене фильтра отправляется запрос', async () => {
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess({ once: false })
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth(),
+      })
+
+      const taskTable = taskTableUtils.getTable()
+      await loadingFinishedByIconIn(taskTable)
+      await fastFilterUtils.loadingFinished()
+
+      const tag = fastFilterUtils.getCheckableTag(FastFilterEnum.Free)
+      await user.click(tag)
+
+      await loadingStartedByIconIn(taskTable)
+    })
+
+    // продолжить
+    test('После фильтрации количество заявок меняется', async () => {})
   })
 
   describe('Кнопка расширенных фильтров', () => {
@@ -121,7 +147,8 @@ describe('Страница реестра заявок', () => {
 
       await user.click(utils.getExtendedFilterButton())
 
-      expect(extendedFilterUtils.getExtendedFilter()).toBeInTheDocument()
+      const filter = await extendedFilterUtils.findExtendedFilter()
+      expect(filter).toBeInTheDocument()
     })
   })
 
@@ -303,11 +330,22 @@ describe('Страница реестра заявок', () => {
   })
 
   describe('Таблица заявок', () => {
-    test('Отображается', async () => {
-      render(<TaskListPage />)
+    test('Отображается корректно', async () => {
+      const taskList = getTaskList(2)
+
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess({ body: getGetTaskListResponse(taskList) })
+
+      render(<TaskListPage />, { store: getStoreWithAuth() })
 
       const taskTable = taskTableUtils.getTable()
+      await loadingFinishedByIconIn(taskTable)
+
       expect(taskTable).toBeInTheDocument()
+      taskList.forEach((item) => {
+        const row = taskTableUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
     })
 
     describe('При клике на строку', () => {
