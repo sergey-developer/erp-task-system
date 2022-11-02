@@ -304,23 +304,32 @@ describe('Страница реестра заявок', () => {
         })
       })
 
-      test('Если другой фильтр не применялся, имеет значения установленные ранее', () => {})
+      test('Если другой фильтр не применялся, имеет ранее установленные значения', () => {})
     })
 
     test('Закрывается нажав кнопку закрытия', async () => {
       const { user } = render(<TaskListPage />)
 
       await taskListPageTestUtils.userOpenExtendedFilter(user)
-      const extendedFilter = await extendedFilterTestUtils.findFilter()
-
+      const filter = await extendedFilterTestUtils.findFilter()
       await extendedFilterTestUtils.userCloseFilter(user)
 
       await waitFor(() => {
-        expect(extendedFilter).not.toBeInTheDocument()
+        expect(filter).not.toBeInTheDocument()
       })
     })
 
-    test('Закрывается нажав вне фильтра', async () => {})
+    test('Закрывается нажав вне фильтра', async () => {
+      const { user } = render(<TaskListPage />)
+
+      await taskListPageTestUtils.userOpenExtendedFilter(user)
+      const filter = await extendedFilterTestUtils.findFilter()
+      await extendedFilterTestUtils.userClickOutOfFilter(user)
+
+      await waitFor(() => {
+        expect(filter).not.toBeInTheDocument()
+      })
+    })
 
     test('При открытии имеет корректные значения по умолчанию', () => {})
   })

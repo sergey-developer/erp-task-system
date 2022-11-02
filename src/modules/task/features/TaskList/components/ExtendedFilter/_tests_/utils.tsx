@@ -85,3 +85,9 @@ export const userSelectStatus = async (user: UserEvent, label: string) => {
   await user.click(checkbox)
   return checkbox
 }
+
+export const userClickOutOfFilter = async (user: UserEvent) => {
+  const filter = getFilter()
+  const overlay = filter.querySelector('.ant-drawer-mask')
+  if (overlay) await user.click(overlay)
+}
