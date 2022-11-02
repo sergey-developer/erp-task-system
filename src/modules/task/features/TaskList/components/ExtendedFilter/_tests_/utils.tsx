@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 export const getFilter = () => screen.getByTestId('filter-extended')
 
-export const findFilter = () => screen.findByTestId('filter-extended')
+export const findFilter = async () => screen.findByTestId('filter-extended')
 
 export const getCloseButton = () => getButtonIn(getFilter(), /close/i)
 

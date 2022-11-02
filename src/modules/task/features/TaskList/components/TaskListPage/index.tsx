@@ -116,6 +116,8 @@ const TaskListPage: FC = () => {
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
+    if (isEqual(value, fastFilterValue)) return
+
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilterValue(value)
 
@@ -125,9 +127,7 @@ const TaskListPage: FC = () => {
       filter: value,
     })
 
-    if (!isEqual(value, fastFilterValue)) {
-      handleCloseTaskDetails()
-    }
+    handleCloseTaskDetails()
   }
 
   const handleTaskIdFilterSearch = useDebounceFn<
