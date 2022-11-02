@@ -12,6 +12,12 @@ export const getSearchButton = () => getButtonIn(getTaskListPage(), /search/)
 export const getSearchClearButton = () =>
   getButtonIn(getTaskListPage(), 'close-circle')
 
+export const userClickSearchClearButton = async (user: UserEvent) => {
+  const button = getSearchClearButton()
+  await user.click(button)
+  return button
+}
+
 export const getReloadListButton = () => getButtonIn(getTaskListPage(), /sync/)
 
 export const userClickReloadListButton = async (user: UserEvent) => {

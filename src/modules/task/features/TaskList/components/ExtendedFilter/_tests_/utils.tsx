@@ -1,4 +1,4 @@
-import { getButton, getButtonIn } from '_tests_/utils'
+import { getButton, getButtonIn, getCheckboxIn } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -78,4 +78,10 @@ export const userApplyFilter = async (user: UserEvent) => {
   const button = getApplyButton()
   await user.click(button)
   return button
+}
+
+export const userSelectStatus = async (user: UserEvent, label: string) => {
+  const checkbox = getCheckboxIn(getStatusContainer(), label)
+  await user.click(checkbox)
+  return checkbox
 }

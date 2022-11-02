@@ -127,9 +127,8 @@ describe('Расширенный фильтр', () => {
         />,
       )
 
-      const container = extendedFilterTestUtils.getStatusContainer()
       const checkbox = getCheckboxIn(
-        container,
+        extendedFilterTestUtils.getStatusContainer(),
         new RegExp(taskExtendedStatusDict[TaskExtendedStatusEnum.InProgress]!),
       )
 

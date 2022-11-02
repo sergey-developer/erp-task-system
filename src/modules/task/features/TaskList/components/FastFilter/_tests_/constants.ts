@@ -12,3 +12,4 @@ export const requiredProps: Pick<
 }
 
 export const filterCheckedClass = 'ant-tag-checkable-checked'
+export const filterDisabledClass = 'ant-tag-checkable--disabled'

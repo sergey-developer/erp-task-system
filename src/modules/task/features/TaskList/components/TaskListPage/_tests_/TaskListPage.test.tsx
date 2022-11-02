@@ -135,7 +135,7 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.loadingFinished()
     })
 
-    test('Сбрасывается если применён расширенный фильтр', async () => {
+    test('Сбрасывает расширенный фильтр', async () => {
       mockGetWorkGroupListSuccess()
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess({ once: false })
@@ -143,23 +143,29 @@ describe('Страница реестра заявок', () => {
       const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
       await fastFilterTestUtils.loadingFinished()
-      await fastFilterTestUtils.userChangeFilter(user, FastFilterEnum.Free)
+      await taskTableTestUtils.loadingFinished()
+
       await taskListPageTestUtils.userOpenExtendedFilter(user)
       await extendedFilterTestUtils.findFilter()
-      const statusCheckbox = getCheckboxIn(
+      const statusCheckbox1 = await extendedFilterTestUtils.userSelectStatus(
+        user,
+        taskExtendedStatusDict.NEW!,
+      )
+      expect(statusCheckbox1).toBeChecked()
+
+      await extendedFilterTestUtils.userApplyFilter(user)
+      await taskTableTestUtils.loadingFinished()
+
+      await fastFilterTestUtils.userChangeFilter(user, FastFilterEnum.Free)
+      await taskTableTestUtils.loadingFinished()
+
+      await taskListPageTestUtils.userOpenExtendedFilter(user)
+      await extendedFilterTestUtils.findFilter()
+      const statusCheckbox2 = getCheckboxIn(
         extendedFilterTestUtils.getStatusContainer(),
         taskExtendedStatusDict.NEW,
       )
-      await user.click(statusCheckbox)
-      await extendedFilterTestUtils.userApplyFilter(user)
-
-      await waitFor(() => {
-        Object.values(FastFilterEnum).forEach((filter) => {
-          fastFilterTestUtils.expectFilterNotChecked(
-            fastFilterTestUtils.getCheckableTag(filter),
-          )
-        })
-      })
+      expect(statusCheckbox2).not.toBeChecked()
     })
   })
 
@@ -186,6 +192,53 @@ describe('Страница реестра заявок', () => {
     })
   })
 
+  describe('Расширенный фильтр', () => {
+    test('Можно закрыть', async () => {
+      const { user } = render(<TaskListPage />)
+
+      await taskListPageTestUtils.userOpenExtendedFilter(user)
+      const extendedFilter = await extendedFilterTestUtils.findFilter()
+      expect(extendedFilter).toBeInTheDocument()
+
+      await extendedFilterTestUtils.userCloseFilter(user)
+
+      await waitFor(() => {
+        expect(extendedFilter).not.toBeInTheDocument()
+      })
+    })
+
+    test('Сбрасывает быстрый фильтр', async () => {
+      mockGetWorkGroupListSuccess()
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess({ once: false })
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await fastFilterTestUtils.loadingFinished()
+      await taskTableTestUtils.loadingFinished()
+
+      const fastFilter = await fastFilterTestUtils.userChangeFilter(
+        user,
+        FastFilterEnum.Free,
+      )
+      fastFilterTestUtils.expectFilterChecked(fastFilter)
+      await taskTableTestUtils.loadingFinished()
+
+      await taskListPageTestUtils.userOpenExtendedFilter(user)
+      await extendedFilterTestUtils.findFilter()
+      await extendedFilterTestUtils.userSelectStatus(
+        user,
+        taskExtendedStatusDict.NEW!,
+      )
+      await extendedFilterTestUtils.userApplyFilter(user)
+      await taskTableTestUtils.loadingFinished()
+
+      await waitFor(() => {
+        fastFilterTestUtils.expectFilterNotChecked(fastFilter)
+      })
+    })
+  })
+
   describe('Поиск заявки по номеру', () => {
     test('Поле поиска отображается корректно', () => {
       render(<TaskListPage />)
@@ -202,18 +255,8 @@ describe('Страница реестра заявок', () => {
 
       const { searchInput, searchValue } =
         await taskListPageTestUtils.userFillSearchInput(user)
+
       expect(searchInput).toHaveValue(searchValue)
-    })
-
-    test('Можно очистить значение', async () => {
-      const { user } = render(<TaskListPage />)
-
-      const { searchInput } = await taskListPageTestUtils.userFillSearchInput(
-        user,
-      )
-      await user.click(taskListPageTestUtils.getSearchClearButton())
-
-      expect(searchInput).not.toHaveValue()
     })
 
     describe('Отправляется запрос', () => {
@@ -244,7 +287,7 @@ describe('Страница реестра заявок', () => {
     })
 
     describe('После применения', () => {
-      test('Недоступен расширенный фильтр', async () => {
+      test('Кнопка открытия расширенного фильтра недоступна', async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
@@ -253,6 +296,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await taskListPageTestUtils.userFillSearchInput(user, true)
+
         const extendedFilterButton =
           taskListPageTestUtils.getExtendedFilterButton()
 
@@ -261,7 +305,7 @@ describe('Страница реестра заявок', () => {
         })
       })
 
-      test('Недоступен быстрый фильтр', async () => {
+      test('Быстрый фильтр не активен и не выделен', async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
@@ -269,16 +313,123 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth(),
         })
 
+        await fastFilterTestUtils.loadingFinished()
+        const fastFilter = await fastFilterTestUtils.userChangeFilter(
+          user,
+          FastFilterEnum.Free,
+        )
+        fastFilterTestUtils.expectFilterChecked(fastFilter)
+        await taskTableTestUtils.loadingFinished()
+
+        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await taskTableTestUtils.loadingFinished()
+
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterNotChecked(fastFilter)
+        })
+
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterDisabled(fastFilter)
+        })
+      })
+    })
+
+    describe('Сброс значения', () => {
+      test('Очищает поле ввода', async () => {
+        const { user } = render(<TaskListPage />)
+
+        const { searchInput } = await taskListPageTestUtils.userFillSearchInput(
+          user,
+        )
+        await taskListPageTestUtils.userClickSearchClearButton(user)
+
+        expect(searchInput).not.toHaveValue()
+      })
+
+      test('Делает быстрый фильтр активным', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({ once: false })
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        await fastFilterTestUtils.loadingFinished()
+
+        const fastFilter = fastFilterTestUtils.getCheckableTag(
+          FastFilterEnum.Free,
+        )
+        fastFilterTestUtils.expectFilterNotDisabled(fastFilter)
+
+        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await taskTableTestUtils.loadingFinished()
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterDisabled(fastFilter)
+        })
+
+        await taskListPageTestUtils.userClickSearchClearButton(user)
+        await taskTableTestUtils.loadingFinished()
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterNotDisabled(fastFilter)
+        })
+      })
+
+      test('Применяет быстрый фильтр если он был применён ранее', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({ once: false })
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        await fastFilterTestUtils.loadingFinished()
+
+        const fastFilter = await fastFilterTestUtils.userChangeFilter(
+          user,
+          FastFilterEnum.Free,
+        )
+        fastFilterTestUtils.expectFilterChecked(fastFilter)
+        await taskTableTestUtils.loadingFinished()
+
+        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterNotChecked(fastFilter)
+        })
+        await taskTableTestUtils.loadingFinished()
+
+        await taskListPageTestUtils.userClickSearchClearButton(user)
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterChecked(fastFilter)
+        })
+      })
+
+      test('Делает кнопку открытия расширенного фильтра активной', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess({ once: false })
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        const extendedFilterButton =
+          taskListPageTestUtils.getExtendedFilterButton()
+
+        expect(extendedFilterButton).toBeEnabled()
+
         await taskListPageTestUtils.userFillSearchInput(user, true)
 
         await waitFor(() => {
-          Object.values(FastFilterEnum).forEach((filter) => {
-            expect(fastFilterTestUtils.getCheckableTag(filter)).toHaveClass(
-              'ant-tag-checkable--disabled',
-            )
-          })
+          expect(extendedFilterButton).toBeDisabled()
+        })
+
+        await taskListPageTestUtils.userClickSearchClearButton(user)
+
+        await waitFor(() => {
+          expect(extendedFilterButton).toBeEnabled()
         })
       })
+
+      test('Применяет расширенный фильтр если он был применён ранее', async () => {})
     })
   })
 
@@ -641,26 +792,6 @@ describe('Страница реестра заявок', () => {
           )
           await taskTableTestUtils.loadingStarted()
         })
-      })
-    })
-  })
-
-  describe('Расширенный фильтр', () => {
-    test('Можно закрыть', async () => {
-      mockGetWorkGroupListSuccess()
-      mockGetTaskListSuccess()
-      mockGetTaskCountersSuccess()
-
-      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
-
-      await taskListPageTestUtils.userOpenExtendedFilter(user)
-      const extendedFilter = await extendedFilterTestUtils.findFilter()
-      expect(extendedFilter).toBeInTheDocument()
-
-      await extendedFilterTestUtils.userCloseFilter(user)
-
-      await waitFor(() => {
-        expect(extendedFilter).not.toBeInTheDocument()
       })
     })
   })
