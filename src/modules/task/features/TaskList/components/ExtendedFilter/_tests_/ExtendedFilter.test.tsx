@@ -37,6 +37,7 @@ import {
   taskOverdueDictValues,
 } from './constants'
 import * as extendedFilterTestUtils from './utils'
+import { userSelectAssigned, userSelectOverdue } from './utils'
 
 setupApiTests()
 jest.setTimeout(15000)
@@ -106,14 +107,7 @@ describe('Расширенный фильтр', () => {
 
     test('Имеет корректные значения по умолчанию', () => {
       render(<ExtendedFilter {...requiredProps} />)
-
-      const container = extendedFilterTestUtils.getStatusContainer()
-
-      Object.entries(taskExtendedStatusDict).forEach(([value, text]) => {
-        const checkbox = getCheckboxIn(container, new RegExp(text))
-        expect(checkbox).not.toBeChecked()
-        expect(checkbox.value).toBe(value)
-      })
+      extendedFilterTestUtils.expectStatusHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
@@ -149,11 +143,11 @@ describe('Расширенный фильтр', () => {
     test('Можно выбрать любое значение', async () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
-      const container = extendedFilterTestUtils.getStatusContainer()
-
       for await (const value of taskExtendedStatusDictValues) {
-        const checkbox = getCheckboxIn(container, new RegExp(value))
-        await user.click(checkbox)
+        const checkbox = await extendedFilterTestUtils.userSelectStatus(
+          user,
+          value,
+        )
         expect(checkbox).toBeChecked()
       }
     })
@@ -211,19 +205,12 @@ describe('Расширенный фильтр', () => {
 
     test('Имеет корректные значения по умолчанию', () => {
       render(<ExtendedFilter {...requiredProps} />)
-
-      const container = extendedFilterTestUtils.getAssignedContainer()
-
-      Object.entries(taskAssignedDict).forEach(([value, text]) => {
-        const radioButton = getRadioButtonIn(container, text)
-        expect(radioButton).not.toBeChecked()
-        expect(radioButton.value).toBe(value)
-      })
+      extendedFilterTestUtils.expectAssignedHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
       /**
-       * По каким-то причинам radioButton не помечается как выбранный и тест не проходит
+       * По каким-то причинам, в тесте, radioButton не помечается как выбранный и тест не проходит
        * Но по факту всё работает как надо
        */
     })
@@ -242,11 +229,8 @@ describe('Расширенный фильтр', () => {
     test('Можно выбрать любое значение', async () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
-      const container = extendedFilterTestUtils.getAssignedContainer()
-
       for await (const value of taskAssignedDictValues) {
-        const radioButton = getRadioButtonIn(container, value)
-        await user.click(radioButton)
+        const radioButton = await userSelectAssigned(user, value)
         expect(radioButton).toBeChecked()
       }
     })
@@ -312,19 +296,12 @@ describe('Расширенный фильтр', () => {
 
     test('Имеет корректные значения по умолчанию', () => {
       render(<ExtendedFilter {...requiredProps} />)
-
-      const container = extendedFilterTestUtils.getOverdueContainer()
-
-      Object.entries(taskOverdueDict).forEach(([value, text]) => {
-        const radioButton = getRadioButtonIn(container, text)
-        expect(radioButton).not.toBeChecked()
-        expect(radioButton.value).toBe(value)
-      })
+      extendedFilterTestUtils.expectOverdueHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
       /**
-       * По каким-то причинам radioButton не помечается как выбранный и тест не проходит
+       * По каким-то причинам, в тесте, radioButton не помечается как выбранный и тест не проходит
        * Но по факту всё работает как надо
        */
     })
@@ -343,11 +320,8 @@ describe('Расширенный фильтр', () => {
     test('Можно выбрать любое значение', async () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
-      const container = extendedFilterTestUtils.getOverdueContainer()
-
       for await (const value of taskOverdueDictValues) {
-        const radioButton = getRadioButtonIn(container, value)
-        await user.click(radioButton)
+        const radioButton = await userSelectOverdue(user, value)
         expect(radioButton).toBeChecked()
       }
     })
@@ -396,12 +370,7 @@ describe('Расширенный фильтр', () => {
 
     test('Имеет корректные значения по умолчанию', () => {
       render(<ExtendedFilter {...requiredProps} />)
-
-      const startDateField = extendedFilterTestUtils.getStartDateField()
-      const endDateField = extendedFilterTestUtils.getEndDateField()
-
-      expect(startDateField).not.toHaveValue()
-      expect(endDateField).not.toHaveValue()
+      extendedFilterTestUtils.expectCompleteAtHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
@@ -449,7 +418,7 @@ describe('Расширенный фильтр', () => {
         const { startDateValue, endDateValue } =
           await extendedFilterTestUtils.userFillExecuteBeforeField(user)
 
-        const container = screen.getByTestId('filter-extended-complete-at')
+        const container = extendedFilterTestUtils.getCompleteAtContainer()
         await extendedFilterTestUtils.userClickResetButtonIn(user, container)
 
         expect(
@@ -489,40 +458,14 @@ describe('Расширенный фильтр', () => {
         expect(radioButton).toBeInTheDocument()
       })
 
-      const keywordField = extendedFilterTestUtils.getKeywordField()
+      const keywordField =
+        extendedFilterTestUtils.getSearchByColumnKeywordField()
       expect(keywordField).toBeInTheDocument()
     })
 
     test('Имеет корректные значения по умолчанию', () => {
       render(<ExtendedFilter {...requiredProps} />)
-
-      const container = extendedFilterTestUtils.getSearchByColumnContainer()
-
-      const searchByNameButton = getRadioButtonIn(
-        container,
-        searchFieldDict.searchByName,
-      )
-
-      const searchByTitleButton = getRadioButtonIn(
-        container,
-        searchFieldDict.searchByTitle,
-      )
-
-      const searchByAssigneeButton = getRadioButtonIn(
-        container,
-        searchFieldDict.searchByAssignee,
-      )
-
-      expect(searchByNameButton.value).toBe('searchByName')
-      expect(searchByTitleButton.value).toBe('searchByTitle')
-      expect(searchByAssigneeButton.value).toBe('searchByAssignee')
-
-      expect(searchByNameButton).not.toBeChecked()
-      expect(searchByTitleButton).toBeChecked()
-      expect(searchByAssigneeButton).not.toBeChecked()
-
-      const keywordField = extendedFilterTestUtils.getKeywordField()
-      expect(keywordField).not.toHaveValue()
+      extendedFilterTestUtils.expectSearchByColumnHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
@@ -541,7 +484,8 @@ describe('Расширенный фильтр', () => {
 
       const container = extendedFilterTestUtils.getSearchByColumnContainer()
 
-      const keywordField = extendedFilterTestUtils.getKeywordField()
+      const keywordField =
+        extendedFilterTestUtils.getSearchByColumnKeywordField()
       expect(keywordField).toHaveValue(searchValue)
 
       const searchByNameButton = getRadioButtonIn(
@@ -561,28 +505,31 @@ describe('Расширенный фильтр', () => {
         expect(radioButton).toBeEnabled()
       })
 
-      const keywordField = extendedFilterTestUtils.getKeywordField()
+      const keywordField =
+        extendedFilterTestUtils.getSearchByColumnKeywordField()
+
       expect(keywordField).toBeEnabled()
     })
 
     test('Можно ввести ключевое слово', async () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
-      const keywordField = extendedFilterTestUtils.getKeywordField()
-      const keyword = generateName()
+      const { keywordField, keyword } =
+        await extendedFilterTestUtils.userEntersSearchByColumnKeyword(user)
 
-      await user.type(keywordField, keyword)
       expect(keywordField).toHaveDisplayValue(keyword)
     })
 
     test('Можно выбрать любой столбец', async () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
-      const container = extendedFilterTestUtils.getSearchByColumnContainer()
-
       for await (const value of searchFieldDictValues) {
-        const radioButton = getRadioButtonIn(container, value)
-        await user.click(radioButton)
+        const radioButton =
+          await extendedFilterTestUtils.userSelectSearchByColumnField(
+            user,
+            value,
+          )
+
         expect(radioButton).toBeChecked()
       }
     })
@@ -594,7 +541,10 @@ describe('Расширенный фильтр', () => {
         const container = extendedFilterTestUtils.getSearchByColumnContainer()
 
         const keyword = generateName()
-        await user.type(extendedFilterTestUtils.getKeywordField(), keyword)
+        await user.type(
+          extendedFilterTestUtils.getSearchByColumnKeywordField(),
+          keyword,
+        )
 
         await user.click(
           getRadioButtonIn(container, searchFieldDict.searchByName),
@@ -603,7 +553,7 @@ describe('Расширенный фильтр', () => {
         await extendedFilterTestUtils.userClickResetButtonIn(user, container)
 
         expect(
-          extendedFilterTestUtils.getKeywordField(),
+          extendedFilterTestUtils.getSearchByColumnKeywordField(),
         ).not.toHaveDisplayValue(keyword)
         expect(
           getRadioButtonIn(container, searchFieldDict.searchByName),
@@ -616,7 +566,10 @@ describe('Расширенный фильтр', () => {
         const container = extendedFilterTestUtils.getSearchByColumnContainer()
 
         const keyword = generateName()
-        await user.type(extendedFilterTestUtils.getKeywordField(), keyword)
+        await user.type(
+          extendedFilterTestUtils.getSearchByColumnKeywordField(),
+          keyword,
+        )
 
         await user.click(
           getRadioButtonIn(container, searchFieldDict.searchByName),
@@ -625,7 +578,7 @@ describe('Расширенный фильтр', () => {
         await extendedFilterTestUtils.userClickResetAllButton(user)
 
         expect(
-          extendedFilterTestUtils.getKeywordField(),
+          extendedFilterTestUtils.getSearchByColumnKeywordField(),
         ).not.toHaveDisplayValue(keyword)
         expect(
           getRadioButtonIn(container, searchFieldDict.searchByName),
