@@ -1,8 +1,22 @@
 stages:
+  - lint
   - test
   - build
   - deploy
   - cleanup
+
+Lint:
+  stage: lint
+  image: jeremymiller/node-lint
+  script:
+    - yarn lint
+  only:
+    - rc
+    - master
+    - develop
+    - task-20542
+  tags:
+    - docker
 
 Tests:
   stage: test
@@ -17,7 +31,7 @@ Tests:
     - rc
     - master
     - develop
-    - task-20338
+    - task-20542
   tags:
     - docker
 
@@ -35,7 +49,7 @@ Tests:
     - rc
     - master
     - develop
-    - task-20338
+    - task-20542
   tags:
     - werf
 
@@ -57,7 +71,7 @@ Build for Develop:
     env: dev
   only:
     - develop
-    - task-20338
+    - task-20542
 
 Build for Staging:
   <<: *base_build
@@ -76,7 +90,7 @@ Deploy to Develop:
     kube_context: default/dev
   only:
     - develop
-    - task-20338
+    - task-20542
 
 Deploy to Staging:
   <<: *base_deploy
