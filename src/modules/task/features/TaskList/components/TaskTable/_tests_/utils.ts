@@ -35,13 +35,34 @@ export const getPaginationNextButton = () =>
     name: 'right',
   })
 
+export const userClickPaginationNextButton = async (user: UserEvent) => {
+  const button = getPaginationNextButton()
+  await user.click(button)
+  return button
+}
+
 export const getPaginationPrevButton = () =>
   within(getPaginationContainer()).getByRole('button', {
     name: 'left',
   })
 
+export const userClickPaginationPrevButton = async (user: UserEvent) => {
+  const button = getPaginationPrevButton()
+  await user.click(button)
+  return button
+}
+
 export const getPaginationPageButton = (pageNumber: string) =>
   within(getPaginationContainer()).getByRole('listitem', { name: pageNumber })
+
+export const userClickPaginationPageButton = async (
+  user: UserEvent,
+  pageNumber: string,
+) => {
+  const button = getPaginationPageButton(pageNumber)
+  await user.click(button)
+  return button
+}
 
 export const getPageSizeOptionsContainer = (container: HTMLElement) =>
   container.querySelector('.rc-virtual-list') as HTMLElement

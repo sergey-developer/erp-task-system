@@ -1,6 +1,6 @@
 import { loadingStartedByIconIn, render } from '_tests_/utils'
 import { within } from '@testing-library/react'
-import { getTaskTableItems } from 'fixtures/task'
+import * as taskFixtures from 'fixtures/task'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
@@ -9,7 +9,7 @@ import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
-import { getTaskStatus } from '../../../../TaskStatus/_tests_/utils'
+import * as taskStatusTestUtils from '../../../../TaskStatus/_tests_/utils'
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { paginationConfig } from '../constants/pagination'
 import TaskTable from '../index'
@@ -29,7 +29,7 @@ afterEach(() => {
 
 describe('Таблица заявок', () => {
   test('Отображается корректно', () => {
-    const tableItems = getTaskTableItems(2)
+    const tableItems = taskFixtures.getTaskTableItems(2)
     render(<TaskTable {...requiredProps} dataSource={tableItems} />)
 
     const table = testUtils.getTable()
@@ -64,7 +64,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = getTaskStatus(TaskStatusEnum.New)
+          const status = taskStatusTestUtils.getTaskStatus(TaskStatusEnum.New)
           expect(status).toBeInTheDocument()
         })
 
@@ -81,7 +81,9 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = getTaskStatus(TaskStatusEnum.InProgress)
+          const status = taskStatusTestUtils.getTaskStatus(
+            TaskStatusEnum.InProgress,
+          )
           expect(status).toBeInTheDocument()
         })
 
@@ -98,7 +100,9 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = getTaskStatus(TaskStatusEnum.Completed)
+          const status = taskStatusTestUtils.getTaskStatus(
+            TaskStatusEnum.Completed,
+          )
           expect(status).toBeInTheDocument()
         })
       })
@@ -118,7 +122,9 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = getTaskStatus(TaskExtendedStatusEnum.Awaiting)
+          const status = taskStatusTestUtils.getTaskStatus(
+            TaskExtendedStatusEnum.Awaiting,
+          )
           expect(status).toBeInTheDocument()
         })
 
@@ -136,7 +142,9 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = getTaskStatus(TaskExtendedStatusEnum.Returned)
+          const status = taskStatusTestUtils.getTaskStatus(
+            TaskExtendedStatusEnum.Returned,
+          )
           expect(status).toBeInTheDocument()
         })
 
@@ -154,7 +162,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = getTaskStatus(
+          const status = taskStatusTestUtils.getTaskStatus(
             TaskExtendedStatusEnum.InReclassification,
           )
           expect(status).toBeInTheDocument()
@@ -174,7 +182,9 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = getTaskStatus(TaskExtendedStatusEnum.Closed)
+          const status = taskStatusTestUtils.getTaskStatus(
+            TaskExtendedStatusEnum.Closed,
+          )
           expect(status).toBeInTheDocument()
         })
       })
@@ -593,7 +603,6 @@ describe('Таблица заявок', () => {
 
         expect(prevButton).toBeInTheDocument()
         expect(prevButton).toBeDisabled()
-
         expect(nextButton).toBeInTheDocument()
         expect(nextButton).toBeEnabled()
       })
@@ -614,7 +623,6 @@ describe('Таблица заявок', () => {
 
         expect(prevButton).toBeInTheDocument()
         expect(prevButton).toBeDisabled()
-
         expect(nextButton).toBeInTheDocument()
         expect(nextButton).toBeDisabled()
       })
@@ -679,17 +687,13 @@ describe('Таблица заявок', () => {
         />,
       )
 
-      const nextButton = testUtils.getPaginationNextButton()
-      const prevButton = testUtils.getPaginationPrevButton()
-      const page2Button = testUtils.getPaginationPageButton('2')
-
-      await user.click(nextButton)
+      await testUtils.userClickPaginationNextButton(user)
       expect(onChange).toBeCalled()
 
-      await user.click(prevButton)
+      await testUtils.userClickPaginationPrevButton(user)
       expect(onChange).toBeCalled()
 
-      await user.click(page2Button)
+      await testUtils.userClickPaginationPageButton(user, '2')
       expect(onChange).toBeCalled()
     })
   })
