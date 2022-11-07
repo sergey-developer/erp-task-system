@@ -3,13 +3,13 @@ import { screen } from '@testing-library/react'
 
 import FilterTag from '../FilterTag'
 import { requiredProps } from './constants'
-import * as testUtils from './utils'
+import fastFilterTestUtils from './utils'
 
 describe('FilterTag', () => {
   test('Отображает состояние загрузки', () => {
     render(<FilterTag {...requiredProps} loading />)
 
-    loadingStartedBySkeletonIn(testUtils.getFilterTag())
+    loadingStartedBySkeletonIn(fastFilterTestUtils.getFilterTag())
   })
 
   test('Отображает текст', () => {
@@ -36,16 +36,16 @@ describe('FilterTag', () => {
   test('Можно сделать выбранным', () => {
     render(<FilterTag {...requiredProps} checked />)
 
-    testUtils.expectFilterChecked(
-      testUtils.getCheckableTag(requiredProps.value),
+    fastFilterTestUtils.expectFilterChecked(
+      fastFilterTestUtils.getCheckableTag(requiredProps.value),
     )
   })
 
   test('Можно сделать не выбранным', () => {
     render(<FilterTag {...requiredProps} checked={false} />)
 
-    testUtils.expectFilterNotChecked(
-      testUtils.getCheckableTag(requiredProps.value),
+    fastFilterTestUtils.expectFilterNotChecked(
+      fastFilterTestUtils.getCheckableTag(requiredProps.value),
     )
   })
 
@@ -61,7 +61,7 @@ describe('FilterTag', () => {
         <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
       )
 
-      const filter = testUtils.getCheckableTag(requiredProps.value)
+      const filter = fastFilterTestUtils.getCheckableTag(requiredProps.value)
       await user.click(filter)
 
       expect(onChange).toBeCalledTimes(1)
@@ -72,7 +72,7 @@ describe('FilterTag', () => {
         <FilterTag {...requiredProps} disabled onChange={onChange} />,
       )
 
-      const filter = testUtils.getCheckableTag(requiredProps.value)
+      const filter = fastFilterTestUtils.getCheckableTag(requiredProps.value)
       await user.click(filter)
 
       expect(onChange).not.toBeCalled()

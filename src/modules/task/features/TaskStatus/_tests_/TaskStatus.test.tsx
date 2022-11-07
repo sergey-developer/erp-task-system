@@ -15,12 +15,7 @@ import {
 } from '../constants'
 import TaskStatus from '../index'
 import { BadgeStyled } from '../styles'
-import {
-  getTaskStatus,
-  getTaskStatusIcon,
-  queryTaskStatus,
-  queryTaskStatusBadge,
-} from './utils'
+import taskStatusTestUtils from './utils'
 
 describe('Получение значка работает корректно по статусу заявки', () => {
   test(`${TaskStatusEnum.New}`, () => {
@@ -125,8 +120,10 @@ describe('TaskStatus', () => {
       />,
     )
 
-    const status = getTaskStatus(TaskExtendedStatusEnum.Completed)
-    const badge = queryTaskStatusBadge(
+    const status = taskStatusTestUtils.getTaskStatus(
+      TaskExtendedStatusEnum.Completed,
+    )
+    const badge = taskStatusTestUtils.queryTaskStatusBadge(
       TaskExtendedStatusEnum.Completed,
       'success',
     )
@@ -143,8 +140,10 @@ describe('TaskStatus', () => {
       />,
     )
 
-    const status = getTaskStatus(TaskExtendedStatusEnum.Awaiting)
-    const icon = getTaskStatusIcon(
+    const status = taskStatusTestUtils.getTaskStatus(
+      TaskExtendedStatusEnum.Awaiting,
+    )
+    const icon = taskStatusTestUtils.getTaskStatusIcon(
       TaskExtendedStatusEnum.Awaiting,
       'pause-circle',
     )
@@ -179,11 +178,11 @@ describe('TaskStatus', () => {
       />,
     )
 
-    const icon = getTaskStatusIcon(
+    const icon = taskStatusTestUtils.getTaskStatusIcon(
       TaskExtendedStatusEnum.Awaiting,
       'pause-circle',
     )
-    const badge = queryTaskStatusBadge(
+    const badge = taskStatusTestUtils.queryTaskStatusBadge(
       TaskExtendedStatusEnum.Awaiting,
       'success',
     )
@@ -196,7 +195,7 @@ describe('TaskStatus', () => {
     const fakeStatus = 'status'
     render(<TaskStatus status={fakeStatus} />)
 
-    const status = queryTaskStatus(fakeStatus)
+    const status = taskStatusTestUtils.queryTaskStatus(fakeStatus)
     expect(status).not.toBeInTheDocument()
   })
 })

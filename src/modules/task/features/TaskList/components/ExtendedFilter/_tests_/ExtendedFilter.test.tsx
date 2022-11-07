@@ -8,12 +8,12 @@ import {
   getSelect,
   getSelectOption,
   getSelectedOption,
+  getStoreWithAuth,
   querySelectOption,
   render,
   setupApiTests,
   userSearchInSelect,
 } from '_tests_/utils'
-import { getStoreWithAuth } from '_tests_/utils/auth'
 import { screen } from '@testing-library/react'
 import * as workGroupFixtures from 'fixtures/workGroup'
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
@@ -34,7 +34,7 @@ import {
   taskExtendedStatusDictValues,
   taskOverdueDictValues,
 } from './constants'
-import * as extendedFilterTestUtils from './utils'
+import extendedFilterTestUtils from './utils'
 
 setupApiTests()
 jest.setTimeout(15000)

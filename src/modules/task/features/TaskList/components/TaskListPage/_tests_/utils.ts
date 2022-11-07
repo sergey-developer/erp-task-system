@@ -2,43 +2,42 @@ import { generateWord, getButtonIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getTaskListPage = () => screen.getByTestId('page-task-list')
+const getTaskListPage = () => screen.getByTestId('page-task-list')
 
-export const getSearchInput = () =>
+const getSearchInput = () =>
   within(getTaskListPage()).getByPlaceholderText('Искать заявку по номеру')
 
-export const getSearchButton = () => getButtonIn(getTaskListPage(), /search/)
+const getSearchButton = () => getButtonIn(getTaskListPage(), /search/)
 
-export const getSearchClearButton = () =>
+const getSearchClearButton = () =>
   getButtonIn(getTaskListPage(), 'close-circle')
 
-export const userClickSearchClearButton = async (user: UserEvent) => {
+const userClickSearchClearButton = async (user: UserEvent) => {
   const button = getSearchClearButton()
   await user.click(button)
   return button
 }
 
-export const getReloadListButton = () => getButtonIn(getTaskListPage(), /sync/)
+const getReloadListButton = () => getButtonIn(getTaskListPage(), /sync/)
 
-export const userClickReloadListButton = async (user: UserEvent) => {
+const userClickReloadListButton = async (user: UserEvent) => {
   const button = getReloadListButton()
   await user.click(button)
   return button
 }
 
-export const getCreateTaskButton = () =>
+const getCreateTaskButton = () =>
   getButtonIn(getTaskListPage(), /создать заявку/i)
 
-export const getExtendedFilterButton = () =>
-  getButtonIn(getTaskListPage(), /filter/)
+const getExtendedFilterButton = () => getButtonIn(getTaskListPage(), /filter/)
 
-export const userOpenExtendedFilter = async (user: UserEvent) => {
+const userOpenExtendedFilter = async (user: UserEvent) => {
   const extendedFilterButton = getExtendedFilterButton()
   await user.click(extendedFilterButton)
   return extendedFilterButton
 }
 
-export const userFillSearchInput = async (
+const userFillSearchInput = async (
   user: UserEvent,
   pressEnter: boolean = false,
 ) => {
@@ -52,3 +51,19 @@ export const userFillSearchInput = async (
 
   return { searchInput, searchValue }
 }
+
+const testUtils = {
+  getTaskListPage,
+  getSearchInput,
+  getSearchButton,
+  getSearchClearButton,
+  userClickSearchClearButton,
+  getReloadListButton,
+  userClickReloadListButton,
+  getCreateTaskButton,
+  getExtendedFilterButton,
+  userOpenExtendedFilter,
+  userFillSearchInput,
+}
+
+export default testUtils

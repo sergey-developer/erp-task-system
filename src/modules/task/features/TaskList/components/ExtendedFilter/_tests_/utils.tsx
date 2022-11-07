@@ -16,14 +16,14 @@ import {
   taskOverdueDict,
 } from '../constants'
 
-export const getFilter = () => screen.getByTestId('filter-extended')
-export const findFilter = async () => screen.findByTestId('filter-extended')
-export const getCloseButton = () => getButtonIn(getFilter(), /close/i)
-export const getApplyButton = () => getButtonIn(getFilter(), /применить/i)
-export const getResetAllButton = () => getButtonIn(getFilter(), /сбросить все/i)
+const getFilter = () => screen.getByTestId('filter-extended')
+const findFilter = async () => screen.findByTestId('filter-extended')
+const getCloseButton = () => getButtonIn(getFilter(), /close/i)
+const getApplyButton = () => getButtonIn(getFilter(), /применить/i)
+const getResetAllButton = () => getButtonIn(getFilter(), /сбросить все/i)
 
 // actions
-export const userClickResetButtonIn = async (
+const userClickResetButtonIn = async (
   user: UserEvent,
   container: HTMLElement,
 ) => {
@@ -32,25 +32,25 @@ export const userClickResetButtonIn = async (
   return button
 }
 
-export const userClickResetAllButton = async (user: UserEvent) => {
+const userClickResetAllButton = async (user: UserEvent) => {
   const button = getResetAllButton()
   await user.click(button)
   return button
 }
 
-export const userCloseFilter = async (user: UserEvent) => {
+const userCloseFilter = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
   return button
 }
 
-export const userApplyFilter = async (user: UserEvent) => {
+const userApplyFilter = async (user: UserEvent) => {
   const button = getApplyButton()
   await user.click(button)
   return button
 }
 
-export const userClickOutOfFilter = async (user: UserEvent) => {
+const userClickOutOfFilter = async (user: UserEvent) => {
   const filter = getFilter()
   const overlay = filter.querySelector('.ant-drawer-mask')
   if (overlay) await user.click(overlay)
@@ -78,7 +78,7 @@ const expectStatusHasCorrectInitialValues = () => {
   })
 }
 
-export const status = {
+const status = {
   getContainer: getStatusContainer,
   getField: getStatusField,
   userSetValue: userSelectStatus,
@@ -108,7 +108,7 @@ const expectAssignedHasCorrectInitialValues = () => {
   })
 }
 
-export const assigned = {
+const assigned = {
   getContainer: getAssignedContainer,
   getField: getAssignedField,
   userSetValue: userSelectAssigned,
@@ -138,7 +138,7 @@ const expectOverdueHasCorrectInitialValues = () => {
   })
 }
 
-export const overdue = {
+const overdue = {
   getContainer: getOverdueContainer,
   getField: getOverdueField,
   userSetValue: userSelectOverdue,
@@ -174,7 +174,7 @@ const expectCompleteAtHasCorrectInitialValues = () => {
   expect(getEndDateField()).not.toHaveValue()
 }
 
-export const completeAt = {
+const completeAt = {
   getContainer: getCompleteAtContainer,
   getStartDateField: getStartDateField,
   getEndDateField: getEndDateField,
@@ -211,7 +211,7 @@ const userSelectWorkGroup = async (user: UserEvent, value: string) => {
   return workGroupOption
 }
 
-export const workGroup = {
+const workGroup = {
   getContainer: getWorkGroupContainer,
   getField: getWorkGroupField,
   queryField: queryWorkGroupField,
@@ -273,7 +273,7 @@ const expectSearchByColumnHasCorrectInitialValues = () => {
   expect(keywordField).not.toHaveValue()
 }
 
-export const searchByColumn = {
+const searchByColumn = {
   getContainer: getSearchByColumnContainer,
   getColumnField: getSearchByColumnColumnField,
   getKeywordField: getSearchByColumnKeywordField,
@@ -281,3 +281,24 @@ export const searchByColumn = {
   userSetColumnValue: userSelectSearchByColumnField,
   expectHasCorrectInitialValues: expectSearchByColumnHasCorrectInitialValues,
 }
+
+const testUtils = {
+  getFilter,
+  findFilter,
+  getCloseButton,
+  getApplyButton,
+  getResetAllButton,
+  userClickResetButtonIn,
+  userClickResetAllButton,
+  userCloseFilter,
+  userApplyFilter,
+  userClickOutOfFilter,
+  searchByColumn,
+  status,
+  assigned,
+  overdue,
+  completeAt,
+  workGroup,
+}
+
+export default testUtils

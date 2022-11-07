@@ -10,6 +10,7 @@ import {
 } from '_tests_/mocks/api'
 import {
   generateWord,
+  getStoreWithAuth,
   loadingFinishedByButton,
   loadingStartedByButton,
   render,
@@ -17,7 +18,6 @@ import {
   setupNotifications,
   validatingFinished,
 } from '_tests_/utils'
-import { getStoreWithAuth } from '_tests_/utils/auth'
 import { screen, within } from '@testing-library/react'
 import { getTaskComment } from 'fixtures/task'
 import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'

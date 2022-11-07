@@ -4,29 +4,33 @@ import {
   mockGetTaskSuccess,
   mockGetWorkGroupListSuccess,
 } from '_tests_/mocks/api'
-import { getSelectedOption, render, setupApiTests } from '_tests_/utils'
-import { getStoreWithAuth } from '_tests_/utils/auth'
+import {
+  getSelectedOption,
+  getStoreWithAuth,
+  render,
+  setupApiTests,
+} from '_tests_/utils'
 import { waitFor } from '@testing-library/react'
 import * as taskFixtures from 'fixtures/task'
 import * as workGroupFixtures from 'fixtures/workGroup'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import { UserRolesEnum } from 'shared/constants/roles'
 
-import * as taskDetailsTestUtils from '../../../../TaskView/components/TaskDetails/_tests_/utils'
+import taskDetailsTestUtils from '../../../../TaskView/components/TaskDetails/_tests_/utils'
 import { FastFilterEnum } from '../../../constants/common'
 import { GetTaskCountersResponseModel } from '../../../models'
-import * as extendedFilterTestUtils from '../../ExtendedFilter/_tests_/utils'
+import extendedFilterTestUtils from '../../ExtendedFilter/_tests_/utils'
 import {
   searchFieldDict,
   taskAssignedDict,
   taskOverdueDict,
 } from '../../ExtendedFilter/constants'
-import * as fastFilterTestUtils from '../../FastFilter/_tests_/utils'
-import * as taskTableTestUtils from '../../TaskTable/_tests_/utils'
+import fastFilterTestUtils from '../../FastFilter/_tests_/utils'
+import taskTableTestUtils from '../../TaskTable/_tests_/utils'
 import { paginationConfig } from '../../TaskTable/constants/pagination'
 import { DEFAULT_PAGE_SIZE } from '../constants'
 import TaskListPage from '../index'
-import * as taskListPageTestUtils from './utils'
+import taskListPageTestUtils from './utils'
 
 setupApiTests()
 jest.setTimeout(10000)
