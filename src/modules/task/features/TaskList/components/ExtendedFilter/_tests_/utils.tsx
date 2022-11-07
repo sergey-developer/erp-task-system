@@ -205,11 +205,18 @@ const openWorkGroupField = async (
   await userOpenSelect(user, workGroupField)
 }
 
+const userSelectWorkGroup = async (user: UserEvent, value: string) => {
+  const workGroupOption = screen.getByText(value)
+  await user.click(workGroupOption)
+  return workGroupOption
+}
+
 export const workGroup = {
   getContainer: getWorkGroupContainer,
   getField: getWorkGroupField,
   queryField: queryWorkGroupField,
   openField: openWorkGroupField,
+  userSetValue: userSelectWorkGroup,
   loadingFinished: workGroupLoadingFinished,
 }
 

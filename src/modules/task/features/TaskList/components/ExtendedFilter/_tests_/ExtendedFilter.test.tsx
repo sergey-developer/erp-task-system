@@ -732,9 +732,10 @@ describe('Расширенный фильтр', () => {
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-
-        const workGroupOption = screen.getByText(workGroupListItem.name)
-        await user.click(workGroupOption)
+        await extendedFilterTestUtils.workGroup.userSetValue(
+          user,
+          workGroupListItem.name,
+        )
 
         const selectedOption = getSelectedOption(workGroupField)
         expect(selectedOption).toHaveTextContent(workGroupListItem.name)
@@ -773,9 +774,8 @@ describe('Расширенный фильтр', () => {
 
       describe('Сбрасывает значения', () => {
         test('Кнопка "Сбросить"', async () => {
-          const mockedWorkGroupList = workGroupFixtures.getWorkGroupList()
-          const mockedWorkGroupListItem = mockedWorkGroupList[0]
-          mockGetWorkGroupListSuccess(mockedWorkGroupList)
+          const workGroupListItem = workGroupFixtures.getWorkGroup()
+          mockGetWorkGroupListSuccess([workGroupListItem])
 
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
@@ -792,8 +792,10 @@ describe('Расширенный фильтр', () => {
             workGroupField,
           )
 
-          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
-          await user.click(workGroupOption)
+          await extendedFilterTestUtils.workGroup.userSetValue(
+            user,
+            workGroupListItem.name,
+          )
 
           const container = extendedFilterTestUtils.workGroup.getContainer()
           await extendedFilterTestUtils.userClickResetButtonIn(user, container)
@@ -803,9 +805,8 @@ describe('Расширенный фильтр', () => {
         })
 
         test('Кнопка "Сбросить всё"', async () => {
-          const mockedWorkGroupList = workGroupFixtures.getWorkGroupList()
-          const mockedWorkGroupListItem = mockedWorkGroupList[0]
-          mockGetWorkGroupListSuccess(mockedWorkGroupList)
+          const workGroupListItem = workGroupFixtures.getWorkGroup()
+          mockGetWorkGroupListSuccess([workGroupListItem])
 
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
@@ -822,9 +823,10 @@ describe('Расширенный фильтр', () => {
             workGroupField,
           )
 
-          const workGroupOption = screen.getByText(mockedWorkGroupListItem.name)
-          await user.click(workGroupOption)
-
+          await extendedFilterTestUtils.workGroup.userSetValue(
+            user,
+            workGroupListItem.name,
+          )
           await extendedFilterTestUtils.userClickResetAllButton(user)
 
           const selectedOption = getSelectedOption(workGroupField)

@@ -4,14 +4,9 @@ import {
   mockGetTaskSuccess,
   mockGetWorkGroupListSuccess,
 } from '_tests_/mocks/api'
-import {
-  getCheckboxIn,
-  getSelectedOption,
-  render,
-  setupApiTests,
-} from '_tests_/utils'
+import { getSelectedOption, render, setupApiTests } from '_tests_/utils'
 import { getStoreWithAuth } from '_tests_/utils/auth'
-import { screen, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import * as taskFixtures from 'fixtures/task'
 import { getGetTaskListResponse, getTaskListItem } from 'fixtures/task'
 import * as workGroupFixtures from 'fixtures/workGroup'
@@ -155,22 +150,56 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Сбрасывает расширенный фильтр', async () => {
-      mockGetWorkGroupListSuccess()
+      const workGroupListItem = workGroupFixtures.getWorkGroup()
+      mockGetWorkGroupListSuccess([workGroupListItem])
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess({ once: false })
 
-      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth({
+          userRole: UserRolesEnum.SeniorEngineer,
+        }),
+      })
 
       await fastFilterTestUtils.loadingFinished()
       await taskTableTestUtils.loadingFinished()
 
       await taskListPageTestUtils.userOpenExtendedFilter(user)
       await extendedFilterTestUtils.findFilter()
-      const statusCheckbox1 = await extendedFilterTestUtils.status.userSetValue(
+
+      await extendedFilterTestUtils.status.userSetValue(
         user,
         taskExtendedStatusDict.NEW!,
       )
-      expect(statusCheckbox1).toBeChecked()
+
+      await extendedFilterTestUtils.assigned.userSetValue(
+        user,
+        taskAssignedDict.True,
+      )
+
+      await extendedFilterTestUtils.overdue.userSetValue(
+        user,
+        taskOverdueDict.False,
+      )
+
+      const { startDateValue, endDateValue } =
+        await extendedFilterTestUtils.completeAt.userSetValue(user)
+
+      const { keyword: searchByColumnKeywordValue } =
+        await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+
+      await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+        user,
+        searchFieldDict.searchByName,
+      )
+
+      const workGroupField =
+        await extendedFilterTestUtils.workGroup.loadingFinished()
+      await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
+      await extendedFilterTestUtils.workGroup.userSetValue(
+        user,
+        workGroupListItem.name,
+      )
 
       await extendedFilterTestUtils.userApplyFilter(user)
       await taskTableTestUtils.loadingFinished()
@@ -180,11 +209,40 @@ describe('Страница реестра заявок', () => {
 
       await taskListPageTestUtils.userOpenExtendedFilter(user)
       await extendedFilterTestUtils.findFilter()
-      const statusCheckbox2 = getCheckboxIn(
-        extendedFilterTestUtils.status.getContainer(),
-        taskExtendedStatusDict.NEW,
-      )
-      expect(statusCheckbox2).not.toBeChecked()
+
+      expect(
+        extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
+      ).not.toBeChecked()
+
+      expect(
+        extendedFilterTestUtils.assigned.getField(taskAssignedDict.True),
+      ).not.toBeChecked()
+
+      expect(
+        extendedFilterTestUtils.overdue.getField(taskOverdueDict.False),
+      ).not.toBeChecked()
+
+      expect(
+        extendedFilterTestUtils.completeAt.getStartDateField(),
+      ).not.toHaveDisplayValue(startDateValue)
+
+      expect(
+        extendedFilterTestUtils.completeAt.getEndDateField(),
+      ).not.toHaveDisplayValue(endDateValue)
+
+      expect(
+        extendedFilterTestUtils.searchByColumn.getKeywordField(),
+      ).not.toHaveDisplayValue(searchByColumnKeywordValue)
+
+      expect(
+        extendedFilterTestUtils.searchByColumn.getColumnField(
+          searchFieldDict.searchByName,
+        ),
+      ).not.toBeChecked()
+
+      expect(
+        getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+      ).not.toBeInTheDocument()
     })
 
     test('Закрывает карточку заявки', async () => {
@@ -301,7 +359,31 @@ describe('Страница реестра заявок', () => {
         })
       })
 
-      test('Если другой фильтр не применялся, значения сохраняются', async () => {
+      test('Закрывается нажав кнопку закрытия', async () => {
+        const { user } = render(<TaskListPage />)
+
+        await taskListPageTestUtils.userOpenExtendedFilter(user)
+        const filter = await extendedFilterTestUtils.findFilter()
+        await extendedFilterTestUtils.userCloseFilter(user)
+
+        await waitFor(() => {
+          expect(filter).not.toBeInTheDocument()
+        })
+      })
+
+      test('Закрывается нажав вне фильтра', async () => {
+        const { user } = render(<TaskListPage />)
+
+        await taskListPageTestUtils.userOpenExtendedFilter(user)
+        const filter = await extendedFilterTestUtils.findFilter()
+        await extendedFilterTestUtils.userClickOutOfFilter(user)
+
+        await waitFor(() => {
+          expect(filter).not.toBeInTheDocument()
+        })
+      })
+
+      test('Значения сохраняются если другой фильтр не применялся', async () => {
         const workGroupListItem = workGroupFixtures.getWorkGroup()
         mockGetWorkGroupListSuccess([workGroupListItem])
         mockGetTaskCountersSuccess()
@@ -343,8 +425,10 @@ describe('Страница реестра заявок', () => {
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        const workGroupOption = screen.getByText(workGroupListItem.name)
-        await user.click(workGroupOption)
+        await extendedFilterTestUtils.workGroup.userSetValue(
+          user,
+          workGroupListItem.name,
+        )
 
         await extendedFilterTestUtils.userApplyFilter(user)
         await taskTableTestUtils.loadingFinished()
@@ -391,31 +475,95 @@ describe('Страница реестра заявок', () => {
       })
     })
 
-    test('Закрывается нажав кнопку закрытия', async () => {
-      const { user } = render(<TaskListPage />)
+    test('Значения не сохраняются если фильтр не был применён', async () => {
+      const workGroupListItem = workGroupFixtures.getWorkGroup()
+      mockGetWorkGroupListSuccess([workGroupListItem])
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess()
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
+      })
 
       await taskListPageTestUtils.userOpenExtendedFilter(user)
       const filter = await extendedFilterTestUtils.findFilter()
+
+      await extendedFilterTestUtils.status.userSetValue(
+        user,
+        taskExtendedStatusDict.NEW!,
+      )
+
+      await extendedFilterTestUtils.assigned.userSetValue(
+        user,
+        taskAssignedDict.True,
+      )
+
+      await extendedFilterTestUtils.overdue.userSetValue(
+        user,
+        taskOverdueDict.False,
+      )
+
+      const { startDateValue, endDateValue } =
+        await extendedFilterTestUtils.completeAt.userSetValue(user)
+
+      const { keyword: searchByColumnKeywordValue } =
+        await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+
+      await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+        user,
+        searchFieldDict.searchByName,
+      )
+
+      const workGroupField =
+        await extendedFilterTestUtils.workGroup.loadingFinished()
+      await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
+      await extendedFilterTestUtils.workGroup.userSetValue(
+        user,
+        workGroupListItem.name,
+      )
+
       await extendedFilterTestUtils.userCloseFilter(user)
-
       await waitFor(() => {
         expect(filter).not.toBeInTheDocument()
       })
-    })
-
-    test('Закрывается нажав вне фильтра', async () => {
-      const { user } = render(<TaskListPage />)
 
       await taskListPageTestUtils.userOpenExtendedFilter(user)
-      const filter = await extendedFilterTestUtils.findFilter()
-      await extendedFilterTestUtils.userClickOutOfFilter(user)
+      await extendedFilterTestUtils.findFilter()
 
-      await waitFor(() => {
-        expect(filter).not.toBeInTheDocument()
-      })
+      expect(
+        extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
+      ).not.toBeChecked()
+
+      expect(
+        extendedFilterTestUtils.assigned.getField(taskAssignedDict.True),
+      ).not.toBeChecked()
+
+      expect(
+        extendedFilterTestUtils.overdue.getField(taskOverdueDict.False),
+      ).not.toBeChecked()
+
+      expect(
+        extendedFilterTestUtils.completeAt.getStartDateField(),
+      ).not.toHaveDisplayValue(startDateValue)
+
+      expect(
+        extendedFilterTestUtils.completeAt.getEndDateField(),
+      ).not.toHaveDisplayValue(endDateValue)
+
+      expect(
+        extendedFilterTestUtils.searchByColumn.getKeywordField(),
+      ).not.toHaveDisplayValue(searchByColumnKeywordValue)
+
+      expect(
+        extendedFilterTestUtils.searchByColumn.getColumnField(
+          searchFieldDict.searchByName,
+        ),
+      ).not.toBeChecked()
+
+      expect(
+        getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+      ).not.toBeInTheDocument()
     })
-
-    test('Значения не сохраняются если фильтр не был применён', () => {})
 
     describe('Имеет корректные значения по умолчанию', () => {
       test('Фильтры которые отображаются для любой роли', async () => {
@@ -475,7 +623,29 @@ describe('Страница реестра заявок', () => {
     })
 
     describe('После применения', () => {
-      test('Карточка заявки закрывается', () => {})
+      test('Карточка заявки закрывается', async () => {
+        mockGetWorkGroupListSuccess()
+        mockGetTaskCountersSuccess()
+
+        const taskListItem = taskFixtures.getTaskListItem()
+        mockGetTaskListSuccess({
+          body: taskFixtures.getGetTaskListResponse([taskListItem]),
+          once: false,
+        })
+        mockGetTaskSuccess(taskListItem.id)
+
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(),
+        })
+
+        await taskTableTestUtils.loadingFinished()
+        await taskTableTestUtils.userClickRow(user, taskListItem.id)
+        const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await waitFor(() => {
+          expect(taskDetails).not.toBeInTheDocument()
+        })
+      })
 
       describe('Отправляется запрос', () => {
         test('При нажатии на кнопку поиска', async () => {
@@ -675,8 +845,10 @@ describe('Страница реестра заявок', () => {
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        const workGroupOption = screen.getByText(workGroupListItem.name)
-        await user.click(workGroupOption)
+        await extendedFilterTestUtils.workGroup.userSetValue(
+          user,
+          workGroupListItem.name,
+        )
 
         await extendedFilterTestUtils.userApplyFilter(user)
         await taskTableTestUtils.loadingFinished()
