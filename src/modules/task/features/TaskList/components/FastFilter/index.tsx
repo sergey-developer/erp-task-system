@@ -40,6 +40,7 @@ const FastFilter: FC<FastFilterProps> = ({
           key={value}
           checked={isEqual(selectedFilter, value)}
           onChange={() => onChange(value)}
+          value={value}
           text={text}
           amount={amount}
           loading={isLoading}

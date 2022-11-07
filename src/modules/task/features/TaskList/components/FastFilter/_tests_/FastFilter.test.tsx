@@ -1,13 +1,11 @@
-import { render, screen } from '_tests_/utils'
+import { render } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 
 import { FastFilterEnum } from '../../../constants/common'
 import { fastFilterNamesDict } from '../constants'
 import FastFilter from '../index'
-import {
-  filterCheckedClass,
-  filterRequiredProps as requiredProps,
-} from './constants'
-import { getFirstFilterTag } from './utils'
+import { filterRequiredProps as requiredProps } from './constants'
+import fastFilterTestUtils from './utils'
 
 describe('Быстрый фильтр', () => {
   test('Отображается с правильными названиями', () => {
@@ -47,11 +45,11 @@ describe('Быстрый фильтр', () => {
   })
 
   test('Правильно определяет выбранный элемент', () => {
-    render(
-      <FastFilter {...requiredProps} selectedFilter={FastFilterEnum.All} />,
-    )
+    const selectedFilter = FastFilterEnum.All
+    render(<FastFilter {...requiredProps} selectedFilter={selectedFilter} />)
 
-    const filterTag = getFirstFilterTag()
-    expect(filterTag).toHaveClass(filterCheckedClass)
+    fastFilterTestUtils.expectFilterChecked(
+      fastFilterTestUtils.getCheckableTag(selectedFilter),
+    )
   })
 })

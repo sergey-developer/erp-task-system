@@ -1,17 +1,23 @@
 import React from 'react'
 
-import { loginResponseSuccess } from '_fixtures_/auth'
 import { CORRECT_EMAIL, CORRECT_PASSWORD } from '_tests_/constants/auth'
 import {
+  mockLoginBadRequestError,
+  mockLoginServerError,
+  mockLoginSuccess,
+  mockLoginUnauthorizedError,
+  mockRefreshTokenSuccess,
+} from '_tests_/mocks/api'
+import {
+  loadingFinishedByButton,
+  loadingStartedByButton,
   render,
   renderInRoute,
-  screen,
   setupApiTests,
-  waitFinishLoadingByButton,
-  waitStartLoadingByButton,
-  within,
 } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 import { RoutesEnum } from 'configs/routes'
+import { loginResponseSuccess } from 'fixtures/auth'
 import LoginPage from 'modules/auth/features/Login/components/LoginPage'
 import {
   LOGIN_BAD_REQUEST_ERROR_MSG,
@@ -22,15 +28,9 @@ import { HttpCodeEnum } from 'shared/constants/http'
 import {
   INCORRECT_EMAIL_MSG,
   REQUIRED_FIELD_MSG,
-} from 'shared/constants/messages'
+} from 'shared/constants/validation'
 import { setupStore } from 'state/store'
 
-import {
-  mockLoginBadRequestError,
-  mockLoginServerError,
-  mockLoginSuccess,
-  mockLoginUnauthorizedError,
-} from './mocks'
 import {
   getEmailField,
   getPasswordField,
@@ -40,8 +40,8 @@ import {
   userEntersIncorrectEmail,
   userEntersNotExistingEmail,
   userEntersWrongPassword,
-  waitFinishValidating,
-  waitStartValidating,
+  validatingFinished,
+  validatingStarted,
 } from './utils'
 
 setupApiTests()
@@ -82,8 +82,8 @@ describe('Страница авторизации', () => {
       const passwordField = getPasswordField()
 
       await userClickSubmitButton(user)
-      await waitStartValidating(emailField, passwordField)
-      await waitFinishValidating(emailField, passwordField)
+      await validatingStarted(emailField, passwordField)
+      await validatingFinished(emailField, passwordField)
 
       expect(checkRouteChanged()).toBe(false)
     })
@@ -109,7 +109,7 @@ describe('Страница авторизации', () => {
   describe('Если заполнить поля и нажать кнопку "Войти"', () => {
     describe('При успешном запросе', () => {
       test('Пользователь покидает страницу авторизации', async () => {
-        mockLoginSuccess()
+        mockLoginSuccess(loginResponseSuccess)
 
         const { user, checkRouteChanged } = renderInRoute(
           <LoginPage />,
@@ -119,8 +119,8 @@ describe('Страница авторизации', () => {
         await userEntersCorrectEmail(user)
         await userEntersCorrectPassword(user)
         const submitBtn = await userClickSubmitButton(user)
-        await waitStartLoadingByButton(submitBtn)
-        await waitFinishLoadingByButton(submitBtn)
+        await loadingStartedByButton(submitBtn)
+        await loadingFinishedByButton(submitBtn)
 
         expect(checkRouteChanged()).toBe(true)
       })
@@ -131,15 +131,15 @@ describe('Страница авторизации', () => {
         })
 
         test('access token', async () => {
-          mockLoginSuccess()
+          mockLoginSuccess(loginResponseSuccess)
 
           const { user } = render(<LoginPage />)
 
           await userEntersCorrectEmail(user)
           await userEntersCorrectPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoadingByButton(submitBtn)
-          await waitFinishLoadingByButton(submitBtn)
+          await loadingStartedByButton(submitBtn)
+          await loadingFinishedByButton(submitBtn)
 
           expect(authLocalStorageService.getAccessToken()).toBe(
             loginResponseSuccess.access,
@@ -147,15 +147,15 @@ describe('Страница авторизации', () => {
         })
 
         test('refresh token', async () => {
-          mockLoginSuccess()
+          mockLoginSuccess(loginResponseSuccess)
 
           const { user } = render(<LoginPage />)
 
           await userEntersCorrectEmail(user)
           await userEntersCorrectPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoadingByButton(submitBtn)
-          await waitFinishLoadingByButton(submitBtn)
+          await loadingStartedByButton(submitBtn)
+          await loadingFinishedByButton(submitBtn)
 
           expect(authLocalStorageService.getRefreshToken()).toBe(
             loginResponseSuccess.refresh,
@@ -164,7 +164,7 @@ describe('Страница авторизации', () => {
       })
 
       test('данные сохраняются в store', async () => {
-        mockLoginSuccess()
+        mockLoginSuccess(loginResponseSuccess)
         const store = setupStore()
 
         const { user } = render(<LoginPage />, { store })
@@ -172,8 +172,8 @@ describe('Страница авторизации', () => {
         await userEntersCorrectEmail(user)
         await userEntersCorrectPassword(user)
         const submitBtn = await userClickSubmitButton(user)
-        await waitStartLoadingByButton(submitBtn)
-        await waitFinishLoadingByButton(submitBtn)
+        await loadingStartedByButton(submitBtn)
+        await loadingFinishedByButton(submitBtn)
 
         const authState = store.getState().auth
 
@@ -196,8 +196,8 @@ describe('Страница авторизации', () => {
         await userEntersNotExistingEmail(user)
         await userEntersWrongPassword(user)
         const submitBtn = await userClickSubmitButton(user)
-        await waitStartLoadingByButton(submitBtn)
-        await waitFinishLoadingByButton(submitBtn)
+        await loadingStartedByButton(submitBtn)
+        await loadingFinishedByButton(submitBtn)
 
         expect(checkRouteChanged()).toBe(false)
       })
@@ -211,8 +211,8 @@ describe('Страница авторизации', () => {
           await userEntersNotExistingEmail(user)
           await userEntersWrongPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoadingByButton(submitBtn)
-          await waitFinishLoadingByButton(submitBtn)
+          await loadingStartedByButton(submitBtn)
+          await loadingFinishedByButton(submitBtn)
 
           expect(
             await screen.findByText(LOGIN_BAD_REQUEST_ERROR_MSG),
@@ -223,14 +223,15 @@ describe('Страница авторизации', () => {
       describe(`Если код ошибки "${HttpCodeEnum.Unauthorized}"`, () => {
         test(`В форме показывается ошибка - ${LOGIN_WRONG_DATA_ERROR_MSG}`, async () => {
           mockLoginUnauthorizedError()
+          mockRefreshTokenSuccess()
 
           const { user } = render(<LoginPage />)
 
           await userEntersNotExistingEmail(user)
           await userEntersWrongPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoadingByButton(submitBtn)
-          await waitFinishLoadingByButton(submitBtn)
+          await loadingStartedByButton(submitBtn)
+          await loadingFinishedByButton(submitBtn)
 
           expect(
             await screen.findByText(LOGIN_WRONG_DATA_ERROR_MSG),
@@ -247,8 +248,8 @@ describe('Страница авторизации', () => {
           await userEntersNotExistingEmail(user)
           await userEntersWrongPassword(user)
           const submitBtn = await userClickSubmitButton(user)
-          await waitStartLoadingByButton(submitBtn)
-          await waitFinishLoadingByButton(submitBtn)
+          await loadingStartedByButton(submitBtn)
+          await loadingFinishedByButton(submitBtn)
 
           expect(await screen.findByTestId('login-error')).toBeInTheDocument()
         })

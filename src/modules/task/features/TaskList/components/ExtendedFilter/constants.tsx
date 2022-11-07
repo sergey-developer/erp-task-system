@@ -1,73 +1,91 @@
 import { CheckboxOptionType } from 'antd'
 import React from 'react'
 
+import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
+import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import {
-  TaskExtraStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
-import {
-  taskExtraStatusDict,
-  taskFilterStatusDict,
-  taskStatusDict,
-} from 'modules/task/constants/dictionary'
-import {
-  TaskExtraStatus,
-  TaskFilterStatus,
-  TaskStatus,
-} from 'modules/task/features/TaskStatus'
+  badgeByTaskExtendedStatus,
+  iconByTaskExtendedStatus,
+} from 'modules/task/features/TaskStatus/constants'
+import TaskStatus from 'modules/task/features/TaskStatus/index'
 import { StringMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import { FastFilterEnum } from '../../constants/common'
-import { ExtendedFilterFormFields, SearchQueries } from './interfaces'
+import { ExtendedFilterFormFields, SearchFields } from './interfaces'
 
-export const DEFAULT_SEARCH_FIELD: keyof SearchQueries = 'searchByTitle'
-
-export const initialExtendedFilterFormValues: ExtendedFilterFormFields = {
-  completeAt: null,
-  searchField: DEFAULT_SEARCH_FIELD,
-  searchValue: '',
-  status: [],
-  isAssigned: [],
-  filter: undefined,
-  workGroupId: undefined,
+export enum TaskAssignedEnum {
+  Assigned = 'True',
+  NotAssigned = 'False',
 }
 
-export const searchQueriesDict: StringMap<keyof SearchQueries> = {
+export enum TaskOverdueEnum {
+  Overdue = 'True',
+  NotOverdue = 'False',
+}
+
+export const DEFAULT_SEARCH_FIELD: keyof SearchFields = 'searchByTitle'
+
+export const initialExtendedFilterFormValues: Readonly<ExtendedFilterFormFields> =
+  {
+    completeAt: null,
+    searchField: DEFAULT_SEARCH_FIELD,
+    searchValue: '',
+    status: [],
+    isOverdue: [],
+    isAssigned: [],
+    workGroupId: undefined,
+  }
+
+export const searchFieldDict: Readonly<StringMap<keyof SearchFields>> = {
   searchByName: 'Объект',
   searchByTitle: 'Тема',
   searchByAssignee: 'Исполнитель',
 }
 
-export const checkboxExtraStatusOptions: Array<CheckboxOptionType> =
-  Object.values(TaskExtraStatusEnum).map((status) => ({
-    label: (
-      <TaskExtraStatus status={status} text={taskExtraStatusDict[status]} />
-    ),
-    value: status,
-  }))
+export const taskAssignedDict: Readonly<StringMap<TaskAssignedEnum>> = {
+  [TaskAssignedEnum.Assigned]: 'Есть',
+  [TaskAssignedEnum.NotAssigned]: 'Нет',
+}
 
-export const checkboxFilterStatusOptions: Array<CheckboxOptionType> = [
-  {
-    label: (
-      <TaskFilterStatus
-        status={FastFilterEnum.Overdue}
-        text={taskFilterStatusDict[FastFilterEnum.Overdue]}
-      />
-    ),
-    value: FastFilterEnum.Overdue,
-  },
-]
+export const taskOverdueDict: Readonly<StringMap<TaskOverdueEnum>> = {
+  [TaskOverdueEnum.Overdue]: 'Да',
+  [TaskOverdueEnum.NotOverdue]: 'Нет',
+}
 
-export const checkboxStatusOptions: Array<CheckboxOptionType> = Object.values(
-  TaskStatusEnum,
-)
-  .filter(
-    (status) =>
-      !isEqual(status, TaskStatusEnum.New) &&
-      !isEqual(status, TaskStatusEnum.Appointed),
-  )
-  .map((status) => ({
-    label: <TaskStatus status={status} text={taskStatusDict[status]} />,
-    value: status,
-  }))
+export const searchFieldOptions: Array<CheckboxOptionType> = Object.keys(
+  searchFieldDict,
+).map((searchField) => ({
+  label: searchFieldDict[searchField as keyof SearchFields],
+  value: searchField,
+}))
+
+export const taskAssignedOptions: Array<CheckboxOptionType> = Object.values(
+  TaskAssignedEnum,
+).map((status) => ({
+  label: taskAssignedDict[status],
+  value: status,
+}))
+
+export const taskOverdueOptions: Array<CheckboxOptionType> = Object.values(
+  TaskOverdueEnum,
+).map((status) => ({
+  label: taskOverdueDict[status],
+  value: status,
+}))
+
+export const taskExtendedStatusOptions: Array<CheckboxOptionType> =
+  Object.values(TaskExtendedStatusEnum)
+    .filter(
+      (status) => !isEqual(status, TaskExtendedStatusEnum.FirstLineReturned),
+    )
+    .map((status) => ({
+      label: (
+        <TaskStatus
+          status={status}
+          icon={iconByTaskExtendedStatus[status]}
+          badge={badgeByTaskExtendedStatus[status]}
+          text={taskExtendedStatusDict[status]}
+        />
+      ),
+      value: status,
+    }))

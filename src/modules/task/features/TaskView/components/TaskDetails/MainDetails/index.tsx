@@ -13,6 +13,7 @@ import formatDate from 'shared/utils/date/formatDate'
 import makeString from 'shared/utils/string/makeString'
 
 import { DetailsContainerStyled } from '../styles'
+import { RecordIdStyled } from './styles'
 import { getTaskRemainingTime } from './utils'
 
 const { Text, Title } = Typography
@@ -28,6 +29,8 @@ type MainDetailsProps = Pick<
   | 'olaStatus'
   | 'olaNextBreachTime'
   | 'olaEstimatedTime'
+  | 'contactPhone'
+  | 'portablePhone'
 >
 
 const MainDetails: FC<MainDetailsProps> = ({
@@ -37,6 +40,8 @@ const MainDetails: FC<MainDetailsProps> = ({
   name,
   address,
   contactService,
+  contactPhone,
+  portablePhone,
   olaStatus: rawOlaStatus,
   olaNextBreachTime: rawOlaNextBreachTime,
   olaEstimatedTime,
@@ -75,15 +80,15 @@ const MainDetails: FC<MainDetailsProps> = ({
     <DetailsContainerStyled $breakpoints={breakpoints}>
       <Space direction='vertical' size='middle' $block>
         <SeparatedText>
-          <Text type='secondary' ellipsis className='break-text'>
+          <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
             {recordId}
-          </Text>
+          </RecordIdStyled>
 
           {rawOlaNextBreachTime && olaNextBreachTime}
         </SeparatedText>
 
-        <Space direction='vertical' size={4}>
-          <Title level={4} ellipsis className='break-text'>
+        <Space direction='vertical' size={4} $block>
+          <Title level={4} ellipsis title={title}>
             {title}
           </Title>
 
@@ -91,25 +96,21 @@ const MainDetails: FC<MainDetailsProps> = ({
         </Space>
 
         <Row justify='space-between'>
-          <Col span={12}>
-            <LabeledData label='Адрес'>
-              <Text strong ellipsis className='break-text'>
-                {name}
-              </Text>
+          <Col span={11}>
+            <LabeledData label='Адрес' block>
+              <Text strong>{name}</Text>
 
-              {!!address && (
-                <Text ellipsis className='break-text'>
-                  {address}
-                </Text>
-              )}
+              {!!address && <Text>{address}</Text>}
             </LabeledData>
           </Col>
 
-          <Col span={10}>
-            <LabeledData label='Заявитель'>
-              <Text strong ellipsis className='break-text'>
-                {contactService}
-              </Text>
+          <Col span={11}>
+            <LabeledData label='Заявитель' block>
+              <Text strong>{contactService}</Text>
+
+              <Text>{contactPhone}</Text>
+
+              <Text>{portablePhone}</Text>
             </LabeledData>
           </Col>
         </Row>

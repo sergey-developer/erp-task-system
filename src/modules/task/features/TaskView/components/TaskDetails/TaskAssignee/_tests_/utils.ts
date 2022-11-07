@@ -1,4 +1,3 @@
-import { screen } from '_tests_/utils'
+import { getButton } from '_tests_/utils'
 
-export const getTakeTaskButton = () =>
-  screen.getByRole('button', { name: 'В работу' })
+export const getTakeTaskButton = () => getButton(/В работу/i)

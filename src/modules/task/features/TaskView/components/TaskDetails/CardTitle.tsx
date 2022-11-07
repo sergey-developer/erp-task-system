@@ -58,10 +58,7 @@ const CardTitle: FC<CardTitleProps> = ({
       items.push({
         key: 2,
         disabled:
-          !(
-            (taskStatus.isNew || taskStatus.isAppointed) &&
-            taskOlaStatus.isNotExpired
-          ) ||
+          !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
           taskType.isRequestTask ||
           taskType.isIncidentTask ||
           isEngineerRole,
@@ -84,7 +81,6 @@ const CardTitle: FC<CardTitleProps> = ({
     hasReclassificationRequest,
     taskOlaStatus.isHalfExpired,
     taskOlaStatus.isNotExpired,
-    taskStatus.isAppointed,
     taskStatus.isInProgress,
     taskStatus.isNew,
     taskType.isIncidentTask,

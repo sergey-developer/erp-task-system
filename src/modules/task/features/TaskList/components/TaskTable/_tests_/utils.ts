@@ -1,45 +1,76 @@
-import { screen, within } from '_tests_/utils'
+import { loadingFinishedByIconIn, loadingStartedByIconIn } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { NumOrStr } from 'shared/interfaces/utils'
 
-export const getTable = (): HTMLElement => screen.getByTestId('table-task-list')
+const getTable = () => screen.getByTestId('table-task-list')
 
-export const getColumnTitle = (
-  container: HTMLElement,
-  title: string,
-): HTMLElement => within(container).getByText(title)
+const getRow = (id: number) =>
+  getTable().querySelector(`[data-row-key='${id}']`)
 
-export const getColumnTitleContainer = (
-  container: HTMLElement,
-  title: string,
-): HTMLElement => {
-  // eslint-disable-next-line testing-library/no-node-access
-  return getColumnTitle(container, title).parentElement?.parentElement!
+const userClickRow = async (user: UserEvent, id: number) => {
+  const row = getRow(id)
+  await user.click(row!)
+
+  return row
 }
 
-export const getPaginationContainer = () => screen.getByRole('list')
+const getColText = (text: string) => within(getTable()).getByText(text)
 
-export const getPaginationNextButton = (container: HTMLElement) =>
-  within(container).getByRole('listitem', {
-    name: 'Вперед',
+const getHeadCol = (text: string) => {
+  return getColText(text).parentElement?.parentElement!
+}
+
+const userClickHeadCol = async (user: UserEvent, text: string) => {
+  const col = getHeadCol(text)
+  await user.click(col)
+
+  return col
+}
+
+const getPaginationContainer = () => within(getTable()).getByRole('list')
+
+const getPaginationNextButton = () =>
+  within(getPaginationContainer()).getByRole('button', {
+    name: 'right',
   })
 
-export const getPaginationPrevButton = (container: HTMLElement) =>
-  within(container).getByRole('listitem', {
-    name: 'Назад',
+const userClickPaginationNextButton = async (user: UserEvent) => {
+  const button = getPaginationNextButton()
+  await user.click(button)
+  return button
+}
+
+const getPaginationPrevButton = () =>
+  within(getPaginationContainer()).getByRole('button', {
+    name: 'left',
   })
 
-export const getPageButton = (container: HTMLElement, pageNumber: string) =>
-  within(container).getByRole('listitem', { name: pageNumber })
+const userClickPaginationPrevButton = async (user: UserEvent) => {
+  const button = getPaginationPrevButton()
+  await user.click(button)
+  return button
+}
 
-export const getPageSizeOptionsContainer = (container: HTMLElement) =>
+const getPaginationPageButton = (pageNumber: string) =>
+  within(getPaginationContainer()).getByRole('listitem', { name: pageNumber })
+
+const userClickPaginationPageButton = async (
+  user: UserEvent,
+  pageNumber: string,
+) => {
+  const button = getPaginationPageButton(pageNumber)
+  await user.click(button)
+  return button
+}
+
+const getPageSizeOptionsContainer = (container: HTMLElement) =>
   container.querySelector('.rc-virtual-list') as HTMLElement
 
-export const getPageSizeOption = (
-  container: HTMLElement,
-  pageSize: string | number,
-) => within(container).getByText(`${pageSize} / стр.`)
+const getPageSizeOption = (container: HTMLElement, pageSize: NumOrStr) =>
+  within(container).getByText(`${pageSize} / стр.`)
 
-export const userOpenPageSizeOptions = async (
+const userOpenPageSizeOptions = async (
   user: UserEvent,
   container: HTMLElement,
 ) => {
@@ -49,3 +80,49 @@ export const userOpenPageSizeOptions = async (
 
   await user.click(button)
 }
+
+const userChangePageSize = async (user: UserEvent, pageSize: NumOrStr) => {
+  const pagination = getPaginationContainer()
+  await userOpenPageSizeOptions(user, pagination)
+  const pageSizeOption = getPageSizeOption(
+    getPageSizeOptionsContainer(pagination),
+    pageSize,
+  )
+  await user.click(pageSizeOption)
+}
+
+const loadingStarted = async () => {
+  const taskTable = getTable()
+  await loadingStartedByIconIn(taskTable)
+  return taskTable
+}
+
+const loadingFinished = async () => {
+  const taskTable = getTable()
+  await loadingFinishedByIconIn(taskTable)
+  return taskTable
+}
+
+const testUtils = {
+  getTable,
+  getRow,
+  userClickRow,
+  getColText,
+  getHeadCol,
+  userClickHeadCol,
+  getPaginationContainer,
+  getPaginationNextButton,
+  userClickPaginationNextButton,
+  getPaginationPrevButton,
+  userClickPaginationPrevButton,
+  getPaginationPageButton,
+  userClickPaginationPageButton,
+  getPageSizeOptionsContainer,
+  getPageSizeOption,
+  userOpenPageSizeOptions,
+  userChangePageSize,
+  loadingStarted,
+  loadingFinished,
+}
+
+export default testUtils

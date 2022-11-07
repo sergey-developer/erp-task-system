@@ -1,5 +1,5 @@
-import { render, waitFor } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
+import { render } from '_tests_/utils'
+import { screen, waitFor, within } from '@testing-library/react'
 
 import AdditionalInfo from '../index'
 import { baseProps, notRequiredProps, requiredProps } from './constants'

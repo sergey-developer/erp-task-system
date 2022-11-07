@@ -6,7 +6,7 @@ export enum TaskEndpointsEnum {
   TakeTask = '/tasks/:id/execution/',
   TaskWorkGroup = '/tasks/:id/work-group/',
   TaskAssignee = '/tasks/:id/assignee/',
-  TaskCommentList = '/tasks/:id/comments',
+  TaskComment = '/tasks/:id/comments/',
   CreateReclassificationRequest = '/tasks/:id/reclassification-requests/',
   GetReclassificationRequest = '/tasks/:id/reclassification-request/',
   TaskJournal = '/tasks/:id/journal/',
@@ -16,5 +16,4 @@ export enum TaskEndpointsEnum {
 export enum TaskEndpointsTagsEnum {
   Task = 'Task',
   TaskList = 'TaskList',
-  TaskReclassificationRequest = 'TaskReclassificationRequest',
 }

@@ -10,9 +10,9 @@ import { HttpCodeEnum } from 'shared/constants/http'
 
 export type ResponseResolver = BaseResponseResolver<MockedRequest, RestContext>
 
-export type ResponseResolverOptions = {
+export type ResponseResolverOptions<Body = any> = {
   status: HttpCodeEnum
-  body?: any
+  body?: Body
   once?: boolean
   delay?: number
 }

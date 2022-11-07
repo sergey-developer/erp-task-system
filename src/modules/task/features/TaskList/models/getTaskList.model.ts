@@ -12,7 +12,6 @@ export type GetTaskListResponseModel =
   PaginatedListResponseModel<TaskListItemModel>
 
 export type GetTaskListQueryArgsModel = {
-  hideAwaitingTask?: boolean
   limit: number
   offset: number
   sort: SortValue

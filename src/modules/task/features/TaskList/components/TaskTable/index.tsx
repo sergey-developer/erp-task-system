@@ -37,8 +37,8 @@ const TaskTable: FC<TaskTableProps> = ({
         columns={columns}
         pagination={
           pagination && {
-            ...pagination,
             ...paginationConfig,
+            ...pagination,
           }
         }
         loading={loading}

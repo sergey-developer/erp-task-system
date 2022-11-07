@@ -1,13 +1,12 @@
-import { Button, Row, Typography } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
-import LabeledData from 'components/LabeledData'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions/taskAssignee.permissions'
+import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions'
 import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { TaskAssigneeModel } from 'modules/task/models'
@@ -116,24 +115,30 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   return (
     <Space direction='vertical' $block>
-      <LabeledData label='Исполнитель' size='large' direction='horizontal'>
-        <Button
-          type='link'
-          loading={updateAssigneeIsLoading}
-          disabled={
-            taskStatus.isClosed ||
-            taskStatus.isCompleted ||
-            hasReclassificationRequest
-          }
-          onClick={
-            currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
-          }
-        >
-          {currentAssigneeIsAuthenticatedUser
-            ? 'Отказаться от заявки'
-            : 'Назначить на себя'}
-        </Button>
-      </LabeledData>
+      <Row justify='space-between'>
+        <Col>
+          <Text type='secondary'>Исполнитель</Text>
+        </Col>
+
+        <Col>
+          <Button
+            type='link'
+            loading={updateAssigneeIsLoading}
+            disabled={
+              taskStatus.isClosed ||
+              taskStatus.isCompleted ||
+              hasReclassificationRequest
+            }
+            onClick={
+              currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
+            }
+          >
+            {currentAssigneeIsAuthenticatedUser
+              ? 'Отказаться от заявки'
+              : 'Назначить на себя'}
+          </Button>
+        </Col>
+      </Row>
 
       <Permissions
         config={taskAssigneePermissions.select}

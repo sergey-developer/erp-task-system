@@ -1,71 +1,63 @@
-import { render, within } from '_tests_/utils'
+import { loadingStartedBySkeletonIn, render } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 
 import FilterTag from '../FilterTag'
-import {
-  filterCheckedClass,
-  filterTagRequiredProps as requiredProps,
-} from './constants'
-import { getFilterTag, getFilterTagContainer, waitStartLoading } from './utils'
+import { filterTagRequiredProps as requiredProps } from './constants'
+import fastFilterTestUtils from './utils'
 
 describe('Элемент быстрого фильтра', () => {
   test('Отображает состояние загрузки', () => {
     render(<FilterTag {...requiredProps} loading />)
 
-    const container = getFilterTagContainer()
-    waitStartLoading(container)
+    loadingStartedBySkeletonIn(fastFilterTestUtils.getFilterTag())
   })
 
   test('Отображает текст', () => {
     render(<FilterTag {...requiredProps} />)
 
-    const container = getFilterTagContainer()
-    expect(within(container).getByText(requiredProps.text)).toBeInTheDocument()
+    expect(screen.getByText(requiredProps.text)).toBeInTheDocument()
   })
 
   describe('Количество', () => {
     test('Отображается если оно присутствует (включая "0")', () => {
-      render(<FilterTag {...requiredProps} />)
+      const amount = 0
+      render(<FilterTag {...requiredProps} amount={amount} />)
 
-      const container = getFilterTagContainer()
-
-      expect(
-        within(container).getByText(requiredProps.amount!),
-      ).toBeInTheDocument()
+      expect(screen.getByText(amount)).toBeInTheDocument()
     })
 
     test('Не отображается если оно отсутствует', () => {
       render(<FilterTag {...requiredProps} amount={null} />)
 
-      const container = getFilterTagContainer()
-
-      expect(
-        within(container).queryByText(requiredProps.amount!),
-      ).not.toBeInTheDocument()
+      expect(screen.queryByText(requiredProps.amount!)).not.toBeInTheDocument()
     })
   })
 
   test('Можно сделать выбранным', () => {
     render(<FilterTag {...requiredProps} checked />)
 
-    const filter = getFilterTag()
-    expect(filter).toHaveClass(filterCheckedClass)
+    fastFilterTestUtils.expectFilterChecked(
+      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    )
   })
 
   test('Можно сделать не выбранным', () => {
     render(<FilterTag {...requiredProps} checked={false} />)
 
-    const filter = getFilterTag()
-    expect(filter).not.toHaveClass(filterCheckedClass)
+    fastFilterTestUtils.expectFilterNotChecked(
+      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    )
   })
 
   test('Если элемент не активный, он перестаёт быть выбранным', () => {
     render(<FilterTag {...requiredProps} checked disabled />)
 
-    const filter = getFilterTag()
-    expect(filter).not.toHaveClass(filterCheckedClass)
+    fastFilterTestUtils.expectFilterNotChecked(
+      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    )
   })
 
-  describe('"onChange"', () => {
+  describe('Обработчик изменения', () => {
     const onChange = jest.fn()
 
     afterEach(() => {
@@ -77,9 +69,7 @@ describe('Элемент быстрого фильтра', () => {
         <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
       )
 
-      const filter = getFilterTag()
-      await user.click(filter)
-
+      await fastFilterTestUtils.userChangeFilter(user, requiredProps.value)
       expect(onChange).toBeCalledTimes(1)
     })
 
@@ -88,9 +78,7 @@ describe('Элемент быстрого фильтра', () => {
         <FilterTag {...requiredProps} disabled onChange={onChange} />,
       )
 
-      const filter = getFilterTag()
-      await user.click(filter)
-
+      await fastFilterTestUtils.userChangeFilter(user, requiredProps.value)
       expect(onChange).not.toBeCalled()
     })
   })

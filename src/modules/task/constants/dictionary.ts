@@ -1,41 +1,28 @@
 import {
   TaskExtendedStatusEnum,
-  TaskExtraStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { BaseTaskModel } from 'modules/task/models'
 import { StringMap } from 'shared/interfaces/utils'
 
-import { FastFilterEnum } from '../features/TaskList/constants/common'
-
-export const taskExtendedStatusToTaskStatus: Partial<
-  Record<TaskExtendedStatusEnum, TaskStatusEnum>
-> = {
-  [TaskExtendedStatusEnum.Awaiting]: TaskStatusEnum.Awaiting,
-  [TaskExtendedStatusEnum.Returned]: TaskStatusEnum.Returned,
-  [TaskExtendedStatusEnum.InReclassification]:
-    TaskStatusEnum.InReclassification,
-}
-
-export const taskStatusDict: Readonly<Partial<StringMap<TaskStatusEnum>>> = {
+export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.New]: 'Новая',
   [TaskStatusEnum.InProgress]: 'В работе',
-  [TaskStatusEnum.Completed]: 'Выполнено',
-  [TaskStatusEnum.Awaiting]: 'В ожидании',
-  [TaskStatusEnum.InReclassification]: 'На переклассификации',
-  [TaskStatusEnum.Returned]: 'Возврат заявителем',
-  [TaskStatusEnum.Closed]: 'Закрытые',
+  [TaskStatusEnum.Completed]: 'Выполнена',
+  [TaskStatusEnum.Closed]: 'Закрыта',
 }
 
-export const taskExtraStatusDict: Readonly<StringMap<TaskExtraStatusEnum>> = {
-  [TaskExtraStatusEnum.Assigned]: 'Есть назначенный',
-  [TaskExtraStatusEnum.NotAssigned]: 'Без назначенного',
+export const taskExtendedStatusDict: Readonly<
+  Partial<StringMap<TaskExtendedStatusEnum>>
+> = {
+  [TaskExtendedStatusEnum.New]: 'Новые',
+  [TaskExtendedStatusEnum.InProgress]: 'В работе',
+  [TaskExtendedStatusEnum.Completed]: 'Выполнено',
+  [TaskExtendedStatusEnum.Awaiting]: 'В ожидании',
+  [TaskExtendedStatusEnum.InReclassification]: 'На переклассификации',
+  [TaskExtendedStatusEnum.Returned]: 'Возврат заявителем',
+  [TaskExtendedStatusEnum.Closed]: 'Закрытые',
 }
-
-export const taskFilterStatusDict: Readonly<StringMap<FastFilterEnum.Overdue>> =
-  {
-    [FastFilterEnum.Overdue]: 'Просроченные',
-  }
 
 export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> =
   new Map([

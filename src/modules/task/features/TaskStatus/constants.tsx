@@ -1,47 +1,49 @@
-import { BadgeProps } from 'antd'
 import React, { ReactElement } from 'react'
 
 import {
   CheckCircleIcon,
-  HistoryIcon,
+  ExclamationCircleIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
   RightCircleIcon,
 } from 'components/Icons'
 import {
-  TaskExtraStatusEnum,
+  TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 
-import { FastFilterEnum } from '../TaskList/constants/common'
+import { BadgeStyled } from './styles'
 
-export const badgeNameByTaskStatus: Partial<
-  Record<
-    TaskStatusEnum,
-    Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
-  >
+export const badgeByTaskStatus: Readonly<
+  Partial<Record<TaskStatusEnum, ReactElement>>
 > = {
-  [TaskStatusEnum.New]: 'default',
-  [TaskStatusEnum.Appointed]: 'default',
-  [TaskStatusEnum.InProgress]: 'warning',
-  [TaskStatusEnum.Completed]: 'success',
+  [TaskStatusEnum.New]: <BadgeStyled status='default' />,
+  [TaskStatusEnum.InProgress]: <BadgeStyled status='warning' />,
+  [TaskStatusEnum.Completed]: <BadgeStyled status='success' />,
 }
 
-export const iconByTaskStatus: Partial<Record<TaskStatusEnum, ReactElement>> = {
-  [TaskStatusEnum.Awaiting]: <PauseCircleIcon />,
-  [TaskStatusEnum.InReclassification]: <QuestionCircleIcon />,
-  [TaskStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
+export const iconByTaskStatus: Readonly<
+  Partial<Record<TaskStatusEnum, ReactElement>>
+> = {
   [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
 }
 
-export const badgeNameByTaskExtraStatus: Record<
-  TaskExtraStatusEnum,
-  Extract<BadgeProps['status'], 'default'>
+export const badgeByTaskExtendedStatus: Readonly<
+  Partial<Record<TaskExtendedStatusEnum, ReactElement>>
 > = {
-  [TaskExtraStatusEnum.Assigned]: 'default',
-  [TaskExtraStatusEnum.NotAssigned]: 'default',
+  [TaskExtendedStatusEnum.New]: <BadgeStyled status='default' />,
+  [TaskExtendedStatusEnum.InProgress]: <BadgeStyled status='warning' />,
+  [TaskExtendedStatusEnum.Completed]: <BadgeStyled status='success' />,
 }
 
-export const iconByFilter: Record<FastFilterEnum.Overdue, ReactElement> = {
-  [FastFilterEnum.Overdue]: <HistoryIcon $color='fireOpal' />,
+export const iconByTaskExtendedStatus: Readonly<
+  Partial<Record<TaskExtendedStatusEnum, ReactElement>>
+> = {
+  [TaskExtendedStatusEnum.Awaiting]: <PauseCircleIcon />,
+  [TaskExtendedStatusEnum.InReclassification]: <QuestionCircleIcon />,
+  [TaskExtendedStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
+  [TaskExtendedStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
+  [TaskExtendedStatusEnum.FirstLineReturned]: (
+    <ExclamationCircleIcon $color='fireOpal' />
+  ),
 }

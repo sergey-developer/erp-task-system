@@ -2,7 +2,6 @@ import { useBoolean, usePrevious } from 'ahooks'
 import {
   Button,
   Col,
-  Form,
   Row,
   Space,
   TablePaginationConfig,
@@ -85,14 +84,8 @@ const TaskListPage: FC = () => {
     { toggle: toggleTaskAdditionalInfoExpanded },
   ] = useBoolean(false)
 
-  const [extendedFilterForm] = Form.useForm<ExtendedFilterFormFields>()
-
-  const [isExtendedFilterOpened, { toggle: toggleExtendedFilterOpened }] =
+  const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] =
     useBoolean(false)
-
-  const debouncedToggleExtendedFilterOpened = useDebounceFn(
-    toggleExtendedFilterOpened,
-  )
 
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
@@ -107,11 +100,15 @@ const TaskListPage: FC = () => {
   const previousAppliedFilterType =
     usePrevious<typeof appliedFilterType>(appliedFilterType)
 
+  const debouncedToggleOpenExtendedFilter = useDebounceFn(
+    toggleOpenExtendedFilter,
+  )
+
   const handleExtendedFilterSubmit: ExtendedFilterProps['onSubmit'] = (
     values,
   ) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
-    toggleExtendedFilterOpened()
+    toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
     setFastFilterValue(undefined)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
@@ -119,19 +116,18 @@ const TaskListPage: FC = () => {
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
+    if (isEqual(value, fastFilterValue)) return
+
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilterValue(value)
 
-    extendedFilterForm.resetFields()
     setExtendedFilterFormValues(initialExtendedFilterFormValues)
 
     triggerFilterChange({
       filter: value,
     })
 
-    if (!isEqual(value, fastFilterValue)) {
-      handleCloseTaskDetails()
-    }
+    handleCloseTaskDetails()
   }
 
   const handleTaskIdFilterSearch = useDebounceFn<
@@ -217,13 +213,14 @@ const TaskListPage: FC = () => {
       | FastFilterQueries
       | TaskIdFilterQueries,
   ) => {
-    setQueryArgs((prev) => ({
-      ...prev,
+    setQueryArgs((prevState) => ({
+      ...prevState,
       offset: 0,
       completeAtFrom: undefined,
       completeAtTo: undefined,
       filter: undefined,
       status: undefined,
+      isOverdue: undefined,
       isAssigned: undefined,
       searchByAssignee: undefined,
       searchByName: undefined,
@@ -250,7 +247,7 @@ const TaskListPage: FC = () => {
 
   return (
     <>
-      <RowWrapStyled gutter={[0, 40]}>
+      <RowWrapStyled data-testid='page-task-list' gutter={[0, 40]}>
         <Row justify='space-between' align='bottom'>
           <Col span={13}>
             <Row align='middle' gutter={[30, 30]}>
@@ -267,9 +264,8 @@ const TaskListPage: FC = () => {
 
               <Col>
                 <Button
-                  data-testid='btn-filter-extended'
                   icon={<FilterIcon $size='large' />}
-                  onClick={debouncedToggleExtendedFilterOpened}
+                  onClick={debouncedToggleOpenExtendedFilter}
                   disabled={searchFilterApplied}
                 >
                   Фильтры
@@ -291,11 +287,7 @@ const TaskListPage: FC = () => {
 
               <Col>
                 <Space align='end' size='middle'>
-                  <Button
-                    data-testid='btn-reload-taskList'
-                    icon={<SyncIcon />}
-                    onClick={handleRefetchTaskList}
-                  >
+                  <Button icon={<SyncIcon />} onClick={handleRefetchTaskList}>
                     Обновить заявки
                   </Button>
 
@@ -326,7 +318,7 @@ const TaskListPage: FC = () => {
                   taskId={selectedTask}
                   additionalInfoExpanded={taskAdditionalInfoExpanded}
                   onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
-                  onClose={handleCloseTaskDetails}
+                  closeTaskDetails={handleCloseTaskDetails}
                 />
               </Col>
             )}
@@ -336,10 +328,9 @@ const TaskListPage: FC = () => {
 
       {isExtendedFilterOpened && (
         <ExtendedFilter
-          visible
-          form={extendedFilterForm}
+          formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
-          onClose={toggleExtendedFilterOpened}
+          onClose={debouncedToggleOpenExtendedFilter}
           onSubmit={handleExtendedFilterSubmit}
         />
       )}
