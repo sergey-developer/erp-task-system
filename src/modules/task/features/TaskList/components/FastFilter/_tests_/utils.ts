@@ -8,7 +8,6 @@ import { filterCheckedClass, filterDisabledClass } from './constants'
 const getFastFilter = () => screen.getByTestId('filter-fast')
 
 const getFilterTag = () => screen.getByTestId('filter-tag')
-
 const getAllFilterTag = () => screen.getAllByTestId('filter-tag')
 
 const getCheckableTag = (filter: FastFilterEnum) =>
@@ -16,6 +15,9 @@ const getCheckableTag = (filter: FastFilterEnum) =>
 
 const getByTextInCheckableTag = (filter: FastFilterEnum, text: NumOrStr) =>
   within(getCheckableTag(filter)).getByText(text)
+
+const queryByTextInCheckableTag = (filter: FastFilterEnum, text: NumOrStr) =>
+  within(getCheckableTag(filter)).queryByText(text)
 
 const userChangeFilter = async (
   user: UserEvent,
@@ -60,19 +62,27 @@ const loadingFinished = async () => {
   })
 }
 
+export const expectAllFiltersDisabled = () => {
+  Object.values(FastFilterEnum).forEach((filter) => {
+    expectFilterDisabled(getCheckableTag(filter))
+  })
+}
+
 const testUtils = {
   getFastFilter,
   getFilterTag,
   getAllFilterTag,
   getCheckableTag,
   getByTextInCheckableTag,
+  queryByTextInCheckableTag,
   userChangeFilter,
+  loadingStarted,
+  loadingFinished,
   expectFilterChecked,
   expectFilterNotChecked,
   expectFilterDisabled,
   expectFilterNotDisabled,
-  loadingStarted,
-  loadingFinished,
+  expectAllFiltersDisabled,
 }
 
 export default testUtils
