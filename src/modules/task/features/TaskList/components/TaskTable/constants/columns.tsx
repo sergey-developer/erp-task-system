@@ -14,6 +14,7 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import valueOr from 'shared/utils/common/valueOr'
 import formatDate from 'shared/utils/date/formatDate'
 
+import { taskStatusDict } from '../../../../../constants/dictionary'
 import { TaskTableListItem } from '../interfaces'
 
 const { Text } = Typography
@@ -92,6 +93,19 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
       </Text>
     ),
     sorter: true,
+  },
+  {
+    key: 'status',
+    dataIndex: 'status',
+    title: 'Статус',
+    ellipsis: true,
+    sorter: ({ status: statusA }, { status: statusB }) =>
+      taskStatusDict[statusA] < taskStatusDict[statusB]
+        ? -1
+        : taskStatusDict[statusA] > taskStatusDict[statusB]
+        ? 1
+        : 0,
+    render: (_, { status }) => taskStatusDict[status],
   },
   {
     key: 'lastComment',

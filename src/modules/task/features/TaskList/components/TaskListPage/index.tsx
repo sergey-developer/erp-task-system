@@ -74,7 +74,9 @@ const TaskListPage: FC = () => {
     data: taskListResponse,
     isFetching: taskListIsFetching,
     refetch: refetchTaskList,
-  } = useGetTaskList(queryArgs)
+  } = useGetTaskList(queryArgs, {
+    skip: sortableFieldToSortValues.status.includes(queryArgs.sort),
+  })
 
   const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskTableListItem['id']>>(null)

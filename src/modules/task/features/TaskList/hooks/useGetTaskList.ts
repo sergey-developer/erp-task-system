@@ -8,11 +8,14 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { GetTaskListQueryArgsModel } from '../models'
 
-const useGetTaskList = (filter: GetTaskListQueryArgsModel) => {
+const useGetTaskList = (
+  filter: GetTaskListQueryArgsModel,
+  options?: Partial<{ skip: boolean }>,
+) => {
   const permissions = useUserPermissions(taskApiPermissions)
 
   const state = useGetTaskListQuery(filter, {
-    skip: !permissions.canGetList,
+    skip: !permissions.canGetList || options?.skip,
   })
 
   useEffect(() => {

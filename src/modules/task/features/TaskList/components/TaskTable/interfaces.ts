@@ -31,6 +31,7 @@ export type TaskTableColumnKey =
       | 'assignee'
       | 'workGroup'
       | 'olaNextBreachTime'
+      | 'status'
       | 'lastComment'
       | 'createdAt'
     >
