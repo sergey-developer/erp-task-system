@@ -34,12 +34,13 @@ const FastFilter: FC<FastFilterProps> = ({
   }, [isError, data])
 
   return (
-    <Space wrap>
+    <Space wrap data-testid='filter-fast'>
       {filters.map(({ amount, text, value }) => (
         <FilterTag
           key={value}
           checked={isEqual(selectedFilter, value)}
           onChange={() => onChange(value)}
+          value={value}
           text={text}
           amount={amount}
           loading={isLoading}

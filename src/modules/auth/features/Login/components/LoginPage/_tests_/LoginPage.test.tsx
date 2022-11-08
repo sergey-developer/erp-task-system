@@ -40,8 +40,8 @@ import {
   userEntersIncorrectEmail,
   userEntersNotExistingEmail,
   userEntersWrongPassword,
-  waitFinishValidating,
-  waitStartValidating,
+  validatingFinished,
+  validatingStarted,
 } from './utils'
 
 setupApiTests()
@@ -82,8 +82,8 @@ describe('Страница авторизации', () => {
       const passwordField = getPasswordField()
 
       await userClickSubmitButton(user)
-      await waitStartValidating(emailField, passwordField)
-      await waitFinishValidating(emailField, passwordField)
+      await validatingStarted(emailField, passwordField)
+      await validatingFinished(emailField, passwordField)
 
       expect(checkRouteChanged()).toBe(false)
     })

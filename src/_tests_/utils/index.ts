@@ -1,6 +1,10 @@
 export * from './fakeGenerator'
 
+export * from './auth'
+
 export * from './fields/select'
+export * from './fields/radioButton'
+export * from './fields/checkbox'
 
 export * from './loading'
 export * from './validating'

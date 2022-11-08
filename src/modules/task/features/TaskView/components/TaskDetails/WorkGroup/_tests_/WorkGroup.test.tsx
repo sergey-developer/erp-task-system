@@ -1,5 +1,4 @@
-import { loadingStartedByButton, render } from '_tests_/utils'
-import { getStoreWithAuth } from '_tests_/utils/auth'
+import { getStoreWithAuth, loadingStartedByButton, render } from '_tests_/utils'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { UserRolesEnum } from 'shared/constants/roles'
 

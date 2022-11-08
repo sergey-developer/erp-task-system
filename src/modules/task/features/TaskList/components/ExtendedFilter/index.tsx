@@ -59,6 +59,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
   return (
     <DrawerStyled
+      data-testid='filter-extended'
       $breakpoints={breakpoints}
       footer={
         <Row justify='end'>

@@ -1,3 +1,5 @@
+import times from 'lodash/times'
+
 import {
   generateDateString,
   generateId,
@@ -32,3 +34,6 @@ export const getTaskTableItem = (
   assignee: getTaskAssignee(),
   olaNextBreachTime: generateDateString(),
 })
+
+export const getTaskTableItems = (length: number = 1) =>
+  times(length, () => getTaskTableItem())

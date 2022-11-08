@@ -11,6 +11,7 @@ import {
 } from '_tests_/mocks/api'
 import {
   generateWord,
+  getStoreWithAuth,
   loadingFinishedByButton,
   loadingFinishedByCard,
   loadingStartedByButton,
@@ -18,14 +19,13 @@ import {
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { getStoreWithAuth } from '_tests_/utils/auth'
 import { screen, waitFor, within } from '@testing-library/react'
 import { getTask } from 'fixtures/task'
 import { getWorkGroup } from 'fixtures/workGroup'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
-import { getTaskDetails } from '../../TaskDetails/_tests_/utils'
+import taskDetailsTestUtils from '../../TaskDetails/_tests_/utils'
 import { findFirstLineButton } from '../../TaskDetails/WorkGroup/_tests_/utils'
 import TaskDetailsContainer from '../../TaskDetailsContainer'
 import {
@@ -61,7 +61,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()
@@ -110,7 +110,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()
@@ -159,7 +159,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()
@@ -205,7 +205,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()
@@ -247,7 +247,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()
@@ -289,7 +289,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()
@@ -338,7 +338,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()
@@ -387,7 +387,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()
@@ -433,7 +433,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()
@@ -475,7 +475,7 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getTaskDetails()
           await loadingFinishedByCard(taskDetails)
 
           const firstLineButton = await findFirstLineButton()

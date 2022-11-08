@@ -116,6 +116,8 @@ const TaskListPage: FC = () => {
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
+    if (isEqual(value, fastFilterValue)) return
+
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilterValue(value)
 
@@ -125,9 +127,7 @@ const TaskListPage: FC = () => {
       filter: value,
     })
 
-    if (!isEqual(value, fastFilterValue)) {
-      handleCloseTaskDetails()
-    }
+    handleCloseTaskDetails()
   }
 
   const handleTaskIdFilterSearch = useDebounceFn<
@@ -247,7 +247,7 @@ const TaskListPage: FC = () => {
 
   return (
     <>
-      <RowWrapStyled gutter={[0, 40]}>
+      <RowWrapStyled data-testid='page-task-list' gutter={[0, 40]}>
         <Row justify='space-between' align='bottom'>
           <Col span={13}>
             <Row align='middle' gutter={[30, 30]}>
@@ -264,7 +264,6 @@ const TaskListPage: FC = () => {
 
               <Col>
                 <Button
-                  data-testid='btn-filter-extended'
                   icon={<FilterIcon $size='large' />}
                   onClick={debouncedToggleOpenExtendedFilter}
                   disabled={searchFilterApplied}
@@ -288,11 +287,7 @@ const TaskListPage: FC = () => {
 
               <Col>
                 <Space align='end' size='middle'>
-                  <Button
-                    data-testid='btn-reload-taskList'
-                    icon={<SyncIcon />}
-                    onClick={handleRefetchTaskList}
-                  >
+                  <Button icon={<SyncIcon />} onClick={handleRefetchTaskList}>
                     Обновить заявки
                   </Button>
 

@@ -1,3 +1,4 @@
+import { findIconByNameIn, queryIconByNameIn } from '_tests_/utils'
 import { screen, waitFor } from '@testing-library/react'
 
 const btnLoadingClass = 'ant-btn-loading'
@@ -37,3 +38,25 @@ export const loadingFinishedByCard = async (card: HTMLElement) => {
     expect(card).not.toHaveClass('ant-card-loading')
   })
 }
+
+export const loadingStartedByIconIn = async (container: HTMLElement) => {
+  expect(await findIconByNameIn(container, 'loading')).toBeInTheDocument()
+}
+
+export const loadingFinishedByIconIn = async (container: HTMLElement) => {
+  await waitFor(() => {
+    expect(queryIconByNameIn(container, 'loading')).not.toBeInTheDocument()
+  })
+}
+
+export const loadingStartedBySkeletonIn =
+  (container: HTMLElement) => async () => {
+    const skeleton = container.querySelector('.ant-skeleton-active')
+    expect(skeleton).toBeInTheDocument()
+  }
+
+export const loadingFinishedBySkeletonIn =
+  (container: HTMLElement) => async () => {
+    const skeleton = container.querySelector('.ant-skeleton-active')
+    expect(skeleton).not.toBeInTheDocument()
+  }
