@@ -1,7 +1,7 @@
 import { TablePaginationConfig } from 'antd'
 import head from 'lodash/head'
 
-import { getTaskTableItem } from 'fixtures/task'
+import * as taskFixtures from 'fixtures/task'
 
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { TaskTableProps } from '../interfaces'
@@ -9,7 +9,7 @@ import { TaskTableProps } from '../interfaces'
 const columnWithSortingClass = 'ant-table-column-has-sorters'
 
 const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
-  dataSource: [getTaskTableItem()],
+  dataSource: [taskFixtures.getTaskTableItem()],
   loading: false,
   onRow: jest.fn(),
   onChange: jest.fn(),

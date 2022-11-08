@@ -1,19 +1,6 @@
-import { TaskTableListItem } from '../interfaces'
+import { TaskTableColumnKey } from '../interfaces'
 
-export type AllColumnWidthMap =
-  | 'noop'
-  | keyof Pick<
-      TaskTableListItem,
-      | 'id'
-      | 'recordId'
-      | 'name'
-      | 'title'
-      | 'assignee'
-      | 'workGroup'
-      | 'olaNextBreachTime'
-      | 'lastComment'
-      | 'createdAt'
-    >
+export type AllColumnWidthMap = TaskTableColumnKey
 
 export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
   noop: 25,

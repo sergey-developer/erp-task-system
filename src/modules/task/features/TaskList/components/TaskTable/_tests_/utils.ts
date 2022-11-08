@@ -1,7 +1,15 @@
+import { SortOrder, TableAction } from 'antd/es/table/interface'
+
 import { loadingFinishedByIconIn, loadingStartedByIconIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { NumOrStr } from 'shared/interfaces/utils'
+
+import { tableColumns } from '../constants/columns'
+import { defaultColumnWidthMap } from '../constants/columnWidth'
+import { paginationConfig } from '../constants/pagination'
+import { TaskTableColumnKey } from '../interfaces'
+import testConstants from './constants'
 
 const getTable = () => screen.getByTestId('table-task-list')
 
@@ -11,20 +19,18 @@ const getRow = (id: number) =>
 const userClickRow = async (user: UserEvent, id: number) => {
   const row = getRow(id)
   await user.click(row!)
-
   return row
 }
 
-const getColText = (text: string) => within(getTable()).getByText(text)
+const getTextInTable = (text: string) => within(getTable()).getByText(text)
 
 const getHeadCol = (text: string) => {
-  return getColText(text).parentElement?.parentElement!
+  return getTextInTable(text).parentElement?.parentElement!
 }
 
 const userClickHeadCol = async (user: UserEvent, text: string) => {
   const col = getHeadCol(text)
   await user.click(col)
-
   return col
 }
 
@@ -103,26 +109,55 @@ const loadingFinished = async () => {
   return taskTable
 }
 
-const testUtils = {
+const onChangeTableArgs = {
+  pagination: (config: typeof testConstants.paginationProps) => ({
+    ...paginationConfig,
+    ...config,
+  }),
+  filters: () => ({}),
+  sorter: (key: TaskTableColumnKey, order: SortOrder) => {
+    const column = tableColumns.find((col) => col.key === key) || {}
+
+    return {
+      column: {
+        ...column,
+        width: defaultColumnWidthMap[key],
+      },
+      columnKey: key,
+      field: key,
+      order,
+    }
+  },
+  extra: (action: TableAction, dataSource: Readonly<Array<any>>) => ({
+    action,
+    currentDataSource: dataSource,
+  }),
+}
+
+const utils = {
   getTable,
   getRow,
   userClickRow,
-  getColText,
+  getTextInTable,
   getHeadCol,
-  userClickHeadCol,
   getPaginationContainer,
   getPaginationNextButton,
-  userClickPaginationNextButton,
   getPaginationPrevButton,
-  userClickPaginationPrevButton,
   getPaginationPageButton,
-  userClickPaginationPageButton,
   getPageSizeOptionsContainer,
   getPageSizeOption,
+
+  userClickHeadCol,
+  userClickPaginationNextButton,
+  userClickPaginationPrevButton,
+  userClickPaginationPageButton,
   userOpenPageSizeOptions,
   userChangePageSize,
+
   loadingStarted,
   loadingFinished,
+
+  onChangeTableArgs,
 }
 
-export default testUtils
+export default utils

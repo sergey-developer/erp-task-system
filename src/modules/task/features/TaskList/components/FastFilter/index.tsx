@@ -34,7 +34,7 @@ const FastFilter: FC<FastFilterProps> = ({
   }, [isError, data])
 
   return (
-    <Space wrap data-testid='filter-fast'>
+    <Space data-testid='filter-fast' wrap>
       {filters.map(({ amount, text, value }) => (
         <FilterTag
           key={value}
