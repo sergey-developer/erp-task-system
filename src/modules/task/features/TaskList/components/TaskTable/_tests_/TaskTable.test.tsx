@@ -4,11 +4,11 @@ import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
+import { taskStatusDict } from 'modules/task/constants/dictionary'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
-import { taskStatusDict } from '../../../../../constants/dictionary'
 import taskStatusTestUtils from '../../../../TaskStatus/_tests_/utils'
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { paginationConfig } from '../constants/pagination'

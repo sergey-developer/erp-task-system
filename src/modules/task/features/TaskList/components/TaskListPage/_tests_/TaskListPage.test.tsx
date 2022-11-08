@@ -33,7 +33,7 @@ import TaskListPage from '../index'
 import taskListPageTestUtils from './utils'
 
 setupApiTests()
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 
 describe('Страница реестра заявок', () => {
   test('Отображается корректно', () => {
