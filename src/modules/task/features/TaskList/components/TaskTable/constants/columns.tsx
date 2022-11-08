@@ -2,6 +2,7 @@ import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
+import { taskStatusDict } from 'modules/task/constants/dictionary'
 import {
   badgeByTaskStatus,
   iconByTaskExtendedStatus,
@@ -14,7 +15,6 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import valueOr from 'shared/utils/common/valueOr'
 import formatDate from 'shared/utils/date/formatDate'
 
-import { taskStatusDict } from '../../../../../constants/dictionary'
 import { TaskTableListItem } from '../interfaces'
 
 const { Text } = Typography
