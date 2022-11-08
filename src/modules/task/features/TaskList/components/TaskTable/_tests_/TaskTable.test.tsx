@@ -8,6 +8,7 @@ import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
+import { taskStatusDict } from '../../../../../constants/dictionary'
 import taskStatusTestUtils from '../../../../TaskStatus/_tests_/utils'
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { paginationConfig } from '../constants/pagination'
@@ -608,6 +609,61 @@ describe('Таблица заявок', () => {
       })
     })
 
+    describe('Статус', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...taskTableTestConstants.requiredProps} />)
+
+        expect(taskTableTestUtils.getTextInTable('Статус')).toBeInTheDocument()
+      })
+
+      test('Отображает значение', () => {
+        render(<TaskTable {...taskTableTestConstants.requiredProps} />)
+
+        expect(
+          taskTableTestUtils.getTextInTable(
+            taskStatusDict[taskTableTestConstants.firstTaskTableItem.status],
+          ),
+        ).toBeInTheDocument()
+      })
+
+      test('Имеет сортировку', async () => {
+        render(<TaskTable {...taskTableTestConstants.requiredProps} />)
+
+        const headCol = taskTableTestUtils.getHeadCol('Статус')
+        expect(headCol).toHaveClass(
+          taskTableTestConstants.columnWithSortingClass,
+        )
+      })
+
+      test('Не имеет сортировки по умолчанию', () => {
+        render(<TaskTable {...taskTableTestConstants.requiredProps} />)
+
+        const headCol = taskTableTestUtils.getHeadCol('Статус')
+        expect(headCol).not.toHaveAttribute('aria-sort')
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(
+          <TaskTable
+            {...taskTableTestConstants.requiredProps}
+            onChange={onChange}
+          />,
+        )
+
+        await taskTableTestUtils.userClickHeadCol(user, 'Статус')
+        expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter('status', 'ascend'),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
+      })
+    })
+
     describe('Комментарий', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
@@ -963,11 +1019,16 @@ describe('Таблица заявок', () => {
       <TaskTable {...taskTableTestConstants.requiredProps} onRow={onRow} />,
     )
 
+    const index = 0
+
     await taskTableTestUtils.userClickRow(
       user,
       taskTableTestConstants.firstTaskTableItem.id,
     )
     expect(onRow).toBeCalled()
-    expect(onRow).toBeCalledWith(taskTableTestConstants.firstTaskTableItem, 0)
+    expect(onRow).toBeCalledWith(
+      taskTableTestConstants.firstTaskTableItem,
+      index,
+    )
   })
 })
