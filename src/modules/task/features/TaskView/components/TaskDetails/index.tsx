@@ -4,6 +4,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
+import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
@@ -37,6 +38,7 @@ import {
 } from '../TaskFirstLineModal/interfaces'
 import { TaskReclassificationModalProps } from '../TaskReclassificationModal'
 import { TaskReclassificationRequestFormErrors } from '../TaskReclassificationModal/interfaces'
+import { loadingMessage as reclassificationRequestLoadingMessage } from '../TaskReclassificationRequest/constants'
 import { TaskResolutionModalProps } from '../TaskResolutionModal'
 import { TaskResolutionFormErrors } from '../TaskResolutionModal/interfaces'
 import AdditionalInfo from './AdditionalInfo'
@@ -45,7 +47,9 @@ import MainDetails from './MainDetails'
 import SecondaryDetails from './SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
-const TaskRequestStatus = React.lazy(() => import('../TaskRequestStatus'))
+const TaskReclassificationRequest = React.lazy(
+  () => import('../TaskReclassificationRequest'),
+)
 const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
 const TaskReclassificationModal = React.lazy(
   () => import('../TaskReclassificationModal'),
@@ -95,6 +99,7 @@ export type TaskDetailsProps = {
   taskIsLoading: boolean
 
   reclassificationRequest: MaybeNull<TaskReclassificationRequestModel>
+  reclassificationRequestIsLoading: boolean
   createReclassificationRequest: (
     data: CreateTaskReclassificationRequestMutationArgsModel,
   ) => Promise<void>
@@ -134,6 +139,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   isTaskResolving,
 
   reclassificationRequest,
+  reclassificationRequestIsLoading,
   createReclassificationRequest,
   createReclassificationRequestIsLoading,
 
@@ -283,7 +289,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
     />
   )
-
+  console.log(reclassificationRequestIsLoading)
   return (
     <RootWrapperStyled>
       <CardStyled
@@ -294,18 +300,31 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       >
         {hasReclassificationRequest && (
           <React.Suspense
-            fallback={<Spinner dimension='block' offset={['top', 10]} />}
+            fallback={
+              <Spinner
+                dimension='block'
+                offset={['top', 10]}
+                tip={reclassificationRequestLoadingMessage}
+              />
+            }
           >
-            <TaskRequestStatus
-              title='Запрошена переклассификация:'
-              comment={reclassificationRequest!.comment.text}
-              createdAt={reclassificationRequest!.createdAt}
-              user={reclassificationRequest!.user}
-              actionText='Отменить запрос'
-              onAction={noop}
-            />
+            <LoadingArea
+              dimension='block'
+              offset={['top', 10]}
+              tip={reclassificationRequestLoadingMessage}
+              isLoading={reclassificationRequestIsLoading}
+            >
+              <TaskReclassificationRequest
+                title='Запрошена переклассификация:'
+                comment={reclassificationRequest!.comment.text}
+                createdAt={reclassificationRequest!.createdAt}
+                user={reclassificationRequest!.user}
+                actionText='Отменить запрос'
+                onAction={noop}
+              />
+            </LoadingArea>
 
-            <DividerStyled />
+            {!reclassificationRequestIsLoading && <DividerStyled />}
           </React.Suspense>
         )}
 

@@ -3,7 +3,7 @@ import addDotAtEnd from 'shared/utils/string/addDotToEnd'
 import getFirstLetterInUpperCase from 'shared/utils/string/getFirstLetterInUpperCase'
 import makeString from 'shared/utils/string/makeString'
 
-const getShortUserName = <T extends Omit<BaseUserModel, 'id' | 'avatar'>>({
+const getShortUserName = <T extends Omit<BaseUserModel, 'id'>>({
   firstName,
   lastName,
   middleName,

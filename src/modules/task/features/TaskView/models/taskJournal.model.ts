@@ -7,7 +7,7 @@ import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskJournalEntryModel = {
   id: number
-  author: MaybeNull<Omit<BaseUserModel, 'avatar'>>
+  author: MaybeNull<BaseUserModel>
   createdAt: string
   type: TaskJournalTypeEnum
   description: string

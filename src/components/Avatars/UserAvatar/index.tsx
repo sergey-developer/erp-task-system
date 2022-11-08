@@ -1,7 +1,7 @@
 import { AvatarProps, BadgeProps } from 'antd'
 import React, { FC } from 'react'
 
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 import getUserAbbr from 'modules/user/utils/getUserAbbr'
 
 import { AvatarStyled, BadgeStyled } from './styles'
@@ -10,7 +10,7 @@ import { AvatarStyled, BadgeStyled } from './styles'
 
 type UserAvatarProps = Omit<AvatarProps, 'src' | 'alt'> &
   Pick<BadgeProps, 'dot'> & {
-    user?: Pick<BaseUserModel, 'firstName' | 'lastName' | 'avatar'>
+    user?: Pick<UserModel, 'firstName' | 'lastName' | 'avatar'>
   }
 
 const UserAvatar: FC<UserAvatarProps> = ({ dot, user, ...props }) => {

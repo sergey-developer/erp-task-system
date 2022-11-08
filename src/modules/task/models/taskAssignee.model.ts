@@ -1,3 +1,3 @@
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 
-export type TaskAssigneeModel = BaseUserModel
+export type TaskAssigneeModel = UserModel

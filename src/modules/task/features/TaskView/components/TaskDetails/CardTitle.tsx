@@ -1,4 +1,5 @@
 import { Button, Dropdown, Menu, Row, Space, Typography } from 'antd'
+import { ItemType } from 'antd/es/menu/hooks/useItems'
 import noop from 'lodash/noop'
 import React, { FC, useMemo } from 'react'
 
@@ -42,7 +43,7 @@ const CardTitle: FC<CardTitleProps> = ({
   const { isEngineerRole } = useUserRole()
 
   const actionMenu = useMemo(() => {
-    const items = []
+    const items: ItemType[] = []
 
     if (taskStatus.isInProgress) {
       items.push({

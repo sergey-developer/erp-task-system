@@ -14,7 +14,7 @@ import { WrapperStyled } from './styles'
 
 const { Text, Title, Paragraph } = Typography
 
-type TaskRequestStatusProps = {
+export type TaskReclassificationRequestProps = {
   user: Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>
   title: string
   createdAt: string
@@ -23,7 +23,7 @@ type TaskRequestStatusProps = {
   onAction: () => void
 }
 
-const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
+const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
   user,
   title,
   comment,
@@ -34,7 +34,10 @@ const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
   const breakpoints = useBreakpoint()
 
   return (
-    <WrapperStyled $breakpoints={breakpoints}>
+    <WrapperStyled
+      data-testid='task-reclassification-request'
+      $breakpoints={breakpoints}
+    >
       <Space size='middle' align='baseline'>
         <QuestionCircleIcon $size='large' />
 
@@ -62,4 +65,4 @@ const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
   )
 }
 
-export default TaskRequestStatus
+export default TaskReclassificationRequest
