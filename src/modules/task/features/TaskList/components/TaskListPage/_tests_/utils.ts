@@ -52,7 +52,7 @@ const userFillSearchInput = async (
   return { searchInput, searchValue }
 }
 
-const testUtils = {
+const utils = {
   getTaskListPage,
   getSearchInput,
   getSearchButton,
@@ -66,4 +66,4 @@ const testUtils = {
   userFillSearchInput,
 }
 
-export default testUtils
+export default utils

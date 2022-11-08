@@ -20,6 +20,21 @@ export type TaskTableListItem = Pick<
   | 'extendedStatus'
 >
 
+export type TaskTableColumnKey =
+  | 'noop'
+  | keyof Pick<
+      TaskTableListItem,
+      | 'id'
+      | 'recordId'
+      | 'name'
+      | 'title'
+      | 'assignee'
+      | 'workGroup'
+      | 'olaNextBreachTime'
+      | 'lastComment'
+      | 'createdAt'
+    >
+
 export type TaskTableProps = Required<
   Pick<
     TableProps<TaskTableListItem>,

@@ -282,7 +282,7 @@ const searchByColumn = {
   expectHasCorrectInitialValues: expectSearchByColumnHasCorrectInitialValues,
 }
 
-const testUtils = {
+const utils = {
   getFilter,
   findFilter,
   getCloseButton,
@@ -301,4 +301,4 @@ const testUtils = {
   workGroup,
 }
 
-export default testUtils
+export default utils

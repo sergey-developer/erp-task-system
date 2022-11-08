@@ -1,5 +1,4 @@
-import { loadingStartedByIconIn, render } from '_tests_/utils'
-import { within } from '@testing-library/react'
+import { render } from '_tests_/utils'
 import * as taskFixtures from 'fixtures/task'
 import {
   TaskExtendedStatusEnum,
@@ -41,11 +40,9 @@ describe('Таблица заявок', () => {
     })
   })
 
-  test('Отображает состояние загрузки', () => {
+  test('Отображает состояние загрузки', async () => {
     render(<TaskTable {...taskTableTestConstants.requiredProps} loading />)
-
-    const table = taskTableTestUtils.getTable()
-    loadingStartedByIconIn(table)
+    await taskTableTestUtils.loadingStarted()
   })
 
   describe('Колонка', () => {
@@ -194,15 +191,16 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getColText('Заявка')).toBeInTheDocument()
+        expect(taskTableTestUtils.getTextInTable('Заявка')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        const table = taskTableTestUtils.getTable()
         expect(
-          within(table).getByText(taskTableTestConstants.firstTaskTableItem.id),
+          taskTableTestUtils.getTextInTable(
+            String(taskTableTestConstants.firstTaskTableItem.id),
+          ),
         ).toBeInTheDocument()
       })
 
@@ -222,7 +220,7 @@ describe('Таблица заявок', () => {
         expect(headCol).not.toHaveAttribute('aria-sort')
       })
 
-      test('При клике на заголовок вызывается обработчик', async () => {
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskTable
             {...taskTableTestConstants.requiredProps}
@@ -232,6 +230,15 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickHeadCol(user, 'Заявка')
         expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter('id', 'ascend'),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
       })
     })
 
@@ -239,15 +246,16 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getColText('Внеш.номер')).toBeInTheDocument()
+        expect(
+          taskTableTestUtils.getTextInTable('Внеш.номер'),
+        ).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        const table = taskTableTestUtils.getTable()
         expect(
-          within(table).getByText(
+          taskTableTestUtils.getTextInTable(
             taskTableTestConstants.firstTaskTableItem.recordId,
           ),
         ).toBeInTheDocument()
@@ -269,7 +277,7 @@ describe('Таблица заявок', () => {
         expect(headCol).not.toHaveAttribute('aria-sort')
       })
 
-      test('При клике на заголовок вызывается обработчик', async () => {
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskTable
             {...taskTableTestConstants.requiredProps}
@@ -279,6 +287,15 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickHeadCol(user, 'Внеш.номер')
         expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter('recordId', 'ascend'),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
       })
     })
 
@@ -286,15 +303,14 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getColText('Объект')).toBeInTheDocument()
+        expect(taskTableTestUtils.getTextInTable('Объект')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        const table = taskTableTestUtils.getTable()
         expect(
-          within(table).getByText(
+          taskTableTestUtils.getTextInTable(
             taskTableTestConstants.firstTaskTableItem.name,
           ),
         ).toBeInTheDocument()
@@ -316,7 +332,7 @@ describe('Таблица заявок', () => {
         expect(headCol).not.toHaveAttribute('aria-sort')
       })
 
-      test('При клике на заголовок вызывается обработчик', async () => {
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskTable
             {...taskTableTestConstants.requiredProps}
@@ -326,6 +342,15 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickHeadCol(user, 'Объект')
         expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter('name', 'ascend'),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
       })
     })
 
@@ -333,15 +358,14 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getColText('Тема')).toBeInTheDocument()
+        expect(taskTableTestUtils.getTextInTable('Тема')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        const table = taskTableTestUtils.getTable()
         expect(
-          within(table).getByText(
+          taskTableTestUtils.getTextInTable(
             taskTableTestConstants.firstTaskTableItem.title,
           ),
         ).toBeInTheDocument()
@@ -363,7 +387,7 @@ describe('Таблица заявок', () => {
         expect(headCol).not.toHaveAttribute('aria-sort')
       })
 
-      test('При клике на заголовок вызывается обработчик', async () => {
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskTable
             {...taskTableTestConstants.requiredProps}
@@ -373,6 +397,15 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickHeadCol(user, 'Тема')
         expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter('title', 'ascend'),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
       })
     })
 
@@ -380,16 +413,16 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getColText('Исполнитель')).toBeInTheDocument()
+        expect(
+          taskTableTestUtils.getTextInTable('Исполнитель'),
+        ).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        const table = taskTableTestUtils.getTable()
-
         expect(
-          within(table).getByText(
+          taskTableTestUtils.getTextInTable(
             getShortUserName(
               taskTableTestConstants.firstTaskTableItem.assignee,
             ),
@@ -413,7 +446,7 @@ describe('Таблица заявок', () => {
         expect(headCol).not.toHaveAttribute('aria-sort')
       })
 
-      test('При клике на заголовок вызывается обработчик', async () => {
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskTable
             {...taskTableTestConstants.requiredProps}
@@ -423,6 +456,15 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickHeadCol(user, 'Исполнитель')
         expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter('assignee', 'ascend'),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
       })
     })
 
@@ -431,17 +473,15 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getColText('Рабочая группа'),
+          taskTableTestUtils.getTextInTable('Рабочая группа'),
         ).toBeInTheDocument()
       })
 
       test('Отображает значение если оно присутствует', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        const table = taskTableTestUtils.getTable()
-
         expect(
-          within(table).getByText(
+          taskTableTestUtils.getTextInTable(
             taskTableTestConstants.firstTaskTableItem.workGroup!.name,
           ),
         ).toBeInTheDocument()
@@ -457,8 +497,9 @@ describe('Таблица заявок', () => {
           />,
         )
 
-        const table = taskTableTestUtils.getTable()
-        expect(within(table).getByText('I линия поддержки')).toBeInTheDocument()
+        expect(
+          taskTableTestUtils.getTextInTable('I линия поддержки'),
+        ).toBeInTheDocument()
       })
 
       test('Имеет сортировку', async () => {
@@ -477,7 +518,7 @@ describe('Таблица заявок', () => {
         expect(headCol).not.toHaveAttribute('aria-sort')
       })
 
-      test('При клике на заголовок вызывается обработчик', async () => {
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskTable
             {...taskTableTestConstants.requiredProps}
@@ -487,6 +528,15 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickHeadCol(user, 'Рабочая группа')
         expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter('workGroup', 'ascend'),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
       })
     })
 
@@ -495,17 +545,15 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getColText('Выполнить до'),
+          taskTableTestUtils.getTextInTable('Выполнить до'),
         ).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        const table = taskTableTestUtils.getTable()
-
         expect(
-          within(table).getByText(
+          taskTableTestUtils.getTextInTable(
             formatDate(
               taskTableTestConstants.firstTaskTableItem.olaNextBreachTime,
               DATE_TIME_FORMAT,
@@ -535,7 +583,7 @@ describe('Таблица заявок', () => {
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
       })
 
-      test('При клике на заголовок вызывается обработчик', async () => {
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskTable
             {...taskTableTestConstants.requiredProps}
@@ -545,6 +593,18 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickHeadCol(user, 'Выполнить до')
         expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter(
+            'olaNextBreachTime',
+            'ascend',
+          ),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
       })
     })
 
@@ -552,16 +612,16 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getColText('Комментарий')).toBeInTheDocument()
+        expect(
+          taskTableTestUtils.getTextInTable('Комментарий'),
+        ).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        const table = taskTableTestUtils.getTable()
-
         expect(
-          within(table).getByText(
+          taskTableTestUtils.getTextInTable(
             taskTableTestConstants.firstTaskTableItem.lastComment,
           ),
         ).toBeInTheDocument()
@@ -583,7 +643,7 @@ describe('Таблица заявок', () => {
         expect(headCol).not.toHaveAttribute('aria-sort')
       })
 
-      test('При клике на заголовок вызывается обработчик', async () => {
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskTable
             {...taskTableTestConstants.requiredProps}
@@ -593,6 +653,15 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickHeadCol(user, 'Комментарий')
         expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter('lastComment', 'ascend'),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
       })
     })
 
@@ -601,17 +670,15 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getColText('Дата создания'),
+          taskTableTestUtils.getTextInTable('Дата создания'),
         ).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        const table = taskTableTestUtils.getTable()
-
         expect(
-          within(table).getByText(
+          taskTableTestUtils.getTextInTable(
             formatDate(
               taskTableTestConstants.firstTaskTableItem.createdAt,
               DATE_TIME_FORMAT,
@@ -636,7 +703,7 @@ describe('Таблица заявок', () => {
         expect(headCol).not.toHaveAttribute('aria-sort')
       })
 
-      test('При клике на заголовок вызывается обработчик', async () => {
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskTable
             {...taskTableTestConstants.requiredProps}
@@ -646,6 +713,15 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickHeadCol(user, 'Дата создания')
         expect(onChange).toBeCalledTimes(1)
+        expect(onChange).toBeCalledWith(
+          {},
+          {},
+          taskTableTestUtils.onChangeTableArgs.sorter('createdAt', 'ascend'),
+          taskTableTestUtils.onChangeTableArgs.extra(
+            'sort',
+            taskTableTestConstants.requiredProps.dataSource,
+          ),
+        )
       })
     })
   })
@@ -761,7 +837,7 @@ describe('Таблица заявок', () => {
       })
     })
 
-    test('При изменении размера страницы вызывается обработчик', async () => {
+    test('При изменении размера страницы обработчик вызывается корректно', async () => {
       const { user } = render(
         <TaskTable
           {...taskTableTestConstants.requiredProps}
@@ -770,14 +846,25 @@ describe('Таблица заявок', () => {
         />,
       )
 
-      await taskTableTestUtils.userChangePageSize(
-        user,
-        paginationConfig.pageSizeOptions[0],
-      )
+      const pageSize = paginationConfig.pageSizeOptions[0]
+
+      await taskTableTestUtils.userChangePageSize(user, pageSize)
       expect(onChange).toBeCalledTimes(1)
+      expect(onChange).toBeCalledWith(
+        taskTableTestUtils.onChangeTableArgs.pagination({
+          ...taskTableTestConstants.paginationProps,
+          pageSize,
+        }),
+        {},
+        {},
+        taskTableTestUtils.onChangeTableArgs.extra(
+          'paginate',
+          taskTableTestConstants.requiredProps.dataSource,
+        ),
+      )
     })
 
-    test('При изменении страницы вызывается обработчик', async () => {
+    test('При клике "Вперед" обработчик вызывается корректно', async () => {
       const { user } = render(
         <TaskTable
           {...taskTableTestConstants.requiredProps}
@@ -787,13 +874,72 @@ describe('Таблица заявок', () => {
       )
 
       await taskTableTestUtils.userClickPaginationNextButton(user)
-      expect(onChange).toBeCalled()
+      expect(onChange).toBeCalledTimes(1)
+      expect(onChange).toBeCalledWith(
+        taskTableTestUtils.onChangeTableArgs.pagination({
+          ...taskTableTestConstants.paginationProps,
+          current: 2,
+        }),
+        {},
+        {},
+        taskTableTestUtils.onChangeTableArgs.extra(
+          'paginate',
+          taskTableTestConstants.requiredProps.dataSource,
+        ),
+      )
+    })
+
+    test('При клике "Назад" обработчик вызывается корректно', async () => {
+      const { user } = render(
+        <TaskTable
+          {...taskTableTestConstants.requiredProps}
+          pagination={{
+            ...taskTableTestConstants.paginationProps,
+            current: 2,
+          }}
+          onChange={onChange}
+        />,
+      )
 
       await taskTableTestUtils.userClickPaginationPrevButton(user)
-      expect(onChange).toBeCalled()
+      expect(onChange).toBeCalledTimes(1)
+      expect(onChange).toBeCalledWith(
+        taskTableTestUtils.onChangeTableArgs.pagination({
+          ...taskTableTestConstants.paginationProps,
+          current: 1,
+        }),
+        {},
+        {},
+        taskTableTestUtils.onChangeTableArgs.extra(
+          'paginate',
+          taskTableTestConstants.requiredProps.dataSource,
+        ),
+      )
+    })
+
+    test('При клике на номер страницы обработчик вызывается корректно', async () => {
+      const { user } = render(
+        <TaskTable
+          {...taskTableTestConstants.requiredProps}
+          pagination={taskTableTestConstants.paginationProps}
+          onChange={onChange}
+        />,
+      )
 
       await taskTableTestUtils.userClickPaginationPageButton(user, '2')
-      expect(onChange).toBeCalled()
+      expect(onChange).toBeCalledTimes(1)
+      expect(onChange).toBeCalledWith(
+        taskTableTestUtils.onChangeTableArgs.pagination({
+          ...taskTableTestConstants.paginationProps,
+          current: 2,
+        }),
+        {},
+        {},
+        taskTableTestUtils.onChangeTableArgs.extra(
+          'paginate',
+          taskTableTestConstants.requiredProps.dataSource,
+        ),
+      )
     })
   })
 
@@ -803,12 +949,11 @@ describe('Таблица заявок', () => {
         <TaskTable {...taskTableTestConstants.requiredProps} dataSource={[]} />,
       )
 
-      const table = taskTableTestUtils.getTable()
-      const emptyContent = within(table).getByText(
-        'По заданным параметрам фильтрации ни одна заявка не найдена',
-      )
-
-      expect(emptyContent).toBeInTheDocument()
+      expect(
+        taskTableTestUtils.getTextInTable(
+          'По заданным параметрам фильтрации ни одна заявка не найдена',
+        ),
+      ).toBeInTheDocument()
     })
   })
 
@@ -823,5 +968,6 @@ describe('Таблица заявок', () => {
       taskTableTestConstants.firstTaskTableItem.id,
     )
     expect(onRow).toBeCalled()
+    expect(onRow).toBeCalledWith(taskTableTestConstants.firstTaskTableItem, 0)
   })
 })

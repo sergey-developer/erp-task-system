@@ -19,11 +19,11 @@ const queryTaskStatusBadge = (
   // eslint-disable-next-line testing-library/no-node-access
   getTaskStatus(status).querySelector(`.ant-badge-status-${badgeStatus}`)
 
-const testUtils = {
+const utils = {
   getTaskStatus,
   queryTaskStatus,
   getTaskStatusIcon,
   queryTaskStatusBadge,
 }
 
-export default testUtils
+export default utils

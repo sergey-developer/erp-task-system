@@ -68,7 +68,7 @@ export const expectAllFiltersDisabled = () => {
   })
 }
 
-const testUtils = {
+const utils = {
   getFastFilter,
   getFilterTag,
   getAllFilterTag,
@@ -85,4 +85,4 @@ const testUtils = {
   expectAllFiltersDisabled,
 }
 
-export default testUtils
+export default utils
