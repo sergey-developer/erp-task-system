@@ -14,6 +14,7 @@ export const CheckboxGroupStyled = styled(Checkbox.Group)`
 
     & .ant-checkbox-group-item {
       align-items: center;
+      width: max-content;
     }
 
     & .ant-checkbox-group-item:not(:nth-last-child(1)) {
