@@ -289,7 +289,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
     />
   )
-  console.log(reclassificationRequestIsLoading)
+
   return (
     <RootWrapperStyled>
       <CardStyled
