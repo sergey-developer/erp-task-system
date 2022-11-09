@@ -1,5 +1,6 @@
 stages:
   - lint
+  - test
   - build
   - deploy
   - cleanup
@@ -29,7 +30,6 @@ Tests:
   only:
     - rc
     - master
-    - develop
     - task-20542
   tags:
     - docker
