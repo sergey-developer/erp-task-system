@@ -77,7 +77,7 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
               <Radio value={ReclassificationReasonEnum.WrongSupportGroup}>
                 Требуется переклассификация (классификация верная)
               </Radio>
-              <Radio value={ReclassificationReasonEnum.DivideTask}>
+              <Radio value={ReclassificationReasonEnum.DivideTask} disabled>
                 Требуется разбить обращение
               </Radio>
             </Space>
