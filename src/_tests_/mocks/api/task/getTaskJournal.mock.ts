@@ -3,6 +3,7 @@ import {
   getServerErrorMockFn,
   getSuccessMockFn,
 } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 import { GetTaskJournalResponseModel } from 'modules/task/features/TaskView/models'
 import {
   getTaskJournalCsvUrl,
@@ -10,8 +11,6 @@ import {
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
-
-import { ResponseResolverOptions } from '../../response'
 
 const getGetJournalMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Get, getTaskJournalUrl(taskId))
