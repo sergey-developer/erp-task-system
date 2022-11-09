@@ -1,4 +1,5 @@
 import { generateWord } from '_tests_/utils'
+import * as taskFixtures from 'fixtures/task'
 
 import { FastFilterEnum } from '../../../constants/common'
 import { FilterTagProps } from '../FilterTag'
@@ -17,7 +18,7 @@ export const filterCheckedClass = 'ant-tag-checkable-checked'
 export const filterDisabledClass = 'ant-tag-checkable--disabled'
 
 export const filterRequiredProps: Readonly<FastFilterProps> = {
-  data: { all: 1, closed: 2, free: 3, mine: 4, overdue: 5 },
+  data: taskFixtures.getGetTaskCountersResponse(),
   isError: false,
   disabled: false,
   isLoading: false,
