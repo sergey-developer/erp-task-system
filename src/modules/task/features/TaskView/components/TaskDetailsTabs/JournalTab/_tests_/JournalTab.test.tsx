@@ -49,7 +49,10 @@ describe('Вкладка журнала задачи', () => {
     })
 
     test('При клике отправляется запрос', async () => {
-      mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+      mockGetJournalSuccess(requiredProps.taskId, {
+        body: getJournalResponseSuccess,
+        once: false,
+      })
 
       const { user } = render(<JournalTab {...requiredProps} />, {
         store: getStoreWithAuth(),
@@ -65,7 +68,9 @@ describe('Вкладка журнала задачи', () => {
     describe('Если есть записи', () => {
       describe('Отображает', () => {
         test('Записи', async () => {
-          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+          mockGetJournalSuccess(requiredProps.taskId, {
+            body: getJournalResponseSuccess,
+          })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
@@ -80,7 +85,9 @@ describe('Вкладка журнала задачи', () => {
         })
 
         test('Кнопку экспорта в csv', async () => {
-          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+          mockGetJournalSuccess(requiredProps.taskId, {
+            body: getJournalResponseSuccess,
+          })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
@@ -101,7 +108,9 @@ describe('Вкладка журнала задачи', () => {
 
       describe('Не отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
-          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+          mockGetJournalSuccess(requiredProps.taskId, {
+            body: getJournalResponseSuccess,
+          })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
@@ -115,7 +124,9 @@ describe('Вкладка журнала задачи', () => {
       })
 
       test('Кнопка экспорта в csv активна', async () => {
-        mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+        mockGetJournalSuccess(requiredProps.taskId, {
+          body: getJournalResponseSuccess,
+        })
 
         render(<JournalTab {...requiredProps} />, {
           store: getStoreWithAuth(),
@@ -136,7 +147,9 @@ describe('Вкладка журнала задачи', () => {
         )
 
         test('Не показывает сообщение об ошибке', async () => {
-          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+          mockGetJournalSuccess(requiredProps.taskId, {
+            body: getJournalResponseSuccess,
+          })
           mockGetJournalCsvSuccess(requiredProps.taskId)
 
           const { user } = render(<JournalTab {...requiredProps} />, {
@@ -167,7 +180,9 @@ describe('Вкладка журнала задачи', () => {
         )
 
         test('Показывает сообщение об ошибке', async () => {
-          mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+          mockGetJournalSuccess(requiredProps.taskId, {
+            body: getJournalResponseSuccess,
+          })
           mockGetJournalCsvServerError(requiredProps.taskId)
 
           const { user } = render(<JournalTab {...requiredProps} />, {
@@ -194,10 +209,9 @@ describe('Вкладка журнала задачи', () => {
     describe('Если нет записей', () => {
       describe('Отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
-          mockGetJournalSuccess(
-            requiredProps.taskId,
-            getEmptyJournalResponseSuccess,
-          )
+          mockGetJournalSuccess(requiredProps.taskId, {
+            body: getEmptyJournalResponseSuccess,
+          })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
@@ -212,10 +226,9 @@ describe('Вкладка журнала задачи', () => {
 
       describe('Не отображает', () => {
         test('Записи', async () => {
-          mockGetJournalSuccess(
-            requiredProps.taskId,
-            getEmptyJournalResponseSuccess,
-          )
+          mockGetJournalSuccess(requiredProps.taskId, {
+            body: getEmptyJournalResponseSuccess,
+          })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
@@ -230,10 +243,9 @@ describe('Вкладка журнала задачи', () => {
         })
 
         test('Кнопку экспорта в csv', async () => {
-          mockGetJournalSuccess(
-            requiredProps.taskId,
-            getEmptyJournalResponseSuccess,
-          )
+          mockGetJournalSuccess(requiredProps.taskId, {
+            body: getEmptyJournalResponseSuccess,
+          })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),

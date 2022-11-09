@@ -11,6 +11,8 @@ import {
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
+import { ResponseResolverOptions } from '../../response'
+
 const getGetJournalMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Get, getTaskJournalUrl(taskId))
 
@@ -19,12 +21,9 @@ const getGetJournalCsvMockFn = (taskId: number) =>
 
 export const mockGetJournalSuccess = (
   taskId: number,
-  response?: GetTaskJournalResponseModel,
+  options?: Partial<ResponseResolverOptions<GetTaskJournalResponseModel>>,
 ) => {
-  const mockGetJournal = getSuccessMockFn(getGetJournalMockFn(taskId), {
-    body: response,
-  })
-
+  const mockGetJournal = getSuccessMockFn(getGetJournalMockFn(taskId), options)
   mockGetJournal()
 }
 
