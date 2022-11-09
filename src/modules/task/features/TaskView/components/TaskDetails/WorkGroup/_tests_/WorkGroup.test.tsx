@@ -2,7 +2,7 @@ import { getStoreWithAuth, loadingStartedByButton, render } from '_tests_/utils'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { UserRolesEnum } from 'shared/constants/roles'
 
-import { findModal as findFirstLineModal } from '../../../TaskFirstLineModal/_tests_/utils'
+import taskFirstLineModalTestUtils from '../../../TaskFirstLineModal/_tests_/utils'
 import WorkGroup from '../index'
 import { firstLineButtonProps, requiredProps } from './constants'
 import { getFirstLineButton, queryFirstLineButton } from './utils'
@@ -74,7 +74,9 @@ describe('Блок рабочей группы', () => {
 
         await user.click(getFirstLineButton())
 
-        expect(await findFirstLineModal()).toBeInTheDocument()
+        expect(
+          await taskFirstLineModalTestUtils.findModal(),
+        ).toBeInTheDocument()
       })
 
       describe('Не отображается', () => {
@@ -202,7 +204,9 @@ describe('Блок рабочей группы', () => {
 
         await user.click(getFirstLineButton())
 
-        expect(await findFirstLineModal()).toBeInTheDocument()
+        expect(
+          await taskFirstLineModalTestUtils.findModal(),
+        ).toBeInTheDocument()
       })
 
       describe('Не отображается', () => {
