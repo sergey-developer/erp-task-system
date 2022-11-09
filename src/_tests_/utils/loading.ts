@@ -20,8 +20,10 @@ export const loadingStartedBySpinner = (testId: string) => async () => {
 }
 
 export const loadingFinishedBySpinner = (testId: string) => async () => {
+  const spinner = screen.queryByTestId(testId)
+
   await waitFor(() => {
-    expect(screen.queryByTestId(testId)).not.toBeInTheDocument()
+    expect(spinner).not.toBeInTheDocument()
   })
 }
 

@@ -1,4 +1,5 @@
 import {
+  getButtonIn,
   loadingFinishedByButton,
   loadingFinishedBySpinner,
   loadingStartedByButton,
@@ -7,13 +8,18 @@ import {
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const journalLoadingStarted = loadingStartedBySpinner('spinner-journal')
-
-export const journalLoadingFinished =
-  loadingFinishedBySpinner('spinner-journal')
+export const getTaskJournal = () => screen.getByTestId('task-journal')
 
 export const getDownloadButton = () =>
   screen.getByTestId('journal-btn-download')
+
+export const getReloadButton = () => getButtonIn(getTaskJournal(), 'sync')
+
+export const userClickReloadButton = async (user: UserEvent) => {
+  const button = getReloadButton()
+  await user.click(button)
+  return button
+}
 
 export const userClickDownloadButton = async (
   user: UserEvent,
@@ -22,6 +28,11 @@ export const userClickDownloadButton = async (
   await user.click(button)
   return button
 }
+
+export const journalLoadingStarted = loadingStartedBySpinner('spinner-journal')
+
+export const journalLoadingFinished =
+  loadingFinishedBySpinner('spinner-journal')
 
 export const journalCsvLoadingStarted = loadingStartedByButton
 export const journalCsvLoadingFinished = loadingFinishedByButton

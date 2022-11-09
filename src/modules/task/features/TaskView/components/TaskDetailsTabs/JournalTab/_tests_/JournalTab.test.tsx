@@ -4,7 +4,12 @@ import {
   mockGetJournalServerError,
   mockGetJournalSuccess,
 } from '_tests_/mocks/api'
-import { generateId, render, setupApiTests } from '_tests_/utils'
+import {
+  generateId,
+  getStoreWithAuth,
+  render,
+  setupApiTests,
+} from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import {
   getEmptyJournalResponseSuccess,
@@ -17,11 +22,13 @@ import { NO_DATA_MSG } from '../constants'
 import JournalTab, { JournalTabProps } from '../index'
 import {
   getDownloadButton,
+  getReloadButton,
   journalCsvLoadingFinished,
   journalCsvLoadingStarted,
   journalLoadingFinished,
   journalLoadingStarted,
   userClickDownloadButton,
+  userClickReloadButton,
 } from './utils'
 
 setupApiTests()
@@ -31,13 +38,38 @@ const requiredProps: JournalTabProps = {
 }
 
 describe('Вкладка журнала задачи', () => {
+  describe('Кнопка обновления журнала', () => {
+    test('Отображается корректно', () => {
+      render(<JournalTab {...requiredProps} />)
+
+      const button = getReloadButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('При клике отправляется запрос', async () => {
+      mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
+
+      const { user } = render(<JournalTab {...requiredProps} />, {
+        store: getStoreWithAuth(),
+      })
+
+      await journalLoadingFinished()
+      await userClickReloadButton(user)
+      await journalLoadingStarted()
+    })
+  })
+
   describe('При успешном запросе журнала', () => {
     describe('Если есть записи', () => {
       describe('Отображает', () => {
         test('Записи', async () => {
           mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
 
-          render(<JournalTab {...requiredProps} />)
+          render(<JournalTab {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -50,7 +82,9 @@ describe('Вкладка журнала задачи', () => {
         test('Кнопку экспорта в csv', async () => {
           mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
 
-          render(<JournalTab {...requiredProps} />)
+          render(<JournalTab {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -69,7 +103,9 @@ describe('Вкладка журнала задачи', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
           mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
 
-          render(<JournalTab {...requiredProps} />)
+          render(<JournalTab {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -81,7 +117,9 @@ describe('Вкладка журнала задачи', () => {
       test('Кнопка экспорта в csv активна', async () => {
         mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
 
-        render(<JournalTab {...requiredProps} />)
+        render(<JournalTab {...requiredProps} />, {
+          store: getStoreWithAuth(),
+        })
 
         await journalLoadingStarted()
         await journalLoadingFinished()
@@ -101,7 +139,9 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
           mockGetJournalCsvSuccess(requiredProps.taskId)
 
-          const { user } = render(<JournalTab {...requiredProps} />)
+          const { user } = render(<JournalTab {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -130,7 +170,9 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(requiredProps.taskId, getJournalResponseSuccess)
           mockGetJournalCsvServerError(requiredProps.taskId)
 
-          const { user } = render(<JournalTab {...requiredProps} />)
+          const { user } = render(<JournalTab {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -157,7 +199,9 @@ describe('Вкладка журнала задачи', () => {
             getEmptyJournalResponseSuccess,
           )
 
-          render(<JournalTab {...requiredProps} />)
+          render(<JournalTab {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -173,7 +217,9 @@ describe('Вкладка журнала задачи', () => {
             getEmptyJournalResponseSuccess,
           )
 
-          render(<JournalTab {...requiredProps} />)
+          render(<JournalTab {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -189,7 +235,9 @@ describe('Вкладка журнала задачи', () => {
             getEmptyJournalResponseSuccess,
           )
 
-          render(<JournalTab {...requiredProps} />)
+          render(<JournalTab {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
 
           await journalLoadingStarted()
           await journalLoadingFinished()
@@ -211,7 +259,9 @@ describe('Вкладка журнала задачи', () => {
       test(`Ошибку "${UNKNOWN_ERROR_MSG}"`, async () => {
         mockGetJournalServerError(requiredProps.taskId)
 
-        render(<JournalTab {...requiredProps} />)
+        render(<JournalTab {...requiredProps} />, {
+          store: getStoreWithAuth(),
+        })
 
         await journalLoadingStarted()
         await journalLoadingFinished()
@@ -223,7 +273,9 @@ describe('Вкладка журнала задачи', () => {
       test(`Текст "${NO_DATA_MSG}"`, async () => {
         mockGetJournalServerError(requiredProps.taskId)
 
-        render(<JournalTab {...requiredProps} />)
+        render(<JournalTab {...requiredProps} />, {
+          store: getStoreWithAuth(),
+        })
 
         await journalLoadingStarted()
         await journalLoadingFinished()

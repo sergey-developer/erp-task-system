@@ -47,7 +47,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
 
   return (
     <LoadingArea data-testid='spinner-journal' isLoading={journalIsFetching}>
-      <Space direction='vertical' $block>
+      <Space data-testid='task-journal' direction='vertical' $block>
         <Row justify='end'>
           <Space>
             {!isEmpty(journal) && (
