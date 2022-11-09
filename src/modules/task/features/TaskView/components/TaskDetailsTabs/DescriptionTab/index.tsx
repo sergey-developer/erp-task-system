@@ -5,13 +5,13 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 
 const { Title, Paragraph } = Typography
 
-type DescriptionTabProps = Pick<TaskDetailsModel, 'description'> & {
+export type DescriptionTabProps = Pick<TaskDetailsModel, 'description'> & {
   title: string
 }
 
 const DescriptionTab: FC<DescriptionTabProps> = ({ title, description }) => {
   return (
-    <Space direction='vertical'>
+    <Space data-testid='task-description-tab' direction='vertical'>
       <Title level={5}>{title}</Title>
 
       {description && <Paragraph>{description}</Paragraph>}
