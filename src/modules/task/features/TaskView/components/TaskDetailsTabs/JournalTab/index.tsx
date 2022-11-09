@@ -2,7 +2,7 @@ import { Button, Row } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
-import { DownloadIcon } from 'components/Icons'
+import { DownloadIcon, SyncIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import useGetTaskJournal from 'modules/task/features/TaskView/hooks/useGetTaskJournal'
@@ -20,8 +20,11 @@ export type JournalTabProps = {
 }
 
 const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
-  const { data: journal = [], isFetching: journalIsFetching } =
-    useGetTaskJournal(taskId)
+  const {
+    data: journal = [],
+    isFetching: journalIsFetching,
+    refetch: refetchJournal,
+  } = useGetTaskJournal(taskId)
 
   const {
     fn: getJournalCsv,
@@ -44,23 +47,31 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
 
   return (
     <LoadingArea data-testid='spinner-journal' isLoading={journalIsFetching}>
-      <Space direction='vertical' $block>
-        {!journalIsFetching && !isEmpty(journal) && (
-          <Row justify='end'>
+      <Space data-testid='task-journal' direction='vertical' $block>
+        <Row justify='end'>
+          <Space>
+            {!isEmpty(journal) && (
+              <Button
+                data-testid='journal-btn-download'
+                type='link'
+                onClick={handleGetJournalCsv}
+                loading={journalCsvIsFetching}
+                icon={
+                  <DownloadIcon
+                    data-testid='journal-icon-download'
+                    $color='black'
+                  />
+                }
+              />
+            )}
+
             <Button
-              data-testid='journal-btn-download'
               type='link'
-              onClick={handleGetJournalCsv}
-              loading={journalCsvIsFetching}
-              icon={
-                <DownloadIcon
-                  data-testid='journal-icon-download'
-                  $color='black'
-                />
-              }
+              icon={<SyncIcon $color='black' />}
+              onClick={refetchJournal}
             />
-          </Row>
-        )}
+          </Space>
+        </Row>
 
         <Journal data={journal} isLoading={journalIsFetching} />
       </Space>

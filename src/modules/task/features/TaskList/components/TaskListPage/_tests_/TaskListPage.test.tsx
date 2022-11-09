@@ -455,9 +455,11 @@ describe('Страница реестра заявок', () => {
           extendedFilterTestUtils.overdue.getField(taskOverdueDict.False),
         ).toBeChecked()
 
-        expect(
-          extendedFilterTestUtils.completeAt.getStartDateField(),
-        ).toHaveDisplayValue(startDateValue)
+        const startDateField =
+          extendedFilterTestUtils.completeAt.getStartDateField()
+        await waitFor(() => {
+          expect(startDateField).toHaveDisplayValue(startDateValue)
+        })
 
         expect(
           extendedFilterTestUtils.completeAt.getEndDateField(),

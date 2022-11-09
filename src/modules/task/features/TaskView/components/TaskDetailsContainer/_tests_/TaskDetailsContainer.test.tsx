@@ -19,7 +19,7 @@ import {
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import { getTask } from 'fixtures/task'
 import { getWorkGroup } from 'fixtures/workGroup'
 import { UserRolesEnum } from 'shared/constants/roles'
@@ -28,12 +28,7 @@ import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import taskDetailsTestUtils from '../../TaskDetails/_tests_/utils'
 import { findFirstLineButton } from '../../TaskDetails/WorkGroup/_tests_/utils'
 import TaskDetailsContainer from '../../TaskDetailsContainer'
-import {
-  getDescriptionField as getFirstLineFormDescriptionField,
-  getDescriptionFieldContainer as getFirstLineFormDescriptionFieldContainer,
-  getSubmitButton as getTaskFirstLineSubmitButton,
-  queryModal as queryTaskFirstLineModal,
-} from '../../TaskFirstLineModal/_tests_/utils'
+import taskFirstLineModalTestUtils from '../../TaskFirstLineModal/_tests_/utils'
 import { requiredProps } from './constants'
 
 setupApiTests()
@@ -67,18 +62,17 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const modal = queryTaskFirstLineModal()
+          const modal = taskFirstLineModalTestUtils.queryModal()
           expect(modal).not.toBeInTheDocument()
           expect(requiredProps.closeTaskDetails).toBeCalledTimes(1)
         })
@@ -116,19 +110,18 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
           const descriptionContainer =
-            getFirstLineFormDescriptionFieldContainer()
+            taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
           const errorMsg = await within(descriptionContainer).findByText(
             head(badRequestErrorResponse.description)!,
@@ -165,12 +158,11 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
@@ -211,12 +203,11 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
@@ -253,12 +244,11 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
@@ -295,18 +285,17 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const modal = queryTaskFirstLineModal()
+          const modal = taskFirstLineModalTestUtils.queryModal()
           expect(modal).not.toBeInTheDocument()
           expect(requiredProps.closeTaskDetails).toBeCalledTimes(1)
         })
@@ -344,19 +333,18 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
           const descriptionContainer =
-            getFirstLineFormDescriptionFieldContainer()
+            taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
           const errorMsg = await within(descriptionContainer).findByText(
             head(badRequestErrorResponse.description)!,
@@ -393,12 +381,11 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
@@ -439,12 +426,11 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
@@ -481,12 +467,11 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await waitFor(async () => {
-            const description = getFirstLineFormDescriptionField()
-            await user.type(description, generateWord())
-          })
+          await taskFirstLineModalTestUtils.findModal()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, generateWord())
 
-          const submitButton = getTaskFirstLineSubmitButton()
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
           await loadingStartedByButton(firstLineButton)
