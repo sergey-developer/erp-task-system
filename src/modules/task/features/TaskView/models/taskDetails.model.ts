@@ -1,4 +1,4 @@
-import { TaskDetailsWorkGroupModel } from 'modules/task/features/TaskView/models/taskDetailsWorkGroup.model'
+import { TaskDetailsWorkGroupModel } from 'modules/task/features/TaskView/models'
 import { BaseTaskModel, TaskAssigneeModel } from 'modules/task/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 

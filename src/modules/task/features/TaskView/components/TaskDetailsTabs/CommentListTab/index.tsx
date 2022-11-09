@@ -58,7 +58,12 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
       : commentList.slice(0, DISPLAYABLE_COUNT)
 
   return (
-    <Space direction='vertical' size='large' $block>
+    <Space
+      data-testid='task-comment-list-tab'
+      direction='vertical'
+      size='large'
+      $block
+    >
       <Row justify='space-between'>
         <Title level={5}>{title}</Title>
 
@@ -76,7 +81,10 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
         isLoading={createCommentIsLoading}
       />
 
-      <LoadingArea isLoading={commentListIsFetching}>
+      <LoadingArea
+        data-testid='spinner-task-comment-list'
+        isLoading={commentListIsFetching}
+      >
         <CommentList
           isLoading={commentListIsFetching}
           data={displayableComments}
