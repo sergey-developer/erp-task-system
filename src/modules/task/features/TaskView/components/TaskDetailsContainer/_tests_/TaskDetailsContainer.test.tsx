@@ -19,7 +19,7 @@ import {
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { getTask } from 'fixtures/task'
 import { getWorkGroup } from 'fixtures/workGroup'
 import { UserRolesEnum } from 'shared/constants/roles'
@@ -62,18 +62,18 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          const modal = await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const modal = taskFirstLineModalTestUtils.queryModal()
-          expect(modal).not.toBeInTheDocument()
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
           expect(requiredProps.closeTaskDetails).toBeCalledTimes(1)
         })
       })
@@ -285,18 +285,18 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          const modal = await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const modal = taskFirstLineModalTestUtils.queryModal()
-          expect(modal).not.toBeInTheDocument()
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
           expect(requiredProps.closeTaskDetails).toBeCalledTimes(1)
         })
       })

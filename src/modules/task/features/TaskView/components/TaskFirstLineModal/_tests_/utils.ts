@@ -2,9 +2,6 @@ import { getButtonIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 
 const getModal = () => screen.getByTestId('modal-task-first-line')
-
-const queryModal = () => screen.queryByTestId('modal-task-first-line')
-
 const findModal = async () => screen.findByTestId('modal-task-first-line')
 
 const getDescriptionField = () =>
@@ -21,7 +18,6 @@ const getCancelButton = () => getButtonIn(getModal(), /отменить/i)
 
 const utils = {
   getModal,
-  queryModal,
   findModal,
   getDescriptionField,
   getDescriptionFieldContainer,
