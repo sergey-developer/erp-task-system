@@ -1,9 +1,9 @@
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 import addDotAtEnd from 'shared/utils/string/addDotToEnd'
 import getFirstLetterInUpperCase from 'shared/utils/string/getFirstLetterInUpperCase'
 import makeString from 'shared/utils/string/makeString'
 
-const getShortUserName = <T extends Omit<BaseUserModel, 'id' | 'avatar'>>({
+const getShortUserName = <T extends Omit<UserModel, 'id'>>({
   firstName,
   lastName,
   middleName,

@@ -27,9 +27,10 @@ export const requiredProps: TaskDetailsProps = {
   takeTask: jest.fn(),
   takeTaskIsLoading: false,
 
+  reclassificationRequest: null,
+  reclassificationRequestIsLoading: false,
   createReclassificationRequest: jest.fn(),
   createReclassificationRequestIsLoading: false,
-  reclassificationRequest: null,
 
   onExpandAdditionalInfo: jest.fn(),
   additionalInfoExpanded: false,

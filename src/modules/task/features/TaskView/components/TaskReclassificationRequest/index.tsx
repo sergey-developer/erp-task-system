@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 
 import { QuestionCircleIcon } from 'components/Icons'
 import SeparatedText from 'components/Texts/SeparatedText'
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
@@ -14,8 +14,8 @@ import { WrapperStyled } from './styles'
 
 const { Text, Title, Paragraph } = Typography
 
-type TaskRequestStatusProps = {
-  user: Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>
+export type TaskReclassificationRequestProps = {
+  user: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
   title: string
   createdAt: string
   comment: string
@@ -23,7 +23,7 @@ type TaskRequestStatusProps = {
   onAction: () => void
 }
 
-const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
+const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
   user,
   title,
   comment,
@@ -34,7 +34,10 @@ const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
   const breakpoints = useBreakpoint()
 
   return (
-    <WrapperStyled $breakpoints={breakpoints}>
+    <WrapperStyled
+      data-testid='task-reclassification-request'
+      $breakpoints={breakpoints}
+    >
       <Space size='middle' align='baseline'>
         <QuestionCircleIcon $size='large' />
 
@@ -62,4 +65,4 @@ const TaskRequestStatus: FC<TaskRequestStatusProps> = ({
   )
 }
 
-export default TaskRequestStatus
+export default TaskReclassificationRequest

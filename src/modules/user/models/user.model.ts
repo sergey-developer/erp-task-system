@@ -1,4 +1,4 @@
-export type BaseUserModel = {
+export type UserModel = {
   id: number
   firstName: string
   lastName: string

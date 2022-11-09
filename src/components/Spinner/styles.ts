@@ -10,16 +10,9 @@ const dimensionStyles: Record<
 > = {
   block: css<SpinnerStyledProps>`
     width: 100%;
-    display: flex;
-
-    ${({ $centered }) => ($centered ? 'justify-content: center;' : '')}
   `,
   parent: css<SpinnerStyledProps>`
     height: 100%;
-    display: flex;
-
-    ${({ $centered }) =>
-      $centered ? 'justify-content: center; align-items: center;' : ''}
   `,
 }
 
@@ -30,7 +23,16 @@ type SpinnerStyledProps = {
 }
 
 export const SpinnerStyled = styled(Spin)<SpinnerStyledProps>`
-  ${({ $dimension }) => ($dimension ? dimensionStyles[$dimension] : '')}
+  ${({ $dimension }) =>
+    $dimension
+      ? `
+        display: flex;
+        flex-direction: column;
+        ${dimensionStyles[$dimension]}`
+      : ''}
+
+  ${({ $centered }) =>
+    $centered ? 'justify-content: center; align-items: center;' : ''}
 
   ${({ $offset }) => {
     if (!$offset) return ''

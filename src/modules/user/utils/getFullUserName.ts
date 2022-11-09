@@ -1,7 +1,7 @@
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 import makeString from 'shared/utils/string/makeString'
 
-const getFullUserName = <T extends Omit<BaseUserModel, 'id' | 'avatar'>>({
+const getFullUserName = <T extends Omit<UserModel, 'id'>>({
   firstName,
   lastName,
   middleName,

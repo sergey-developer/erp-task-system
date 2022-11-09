@@ -39,10 +39,12 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
 
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
 
-  const { currentData: reclassificationRequest = null } =
-    useGetTaskReclassificationRequest(taskId, {
-      skip: !taskExtendedStatus.isInReclassification,
-    })
+  const {
+    currentData: reclassificationRequest = null,
+    isFetching: reclassificationRequestIsFetching,
+  } = useGetTaskReclassificationRequest(taskId, {
+    skip: !taskExtendedStatus.isInReclassification,
+  })
 
   const {
     fn: createReclassificationRequest,
@@ -88,6 +90,7 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       updateAssignee={updateAssignee}
       updateAssigneeIsLoading={updateAssigneeIsLoading}
       reclassificationRequest={reclassificationRequest}
+      reclassificationRequestIsLoading={reclassificationRequestIsFetching}
       createReclassificationRequest={createReclassificationRequest}
       createReclassificationRequestIsLoading={
         createReclassificationRequestIsLoading
