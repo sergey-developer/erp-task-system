@@ -1,5 +1,7 @@
-import { BaseUserModel } from './baseUser.model'
-
-export type UserModel = BaseUserModel & {
+export type UserModel = {
+  id: number
+  firstName: string
+  lastName: string
+  middleName?: string
   avatar?: string
 }

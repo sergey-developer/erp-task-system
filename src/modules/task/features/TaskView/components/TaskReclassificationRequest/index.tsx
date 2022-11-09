@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 
 import { QuestionCircleIcon } from 'components/Icons'
 import SeparatedText from 'components/Texts/SeparatedText'
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
@@ -15,7 +15,7 @@ import { WrapperStyled } from './styles'
 const { Text, Title, Paragraph } = Typography
 
 export type TaskReclassificationRequestProps = {
-  user: Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>
+  user: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
   title: string
   createdAt: string
   comment: string

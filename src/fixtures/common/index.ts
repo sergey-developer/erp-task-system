@@ -1,2 +1,2 @@
-export * from './baseUser'
+export * from './user'
 export * from './commentAuthor'

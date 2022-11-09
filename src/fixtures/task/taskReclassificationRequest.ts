@@ -13,5 +13,5 @@ export const getTaskReclassificationRequest =
       author: commonFixtures.getCommentAuthor(),
       createdAt: generateDateString(),
     },
-    user: commonFixtures.getBaseUser(),
+    user: commonFixtures.getUser(),
   })
