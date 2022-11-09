@@ -8,11 +8,12 @@ import { commonEllipsisConfig } from 'shared/constants/text'
 
 const { Title, Paragraph } = Typography
 
-type ResolutionTabProps = Pick<
+export type ResolutionTabProps = Pick<
   TaskDetailsModel,
-  'type' | 'techResolution' | 'userResolution'
+  'techResolution' | 'userResolution'
 > & {
   title: string
+  type?: TaskDetailsModel['type']
 }
 
 const ResolutionTab: FC<ResolutionTabProps> = ({
@@ -24,7 +25,7 @@ const ResolutionTab: FC<ResolutionTabProps> = ({
   const taskType = useTaskType(type)
 
   return (
-    <Space direction='vertical' size='large'>
+    <Space data-testid='task-resolution-tab' direction='vertical' size='large'>
       <Title level={5}>{title}</Title>
 
       {!!techResolution && (
