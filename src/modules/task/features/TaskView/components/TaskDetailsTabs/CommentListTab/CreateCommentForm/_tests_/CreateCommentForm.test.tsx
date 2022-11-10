@@ -1,5 +1,4 @@
-import { generateWord, loadingStartedByButton, render } from '_tests_/utils'
-import { screen } from '@testing-library/react'
+import { generateWord, render } from '_tests_/utils'
 import {
   DEFAULT_LONG_TEXT_LENGTH,
   FIELD_CAN_NOT_BE_EMPTY_MSG,
@@ -35,9 +34,8 @@ describe('Форма добавления комментария', () => {
     test('Можно ввести значение', async () => {
       const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-      const commentInput = testUtils.getCommentInput()
       const commentText = generateWord()
-      await user.type(commentInput, commentText)
+      const commentInput = await testUtils.userEntersComment(user, commentText)
 
       expect(commentInput).toHaveValue(commentText)
     })
@@ -46,13 +44,11 @@ describe('Форма добавления комментария', () => {
       test('Если превысить лимит символов', async () => {
         const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-        const commentInput = testUtils.getCommentInput()
         const commentText = generateWord({
           length: DEFAULT_LONG_TEXT_LENGTH + 1,
         })
-        await user.type(commentInput, commentText)
-
-        const errorMessage = await screen.findByText(
+        await testUtils.userEntersComment(user, commentText)
+        const error = await testUtils.findCommentFieldError(
           TEXT_MAX_LENGTH_MSG.replace(
             // eslint-disable-next-line no-template-curly-in-string
             '${max}',
@@ -60,27 +56,27 @@ describe('Форма добавления комментария', () => {
           ),
         )
 
-        expect(errorMessage).toBeInTheDocument()
+        expect(error).toBeInTheDocument()
       })
 
       test('Если ввести только пробелы', async () => {
         const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-        const commentInput = testUtils.getCommentInput()
-        await user.type(commentInput, ' ')
+        await testUtils.userEntersComment(user, ' ')
+        const error = await testUtils.findCommentFieldError(
+          FIELD_CAN_NOT_BE_EMPTY_MSG,
+        )
 
-        const errorMessage = await screen.findByText(FIELD_CAN_NOT_BE_EMPTY_MSG)
-        expect(errorMessage).toBeInTheDocument()
+        expect(error).toBeInTheDocument()
       })
 
       test('Если не заполнить поле и нажать кнопку отправки', async () => {
         const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-        const submitButton = testUtils.getSubmitButton()
-        await user.click(submitButton)
+        await testUtils.userClickSubmitButton(user)
+        const error = await testUtils.findCommentFieldError(REQUIRED_FIELD_MSG)
 
-        const errorMessage = await screen.findByText(REQUIRED_FIELD_MSG)
-        expect(errorMessage).toBeInTheDocument()
+        expect(error).toBeInTheDocument()
       })
     })
   })
@@ -97,19 +93,14 @@ describe('Форма добавления комментария', () => {
 
     test('Отображает процесс загрузки', async () => {
       render(<CreateCommentForm {...requiredProps} isLoading />)
-
-      const submitButton = testUtils.getSubmitButton()
-      await loadingStartedByButton(submitButton)
+      await testUtils.loadingStarted()
     })
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-      const commentInput = testUtils.getCommentInput()
-      const submitButton = testUtils.getSubmitButton()
-
-      await user.type(commentInput, generateWord())
-      await user.click(submitButton)
+      await testUtils.userEntersComment(user, generateWord())
+      await testUtils.userClickSubmitButton(user)
 
       expect(requiredProps.onSubmit).toBeCalledTimes(1)
     })

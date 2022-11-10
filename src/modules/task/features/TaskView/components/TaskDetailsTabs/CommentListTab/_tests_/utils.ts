@@ -11,7 +11,7 @@ const getExpandButton = (commentCount?: number) =>
     getContainer(),
     commentCount
       ? `Отобразить все комментарии: ${commentCount}`
-      : /Отобразить все комментарии/i,
+      : /Отобразить все комментарии/,
   )
 
 const queryExpandButton = (commentCount?: number) =>
@@ -19,7 +19,7 @@ const queryExpandButton = (commentCount?: number) =>
     getContainer(),
     commentCount
       ? `Отобразить все комментарии: ${commentCount}`
-      : /Отобразить все комментарии/i,
+      : /Отобразить все комментарии/,
   )
 
 const userClickExpandButton = async (user: UserEvent) => {
@@ -29,7 +29,7 @@ const userClickExpandButton = async (user: UserEvent) => {
 }
 
 const getCollapseButton = () =>
-  getButtonIn(getContainer(), /Скрыть комментарии/)
+  getButtonIn(getContainer(), /скрыть комментарии/i)
 
 const userClickCollapseButton = async (user: UserEvent) => {
   const button = getCollapseButton()

@@ -11,7 +11,7 @@ import Comment from './Comment'
 
 const { Text } = Typography
 
-type CommentListProps = {
+export type CommentListProps = {
   data: GetTaskCommentListResponseModel
   isLoading: boolean
 }

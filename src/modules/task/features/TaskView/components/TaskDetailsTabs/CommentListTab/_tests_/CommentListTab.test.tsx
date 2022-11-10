@@ -15,7 +15,7 @@ import {
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { within } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import * as taskFixtures from 'fixtures/task'
 import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
@@ -81,7 +81,7 @@ describe('Вкладка списка комментариев заявки', ()
     })
 
     describe('Не отображается', () => {
-      test('Если все условия соблюдены, но комментариев не больше отображаемого кол-ва по умолчанию', async () => {
+      test('Если все условия соблюдены, но комментариев не более отображаемого кол-ва по умолчанию', async () => {
         mockGetTaskCommentListSuccess(requiredProps.taskId, {
           body: taskFixtures.getTaskCommentList(DEFAULT_DISPLAYABLE_COUNT),
         })
@@ -113,9 +113,9 @@ describe('Вкладка списка комментариев заявки', ()
     })
 
     test('Раскрывает все комментарии', async () => {
-      const commentCount = DEFAULT_DISPLAYABLE_COUNT + 1
+      const allCommentCount = DEFAULT_DISPLAYABLE_COUNT + 1
       mockGetTaskCommentListSuccess(requiredProps.taskId, {
-        body: taskFixtures.getTaskCommentList(commentCount),
+        body: taskFixtures.getTaskCommentList(allCommentCount),
       })
 
       const { user } = render(<CommentListTab {...requiredProps} />, {
@@ -123,16 +123,22 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       await commentListTestUtils.loadingFinished()
-      await commentListTabTestUtils.userClickExpandButton(user)
-      const commentList = commentListTestUtils.getAllComments()
 
-      expect(commentList).toHaveLength(commentCount)
+      expect(commentListTestUtils.getAllComments()).toHaveLength(
+        DEFAULT_DISPLAYABLE_COUNT,
+      )
+
+      await commentListTabTestUtils.userClickExpandButton(user)
+
+      expect(commentListTestUtils.getAllComments()).toHaveLength(
+        allCommentCount,
+      )
     })
 
     test('Скрывает все комментарии', async () => {
-      const commentCount = DEFAULT_DISPLAYABLE_COUNT + 1
+      const allCommentCount = DEFAULT_DISPLAYABLE_COUNT + 1
       mockGetTaskCommentListSuccess(requiredProps.taskId, {
-        body: taskFixtures.getTaskCommentList(commentCount),
+        body: taskFixtures.getTaskCommentList(allCommentCount),
       })
 
       const { user } = render(<CommentListTab {...requiredProps} />, {
@@ -140,11 +146,22 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       await commentListTestUtils.loadingFinished()
-      await commentListTabTestUtils.userClickExpandButton(user)
-      await commentListTabTestUtils.userClickCollapseButton(user)
-      const commentList = commentListTestUtils.getAllComments()
 
-      expect(commentList).toHaveLength(DEFAULT_DISPLAYABLE_COUNT)
+      expect(commentListTestUtils.getAllComments()).toHaveLength(
+        DEFAULT_DISPLAYABLE_COUNT,
+      )
+
+      await commentListTabTestUtils.userClickExpandButton(user)
+
+      expect(commentListTestUtils.getAllComments()).toHaveLength(
+        allCommentCount,
+      )
+
+      await commentListTabTestUtils.userClickCollapseButton(user)
+
+      expect(commentListTestUtils.getAllComments()).toHaveLength(
+        DEFAULT_DISPLAYABLE_COUNT,
+      )
     })
   })
 
@@ -260,10 +277,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          const error = await createCommentFormTestUtils.findChildByText(
-            CREATE_TASK_COMMENT_ERROR_MSG,
-          )
-
+          const error = await screen.findByText(CREATE_TASK_COMMENT_ERROR_MSG)
           expect(error).toBeInTheDocument()
         })
 
@@ -284,10 +298,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          const error = await createCommentFormTestUtils.findChildByText(
-            CREATE_TASK_COMMENT_ERROR_MSG,
-          )
-
+          const error = await screen.findByText(CREATE_TASK_COMMENT_ERROR_MSG)
           expect(error).toBeInTheDocument()
         })
 
@@ -308,10 +319,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          const error = await createCommentFormTestUtils.findChildByText(
-            UNKNOWN_ERROR_MSG,
-          )
-
+          const error = await screen.findByText(UNKNOWN_ERROR_MSG)
           expect(error).toBeInTheDocument()
         })
       })
