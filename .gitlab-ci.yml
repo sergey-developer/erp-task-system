@@ -32,7 +32,7 @@ Tests:
   only:
     - rc
     - master
-    - task-20635
+    - develop
   tags:
     - docker
 
