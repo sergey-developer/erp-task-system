@@ -1,11 +1,22 @@
-import { getButtonIn, validatingFinished } from '_tests_/utils'
+import {
+  getButtonIn,
+  loadingFinishedByButton,
+  loadingStartedByButton,
+  validatingFinished,
+} from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const getContainer = () => screen.getByTestId('form-create-comment')
+const getContainer = () => screen.getByTestId('create-comment-form')
+
+const findChildByText = (text: string) =>
+  within(getContainer()).findByText(text)
 
 const getCommentField = () =>
   within(getContainer()).getByTestId('field-comment')
+
+const findCommentFieldError = (error: string) =>
+  within(getCommentField()).findByText(error)
 
 const getCommentInput = () =>
   within(getCommentField()).getByPlaceholderText(
@@ -33,16 +44,31 @@ const userClickSubmitButton = async (user: UserEvent) => {
   return button
 }
 
+const loadingStarted = async () => {
+  const submitButton = getSubmitButton()
+  await loadingStartedByButton(submitButton)
+}
+
+const loadingFinished = async () => {
+  const submitButton = getSubmitButton()
+  await loadingFinishedByButton(submitButton)
+}
+
 const utils = {
   getContainer,
+  findChildByText,
 
   getCommentField,
+  findCommentFieldError,
   getCommentInput,
   userEntersComment,
   commentValidatingFinished,
 
   getSubmitButton,
   userClickSubmitButton,
+
+  loadingStarted,
+  loadingFinished,
 }
 
 export default utils

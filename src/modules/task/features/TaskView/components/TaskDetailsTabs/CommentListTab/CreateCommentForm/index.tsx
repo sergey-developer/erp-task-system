@@ -20,7 +20,7 @@ const CreateCommentForm: FC<CreateCommentFormProps> = ({
 
   return (
     <Space
-      data-testid='form-create-comment'
+      data-testid='create-comment-form'
       direction='vertical'
       size='middle'
       $block

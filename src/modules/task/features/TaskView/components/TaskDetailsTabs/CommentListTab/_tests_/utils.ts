@@ -1,8 +1,4 @@
-import {
-  getButtonIn,
-  loadingFinishedBySpinner,
-  queryButtonIn,
-} from '_tests_/utils'
+import { getButtonIn, queryButtonIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -41,8 +37,6 @@ const userClickCollapseButton = async (user: UserEvent) => {
   return button
 }
 
-const loadingFinished = loadingFinishedBySpinner('task-comment-list-spinner')
-
 const utils = {
   getContainer,
   getChildByText,
@@ -53,8 +47,6 @@ const utils = {
 
   getCollapseButton,
   userClickCollapseButton,
-
-  loadingFinished,
 }
 
 export default utils

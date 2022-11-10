@@ -11,14 +11,11 @@ import {
 import {
   generateWord,
   getStoreWithAuth,
-  loadingFinishedByButton,
-  loadingStartedByButton,
   render,
   setupApiTests,
   setupNotifications,
-  validatingFinished,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
+import { within } from '@testing-library/react'
 import * as taskFixtures from 'fixtures/task'
 import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
@@ -38,6 +35,7 @@ setupApiTests()
 describe('Вкладка списка комментариев заявки', () => {
   test('Заголовок отображается корректно', () => {
     render(<CommentListTab {...requiredProps} />)
+
     expect(
       commentListTabTestUtils.getChildByText(requiredProps.title),
     ).toBeInTheDocument()
@@ -55,7 +53,7 @@ describe('Вкладка списка комментариев заявки', ()
           store: getStoreWithAuth(),
         })
 
-        await commentListTabTestUtils.loadingFinished()
+        await commentListTestUtils.loadingFinished()
         const button = commentListTabTestUtils.getExpandButton(commentCount)
 
         expect(button).toBeInTheDocument()
@@ -73,7 +71,7 @@ describe('Вкладка списка комментариев заявки', ()
           store: getStoreWithAuth(),
         })
 
-        await commentListTabTestUtils.loadingFinished()
+        await commentListTestUtils.loadingFinished()
         await commentListTabTestUtils.userClickExpandButton(user)
         const button = commentListTabTestUtils.getCollapseButton()
 
@@ -92,16 +90,24 @@ describe('Вкладка списка комментариев заявки', ()
           store: getStoreWithAuth(),
         })
 
-        await commentListTabTestUtils.loadingFinished()
+        await commentListTestUtils.loadingFinished()
         const button = commentListTabTestUtils.queryExpandButton()
 
         expect(button).not.toBeInTheDocument()
       })
 
       test('Если нет комментариев', async () => {
-        render(<CommentListTab {...requiredProps} />)
+        mockGetTaskCommentListSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTaskCommentList(0),
+        })
 
+        render(<CommentListTab {...requiredProps} />, {
+          store: getStoreWithAuth(),
+        })
+
+        await commentListTestUtils.loadingFinished()
         const button = commentListTabTestUtils.queryExpandButton()
+
         expect(button).not.toBeInTheDocument()
       })
     })
@@ -116,7 +122,7 @@ describe('Вкладка списка комментариев заявки', ()
         store: getStoreWithAuth(),
       })
 
-      await commentListTabTestUtils.loadingFinished()
+      await commentListTestUtils.loadingFinished()
       await commentListTabTestUtils.userClickExpandButton(user)
       const commentList = commentListTestUtils.getAllComments()
 
@@ -133,7 +139,7 @@ describe('Вкладка списка комментариев заявки', ()
         store: getStoreWithAuth(),
       })
 
-      await commentListTabTestUtils.loadingFinished()
+      await commentListTestUtils.loadingFinished()
       await commentListTabTestUtils.userClickExpandButton(user)
       await commentListTabTestUtils.userClickCollapseButton(user)
       const commentList = commentListTestUtils.getAllComments()
@@ -146,9 +152,7 @@ describe('Вкладка списка комментариев заявки', ()
     describe('Роль - любая', () => {
       test('Отображается', () => {
         render(<CommentListTab {...requiredProps} />)
-
-        const formContainer = createCommentFormTestUtils.getContainer()
-        expect(formContainer).toBeInTheDocument()
+        expect(createCommentFormTestUtils.getContainer()).toBeInTheDocument()
       })
 
       describe('При успешном запросе', () => {
@@ -165,23 +169,18 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          // const commentField = createCommentFormTestUtils.getCommentField()
-
+          await commentListTestUtils.loadingFinished()
           await createCommentFormTestUtils.userEntersComment(
             user,
             newComment.text,
           )
-          // await createCommentFormTestUtils.commentValidatingFinished()
-          // await validatingFinished(commentField)
+          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.loadingStarted()
+          await createCommentFormTestUtils.loadingFinished()
 
-          const submitButton =
-            await createCommentFormTestUtils.userClickSubmitButton(user)
-
-          await loadingStartedByButton(submitButton)
-          await loadingFinishedByButton(submitButton)
-
-          const firstComment = commentListTestUtils.getFirstComment()
-          const newCommentText = within(firstComment).getByText(newComment.text)
+          const newCommentText = within(
+            commentListTestUtils.getFirstComment(),
+          ).getByText(newComment.text)
 
           expect(newCommentText).toBeInTheDocument()
         })
@@ -197,16 +196,14 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          const submitButton = createCommentFormTestUtils.getSubmitButton()
-          const commentField = createCommentFormTestUtils.getCommentField()
-          const commentInput = createCommentFormTestUtils.getCommentInput()
-
-          await user.type(commentInput, newComment.text)
-          await validatingFinished(commentField)
-
-          await user.click(submitButton)
-          await loadingStartedByButton(submitButton)
-          await loadingFinishedByButton(submitButton)
+          await commentListTestUtils.loadingFinished()
+          await createCommentFormTestUtils.userEntersComment(
+            user,
+            newComment.text,
+          )
+          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.loadingStarted()
+          await createCommentFormTestUtils.loadingFinished()
 
           expect(createCommentFormTestUtils.getCommentInput()).not.toHaveValue()
         })
@@ -230,21 +227,20 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          const submitButton = createCommentFormTestUtils.getSubmitButton()
-          const commentField = createCommentFormTestUtils.getCommentField()
-          const commentInput = createCommentFormTestUtils.getCommentInput()
+          await commentListTestUtils.loadingFinished()
+          await createCommentFormTestUtils.userEntersComment(
+            user,
+            generateWord(),
+          )
+          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.loadingStarted()
+          await createCommentFormTestUtils.loadingFinished()
 
-          await user.type(commentInput, generateWord())
-          await validatingFinished(commentField)
-
-          await user.click(submitButton)
-          await loadingStartedByButton(submitButton)
-          await loadingFinishedByButton(submitButton)
-
-          const errorMsg = await within(commentField).findByText(
+          const error = await createCommentFormTestUtils.findCommentFieldError(
             head(badRequestErrorResponse.comment)!,
           )
-          expect(errorMsg).toBeInTheDocument()
+
+          expect(error).toBeInTheDocument()
         })
 
         test('Корректно обрабатывается ошибка 404', async () => {
@@ -255,21 +251,20 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          const submitButton = createCommentFormTestUtils.getSubmitButton()
-          const commentField = createCommentFormTestUtils.getCommentField()
-          const commentInput = createCommentFormTestUtils.getCommentInput()
+          await commentListTestUtils.loadingFinished()
+          await createCommentFormTestUtils.userEntersComment(
+            user,
+            generateWord(),
+          )
+          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.loadingStarted()
+          await createCommentFormTestUtils.loadingFinished()
 
-          await user.type(commentInput, generateWord())
-          await validatingFinished(commentField)
-
-          await user.click(submitButton)
-          await loadingStartedByButton(submitButton)
-          await loadingFinishedByButton(submitButton)
-
-          const errorMsg = await screen.findByText(
+          const error = await createCommentFormTestUtils.findChildByText(
             CREATE_TASK_COMMENT_ERROR_MSG,
           )
-          expect(errorMsg).toBeInTheDocument()
+
+          expect(error).toBeInTheDocument()
         })
 
         test('Корректно обрабатывается ошибка 500', async () => {
@@ -280,21 +275,20 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          const submitButton = createCommentFormTestUtils.getSubmitButton()
-          const commentField = createCommentFormTestUtils.getCommentField()
-          const commentInput = createCommentFormTestUtils.getCommentInput()
+          await commentListTestUtils.loadingFinished()
+          await createCommentFormTestUtils.userEntersComment(
+            user,
+            generateWord(),
+          )
+          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.loadingStarted()
+          await createCommentFormTestUtils.loadingFinished()
 
-          await user.type(commentInput, generateWord())
-          await validatingFinished(commentField)
-
-          await user.click(submitButton)
-          await loadingStartedByButton(submitButton)
-          await loadingFinishedByButton(submitButton)
-
-          const errorMsg = await screen.findByText(
+          const error = await createCommentFormTestUtils.findChildByText(
             CREATE_TASK_COMMENT_ERROR_MSG,
           )
-          expect(errorMsg).toBeInTheDocument()
+
+          expect(error).toBeInTheDocument()
         })
 
         test('Корректно обрабатывается неизвестная ошибка', async () => {
@@ -305,19 +299,20 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          const submitButton = createCommentFormTestUtils.getSubmitButton()
-          const commentField = createCommentFormTestUtils.getCommentField()
-          const commentInput = createCommentFormTestUtils.getCommentInput()
+          await commentListTestUtils.loadingFinished()
+          await createCommentFormTestUtils.userEntersComment(
+            user,
+            generateWord(),
+          )
+          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.loadingStarted()
+          await createCommentFormTestUtils.loadingFinished()
 
-          await user.type(commentInput, generateWord())
-          await validatingFinished(commentField)
+          const error = await createCommentFormTestUtils.findChildByText(
+            UNKNOWN_ERROR_MSG,
+          )
 
-          await user.click(submitButton)
-          await loadingStartedByButton(submitButton)
-          await loadingFinishedByButton(submitButton)
-
-          const errorMsg = await screen.findByText(UNKNOWN_ERROR_MSG)
-          expect(errorMsg).toBeInTheDocument()
+          expect(error).toBeInTheDocument()
         })
       })
     })
@@ -339,17 +334,26 @@ describe('Вкладка списка комментариев заявки', ()
         store: getStoreWithAuth(),
       })
 
-      await commentListTabTestUtils.loadingFinished()
+      await commentListTestUtils.loadingFinished()
       const commentList = commentListTestUtils.getAllComments()
 
       expect(commentList).toHaveLength(commentCount)
     })
 
     test('Комментарии не отображаются если их нет', async () => {
-      render(<CommentListTab {...requiredProps} />)
+      const commentCount = 0
+      mockGetTaskCommentListSuccess(requiredProps.taskId, {
+        body: taskFixtures.getTaskCommentList(commentCount),
+      })
 
+      render(<CommentListTab {...requiredProps} />, {
+        store: getStoreWithAuth(),
+      })
+
+      await commentListTestUtils.loadingFinished()
       const commentList = commentListTestUtils.queryAllComments()
-      expect(commentList).toHaveLength(0)
+
+      expect(commentList).toHaveLength(commentCount)
     })
   })
 })
