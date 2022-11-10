@@ -6,6 +6,7 @@ import {
   getServerErrorMockFn,
   getSuccessMockFn,
 } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 import { CreateTaskCommentResponseModel } from 'modules/task/features/TaskView/models'
 import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -16,11 +17,11 @@ const getCreateTaskCommentMockFn = (taskId: number) =>
 
 export const mockCreateTaskCommentSuccess = (
   taskId: number,
-  response?: CreateTaskCommentResponseModel,
+  options?: Partial<ResponseResolverOptions<CreateTaskCommentResponseModel>>,
 ) => {
   const mockCreateTaskComment = getSuccessMockFn(
     getCreateTaskCommentMockFn(taskId),
-    { body: response },
+    options,
   )
 
   mockCreateTaskComment()
@@ -28,11 +29,11 @@ export const mockCreateTaskCommentSuccess = (
 
 export const mockCreateTaskCommentBadRequestError = <T extends object>(
   taskId: number,
-  response?: ErrorData<T>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => {
   const mockCreateTaskComment = getBadRequestErrorMockFn(
     getCreateTaskCommentMockFn(taskId),
-    { body: response },
+    options,
   )
 
   mockCreateTaskComment()
@@ -40,11 +41,11 @@ export const mockCreateTaskCommentBadRequestError = <T extends object>(
 
 export const mockCreateTaskCommentNotFoundError = <T extends object>(
   taskId: number,
-  response?: ErrorData<T>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => {
   const mockCreateTaskComment = getNotFoundErrorMockFn(
     getCreateTaskCommentMockFn(taskId),
-    { body: response },
+    options,
   )
 
   mockCreateTaskComment()
@@ -52,11 +53,11 @@ export const mockCreateTaskCommentNotFoundError = <T extends object>(
 
 export const mockCreateTaskCommentForbiddenError = <T extends object>(
   taskId: number,
-  response?: ErrorData<T>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => {
   const mockCreateTaskComment = getForbiddenErrorMockFn(
     getCreateTaskCommentMockFn(taskId),
-    { body: response },
+    options,
   )
 
   mockCreateTaskComment()
@@ -64,11 +65,11 @@ export const mockCreateTaskCommentForbiddenError = <T extends object>(
 
 export const mockCreateTaskCommentServerError = <T extends object>(
   taskId: number,
-  response?: ErrorData<T>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => {
   const mockCreateTaskComment = getServerErrorMockFn(
     getCreateTaskCommentMockFn(taskId),
-    { body: response },
+    options,
   )
 
   mockCreateTaskComment()

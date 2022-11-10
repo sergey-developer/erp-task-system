@@ -23,45 +23,122 @@ import * as taskFixtures from 'fixtures/task'
 import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
-import {
-  getCommentField,
-  getCommentInput,
-  getFormContainer,
-  getSubmitButton,
-} from '../CreateCommentForm/_tests_/utils'
+import commentListTestUtils from '../CommentList/_tests_/utils'
+import createCommentFormTestUtils from '../CreateCommentForm/_tests_/utils'
 import {
   CreateCommentFormErrors,
   CreateCommentFormFields,
 } from '../CreateCommentForm/interfaces'
-import CommentListTab from '../index'
+import CommentListTab, { DEFAULT_DISPLAYABLE_COUNT } from '../index'
 import { requiredProps } from './constants'
-import testUtils from './utils'
+import commentListTabTestUtils from './utils'
 
 setupApiTests()
 
 describe('Вкладка списка комментариев заявки', () => {
   test('Заголовок отображается корректно', () => {
     render(<CommentListTab {...requiredProps} />)
-    expect(testUtils.getChildByText(requiredProps.title)).toBeInTheDocument()
+    expect(
+      commentListTabTestUtils.getChildByText(requiredProps.title),
+    ).toBeInTheDocument()
   })
 
-  describe('Кнопка раскрытия всех комментариев"', () => {
-    test('Отображается корректно если все условия соблюдены', async () => {
-      const commentCount = 4
-      mockGetTaskCommentListSuccess(
-        requiredProps.taskId,
-        taskFixtures.getTaskCommentList(commentCount),
-      )
+  describe('Кнопка раскрытия/скрытия комментариев', () => {
+    describe('Отображается корректно если все условия соблюдены', () => {
+      test('Кнопка раскрытия', async () => {
+        const commentCount = DEFAULT_DISPLAYABLE_COUNT + 1
+        mockGetTaskCommentListSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTaskCommentList(commentCount),
+        })
 
-      render(<CommentListTab {...requiredProps} />, {
+        render(<CommentListTab {...requiredProps} />, {
+          store: getStoreWithAuth(),
+        })
+
+        await commentListTabTestUtils.loadingFinished()
+        const button = commentListTabTestUtils.getExpandButton(commentCount)
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+        expect(button).toHaveTextContent(new RegExp(String(commentCount)))
+      })
+
+      test('Кнопка скрытия', async () => {
+        const commentCount = DEFAULT_DISPLAYABLE_COUNT + 1
+        mockGetTaskCommentListSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTaskCommentList(commentCount),
+        })
+
+        const { user } = render(<CommentListTab {...requiredProps} />, {
+          store: getStoreWithAuth(),
+        })
+
+        await commentListTabTestUtils.loadingFinished()
+        await commentListTabTestUtils.userClickExpandButton(user)
+        const button = commentListTabTestUtils.getCollapseButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
+    })
+
+    describe('Не отображается', () => {
+      test('Если все условия соблюдены, но комментариев не больше отображаемого кол-ва по умолчанию', async () => {
+        mockGetTaskCommentListSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTaskCommentList(DEFAULT_DISPLAYABLE_COUNT),
+        })
+
+        render(<CommentListTab {...requiredProps} />, {
+          store: getStoreWithAuth(),
+        })
+
+        await commentListTabTestUtils.loadingFinished()
+        const button = commentListTabTestUtils.queryExpandButton()
+
+        expect(button).not.toBeInTheDocument()
+      })
+
+      test('Если нет комментариев', async () => {
+        render(<CommentListTab {...requiredProps} />)
+
+        const button = commentListTabTestUtils.queryExpandButton()
+        expect(button).not.toBeInTheDocument()
+      })
+    })
+
+    test('Раскрывает все комментарии', async () => {
+      const commentCount = DEFAULT_DISPLAYABLE_COUNT + 1
+      mockGetTaskCommentListSuccess(requiredProps.taskId, {
+        body: taskFixtures.getTaskCommentList(commentCount),
+      })
+
+      const { user } = render(<CommentListTab {...requiredProps} />, {
         store: getStoreWithAuth(),
       })
 
-      await testUtils.loadingFinished()
-      const button = testUtils.getExpandButton(commentCount)
+      await commentListTabTestUtils.loadingFinished()
+      await commentListTabTestUtils.userClickExpandButton(user)
+      const commentList = commentListTestUtils.getAllComments()
 
-      expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
+      expect(commentList).toHaveLength(commentCount)
+    })
+
+    test('Скрывает все комментарии', async () => {
+      const commentCount = DEFAULT_DISPLAYABLE_COUNT + 1
+      mockGetTaskCommentListSuccess(requiredProps.taskId, {
+        body: taskFixtures.getTaskCommentList(commentCount),
+      })
+
+      const { user } = render(<CommentListTab {...requiredProps} />, {
+        store: getStoreWithAuth(),
+      })
+
+      await commentListTabTestUtils.loadingFinished()
+      await commentListTabTestUtils.userClickExpandButton(user)
+      await commentListTabTestUtils.userClickCollapseButton(user)
+      const commentList = commentListTestUtils.getAllComments()
+
+      expect(commentList).toHaveLength(DEFAULT_DISPLAYABLE_COUNT)
     })
   })
 
@@ -70,35 +147,40 @@ describe('Вкладка списка комментариев заявки', ()
       test('Отображается', () => {
         render(<CommentListTab {...requiredProps} />)
 
-        const formContainer = getFormContainer()
+        const formContainer = createCommentFormTestUtils.getContainer()
         expect(formContainer).toBeInTheDocument()
       })
 
       describe('При успешном запросе', () => {
         test('Корректно добавляет комментарий в список', async () => {
           const newComment = taskFixtures.getTaskComment()
-          mockCreateTaskCommentSuccess(requiredProps.taskId, newComment)
-          mockGetTaskCommentListSuccess(
-            requiredProps.taskId,
-            taskFixtures.getTaskCommentList(),
-          )
+          mockCreateTaskCommentSuccess(requiredProps.taskId, {
+            body: newComment,
+          })
+          mockGetTaskCommentListSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTaskCommentList(),
+          })
 
           const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          const submitButton = getSubmitButton()
-          const commentField = getCommentField()
-          const commentInput = getCommentInput()
+          // const commentField = createCommentFormTestUtils.getCommentField()
 
-          await user.type(commentInput, newComment.text)
-          await validatingFinished(commentField)
+          await createCommentFormTestUtils.userEntersComment(
+            user,
+            newComment.text,
+          )
+          // await createCommentFormTestUtils.commentValidatingFinished()
+          // await validatingFinished(commentField)
 
-          await user.click(submitButton)
+          const submitButton =
+            await createCommentFormTestUtils.userClickSubmitButton(user)
+
           await loadingStartedByButton(submitButton)
           await loadingFinishedByButton(submitButton)
 
-          const firstComment = testUtils.getFirstComment()
+          const firstComment = commentListTestUtils.getFirstComment()
           const newCommentText = within(firstComment).getByText(newComment.text)
 
           expect(newCommentText).toBeInTheDocument()
@@ -106,16 +188,18 @@ describe('Вкладка списка комментариев заявки', ()
 
         test('Сбрасывает значения полей', async () => {
           const newComment = taskFixtures.getTaskComment()
-          mockCreateTaskCommentSuccess(requiredProps.taskId, newComment)
-          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
+          mockCreateTaskCommentSuccess(requiredProps.taskId, {
+            body: newComment,
+          })
+          mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
 
           const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          const submitButton = getSubmitButton()
-          const commentField = getCommentField()
-          const commentInput = getCommentInput()
+          const submitButton = createCommentFormTestUtils.getSubmitButton()
+          const commentField = createCommentFormTestUtils.getCommentField()
+          const commentInput = createCommentFormTestUtils.getCommentInput()
 
           await user.type(commentInput, newComment.text)
           await validatingFinished(commentField)
@@ -124,7 +208,7 @@ describe('Вкладка списка комментариев заявки', ()
           await loadingStartedByButton(submitButton)
           await loadingFinishedByButton(submitButton)
 
-          expect(getCommentInput()).not.toHaveValue()
+          expect(createCommentFormTestUtils.getCommentInput()).not.toHaveValue()
         })
       })
 
@@ -132,23 +216,23 @@ describe('Вкладка списка комментариев заявки', ()
         setupNotifications()
 
         test('Корректно обрабатывается ошибка 400', async () => {
-          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
+          mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
 
           const badRequestErrorResponse: CreateCommentFormErrors = {
             comment: [generateWord()],
           }
           mockCreateTaskCommentBadRequestError<CreateCommentFormFields>(
             requiredProps.taskId,
-            badRequestErrorResponse,
+            { body: badRequestErrorResponse },
           )
 
           const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          const submitButton = getSubmitButton()
-          const commentField = getCommentField()
-          const commentInput = getCommentInput()
+          const submitButton = createCommentFormTestUtils.getSubmitButton()
+          const commentField = createCommentFormTestUtils.getCommentField()
+          const commentInput = createCommentFormTestUtils.getCommentInput()
 
           await user.type(commentInput, generateWord())
           await validatingFinished(commentField)
@@ -164,16 +248,16 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         test('Корректно обрабатывается ошибка 404', async () => {
-          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
+          mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
           mockCreateTaskCommentNotFoundError(requiredProps.taskId)
 
           const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          const submitButton = getSubmitButton()
-          const commentField = getCommentField()
-          const commentInput = getCommentInput()
+          const submitButton = createCommentFormTestUtils.getSubmitButton()
+          const commentField = createCommentFormTestUtils.getCommentField()
+          const commentInput = createCommentFormTestUtils.getCommentInput()
 
           await user.type(commentInput, generateWord())
           await validatingFinished(commentField)
@@ -189,16 +273,16 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         test('Корректно обрабатывается ошибка 500', async () => {
-          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
+          mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
           mockCreateTaskCommentServerError(requiredProps.taskId)
 
           const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          const submitButton = getSubmitButton()
-          const commentField = getCommentField()
-          const commentInput = getCommentInput()
+          const submitButton = createCommentFormTestUtils.getSubmitButton()
+          const commentField = createCommentFormTestUtils.getCommentField()
+          const commentInput = createCommentFormTestUtils.getCommentInput()
 
           await user.type(commentInput, generateWord())
           await validatingFinished(commentField)
@@ -214,16 +298,16 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         test('Корректно обрабатывается неизвестная ошибка', async () => {
-          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
+          mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
           mockCreateTaskCommentForbiddenError(requiredProps.taskId)
 
           const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          const submitButton = getSubmitButton()
-          const commentField = getCommentField()
-          const commentInput = getCommentInput()
+          const submitButton = createCommentFormTestUtils.getSubmitButton()
+          const commentField = createCommentFormTestUtils.getCommentField()
+          const commentInput = createCommentFormTestUtils.getCommentInput()
 
           await user.type(commentInput, generateWord())
           await validatingFinished(commentField)
@@ -236,6 +320,36 @@ describe('Вкладка списка комментариев заявки', ()
           expect(errorMsg).toBeInTheDocument()
         })
       })
+    })
+  })
+
+  describe('Список комментариев', () => {
+    test('Отображается', () => {
+      render(<CommentListTab {...requiredProps} />)
+      expect(commentListTestUtils.getContainer()).toBeInTheDocument()
+    })
+
+    test('Комментарии отображаются если они есть', async () => {
+      const commentCount = 1
+      mockGetTaskCommentListSuccess(requiredProps.taskId, {
+        body: taskFixtures.getTaskCommentList(commentCount),
+      })
+
+      render(<CommentListTab {...requiredProps} />, {
+        store: getStoreWithAuth(),
+      })
+
+      await commentListTabTestUtils.loadingFinished()
+      const commentList = commentListTestUtils.getAllComments()
+
+      expect(commentList).toHaveLength(commentCount)
+    })
+
+    test('Комментарии не отображаются если их нет', async () => {
+      render(<CommentListTab {...requiredProps} />)
+
+      const commentList = commentListTestUtils.queryAllComments()
+      expect(commentList).toHaveLength(0)
     })
   })
 })

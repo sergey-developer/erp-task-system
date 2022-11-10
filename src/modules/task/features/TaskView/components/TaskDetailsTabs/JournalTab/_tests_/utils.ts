@@ -29,10 +29,10 @@ export const userClickDownloadButton = async (
   return button
 }
 
-export const journalLoadingStarted = loadingStartedBySpinner('spinner-journal')
+export const journalLoadingStarted = loadingStartedBySpinner('journal-spinner')
 
 export const journalLoadingFinished =
-  loadingFinishedBySpinner('spinner-journal')
+  loadingFinishedBySpinner('journal-spinner')
 
 export const journalCsvLoadingStarted = loadingStartedByButton
 export const journalCsvLoadingFinished = loadingFinishedByButton
