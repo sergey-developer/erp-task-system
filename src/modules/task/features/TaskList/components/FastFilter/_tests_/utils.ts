@@ -5,7 +5,7 @@ import { NumOrStr } from 'shared/interfaces/utils'
 import { FastFilterEnum } from '../../../constants/common'
 import { filterCheckedClass, filterDisabledClass } from './constants'
 
-const getFastFilter = () => screen.getByTestId('filter-fast')
+const getContainer = () => screen.getByTestId('filter-fast')
 
 const getFilterTag = () => screen.getByTestId('filter-tag')
 const getAllFilterTag = () => screen.getAllByTestId('filter-tag')
@@ -68,21 +68,34 @@ export const expectAllFiltersDisabled = () => {
   })
 }
 
+export const expectAllFiltersNotDisabled = () => {
+  Object.values(FastFilterEnum).forEach((filter) => {
+    expectFilterNotDisabled(getCheckableTag(filter))
+  })
+}
+
 const utils = {
-  getFastFilter,
+  getContainer,
+
   getFilterTag,
   getAllFilterTag,
+
   getCheckableTag,
   getByTextInCheckableTag,
   queryByTextInCheckableTag,
+
   userChangeFilter,
+
   loadingStarted,
   loadingFinished,
+
   expectFilterChecked,
   expectFilterNotChecked,
+
   expectFilterDisabled,
   expectFilterNotDisabled,
   expectAllFiltersDisabled,
+  expectAllFiltersNotDisabled,
 }
 
 export default utils

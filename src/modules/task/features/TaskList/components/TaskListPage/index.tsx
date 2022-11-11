@@ -259,7 +259,7 @@ const TaskListPage: FC = () => {
                   selectedFilter={queryArgs.filter}
                   onChange={handleFastFilterChange}
                   isError={isGetTaskCountersError}
-                  disabled={searchFilterApplied}
+                  disabled={taskListIsFetching || searchFilterApplied}
                   isLoading={taskCountersIsFetching}
                 />
               </Col>
@@ -268,7 +268,7 @@ const TaskListPage: FC = () => {
                 <Button
                   icon={<FilterIcon $size='large' />}
                   onClick={debouncedToggleOpenExtendedFilter}
-                  disabled={searchFilterApplied}
+                  disabled={taskListIsFetching || searchFilterApplied}
                 >
                   Фильтры
                 </Button>
@@ -284,12 +284,17 @@ const TaskListPage: FC = () => {
                   allowClear
                   onSearch={handleTaskIdFilterSearch}
                   placeholder='Искать заявку по номеру'
+                  disabled={taskListIsFetching}
                 />
               </Col>
 
               <Col>
                 <Space align='end' size='middle'>
-                  <Button icon={<SyncIcon />} onClick={handleRefetchTaskList}>
+                  <Button
+                    icon={<SyncIcon />}
+                    onClick={handleRefetchTaskList}
+                    disabled={taskListIsFetching}
+                  >
                     Обновить заявки
                   </Button>
 
