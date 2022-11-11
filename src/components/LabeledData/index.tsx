@@ -29,7 +29,7 @@ const LabeledData: FCWithChildren<LabeledDataProps> = ({
 
 LabeledData.defaultProps = {
   direction: 'vertical',
-  block: false,
+  block: true,
 }
 
 export default LabeledData
