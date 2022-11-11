@@ -1,6 +1,6 @@
 import { CreateCommentFormProps } from '../interfaces'
 
-export const baseProps: Readonly<CreateCommentFormProps> = {
+export const requiredProps: Readonly<CreateCommentFormProps> = {
   isLoading: false,
   onSubmit: jest.fn(),
 }

@@ -18,7 +18,7 @@ import {
 } from './CreateCommentForm/interfaces'
 
 const { Title } = Typography
-const DISPLAYABLE_COUNT: number = 3
+export const DEFAULT_DISPLAYABLE_COUNT: number = 3
 
 export type CommentListTabProps = {
   title: string
@@ -50,15 +50,20 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
   )
 
   const isDisplayableCountExceed: boolean =
-    commentList.length > DISPLAYABLE_COUNT
+    commentList.length > DEFAULT_DISPLAYABLE_COUNT
 
   const displayableComments =
     isDisplayableCountExceed && expanded
       ? commentList
-      : commentList.slice(0, DISPLAYABLE_COUNT)
+      : commentList.slice(0, DEFAULT_DISPLAYABLE_COUNT)
 
   return (
-    <Space direction='vertical' size='large' $block>
+    <Space
+      data-testid='task-comment-list-tab'
+      direction='vertical'
+      size='large'
+      $block
+    >
       <Row justify='space-between'>
         <Title level={5}>{title}</Title>
 
@@ -76,7 +81,10 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
         isLoading={createCommentIsLoading}
       />
 
-      <LoadingArea isLoading={commentListIsFetching}>
+      <LoadingArea
+        data-testid='task-comment-list-spinner'
+        isLoading={commentListIsFetching}
+      >
         <CommentList
           isLoading={commentListIsFetching}
           data={displayableComments}
