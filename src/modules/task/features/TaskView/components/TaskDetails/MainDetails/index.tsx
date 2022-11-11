@@ -18,7 +18,7 @@ import { getTaskRemainingTime } from './utils'
 
 const { Text, Title } = Typography
 
-type MainDetailsProps = Pick<
+export type MainDetailsProps = Pick<
   TaskDetailsModel,
   | 'recordId'
   | 'title'
@@ -66,7 +66,7 @@ const MainDetails: FC<MainDetailsProps> = ({
       formattedOlaNextBreachTime,
       taskRemainingTime,
     )
-
+    console.log({ olaNextBreachTimeText })
     const olaStatusTextType = getOlaStatusTextType(rawOlaStatus)
 
     return (
@@ -75,9 +75,12 @@ const MainDetails: FC<MainDetailsProps> = ({
       </Typography.Text>
     )
   }, [olaEstimatedTime, rawOlaStatus, rawOlaNextBreachTime])
-
+  console.log({ rawOlaNextBreachTime, olaNextBreachTime })
   return (
-    <DetailsContainerStyled $breakpoints={breakpoints}>
+    <DetailsContainerStyled
+      data-testid='task-details-main'
+      $breakpoints={breakpoints}
+    >
       <Space direction='vertical' size='middle' $block>
         <SeparatedText>
           <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
@@ -92,7 +95,7 @@ const MainDetails: FC<MainDetailsProps> = ({
             {title}
           </Title>
 
-          <Text>{formatDate(createdAt, DATE_TIME_FORMAT)}</Text>
+          <Text>{createdAt}</Text>
         </Space>
 
         <Row justify='space-between'>
@@ -108,9 +111,9 @@ const MainDetails: FC<MainDetailsProps> = ({
             <LabeledData label='Заявитель' block>
               <Text strong>{contactService}</Text>
 
-              <Text>{contactPhone}</Text>
+              {contactPhone && <Text>{contactPhone}</Text>}
 
-              <Text>{portablePhone}</Text>
+              {portablePhone && <Text>{portablePhone}</Text>}
             </LabeledData>
           </Col>
         </Row>

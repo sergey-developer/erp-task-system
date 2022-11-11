@@ -5,7 +5,7 @@ import { getSecondaryDetails } from '../SecondaryDetails/_tests_/utils'
 import { requiredProps } from './constants'
 
 describe('Детальная карточка заявки', () => {
-  describe('SecondaryDetails / Блок детальной информации заявки', () => {
+  describe('Блок вторичной детальной информации заявки', () => {
     test('Отображается', async () => {
       render(<TaskDetails {...requiredProps} />)
 

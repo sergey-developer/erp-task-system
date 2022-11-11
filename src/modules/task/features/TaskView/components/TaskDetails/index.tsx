@@ -25,9 +25,11 @@ import {
 } from 'modules/task/features/TaskView/models'
 import { TaskAssigneeModel } from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
+import formatDate from 'shared/utils/date/formatDate'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
 import TaskDetailsTabs from '../TaskDetailsTabs'
@@ -333,7 +335,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             <MainDetails
               recordId={details.recordId}
               title={details.title}
-              createdAt={details.createdAt}
+              createdAt={formatDate(details.createdAt, DATE_TIME_FORMAT)}
               name={details.name}
               address={details.address}
               contactService={details.contactService}

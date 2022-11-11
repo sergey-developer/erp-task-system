@@ -4,7 +4,7 @@ import { getWorkGroup } from '../../WorkGroup/_tests_/utils'
 import SecondaryDetails from '../index'
 import { requiredProps } from './constants'
 
-describe('SecondaryDetails / Блок детальной информации заявки', () => {
+describe('Блок детальной информации заявки', () => {
   describe('Блок рабочей группы', () => {
     test('Отображается', () => {
       render(<SecondaryDetails {...requiredProps} />)
