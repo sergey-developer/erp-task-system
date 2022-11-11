@@ -158,19 +158,19 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 <Col span={18}>
                   <Row gutter={20}>
                     <Col span={8}>
-                      <LabeledData label='Уровень 1' block>
+                      <LabeledData label='Уровень 1'>
                         <Text>{productClassifier1}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
-                      <LabeledData label='Уровень 2' block>
+                      <LabeledData label='Уровень 2'>
                         <Text>{productClassifier2}</Text>
                       </LabeledData>
                     </Col>
 
                     <Col span={8}>
-                      <LabeledData label='Уровень 3' block>
+                      <LabeledData label='Уровень 3'>
                         <Text>{productClassifier3}</Text>
                       </LabeledData>
                     </Col>

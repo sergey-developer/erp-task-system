@@ -97,7 +97,7 @@ const MainDetails: FC<MainDetailsProps> = ({
 
         <Row justify='space-between'>
           <Col span={11}>
-            <LabeledData label='Адрес' block>
+            <LabeledData label='Адрес'>
               <Text strong>{name}</Text>
 
               {!!address && <Text>{address}</Text>}
@@ -105,7 +105,7 @@ const MainDetails: FC<MainDetailsProps> = ({
           </Col>
 
           <Col span={11}>
-            <LabeledData label='Заявитель' block>
+            <LabeledData label='Заявитель'>
               <Text strong>{contactService}</Text>
 
               <Text>{contactPhone}</Text>

@@ -34,7 +34,7 @@ const JournalEntry: FC<JournalEntryProps> = ({
         <Description ellipsis={commonEllipsisConfig}>{description}</Description>
       </Space>
 
-      <Row>
+      <Row gutter={10}>
         <Col span={8}>
           <LabeledData label='Тип'>
             <Text>{type}</Text>
