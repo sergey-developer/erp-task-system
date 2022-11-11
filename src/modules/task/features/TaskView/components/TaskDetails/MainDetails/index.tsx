@@ -6,15 +6,11 @@ import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import formatDate from 'shared/utils/date/formatDate'
-import makeString from 'shared/utils/string/makeString'
 
 import { DetailsContainerStyled } from '../styles'
 import { RecordIdStyled } from './styles'
-import { getTaskRemainingTime } from './utils'
+import { getCompleteAt } from './utils'
 
 const { Text, Title } = Typography
 
@@ -42,40 +38,25 @@ const MainDetails: FC<MainDetailsProps> = ({
   contactService,
   contactPhone,
   portablePhone,
-  olaStatus: rawOlaStatus,
-  olaNextBreachTime: rawOlaNextBreachTime,
+  olaStatus,
+  olaNextBreachTime,
   olaEstimatedTime,
 }) => {
   const breakpoints = useBreakpoint()
 
-  const olaNextBreachTime = useMemo(() => {
-    const olaStatus = getOlaStatusMap(rawOlaStatus)
-
-    const formattedOlaNextBreachTime = formatDate(
-      rawOlaNextBreachTime,
-      DATE_TIME_FORMAT,
-    )
-
-    const taskRemainingTime = olaStatus.isHalfExpired
-      ? getTaskRemainingTime(olaEstimatedTime)
-      : null
-
-    const olaNextBreachTimeText = makeString(
-      ' ',
-      'до',
-      formattedOlaNextBreachTime,
-      taskRemainingTime,
-    )
-    console.log({ olaNextBreachTimeText })
-    const olaStatusTextType = getOlaStatusTextType(rawOlaStatus)
-
+  const completeAtTime = useMemo(() => {
+    const olaStatusTextType = getOlaStatusTextType(olaStatus)
+    const completeAt = getCompleteAt({
+      olaStatus,
+      olaEstimatedTime,
+      olaNextBreachTime,
+    })
+    console.log({ completeAt })
     return (
-      <Typography.Text type={olaStatusTextType}>
-        {olaNextBreachTimeText}
-      </Typography.Text>
+      <Typography.Text type={olaStatusTextType}>{completeAt}</Typography.Text>
     )
-  }, [olaEstimatedTime, rawOlaStatus, rawOlaNextBreachTime])
-  console.log({ rawOlaNextBreachTime, olaNextBreachTime })
+  }, [olaEstimatedTime, olaStatus, olaNextBreachTime])
+
   return (
     <DetailsContainerStyled
       data-testid='task-details-main'
@@ -87,7 +68,7 @@ const MainDetails: FC<MainDetailsProps> = ({
             {recordId}
           </RecordIdStyled>
 
-          {rawOlaNextBreachTime && olaNextBreachTime}
+          {olaNextBreachTime && completeAtTime}
         </SeparatedText>
 
         <Space direction='vertical' size={4} $block>

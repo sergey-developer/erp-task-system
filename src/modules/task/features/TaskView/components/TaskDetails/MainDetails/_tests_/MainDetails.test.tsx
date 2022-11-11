@@ -23,7 +23,7 @@ describe('Блок детальной информации заявки', () => 
       />,
     )
 
-    //...
+    expect(testUtils.getChildByText(/до/)).toBeInTheDocument()
   })
 
   test('Заголовок отображается', () => {
