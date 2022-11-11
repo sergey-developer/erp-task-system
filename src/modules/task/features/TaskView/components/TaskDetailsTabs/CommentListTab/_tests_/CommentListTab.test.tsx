@@ -34,7 +34,7 @@ import {
   CreateCommentFormFields,
 } from '../CreateCommentForm/interfaces'
 import CommentListTab from '../index'
-import { baseProps } from './constants'
+import { requiredProps } from './constants'
 import { getFirstComment } from './utils'
 
 setupApiTests()
@@ -43,7 +43,7 @@ describe('Вкладка списка комментариев заявки', ()
   describe('Форма добавления заявки', () => {
     describe('Роль - любая', () => {
       test('Отображается', () => {
-        render(<CommentListTab {...baseProps} />)
+        render(<CommentListTab {...requiredProps} />)
 
         const formContainer = getFormContainer()
         expect(formContainer).toBeInTheDocument()
@@ -52,10 +52,12 @@ describe('Вкладка списка комментариев заявки', ()
       describe('При успешном запросе', () => {
         test('Корректно добавляет комментарий в список', async () => {
           const newComment = getTaskComment()
-          mockCreateTaskCommentSuccess(baseProps.taskId, newComment)
-          mockGetTaskCommentListSuccess(baseProps.taskId, [getTaskComment()])
+          mockCreateTaskCommentSuccess(requiredProps.taskId, newComment)
+          mockGetTaskCommentListSuccess(requiredProps.taskId, [
+            getTaskComment(),
+          ])
 
-          const { user } = render(<CommentListTab {...baseProps} />, {
+          const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
@@ -78,10 +80,10 @@ describe('Вкладка списка комментариев заявки', ()
 
         test('Сбрасывает значения полей', async () => {
           const newComment = getTaskComment()
-          mockCreateTaskCommentSuccess(baseProps.taskId, newComment)
-          mockGetTaskCommentListSuccess(baseProps.taskId, [])
+          mockCreateTaskCommentSuccess(requiredProps.taskId, newComment)
+          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
 
-          const { user } = render(<CommentListTab {...baseProps} />, {
+          const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
@@ -104,17 +106,17 @@ describe('Вкладка списка комментариев заявки', ()
         setupNotifications()
 
         test('Корректно обрабатывается ошибка 400', async () => {
-          mockGetTaskCommentListSuccess(baseProps.taskId, [])
+          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
 
           const badRequestErrorResponse: CreateCommentFormErrors = {
             comment: [generateWord()],
           }
           mockCreateTaskCommentBadRequestError<CreateCommentFormFields>(
-            baseProps.taskId,
+            requiredProps.taskId,
             badRequestErrorResponse,
           )
 
-          const { user } = render(<CommentListTab {...baseProps} />, {
+          const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
@@ -136,10 +138,10 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         test('Корректно обрабатывается ошибка 404', async () => {
-          mockGetTaskCommentListSuccess(baseProps.taskId, [])
-          mockCreateTaskCommentNotFoundError(baseProps.taskId)
+          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
+          mockCreateTaskCommentNotFoundError(requiredProps.taskId)
 
-          const { user } = render(<CommentListTab {...baseProps} />, {
+          const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
@@ -161,10 +163,10 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         test('Корректно обрабатывается ошибка 500', async () => {
-          mockGetTaskCommentListSuccess(baseProps.taskId, [])
-          mockCreateTaskCommentServerError(baseProps.taskId)
+          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
+          mockCreateTaskCommentServerError(requiredProps.taskId)
 
-          const { user } = render(<CommentListTab {...baseProps} />, {
+          const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
@@ -186,10 +188,10 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         test('Корректно обрабатывается неизвестная ошибка', async () => {
-          mockGetTaskCommentListSuccess(baseProps.taskId, [])
-          mockCreateTaskCommentForbiddenError(baseProps.taskId)
+          mockGetTaskCommentListSuccess(requiredProps.taskId, [])
+          mockCreateTaskCommentForbiddenError(requiredProps.taskId)
 
-          const { user } = render(<CommentListTab {...baseProps} />, {
+          const { user } = render(<CommentListTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 

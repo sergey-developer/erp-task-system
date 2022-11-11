@@ -8,7 +8,7 @@ import {
 } from 'shared/constants/validation'
 
 import CreateCommentForm from '../index'
-import { baseProps } from './constants'
+import { requiredProps } from './constants'
 import { getCommentInput, getSubmitButton } from './utils'
 
 jest.setTimeout(10000)
@@ -16,7 +16,7 @@ jest.setTimeout(10000)
 describe('Форма добавления комментария', () => {
   describe('Поле ввода комментария', () => {
     test('Отображается корректно', () => {
-      render(<CreateCommentForm {...baseProps} />)
+      render(<CreateCommentForm {...requiredProps} />)
 
       const commentInput = getCommentInput()
 
@@ -26,14 +26,14 @@ describe('Форма добавления комментария', () => {
     })
 
     test('Не активно при загрузке', () => {
-      render(<CreateCommentForm {...baseProps} isLoading />)
+      render(<CreateCommentForm {...requiredProps} isLoading />)
 
       const commentInput = getCommentInput()
       expect(commentInput).toBeDisabled()
     })
 
     test('Можно ввести значение', async () => {
-      const { user } = render(<CreateCommentForm {...baseProps} />)
+      const { user } = render(<CreateCommentForm {...requiredProps} />)
 
       const commentInput = getCommentInput()
       const commentText = generateWord()
@@ -44,7 +44,7 @@ describe('Форма добавления комментария', () => {
 
     describe('Отображает ошибку', () => {
       test('Если превысить лимит символов', async () => {
-        const { user } = render(<CreateCommentForm {...baseProps} />)
+        const { user } = render(<CreateCommentForm {...requiredProps} />)
 
         const commentInput = getCommentInput()
         const commentText = generateWord({
@@ -64,7 +64,7 @@ describe('Форма добавления комментария', () => {
       })
 
       test('Если ввести только пробелы', async () => {
-        const { user } = render(<CreateCommentForm {...baseProps} />)
+        const { user } = render(<CreateCommentForm {...requiredProps} />)
 
         const commentInput = getCommentInput()
         await user.type(commentInput, ' ')
@@ -74,7 +74,7 @@ describe('Форма добавления комментария', () => {
       })
 
       test('Если не заполнить поле и нажать кнопку отправки', async () => {
-        const { user } = render(<CreateCommentForm {...baseProps} />)
+        const { user } = render(<CreateCommentForm {...requiredProps} />)
 
         const submitButton = getSubmitButton()
         await user.click(submitButton)
@@ -87,7 +87,7 @@ describe('Форма добавления комментария', () => {
 
   describe('Кнопка отправки', () => {
     test('Отображается корректно', () => {
-      render(<CreateCommentForm {...baseProps} />)
+      render(<CreateCommentForm {...requiredProps} />)
 
       const submitButton = getSubmitButton()
 
@@ -96,14 +96,14 @@ describe('Форма добавления комментария', () => {
     })
 
     test('Отображает процесс загрузки', async () => {
-      render(<CreateCommentForm {...baseProps} isLoading />)
+      render(<CreateCommentForm {...requiredProps} isLoading />)
 
       const submitButton = getSubmitButton()
       await loadingStartedByButton(submitButton)
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<CreateCommentForm {...baseProps} />)
+      const { user } = render(<CreateCommentForm {...requiredProps} />)
 
       const commentInput = getCommentInput()
       const submitButton = getSubmitButton()
@@ -111,7 +111,7 @@ describe('Форма добавления комментария', () => {
       await user.type(commentInput, generateWord())
       await user.click(submitButton)
 
-      expect(baseProps.onSubmit).toBeCalledTimes(1)
+      expect(requiredProps.onSubmit).toBeCalledTimes(1)
     })
   })
 })

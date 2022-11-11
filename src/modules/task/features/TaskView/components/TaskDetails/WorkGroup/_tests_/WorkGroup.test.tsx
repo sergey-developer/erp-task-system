@@ -5,7 +5,7 @@ import { UserRolesEnum } from 'shared/constants/roles'
 import taskFirstLineModalTestUtils from '../../../TaskFirstLineModal/_tests_/utils'
 import WorkGroup from '../index'
 import { firstLineButtonProps, requiredProps } from './constants'
-import { getFirstLineButton, queryFirstLineButton } from './utils'
+import workGroupTestUtils from './utils'
 
 describe('Блок рабочей группы', () => {
   describe('Кнопка перевода на 1-ю линию', () => {
@@ -19,7 +19,7 @@ describe('Блок рабочей группы', () => {
           store,
         })
 
-        expect(getFirstLineButton()).toBeInTheDocument()
+        expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
       test('Не активна если есть запрос на переклассификацию', () => {
@@ -38,7 +38,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        expect(getFirstLineButton()).toBeDisabled()
+        expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
       })
 
       test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
@@ -57,7 +57,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await loadingStartedByButton(getFirstLineButton())
+        await loadingStartedByButton(workGroupTestUtils.getFirstLineButton())
       })
 
       test('При клике открывается модальное окно', async () => {
@@ -72,7 +72,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await user.click(getFirstLineButton())
+        await user.click(workGroupTestUtils.getFirstLineButton())
 
         expect(
           await taskFirstLineModalTestUtils.findModal(),
@@ -96,7 +96,9 @@ describe('Блок рабочей группы', () => {
             },
           )
 
-          expect(queryFirstLineButton()).not.toBeInTheDocument()
+          expect(
+            workGroupTestUtils.queryFirstLineButton(),
+          ).not.toBeInTheDocument()
         })
 
         test('Если заявка закрыта', () => {
@@ -115,7 +117,9 @@ describe('Блок рабочей группы', () => {
             },
           )
 
-          expect(queryFirstLineButton()).not.toBeInTheDocument()
+          expect(
+            workGroupTestUtils.queryFirstLineButton(),
+          ).not.toBeInTheDocument()
         })
 
         test('Если заявка завершена', () => {
@@ -134,7 +138,9 @@ describe('Блок рабочей группы', () => {
             },
           )
 
-          expect(queryFirstLineButton()).not.toBeInTheDocument()
+          expect(
+            workGroupTestUtils.queryFirstLineButton(),
+          ).not.toBeInTheDocument()
         })
       })
     })
@@ -149,7 +155,7 @@ describe('Блок рабочей группы', () => {
           store,
         })
 
-        expect(getFirstLineButton()).toBeInTheDocument()
+        expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
       test('Не активна если есть запрос на переклассификацию', () => {
@@ -168,7 +174,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        expect(getFirstLineButton()).toBeDisabled()
+        expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
       })
 
       test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
@@ -187,7 +193,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await loadingStartedByButton(getFirstLineButton())
+        await loadingStartedByButton(workGroupTestUtils.getFirstLineButton())
       })
 
       test('При клике открывается модальное окно', async () => {
@@ -202,7 +208,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await user.click(getFirstLineButton())
+        await user.click(workGroupTestUtils.getFirstLineButton())
 
         expect(
           await taskFirstLineModalTestUtils.findModal(),
@@ -226,7 +232,9 @@ describe('Блок рабочей группы', () => {
             },
           )
 
-          expect(queryFirstLineButton()).not.toBeInTheDocument()
+          expect(
+            workGroupTestUtils.queryFirstLineButton(),
+          ).not.toBeInTheDocument()
         })
 
         test('Если заявка закрыта', () => {
@@ -245,7 +253,9 @@ describe('Блок рабочей группы', () => {
             },
           )
 
-          expect(queryFirstLineButton()).not.toBeInTheDocument()
+          expect(
+            workGroupTestUtils.queryFirstLineButton(),
+          ).not.toBeInTheDocument()
         })
 
         test('Если заявка завершена', () => {
@@ -264,7 +274,9 @@ describe('Блок рабочей группы', () => {
             },
           )
 
-          expect(queryFirstLineButton()).not.toBeInTheDocument()
+          expect(
+            workGroupTestUtils.queryFirstLineButton(),
+          ).not.toBeInTheDocument()
         })
       })
     })
@@ -279,7 +291,9 @@ describe('Блок рабочей группы', () => {
           store,
         })
 
-        expect(queryFirstLineButton()).not.toBeInTheDocument()
+        expect(
+          workGroupTestUtils.queryFirstLineButton(),
+        ).not.toBeInTheDocument()
       })
     })
 
@@ -293,7 +307,9 @@ describe('Блок рабочей группы', () => {
           store,
         })
 
-        expect(queryFirstLineButton()).not.toBeInTheDocument()
+        expect(
+          workGroupTestUtils.queryFirstLineButton(),
+        ).not.toBeInTheDocument()
       })
     })
   })

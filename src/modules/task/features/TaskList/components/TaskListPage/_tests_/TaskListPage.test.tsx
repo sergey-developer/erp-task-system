@@ -263,7 +263,7 @@ describe('Страница реестра заявок', () => {
 
       await taskTableTestUtils.loadingFinished()
       await taskTableTestUtils.userClickRow(user, taskListItem.id)
-      const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+      const taskDetails = await taskDetailsTestUtils.findContainer()
 
       await fastFilterTestUtils.userChangeFilter(user, FastFilterEnum.Free)
 
@@ -335,7 +335,7 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.loadingFinished()
         await taskTableTestUtils.userClickRow(user, taskListItem.id)
-        const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+        const taskDetails = await taskDetailsTestUtils.findContainer()
 
         await taskListPageTestUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
@@ -646,7 +646,7 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.loadingFinished()
         await taskTableTestUtils.userClickRow(user, taskListItem.id)
-        const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+        const taskDetails = await taskDetailsTestUtils.findContainer()
         await taskListPageTestUtils.userFillSearchInput(user, true)
         await waitFor(() => {
           expect(taskDetails).not.toBeInTheDocument()
@@ -929,7 +929,7 @@ describe('Страница реестра заявок', () => {
 
       await taskTableTestUtils.loadingFinished()
       await taskTableTestUtils.userClickRow(user, taskListItem.id)
-      const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+      const taskDetails = await taskDetailsTestUtils.findContainer()
       await taskListPageTestUtils.userClickReloadListButton(user)
 
       await waitFor(() => {
@@ -1005,7 +1005,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.loadingFinished()
         await taskTableTestUtils.userClickRow(user, taskListItem.id)
 
-        const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+        const taskDetails = await taskDetailsTestUtils.findContainer()
         expect(taskDetails).toBeInTheDocument()
       })
     })

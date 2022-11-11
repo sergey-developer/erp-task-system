@@ -61,7 +61,10 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   const handleExpand = useDebounceFn(onExpand)
 
   return (
-    <ContainerStyled $hasMarginBottom={!expanded}>
+    <ContainerStyled
+      data-testid='task-additional-info'
+      $hasMarginBottom={!expanded}
+    >
       <Space direction='vertical' size='middle' $block>
         <DetailsWrapper disablePadding='vertical'>
           <Button type='text' onClick={handleExpand}>
