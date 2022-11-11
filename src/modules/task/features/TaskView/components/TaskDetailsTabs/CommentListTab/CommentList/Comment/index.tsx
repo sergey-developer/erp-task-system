@@ -7,7 +7,7 @@ import { TaskCommentModel } from 'modules/task/features/TaskView/models'
 
 const { Paragraph, Text } = Typography
 
-type CommentProps = Pick<TaskCommentModel, 'createdAt' | 'text'> & {
+export type CommentProps = Pick<TaskCommentModel, 'createdAt' | 'text'> & {
   author: string
 }
 

@@ -46,7 +46,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
   }
 
   return (
-    <LoadingArea data-testid='spinner-journal' isLoading={journalIsFetching}>
+    <LoadingArea data-testid='journal-spinner' isLoading={journalIsFetching}>
       <Space data-testid='task-journal' direction='vertical' $block>
         <Row justify='end'>
           <Space>
