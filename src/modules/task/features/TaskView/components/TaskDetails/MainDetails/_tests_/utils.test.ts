@@ -14,31 +14,29 @@ export const baseDateTimeRegexp =
 const halfExpiredDateTimeRegexp =
   /^до\s\d{1,2}\.\d{1,2}\.\d{1,4},\s\d{1,2}:\d{1,2}:\d{1,2}\s(?:\d{1,2}мес\s)?(?:\d{1,2}д\s)?(?:\d{1,2}ч\s)?(?:\d{1,2}мин)$/
 
-describe('getCompleteAt', () => {
-  test('Корректный результат для не просроченной заявки', () => {
-    const result = getCompleteAt({
-      ...baseArgs,
-      olaStatus: TaskOlaStatusEnum.NotExpired,
-    })
-
-    expect(result).toMatch(baseDateTimeRegexp)
+test('Корректный результат для не просроченной заявки', () => {
+  const result = getCompleteAt({
+    ...baseArgs,
+    olaStatus: TaskOlaStatusEnum.NotExpired,
   })
 
-  test('Корректный результат для просроченной заявки', () => {
-    const result = getCompleteAt({
-      ...baseArgs,
-      olaStatus: TaskOlaStatusEnum.Expired,
-    })
+  expect(result).toMatch(baseDateTimeRegexp)
+})
 
-    expect(result).toMatch(baseDateTimeRegexp)
+test('Корректный результат для просроченной заявки', () => {
+  const result = getCompleteAt({
+    ...baseArgs,
+    olaStatus: TaskOlaStatusEnum.Expired,
   })
 
-  test('Корректный результат для заявки у которой прошло более половины времени', () => {
-    const result = getCompleteAt({
-      ...baseArgs,
-      olaStatus: TaskOlaStatusEnum.HalfExpired,
-    })
+  expect(result).toMatch(baseDateTimeRegexp)
+})
 
-    expect(result).toMatch(halfExpiredDateTimeRegexp)
+test('Корректный результат для заявки у которой прошло более половины времени', () => {
+  const result = getCompleteAt({
+    ...baseArgs,
+    olaStatus: TaskOlaStatusEnum.HalfExpired,
   })
+
+  expect(result).toMatch(halfExpiredDateTimeRegexp)
 })
