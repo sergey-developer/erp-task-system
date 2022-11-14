@@ -2,15 +2,14 @@ import { generateWord, getButtonIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const getTaskListPage = () => screen.getByTestId('page-task-list')
+const getContainer = () => screen.getByTestId('page-task-list')
 
 const getSearchInput = () =>
-  within(getTaskListPage()).getByPlaceholderText('Искать заявку по номеру')
+  within(getContainer()).getByPlaceholderText('Искать заявку по номеру')
 
-const getSearchButton = () => getButtonIn(getTaskListPage(), /search/)
+const getSearchButton = () => getButtonIn(getContainer(), /search/)
 
-const getSearchClearButton = () =>
-  getButtonIn(getTaskListPage(), 'close-circle')
+const getSearchClearButton = () => getButtonIn(getContainer(), 'close-circle')
 
 const userClickSearchClearButton = async (user: UserEvent) => {
   const button = getSearchClearButton()
@@ -18,7 +17,7 @@ const userClickSearchClearButton = async (user: UserEvent) => {
   return button
 }
 
-const getReloadListButton = () => getButtonIn(getTaskListPage(), /sync/)
+const getReloadListButton = () => getButtonIn(getContainer(), /sync/)
 
 const userClickReloadListButton = async (user: UserEvent) => {
   const button = getReloadListButton()
@@ -26,10 +25,9 @@ const userClickReloadListButton = async (user: UserEvent) => {
   return button
 }
 
-const getCreateTaskButton = () =>
-  getButtonIn(getTaskListPage(), /создать заявку/i)
+const getCreateTaskButton = () => getButtonIn(getContainer(), /создать заявку/i)
 
-const getExtendedFilterButton = () => getButtonIn(getTaskListPage(), /filter/)
+const getExtendedFilterButton = () => getButtonIn(getContainer(), /filter/)
 
 const userOpenExtendedFilter = async (user: UserEvent) => {
   const extendedFilterButton = getExtendedFilterButton()
@@ -53,17 +51,23 @@ const userFillSearchInput = async (
 }
 
 const utils = {
-  getTaskListPage,
+  getContainer,
+
   getSearchInput,
+  userFillSearchInput,
+
   getSearchButton,
+
   getSearchClearButton,
   userClickSearchClearButton,
+
   getReloadListButton,
   userClickReloadListButton,
+
   getCreateTaskButton,
+
   getExtendedFilterButton,
   userOpenExtendedFilter,
-  userFillSearchInput,
 }
 
 export default utils
