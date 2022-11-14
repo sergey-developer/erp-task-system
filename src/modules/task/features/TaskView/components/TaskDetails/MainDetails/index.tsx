@@ -51,7 +51,7 @@ const MainDetails: FC<MainDetailsProps> = ({
       olaEstimatedTime,
       olaNextBreachTime,
     })
-    console.log({ completeAt })
+
     return (
       <Typography.Text type={olaStatusTextType}>{completeAt}</Typography.Text>
     )

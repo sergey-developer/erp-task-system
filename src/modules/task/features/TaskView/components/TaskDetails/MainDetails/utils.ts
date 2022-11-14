@@ -23,6 +23,8 @@ export const getCompleteAt = ({
   TaskDetailsModel,
   'olaStatus' | 'olaNextBreachTime' | 'olaEstimatedTime'
 >): string => {
+  if (!olaNextBreachTime) return ''
+
   const olaStatusMap = getOlaStatusMap(olaStatus)
 
   const formattedOlaNextBreachTime = formatDate(
