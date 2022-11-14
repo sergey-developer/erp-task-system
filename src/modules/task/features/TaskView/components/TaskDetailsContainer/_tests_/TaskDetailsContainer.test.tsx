@@ -26,7 +26,7 @@ import { UserRolesEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
 import taskDetailsTestUtils from '../../TaskDetails/_tests_/utils'
-import { findFirstLineButton } from '../../TaskDetails/WorkGroup/_tests_/utils'
+import workGroupTestUtils from '../../TaskDetails/WorkGroup/_tests_/utils'
 import TaskDetailsContainer from '../../TaskDetailsContainer'
 import taskFirstLineModalTestUtils from '../../TaskFirstLineModal/_tests_/utils'
 import { requiredProps } from './constants'
@@ -56,10 +56,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           const modal = await taskFirstLineModalTestUtils.findModal()
@@ -104,10 +104,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -152,10 +152,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -197,10 +197,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -238,10 +238,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -279,10 +279,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           const modal = await taskFirstLineModalTestUtils.findModal()
@@ -327,10 +327,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -375,10 +375,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -420,10 +420,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -461,10 +461,10 @@ describe('Контейнер детальной карточки заявки', 
             store,
           })
 
-          const taskDetails = taskDetailsTestUtils.getTaskDetails()
+          const taskDetails = taskDetailsTestUtils.getContainer()
           await loadingFinishedByCard(taskDetails)
 
-          const firstLineButton = await findFirstLineButton()
+          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()

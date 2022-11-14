@@ -69,7 +69,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   return (
     <DetailsContainerStyled
-      data-testid='task-details-secondary'
+      data-testid='task-secondary-details'
       $breakpoints={breakpoints}
     >
       <Row justify='space-between'>
