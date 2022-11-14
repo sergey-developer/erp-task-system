@@ -11,14 +11,19 @@ import Comment from './Comment'
 
 const { Text } = Typography
 
-type CommentListProps = {
+export type CommentListProps = {
   data: GetTaskCommentListResponseModel
   isLoading: boolean
 }
 
 const CommentList: FC<CommentListProps> = ({ isLoading, data }) => {
   return (
-    <Space size='large' direction='vertical' $block>
+    <Space
+      data-testid='task-comment-list'
+      size='large'
+      direction='vertical'
+      $block
+    >
       {!isLoading && !data.length ? (
         <Text>Комментариев пока нет</Text>
       ) : (
