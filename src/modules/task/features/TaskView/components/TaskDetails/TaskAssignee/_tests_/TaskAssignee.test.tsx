@@ -1,5 +1,5 @@
 import { getStoreWithAuth, render } from '_tests_/utils'
-import { getTaskAssignee } from 'fixtures/task'
+import * as taskFixtures from 'fixtures/task'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
@@ -9,11 +9,11 @@ import { UserRolesEnum } from 'shared/constants/roles'
 import { asyncNoop } from 'shared/utils/common/noop'
 
 import TaskAssignee, { TaskAssigneeProps } from '../index'
-import { getTakeTaskButton } from './utils'
+import testUtils from './utils'
 
 describe('Блок "Исполнитель заявки"', () => {
   describe('Кнопка "В работу"', () => {
-    const baseProps: Readonly<
+    const requiredProps: Readonly<
       Pick<
         TaskAssigneeProps,
         | 'takeTask'
@@ -42,11 +42,11 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        render(<TaskAssignee {...baseProps} />, {
+        render(<TaskAssignee {...requiredProps} />, {
           store,
         })
 
-        expect(getTakeTaskButton()).toBeInTheDocument()
+        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
 
       test(`${UserRolesEnum.Engineer}`, () => {
@@ -54,11 +54,11 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.Engineer,
         })
 
-        render(<TaskAssignee {...baseProps} />, {
+        render(<TaskAssignee {...requiredProps} />, {
           store,
         })
 
-        expect(getTakeTaskButton()).toBeInTheDocument()
+        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
 
       test(`${UserRolesEnum.SeniorEngineer}`, () => {
@@ -66,9 +66,9 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        render(<TaskAssignee {...baseProps} />, { store })
+        render(<TaskAssignee {...requiredProps} />, { store })
 
-        expect(getTakeTaskButton()).toBeInTheDocument()
+        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
 
       test(`${UserRolesEnum.HeadOfDepartment}`, () => {
@@ -76,9 +76,9 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.HeadOfDepartment,
         })
 
-        render(<TaskAssignee {...baseProps} />, { store })
+        render(<TaskAssignee {...requiredProps} />, { store })
 
-        expect(getTakeTaskButton()).toBeInTheDocument()
+        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
     })
 
@@ -88,7 +88,7 @@ describe('Блок "Исполнитель заявки"', () => {
       > = {
         status: TaskStatusEnum.New,
         extendedStatus: TaskExtendedStatusEnum.New,
-        assignee: getTaskAssignee(),
+        assignee: taskFixtures.getTaskAssignee(),
       }
 
       describe('Если все условия соблюдены', () => {
@@ -100,14 +100,14 @@ describe('Блок "Исполнитель заявки"', () => {
 
           render(
             <TaskAssignee
-              {...baseProps}
+              {...requiredProps}
               {...activeBtnProps}
               status={TaskStatusEnum.InProgress}
             />,
             { store },
           )
 
-          expect(getTakeTaskButton()).toBeDisabled()
+          expect(testUtils.getTakeTaskButton()).toBeDisabled()
         })
 
         test('Но исполнитель заявки назначен и не является авторизованным пользователем', async () => {
@@ -115,9 +115,11 @@ describe('Блок "Исполнитель заявки"', () => {
             userRole: UserRolesEnum.FirstLineSupport,
           })
 
-          render(<TaskAssignee {...baseProps} {...activeBtnProps} />, { store })
+          render(<TaskAssignee {...requiredProps} {...activeBtnProps} />, {
+            store,
+          })
 
-          expect(getTakeTaskButton()).toBeDisabled()
+          expect(testUtils.getTakeTaskButton()).toBeDisabled()
         })
 
         test(`Но расширенный статус заявки "${TaskExtendedStatusEnum.InReclassification}"`, async () => {
@@ -128,14 +130,14 @@ describe('Блок "Исполнитель заявки"', () => {
 
           render(
             <TaskAssignee
-              {...baseProps}
+              {...requiredProps}
               {...activeBtnProps}
               extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
             { store },
           )
 
-          expect(getTakeTaskButton()).toBeDisabled()
+          expect(testUtils.getTakeTaskButton()).toBeDisabled()
         })
       })
     })

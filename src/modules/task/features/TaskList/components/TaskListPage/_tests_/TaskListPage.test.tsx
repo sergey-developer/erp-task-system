@@ -38,17 +38,26 @@ jest.setTimeout(15000)
 describe('Страница реестра заявок', () => {
   test('Отображается корректно', () => {
     render(<TaskListPage />)
-
-    const page = taskListPageTestUtils.getTaskListPage()
-    expect(page).toBeInTheDocument()
+    expect(taskListPageTestUtils.getContainer()).toBeInTheDocument()
   })
 
   describe('Быстрый фильтр', () => {
-    test('Отображается', async () => {
+    test('Отображается', () => {
       render(<TaskListPage />)
+      expect(fastFilterTestUtils.getContainer()).toBeInTheDocument()
+    })
 
-      const fastFilter = fastFilterTestUtils.getFastFilter()
-      expect(fastFilter).toBeInTheDocument()
+    test('Не активный во время загрузки заявок', async () => {
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess()
+
+      render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await fastFilterTestUtils.loadingFinished()
+      await taskTableTestUtils.loadingStarted()
+      fastFilterTestUtils.expectAllFiltersDisabled()
+      await taskTableTestUtils.loadingFinished()
+      fastFilterTestUtils.expectAllFiltersNotDisabled()
     })
 
     test('Количество заявок отображается корректно', async () => {
@@ -263,7 +272,7 @@ describe('Страница реестра заявок', () => {
 
       await taskTableTestUtils.loadingFinished()
       await taskTableTestUtils.userClickRow(user, taskListItem.id)
-      const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+      const taskDetails = await taskDetailsTestUtils.findContainer()
 
       await fastFilterTestUtils.userChangeFilter(user, FastFilterEnum.Free)
 
@@ -289,6 +298,19 @@ describe('Страница реестра заявок', () => {
       await taskListPageTestUtils.userOpenExtendedFilter(user)
       const filter = await extendedFilterTestUtils.findFilter()
       expect(filter).toBeInTheDocument()
+    })
+
+    test('Не активна во время загрузки заявок', async () => {
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess()
+
+      render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      const button = taskListPageTestUtils.getExtendedFilterButton()
+      await taskTableTestUtils.loadingStarted()
+      expect(button).toBeDisabled()
+      await taskTableTestUtils.loadingFinished()
+      expect(button).toBeEnabled()
     })
   })
 
@@ -335,7 +357,7 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.loadingFinished()
         await taskTableTestUtils.userClickRow(user, taskListItem.id)
-        const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+        const taskDetails = await taskDetailsTestUtils.findContainer()
 
         await taskListPageTestUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
@@ -628,6 +650,19 @@ describe('Страница реестра заявок', () => {
       expect(searchInput).toHaveValue(searchValue)
     })
 
+    test('Поле не активно во время загрузки заявок', async () => {
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess()
+
+      render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      const searchInput = taskListPageTestUtils.getSearchInput()
+      await taskTableTestUtils.loadingStarted()
+      expect(searchInput).toBeDisabled()
+      await taskTableTestUtils.loadingFinished()
+      expect(searchInput).toBeEnabled()
+    })
+
     describe('После применения', () => {
       test('Карточка заявки закрывается', async () => {
         mockGetWorkGroupListSuccess()
@@ -646,7 +681,7 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.loadingFinished()
         await taskTableTestUtils.userClickRow(user, taskListItem.id)
-        const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+        const taskDetails = await taskDetailsTestUtils.findContainer()
         await taskListPageTestUtils.userFillSearchInput(user, true)
         await waitFor(() => {
           expect(taskDetails).not.toBeInTheDocument()
@@ -929,12 +964,25 @@ describe('Страница реестра заявок', () => {
 
       await taskTableTestUtils.loadingFinished()
       await taskTableTestUtils.userClickRow(user, taskListItem.id)
-      const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+      const taskDetails = await taskDetailsTestUtils.findContainer()
       await taskListPageTestUtils.userClickReloadListButton(user)
 
       await waitFor(() => {
         expect(taskDetails).not.toBeInTheDocument()
       })
+    })
+
+    test('Не активна во время загрузки заявок', async () => {
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess()
+
+      render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      const button = taskListPageTestUtils.getReloadListButton()
+      await taskTableTestUtils.loadingStarted()
+      expect(button).toBeDisabled()
+      await taskTableTestUtils.loadingFinished()
+      expect(button).toBeEnabled()
     })
   })
 
@@ -1005,7 +1053,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.loadingFinished()
         await taskTableTestUtils.userClickRow(user, taskListItem.id)
 
-        const taskDetails = await taskDetailsTestUtils.findTaskDetails()
+        const taskDetails = await taskDetailsTestUtils.findContainer()
         expect(taskDetails).toBeInTheDocument()
       })
     })

@@ -2,26 +2,22 @@ import { generateEmail, generateWord } from '_tests_/utils'
 
 import { AdditionalInfoProps } from '../index'
 
-export const baseProps: Readonly<
-  Pick<AdditionalInfoProps, 'expanded'> & {
-    onExpand: jest.MockedFn<AdditionalInfoProps['onExpand']>
-  }
-> = {
-  expanded: false,
-  onExpand: jest.fn(),
-}
-
 export const requiredProps: Readonly<
   Pick<
     AdditionalInfoProps,
+    | 'expanded'
     | 'priority'
     | 'severity'
     | 'impact'
     | 'productClassifier1'
     | 'productClassifier2'
     | 'productClassifier3'
-  >
+  > & {
+    onExpand: jest.MockedFn<AdditionalInfoProps['onExpand']>
+  }
 > = {
+  expanded: false,
+  onExpand: jest.fn(),
   severity: generateWord(),
   priority: generateWord(),
   impact: generateWord(),
@@ -31,7 +27,7 @@ export const requiredProps: Readonly<
 }
 
 export const notRequiredProps: Readonly<
-  Omit<AdditionalInfoProps, keyof typeof baseProps | keyof typeof requiredProps>
+  Omit<AdditionalInfoProps, keyof typeof requiredProps>
 > = {
   email: generateEmail(),
   sapId: generateWord(),

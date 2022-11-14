@@ -1,3 +1,13 @@
-import { getButton } from '_tests_/utils'
+import { getButtonIn } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 
-export const getTakeTaskButton = () => getButton(/В работу/i)
+const getContainer = () => screen.getByTestId('task-assignee')
+
+const getTakeTaskButton = () => getButtonIn(getContainer(), /в работу/i)
+
+const utils = {
+  getContainer,
+  getTakeTaskButton,
+}
+
+export default utils

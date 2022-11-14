@@ -1,4 +1,9 @@
 import { screen } from '@testing-library/react'
 
-export const getSecondaryDetails = () =>
-  screen.getByTestId('task-details-secondary')
+const getContainer = () => screen.getByTestId('task-secondary-details')
+
+const utils = {
+  getContainer,
+}
+
+export default utils
