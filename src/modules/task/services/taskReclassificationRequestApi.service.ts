@@ -27,7 +27,7 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
       }),
       onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
         try {
-          await queryFulfilled
+          const { data } = await queryFulfilled
 
           dispatch(
             taskApiService.util.updateQueryData(
@@ -38,7 +38,36 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
               },
             ),
           )
-        } catch {}
+          // dispatch(
+          //   taskApiService.util.upsertQueryData(
+          //     'getReclassificationRequest' as never,
+          //     taskId as never,
+          //     data as never,
+          //   ),
+          // )
+
+          dispatch(
+            taskApiService.util.updateQueryData(
+              'getReclassificationRequest' as never,
+              taskId as never,
+              (
+                reclassificationRequest: GetTaskReclassificationRequestResponseModel,
+              ) => {
+                console.log({
+                  updateQueryData_reclassificationRequest:
+                    reclassificationRequest,
+                })
+                reclassificationRequest.id = data.id
+                reclassificationRequest.user = data.user
+                reclassificationRequest.comment = data.comment
+                reclassificationRequest.createdAt = data.createdAt
+              },
+            ),
+          )
+          console.log('after getReclassificationRequest updateQueryData')
+        } catch (error) {
+          console.log(error)
+        }
       },
     }),
     getReclassificationRequest: build.query<

@@ -1,3 +1,4 @@
+import { usePrevious } from 'ahooks'
 import React, { FC } from 'react'
 
 import { TaskListItemModel } from 'modules/task/features/TaskList/models'
@@ -11,6 +12,7 @@ import useUpdateTaskAssignee from 'modules/task/features/TaskView/hooks/useUpdat
 import useUpdateTaskWorkGroup from 'modules/task/features/TaskView/hooks/useUpdateTaskWorkGroup'
 import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import TaskDetails from '../TaskDetails'
 
@@ -35,20 +37,27 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     data: task = null,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
+    fulfilledTimeStamp: getTaskFulfilledTimeStamp,
   } = useGetTask(taskId)
 
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
+  const prevGetTaskFulfilledTimeStamp = usePrevious(getTaskFulfilledTimeStamp)
 
   const {
-    currentData: reclassificationRequest = null,
+    currentData: getReclassificationRequestResult = null,
     isFetching: reclassificationRequestIsFetching,
   } = useGetTaskReclassificationRequest(taskId, {
-    skip: !taskExtendedStatus.isInReclassification,
+    skip:
+      !taskExtendedStatus.isInReclassification ||
+      !isEqual(getTaskFulfilledTimeStamp, prevGetTaskFulfilledTimeStamp),
   })
 
   const {
     fn: createReclassificationRequest,
-    state: { isLoading: createReclassificationRequestIsLoading },
+    state: {
+      isLoading: createReclassificationRequestIsLoading,
+      data: createReclassificationRequestResult = null,
+    },
   } = useCreateTaskReclassificationRequest()
 
   const {
@@ -89,7 +98,9 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       isTaskResolving={isTaskResolving}
       updateAssignee={updateAssignee}
       updateAssigneeIsLoading={updateAssigneeIsLoading}
-      reclassificationRequest={reclassificationRequest}
+      reclassificationRequest={
+        createReclassificationRequestResult || getReclassificationRequestResult
+      }
       reclassificationRequestIsLoading={reclassificationRequestIsFetching}
       createReclassificationRequest={createReclassificationRequest}
       createReclassificationRequestIsLoading={
