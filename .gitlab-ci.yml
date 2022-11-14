@@ -7,15 +7,15 @@ stages:
 
 Lint:
   stage: lint
-  image: jeremymiller/node-lint
+  image: node:18-alpine
   interruptible: true
   script:
+    - yarn install
     - yarn lint
   only:
     - rc
     - master
     - develop
-    - task-20635
   tags:
     - docker
 
@@ -51,7 +51,6 @@ Tests:
     - rc
     - master
     - develop
-    - task-20635
   tags:
     - werf
 
@@ -74,7 +73,6 @@ Build for Develop:
     env: dev
   only:
     - develop
-    - task-20635
 
 Build for Staging:
   <<: *base_build
@@ -82,6 +80,14 @@ Build for Staging:
     env: stage
   only:
     - rc
+
+Build for Production:
+  <<: *base_build
+  variables:
+    env: prod
+  only:
+    - master
+    - task-20338-update
 
 
 Deploy to Develop:
@@ -93,7 +99,6 @@ Deploy to Develop:
     kube_context: default/dev
   only:
     - develop
-    - task-20542
 
 Deploy to Staging:
   <<: *base_deploy
@@ -104,6 +109,16 @@ Deploy to Staging:
     kube_context: default/dev
   only:
     - rc
+
+Deploy to Production:
+  <<: *base_deploy
+  dependencies:
+    - Build for Production
+  variables:
+    env: prod
+    kube_context: default/production
+  only:
+    - master
 
 Cleanup:
   stage: cleanup
