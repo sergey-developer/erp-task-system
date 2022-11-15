@@ -5,10 +5,12 @@ import {
   NOT_EXISTING_EMAIL,
   WRONG_PASSWORD,
 } from '_tests_/constants/auth'
-import { screen, waitFor } from '_tests_/utils'
+import {
+  validatingFinished as baseValidatingFinished,
+  validatingStarted as baseValidatingStarted,
+} from '_tests_/utils'
+import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
-const validatingStatusClass = 'ant-form-item-is-validating'
 
 export const getEmailField = () => screen.getByTestId('field-email')
 export const getEmailInput = () => screen.getByTestId('input-email')
@@ -66,30 +68,20 @@ export const userEntersWrongPassword = async (
   return userEntersPassword(user, WRONG_PASSWORD)
 }
 
-export const waitStartValidating = async (
+export const validatingStarted = async (
   emailField: HTMLElement,
   passwordField: HTMLElement,
 ) => {
-  await waitFor(() => {
-    expect(emailField).toHaveClass(validatingStatusClass)
-  })
-
-  await waitFor(() => {
-    expect(passwordField).toHaveClass(validatingStatusClass)
-  })
+  await baseValidatingStarted(emailField)
+  await baseValidatingStarted(passwordField)
 }
 
-export const waitFinishValidating = async (
+export const validatingFinished = async (
   emailField: HTMLElement,
   passwordField: HTMLElement,
 ) => {
-  await waitFor(() => {
-    expect(emailField).not.toHaveClass(validatingStatusClass)
-  })
-
-  await waitFor(() => {
-    expect(passwordField).not.toHaveClass(validatingStatusClass)
-  })
+  await baseValidatingFinished(emailField)
+  await baseValidatingFinished(passwordField)
 }
 
 export const userClickSubmitButton = async (

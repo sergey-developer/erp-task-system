@@ -1,8 +1,8 @@
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 import getFirstLetterInUpperCase from 'shared/utils/string/getFirstLetterInUpperCase'
 import makeString from 'shared/utils/string/makeString'
 
-const getUserAbbr = <T extends Pick<BaseUserModel, 'firstName' | 'lastName'>>({
+const getUserAbbr = <T extends Pick<UserModel, 'firstName' | 'lastName'>>({
   firstName,
   lastName,
 }: T): string =>

@@ -1,7 +1,7 @@
 import { TableProps } from 'antd'
 import { ReactElement } from 'react'
 
-import { StyledTable } from './styles'
+import { TableStyled } from './styles'
 
 /**
  * ParentSizedTable является полной копией компонента antd Table с измененными стилями
@@ -14,6 +14,6 @@ export function ParentSizedTable<RecordType extends Record<string, any>>(
   props: Omit<TableProps<RecordType>, 'scroll'>,
 ): ReactElement {
   return (
-    <StyledTable<RecordType> {...props} scroll={{ x: '100%', y: '100%' }} />
+    <TableStyled<RecordType> {...props} scroll={{ x: '100%', y: '100%' }} />
   )
 }

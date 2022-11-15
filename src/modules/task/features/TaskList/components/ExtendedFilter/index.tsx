@@ -12,7 +12,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useEffect } from 'react'
 
 import Permissions from 'components/Permissions'
-import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions/extendedFilter.permissions'
+import { extendedFilterPermissions } from 'modules/task/features/TaskList/permissions'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
 import { isEqualDeep } from 'shared/utils/common/isEqual'
@@ -20,8 +20,8 @@ import { isEqualDeep } from 'shared/utils/common/isEqual'
 import {
   searchFieldOptions,
   taskAssignedOptions,
+  taskExtendedStatusOptions,
   taskOverdueOptions,
-  taskStatusOptions,
 } from './constants'
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
@@ -59,6 +59,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
   return (
     <DrawerStyled
+      data-testid='filter-extended'
       $breakpoints={breakpoints}
       footer={
         <Row justify='end'>
@@ -87,7 +88,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
 
           <Form.Item name='status'>
-            <CheckboxGroupStyled options={taskStatusOptions} />
+            <CheckboxGroupStyled options={taskExtendedStatusOptions} />
           </Form.Item>
         </FilterBlock>
 

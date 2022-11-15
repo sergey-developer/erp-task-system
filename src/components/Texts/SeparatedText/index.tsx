@@ -1,5 +1,7 @@
-import { Space, SpaceProps, Typography } from 'antd'
+import { Typography } from 'antd'
 import React, { FC } from 'react'
+
+import Space, { SpaceProps } from 'components/Space'
 
 const { Text } = Typography
 

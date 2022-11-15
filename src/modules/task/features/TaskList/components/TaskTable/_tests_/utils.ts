@@ -1,45 +1,82 @@
-import { screen, within } from '_tests_/utils'
+import { SortOrder, TableAction } from 'antd/es/table/interface'
+
+import { loadingFinishedByIconIn, loadingStartedByIconIn } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { NumOrStr } from 'shared/interfaces/utils'
 
-export const getTable = (): HTMLElement => screen.getByTestId('table-task-list')
+import { tableColumns } from '../constants/columns'
+import { defaultColumnWidthMap } from '../constants/columnWidth'
+import { paginationConfig } from '../constants/pagination'
+import { TaskTableColumnKey } from '../interfaces'
+import testConstants from './constants'
 
-export const getColumnTitle = (
-  container: HTMLElement,
-  title: string,
-): HTMLElement => within(container).getByText(title)
+const getTable = () => screen.getByTestId('table-task-list')
 
-export const getColumnTitleContainer = (
-  container: HTMLElement,
-  title: string,
-): HTMLElement => {
-  // eslint-disable-next-line testing-library/no-node-access
-  return getColumnTitle(container, title).parentElement?.parentElement!
+const getRow = (id: number) =>
+  getTable().querySelector(`[data-row-key='${id}']`)
+
+const userClickRow = async (user: UserEvent, id: number) => {
+  const row = getRow(id)
+  await user.click(row!)
+  return row
 }
 
-export const getPaginationContainer = () => screen.getByRole('list')
+const getTextInTable = (text: string) => within(getTable()).getByText(text)
 
-export const getPaginationNextButton = (container: HTMLElement) =>
-  within(container).getByRole('listitem', {
-    name: 'Вперед',
+const getHeadCol = (text: string) => {
+  return getTextInTable(text).parentElement?.parentElement!
+}
+
+const userClickHeadCol = async (user: UserEvent, text: string) => {
+  const col = getHeadCol(text)
+  await user.click(col)
+  return col
+}
+
+const getPaginationContainer = () => within(getTable()).getByRole('list')
+
+const getPaginationNextButton = () =>
+  within(getPaginationContainer()).getByRole('button', {
+    name: 'right',
   })
 
-export const getPaginationPrevButton = (container: HTMLElement) =>
-  within(container).getByRole('listitem', {
-    name: 'Назад',
+const userClickPaginationNextButton = async (user: UserEvent) => {
+  const button = getPaginationNextButton()
+  await user.click(button)
+  return button
+}
+
+const getPaginationPrevButton = () =>
+  within(getPaginationContainer()).getByRole('button', {
+    name: 'left',
   })
 
-export const getPageButton = (container: HTMLElement, pageNumber: string) =>
-  within(container).getByRole('listitem', { name: pageNumber })
+const userClickPaginationPrevButton = async (user: UserEvent) => {
+  const button = getPaginationPrevButton()
+  await user.click(button)
+  return button
+}
 
-export const getPageSizeOptionsContainer = (container: HTMLElement) =>
+const getPaginationPageButton = (pageNumber: string) =>
+  within(getPaginationContainer()).getByRole('listitem', { name: pageNumber })
+
+const userClickPaginationPageButton = async (
+  user: UserEvent,
+  pageNumber: string,
+) => {
+  const button = getPaginationPageButton(pageNumber)
+  await user.click(button)
+  return button
+}
+
+const getPageSizeOptionsContainer = (container: HTMLElement) =>
   container.querySelector('.rc-virtual-list') as HTMLElement
 
-export const getPageSizeOption = (
-  container: HTMLElement,
-  pageSize: string | number,
-) => within(container).getByText(`${pageSize} / стр.`)
+const getPageSizeOption = (container: HTMLElement, pageSize: NumOrStr) =>
+  within(container).getByText(`${pageSize} / стр.`)
 
-export const userOpenPageSizeOptions = async (
+const userOpenPageSizeOptions = async (
   user: UserEvent,
   container: HTMLElement,
 ) => {
@@ -49,3 +86,78 @@ export const userOpenPageSizeOptions = async (
 
   await user.click(button)
 }
+
+const userChangePageSize = async (user: UserEvent, pageSize: NumOrStr) => {
+  const pagination = getPaginationContainer()
+  await userOpenPageSizeOptions(user, pagination)
+  const pageSizeOption = getPageSizeOption(
+    getPageSizeOptionsContainer(pagination),
+    pageSize,
+  )
+  await user.click(pageSizeOption)
+}
+
+const loadingStarted = async () => {
+  const taskTable = getTable()
+  await loadingStartedByIconIn(taskTable)
+  return taskTable
+}
+
+const loadingFinished = async () => {
+  const taskTable = getTable()
+  await loadingFinishedByIconIn(taskTable)
+  return taskTable
+}
+
+const onChangeTableArgs = {
+  pagination: (config: typeof testConstants.paginationProps) => ({
+    ...paginationConfig,
+    ...config,
+  }),
+  filters: () => ({}),
+  sorter: (key: TaskTableColumnKey, order: SortOrder) => {
+    const column = tableColumns.find((col) => col.key === key) || {}
+
+    return {
+      column: {
+        ...column,
+        width: defaultColumnWidthMap[key],
+      },
+      columnKey: key,
+      field: key,
+      order,
+    }
+  },
+  extra: (action: TableAction, dataSource: Readonly<Array<any>>) => ({
+    action,
+    currentDataSource: dataSource,
+  }),
+}
+
+const utils = {
+  getTable,
+  getRow,
+  userClickRow,
+  getTextInTable,
+  getHeadCol,
+  getPaginationContainer,
+  getPaginationNextButton,
+  getPaginationPrevButton,
+  getPaginationPageButton,
+  getPageSizeOptionsContainer,
+  getPageSizeOption,
+
+  userClickHeadCol,
+  userClickPaginationNextButton,
+  userClickPaginationPrevButton,
+  userClickPaginationPageButton,
+  userOpenPageSizeOptions,
+  userChangePageSize,
+
+  loadingStarted,
+  loadingFinished,
+
+  onChangeTableArgs,
+}
+
+export default utils

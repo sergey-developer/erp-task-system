@@ -8,3 +8,6 @@ export const RESOLVE_TASK_COMMON_ERROR_MSG = 'Невозможно выполн�
 
 export const UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG =
   'Возникла ошибка при назначении рабочей группы'
+
+export const CREATE_TASK_COMMENT_ERROR_MSG =
+  'Возникла ошибка при добавлении комментария'

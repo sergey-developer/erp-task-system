@@ -1,8 +1,8 @@
-import { Space } from 'antd'
+import { Divider, Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, ReactNode } from 'react'
 
-import { DividerStyled, WrapperStyled } from './styles'
+import { WrapperStyled } from './styles'
 
 type FilterBlockProps = {
   children: ReactNode
@@ -24,7 +24,7 @@ const FilterBlock: FC<FilterBlockProps> = ({
         </Space>
       </WrapperStyled>
 
-      {withDivider && <DividerStyled />}
+      {withDivider && <Divider />}
     </>
   )
 }

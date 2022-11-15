@@ -16,7 +16,7 @@ const PrivateLayout: FC = () => {
       <Header />
 
       <ContentStyled $breakpoints={breakpoints}>
-        <React.Suspense fallback={<Spinner area='parent' size='large' />}>
+        <React.Suspense fallback={<Spinner dimension='parent' size='large' />}>
           <Outlet />
         </React.Suspense>
       </ContentStyled>

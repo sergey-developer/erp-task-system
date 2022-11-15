@@ -3,6 +3,7 @@ import {
   LoginMutationArgsModel,
   LoginResponseModel,
   LogoutMutationArgsModel,
+  LogoutResponseModel,
 } from 'modules/auth/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
@@ -16,7 +17,7 @@ const authApiService = apiService.injectEndpoints({
         data: queryArg,
       }),
     }),
-    logout: build.mutation<void, LogoutMutationArgsModel>({
+    logout: build.mutation<LogoutResponseModel, LogoutMutationArgsModel>({
       query: (queryArg) => ({
         url: AuthEndpointsEnum.Logout,
         method: HttpMethodEnum.Post,

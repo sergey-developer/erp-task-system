@@ -1,29 +1,49 @@
-import { BadgeProps } from 'antd'
 import React, { ReactElement } from 'react'
 
 import {
   CheckCircleIcon,
+  ExclamationCircleIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
   RightCircleIcon,
 } from 'components/Icons'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 
-export const badgeNameByTaskStatus: Partial<
-  Record<
-    TaskStatusEnum,
-    Extract<BadgeProps['status'], 'default' | 'warning' | 'success'>
-  >
+import { BadgeStyled } from './styles'
+
+export const badgeByTaskStatus: Readonly<
+  Partial<Record<TaskStatusEnum, ReactElement>>
 > = {
-  [TaskStatusEnum.New]: 'default',
-  [TaskStatusEnum.Appointed]: 'default',
-  [TaskStatusEnum.InProgress]: 'warning',
-  [TaskStatusEnum.Completed]: 'success',
+  [TaskStatusEnum.New]: <BadgeStyled status='default' />,
+  [TaskStatusEnum.InProgress]: <BadgeStyled status='warning' />,
+  [TaskStatusEnum.Completed]: <BadgeStyled status='success' />,
 }
 
-export const iconByTaskStatus: Partial<Record<TaskStatusEnum, ReactElement>> = {
-  [TaskStatusEnum.Awaiting]: <PauseCircleIcon />,
-  [TaskStatusEnum.InReclassification]: <QuestionCircleIcon />,
-  [TaskStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
+export const iconByTaskStatus: Readonly<
+  Partial<Record<TaskStatusEnum, ReactElement>>
+> = {
   [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
+}
+
+export const badgeByTaskExtendedStatus: Readonly<
+  Partial<Record<TaskExtendedStatusEnum, ReactElement>>
+> = {
+  [TaskExtendedStatusEnum.New]: <BadgeStyled status='default' />,
+  [TaskExtendedStatusEnum.InProgress]: <BadgeStyled status='warning' />,
+  [TaskExtendedStatusEnum.Completed]: <BadgeStyled status='success' />,
+}
+
+export const iconByTaskExtendedStatus: Readonly<
+  Partial<Record<TaskExtendedStatusEnum, ReactElement>>
+> = {
+  [TaskExtendedStatusEnum.Awaiting]: <PauseCircleIcon />,
+  [TaskExtendedStatusEnum.InReclassification]: <QuestionCircleIcon />,
+  [TaskExtendedStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
+  [TaskExtendedStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
+  [TaskExtendedStatusEnum.FirstLineReturned]: (
+    <ExclamationCircleIcon $color='fireOpal' />
+  ),
 }

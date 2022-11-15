@@ -1,3 +1,3 @@
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 
-export type CommentAuthorModel = Omit<BaseUserModel, 'avatar'>
+export type CommentAuthorModel = Omit<UserModel, 'avatar'>

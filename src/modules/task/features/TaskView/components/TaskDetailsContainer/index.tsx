@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react'
 
 import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useCreateTaskReclassificationRequest'
+import useDeleteTaskWorkGroup from 'modules/task/features/TaskView/hooks/useDeleteTaskWorkGroup'
 import useGetTask from 'modules/task/features/TaskView/hooks/useGetTask'
 import useGetTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useGetTaskReclassificationRequest'
 import useResolveTask from 'modules/task/features/TaskView/hooks/useResolveTask'
@@ -13,13 +14,13 @@ import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/
 
 import TaskDetails from '../TaskDetails'
 
-type TaskDetailsContainerProps = {
+export type TaskDetailsContainerProps = {
   taskId: TaskListItemModel['id']
 
   additionalInfoExpanded: boolean
   onExpandAdditionalInfo: () => void
 
-  onClose: () => void
+  closeTaskDetails: () => void
 }
 
 const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
@@ -28,25 +29,38 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   additionalInfoExpanded,
   onExpandAdditionalInfo,
 
-  onClose,
+  closeTaskDetails,
 }) => {
   const {
-    data: task = null,
+    currentData: task = null,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
+    startedTimeStamp: getTaskStartedTimeStamp = 0,
   } = useGetTask(taskId)
 
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
 
-  const { currentData: reclassificationRequest = null } =
-    useGetTaskReclassificationRequest(taskId, {
-      skip: !taskExtendedStatus.isInReclassification,
-    })
-
   const {
     fn: createReclassificationRequest,
-    state: { isLoading: reclassificationRequestIsCreating },
+    state: {
+      isLoading: createReclassificationRequestIsLoading,
+      data: createReclassificationRequestResult = null,
+      reset: resetCreateReclassificationRequestData,
+      fulfilledTimeStamp: createReclassificationRequestFulfilledTimeStamp = 0,
+    },
   } = useCreateTaskReclassificationRequest()
+
+  const {
+    currentData: getReclassificationRequestResult = null,
+    isFetching: reclassificationRequestIsFetching,
+  } = useGetTaskReclassificationRequest(taskId, {
+    skip:
+      !taskExtendedStatus.isInReclassification ||
+      !!createReclassificationRequestResult,
+  })
+
+  const getTaskCalledAfterSuccessfullyRequestCreation =
+    getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
 
   const {
     fn: takeTask,
@@ -67,15 +81,27 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   } = useUpdateTaskWorkGroup()
 
   const {
+    fn: deleteWorkGroup,
+    state: { isLoading: deleteWorkGroupIsLoading },
+  } = useDeleteTaskWorkGroup()
+
+  const {
     fn: updateAssignee,
     state: { isLoading: updateAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 
   useEffect(() => {
-    if (isGetTaskError) {
-      onClose()
+    if (
+      createReclassificationRequestResult &&
+      getTaskCalledAfterSuccessfullyRequestCreation
+    ) {
+      resetCreateReclassificationRequestData()
     }
-  }, [isGetTaskError, onClose])
+  }, [
+    createReclassificationRequestResult,
+    getTaskCalledAfterSuccessfullyRequestCreation,
+    resetCreateReclassificationRequestData,
+  ])
 
   return (
     <TaskDetails
@@ -87,16 +113,24 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       isTaskResolving={isTaskResolving}
       updateAssignee={updateAssignee}
       updateAssigneeIsLoading={updateAssigneeIsLoading}
-      reclassificationRequest={reclassificationRequest}
+      reclassificationRequest={
+        createReclassificationRequestResult || getReclassificationRequestResult
+      }
+      reclassificationRequestIsLoading={reclassificationRequestIsFetching}
       createReclassificationRequest={createReclassificationRequest}
-      reclassificationRequestIsCreating={reclassificationRequestIsCreating}
+      createReclassificationRequestIsLoading={
+        createReclassificationRequestIsLoading
+      }
       workGroupList={workGroupList}
       workGroupListIsLoading={workGroupListIsFetching}
       updateWorkGroup={updateWorkGroup}
       updateWorkGroupIsLoading={updateWorkGroupIsLoading}
+      deleteWorkGroup={deleteWorkGroup}
+      deleteWorkGroupIsLoading={deleteWorkGroupIsLoading}
       additionalInfoExpanded={additionalInfoExpanded}
       onExpandAdditionalInfo={onExpandAdditionalInfo}
-      onClose={onClose}
+      closeTaskDetails={closeTaskDetails}
+      isGetTaskError={isGetTaskError}
     />
   )
 }

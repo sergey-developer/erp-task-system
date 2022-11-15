@@ -1,6 +1,6 @@
 import { Button, Dropdown, Menu, Row, Space, Typography } from 'antd'
 import noop from 'lodash/noop'
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 
 import {
   CheckCircleIcon,
@@ -41,55 +41,38 @@ const CardTitle: FC<CardTitleProps> = ({
   const taskOlaStatus = useTaskOlaStatus(olaStatus)
   const { isEngineerRole } = useUserRole()
 
-  const actionMenu = useMemo(() => {
-    const items = []
-
-    if (taskStatus.isInProgress) {
-      items.push({
-        key: 1,
-        disabled: !isAssignedToCurrentUser || hasReclassificationRequest,
-        icon: <CheckCircleIcon $color='crayola' />,
-        label: 'Выполнить заявку',
-        onClick: onClickExecuteTask,
-      })
-    }
-
-    if (!taskOlaStatus.isHalfExpired) {
-      items.push({
-        key: 2,
-        disabled:
-          !(
-            (taskStatus.isNew || taskStatus.isAppointed) &&
-            taskOlaStatus.isNotExpired
-          ) ||
-          taskType.isRequestTask ||
-          taskType.isIncidentTask ||
-          isEngineerRole,
-        icon: <QuestionCircleIcon />,
-        label: hasReclassificationRequest
-          ? 'Отменить переклассификацию'
-          : 'Запросить переклассификацию',
-        onClick: hasReclassificationRequest
-          ? noop
-          : onClickRequestReclassification,
-      })
-    }
-
-    return <Menu items={items} />
-  }, [
-    isAssignedToCurrentUser,
-    isEngineerRole,
-    onClickExecuteTask,
-    onClickRequestReclassification,
-    hasReclassificationRequest,
-    taskOlaStatus.isHalfExpired,
-    taskOlaStatus.isNotExpired,
-    taskStatus.isAppointed,
-    taskStatus.isInProgress,
-    taskStatus.isNew,
-    taskType.isIncidentTask,
-    taskType.isRequestTask,
-  ])
+  const actionMenu = (
+    <Menu
+      items={[
+        {
+          key: 1,
+          disabled:
+            !taskStatus.isInProgress ||
+            !isAssignedToCurrentUser ||
+            hasReclassificationRequest,
+          icon: <CheckCircleIcon $color='crayola' />,
+          label: 'Выполнить заявку',
+          onClick: onClickExecuteTask,
+        },
+        {
+          key: 2,
+          disabled:
+            !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
+            taskOlaStatus.isHalfExpired ||
+            taskType.isRequestTask ||
+            taskType.isIncidentTask ||
+            isEngineerRole,
+          icon: <QuestionCircleIcon />,
+          label: hasReclassificationRequest
+            ? 'Отменить переклассификацию'
+            : 'Запросить переклассификацию',
+          onClick: hasReclassificationRequest
+            ? noop
+            : onClickRequestReclassification,
+        },
+      ]}
+    />
+  )
 
   return (
     <Row justify='space-between' align='middle'>

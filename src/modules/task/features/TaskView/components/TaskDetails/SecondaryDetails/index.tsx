@@ -4,37 +4,37 @@ import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { TaskAssigneeModel } from 'modules/task/models'
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import { DetailsContainerStyled } from '../styles'
 import TaskAssignee from '../TaskAssignee'
-import WorkGroup from '../WorkGroup'
+import WorkGroup, { WorkGroupProps } from '../WorkGroup'
 
-type SecondaryDetailsProps = Pick<
+export type SecondaryDetailsProps = Pick<
   TaskDetailsModel,
-  'id' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
-> & {
-  workGroupList: Array<WorkGroupListItemModel>
-  workGroupListIsLoading: boolean
+  'id' | 'recordId' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
+> &
+  Pick<
+    WorkGroupProps,
+    | 'workGroupList'
+    | 'workGroupListIsLoading'
+    | 'transferTaskToFirstLine'
+    | 'transferTaskToFirstLineIsLoading'
+    | 'transferTaskToSecondLine'
+    | 'transferTaskToSecondLineIsLoading'
+    | 'hasReclassificationRequest'
+  > & {
+    takeTask: () => Promise<void>
+    takeTaskIsLoading: boolean
 
-  transferTask: (
-    workGroup: WorkGroupListItemModel['id'],
-    closeTaskSecondLineModal: () => void,
-  ) => Promise<void>
-  transferTaskIsLoading: boolean
-
-  takeTask: () => Promise<void>
-  takeTaskIsLoading: boolean
-
-  updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
-  updateAssigneeIsLoading: boolean
-
-  hasReclassificationRequest: boolean
-}
+    updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
+    updateAssigneeIsLoading: boolean
+  }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   id,
+  recordId,
+
   assignee,
 
   status,
@@ -44,8 +44,10 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   workGroupList,
   workGroupListIsLoading,
 
-  transferTask,
-  transferTaskIsLoading,
+  transferTaskToFirstLine,
+  transferTaskToFirstLineIsLoading,
+  transferTaskToSecondLine,
+  transferTaskToSecondLineIsLoading,
 
   takeTask,
   takeTaskIsLoading,
@@ -66,22 +68,31 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   )
 
   return (
-    <DetailsContainerStyled $breakpoints={breakpoints}>
+    <DetailsContainerStyled
+      data-testid='task-secondary-details'
+      $breakpoints={breakpoints}
+    >
       <Row justify='space-between'>
-        <Col span={12}>
+        <Col span={11}>
           <WorkGroup
             id={id}
+            recordId={recordId}
             status={status}
+            extendedStatus={extendedStatus}
             workGroup={workGroup}
             workGroupList={workGroupList}
             workGroupListIsLoading={workGroupListIsLoading}
-            transferTask={transferTask}
-            transferTaskIsLoading={transferTaskIsLoading}
+            transferTaskToFirstLine={transferTaskToFirstLine}
+            transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
+            transferTaskToSecondLine={transferTaskToSecondLine}
+            transferTaskToSecondLineIsLoading={
+              transferTaskToSecondLineIsLoading
+            }
             hasReclassificationRequest={hasReclassificationRequest}
           />
         </Col>
 
-        <Col span={10}>
+        <Col span={11}>
           <TaskAssignee
             status={status}
             extendedStatus={extendedStatus}

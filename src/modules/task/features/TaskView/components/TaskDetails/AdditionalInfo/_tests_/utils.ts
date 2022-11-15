@@ -1,22 +1,41 @@
-import { screen } from '_tests_/utils'
-import { within } from '@testing-library/react'
+import { getButtonIn } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getExpandButton = () =>
-  screen.getByRole('button', { name: /Дополнительная информация/ })
+const getContainer = () => screen.getByTestId('task-additional-info')
 
-export const getAdditionalInfoContent = () =>
-  screen.getByTestId('additional-info-content')
+const getAdditionalInfoContent = () =>
+  within(getContainer()).getByTestId('additional-info-content')
 
-export const queryAdditionalInfoContent = () =>
-  screen.queryByTestId('additional-info-content')
+const queryAdditionalInfoContent = () =>
+  within(getContainer()).queryByTestId('additional-info-content')
 
-export const userClickExpandButton = async (user: UserEvent) => {
+const getExpandButton = () =>
+  getButtonIn(getContainer(), /дополнительная информация/i)
+
+const userClickExpandButton = async (user: UserEvent) => {
   const button = getExpandButton()
   await user.click(button)
+  return button
 }
 
-export const getAddress = () => screen.getByTestId('additional-info-address')
+const getAddress = () =>
+  within(getAdditionalInfoContent()).getByTestId('additional-info-address')
 
-export const getAddressIcon = (address: HTMLElement) =>
-  within(address).getByRole('img', { name: 'environment' })
+const getAddressIcon = () =>
+  within(getAddress()).getByRole('img', { name: 'environment' })
+
+const utils = {
+  getContainer,
+
+  getAdditionalInfoContent,
+  queryAdditionalInfoContent,
+
+  getExpandButton,
+  userClickExpandButton,
+
+  getAddress,
+  getAddressIcon,
+}
+
+export default utils
