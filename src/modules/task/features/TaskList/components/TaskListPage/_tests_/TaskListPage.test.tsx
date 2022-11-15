@@ -871,6 +871,7 @@ describe('Страница реестра заявок', () => {
         )
 
         await extendedFilterTestUtils.userApplyFilter(user)
+        await taskTableTestUtils.loadingStarted()
         await taskTableTestUtils.loadingFinished()
 
         await taskListPageTestUtils.userFillSearchInput(user, true)
