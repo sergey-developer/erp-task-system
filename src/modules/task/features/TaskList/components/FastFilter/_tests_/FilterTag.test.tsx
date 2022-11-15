@@ -1,44 +1,47 @@
-import { render, within } from '_tests_/utils'
+import { render } from '_tests_/utils'
 
 import FilterTag from '../FilterTag'
-import { filterCheckedClass, requiredProps } from './constants'
-import { getFilterTag, getFilterTagContainer } from './utils'
+import { filterTagRequiredProps as requiredProps } from './constants'
+import fastFilterTestUtils from './utils'
 
-describe('FilterTag', () => {
-  test('Отображает состояние загрузки', () => {
+describe('Элемент быстрого фильтра', () => {
+  test('Отображает состояние загрузки', async () => {
     render(<FilterTag {...requiredProps} loading />)
-
-    const container = getFilterTagContainer()
-    const skeleton = container.querySelector('.ant-skeleton-active')
-
-    expect(skeleton).toBeInTheDocument()
+    await fastFilterTestUtils.loadingStarted()
   })
 
   test('Отображает текст', () => {
     render(<FilterTag {...requiredProps} />)
 
-    const container = getFilterTagContainer()
-    expect(within(container).getByText(requiredProps.text)).toBeInTheDocument()
+    expect(
+      fastFilterTestUtils.getByTextInCheckableTag(
+        requiredProps.value,
+        requiredProps.text,
+      ),
+    ).toBeInTheDocument()
   })
 
   describe('Количество', () => {
-    test('Отображается если оно присутствует (включая "0")', () => {
-      render(<FilterTag {...requiredProps} />)
-
-      const container = getFilterTagContainer()
+    test('Отображается корректно', () => {
+      const amount = 0
+      render(<FilterTag {...requiredProps} amount={amount} />)
 
       expect(
-        within(container).getByText(requiredProps.amount!),
+        fastFilterTestUtils.getByTextInCheckableTag(
+          requiredProps.value,
+          amount,
+        ),
       ).toBeInTheDocument()
     })
 
     test('Не отображается если оно отсутствует', () => {
       render(<FilterTag {...requiredProps} amount={null} />)
 
-      const container = getFilterTagContainer()
-
       expect(
-        within(container).queryByText(requiredProps.amount!),
+        fastFilterTestUtils.queryByTextInCheckableTag(
+          requiredProps.value,
+          requiredProps.amount!,
+        ),
       ).not.toBeInTheDocument()
     })
   })
@@ -46,18 +49,36 @@ describe('FilterTag', () => {
   test('Можно сделать выбранным', () => {
     render(<FilterTag {...requiredProps} checked />)
 
-    const filter = getFilterTag()
-    expect(filter).toHaveClass(filterCheckedClass)
+    fastFilterTestUtils.expectFilterChecked(
+      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    )
   })
 
   test('Можно сделать не выбранным', () => {
     render(<FilterTag {...requiredProps} checked={false} />)
 
-    const filter = getFilterTag()
-    expect(filter).not.toHaveClass(filterCheckedClass)
+    fastFilterTestUtils.expectFilterNotChecked(
+      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    )
   })
 
-  describe('"onChange"', () => {
+  test('Можно сделать не активным', () => {
+    render(<FilterTag {...requiredProps} disabled />)
+
+    fastFilterTestUtils.expectFilterNotChecked(
+      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    )
+  })
+
+  test('Если элемент не активный, он перестаёт быть выбранным', () => {
+    render(<FilterTag {...requiredProps} checked disabled />)
+
+    fastFilterTestUtils.expectFilterNotChecked(
+      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    )
+  })
+
+  describe('Обработчик onChange', () => {
     const onChange = jest.fn()
 
     afterEach(() => {
@@ -69,9 +90,7 @@ describe('FilterTag', () => {
         <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
       )
 
-      const filter = getFilterTag()
-      await user.click(filter)
-
+      await fastFilterTestUtils.userChangeFilter(user, requiredProps.value)
       expect(onChange).toBeCalledTimes(1)
     })
 
@@ -80,9 +99,7 @@ describe('FilterTag', () => {
         <FilterTag {...requiredProps} disabled onChange={onChange} />,
       )
 
-      const filter = getFilterTag()
-      await user.click(filter)
-
+      await fastFilterTestUtils.userChangeFilter(user, requiredProps.value)
       expect(onChange).not.toBeCalled()
     })
   })

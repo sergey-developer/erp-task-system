@@ -4,6 +4,7 @@ export type AscendSortValue =
   | 'id'
   | 'name'
   | 'title'
+  | 'status'
   | 'last_comment_text'
   | 'assignee__last_name'
   | 'record_id'
@@ -20,6 +21,7 @@ export type SortableField = keyof Pick<
   | 'id'
   | 'name'
   | 'title'
+  | 'status'
   | 'lastComment'
   | 'assignee'
   | 'recordId'
@@ -35,6 +37,7 @@ export const sortableFieldToSortValues: Record<
   id: ['id', '-id'],
   name: ['name', '-name'],
   title: ['title', '-title'],
+  status: ['status', '-status'],
   lastComment: ['last_comment_text', '-last_comment_text'],
   assignee: ['assignee__last_name', '-assignee__last_name'],
   recordId: ['record_id', '-record_id'],

@@ -74,7 +74,9 @@ const TaskListPage: FC = () => {
     data: taskListResponse,
     isFetching: taskListIsFetching,
     refetch: refetchTaskList,
-  } = useGetTaskList(queryArgs)
+  } = useGetTaskList(queryArgs, {
+    skip: sortableFieldToSortValues.status.includes(queryArgs.sort),
+  })
 
   const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskTableListItem['id']>>(null)
@@ -111,11 +113,13 @@ const TaskListPage: FC = () => {
     toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
     setFastFilterValue(undefined)
-    triggerFilterChange({...mapExtendedFilterFormFieldsToQueries(values), filter: undefined})
+    triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
     handleCloseTaskDetails()
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
+    if (isEqual(value, fastFilterValue)) return
+
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilterValue(value)
 
@@ -125,9 +129,7 @@ const TaskListPage: FC = () => {
       filter: value,
     })
 
-    if (!isEqual(value, fastFilterValue)) {
-      handleCloseTaskDetails()
-    }
+    handleCloseTaskDetails()
   }
 
   const handleTaskIdFilterSearch = useDebounceFn<
@@ -139,6 +141,8 @@ const TaskListPage: FC = () => {
         taskId: value,
       })
     } else {
+      if (!previousAppliedFilterType) return
+
       setAppliedFilterType(previousAppliedFilterType!)
 
       const prevFilter = isEqual(
@@ -213,12 +217,12 @@ const TaskListPage: FC = () => {
       | FastFilterQueries
       | TaskIdFilterQueries,
   ) => {
-    // рефакторить
-    setQueryArgs((prev) => ({
-      ...prev,
+    setQueryArgs((prevState) => ({
+      ...prevState,
       offset: 0,
       completeAtFrom: undefined,
       completeAtTo: undefined,
+      filter: undefined,
       status: undefined,
       isOverdue: undefined,
       isAssigned: undefined,
@@ -247,7 +251,7 @@ const TaskListPage: FC = () => {
 
   return (
     <>
-      <RowWrapStyled gutter={[0, 40]}>
+      <RowWrapStyled data-testid='page-task-list' gutter={[0, 40]}>
         <Row justify='space-between' align='bottom'>
           <Col span={13}>
             <Row align='middle' gutter={[30, 30]}>
@@ -257,17 +261,16 @@ const TaskListPage: FC = () => {
                   selectedFilter={queryArgs.filter}
                   onChange={handleFastFilterChange}
                   isError={isGetTaskCountersError}
-                  disabled={searchFilterApplied}
+                  disabled={taskListIsFetching || searchFilterApplied}
                   isLoading={taskCountersIsFetching}
                 />
               </Col>
 
               <Col>
                 <Button
-                  data-testid='btn-filter-extended'
                   icon={<FilterIcon $size='large' />}
                   onClick={debouncedToggleOpenExtendedFilter}
-                  disabled={searchFilterApplied}
+                  disabled={taskListIsFetching || searchFilterApplied}
                 >
                   Фильтры
                 </Button>
@@ -283,15 +286,16 @@ const TaskListPage: FC = () => {
                   allowClear
                   onSearch={handleTaskIdFilterSearch}
                   placeholder='Искать заявку по номеру'
+                  disabled={taskListIsFetching}
                 />
               </Col>
 
               <Col>
                 <Space align='end' size='middle'>
                   <Button
-                    data-testid='btn-reload-taskList'
                     icon={<SyncIcon />}
                     onClick={handleRefetchTaskList}
+                    disabled={taskListIsFetching}
                   >
                     Обновить заявки
                   </Button>
@@ -323,7 +327,7 @@ const TaskListPage: FC = () => {
                   taskId={selectedTask}
                   additionalInfoExpanded={taskAdditionalInfoExpanded}
                   onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
-                  onClose={handleCloseTaskDetails}
+                  closeTaskDetails={handleCloseTaskDetails}
                 />
               </Col>
             )}

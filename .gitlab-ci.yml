@@ -1,12 +1,28 @@
 stages:
+  - lint
   - test
   - build
   - deploy
   - cleanup
 
+Lint:
+  stage: lint
+  image: node:18-alpine
+  interruptible: true
+  script:
+    - yarn install
+    - yarn lint
+  only:
+    - rc
+    - master
+    - develop
+  tags:
+    - docker
+
 Tests:
   stage: test
   image: node:18-alpine
+  interruptible: true
   script:
     - export REACT_APP_API_URL=http://localhost:3000
     - export REACT_APP_ENVIRONMENT=test
@@ -16,30 +32,31 @@ Tests:
   only:
     - rc
     - master
+    - develop
   tags:
     - docker
 
 
-Build and Publish:
+.base_build: &base_build
   stage: build
+  interruptible: true
   before_script:
     - source "$(~/bin/trdl use werf 1.2 stable)"
     - type werf && source $(werf ci-env gitlab --as-file)
     - export WERF_SECRET_KEY=$WERF_SECRET_KEY
   script:
-    - werf build
+    - werf build --env=$env
   except: [schedules]
   only:
     - rc
     - master
+    - develop
   tags:
     - werf
 
 .base_deploy: &base_deploy
   stage: deploy
-  needs: ["Build and Publish"]
-  dependencies:
-    - Build and Publish
+  interruptible: true
   before_script:
     - source "$(~/bin/trdl use werf 1.2 stable)"
     - type werf && source $(werf ci-env gitlab --as-file)
@@ -50,8 +67,33 @@ Build and Publish:
   tags: [werf]
 
 
+Build for Develop:
+  <<: *base_build
+  variables:
+    env: dev
+  only:
+    - develop
+
+Build for Staging:
+  <<: *base_build
+  variables:
+    env: stage
+  only:
+    - rc
+
+Build for Production:
+  <<: *base_build
+  variables:
+    env: prod
+  only:
+    - master
+    - task-20338-update
+
+
 Deploy to Develop:
   <<: *base_deploy
+  dependencies:
+    - Build for Develop
   variables:
     env: dev
     kube_context: default/dev
@@ -60,14 +102,27 @@ Deploy to Develop:
 
 Deploy to Staging:
   <<: *base_deploy
+  dependencies:
+    - Build for Staging
   variables:
     env: stage
     kube_context: default/dev
   only:
     - rc
 
+Deploy to Production:
+  <<: *base_deploy
+  dependencies:
+    - Build for Production
+  variables:
+    env: prod
+    kube_context: default/production
+  only:
+    - master
+
 Cleanup:
   stage: cleanup
+  interruptible: true
   before_script:
     - source "$(~/bin/trdl use werf 1.2 stable)"
     - type werf && source $(werf ci-env gitlab --as-file)

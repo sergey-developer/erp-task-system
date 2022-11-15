@@ -2,19 +2,16 @@ import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
 } from 'modules/task/constants/common'
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskJournalEntryModel = {
   id: number
-  author: MaybeNull<Omit<BaseUserModel, 'avatar'>>
+  author: MaybeNull<Omit<UserModel, 'avatar'>>
   createdAt: string
-  updatedAt: string
   type: TaskJournalTypeEnum
   description: string
   sourceSystem: TaskJournalSourceEnum
-  task: number
-  recordId?: string
 }
 
 export type TaskJournalModel = Array<TaskJournalEntryModel>

@@ -11,6 +11,10 @@ export const TableStyled: typeof ParentSizedTable = styled(ParentSizedTable)`
   }
 `
 
+export const TableWrapperStyled = styled.div`
+  height: 100%;
+`
+
 export const EmptyContentStyled = styled.div`
   padding: 20px 0;
 `

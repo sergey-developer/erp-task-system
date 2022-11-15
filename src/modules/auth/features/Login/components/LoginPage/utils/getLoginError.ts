@@ -3,7 +3,7 @@ import {
   LOGIN_WRONG_DATA_ERROR_MSG,
 } from 'modules/auth/features/Login/constants/messages'
 import { HttpCodeEnum } from 'shared/constants/http'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
 

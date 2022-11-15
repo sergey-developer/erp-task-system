@@ -1,32 +1,19 @@
 import { Space } from 'antd'
-import React, { FC } from 'react'
-
-import { TaskStatusEnum } from 'modules/task/constants/common'
-
-import { badgeNameByTaskStatus, iconByTaskStatus } from './constants'
-import { BadgeStyled } from './styles'
+import React, { FC, ReactElement } from 'react'
 
 type TaskStatusProps = {
-  status: TaskStatusEnum
+  status: string
   text?: string
+  icon?: ReactElement
+  badge?: ReactElement
 }
 
-const TaskStatus: FC<TaskStatusProps> = ({ text, status }) => {
-  const badgeName = badgeNameByTaskStatus[status]
-  const icon = iconByTaskStatus[status]
-
-  if (!text && !badgeName && !icon) return null
+const TaskStatus: FC<TaskStatusProps> = ({ text, badge, icon, status }) => {
+  if (!text && !badge && !icon) return null
 
   return (
-    <Space>
-      {icon ? (
-        icon
-      ) : badgeName ? (
-        <BadgeStyled
-          data-testid={`badge-status-${badgeName}`}
-          status={badgeName}
-        />
-      ) : null}
+    <Space data-testid={`task-status-${status}`}>
+      {icon ? icon : badge ? badge : null}
 
       {text}
     </Space>

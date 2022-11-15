@@ -1,24 +1,24 @@
 import { useEffect } from 'react'
 
 import { GetTaskQueryArgsModel } from 'modules/task/features/TaskView/models'
-import { taskApiPermissions } from 'modules/task/features/TaskView/permissions/task.permissions'
 import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
 } from 'modules/task/features/TaskView/utils/messages'
+import { taskApiPermissions } from 'modules/task/permissions'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/messages'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import {
   ErrorResponse,
   isBadRequestError,
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 const useGetTask = (id: GetTaskQueryArgsModel) => {
-  const permissions = useUserPermissions(taskApiPermissions.task)
+  const permissions = useUserPermissions(taskApiPermissions)
 
   const state = useGetTaskQuery(id, {
     skip: !permissions.canGet,

@@ -14,13 +14,3 @@ export const RECLASSIFICATION_REASON_RULES: Rule[] = [
     message: 'Недопустимая причина переклассификации',
   },
 ]
-
-export const COMMENT_RULES: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-  },
-  {
-    max: 500,
-  },
-]
