@@ -141,6 +141,8 @@ const TaskListPage: FC = () => {
         taskId: value,
       })
     } else {
+      if (!previousAppliedFilterType) return
+
       setAppliedFilterType(previousAppliedFilterType!)
 
       const prevFilter = isEqual(
