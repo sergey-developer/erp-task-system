@@ -94,6 +94,7 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.FirstLineSupport }),
         })
 
+        await taskTableTestUtils.loadingFinished()
         await fastFilterTestUtils.loadingFinished()
 
         fastFilterTestUtils.expectFilterChecked(
@@ -109,6 +110,7 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.Engineer }),
         })
 
+        await taskTableTestUtils.loadingFinished()
         await fastFilterTestUtils.loadingFinished()
 
         fastFilterTestUtils.expectFilterChecked(
@@ -124,6 +126,7 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
         })
 
+        await taskTableTestUtils.loadingFinished()
         await fastFilterTestUtils.loadingFinished()
 
         fastFilterTestUtils.expectFilterChecked(
@@ -139,6 +142,7 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.HeadOfDepartment }),
         })
 
+        await taskTableTestUtils.loadingFinished()
         await fastFilterTestUtils.loadingFinished()
 
         fastFilterTestUtils.expectFilterChecked(
@@ -458,6 +462,7 @@ describe('Страница реестра заявок', () => {
         )
 
         await extendedFilterTestUtils.userApplyFilter(user)
+        await taskTableTestUtils.loadingStarted()
         await taskTableTestUtils.loadingFinished()
         await taskListPageTestUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
@@ -513,6 +518,7 @@ describe('Страница реестра заявок', () => {
         store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
       })
 
+      await taskTableTestUtils.loadingFinished()
       await taskListPageTestUtils.userOpenExtendedFilter(user)
       const filter = await extendedFilterTestUtils.findFilter()
 
@@ -618,6 +624,7 @@ describe('Страница реестра заявок', () => {
           }),
         })
 
+        await taskTableTestUtils.loadingFinished()
         await taskListPageTestUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
 
@@ -697,6 +704,7 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingFinished()
           await taskListPageTestUtils.userFillSearchInput(user)
           await user.click(taskListPageTestUtils.getSearchButton())
           await taskTableTestUtils.loadingStarted()
@@ -710,6 +718,7 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingFinished()
           await taskListPageTestUtils.userFillSearchInput(user, true)
           await taskTableTestUtils.loadingStarted()
         })
@@ -823,6 +832,7 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
         })
 
+        await taskTableTestUtils.loadingFinished()
         await taskListPageTestUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
 
@@ -944,6 +954,7 @@ describe('Страница реестра заявок', () => {
         store: getStoreWithAuth(),
       })
 
+      await taskTableTestUtils.loadingFinished()
       await fastFilterTestUtils.loadingFinished()
       await taskListPageTestUtils.userClickReloadListButton(user)
       await fastFilterTestUtils.loadingStarted()
