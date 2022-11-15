@@ -1,5 +1,4 @@
-import { usePrevious } from 'ahooks'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useCreateTaskReclassificationRequest'
@@ -12,7 +11,6 @@ import useUpdateTaskAssignee from 'modules/task/features/TaskView/hooks/useUpdat
 import useUpdateTaskWorkGroup from 'modules/task/features/TaskView/hooks/useUpdateTaskWorkGroup'
 import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
-import { isEqual } from 'shared/utils/common/isEqual'
 
 import TaskDetails from '../TaskDetails'
 
@@ -34,14 +32,23 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   closeTaskDetails,
 }) => {
   const {
-    data: task = null,
+    currentData: task = null,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
-    fulfilledTimeStamp: getTaskFulfilledTimeStamp,
+    startedTimeStamp: getTaskStartedTimeStamp = 0,
   } = useGetTask(taskId)
 
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
-  const prevGetTaskFulfilledTimeStamp = usePrevious(getTaskFulfilledTimeStamp)
+
+  const {
+    fn: createReclassificationRequest,
+    state: {
+      isLoading: createReclassificationRequestIsLoading,
+      data: createReclassificationRequestResult = null,
+      reset: resetCreateReclassificationRequestData,
+      fulfilledTimeStamp: createReclassificationRequestFulfilledTimeStamp = 0,
+    },
+  } = useCreateTaskReclassificationRequest()
 
   const {
     currentData: getReclassificationRequestResult = null,
@@ -49,16 +56,11 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   } = useGetTaskReclassificationRequest(taskId, {
     skip:
       !taskExtendedStatus.isInReclassification ||
-      !isEqual(getTaskFulfilledTimeStamp, prevGetTaskFulfilledTimeStamp),
+      !!createReclassificationRequestResult,
   })
 
-  const {
-    fn: createReclassificationRequest,
-    state: {
-      isLoading: createReclassificationRequestIsLoading,
-      data: createReclassificationRequestResult = null,
-    },
-  } = useCreateTaskReclassificationRequest()
+  const getTaskCalledAfterSuccessfullyRequestCreation =
+    getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
 
   const {
     fn: takeTask,
@@ -87,6 +89,19 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     fn: updateAssignee,
     state: { isLoading: updateAssigneeIsLoading },
   } = useUpdateTaskAssignee()
+
+  useEffect(() => {
+    if (
+      createReclassificationRequestResult &&
+      getTaskCalledAfterSuccessfullyRequestCreation
+    ) {
+      resetCreateReclassificationRequestData()
+    }
+  }, [
+    createReclassificationRequestResult,
+    getTaskCalledAfterSuccessfullyRequestCreation,
+    resetCreateReclassificationRequestData,
+  ])
 
   return (
     <TaskDetails

@@ -4,7 +4,6 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
-import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
@@ -53,6 +52,14 @@ const TaskReclassificationRequest = React.lazy(
 const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
 const TaskReclassificationModal = React.lazy(
   () => import('../TaskReclassificationModal'),
+)
+
+const reclassificationRequestSpinner = (
+  <Spinner
+    dimension='block'
+    offset={['top', 10]}
+    tip={reclassificationRequestLoadingMessage}
+  />
 )
 
 export type TaskDetailsProps = {
@@ -298,35 +305,23 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         loading={taskIsLoading}
         $breakpoints={breakpoints}
       >
-        {hasReclassificationRequest && (
-          <React.Suspense
-            fallback={
-              <Spinner
-                dimension='block'
-                offset={['top', 10]}
-                tip={reclassificationRequestLoadingMessage}
-              />
-            }
-          >
-            <LoadingArea
-              dimension='block'
-              offset={['top', 10]}
-              tip={reclassificationRequestLoadingMessage}
-              isLoading={reclassificationRequestIsLoading}
-            >
-              <TaskReclassificationRequest
-                title='Запрошена переклассификация:'
-                comment={reclassificationRequest!.comment.text}
-                createdAt={reclassificationRequest!.createdAt}
-                user={reclassificationRequest!.user}
-                actionText='Отменить запрос'
-                onAction={noop}
-              />
-            </LoadingArea>
+        {reclassificationRequestIsLoading ||
+        createReclassificationRequestIsLoading
+          ? reclassificationRequestSpinner
+          : hasReclassificationRequest && (
+              <React.Suspense fallback={reclassificationRequestSpinner}>
+                <TaskReclassificationRequest
+                  title='Запрошена переклассификация:'
+                  comment={reclassificationRequest!.comment.text}
+                  createdAt={reclassificationRequest!.createdAt}
+                  user={reclassificationRequest!.user}
+                  actionText='Отменить запрос'
+                  onAction={noop}
+                />
 
-            {!reclassificationRequestIsLoading && <DividerStyled />}
-          </React.Suspense>
-        )}
+                {!reclassificationRequestIsLoading && <DividerStyled />}
+              </React.Suspense>
+            )}
 
         {details && (
           <>
