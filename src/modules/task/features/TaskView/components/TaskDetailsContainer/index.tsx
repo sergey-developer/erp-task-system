@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import { TaskListItemModel } from 'modules/task/features/TaskList/models'
 import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useCreateTaskReclassificationRequest'
@@ -32,24 +32,35 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
   closeTaskDetails,
 }) => {
   const {
-    data: task = null,
+    currentData: task = null,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
+    startedTimeStamp: getTaskStartedTimeStamp = 0,
   } = useGetTask(taskId)
 
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
 
   const {
-    currentData: reclassificationRequest = null,
-    isFetching: reclassificationRequestIsFetching,
-  } = useGetTaskReclassificationRequest(taskId, {
-    skip: !taskExtendedStatus.isInReclassification,
-  })
+    fn: createReclassificationRequest,
+    state: {
+      isLoading: createReclassificationRequestIsLoading,
+      data: createReclassificationRequestResult = null,
+      reset: resetCreateReclassificationRequestData,
+      fulfilledTimeStamp: createReclassificationRequestFulfilledTimeStamp = 0,
+    },
+  } = useCreateTaskReclassificationRequest()
 
   const {
-    fn: createReclassificationRequest,
-    state: { isLoading: createReclassificationRequestIsLoading },
-  } = useCreateTaskReclassificationRequest()
+    currentData: getReclassificationRequestResult = null,
+    isFetching: reclassificationRequestIsFetching,
+  } = useGetTaskReclassificationRequest(taskId, {
+    skip:
+      !taskExtendedStatus.isInReclassification ||
+      !!createReclassificationRequestResult,
+  })
+
+  const getTaskCalledAfterSuccessfullyRequestCreation =
+    getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
 
   const {
     fn: takeTask,
@@ -79,6 +90,19 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
     state: { isLoading: updateAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 
+  useEffect(() => {
+    if (
+      createReclassificationRequestResult &&
+      getTaskCalledAfterSuccessfullyRequestCreation
+    ) {
+      resetCreateReclassificationRequestData()
+    }
+  }, [
+    createReclassificationRequestResult,
+    getTaskCalledAfterSuccessfullyRequestCreation,
+    resetCreateReclassificationRequestData,
+  ])
+
   return (
     <TaskDetails
       details={task}
@@ -89,7 +113,9 @@ const TaskDetailsContainer: FC<TaskDetailsContainerProps> = ({
       isTaskResolving={isTaskResolving}
       updateAssignee={updateAssignee}
       updateAssigneeIsLoading={updateAssigneeIsLoading}
-      reclassificationRequest={reclassificationRequest}
+      reclassificationRequest={
+        createReclassificationRequestResult || getReclassificationRequestResult
+      }
       reclassificationRequestIsLoading={reclassificationRequestIsFetching}
       createReclassificationRequest={createReclassificationRequest}
       createReclassificationRequestIsLoading={
