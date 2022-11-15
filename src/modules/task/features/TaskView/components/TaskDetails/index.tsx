@@ -319,7 +319,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                   onAction={noop}
                 />
 
-                {!reclassificationRequestIsLoading && <DividerStyled />}
+                <DividerStyled />
               </React.Suspense>
             )}
 
