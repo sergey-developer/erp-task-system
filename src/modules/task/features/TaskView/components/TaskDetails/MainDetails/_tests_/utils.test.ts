@@ -1,42 +1,38 @@
-import { generateDateString } from '_tests_/utils'
+import setupMoment from 'lib/moment/setup'
 import { TaskOlaStatusEnum } from 'modules/task/constants/common'
 
 import { getCompleteAt } from '../utils'
 
-const baseArgs: Omit<Parameters<typeof getCompleteAt>[0], 'olaStatus'> = {
-  olaNextBreachTime: generateDateString(),
-  olaEstimatedTime: 5353455,
-}
-
-export const baseDateTimeRegexp =
-  /^до\s\d{1,2}\.\d{1,2}\.\d{1,4},\s(?:\d{1,2}:\d{1,2}:\d{1,2})$/
-
-const halfExpiredDateTimeRegexp =
-  /^до\s\d{1,2}\.\d{1,2}\.\d{1,4},\s\d{1,2}:\d{1,2}:\d{1,2}\s(?:\d{1,2}мес\s)?(?:\d{1,2}д\s)?(?:\d{1,2}ч\s)?(?:\d{1,2}мин)$/
+beforeAll(() => {
+  setupMoment()
+})
 
 test('Корректный результат для не просроченной заявки', () => {
   const result = getCompleteAt({
-    ...baseArgs,
+    olaNextBreachTime: new Date(2024, 3, 3, 3, 3, 3).toISOString(),
+    olaEstimatedTime: 5353455,
     olaStatus: TaskOlaStatusEnum.NotExpired,
   })
 
-  expect(result).toMatch(baseDateTimeRegexp)
+  expect(result).toMatch('до 03.04.2024, 03:03:03')
 })
 
 test('Корректный результат для просроченной заявки', () => {
   const result = getCompleteAt({
-    ...baseArgs,
+    olaNextBreachTime: new Date(2023, 2, 2, 2, 2, 2).toISOString(),
+    olaEstimatedTime: 5353455,
     olaStatus: TaskOlaStatusEnum.Expired,
   })
 
-  expect(result).toMatch(baseDateTimeRegexp)
+  expect(result).toMatch('до 02.03.2023, 02:02:02')
 })
 
 test('Корректный результат для заявки у которой прошло более половины времени', () => {
   const result = getCompleteAt({
-    ...baseArgs,
+    olaNextBreachTime: new Date(2022, 1, 1, 1, 1, 1).toISOString(),
+    olaEstimatedTime: 13926399226,
     olaStatus: TaskOlaStatusEnum.HalfExpired,
   })
 
-  expect(result).toMatch(halfExpiredDateTimeRegexp)
+  expect(result).toMatch('до 01.02.2022, 01:01:01 5мес 9д 04ч 27мин')
 })
