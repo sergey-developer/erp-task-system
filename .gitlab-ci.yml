@@ -12,6 +12,13 @@ Lint:
   script:
     - yarn install
     - yarn lint
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules/
+    policy: pull-push
   only:
     - rc
     - master
@@ -29,6 +36,13 @@ Tests:
     - export CI=true
     - yarn install
     - yarn test
+  cache:
+    - key:
+        files:
+          - yarn.lock
+      paths:
+        - node_modules/
+      policy: pull
   only:
     - rc
     - master
@@ -46,6 +60,13 @@ Tests:
     - export WERF_SECRET_KEY=$WERF_SECRET_KEY
   script:
     - werf build --env=$env
+  cache:
+    - key:
+        files:
+          - yarn.lock
+      paths:
+        - node_modules/
+      policy: pull
   except: [schedules]
   only:
     - rc
@@ -87,7 +108,6 @@ Build for Production:
     env: prod
   only:
     - master
-    - task-20338-update
 
 
 Deploy to Develop:
@@ -99,6 +119,7 @@ Deploy to Develop:
     kube_context: default/dev
   only:
     - develop
+    - task-20716
 
 Deploy to Staging:
   <<: *base_deploy
