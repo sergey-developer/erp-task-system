@@ -7,6 +7,8 @@ import WorkGroup from '../index'
 import { firstLineButtonProps, requiredProps } from './constants'
 import workGroupTestUtils from './utils'
 
+jest.setTimeout(10000)
+
 describe('Блок рабочей группы', () => {
   describe('Кнопка перевода на 1-ю линию', () => {
     describe('Роль - старший инженер', () => {
