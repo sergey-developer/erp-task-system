@@ -10,10 +10,9 @@ const { Title, Paragraph } = Typography
 
 export type ResolutionTabProps = Pick<
   TaskDetailsModel,
-  'techResolution' | 'userResolution'
+  'techResolution' | 'userResolution' | 'type'
 > & {
   title: string
-  type?: TaskDetailsModel['type']
 }
 
 const ResolutionTab: FC<ResolutionTabProps> = ({

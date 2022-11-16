@@ -17,10 +17,8 @@ const { TabPane } = Tabs
 export type TaskDetailsTabsProps = {
   details: Pick<
     TaskDetailsModel,
-    'id' | 'description' | 'userResolution' | 'techResolution'
-  > & {
-    type?: TaskDetailsModel['type']
-  }
+    'id' | 'description' | 'userResolution' | 'techResolution' | 'type'
+  >
 }
 
 const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
