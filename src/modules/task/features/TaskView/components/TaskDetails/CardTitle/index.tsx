@@ -83,7 +83,7 @@ const CardTitle: FC<CardTitleProps> = ({
       <Typography.Text>{id}</Typography.Text>
 
       <Space>
-        <Dropdown overlay={actionMenu} visible>
+        <Dropdown overlay={actionMenu}>
           <Button type='text' icon={<MenuIcon />} />
         </Dropdown>
 

@@ -18,3 +18,21 @@ export const requiredProps: CardTitleProps = {
   onClickExecuteTask: jest.fn(),
   onClickRequestReclassification: jest.fn(),
 }
+
+export const firstItemActiveProps: Pick<
+  CardTitleProps,
+  'status' | 'isAssignedToCurrentUser' | 'hasReclassificationRequest'
+> = {
+  status: TaskStatusEnum.InProgress,
+  isAssignedToCurrentUser: true,
+  hasReclassificationRequest: false,
+}
+
+export const secondItemActiveProps: Pick<
+  CardTitleProps,
+  'status' | 'olaStatus' | 'type'
+> = {
+  status: TaskStatusEnum.New,
+  olaStatus: TaskOlaStatusEnum.NotExpired,
+  type: TaskTypeEnum.Request,
+}

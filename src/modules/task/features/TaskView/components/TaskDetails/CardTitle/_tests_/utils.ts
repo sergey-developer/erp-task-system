@@ -7,8 +7,8 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // menu
 const getMenuButton = () => getButtonIn(getContainer(), 'menu')
-
 const getMenu = () => screen.getByRole('menu')
+const findMenu = async () => screen.findByRole('menu')
 const getMenuItems = () => within(getMenu()).getAllByRole('menuitem')
 const getFirstMenuItem = () => getMenuItems()[0]
 const getSecondMenuItem = () => getMenuItems()[1]
@@ -22,12 +22,30 @@ const getMenuItemText = (item: HTMLElement, text: string) =>
 const queryMenuItemText = (item: HTMLElement, text: string) =>
   within(item).queryByText(text)
 
+const userClickFirstMenuItem = async (user: UserEvent) => {
+  const item = getFirstMenuItem()
+  await user.click(item)
+  return item
+}
+
+const userClickSecondMenuItem = async (user: UserEvent) => {
+  const item = getSecondMenuItem()
+  await user.click(item)
+  return item
+}
+
 const userOpenMenu = async (user: UserEvent) => {
   const button = getMenuButton()
   await user.hover(button)
-  const menu = getMenu()
+  const menu = await findMenu()
   return { button, menu }
 }
+
+const expectMenuItemDisabled = (item: HTMLElement) =>
+  expect(item).toHaveClass('ant-dropdown-menu-item-disabled')
+
+const expectMenuItemNotDisabled = (item: HTMLElement) =>
+  expect(item).not.toHaveClass('ant-dropdown-menu-item-disabled')
 
 // close button
 const getCloseButton = () => getButtonIn(getContainer(), 'close')
@@ -43,6 +61,7 @@ const utils = {
   getChildByText,
 
   getMenuButton,
+  findMenu,
   getMenuItems,
   getFirstMenuItem,
   getSecondMenuItem,
@@ -50,6 +69,10 @@ const utils = {
   getMenuItemText,
   queryMenuItemText,
   userOpenMenu,
+  userClickFirstMenuItem,
+  userClickSecondMenuItem,
+  expectMenuItemDisabled,
+  expectMenuItemNotDisabled,
 
   getCloseButton,
   userClickCloseButton,
