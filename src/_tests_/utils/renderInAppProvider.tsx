@@ -4,7 +4,7 @@
  */
 
 import { PreloadedState } from '@reduxjs/toolkit'
-import { ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 
 import { RenderOptions, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -27,7 +27,11 @@ const renderInAppProvider = (
   }: RenderInAppProviderOptions = {},
 ) => {
   const Wrapper: FCWithChildren = ({ children }) => {
-    return <AppProvider store={store}>{children}</AppProvider>
+    return (
+      <React.StrictMode>
+        <AppProvider store={store}>{children}</AppProvider>
+      </React.StrictMode>
+    )
   }
 
   return {

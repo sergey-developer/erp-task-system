@@ -8,7 +8,7 @@ describe('Вкладка описания заявки', () => {
   test('Заголовок отображается', () => {
     render(<DescriptionTab {...requiredProps} />)
 
-    const title = testUtils.getByTextInTab(requiredProps.title)
+    const title = testUtils.getChildByText(requiredProps.title)
     expect(title).toBeInTheDocument()
   })
 
@@ -21,7 +21,7 @@ describe('Вкладка описания заявки', () => {
         />,
       )
 
-      const description = testUtils.getByTextInTab(
+      const description = testUtils.getChildByText(
         notRequiredProps.description!,
       )
       expect(description).toBeInTheDocument()
@@ -30,7 +30,7 @@ describe('Вкладка описания заявки', () => {
     test('Не отображается если отсутствует', () => {
       render(<DescriptionTab {...requiredProps} />)
 
-      const description = testUtils.queryByTextInTab(
+      const description = testUtils.queryChildByText(
         notRequiredProps.description!,
       )
       expect(description).not.toBeInTheDocument()

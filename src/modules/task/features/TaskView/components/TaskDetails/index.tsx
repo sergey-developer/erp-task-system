@@ -32,7 +32,6 @@ import formatDate from 'shared/utils/date/formatDate'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
 import TaskDetailsTabs from '../TaskDetailsTabs'
-import { TaskDetailsTabsEnum } from '../TaskDetailsTabs/constants'
 import {
   TaskFirstLineFormErrors,
   TaskFirstLineFormFields,
@@ -383,10 +382,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               takeTaskIsLoading={takeTaskIsLoading}
             />
 
-            <TaskDetailsTabs
-              details={details}
-              defaultTab={TaskDetailsTabsEnum.Description}
-            />
+            <TaskDetailsTabs details={details} />
 
             {isTaskResolutionModalOpened && (
               <React.Suspense
