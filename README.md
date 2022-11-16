@@ -230,5 +230,7 @@ RTK query не умеет правильно доставать ReturnType из 
 
 ## CI/CD
 ### Testing
-Сборка и запуск приложения описаны в пункте `Запуск проекта / Testing`.
-Нужно только прокинуть переменную окружения [CI=true](https://create-react-app.dev/docs/advanced-configuration)
+- Сборка и запуск приложения описаны в пункте `Запуск проекта / Testing`, но в 4-м пункте команда меняется на - `yarn test --coverage`
+- Прокинуть переменную окружения [CI=true](https://create-react-app.dev/docs/advanced-configuration)
+
+После запуска тестов, появится папка `coverage`
