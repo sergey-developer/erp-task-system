@@ -6,7 +6,7 @@ import SecondaryDetails from '../index'
 import { requiredProps } from './constants'
 import secondaryDetailsTestUtils from './utils'
 
-describe('SecondaryDetails / Блок детальной информации заявки', () => {
+describe('Блок детальной информации заявки', () => {
   test('Отображается', () => {
     render(<SecondaryDetails {...requiredProps} />)
     expect(secondaryDetailsTestUtils.getContainer()).toBeInTheDocument()
