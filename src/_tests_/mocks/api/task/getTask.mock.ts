@@ -1,4 +1,5 @@
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 import {
   GetTaskQueryArgsModel,
   GetTaskResponseModel,
@@ -11,11 +12,8 @@ const getTaskMockFn = (taskId: GetTaskQueryArgsModel) =>
 
 export const mockGetTaskSuccess = (
   taskId: GetTaskQueryArgsModel,
-  response?: GetTaskResponseModel,
+  options?: Partial<ResponseResolverOptions<GetTaskResponseModel>>,
 ) => {
-  const mockGetTask = getSuccessMockFn(getTaskMockFn(taskId), {
-    body: response,
-  })
-
+  const mockGetTask = getSuccessMockFn(getTaskMockFn(taskId), options)
   mockGetTask()
 }

@@ -42,10 +42,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
 
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
 
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
 
@@ -86,10 +85,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
 
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
 
           const badRequestErrorResponse = { description: [generateWord()] }
           mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
@@ -134,10 +132,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
 
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
 
           const notFoundErrorResponse = { detail: [generateWord()] }
           mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
@@ -178,10 +175,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
 
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
 
           const serverErrorResponse = { detail: [generateWord()] }
           mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
@@ -222,10 +218,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
 
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
 
@@ -264,10 +259,9 @@ describe('Контейнер детальной карточки заявки', 
         test('Закрывается модальное окно и карточка заявки', async () => {
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
 
           const store = getStoreWithAuth({
@@ -307,10 +301,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
 
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
 
           const badRequestErrorResponse = { description: [generateWord()] }
           mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
@@ -355,10 +348,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
 
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
 
           const notFoundErrorResponse = { detail: [generateWord()] }
           mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
@@ -399,10 +391,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
 
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
 
           const serverErrorResponse = { detail: [generateWord()] }
           mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
@@ -443,10 +434,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = getWorkGroup()
           mockGetWorkGroupListSuccess([workGroup])
 
-          mockGetTaskSuccess(
-            requiredProps.taskId,
-            getTask({ id: requiredProps.taskId, workGroup }),
-          )
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: getTask({ id: requiredProps.taskId, workGroup }),
+          })
 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
 

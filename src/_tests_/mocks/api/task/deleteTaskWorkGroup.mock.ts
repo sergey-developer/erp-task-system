@@ -6,12 +6,14 @@ import {
   getServerErrorMockFn,
   getSuccessMockFn,
 } from '_tests_/mocks/request'
-import { DeleteTaskWorkGroupMutationArgsModel } from 'modules/task/features/TaskView/models'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
+import {
+  DeleteTaskWorkGroupMutationArgsModel,
+  DeleteTaskWorkGroupResponseModel,
+} from 'modules/task/features/TaskView/models'
 import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
-
-import { ResponseResolverOptions } from '../../response'
 
 const deleteTaskWorkGroupMockFn = (
   taskId: DeleteTaskWorkGroupMutationArgsModel['taskId'],
@@ -19,7 +21,7 @@ const deleteTaskWorkGroupMockFn = (
 
 export const mockDeleteTaskWorkGroupSuccess = (
   taskId: DeleteTaskWorkGroupMutationArgsModel['taskId'],
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<DeleteTaskWorkGroupResponseModel>>,
 ) => {
   const mockDeleteTaskWorkGroup = getSuccessMockFn(
     deleteTaskWorkGroupMockFn(taskId),
