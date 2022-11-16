@@ -29,6 +29,7 @@ import taskDetailsTestUtils from '../../TaskDetails/_tests_/utils'
 import workGroupTestUtils from '../../TaskDetails/WorkGroup/_tests_/utils'
 import TaskDetailsContainer from '../../TaskDetailsContainer'
 import taskFirstLineModalTestUtils from '../../TaskFirstLineModal/_tests_/utils'
+import { TaskFirstLineFormErrors } from '../../TaskFirstLineModal/interfaces'
 import { requiredProps } from './constants'
 
 setupApiTests()
@@ -91,9 +92,9 @@ describe('Контейнер детальной карточки заявки', 
           )
 
           const badRequestErrorResponse = { description: [generateWord()] }
-          mockDeleteTaskWorkGroupBadRequestError(
+          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
             requiredProps.taskId,
-            badRequestErrorResponse,
+            { body: badRequestErrorResponse },
           )
 
           const store = getStoreWithAuth({
@@ -139,10 +140,9 @@ describe('Контейнер детальной карточки заявки', 
           )
 
           const notFoundErrorResponse = { detail: [generateWord()] }
-          mockDeleteTaskWorkGroupNotFoundError(
-            requiredProps.taskId,
-            notFoundErrorResponse,
-          )
+          mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
+            body: notFoundErrorResponse,
+          })
 
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
@@ -184,10 +184,9 @@ describe('Контейнер детальной карточки заявки', 
           )
 
           const serverErrorResponse = { detail: [generateWord()] }
-          mockDeleteTaskWorkGroupServerError(
-            requiredProps.taskId,
-            serverErrorResponse,
-          )
+          mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
+            body: serverErrorResponse,
+          })
 
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
@@ -314,9 +313,9 @@ describe('Контейнер детальной карточки заявки', 
           )
 
           const badRequestErrorResponse = { description: [generateWord()] }
-          mockDeleteTaskWorkGroupBadRequestError(
+          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
             requiredProps.taskId,
-            badRequestErrorResponse,
+            { body: badRequestErrorResponse },
           )
 
           const store = getStoreWithAuth({
@@ -362,10 +361,9 @@ describe('Контейнер детальной карточки заявки', 
           )
 
           const notFoundErrorResponse = { detail: [generateWord()] }
-          mockDeleteTaskWorkGroupNotFoundError(
-            requiredProps.taskId,
-            notFoundErrorResponse,
-          )
+          mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
+            body: notFoundErrorResponse,
+          })
 
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
@@ -407,10 +405,9 @@ describe('Контейнер детальной карточки заявки', 
           )
 
           const serverErrorResponse = { detail: [generateWord()] }
-          mockDeleteTaskWorkGroupServerError(
-            requiredProps.taskId,
-            serverErrorResponse,
-          )
+          mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
+            body: serverErrorResponse,
+          })
 
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
