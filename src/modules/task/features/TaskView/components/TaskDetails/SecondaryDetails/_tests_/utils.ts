@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 
-const getContainer = () => screen.getByTestId('task-secondary-details')
+const getContainer = () => screen.getByTestId('task-details-secondary')
 
 const utils = {
   getContainer,

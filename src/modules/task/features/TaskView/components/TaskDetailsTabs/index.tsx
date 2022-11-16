@@ -14,17 +14,20 @@ const CommentListTab = React.lazy(() => import('./CommentListTab'))
 
 const { TabPane } = Tabs
 
-type TaskDetailsTabsProps = {
+export type TaskDetailsTabsProps = {
   details: Pick<
     TaskDetailsModel,
-    'id' | 'description' | 'type' | 'userResolution' | 'techResolution'
+    'id' | 'description' | 'userResolution' | 'techResolution' | 'type'
   >
-  defaultTab: TaskDetailsTabsEnum
 }
 
-const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
+const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
   return (
-    <Tabs defaultActiveKey={defaultTab} type='card'>
+    <Tabs
+      data-testid='task-details-tabs'
+      defaultActiveKey={TaskDetailsTabsEnum.Description}
+      type='card'
+    >
       <TabPane
         tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Description]}
         key={TaskDetailsTabsEnum.Description}
