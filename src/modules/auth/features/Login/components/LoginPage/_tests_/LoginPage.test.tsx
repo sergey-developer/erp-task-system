@@ -109,7 +109,7 @@ describe('Страница авторизации', () => {
   describe('Если заполнить поля и нажать кнопку "Войти"', () => {
     describe('При успешном запросе', () => {
       test('Пользователь покидает страницу авторизации', async () => {
-        mockLoginSuccess(loginResponseSuccess)
+        mockLoginSuccess({ body: loginResponseSuccess })
 
         const { user, checkRouteChanged } = renderInRoute(
           <LoginPage />,
@@ -131,7 +131,7 @@ describe('Страница авторизации', () => {
         })
 
         test('access token', async () => {
-          mockLoginSuccess(loginResponseSuccess)
+          mockLoginSuccess({ body: loginResponseSuccess })
 
           const { user } = render(<LoginPage />)
 
@@ -147,7 +147,7 @@ describe('Страница авторизации', () => {
         })
 
         test('refresh token', async () => {
-          mockLoginSuccess(loginResponseSuccess)
+          mockLoginSuccess({ body: loginResponseSuccess })
 
           const { user } = render(<LoginPage />)
 
@@ -164,7 +164,7 @@ describe('Страница авторизации', () => {
       })
 
       test('данные сохраняются в store', async () => {
-        mockLoginSuccess(loginResponseSuccess)
+        mockLoginSuccess({ body: loginResponseSuccess })
         const store = setupStore()
 
         const { user } = render(<LoginPage />, { store })
