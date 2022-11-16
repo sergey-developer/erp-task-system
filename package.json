@@ -101,7 +101,16 @@
       "^state(.*)$": "<rootDir>/src/state/$1",
       "^shared(.*)$": "<rootDir>/src/shared/$1",
       "^app(.*)$": "<rootDir>/src/app/$1"
-    }
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/",
+      "_tests_",
+      "fixtures",
+      "interfaces.ts",
+      "interfaces",
+      "models"
+    ]
   },
   "browserslist": {
     "production": [
