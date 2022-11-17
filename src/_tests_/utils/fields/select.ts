@@ -1,5 +1,5 @@
 import { ByRoleOptions } from '@testing-library/dom/types/queries'
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { MaybeNull } from 'shared/interfaces/utils'
 
@@ -32,4 +32,18 @@ export const userSearchInSelect = async (
 ) => {
   const openedSelect = getSelect(container, { expanded: true })
   await user.type(openedSelect, searchValue)
+}
+
+export const selectDisabled = async (element: HTMLElement) => {
+  await waitFor(() => {
+    expect(element.querySelector('.ant-select-disabled')).toBeInTheDocument()
+  })
+}
+
+export const selectNotDisabled = async (element: HTMLElement) => {
+  await waitFor(() => {
+    expect(
+      element.querySelector('.ant-select-disabled'),
+    ).not.toBeInTheDocument()
+  })
 }

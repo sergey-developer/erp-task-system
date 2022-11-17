@@ -12,14 +12,14 @@ const { Text, Link } = Typography
 
 const OK_BUTTON_TEXT: string = 'Перевести заявку'
 
-export type TaskSecondLineModalProps = Pick<ModalProps, 'onCancel'> &
-  Pick<TaskDetailsModel, 'id'> & {
-    workGroupList: Array<WorkGroupListItemModel>
-    workGroupListIsLoading: boolean
+export type TaskSecondLineModalProps = Pick<TaskDetailsModel, 'id'> & {
+  workGroupList: Array<WorkGroupListItemModel>
+  workGroupListIsLoading: boolean
 
-    isLoading: boolean
-    onSubmit: (value: WorkGroupListItemModel['id']) => Promise<void>
-  }
+  isLoading: boolean
+  onSubmit: (value: WorkGroupListItemModel['id']) => Promise<void>
+  onCancel: NonNullable<ModalProps['onCancel']>
+}
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
@@ -46,6 +46,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
 
   return (
     <BaseModal
+      data-testid='task-second-line-modal'
       visible
       title={modalTitle}
       confirmLoading={isLoading}
@@ -69,7 +70,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           </Text>
         </Space>
 
-        <LabeledData label='Рабочая группа'>
+        <LabeledData data-testid='work-group' label='Рабочая группа'>
           <Select
             placeholder='Выберите рабочую группу'
             options={workGroupList}
