@@ -27,11 +27,7 @@ const renderInAppProvider = (
   }: RenderInAppProviderOptions = {},
 ) => {
   const Wrapper: FCWithChildren = ({ children }) => {
-    return (
-      <React.StrictMode>
-        <AppProvider store={store}>{children}</AppProvider>
-      </React.StrictMode>
-    )
+    return <AppProvider store={store}>{children}</AppProvider>
   }
 
   return {
