@@ -1099,6 +1099,7 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickHeadCol(user, 'Внеш.номер')
           await taskTableTestUtils.loadingStarted()
