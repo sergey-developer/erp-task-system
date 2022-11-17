@@ -14,7 +14,7 @@ import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import useTaskType from 'modules/task/hooks/useTaskType'
 import useUserRole from 'modules/user/hooks/useUserRole'
 
-type CardTitleProps = Pick<
+export type CardTitleProps = Pick<
   TaskDetailsModel,
   'id' | 'status' | 'olaStatus' | 'type'
 > & {
@@ -75,7 +75,11 @@ const CardTitle: FC<CardTitleProps> = ({
   )
 
   return (
-    <Row justify='space-between' align='middle'>
+    <Row
+      data-testid='task-details-card-title'
+      justify='space-between'
+      align='middle'
+    >
       <Typography.Text>{id}</Typography.Text>
 
       <Space>
