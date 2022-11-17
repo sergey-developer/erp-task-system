@@ -596,7 +596,7 @@ describe('Расширенный фильтр', () => {
   describe('Рабочая группа', () => {
     describe(`Для роли ${UserRolesEnum.FirstLineSupport}`, () => {
       test('Не отображается', () => {
-        mockGetWorkGroupListSuccess([])
+        mockGetWorkGroupListSuccess({ body: [] })
 
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.FirstLineSupport,
@@ -624,7 +624,7 @@ describe('Расширенный фильтр', () => {
 
     describe(`Для роли ${UserRolesEnum.SeniorEngineer}`, () => {
       test('Отображается', async () => {
-        mockGetWorkGroupListSuccess([])
+        mockGetWorkGroupListSuccess({ body: [] })
 
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.SeniorEngineer,
@@ -641,7 +641,7 @@ describe('Расширенный фильтр', () => {
 
     describe(`Для роли ${UserRolesEnum.HeadOfDepartment}`, () => {
       test('Отображается', async () => {
-        mockGetWorkGroupListSuccess([])
+        mockGetWorkGroupListSuccess({ body: [] })
 
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.HeadOfDepartment,
@@ -658,7 +658,9 @@ describe('Расширенный фильтр', () => {
 
     describe('Для роли с которой отображается', () => {
       test('Имеет корректные значения по умолчанию', async () => {
-        mockGetWorkGroupListSuccess(workGroupFixtures.getWorkGroupList())
+        mockGetWorkGroupListSuccess({
+          body: workGroupFixtures.getWorkGroupList(),
+        })
 
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.SeniorEngineer,
@@ -676,7 +678,7 @@ describe('Расширенный фильтр', () => {
       test('Переданное значение перезаписывает значение по умолчанию', async () => {
         const workGroupList = workGroupFixtures.getWorkGroupList()
         const workGroupId = String(workGroupList[0].id)
-        mockGetWorkGroupListSuccess(workGroupList)
+        mockGetWorkGroupListSuccess({ body: workGroupList })
 
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.SeniorEngineer,
@@ -702,7 +704,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Доступен для редактирования после загрузки списка', async () => {
-        mockGetWorkGroupListSuccess([])
+        mockGetWorkGroupListSuccess({ body: [] })
 
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.SeniorEngineer,
@@ -719,7 +721,7 @@ describe('Расширенный фильтр', () => {
 
       test('Можно выбрать рабочую группу из списка', async () => {
         const workGroupListItem = workGroupFixtures.getWorkGroup()
-        mockGetWorkGroupListSuccess([workGroupListItem])
+        mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.SeniorEngineer,
@@ -746,7 +748,7 @@ describe('Расширенный фильтр', () => {
         const mockedWorkGroupList = workGroupFixtures.getWorkGroupList(2)
         const mockedWorkGroupListItem1 = mockedWorkGroupList[0]
         const mockedWorkGroupListItem2 = mockedWorkGroupList[1]
-        mockGetWorkGroupListSuccess(mockedWorkGroupList)
+        mockGetWorkGroupListSuccess({ body: mockedWorkGroupList })
 
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.SeniorEngineer,
@@ -775,7 +777,7 @@ describe('Расширенный фильтр', () => {
       describe('Сбрасывает значения', () => {
         test('Кнопка "Сбросить"', async () => {
           const workGroupListItem = workGroupFixtures.getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroupListItem])
+          mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
@@ -806,7 +808,7 @@ describe('Расширенный фильтр', () => {
 
         test('Кнопка "Сбросить всё"', async () => {
           const workGroupListItem = workGroupFixtures.getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroupListItem])
+          mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,

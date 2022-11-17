@@ -40,7 +40,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При успешный запросе', () => {
         test('Закрывается модальное окно и карточка заявки', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),
@@ -83,7 +83,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Корректно обрабатывается ошибка 400', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),
@@ -130,7 +130,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Корректно обрабатывается ошибка 404', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),
@@ -173,7 +173,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Корректно обрабатывается ошибка 500', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),
@@ -216,7 +216,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Корректно обрабатывается неизвестная ошибка', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),
@@ -258,7 +258,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При успешный запросе', () => {
         test('Закрывается модальное окно и карточка заявки', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),
           })
@@ -299,7 +299,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Корректно обрабатывается ошибка 400', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),
@@ -346,7 +346,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Корректно обрабатывается ошибка 404', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),
@@ -389,7 +389,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Корректно обрабатывается ошибка 500', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),
@@ -432,7 +432,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Корректно обрабатывается неизвестная ошибка', async () => {
           const workGroup = getWorkGroup()
-          mockGetWorkGroupListSuccess([workGroup])
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
             body: getTask({ id: requiredProps.taskId, workGroup }),

@@ -167,7 +167,7 @@ describe('Страница реестра заявок', () => {
 
     test('Сбрасывает расширенный фильтр', async () => {
       const workGroupListItem = workGroupFixtures.getWorkGroup()
-      mockGetWorkGroupListSuccess([workGroupListItem])
+      mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess({ once: false })
 
@@ -415,7 +415,7 @@ describe('Страница реестра заявок', () => {
 
       test('Значения сохраняются если другой фильтр не применялся', async () => {
         const workGroupListItem = workGroupFixtures.getWorkGroup()
-        mockGetWorkGroupListSuccess([workGroupListItem])
+        mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
@@ -510,7 +510,7 @@ describe('Страница реестра заявок', () => {
 
     test('Значения не сохраняются если фильтр не был применён', async () => {
       const workGroupListItem = workGroupFixtures.getWorkGroup()
-      mockGetWorkGroupListSuccess([workGroupListItem])
+      mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
 
@@ -616,7 +616,9 @@ describe('Страница реестра заявок', () => {
       test('Фильтр по рабочей группе', async () => {
         mockGetTaskListSuccess()
         mockGetTaskCountersSuccess()
-        mockGetWorkGroupListSuccess(workGroupFixtures.getWorkGroupList())
+        mockGetWorkGroupListSuccess({
+          body: workGroupFixtures.getWorkGroupList(),
+        })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({
@@ -824,7 +826,7 @@ describe('Страница реестра заявок', () => {
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
         const workGroupListItem = workGroupFixtures.getWorkGroup()
-        mockGetWorkGroupListSuccess([workGroupListItem])
+        mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
