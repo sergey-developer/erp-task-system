@@ -12,10 +12,8 @@ const { Text, Link } = Typography
 const { TextArea } = Input
 
 export type TaskResolutionModalProps = Pick<ModalProps, 'onCancel'> &
-  Pick<
-    TaskDetailsModel,
-    'type' | 'techResolution' | 'userResolution' | 'recordId'
-  > & {
+  Pick<TaskDetailsModel, 'type' | 'recordId'> & {
+    initialFormValues: Partial<TaskResolutionFormFields>
     isLoading: boolean
     onSubmit: (
       values: TaskResolutionFormFields,
@@ -27,19 +25,13 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   isLoading,
   onCancel,
   onSubmit,
-  techResolution,
   recordId,
   type,
-  userResolution,
+  initialFormValues,
 }) => {
   const [form] = Form.useForm<TaskResolutionFormFields>()
 
   const taskType = useTaskType(type)
-
-  const initialFormValues: Partial<TaskResolutionFormFields> = {
-    techResolution,
-    userResolution,
-  }
 
   const modalTitle = (
     <Text>
@@ -52,7 +44,10 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     userResolution,
   }: TaskResolutionFormFields) => {
     await onSubmit(
-      { techResolution, userResolution: userResolution || undefined },
+      {
+        techResolution: techResolution?.trim(),
+        userResolution: userResolution?.trim(),
+      },
       form.setFields,
     )
   }
