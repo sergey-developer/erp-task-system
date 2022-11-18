@@ -7,7 +7,7 @@ import {
   FIELD_CAN_NOT_BE_EMPTY_MSG,
   INCORRECT_EMAIL_MSG,
   REQUIRED_FIELD_MSG,
-  TEXT_MAX_LENGTH_TEMPLATE_MSG,
+  TEXT_MAX_LENGTH_MSG,
 } from 'shared/constants/validation'
 
 import setupAntd from './setup'
@@ -21,7 +21,7 @@ const globalFormConfig: BaseConfigProviderProps['form'] = {
     required: REQUIRED_FIELD_MSG,
     whitespace: FIELD_CAN_NOT_BE_EMPTY_MSG,
     string: {
-      max: TEXT_MAX_LENGTH_TEMPLATE_MSG,
+      max: TEXT_MAX_LENGTH_MSG,
     },
     types: {
       email: INCORRECT_EMAIL_MSG,
