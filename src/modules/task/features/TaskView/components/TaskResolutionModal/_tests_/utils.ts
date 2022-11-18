@@ -40,9 +40,7 @@ const getTechResolutionTitle = () =>
   within(getTechResolutionBlock()).getByTitle('Техническое решение')
 
 const getTechResolutionField = () =>
-  within(getContainer()).getByRole('textbox', {
-    name: 'Техническое решение',
-  })
+  within(getContainer()).getByPlaceholderText('Расскажите о работах на объекте')
 
 const findTechResolutionError = (text: string) =>
   within(getTechResolutionBlock()).findByText(text)
@@ -61,9 +59,9 @@ const getUserResolutionTitle = () =>
   within(getUserResolutionBlock()).getByTitle('Решение для пользователя')
 
 const getUserResolutionField = () =>
-  within(getUserResolutionBlock()).getByRole('textbox', {
-    name: 'Решение для пользователя',
-  })
+  within(getUserResolutionBlock()).getByPlaceholderText(
+    'Расскажите заявителю о решении',
+  )
 
 const queryUserResolutionField = () =>
   within(getContainer()).queryByRole('textbox', {

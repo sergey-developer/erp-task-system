@@ -14,20 +14,24 @@ import { ReclassificationReasonEnum } from 'modules/task/constants/common'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
 
+import { reclassificationReasonLabels } from './constants'
 import { TaskReclassificationRequestFormFields } from './interfaces'
 import { RECLASSIFICATION_REASON_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-export type TaskReclassificationModalProps = Pick<ModalProps, 'onCancel'> &
-  Pick<TaskDetailsModel, 'recordId'> & {
-    onSubmit: (
-      values: TaskReclassificationRequestFormFields,
-      setFields: FormInstance['setFields'],
-    ) => Promise<void>
-    isLoading: boolean
-  }
+export type TaskReclassificationModalProps = Pick<
+  TaskDetailsModel,
+  'recordId'
+> & {
+  onSubmit: (
+    values: TaskReclassificationRequestFormFields,
+    setFields: FormInstance['setFields'],
+  ) => Promise<void>
+  onCancel: NonNullable<ModalProps['onCancel']>
+  isLoading: boolean
+}
 
 const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
   recordId,
@@ -65,6 +69,7 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
         preserve={false}
       >
         <Form.Item
+          data-testid='reclassification-reason'
           label='Причина переклассификации'
           name='reclassificationReason'
           rules={RECLASSIFICATION_REASON_RULES}
@@ -72,19 +77,32 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
           <Radio.Group disabled={isLoading}>
             <Space direction='vertical'>
               <Radio value={ReclassificationReasonEnum.WrongClassification}>
-                Требуется переклассификация (классификация неверная)
+                {
+                  reclassificationReasonLabels[
+                    ReclassificationReasonEnum.WrongClassification
+                  ]
+                }
               </Radio>
               <Radio value={ReclassificationReasonEnum.WrongSupportGroup}>
-                Требуется переклассификация (классификация верная)
+                {
+                  reclassificationReasonLabels[
+                    ReclassificationReasonEnum.WrongSupportGroup
+                  ]
+                }
               </Radio>
               <Radio value={ReclassificationReasonEnum.DivideTask} disabled>
-                Требуется разбить обращение
+                {
+                  reclassificationReasonLabels[
+                    ReclassificationReasonEnum.DivideTask
+                  ]
+                }
               </Radio>
             </Space>
           </Radio.Group>
         </Form.Item>
 
         <Form.Item
+          data-testid='comment'
           label='Комментарий'
           name='comment'
           rules={BASE_LONG_TEXT_RULES}
