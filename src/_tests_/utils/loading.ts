@@ -27,6 +27,14 @@ export const loadingFinishedBySpinner = (testId: string) => async () => {
   })
 }
 
+export const loadingStartedBySelect = async (container: HTMLElement) => {
+  await waitFor(() => {
+    expect(
+      container.querySelector('.ant-select-arrow-loading'),
+    ).toBeInTheDocument()
+  })
+}
+
 export const loadingFinishedBySelect = async (container: HTMLElement) => {
   await waitFor(() => {
     expect(
