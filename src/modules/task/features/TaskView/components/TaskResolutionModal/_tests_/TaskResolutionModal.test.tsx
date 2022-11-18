@@ -1,4 +1,4 @@
-import { generateWord, render } from '_tests_/utils'
+import { generateWord, modalTestUtils, render } from '_tests_/utils'
 import { TaskTypeEnum } from 'modules/task/constants/common'
 import {
   DEFAULT_LONG_TEXT_LENGTH,
@@ -289,5 +289,12 @@ describe('Модалка решения по заявки', () => {
         })
       })
     })
+  })
+
+  test('Обработчик вызывается корректно кликнув вне модалки', async () => {
+    const { user } = render(<TaskResolutionModal {...requiredProps} />)
+
+    await modalTestUtils.userClickOutOfModal(user)
+    expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })
