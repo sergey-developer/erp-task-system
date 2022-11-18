@@ -11,15 +11,18 @@ import { TaskResolutionFormFields } from './interfaces'
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-export type TaskResolutionModalProps = Pick<ModalProps, 'onCancel'> &
-  Pick<TaskDetailsModel, 'type' | 'recordId'> & {
-    initialFormValues: Partial<TaskResolutionFormFields>
-    isLoading: boolean
-    onSubmit: (
-      values: TaskResolutionFormFields,
-      setFields: FormInstance['setFields'],
-    ) => void
-  }
+export type TaskResolutionModalProps = Pick<
+  TaskDetailsModel,
+  'type' | 'recordId'
+> & {
+  initialFormValues: Partial<TaskResolutionFormFields>
+  isLoading: boolean
+  onSubmit: (
+    values: TaskResolutionFormFields,
+    setFields: FormInstance['setFields'],
+  ) => void
+  onCancel: NonNullable<ModalProps['onCancel']>
+}
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   isLoading,

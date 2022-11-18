@@ -1,4 +1,4 @@
-import { getButton, render } from '_tests_/utils'
+import { buttonTestUtils, render } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 
 import FilterBlockLabel from './index'
@@ -6,7 +6,7 @@ import FilterBlockLabel from './index'
 const labelText = 'label'
 const onReset = jest.fn()
 
-const getResetButton = () => getButton(/Сбросить/i)
+const getResetButton = () => buttonTestUtils.getButton(/сбросить/i)
 
 describe('FilterBlockLabel', () => {
   test('Заголовок отображается корректно', () => {

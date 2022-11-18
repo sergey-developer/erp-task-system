@@ -1,5 +1,12 @@
+import { render } from '_tests_/utils'
+
+import TaskResolutionModal from '../index'
+import { requiredProps } from './constants'
+
 describe('Модалка решения по заявки', () => {
-  test('Заголовок отображается', () => {})
+  test('Заголовок отображается', () => {
+    render(<TaskResolutionModal {...requiredProps} />)
+  })
 
   test('Текст отображается', () => {})
 

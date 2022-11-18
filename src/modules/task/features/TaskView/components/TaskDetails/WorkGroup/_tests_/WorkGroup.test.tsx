@@ -77,7 +77,7 @@ describe('Блок рабочей группы', () => {
         await user.click(workGroupTestUtils.getFirstLineButton())
 
         expect(
-          await taskFirstLineModalTestUtils.findModal(),
+          await taskFirstLineModalTestUtils.findContainer(),
         ).toBeInTheDocument()
       })
 
@@ -213,7 +213,7 @@ describe('Блок рабочей группы', () => {
         await user.click(workGroupTestUtils.getFirstLineButton())
 
         expect(
-          await taskFirstLineModalTestUtils.findModal(),
+          await taskFirstLineModalTestUtils.findContainer(),
         ).toBeInTheDocument()
       })
 

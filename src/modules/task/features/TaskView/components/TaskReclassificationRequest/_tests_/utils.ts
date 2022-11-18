@@ -1,4 +1,4 @@
-import { getButtonIn, getIconByNameIn } from '_tests_/utils'
+import { buttonTestUtils, getIconByNameIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -12,7 +12,7 @@ const getText = (text: string) =>
   within(getTaskReclassificationRequest()).getByText(text)
 
 const getButton = (label: string) =>
-  getButtonIn(getTaskReclassificationRequest(), label)
+  buttonTestUtils.getButtonIn(getTaskReclassificationRequest(), label)
 
 const userClickButton = async (user: UserEvent, btnLabel: string) => {
   const button = getButton(btnLabel)

@@ -1,4 +1,4 @@
-import { generateWord, getButtonIn } from '_tests_/utils'
+import { buttonTestUtils, generateWord } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -7,9 +7,11 @@ const getContainer = () => screen.getByTestId('page-task-list')
 const getSearchInput = () =>
   within(getContainer()).getByPlaceholderText('Искать заявку по номеру')
 
-const getSearchButton = () => getButtonIn(getContainer(), /search/)
+const getSearchButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /search/)
 
-const getSearchClearButton = () => getButtonIn(getContainer(), 'close-circle')
+const getSearchClearButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), 'close-circle')
 
 const userClickSearchClearButton = async (user: UserEvent) => {
   const button = getSearchClearButton()
@@ -17,7 +19,8 @@ const userClickSearchClearButton = async (user: UserEvent) => {
   return button
 }
 
-const getReloadListButton = () => getButtonIn(getContainer(), /sync/)
+const getReloadListButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /sync/)
 
 const userClickReloadListButton = async (user: UserEvent) => {
   const button = getReloadListButton()
@@ -25,9 +28,11 @@ const userClickReloadListButton = async (user: UserEvent) => {
   return button
 }
 
-const getCreateTaskButton = () => getButtonIn(getContainer(), /создать заявку/i)
+const getCreateTaskButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /создать заявку/i)
 
-const getExtendedFilterButton = () => getButtonIn(getContainer(), /filter/)
+const getExtendedFilterButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /filter/)
 
 const userOpenExtendedFilter = async (user: UserEvent) => {
   const extendedFilterButton = getExtendedFilterButton()
