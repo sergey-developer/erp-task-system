@@ -10,16 +10,20 @@ import { TaskResolutionFormFields } from './interfaces'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+const OK_BUTTON_TEXT = 'Выполнить заявку'
 
-export type TaskResolutionModalProps = Pick<ModalProps, 'onCancel'> &
-  Pick<TaskDetailsModel, 'type' | 'recordId'> & {
-    initialFormValues: Partial<TaskResolutionFormFields>
-    isLoading: boolean
-    onSubmit: (
-      values: TaskResolutionFormFields,
-      setFields: FormInstance['setFields'],
-    ) => void
-  }
+export type TaskResolutionModalProps = Pick<
+  TaskDetailsModel,
+  'type' | 'recordId'
+> & {
+  initialFormValues: Partial<TaskResolutionFormFields>
+  isLoading: boolean
+  onSubmit: (
+    values: TaskResolutionFormFields,
+    setFields: FormInstance['setFields'],
+  ) => void
+  onCancel: NonNullable<ModalProps['onCancel']>
+}
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   isLoading,
@@ -58,14 +62,14 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}
-      okText='Выполнить заявку'
+      okText={OK_BUTTON_TEXT}
       onCancel={onCancel}
     >
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>
           <Text>
             Заполните информацию о работах на объекте и предложенном решении.
-            Затем нажмите кнопку «Выполнить заявку».
+            Затем нажмите кнопку «{OK_BUTTON_TEXT}».
           </Text>
 
           <Text type='danger'>
