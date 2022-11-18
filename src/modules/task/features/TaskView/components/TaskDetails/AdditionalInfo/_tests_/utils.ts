@@ -1,4 +1,4 @@
-import { buttonTestUtils } from '_tests_/utils'
+import { getButtonIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -11,7 +11,7 @@ const queryAdditionalInfoContent = () =>
   within(getContainer()).queryByTestId('additional-info-content')
 
 const getExpandButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /дополнительная информация/i)
+  getButtonIn(getContainer(), /дополнительная информация/i)
 
 const userClickExpandButton = async (user: UserEvent) => {
   const button = getExpandButton()

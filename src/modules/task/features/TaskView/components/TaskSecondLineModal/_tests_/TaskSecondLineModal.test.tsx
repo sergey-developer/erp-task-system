@@ -1,4 +1,4 @@
-import { modalTestUtils, render } from '_tests_/utils'
+import { render, userClickOutOfModal } from '_tests_/utils'
 
 import TaskSecondLineModal from '../index'
 import { requiredProps } from './constants'
@@ -194,7 +194,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
     const { user } = render(<TaskSecondLineModal {...requiredProps} />)
 
-    await modalTestUtils.userClickOutOfModal(user)
+    await userClickOutOfModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })

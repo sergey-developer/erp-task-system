@@ -1,10 +1,9 @@
-import { buttonTestUtils } from '_tests_/utils'
+import { getButtonIn } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 
 const getContainer = () => screen.getByTestId('task-assignee')
 
-const getTakeTaskButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /в работу/i)
+const getTakeTaskButton = () => getButtonIn(getContainer(), /в работу/i)
 
 const utils = {
   getContainer,

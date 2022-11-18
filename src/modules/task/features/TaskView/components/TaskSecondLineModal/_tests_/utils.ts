@@ -1,12 +1,12 @@
 import {
-  buttonTestUtils,
   getAllSelectOption,
+  getButtonIn,
+  getModal,
   getSelect,
   getSelectOption,
   getSelectedOption,
   loadingStartedByButton,
   loadingStartedBySelect,
-  modalTestUtils,
   querySelect,
   selectDisabled,
   userClickOption,
@@ -16,7 +16,7 @@ import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const getContainer = modalTestUtils.getModal
+const getContainer = getModal
 
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
@@ -46,8 +46,7 @@ const userOpenWorkGroup = async (user: UserEvent) => {
 const userSelectWorkGroup = userClickOption
 
 // submit button
-const getSubmitButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /перевести заявку/i)
+const getSubmitButton = () => getButtonIn(getContainer(), /перевести заявку/i)
 
 const userClickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
@@ -56,18 +55,22 @@ const userClickSubmitButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = modalTestUtils.getCancelButtonFn(getContainer())
+const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
-const userClickCancelButton = modalTestUtils.getUserClickCancelButtonFn(
-  getContainer(),
-)
+const userClickCancelButton = async (user: UserEvent) => {
+  const button = getCancelButton()
+  await user.click(button)
+  return button
+}
 
 // close button
-const getCloseButton = buttonTestUtils.getCloseButtonFn(getContainer())
+const getCloseButton = () => getButtonIn(getContainer(), /close/i)
 
-const userClickCloseButton = buttonTestUtils.getUserClickCloseButtonFn(
-  getContainer(),
-)
+const userClickCloseButton = async (user: UserEvent) => {
+  const button = getCloseButton()
+  await user.click(button)
+  return button
+}
 
 // loading
 const loadingStarted = () => loadingStartedByButton(getSubmitButton())

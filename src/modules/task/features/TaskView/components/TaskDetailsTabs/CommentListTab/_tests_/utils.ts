@@ -1,4 +1,4 @@
-import { buttonTestUtils } from '_tests_/utils'
+import { getButtonIn, queryButtonIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -7,7 +7,7 @@ const getContainer = () => screen.getByTestId('task-comment-list-tab')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 const getExpandButton = (commentCount?: number) =>
-  buttonTestUtils.getButtonIn(
+  getButtonIn(
     getContainer(),
     commentCount
       ? `Отобразить все комментарии: ${commentCount}`
@@ -15,7 +15,7 @@ const getExpandButton = (commentCount?: number) =>
   )
 
 const queryExpandButton = (commentCount?: number) =>
-  buttonTestUtils.queryButtonIn(
+  queryButtonIn(
     getContainer(),
     commentCount
       ? `Отобразить все комментарии: ${commentCount}`
@@ -29,7 +29,7 @@ const userClickExpandButton = async (user: UserEvent) => {
 }
 
 const getCollapseButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /скрыть комментарии/i)
+  getButtonIn(getContainer(), /скрыть комментарии/i)
 
 const userClickCollapseButton = async (user: UserEvent) => {
   const button = getCollapseButton()

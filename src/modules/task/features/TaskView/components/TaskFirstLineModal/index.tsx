@@ -31,6 +31,7 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
 
   return (
     <BaseModal
+      data-testid='modal-task-first-line'
       visible
       title={modalTitle}
       confirmLoading={isLoading}

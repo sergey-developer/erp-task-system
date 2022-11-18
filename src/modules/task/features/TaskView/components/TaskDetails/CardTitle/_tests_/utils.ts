@@ -1,4 +1,4 @@
-import { buttonTestUtils, getIconByNameIn } from '_tests_/utils'
+import { getButtonIn, getIconByNameIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -6,9 +6,9 @@ const getContainer = () => screen.getByTestId('task-details-card-title')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // menu
-const getMenuButton = () => buttonTestUtils.getButtonIn(getContainer(), 'menu')
+const getMenuButton = () => getButtonIn(getContainer(), 'menu')
 const getMenu = () => screen.getByRole('menu')
-const findMenu = () => screen.findByRole('menu')
+const findMenu = async () => screen.findByRole('menu')
 const getMenuItems = () => within(getMenu()).getAllByRole('menuitem')
 const getFirstMenuItem = () => getMenuItems()[0]
 const getSecondMenuItem = () => getMenuItems()[1]
@@ -48,11 +48,13 @@ const expectMenuItemNotDisabled = (item: HTMLElement) =>
   expect(item).not.toHaveClass('ant-dropdown-menu-item-disabled')
 
 // close button
-const getCloseButton = buttonTestUtils.getCloseButtonFn(getContainer())
+const getCloseButton = () => getButtonIn(getContainer(), 'close')
 
-const userClickCloseButton = buttonTestUtils.getUserClickCloseButtonFn(
-  getContainer(),
-)
+const userClickCloseButton = async (user: UserEvent) => {
+  const button = getCloseButton()
+  await user.click(button)
+  return button
+}
 
 const utils = {
   getContainer,

@@ -1,25 +1,24 @@
-import { buttonTestUtils, modalTestUtils } from '_tests_/utils'
-import { within } from '@testing-library/react'
+import { getButtonIn } from '_tests_/utils'
+import { screen, within } from '@testing-library/react'
 
-const getContainer = modalTestUtils.getModal
-const findContainer = modalTestUtils.findModal
+const getModal = () => screen.getByTestId('modal-task-first-line')
+const findModal = async () => screen.findByTestId('modal-task-first-line')
 
 const getDescriptionField = () =>
-  within(getContainer()).getByRole('textbox', {
+  within(getModal()).getByRole('textbox', {
     name: 'Причина возврата',
   })
 
 const getDescriptionFieldContainer = () =>
-  within(getContainer()).getByTestId('field-description')
+  within(getModal()).getByTestId('field-description')
 
-const getSubmitButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /вернуть заявку/i)
+const getSubmitButton = () => getButtonIn(getModal(), /вернуть заявку/i)
 
-const getCancelButton = modalTestUtils.getCancelButtonFn(getContainer())
+const getCancelButton = () => getButtonIn(getModal(), /отменить/i)
 
 const utils = {
-  getContainer,
-  findContainer,
+  getModal,
+  findModal,
   getDescriptionField,
   getDescriptionFieldContainer,
   getSubmitButton,

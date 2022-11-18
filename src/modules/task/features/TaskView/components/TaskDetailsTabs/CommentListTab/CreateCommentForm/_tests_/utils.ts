@@ -1,5 +1,5 @@
 import {
-  buttonTestUtils,
+  getButtonIn,
   loadingFinishedByButton,
   loadingStartedByButton,
   validatingFinished,
@@ -36,7 +36,7 @@ const commentValidatingFinished = async () => {
 }
 
 const getSubmitButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /опубликовать комментарий/i)
+  getButtonIn(getContainer(), /опубликовать комментарий/i)
 
 const userClickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()

@@ -1,5 +1,5 @@
 import {
-  buttonTestUtils,
+  getButtonIn,
   loadingFinishedByButton,
   loadingFinishedBySpinner,
   loadingStartedByButton,
@@ -13,8 +13,7 @@ export const getTaskJournal = () => screen.getByTestId('task-journal')
 export const getDownloadButton = () =>
   screen.getByTestId('journal-btn-download')
 
-export const getReloadButton = () =>
-  buttonTestUtils.getButtonIn(getTaskJournal(), 'sync')
+export const getReloadButton = () => getButtonIn(getTaskJournal(), 'sync')
 
 export const userClickReloadButton = async (user: UserEvent) => {
   const button = getReloadButton()

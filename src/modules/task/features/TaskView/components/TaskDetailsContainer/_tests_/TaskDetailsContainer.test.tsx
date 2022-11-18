@@ -62,7 +62,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          const modal = await taskFirstLineModalTestUtils.findContainer()
+          const modal = await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
@@ -109,7 +109,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findContainer()
+          await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
@@ -155,7 +155,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findContainer()
+          await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
@@ -198,7 +198,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findContainer()
+          await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
@@ -238,7 +238,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findContainer()
+          await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
@@ -278,7 +278,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          const modal = await taskFirstLineModalTestUtils.findContainer()
+          const modal = await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
@@ -325,7 +325,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findContainer()
+          await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
@@ -371,7 +371,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findContainer()
+          await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
@@ -414,7 +414,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findContainer()
+          await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
@@ -454,7 +454,7 @@ describe('Контейнер детальной карточки заявки', 
           const firstLineButton = await workGroupTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findContainer()
+          await taskFirstLineModalTestUtils.findModal()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 

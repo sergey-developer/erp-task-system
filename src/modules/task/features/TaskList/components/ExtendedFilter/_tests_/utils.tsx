@@ -1,6 +1,6 @@
 import {
-  buttonTestUtils,
   generateWord,
+  getButtonIn,
   getCheckboxIn,
   getRadioButtonIn,
   loadingFinishedBySelect,
@@ -19,20 +19,16 @@ import {
 
 const getFilter = () => screen.getByTestId('filter-extended')
 const findFilter = async () => screen.findByTestId('filter-extended')
-const getCloseButton = buttonTestUtils.getCloseButtonFn(getFilter())
-
-const getApplyButton = () =>
-  buttonTestUtils.getButtonIn(getFilter(), /применить/i)
-
-const getResetAllButton = () =>
-  buttonTestUtils.getButtonIn(getFilter(), /сбросить все/i)
+const getCloseButton = () => getButtonIn(getFilter(), /close/i)
+const getApplyButton = () => getButtonIn(getFilter(), /применить/i)
+const getResetAllButton = () => getButtonIn(getFilter(), /сбросить все/i)
 
 // actions
 const userClickResetButtonIn = async (
   user: UserEvent,
   container: HTMLElement,
 ) => {
-  const button = buttonTestUtils.getButtonIn(container, /сбросить/i)
+  const button = getButtonIn(container, /сбросить/i)
   await user.click(button)
   return button
 }

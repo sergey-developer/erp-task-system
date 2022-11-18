@@ -16,15 +16,16 @@ jest.setTimeout(10000)
 describe('Модальное окно перевода запроса на первую линию', () => {
   test('Отображается корректно', () => {
     render(<TaskFirstLineModal {...requiredProps} />)
-    expect(testUtils.getContainer()).toBeInTheDocument()
+
+    const modal = testUtils.getModal()
+    expect(modal).toBeInTheDocument()
   })
 
   test('Заголовок отображается корректно', () => {
     render(<TaskFirstLineModal {...requiredProps} />)
 
-    const recordId = within(testUtils.getContainer()).getByText(
-      requiredProps.recordId,
-    )
+    const modal = testUtils.getModal()
+    const recordId = within(modal).getByText(requiredProps.recordId)
 
     expect(recordId).toBeInTheDocument()
   })
@@ -32,7 +33,7 @@ describe('Модальное окно перевода запроса на пе�
   test('Текст отображается корректно', () => {
     render(<TaskFirstLineModal {...requiredProps} />)
 
-    const modal = testUtils.getContainer()
+    const modal = testUtils.getModal()
     const text1 = within(modal).getByText(
       /Укажите причину возврата. Нажмите кнопку «Вернуть заявку»/i,
     )
