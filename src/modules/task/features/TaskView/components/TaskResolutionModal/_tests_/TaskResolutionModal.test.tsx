@@ -1,9 +1,17 @@
 import { generateWord, render } from '_tests_/utils'
 import { TaskTypeEnum } from 'modules/task/constants/common'
+import {
+  DEFAULT_LONG_TEXT_LENGTH,
+  DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+  FIELD_CAN_NOT_BE_EMPTY_MSG,
+  REQUIRED_FIELD_MSG,
+} from 'shared/constants/validation'
 
 import TaskResolutionModal, { TaskResolutionModalProps } from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
+
+jest.setTimeout(10000)
 
 describe('Модалка решения по заявки', () => {
   test('Заголовок отображается', () => {
@@ -84,8 +92,8 @@ describe('Модалка решения по заявки', () => {
       test('Если поля заполнены', async () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        await testUtils.userSetTechResolution(user)
-        await testUtils.userSetUserResolution(user)
+        await testUtils.userSetTechResolution(user, generateWord())
+        await testUtils.userSetUserResolution(user, generateWord())
         await testUtils.userClickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
@@ -123,7 +131,10 @@ describe('Модалка решения по заявки', () => {
     })
 
     describe('Поле технического решения', () => {
-      test('Заголовок отображается', () => {})
+      test('Заголовок отображается', () => {
+        render(<TaskResolutionModal {...requiredProps} />)
+        expect(testUtils.getTechResolutionTitle()).toBeInTheDocument()
+      })
 
       test('Отображается корректно', () => {
         render(<TaskResolutionModal {...requiredProps} />)
@@ -138,7 +149,9 @@ describe('Модалка решения по заявки', () => {
       test('Можно заполнить', async () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        const { value, field } = await testUtils.userSetTechResolution(user)
+        const value = generateWord()
+        const field = await testUtils.userSetTechResolution(user, value)
+
         expect(field).toHaveDisplayValue(value)
       })
 
@@ -148,16 +161,48 @@ describe('Модалка решения по заявки', () => {
       })
 
       describe('Отображается ошибка', () => {
-        test('Если ввести только пробелы', () => {})
+        test('Если ввести только пробелы', async () => {
+          const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        test('Если не заполнить и нажать кнопку отправки', () => {})
+          await testUtils.userSetTechResolution(user, ' ')
 
-        test('Если превысить лимит символов', () => {})
+          expect(
+            await testUtils.findTechResolutionError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Если не заполнить поле и нажать кнопку отправки', async () => {
+          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+
+          await testUtils.userClickSubmitButton(user)
+
+          expect(
+            await testUtils.findTechResolutionError(REQUIRED_FIELD_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Если превысить лимит символов', async () => {
+          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+
+          await testUtils.userSetTechResolution(
+            user,
+            generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
+          )
+
+          expect(
+            await testUtils.findTechResolutionError(
+              DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+            ),
+          ).toBeInTheDocument()
+        })
       })
     })
 
     describe('Поле решения для пользователя', () => {
-      test('Заголовок отображается', () => {})
+      test('Заголовок отображается', () => {
+        render(<TaskResolutionModal {...requiredProps} />)
+        expect(testUtils.getUserResolutionTitle()).toBeInTheDocument()
+      })
 
       test('Отображается корректно если все условия соблюдены', () => {
         render(<TaskResolutionModal {...requiredProps} />)
@@ -196,7 +241,9 @@ describe('Модалка решения по заявки', () => {
       test('Можно заполнить', async () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        const { value, field } = await testUtils.userSetUserResolution(user)
+        const value = generateWord()
+        const field = await testUtils.userSetUserResolution(user, value)
+
         expect(field).toHaveDisplayValue(value)
       })
 
@@ -206,11 +253,40 @@ describe('Модалка решения по заявки', () => {
       })
 
       describe('Отображается ошибка', () => {
-        test('Если ввести только пробелы', () => {})
+        test('Если ввести только пробелы', async () => {
+          const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        test('Если не заполнить и нажать кнопку отправки', () => {})
+          await testUtils.userSetUserResolution(user, ' ')
 
-        test('Если превысить лимит символов', () => {})
+          expect(
+            await testUtils.findUserResolutionError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Если не заполнить поле и нажать кнопку отправки', async () => {
+          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+
+          await testUtils.userClickSubmitButton(user)
+
+          expect(
+            await testUtils.findUserResolutionError(REQUIRED_FIELD_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Если превысить лимит символов', async () => {
+          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+
+          await testUtils.userSetUserResolution(
+            user,
+            generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
+          )
+
+          expect(
+            await testUtils.findUserResolutionError(
+              DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+            ),
+          ).toBeInTheDocument()
+        })
       })
     })
   })

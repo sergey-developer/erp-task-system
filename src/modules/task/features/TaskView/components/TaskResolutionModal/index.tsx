@@ -85,6 +85,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
           preserve={false}
         >
           <Form.Item
+            data-testid='tech-resolution'
             label='Техническое решение'
             name='techResolution'
             rules={BASE_LONG_TEXT_RULES}
@@ -97,6 +98,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
 
           {!taskType.isIncidentTask && !taskType.isRequestTask && (
             <Form.Item
+              data-testid='user-resolution'
               label='Решение для пользователя'
               name='userResolution'
               rules={BASE_LONG_TEXT_RULES}

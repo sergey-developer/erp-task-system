@@ -1,8 +1,4 @@
-import {
-  generateWord,
-  getButtonIn,
-  loadingStartedByButton,
-} from '_tests_/utils'
+import { getButtonIn, loadingStartedByButton } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -38,41 +34,49 @@ const userClickSubmitButton = async (user: UserEvent) => {
 
 // tech resolution
 const getTechResolutionBlock = () =>
-  screen.getByRole('roww', { name: 'Техническое решение' })
+  within(getContainer()).getByTestId('tech-resolution')
+
+const getTechResolutionTitle = () =>
+  within(getTechResolutionBlock()).getByTitle('Техническое решение')
 
 const getTechResolutionField = () =>
-  screen.getByRole('textbox', {
+  within(getContainer()).getByRole('textbox', {
     name: 'Техническое решение',
   })
 
-const queryTechResolutionField = () =>
-  screen.queryByRole('textbox', {
-    name: 'Техническое решение',
-  })
+const findTechResolutionError = (text: string) =>
+  within(getTechResolutionBlock()).findByText(text)
 
-const userSetTechResolution = async (user: UserEvent) => {
-  const value = generateWord()
+const userSetTechResolution = async (user: UserEvent, value: string) => {
   const field = getTechResolutionField()
   await user.type(field, value)
-  return { field, value }
+  return field
 }
 
 // user resolution
+const getUserResolutionBlock = () =>
+  within(getContainer()).getByTestId('user-resolution')
+
+const getUserResolutionTitle = () =>
+  within(getUserResolutionBlock()).getByTitle('Решение для пользователя')
+
 const getUserResolutionField = () =>
-  screen.getByRole('textbox', {
+  within(getUserResolutionBlock()).getByRole('textbox', {
     name: 'Решение для пользователя',
   })
 
 const queryUserResolutionField = () =>
-  screen.queryByRole('textbox', {
+  within(getContainer()).queryByRole('textbox', {
     name: 'Решение для пользователя',
   })
 
-const userSetUserResolution = async (user: UserEvent) => {
-  const value = generateWord()
+const findUserResolutionError = (text: string) =>
+  within(getUserResolutionBlock()).findByText(text)
+
+const userSetUserResolution = async (user: UserEvent, value: string) => {
   const field = getUserResolutionField()
   await user.type(field, value)
-  return { field, value }
+  return field
 }
 
 // loading
@@ -92,12 +96,16 @@ const utils = {
   userClickSubmitButton,
 
   getTechResolutionBlock,
+  getTechResolutionTitle,
   getTechResolutionField,
-  queryTechResolutionField,
+  findTechResolutionError,
   userSetTechResolution,
 
+  getUserResolutionBlock,
+  getUserResolutionTitle,
   getUserResolutionField,
   queryUserResolutionField,
+  findUserResolutionError,
   userSetUserResolution,
 
   loadingStarted,
