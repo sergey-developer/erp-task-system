@@ -11,25 +11,13 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
-import {
-  getEmptyJournalResponseSuccess,
-  getJournalResponseSuccess,
-} from 'fixtures/task'
+import * as taskFixtures from 'fixtures/task'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import { NO_DATA_MSG } from '../constants'
 import JournalTab, { JournalTabProps } from '../index'
-import {
-  getDownloadButton,
-  getReloadButton,
-  journalCsvLoadingFinished,
-  journalCsvLoadingStarted,
-  journalLoadingFinished,
-  journalLoadingStarted,
-  userClickDownloadButton,
-  userClickReloadButton,
-} from './utils'
+import testUtils from './utils'
 
 setupApiTests()
 
@@ -42,7 +30,7 @@ describe('Вкладка журнала задачи', () => {
     test('Отображается корректно', () => {
       render(<JournalTab {...requiredProps} />)
 
-      const button = getReloadButton()
+      const button = testUtils.getReloadButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -50,7 +38,7 @@ describe('Вкладка журнала задачи', () => {
 
     test('При клике отправляется запрос', async () => {
       mockGetJournalSuccess(requiredProps.taskId, {
-        body: getJournalResponseSuccess,
+        body: taskFixtures.getTaskJournal(),
         once: false,
       })
 
@@ -58,9 +46,9 @@ describe('Вкладка журнала задачи', () => {
         store: getStoreWithAuth(),
       })
 
-      await journalLoadingFinished()
-      await userClickReloadButton(user)
-      await journalLoadingStarted()
+      await testUtils.journalLoadingFinished()
+      await testUtils.userClickReloadButton(user)
+      await testUtils.journalLoadingStarted()
     })
   })
 
@@ -68,35 +56,36 @@ describe('Вкладка журнала задачи', () => {
     describe('Если есть записи', () => {
       describe('Отображает', () => {
         test('Записи', async () => {
+          const taskJournal = taskFixtures.getTaskJournal()
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: getJournalResponseSuccess,
+            body: taskJournal,
           })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          await journalLoadingStarted()
-          await journalLoadingFinished()
+          await testUtils.journalLoadingStarted()
+          await testUtils.journalLoadingFinished()
 
           expect(screen.getAllByTestId('journalEntry')).toHaveLength(
-            getJournalResponseSuccess.length,
+            taskJournal.length,
           )
         })
 
         test('Кнопку экспорта в csv', async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: getJournalResponseSuccess,
+            body: taskFixtures.getTaskJournal(),
           })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          await journalLoadingStarted()
-          await journalLoadingFinished()
+          await testUtils.journalLoadingStarted()
+          await testUtils.journalLoadingFinished()
 
-          const downloadButton = getDownloadButton()
+          const downloadButton = testUtils.getDownloadButton()
 
           expect(downloadButton).toBeInTheDocument()
 
@@ -109,15 +98,15 @@ describe('Вкладка журнала задачи', () => {
       describe('Не отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: getJournalResponseSuccess,
+            body: taskFixtures.getTaskJournal(),
           })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          await journalLoadingStarted()
-          await journalLoadingFinished()
+          await testUtils.journalLoadingStarted()
+          await testUtils.journalLoadingFinished()
 
           expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
         })
@@ -125,17 +114,17 @@ describe('Вкладка журнала задачи', () => {
 
       test('Кнопка экспорта в csv активна', async () => {
         mockGetJournalSuccess(requiredProps.taskId, {
-          body: getJournalResponseSuccess,
+          body: taskFixtures.getTaskJournal(),
         })
 
         render(<JournalTab {...requiredProps} />, {
           store: getStoreWithAuth(),
         })
 
-        await journalLoadingStarted()
-        await journalLoadingFinished()
+        await testUtils.journalLoadingStarted()
+        await testUtils.journalLoadingFinished()
 
-        const downloadButton = getDownloadButton()
+        const downloadButton = testUtils.getDownloadButton()
         expect(downloadButton).toBeEnabled()
       })
 
@@ -148,7 +137,7 @@ describe('Вкладка журнала задачи', () => {
 
         test('Не показывает сообщение об ошибке', async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: getJournalResponseSuccess,
+            body: taskFixtures.getTaskJournal(),
           })
           mockGetJournalCsvSuccess(requiredProps.taskId)
 
@@ -156,13 +145,13 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await journalLoadingStarted()
-          await journalLoadingFinished()
+          await testUtils.journalLoadingStarted()
+          await testUtils.journalLoadingFinished()
 
-          const downloadButton = await userClickDownloadButton(user)
+          const downloadButton = await testUtils.userClickDownloadButton(user)
 
-          await journalCsvLoadingStarted(downloadButton)
-          await journalCsvLoadingFinished(downloadButton)
+          await testUtils.journalCsvLoadingStarted(downloadButton)
+          await testUtils.journalCsvLoadingFinished(downloadButton)
 
           expect(makeDownloadLinkSpy).toBeCalledTimes(1)
           expect(clickDownloadLinkSpy).toBeCalledTimes(1)
@@ -181,7 +170,7 @@ describe('Вкладка журнала задачи', () => {
 
         test('Показывает сообщение об ошибке', async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: getJournalResponseSuccess,
+            body: taskFixtures.getTaskJournal(),
           })
           mockGetJournalCsvServerError(requiredProps.taskId)
 
@@ -189,13 +178,13 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await journalLoadingStarted()
-          await journalLoadingFinished()
+          await testUtils.journalLoadingStarted()
+          await testUtils.journalLoadingFinished()
 
-          const downloadButton = await userClickDownloadButton(user)
+          const downloadButton = await testUtils.userClickDownloadButton(user)
 
-          await journalCsvLoadingStarted(downloadButton)
-          await journalCsvLoadingFinished(downloadButton)
+          await testUtils.journalCsvLoadingStarted(downloadButton)
+          await testUtils.journalCsvLoadingFinished(downloadButton)
 
           expect(makeDownloadLinkSpy).not.toBeCalled()
           expect(clickDownloadLinkSpy).not.toBeCalled()
@@ -210,15 +199,15 @@ describe('Вкладка журнала задачи', () => {
       describe('Отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: getEmptyJournalResponseSuccess,
+            body: taskFixtures.getTaskJournal(0),
           })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          await journalLoadingStarted()
-          await journalLoadingFinished()
+          await testUtils.journalLoadingStarted()
+          await testUtils.journalLoadingFinished()
 
           expect(screen.getByText(NO_DATA_MSG)).toBeInTheDocument()
         })
@@ -226,33 +215,34 @@ describe('Вкладка журнала задачи', () => {
 
       describe('Не отображает', () => {
         test('Записи', async () => {
+          const taskJournal = taskFixtures.getTaskJournal(0)
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: getEmptyJournalResponseSuccess,
+            body: taskJournal,
           })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          await journalLoadingStarted()
-          await journalLoadingFinished()
+          await testUtils.journalLoadingStarted()
+          await testUtils.journalLoadingFinished()
 
           expect(screen.queryAllByTestId('journalEntry')).toHaveLength(
-            getEmptyJournalResponseSuccess.length,
+            taskJournal.length,
           )
         })
 
         test('Кнопку экспорта в csv', async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: getEmptyJournalResponseSuccess,
+            body: taskFixtures.getTaskJournal(0),
           })
 
           render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),
           })
 
-          await journalLoadingStarted()
-          await journalLoadingFinished()
+          await testUtils.journalLoadingStarted()
+          await testUtils.journalLoadingFinished()
 
           expect(
             screen.queryByTestId('journal-btn-download'),
@@ -275,8 +265,8 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await journalLoadingStarted()
-        await journalLoadingFinished()
+        await testUtils.journalLoadingStarted()
+        await testUtils.journalLoadingFinished()
 
         const notification = await screen.findByText(UNKNOWN_ERROR_MSG)
         expect(notification).toBeInTheDocument()
@@ -289,8 +279,8 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await journalLoadingStarted()
-        await journalLoadingFinished()
+        await testUtils.journalLoadingStarted()
+        await testUtils.journalLoadingFinished()
 
         expect(await screen.findByText(NO_DATA_MSG)).toBeInTheDocument()
       })

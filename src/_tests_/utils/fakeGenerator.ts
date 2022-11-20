@@ -8,6 +8,7 @@ export const generateName = chance.name.bind(chance)
 export const generateWord = chance.word.bind(chance)
 export const generatePhone = chance.phone.bind(chance)
 export const generateAddress = chance.address.bind(chance)
+export const generateUrl = chance.url.bind(chance)
 
 export const generateDate = chance.date.bind(chance)
 export const generateDateString = () => generateDate().toISOString()
