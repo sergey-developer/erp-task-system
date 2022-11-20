@@ -6,7 +6,7 @@ import FilterBlockLabel from './index'
 const labelText = 'label'
 const onReset = jest.fn()
 
-const getResetButton = () => getButton(/Сбросить/i)
+const getResetButton = () => getButton(/сбросить/i)
 
 describe('FilterBlockLabel', () => {
   test('Заголовок отображается корректно', () => {

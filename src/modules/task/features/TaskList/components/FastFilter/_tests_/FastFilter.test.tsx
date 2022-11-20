@@ -4,14 +4,14 @@ import { FastFilterEnum } from '../../../constants/common'
 import { fastFilterNamesDict } from '../constants'
 import FastFilter from '../index'
 import { filterRequiredProps as requiredProps } from './constants'
-import fastFilterTestUtils from './utils'
+import testUtils from './utils'
 
 describe('Быстрый фильтр', () => {
   test('Отображается с правильными названиями', () => {
     render(<FastFilter {...requiredProps} />)
 
     Object.values(FastFilterEnum).forEach((filter) => {
-      const filterName = fastFilterTestUtils.getByTextInCheckableTag(
+      const filterName = testUtils.getByTextInCheckableTag(
         filter,
         fastFilterNamesDict[filter],
       )
@@ -23,7 +23,7 @@ describe('Быстрый фильтр', () => {
     render(<FastFilter {...requiredProps} />)
 
     Object.values(FastFilterEnum).forEach((filter) => {
-      const taskCount = fastFilterTestUtils.getByTextInCheckableTag(
+      const taskCount = testUtils.getByTextInCheckableTag(
         filter,
         requiredProps.data![filter.toLowerCase() as Lowercase<FastFilterEnum>],
       )
@@ -35,7 +35,7 @@ describe('Быстрый фильтр', () => {
     render(<FastFilter {...requiredProps} isError />)
 
     Object.values(FastFilterEnum).forEach((filter) => {
-      const taskCount = fastFilterTestUtils.queryByTextInCheckableTag(
+      const taskCount = testUtils.queryByTextInCheckableTag(
         filter,
         requiredProps.data![filter.toLowerCase() as Lowercase<FastFilterEnum>],
       )
@@ -45,13 +45,13 @@ describe('Быстрый фильтр', () => {
 
   test('Отображает состояние загрузки', async () => {
     render(<FastFilter {...requiredProps} isLoading />)
-    await fastFilterTestUtils.loadingStarted()
+    await testUtils.loadingStarted()
   })
 
   test('Обработчик onChange вызывается корректно', async () => {
     const { user } = render(<FastFilter {...requiredProps} />)
 
-    await fastFilterTestUtils.userChangeFilter(user, FastFilterEnum.Free)
+    await testUtils.userChangeFilter(user, FastFilterEnum.Free)
 
     expect(requiredProps.onChange).toBeCalledTimes(1)
     expect(requiredProps.onChange).toHaveBeenCalledWith(FastFilterEnum.Free)
@@ -61,13 +61,11 @@ describe('Быстрый фильтр', () => {
     const selectedFilter = FastFilterEnum.Mine
     render(<FastFilter {...requiredProps} selectedFilter={selectedFilter} />)
 
-    fastFilterTestUtils.expectFilterChecked(
-      fastFilterTestUtils.getCheckableTag(selectedFilter),
-    )
+    testUtils.expectFilterChecked(testUtils.getCheckableTag(selectedFilter))
   })
 
   test('Можно сделать не активным', () => {
     render(<FastFilter {...requiredProps} disabled />)
-    fastFilterTestUtils.expectAllFiltersDisabled()
+    testUtils.expectAllFiltersDisabled()
   })
 })

@@ -15,7 +15,7 @@ const getFirstComment = () => getAllComments()[0]
 
 const loadingFinished = loadingFinishedBySpinner('task-comment-list-spinner')
 
-const testUtils = {
+const utils = {
   getContainer,
   getChildByText,
 
@@ -26,4 +26,4 @@ const testUtils = {
   loadingFinished,
 }
 
-export default testUtils
+export default utils

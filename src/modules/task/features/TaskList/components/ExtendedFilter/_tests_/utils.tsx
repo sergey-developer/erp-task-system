@@ -18,7 +18,7 @@ import {
 } from '../constants'
 
 const getFilter = () => screen.getByTestId('filter-extended')
-const findFilter = async () => screen.findByTestId('filter-extended')
+const findFilter = () => screen.findByTestId('filter-extended')
 const getCloseButton = () => getButtonIn(getFilter(), /close/i)
 const getApplyButton = () => getButtonIn(getFilter(), /применить/i)
 const getResetAllButton = () => getButtonIn(getFilter(), /сбросить все/i)

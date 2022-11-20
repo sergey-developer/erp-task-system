@@ -2,7 +2,7 @@ import { getButtonIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 
 const getModal = () => screen.getByTestId('modal-task-first-line')
-const findModal = async () => screen.findByTestId('modal-task-first-line')
+const findModal = () => screen.findByTestId('modal-task-first-line')
 
 const getDescriptionField = () =>
   within(getModal()).getByRole('textbox', {

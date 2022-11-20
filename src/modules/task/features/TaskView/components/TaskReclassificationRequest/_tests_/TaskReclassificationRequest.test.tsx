@@ -5,39 +5,30 @@ import formatDate from 'shared/utils/date/formatDate'
 
 import TaskReclassificationRequest from '../index'
 import { requiredProps } from './constants'
-import reclassificationRequestTestUtils from './utils'
+import testUtils from './utils'
 
 describe('Статус запроса на переклассификацию', () => {
   describe('Отображается корректно', () => {
     test('Иконка', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
-
-      expect(reclassificationRequestTestUtils.getIcon()).toBeInTheDocument()
+      expect(testUtils.getIcon()).toBeInTheDocument()
     })
 
     test('Заголовок', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
-
-      expect(
-        reclassificationRequestTestUtils.getText(requiredProps.title),
-      ).toBeInTheDocument()
+      expect(testUtils.getText(requiredProps.title)).toBeInTheDocument()
     })
 
     test('Комментарий', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
-
-      expect(
-        reclassificationRequestTestUtils.getText(requiredProps.comment),
-      ).toBeInTheDocument()
+      expect(testUtils.getText(requiredProps.comment)).toBeInTheDocument()
     })
 
     test('Данные пользователя', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
 
       expect(
-        reclassificationRequestTestUtils.getText(
-          getShortUserName(requiredProps.user),
-        ),
+        testUtils.getText(getShortUserName(requiredProps.user)),
       ).toBeInTheDocument()
     })
 
@@ -45,7 +36,7 @@ describe('Статус запроса на переклассификацию', 
       render(<TaskReclassificationRequest {...requiredProps} />)
 
       expect(
-        reclassificationRequestTestUtils.getText(
+        testUtils.getText(
           formatDate(requiredProps.createdAt, DATE_TIME_FORMAT),
         ),
       ).toBeInTheDocument()
@@ -56,9 +47,7 @@ describe('Статус запроса на переклассификацию', 
     test('Отображается корректно', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
 
-      const button = reclassificationRequestTestUtils.getButton(
-        requiredProps.actionText,
-      )
+      const button = testUtils.getButton(requiredProps.actionText)
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -69,11 +58,7 @@ describe('Статус запроса на переклассификацию', 
         <TaskReclassificationRequest {...requiredProps} />,
       )
 
-      await reclassificationRequestTestUtils.userClickButton(
-        user,
-        requiredProps.actionText,
-      )
-
+      await testUtils.userClickButton(user, requiredProps.actionText)
       expect(requiredProps.onAction).toBeCalledTimes(1)
     })
   })

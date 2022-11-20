@@ -8,7 +8,7 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 // menu
 const getMenuButton = () => getButtonIn(getContainer(), 'menu')
 const getMenu = () => screen.getByRole('menu')
-const findMenu = async () => screen.findByRole('menu')
+const findMenu = () => screen.findByRole('menu')
 const getMenuItems = () => within(getMenu()).getAllByRole('menuitem')
 const getFirstMenuItem = () => getMenuItems()[0]
 const getSecondMenuItem = () => getMenuItems()[1]
