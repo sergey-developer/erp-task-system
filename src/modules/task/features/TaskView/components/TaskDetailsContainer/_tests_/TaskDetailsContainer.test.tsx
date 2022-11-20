@@ -20,8 +20,8 @@ import {
   setupNotifications,
 } from '_tests_/utils'
 import { screen, waitFor, within } from '@testing-library/react'
-import { getTask } from 'fixtures/task'
-import { getWorkGroup } from 'fixtures/workGroup'
+import { taskFixtures } from 'fixtures/task'
+import { workGroupFixtures } from 'fixtures/workGroup'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
@@ -39,11 +39,11 @@ describe('Контейнер детальной карточки заявки', 
     describe('Роль - старший инженер', () => {
       describe('При успешный запросе', () => {
         test('Закрывается модальное окно и карточка заявки', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
@@ -82,11 +82,11 @@ describe('Контейнер детальной карточки заявки', 
         setupNotifications()
 
         test('Корректно обрабатывается ошибка 400', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
           const badRequestErrorResponse = { description: [generateWord()] }
@@ -129,11 +129,11 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Корректно обрабатывается ошибка 404', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
           const notFoundErrorResponse = { detail: [generateWord()] }
@@ -172,11 +172,11 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Корректно обрабатывается ошибка 500', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
           const serverErrorResponse = { detail: [generateWord()] }
@@ -215,11 +215,11 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Корректно обрабатывается неизвестная ошибка', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
@@ -257,10 +257,10 @@ describe('Контейнер детальной карточки заявки', 
     describe('Роль - глава отдела', () => {
       describe('При успешный запросе', () => {
         test('Закрывается модальное окно и карточка заявки', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
 
@@ -298,11 +298,11 @@ describe('Контейнер детальной карточки заявки', 
         setupNotifications()
 
         test('Корректно обрабатывается ошибка 400', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
           const badRequestErrorResponse = { description: [generateWord()] }
@@ -345,11 +345,11 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Корректно обрабатывается ошибка 404', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
           const notFoundErrorResponse = { detail: [generateWord()] }
@@ -388,11 +388,11 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Корректно обрабатывается ошибка 500', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
           const serverErrorResponse = { detail: [generateWord()] }
@@ -431,11 +431,11 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Корректно обрабатывается неизвестная ошибка', async () => {
-          const workGroup = getWorkGroup()
+          const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)

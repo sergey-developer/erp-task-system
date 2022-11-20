@@ -1,9 +1,9 @@
-import { getTask } from 'fixtures/task'
+import { taskFixtures } from 'fixtures/task'
 
 import { TaskDetailsProps } from '../index'
 
 export const requiredProps: TaskDetailsProps = {
-  details: getTask(),
+  details: taskFixtures.getTask(),
   closeTaskDetails: jest.fn(),
 
   taskIsLoading: false,

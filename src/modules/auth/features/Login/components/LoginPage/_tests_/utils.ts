@@ -12,13 +12,13 @@ import {
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getEmailField = () => screen.getByTestId('field-email')
-export const getEmailInput = () => screen.getByTestId('input-email')
+const getEmailField = () => screen.getByTestId('field-email')
+const getEmailInput = () => screen.getByTestId('input-email')
 
-export const getPasswordField = () => screen.getByTestId('field-password')
-export const getPasswordInput = () => screen.getByTestId('input-password')
+const getPasswordField = () => screen.getByTestId('field-password')
+const getPasswordInput = () => screen.getByTestId('input-password')
 
-export const getSubmitBtn = () => screen.getByTestId('btn-submit')
+const getSubmitBtn = () => screen.getByTestId('btn-submit')
 
 const userEntersEmail = async (
   user: UserEvent,
@@ -29,19 +29,19 @@ const userEntersEmail = async (
   return emailInput
 }
 
-export const userEntersCorrectEmail = async (
+const userEntersCorrectEmail = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersEmail(user, CORRECT_EMAIL)
 }
 
-export const userEntersIncorrectEmail = async (
+const userEntersIncorrectEmail = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersEmail(user, INCORRECT_EMAIL)
 }
 
-export const userEntersNotExistingEmail = async (
+const userEntersNotExistingEmail = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersEmail(user, NOT_EXISTING_EMAIL)
@@ -56,19 +56,19 @@ const userEntersPassword = async (
   return passwordInput
 }
 
-export const userEntersCorrectPassword = async (
+const userEntersCorrectPassword = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersPassword(user, CORRECT_PASSWORD)
 }
 
-export const userEntersWrongPassword = async (
+const userEntersWrongPassword = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersPassword(user, WRONG_PASSWORD)
 }
 
-export const validatingStarted = async (
+const validatingStarted = async (
   emailField: HTMLElement,
   passwordField: HTMLElement,
 ) => {
@@ -76,7 +76,7 @@ export const validatingStarted = async (
   await baseValidatingStarted(passwordField)
 }
 
-export const validatingFinished = async (
+const validatingFinished = async (
   emailField: HTMLElement,
   passwordField: HTMLElement,
 ) => {
@@ -84,10 +84,28 @@ export const validatingFinished = async (
   await baseValidatingFinished(passwordField)
 }
 
-export const userClickSubmitButton = async (
-  user: UserEvent,
-): Promise<HTMLElement> => {
+const userClickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
   const submitBtn = getSubmitBtn()
   await user.click(submitBtn)
   return submitBtn
 }
+
+const utils = {
+  getEmailField,
+  getEmailInput,
+  getPasswordField,
+  getPasswordInput,
+  getSubmitBtn,
+  userEntersEmail,
+  userEntersCorrectEmail,
+  userEntersIncorrectEmail,
+  userEntersNotExistingEmail,
+  userEntersPassword,
+  userEntersCorrectPassword,
+  userEntersWrongPassword,
+  validatingStarted,
+  validatingFinished,
+  userClickSubmitButton,
+}
+
+export default utils

@@ -17,7 +17,7 @@ import {
   TaskListItemModel,
 } from 'modules/task/features/TaskList/models'
 
-import { getWorkGroup } from '../workGroup'
+import { workGroupFixtures } from '../workGroup'
 import { getTaskAssignee } from './taskAssignee'
 
 export const getTaskListItem = (
@@ -45,7 +45,7 @@ export const getTaskListItem = (
   }) as TaskListItemModel['initialImpact'],
   createdAt: generateDateString(),
   recordId: generateWord(),
-  workGroup: getWorkGroup(),
+  workGroup: workGroupFixtures.getWorkGroup(),
   title: generateWord(),
   name: generateWord(),
   productClassifier1: generateWord(),

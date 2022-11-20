@@ -7,8 +7,8 @@ import {
 } from 'modules/task/constants/common'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 
-import { getWorkGroup } from '../workGroup'
 import { getTaskAssignee } from './taskAssignee'
+import { getTaskWorkGroup } from './taskWorkGroup'
 
 export const getTask = (
   props?: Partial<
@@ -23,7 +23,7 @@ export const getTask = (
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
-  workGroup: props?.workGroup || getWorkGroup(),
+  workGroup: props?.workGroup || getTaskWorkGroup(),
 
   recordId: generateWord(),
   name: generateWord(),

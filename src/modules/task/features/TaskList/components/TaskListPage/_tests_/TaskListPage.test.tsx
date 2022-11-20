@@ -11,8 +11,8 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 import { waitFor } from '@testing-library/react'
-import * as taskFixtures from 'fixtures/task'
-import * as workGroupFixtures from 'fixtures/workGroup'
+import { taskFixtures } from 'fixtures/task'
+import { workGroupFixtures } from 'fixtures/workGroup'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import taskDetailsTestUtils from 'modules/task/features/TaskView/components/TaskDetails/_tests_/utils'
 import { UserRolesEnum } from 'shared/constants/roles'
