@@ -22,10 +22,32 @@ export const requiredProps: Omit<WorkGroupProps, 'workGroup'> = {
   hasReclassificationRequest: false,
 }
 
-export const firstLineButtonProps: Pick<
+// first line button
+export const showFirstLineButtonProps: Pick<
   WorkGroupProps,
   'workGroup' | 'status'
 > = {
   workGroup: taskFixtures.getTaskWorkGroup(),
   status: TaskStatusEnum.New,
+}
+
+export const activeFirstLineButtonProps: Pick<
+  WorkGroupProps,
+  'hasReclassificationRequest'
+> = {
+  hasReclassificationRequest: false,
+}
+
+// second line button
+export const showSecondLineButtonProps: Pick<WorkGroupProps, 'workGroup'> = {
+  workGroup: null,
+}
+
+export const activeSecondLineButtonProps: Pick<
+  WorkGroupProps,
+  'status' | 'extendedStatus' | 'hasReclassificationRequest'
+> = {
+  status: TaskStatusEnum.New,
+  extendedStatus: TaskExtendedStatusEnum.Awaiting,
+  hasReclassificationRequest: false,
 }

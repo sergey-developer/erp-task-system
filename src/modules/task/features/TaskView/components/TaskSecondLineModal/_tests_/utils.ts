@@ -13,10 +13,11 @@ import {
   userOpenSelect,
 } from '_tests_/utils'
 import { ByRoleOptions } from '@testing-library/dom/types/queries'
-import { within } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 const getContainer = getModal
+const findContainer = () => screen.findByRole('dialog')
 
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
@@ -77,6 +78,7 @@ const loadingStarted = () => loadingStartedByButton(getSubmitButton())
 
 const utils = {
   getContainer,
+  findContainer,
   getChildByText,
 
   getWorkGroupSelect,
