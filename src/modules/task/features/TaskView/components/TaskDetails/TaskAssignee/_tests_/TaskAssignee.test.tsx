@@ -6,7 +6,6 @@ import {
 } from 'modules/task/constants/common'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { UserRolesEnum } from 'shared/constants/roles'
-import { asyncNoop } from 'shared/utils/common/noop'
 
 import TaskAssignee, { TaskAssigneeProps } from '../index'
 import testUtils from './utils'
@@ -26,9 +25,9 @@ describe('Блок "Исполнитель заявки"', () => {
         | 'hasReclassificationRequest'
       >
     > = {
-      takeTask: asyncNoop,
+      takeTask: async () => {},
       takeTaskIsLoading: false,
-      updateAssignee: asyncNoop,
+      updateAssignee: async () => {},
       updateAssigneeIsLoading: false,
       workGroupListIsLoading: false,
       hasReclassificationRequest: false,

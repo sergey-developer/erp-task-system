@@ -396,8 +396,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                 <TaskResolutionModal
                   type={details.type}
                   recordId={details.recordId}
-                  techResolution={details.techResolution}
-                  userResolution={details.userResolution}
+                  initialFormValues={{
+                    techResolution: details.techResolution,
+                    userResolution: details.userResolution,
+                  }}
                   isLoading={isTaskResolving}
                   onCancel={closeTaskResolutionModal}
                   onSubmit={handleResolutionSubmit}
