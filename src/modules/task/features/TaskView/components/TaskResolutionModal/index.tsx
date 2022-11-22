@@ -5,6 +5,7 @@ import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
 import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 import { TaskResolutionFormFields } from './interfaces'
 
@@ -43,14 +44,31 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async ({
-    techResolution,
-    userResolution,
-  }: TaskResolutionFormFields) => {
+  const handleFinish = async (values: TaskResolutionFormFields) => {
+    const handledValues: TaskResolutionFormFields = {
+      techResolution: values.techResolution?.trim(),
+      userResolution: values.userResolution?.trim(),
+    }
+
+    const techResolutionNotChanged = isEqual(
+      initialFormValues.techResolution,
+      handledValues.techResolution,
+    )
+    const userResolutionNotChanged = isEqual(
+      initialFormValues.userResolution,
+      handledValues.userResolution,
+    )
+
+    if (techResolutionNotChanged && userResolutionNotChanged) return
+
     await onSubmit(
       {
-        techResolution: techResolution?.trim(),
-        userResolution: userResolution?.trim(),
+        techResolution: techResolutionNotChanged
+          ? undefined
+          : handledValues.techResolution,
+        userResolution: userResolutionNotChanged
+          ? undefined
+          : handledValues.userResolution,
       },
       form.setFields,
     )
