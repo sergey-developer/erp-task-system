@@ -150,7 +150,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                 <Assignee
                   name={getFullUserName(assignee)}
                   status={status}
-                  extendedStatus={extendedStatus}
                   assignee={assignee}
                 />
               ) : (
@@ -193,7 +192,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                         <Assignee
                           name={fullName}
                           status={status}
-                          extendedStatus={extendedStatus}
                           assignee={assignee}
                         />
                       </SelectStyled.Option>
@@ -204,7 +202,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                 <Assignee
                   name={getFullUserName(assignee)}
                   status={status}
-                  extendedStatus={extendedStatus}
                   assignee={assignee}
                 />
               ) : (
