@@ -22,6 +22,7 @@ describe('Блок "Исполнитель заявки"', () => {
         | 'updateAssigneeIsLoading'
         | 'status'
         | 'extendedStatus'
+        | 'assignee'
         | 'workGroupListIsLoading'
         | 'hasReclassificationRequest'
       >
@@ -34,6 +35,7 @@ describe('Блок "Исполнитель заявки"', () => {
       hasReclassificationRequest: false,
       status: TaskStatusEnum.New,
       extendedStatus: TaskExtendedStatusEnum.New,
+      assignee: null,
     }
 
     describe('Отображается для пользователя с ролью', () => {
