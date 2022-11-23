@@ -24,14 +24,14 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
   {
     key: 'noop',
     render: (_, { status, extendedStatus }) => {
-      const icon =
-        iconByTaskStatus[status] || iconByTaskExtendedStatus[extendedStatus]
+      const taskStatusIcon = iconByTaskStatus[status]
+      const extendedStatusIcon = iconByTaskExtendedStatus[extendedStatus]
       const badge = badgeByTaskStatus[status]
 
       return (
         <TaskStatus
-          status={icon ? extendedStatus : status}
-          icon={icon}
+          status={extendedStatusIcon ? extendedStatus : status}
+          icon={taskStatusIcon || extendedStatusIcon}
           badge={badge}
         />
       )

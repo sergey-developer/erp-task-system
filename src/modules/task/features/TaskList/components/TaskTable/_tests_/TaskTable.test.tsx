@@ -48,7 +48,7 @@ describe('Таблица заявок', () => {
 
   describe('Колонка', () => {
     describe('Статус заявки', () => {
-      describe('Отображает значение по статусу заявки', () => {
+      describe('Отображается по статусу заявки', () => {
         test(`${TaskStatusEnum.New}`, () => {
           render(
             <TaskTable
@@ -103,29 +103,47 @@ describe('Таблица заявок', () => {
           )
           expect(status).toBeInTheDocument()
         })
-      })
 
-      describe('Отображает значение по расширенному статусу заявки', () => {
-        test(`${TaskExtendedStatusEnum.Awaiting}`, () => {
+        test(`${TaskStatusEnum.Awaiting}`, () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
               dataSource={[
                 {
                   ...taskTableTestConstants.firstTaskTableItem,
-                  status: TaskStatusEnum.New,
-                  extendedStatus: TaskExtendedStatusEnum.Awaiting,
+                  status: TaskStatusEnum.Awaiting,
                 },
               ]}
             />,
           )
 
           const status = taskStatusTestUtils.getTaskStatus(
-            TaskExtendedStatusEnum.Awaiting,
+            TaskStatusEnum.Awaiting,
           )
           expect(status).toBeInTheDocument()
         })
 
+        test(`${TaskStatusEnum.Closed}`, () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              dataSource={[
+                {
+                  ...taskTableTestConstants.firstTaskTableItem,
+                  status: TaskStatusEnum.Closed,
+                },
+              ]}
+            />,
+          )
+
+          const status = taskStatusTestUtils.getTaskStatus(
+            TaskStatusEnum.Closed,
+          )
+          expect(status).toBeInTheDocument()
+        })
+      })
+
+      describe('Отображается по расширенному статусу заявки', () => {
         test(`${TaskExtendedStatusEnum.Returned}`, () => {
           render(
             <TaskTable
@@ -166,7 +184,7 @@ describe('Таблица заявок', () => {
           expect(status).toBeInTheDocument()
         })
 
-        test(`${TaskExtendedStatusEnum.Closed}`, () => {
+        test(`${TaskExtendedStatusEnum.FirstLineReturned}`, () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
@@ -174,14 +192,14 @@ describe('Таблица заявок', () => {
                 {
                   ...taskTableTestConstants.firstTaskTableItem,
                   status: TaskStatusEnum.New,
-                  extendedStatus: TaskExtendedStatusEnum.Closed,
+                  extendedStatus: TaskExtendedStatusEnum.FirstLineReturned,
                 },
               ]}
             />,
           )
 
           const status = taskStatusTestUtils.getTaskStatus(
-            TaskExtendedStatusEnum.Closed,
+            TaskExtendedStatusEnum.FirstLineReturned,
           )
           expect(status).toBeInTheDocument()
         })
