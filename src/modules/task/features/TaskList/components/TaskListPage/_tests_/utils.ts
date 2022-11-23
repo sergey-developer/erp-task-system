@@ -1,4 +1,4 @@
-import { generateWord, getButtonIn } from '_tests_/utils'
+import { getButtonIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -37,17 +37,19 @@ const userOpenExtendedFilter = async (user: UserEvent) => {
 
 const userFillSearchInput = async (
   user: UserEvent,
+  value: string,
   pressEnter: boolean = false,
 ) => {
-  const searchInput = getSearchInput()
-  const searchValue = generateWord()
+  const input = getSearchInput()
+  await user.type(input, pressEnter ? value.concat('{enter}') : value)
+  return input
+}
 
-  await user.type(
-    searchInput,
-    pressEnter ? searchValue.concat('{enter}') : searchValue,
-  )
-
-  return { searchInput, searchValue }
+const userClearSearchFieldByBackspace = async (
+  user: UserEvent,
+  input: HTMLElement,
+) => {
+  await user.type(input, '{backspace}')
 }
 
 const utils = {
@@ -60,6 +62,8 @@ const utils = {
 
   getSearchClearButton,
   userClickSearchClearButton,
+
+  userClearSearchFieldByBackspace,
 
   getReloadListButton,
   userClickReloadListButton,
