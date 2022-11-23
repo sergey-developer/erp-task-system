@@ -132,7 +132,7 @@ const TaskListPage: FC = () => {
     handleCloseTaskDetails()
   }
 
-  const handleTaskIdFilterSearch = useDebounceFn<
+  const handleSearchByTaskId = useDebounceFn<
     NonNullable<SearchProps['onSearch']>
   >((value) => {
     if (value) {
@@ -158,6 +158,13 @@ const TaskListPage: FC = () => {
     }
 
     handleCloseTaskDetails()
+  })
+
+  const handleChangeSearch = useDebounceFn<
+    NonNullable<SearchProps['onChange']>
+  >((event) => {
+    const value = event.target.value
+    if (!value) handleSearchByTaskId(value)
   })
 
   const debouncedSetSelectedTask = useDebounceFn(setSelectedTask)
@@ -284,7 +291,8 @@ const TaskListPage: FC = () => {
                 <SearchStyled
                   $breakpoints={breakpoints}
                   allowClear
-                  onSearch={handleTaskIdFilterSearch}
+                  onSearch={handleSearchByTaskId}
+                  onChange={handleChangeSearch}
                   placeholder='Искать заявку по номеру'
                   disabled={taskListIsFetching}
                 />
