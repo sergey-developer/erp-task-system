@@ -8,6 +8,7 @@ import { StringMap } from 'shared/interfaces/utils'
 export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.New]: 'Новая',
   [TaskStatusEnum.InProgress]: 'В работе',
+  [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.Completed]: 'Выполнена',
   [TaskStatusEnum.Closed]: 'Закрыта',
 }
