@@ -25,6 +25,7 @@ export const badgeByTaskStatus: Readonly<
 export const iconByTaskStatus: Readonly<
   Partial<Record<TaskStatusEnum, ReactElement>>
 > = {
+  [TaskStatusEnum.Awaiting]: <PauseCircleIcon />,
   [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
 }
 
