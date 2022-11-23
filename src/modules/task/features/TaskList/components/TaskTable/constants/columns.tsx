@@ -6,6 +6,7 @@ import { taskStatusDict } from 'modules/task/constants/dictionary'
 import {
   badgeByTaskStatus,
   iconByTaskExtendedStatus,
+  iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
@@ -23,7 +24,8 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
   {
     key: 'noop',
     render: (_, { status, extendedStatus }) => {
-      const icon = iconByTaskExtendedStatus[extendedStatus]
+      const icon =
+        iconByTaskStatus[status] || iconByTaskExtendedStatus[extendedStatus]
       const badge = badgeByTaskStatus[status]
 
       return (

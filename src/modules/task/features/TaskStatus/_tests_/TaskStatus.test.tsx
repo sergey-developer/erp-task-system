@@ -64,6 +64,13 @@ describe('Получение значка работает корректно п
 })
 
 describe('Получение иконки работает корректно по статусу заявки', () => {
+  test(`${TaskStatusEnum.Awaiting}`, () => {
+    const icon = iconByTaskStatus[TaskStatusEnum.Awaiting]
+    render(icon!)
+
+    expect(getIconByName('pause-circle')).toBeInTheDocument()
+  })
+
   test(`${TaskStatusEnum.Closed}`, () => {
     const icon = iconByTaskStatus[TaskStatusEnum.Closed]
     render(icon!)
