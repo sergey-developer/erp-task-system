@@ -53,6 +53,11 @@ describe('Статус запроса на переклассификацию', 
       expect(button).toBeEnabled()
     })
 
+    test('Можно сделать не активной', () => {
+      render(<TaskReclassificationRequest {...requiredProps} actionDisabled />)
+      expect(testUtils.getButton(requiredProps.actionText)).toBeDisabled()
+    })
+
     test('При клике обработчик вызывается корректно', async () => {
       const { user } = render(
         <TaskReclassificationRequest {...requiredProps} />,
