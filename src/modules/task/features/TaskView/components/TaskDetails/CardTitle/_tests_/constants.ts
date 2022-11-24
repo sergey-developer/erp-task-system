@@ -1,5 +1,6 @@
 import { generateId } from '_tests_/utils'
 import {
+  TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
@@ -11,8 +12,8 @@ export const requiredProps: CardTitleProps = {
   id: generateId(),
   type: TaskTypeEnum.Request,
   status: TaskStatusEnum.New,
+  extendedStatus: TaskExtendedStatusEnum.New,
   olaStatus: TaskOlaStatusEnum.NotExpired,
-  hasReclassificationRequest: false,
   isAssignedToCurrentUser: false,
   onClose: jest.fn(),
   onClickExecuteTask: jest.fn(),
@@ -21,11 +22,11 @@ export const requiredProps: CardTitleProps = {
 
 export const firstItemActiveProps: Pick<
   CardTitleProps,
-  'status' | 'isAssignedToCurrentUser' | 'hasReclassificationRequest'
+  'status' | 'extendedStatus' | 'isAssignedToCurrentUser'
 > = {
   status: TaskStatusEnum.InProgress,
+  extendedStatus: TaskExtendedStatusEnum.New,
   isAssignedToCurrentUser: true,
-  hasReclassificationRequest: false,
 }
 
 export const secondItemActiveProps: Pick<

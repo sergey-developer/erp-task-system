@@ -22,6 +22,7 @@ import {
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskWorkGroupMutationArgsModel,
 } from 'modules/task/features/TaskView/models'
+import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { TaskAssigneeModel } from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
@@ -169,8 +170,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   isGetTaskError,
 }) => {
   const breakpoints = useBreakpoint()
-
-  const hasReclassificationRequest = !!reclassificationRequest
+  const taskStatus = useTaskStatus(details?.status)
 
   const isAssignedToCurrentUser = useCheckUserAuthenticated(
     details?.assignee?.id,
@@ -289,9 +289,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       id={details.id}
       type={details.type}
       status={details.status}
+      extendedStatus={details.extendedStatus}
       olaStatus={details.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
-      hasReclassificationRequest={hasReclassificationRequest}
       onClose={debouncedCloseTaskDetails}
       onClickExecuteTask={debouncedOpenTaskResolutionModal}
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
@@ -309,15 +309,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         {reclassificationRequestIsLoading ||
         createReclassificationRequestIsLoading
           ? reclassificationRequestSpinner
-          : hasReclassificationRequest && (
+          : reclassificationRequest && (
               <React.Suspense fallback={reclassificationRequestSpinner}>
                 <TaskReclassificationRequest
                   title='Запрошена переклассификация:'
-                  comment={reclassificationRequest!.comment.text}
-                  createdAt={reclassificationRequest!.createdAt}
-                  user={reclassificationRequest!.user}
+                  comment={reclassificationRequest.comment.text}
+                  createdAt={reclassificationRequest.createdAt}
+                  user={reclassificationRequest.user}
                   actionText='Отменить запрос'
                   onAction={noop}
+                  actionDisabled={taskStatus.isAwaiting}
                 />
 
                 <DividerStyled />

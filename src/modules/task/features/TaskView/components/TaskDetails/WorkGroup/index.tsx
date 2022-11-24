@@ -12,12 +12,11 @@ import {
 import { TaskSecondLineModalProps } from 'modules/task/features/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/features/TaskView/permissions/taskWorkGroup.permissions'
+import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import valueOr from 'shared/utils/common/valueOr'
-
-import useTaskExtendedStatus from '../../../../../hooks/useTaskExtendedStatus'
 
 const TaskFirstLineModal = React.lazy(
   () => import('modules/task/features/TaskView/components/TaskFirstLineModal'),

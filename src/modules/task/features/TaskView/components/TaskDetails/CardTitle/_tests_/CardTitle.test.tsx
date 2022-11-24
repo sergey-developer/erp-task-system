@@ -1,5 +1,6 @@
 import { getStoreWithAuth, render } from '_tests_/utils'
 import {
+  TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
@@ -131,7 +132,7 @@ describe('Заголовок карточки заявки', () => {
             <CardTitle
               {...requiredProps}
               {...firstItemActiveProps}
-              hasReclassificationRequest
+              extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
           )
 
@@ -144,7 +145,10 @@ describe('Заголовок карточки заявки', () => {
     describe('Элемент "Запросить переклассификацию"', () => {
       test('Отображается корректно если нет запроса на переклассификацию', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} hasReclassificationRequest={false} />,
+          <CardTitle
+            {...requiredProps}
+            extendedStatus={TaskExtendedStatusEnum.New}
+          />,
         )
 
         await testUtils.userOpenMenu(user)
@@ -161,7 +165,10 @@ describe('Заголовок карточки заявки', () => {
 
       test('Отображается корректно если есть запрос на переклассификацию', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} hasReclassificationRequest />,
+          <CardTitle
+            {...requiredProps}
+            extendedStatus={TaskExtendedStatusEnum.InReclassification}
+          />,
         )
 
         await testUtils.userOpenMenu(user)
@@ -181,7 +188,7 @@ describe('Заголовок карточки заявки', () => {
           <CardTitle
             {...requiredProps}
             {...secondItemActiveProps}
-            hasReclassificationRequest={false}
+            extendedStatus={TaskExtendedStatusEnum.New}
           />,
           { store: getStoreWithAuth() },
         )
@@ -196,7 +203,7 @@ describe('Заголовок карточки заявки', () => {
           <CardTitle
             {...requiredProps}
             {...secondItemActiveProps}
-            hasReclassificationRequest
+            extendedStatus={TaskExtendedStatusEnum.InReclassification}
           />,
           { store: getStoreWithAuth() },
         )
@@ -316,7 +323,10 @@ describe('Заголовок карточки заявки', () => {
     describe('Элемент "Отменить переклассификацию"', () => {
       test('Отображается корректно если нет запроса на переклассификацию', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} hasReclassificationRequest={false} />,
+          <CardTitle
+            {...requiredProps}
+            extendedStatus={TaskExtendedStatusEnum.New}
+          />,
         )
 
         await testUtils.userOpenMenu(user)
@@ -333,7 +343,10 @@ describe('Заголовок карточки заявки', () => {
 
       test('Отображается корректно если есть запрос на переклассификацию', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} hasReclassificationRequest />,
+          <CardTitle
+            {...requiredProps}
+            extendedStatus={TaskExtendedStatusEnum.InReclassification}
+          />,
         )
 
         await testUtils.userOpenMenu(user)
