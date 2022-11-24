@@ -21,6 +21,7 @@ export type TaskReclassificationRequestProps = {
   comment: string
   actionText: string
   onAction: () => void
+  actionDisabled: boolean
 }
 
 const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
@@ -30,6 +31,7 @@ const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
   createdAt,
   actionText,
   onAction,
+  actionDisabled,
 }) => {
   const breakpoints = useBreakpoint()
 
@@ -56,7 +58,7 @@ const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
             </SeparatedText>
           </Space>
 
-          <Button type='link' onClick={onAction}>
+          <Button type='link' onClick={onAction} disabled={actionDisabled}>
             {actionText}
           </Button>
         </Space>

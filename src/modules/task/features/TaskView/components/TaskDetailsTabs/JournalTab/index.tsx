@@ -6,7 +6,7 @@ import { DownloadIcon, SyncIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import useGetTaskJournal from 'modules/task/features/TaskView/hooks/useGetTaskJournal'
-import useGetTaskJournalCsv from 'modules/task/features/TaskView/hooks/useGetTaskJournalCsv'
+import useLazyGetTaskJournalCsv from 'modules/task/features/TaskView/hooks/useLazyGetTaskJournalCsv'
 import {
   clickDownloadLink,
   makeDownloadLink,
@@ -29,7 +29,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
   const {
     fn: getJournalCsv,
     state: { isFetching: journalCsvIsFetching },
-  } = useGetTaskJournalCsv()
+  } = useLazyGetTaskJournalCsv()
 
   const handleGetJournalCsv = async () => {
     try {

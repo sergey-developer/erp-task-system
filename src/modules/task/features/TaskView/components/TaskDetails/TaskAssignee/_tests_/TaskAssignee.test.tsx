@@ -23,7 +23,6 @@ describe('Блок "Исполнитель заявки"', () => {
         | 'extendedStatus'
         | 'assignee'
         | 'workGroupListIsLoading'
-        | 'hasReclassificationRequest'
       >
     > = {
       takeTask: async () => {},
@@ -31,7 +30,6 @@ describe('Блок "Исполнитель заявки"', () => {
       updateAssignee: async () => {},
       updateAssigneeIsLoading: false,
       workGroupListIsLoading: false,
-      hasReclassificationRequest: false,
       status: TaskStatusEnum.New,
       extendedStatus: TaskExtendedStatusEnum.New,
       assignee: null,
@@ -83,7 +81,7 @@ describe('Блок "Исполнитель заявки"', () => {
       })
     })
 
-    describe('Не активна', () => {
+    describe('Не активна если все условия соблюдены', () => {
       const activeBtnProps: Readonly<
         Pick<TaskDetailsModel, 'status' | 'extendedStatus' | 'assignee'>
       > = {
@@ -92,54 +90,52 @@ describe('Блок "Исполнитель заявки"', () => {
         assignee: taskFixtures.getTaskAssignee(),
       }
 
-      describe('Если все условия соблюдены', () => {
-        test(`Но статус заявки не "${TaskStatusEnum.New}"`, async () => {
-          const store = getStoreWithAuth({
-            userId: activeBtnProps.assignee!.id,
-            userRole: UserRolesEnum.FirstLineSupport,
-          })
-
-          render(
-            <TaskAssignee
-              {...requiredProps}
-              {...activeBtnProps}
-              status={TaskStatusEnum.InProgress}
-            />,
-            { store },
-          )
-
-          expect(testUtils.getTakeTaskButton()).toBeDisabled()
+      test(`Но статус заявки не "${TaskStatusEnum.New}"`, async () => {
+        const store = getStoreWithAuth({
+          userId: activeBtnProps.assignee!.id,
+          userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        test('Но исполнитель заявки назначен и не является авторизованным пользователем', async () => {
-          const store = getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
-          })
+        render(
+          <TaskAssignee
+            {...requiredProps}
+            {...activeBtnProps}
+            status={TaskStatusEnum.InProgress}
+          />,
+          { store },
+        )
 
-          render(<TaskAssignee {...requiredProps} {...activeBtnProps} />, {
-            store,
-          })
+        expect(testUtils.getTakeTaskButton()).toBeDisabled()
+      })
 
-          expect(testUtils.getTakeTaskButton()).toBeDisabled()
+      test('Но исполнитель заявки назначен и не является авторизованным пользователем', async () => {
+        const store = getStoreWithAuth({
+          userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        test(`Но расширенный статус заявки "${TaskExtendedStatusEnum.InReclassification}"`, async () => {
-          const store = getStoreWithAuth({
-            userId: activeBtnProps.assignee!.id,
-            userRole: UserRolesEnum.FirstLineSupport,
-          })
-
-          render(
-            <TaskAssignee
-              {...requiredProps}
-              {...activeBtnProps}
-              extendedStatus={TaskExtendedStatusEnum.InReclassification}
-            />,
-            { store },
-          )
-
-          expect(testUtils.getTakeTaskButton()).toBeDisabled()
+        render(<TaskAssignee {...requiredProps} {...activeBtnProps} />, {
+          store,
         })
+
+        expect(testUtils.getTakeTaskButton()).toBeDisabled()
+      })
+
+      test(`Но расширенный статус заявки "${TaskExtendedStatusEnum.InReclassification}"`, async () => {
+        const store = getStoreWithAuth({
+          userId: activeBtnProps.assignee!.id,
+          userRole: UserRolesEnum.FirstLineSupport,
+        })
+
+        render(
+          <TaskAssignee
+            {...requiredProps}
+            {...activeBtnProps}
+            extendedStatus={TaskExtendedStatusEnum.InReclassification}
+          />,
+          { store },
+        )
+
+        expect(testUtils.getTakeTaskButton()).toBeDisabled()
       })
     })
   })

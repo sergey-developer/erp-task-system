@@ -19,13 +19,20 @@ export const requiredProps: Omit<WorkGroupProps, 'workGroup'> = {
   transferTaskToFirstLineIsLoading: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
-  hasReclassificationRequest: false,
 }
 
-export const firstLineButtonProps: Pick<
+export const showFirstLineButtonProps: Pick<
   WorkGroupProps,
   'workGroup' | 'status'
 > = {
   workGroup: taskFixtures.getTaskWorkGroup(),
   status: TaskStatusEnum.New,
+}
+
+export const activeFirstLineButtonProps: Pick<
+  WorkGroupProps,
+  'status' | 'extendedStatus'
+> = {
+  status: TaskStatusEnum.New,
+  extendedStatus: TaskExtendedStatusEnum.New,
 }
