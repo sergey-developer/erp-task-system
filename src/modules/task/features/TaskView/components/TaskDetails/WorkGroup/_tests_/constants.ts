@@ -19,7 +19,6 @@ export const requiredProps: Omit<WorkGroupProps, 'workGroup'> = {
   transferTaskToFirstLineIsLoading: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
-  hasReclassificationRequest: false,
 }
 
 export const showFirstLineButtonProps: Pick<
@@ -32,8 +31,8 @@ export const showFirstLineButtonProps: Pick<
 
 export const activeFirstLineButtonProps: Pick<
   WorkGroupProps,
-  'hasReclassificationRequest' | 'status'
+  'status' | 'extendedStatus'
 > = {
   status: TaskStatusEnum.New,
-  hasReclassificationRequest: false,
+  extendedStatus: TaskExtendedStatusEnum.New,
 }

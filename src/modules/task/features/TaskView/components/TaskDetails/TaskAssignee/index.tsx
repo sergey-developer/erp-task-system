@@ -33,8 +33,6 @@ export type TaskAssigneeProps = Pick<
 
   takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
-
-  hasReclassificationRequest: boolean
 }
 
 const TaskAssignee: FC<TaskAssigneeProps> = ({
@@ -51,8 +49,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   takeTask,
   takeTaskIsLoading,
-
-  hasReclassificationRequest,
 }) => {
   const currentAssignee = assignee?.id
   const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
@@ -126,7 +122,8 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
             disabled={
               taskStatus.isClosed ||
               taskStatus.isCompleted ||
-              hasReclassificationRequest
+              taskStatus.isAwaiting ||
+              taskExtendedStatus.isInReclassification
             }
             onClick={
               currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
@@ -218,10 +215,11 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                     onClick={handleClickAssigneeButton}
                     loading={updateAssigneeIsLoading}
                     disabled={
+                      taskStatus.isAwaiting ||
                       !selectedAssignee ||
                       selectedAssigneeIsAuthenticatedUser ||
                       selectedAssigneeIsCurrentAssignee ||
-                      hasReclassificationRequest
+                      taskExtendedStatus.isInReclassification
                     }
                   >
                     Назначить

@@ -1,5 +1,8 @@
 import { getStoreWithAuth, loadingStartedByButton, render } from '_tests_/utils'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import { UserRolesEnum } from 'shared/constants/roles'
 
 import taskFirstLineModalTestUtils from '../../../TaskFirstLineModal/_tests_/utils'
@@ -39,7 +42,7 @@ describe('Блок рабочей группы', () => {
               {...requiredProps}
               {...showFirstLineButtonProps}
               {...activeFirstLineButtonProps}
-              hasReclassificationRequest
+              extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
             { store },
           )
@@ -194,7 +197,7 @@ describe('Блок рабочей группы', () => {
               {...requiredProps}
               {...showFirstLineButtonProps}
               {...activeFirstLineButtonProps}
-              hasReclassificationRequest
+              extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
             { store },
           )

@@ -377,7 +377,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
               updateAssignee={handleUpdateAssignee}
               updateAssigneeIsLoading={updateAssigneeIsLoading}
-              hasReclassificationRequest={hasReclassificationRequest}
               takeTask={handleTakeTask}
               takeTaskIsLoading={takeTaskIsLoading}
             />

@@ -22,7 +22,6 @@ export type SecondaryDetailsProps = Pick<
     | 'transferTaskToFirstLineIsLoading'
     | 'transferTaskToSecondLine'
     | 'transferTaskToSecondLineIsLoading'
-    | 'hasReclassificationRequest'
   > & {
     takeTask: () => Promise<void>
     takeTaskIsLoading: boolean
@@ -54,8 +53,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   updateAssignee,
   updateAssigneeIsLoading,
-
-  hasReclassificationRequest,
 }) => {
   const breakpoints = useBreakpoint()
 
@@ -78,6 +75,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             id={id}
             recordId={recordId}
             status={status}
+            extendedStatus={extendedStatus}
             workGroup={workGroup}
             workGroupList={workGroupList}
             workGroupListIsLoading={workGroupListIsLoading}
@@ -87,7 +85,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             transferTaskToSecondLineIsLoading={
               transferTaskToSecondLineIsLoading
             }
-            hasReclassificationRequest={hasReclassificationRequest}
           />
         </Col>
 
@@ -102,7 +99,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             updateAssigneeIsLoading={updateAssigneeIsLoading}
             takeTask={takeTask}
             takeTaskIsLoading={takeTaskIsLoading}
-            hasReclassificationRequest={hasReclassificationRequest}
           />
         </Col>
       </Row>

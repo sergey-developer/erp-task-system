@@ -17,6 +17,8 @@ import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import valueOr from 'shared/utils/common/valueOr'
 
+import useTaskExtendedStatus from '../../../../../hooks/useTaskExtendedStatus'
+
 const TaskFirstLineModal = React.lazy(
   () => import('modules/task/features/TaskView/components/TaskFirstLineModal'),
 )
@@ -29,7 +31,7 @@ const { Text } = Typography
 
 export type WorkGroupProps = Pick<
   TaskDetailsModel,
-  'id' | 'recordId' | 'workGroup' | 'status'
+  'id' | 'recordId' | 'workGroup' | 'status' | 'extendedStatus'
 > & {
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
@@ -46,8 +48,6 @@ export type WorkGroupProps = Pick<
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
-
-  hasReclassificationRequest: boolean
 }
 
 const WorkGroup: FC<WorkGroupProps> = ({
@@ -57,6 +57,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
   workGroup,
 
   status,
+  extendedStatus,
 
   workGroupList,
   workGroupListIsLoading,
@@ -65,8 +66,6 @@ const WorkGroup: FC<WorkGroupProps> = ({
   transferTaskToFirstLineIsLoading,
   transferTaskToSecondLine,
   transferTaskToSecondLineIsLoading,
-
-  hasReclassificationRequest,
 }) => {
   const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] =
     useBoolean(false)
@@ -77,6 +76,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
   ] = useBoolean(false)
 
   const taskStatus = useTaskStatus(status)
+  const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const hasWorkGroup: boolean = !!workGroup
 
   const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(
@@ -120,7 +120,8 @@ const WorkGroup: FC<WorkGroupProps> = ({
                     onClick={debouncedToggleOpenTaskFirstLineModal}
                     loading={transferTaskToFirstLineIsLoading}
                     disabled={
-                      hasReclassificationRequest || taskStatus.isAwaiting
+                      taskStatus.isAwaiting ||
+                      taskExtendedStatus.isInReclassification
                     }
                   >
                     Вернуть на I линию
@@ -141,7 +142,7 @@ const WorkGroup: FC<WorkGroupProps> = ({
                     disabled={
                       !taskStatus.isNew ||
                       !taskStatus.isInProgress ||
-                      hasReclassificationRequest
+                      taskExtendedStatus.isInReclassification
                     }
                   >
                     Перевести на II линию
