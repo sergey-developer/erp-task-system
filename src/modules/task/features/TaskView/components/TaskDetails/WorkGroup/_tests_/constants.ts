@@ -22,10 +22,18 @@ export const requiredProps: Omit<WorkGroupProps, 'workGroup'> = {
   hasReclassificationRequest: false,
 }
 
-export const firstLineButtonProps: Pick<
+export const showFirstLineButtonProps: Pick<
   WorkGroupProps,
   'workGroup' | 'status'
 > = {
   workGroup: taskFixtures.getTaskWorkGroup(),
   status: TaskStatusEnum.New,
+}
+
+export const activeFirstLineButtonProps: Pick<
+  WorkGroupProps,
+  'hasReclassificationRequest' | 'status'
+> = {
+  status: TaskStatusEnum.New,
+  hasReclassificationRequest: false,
 }

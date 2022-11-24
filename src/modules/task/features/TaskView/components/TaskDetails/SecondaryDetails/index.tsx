@@ -78,7 +78,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
             id={id}
             recordId={recordId}
             status={status}
-            extendedStatus={extendedStatus}
             workGroup={workGroup}
             workGroupList={workGroupList}
             workGroupListIsLoading={workGroupListIsLoading}

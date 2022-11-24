@@ -4,7 +4,11 @@ import { UserRolesEnum } from 'shared/constants/roles'
 
 import taskFirstLineModalTestUtils from '../../../TaskFirstLineModal/_tests_/utils'
 import WorkGroup from '../index'
-import { firstLineButtonProps, requiredProps } from './constants'
+import {
+  activeFirstLineButtonProps,
+  requiredProps,
+  showFirstLineButtonProps,
+} from './constants'
 import workGroupTestUtils from './utils'
 
 jest.setTimeout(10000)
@@ -17,30 +21,49 @@ describe('Блок рабочей группы', () => {
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        render(<WorkGroup {...requiredProps} {...firstLineButtonProps} />, {
+        render(<WorkGroup {...requiredProps} {...showFirstLineButtonProps} />, {
           store,
         })
 
         expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
-      test('Не активна если есть запрос на переклассификацию', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+      describe('Не активна если все условия соблюдены', () => {
+        test('Но есть запрос на переклассификацию', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
+
+          render(
+            <WorkGroup
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              hasReclassificationRequest
+            />,
+            { store },
+          )
+
+          expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
         })
 
-        render(
-          <WorkGroup
-            {...requiredProps}
-            {...firstLineButtonProps}
-            hasReclassificationRequest
-          />,
-          {
-            store,
-          },
-        )
+        test('Но заявка в статусе - "В ожидании"', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
 
-        expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
+          render(
+            <WorkGroup
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              status={TaskStatusEnum.Awaiting}
+            />,
+            { store },
+          )
+
+          expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
+        })
       })
 
       test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
@@ -51,7 +74,7 @@ describe('Блок рабочей группы', () => {
         render(
           <WorkGroup
             {...requiredProps}
-            {...firstLineButtonProps}
+            {...showFirstLineButtonProps}
             transferTaskToFirstLineIsLoading
           />,
           {
@@ -68,7 +91,7 @@ describe('Блок рабочей группы', () => {
         })
 
         const { user } = render(
-          <WorkGroup {...requiredProps} {...firstLineButtonProps} />,
+          <WorkGroup {...requiredProps} {...showFirstLineButtonProps} />,
           {
             store,
           },
@@ -90,7 +113,7 @@ describe('Блок рабочей группы', () => {
           render(
             <WorkGroup
               {...requiredProps}
-              {...firstLineButtonProps}
+              {...showFirstLineButtonProps}
               workGroup={null}
             />,
             {
@@ -111,7 +134,7 @@ describe('Блок рабочей группы', () => {
           render(
             <WorkGroup
               {...requiredProps}
-              {...firstLineButtonProps}
+              {...showFirstLineButtonProps}
               status={TaskStatusEnum.Closed}
             />,
             {
@@ -132,7 +155,7 @@ describe('Блок рабочей группы', () => {
           render(
             <WorkGroup
               {...requiredProps}
-              {...firstLineButtonProps}
+              {...showFirstLineButtonProps}
               status={TaskStatusEnum.Completed}
             />,
             {
@@ -153,30 +176,49 @@ describe('Блок рабочей группы', () => {
           userRole: UserRolesEnum.HeadOfDepartment,
         })
 
-        render(<WorkGroup {...requiredProps} {...firstLineButtonProps} />, {
+        render(<WorkGroup {...requiredProps} {...showFirstLineButtonProps} />, {
           store,
         })
 
         expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
-      test('Не активна если есть запрос на переклассификацию', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRolesEnum.HeadOfDepartment,
+      describe('Не активна если все условия соблюдены', () => {
+        test('Но есть запрос на переклассификацию', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.HeadOfDepartment,
+          })
+
+          render(
+            <WorkGroup
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              hasReclassificationRequest
+            />,
+            { store },
+          )
+
+          expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
         })
 
-        render(
-          <WorkGroup
-            {...requiredProps}
-            {...firstLineButtonProps}
-            hasReclassificationRequest
-          />,
-          {
-            store,
-          },
-        )
+        test('Но заявка в статусе - "В ожидании"', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.HeadOfDepartment,
+          })
 
-        expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
+          render(
+            <WorkGroup
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              status={TaskStatusEnum.Awaiting}
+            />,
+            { store },
+          )
+
+          expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
+        })
       })
 
       test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
@@ -187,7 +229,7 @@ describe('Блок рабочей группы', () => {
         render(
           <WorkGroup
             {...requiredProps}
-            {...firstLineButtonProps}
+            {...showFirstLineButtonProps}
             transferTaskToFirstLineIsLoading
           />,
           {
@@ -204,7 +246,7 @@ describe('Блок рабочей группы', () => {
         })
 
         const { user } = render(
-          <WorkGroup {...requiredProps} {...firstLineButtonProps} />,
+          <WorkGroup {...requiredProps} {...showFirstLineButtonProps} />,
           {
             store,
           },
@@ -226,7 +268,7 @@ describe('Блок рабочей группы', () => {
           render(
             <WorkGroup
               {...requiredProps}
-              {...firstLineButtonProps}
+              {...showFirstLineButtonProps}
               workGroup={null}
             />,
             {
@@ -247,7 +289,7 @@ describe('Блок рабочей группы', () => {
           render(
             <WorkGroup
               {...requiredProps}
-              {...firstLineButtonProps}
+              {...showFirstLineButtonProps}
               status={TaskStatusEnum.Closed}
             />,
             {
@@ -268,7 +310,7 @@ describe('Блок рабочей группы', () => {
           render(
             <WorkGroup
               {...requiredProps}
-              {...firstLineButtonProps}
+              {...showFirstLineButtonProps}
               status={TaskStatusEnum.Completed}
             />,
             {
@@ -289,7 +331,7 @@ describe('Блок рабочей группы', () => {
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        render(<WorkGroup {...requiredProps} {...firstLineButtonProps} />, {
+        render(<WorkGroup {...requiredProps} {...showFirstLineButtonProps} />, {
           store,
         })
 
@@ -305,7 +347,7 @@ describe('Блок рабочей группы', () => {
           userRole: UserRolesEnum.Engineer,
         })
 
-        render(<WorkGroup {...requiredProps} {...firstLineButtonProps} />, {
+        render(<WorkGroup {...requiredProps} {...showFirstLineButtonProps} />, {
           store,
         })
 

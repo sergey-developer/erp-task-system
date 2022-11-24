@@ -12,7 +12,6 @@ import {
 import { TaskSecondLineModalProps } from 'modules/task/features/TaskView/components/TaskSecondLineModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskWorkGroupPermissions } from 'modules/task/features/TaskView/permissions/taskWorkGroup.permissions'
-import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
@@ -30,7 +29,7 @@ const { Text } = Typography
 
 export type WorkGroupProps = Pick<
   TaskDetailsModel,
-  'id' | 'recordId' | 'workGroup' | 'status' | 'extendedStatus'
+  'id' | 'recordId' | 'workGroup' | 'status'
 > & {
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
@@ -58,7 +57,6 @@ const WorkGroup: FC<WorkGroupProps> = ({
   workGroup,
 
   status,
-  extendedStatus,
 
   workGroupList,
   workGroupListIsLoading,
@@ -79,8 +77,6 @@ const WorkGroup: FC<WorkGroupProps> = ({
   ] = useBoolean(false)
 
   const taskStatus = useTaskStatus(status)
-  const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
-
   const hasWorkGroup: boolean = !!workGroup
 
   const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(
@@ -123,7 +119,9 @@ const WorkGroup: FC<WorkGroupProps> = ({
                     type='link'
                     onClick={debouncedToggleOpenTaskFirstLineModal}
                     loading={transferTaskToFirstLineIsLoading}
-                    disabled={hasReclassificationRequest}
+                    disabled={
+                      hasReclassificationRequest || taskStatus.isAwaiting
+                    }
                   >
                     Вернуть на I линию
                   </Button>
@@ -141,11 +139,9 @@ const WorkGroup: FC<WorkGroupProps> = ({
                     onClick={debouncedToggleOpenTaskSecondLineModal}
                     loading={transferTaskToSecondLineIsLoading}
                     disabled={
-                      !(
-                        taskStatus.isNew ||
-                        taskStatus.isInProgress ||
-                        taskExtendedStatus.isAwaiting
-                      ) || hasReclassificationRequest
+                      !taskStatus.isNew ||
+                      !taskStatus.isInProgress ||
+                      hasReclassificationRequest
                     }
                   >
                     Перевести на II линию
