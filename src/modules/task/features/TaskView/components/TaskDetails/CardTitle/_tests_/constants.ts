@@ -20,7 +20,7 @@ export const requiredProps: CardTitleProps = {
   onClickRequestReclassification: jest.fn(),
 }
 
-export const firstItemActiveProps: Pick<
+export const activeFirstItemProps: Pick<
   CardTitleProps,
   'status' | 'extendedStatus' | 'isAssignedToCurrentUser'
 > = {
@@ -29,7 +29,7 @@ export const firstItemActiveProps: Pick<
   isAssignedToCurrentUser: true,
 }
 
-export const secondItemActiveProps: Pick<
+export const activeSecondItemProps: Pick<
   CardTitleProps,
   'status' | 'olaStatus' | 'type'
 > = {

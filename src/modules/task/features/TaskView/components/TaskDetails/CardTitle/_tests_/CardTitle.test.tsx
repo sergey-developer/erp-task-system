@@ -9,9 +9,9 @@ import { UserRolesEnum } from 'shared/constants/roles'
 
 import CardTitle from '../index'
 import {
-  firstItemActiveProps,
+  activeFirstItemProps,
+  activeSecondItemProps,
   requiredProps,
-  secondItemActiveProps,
 } from './constants'
 import testUtils from './utils'
 
@@ -83,7 +83,7 @@ describe('Заголовок карточки заявки', () => {
 
       test('При клике обработчик вызывается корректно', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} {...firstItemActiveProps} />,
+          <CardTitle {...requiredProps} {...activeFirstItemProps} />,
         )
 
         await testUtils.userOpenMenu(user)
@@ -93,7 +93,7 @@ describe('Заголовок карточки заявки', () => {
 
       test('Активен если все условия соблюдены', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} {...firstItemActiveProps} />,
+          <CardTitle {...requiredProps} {...activeFirstItemProps} />,
         )
 
         await testUtils.userOpenMenu(user)
@@ -105,7 +105,7 @@ describe('Заголовок карточки заявки', () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
-              {...firstItemActiveProps}
+              {...activeFirstItemProps}
               status={TaskStatusEnum.New}
             />,
           )
@@ -118,7 +118,7 @@ describe('Заголовок карточки заявки', () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
-              {...firstItemActiveProps}
+              {...activeFirstItemProps}
               isAssignedToCurrentUser={false}
             />,
           )
@@ -131,7 +131,7 @@ describe('Заголовок карточки заявки', () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
-              {...firstItemActiveProps}
+              {...activeFirstItemProps}
               extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
           )
@@ -187,7 +187,7 @@ describe('Заголовок карточки заявки', () => {
         const { user } = render(
           <CardTitle
             {...requiredProps}
-            {...secondItemActiveProps}
+            {...activeSecondItemProps}
             extendedStatus={TaskExtendedStatusEnum.New}
           />,
           { store: getStoreWithAuth() },
@@ -202,7 +202,7 @@ describe('Заголовок карточки заявки', () => {
         const { user } = render(
           <CardTitle
             {...requiredProps}
-            {...secondItemActiveProps}
+            {...activeSecondItemProps}
             extendedStatus={TaskExtendedStatusEnum.InReclassification}
           />,
           { store: getStoreWithAuth() },
@@ -215,7 +215,7 @@ describe('Заголовок карточки заявки', () => {
 
       test('Активен если все условия соблюдены', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} {...secondItemActiveProps} />,
+          <CardTitle {...requiredProps} {...activeSecondItemProps} />,
           {
             store: getStoreWithAuth(),
           },
@@ -230,7 +230,7 @@ describe('Заголовок карточки заявки', () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
-              {...secondItemActiveProps}
+              {...activeSecondItemProps}
               status={TaskStatusEnum.InProgress}
             />,
             {
@@ -246,7 +246,7 @@ describe('Заголовок карточки заявки', () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
-              {...secondItemActiveProps}
+              {...activeSecondItemProps}
               olaStatus={TaskOlaStatusEnum.Expired}
             />,
             {
@@ -262,7 +262,7 @@ describe('Заголовок карточки заявки', () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
-              {...secondItemActiveProps}
+              {...activeSecondItemProps}
               olaStatus={TaskOlaStatusEnum.HalfExpired}
             />,
             {
@@ -278,7 +278,7 @@ describe('Заголовок карточки заявки', () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
-              {...secondItemActiveProps}
+              {...activeSecondItemProps}
               type={TaskTypeEnum.RequestTask}
             />,
             {
@@ -294,7 +294,7 @@ describe('Заголовок карточки заявки', () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
-              {...secondItemActiveProps}
+              {...activeSecondItemProps}
               type={TaskTypeEnum.IncidentTask}
             />,
             {
@@ -308,7 +308,7 @@ describe('Заголовок карточки заявки', () => {
 
         test('Но у пользователя роль - инженер', async () => {
           const { user } = render(
-            <CardTitle {...requiredProps} {...secondItemActiveProps} />,
+            <CardTitle {...requiredProps} {...activeSecondItemProps} />,
             {
               store: getStoreWithAuth({ userRole: UserRolesEnum.Engineer }),
             },
