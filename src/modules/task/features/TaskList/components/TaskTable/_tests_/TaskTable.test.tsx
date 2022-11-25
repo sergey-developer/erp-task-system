@@ -231,7 +231,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Сортировка по умолчанию не установлена', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Заявка')
@@ -289,7 +289,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Сортировка по умолчанию не установлена', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Внеш.номер')
@@ -346,7 +346,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Сортировка по умолчанию не установлена', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Объект')
@@ -402,7 +402,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Сортировка по умолчанию не установлена', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Тема')
@@ -462,7 +462,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Сортировка по умолчанию не установлена', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Исполнитель')
@@ -535,7 +535,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Сортировка по умолчанию не установлена', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
@@ -657,7 +657,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Сортировка по умолчанию не установлена', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Статус')
@@ -715,7 +715,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Сортировка по умолчанию не установлена', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Комментарий')
@@ -776,7 +776,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Сортировка по умолчанию не установлена', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Дата создания')
