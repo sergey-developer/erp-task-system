@@ -1,4 +1,5 @@
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
+import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect, useState } from 'react'
 import { Resizable, ResizableProps } from 'react-resizable'
 
@@ -21,6 +22,14 @@ const ResizeableTitle = (
     return <th {...restProps} />
   }
 
+  const handleOnClickCapture = (event: React.MouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement
+
+    if (!target.className.includes('ant-table-column-title')) {
+      event.stopPropagation()
+    }
+  }
+
   return (
     <Resizable
       width={width}
@@ -28,20 +37,7 @@ const ResizeableTitle = (
       onResize={onResize}
       draggableOpts={{ enableUserSelectHack: false }}
     >
-      <th
-        onClick={(event) => {
-          console.log('onClick: ', event)
-        }}
-        onClickCapture={(event) => {
-          console.log(event.target)
-
-          // @ts-ignore
-          if (event.target.className.includes('ant-table-column-has-sorters')) {
-            event.stopPropagation()
-          }
-        }}
-        {...restProps}
-      />
+      <th {...restProps} onClickCapture={handleOnClickCapture} />
     </Resizable>
   )
 }
@@ -62,7 +58,8 @@ const TaskTable: FC<TaskTableProps> = ({
   rowClassName,
 }) => {
   const breakpoints = useBreakpoint()
-  const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>([])
+  const [columns, setColumns] =
+    useState<ColumnsType<TaskTableListItem>>(tableColumns)
 
   const handleResize =
     (index: number): ResizableProps['onResize'] =>
@@ -78,27 +75,53 @@ const TaskTable: FC<TaskTableProps> = ({
       })
     }
 
+  // useEffect(() => {
+  //   setColumns((prev) => {
+  //     return [...prev].map((col, index) => {
+  //       const sortedColumn = sort ? applySortToColumn(col, sort) : col
+  //       const colWithModifiedWidth = applyWidthToColumn(
+  //         sortedColumn,
+  //         breakpoints,
+  //       )
+  //
+  //       return {
+  //         ...colWithModifiedWidth,
+  //         onHeaderCell: (col: ColumnsType<TaskTableListItem>[number]) => ({
+  //           width: col.width,
+  //           onResize: handleResize(index),
+  //         }),
+  //       }
+  //     })
+  //   })
+  // }, [breakpoints, sort])
+
   useEffect(() => {
-    const columns: ColumnsType<TaskTableListItem> = tableColumns.map(
-      (col, index) => {
-        const sortedColumn = sort ? applySortToColumn(col, sort) : col
-        const colWithModifiedWidth = applyWidthToColumn(
-          sortedColumn,
-          breakpoints,
-        )
-
-        return {
-          ...colWithModifiedWidth,
-          onHeaderCell: (col: ColumnsType<TaskTableListItem>[number]) => ({
-            width: col.width,
-            onResize: handleResize(index),
-          }),
-        }
-      },
+    setColumns((prevColumns) =>
+      [...prevColumns].map((col, index) => ({
+        ...col,
+        onHeaderCell: (col: ColumnsType<TaskTableListItem>[number]) => ({
+          width: col.width,
+          onResize: handleResize(index),
+        }),
+      })),
     )
+  }, [])
 
-    setColumns(columns)
-  }, [breakpoints, sort])
+  useEffect(() => {
+    if (isEmpty(breakpoints)) return
+
+    setColumns((prevColumns) =>
+      [...prevColumns].map((col) => applyWidthToColumn(col, breakpoints)),
+    )
+  }, [breakpoints])
+
+  useEffect(() => {
+    setColumns((prevColumns) =>
+      [...prevColumns].map((col) =>
+        sort ? applySortToColumn(col, sort) : col,
+      ),
+    )
+  }, [sort])
 
   return (
     <TableWrapperStyled data-testid='table-task-list'>

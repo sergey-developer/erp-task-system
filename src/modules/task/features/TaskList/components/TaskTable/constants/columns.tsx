@@ -61,18 +61,6 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
     key: 'title',
     dataIndex: 'title',
     title: 'Тема',
-    // title: () => {
-    //   return (
-    //     <div
-    //       className='hhh'
-    //       onClick={(event) => {
-    //         event.stopPropagation()
-    //       }}
-    //     >
-    //       Тема
-    //     </div>
-    //   )
-    // },
     ellipsis: true,
     sorter: true,
   },
