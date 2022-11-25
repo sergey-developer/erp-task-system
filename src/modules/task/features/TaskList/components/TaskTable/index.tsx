@@ -57,7 +57,7 @@ const TaskTable: FC<TaskTableProps> = ({
     setColumns((prevColumns) =>
       prevColumns.map((col) => applyWidthToColumn(col, breakpoints)),
     )
-  }, [breakpoints])
+  }, [breakpoints.xxl])
 
   const sortedColumns = useMemo(
     () => columns.map((col) => (sort ? applySortToColumn(col, sort) : col)),
