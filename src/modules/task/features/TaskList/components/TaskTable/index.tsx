@@ -1,52 +1,16 @@
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
+import { ColumnsType } from 'antd/es/table'
 import isEmpty from 'lodash/isEmpty'
-import React, { FC, useEffect, useState } from 'react'
-import { Resizable, ResizableProps } from 'react-resizable'
-
-import { ColumnsType } from 'antd/lib/table'
-import { TableComponents } from 'rc-table/lib/interface'
+import React, { FC, useEffect, useMemo, useState } from 'react'
+import { ResizableProps } from 'react-resizable'
 
 import { tableColumns } from './constants/columns'
 import { localeConfig } from './constants/common'
+import tableComponents from './constants/components'
 import { paginationConfig } from './constants/pagination'
 import { TaskTableListItem, TaskTableProps } from './interfaces'
 import { TableStyled, TableWrapperStyled } from './styles'
 import { applySortToColumn, applyWidthToColumn } from './utils'
-
-const ResizeableTitle = (
-  props: ColumnsType<TaskTableListItem> & ResizableProps,
-) => {
-  const { onResize, width, ...restProps } = props
-
-  if (!width) {
-    return <th {...restProps} />
-  }
-
-  const handleOnClickCapture = (event: React.MouseEvent<HTMLElement>) => {
-    const target = event.target as HTMLElement
-
-    if (!target.className.includes('ant-table-column-title')) {
-      event.stopPropagation()
-    }
-  }
-
-  return (
-    <Resizable
-      width={width}
-      height={0}
-      onResize={onResize}
-      draggableOpts={{ enableUserSelectHack: false }}
-    >
-      <th {...restProps} onClickCapture={handleOnClickCapture} />
-    </Resizable>
-  )
-}
-
-const customComponents: TableComponents<TaskTableListItem> = {
-  header: {
-    cell: ResizeableTitle,
-  },
-}
 
 const TaskTable: FC<TaskTableProps> = ({
   dataSource,
@@ -75,29 +39,9 @@ const TaskTable: FC<TaskTableProps> = ({
       })
     }
 
-  // useEffect(() => {
-  //   setColumns((prev) => {
-  //     return [...prev].map((col, index) => {
-  //       const sortedColumn = sort ? applySortToColumn(col, sort) : col
-  //       const colWithModifiedWidth = applyWidthToColumn(
-  //         sortedColumn,
-  //         breakpoints,
-  //       )
-  //
-  //       return {
-  //         ...colWithModifiedWidth,
-  //         onHeaderCell: (col: ColumnsType<TaskTableListItem>[number]) => ({
-  //           width: col.width,
-  //           onResize: handleResize(index),
-  //         }),
-  //       }
-  //     })
-  //   })
-  // }, [breakpoints, sort])
-
   useEffect(() => {
     setColumns((prevColumns) =>
-      [...prevColumns].map((col, index) => ({
+      prevColumns.map((col, index) => ({
         ...col,
         onHeaderCell: (col: ColumnsType<TaskTableListItem>[number]) => ({
           width: col.width,
@@ -111,25 +55,22 @@ const TaskTable: FC<TaskTableProps> = ({
     if (isEmpty(breakpoints)) return
 
     setColumns((prevColumns) =>
-      [...prevColumns].map((col) => applyWidthToColumn(col, breakpoints)),
+      prevColumns.map((col) => applyWidthToColumn(col, breakpoints)),
     )
   }, [breakpoints])
 
-  useEffect(() => {
-    setColumns((prevColumns) =>
-      [...prevColumns].map((col) =>
-        sort ? applySortToColumn(col, sort) : col,
-      ),
-    )
-  }, [sort])
+  const sortedColumns = useMemo(
+    () => columns.map((col) => (sort ? applySortToColumn(col, sort) : col)),
+    [columns, sort],
+  )
 
   return (
     <TableWrapperStyled data-testid='table-task-list'>
       <TableStyled<TaskTableListItem>
-        components={customComponents}
+        components={tableComponents}
         rowClassName={rowClassName}
         dataSource={dataSource}
-        columns={columns}
+        columns={sortedColumns}
         pagination={
           pagination && {
             ...paginationConfig,
