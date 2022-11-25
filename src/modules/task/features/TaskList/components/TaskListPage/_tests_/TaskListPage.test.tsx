@@ -1295,7 +1295,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Заявка')
+          await taskTableTestUtils.userClickColTitle(user, 'Заявка')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1311,7 +1311,7 @@ describe('Страница реестра заявок', () => {
 
           await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Внеш.номер')
+          await taskTableTestUtils.userClickColTitle(user, 'Внеш.номер')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1326,7 +1326,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Объект')
+          await taskTableTestUtils.userClickColTitle(user, 'Объект')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1341,7 +1341,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Тема')
+          await taskTableTestUtils.userClickColTitle(user, 'Тема')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1356,7 +1356,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Исполнитель')
+          await taskTableTestUtils.userClickColTitle(user, 'Исполнитель')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1371,7 +1371,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Рабочая группа')
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1386,7 +1386,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Выполнить до')
+          await taskTableTestUtils.userClickColTitle(user, 'Выполнить до')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1401,7 +1401,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Комментарий')
+          await taskTableTestUtils.userClickColTitle(user, 'Комментарий')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1416,7 +1416,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Дата создания')
+          await taskTableTestUtils.userClickColTitle(user, 'Дата создания')
           await taskTableTestUtils.loadingStarted()
         })
       })

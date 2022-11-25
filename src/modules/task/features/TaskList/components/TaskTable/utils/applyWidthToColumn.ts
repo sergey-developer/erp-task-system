@@ -15,12 +15,11 @@ const applyWidthToColumn = (
   column: ColumnsType<TaskTableListItem>[number],
   breakpoints: ScreenMap,
 ): ColumnsType<TaskTableListItem>[number] => {
-  const colBreakpointWidth: MaybeUndefined<number> = breakpoints.xxl
-    ? xxlColumnWidthMap[column.key as XxlColumnWidthMap]
-    : undefined
+  const defaultWidth = defaultColumnWidthMap[column.key as AllColumnWidthMap]
 
-  const colWidth =
-    colBreakpointWidth || defaultColumnWidthMap[column.key as AllColumnWidthMap]
+  const colWidth: MaybeUndefined<number> = breakpoints.xxl
+    ? xxlColumnWidthMap[column.key as XxlColumnWidthMap] || defaultWidth
+    : defaultWidth
 
   return {
     ...column,
