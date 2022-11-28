@@ -48,5 +48,5 @@ export const activeSecondLineButtonProps: Pick<
   'status' | 'extendedStatus'
 > = {
   status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.Awaiting,
+  extendedStatus: TaskExtendedStatusEnum.New,
 }

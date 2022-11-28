@@ -65,78 +65,21 @@ describe('Блок рабочей группы', () => {
         })
       })
 
-      describe('Активна если все условия соблюдены', () => {
-        test('И статус заявки "Новая"', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
-          })
-
-          render(
-            <WorkGroup
-              {...requiredProps}
-              {...showSecondLineButtonProps}
-              {...activeSecondLineButtonProps}
-              extendedStatus={TaskExtendedStatusEnum.New}
-            />,
-            { store },
-          )
-
-          expect(workGroupTestUtils.getSecondLineButton()).toBeEnabled()
+      test('Активна если все условия соблюдены', () => {
+        const store = getStoreWithAuth({
+          userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        test('И статус заявки "В процессе"', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
-          })
+        render(
+          <WorkGroup
+            {...requiredProps}
+            {...showSecondLineButtonProps}
+            {...activeSecondLineButtonProps}
+          />,
+          { store },
+        )
 
-          render(
-            <WorkGroup
-              {...requiredProps}
-              {...showSecondLineButtonProps}
-              {...activeSecondLineButtonProps}
-              status={TaskStatusEnum.InProgress}
-              extendedStatus={TaskExtendedStatusEnum.New}
-            />,
-            { store },
-          )
-
-          expect(workGroupTestUtils.getSecondLineButton()).toBeEnabled()
-        })
-
-        test('И расширенный статус заявки "В ожидании"', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
-          })
-
-          render(
-            <WorkGroup
-              {...requiredProps}
-              {...showSecondLineButtonProps}
-              {...activeSecondLineButtonProps}
-              status={TaskStatusEnum.Completed}
-            />,
-            { store },
-          )
-
-          expect(workGroupTestUtils.getSecondLineButton()).toBeEnabled()
-        })
-
-        test('И нет запроса на переклассификацию', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
-          })
-
-          render(
-            <WorkGroup
-              {...requiredProps}
-              {...showSecondLineButtonProps}
-              {...activeSecondLineButtonProps}
-            />,
-            { store },
-          )
-
-          expect(workGroupTestUtils.getSecondLineButton()).toBeEnabled()
-        })
+        expect(workGroupTestUtils.getSecondLineButton()).toBeEnabled()
       })
 
       describe('Не активна если все условия соблюдены', () => {
@@ -150,15 +93,15 @@ describe('Блок рабочей группы', () => {
               {...requiredProps}
               {...showSecondLineButtonProps}
               {...activeSecondLineButtonProps}
-              hasReclassificationRequest
+              extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
             { store },
           )
 
-          expect(workGroupTestUtils.getSecondLineButton()).not.toBeEnabled()
+          expect(workGroupTestUtils.getSecondLineButton()).toBeDisabled()
         })
 
-        test('Но статус заявки не "Новая" и не "В процессе" и расширенный статус заявки не "В ожидании"', () => {
+        test('Но статус заявки не "Новая" и не "В процессе"', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.FirstLineSupport,
           })
@@ -168,13 +111,12 @@ describe('Блок рабочей группы', () => {
               {...requiredProps}
               {...showSecondLineButtonProps}
               {...activeSecondLineButtonProps}
-              status={TaskStatusEnum.Completed}
-              extendedStatus={TaskExtendedStatusEnum.New}
+              status={TaskStatusEnum.Awaiting}
             />,
             { store },
           )
 
-          expect(workGroupTestUtils.getSecondLineButton()).not.toBeEnabled()
+          expect(workGroupTestUtils.getSecondLineButton()).toBeDisabled()
         })
       })
 
