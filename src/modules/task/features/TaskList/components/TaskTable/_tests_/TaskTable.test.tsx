@@ -16,9 +16,8 @@ import TaskTable from '../index'
 import taskTableTestConstants from './constants'
 import taskTableTestUtils from './utils'
 
-const onChange = jest.fn()
-
 afterEach(() => {
+  const onChange = taskTableTestConstants.requiredProps.onChange as jest.Mock
   onChange.mockReset()
 })
 
@@ -48,7 +47,7 @@ describe('Таблица заявок', () => {
 
   describe('Колонка', () => {
     describe('Статус заявки', () => {
-      describe('Отображает значение по статусу заявки', () => {
+      describe('Отображается по статусу заявки', () => {
         test(`${TaskStatusEnum.New}`, () => {
           render(
             <TaskTable
@@ -103,29 +102,47 @@ describe('Таблица заявок', () => {
           )
           expect(status).toBeInTheDocument()
         })
-      })
 
-      describe('Отображает значение по расширенному статусу заявки', () => {
-        test(`${TaskExtendedStatusEnum.Awaiting}`, () => {
+        test(`${TaskStatusEnum.Awaiting}`, () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
               dataSource={[
                 {
                   ...taskTableTestConstants.firstTaskTableItem,
-                  status: TaskStatusEnum.New,
-                  extendedStatus: TaskExtendedStatusEnum.Awaiting,
+                  status: TaskStatusEnum.Awaiting,
                 },
               ]}
             />,
           )
 
           const status = taskStatusTestUtils.getTaskStatus(
-            TaskExtendedStatusEnum.Awaiting,
+            TaskStatusEnum.Awaiting,
           )
           expect(status).toBeInTheDocument()
         })
 
+        test(`${TaskStatusEnum.Closed}`, () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              dataSource={[
+                {
+                  ...taskTableTestConstants.firstTaskTableItem,
+                  status: TaskStatusEnum.Closed,
+                },
+              ]}
+            />,
+          )
+
+          const status = taskStatusTestUtils.getTaskStatus(
+            TaskStatusEnum.Closed,
+          )
+          expect(status).toBeInTheDocument()
+        })
+      })
+
+      describe('Отображается по расширенному статусу заявки', () => {
         test(`${TaskExtendedStatusEnum.Returned}`, () => {
           render(
             <TaskTable
@@ -166,7 +183,7 @@ describe('Таблица заявок', () => {
           expect(status).toBeInTheDocument()
         })
 
-        test(`${TaskExtendedStatusEnum.Closed}`, () => {
+        test(`${TaskExtendedStatusEnum.FirstLineReturned}`, () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
@@ -174,14 +191,14 @@ describe('Таблица заявок', () => {
                 {
                   ...taskTableTestConstants.firstTaskTableItem,
                   status: TaskStatusEnum.New,
-                  extendedStatus: TaskExtendedStatusEnum.Closed,
+                  extendedStatus: TaskExtendedStatusEnum.FirstLineReturned,
                 },
               ]}
             />,
           )
 
           const status = taskStatusTestUtils.getTaskStatus(
-            TaskExtendedStatusEnum.Closed,
+            TaskExtendedStatusEnum.FirstLineReturned,
           )
           expect(status).toBeInTheDocument()
         })
@@ -205,7 +222,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Заявка')
@@ -214,7 +231,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Не имеет сортировки по умолчанию', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Заявка')
@@ -223,23 +240,24 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Заявка')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter('id', 'ascend'),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Заявка')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Заявка')
+        const headCol = taskTableTestUtils.getHeadCol('Заявка')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Заявка')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
 
@@ -262,7 +280,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Внеш.номер')
@@ -271,7 +289,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Не имеет сортировки по умолчанию', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Внеш.номер')
@@ -280,23 +298,25 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Внеш.номер')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter('recordId', 'ascend'),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Внеш.номер')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Внеш.номер')
+        const headCol = taskTableTestUtils.getHeadCol('Внеш.номер')
+
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Внеш.номер')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
 
@@ -317,7 +337,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Объект')
@@ -326,7 +346,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Не имеет сортировки по умолчанию', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Объект')
@@ -335,23 +355,24 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Объект')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter('name', 'ascend'),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Объект')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Объект')
+        const headCol = taskTableTestUtils.getHeadCol('Объект')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Объект')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
 
@@ -372,7 +393,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Тема')
@@ -381,7 +402,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Не имеет сортировки по умолчанию', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Тема')
@@ -390,23 +411,24 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Тема')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter('title', 'ascend'),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Тема')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Тема')
+        const headCol = taskTableTestUtils.getHeadCol('Тема')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Тема')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
 
@@ -431,7 +453,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Исполнитель')
@@ -440,7 +462,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Не имеет сортировки по умолчанию', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Исполнитель')
@@ -449,23 +471,24 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Исполнитель')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter('assignee', 'ascend'),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Исполнитель')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Исполнитель')
+        const headCol = taskTableTestUtils.getHeadCol('Исполнитель')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Исполнитель')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
 
@@ -503,7 +526,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
@@ -512,7 +535,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Не имеет сортировки по умолчанию', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
@@ -521,23 +544,24 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Рабочая группа')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter('workGroup', 'ascend'),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+        const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
 
@@ -563,7 +587,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Выполнить до')
@@ -586,26 +610,24 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Выполнить до')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter(
-            'olaNextBreachTime',
-            'ascend',
-          ),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Выполнить до')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Выполнить до')
+        const headCol = taskTableTestUtils.getHeadCol('Выполнить до')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Выполнить до')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
 
@@ -626,7 +648,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Статус')
@@ -635,7 +657,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Не имеет сортировки по умолчанию', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Статус')
@@ -644,23 +666,24 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Статус')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter('status', 'ascend'),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Статус')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Статус')
+        const headCol = taskTableTestUtils.getHeadCol('Статус')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Статус')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
 
@@ -683,7 +706,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Комментарий')
@@ -692,7 +715,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Не имеет сортировки по умолчанию', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Комментарий')
@@ -701,23 +724,24 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Комментарий')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter('lastComment', 'ascend'),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Комментарий')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Комментарий')
+        const headCol = taskTableTestUtils.getHeadCol('Комментарий')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Комментарий')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
 
@@ -743,7 +767,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Имеет сортировку', async () => {
+      test('Сортировка включена', async () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Дата создания')
@@ -752,7 +776,7 @@ describe('Таблица заявок', () => {
         )
       })
 
-      test('Не имеет сортировки по умолчанию', () => {
+      test('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         const headCol = taskTableTestUtils.getHeadCol('Дата создания')
@@ -761,23 +785,24 @@ describe('Таблица заявок', () => {
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            onChange={onChange}
-          />,
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
 
-        await taskTableTestUtils.userClickHeadCol(user, 'Дата создания')
-        expect(onChange).toBeCalledTimes(1)
-        expect(onChange).toBeCalledWith(
-          {},
-          {},
-          taskTableTestUtils.onChangeTableArgs.sorter('createdAt', 'ascend'),
-          taskTableTestUtils.onChangeTableArgs.extra(
-            'sort',
-            taskTableTestConstants.requiredProps.dataSource,
-          ),
+        await taskTableTestUtils.userClickColTitle(user, 'Дата создания')
+        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(
+          <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
+
+        await taskTableTestUtils.userClickColTitle(user, 'Дата создания')
+        const headCol = taskTableTestUtils.getHeadCol('Дата создания')
+        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+        await taskTableTestUtils.userClickColTitle(user, 'Дата создания')
+        expect(headCol).toHaveAttribute('aria-sort', 'descending')
       })
     })
   })
@@ -898,15 +923,14 @@ describe('Таблица заявок', () => {
         <TaskTable
           {...taskTableTestConstants.requiredProps}
           pagination={taskTableTestConstants.paginationProps}
-          onChange={onChange}
         />,
       )
 
       const pageSize = paginationConfig.pageSizeOptions[0]
 
       await taskTableTestUtils.userChangePageSize(user, pageSize)
-      expect(onChange).toBeCalledTimes(1)
-      expect(onChange).toBeCalledWith(
+      expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      expect(taskTableTestConstants.requiredProps.onChange).toBeCalledWith(
         taskTableTestUtils.onChangeTableArgs.pagination({
           ...taskTableTestConstants.paginationProps,
           pageSize,
@@ -925,13 +949,12 @@ describe('Таблица заявок', () => {
         <TaskTable
           {...taskTableTestConstants.requiredProps}
           pagination={taskTableTestConstants.paginationProps}
-          onChange={onChange}
         />,
       )
 
       await taskTableTestUtils.userClickPaginationNextButton(user)
-      expect(onChange).toBeCalledTimes(1)
-      expect(onChange).toBeCalledWith(
+      expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      expect(taskTableTestConstants.requiredProps.onChange).toBeCalledWith(
         taskTableTestUtils.onChangeTableArgs.pagination({
           ...taskTableTestConstants.paginationProps,
           current: 2,
@@ -953,13 +976,12 @@ describe('Таблица заявок', () => {
             ...taskTableTestConstants.paginationProps,
             current: 2,
           }}
-          onChange={onChange}
         />,
       )
 
       await taskTableTestUtils.userClickPaginationPrevButton(user)
-      expect(onChange).toBeCalledTimes(1)
-      expect(onChange).toBeCalledWith(
+      expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      expect(taskTableTestConstants.requiredProps.onChange).toBeCalledWith(
         taskTableTestUtils.onChangeTableArgs.pagination({
           ...taskTableTestConstants.paginationProps,
           current: 1,
@@ -978,13 +1000,12 @@ describe('Таблица заявок', () => {
         <TaskTable
           {...taskTableTestConstants.requiredProps}
           pagination={taskTableTestConstants.paginationProps}
-          onChange={onChange}
         />,
       )
 
       await taskTableTestUtils.userClickPaginationPageButton(user, '2')
-      expect(onChange).toBeCalledTimes(1)
-      expect(onChange).toBeCalledWith(
+      expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+      expect(taskTableTestConstants.requiredProps.onChange).toBeCalledWith(
         taskTableTestUtils.onChangeTableArgs.pagination({
           ...taskTableTestConstants.paginationProps,
           current: 2,

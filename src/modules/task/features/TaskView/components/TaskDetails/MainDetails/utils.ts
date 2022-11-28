@@ -5,7 +5,7 @@ import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 import humanizeDuration from 'shared/utils/date/humanizeDuration'
-import makeString from 'shared/utils/string/makeString'
+import { makeString } from 'shared/utils/string'
 
 const settings: DurationFormatSettings = {
   template: 'Mмес Dд hhч mmмин',

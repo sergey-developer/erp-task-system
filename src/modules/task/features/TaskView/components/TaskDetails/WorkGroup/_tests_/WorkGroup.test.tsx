@@ -261,34 +261,56 @@ describe('Блок рабочей группы', () => {
   describe('Кнопка перевода на 1-ю линию', () => {
     describe('Роль - старший инженер', () => {
       test('Отображается если все условия соблюдены', () => {
+        const store = getStoreWithAuth({
+          userRole: UserRolesEnum.SeniorEngineer,
+        })
+
         render(<WorkGroup {...requiredProps} {...showFirstLineButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
-          }),
+          store,
         })
 
         expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
-      test('Не активна если есть запрос на переклассификацию', () => {
-        render(
-          <WorkGroup
-            {...requiredProps}
-            {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-            hasReclassificationRequest
-          />,
-          {
-            store: getStoreWithAuth({
-              userRole: UserRolesEnum.SeniorEngineer,
-            }),
-          },
-        )
+      describe('Не активна если все условия соблюдены', () => {
+        test('Но есть запрос на переклассификацию', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
 
-        expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
+          render(
+            <WorkGroup
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              extendedStatus={TaskExtendedStatusEnum.InReclassification}
+            />,
+            { store },
+          )
+
+          expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
+        })
+
+        test('Но заявка в статусе - "В ожидании"', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
+
+          render(
+            <WorkGroup
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              status={TaskStatusEnum.Awaiting}
+            />,
+            { store },
+          )
+
+          expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
+        })
       })
 
-      test('Отображает состоянии загрузки во время перевода на 1-ю линию', async () => {
+      test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.SeniorEngineer,
         })
@@ -350,17 +372,17 @@ describe('Блок рабочей группы', () => {
         })
 
         test('Но заявка закрыта', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
+
           render(
             <WorkGroup
               {...requiredProps}
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Closed}
             />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRolesEnum.SeniorEngineer,
-              }),
-            },
+            { store },
           )
 
           expect(
@@ -369,17 +391,17 @@ describe('Блок рабочей группы', () => {
         })
 
         test('Но заявка завершена', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          })
+
           render(
             <WorkGroup
               {...requiredProps}
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Completed}
             />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRolesEnum.SeniorEngineer,
-              }),
-            },
+            { store },
           )
 
           expect(
@@ -402,22 +424,42 @@ describe('Блок рабочей группы', () => {
         expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
-      test('Не активна если есть запрос на переклассификацию', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRolesEnum.HeadOfDepartment,
+      describe('Не активна если все условия соблюдены', () => {
+        test('Но есть запрос на переклассификацию', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.HeadOfDepartment,
+          })
+
+          render(
+            <WorkGroup
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              extendedStatus={TaskExtendedStatusEnum.InReclassification}
+            />,
+            { store },
+          )
+
+          expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
         })
 
-        render(
-          <WorkGroup
-            {...requiredProps}
-            {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-            hasReclassificationRequest
-          />,
-          { store },
-        )
+        test('Но заявка в статусе - "В ожидании"', () => {
+          const store = getStoreWithAuth({
+            userRole: UserRolesEnum.HeadOfDepartment,
+          })
 
-        expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
+          render(
+            <WorkGroup
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              status={TaskStatusEnum.Awaiting}
+            />,
+            { store },
+          )
+
+          expect(workGroupTestUtils.getFirstLineButton()).toBeDisabled()
+        })
       })
 
       test('Отображает состояние загрузки во время перевода на 1-ю линию', async () => {

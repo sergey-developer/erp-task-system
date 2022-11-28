@@ -12,4 +12,5 @@ export const requiredProps: TaskReclassificationRequestProps = {
   comment: reclassificationRequest.comment.text,
   createdAt: reclassificationRequest.createdAt,
   onAction: jest.fn(),
+  actionDisabled: false,
 }

@@ -1,14 +1,11 @@
-import { SortOrder, TableAction } from 'antd/es/table/interface'
+import { TableAction } from 'antd/es/table/interface'
 
 import { loadingFinishedByIconIn, loadingStartedByIconIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { NumOrStr } from 'shared/interfaces/utils'
 
-import { tableColumns } from '../constants/columns'
-import { defaultColumnWidthMap } from '../constants/columnWidth'
 import { paginationConfig } from '../constants/pagination'
-import { TaskTableColumnKey } from '../interfaces'
 import testConstants from './constants'
 
 const getTable = () => screen.getByTestId('table-task-list')
@@ -28,8 +25,8 @@ const getHeadCol = (text: string) => {
   return getTextInTable(text).parentElement?.parentElement!
 }
 
-const userClickHeadCol = async (user: UserEvent, text: string) => {
-  const col = getHeadCol(text)
+const userClickColTitle = async (user: UserEvent, text: string) => {
+  const col = getTextInTable(text)
   await user.click(col)
   return col
 }
@@ -95,6 +92,8 @@ const userChangePageSize = async (user: UserEvent, pageSize: NumOrStr) => {
     pageSize,
   )
   await user.click(pageSizeOption)
+
+  return pageSizeOption
 }
 
 const loadingStarted = async () => {
@@ -114,20 +113,6 @@ const onChangeTableArgs = {
     ...paginationConfig,
     ...config,
   }),
-  filters: () => ({}),
-  sorter: (key: TaskTableColumnKey, order: SortOrder) => {
-    const column = tableColumns.find((col) => col.key === key) || {}
-
-    return {
-      column: {
-        ...column,
-        width: defaultColumnWidthMap[key],
-      },
-      columnKey: key,
-      field: key,
-      order,
-    }
-  },
   extra: (action: TableAction, dataSource: Readonly<Array<any>>) => ({
     action,
     currentDataSource: dataSource,
@@ -147,7 +132,7 @@ const utils = {
   getPageSizeOptionsContainer,
   getPageSizeOption,
 
-  userClickHeadCol,
+  userClickColTitle,
   userClickPaginationNextButton,
   userClickPaginationPrevButton,
   userClickPaginationPageButton,

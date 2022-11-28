@@ -5,7 +5,7 @@ import isString from 'lodash/isString'
 import { env } from 'configs/env'
 import { HttpCodeEnum } from 'shared/constants/http'
 import { isEqual } from 'shared/utils/common/isEqual'
-import makeString from 'shared/utils/string/makeString'
+import { makeString } from 'shared/utils/string'
 
 import { apiPath, currentApiVersion } from './constants'
 import { ApiVersionUnion, ErrorResponse, ValidationErrors } from './intefraces'

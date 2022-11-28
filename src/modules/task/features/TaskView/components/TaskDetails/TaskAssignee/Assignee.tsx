@@ -13,7 +13,7 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 
 const { Text } = Typography
 
-type AssigneeProps = Partial<Pick<TaskDetailsModel, 'assignee' | 'status'>> & {
+type AssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'status'> & {
   name: string
 }
 
@@ -25,7 +25,7 @@ const Assignee: FC<AssigneeProps> = ({ assignee, status, name }) => {
       <Space direction='vertical'>
         <Text>{name}</Text>
 
-        {assignee && status && (
+        {assignee && (
           <TaskStatus
             status={status}
             text={taskStatusDict[status]}

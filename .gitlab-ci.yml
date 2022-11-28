@@ -30,12 +30,13 @@ Tests:
   stage: test
   image: node:18-alpine
   interruptible: true
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   script:
     - export REACT_APP_API_URL=http://localhost:3000
     - export REACT_APP_ENVIRONMENT=test
     - export CI=true
     - yarn install
-    - yarn test
+    - yarn test --coverage
   cache:
     - key:
         files:
@@ -119,7 +120,6 @@ Deploy to Develop:
     kube_context: default/dev
   only:
     - develop
-    - task-20716
 
 Deploy to Staging:
   <<: *base_deploy

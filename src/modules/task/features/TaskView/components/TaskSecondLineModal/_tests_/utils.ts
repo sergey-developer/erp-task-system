@@ -1,7 +1,6 @@
 import {
   getAllSelectOption,
   getButtonIn,
-  getModal,
   getSelect,
   getSelectOption,
   getSelectedOption,
@@ -16,7 +15,7 @@ import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const getContainer = getModal
+const getContainer = () => screen.getByRole('dialog')
 const findContainer = () => screen.findByRole('dialog')
 
 const getChildByText = (text: string | RegExp) =>

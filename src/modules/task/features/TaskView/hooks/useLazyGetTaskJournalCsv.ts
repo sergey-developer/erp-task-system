@@ -6,7 +6,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { GetTaskJournalCsvQueryArgsModel } from '../models'
 
-const useGetTaskJournalCsv = () => {
+const useLazyGetTaskJournalCsv = () => {
   const [trigger, state] = useLazyGetTaskJournalCsvQuery()
 
   const fn = async (data: GetTaskJournalCsvQueryArgsModel) => {
@@ -22,4 +22,4 @@ const useGetTaskJournalCsv = () => {
   return { fn, state }
 }
 
-export default useGetTaskJournalCsv
+export default useLazyGetTaskJournalCsv
