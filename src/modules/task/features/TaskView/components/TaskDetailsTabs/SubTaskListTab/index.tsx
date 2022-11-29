@@ -13,13 +13,15 @@ const { Title } = Typography
 
 export type SubTaskListTabProps = Pick<
   TaskDetailsModel,
-  'assignee' | 'status' | 'type' | 'recordId'
+  'assignee' | 'status' | 'type' | 'recordId' | 'title' | 'description'
 >
 
 const SubTaskListTab: FC<SubTaskListTabProps> = ({
-  assignee,
-  status,
   type,
+  title,
+  description,
+  status,
+  assignee,
   recordId,
 }) => {
   const [modalOpened, { toggle: toggleOpenModal }] = useBoolean(false)
@@ -42,18 +44,14 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
               <Button type='link'>+ Создать новое задание</Button>
             </Col>
           )}
-
-        <Col>
-          <Button type='link' onClick={toggleOpenModal}>
-            + Создать новое задание
-          </Button>
-        </Col>
       </Row>
 
       {modalOpened && (
         <CreateSubTaskModal
+          initialFormValues={{ title, description }}
           recordId={recordId}
           isLoading={false}
+          onSubmit={async () => {}}
           onCancel={toggleOpenModal}
         />
       )}

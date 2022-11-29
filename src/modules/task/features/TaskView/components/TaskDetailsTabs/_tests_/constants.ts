@@ -7,6 +7,7 @@ export const requiredProps: TaskDetailsTabsProps = {
   details: {
     id: generateId(),
     type: TaskTypeEnum.Request,
+    title: generateWord(),
     description: generateWord(),
     userResolution: generateWord(),
     techResolution: generateWord(),
