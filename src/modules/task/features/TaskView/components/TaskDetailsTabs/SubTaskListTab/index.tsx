@@ -54,9 +54,14 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
   const currentUserIsAssignee = useCheckUserAuthenticated(assignee?.id)
 
   const handleCreateSubTask = useCallback<CreateSubTaskModalProps['onSubmit']>(
-    async (values, setFields) => {
+    async ({ title, description, template }, setFields) => {
       try {
-        await createSubTask({ taskId, ...values })
+        await createSubTask({
+          taskId,
+          title: title.trim(),
+          description: description.trim(),
+          template,
+        })
       } catch (exception) {
         const error = exception as ErrorResponse<CreateSubTaskFormErrors>
         handleSetFieldsErrors(error, setFields)

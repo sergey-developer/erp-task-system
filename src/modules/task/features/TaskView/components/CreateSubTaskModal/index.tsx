@@ -87,6 +87,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
             placeholder='Расскажите подробнее о задаче'
             allowClear
             disabled={isLoading}
+            rows={3}
           />
         </Form.Item>
       </Form>
