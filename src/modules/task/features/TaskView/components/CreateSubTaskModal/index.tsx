@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
+import { templateFieldNames } from './constants'
 import { CreateSubTaskModalProps, SubTaskFormFields } from './interfaces'
 import { SelectStyled } from './styles'
 import { TEMPLATE_RULES, TITLE_RULES } from './validation'
@@ -13,8 +14,10 @@ const { TextArea } = Input
 
 const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
   recordId,
-  isLoading,
   initialFormValues,
+  templateOptions,
+  templateOptionsIsLoading,
+  isLoading,
   onSubmit,
   onCancel,
 }) => {
@@ -54,7 +57,10 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
         >
           <SelectStyled
             placeholder='Наименование шаблона'
+            loading={templateOptionsIsLoading}
             disabled={isLoading}
+            options={templateOptions}
+            fieldNames={templateFieldNames}
           />
         </Form.Item>
 

@@ -11,6 +11,7 @@ export enum TaskEndpointsEnum {
   GetReclassificationRequest = '/tasks/:id/reclassification-request/',
   TaskJournal = '/tasks/:id/journal/',
   TaskJournalCsv = '/tasks/:id/journal/csv/',
+  GetSubTaskTemplateList = '/catalogs/templates',
 }
 
 export enum TaskEndpointsTagsEnum {

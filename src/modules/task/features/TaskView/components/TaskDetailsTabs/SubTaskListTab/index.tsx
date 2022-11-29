@@ -1,13 +1,15 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
+import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
 
-import CreateSubTaskModal from '../../CreateSubTaskModal'
+const CreateSubTaskModal = React.lazy(() => import('../../CreateSubTaskModal'))
 
 const { Title } = Typography
 
@@ -24,11 +26,22 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
   assignee,
   recordId,
 }) => {
+  const {
+    fn: getTemplateList,
+    state: { isLoading: templateListIsLoading, currentData: templateList = [] },
+  } = useLazyGetSubTaskTemplateList()
+
   const [modalOpened, { toggle: toggleOpenModal }] = useBoolean(false)
 
-  const currentUserIsAssignee = useCheckUserAuthenticated(assignee?.id)
-  const taskStatus = useTaskStatus(status)
   const taskType = useTaskType(type)
+  const taskStatus = useTaskStatus(status)
+  const currentUserIsAssignee = useCheckUserAuthenticated(assignee?.id)
+
+  useEffect(() => {
+    if (modalOpened) {
+      getTemplateList()
+    }
+  }, [getTemplateList, modalOpened])
 
   return (
     <Space data-testid='subtask-list-tab' direction='vertical' $block>
@@ -47,13 +60,21 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
       </Row>
 
       {modalOpened && (
-        <CreateSubTaskModal
-          initialFormValues={{ title, description }}
-          recordId={recordId}
-          isLoading={false}
-          onSubmit={async () => {}}
-          onCancel={toggleOpenModal}
-        />
+        <React.Suspense
+          fallback={
+            <ModalFallback visible={modalOpened} onCancel={toggleOpenModal} />
+          }
+        >
+          <CreateSubTaskModal
+            initialFormValues={{ title, description }}
+            recordId={recordId}
+            templateOptions={templateList}
+            templateOptionsIsLoading={templateListIsLoading}
+            isLoading={false}
+            onSubmit={async () => {}}
+            onCancel={toggleOpenModal}
+          />
+        </React.Suspense>
       )}
     </Space>
   )
