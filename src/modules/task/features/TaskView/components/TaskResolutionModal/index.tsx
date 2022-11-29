@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import useTaskType from 'modules/task/hooks/useTaskType'
+import { useTaskType } from 'modules/task/hooks'
 import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
 import { isEqual } from 'shared/utils/common/isEqual'
 

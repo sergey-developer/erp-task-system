@@ -2,12 +2,27 @@ import { Button, Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
+import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { useTaskStatus, useTaskType } from 'modules/task/hooks'
+
+import useCheckUserAuthenticated from '../../../../../../auth/hooks/useCheckUserAuthenticated'
 
 const { Title } = Typography
 
-export type SubTaskListTabProps = {}
+export type SubTaskListTabProps = Pick<
+  TaskDetailsModel,
+  'assignee' | 'status' | 'type'
+>
 
-const SubTaskListTab: FC<SubTaskListTabProps> = () => {
+const SubTaskListTab: FC<SubTaskListTabProps> = ({
+  assignee,
+  status,
+  type,
+}) => {
+  const currentUserIsAssignee = useCheckUserAuthenticated(assignee?.id)
+  const taskStatus = useTaskStatus(status)
+  const taskType = useTaskType(type)
+
   return (
     <Space data-testid='subtask-list-tab' direction='vertical' $block>
       <Row justify='space-between' align='middle'>
@@ -15,9 +30,13 @@ const SubTaskListTab: FC<SubTaskListTabProps> = () => {
           <Title level={5}>Задания</Title>
         </Col>
 
-        <Col>
-          <Button type='link'>+ Создать новое задание</Button>
-        </Col>
+        {currentUserIsAssignee &&
+          taskStatus.isInProgress &&
+          (taskType.isIncident || taskType.isRequest) && (
+            <Col>
+              <Button type='link'>+ Создать новое задание</Button>
+            </Col>
+          )}
       </Row>
     </Space>
   )
