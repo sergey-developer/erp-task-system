@@ -1,7 +1,9 @@
 import { TaskDetailsTabsEnum, taskDetailsTabNamesDict } from '../constants'
 
 test('taskDetailsTabNamesDict / Содержит корректные имена вкладок', () => {
-  expect(taskDetailsTabNamesDict[TaskDetailsTabsEnum.TaskList]).toBe('Задания')
+  expect(taskDetailsTabNamesDict[TaskDetailsTabsEnum.SubTaskList]).toBe(
+    'Задания',
+  )
 
   expect(taskDetailsTabNamesDict[TaskDetailsTabsEnum.CommentList]).toBe(
     'Комментарии',

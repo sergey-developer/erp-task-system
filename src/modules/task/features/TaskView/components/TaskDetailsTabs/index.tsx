@@ -11,6 +11,7 @@ import ResolutionTab from './ResolutionTab'
 
 const JournalTab = React.lazy(() => import('./JournalTab'))
 const CommentListTab = React.lazy(() => import('./CommentListTab'))
+const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
 
 const { TabPane } = Tabs
 
@@ -80,11 +81,13 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
       </TabPane>
 
       <TabPane
-        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.TaskList]}
-        key={TaskDetailsTabsEnum.TaskList}
+        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.SubTaskList]}
+        key={TaskDetailsTabsEnum.SubTaskList}
       >
         <DetailsWrapper>
-          <span>Задания</span>
+          <React.Suspense fallback={<Spinner />}>
+            <SubTaskListTab />
+          </React.Suspense>
         </DetailsWrapper>
       </TabPane>
     </Tabs>
