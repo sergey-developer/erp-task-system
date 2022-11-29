@@ -3,8 +3,10 @@ import React, { FC, useState } from 'react'
 
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
-import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
-import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
+import {
+  useAuthenticatedUser,
+  useCheckUserAuthenticated,
+} from 'modules/auth/hooks'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'

@@ -2,10 +2,9 @@ import { Button, Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
+import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
-
-import useCheckUserAuthenticated from '../../../../../../auth/hooks/useCheckUserAuthenticated'
 
 const { Title } = Typography
 

@@ -6,7 +6,7 @@ import React, { FC, useCallback, useEffect } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
-import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
+import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import {
   taskImpactMap,
   taskPriorityMap,
