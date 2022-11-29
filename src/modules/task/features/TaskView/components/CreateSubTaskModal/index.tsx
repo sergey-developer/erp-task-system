@@ -1,10 +1,11 @@
-import { Form, Input, Select, Typography } from 'antd'
+import { Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { CreateSubTaskModalProps, SubTaskFormFields } from './interfaces'
+import { SelectStyled } from './styles'
 import { TEMPLATE_RULES, TITLE_RULES } from './validation'
 
 const { Text, Link } = Typography
@@ -51,7 +52,10 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           name='template'
           rules={TEMPLATE_RULES}
         >
-          <Select placeholder='Наименование шаблона' disabled={isLoading} />
+          <SelectStyled
+            placeholder='Наименование шаблона'
+            disabled={isLoading}
+          />
         </Form.Item>
 
         <Form.Item
