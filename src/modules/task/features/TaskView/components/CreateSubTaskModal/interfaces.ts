@@ -9,18 +9,23 @@ import { FieldsErrors } from 'shared/services/api'
 
 type FormFields = Omit<CreateSubTaskMutationArgsModel, 'taskId'>
 
-export type SubTaskFormFields = Required<FormFields>
+export type CreateSubTaskFormFields = Required<FormFields>
 
-export type SubTaskFormErrors = FieldsErrors<FormFields>
+export type CreateSubTaskFormErrors = FieldsErrors<FormFields>
 
 export type CreateSubTaskModalProps = Pick<TaskDetailsModel, 'recordId'> & {
-  initialFormValues: Partial<Pick<SubTaskFormFields, 'title' | 'description'>>
+  initialFormValues: Partial<
+    Pick<CreateSubTaskFormFields, 'title' | 'description'>
+  >
+
   templateOptions: Array<SubTaskTemplateModel>
   templateOptionsIsLoading: boolean
+
   isLoading: boolean
+
   onCancel: NonNullable<ModalProps['onCancel']>
   onSubmit: (
-    values: SubTaskFormFields,
+    values: CreateSubTaskFormFields,
     setFields: FormInstance['setFields'],
   ) => Promise<void>
 }

@@ -12,6 +12,7 @@ export enum TaskEndpointsEnum {
   TaskJournal = '/tasks/:id/journal/',
   TaskJournalCsv = '/tasks/:id/journal/csv/',
   GetSubTaskTemplateList = '/catalogs/templates',
+  CreateSubTask = '/tasks/:id/subtasks',
 }
 
 export enum TaskEndpointsTagsEnum {

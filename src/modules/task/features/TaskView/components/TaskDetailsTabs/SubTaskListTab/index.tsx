@@ -1,6 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useCallback, useEffect } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
@@ -9,6 +9,14 @@ import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
 
+import { ErrorResponse } from '../../../../../../../shared/services/api'
+import handleSetFieldsErrors from '../../../../../../../shared/utils/form/handleSetFieldsErrors'
+import useCreateSubTask from '../../../hooks/useCreateSubTask'
+import {
+  CreateSubTaskFormErrors,
+  CreateSubTaskModalProps,
+} from '../../CreateSubTaskModal/interfaces'
+
 const CreateSubTaskModal = React.lazy(() => import('../../CreateSubTaskModal'))
 
 const { Title } = Typography
@@ -16,9 +24,12 @@ const { Title } = Typography
 export type SubTaskListTabProps = Pick<
   TaskDetailsModel,
   'assignee' | 'status' | 'type' | 'recordId' | 'title' | 'description'
->
+> & {
+  taskId: TaskDetailsModel['id']
+}
 
 const SubTaskListTab: FC<SubTaskListTabProps> = ({
+  taskId,
   type,
   title,
   description,
@@ -31,11 +42,28 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     state: { isLoading: templateListIsLoading, currentData: templateList = [] },
   } = useLazyGetSubTaskTemplateList()
 
+  const {
+    fn: createSubTask,
+    state: { isLoading: createSubTaskIsLoading },
+  } = useCreateSubTask()
+
   const [modalOpened, { toggle: toggleOpenModal }] = useBoolean(false)
 
   const taskType = useTaskType(type)
   const taskStatus = useTaskStatus(status)
   const currentUserIsAssignee = useCheckUserAuthenticated(assignee?.id)
+
+  const handleCreateSubTask = useCallback<CreateSubTaskModalProps['onSubmit']>(
+    async (values, setFields) => {
+      try {
+        await createSubTask({ taskId, ...values })
+      } catch (exception) {
+        const error = exception as ErrorResponse<CreateSubTaskFormErrors>
+        handleSetFieldsErrors(error, setFields)
+      }
+    },
+    [createSubTask, taskId],
+  )
 
   useEffect(() => {
     if (modalOpened) {
@@ -74,8 +102,8 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
             recordId={recordId}
             templateOptions={templateList}
             templateOptionsIsLoading={templateListIsLoading}
-            isLoading={false}
-            onSubmit={async () => {}}
+            isLoading={createSubTaskIsLoading}
+            onSubmit={handleCreateSubTask}
             onCancel={toggleOpenModal}
           />
         </React.Suspense>

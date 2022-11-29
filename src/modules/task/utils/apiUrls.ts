@@ -37,3 +37,6 @@ export const getTaskJournalUrl = (taskId: number): string =>
 
 export const getTaskJournalCsvUrl = (taskId: number): string =>
   generatePath(TaskEndpointsEnum.TaskJournalCsv, { id: String(taskId) })
+
+export const getCreateSubTaskUrl = (taskId: number): string =>
+  generatePath(TaskEndpointsEnum.CreateSubTask, { id: String(taskId) })

@@ -4,10 +4,10 @@ import { useLazyGetSubTaskTemplateListQuery } from 'modules/task/services/subTas
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { subTaskApiPermissions } from '../permissions'
+import { subTaskTemplateApiPermissions } from '../permissions'
 
 const useLazyGetSubTaskTemplateList = () => {
-  const permissions = useUserPermissions(subTaskApiPermissions.template)
+  const permissions = useUserPermissions(subTaskTemplateApiPermissions)
   const [trigger, state] = useLazyGetSubTaskTemplateListQuery()
 
   const fn = useCallback(async () => {

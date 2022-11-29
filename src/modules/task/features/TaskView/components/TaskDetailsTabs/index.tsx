@@ -95,6 +95,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
         <DetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
             <SubTaskListTab
+              taskId={details.id}
               type={details.type}
               status={details.status}
               assignee={details.assignee}

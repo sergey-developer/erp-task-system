@@ -5,7 +5,7 @@ import BaseModal from 'components/Modals/BaseModal'
 import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { templateFieldNames } from './constants'
-import { CreateSubTaskModalProps, SubTaskFormFields } from './interfaces'
+import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'
 import { SelectStyled } from './styles'
 import { TEMPLATE_RULES, TITLE_RULES } from './validation'
 
@@ -21,7 +21,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
   onSubmit,
   onCancel,
 }) => {
-  const [form] = Form.useForm<SubTaskFormFields>()
+  const [form] = Form.useForm<CreateSubTaskFormFields>()
 
   const modalTitle = (
     <Text>
@@ -29,7 +29,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async (values: SubTaskFormFields) => {
+  const handleFinish = async (values: CreateSubTaskFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -42,7 +42,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
       okText='Создать задание'
       onCancel={onCancel}
     >
-      <Form<SubTaskFormFields>
+      <Form<CreateSubTaskFormFields>
         form={form}
         initialValues={initialFormValues}
         layout='vertical'
