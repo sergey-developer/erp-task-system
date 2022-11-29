@@ -39,7 +39,9 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
 
   useEffect(() => {
     if (modalOpened) {
-      getTemplateList()
+      ;(async () => {
+        await getTemplateList()
+      })()
     }
   }, [getTemplateList, modalOpened])
 
@@ -54,7 +56,9 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
           taskStatus.isInProgress &&
           (taskType.isIncident || taskType.isRequest) && (
             <Col>
-              <Button type='link'>+ Создать новое задание</Button>
+              <Button type='link' onClick={toggleOpenModal}>
+                + Создать новое задание
+              </Button>
             </Col>
           )}
       </Row>
