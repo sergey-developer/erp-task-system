@@ -25,6 +25,7 @@ export type TaskDetailsTabsProps = {
     | 'type'
     | 'status'
     | 'assignee'
+    | 'recordId'
   >
 }
 
@@ -96,6 +97,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
               type={details.type}
               status={details.status}
               assignee={details.assignee}
+              recordId={details.recordId}
             />
           </React.Suspense>
         </DetailsWrapper>
