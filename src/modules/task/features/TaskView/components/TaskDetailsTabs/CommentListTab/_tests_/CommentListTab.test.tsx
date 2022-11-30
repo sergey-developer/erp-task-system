@@ -227,10 +227,12 @@ describe('Вкладка списка комментариев заявки', ()
             newComment.text,
           )
           await createCommentFormTestUtils.userClickSubmitButton(user)
-          // await createCommentFormTestUtils.loadingStarted()
+          await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          expect(createCommentFormTestUtils.getCommentInput()).not.toHaveValue()
+          expect(
+            createCommentFormTestUtils.getCommentInput(),
+          ).not.toHaveDisplayValue(newComment.text)
         })
       })
 
@@ -324,7 +326,7 @@ describe('Вкладка списка комментариев заявки', ()
             generateWord(),
           )
           await createCommentFormTestUtils.userClickSubmitButton(user)
-          // await createCommentFormTestUtils.loadingStarted()
+          await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
           const error = await screen.findByText(UNKNOWN_ERROR_MSG)

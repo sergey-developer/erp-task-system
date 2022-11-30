@@ -33,6 +33,7 @@ import { TaskFirstLineFormErrors } from '../../TaskFirstLineModal/interfaces'
 import { requiredProps } from './constants'
 
 setupApiTests()
+jest.setTimeout(5000)
 
 describe('Контейнер детальной карточки заявки', () => {
   describe('Перевод заявки на 1-ю линию', () => {
