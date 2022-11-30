@@ -1,6 +1,7 @@
 import {
   getButtonIn,
   getSelect,
+  loadingStartedByButton,
   loadingStartedBySelect,
   querySelect,
   userClickOption,
@@ -37,6 +38,13 @@ const getSelectedTemplate = (value: string) =>
 const querySelectedTemplate = (value: string) =>
   within(getTemplateFieldContainer()).queryByTitle(value)
 
+const userOpenTemplateField = async (user: UserEvent) => {
+  await userOpenSelect(user, getTemplateFieldContainer())
+}
+
+const findTemplateFieldError = (error: string) =>
+  within(getTemplateFieldContainer()).findByText(error)
+
 const templateFieldExpectLoadingStarted = async () => {
   await loadingStartedBySelect(getTemplateFieldContainer())
 }
@@ -63,6 +71,9 @@ const userResetTitle = async (user: UserEvent) => {
   await user.click(button)
 }
 
+const findTitleFieldError = (error: string) =>
+  within(getTitleFieldContainer()).findByText(error)
+
 // description field
 const getDescriptionFieldContainer = () =>
   within(getContainer()).getByTestId('description')
@@ -76,7 +87,7 @@ const getDescriptionFieldLabel = () =>
   within(getDescriptionFieldContainer()).getByTitle('Подробное описание')
 
 const userSetDescription = async (user: UserEvent, value: string) => {
-  const field = getTitleField()
+  const field = getDescriptionField()
   await user.type(field, value)
   return field
 }
@@ -84,6 +95,27 @@ const userSetDescription = async (user: UserEvent, value: string) => {
 const userResetDescription = async (user: UserEvent) => {
   const button = getButtonIn(getDescriptionFieldContainer(), 'close-circle')
   await user.click(button)
+}
+
+const findDescriptionFieldError = (error: string) =>
+  within(getDescriptionFieldContainer()).findByText(error)
+
+// submit button
+const getSubmitButton = () => getButtonIn(getContainer(), /создать задание/i)
+
+const userClickSubmitButton = async (user: UserEvent) => {
+  const button = getSubmitButton()
+  await user.click(button)
+  return button
+}
+
+// cancel button
+const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
+
+const userClickCancelButton = async (user: UserEvent) => {
+  const button = getCancelButton()
+  await user.click(button)
+  return button
 }
 
 const utils = {
@@ -99,10 +131,9 @@ const utils = {
     getValue: getSelectedTemplate,
     queryValue: querySelectedTemplate,
     setValue: userClickOption,
-    openField: async (user: UserEvent) => {
-      await userOpenSelect(user, getTemplateFieldContainer())
-    },
+    openField: userOpenTemplateField,
     getOption: getTemplateOption,
+    findError: findTemplateFieldError,
     expectLoadingStarted: templateFieldExpectLoadingStarted,
   },
   title: {
@@ -110,13 +141,23 @@ const utils = {
     getLabel: getTitleFieldLabel,
     setValue: userSetTitle,
     resetValue: userResetTitle,
+    findError: findTitleFieldError,
   },
   description: {
     getField: getDescriptionField,
     getLabel: getDescriptionFieldLabel,
     setValue: userSetDescription,
     resetValue: userResetDescription,
+    findError: findDescriptionFieldError,
   },
+
+  getSubmitButton,
+  userClickSubmitButton,
+
+  getCancelButton,
+  userClickCancelButton,
+
+  loadingStarted: () => loadingStartedByButton(getSubmitButton()),
 }
 
 export default utils

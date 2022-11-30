@@ -1,8 +1,18 @@
 import { generateWord, render } from '_tests_/utils'
+import {
+  DEFAULT_LONG_TEXT_LENGTH,
+  DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+  FIELD_CAN_NOT_BE_EMPTY_MSG,
+  REQUIRED_FIELD_MSG,
+  TEXT_MAX_LENGTH_MSG,
+} from 'shared/constants/validation'
+import { makeMaxLengthMessage } from 'shared/utils/validation'
 
 import CreateSubTaskModal from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
+
+jest.setTimeout(10000)
 
 describe('Модалка создания задачи заявки', () => {
   test('Заголовок отображается', () => {
@@ -89,7 +99,15 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       describe('Соответствующая ошибка отображается под полем', () => {
-        test('Если не выбрать значение и нажать кнопку отправки', () => {})
+        test('Если не выбрать значение и нажать кнопку отправки', async () => {
+          const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+
+          await testUtils.userClickSubmitButton(user)
+
+          expect(
+            await testUtils.template.findError(REQUIRED_FIELD_MSG),
+          ).toBeInTheDocument()
+        })
       })
     })
 
@@ -148,11 +166,37 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       describe('Соответствующая ошибка отображается под полем', () => {
-        test('Если не выбрать значение и нажать кнопку отправки', () => {})
+        test('Если не ввести значение и нажать кнопку отправки', async () => {
+          const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-        test('Если ввести только пробелы', () => {})
+          await testUtils.userClickSubmitButton(user)
 
-        test('Если превысить допустимое количество символов', () => {})
+          expect(
+            await testUtils.title.findError(REQUIRED_FIELD_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Если ввести только пробелы', async () => {
+          const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+
+          await testUtils.title.setValue(user, ' ')
+
+          expect(
+            await testUtils.title.findError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Если превысить лимит символов', async () => {
+          const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+
+          await testUtils.title.setValue(user, generateWord({ length: 101 }))
+
+          expect(
+            await testUtils.title.findError(
+              makeMaxLengthMessage(TEXT_MAX_LENGTH_MSG, 100),
+            ),
+          ).toBeInTheDocument()
+        })
       })
     })
 
@@ -213,12 +257,88 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       describe('Соответствующая ошибка отображается под полем', () => {
-        test('Если не выбрать значение и нажать кнопку отправки', () => {})
+        test('Если не ввести значение и нажать кнопку отправки', async () => {
+          const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-        test('Если ввести только пробелы', () => {})
+          await testUtils.userClickSubmitButton(user)
 
-        test('Если превысить допустимое количество символов', () => {})
+          expect(
+            await testUtils.description.findError(REQUIRED_FIELD_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Если ввести только пробелы', async () => {
+          const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+
+          await testUtils.description.setValue(user, ' ')
+
+          expect(
+            await testUtils.description.findError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Если превысить лимит символов', async () => {
+          const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+
+          await testUtils.description.setValue(
+            user,
+            generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
+          )
+
+          expect(
+            await testUtils.description.findError(
+              DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+            ),
+          ).toBeInTheDocument()
+        })
       })
+    })
+  })
+
+  describe('Кнопка отправки', () => {
+    test('Отображается корректно', () => {
+      render(<CreateSubTaskModal {...requiredProps} />)
+
+      const button = testUtils.getSubmitButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Отображает состояние загрузки', async () => {
+      render(<CreateSubTaskModal {...requiredProps} isLoading />)
+      await testUtils.loadingStarted()
+    })
+
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+
+      const templateOption = requiredProps.templateOptions[0]
+      await testUtils.template.openField(user)
+      await testUtils.template.setValue(user, templateOption.title)
+      await testUtils.title.setValue(user, generateWord())
+      await testUtils.description.setValue(user, generateWord())
+      await testUtils.userClickSubmitButton(user)
+
+      expect(requiredProps.onSubmit).toBeCalledTimes(1)
+    })
+  })
+
+  describe('Кнопка отмены', () => {
+    test('Отображается корректно', () => {
+      render(<CreateSubTaskModal {...requiredProps} />)
+
+      const button = testUtils.getCancelButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+
+      await testUtils.userClickCancelButton(user)
+      expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })
 })

@@ -91,18 +91,15 @@ describe('Модальное окно перевода запроса на пе�
         test('Если превысить лимит символов', async () => {
           const { user } = render(<TaskFirstLineModal {...requiredProps} />)
 
-          const description = testUtils.getDescriptionField()
-          const descriptionText = generateWord({
-            length: DEFAULT_LONG_TEXT_LENGTH + 1,
-          })
-
-          await user.type(description, descriptionText)
-
-          const errorMessage = await screen.findByText(
-            DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+          const field = testUtils.getDescriptionField()
+          await user.type(
+            field,
+            generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
           )
 
-          expect(errorMessage).toBeInTheDocument()
+          expect(
+            await screen.findByText(DEFAULT_LONG_TEXT_MAX_LENGTH_MSG),
+          ).toBeInTheDocument()
         })
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {

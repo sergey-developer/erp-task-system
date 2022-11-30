@@ -44,15 +44,16 @@ describe('Форма добавления комментария', () => {
       test('Если превысить лимит символов', async () => {
         const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-        const commentText = generateWord({
-          length: DEFAULT_LONG_TEXT_LENGTH + 1,
-        })
-        await testUtils.userEntersComment(user, commentText)
-        const error = await testUtils.findCommentFieldError(
-          DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+        await testUtils.userEntersComment(
+          user,
+          generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
         )
 
-        expect(error).toBeInTheDocument()
+        expect(
+          await testUtils.findCommentFieldError(
+            DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+          ),
+        ).toBeInTheDocument()
       })
 
       test('Если ввести только пробелы', async () => {
