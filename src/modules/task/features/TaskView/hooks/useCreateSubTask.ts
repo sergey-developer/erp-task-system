@@ -2,13 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { useCreateSubTaskMutation } from 'modules/task/services/subTaskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
-import {
-  ErrorResponse,
-  isBadRequestError,
-  isClientRangeError,
-  isServerRangeError,
-} from 'shared/services/api'
+import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { CreateSubTaskMutationArgsModel } from '../models'
@@ -32,12 +26,8 @@ const useCreateSubTask = () => {
     if (!state.isError) return
     const error = state.error as ErrorResponse
 
-    if (isBadRequestError(error)) {
-      return
-    } else if (isClientRangeError(error) || isServerRangeError(error)) {
+    if (!isBadRequestError(error)) {
       showErrorNotification('Не удалось создать задание')
-    } else {
-      showErrorNotification(UNKNOWN_ERROR_MSG)
     }
   }, [state.error, state.isError])
 

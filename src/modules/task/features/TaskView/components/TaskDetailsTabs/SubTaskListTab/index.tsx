@@ -5,13 +5,13 @@ import React, { FC, useCallback, useEffect } from 'react'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubTask'
 import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
+import { ErrorResponse } from 'shared/services/api'
+import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
-import { ErrorResponse } from '../../../../../../../shared/services/api'
-import handleSetFieldsErrors from '../../../../../../../shared/utils/form/handleSetFieldsErrors'
-import useCreateSubTask from '../../../hooks/useCreateSubTask'
 import {
   CreateSubTaskFormErrors,
   CreateSubTaskModalProps,
@@ -85,15 +85,21 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
           <Title level={5}>Задания</Title>
         </Col>
 
-        {currentUserIsAssignee &&
-          taskStatus.isInProgress &&
-          (taskType.isIncident || taskType.isRequest) && (
-            <Col>
-              <Button type='link' onClick={toggleOpenModal}>
-                + Создать новое задание
-              </Button>
-            </Col>
-          )}
+        <Col>
+          <Button
+            type='link'
+            onClick={toggleOpenModal}
+            disabled={
+              !(
+                currentUserIsAssignee &&
+                taskStatus.isInProgress &&
+                (taskType.isIncident || taskType.isRequest)
+              )
+            }
+          >
+            + Создать новое задание
+          </Button>
+        </Col>
       </Row>
 
       {modalOpened && (
