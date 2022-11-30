@@ -43,18 +43,50 @@ describe('Модалка создания задачи заявки', () => {
         render(
           <CreateSubTaskModal {...requiredProps} templateOptionsIsLoading />,
         )
+
         testUtils.template.expectLoadingStarted()
       })
 
-      test('Имеет верное количество вариантов', () => {})
+      test('Имеет верное количество вариантов', async () => {
+        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-      test('Не имеет значения по умолчанию', () => {})
+        await testUtils.template.openField(user)
 
-      test('Можно выбрать значение', () => {})
+        requiredProps.templateOptions.forEach((opt) => {
+          const value = testUtils.template.getOption(opt.title)
+          expect(value).toBeInTheDocument()
+        })
+      })
 
-      test('Закрывается после выбора значения', () => {})
+      test('Не имеет значения по умолчанию', () => {
+        render(<CreateSubTaskModal {...requiredProps} />)
 
-      test('Можно установить значение по умолчанию', () => {})
+        requiredProps.templateOptions.forEach((opt) => {
+          const value = testUtils.template.queryValue(opt.title)
+          expect(value).not.toBeInTheDocument()
+        })
+      })
+
+      test('Можно выбрать значение', async () => {
+        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+
+        const templateOption = requiredProps.templateOptions[0]
+        await testUtils.template.openField(user)
+        await testUtils.template.setValue(user, templateOption.title)
+        const value = await testUtils.template.getValue(templateOption.title)
+
+        expect(value).toBeInTheDocument()
+      })
+
+      test('Закрывается после выбора значения', async () => {
+        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+
+        const templateOption = requiredProps.templateOptions[0]
+        await testUtils.template.openField(user)
+        await testUtils.template.setValue(user, templateOption.title)
+
+        expect(testUtils.template.getField(false)).toBeInTheDocument()
+      })
     })
 
     describe('Поле заголовка', () => {

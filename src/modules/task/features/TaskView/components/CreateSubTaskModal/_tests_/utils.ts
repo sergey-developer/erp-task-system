@@ -3,6 +3,8 @@ import {
   getSelect,
   loadingStartedBySelect,
   querySelect,
+  userClickOption,
+  userOpenSelect,
 } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
@@ -15,16 +17,25 @@ const getTemplateFieldContainer = () =>
   within(getContainer()).getByTestId('template')
 
 const getTemplateField = (opened?: boolean) =>
-  getSelect(getTemplateFieldContainer(), { expanded: opened })
+  getSelect(getTemplateFieldContainer(), { name: 'Шаблон', expanded: opened })
 
 const queryTemplateField = (opened?: boolean) =>
-  querySelect(getTemplateFieldContainer(), { expanded: opened })
+  querySelect(getTemplateFieldContainer(), { name: 'Шаблон', expanded: opened })
 
 const getTemplateFieldPlaceholder = () =>
   within(getTemplateFieldContainer()).getByText('Наименование шаблона')
 
 const getTemplateFieldLabel = () =>
   within(getTemplateFieldContainer()).getByTitle('Шаблон')
+
+const getTemplateOption = (name: string) =>
+  within(screen.getByRole('listbox')).getByRole('option', { name })
+
+const getSelectedTemplate = (value: string) =>
+  within(getTemplateFieldContainer()).getByTitle(value)
+
+const querySelectedTemplate = (value: string) =>
+  within(getTemplateFieldContainer()).queryByTitle(value)
 
 const templateFieldExpectLoadingStarted = async () => {
   await loadingStartedBySelect(getTemplateFieldContainer())
@@ -80,10 +91,18 @@ const utils = {
   getChildByText,
 
   template: {
+    getContainer: getTemplateFieldContainer,
     getField: getTemplateField,
     queryField: queryTemplateField,
     getPlaceholder: getTemplateFieldPlaceholder,
     getLabel: getTemplateFieldLabel,
+    getValue: getSelectedTemplate,
+    queryValue: querySelectedTemplate,
+    setValue: userClickOption,
+    openField: async (user: UserEvent) => {
+      await userOpenSelect(user, getTemplateFieldContainer())
+    },
+    getOption: getTemplateOption,
     expectLoadingStarted: templateFieldExpectLoadingStarted,
   },
   title: {
