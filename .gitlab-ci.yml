@@ -36,7 +36,7 @@ Tests:
     - export REACT_APP_ENVIRONMENT=test
     - export CI=true
     - yarn install
-    - yarn test --coverage --maxWorkers=2
+    - yarn test --coverage
   cache:
     - key:
         files:
