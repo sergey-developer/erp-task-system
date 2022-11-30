@@ -139,9 +139,8 @@ const WorkGroup: FC<WorkGroupProps> = ({
                     onClick={debouncedToggleOpenTaskSecondLineModal}
                     loading={transferTaskToSecondLineIsLoading}
                     disabled={
-                      !taskStatus.isNew ||
-                      !taskStatus.isInProgress ||
-                      taskExtendedStatus.isInReclassification
+                      taskExtendedStatus.isInReclassification ||
+                      (!taskStatus.isNew && !taskStatus.isInProgress)
                     }
                   >
                     Перевести на II линию

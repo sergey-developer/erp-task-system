@@ -21,6 +21,7 @@ export const requiredProps: Omit<WorkGroupProps, 'workGroup'> = {
   transferTaskToSecondLineIsLoading: false,
 }
 
+// first line button
 export const showFirstLineButtonProps: Pick<
   WorkGroupProps,
   'workGroup' | 'status'
@@ -30,6 +31,19 @@ export const showFirstLineButtonProps: Pick<
 }
 
 export const activeFirstLineButtonProps: Pick<
+  WorkGroupProps,
+  'status' | 'extendedStatus'
+> = {
+  status: TaskStatusEnum.New,
+  extendedStatus: TaskExtendedStatusEnum.New,
+}
+
+// second line button
+export const showSecondLineButtonProps: Pick<WorkGroupProps, 'workGroup'> = {
+  workGroup: null,
+}
+
+export const activeSecondLineButtonProps: Pick<
   WorkGroupProps,
   'status' | 'extendedStatus'
 > = {
