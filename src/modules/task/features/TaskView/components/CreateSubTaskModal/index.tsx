@@ -35,6 +35,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
 
   return (
     <BaseModal
+      data-testid='create-sub-task-modal'
       visible
       title={modalTitle}
       confirmLoading={isLoading}

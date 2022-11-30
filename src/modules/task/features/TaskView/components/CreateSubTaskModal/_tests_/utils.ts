@@ -1,6 +1,7 @@
 import {
   getButtonIn,
   getSelect,
+  loadingFinishedBySelect,
   loadingStartedByButton,
   loadingStartedBySelect,
   querySelect,
@@ -10,7 +11,8 @@ import {
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const getContainer = () => screen.getByRole('dialog')
+const getContainer = () => screen.getByTestId('create-sub-task-modal')
+const findContainer = () => screen.findByTestId('create-sub-task-modal')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // template field
@@ -47,6 +49,10 @@ const findTemplateFieldError = (error: string) =>
 
 const templateFieldExpectLoadingStarted = async () => {
   await loadingStartedBySelect(getTemplateFieldContainer())
+}
+
+const templateFieldExpectLoadingFinished = async () => {
+  await loadingFinishedBySelect(getTemplateFieldContainer())
 }
 
 // title field
@@ -120,6 +126,7 @@ const userClickCancelButton = async (user: UserEvent) => {
 
 const utils = {
   getContainer,
+  findContainer,
   getChildByText,
 
   template: {
@@ -135,6 +142,7 @@ const utils = {
     getOption: getTemplateOption,
     findError: findTemplateFieldError,
     expectLoadingStarted: templateFieldExpectLoadingStarted,
+    expectLoadingFinished: templateFieldExpectLoadingFinished,
   },
   title: {
     getField: getTitleField,

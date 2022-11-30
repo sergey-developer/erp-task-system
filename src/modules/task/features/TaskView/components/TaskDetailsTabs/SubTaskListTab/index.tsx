@@ -9,6 +9,7 @@ import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubT
 import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
+import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
@@ -48,6 +49,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
   } = useCreateSubTask()
 
   const [modalOpened, { toggle: toggleOpenModal }] = useBoolean(false)
+  const debouncedToggleOpenModal = useDebounceFn(toggleOpenModal)
 
   const taskType = useTaskType(type)
   const taskStatus = useTaskStatus(status)
@@ -88,7 +90,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
         <Col>
           <Button
             type='link'
-            onClick={toggleOpenModal}
+            onClick={debouncedToggleOpenModal}
             disabled={
               !(
                 currentUserIsAssignee &&
@@ -105,7 +107,10 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
       {modalOpened && (
         <React.Suspense
           fallback={
-            <ModalFallback visible={modalOpened} onCancel={toggleOpenModal} />
+            <ModalFallback
+              visible={modalOpened}
+              onCancel={debouncedToggleOpenModal}
+            />
           }
         >
           <CreateSubTaskModal
@@ -115,7 +120,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
             templateOptionsIsLoading={templateListIsLoading}
             isLoading={createSubTaskIsLoading}
             onSubmit={handleCreateSubTask}
-            onCancel={toggleOpenModal}
+            onCancel={debouncedToggleOpenModal}
           />
         </React.Suspense>
       )}

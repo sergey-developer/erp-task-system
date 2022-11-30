@@ -1,4 +1,5 @@
 import { generateId, generateIdStr, generateWord } from '_tests_/utils'
+import { taskFixtures } from 'fixtures/task'
 import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
 
 import { SubTaskListTabProps } from '../index'
@@ -12,9 +13,11 @@ export const requiredProps: Omit<SubTaskListTabProps, 'description'> = {
   type: TaskTypeEnum.Request,
 }
 
-export const notRequiredProps: Omit<
+export const activeCreateSubTaskButton: Pick<
   SubTaskListTabProps,
-  keyof typeof requiredProps
-> = {
-  description: generateWord(),
+  'status' | 'type'
+> & { assignee: NonNullable<SubTaskListTabProps['assignee']> } = {
+  assignee: taskFixtures.getTaskAssignee(),
+  status: TaskStatusEnum.InProgress,
+  type: TaskTypeEnum.Request,
 }
