@@ -313,11 +313,11 @@ describe('Модалка создания задачи заявки', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-      const templateOption = requiredProps.templateOptions[0]
-      await testUtils.template.openField(user)
-      await testUtils.template.setValue(user, templateOption.title)
-      await testUtils.title.setValue(user, generateWord())
-      await testUtils.description.setValue(user, generateWord())
+      await testUtils.userFillForm(user, {
+        template: requiredProps.templateOptions[0].title,
+        title: generateWord(),
+        description: generateWord(),
+      })
       await testUtils.userClickSubmitButton(user)
 
       expect(requiredProps.onSubmit).toBeCalledTimes(1)

@@ -48,8 +48,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     state: { isLoading: createSubTaskIsLoading },
   } = useCreateSubTask()
 
-  const [modalOpened, { toggle: toggleOpenModal }] = useBoolean(false)
-  const debouncedToggleOpenModal = useDebounceFn(toggleOpenModal)
+  const [createSubTaskModalOpened, { toggle: toggleCreateSubTaskModalOpened }] =
+    useBoolean(false)
+
+  const debouncedToggleCreateSubTaskModalOpened = useDebounceFn(
+    toggleCreateSubTaskModalOpened,
+  )
 
   const taskType = useTaskType(type)
   const taskStatus = useTaskStatus(status)
@@ -73,12 +77,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
   )
 
   useEffect(() => {
-    if (modalOpened) {
+    if (createSubTaskModalOpened) {
       ;(async () => {
         await getTemplateList()
       })()
     }
-  }, [getTemplateList, modalOpened])
+  }, [getTemplateList, createSubTaskModalOpened])
 
   return (
     <Space data-testid='subtask-list-tab' direction='vertical' $block>
@@ -90,7 +94,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
         <Col>
           <Button
             type='link'
-            onClick={debouncedToggleOpenModal}
+            onClick={debouncedToggleCreateSubTaskModalOpened}
             disabled={
               !(
                 currentUserIsAssignee &&
@@ -104,12 +108,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
         </Col>
       </Row>
 
-      {modalOpened && (
+      {createSubTaskModalOpened && (
         <React.Suspense
           fallback={
             <ModalFallback
-              visible={modalOpened}
-              onCancel={debouncedToggleOpenModal}
+              visible={createSubTaskModalOpened}
+              onCancel={debouncedToggleCreateSubTaskModalOpened}
             />
           }
         >
@@ -120,7 +124,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
             templateOptionsIsLoading={templateListIsLoading}
             isLoading={createSubTaskIsLoading}
             onSubmit={handleCreateSubTask}
-            onCancel={debouncedToggleOpenModal}
+            onCancel={debouncedToggleCreateSubTaskModalOpened}
           />
         </React.Suspense>
       )}

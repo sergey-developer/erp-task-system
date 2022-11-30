@@ -1,6 +1,14 @@
-import { mockGetSubTaskTemplateListSuccess } from '_tests_/mocks/api'
-import { getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
-import { taskFixtures } from 'fixtures/task'
+import {
+  mockGetSubTaskTemplateListServerError,
+  mockGetSubTaskTemplateListSuccess,
+} from '_tests_/mocks/api'
+import {
+  getStoreWithAuth,
+  render,
+  setupApiTests,
+  setupNotifications,
+} from '_tests_/utils'
+import { screen } from '@testing-library/react'
 import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
 
 import createSubTaskModalTestUtils from '../../../CreateSubTaskModal/_tests_/utils'
@@ -100,31 +108,12 @@ describe('Вкладка списка подзадач', () => {
   })
 
   describe('Модалка создания задания', () => {
-    describe('После открытия', () => {
-      describe('Список шаблонов', () => {
-        test('Загружается', async () => {
-          mockGetSubTaskTemplateListSuccess()
+    describe('Список шаблонов', () => {
+      describe('При не успешном запросе', () => {
+        setupNotifications()
 
-          const { user } = render(
-            <SubTaskListTab
-              {...requiredProps}
-              {...activeCreateSubTaskButton}
-            />,
-            {
-              store: getStoreWithAuth({
-                userId: activeCreateSubTaskButton.assignee.id,
-              }),
-            },
-          )
-
-          await subTaskListTabTestUtils.openCreateSubTaskModal(user)
-          await createSubTaskModalTestUtils.findContainer()
-          await createSubTaskModalTestUtils.template.expectLoadingStarted()
-        })
-
-        test('Отображается корректно', async () => {
-          const templateList = taskFixtures.getSubTaskTemplateList(2)
-          mockGetSubTaskTemplateListSuccess({ body: templateList })
+        test('Отображается соответствующее уведомление', async () => {
+          mockGetSubTaskTemplateListServerError()
 
           const { user } = render(
             <SubTaskListTab
@@ -141,17 +130,18 @@ describe('Вкладка списка подзадач', () => {
           await subTaskListTabTestUtils.openCreateSubTaskModal(user)
           await createSubTaskModalTestUtils.findContainer()
           await createSubTaskModalTestUtils.template.expectLoadingFinished()
-          await createSubTaskModalTestUtils.template.openField(user)
 
-          templateList.forEach((template) => {
-            expect(
-              createSubTaskModalTestUtils.template.getOption(template.title),
-            ).toBeInTheDocument()
-          })
+          expect(
+            await screen.findByText('Не удалось получить шаблоны заданий'),
+          ).toBeInTheDocument()
         })
       })
     })
 
-    describe('При успешном запросе', () => {})
+    describe('При успешном запросе', () => {
+      // замокать useCreateSubTask???
+    })
+
+    describe('При не успешном запросе', () => {})
   })
 })

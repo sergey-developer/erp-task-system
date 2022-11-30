@@ -11,6 +11,8 @@ import {
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { CreateSubTaskFormFields } from '../interfaces'
+
 const getContainer = () => screen.getByTestId('create-sub-task-modal')
 const findContainer = () => screen.findByTestId('create-sub-task-modal')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
@@ -30,6 +32,8 @@ const getTemplateFieldPlaceholder = () =>
 
 const getTemplateFieldLabel = () =>
   within(getTemplateFieldContainer()).getByTitle('Шаблон')
+
+const userSetTemplate = userClickOption
 
 const getTemplateOption = (name: string) =>
   within(screen.getByRole('listbox')).getByRole('option', { name })
@@ -124,6 +128,17 @@ const userClickCancelButton = async (user: UserEvent) => {
   return button
 }
 
+// rest
+const userFillForm = async (
+  user: UserEvent,
+  values: CreateSubTaskFormFields,
+) => {
+  await userOpenTemplateField(user)
+  await userSetTemplate(user, values.template)
+  await userSetTitle(user, values.title)
+  await userSetDescription(user, values.description)
+}
+
 const utils = {
   getContainer,
   findContainer,
@@ -137,7 +152,7 @@ const utils = {
     getLabel: getTemplateFieldLabel,
     getValue: getSelectedTemplate,
     queryValue: querySelectedTemplate,
-    setValue: userClickOption,
+    setValue: userSetTemplate,
     openField: userOpenTemplateField,
     getOption: getTemplateOption,
     findError: findTemplateFieldError,
@@ -158,6 +173,7 @@ const utils = {
     resetValue: userResetDescription,
     findError: findDescriptionFieldError,
   },
+  userFillForm,
 
   getSubmitButton,
   userClickSubmitButton,
