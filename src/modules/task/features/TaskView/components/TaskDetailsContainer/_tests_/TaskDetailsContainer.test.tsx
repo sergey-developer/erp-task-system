@@ -116,7 +116,7 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
+          // await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
           const descriptionContainer =
@@ -162,7 +162,7 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
+          // await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
           const errorMsg = await screen.findByText(
