@@ -12,7 +12,7 @@ import { SearchProps } from 'antd/es/input'
 import { SorterResult } from 'antd/es/table/interface'
 import isArray from 'lodash/isArray'
 import { GetComponentProps } from 'rc-table/es/interface'
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 
 import { FilterIcon, SyncIcon } from 'components/Icons'
 import {
@@ -20,7 +20,7 @@ import {
   FilterTypeEnum,
 } from 'modules/task/features/TaskList/constants/common'
 import useGetTaskCounters from 'modules/task/features/TaskList/hooks/useGetTaskCounters'
-import useGetTaskList from 'modules/task/features/TaskList/hooks/useGetTaskList'
+import useLazyGetTaskList from 'modules/task/features/TaskList/hooks/useLazyGetTaskList'
 import { GetTaskListQueryArgsModel } from 'modules/task/features/TaskList/models'
 import TaskDetails from 'modules/task/features/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
@@ -70,13 +70,22 @@ const TaskListPage: FC = () => {
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
   })
 
+  /**
+   * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
+   * Это также можно сделать если передать аргумент `skip` в обычный Query, но тогда
+   * данные будут сбрасываться, это связано с багом https://github.com/reduxjs/redux-toolkit/issues/2871
+   * Как баг починят, будет видно, оставлять как есть или можно использовать обычный Query.
+   */
   const {
-    data: taskListResponse,
-    isFetching: taskListIsFetching,
-    refetch: refetchTaskList,
-  } = useGetTaskList(queryArgs, {
-    skip: sortableFieldToSortValues.status.includes(queryArgs.sort),
-  })
+    fn: fetchTaskList,
+    state: { data: taskListResponse, isFetching: taskListIsFetching },
+  } = useLazyGetTaskList()
+
+  useEffect(() => {
+    if (!sortableFieldToSortValues.status.includes(queryArgs.sort)) {
+      fetchTaskList(queryArgs)
+    }
+  }, [fetchTaskList, queryArgs])
 
   const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskTableListItem['id']>>(null)
@@ -243,10 +252,10 @@ const TaskListPage: FC = () => {
   }
 
   const handleRefetchTaskList = useDebounceFn(() => {
-    refetchTaskList()
+    fetchTaskList(queryArgs)
     handleCloseTaskDetails()
     refetchTaskCounters()
-  })
+  }, [fetchTaskList, queryArgs])
 
   const searchFilterApplied: boolean = isEqual(
     appliedFilterType,
