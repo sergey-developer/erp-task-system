@@ -2,6 +2,8 @@ import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import {
   CreateSubTaskMutationArgsModel,
   CreateSubTaskResponseModel,
+  GetSubTaskListQueryArgsModel,
+  GetSubTaskListResponseModel,
   GetSubTaskTemplateListQueryArgsModel,
   GetSubTaskTemplateListResponseModel,
 } from 'modules/task/features/TaskView/models'
@@ -39,7 +41,10 @@ const subTaskApiService = apiService.injectEndpoints({
         } catch {}
       },
     }),
-    getSubTaskList: build.query<any, any>({
+    getSubTaskList: build.query<
+      GetSubTaskListResponseModel,
+      GetSubTaskListQueryArgsModel
+    >({
       query: (taskId) => ({
         url: getSubTaskListUrl(taskId),
         method: HttpMethodEnum.Get,
@@ -58,5 +63,8 @@ const subTaskApiService = apiService.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useLazyGetSubTaskTemplateListQuery, useCreateSubTaskMutation } =
-  subTaskApiService
+export const {
+  useLazyGetSubTaskTemplateListQuery,
+  useCreateSubTaskMutation,
+  useGetSubTaskListQuery,
+} = subTaskApiService

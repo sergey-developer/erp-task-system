@@ -6,6 +6,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubTask'
+import useGetSubTaskList from 'modules/task/features/TaskView/hooks/useGetSubTaskList'
 import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
@@ -47,6 +48,9 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     fn: createSubTask,
     state: { isLoading: createSubTaskIsLoading },
   } = useCreateSubTask()
+
+  const { isLoading: subTaskListIsLoading, currentData: subTaskList = [] } =
+    useGetSubTaskList(taskId)
 
   const [createSubTaskModalOpened, { toggle: toggleCreateSubTaskModalOpened }] =
     useBoolean(false)
@@ -90,7 +94,9 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     <Space data-testid='subtask-list-tab' direction='vertical' $block>
       <Row justify='space-between' align='middle'>
         <Col>
-          <Title level={5}>Задания</Title>
+          <Title level={5}>
+            Задания {!!subTaskList.length && <>({subTaskList.length})</>}
+          </Title>
         </Col>
 
         <Col>
