@@ -57,8 +57,7 @@ const TaskTable: FC<TaskTableProps> = ({
     setColumns((prevColumns) =>
       prevColumns.map((col) => applyWidthToColumn(col, breakpoints)),
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [breakpoints.xxl])
+  }, [breakpoints])
 
   const sortedColumns = useMemo(
     () => columns.map((col) => (sort ? applySortToColumn(col, sort) : col)),

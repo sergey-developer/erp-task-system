@@ -100,7 +100,7 @@ const taskApiService = apiService
 
 export const {
   useGetTaskQuery,
-  useGetTaskListQuery,
+  useLazyGetTaskListQuery,
   useResolveTaskMutation,
   useGetTaskCountersQuery,
   useTakeTaskMutation,
