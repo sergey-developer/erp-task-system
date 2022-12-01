@@ -9,13 +9,14 @@ import {
   mockGetTaskCommentListSuccess,
 } from '_tests_/mocks/api'
 import {
+  findNotification,
   generateWord,
   getStoreWithAuth,
   render,
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
+import { within } from '@testing-library/react'
 import { taskFixtures } from 'fixtures/task'
 import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
@@ -285,7 +286,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          const error = await screen.findByText(CREATE_TASK_COMMENT_ERROR_MSG)
+          const error = await findNotification(CREATE_TASK_COMMENT_ERROR_MSG)
           expect(error).toBeInTheDocument()
         })
 
@@ -306,7 +307,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          const error = await screen.findByText(CREATE_TASK_COMMENT_ERROR_MSG)
+          const error = await findNotification(CREATE_TASK_COMMENT_ERROR_MSG)
           expect(error).toBeInTheDocument()
         })
 
@@ -327,7 +328,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          const error = await screen.findByText(UNKNOWN_ERROR_MSG)
+          const error = await findNotification(UNKNOWN_ERROR_MSG)
           expect(error).toBeInTheDocument()
         })
       })

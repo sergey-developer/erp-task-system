@@ -68,12 +68,14 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
           description: description.trim(),
           template,
         })
+
+        toggleCreateSubTaskModalOpened()
       } catch (exception) {
         const error = exception as ErrorResponse<CreateSubTaskFormErrors>
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [createSubTask, taskId],
+    [createSubTask, taskId, toggleCreateSubTaskModalOpened],
   )
 
   useEffect(() => {

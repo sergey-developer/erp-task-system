@@ -16,12 +16,8 @@ export const mockGetSubTaskTemplateListSuccess = (
   options?: Partial<
     ResponseResolverOptions<GetSubTaskTemplateListResponseModel>
   >,
-) => {
-  getSuccessMockFn(getGetSubTaskTemplateListMockFn(), options)()
-}
+) => getSuccessMockFn(getGetSubTaskTemplateListMockFn(), options)()
 
 export const mockGetSubTaskTemplateListServerError = <T extends object>(
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  getServerErrorMockFn(getGetSubTaskTemplateListMockFn(), options)()
-}
+) => getServerErrorMockFn(getGetSubTaskTemplateListMockFn(), options)()

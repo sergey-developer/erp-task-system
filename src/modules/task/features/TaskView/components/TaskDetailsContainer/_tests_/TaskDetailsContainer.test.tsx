@@ -10,6 +10,7 @@ import {
   mockGetWorkGroupListSuccess,
 } from '_tests_/mocks/api'
 import {
+  findNotification,
   generateWord,
   getStoreWithAuth,
   loadingFinishedByButton,
@@ -19,7 +20,7 @@ import {
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { screen, waitFor, within } from '@testing-library/react'
+import { waitFor, within } from '@testing-library/react'
 import { taskFixtures } from 'fixtures/task'
 import { workGroupFixtures } from 'fixtures/workGroup'
 import { UserRolesEnum } from 'shared/constants/roles'
@@ -165,7 +166,7 @@ describe('Контейнер детальной карточки заявки', 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await screen.findByText(
+          const errorMsg = await findNotification(
             head(notFoundErrorResponse.detail)!,
           )
           expect(errorMsg).toBeInTheDocument()
@@ -208,7 +209,7 @@ describe('Контейнер детальной карточки заявки', 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await screen.findByText(
+          const errorMsg = await findNotification(
             head(serverErrorResponse.detail)!,
           )
           expect(errorMsg).toBeInTheDocument()
@@ -248,7 +249,7 @@ describe('Контейнер детальной карточки заявки', 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await screen.findByText(UNKNOWN_ERROR_MSG)
+          const errorMsg = await findNotification(UNKNOWN_ERROR_MSG)
           expect(errorMsg).toBeInTheDocument()
         })
       })
@@ -381,7 +382,7 @@ describe('Контейнер детальной карточки заявки', 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await screen.findByText(
+          const errorMsg = await findNotification(
             head(notFoundErrorResponse.detail)!,
           )
           expect(errorMsg).toBeInTheDocument()
@@ -424,7 +425,7 @@ describe('Контейнер детальной карточки заявки', 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await screen.findByText(
+          const errorMsg = await findNotification(
             head(serverErrorResponse.detail)!,
           )
           expect(errorMsg).toBeInTheDocument()
@@ -464,7 +465,7 @@ describe('Контейнер детальной карточки заявки', 
           await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await screen.findByText(UNKNOWN_ERROR_MSG)
+          const errorMsg = await findNotification(UNKNOWN_ERROR_MSG)
           expect(errorMsg).toBeInTheDocument()
         })
       })

@@ -1,6 +1,7 @@
 import {
   getButtonIn,
   getSelect,
+  loadingFinishedByButton,
   loadingFinishedBySelect,
   loadingStartedByButton,
   loadingStartedBySelect,
@@ -182,6 +183,7 @@ const utils = {
   userClickCancelButton,
 
   loadingStarted: () => loadingStartedByButton(getSubmitButton()),
+  loadingFinished: () => loadingFinishedByButton(getSubmitButton()),
 }
 
 export default utils
