@@ -2,7 +2,7 @@ import { Button, Form, Input } from 'antd'
 import { FC } from 'react'
 
 import Space from 'components/Space'
-import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
+import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { CreateCommentFormFields, CreateCommentFormProps } from './interfaces'
 
@@ -33,7 +33,7 @@ const CreateCommentForm: FC<CreateCommentFormProps> = ({
         <Form.Item
           data-testid='field-comment'
           name='comment'
-          rules={BASE_LONG_TEXT_RULES}
+          rules={DEFAULT_LONG_TEXT_RULES}
         >
           <TextArea
             placeholder='Дополните информацию о заявке'

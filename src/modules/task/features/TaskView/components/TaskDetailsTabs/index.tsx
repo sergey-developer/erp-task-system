@@ -11,13 +11,22 @@ import ResolutionTab from './ResolutionTab'
 
 const JournalTab = React.lazy(() => import('./JournalTab'))
 const CommentListTab = React.lazy(() => import('./CommentListTab'))
+const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
 
 const { TabPane } = Tabs
 
 export type TaskDetailsTabsProps = {
   details: Pick<
     TaskDetailsModel,
-    'id' | 'description' | 'userResolution' | 'techResolution' | 'type'
+    | 'id'
+    | 'title'
+    | 'description'
+    | 'userResolution'
+    | 'techResolution'
+    | 'type'
+    | 'status'
+    | 'assignee'
+    | 'recordId'
   >
 }
 
@@ -80,11 +89,21 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
       </TabPane>
 
       <TabPane
-        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.TaskList]}
-        key={TaskDetailsTabsEnum.TaskList}
+        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.SubTaskList]}
+        key={TaskDetailsTabsEnum.SubTaskList}
       >
         <DetailsWrapper>
-          <span>Задания</span>
+          <React.Suspense fallback={<Spinner />}>
+            <SubTaskListTab
+              taskId={details.id}
+              type={details.type}
+              status={details.status}
+              assignee={details.assignee}
+              recordId={details.recordId}
+              title={details.title}
+              description={details.description}
+            />
+          </React.Suspense>
         </DetailsWrapper>
       </TabPane>
     </Tabs>

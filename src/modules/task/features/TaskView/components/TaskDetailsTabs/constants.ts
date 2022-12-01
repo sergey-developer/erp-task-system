@@ -1,7 +1,7 @@
 import { StringMap } from 'shared/interfaces/utils'
 
 export enum TaskDetailsTabsEnum {
-  TaskList = 'TaskList',
+  SubTaskList = 'SubTaskList',
   CommentList = 'CommentList',
   Resolution = 'Resolution',
   Description = 'Description',
@@ -10,7 +10,7 @@ export enum TaskDetailsTabsEnum {
 
 export const taskDetailsTabNamesDict: Readonly<StringMap<TaskDetailsTabsEnum>> =
   {
-    [TaskDetailsTabsEnum.TaskList]: 'Задания',
+    [TaskDetailsTabsEnum.SubTaskList]: 'Задания',
     [TaskDetailsTabsEnum.CommentList]: 'Комментарии',
     [TaskDetailsTabsEnum.Resolution]: 'Решение',
     [TaskDetailsTabsEnum.Description]: 'Описание',

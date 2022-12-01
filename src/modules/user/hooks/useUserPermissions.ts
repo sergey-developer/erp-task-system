@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
+import { useAuthenticatedUser } from 'modules/auth/hooks'
 import {
   PermissionsMap,
   UserPermissionConfig,

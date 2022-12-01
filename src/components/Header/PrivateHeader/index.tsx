@@ -9,7 +9,7 @@ import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 import { getNavMenuConfig } from 'configs/navMenu/utils'
 import LogoutButton from 'modules/auth/features/Logout/components/LogoutButton'
-import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
+import { useAuthenticatedUser } from 'modules/auth/hooks'
 import useMatchedRoute from 'shared/hooks/useMatchedRoute'
 
 import { HeaderStyled } from './styles'

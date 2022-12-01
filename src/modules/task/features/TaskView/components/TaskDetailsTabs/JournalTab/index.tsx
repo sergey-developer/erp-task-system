@@ -35,13 +35,15 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
     try {
       const journalCsv = await getJournalCsv(taskId)
 
-      const downloadLink = makeDownloadLink(
-        journalCsv,
-        'text/csv',
-        getJournalCsvFilename(taskId),
-      )
+      if (journalCsv) {
+        const downloadLink = makeDownloadLink(
+          journalCsv,
+          'text/csv',
+          getJournalCsvFilename(taskId),
+        )
 
-      clickDownloadLink(downloadLink)
+        clickDownloadLink(downloadLink)
+      }
     } catch {}
   }
 

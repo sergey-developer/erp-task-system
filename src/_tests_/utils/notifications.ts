@@ -1,6 +1,6 @@
 import { notification } from 'antd'
 
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
 export const setupNotifications = () => {
   afterEach(async () => {
@@ -9,3 +9,5 @@ export const setupNotifications = () => {
     })
   })
 }
+
+export const findNotification = (text: string) => screen.findByText(text)
