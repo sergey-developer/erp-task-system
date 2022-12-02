@@ -5,6 +5,7 @@ import React, { FC, useCallback, useEffect } from 'react'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubTask'
 import useGetSubTaskList from 'modules/task/features/TaskView/hooks/useGetSubTaskList'
 import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
@@ -18,6 +19,7 @@ import {
   CreateSubTaskFormErrors,
   CreateSubTaskModalProps,
 } from '../../CreateSubTaskModal/interfaces'
+import SubTaskList from './SubTaskList'
 
 const CreateSubTaskModal = React.lazy(() => import('../../CreateSubTaskModal'))
 
@@ -91,7 +93,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
   }, [getTemplateList, createSubTaskModalOpened])
 
   return (
-    <Space data-testid='subtask-list-tab' direction='vertical' $block>
+    <Space
+      data-testid='subtask-list-tab'
+      size='middle'
+      direction='vertical'
+      $block
+    >
       <Row justify='space-between' align='middle'>
         <Col>
           <Title level={5}>
@@ -115,6 +122,27 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
           </Button>
         </Col>
       </Row>
+
+      <SubTaskList
+        data={[
+          {
+            title:
+              'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем. Пробовали все вариации',
+            recordId: 'ИНЦ-000345456-001',
+            olaNextBreachTime: Date.now(),
+            status: TaskStatusEnum.InProgress,
+            createdAt: Date.now(),
+            workGroup: 'РГ 1 Линия Поддержки',
+            assignee: {
+              id: 1,
+              firstName: 'firstName',
+              lastName: 'lastName',
+              middleName: 'middleName',
+            },
+            contactPhone: '+7 (900) 345-34-54',
+          },
+        ]}
+      />
 
       {createSubTaskModalOpened && (
         <React.Suspense

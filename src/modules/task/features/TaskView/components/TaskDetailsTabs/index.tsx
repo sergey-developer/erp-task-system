@@ -1,13 +1,15 @@
 import { Tabs } from 'antd'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
 import Spinner from 'components/Spinner'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 
-import DetailsWrapper from '../TaskDetails/DetailsWrapper'
+import TaskDetailsWrapper from '../TaskDetails/TaskDetailsWrapper'
 import { TaskDetailsTabsEnum, taskDetailsTabNamesDict } from './constants'
 import DescriptionTab from './DescriptionTab'
 import ResolutionTab from './ResolutionTab'
+import { TabsStyled } from './styles'
 
 const JournalTab = React.lazy(() => import('./JournalTab'))
 const CommentListTab = React.lazy(() => import('./CommentListTab'))
@@ -31,9 +33,12 @@ export type TaskDetailsTabsProps = {
 }
 
 const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
+  const breakpoints = useBreakpoint()
+
   return (
-    <Tabs
+    <TabsStyled
       data-testid='task-details-tabs'
+      $breakpoints={breakpoints}
       defaultActiveKey={TaskDetailsTabsEnum.Description}
       type='card'
     >
@@ -41,58 +46,58 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
         tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Description]}
         key={TaskDetailsTabsEnum.Description}
       >
-        <DetailsWrapper>
+        <TaskDetailsWrapper>
           <DescriptionTab
             title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Description]}
             description={details.description}
           />
-        </DetailsWrapper>
+        </TaskDetailsWrapper>
       </TabPane>
 
       <TabPane
         tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.CommentList]}
         key={TaskDetailsTabsEnum.CommentList}
       >
-        <DetailsWrapper>
+        <TaskDetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
             <CommentListTab
               title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.CommentList]}
               taskId={details.id}
             />
           </React.Suspense>
-        </DetailsWrapper>
+        </TaskDetailsWrapper>
       </TabPane>
 
       <TabPane
         tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Resolution]}
         key={TaskDetailsTabsEnum.Resolution}
       >
-        <DetailsWrapper>
+        <TaskDetailsWrapper>
           <ResolutionTab
             type={details.type}
             title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Resolution]}
             techResolution={details.techResolution}
             userResolution={details.userResolution}
           />
-        </DetailsWrapper>
+        </TaskDetailsWrapper>
       </TabPane>
 
       <TabPane
         tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Journal]}
         key={TaskDetailsTabsEnum.Journal}
       >
-        <DetailsWrapper>
+        <TaskDetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
             <JournalTab taskId={details.id} />
           </React.Suspense>
-        </DetailsWrapper>
+        </TaskDetailsWrapper>
       </TabPane>
 
       <TabPane
         tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.SubTaskList]}
         key={TaskDetailsTabsEnum.SubTaskList}
       >
-        <DetailsWrapper>
+        <TaskDetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
             <SubTaskListTab
               taskId={details.id}
@@ -104,9 +109,9 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
               description={details.description}
             />
           </React.Suspense>
-        </DetailsWrapper>
+        </TaskDetailsWrapper>
       </TabPane>
-    </Tabs>
+    </TabsStyled>
   )
 }
 

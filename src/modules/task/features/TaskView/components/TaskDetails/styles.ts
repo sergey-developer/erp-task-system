@@ -1,7 +1,19 @@
 import { Card, Divider } from 'antd'
 
 import { StyledBreakpointsProps } from 'shared/interfaces/breakpoints'
-import styled, { DefaultTheme } from 'styled-components'
+import styled, { css } from 'styled-components'
+
+export const taskDetailsContainerBaseCss = css<StyledBreakpointsProps>`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: ${({ $breakpoints }) => ($breakpoints.xxl ? '20' : '30')}px;
+  padding-right: ${({ $breakpoints }) => ($breakpoints.xxl ? '20' : '30')}px;
+`
+
+export const taskDetailsContainerStretchCss = css<StyledBreakpointsProps>`
+  margin-left: ${({ $breakpoints }) => ($breakpoints.xxl ? '-20' : '-30')}px;
+  margin-right: ${({ $breakpoints }) => ($breakpoints.xxl ? '-20' : '-30')}px;
+`
 
 export const RootWrapperStyled = styled.div`
   padding: 0 0 8px 8px;
@@ -32,7 +44,8 @@ export const CardStyled = styled(Card)<StyledBreakpointsProps>`
     flex: 1;
     height: 100%;
     overflow-y: auto;
-    padding: ${({ loading }) => (loading ? '20px' : 0)};
+    ${taskDetailsContainerBaseCss};
+    padding-bottom: 0;
   }
 `
 
@@ -42,22 +55,13 @@ export const DividerStyled = styled(Divider)`
   }
 `
 
-export type DetailsContainerStyledProps = StyledBreakpointsProps & {
-  $bgColor?: Extract<keyof DefaultTheme['colors'], 'lotion'>
-  $disablePadding?: 'horizontal' | 'vertical'
+export type TaskDetailsContainerStyledProps = {
+  $stretch?: boolean
 }
 
-export const DetailsContainerStyled = styled.div<DetailsContainerStyledProps>`
-  padding-top: ${({ $disablePadding }) =>
-    $disablePadding === 'vertical' ? '0' : '20'}px;
-  padding-bottom: ${({ $disablePadding }) =>
-    $disablePadding === 'vertical' ? '0' : '20'}px;
-
-  padding-left: ${({ $breakpoints, $disablePadding }) =>
-    $disablePadding === 'horizontal' ? '0' : $breakpoints.xxl ? '20' : '30'}px;
-  padding-right: ${({ $breakpoints, $disablePadding }) =>
-    $disablePadding === 'horizontal' ? '0' : $breakpoints.xxl ? '20' : '30'}px;
-
-  ${({ $bgColor, theme }) =>
-    $bgColor ? `background-color: ${theme.colors[$bgColor]}` : ''}
+export const TaskDetailsContainerStyled = styled.div<
+  StyledBreakpointsProps & TaskDetailsContainerStyledProps
+>`
+  ${taskDetailsContainerBaseCss}
+  ${({ $stretch }) => ($stretch ? taskDetailsContainerStretchCss : '')}
 `
