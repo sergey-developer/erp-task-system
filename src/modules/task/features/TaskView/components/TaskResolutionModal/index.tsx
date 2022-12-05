@@ -45,30 +45,22 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   )
 
   const handleFinish = async (values: TaskResolutionFormFields) => {
-    const handledValues: TaskResolutionFormFields = {
-      techResolution: values.techResolution?.trim(),
-      userResolution: values.userResolution?.trim(),
-    }
+    const techResolution = values.techResolution?.trim()
+    const userResolution = values.userResolution?.trim()
 
     const techResolutionNotChanged = isEqual(
       initialFormValues.techResolution,
-      handledValues.techResolution,
+      techResolution,
     )
     const userResolutionNotChanged = isEqual(
       initialFormValues.userResolution,
-      handledValues.userResolution,
+      userResolution,
     )
-
-    if (techResolutionNotChanged && userResolutionNotChanged) return
 
     await onSubmit(
       {
-        techResolution: techResolutionNotChanged
-          ? undefined
-          : handledValues.techResolution,
-        userResolution: userResolutionNotChanged
-          ? undefined
-          : handledValues.userResolution,
+        techResolution: techResolutionNotChanged ? undefined : techResolution,
+        userResolution: userResolutionNotChanged ? undefined : userResolution,
       },
       form.setFields,
     )
