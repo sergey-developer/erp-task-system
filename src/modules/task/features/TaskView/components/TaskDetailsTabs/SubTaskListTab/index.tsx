@@ -6,7 +6,6 @@ import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
-import { TaskStatusEnum } from 'modules/task/constants/common'
 import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubTask'
 import useGetSubTaskList from 'modules/task/features/TaskView/hooks/useGetSubTaskList'
 import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
@@ -128,32 +127,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
       </Row>
 
       <LoadingArea isLoading={subTaskListIsLoading}>
-        <SubTaskList
-          data={[
-            {
-              id: 1,
-              title:
-                'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем. Пробовали все вариации',
-              description:
-                'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем. Пробовали все вариации',
-              recordId: 'ИНЦ-000345456-001',
-              olaNextBreachTime: Date.now(),
-              status: TaskStatusEnum.InProgress,
-              createdAt: Date.now(),
-              workGroup: 'РГ 1 Линия Поддержки',
-              assignee: {
-                id: 1,
-                firstName: 'firstName',
-                lastName: 'lastName',
-                middleName: 'middleName',
-              },
-              contactPhone: '+7 (900) 345-34-54',
-              techResolution:
-                'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем.',
-            },
-          ]}
-          isError={isGetSubTaskListError}
-        />
+        <SubTaskList data={subTaskList} isError={isGetSubTaskListError} />
       </LoadingArea>
 
       {createSubTaskModalOpened && (

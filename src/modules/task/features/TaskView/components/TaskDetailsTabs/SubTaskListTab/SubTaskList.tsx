@@ -2,6 +2,7 @@ import { Typography } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
+import { SubTaskModel } from 'modules/task/features/TaskView/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
@@ -10,8 +11,7 @@ import SubTask from './SubTask'
 const { Text } = Typography
 
 type SubTaskListProps = {
-  // data: Array<SubTaskModel>
-  data: any[]
+  data: Array<SubTaskModel>
   isError: boolean
 }
 
