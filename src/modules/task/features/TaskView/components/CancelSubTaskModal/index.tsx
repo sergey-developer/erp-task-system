@@ -2,7 +2,7 @@ import { Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
-import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
+import { DEFAULT_MIDDLE_TEXT_RULES } from 'shared/constants/validation'
 
 import { CancelSubTaskFormFields, CancelSubTaskModalProps } from './interfaces'
 
@@ -47,7 +47,7 @@ const CancelSubTaskModal: FC<CancelSubTaskModalProps> = ({
           data-testid='cancelReason'
           label='Причина отмены'
           name='cancelReason'
-          rules={DEFAULT_LONG_TEXT_RULES}
+          rules={DEFAULT_MIDDLE_TEXT_RULES}
         >
           <TextArea placeholder='Опишите причину отмены' disabled={isLoading} />
         </Form.Item>
