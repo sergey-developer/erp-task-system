@@ -1,6 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import React, { FC, useCallback, useEffect } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -9,12 +9,26 @@ import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubTask'
 import useGetSubTaskList from 'modules/task/features/TaskView/hooks/useGetSubTaskList'
 import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import {
+  SubTaskModel,
+  TaskDetailsModel,
+} from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
+import {
+  TaskExtendedStatusEnum,
+  TaskOlaStatusEnum,
+  TaskStatusEnum,
+  TaskTypeEnum,
+} from '../../../../../constants/common'
+import useCancelSubTask from '../../../hooks/useCancelSubTask'
+import {
+  CancelSubTaskFormErrors,
+  CancelSubTaskModalProps,
+} from '../../CancelSubTaskModal/interfaces'
 import {
   CreateSubTaskFormErrors,
   CreateSubTaskModalProps,
@@ -22,6 +36,7 @@ import {
 import SubTaskList from './SubTaskList'
 
 const CreateSubTaskModal = React.lazy(() => import('../../CreateSubTaskModal'))
+const CancelSubTaskModal = React.lazy(() => import('../../CancelSubTaskModal'))
 
 const { Title } = Typography
 
@@ -57,11 +72,24 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     isError: isGetSubTaskListError,
   } = useGetSubTaskList(taskId)
 
+  const {
+    fn: cancelSubTask,
+    state: { isLoading: cancelSubTaskIsLoading },
+  } = useCancelSubTask()
+
   const [createSubTaskModalOpened, { toggle: toggleCreateSubTaskModalOpened }] =
     useBoolean(false)
 
   const debouncedToggleCreateSubTaskModalOpened = useDebounceFn(
     toggleCreateSubTaskModalOpened,
+  )
+
+  const [subTaskId, setSubTaskId] = useState<SubTaskModel['id']>()
+  const [cancelSubTaskModalOpened, { toggle: toggleCancelSubTaskModalOpened }] =
+    useBoolean(false)
+
+  const debouncedToggleCancelSubTaskModalOpened = useDebounceFn(
+    toggleCancelSubTaskModalOpened,
   )
 
   const taskType = useTaskType(type)
@@ -86,6 +114,31 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     },
     [createSubTask, taskId, toggleCreateSubTaskModalOpened],
   )
+
+  const handleClickCancel = (id: SubTaskModel['id']) => {
+    setSubTaskId(id)
+    debouncedToggleCancelSubTaskModalOpened()
+  }
+
+  const handleCancelSubTask: CancelSubTaskModalProps['onSubmit'] =
+    useDebounceFn(
+      async ({ cancelReason }, setFields) => {
+        if (!subTaskId) return
+
+        try {
+          await cancelSubTask({
+            taskId: subTaskId,
+            cancelReason: cancelReason.trim(),
+          })
+
+          toggleCancelSubTaskModalOpened()
+        } catch (exception) {
+          const error = exception as ErrorResponse<CancelSubTaskFormErrors>
+          handleSetFieldsErrors(error, setFields)
+        }
+      },
+      [cancelSubTask, subTaskId, toggleCancelSubTaskModalOpened],
+    )
 
   useEffect(() => {
     if (createSubTaskModalOpened) {
@@ -127,7 +180,39 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
       </Row>
 
       <LoadingArea isLoading={subTaskListIsLoading}>
-        <SubTaskList data={subTaskList} isError={isGetSubTaskListError} />
+        <SubTaskList
+          data={[
+            {
+              id: 1,
+              workGroup: 'workGroup',
+              title: 'title',
+              parentId: 2,
+              assignee: {
+                id: 1,
+                firstName: 'firstName',
+                lastName: 'lastName',
+              },
+              status: TaskStatusEnum.New,
+              recordId: 'recordId',
+              type: TaskTypeEnum.Request,
+              createdAt: new Date().toISOString(),
+              name: 'name',
+              extendedStatus: TaskExtendedStatusEnum.New,
+              severity: 1,
+              priorityCode: 1,
+              olaStatus: TaskOlaStatusEnum.NotExpired,
+              olaEstimatedTime: Date.now(),
+              contactService: '',
+              supportGroup: { id: 1, name: '' },
+              productClassifier1: '1',
+              productClassifier2: '2',
+              productClassifier3: '3',
+              initialImpact: 1,
+            },
+          ]}
+          isError={isGetSubTaskListError}
+          onClickCancel={handleClickCancel}
+        />
       </LoadingArea>
 
       {createSubTaskModalOpened && (
@@ -147,6 +232,24 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
             isLoading={createSubTaskIsLoading}
             onSubmit={handleCreateSubTask}
             onCancel={debouncedToggleCreateSubTaskModalOpened}
+          />
+        </React.Suspense>
+      )}
+
+      {cancelSubTaskModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              visible={cancelSubTaskModalOpened}
+              onCancel={debouncedToggleCancelSubTaskModalOpened}
+            />
+          }
+        >
+          <CancelSubTaskModal
+            recordId={recordId}
+            isLoading={cancelSubTaskIsLoading}
+            onSubmit={handleCancelSubTask}
+            onCancel={debouncedToggleCancelSubTaskModalOpened}
           />
         </React.Suspense>
       )}

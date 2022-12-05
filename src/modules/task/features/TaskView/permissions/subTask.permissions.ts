@@ -6,17 +6,21 @@ export const subTaskApiPermissions: UserPermissionConfig = {
   [UserRolesEnum.FirstLineSupport]: [
     PermissionsEnum.CanCreate,
     PermissionsEnum.CanGetList,
+    PermissionsEnum.CanDelete,
   ],
   [UserRolesEnum.Engineer]: [
     PermissionsEnum.CanCreate,
     PermissionsEnum.CanGetList,
+    PermissionsEnum.CanDelete,
   ],
   [UserRolesEnum.SeniorEngineer]: [
     PermissionsEnum.CanCreate,
     PermissionsEnum.CanGetList,
+    PermissionsEnum.CanDelete,
   ],
   [UserRolesEnum.HeadOfDepartment]: [
     PermissionsEnum.CanCreate,
     PermissionsEnum.CanGetList,
+    PermissionsEnum.CanDelete,
   ],
 }

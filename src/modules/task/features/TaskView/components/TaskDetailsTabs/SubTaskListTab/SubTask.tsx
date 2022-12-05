@@ -1,11 +1,12 @@
 import { useBoolean } from 'ahooks'
-import { Col, Row, Typography } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
 import { FC } from 'react'
 
 import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
+import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import {
@@ -22,6 +23,7 @@ const { Text, Title, Paragraph } = Typography
 
 type SubTaskProps = Pick<
   SubTaskModel,
+  | 'id'
   | 'olaNextBreachTime'
   | 'recordId'
   | 'title'
@@ -33,9 +35,11 @@ type SubTaskProps = Pick<
   | 'techResolution'
 > & {
   workGroup: string
+  onClickCancel: (id: SubTaskModel['id']) => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
+  id,
   title,
   description,
   status,
@@ -46,9 +50,11 @@ const SubTask: FC<SubTaskProps> = ({
   assignee,
   contactPhone,
   techResolution,
+  onClickCancel,
 }) => {
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
   const taskStatus = useTaskStatus(status)
+  const currentUserIsAssignee = useCheckUserAuthenticated(assignee?.id)
 
   return (
     <Space $block direction='vertical' size='middle'>
@@ -62,6 +68,12 @@ const SubTask: FC<SubTaskProps> = ({
             )}
           </SeparatedText>
         </Col>
+
+        {taskStatus.isNew && (
+          <Col>
+            <Button onClick={() => onClickCancel(id)}>Отменить</Button>
+          </Col>
+        )}
       </Row>
 
       <Space $block direction='vertical'>
