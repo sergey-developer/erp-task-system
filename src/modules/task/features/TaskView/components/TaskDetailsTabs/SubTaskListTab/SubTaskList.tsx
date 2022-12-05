@@ -12,15 +12,17 @@ const { Text } = Typography
 type SubTaskListProps = {
   // data: Array<SubTaskModel>
   data: any[]
+  isError: boolean
 }
 
-const SubTaskList: FC<SubTaskListProps> = ({ data }) => {
+const SubTaskList: FC<SubTaskListProps> = ({ data, isError }) => {
   return (
     <Space $block direction='vertical'>
       {data.length ? (
         <Space $block direction='vertical' size='large'>
           {data.map((subTask) => (
             <SubTask
+              key={subTask.id}
               title={subTask.title}
               description={subTask.description}
               recordId={subTask.recordId}
@@ -33,11 +35,12 @@ const SubTaskList: FC<SubTaskListProps> = ({ data }) => {
               workGroup={subTask.workGroup}
               assignee={subTask.assignee}
               contactPhone={subTask.contactPhone}
+              techResolution={subTask.techResolution}
             />
           ))}
         </Space>
       ) : (
-        <Text>Заданий нет</Text>
+        <Text>{isError ? 'Не удалось получить задания' : 'Заданий нет'}</Text>
       )}
     </Space>
   )

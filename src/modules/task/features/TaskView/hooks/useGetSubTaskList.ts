@@ -12,7 +12,7 @@ const useGetSubTaskList = (id: GetSubTaskListQueryArgsModel) => {
 
   useEffect(() => {
     if (!state.isError) return
-    showErrorNotification('Не удалось получить список заданий')
+    showErrorNotification('Не удалось получить задания')
   }, [state.isError])
 
   return state

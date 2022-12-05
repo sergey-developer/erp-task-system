@@ -2,6 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback, useEffect } from 'react'
 
+import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
@@ -51,8 +52,11 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     state: { isLoading: createSubTaskIsLoading },
   } = useCreateSubTask()
 
-  const { isLoading: subTaskListIsLoading, currentData: subTaskList = [] } =
-    useGetSubTaskList(taskId)
+  const {
+    isLoading: subTaskListIsLoading,
+    currentData: subTaskList = [],
+    isError: isGetSubTaskListError,
+  } = useGetSubTaskList(taskId)
 
   const [createSubTaskModalOpened, { toggle: toggleCreateSubTaskModalOpened }] =
     useBoolean(false)
@@ -102,7 +106,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
       <Row justify='space-between' align='middle'>
         <Col>
           <Title level={5}>
-            Задания {!!subTaskList.length && <>({subTaskList.length})</>}
+            {`Задания${!!subTaskList.length ? ` (${subTaskList.length})` : ''}`}
           </Title>
         </Col>
 
@@ -123,28 +127,34 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
         </Col>
       </Row>
 
-      <SubTaskList
-        data={[
-          {
-            title:
-              'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем. Пробовали все вариации',
-            description:
-              'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем. Пробовали все вариации',
-            recordId: 'ИНЦ-000345456-001',
-            olaNextBreachTime: Date.now(),
-            status: TaskStatusEnum.InProgress,
-            createdAt: Date.now(),
-            workGroup: 'РГ 1 Линия Поддержки',
-            assignee: {
+      <LoadingArea isLoading={subTaskListIsLoading}>
+        <SubTaskList
+          data={[
+            {
               id: 1,
-              firstName: 'firstName',
-              lastName: 'lastName',
-              middleName: 'middleName',
+              title:
+                'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем. Пробовали все вариации',
+              description:
+                'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем. Пробовали все вариации',
+              recordId: 'ИНЦ-000345456-001',
+              olaNextBreachTime: Date.now(),
+              status: TaskStatusEnum.InProgress,
+              createdAt: Date.now(),
+              workGroup: 'РГ 1 Линия Поддержки',
+              assignee: {
+                id: 1,
+                firstName: 'firstName',
+                lastName: 'lastName',
+                middleName: 'middleName',
+              },
+              contactPhone: '+7 (900) 345-34-54',
+              techResolution:
+                'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем.',
             },
-            contactPhone: '+7 (900) 345-34-54',
-          },
-        ]}
-      />
+          ]}
+          isError={isGetSubTaskListError}
+        />
+      </LoadingArea>
 
       {createSubTaskModalOpened && (
         <React.Suspense

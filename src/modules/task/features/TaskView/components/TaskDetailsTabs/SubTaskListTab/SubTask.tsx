@@ -13,6 +13,7 @@ import {
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
 import { SubTaskModel } from 'modules/task/features/TaskView/models'
+import { useTaskStatus } from 'modules/task/hooks'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 
 import Assignee from '../../TaskDetails/TaskAssignee/Assignee'
@@ -29,6 +30,7 @@ type SubTaskProps = Pick<
   | 'createdAt'
   | 'assignee'
   | 'contactPhone'
+  | 'techResolution'
 > & {
   workGroup: string
 }
@@ -43,8 +45,10 @@ const SubTask: FC<SubTaskProps> = ({
   workGroup,
   assignee,
   contactPhone,
+  techResolution,
 }) => {
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
+  const taskStatus = useTaskStatus(status)
 
   return (
     <Space $block direction='vertical' size='middle'>
@@ -61,24 +65,30 @@ const SubTask: FC<SubTaskProps> = ({
       </Row>
 
       <Space $block direction='vertical'>
-        <Title level={5}>{title}</Title>
+        <Space $block direction='vertical'>
+          <Title level={5}>{title}</Title>
 
-        <Row gutter={10}>
-          <Col span={12}>
-            <TaskStatus
-              status={status}
-              badge={badgeByTaskStatus[status]}
-              icon={iconByTaskStatus[status]}
-              text={taskStatusDict[status]}
-            />
-          </Col>
+          <Row gutter={10}>
+            <Col span={12}>
+              <TaskStatus
+                status={status}
+                badge={badgeByTaskStatus[status]}
+                icon={iconByTaskStatus[status]}
+                text={taskStatusDict[status]}
+              />
+            </Col>
 
-          <Col span={12}>
-            <LabeledData direction='horizontal' label='Дата создания:'>
-              {createdAt}
-            </LabeledData>
-          </Col>
-        </Row>
+            <Col span={12}>
+              <LabeledData direction='horizontal' label='Дата создания:'>
+                {createdAt}
+              </LabeledData>
+            </Col>
+          </Row>
+        </Space>
+
+        {techResolution && (taskStatus.isCompleted || taskStatus.isClosed) && (
+          <Paragraph type='success'>{techResolution}</Paragraph>
+        )}
       </Space>
 
       <Row gutter={10}>
