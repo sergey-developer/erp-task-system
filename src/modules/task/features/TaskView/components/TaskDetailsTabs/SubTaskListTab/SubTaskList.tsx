@@ -14,12 +14,14 @@ type SubTaskListProps = {
   data: Array<SubTaskModel>
   isError: boolean
   onClickCancel: (id: SubTaskModel['id']) => void
+  onClickRework: (id: SubTaskModel['id']) => void
 }
 
 const SubTaskList: FC<SubTaskListProps> = ({
   data,
   isError,
   onClickCancel,
+  onClickRework,
 }) => {
   return (
     <Space $block direction='vertical'>
@@ -43,6 +45,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
               contactPhone={subTask.contactPhone}
               techResolution={subTask.techResolution}
               onClickCancel={onClickCancel}
+              onClickRework={onClickRework}
             />
           ))}
         </Space>

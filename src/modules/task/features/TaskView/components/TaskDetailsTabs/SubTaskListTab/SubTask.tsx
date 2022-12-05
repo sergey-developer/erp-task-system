@@ -36,6 +36,7 @@ type SubTaskProps = Pick<
 > & {
   workGroup: string
   onClickCancel: (id: SubTaskModel['id']) => void
+  onClickRework: (id: SubTaskModel['id']) => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
@@ -51,6 +52,7 @@ const SubTask: FC<SubTaskProps> = ({
   contactPhone,
   techResolution,
   onClickCancel,
+  onClickRework,
 }) => {
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
   const taskStatus = useTaskStatus(status)
@@ -72,6 +74,14 @@ const SubTask: FC<SubTaskProps> = ({
         {taskStatus.isNew && (
           <Col>
             <Button onClick={() => onClickCancel(id)}>Отменить</Button>
+          </Col>
+        )}
+
+        {(taskStatus.isCompleted || taskStatus.isClosed) && (
+          <Col>
+            <Button onClick={() => onClickRework(id)}>
+              Вернуть на доработку
+            </Button>
           </Col>
         )}
       </Row>

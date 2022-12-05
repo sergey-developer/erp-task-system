@@ -8,6 +8,7 @@ export * from './getSubTaskList.model'
 export * from './subTaskTemplate.model'
 export * from './getSubTaskTemplateList.model'
 export * from './deleteSubTask.model'
+export * from './reworkSubTask.model'
 
 export * from './taskJournal.model'
 export * from './getTaskJournal.model'
