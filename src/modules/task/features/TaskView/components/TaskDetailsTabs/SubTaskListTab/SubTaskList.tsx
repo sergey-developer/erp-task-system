@@ -22,6 +22,7 @@ const SubTaskList: FC<SubTaskListProps> = ({ data }) => {
           {data.map((subTask) => (
             <SubTask
               title={subTask.title}
+              description={subTask.description}
               recordId={subTask.recordId}
               olaNextBreachTime={formatDate(
                 subTask.olaNextBreachTime,

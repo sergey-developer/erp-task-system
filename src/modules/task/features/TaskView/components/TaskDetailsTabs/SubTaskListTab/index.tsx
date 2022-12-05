@@ -128,6 +128,8 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
           {
             title:
               'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем. Пробовали все вариации',
+            description:
+              'На кассе не проходит пароль, не могут зарегистрироваться ни под одним паролем. Пробовали все вариации',
             recordId: 'ИНЦ-000345456-001',
             olaNextBreachTime: Date.now(),
             status: TaskStatusEnum.InProgress,

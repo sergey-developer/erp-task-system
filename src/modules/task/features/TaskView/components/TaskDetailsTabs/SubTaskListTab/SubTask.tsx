@@ -1,6 +1,8 @@
+import { useBoolean } from 'ahooks'
 import { Col, Row, Typography } from 'antd'
 import { FC } from 'react'
 
+import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
@@ -15,13 +17,14 @@ import getFullUserName from 'modules/user/utils/getFullUserName'
 
 import Assignee from '../../TaskDetails/TaskAssignee/Assignee'
 
-const { Text, Title } = Typography
+const { Text, Title, Paragraph } = Typography
 
 type SubTaskProps = Pick<
   SubTaskModel,
   | 'olaNextBreachTime'
   | 'recordId'
   | 'title'
+  | 'description'
   | 'status'
   | 'createdAt'
   | 'assignee'
@@ -32,6 +35,7 @@ type SubTaskProps = Pick<
 
 const SubTask: FC<SubTaskProps> = ({
   title,
+  description,
   status,
   recordId,
   olaNextBreachTime,
@@ -40,6 +44,8 @@ const SubTask: FC<SubTaskProps> = ({
   assignee,
   contactPhone,
 }) => {
+  const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
+
   return (
     <Space $block direction='vertical' size='middle'>
       <Row justify='space-between' align='middle'>
@@ -57,7 +63,7 @@ const SubTask: FC<SubTaskProps> = ({
       <Space $block direction='vertical'>
         <Title level={5}>{title}</Title>
 
-        <Row align='middle' gutter={10}>
+        <Row gutter={10}>
           <Col span={12}>
             <TaskStatus
               status={status}
@@ -75,25 +81,35 @@ const SubTask: FC<SubTaskProps> = ({
         </Row>
       </Space>
 
-      <Space $block direction='vertical'>
-        <Row gutter={10}>
-          <Col span={12}>
-            <LabeledData label='Рабочая группа'>{workGroup}</LabeledData>
-          </Col>
+      <Row gutter={10}>
+        <Col span={12}>
+          <LabeledData label='Рабочая группа'>{workGroup}</LabeledData>
+        </Col>
 
-          {assignee && (
-            <Col span={12}>
-              <LabeledData label='Исполнитель'>
-                <Assignee
-                  name={getFullUserName(assignee)}
-                  assignee={assignee}
-                  contactPhone={contactPhone}
-                />
-              </LabeledData>
-            </Col>
-          )}
-        </Row>
-      </Space>
+        {assignee && (
+          <Col span={12}>
+            <LabeledData label='Исполнитель'>
+              <Assignee
+                name={getFullUserName(assignee)}
+                assignee={assignee}
+                contactPhone={contactPhone}
+              />
+            </LabeledData>
+          </Col>
+        )}
+      </Row>
+
+      {description && (
+        <Space $block direction='vertical'>
+          <Expandable
+            buttonText='Подробное описание'
+            expanded={showDescription}
+            onExpand={toggleShowDescription}
+          >
+            <Paragraph>{description}</Paragraph>
+          </Expandable>
+        </Space>
+      )}
     </Space>
   )
 }
