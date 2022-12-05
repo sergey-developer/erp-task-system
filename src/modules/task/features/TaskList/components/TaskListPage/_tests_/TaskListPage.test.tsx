@@ -853,6 +853,7 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
         })
 
+        await taskTableTestUtils.loadingStarted()
         await taskTableTestUtils.loadingFinished()
         await taskListPageTestUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
@@ -1040,6 +1041,7 @@ describe('Страница реестра заявок', () => {
           store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
         })
 
+        await taskTableTestUtils.loadingStarted()
         await taskTableTestUtils.loadingFinished()
         await taskListPageTestUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
