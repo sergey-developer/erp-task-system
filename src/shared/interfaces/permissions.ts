@@ -1,9 +1,18 @@
-import { PermissionsEnum } from 'shared/constants/permissions'
+import { SubTaskApiPermissionsEnum } from 'modules/task/features/TaskView/permissions'
+import {
+  CRUDPermissionsEnum,
+  UIPermissionsEnum,
+} from 'shared/constants/permissions'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { BooleanMap } from 'shared/interfaces/utils'
 
+export type Permissions =
+  | UIPermissionsEnum
+  | CRUDPermissionsEnum
+  | SubTaskApiPermissionsEnum
+
 export type UserPermissionConfig = Partial<
-  Record<UserRolesEnum, Array<PermissionsEnum>>
+  Record<UserRolesEnum, Array<Permissions>>
 >
 
 export type ObjectPermissionConfig<K extends string> = Record<
@@ -11,6 +20,4 @@ export type ObjectPermissionConfig<K extends string> = Record<
   UserPermissionConfig
 >
 
-export type PermissionsMapKey = Uncapitalize<keyof typeof PermissionsEnum>
-
-export type PermissionsMap = Partial<BooleanMap<PermissionsMapKey>>
+export type PermissionsMap = Partial<BooleanMap<Uncapitalize<Permissions>>>

@@ -46,22 +46,21 @@ const ReworkSubTaskModal = React.lazy(() => import('../../ReworkSubTaskModal'))
 
 const { Title } = Typography
 
-export type SubTaskListTabProps = Pick<
-  TaskDetailsModel,
-  'assignee' | 'status' | 'type' | 'recordId' | 'title' | 'description'
-> & {
-  taskId: TaskDetailsModel['id']
+export type SubTaskListTabProps = {
+  task: Pick<
+    TaskDetailsModel,
+    | 'id'
+    | 'assignee'
+    | 'status'
+    | 'type'
+    | 'recordId'
+    | 'title'
+    | 'description'
+    | 'parentTask'
+  >
 }
 
-const SubTaskListTab: FC<SubTaskListTabProps> = ({
-  taskId,
-  type,
-  title,
-  description,
-  status,
-  assignee,
-  recordId,
-}) => {
+const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
   const {
     fn: getTemplateList,
     state: { isLoading: templateListIsLoading, currentData: templateList = [] },
@@ -76,7 +75,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     isLoading: subTaskListIsLoading,
     currentData: subTaskList = [],
     isError: isGetSubTaskListError,
-  } = useGetSubTaskList(taskId)
+  } = useGetSubTaskList(task.id)
 
   const {
     fn: cancelSubTask,
@@ -108,15 +107,15 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     toggleReworkSubTaskModalOpened,
   )
 
-  const taskType = useTaskType(type)
-  const taskStatus = useTaskStatus(status)
-  const currentUserIsAssignee = useCheckUserAuthenticated(assignee?.id)
+  const taskType = useTaskType(task.type)
+  const taskStatus = useTaskStatus(task.status)
+  const currentUserIsAssignee = useCheckUserAuthenticated(task.assignee?.id)
 
   const handleCreateSubTask = useCallback<CreateSubTaskModalProps['onSubmit']>(
     async ({ title, description, template }, setFields) => {
       try {
         await createSubTask({
-          taskId,
+          taskId: task.id,
           title: title.trim(),
           description: description.trim(),
           template,
@@ -128,7 +127,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [createSubTask, taskId, toggleCreateSubTaskModalOpened],
+    [createSubTask, task.id, toggleCreateSubTaskModalOpened],
   )
 
   const handleClickCancel = useCallback(
@@ -228,12 +227,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
 
       <LoadingArea isLoading={subTaskListIsLoading}>
         <SubTaskList
-          data={[
+          task={task}
+          list={[
             {
               id: 1,
               workGroup: 'workGroup',
               title: 'title',
-              parentId: 2,
               assignee: {
                 id: 1,
                 firstName: 'firstName',
@@ -273,8 +272,11 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
           }
         >
           <CreateSubTaskModal
-            initialFormValues={{ title, description }}
-            recordId={recordId}
+            initialFormValues={{
+              title: task.title,
+              description: task.description,
+            }}
+            recordId={task.recordId}
             templateOptions={templateList}
             templateOptionsIsLoading={templateListIsLoading}
             isLoading={createSubTaskIsLoading}
@@ -294,7 +296,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
           }
         >
           <CancelSubTaskModal
-            recordId={recordId}
+            recordId={task.recordId}
             isLoading={cancelSubTaskIsLoading}
             onSubmit={handleCancelSubTask}
             onCancel={debouncedToggleCancelSubTaskModalOpened}
@@ -312,7 +314,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
           }
         >
           <ReworkSubTaskModal
-            recordId={recordId}
+            recordId={task.recordId}
             isLoading={reworkSubTaskIsLoading}
             onSubmit={handleReworkSubTask}
             onCancel={debouncedToggleReworkSubTaskModalOpened}

@@ -20,7 +20,7 @@ import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
 import createSubTaskModalTestUtils from '../../../CreateSubTaskModal/_tests_/utils'
 import { CreateSubTaskFormErrors } from '../../../CreateSubTaskModal/interfaces'
 import SubTaskListTab from '../index'
-import { activeCreateSubTaskButton, requiredProps } from './constants'
+import { activeCreateSubTaskButtonProps, requiredProps } from './constants'
 import subTaskListTabTestUtils from './utils'
 
 setupApiTests()
@@ -36,10 +36,13 @@ describe('Вкладка списка подзадач', () => {
 
     test('Активна если все условия соблюдены', () => {
       render(
-        <SubTaskListTab {...requiredProps} {...activeCreateSubTaskButton} />,
+        <SubTaskListTab
+          {...requiredProps}
+          {...activeCreateSubTaskButtonProps}
+        />,
         {
           store: getStoreWithAuth({
-            userId: activeCreateSubTaskButton.assignee.id,
+            userId: activeCreateSubTaskButtonProps.task.assignee!.id,
           }),
         },
       )
@@ -50,7 +53,10 @@ describe('Вкладка списка подзадач', () => {
     describe('Не активна если все условия соблюдены', () => {
       test('Но текущий пользователь не является исполнителем заявки', () => {
         render(
-          <SubTaskListTab {...requiredProps} {...activeCreateSubTaskButton} />,
+          <SubTaskListTab
+            {...requiredProps}
+            {...activeCreateSubTaskButtonProps}
+          />,
           {
             store: getStoreWithAuth(),
           },
@@ -63,12 +69,12 @@ describe('Вкладка списка подзадач', () => {
         render(
           <SubTaskListTab
             {...requiredProps}
-            {...activeCreateSubTaskButton}
-            status={TaskStatusEnum.New}
+            {...activeCreateSubTaskButtonProps}
+            task={{ ...requiredProps.task, status: TaskStatusEnum.New }}
           />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButton.assignee.id,
+              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
             }),
           },
         )
@@ -80,12 +86,12 @@ describe('Вкладка списка подзадач', () => {
         render(
           <SubTaskListTab
             {...requiredProps}
-            {...activeCreateSubTaskButton}
-            type={TaskTypeEnum.RequestTask}
+            {...activeCreateSubTaskButtonProps}
+            task={{ ...requiredProps.task, type: TaskTypeEnum.RequestTask }}
           />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButton.assignee.id,
+              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
             }),
           },
         )
@@ -98,10 +104,13 @@ describe('Вкладка списка подзадач', () => {
       mockGetSubTaskTemplateListSuccess()
 
       const { user } = render(
-        <SubTaskListTab {...requiredProps} {...activeCreateSubTaskButton} />,
+        <SubTaskListTab
+          {...requiredProps}
+          {...activeCreateSubTaskButtonProps}
+        />,
         {
           store: getStoreWithAuth({
-            userId: activeCreateSubTaskButton.assignee.id,
+            userId: activeCreateSubTaskButtonProps.task.assignee!.id,
           }),
         },
       )
@@ -125,11 +134,11 @@ describe('Вкладка списка подзадач', () => {
           const { user } = render(
             <SubTaskListTab
               {...requiredProps}
-              {...activeCreateSubTaskButton}
+              {...activeCreateSubTaskButtonProps}
             />,
             {
               store: getStoreWithAuth({
-                userId: activeCreateSubTaskButton.assignee.id,
+                userId: activeCreateSubTaskButtonProps.task.assignee!.id,
               }),
             },
           )
@@ -149,13 +158,16 @@ describe('Вкладка списка подзадач', () => {
       test('Модалка создания закрывается', async () => {
         const templateList = taskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({ body: templateList })
-        mockCreateSubTaskSuccess(requiredProps.taskId)
+        mockCreateSubTaskSuccess(requiredProps.task.id)
 
         const { user } = render(
-          <SubTaskListTab {...requiredProps} {...activeCreateSubTaskButton} />,
+          <SubTaskListTab
+            {...requiredProps}
+            {...activeCreateSubTaskButtonProps}
+          />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButton.assignee.id,
+              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
             }),
           },
         )
@@ -189,15 +201,18 @@ describe('Вкладка списка подзадач', () => {
           description: [generateWord()],
           template: [generateWord()],
         }
-        mockCreateSubTaskBadRequestError(requiredProps.taskId, {
+        mockCreateSubTaskBadRequestError(requiredProps.task.id, {
           body: badRequestResponse,
         })
 
         const { user } = render(
-          <SubTaskListTab {...requiredProps} {...activeCreateSubTaskButton} />,
+          <SubTaskListTab
+            {...requiredProps}
+            {...activeCreateSubTaskButtonProps}
+          />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButton.assignee.id,
+              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
             }),
           },
         )
@@ -234,13 +249,16 @@ describe('Вкладка списка подзадач', () => {
       test('Корректно обрабатывается ошибка - 500', async () => {
         const templateList = taskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({ body: templateList })
-        mockCreateSubTaskServerError(requiredProps.taskId)
+        mockCreateSubTaskServerError(requiredProps.task.id)
 
         const { user } = render(
-          <SubTaskListTab {...requiredProps} {...activeCreateSubTaskButton} />,
+          <SubTaskListTab
+            {...requiredProps}
+            {...activeCreateSubTaskButtonProps}
+          />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButton.assignee.id,
+              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
             }),
           },
         )

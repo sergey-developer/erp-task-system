@@ -1,3 +1,4 @@
+import { TaskStatusEnum } from 'modules/task/constants/common'
 import { TaskDetailsWorkGroupModel } from 'modules/task/features/TaskView/models'
 import { BaseTaskModel, TaskAssigneeModel } from 'modules/task/models'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -15,4 +16,9 @@ export type TaskDetailsModel = BaseTaskModel & {
     name: string
   }
   workGroup?: MaybeNull<TaskDetailsWorkGroupModel>
+  // todo: поправить тип когда он будет известен
+  parentTask: MaybeNull<{
+    status: TaskStatusEnum
+    assignee: number
+  }>
 }

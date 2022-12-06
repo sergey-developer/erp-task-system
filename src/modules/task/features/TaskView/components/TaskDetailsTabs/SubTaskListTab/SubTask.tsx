@@ -6,7 +6,6 @@ import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
-import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import {
@@ -36,7 +35,8 @@ type SubTaskProps = Pick<
 > & {
   workGroup: string
   onClickCancel: (id: SubTaskModel['id']) => void
-  onClickRework: (id: SubTaskModel['id']) => void
+  showReworkBtn: boolean
+  onClickRework?: (id: SubTaskModel['id']) => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
@@ -52,11 +52,11 @@ const SubTask: FC<SubTaskProps> = ({
   contactPhone,
   techResolution,
   onClickCancel,
+  showReworkBtn,
   onClickRework,
 }) => {
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
-  const taskStatus = useTaskStatus(status)
-  const currentUserIsAssignee = useCheckUserAuthenticated(assignee?.id)
+  const subTaskStatus = useTaskStatus(status)
 
   return (
     <Space $block direction='vertical' size='middle'>
@@ -71,15 +71,17 @@ const SubTask: FC<SubTaskProps> = ({
           </SeparatedText>
         </Col>
 
-        {taskStatus.isNew && (
+        {subTaskStatus.isNew && (
           <Col>
             <Button onClick={() => onClickCancel(id)}>Отменить</Button>
           </Col>
         )}
 
-        {(taskStatus.isCompleted || taskStatus.isClosed) && (
+        {showReworkBtn && (
           <Col>
-            <Button onClick={() => onClickRework(id)}>
+            <Button
+              onClick={onClickRework ? () => onClickRework(id) : undefined}
+            >
               Вернуть на доработку
             </Button>
           </Col>
@@ -108,9 +110,10 @@ const SubTask: FC<SubTaskProps> = ({
           </Row>
         </Space>
 
-        {techResolution && (taskStatus.isCompleted || taskStatus.isClosed) && (
-          <Paragraph type='success'>{techResolution}</Paragraph>
-        )}
+        {techResolution &&
+          (subTaskStatus.isCompleted || subTaskStatus.isClosed) && (
+            <Paragraph type='success'>{techResolution}</Paragraph>
+          )}
       </Space>
 
       <Row gutter={10}>

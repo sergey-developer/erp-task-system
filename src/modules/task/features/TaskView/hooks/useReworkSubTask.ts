@@ -14,11 +14,11 @@ const useReworkSubTask = () => {
 
   const fn = useCallback(
     async (data: ReworkSubTaskMutationArgsModel) => {
-      // if (permissions.canDelete) {
-      await mutation(data).unwrap()
-      // }
+      if (permissions.canRework) {
+        await mutation(data).unwrap()
+      }
     },
-    [mutation],
+    [mutation, permissions.canRework],
   )
 
   useEffect(() => {

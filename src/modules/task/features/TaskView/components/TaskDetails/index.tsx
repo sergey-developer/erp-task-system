@@ -99,6 +99,7 @@ export type TaskDetailsProps = {
       | 'productClassifier3'
       | 'latitude'
       | 'longitude'
+      | 'parentTask'
     >
   >
 

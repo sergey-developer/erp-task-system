@@ -174,7 +174,7 @@ RTK query не умеет правильно доставать ReturnType из 
 ## Permissions
 Пермишены ролей реализованы на фронте.
 
-- Перечисленны в `PermissionsEnum`
+- Перечисленны в `UIPermissionsEnum`, `CRUDPermissionsEnum`
 - Конфиги описываются в файле `*.permissions.ts`
 - Хук `useUserPermissions` для получения пермишенов в зависимости от роли пользователя
 - Функция `getPermissionsMap` для получения пермишенов вне хука `useUserPermissions`

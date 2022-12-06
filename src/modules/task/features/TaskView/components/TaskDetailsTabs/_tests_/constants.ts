@@ -14,5 +14,6 @@ export const requiredProps: TaskDetailsTabsProps = {
     status: TaskStatusEnum.New,
     recordId: generateIdStr(),
     assignee: null,
+    parentTask: null,
   },
 }
