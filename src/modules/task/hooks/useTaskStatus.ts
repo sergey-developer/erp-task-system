@@ -10,12 +10,9 @@ const useTaskStatus = (
   return useMemo(
     () => ({
       isNew: isEqual(status, TaskStatusEnum.New),
-      isAppointed: isEqual(status, TaskStatusEnum.Appointed),
       isInProgress: isEqual(status, TaskStatusEnum.InProgress),
-      isCompleted: isEqual(status, TaskStatusEnum.Completed),
       isAwaiting: isEqual(status, TaskStatusEnum.Awaiting),
-      isInReclassification: isEqual(status, TaskStatusEnum.InReclassification),
-      isReturned: isEqual(status, TaskStatusEnum.Returned),
+      isCompleted: isEqual(status, TaskStatusEnum.Completed),
       isClosed: isEqual(status, TaskStatusEnum.Closed),
     }),
     [status],

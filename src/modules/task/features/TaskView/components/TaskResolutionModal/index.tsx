@@ -4,46 +4,36 @@ import React, { FC } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
+import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { TaskResolutionFormFields } from './interfaces'
-import { TECH_RESOLUTION_RULES, USER_RESOLUTION_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+const OK_BUTTON_TEXT = 'Выполнить заявку'
 
 export type TaskResolutionModalProps = Pick<
-  ModalProps,
-  'visible' | 'onCancel'
-> &
-  Pick<
-    TaskDetailsModel,
-    'type' | 'techResolution' | 'userResolution' | 'recordId'
-  > & {
-    isTaskResolving: boolean
-    onSubmit: (
-      values: TaskResolutionFormFields,
-      setFields: FormInstance['setFields'],
-    ) => void
-  }
+  TaskDetailsModel,
+  'type' | 'recordId'
+> & {
+  isLoading: boolean
+  onSubmit: (
+    values: TaskResolutionFormFields,
+    setFields: FormInstance['setFields'],
+  ) => void
+  onCancel: NonNullable<ModalProps['onCancel']>
+}
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
-  isTaskResolving,
+  isLoading,
   onCancel,
   onSubmit,
-  techResolution,
   recordId,
   type,
-  userResolution,
-  visible,
 }) => {
   const [form] = Form.useForm<TaskResolutionFormFields>()
 
   const taskType = useTaskType(type)
-
-  const initialFormValues: Partial<TaskResolutionFormFields> = {
-    techResolution,
-    userResolution,
-  }
 
   const modalTitle = (
     <Text>
@@ -56,25 +46,28 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     userResolution,
   }: TaskResolutionFormFields) => {
     await onSubmit(
-      { techResolution, userResolution: userResolution || undefined },
+      {
+        techResolution: techResolution?.trim(),
+        userResolution: userResolution?.trim(),
+      },
       form.setFields,
     )
   }
 
   return (
     <BaseModal
+      visible
       title={modalTitle}
-      visible={visible}
-      confirmLoading={isTaskResolving}
+      confirmLoading={isLoading}
       onOk={form.submit}
-      okText='Выполнить заявку'
+      okText={OK_BUTTON_TEXT}
       onCancel={onCancel}
     >
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>
           <Text>
             Заполните информацию о работах на объекте и предложенном решении.
-            Затем нажмите кнопку «Выполнить заявку».
+            Затем нажмите кнопку «{OK_BUTTON_TEXT}».
           </Text>
 
           <Text type='danger'>
@@ -84,25 +77,33 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
 
         <Form<TaskResolutionFormFields>
           form={form}
-          initialValues={initialFormValues}
           layout='vertical'
           onFinish={handleFinish}
+          preserve={false}
         >
           <Form.Item
+            data-testid='tech-resolution'
             label='Техническое решение'
             name='techResolution'
-            rules={TECH_RESOLUTION_RULES}
+            rules={BASE_LONG_TEXT_RULES}
           >
-            <TextArea placeholder='Расскажите о работах на объекте' />
+            <TextArea
+              placeholder='Расскажите о работах на объекте'
+              disabled={isLoading}
+            />
           </Form.Item>
 
           {!taskType.isIncidentTask && !taskType.isRequestTask && (
             <Form.Item
+              data-testid='user-resolution'
               label='Решение для пользователя'
               name='userResolution'
-              rules={USER_RESOLUTION_RULES}
+              rules={BASE_LONG_TEXT_RULES}
             >
-              <TextArea placeholder='Расскажите заявителю о решении' />
+              <TextArea
+                placeholder='Расскажите заявителю о решении'
+                disabled={isLoading}
+              />
             </Form.Item>
           )}
         </Form>

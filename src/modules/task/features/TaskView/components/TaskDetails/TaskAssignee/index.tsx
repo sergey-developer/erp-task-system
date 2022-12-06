@@ -1,13 +1,12 @@
-import { Button, Row, Typography } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
-import LabeledData from 'components/LabeledData'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
 import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions/taskAssignee.permissions'
+import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions'
 import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
 import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { TaskAssigneeModel } from 'modules/task/models'
@@ -24,19 +23,16 @@ const NOT_ASSIGNED_TEXT: string = 'Не назначен'
 
 export type TaskAssigneeProps = Pick<
   TaskDetailsModel,
-  'status' | 'extendedStatus'
+  'status' | 'extendedStatus' | 'assignee'
 > & {
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
-  assignee?: TaskDetailsModel['assignee']
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
 
   takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
-
-  hasReclassificationRequest: boolean
 }
 
 const TaskAssignee: FC<TaskAssigneeProps> = ({
@@ -53,8 +49,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   takeTask,
   takeTaskIsLoading,
-
-  hasReclassificationRequest,
 }) => {
   const currentAssignee = assignee?.id
   const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
@@ -115,25 +109,32 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   )
 
   return (
-    <Space direction='vertical' $block>
-      <LabeledData label='Исполнитель' size='large' direction='horizontal'>
-        <Button
-          type='link'
-          loading={updateAssigneeIsLoading}
-          disabled={
-            taskStatus.isClosed ||
-            taskStatus.isCompleted ||
-            hasReclassificationRequest
-          }
-          onClick={
-            currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
-          }
-        >
-          {currentAssigneeIsAuthenticatedUser
-            ? 'Отказаться от заявки'
-            : 'Назначить на себя'}
-        </Button>
-      </LabeledData>
+    <Space data-testid='task-assignee' direction='vertical' $block>
+      <Row justify='space-between'>
+        <Col>
+          <Text type='secondary'>Исполнитель</Text>
+        </Col>
+
+        <Col>
+          <Button
+            type='link'
+            loading={updateAssigneeIsLoading}
+            disabled={
+              taskStatus.isClosed ||
+              taskStatus.isCompleted ||
+              taskStatus.isAwaiting ||
+              taskExtendedStatus.isInReclassification
+            }
+            onClick={
+              currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
+            }
+          >
+            {currentAssigneeIsAuthenticatedUser
+              ? 'Отказаться от заявки'
+              : 'Назначить на себя'}
+          </Button>
+        </Col>
+      </Row>
 
       <Permissions
         config={taskAssigneePermissions.select}
@@ -214,10 +215,11 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                     onClick={handleClickAssigneeButton}
                     loading={updateAssigneeIsLoading}
                     disabled={
+                      taskStatus.isAwaiting ||
                       !selectedAssignee ||
                       selectedAssigneeIsAuthenticatedUser ||
                       selectedAssigneeIsCurrentAssignee ||
-                      hasReclassificationRequest
+                      taskExtendedStatus.isInReclassification
                     }
                   >
                     Назначить

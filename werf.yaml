@@ -11,7 +11,10 @@ args:
   REACT_APP_ENVIRONMENT: development
 {{ else if eq .Env "stage" }}
   REACT_APP_API_URL: https://stage.itsm.bnvt.ru
-  REACT_APP_ENVIRONMENT: stage
+  REACT_APP_ENVIRONMENT: production
+{{ else if eq .Env "prod" }}
+  REACT_APP_API_URL: https://itsm.obermeister.ru
+  REACT_APP_ENVIRONMENT: production
 {{ end }}
 
 

@@ -1,0 +1,25 @@
+import { useEffect } from 'react'
+
+import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskJournalApi.service'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
+import { showErrorNotification } from 'shared/utils/notifications'
+
+import { GetTaskJournalCsvQueryArgsModel } from '../models'
+
+const useLazyGetTaskJournalCsv = () => {
+  const [trigger, state] = useLazyGetTaskJournalCsvQuery()
+
+  const fn = async (data: GetTaskJournalCsvQueryArgsModel) => {
+    return trigger(data).unwrap()
+  }
+
+  useEffect(() => {
+    if (!state.isError) return
+
+    showErrorNotification(UNKNOWN_ERROR_MSG)
+  }, [state.isError])
+
+  return { fn, state }
+}
+
+export default useLazyGetTaskJournalCsv

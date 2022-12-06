@@ -1,10 +1,19 @@
-export * from '@testing-library/react'
+export * from './fakeGenerator'
 
-export * from './common'
-export * from './icon'
+export * from './auth'
+
 export * from './fields/select'
-export * from './waitLoading'
+export * from './fields/radioButton'
+export * from './fields/checkbox'
+
+export * from './loading'
+export * from './validating'
+export * from './icon'
+export * from './button'
+export { default as modalTestUtils } from './modal'
+
+export * from './setupApiTests'
+export * from './setupNotifications'
 
 export { default as render } from './renderInAppProvider'
 export { default as renderInRoute } from './renderInRoute'
-export { default as setupApiTests } from './setupApiTests'

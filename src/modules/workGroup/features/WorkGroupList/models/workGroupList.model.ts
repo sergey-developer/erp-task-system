@@ -1,10 +1,12 @@
-import { WorkGroupListMemberModel } from './workGroupListMember.model'
+type WorkGroupListMemberModel = {
+  id: number
+  fullName: string
+}
 
 export type WorkGroupListItemModel = {
   id: number
   name: string
   seniorEngineer: WorkGroupListMemberModel
   groupLead: WorkGroupListMemberModel
-  engineers: Array<WorkGroupListMemberModel>
   members: Array<WorkGroupListMemberModel>
 }

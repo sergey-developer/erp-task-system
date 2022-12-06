@@ -1,12 +1,15 @@
-import { getTaskTableItem } from '_fixtures_/task'
+import { TablePaginationConfig } from 'antd'
+import head from 'lodash/head'
+
+import { taskFixtures } from 'fixtures/task'
 
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { TaskTableProps } from '../interfaces'
 
-export const columnWithSortingClass = 'ant-table-column-has-sorters'
+const columnWithSortingClass = 'ant-table-column-has-sorters'
 
-export const baseProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
-  dataSource: [getTaskTableItem()],
+const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
+  dataSource: [taskFixtures.getTaskTableItem()],
   loading: false,
   onRow: jest.fn(),
   onChange: jest.fn(),
@@ -14,10 +17,21 @@ export const baseProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   rowClassName: '',
 }
 
-export const paginationProps: TaskTableProps['pagination'] = {
+const paginationProps: Readonly<
+  Required<Pick<TablePaginationConfig, 'current' | 'pageSize' | 'total'>>
+> = {
   current: 1,
   pageSize: DEFAULT_PAGE_SIZE,
-  total: 120,
+  total: DEFAULT_PAGE_SIZE + 1,
 }
 
-export const taskTableItemFromBaseProps = baseProps.dataSource![0]
+const firstTaskTableItem = head(requiredProps.dataSource)!
+
+const testConstants = {
+  columnWithSortingClass,
+  requiredProps,
+  paginationProps,
+  firstTaskTableItem,
+}
+
+export default testConstants

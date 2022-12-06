@@ -2,13 +2,7 @@ import { Tag } from 'antd'
 
 import styled from 'styled-components'
 
-type CheckableTagStyledProps = {
-  $disabled?: boolean
-}
-
-export const CheckableTagStyled = styled(
-  Tag.CheckableTag,
-)<CheckableTagStyledProps>`
+export const CheckableTagStyled = styled(Tag.CheckableTag)`
   && {
     height: 30px;
     display: inline-flex;
@@ -17,18 +11,20 @@ export const CheckableTagStyled = styled(
     margin: 0;
   }
 
-  &.ant-tag-checkable:not(.ant-tag-checkable-checked):hover {
-    ${({ $disabled }) => ($disabled ? `color: unset;` : '')}
+  &.ant-tag-checkable--disabled {
+    cursor: not-allowed;
   }
 
-  &.ant-tag-checkable:active {
-    ${({ theme, $disabled }) =>
-      $disabled ? `background-color: ${theme.colors.platinum};` : ''}
+  &&.ant-tag-checkable--disabled:hover {
+    color: unset;
+  }
+
+  &.ant-tag-checkable--disabled:active {
+    ${({ theme }) => `background-color: ${theme.colors.platinum};`}
   }
 
   &:not(.ant-tag-checkable-checked) {
     background-color: ${({ theme }) => theme.colors.platinum};
-    ${({ $disabled }) => ($disabled ? 'cursor: not-allowed;' : '')};
   }
 
   &.ant-tag-checkable-checked .ant-typography {

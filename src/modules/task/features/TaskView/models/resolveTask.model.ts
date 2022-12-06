@@ -5,3 +5,5 @@ export type ResolveTaskMutationArgsModel = BaseTaskRequestArgs &
     techResolution: string
     userResolution: string
   }>
+
+export type ResolveTaskResponseModel = void

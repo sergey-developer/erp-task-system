@@ -39,7 +39,6 @@ export const CardStyled = styled(Card)<StyledBreakpointsProps>`
 export const DividerStyled = styled(Divider)`
   && {
     border-top: 1px solid ${({ theme }) => theme.colors.chineseWhite};
-    margin: 0;
   }
 `
 

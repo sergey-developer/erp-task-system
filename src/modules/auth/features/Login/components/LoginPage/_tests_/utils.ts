@@ -5,18 +5,20 @@ import {
   NOT_EXISTING_EMAIL,
   WRONG_PASSWORD,
 } from '_tests_/constants/auth'
-import { screen, waitFor } from '_tests_/utils'
+import {
+  validatingFinished as baseValidatingFinished,
+  validatingStarted as baseValidatingStarted,
+} from '_tests_/utils'
+import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const validatingStatusClass = 'ant-form-item-is-validating'
+const getEmailField = () => screen.getByTestId('field-email')
+const getEmailInput = () => screen.getByTestId('input-email')
 
-export const getEmailField = () => screen.getByTestId('field-email')
-export const getEmailInput = () => screen.getByTestId('input-email')
+const getPasswordField = () => screen.getByTestId('field-password')
+const getPasswordInput = () => screen.getByTestId('input-password')
 
-export const getPasswordField = () => screen.getByTestId('field-password')
-export const getPasswordInput = () => screen.getByTestId('input-password')
-
-export const getSubmitBtn = () => screen.getByTestId('btn-submit')
+const getSubmitBtn = () => screen.getByTestId('btn-submit')
 
 const userEntersEmail = async (
   user: UserEvent,
@@ -27,19 +29,19 @@ const userEntersEmail = async (
   return emailInput
 }
 
-export const userEntersCorrectEmail = async (
+const userEntersCorrectEmail = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersEmail(user, CORRECT_EMAIL)
 }
 
-export const userEntersIncorrectEmail = async (
+const userEntersIncorrectEmail = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersEmail(user, INCORRECT_EMAIL)
 }
 
-export const userEntersNotExistingEmail = async (
+const userEntersNotExistingEmail = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersEmail(user, NOT_EXISTING_EMAIL)
@@ -54,48 +56,56 @@ const userEntersPassword = async (
   return passwordInput
 }
 
-export const userEntersCorrectPassword = async (
+const userEntersCorrectPassword = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersPassword(user, CORRECT_PASSWORD)
 }
 
-export const userEntersWrongPassword = async (
+const userEntersWrongPassword = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   return userEntersPassword(user, WRONG_PASSWORD)
 }
 
-export const waitStartValidating = async (
+const validatingStarted = async (
   emailField: HTMLElement,
   passwordField: HTMLElement,
 ) => {
-  await waitFor(() => {
-    expect(emailField).toHaveClass(validatingStatusClass)
-  })
-
-  await waitFor(() => {
-    expect(passwordField).toHaveClass(validatingStatusClass)
-  })
+  await baseValidatingStarted(emailField)
+  await baseValidatingStarted(passwordField)
 }
 
-export const waitFinishValidating = async (
+const validatingFinished = async (
   emailField: HTMLElement,
   passwordField: HTMLElement,
 ) => {
-  await waitFor(() => {
-    expect(emailField).not.toHaveClass(validatingStatusClass)
-  })
-
-  await waitFor(() => {
-    expect(passwordField).not.toHaveClass(validatingStatusClass)
-  })
+  await baseValidatingFinished(emailField)
+  await baseValidatingFinished(passwordField)
 }
 
-export const userClickSubmitButton = async (
-  user: UserEvent,
-): Promise<HTMLElement> => {
+const userClickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
   const submitBtn = getSubmitBtn()
   await user.click(submitBtn)
   return submitBtn
 }
+
+const utils = {
+  getEmailField,
+  getEmailInput,
+  getPasswordField,
+  getPasswordInput,
+  getSubmitBtn,
+  userEntersEmail,
+  userEntersCorrectEmail,
+  userEntersIncorrectEmail,
+  userEntersNotExistingEmail,
+  userEntersPassword,
+  userEntersCorrectPassword,
+  userEntersWrongPassword,
+  validatingStarted,
+  validatingFinished,
+  userClickSubmitButton,
+}
+
+export default utils

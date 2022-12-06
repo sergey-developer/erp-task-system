@@ -4,7 +4,7 @@ import { useLogoutMutation } from 'modules/auth/services/authApi.service'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import logoutAndClearTokens from 'modules/auth/utils/logoutAndClearTokens'
 import useDispatch from 'shared/hooks/useDispatch'
-import showErrorNotification from 'shared/utils/notifications/showErrorNotification'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { LOGOUT_ERROR_MSG } from '../constants/messages'
 

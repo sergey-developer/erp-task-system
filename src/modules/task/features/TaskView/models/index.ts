@@ -8,17 +8,18 @@ export * from './taskJournal.model'
 export * from './getTaskJournal.model'
 export * from './getTaskJournalCsv.model'
 
+export * from './createTaskComment.model'
 export * from './getTaskCommentList.model'
 
 export * from './updateTaskAssignee.model'
 
 export * from './updateTaskWorkGroup.model'
+export * from './deleteTaskWorkGroup.model'
 
 export * from './getTaskReclassificationRequest.model'
 export * from './createTaskReclassificationRequest.model'
 
 export * from './taskDetails.model'
-export * from './taskDetailsComment.model'
+export * from './taskComment.model'
 export * from './taskDetailsWorkGroup.model'
-export * from './taskDetailsReclassificationRequest.model'
-export * from './taskDetailsReclassificationRequestComment.model'
+export * from './taskReclassificationRequest.model'

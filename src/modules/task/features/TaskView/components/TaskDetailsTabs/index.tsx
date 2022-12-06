@@ -6,31 +6,34 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 
 import DetailsWrapper from '../TaskDetails/DetailsWrapper'
 import { TaskDetailsTabsEnum, taskDetailsTabNamesDict } from './constants'
-import Description from './Description'
-import Resolution from './Resolution'
+import DescriptionTab from './DescriptionTab'
+import ResolutionTab from './ResolutionTab'
 
-const Journal = React.lazy(() => import('./Journal'))
-const CommentList = React.lazy(() => import('./CommentList'))
+const JournalTab = React.lazy(() => import('./JournalTab'))
+const CommentListTab = React.lazy(() => import('./CommentListTab'))
 
 const { TabPane } = Tabs
 
-type TaskDetailsTabsProps = {
+export type TaskDetailsTabsProps = {
   details: Pick<
     TaskDetailsModel,
-    'id' | 'description' | 'type' | 'userResolution' | 'techResolution'
+    'id' | 'description' | 'userResolution' | 'techResolution' | 'type'
   >
-  defaultTab: TaskDetailsTabsEnum
 }
 
-const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
+const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
   return (
-    <Tabs defaultActiveKey={defaultTab} type='card'>
+    <Tabs
+      data-testid='task-details-tabs'
+      defaultActiveKey={TaskDetailsTabsEnum.Description}
+      type='card'
+    >
       <TabPane
         tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Description]}
         key={TaskDetailsTabsEnum.Description}
       >
         <DetailsWrapper>
-          <Description
+          <DescriptionTab
             title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Description]}
             description={details.description}
           />
@@ -38,13 +41,13 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
       </TabPane>
 
       <TabPane
-        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Comments]}
-        key={TaskDetailsTabsEnum.Comments}
+        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.CommentList]}
+        key={TaskDetailsTabsEnum.CommentList}
       >
         <DetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <CommentList
-              title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Comments]}
+            <CommentListTab
+              title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.CommentList]}
               taskId={details.id}
             />
           </React.Suspense>
@@ -56,7 +59,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
         key={TaskDetailsTabsEnum.Resolution}
       >
         <DetailsWrapper>
-          <Resolution
+          <ResolutionTab
             type={details.type}
             title={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Resolution]}
             techResolution={details.techResolution}
@@ -71,14 +74,14 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details, defaultTab }) => {
       >
         <DetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <Journal taskId={details.id} />
+            <JournalTab taskId={details.id} />
           </React.Suspense>
         </DetailsWrapper>
       </TabPane>
 
       <TabPane
-        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Tasks]}
-        key={TaskDetailsTabsEnum.Tasks}
+        tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.TaskList]}
+        key={TaskDetailsTabsEnum.TaskList}
       >
         <DetailsWrapper>
           <span>Задания</span>

@@ -5,27 +5,25 @@ import {
 import { BaseTaskModel } from 'modules/task/models'
 import { StringMap } from 'shared/interfaces/utils'
 
-export const taskExtendedStatusToTaskStatus: Partial<
-  Record<TaskExtendedStatusEnum, TaskStatusEnum>
-> = {
-  [TaskExtendedStatusEnum.Awaiting]: TaskStatusEnum.Awaiting,
-  [TaskExtendedStatusEnum.Returned]: TaskStatusEnum.Returned,
-  [TaskExtendedStatusEnum.InReclassification]:
-    TaskStatusEnum.InReclassification,
-}
-
-export const taskStatusDict: Readonly<Partial<StringMap<TaskStatusEnum>>> = {
+export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.New]: 'Новая',
   [TaskStatusEnum.InProgress]: 'В работе',
-  [TaskStatusEnum.Completed]: 'Выполнено',
   [TaskStatusEnum.Awaiting]: 'В ожидании',
-  [TaskStatusEnum.InReclassification]: 'На переклассификации',
-  [TaskStatusEnum.Returned]: 'Возврат заявителем',
-  [TaskStatusEnum.Closed]: 'Закрытые',
+  [TaskStatusEnum.Completed]: 'Выполнена',
+  [TaskStatusEnum.Closed]: 'Закрыта',
 }
 
-export const taskStatusExtendedFilterDict = { ...taskStatusDict }
-delete taskStatusExtendedFilterDict.NEW
+export const taskExtendedStatusDict: Readonly<
+  Partial<StringMap<TaskExtendedStatusEnum>>
+> = {
+  [TaskExtendedStatusEnum.New]: 'Новые',
+  [TaskExtendedStatusEnum.InProgress]: 'В работе',
+  [TaskExtendedStatusEnum.Completed]: 'Выполнено',
+  [TaskExtendedStatusEnum.Awaiting]: 'В ожидании',
+  [TaskExtendedStatusEnum.InReclassification]: 'На переклассификации',
+  [TaskExtendedStatusEnum.Returned]: 'Возврат заявителем',
+  [TaskExtendedStatusEnum.Closed]: 'Закрытые',
+}
 
 export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> =
   new Map([

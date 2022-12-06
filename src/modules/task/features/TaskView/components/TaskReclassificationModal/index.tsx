@@ -12,27 +12,28 @@ import React, { FC } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 import { ReclassificationReasonEnum } from 'modules/task/constants/common'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
 
+import { reclassificationReasonLabels } from './constants'
 import { TaskReclassificationRequestFormFields } from './interfaces'
-import { COMMENT_RULES, RECLASSIFICATION_REASON_RULES } from './validation'
+import { RECLASSIFICATION_REASON_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
 export type TaskReclassificationModalProps = Pick<
-  ModalProps,
-  'visible' | 'onCancel'
-> &
-  Pick<TaskDetailsModel, 'recordId'> & {
-    onSubmit: (
-      values: TaskReclassificationRequestFormFields,
-      setFields: FormInstance['setFields'],
-    ) => void
-    isLoading: boolean
-  }
+  TaskDetailsModel,
+  'recordId'
+> & {
+  onSubmit: (
+    values: TaskReclassificationRequestFormFields,
+    setFields: FormInstance['setFields'],
+  ) => Promise<void>
+  onCancel: NonNullable<ModalProps['onCancel']>
+  isLoading: boolean
+}
 
 const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
-  visible,
   recordId,
   isLoading,
   onCancel,
@@ -54,7 +55,7 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
 
   return (
     <BaseModal
-      visible={visible}
+      visible
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}
@@ -65,29 +66,48 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
         form={form}
         layout='vertical'
         onFinish={handleFinish}
+        preserve={false}
       >
         <Form.Item
+          data-testid='reclassification-reason'
           label='Причина переклассификации'
           name='reclassificationReason'
           rules={RECLASSIFICATION_REASON_RULES}
         >
-          <Radio.Group>
+          <Radio.Group disabled={isLoading}>
             <Space direction='vertical'>
               <Radio value={ReclassificationReasonEnum.WrongClassification}>
-                Требуется переклассификация (классификация неверная)
+                {
+                  reclassificationReasonLabels[
+                    ReclassificationReasonEnum.WrongClassification
+                  ]
+                }
               </Radio>
               <Radio value={ReclassificationReasonEnum.WrongSupportGroup}>
-                Требуется переклассификация (классификация верная)
+                {
+                  reclassificationReasonLabels[
+                    ReclassificationReasonEnum.WrongSupportGroup
+                  ]
+                }
               </Radio>
-              <Radio value={ReclassificationReasonEnum.DivideTask}>
-                Требуется разбить обращение
+              <Radio value={ReclassificationReasonEnum.DivideTask} disabled>
+                {
+                  reclassificationReasonLabels[
+                    ReclassificationReasonEnum.DivideTask
+                  ]
+                }
               </Radio>
             </Space>
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item label='Комментарий' name='comment' rules={COMMENT_RULES}>
-          <TextArea placeholder='Опишите ситуацию' />
+        <Form.Item
+          data-testid='comment'
+          label='Комментарий'
+          name='comment'
+          rules={BASE_LONG_TEXT_RULES}
+        >
+          <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>
       </Form>
     </BaseModal>

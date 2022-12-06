@@ -2,7 +2,12 @@ import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import React from 'react'
 
-import { taskExtendedStatusToTaskStatus } from 'modules/task/constants/dictionary'
+import { taskStatusDict } from 'modules/task/constants/dictionary'
+import {
+  badgeByTaskStatus,
+  iconByTaskExtendedStatus,
+  iconByTaskStatus,
+} from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import getShortUserName from 'modules/user/utils/getShortUserName'
@@ -18,11 +23,19 @@ const { Text } = Typography
 export const tableColumns: ColumnsType<TaskTableListItem> = [
   {
     key: 'noop',
-    render: (_, { status, extendedStatus }) => (
-      <TaskStatus
-        status={taskExtendedStatusToTaskStatus[extendedStatus] || status}
-      />
-    ),
+    render: (_, { status, extendedStatus }) => {
+      const taskStatusIcon = iconByTaskStatus[status]
+      const extendedStatusIcon = iconByTaskExtendedStatus[extendedStatus]
+      const badge = badgeByTaskStatus[status]
+
+      return (
+        <TaskStatus
+          status={extendedStatusIcon ? extendedStatus : status}
+          icon={taskStatusIcon || extendedStatusIcon}
+          badge={badge}
+        />
+      )
+    },
     align: 'center',
   },
   {
@@ -82,6 +95,19 @@ export const tableColumns: ColumnsType<TaskTableListItem> = [
       </Text>
     ),
     sorter: true,
+  },
+  {
+    key: 'status',
+    dataIndex: 'status',
+    title: 'Статус',
+    ellipsis: true,
+    sorter: ({ status: statusA }, { status: statusB }) =>
+      taskStatusDict[statusA] < taskStatusDict[statusB]
+        ? -1
+        : taskStatusDict[statusA] > taskStatusDict[statusB]
+        ? 1
+        : 0,
+    render: (_, { status }) => taskStatusDict[status],
   },
   {
     key: 'lastComment',

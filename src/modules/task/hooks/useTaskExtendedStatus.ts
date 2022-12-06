@@ -19,6 +19,10 @@ const useTaskExtendedStatus = (
         status,
         TaskExtendedStatusEnum.InReclassification,
       ),
+      isFirstLineReturned: isEqual(
+        status,
+        TaskExtendedStatusEnum.FirstLineReturned,
+      ),
     }),
     [status],
   )

@@ -10,27 +10,26 @@ import { MaybeNull } from 'shared/interfaces/utils'
 
 const { Text, Link } = Typography
 
-const TRANSFER_BUTTON_TEXT: string = 'Перевести заявку'
+const OK_BUTTON_TEXT: string = 'Перевести заявку'
 
-type TaskSecondLineModalProps = Pick<ModalProps, 'visible' | 'onCancel'> &
-  Pick<TaskDetailsModel, 'id'> & {
-    workGroupList: Array<WorkGroupListItemModel>
-    workGroupListIsLoading: boolean
+export type TaskSecondLineModalProps = Pick<TaskDetailsModel, 'id'> & {
+  workGroupList: Array<WorkGroupListItemModel>
+  workGroupListIsLoading: boolean
 
-    transferTaskIsLoading: boolean
-    onTransfer: (value: WorkGroupListItemModel['id']) => void
-  }
+  isLoading: boolean
+  onSubmit: (value: WorkGroupListItemModel['id']) => Promise<void>
+  onCancel: NonNullable<ModalProps['onCancel']>
+}
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
-  visible,
-  onCancel,
 
   workGroupList,
   workGroupListIsLoading,
 
-  onTransfer,
-  transferTaskIsLoading,
+  isLoading,
+  onSubmit,
+  onCancel,
 }) => {
   const [selectedWorkGroup, setSelectedWorkGroup] =
     useState<MaybeNull<WorkGroupListItemModel['id']>>(null)
@@ -41,27 +40,27 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
     </Text>
   )
 
-  const handleClickTransfer = () => {
-    selectedWorkGroup && onTransfer(selectedWorkGroup)
+  const handleFinish = () => {
+    selectedWorkGroup && onSubmit(selectedWorkGroup)
   }
 
   return (
     <BaseModal
+      visible
       title={modalTitle}
-      visible={visible}
-      okText={TRANSFER_BUTTON_TEXT}
-      onOk={handleClickTransfer}
+      confirmLoading={isLoading}
+      okText={OK_BUTTON_TEXT}
+      onOk={handleFinish}
       onCancel={onCancel}
       okButtonProps={{
         disabled: !selectedWorkGroup,
-        loading: transferTaskIsLoading,
       }}
     >
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>
           <Text>
             Выберите рабочую группу II линии, в которую хотите направить заявку
-            для дальнейшей работы. Нажмите кнопку «{TRANSFER_BUTTON_TEXT}».
+            для дальнейшей работы. Нажмите кнопку «{OK_BUTTON_TEXT}».
           </Text>
 
           <Text type='danger'>
@@ -70,12 +69,12 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           </Text>
         </Space>
 
-        <LabeledData label='Рабочая группа'>
+        <LabeledData data-testid='work-group' label='Рабочая группа'>
           <Select
             placeholder='Выберите рабочую группу'
             options={workGroupList}
             loading={workGroupListIsLoading}
-            disabled={transferTaskIsLoading}
+            disabled={isLoading}
             fieldNames={workGroupListSelectFieldNames}
             onSelect={setSelectedWorkGroup}
           />

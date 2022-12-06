@@ -6,18 +6,15 @@ import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import formatDate from 'shared/utils/date/formatDate'
-import makeString from 'shared/utils/string/makeString'
 
 import { DetailsContainerStyled } from '../styles'
-import { getTaskRemainingTime } from './utils'
+import { RecordIdStyled } from './styles'
+import { getCompleteAt } from './utils'
 
 const { Text, Title } = Typography
 
-type MainDetailsProps = Pick<
+export type MainDetailsProps = Pick<
   TaskDetailsModel,
   | 'recordId'
   | 'title'
@@ -41,83 +38,63 @@ const MainDetails: FC<MainDetailsProps> = ({
   contactService,
   contactPhone,
   portablePhone,
-  olaStatus: rawOlaStatus,
-  olaNextBreachTime: rawOlaNextBreachTime,
+  olaStatus,
+  olaNextBreachTime,
   olaEstimatedTime,
 }) => {
   const breakpoints = useBreakpoint()
 
-  const olaNextBreachTime = useMemo(() => {
-    const olaStatus = getOlaStatusMap(rawOlaStatus)
-
-    const formattedOlaNextBreachTime = formatDate(
-      rawOlaNextBreachTime,
-      DATE_TIME_FORMAT,
-    )
-
-    const taskRemainingTime = olaStatus.isHalfExpired
-      ? getTaskRemainingTime(olaEstimatedTime)
-      : null
-
-    const olaNextBreachTimeText = makeString(
-      ' ',
-      'до',
-      formattedOlaNextBreachTime,
-      taskRemainingTime,
-    )
-
-    const olaStatusTextType = getOlaStatusTextType(rawOlaStatus)
+  const completeAtTime = useMemo(() => {
+    const olaStatusTextType = getOlaStatusTextType(olaStatus)
+    const completeAt = getCompleteAt({
+      olaStatus,
+      olaEstimatedTime,
+      olaNextBreachTime,
+    })
 
     return (
-      <Typography.Text type={olaStatusTextType}>
-        {olaNextBreachTimeText}
-      </Typography.Text>
+      <Typography.Text type={olaStatusTextType}>{completeAt}</Typography.Text>
     )
-  }, [olaEstimatedTime, rawOlaStatus, rawOlaNextBreachTime])
+  }, [olaEstimatedTime, olaStatus, olaNextBreachTime])
 
   return (
-    <DetailsContainerStyled $breakpoints={breakpoints}>
+    <DetailsContainerStyled
+      data-testid='task-details-main'
+      $breakpoints={breakpoints}
+    >
       <Space direction='vertical' size='middle' $block>
         <SeparatedText>
-          <Text type='secondary' ellipsis className='break-text'>
+          <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
             {recordId}
-          </Text>
+          </RecordIdStyled>
 
-          {rawOlaNextBreachTime && olaNextBreachTime}
+          {olaNextBreachTime && completeAtTime}
         </SeparatedText>
 
-        <Space direction='vertical' size={4}>
-          <Title level={4} ellipsis className='break-text'>
+        <Space direction='vertical' size={4} $block>
+          <Title level={4} ellipsis title={title}>
             {title}
           </Title>
 
-          <Text>{formatDate(createdAt, DATE_TIME_FORMAT)}</Text>
+          <Text>{createdAt}</Text>
         </Space>
 
         <Row justify='space-between'>
-          <Col span={12}>
+          <Col span={11}>
             <LabeledData label='Адрес'>
-              <Text strong ellipsis className='break-text'>
-                {name}
-              </Text>
+              <Text strong>{name}</Text>
 
-              {!!address && (
-                <Text ellipsis className='break-text'>
-                  {address}
-                </Text>
-              )}
+              {!!address && <Text>{address}</Text>}
             </LabeledData>
           </Col>
 
-          <Col span={10}>
+          <Col span={11}>
             <LabeledData label='Заявитель'>
-              <Text strong ellipsis className='break-text'>
-                {contactService}
-              </Text>
+              <Text strong>{contactService}</Text>
 
-              <Text>{contactPhone}</Text>
+              {contactPhone && <Text>{contactPhone}</Text>}
 
-              <Text>{portablePhone}</Text>
+              {portablePhone && <Text>{portablePhone}</Text>}
             </LabeledData>
           </Col>
         </Row>

@@ -10,7 +10,7 @@ const PublicLayout: FC = () => {
   return (
     <Layout>
       <ContentStyled>
-        <React.Suspense fallback={<Spinner area='parent' size='large' />}>
+        <React.Suspense fallback={<Spinner dimension='parent' size='large' />}>
           <Outlet />
         </React.Suspense>
       </ContentStyled>
