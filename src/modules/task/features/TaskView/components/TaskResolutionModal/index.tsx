@@ -5,7 +5,6 @@ import BaseModal from 'components/Modals/BaseModal'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
 import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
-import { isEqual } from 'shared/utils/common/isEqual'
 
 import { TaskResolutionFormFields } from './interfaces'
 
@@ -17,7 +16,6 @@ export type TaskResolutionModalProps = Pick<
   TaskDetailsModel,
   'type' | 'recordId'
 > & {
-  initialFormValues: Partial<TaskResolutionFormFields>
   isLoading: boolean
   onSubmit: (
     values: TaskResolutionFormFields,
@@ -32,7 +30,6 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   onSubmit,
   recordId,
   type,
-  initialFormValues,
 }) => {
   const [form] = Form.useForm<TaskResolutionFormFields>()
 
@@ -44,23 +41,14 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async (values: TaskResolutionFormFields) => {
-    const techResolution = values.techResolution?.trim()
-    const userResolution = values.userResolution?.trim()
-
-    const techResolutionNotChanged = isEqual(
-      initialFormValues.techResolution,
-      techResolution,
-    )
-    const userResolutionNotChanged = isEqual(
-      initialFormValues.userResolution,
-      userResolution,
-    )
-
+  const handleFinish = async ({
+    techResolution,
+    userResolution,
+  }: TaskResolutionFormFields) => {
     await onSubmit(
       {
-        techResolution: techResolutionNotChanged ? undefined : techResolution,
-        userResolution: userResolutionNotChanged ? undefined : userResolution,
+        techResolution: techResolution?.trim(),
+        userResolution: userResolution?.trim(),
       },
       form.setFields,
     )
@@ -89,7 +77,6 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
 
         <Form<TaskResolutionFormFields>
           form={form}
-          initialValues={initialFormValues}
           layout='vertical'
           onFinish={handleFinish}
           preserve={false}
