@@ -12,6 +12,13 @@ Lint:
   script:
     - yarn install
     - yarn lint
+  cache:
+    key:
+      files:
+        - package.json
+    paths:
+      - node_modules/
+    policy: pull-push
   only:
     - rc
     - master
@@ -23,16 +30,24 @@ Tests:
   stage: test
   image: node:18-alpine
   interruptible: true
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   script:
     - export REACT_APP_API_URL=http://localhost:3000
     - export REACT_APP_ENVIRONMENT=test
     - export CI=true
     - yarn install
-    - yarn test
+    - yarn test --coverage
+  cache:
+    - key:
+        files:
+          - package.json
+      paths:
+        - node_modules/
+      policy: pull
   only:
-    - rc
+#    - rc
     - master
-    - develop
+#    - develop
   tags:
     - docker
 
@@ -46,6 +61,13 @@ Tests:
     - export WERF_SECRET_KEY=$WERF_SECRET_KEY
   script:
     - werf build --env=$env
+  cache:
+    - key:
+        files:
+          - package.json
+      paths:
+        - node_modules/
+      policy: pull
   except: [schedules]
   only:
     - rc
@@ -87,7 +109,6 @@ Build for Production:
     env: prod
   only:
     - master
-    - task-20338-update
 
 
 Deploy to Develop:
