@@ -1,6 +1,6 @@
 import { generateId, generateWord } from '_tests_/utils'
-import { getTaskWorkGroup } from 'fixtures/task'
-import { getWorkGroupList } from 'fixtures/workGroup'
+import { taskFixtures } from 'fixtures/task'
+import { workGroupFixtures } from 'fixtures/workGroup'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
@@ -13,19 +13,40 @@ export const requiredProps: Omit<WorkGroupProps, 'workGroup'> = {
   recordId: generateWord(),
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
-  workGroupList: getWorkGroupList(),
+  workGroupList: workGroupFixtures.getWorkGroupList(),
   workGroupListIsLoading: false,
   transferTaskToFirstLine: jest.fn(),
   transferTaskToFirstLineIsLoading: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
-  hasReclassificationRequest: false,
 }
 
-export const firstLineButtonProps: Pick<
+// first line button
+export const showFirstLineButtonProps: Pick<
   WorkGroupProps,
   'workGroup' | 'status'
 > = {
-  workGroup: getTaskWorkGroup(),
+  workGroup: taskFixtures.getTaskWorkGroup(),
   status: TaskStatusEnum.New,
+}
+
+export const activeFirstLineButtonProps: Pick<
+  WorkGroupProps,
+  'status' | 'extendedStatus'
+> = {
+  status: TaskStatusEnum.New,
+  extendedStatus: TaskExtendedStatusEnum.New,
+}
+
+// second line button
+export const showSecondLineButtonProps: Pick<WorkGroupProps, 'workGroup'> = {
+  workGroup: null,
+}
+
+export const activeSecondLineButtonProps: Pick<
+  WorkGroupProps,
+  'status' | 'extendedStatus'
+> = {
+  status: TaskStatusEnum.New,
+  extendedStatus: TaskExtendedStatusEnum.New,
 }

@@ -47,8 +47,6 @@ export type WorkGroupProps = Pick<
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
-
-  hasReclassificationRequest: boolean
 }
 
 const WorkGroup: FC<WorkGroupProps> = ({
@@ -67,8 +65,6 @@ const WorkGroup: FC<WorkGroupProps> = ({
   transferTaskToFirstLineIsLoading,
   transferTaskToSecondLine,
   transferTaskToSecondLineIsLoading,
-
-  hasReclassificationRequest,
 }) => {
   const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] =
     useBoolean(false)
@@ -80,7 +76,6 @@ const WorkGroup: FC<WorkGroupProps> = ({
 
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
-
   const hasWorkGroup: boolean = !!workGroup
 
   const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(
@@ -123,7 +118,10 @@ const WorkGroup: FC<WorkGroupProps> = ({
                     type='link'
                     onClick={debouncedToggleOpenTaskFirstLineModal}
                     loading={transferTaskToFirstLineIsLoading}
-                    disabled={hasReclassificationRequest}
+                    disabled={
+                      taskStatus.isAwaiting ||
+                      taskExtendedStatus.isInReclassification
+                    }
                   >
                     Вернуть на I линию
                   </Button>
@@ -141,11 +139,8 @@ const WorkGroup: FC<WorkGroupProps> = ({
                     onClick={debouncedToggleOpenTaskSecondLineModal}
                     loading={transferTaskToSecondLineIsLoading}
                     disabled={
-                      !(
-                        taskStatus.isNew ||
-                        taskStatus.isInProgress ||
-                        taskExtendedStatus.isAwaiting
-                      ) || hasReclassificationRequest
+                      taskExtendedStatus.isInReclassification ||
+                      (!taskStatus.isNew && !taskStatus.isInProgress)
                     }
                   >
                     Перевести на II линию

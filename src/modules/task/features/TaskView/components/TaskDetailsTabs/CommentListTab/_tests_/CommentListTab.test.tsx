@@ -16,7 +16,7 @@ import {
   setupNotifications,
 } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
-import * as taskFixtures from 'fixtures/task'
+import { taskFixtures } from 'fixtures/task'
 import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
@@ -44,9 +44,11 @@ describe('Вкладка списка комментариев заявки', ()
   describe('Кнопка раскрытия/скрытия комментариев', () => {
     describe('Отображается корректно если все условия соблюдены', () => {
       test('Кнопка раскрытия', async () => {
-        const commentCount = DEFAULT_DISPLAYABLE_COUNT + 1
+        const taskCommentList = taskFixtures.getTaskCommentList(
+          DEFAULT_DISPLAYABLE_COUNT + 1,
+        )
         mockGetTaskCommentListSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTaskCommentList(commentCount),
+          body: taskCommentList,
         })
 
         render(<CommentListTab {...requiredProps} />, {
@@ -54,17 +56,23 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         await commentListTestUtils.loadingFinished()
-        const button = commentListTabTestUtils.getExpandButton(commentCount)
+        const button = commentListTabTestUtils.getExpandButton(
+          taskCommentList.length,
+        )
 
         expect(button).toBeInTheDocument()
         expect(button).toBeEnabled()
-        expect(button).toHaveTextContent(new RegExp(String(commentCount)))
+        expect(button).toHaveTextContent(
+          new RegExp(String(taskCommentList.length)),
+        )
       })
 
       test('Кнопка скрытия', async () => {
-        const commentCount = DEFAULT_DISPLAYABLE_COUNT + 1
+        const taskCommentList = taskFixtures.getTaskCommentList(
+          DEFAULT_DISPLAYABLE_COUNT + 1,
+        )
         mockGetTaskCommentListSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTaskCommentList(commentCount),
+          body: taskCommentList,
         })
 
         const { user } = render(<CommentListTab {...requiredProps} />, {
@@ -222,7 +230,9 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          expect(createCommentFormTestUtils.getCommentInput()).not.toHaveValue()
+          expect(
+            createCommentFormTestUtils.getCommentInput(),
+          ).not.toHaveDisplayValue(newComment.text)
         })
       })
 
@@ -333,9 +343,9 @@ describe('Вкладка списка комментариев заявки', ()
     })
 
     test('Комментарии отображаются если они есть', async () => {
-      const commentCount = 1
+      const taskCommentList = taskFixtures.getTaskCommentList(1)
       mockGetTaskCommentListSuccess(requiredProps.taskId, {
-        body: taskFixtures.getTaskCommentList(commentCount),
+        body: taskCommentList,
       })
 
       render(<CommentListTab {...requiredProps} />, {
@@ -345,13 +355,13 @@ describe('Вкладка списка комментариев заявки', ()
       await commentListTestUtils.loadingFinished()
       const commentList = commentListTestUtils.getAllComments()
 
-      expect(commentList).toHaveLength(commentCount)
+      expect(commentList).toHaveLength(taskCommentList.length)
     })
 
     test('Комментарии не отображаются если их нет', async () => {
-      const commentCount = 0
+      const taskCommentList = taskFixtures.getTaskCommentList(0)
       mockGetTaskCommentListSuccess(requiredProps.taskId, {
-        body: taskFixtures.getTaskCommentList(commentCount),
+        body: taskCommentList,
       })
 
       render(<CommentListTab {...requiredProps} />, {
@@ -361,7 +371,7 @@ describe('Вкладка списка комментариев заявки', ()
       await commentListTestUtils.loadingFinished()
       const commentList = commentListTestUtils.queryAllComments()
 
-      expect(commentList).toHaveLength(commentCount)
+      expect(commentList).toHaveLength(taskCommentList.length)
     })
   })
 })

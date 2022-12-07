@@ -4,6 +4,7 @@ import {
   getCheckboxIn,
   getRadioButtonIn,
   loadingFinishedBySelect,
+  userClickOption,
   userOpenSelect,
 } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
@@ -17,7 +18,7 @@ import {
 } from '../constants'
 
 const getFilter = () => screen.getByTestId('filter-extended')
-const findFilter = async () => screen.findByTestId('filter-extended')
+const findFilter = () => screen.findByTestId('filter-extended')
 const getCloseButton = () => getButtonIn(getFilter(), /close/i)
 const getApplyButton = () => getButtonIn(getFilter(), /применить/i)
 const getResetAllButton = () => getButtonIn(getFilter(), /сбросить все/i)
@@ -198,25 +199,12 @@ const workGroupLoadingFinished = async () => {
   return workGroupField
 }
 
-const openWorkGroupField = async (
-  user: UserEvent,
-  workGroupField: HTMLElement,
-) => {
-  await userOpenSelect(user, workGroupField)
-}
-
-const userSelectWorkGroup = async (user: UserEvent, value: string) => {
-  const workGroupOption = screen.getByText(value)
-  await user.click(workGroupOption)
-  return workGroupOption
-}
-
 const workGroup = {
   getContainer: getWorkGroupContainer,
   getField: getWorkGroupField,
   queryField: queryWorkGroupField,
-  openField: openWorkGroupField,
-  userSetValue: userSelectWorkGroup,
+  openField: userOpenSelect,
+  userSetValue: userClickOption,
   loadingFinished: workGroupLoadingFinished,
 }
 

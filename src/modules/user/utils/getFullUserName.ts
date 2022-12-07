@@ -1,5 +1,5 @@
 import { UserModel } from 'modules/user/models'
-import makeString from 'shared/utils/string/makeString'
+import { makeString } from 'shared/utils/string'
 
 const getFullUserName = <T extends Omit<UserModel, 'id'>>({
   firstName,

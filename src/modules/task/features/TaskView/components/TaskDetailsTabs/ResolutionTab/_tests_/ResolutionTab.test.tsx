@@ -55,7 +55,7 @@ describe('Вкладка решение заявки', () => {
     })
 
     test('Не отображается если все условия соблюдены но решение отсутствует', () => {
-      render(<ResolutionTab {...requiredProps} type={TaskTypeEnum.Request} />)
+      render(<ResolutionTab {...requiredProps} />)
 
       expect(
         testUtils.queryElementByText(notRequiredProps.userResolution!),

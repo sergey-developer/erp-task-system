@@ -4,9 +4,9 @@ const getContainer = () => screen.getByTestId('task-comment')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
-const testUtils = {
+const utils = {
   getContainer,
   getChildByText,
 }
 
-export default testUtils
+export default utils

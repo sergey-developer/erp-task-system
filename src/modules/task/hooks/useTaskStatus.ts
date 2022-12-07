@@ -11,6 +11,7 @@ const useTaskStatus = (
     () => ({
       isNew: isEqual(status, TaskStatusEnum.New),
       isInProgress: isEqual(status, TaskStatusEnum.InProgress),
+      isAwaiting: isEqual(status, TaskStatusEnum.Awaiting),
       isCompleted: isEqual(status, TaskStatusEnum.Completed),
       isClosed: isEqual(status, TaskStatusEnum.Closed),
     }),

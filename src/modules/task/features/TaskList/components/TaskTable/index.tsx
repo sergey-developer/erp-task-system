@@ -1,13 +1,16 @@
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import React, { FC, useMemo } from 'react'
+import { ColumnsType } from 'antd/es/table'
+import isEmpty from 'lodash/isEmpty'
+import React, { FC, useEffect, useMemo, useState } from 'react'
+import { ResizableProps } from 'react-resizable'
 
 import { tableColumns } from './constants/columns'
 import { localeConfig } from './constants/common'
+import tableComponents from './constants/components'
 import { paginationConfig } from './constants/pagination'
 import { TaskTableListItem, TaskTableProps } from './interfaces'
 import { TableStyled, TableWrapperStyled } from './styles'
-import applySortToColumn from './utils/applySortToColumn'
-import applyWidthToColumn from './utils/applyWidthToColumn'
+import { applySortToColumn, applyWidthToColumn } from './utils'
 
 const TaskTable: FC<TaskTableProps> = ({
   dataSource,
@@ -19,22 +22,55 @@ const TaskTable: FC<TaskTableProps> = ({
   rowClassName,
 }) => {
   const breakpoints = useBreakpoint()
+  const [columns, setColumns] =
+    useState<ColumnsType<TaskTableListItem>>(tableColumns)
 
-  const columns = useMemo(
-    () =>
-      tableColumns.map((col) => {
-        const sortedColumn = sort ? applySortToColumn(col, sort) : col
-        return applyWidthToColumn(sortedColumn, breakpoints)
-      }),
-    [breakpoints, sort],
+  const handleResize =
+    (index: number): ResizableProps['onResize'] =>
+    (event, { size }) => {
+      setColumns((prevColumns) => {
+        const nextColumns = [...prevColumns]
+        nextColumns[index] = {
+          ...nextColumns[index],
+          width: size.width,
+        }
+
+        return nextColumns
+      })
+    }
+
+  useEffect(() => {
+    setColumns((prevColumns) =>
+      prevColumns.map((col, index) => ({
+        ...col,
+        onHeaderCell: (col: ColumnsType<TaskTableListItem>[number]) => ({
+          width: col.width,
+          onResize: handleResize(index),
+        }),
+      })),
+    )
+  }, [])
+
+  useEffect(() => {
+    if (isEmpty(breakpoints)) return
+
+    setColumns((prevColumns) =>
+      prevColumns.map((col) => applyWidthToColumn(col, breakpoints)),
+    )
+  }, [breakpoints])
+
+  const sortedColumns = useMemo(
+    () => columns.map((col) => (sort ? applySortToColumn(col, sort) : col)),
+    [columns, sort],
   )
 
   return (
     <TableWrapperStyled data-testid='table-task-list'>
       <TableStyled<TaskTableListItem>
+        components={tableComponents}
         rowClassName={rowClassName}
         dataSource={dataSource}
-        columns={columns}
+        columns={sortedColumns}
         pagination={
           pagination && {
             ...paginationConfig,

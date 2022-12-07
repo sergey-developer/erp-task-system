@@ -8,7 +8,6 @@ import authLocalStorageService from 'modules/auth/services/authLocalStorage.serv
 import logoutAndClearTokens from 'modules/auth/utils/logoutAndClearTokens'
 import parseJwt from 'modules/auth/utils/parseJwt'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { MaybeUndefined } from 'shared/interfaces/utils'
 import { RootState } from 'state/store'
 
 import baseQuery from './baseQuery'
@@ -41,37 +40,33 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
 ) => {
   await mutex.waitForUnlock()
   let response = await query(args, api, extraOptions)
-  const error = response.error as MaybeUndefined<ErrorResponse>
 
-  if (error && isUnauthorizedError(error)) {
+  if (response.error && isUnauthorizedError(response.error as ErrorResponse)) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
+      let refreshResult
+
       try {
         const { refreshToken } = (api.getState() as RootState).auth
 
-        if (refreshToken) {
-          let refreshResult
+        if (!refreshToken) logoutAndClearTokens(api.dispatch)
 
-          try {
-            refreshResult = await query(
-              {
-                method: HttpMethodEnum.Post,
-                url: AuthEndpointsEnum.RefreshToken,
-                data: {
-                  refresh: refreshToken,
-                },
+        try {
+          refreshResult = await query(
+            {
+              method: HttpMethodEnum.Post,
+              url: AuthEndpointsEnum.RefreshToken,
+              data: {
+                refresh: refreshToken,
               },
-              api,
-              extraOptions,
-            )
-          } catch (exception) {
-            const error = exception as ErrorResponse
+            },
+            api,
+            extraOptions,
+          )
 
-            if (isClientRangeError(error)) {
-              logoutAndClearTokens(api.dispatch)
-            }
-
-            throw error
+          if (refreshResult.error) {
+            // noinspection ExceptionCaughtLocallyJS
+            throw refreshResult.error
           }
 
           if (refreshResult.data) {
@@ -91,13 +86,26 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           } else {
             logoutAndClearTokens(api.dispatch)
           }
+        } catch (exception) {
+          const error = exception as ErrorResponse
+
+          if (isClientRangeError(error)) {
+            logoutAndClearTokens(api.dispatch)
+          }
         }
       } finally {
         release()
       }
     } else {
       await mutex.waitForUnlock()
-      response = await query(args, api, extraOptions)
+      /**
+       * api.getState() вызывается в нескольких местах, вместо присвоения значения переменной,
+       * намеренно, чтобы получить актуальное состояние и при не успешном обновлении токена
+       * не отправлялся лишний запрос
+       */
+      if ((api.getState() as RootState).auth.isAuthenticated) {
+        response = await query(args, api, extraOptions)
+      }
     }
   }
 

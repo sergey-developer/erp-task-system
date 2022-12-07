@@ -2,16 +2,16 @@ import { generateWord, loadingStartedByButton, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import {
   DEFAULT_LONG_TEXT_LENGTH,
+  DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
   FIELD_CAN_NOT_BE_EMPTY_MSG,
   REQUIRED_FIELD_MSG,
-  TEXT_MAX_LENGTH_MSG,
 } from 'shared/constants/validation'
 
 import TaskFirstLineModal from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
 
-jest.setTimeout(10000)
+jest.setTimeout(20000)
 
 describe('Модальное окно перевода запроса на первую линию', () => {
   test('Отображается корректно', () => {
@@ -99,11 +99,7 @@ describe('Модальное окно перевода запроса на пе�
           await user.type(description, descriptionText)
 
           const errorMessage = await screen.findByText(
-            TEXT_MAX_LENGTH_MSG.replace(
-              // eslint-disable-next-line no-template-curly-in-string
-              '${max}',
-              String(DEFAULT_LONG_TEXT_LENGTH),
-            ),
+            DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
           )
 
           expect(errorMessage).toBeInTheDocument()

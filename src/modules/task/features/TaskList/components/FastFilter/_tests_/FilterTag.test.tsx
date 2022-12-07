@@ -2,19 +2,19 @@ import { render } from '_tests_/utils'
 
 import FilterTag from '../FilterTag'
 import { filterTagRequiredProps as requiredProps } from './constants'
-import fastFilterTestUtils from './utils'
+import testUtils from './utils'
 
 describe('Элемент быстрого фильтра', () => {
   test('Отображает состояние загрузки', async () => {
     render(<FilterTag {...requiredProps} loading />)
-    await fastFilterTestUtils.loadingStarted()
+    await testUtils.loadingStarted()
   })
 
   test('Отображает текст', () => {
     render(<FilterTag {...requiredProps} />)
 
     expect(
-      fastFilterTestUtils.getByTextInCheckableTag(
+      testUtils.getByTextInCheckableTag(
         requiredProps.value,
         requiredProps.text,
       ),
@@ -27,10 +27,7 @@ describe('Элемент быстрого фильтра', () => {
       render(<FilterTag {...requiredProps} amount={amount} />)
 
       expect(
-        fastFilterTestUtils.getByTextInCheckableTag(
-          requiredProps.value,
-          amount,
-        ),
+        testUtils.getByTextInCheckableTag(requiredProps.value, amount),
       ).toBeInTheDocument()
     })
 
@@ -38,7 +35,7 @@ describe('Элемент быстрого фильтра', () => {
       render(<FilterTag {...requiredProps} amount={null} />)
 
       expect(
-        fastFilterTestUtils.queryByTextInCheckableTag(
+        testUtils.queryByTextInCheckableTag(
           requiredProps.value,
           requiredProps.amount!,
         ),
@@ -49,32 +46,32 @@ describe('Элемент быстрого фильтра', () => {
   test('Можно сделать выбранным', () => {
     render(<FilterTag {...requiredProps} checked />)
 
-    fastFilterTestUtils.expectFilterChecked(
-      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    testUtils.expectFilterChecked(
+      testUtils.getCheckableTag(requiredProps.value),
     )
   })
 
   test('Можно сделать не выбранным', () => {
     render(<FilterTag {...requiredProps} checked={false} />)
 
-    fastFilterTestUtils.expectFilterNotChecked(
-      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    testUtils.expectFilterNotChecked(
+      testUtils.getCheckableTag(requiredProps.value),
     )
   })
 
   test('Можно сделать не активным', () => {
     render(<FilterTag {...requiredProps} disabled />)
 
-    fastFilterTestUtils.expectFilterNotChecked(
-      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    testUtils.expectFilterNotChecked(
+      testUtils.getCheckableTag(requiredProps.value),
     )
   })
 
   test('Если элемент не активный, он перестаёт быть выбранным', () => {
     render(<FilterTag {...requiredProps} checked disabled />)
 
-    fastFilterTestUtils.expectFilterNotChecked(
-      fastFilterTestUtils.getCheckableTag(requiredProps.value),
+    testUtils.expectFilterNotChecked(
+      testUtils.getCheckableTag(requiredProps.value),
     )
   })
 
@@ -90,7 +87,7 @@ describe('Элемент быстрого фильтра', () => {
         <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
       )
 
-      await fastFilterTestUtils.userChangeFilter(user, requiredProps.value)
+      await testUtils.userChangeFilter(user, requiredProps.value)
       expect(onChange).toBeCalledTimes(1)
     })
 
@@ -99,7 +96,7 @@ describe('Элемент быстрого фильтра', () => {
         <FilterTag {...requiredProps} disabled onChange={onChange} />,
       )
 
-      await fastFilterTestUtils.userChangeFilter(user, requiredProps.value)
+      await testUtils.userChangeFilter(user, requiredProps.value)
       expect(onChange).not.toBeCalled()
     })
   })

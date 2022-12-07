@@ -5,18 +5,19 @@ import {
   mockGetWorkGroupListSuccess,
 } from '_tests_/mocks/api'
 import {
+  generateWord,
   getSelectedOption,
   getStoreWithAuth,
   render,
   setupApiTests,
 } from '_tests_/utils'
 import { waitFor } from '@testing-library/react'
-import * as taskFixtures from 'fixtures/task'
-import * as workGroupFixtures from 'fixtures/workGroup'
+import { taskFixtures } from 'fixtures/task'
+import { workGroupFixtures } from 'fixtures/workGroup'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
+import taskDetailsTestUtils from 'modules/task/features/TaskView/components/TaskDetails/_tests_/utils'
 import { UserRolesEnum } from 'shared/constants/roles'
 
-import taskDetailsTestUtils from '../../../../TaskView/components/TaskDetails/_tests_/utils'
 import { FastFilterEnum } from '../../../constants/common'
 import { GetTaskCountersResponseModel } from '../../../models'
 import extendedFilterTestUtils from '../../ExtendedFilter/_tests_/utils'
@@ -33,7 +34,7 @@ import TaskListPage from '../index'
 import taskListPageTestUtils from './utils'
 
 setupApiTests()
-jest.setTimeout(20000)
+jest.setTimeout(30000)
 
 describe('Страница реестра заявок', () => {
   test('Отображается корректно', () => {
@@ -167,7 +168,7 @@ describe('Страница реестра заявок', () => {
 
     test('Сбрасывает расширенный фильтр', async () => {
       const workGroupListItem = workGroupFixtures.getWorkGroup()
-      mockGetWorkGroupListSuccess([workGroupListItem])
+      mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess({ once: false })
 
@@ -415,7 +416,7 @@ describe('Страница реестра заявок', () => {
 
       test('Значения сохраняются если другой фильтр не применялся', async () => {
         const workGroupListItem = workGroupFixtures.getWorkGroup()
-        mockGetWorkGroupListSuccess([workGroupListItem])
+        mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
@@ -510,7 +511,7 @@ describe('Страница реестра заявок', () => {
 
     test('Значения не сохраняются если фильтр не был применён', async () => {
       const workGroupListItem = workGroupFixtures.getWorkGroup()
-      mockGetWorkGroupListSuccess([workGroupListItem])
+      mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
 
@@ -616,7 +617,9 @@ describe('Страница реестра заявок', () => {
       test('Фильтр по рабочей группе', async () => {
         mockGetTaskListSuccess()
         mockGetTaskCountersSuccess()
-        mockGetWorkGroupListSuccess(workGroupFixtures.getWorkGroupList())
+        mockGetWorkGroupListSuccess({
+          body: workGroupFixtures.getWorkGroupList(),
+        })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({
@@ -651,10 +654,10 @@ describe('Страница реестра заявок', () => {
     test('Можно ввести значение', async () => {
       const { user } = render(<TaskListPage />)
 
-      const { searchInput, searchValue } =
-        await taskListPageTestUtils.userFillSearchInput(user)
+      const value = generateWord()
+      const input = await taskListPageTestUtils.userFillSearchInput(user, value)
 
-      expect(searchInput).toHaveValue(searchValue)
+      expect(input).toHaveValue(value)
     })
 
     test('Поле не активно во время загрузки заявок', async () => {
@@ -689,7 +692,11 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.loadingFinished()
         await taskTableTestUtils.userClickRow(user, taskListItem.id)
         const taskDetails = await taskDetailsTestUtils.findContainer()
-        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await taskListPageTestUtils.userFillSearchInput(
+          user,
+          generateWord(),
+          true,
+        )
         await waitFor(() => {
           expect(taskDetails).not.toBeInTheDocument()
         })
@@ -705,7 +712,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskListPageTestUtils.userFillSearchInput(user)
+          await taskListPageTestUtils.userFillSearchInput(user, generateWord())
           await user.click(taskListPageTestUtils.getSearchButton())
           await taskTableTestUtils.loadingStarted()
         })
@@ -719,7 +726,11 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskListPageTestUtils.userFillSearchInput(user, true)
+          await taskListPageTestUtils.userFillSearchInput(
+            user,
+            generateWord(),
+            true,
+          )
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -727,7 +738,11 @@ describe('Страница реестра заявок', () => {
       test('Кнопка открытия расширенного фильтра недоступна', async () => {
         const { user } = render(<TaskListPage />)
 
-        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await taskListPageTestUtils.userFillSearchInput(
+          user,
+          generateWord(),
+          true,
+        )
 
         const extendedFilterButton =
           taskListPageTestUtils.getExtendedFilterButton()
@@ -746,7 +761,11 @@ describe('Страница реестра заявок', () => {
         fastFilterTestUtils.expectFilterChecked(fastFilter)
         fastFilterTestUtils.expectFilterNotDisabled(fastFilter)
 
-        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await taskListPageTestUtils.userFillSearchInput(
+          user,
+          generateWord(),
+          true,
+        )
 
         await waitFor(() => {
           fastFilterTestUtils.expectFilterNotChecked(fastFilter)
@@ -758,22 +777,204 @@ describe('Страница реестра заявок', () => {
       })
     })
 
-    describe('Сброс значения', () => {
+    describe('Очищение поля через клавиатуру', () => {
+      test('Делает быстрый фильтр активным', async () => {
+        const { user } = render(<TaskListPage />)
+
+        const input = await taskListPageTestUtils.userFillSearchInput(
+          user,
+          generateWord({ length: 1 }),
+          true,
+        )
+
+        const fastFilter = fastFilterTestUtils.getCheckableTag(
+          FastFilterEnum.Free,
+        )
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterDisabled(fastFilter)
+        })
+
+        await taskListPageTestUtils.userClearSearchFieldByBackspace(user, input)
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterNotDisabled(fastFilter)
+        })
+      })
+
+      test('Применяет быстрый фильтр если он был применён ранее', async () => {
+        const { user } = render(<TaskListPage />)
+
+        const input = await taskListPageTestUtils.userFillSearchInput(
+          user,
+          generateWord({ length: 1 }),
+          true,
+        )
+        const fastFilter = fastFilterTestUtils.getCheckableTag(
+          FastFilterEnum.All,
+        )
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterNotChecked(fastFilter)
+        })
+
+        await taskListPageTestUtils.userClearSearchFieldByBackspace(user, input)
+        await waitFor(() => {
+          fastFilterTestUtils.expectFilterChecked(fastFilter)
+        })
+      })
+
+      test('Делает кнопку открытия расширенного фильтра активной', async () => {
+        const { user } = render(<TaskListPage />)
+
+        const extendedFilterButton =
+          taskListPageTestUtils.getExtendedFilterButton()
+        expect(extendedFilterButton).toBeEnabled()
+
+        const input = await taskListPageTestUtils.userFillSearchInput(
+          user,
+          generateWord({ length: 1 }),
+          true,
+        )
+        await waitFor(() => {
+          expect(extendedFilterButton).toBeDisabled()
+        })
+
+        await taskListPageTestUtils.userClearSearchFieldByBackspace(user, input)
+        await waitFor(() => {
+          expect(extendedFilterButton).toBeEnabled()
+        })
+      })
+
+      // test('Применяет расширенный фильтр если он был применён ранее', async () => {
+      //   const workGroupListItem = workGroupFixtures.getWorkGroup()
+      //   mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
+      //   mockGetTaskCountersSuccess()
+      //   mockGetTaskListSuccess({ once: false })
+      //
+      //   const { user } = render(<TaskListPage />, {
+      //     store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
+      //   })
+      //
+      //   await taskTableTestUtils.loadingStarted()
+      //   await taskTableTestUtils.loadingFinished()
+      //   await taskListPageTestUtils.userOpenExtendedFilter(user)
+      //   await extendedFilterTestUtils.findFilter()
+      //
+      //   await extendedFilterTestUtils.status.userSetValue(
+      //     user,
+      //     taskExtendedStatusDict.NEW!,
+      //   )
+      //
+      //   await extendedFilterTestUtils.assigned.userSetValue(
+      //     user,
+      //     taskAssignedDict.True,
+      //   )
+      //
+      //   await extendedFilterTestUtils.overdue.userSetValue(
+      //     user,
+      //     taskOverdueDict.False,
+      //   )
+      //
+      //   const { startDateValue, endDateValue } =
+      //     await extendedFilterTestUtils.completeAt.userSetValue(user)
+      //
+      //   const { keyword: searchByColumnKeywordValue } =
+      //     await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+      //
+      //   await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+      //     user,
+      //     searchFieldDict.searchByName,
+      //   )
+      //
+      //   const workGroupField =
+      //     await extendedFilterTestUtils.workGroup.loadingFinished()
+      //   await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
+      //   await extendedFilterTestUtils.workGroup.userSetValue(
+      //     user,
+      //     workGroupListItem.name,
+      //   )
+      //
+      //   await extendedFilterTestUtils.userApplyFilter(user)
+      //   await taskTableTestUtils.loadingStarted()
+      //   await taskTableTestUtils.loadingFinished()
+      //
+      //   const searchInput = await taskListPageTestUtils.userFillSearchInput(
+      //     user,
+      //     generateWord({ length: 1 }),
+      //     true,
+      //   )
+      //   await taskTableTestUtils.loadingStarted()
+      //   await taskTableTestUtils.loadingFinished()
+      //   await taskListPageTestUtils.userClearSearchFieldByBackspace(
+      //     user,
+      //     searchInput,
+      //   )
+      //   await taskTableTestUtils.loadingStarted()
+      //   await taskTableTestUtils.loadingFinished()
+      //
+      //   await taskListPageTestUtils.userOpenExtendedFilter(user)
+      //   await extendedFilterTestUtils.findFilter()
+      //
+      //   const statusField = extendedFilterTestUtils.status.getField(
+      //     taskExtendedStatusDict.NEW!,
+      //   )
+      //   await waitFor(() => {
+      //     expect(statusField).toBeChecked()
+      //   })
+      //
+      //   expect(
+      //     extendedFilterTestUtils.assigned.getField(taskAssignedDict.True),
+      //   ).toBeChecked()
+      //
+      //   expect(
+      //     extendedFilterTestUtils.overdue.getField(taskOverdueDict.False),
+      //   ).toBeChecked()
+      //
+      //   const startDateField =
+      //     extendedFilterTestUtils.completeAt.getStartDateField()
+      //   await waitFor(() => {
+      //     expect(startDateField).toHaveDisplayValue(startDateValue)
+      //   })
+      //
+      //   expect(
+      //     extendedFilterTestUtils.completeAt.getEndDateField(),
+      //   ).toHaveDisplayValue(endDateValue)
+      //
+      //   expect(
+      //     extendedFilterTestUtils.searchByColumn.getKeywordField(),
+      //   ).toHaveDisplayValue(searchByColumnKeywordValue)
+      //
+      //   expect(
+      //     extendedFilterTestUtils.searchByColumn.getColumnField(
+      //       searchFieldDict.searchByName,
+      //     ),
+      //   ).toBeChecked()
+      //
+      //   expect(
+      //     getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+      //   ).toHaveTextContent(workGroupListItem.name)
+      // })
+    })
+
+    describe('Сброс значения через кнопку', () => {
       test('Очищает поле ввода', async () => {
         const { user } = render(<TaskListPage />)
 
-        const { searchInput } = await taskListPageTestUtils.userFillSearchInput(
+        const input = await taskListPageTestUtils.userFillSearchInput(
           user,
+          generateWord(),
         )
         await taskListPageTestUtils.userClickSearchClearButton(user)
 
-        expect(searchInput).not.toHaveValue()
+        expect(input).not.toHaveValue()
       })
 
       test('Делает быстрый фильтр активным', async () => {
         const { user } = render(<TaskListPage />)
 
-        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await taskListPageTestUtils.userFillSearchInput(
+          user,
+          generateWord(),
+          true,
+        )
         const fastFilter = fastFilterTestUtils.getCheckableTag(
           FastFilterEnum.Free,
         )
@@ -790,7 +991,11 @@ describe('Страница реестра заявок', () => {
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
         const { user } = render(<TaskListPage />)
 
-        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await taskListPageTestUtils.userFillSearchInput(
+          user,
+          generateWord(),
+          true,
+        )
         const fastFilter = fastFilterTestUtils.getCheckableTag(
           FastFilterEnum.All,
         )
@@ -811,7 +1016,11 @@ describe('Страница реестра заявок', () => {
           taskListPageTestUtils.getExtendedFilterButton()
         expect(extendedFilterButton).toBeEnabled()
 
-        await taskListPageTestUtils.userFillSearchInput(user, true)
+        await taskListPageTestUtils.userFillSearchInput(
+          user,
+          generateWord(),
+          true,
+        )
         await waitFor(() => {
           expect(extendedFilterButton).toBeDisabled()
         })
@@ -822,107 +1031,113 @@ describe('Страница реестра заявок', () => {
         })
       })
 
-      test('Применяет расширенный фильтр если он был применён ранее', async () => {
-        const workGroupListItem = workGroupFixtures.getWorkGroup()
-        mockGetWorkGroupListSuccess([workGroupListItem])
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess({ once: false })
-
-        const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
-        })
-
-        await taskTableTestUtils.loadingFinished()
-        await taskListPageTestUtils.userOpenExtendedFilter(user)
-        await extendedFilterTestUtils.findFilter()
-
-        await extendedFilterTestUtils.status.userSetValue(
-          user,
-          taskExtendedStatusDict.NEW!,
-        )
-
-        await extendedFilterTestUtils.assigned.userSetValue(
-          user,
-          taskAssignedDict.True,
-        )
-
-        await extendedFilterTestUtils.overdue.userSetValue(
-          user,
-          taskOverdueDict.False,
-        )
-
-        const { startDateValue, endDateValue } =
-          await extendedFilterTestUtils.completeAt.userSetValue(user)
-
-        const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
-
-        await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
-          user,
-          searchFieldDict.searchByName,
-        )
-
-        const workGroupField =
-          await extendedFilterTestUtils.workGroup.loadingFinished()
-        await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.userSetValue(
-          user,
-          workGroupListItem.name,
-        )
-
-        await extendedFilterTestUtils.userApplyFilter(user)
-        await taskTableTestUtils.loadingStarted()
-        await taskTableTestUtils.loadingFinished()
-
-        await taskListPageTestUtils.userFillSearchInput(user, true)
-        await taskTableTestUtils.loadingStarted()
-        await taskTableTestUtils.loadingFinished()
-        await taskListPageTestUtils.userClickSearchClearButton(user)
-        await taskTableTestUtils.loadingStarted()
-        await taskTableTestUtils.loadingFinished()
-
-        await taskListPageTestUtils.userOpenExtendedFilter(user)
-        await extendedFilterTestUtils.findFilter()
-
-        const statusField = extendedFilterTestUtils.status.getField(
-          taskExtendedStatusDict.NEW!,
-        )
-        await waitFor(() => {
-          expect(statusField).toBeChecked()
-        })
-
-        expect(
-          extendedFilterTestUtils.assigned.getField(taskAssignedDict.True),
-        ).toBeChecked()
-
-        expect(
-          extendedFilterTestUtils.overdue.getField(taskOverdueDict.False),
-        ).toBeChecked()
-
-        const startDateField =
-          extendedFilterTestUtils.completeAt.getStartDateField()
-        await waitFor(() => {
-          expect(startDateField).toHaveDisplayValue(startDateValue)
-        })
-
-        expect(
-          extendedFilterTestUtils.completeAt.getEndDateField(),
-        ).toHaveDisplayValue(endDateValue)
-
-        expect(
-          extendedFilterTestUtils.searchByColumn.getKeywordField(),
-        ).toHaveDisplayValue(searchByColumnKeywordValue)
-
-        expect(
-          extendedFilterTestUtils.searchByColumn.getColumnField(
-            searchFieldDict.searchByName,
-          ),
-        ).toBeChecked()
-
-        expect(
-          getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
-        ).toHaveTextContent(workGroupListItem.name)
-      })
+      // test('Применяет расширенный фильтр если он был применён ранее', async () => {
+      //   const workGroupListItem = workGroupFixtures.getWorkGroup()
+      //   mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
+      //   mockGetTaskCountersSuccess()
+      //   mockGetTaskListSuccess({ once: false })
+      //
+      //   const { user } = render(<TaskListPage />, {
+      //     store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
+      //   })
+      //
+      //   await taskTableTestUtils.loadingStarted()
+      //   await taskTableTestUtils.loadingFinished()
+      //   const button = await taskListPageTestUtils.userOpenExtendedFilter(user)
+      //   screen.debug(button)
+      //   await extendedFilterTestUtils.findFilter()
+      //
+      //   await extendedFilterTestUtils.status.userSetValue(
+      //     user,
+      //     taskExtendedStatusDict.NEW!,
+      //   )
+      //
+      //   await extendedFilterTestUtils.assigned.userSetValue(
+      //     user,
+      //     taskAssignedDict.True,
+      //   )
+      //
+      //   await extendedFilterTestUtils.overdue.userSetValue(
+      //     user,
+      //     taskOverdueDict.False,
+      //   )
+      //
+      //   const { startDateValue, endDateValue } =
+      //     await extendedFilterTestUtils.completeAt.userSetValue(user)
+      //
+      //   const { keyword: searchByColumnKeywordValue } =
+      //     await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+      //
+      //   await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+      //     user,
+      //     searchFieldDict.searchByName,
+      //   )
+      //
+      //   const workGroupField =
+      //     await extendedFilterTestUtils.workGroup.loadingFinished()
+      //   await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
+      //   await extendedFilterTestUtils.workGroup.userSetValue(
+      //     user,
+      //     workGroupListItem.name,
+      //   )
+      //
+      //   await extendedFilterTestUtils.userApplyFilter(user)
+      //   await taskTableTestUtils.loadingStarted()
+      //   await taskTableTestUtils.loadingFinished()
+      //
+      //   await taskListPageTestUtils.userFillSearchInput(
+      //     user,
+      //     generateWord(),
+      //     true,
+      //   )
+      //   await taskTableTestUtils.loadingStarted()
+      //   await taskTableTestUtils.loadingFinished()
+      //   await taskListPageTestUtils.userClickSearchClearButton(user)
+      //   await taskTableTestUtils.loadingStarted()
+      //   await taskTableTestUtils.loadingFinished()
+      //
+      //   await taskListPageTestUtils.userOpenExtendedFilter(user)
+      //   await extendedFilterTestUtils.findFilter()
+      //
+      //   const statusField = extendedFilterTestUtils.status.getField(
+      //     taskExtendedStatusDict.NEW!,
+      //   )
+      //   await waitFor(() => {
+      //     expect(statusField).toBeChecked()
+      //   })
+      //
+      //   expect(
+      //     extendedFilterTestUtils.assigned.getField(taskAssignedDict.True),
+      //   ).toBeChecked()
+      //
+      //   expect(
+      //     extendedFilterTestUtils.overdue.getField(taskOverdueDict.False),
+      //   ).toBeChecked()
+      //
+      //   const startDateField =
+      //     extendedFilterTestUtils.completeAt.getStartDateField()
+      //   await waitFor(() => {
+      //     expect(startDateField).toHaveDisplayValue(startDateValue)
+      //   })
+      //
+      //   expect(
+      //     extendedFilterTestUtils.completeAt.getEndDateField(),
+      //   ).toHaveDisplayValue(endDateValue)
+      //
+      //   expect(
+      //     extendedFilterTestUtils.searchByColumn.getKeywordField(),
+      //   ).toHaveDisplayValue(searchByColumnKeywordValue)
+      //
+      //   expect(
+      //     extendedFilterTestUtils.searchByColumn.getColumnField(
+      //       searchFieldDict.searchByName,
+      //     ),
+      //   ).toBeChecked()
+      //
+      //   expect(
+      //     getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+      //   ).toHaveTextContent(workGroupListItem.name)
+      // })
     })
   })
 
@@ -1083,7 +1298,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Заявка')
+          await taskTableTestUtils.userClickColTitle(user, 'Заявка')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1097,8 +1312,9 @@ describe('Страница реестра заявок', () => {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Внеш.номер')
+          await taskTableTestUtils.userClickColTitle(user, 'Внеш.номер')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1113,7 +1329,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Объект')
+          await taskTableTestUtils.userClickColTitle(user, 'Объект')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1128,7 +1344,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Тема')
+          await taskTableTestUtils.userClickColTitle(user, 'Тема')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1143,7 +1359,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Исполнитель')
+          await taskTableTestUtils.userClickColTitle(user, 'Исполнитель')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1158,7 +1374,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Рабочая группа')
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1173,7 +1389,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Выполнить до')
+          await taskTableTestUtils.userClickColTitle(user, 'Выполнить до')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1188,7 +1404,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Комментарий')
+          await taskTableTestUtils.userClickColTitle(user, 'Комментарий')
           await taskTableTestUtils.loadingStarted()
         })
       })
@@ -1203,7 +1419,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickHeadCol(user, 'Дата создания')
+          await taskTableTestUtils.userClickColTitle(user, 'Дата создания')
           await taskTableTestUtils.loadingStarted()
         })
       })

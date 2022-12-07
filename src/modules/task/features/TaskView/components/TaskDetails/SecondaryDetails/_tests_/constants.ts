@@ -13,7 +13,6 @@ export const requiredProps: Omit<SecondaryDetailsProps, 'workGroup'> = {
   extendedStatus: TaskExtendedStatusEnum.New,
   workGroupList: [],
   workGroupListIsLoading: false,
-  hasReclassificationRequest: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
   transferTaskToFirstLine: jest.fn(),

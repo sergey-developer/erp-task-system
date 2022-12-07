@@ -10,6 +10,7 @@ export * from './loading'
 export * from './validating'
 export * from './icon'
 export * from './button'
+export { default as modalTestUtils } from './modal'
 
 export * from './setupApiTests'
 export * from './setupNotifications'

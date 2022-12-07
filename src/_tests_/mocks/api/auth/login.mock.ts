@@ -5,6 +5,7 @@ import {
   getSuccessMockFn,
   getUnauthorizedErrorMockFn,
 } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { LoginResponseModel } from 'modules/auth/models'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -13,40 +14,30 @@ import { ErrorData } from 'shared/services/api'
 const getLoginMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, AuthEndpointsEnum.Login)
 
-export const mockLoginSuccess = (response: LoginResponseModel) => {
-  const mockLogin = getSuccessMockFn(getLoginMockFn(), {
-    body: response,
-  })
-
+export const mockLoginSuccess = (
+  options: Partial<ResponseResolverOptions<LoginResponseModel>>,
+) => {
+  const mockLogin = getSuccessMockFn(getLoginMockFn(), options)
   mockLogin()
 }
 
 export const mockLoginBadRequestError = <T extends object>(
-  response?: ErrorData<T>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => {
-  const mockLogin = getBadRequestErrorMockFn(getLoginMockFn(), {
-    body: response,
-  })
-
+  const mockLogin = getBadRequestErrorMockFn(getLoginMockFn(), options)
   mockLogin()
 }
 
 export const mockLoginUnauthorizedError = <T extends object>(
-  response?: ErrorData<T>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => {
-  const mockLogin = getUnauthorizedErrorMockFn(getLoginMockFn(), {
-    body: response,
-  })
-
+  const mockLogin = getUnauthorizedErrorMockFn(getLoginMockFn(), options)
   mockLogin()
 }
 
 export const mockLoginServerError = <T extends object>(
-  response?: ErrorData<T>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => {
-  const mockLogin = getServerErrorMockFn(getLoginMockFn(), {
-    body: response,
-  })
-
+  const mockLogin = getServerErrorMockFn(getLoginMockFn(), options)
   mockLogin()
 }

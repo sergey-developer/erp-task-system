@@ -8,20 +8,19 @@ import {
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-export const getTaskJournal = () => screen.getByTestId('task-journal')
+const getTaskJournal = () => screen.getByTestId('task-journal')
 
-export const getDownloadButton = () =>
-  screen.getByTestId('journal-btn-download')
+const getDownloadButton = () => screen.getByTestId('journal-btn-download')
 
-export const getReloadButton = () => getButtonIn(getTaskJournal(), 'sync')
+const getReloadButton = () => getButtonIn(getTaskJournal(), 'sync')
 
-export const userClickReloadButton = async (user: UserEvent) => {
+const userClickReloadButton = async (user: UserEvent) => {
   const button = getReloadButton()
   await user.click(button)
   return button
 }
 
-export const userClickDownloadButton = async (
+const userClickDownloadButton = async (
   user: UserEvent,
 ): Promise<HTMLElement> => {
   const button = getDownloadButton()
@@ -29,10 +28,23 @@ export const userClickDownloadButton = async (
   return button
 }
 
-export const journalLoadingStarted = loadingStartedBySpinner('journal-spinner')
+const journalLoadingStarted = loadingStartedBySpinner('journal-spinner')
 
-export const journalLoadingFinished =
-  loadingFinishedBySpinner('journal-spinner')
+const journalLoadingFinished = loadingFinishedBySpinner('journal-spinner')
 
-export const journalCsvLoadingStarted = loadingStartedByButton
-export const journalCsvLoadingFinished = loadingFinishedByButton
+const journalCsvLoadingStarted = loadingStartedByButton
+const journalCsvLoadingFinished = loadingFinishedByButton
+
+const utils = {
+  getTaskJournal,
+  getDownloadButton,
+  getReloadButton,
+  userClickReloadButton,
+  userClickDownloadButton,
+  journalLoadingStarted,
+  journalLoadingFinished,
+  journalCsvLoadingStarted,
+  journalCsvLoadingFinished,
+}
+
+export default utils

@@ -10,36 +10,30 @@ import { TaskResolutionFormFields } from './interfaces'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+const OK_BUTTON_TEXT = 'Выполнить заявку'
 
-export type TaskResolutionModalProps = Pick<ModalProps, 'onCancel'> &
-  Pick<
-    TaskDetailsModel,
-    'type' | 'techResolution' | 'userResolution' | 'recordId'
-  > & {
-    isLoading: boolean
-    onSubmit: (
-      values: TaskResolutionFormFields,
-      setFields: FormInstance['setFields'],
-    ) => void
-  }
+export type TaskResolutionModalProps = Pick<
+  TaskDetailsModel,
+  'type' | 'recordId'
+> & {
+  isLoading: boolean
+  onSubmit: (
+    values: TaskResolutionFormFields,
+    setFields: FormInstance['setFields'],
+  ) => void
+  onCancel: NonNullable<ModalProps['onCancel']>
+}
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   isLoading,
   onCancel,
   onSubmit,
-  techResolution,
   recordId,
   type,
-  userResolution,
 }) => {
   const [form] = Form.useForm<TaskResolutionFormFields>()
 
   const taskType = useTaskType(type)
-
-  const initialFormValues: Partial<TaskResolutionFormFields> = {
-    techResolution,
-    userResolution,
-  }
 
   const modalTitle = (
     <Text>
@@ -52,7 +46,10 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     userResolution,
   }: TaskResolutionFormFields) => {
     await onSubmit(
-      { techResolution, userResolution: userResolution || undefined },
+      {
+        techResolution: techResolution?.trim(),
+        userResolution: userResolution?.trim(),
+      },
       form.setFields,
     )
   }
@@ -63,14 +60,14 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}
-      okText='Выполнить заявку'
+      okText={OK_BUTTON_TEXT}
       onCancel={onCancel}
     >
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>
           <Text>
             Заполните информацию о работах на объекте и предложенном решении.
-            Затем нажмите кнопку «Выполнить заявку».
+            Затем нажмите кнопку «{OK_BUTTON_TEXT}».
           </Text>
 
           <Text type='danger'>
@@ -80,12 +77,12 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
 
         <Form<TaskResolutionFormFields>
           form={form}
-          initialValues={initialFormValues}
           layout='vertical'
           onFinish={handleFinish}
           preserve={false}
         >
           <Form.Item
+            data-testid='tech-resolution'
             label='Техническое решение'
             name='techResolution'
             rules={BASE_LONG_TEXT_RULES}
@@ -98,6 +95,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
 
           {!taskType.isIncidentTask && !taskType.isRequestTask && (
             <Form.Item
+              data-testid='user-resolution'
               label='Решение для пользователя'
               name='userResolution'
               rules={BASE_LONG_TEXT_RULES}

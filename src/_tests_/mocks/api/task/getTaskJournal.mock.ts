@@ -28,27 +28,34 @@ export const mockGetJournalSuccess = (
 
 export const mockGetJournalServerError = <T extends object>(
   taskId: number,
-  response?: ErrorData<T>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => {
-  const mockGetJournal = getServerErrorMockFn(getGetJournalMockFn(taskId), {
-    body: response,
-  })
-
+  const mockGetJournal = getServerErrorMockFn(
+    getGetJournalMockFn(taskId),
+    options,
+  )
   mockGetJournal()
 }
 
-export const mockGetJournalCsvSuccess = (taskId: number) => {
-  const mockGetJournalCsv = getSuccessMockFn(getGetJournalCsvMockFn(taskId))
+export const mockGetJournalCsvSuccess = (
+  taskId: number,
+  options?: Partial<ResponseResolverOptions>,
+) => {
+  const mockGetJournalCsv = getSuccessMockFn(
+    getGetJournalCsvMockFn(taskId),
+    options,
+  )
+
   mockGetJournalCsv()
 }
 
 export const mockGetJournalCsvServerError = <T extends object>(
   taskId: number,
-  response?: ErrorData<T>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => {
   const mockGetJournalCsv = getServerErrorMockFn(
     getGetJournalCsvMockFn(taskId),
-    { body: response },
+    options,
   )
 
   mockGetJournalCsv()

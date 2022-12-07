@@ -1,5 +1,5 @@
 import { generateWord } from '_tests_/utils'
-import * as taskFixtures from 'fixtures/task'
+import { taskFixtures } from 'fixtures/task'
 
 import { TaskReclassificationRequestProps } from '../index'
 
@@ -12,4 +12,5 @@ export const requiredProps: TaskReclassificationRequestProps = {
   comment: reclassificationRequest.comment.text,
   createdAt: reclassificationRequest.createdAt,
   onAction: jest.fn(),
+  actionDisabled: false,
 }

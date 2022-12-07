@@ -23,19 +23,16 @@ const NOT_ASSIGNED_TEXT: string = 'Не назначен'
 
 export type TaskAssigneeProps = Pick<
   TaskDetailsModel,
-  'status' | 'extendedStatus'
+  'status' | 'extendedStatus' | 'assignee'
 > & {
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
-  assignee?: TaskDetailsModel['assignee']
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
 
   takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
-
-  hasReclassificationRequest: boolean
 }
 
 const TaskAssignee: FC<TaskAssigneeProps> = ({
@@ -52,8 +49,6 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
 
   takeTask,
   takeTaskIsLoading,
-
-  hasReclassificationRequest,
 }) => {
   const currentAssignee = assignee?.id
   const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
@@ -127,7 +122,8 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
             disabled={
               taskStatus.isClosed ||
               taskStatus.isCompleted ||
-              hasReclassificationRequest
+              taskStatus.isAwaiting ||
+              taskExtendedStatus.isInReclassification
             }
             onClick={
               currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
@@ -219,10 +215,11 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                     onClick={handleClickAssigneeButton}
                     loading={updateAssigneeIsLoading}
                     disabled={
+                      taskStatus.isAwaiting ||
                       !selectedAssignee ||
                       selectedAssigneeIsAuthenticatedUser ||
                       selectedAssigneeIsCurrentAssignee ||
-                      hasReclassificationRequest
+                      taskExtendedStatus.isInReclassification
                     }
                   >
                     Назначить

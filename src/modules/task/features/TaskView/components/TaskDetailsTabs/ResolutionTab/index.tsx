@@ -5,15 +5,15 @@ import LabeledData from 'components/LabeledData'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import useTaskType from 'modules/task/hooks/useTaskType'
 import { commonEllipsisConfig } from 'shared/constants/text'
+import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Title, Paragraph } = Typography
 
 export type ResolutionTabProps = Pick<
   TaskDetailsModel,
-  'techResolution' | 'userResolution'
+  'techResolution' | 'userResolution' | 'type'
 > & {
   title: string
-  type?: TaskDetailsModel['type']
 }
 
 const ResolutionTab: FC<ResolutionTabProps> = ({
@@ -31,7 +31,7 @@ const ResolutionTab: FC<ResolutionTabProps> = ({
       {!!techResolution && (
         <LabeledData label='Техническое решение'>
           <Paragraph ellipsis={commonEllipsisConfig}>
-            {techResolution}
+            {renderStringWithLineBreak(techResolution)}
           </Paragraph>
         </LabeledData>
       )}
@@ -39,7 +39,7 @@ const ResolutionTab: FC<ResolutionTabProps> = ({
       {!!userResolution && !taskType.isIncidentTask && !taskType.isRequestTask && (
         <LabeledData label='Решение для пользователя'>
           <Paragraph ellipsis={commonEllipsisConfig}>
-            {userResolution}
+            {renderStringWithLineBreak(userResolution)}
           </Paragraph>
         </LabeledData>
       )}

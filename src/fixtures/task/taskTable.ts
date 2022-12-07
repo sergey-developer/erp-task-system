@@ -13,7 +13,7 @@ import {
 } from 'modules/task/constants/common'
 import { TaskTableListItem } from 'modules/task/features/TaskList/components/TaskTable/interfaces'
 
-import { getWorkGroup } from '../workGroup'
+import { workGroupFixtures } from '../workGroup'
 import { getTaskAssignee } from './taskAssignee'
 
 export const getTaskTableItem = (
@@ -24,7 +24,7 @@ export const getTaskTableItem = (
   id: generateId(),
   name: generateName(),
   title: generateWord(),
-  workGroup: getWorkGroup(),
+  workGroup: workGroupFixtures.getWorkGroup(),
   createdAt: generateDateString(),
   recordId: generateWord(),
   lastComment: generateWord(),

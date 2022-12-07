@@ -1,9 +1,9 @@
 import { generateWord, render } from '_tests_/utils'
 import {
   DEFAULT_LONG_TEXT_LENGTH,
+  DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
   FIELD_CAN_NOT_BE_EMPTY_MSG,
   REQUIRED_FIELD_MSG,
-  TEXT_MAX_LENGTH_MSG,
 } from 'shared/constants/validation'
 
 import CreateCommentForm from '../index'
@@ -49,11 +49,7 @@ describe('Форма добавления комментария', () => {
         })
         await testUtils.userEntersComment(user, commentText)
         const error = await testUtils.findCommentFieldError(
-          TEXT_MAX_LENGTH_MSG.replace(
-            // eslint-disable-next-line no-template-curly-in-string
-            '${max}',
-            String(DEFAULT_LONG_TEXT_LENGTH),
-          ),
+          DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
         )
 
         expect(error).toBeInTheDocument()

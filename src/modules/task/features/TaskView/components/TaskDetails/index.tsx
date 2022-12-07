@@ -22,15 +22,17 @@ import {
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskWorkGroupMutationArgsModel,
 } from 'modules/task/features/TaskView/models'
+import useTaskStatus from 'modules/task/hooks/useTaskStatus'
 import { TaskAssigneeModel } from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
+import formatDate from 'shared/utils/date/formatDate'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
 import TaskDetailsTabs from '../TaskDetailsTabs'
-import { TaskDetailsTabsEnum } from '../TaskDetailsTabs/constants'
 import {
   TaskFirstLineFormErrors,
   TaskFirstLineFormFields,
@@ -80,8 +82,6 @@ export type TaskDetailsProps = {
       | 'status'
       | 'extendedStatus'
       | 'type'
-      | 'techResolution'
-      | 'userResolution'
       | 'description'
       | 'olaStatus'
       | 'olaEstimatedTime'
@@ -168,8 +168,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   isGetTaskError,
 }) => {
   const breakpoints = useBreakpoint()
-
-  const hasReclassificationRequest = !!reclassificationRequest
+  const taskStatus = useTaskStatus(details?.status)
 
   const isAssignedToCurrentUser = useCheckUserAuthenticated(
     details?.assignee?.id,
@@ -204,8 +203,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     TaskResolutionModalProps['onSubmit']
   >(
     async (values, setFields) => {
+      if (!details?.id) return
+
       try {
-        await resolveTask({ taskId: details?.id!, ...values })
+        await resolveTask({ taskId: details.id, ...values })
         closeTaskDetails()
       } catch (exception) {
         const error = exception as ErrorResponse<TaskResolutionFormErrors>
@@ -219,9 +220,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     TaskReclassificationModalProps['onSubmit']
   >(
     async (values, setFields) => {
+      if (!details?.id) return
+
       try {
         await createReclassificationRequest({
-          taskId: details?.id!,
+          taskId: details.id,
           ...values,
         })
         closeTaskReclassificationModal()
@@ -243,7 +246,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
-      await updateWorkGroup({ taskId: details?.id!, workGroup })
+      if (!details?.id) return
+
+      await updateWorkGroup({ taskId: details.id, workGroup })
       closeTaskSecondLineModal()
       closeTaskDetails()
     },
@@ -256,8 +261,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       setFields: FormInstance['setFields'],
       closeTaskFirstLineModal: () => void,
     ) => {
+      if (!details?.id) return
+
       try {
-        await deleteWorkGroup({ taskId: details?.id!, ...values })
+        await deleteWorkGroup({ taskId: details.id, ...values })
         closeTaskFirstLineModal()
         closeTaskDetails()
       } catch (exception) {
@@ -270,7 +277,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
-      await updateAssignee({ taskId: details?.id!, assignee })
+      if (!details?.id) return
+      await updateAssignee({ taskId: details.id, assignee })
     },
     [details?.id, updateAssignee],
   )
@@ -278,7 +286,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const debouncedTakeTask = useDebounceFn(takeTask)
 
   const handleTakeTask = useCallback(async () => {
-    await debouncedTakeTask({ taskId: details?.id! })
+    if (!details?.id) return
+    await debouncedTakeTask({ taskId: details.id })
   }, [debouncedTakeTask, details?.id])
 
   const debouncedCloseTaskDetails = useDebounceFn(closeTaskDetails)
@@ -288,9 +297,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       id={details.id}
       type={details.type}
       status={details.status}
+      extendedStatus={details.extendedStatus}
       olaStatus={details.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
-      hasReclassificationRequest={hasReclassificationRequest}
       onClose={debouncedCloseTaskDetails}
       onClickExecuteTask={debouncedOpenTaskResolutionModal}
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
@@ -308,15 +317,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         {reclassificationRequestIsLoading ||
         createReclassificationRequestIsLoading
           ? reclassificationRequestSpinner
-          : hasReclassificationRequest && (
+          : reclassificationRequest && (
               <React.Suspense fallback={reclassificationRequestSpinner}>
                 <TaskReclassificationRequest
                   title='Запрошена переклассификация:'
-                  comment={reclassificationRequest!.comment.text}
-                  createdAt={reclassificationRequest!.createdAt}
-                  user={reclassificationRequest!.user}
+                  comment={reclassificationRequest.comment.text}
+                  createdAt={reclassificationRequest.createdAt}
+                  user={reclassificationRequest.user}
                   actionText='Отменить запрос'
                   onAction={noop}
+                  actionDisabled={taskStatus.isAwaiting}
                 />
 
                 <DividerStyled />
@@ -328,7 +338,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             <MainDetails
               recordId={details.recordId}
               title={details.title}
-              createdAt={details.createdAt}
+              createdAt={formatDate(details.createdAt, DATE_TIME_FORMAT)}
               name={details.name}
               address={details.address}
               contactService={details.contactService}
@@ -376,15 +386,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
               updateAssignee={handleUpdateAssignee}
               updateAssigneeIsLoading={updateAssigneeIsLoading}
-              hasReclassificationRequest={hasReclassificationRequest}
               takeTask={handleTakeTask}
               takeTaskIsLoading={takeTaskIsLoading}
             />
 
-            <TaskDetailsTabs
-              details={details}
-              defaultTab={TaskDetailsTabsEnum.Description}
-            />
+            <TaskDetailsTabs details={details} />
 
             {isTaskResolutionModalOpened && (
               <React.Suspense
@@ -398,8 +404,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                 <TaskResolutionModal
                   type={details.type}
                   recordId={details.recordId}
-                  techResolution={details.techResolution}
-                  userResolution={details.userResolution}
                   isLoading={isTaskResolving}
                   onCancel={closeTaskResolutionModal}
                   onSubmit={handleResolutionSubmit}

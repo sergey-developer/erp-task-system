@@ -4,7 +4,7 @@
  */
 
 import { PreloadedState } from '@reduxjs/toolkit'
-import { ReactElement } from 'react'
+import React from 'react'
 
 import { RenderOptions, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -19,7 +19,7 @@ export type RenderInAppProviderOptions = Omit<RenderOptions, 'wrapper'> &
   }>
 
 const renderInAppProvider = (
-  ui: ReactElement,
+  ui: JSX.Element,
   {
     preloadedState = {},
     store = setupStore({ preloadedState }),
