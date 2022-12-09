@@ -285,6 +285,28 @@ describe('Страница реестра заявок', () => {
         expect(taskDetails).not.toBeInTheDocument()
       })
     })
+
+    test('Сбрасывает значение поля поиска', async () => {
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess({ once: false })
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await taskTableTestUtils.loadingFinished()
+      await fastFilterTestUtils.loadingFinished()
+
+      const searchValue = generateWord()
+      const searchInput = await taskListPageTestUtils.userFillSearchInput(
+        user,
+        searchValue,
+      )
+
+      await fastFilterTestUtils.userChangeFilter(user, FastFilterEnum.Closed)
+      await taskTableTestUtils.loadingFinished()
+
+      expect(searchInput).not.toHaveValue()
+      expect(searchInput).not.toHaveDisplayValue(searchValue)
+    })
   })
 
   describe('Кнопка расширенных фильтров', () => {
@@ -752,14 +774,13 @@ describe('Страница реестра заявок', () => {
         })
       })
 
-      test('Быстрый фильтр не активен и не выделен', async () => {
+      test('Быстрый фильтр перестаёт быть выбранным', async () => {
         const { user } = render(<TaskListPage />)
 
         const fastFilter = fastFilterTestUtils.getCheckableTag(
           FastFilterEnum.All,
         )
         fastFilterTestUtils.expectFilterChecked(fastFilter)
-        fastFilterTestUtils.expectFilterNotDisabled(fastFilter)
 
         await taskListPageTestUtils.userFillSearchInput(
           user,
@@ -770,36 +791,10 @@ describe('Страница реестра заявок', () => {
         await waitFor(() => {
           fastFilterTestUtils.expectFilterNotChecked(fastFilter)
         })
-
-        await waitFor(() => {
-          fastFilterTestUtils.expectFilterDisabled(fastFilter)
-        })
       })
     })
 
     describe('Очищение поля через клавиатуру', () => {
-      test('Делает быстрый фильтр активным', async () => {
-        const { user } = render(<TaskListPage />)
-
-        const input = await taskListPageTestUtils.userFillSearchInput(
-          user,
-          generateWord({ length: 1 }),
-          true,
-        )
-
-        const fastFilter = fastFilterTestUtils.getCheckableTag(
-          FastFilterEnum.Free,
-        )
-        await waitFor(() => {
-          fastFilterTestUtils.expectFilterDisabled(fastFilter)
-        })
-
-        await taskListPageTestUtils.userClearSearchFieldByBackspace(user, input)
-        await waitFor(() => {
-          fastFilterTestUtils.expectFilterNotDisabled(fastFilter)
-        })
-      })
-
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
         const { user } = render(<TaskListPage />)
 
@@ -965,27 +960,6 @@ describe('Страница реестра заявок', () => {
         await taskListPageTestUtils.userClickSearchClearButton(user)
 
         expect(input).not.toHaveValue()
-      })
-
-      test('Делает быстрый фильтр активным', async () => {
-        const { user } = render(<TaskListPage />)
-
-        await taskListPageTestUtils.userFillSearchInput(
-          user,
-          generateWord(),
-          true,
-        )
-        const fastFilter = fastFilterTestUtils.getCheckableTag(
-          FastFilterEnum.Free,
-        )
-        await waitFor(() => {
-          fastFilterTestUtils.expectFilterDisabled(fastFilter)
-        })
-
-        await taskListPageTestUtils.userClickSearchClearButton(user)
-        await waitFor(() => {
-          fastFilterTestUtils.expectFilterNotDisabled(fastFilter)
-        })
       })
 
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
