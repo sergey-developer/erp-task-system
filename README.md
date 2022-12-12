@@ -16,9 +16,11 @@
 
 ## Команды
 - `yarn install:dev` Установка зависимостей для dev режима
-  - `husky install` нужен для настройки [husky](https://typicode.github.io/husky/#/?id=usage)
+  - `husky install` Нужен для настройки [husky](https://typicode.github.io/husky/#/?id=usage)
 - [yarn start](https://create-react-app.dev/docs/getting-started/#npm-start-or-yarn-start) Запускает приложение локально в dev режиме, по умолчанию на http://localhost:3000
-- [yarn test](https://create-react-app.dev/docs/getting-started/#npm-test-or-yarn-test) Запускает тесты используя watch mode
+- `yarn test` Запускает тесты в обычном режиме
+- [yarn test:watch](https://create-react-app.dev/docs/getting-started/#npm-test-or-yarn-test) Запускает тесты в watch режиме
+- `yarn test:cov` Запускает тесты в обычном режиме с последующем выводом coverage отчёта
 - [yarn build](https://create-react-app.dev/docs/production-build/) Собирает production версию приложения
 - [yarn eject](https://create-react-app.dev/docs/available-scripts/#npm-run-eject) Команда из create-react-app
 - `yarn lint` Запускает встроенный в CRA линтер
@@ -69,7 +71,7 @@
    - `REACT_APP_API_URL=http://localhost:3000`
    - `REACT_APP_ENVIRONMENT=test`
 3. Установить зависимости `yarn install`
-4. Запустить тесты `yarn test`
+4. Запустить тесты `yarn test` или `yarn test:watch`
 
 ## Архитектура
 - `.husky` Создаётся при запуске команды `husky install` вместе с папкой `_`
@@ -230,7 +232,7 @@ RTK query не умеет правильно доставать ReturnType из 
 
 ## CI/CD
 ### Testing
-- Сборка и запуск приложения описаны в пункте `Запуск проекта / Testing`, но в 4-м пункте команда меняется на - `yarn test --coverage`
+- Сборка и запуск приложения описаны в пункте `Запуск проекта / Testing`, но в 4-м пункте команда меняется на - `yarn test:cov`
 - Прокинуть переменную окружения [CI=true](https://create-react-app.dev/docs/advanced-configuration)
 
-После запуска тестов, появится папка `coverage`
+После запуска тестов, в корне проекта появится папка `coverage`

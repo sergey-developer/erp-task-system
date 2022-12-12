@@ -2,6 +2,7 @@ import {
   mockCreateSubTaskBadRequestError,
   mockCreateSubTaskServerError,
   mockCreateSubTaskSuccess,
+  mockGetSubTaskListSuccess,
   mockGetSubTaskTemplateListServerError,
   mockGetSubTaskTemplateListSuccess,
 } from '_tests_/mocks/api'
@@ -20,7 +21,7 @@ import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
 import createSubTaskModalTestUtils from '../../../CreateSubTaskModal/_tests_/utils'
 import { CreateSubTaskFormErrors } from '../../../CreateSubTaskModal/interfaces'
 import SubTaskListTab from '../index'
-import { activeCreateSubTaskButtonProps, requiredProps } from './constants'
+import { activeCreateSubTaskButtonTaskProps, requiredProps } from './constants'
 import subTaskListTabTestUtils from './utils'
 
 setupApiTests()
@@ -35,14 +36,19 @@ describe('Вкладка списка подзадач', () => {
     })
 
     test('Активна если все условия соблюдены', () => {
+      mockGetSubTaskListSuccess(requiredProps.task.id)
+
       render(
         <SubTaskListTab
           {...requiredProps}
-          {...activeCreateSubTaskButtonProps}
+          task={{
+            ...requiredProps.task,
+            ...activeCreateSubTaskButtonTaskProps,
+          }}
         />,
         {
           store: getStoreWithAuth({
-            userId: activeCreateSubTaskButtonProps.task.assignee!.id,
+            userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
           }),
         },
       )
@@ -52,10 +58,15 @@ describe('Вкладка списка подзадач', () => {
 
     describe('Не активна если все условия соблюдены', () => {
       test('Но текущий пользователь не является исполнителем заявки', () => {
+        mockGetSubTaskListSuccess(requiredProps.task.id)
+
         render(
           <SubTaskListTab
             {...requiredProps}
-            {...activeCreateSubTaskButtonProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+            }}
           />,
           {
             store: getStoreWithAuth(),
@@ -66,15 +77,20 @@ describe('Вкладка списка подзадач', () => {
       })
 
       test('Но статус заявки не - "В процессе"', () => {
+        mockGetSubTaskListSuccess(requiredProps.task.id)
+
         render(
           <SubTaskListTab
             {...requiredProps}
-            {...activeCreateSubTaskButtonProps}
-            task={{ ...requiredProps.task, status: TaskStatusEnum.New }}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+              status: TaskStatusEnum.New,
+            }}
           />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
+              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
             }),
           },
         )
@@ -83,15 +99,20 @@ describe('Вкладка списка подзадач', () => {
       })
 
       test('Но тип заявки не "Incident" и не "Request"', () => {
+        mockGetSubTaskListSuccess(requiredProps.task.id)
+
         render(
           <SubTaskListTab
             {...requiredProps}
-            {...activeCreateSubTaskButtonProps}
-            task={{ ...requiredProps.task, type: TaskTypeEnum.RequestTask }}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+              type: TaskTypeEnum.RequestTask,
+            }}
           />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
+              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
             }),
           },
         )
@@ -101,16 +122,20 @@ describe('Вкладка списка подзадач', () => {
     })
 
     test('При нажатии открывает модалку создания задания', async () => {
+      mockGetSubTaskListSuccess(requiredProps.task.id)
       mockGetSubTaskTemplateListSuccess()
 
       const { user } = render(
         <SubTaskListTab
           {...requiredProps}
-          {...activeCreateSubTaskButtonProps}
+          task={{
+            ...requiredProps.task,
+            ...activeCreateSubTaskButtonTaskProps,
+          }}
         />,
         {
           store: getStoreWithAuth({
-            userId: activeCreateSubTaskButtonProps.task.assignee!.id,
+            userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
           }),
         },
       )
@@ -129,16 +154,20 @@ describe('Вкладка списка подзадач', () => {
         setupNotifications()
 
         test('Отображается соответствующее уведомление', async () => {
+          mockGetSubTaskListSuccess(requiredProps.task.id)
           mockGetSubTaskTemplateListServerError()
 
           const { user } = render(
             <SubTaskListTab
               {...requiredProps}
-              {...activeCreateSubTaskButtonProps}
+              task={{
+                ...requiredProps.task,
+                ...activeCreateSubTaskButtonTaskProps,
+              }}
             />,
             {
               store: getStoreWithAuth({
-                userId: activeCreateSubTaskButtonProps.task.assignee!.id,
+                userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
               }),
             },
           )
@@ -156,6 +185,7 @@ describe('Вкладка списка подзадач', () => {
 
     describe('При успешном запросе', () => {
       test('Модалка создания закрывается', async () => {
+        mockGetSubTaskListSuccess(requiredProps.task.id)
         const templateList = taskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({ body: templateList })
         mockCreateSubTaskSuccess(requiredProps.task.id)
@@ -163,11 +193,14 @@ describe('Вкладка списка подзадач', () => {
         const { user } = render(
           <SubTaskListTab
             {...requiredProps}
-            {...activeCreateSubTaskButtonProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+            }}
           />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
+              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
             }),
           },
         )
@@ -193,6 +226,7 @@ describe('Вкладка списка подзадач', () => {
       setupNotifications()
 
       test('Корректно обрабатывается ошибка - 400', async () => {
+        mockGetSubTaskListSuccess(requiredProps.task.id)
         const templateList = taskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({ body: templateList })
 
@@ -208,11 +242,14 @@ describe('Вкладка списка подзадач', () => {
         const { user } = render(
           <SubTaskListTab
             {...requiredProps}
-            {...activeCreateSubTaskButtonProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+            }}
           />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
+              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
             }),
           },
         )
@@ -247,6 +284,7 @@ describe('Вкладка списка подзадач', () => {
       })
 
       test('Корректно обрабатывается ошибка - 500', async () => {
+        mockGetSubTaskListSuccess(requiredProps.task.id)
         const templateList = taskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({ body: templateList })
         mockCreateSubTaskServerError(requiredProps.task.id)
@@ -254,11 +292,14 @@ describe('Вкладка списка подзадач', () => {
         const { user } = render(
           <SubTaskListTab
             {...requiredProps}
-            {...activeCreateSubTaskButtonProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+            }}
           />,
           {
             store: getStoreWithAuth({
-              userId: activeCreateSubTaskButtonProps.task.assignee!.id,
+              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
             }),
           },
         )

@@ -19,6 +19,7 @@ import {
   GetSubTaskTemplateListResponseModel,
   ReworkSubTaskMutationArgsModel,
   ReworkSubTaskResponseModel,
+  SubTaskModel,
 } from '../features/TaskView/models'
 
 const subTaskApiService = apiService.injectEndpoints({
@@ -40,7 +41,7 @@ const subTaskApiService = apiService.injectEndpoints({
             apiService.util.updateQueryData(
               'getSubTaskList' as never,
               taskId as never,
-              (subTaskList: any[]) => {
+              (subTaskList: SubTaskModel[]) => {
                 subTaskList.unshift(newSubTask)
               },
             ),
