@@ -40,8 +40,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
 }) => {
   const {
     fn: getTemplateList,
-    state: { isLoading: templateListIsLoading, currentData: templateList = [] },
+    state: {
+      isFetching: templateListIsFetching,
+      currentData: templateListResponse,
+    },
   } = useLazyGetSubTaskTemplateList()
+  const templateList = templateListResponse?.results || []
 
   const {
     fn: createSubTask,
@@ -123,7 +127,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
             initialFormValues={{ title, description }}
             recordId={recordId}
             templateOptions={templateList}
-            templateOptionsIsLoading={templateListIsLoading}
+            templateOptionsIsLoading={templateListIsFetching}
             isLoading={createSubTaskIsLoading}
             onSubmit={handleCreateSubTask}
             onCancel={debouncedToggleCreateSubTaskModalOpened}

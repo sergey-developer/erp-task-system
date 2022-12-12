@@ -148,7 +148,9 @@ describe('Вкладка списка подзадач', () => {
     describe('При успешном запросе', () => {
       test('Модалка создания закрывается', async () => {
         const templateList = taskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({ body: templateList })
+        mockGetSubTaskTemplateListSuccess({
+          body: taskFixtures.getSubTaskTemplateListResponse(templateList),
+        })
         mockCreateSubTaskSuccess(requiredProps.taskId)
 
         const { user } = render(
@@ -182,7 +184,9 @@ describe('Вкладка списка подзадач', () => {
 
       test('Корректно обрабатывается ошибка - 400', async () => {
         const templateList = taskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({ body: templateList })
+        mockGetSubTaskTemplateListSuccess({
+          body: taskFixtures.getSubTaskTemplateListResponse(templateList),
+        })
 
         const badRequestResponse: CreateSubTaskFormErrors = {
           title: [generateWord()],
@@ -233,7 +237,9 @@ describe('Вкладка списка подзадач', () => {
 
       test('Корректно обрабатывается ошибка - 500', async () => {
         const templateList = taskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({ body: templateList })
+        mockGetSubTaskTemplateListSuccess({
+          body: taskFixtures.getSubTaskTemplateListResponse(templateList),
+        })
         mockCreateSubTaskServerError(requiredProps.taskId)
 
         const { user } = render(
