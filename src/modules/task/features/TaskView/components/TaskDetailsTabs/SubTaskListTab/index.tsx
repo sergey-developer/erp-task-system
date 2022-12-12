@@ -18,12 +18,6 @@ import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
-import {
-  TaskExtendedStatusEnum,
-  TaskOlaStatusEnum,
-  TaskStatusEnum,
-  TaskTypeEnum,
-} from '../../../../../constants/common'
 import useCancelSubTask from '../../../hooks/useCancelSubTask'
 import {
   CancelSubTaskFormErrors,
@@ -181,35 +175,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
 
       <LoadingArea isLoading={subTaskListIsLoading}>
         <SubTaskList
-          data={[
-            {
-              id: 1,
-              workGroup: 'workGroup',
-              title: 'title',
-              parentId: 2,
-              assignee: {
-                id: 1,
-                firstName: 'firstName',
-                lastName: 'lastName',
-              },
-              status: TaskStatusEnum.New,
-              recordId: 'recordId',
-              type: TaskTypeEnum.Request,
-              createdAt: new Date().toISOString(),
-              name: 'name',
-              extendedStatus: TaskExtendedStatusEnum.New,
-              severity: 1,
-              priorityCode: 1,
-              olaStatus: TaskOlaStatusEnum.NotExpired,
-              olaEstimatedTime: Date.now(),
-              contactService: '',
-              supportGroup: { id: 1, name: '' },
-              productClassifier1: '1',
-              productClassifier2: '2',
-              productClassifier3: '3',
-              initialImpact: 1,
-            },
-          ]}
+          data={subTaskList}
           isError={isGetSubTaskListError}
           onClickCancel={handleClickCancel}
         />
