@@ -13,9 +13,14 @@ const { Text } = Typography
 type SubTaskListProps = {
   data: Array<SubTaskModel>
   isError: boolean
+  onClickCancel: (id: SubTaskModel['id']) => void
 }
 
-const SubTaskList: FC<SubTaskListProps> = ({ data, isError }) => {
+const SubTaskList: FC<SubTaskListProps> = ({
+  data,
+  isError,
+  onClickCancel,
+}) => {
   return (
     <Space $block direction='vertical'>
       {data.length ? (
@@ -23,6 +28,7 @@ const SubTaskList: FC<SubTaskListProps> = ({ data, isError }) => {
           {data.map((subTask) => (
             <SubTask
               key={subTask.id}
+              id={subTask.id}
               title={subTask.title}
               description={subTask.description}
               recordId={subTask.recordId}
@@ -36,6 +42,7 @@ const SubTaskList: FC<SubTaskListProps> = ({ data, isError }) => {
               assignee={subTask.assignee}
               contactPhone={subTask.contactPhone}
               techResolution={subTask.techResolution}
+              onClickCancel={onClickCancel}
             />
           ))}
         </Space>

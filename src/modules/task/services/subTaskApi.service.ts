@@ -2,12 +2,15 @@ import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import {
   CreateSubTaskMutationArgsModel,
   CreateSubTaskResponseModel,
+  DeleteSubTaskMutationArgsModel,
+  DeleteSubTaskResponseModel,
   GetSubTaskListQueryArgsModel,
   GetSubTaskListResponseModel,
   GetSubTaskTemplateListQueryArgsModel,
   GetSubTaskTemplateListResponseModel,
 } from 'modules/task/features/TaskView/models'
 import {
+  deleteSubTaskUrl,
   getCreateSubTaskUrl,
   getSubTaskListUrl,
 } from 'modules/task/utils/apiUrls'
@@ -59,6 +62,16 @@ const subTaskApiService = apiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    deleteSubTask: build.mutation<
+      DeleteSubTaskResponseModel,
+      DeleteSubTaskMutationArgsModel
+    >({
+      query: ({ taskId, ...payload }) => ({
+        url: deleteSubTaskUrl(taskId),
+        method: HttpMethodEnum.Delete,
+        body: payload,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
@@ -66,5 +79,6 @@ const subTaskApiService = apiService.injectEndpoints({
 export const {
   useLazyGetSubTaskTemplateListQuery,
   useCreateSubTaskMutation,
+  useDeleteSubTaskMutation,
   useGetSubTaskListQuery,
 } = subTaskApiService
