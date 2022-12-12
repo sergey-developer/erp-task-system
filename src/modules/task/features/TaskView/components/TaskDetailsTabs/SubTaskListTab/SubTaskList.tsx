@@ -30,15 +30,21 @@ const SubTaskList: FC<SubTaskListProps> = ({
   onClickCancel,
   onClickRework,
 }) => {
-  const currentUserIsTaskAssignee = useCheckUserAuthenticated(
+  const currentUserIsParentTaskAssignee = useCheckUserAuthenticated(
     task.parentTask?.assignee,
   )
   const taskStatus = useTaskStatus(task.status)
   const parentTaskStatus = useTaskStatus(task.parentTask?.status)
 
   const showReworkBtn =
-    currentUserIsTaskAssignee &&
+    currentUserIsParentTaskAssignee &&
     (taskStatus.isCompleted || taskStatus.isClosed) &&
+    !parentTaskStatus.isCompleted &&
+    !parentTaskStatus.isClosed
+
+  const showCancelBtn =
+    currentUserIsParentTaskAssignee &&
+    taskStatus.isNew &&
     !parentTaskStatus.isCompleted &&
     !parentTaskStatus.isClosed
 
@@ -63,6 +69,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
               assignee={subTask.assignee}
               contactPhone={subTask.contactPhone}
               techResolution={subTask.techResolution}
+              showCancelBtn={showCancelBtn}
               onClickCancel={onClickCancel}
               showReworkBtn={showReworkBtn}
               onClickRework={onClickRework}
