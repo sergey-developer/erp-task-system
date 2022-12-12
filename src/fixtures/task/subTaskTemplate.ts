@@ -1,7 +1,10 @@
 import times from 'lodash/times'
 
 import { generateId, generateWord } from '_tests_/utils'
-import { SubTaskTemplateModel } from 'modules/task/features/TaskView/models'
+import {
+  GetSubTaskTemplateListResponseModel,
+  SubTaskTemplateModel,
+} from 'modules/task/features/TaskView/models'
 
 export const getSubTaskTemplate = (): SubTaskTemplateModel => ({
   id: generateId(),
@@ -12,3 +15,12 @@ export const getSubTaskTemplate = (): SubTaskTemplateModel => ({
 export const getSubTaskTemplateList = (
   length: number = 1,
 ): Array<SubTaskTemplateModel> => times(length, () => getSubTaskTemplate())
+
+export const getSubTaskTemplateListResponse = (
+  list: GetSubTaskTemplateListResponseModel['results'],
+): GetSubTaskTemplateListResponseModel => ({
+  results: list,
+  count: list.length,
+  next: null,
+  previous: null,
+})

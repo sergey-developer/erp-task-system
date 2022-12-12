@@ -58,10 +58,10 @@ export const getTaskList = (length: number = 1): Array<TaskListItemModel> =>
   times(length, () => getTaskListItem())
 
 export const getGetTaskListResponse = (
-  taskList: GetTaskListResponseModel['results'],
+  list: GetTaskListResponseModel['results'],
 ): GetTaskListResponseModel => ({
-  results: taskList,
-  count: taskList.length,
+  results: list,
+  count: list.length,
   next: null,
   previous: null,
 })
