@@ -68,7 +68,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
       buttonText='Дополнительная информация'
       gap='middle'
       expanded={expanded}
-      onExpand={handleExpand}
+      onClickExpand={handleExpand}
     >
       <ContentWrapperStyled
         data-testid='additional-info-content'

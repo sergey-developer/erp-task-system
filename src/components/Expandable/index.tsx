@@ -11,7 +11,7 @@ type ExpandableProps = {
   buttonText: string
 
   expanded: boolean
-  onExpand: () => void
+  onClickExpand: () => void
 
   gap?: SpaceProps['size']
 }
@@ -21,12 +21,12 @@ const Expandable: FCWithChildren<ExpandableProps> = ({
   buttonText,
   gap,
   expanded,
-  onExpand,
+  onClickExpand,
   ...props
 }) => {
   return (
     <Space $block direction='vertical' size={gap} {...props}>
-      <Button type='text' onClick={onExpand}>
+      <Button type='text' onClick={onClickExpand}>
         <Text type='secondary' underline>
           {buttonText}
         </Text>

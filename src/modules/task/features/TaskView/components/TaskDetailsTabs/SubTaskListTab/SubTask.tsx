@@ -34,9 +34,10 @@ type SubTaskProps = Pick<
   | 'techResolution'
 > & {
   workGroup: string
+  showCancelBtn: boolean
   onClickCancel: (id: SubTaskModel['id']) => void
   showReworkBtn: boolean
-  onClickRework?: (id: SubTaskModel['id']) => void
+  onClickRework: (id: SubTaskModel['id']) => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
@@ -51,6 +52,7 @@ const SubTask: FC<SubTaskProps> = ({
   assignee,
   contactPhone,
   techResolution,
+  showCancelBtn,
   onClickCancel,
   showReworkBtn,
   onClickRework,
@@ -71,7 +73,7 @@ const SubTask: FC<SubTaskProps> = ({
           </SeparatedText>
         </Col>
 
-        {subTaskStatus.isNew && (
+        {showCancelBtn && (
           <Col>
             <Button onClick={() => onClickCancel(id)}>Отменить</Button>
           </Col>
@@ -79,9 +81,7 @@ const SubTask: FC<SubTaskProps> = ({
 
         {showReworkBtn && (
           <Col>
-            <Button
-              onClick={onClickRework ? () => onClickRework(id) : undefined}
-            >
+            <Button onClick={() => onClickRework(id)}>
               Вернуть на доработку
             </Button>
           </Col>
@@ -139,7 +139,7 @@ const SubTask: FC<SubTaskProps> = ({
           <Expandable
             buttonText='Подробное описание'
             expanded={showDescription}
-            onExpand={toggleShowDescription}
+            onClickExpand={toggleShowDescription}
           >
             <Paragraph>{description}</Paragraph>
           </Expandable>
