@@ -1,3 +1,4 @@
+//todo: разделить урлы (для создания, получения списка) чтобы они не повторялись
 export enum TaskEndpointsEnum {
   TaskList = '/tasks',
   TaskCounters = '/tasks/counters',
@@ -14,6 +15,8 @@ export enum TaskEndpointsEnum {
   GetSubTaskTemplateList = '/catalogs/templates',
   CreateSubTask = '/tasks/:id/subtasks',
   GetSubTaskList = '/tasks/:id/subtasks',
+  DeleteSubTask = '/subtasks/:id',
+  ReworkSubTask = '/subtasks/:id/rework',
 }
 
 export enum TaskEndpointsTagsEnum {

@@ -19,7 +19,13 @@ export const getTask = (
   props?: Partial<
     Pick<
       TaskDetailsModel,
-      'id' | 'type' | 'status' | 'extendedStatus' | 'olaStatus' | 'workGroup'
+      | 'id'
+      | 'type'
+      | 'status'
+      | 'extendedStatus'
+      | 'olaStatus'
+      | 'workGroup'
+      | 'assignee'
     >
   >,
 ): TaskDetailsModel => ({
@@ -29,7 +35,9 @@ export const getTask = (
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   workGroup: props?.workGroup || getTaskWorkGroup(),
+  assignee: props?.assignee || getTaskAssignee(),
 
+  parentTask: null,
   recordId: generateWord(),
   name: generateWord(),
   title: generateWord(),
@@ -51,6 +59,5 @@ export const getTask = (
   productClassifier2: generateWord(),
   productClassifier3: generateWord(),
   supportGroup: { id: generateId(), name: generateWord() },
-  assignee: getTaskAssignee(),
   olaEstimatedTime: Date.now(),
 })

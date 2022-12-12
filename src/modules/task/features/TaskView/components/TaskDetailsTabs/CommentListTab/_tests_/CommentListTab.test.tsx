@@ -231,7 +231,9 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          expect(createCommentFormTestUtils.getCommentInput()).not.toHaveValue()
+          expect(
+            createCommentFormTestUtils.getCommentInput(),
+          ).not.toHaveDisplayValue(newComment.text)
         })
       })
 

@@ -1,22 +1,16 @@
-import { generateId, generateIdStr, generateWord } from '_tests_/utils'
 import { taskFixtures } from 'fixtures/task'
 import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
 
 import { SubTaskListTabProps } from '../index'
 
-export const requiredProps: Omit<SubTaskListTabProps, 'description'> = {
-  recordId: generateIdStr(),
-  title: generateWord(),
-  taskId: generateId(),
-  assignee: null,
-  status: TaskStatusEnum.New,
-  type: TaskTypeEnum.Request,
+export const requiredProps: Pick<SubTaskListTabProps, 'task'> = {
+  task: taskFixtures.getTask(),
 }
 
-export const activeCreateSubTaskButton: Pick<
-  SubTaskListTabProps,
-  'status' | 'type'
-> & { assignee: NonNullable<SubTaskListTabProps['assignee']> } = {
+export const activeCreateSubTaskButtonTaskProps: Pick<
+  SubTaskListTabProps['task'],
+  'assignee' | 'status' | 'type'
+> = {
   assignee: taskFixtures.getTaskAssignee(),
   status: TaskStatusEnum.InProgress,
   type: TaskTypeEnum.Request,

@@ -5,23 +5,12 @@ import { SpinnerStyled } from './styles'
 
 export type SpinnerProps = SpinProps & {
   dimension?: 'block' | 'parent'
-  offset?: ['top', number]
   centered?: boolean
 }
 
-const Spinner: FC<SpinnerProps> = ({
-  dimension,
-  offset,
-  centered,
-  ...props
-}) => {
+const Spinner: FC<SpinnerProps> = ({ dimension, centered, ...props }) => {
   return (
-    <SpinnerStyled
-      $dimension={dimension}
-      $offset={offset}
-      $centered={centered}
-      {...props}
-    />
+    <SpinnerStyled $dimension={dimension} $centered={centered} {...props} />
   )
 }
 

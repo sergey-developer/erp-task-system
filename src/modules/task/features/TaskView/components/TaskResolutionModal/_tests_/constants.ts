@@ -7,7 +7,6 @@ export const requiredProps: TaskResolutionModalProps = {
   type: TaskTypeEnum.Request,
   recordId: generateIdStr(),
   isLoading: false,
-  initialFormValues: {},
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
 }

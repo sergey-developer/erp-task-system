@@ -1,11 +1,12 @@
 import { FormInstance, ModalProps } from 'antd'
 
+import { FieldsErrors } from 'shared/services/api'
+
 import {
   CreateSubTaskMutationArgsModel,
   SubTaskTemplateModel,
   TaskDetailsModel,
-} from 'modules/task/features/TaskView/models'
-import { FieldsErrors } from 'shared/services/api'
+} from '../../models'
 
 type FormFields = Omit<CreateSubTaskMutationArgsModel, 'taskId'>
 

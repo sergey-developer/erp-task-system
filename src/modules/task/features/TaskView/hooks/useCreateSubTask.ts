@@ -16,7 +16,6 @@ const useCreateSubTask = () => {
     async (data: CreateSubTaskMutationArgsModel) => {
       if (permissions.canCreate) {
         await mutation(data).unwrap()
-        // unwrap?? протестить что без него будет при ошибке
       }
     },
     [mutation, permissions.canCreate],

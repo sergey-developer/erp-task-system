@@ -7,11 +7,11 @@ import {
   REQUIRED_FIELD_MSG,
 } from 'shared/constants/validation'
 
-import TaskResolutionModal, { TaskResolutionModalProps } from '../index'
+import TaskResolutionModal from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
 
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 
 describe('Модалка решения по заявки', () => {
   test('Заголовок отображается', () => {
@@ -109,27 +109,6 @@ describe('Модалка решения по заявки', () => {
   })
 
   describe('Форма', () => {
-    test('Можно установить изначальные значения', () => {
-      const initialFormValues: TaskResolutionModalProps['initialFormValues'] = {
-        userResolution: generateWord(),
-        techResolution: generateWord(),
-      }
-
-      render(
-        <TaskResolutionModal
-          {...requiredProps}
-          initialFormValues={initialFormValues}
-        />,
-      )
-
-      expect(testUtils.getTechResolutionField()).toHaveDisplayValue(
-        initialFormValues.techResolution!,
-      )
-      expect(testUtils.getUserResolutionField()).toHaveDisplayValue(
-        initialFormValues.userResolution!,
-      )
-    })
-
     describe('Поле технического решения', () => {
       test('Заголовок отображается', () => {
         render(<TaskResolutionModal {...requiredProps} />)

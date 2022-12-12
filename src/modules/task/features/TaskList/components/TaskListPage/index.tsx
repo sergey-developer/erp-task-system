@@ -12,7 +12,7 @@ import { SearchProps } from 'antd/es/input'
 import { SorterResult } from 'antd/es/table/interface'
 import isArray from 'lodash/isArray'
 import { GetComponentProps } from 'rc-table/es/interface'
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 
 import { FilterIcon, SyncIcon } from 'components/Icons'
 import {
@@ -20,7 +20,7 @@ import {
   FilterTypeEnum,
 } from 'modules/task/features/TaskList/constants/common'
 import useGetTaskCounters from 'modules/task/features/TaskList/hooks/useGetTaskCounters'
-import useGetTaskList from 'modules/task/features/TaskList/hooks/useGetTaskList'
+import useLazyGetTaskList from 'modules/task/features/TaskList/hooks/useLazyGetTaskList'
 import { GetTaskListQueryArgsModel } from 'modules/task/features/TaskList/models'
 import TaskDetails from 'modules/task/features/TaskView/components/TaskDetailsContainer'
 import useUserRole from 'modules/user/hooks/useUserRole'
@@ -70,13 +70,22 @@ const TaskListPage: FC = () => {
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
   })
 
+  /**
+   * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
+   * Это также можно сделать если передать аргумент `skip` в обычный Query, но тогда
+   * данные будут сбрасываться, это связано с багом https://github.com/reduxjs/redux-toolkit/issues/2871
+   * Как баг починят, будет видно, оставлять как есть или можно использовать обычный Query.
+   */
   const {
-    data: taskListResponse,
-    isFetching: taskListIsFetching,
-    refetch: refetchTaskList,
-  } = useGetTaskList(queryArgs, {
-    skip: sortableFieldToSortValues.status.includes(queryArgs.sort),
-  })
+    fn: fetchTaskList,
+    state: { data: taskListResponse, isFetching: taskListIsFetching },
+  } = useLazyGetTaskList()
+
+  useEffect(() => {
+    if (!sortableFieldToSortValues.status.includes(queryArgs.sort)) {
+      fetchTaskList(queryArgs)
+    }
+  }, [fetchTaskList, queryArgs])
 
   const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskTableListItem['id']>>(null)
@@ -92,8 +101,10 @@ const TaskListPage: FC = () => {
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
 
-  const [fastFilterValue, setFastFilterValue] =
+  const [fastFilter, setFastFilter] =
     useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+
+  const [searchValue, setSearchValue] = useState<string>()
 
   const [appliedFilterType, setAppliedFilterType] = useState<
     MaybeNull<FilterTypeEnum>
@@ -112,18 +123,17 @@ const TaskListPage: FC = () => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
-    setFastFilterValue(undefined)
+    setFastFilter(undefined)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
     handleCloseTaskDetails()
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
-    if (isEqual(value, fastFilterValue)) return
-
     setAppliedFilterType(FilterTypeEnum.Fast)
-    setFastFilterValue(value)
+    setFastFilter(value)
 
     setExtendedFilterFormValues(initialExtendedFilterFormValues)
+    setSearchValue(undefined)
 
     triggerFilterChange({
       filter: value,
@@ -134,38 +144,40 @@ const TaskListPage: FC = () => {
 
   const handleSearchByTaskId = useDebounceFn<
     NonNullable<SearchProps['onSearch']>
-  >((value) => {
-    if (value) {
-      setAppliedFilterType(FilterTypeEnum.Search)
-      triggerFilterChange({
-        taskId: value,
-      })
-    } else {
-      if (!previousAppliedFilterType) return
+  >(
+    (value) => {
+      if (value) {
+        setAppliedFilterType(FilterTypeEnum.Search)
+        triggerFilterChange({
+          taskId: value,
+        })
+      } else {
+        if (!previousAppliedFilterType) return
 
-      setAppliedFilterType(previousAppliedFilterType!)
+        setAppliedFilterType(previousAppliedFilterType!)
 
-      const prevFilter = isEqual(
-        previousAppliedFilterType,
-        FilterTypeEnum.Extended,
-      )
-        ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
-        : isEqual(previousAppliedFilterType, FilterTypeEnum.Fast)
-        ? { filter: fastFilterValue }
-        : {}
+        const prevFilter = isEqual(
+          previousAppliedFilterType,
+          FilterTypeEnum.Extended,
+        )
+          ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
+          : isEqual(previousAppliedFilterType, FilterTypeEnum.Fast)
+          ? { filter: fastFilter }
+          : {}
 
-      triggerFilterChange(prevFilter)
-    }
+        triggerFilterChange(prevFilter)
+      }
 
-    handleCloseTaskDetails()
-  })
+      handleCloseTaskDetails()
+    },
+    [previousAppliedFilterType, extendedFilterFormValues, fastFilter],
+  )
 
-  const handleChangeSearch = useDebounceFn<
-    NonNullable<SearchProps['onChange']>
-  >((event) => {
+  const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) => {
     const value = event.target.value
+    setSearchValue(value)
     if (!value) handleSearchByTaskId(value)
-  })
+  }
 
   const debouncedSetSelectedTask = useDebounceFn(setSelectedTask)
 
@@ -243,10 +255,10 @@ const TaskListPage: FC = () => {
   }
 
   const handleRefetchTaskList = useDebounceFn(() => {
-    refetchTaskList()
+    fetchTaskList(queryArgs)
     handleCloseTaskDetails()
     refetchTaskCounters()
-  })
+  }, [fetchTaskList, queryArgs])
 
   const searchFilterApplied: boolean = isEqual(
     appliedFilterType,
@@ -268,7 +280,7 @@ const TaskListPage: FC = () => {
                   selectedFilter={queryArgs.filter}
                   onChange={handleFastFilterChange}
                   isError={isGetTaskCountersError}
-                  disabled={taskListIsFetching || searchFilterApplied}
+                  disabled={taskListIsFetching}
                   isLoading={taskCountersIsFetching}
                 />
               </Col>
@@ -292,7 +304,8 @@ const TaskListPage: FC = () => {
                   $breakpoints={breakpoints}
                   allowClear
                   onSearch={handleSearchByTaskId}
-                  onChange={handleChangeSearch}
+                  onChange={onChangeSearch}
+                  value={searchValue}
                   placeholder='Искать заявку по номеру'
                   disabled={taskListIsFetching}
                 />

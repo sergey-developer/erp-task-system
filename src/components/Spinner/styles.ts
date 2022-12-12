@@ -18,7 +18,6 @@ const dimensionStyles: Record<
 
 type SpinnerStyledProps = {
   $dimension?: SpinnerProps['dimension']
-  $offset?: SpinnerProps['offset']
   $centered?: SpinnerProps['centered']
 }
 
@@ -33,11 +32,4 @@ export const SpinnerStyled = styled(Spin)<SpinnerStyledProps>`
 
   ${({ $centered }) =>
     $centered ? 'justify-content: center; align-items: center;' : ''}
-
-  ${({ $offset }) => {
-    if (!$offset) return ''
-
-    const [direction, value] = $offset
-    return `margin-${direction}: ${value}px;`
-  }}
 `

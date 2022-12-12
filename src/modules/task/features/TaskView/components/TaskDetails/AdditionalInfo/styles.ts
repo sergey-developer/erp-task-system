@@ -1,5 +1,12 @@
 import styled from 'styled-components'
 
-export const ContainerStyled = styled.div<{ $hasMarginBottom?: boolean }>`
-  ${({ $hasMarginBottom }) => ($hasMarginBottom ? 'margin-bottom: 16px' : '')}
+import {
+  taskDetailsContainerBaseCss,
+  taskDetailsContainerStretchCss,
+} from '../styles'
+
+export const ContentWrapperStyled = styled.div`
+  ${taskDetailsContainerBaseCss}
+  ${taskDetailsContainerStretchCss}
+  ${({ theme }) => `background-color: ${theme.colors.lotion};`}
 `

@@ -16,6 +16,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 const getContainer = () => screen.getByRole('dialog')
+const findContainer = () => screen.findByRole('dialog')
 
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
@@ -76,6 +77,7 @@ const loadingStarted = () => loadingStartedByButton(getSubmitButton())
 
 const utils = {
   getContainer,
+  findContainer,
   getChildByText,
 
   getWorkGroupSelect,

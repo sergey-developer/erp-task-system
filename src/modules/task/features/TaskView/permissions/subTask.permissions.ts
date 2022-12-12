@@ -1,22 +1,34 @@
-import { PermissionsEnum } from 'shared/constants/permissions'
+import { CRUDPermissionsEnum } from 'shared/constants/permissions'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { UserPermissionConfig } from 'shared/interfaces/permissions'
 
+export enum SubTaskApiPermissionsEnum {
+  CanRework = 'CanRework',
+}
+
 export const subTaskApiPermissions: UserPermissionConfig = {
   [UserRolesEnum.FirstLineSupport]: [
-    PermissionsEnum.CanCreate,
-    PermissionsEnum.CanGetList,
+    CRUDPermissionsEnum.CanCreate,
+    CRUDPermissionsEnum.CanGetList,
+    CRUDPermissionsEnum.CanDelete,
+    SubTaskApiPermissionsEnum.CanRework,
   ],
   [UserRolesEnum.Engineer]: [
-    PermissionsEnum.CanCreate,
-    PermissionsEnum.CanGetList,
+    CRUDPermissionsEnum.CanCreate,
+    CRUDPermissionsEnum.CanGetList,
+    CRUDPermissionsEnum.CanDelete,
+    SubTaskApiPermissionsEnum.CanRework,
   ],
   [UserRolesEnum.SeniorEngineer]: [
-    PermissionsEnum.CanCreate,
-    PermissionsEnum.CanGetList,
+    CRUDPermissionsEnum.CanCreate,
+    CRUDPermissionsEnum.CanGetList,
+    CRUDPermissionsEnum.CanDelete,
+    SubTaskApiPermissionsEnum.CanRework,
   ],
   [UserRolesEnum.HeadOfDepartment]: [
-    PermissionsEnum.CanCreate,
-    PermissionsEnum.CanGetList,
+    CRUDPermissionsEnum.CanCreate,
+    CRUDPermissionsEnum.CanGetList,
+    CRUDPermissionsEnum.CanDelete,
+    SubTaskApiPermissionsEnum.CanRework,
   ],
 }

@@ -5,6 +5,7 @@ import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'
+import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import {
@@ -57,11 +58,7 @@ const TaskReclassificationModal = React.lazy(
 )
 
 const reclassificationRequestSpinner = (
-  <Spinner
-    dimension='block'
-    offset={['top', 10]}
-    tip={reclassificationRequestLoadingMessage}
-  />
+  <Spinner dimension='block' tip={reclassificationRequestLoadingMessage} />
 )
 
 export type TaskDetailsProps = {
@@ -82,8 +79,6 @@ export type TaskDetailsProps = {
       | 'status'
       | 'extendedStatus'
       | 'type'
-      | 'techResolution'
-      | 'userResolution'
       | 'description'
       | 'olaStatus'
       | 'olaEstimatedTime'
@@ -102,6 +97,7 @@ export type TaskDetailsProps = {
       | 'productClassifier3'
       | 'latitude'
       | 'longitude'
+      | 'parentTask'
     >
   >
 
@@ -205,8 +201,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     TaskResolutionModalProps['onSubmit']
   >(
     async (values, setFields) => {
+      if (!details?.id) return
+
       try {
-        await resolveTask({ taskId: details?.id!, ...values })
+        await resolveTask({ taskId: details.id, ...values })
         closeTaskDetails()
       } catch (exception) {
         const error = exception as ErrorResponse<TaskResolutionFormErrors>
@@ -220,9 +218,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     TaskReclassificationModalProps['onSubmit']
   >(
     async (values, setFields) => {
+      if (!details?.id) return
+
       try {
         await createReclassificationRequest({
-          taskId: details?.id!,
+          taskId: details.id,
           ...values,
         })
         closeTaskReclassificationModal()
@@ -244,7 +244,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
-      await updateWorkGroup({ taskId: details?.id!, workGroup })
+      if (!details?.id) return
+
+      await updateWorkGroup({ taskId: details.id, workGroup })
       closeTaskSecondLineModal()
       closeTaskDetails()
     },
@@ -257,8 +259,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       setFields: FormInstance['setFields'],
       closeTaskFirstLineModal: () => void,
     ) => {
+      if (!details?.id) return
+
       try {
-        await deleteWorkGroup({ taskId: details?.id!, ...values })
+        await deleteWorkGroup({ taskId: details.id, ...values })
         closeTaskFirstLineModal()
         closeTaskDetails()
       } catch (exception) {
@@ -271,7 +275,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
-      await updateAssignee({ taskId: details?.id!, assignee })
+      if (!details?.id) return
+      await updateAssignee({ taskId: details.id, assignee })
     },
     [details?.id, updateAssignee],
   )
@@ -279,7 +284,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const debouncedTakeTask = useDebounceFn(takeTask)
 
   const handleTakeTask = useCallback(async () => {
-    await debouncedTakeTask({ taskId: details?.id! })
+    if (!details?.id) return
+    await debouncedTakeTask({ taskId: details.id })
   }, [debouncedTakeTask, details?.id])
 
   const debouncedCloseTaskDetails = useDebounceFn(closeTaskDetails)
@@ -306,126 +312,122 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         loading={taskIsLoading}
         $breakpoints={breakpoints}
       >
-        {reclassificationRequestIsLoading ||
-        createReclassificationRequestIsLoading
-          ? reclassificationRequestSpinner
-          : reclassificationRequest && (
-              <React.Suspense fallback={reclassificationRequestSpinner}>
-                <TaskReclassificationRequest
-                  title='Запрошена переклассификация:'
-                  comment={reclassificationRequest.comment.text}
-                  createdAt={reclassificationRequest.createdAt}
-                  user={reclassificationRequest.user}
-                  actionText='Отменить запрос'
-                  onAction={noop}
-                  actionDisabled={taskStatus.isAwaiting}
-                />
-
-                <DividerStyled />
-              </React.Suspense>
-            )}
-
-        {details && (
-          <>
-            <MainDetails
-              recordId={details.recordId}
-              title={details.title}
-              createdAt={formatDate(details.createdAt, DATE_TIME_FORMAT)}
-              name={details.name}
-              address={details.address}
-              contactService={details.contactService}
-              contactPhone={details.contactPhone}
-              portablePhone={details.portablePhone}
-              olaStatus={details.olaStatus}
-              olaEstimatedTime={details.olaEstimatedTime}
-              olaNextBreachTime={details.olaNextBreachTime}
-            />
-
-            <AdditionalInfo
-              email={details.email}
-              sapId={details.sapId}
-              weight={details.weight}
-              address={details.address}
-              company={details.company}
-              contactType={details.contactType}
-              severity={taskSeverityMap.get(details.severity)!}
-              priority={taskPriorityMap.get(details.priorityCode)!}
-              impact={taskImpactMap.get(details.initialImpact)!}
-              supportGroup={details.supportGroup?.name}
-              productClassifier1={details.productClassifier1}
-              productClassifier2={details.productClassifier2}
-              productClassifier3={details.productClassifier3}
-              latitude={details.latitude}
-              longitude={details.longitude}
-              expanded={additionalInfoExpanded}
-              onExpand={onExpandAdditionalInfo}
-            />
-
-            <DividerStyled />
-
-            <SecondaryDetails
-              id={details.id}
-              recordId={details.recordId}
-              status={details.status}
-              extendedStatus={details.extendedStatus}
-              assignee={details.assignee}
-              workGroup={details.workGroup}
-              workGroupList={workGroupList}
-              workGroupListIsLoading={workGroupListIsLoading}
-              transferTaskToFirstLine={handleTransferTaskToFirstLine}
-              transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
-              transferTaskToSecondLine={handleTransferTaskToSecondLine}
-              transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
-              updateAssignee={handleUpdateAssignee}
-              updateAssigneeIsLoading={updateAssigneeIsLoading}
-              takeTask={handleTakeTask}
-              takeTaskIsLoading={takeTaskIsLoading}
-            />
-
-            <TaskDetailsTabs details={details} />
-
-            {isTaskResolutionModalOpened && (
-              <React.Suspense
-                fallback={
-                  <ModalFallback
-                    visible={isTaskResolutionModalOpened}
-                    onCancel={closeTaskResolutionModal}
+        <Space direction='vertical' $block size='middle'>
+          {reclassificationRequestIsLoading ||
+          createReclassificationRequestIsLoading
+            ? reclassificationRequestSpinner
+            : reclassificationRequest && (
+                <React.Suspense fallback={reclassificationRequestSpinner}>
+                  <TaskReclassificationRequest
+                    title='Запрошена переклассификация:'
+                    comment={reclassificationRequest.comment.text}
+                    createdAt={reclassificationRequest.createdAt}
+                    user={reclassificationRequest.user}
+                    actionText='Отменить запрос'
+                    onAction={noop}
+                    actionDisabled={taskStatus.isAwaiting}
                   />
-                }
-              >
-                <TaskResolutionModal
-                  type={details.type}
-                  recordId={details.recordId}
-                  initialFormValues={{
-                    techResolution: details.techResolution,
-                    userResolution: details.userResolution,
-                  }}
-                  isLoading={isTaskResolving}
-                  onCancel={closeTaskResolutionModal}
-                  onSubmit={handleResolutionSubmit}
-                />
-              </React.Suspense>
-            )}
+                </React.Suspense>
+              )}
 
-            {isTaskReclassificationModalOpened && (
-              <React.Suspense
-                fallback={
-                  <ModalFallback
-                    visible={isTaskReclassificationModalOpened}
+          {details && (
+            <Space direction='vertical' $block size='middle'>
+              <MainDetails
+                recordId={details.recordId}
+                title={details.title}
+                createdAt={formatDate(details.createdAt, DATE_TIME_FORMAT)}
+                name={details.name}
+                address={details.address}
+                contactService={details.contactService}
+                contactPhone={details.contactPhone}
+                portablePhone={details.portablePhone}
+                olaStatus={details.olaStatus}
+                olaEstimatedTime={details.olaEstimatedTime}
+                olaNextBreachTime={details.olaNextBreachTime}
+              />
+
+              <AdditionalInfo
+                email={details.email}
+                sapId={details.sapId}
+                weight={details.weight}
+                address={details.address}
+                company={details.company}
+                contactType={details.contactType}
+                severity={taskSeverityMap.get(details.severity)!}
+                priority={taskPriorityMap.get(details.priorityCode)!}
+                impact={taskImpactMap.get(details.initialImpact)!}
+                supportGroup={details.supportGroup?.name}
+                productClassifier1={details.productClassifier1}
+                productClassifier2={details.productClassifier2}
+                productClassifier3={details.productClassifier3}
+                latitude={details.latitude}
+                longitude={details.longitude}
+                expanded={additionalInfoExpanded}
+                onExpand={onExpandAdditionalInfo}
+              />
+
+              {!additionalInfoExpanded && <DividerStyled />}
+
+              <SecondaryDetails
+                id={details.id}
+                recordId={details.recordId}
+                status={details.status}
+                extendedStatus={details.extendedStatus}
+                assignee={details.assignee}
+                workGroup={details.workGroup}
+                workGroupList={workGroupList}
+                workGroupListIsLoading={workGroupListIsLoading}
+                transferTaskToFirstLine={handleTransferTaskToFirstLine}
+                transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
+                transferTaskToSecondLine={handleTransferTaskToSecondLine}
+                transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
+                updateAssignee={handleUpdateAssignee}
+                updateAssigneeIsLoading={updateAssigneeIsLoading}
+                takeTask={handleTakeTask}
+                takeTaskIsLoading={takeTaskIsLoading}
+              />
+
+              <TaskDetailsTabs details={details} />
+
+              {isTaskResolutionModalOpened && (
+                <React.Suspense
+                  fallback={
+                    <ModalFallback
+                      visible={isTaskResolutionModalOpened}
+                      onCancel={closeTaskResolutionModal}
+                    />
+                  }
+                >
+                  <TaskResolutionModal
+                    type={details.type}
+                    recordId={details.recordId}
+                    isLoading={isTaskResolving}
+                    onCancel={closeTaskResolutionModal}
+                    onSubmit={handleResolutionSubmit}
+                  />
+                </React.Suspense>
+              )}
+
+              {isTaskReclassificationModalOpened && (
+                <React.Suspense
+                  fallback={
+                    <ModalFallback
+                      visible={isTaskReclassificationModalOpened}
+                      onCancel={closeTaskReclassificationModal}
+                    />
+                  }
+                >
+                  <TaskReclassificationModal
+                    recordId={details.recordId}
+                    isLoading={createReclassificationRequestIsLoading}
+                    onSubmit={handleReclassificationRequestSubmit}
                     onCancel={closeTaskReclassificationModal}
                   />
-                }
-              >
-                <TaskReclassificationModal
-                  recordId={details.recordId}
-                  isLoading={createReclassificationRequestIsLoading}
-                  onSubmit={handleReclassificationRequestSubmit}
-                  onCancel={closeTaskReclassificationModal}
-                />
-              </React.Suspense>
-            )}
-          </>
-        )}
+                </React.Suspense>
+              )}
+            </Space>
+          )}
+        </Space>
       </CardStyled>
     </RootWrapperStyled>
   )

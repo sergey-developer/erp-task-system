@@ -1,16 +1,26 @@
 import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import {
-  CreateSubTaskMutationArgsModel,
-  CreateSubTaskResponseModel,
-  GetSubTaskTemplateListQueryArgsModel,
-  GetSubTaskTemplateListResponseModel,
-} from 'modules/task/features/TaskView/models'
-import {
+  deleteSubTaskUrl,
   getCreateSubTaskUrl,
   getSubTaskListUrl,
+  reworkSubTaskUrl,
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
+
+import {
+  CreateSubTaskMutationArgsModel,
+  CreateSubTaskResponseModel,
+  DeleteSubTaskMutationArgsModel,
+  DeleteSubTaskResponseModel,
+  GetSubTaskListQueryArgsModel,
+  GetSubTaskListResponseModel,
+  GetSubTaskTemplateListQueryArgsModel,
+  GetSubTaskTemplateListResponseModel,
+  ReworkSubTaskMutationArgsModel,
+  ReworkSubTaskResponseModel,
+  SubTaskModel,
+} from '../features/TaskView/models'
 
 const subTaskApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
@@ -31,7 +41,7 @@ const subTaskApiService = apiService.injectEndpoints({
             apiService.util.updateQueryData(
               'getSubTaskList' as never,
               taskId as never,
-              (subTaskList: any[]) => {
+              (subTaskList: SubTaskModel[]) => {
                 subTaskList.unshift(newSubTask)
               },
             ),
@@ -39,7 +49,10 @@ const subTaskApiService = apiService.injectEndpoints({
         } catch {}
       },
     }),
-    getSubTaskList: build.query<any, any>({
+    getSubTaskList: build.query<
+      GetSubTaskListResponseModel,
+      GetSubTaskListQueryArgsModel
+    >({
       query: (taskId) => ({
         url: getSubTaskListUrl(taskId),
         method: HttpMethodEnum.Get,
@@ -54,9 +67,34 @@ const subTaskApiService = apiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    deleteSubTask: build.mutation<
+      DeleteSubTaskResponseModel,
+      DeleteSubTaskMutationArgsModel
+    >({
+      query: ({ taskId, ...payload }) => ({
+        url: deleteSubTaskUrl(taskId),
+        method: HttpMethodEnum.Delete,
+        body: payload,
+      }),
+    }),
+    reworkSubTask: build.mutation<
+      ReworkSubTaskResponseModel,
+      ReworkSubTaskMutationArgsModel
+    >({
+      query: ({ taskId, ...payload }) => ({
+        url: reworkSubTaskUrl(taskId),
+        method: HttpMethodEnum.Post,
+        body: payload,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useLazyGetSubTaskTemplateListQuery, useCreateSubTaskMutation } =
-  subTaskApiService
+export const {
+  useLazyGetSubTaskTemplateListQuery,
+  useCreateSubTaskMutation,
+  useDeleteSubTaskMutation,
+  useReworkSubTaskMutation,
+  useGetSubTaskListQuery,
+} = subTaskApiService
