@@ -5,9 +5,10 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 import { TaskEndpointsEnum } from 'modules/task/constants/api'
-import { GetSubTaskTemplateListResponseModel } from 'modules/task/features/TaskView/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+
+import { GetSubTaskTemplateListResponseModel } from '../../../../modules/task/features/TaskView/models'
 
 const getGetSubTaskTemplateListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, TaskEndpointsEnum.GetSubTaskTemplateList)

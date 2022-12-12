@@ -1,5 +1,14 @@
 import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import {
+  deleteSubTaskUrl,
+  getCreateSubTaskUrl,
+  getSubTaskListUrl,
+  reworkSubTaskUrl,
+} from 'modules/task/utils/apiUrls'
+import { HttpMethodEnum } from 'shared/constants/http'
+import { apiService } from 'shared/services/api'
+
+import {
   CreateSubTaskMutationArgsModel,
   CreateSubTaskResponseModel,
   DeleteSubTaskMutationArgsModel,
@@ -10,15 +19,7 @@ import {
   GetSubTaskTemplateListResponseModel,
   ReworkSubTaskMutationArgsModel,
   ReworkSubTaskResponseModel,
-} from 'modules/task/features/TaskView/models'
-import {
-  deleteSubTaskUrl,
-  getCreateSubTaskUrl,
-  getSubTaskListUrl,
-  reworkSubTaskUrl,
-} from 'modules/task/utils/apiUrls'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
+} from '../features/TaskView/models'
 
 const subTaskApiService = apiService.injectEndpoints({
   endpoints: (build) => ({

@@ -139,7 +139,7 @@ const SubTask: FC<SubTaskProps> = ({
           <Expandable
             buttonText='Подробное описание'
             expanded={showDescription}
-            onExpand={toggleShowDescription}
+            onClickExpand={toggleShowDescription}
           >
             <Paragraph>{description}</Paragraph>
           </Expandable>
