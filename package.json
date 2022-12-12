@@ -6,7 +6,9 @@
     "install:dev": "yarn install & husky install",
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --watchAll=false",
+    "test:watch": "craco test",
+    "test:cov": "craco test --coverage",
     "eject": "craco eject",
     "lint": "eslint ./src"
   },
