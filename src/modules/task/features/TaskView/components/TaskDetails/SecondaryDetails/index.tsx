@@ -1,12 +1,10 @@
 import { Col, Row } from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { TaskAssigneeModel } from 'modules/task/models'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import { DetailsContainerStyled } from '../styles'
 import TaskAssignee from '../TaskAssignee'
 import WorkGroup, { WorkGroupProps } from '../WorkGroup'
 
@@ -54,8 +52,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   updateAssignee,
   updateAssigneeIsLoading,
 }) => {
-  const breakpoints = useBreakpoint()
-
   const workGroup = useMemo(
     () =>
       workGroupList.find((workGroupListItem) =>
@@ -65,44 +61,37 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   )
 
   return (
-    <DetailsContainerStyled
-      data-testid='task-details-secondary'
-      $breakpoints={breakpoints}
-    >
-      <Row justify='space-between'>
-        <Col span={11}>
-          <WorkGroup
-            id={id}
-            recordId={recordId}
-            status={status}
-            extendedStatus={extendedStatus}
-            workGroup={workGroup}
-            workGroupList={workGroupList}
-            workGroupListIsLoading={workGroupListIsLoading}
-            transferTaskToFirstLine={transferTaskToFirstLine}
-            transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
-            transferTaskToSecondLine={transferTaskToSecondLine}
-            transferTaskToSecondLineIsLoading={
-              transferTaskToSecondLineIsLoading
-            }
-          />
-        </Col>
+    <Row data-testid='task-details-secondary' justify='space-between'>
+      <Col span={11}>
+        <WorkGroup
+          id={id}
+          recordId={recordId}
+          status={status}
+          extendedStatus={extendedStatus}
+          workGroup={workGroup}
+          workGroupList={workGroupList}
+          workGroupListIsLoading={workGroupListIsLoading}
+          transferTaskToFirstLine={transferTaskToFirstLine}
+          transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
+          transferTaskToSecondLine={transferTaskToSecondLine}
+          transferTaskToSecondLineIsLoading={transferTaskToSecondLineIsLoading}
+        />
+      </Col>
 
-        <Col span={11}>
-          <TaskAssignee
-            status={status}
-            extendedStatus={extendedStatus}
-            assignee={assignee}
-            workGroup={workGroup}
-            workGroupListIsLoading={workGroupListIsLoading}
-            updateAssignee={updateAssignee}
-            updateAssigneeIsLoading={updateAssigneeIsLoading}
-            takeTask={takeTask}
-            takeTaskIsLoading={takeTaskIsLoading}
-          />
-        </Col>
-      </Row>
-    </DetailsContainerStyled>
+      <Col span={11}>
+        <TaskAssignee
+          status={status}
+          extendedStatus={extendedStatus}
+          assignee={assignee}
+          workGroup={workGroup}
+          workGroupListIsLoading={workGroupListIsLoading}
+          updateAssignee={updateAssignee}
+          updateAssigneeIsLoading={updateAssigneeIsLoading}
+          takeTask={takeTask}
+          takeTaskIsLoading={takeTaskIsLoading}
+        />
+      </Col>
+    </Row>
   )
 }
 

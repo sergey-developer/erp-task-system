@@ -2,10 +2,12 @@ import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback, useEffect } from 'react'
 
+import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubTask'
+import useGetSubTaskList from 'modules/task/features/TaskView/hooks/useGetSubTaskList'
 import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
@@ -17,6 +19,7 @@ import {
   CreateSubTaskFormErrors,
   CreateSubTaskModalProps,
 } from '../../CreateSubTaskModal/interfaces'
+import SubTaskList from './SubTaskList'
 
 const CreateSubTaskModal = React.lazy(() => import('../../CreateSubTaskModal'))
 
@@ -47,6 +50,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
     fn: createSubTask,
     state: { isLoading: createSubTaskIsLoading },
   } = useCreateSubTask()
+
+  const {
+    isLoading: subTaskListIsLoading,
+    currentData: subTaskList = [],
+    isError: isGetSubTaskListError,
+  } = useGetSubTaskList(taskId)
 
   const [createSubTaskModalOpened, { toggle: toggleCreateSubTaskModalOpened }] =
     useBoolean(false)
@@ -87,10 +96,17 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
   }, [getTemplateList, createSubTaskModalOpened])
 
   return (
-    <Space data-testid='subtask-list-tab' direction='vertical' $block>
+    <Space
+      data-testid='subtask-list-tab'
+      size='middle'
+      direction='vertical'
+      $block
+    >
       <Row justify='space-between' align='middle'>
         <Col>
-          <Title level={5}>Задания</Title>
+          <Title level={5}>
+            {`Задания${!!subTaskList.length ? ` (${subTaskList.length})` : ''}`}
+          </Title>
         </Col>
 
         <Col>
@@ -109,6 +125,10 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({
           </Button>
         </Col>
       </Row>
+
+      <LoadingArea isLoading={subTaskListIsLoading}>
+        <SubTaskList data={subTaskList} isError={isGetSubTaskListError} />
+      </LoadingArea>
 
       {createSubTaskModalOpened && (
         <React.Suspense

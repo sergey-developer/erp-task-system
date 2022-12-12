@@ -4,6 +4,7 @@ export * from './takeTask.model'
 
 export * from './subTask.model'
 export * from './createSubTask.model'
+export * from './getSubTaskList.model'
 export * from './subTaskTemplate.model'
 export * from './getSubTaskTemplateList.model'
 

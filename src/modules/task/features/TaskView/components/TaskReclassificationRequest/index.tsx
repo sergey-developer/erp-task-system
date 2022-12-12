@@ -1,8 +1,9 @@
-import { Button, Space, Typography } from 'antd'
+import { Button, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
 import { QuestionCircleIcon } from 'components/Icons'
+import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { UserModel } from 'modules/user/models'
 import getShortUserName from 'modules/user/utils/getShortUserName'
@@ -39,8 +40,9 @@ const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
     <WrapperStyled
       data-testid='task-reclassification-request'
       $breakpoints={breakpoints}
+      $stretch
     >
-      <Space size='middle' align='baseline'>
+      <Space size='middle' align='baseline' $block>
         <QuestionCircleIcon $size='large' />
 
         <Space direction='vertical' size='middle'>

@@ -53,7 +53,7 @@ const PrivateHeader: FC = () => {
           <Row justify='end'>
             <Space size='large'>
               <NotificationCounter />
-              <UserAvatar size='large' dot />
+              <UserAvatar size='large' dot abbr='' />
               <LogoutButton />
             </Space>
           </Row>
