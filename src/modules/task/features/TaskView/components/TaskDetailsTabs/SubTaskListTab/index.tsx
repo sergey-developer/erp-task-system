@@ -6,6 +6,7 @@ import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import useCancelSubTask from 'modules/task/features/TaskView/hooks/useCancelSubTask'
 import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubTask'
 import useGetSubTaskList from 'modules/task/features/TaskView/hooks/useGetSubTaskList'
 import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
@@ -18,7 +19,6 @@ import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
-import useCancelSubTask from '../../../hooks/useCancelSubTask'
 import {
   CancelSubTaskFormErrors,
   CancelSubTaskModalProps,
