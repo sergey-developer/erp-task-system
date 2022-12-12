@@ -79,8 +79,6 @@ export type TaskDetailsProps = {
       | 'status'
       | 'extendedStatus'
       | 'type'
-      | 'techResolution'
-      | 'userResolution'
       | 'description'
       | 'olaStatus'
       | 'olaEstimatedTime'
@@ -202,8 +200,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     TaskResolutionModalProps['onSubmit']
   >(
     async (values, setFields) => {
+      if (!details?.id) return
+
       try {
-        await resolveTask({ taskId: details?.id!, ...values })
+        await resolveTask({ taskId: details.id, ...values })
         closeTaskDetails()
       } catch (exception) {
         const error = exception as ErrorResponse<TaskResolutionFormErrors>
@@ -217,9 +217,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     TaskReclassificationModalProps['onSubmit']
   >(
     async (values, setFields) => {
+      if (!details?.id) return
+
       try {
         await createReclassificationRequest({
-          taskId: details?.id!,
+          taskId: details.id,
           ...values,
         })
         closeTaskReclassificationModal()
@@ -241,7 +243,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
-      await updateWorkGroup({ taskId: details?.id!, workGroup })
+      if (!details?.id) return
+
+      await updateWorkGroup({ taskId: details.id, workGroup })
       closeTaskSecondLineModal()
       closeTaskDetails()
     },
@@ -254,8 +258,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       setFields: FormInstance['setFields'],
       closeTaskFirstLineModal: () => void,
     ) => {
+      if (!details?.id) return
+
       try {
-        await deleteWorkGroup({ taskId: details?.id!, ...values })
+        await deleteWorkGroup({ taskId: details.id, ...values })
         closeTaskFirstLineModal()
         closeTaskDetails()
       } catch (exception) {
@@ -268,7 +274,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
-      await updateAssignee({ taskId: details?.id!, assignee })
+      if (!details?.id) return
+      await updateAssignee({ taskId: details.id, assignee })
     },
     [details?.id, updateAssignee],
   )
@@ -276,7 +283,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const debouncedTakeTask = useDebounceFn(takeTask)
 
   const handleTakeTask = useCallback(async () => {
-    await debouncedTakeTask({ taskId: details?.id! })
+    if (!details?.id) return
+    await debouncedTakeTask({ taskId: details.id })
   }, [debouncedTakeTask, details?.id])
 
   const debouncedCloseTaskDetails = useDebounceFn(closeTaskDetails)
@@ -392,10 +400,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                   <TaskResolutionModal
                     type={details.type}
                     recordId={details.recordId}
-                    initialFormValues={{
-                      techResolution: details.techResolution,
-                      userResolution: details.userResolution,
-                    }}
                     isLoading={isTaskResolving}
                     onCancel={closeTaskResolutionModal}
                     onSubmit={handleResolutionSubmit}

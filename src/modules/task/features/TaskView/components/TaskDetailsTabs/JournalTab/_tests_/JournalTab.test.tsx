@@ -7,6 +7,7 @@ import {
 import {
   findNotification,
   generateId,
+  generateWord,
   getStoreWithAuth,
   render,
   setupApiTests,
@@ -140,7 +141,9 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(requiredProps.taskId, {
             body: taskFixtures.getTaskJournal(),
           })
-          mockGetJournalCsvSuccess(requiredProps.taskId)
+          mockGetJournalCsvSuccess(requiredProps.taskId, {
+            body: generateWord(),
+          })
 
           const { user } = render(<JournalTab {...requiredProps} />, {
             store: getStoreWithAuth(),

@@ -101,8 +101,10 @@ const TaskListPage: FC = () => {
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
 
-  const [fastFilterValue, setFastFilterValue] =
+  const [fastFilter, setFastFilter] =
     useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+
+  const [searchValue, setSearchValue] = useState<string>()
 
   const [appliedFilterType, setAppliedFilterType] = useState<
     MaybeNull<FilterTypeEnum>
@@ -121,18 +123,17 @@ const TaskListPage: FC = () => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
-    setFastFilterValue(undefined)
+    setFastFilter(undefined)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
     handleCloseTaskDetails()
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
-    if (isEqual(value, fastFilterValue)) return
-
     setAppliedFilterType(FilterTypeEnum.Fast)
-    setFastFilterValue(value)
+    setFastFilter(value)
 
     setExtendedFilterFormValues(initialExtendedFilterFormValues)
+    setSearchValue(undefined)
 
     triggerFilterChange({
       filter: value,
@@ -143,38 +144,40 @@ const TaskListPage: FC = () => {
 
   const handleSearchByTaskId = useDebounceFn<
     NonNullable<SearchProps['onSearch']>
-  >((value) => {
-    if (value) {
-      setAppliedFilterType(FilterTypeEnum.Search)
-      triggerFilterChange({
-        taskId: value,
-      })
-    } else {
-      if (!previousAppliedFilterType) return
+  >(
+    (value) => {
+      if (value) {
+        setAppliedFilterType(FilterTypeEnum.Search)
+        triggerFilterChange({
+          taskId: value,
+        })
+      } else {
+        if (!previousAppliedFilterType) return
 
-      setAppliedFilterType(previousAppliedFilterType!)
+        setAppliedFilterType(previousAppliedFilterType!)
 
-      const prevFilter = isEqual(
-        previousAppliedFilterType,
-        FilterTypeEnum.Extended,
-      )
-        ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
-        : isEqual(previousAppliedFilterType, FilterTypeEnum.Fast)
-        ? { filter: fastFilterValue }
-        : {}
+        const prevFilter = isEqual(
+          previousAppliedFilterType,
+          FilterTypeEnum.Extended,
+        )
+          ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
+          : isEqual(previousAppliedFilterType, FilterTypeEnum.Fast)
+          ? { filter: fastFilter }
+          : {}
 
-      triggerFilterChange(prevFilter)
-    }
+        triggerFilterChange(prevFilter)
+      }
 
-    handleCloseTaskDetails()
-  })
+      handleCloseTaskDetails()
+    },
+    [previousAppliedFilterType, extendedFilterFormValues, fastFilter],
+  )
 
-  const handleChangeSearch = useDebounceFn<
-    NonNullable<SearchProps['onChange']>
-  >((event) => {
+  const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) => {
     const value = event.target.value
+    setSearchValue(value)
     if (!value) handleSearchByTaskId(value)
-  })
+  }
 
   const debouncedSetSelectedTask = useDebounceFn(setSelectedTask)
 
@@ -277,7 +280,7 @@ const TaskListPage: FC = () => {
                   selectedFilter={queryArgs.filter}
                   onChange={handleFastFilterChange}
                   isError={isGetTaskCountersError}
-                  disabled={taskListIsFetching || searchFilterApplied}
+                  disabled={taskListIsFetching}
                   isLoading={taskCountersIsFetching}
                 />
               </Col>
@@ -301,7 +304,8 @@ const TaskListPage: FC = () => {
                   $breakpoints={breakpoints}
                   allowClear
                   onSearch={handleSearchByTaskId}
-                  onChange={handleChangeSearch}
+                  onChange={onChangeSearch}
+                  value={searchValue}
                   placeholder='Искать заявку по номеру'
                   disabled={taskListIsFetching}
                 />
