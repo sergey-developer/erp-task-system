@@ -3,12 +3,13 @@ import React, { FC, useState } from 'react'
 
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
-import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
-import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
+import {
+  useAuthenticatedUser,
+  useCheckUserAuthenticated,
+} from 'modules/auth/hooks'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions'
-import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
-import useTaskStatus from 'modules/task/hooks/useTaskStatus'
+import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
 import { TaskAssigneeModel } from 'modules/task/models'
 import getFullUserName from 'modules/user/utils/getFullUserName'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'

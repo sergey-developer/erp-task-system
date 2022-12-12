@@ -1,8 +1,10 @@
 import { Rule } from 'rc-field-form/es/interface'
 
+import { makeMaxLengthMessage } from 'shared/utils/validation'
+
 export const DEFAULT_LONG_TEXT_LENGTH: number = 500
 
-export const BASE_LONG_TEXT_RULES: Rule[] = [
+export const DEFAULT_LONG_TEXT_RULES: Rule[] = [
   {
     required: true,
     whitespace: true,
@@ -23,8 +25,7 @@ export const TEXT_MAX_LENGTH_MSG =
   // eslint-disable-next-line no-template-curly-in-string
   'Убедитесь, что это значение содержит не более ${max} символов'
 
-export const DEFAULT_LONG_TEXT_MAX_LENGTH_MSG = TEXT_MAX_LENGTH_MSG.replace(
-  // eslint-disable-next-line no-template-curly-in-string
-  '${max}',
-  String(DEFAULT_LONG_TEXT_LENGTH),
+export const DEFAULT_LONG_TEXT_MAX_LENGTH_MSG = makeMaxLengthMessage(
+  TEXT_MAX_LENGTH_MSG,
+  DEFAULT_LONG_TEXT_LENGTH,
 )

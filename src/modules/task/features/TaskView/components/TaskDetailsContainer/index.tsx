@@ -9,7 +9,7 @@ import useResolveTask from 'modules/task/features/TaskView/hooks/useResolveTask'
 import useTakeTask from 'modules/task/features/TaskView/hooks/useTakeTask'
 import useUpdateTaskAssignee from 'modules/task/features/TaskView/hooks/useUpdateTaskAssignee'
 import useUpdateTaskWorkGroup from 'modules/task/features/TaskView/hooks/useUpdateTaskWorkGroup'
-import useTaskExtendedStatus from 'modules/task/hooks/useTaskExtendedStatus'
+import { useTaskExtendedStatus } from 'modules/task/hooks'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'

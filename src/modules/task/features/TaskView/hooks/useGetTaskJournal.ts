@@ -9,7 +9,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { taskJournalApiPermissions } from '../permissions'
 
 const useGetTaskJournal = (id: GetTaskJournalQueryArgsModel) => {
-  const permissions = useUserPermissions(taskJournalApiPermissions)
+  const permissions = useUserPermissions(taskJournalApiPermissions.list)
   const state = useGetTaskJournalQuery(id, { skip: !permissions.canGetList })
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import LabeledData from 'components/LabeledData'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import useTaskType from 'modules/task/hooks/useTaskType'
+import { useTaskType } from 'modules/task/hooks'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 

@@ -5,6 +5,7 @@ import {
   mockGetJournalSuccess,
 } from '_tests_/mocks/api'
 import {
+  findNotification,
   generateId,
   generateWord,
   getStoreWithAuth,
@@ -192,7 +193,7 @@ describe('Вкладка журнала задачи', () => {
           expect(makeDownloadLinkSpy).not.toBeCalled()
           expect(clickDownloadLinkSpy).not.toBeCalled()
 
-          const notification = await screen.findByText(UNKNOWN_ERROR_MSG)
+          const notification = await findNotification(UNKNOWN_ERROR_MSG)
           expect(notification).toBeInTheDocument()
         })
       })
@@ -271,7 +272,7 @@ describe('Вкладка журнала задачи', () => {
         await testUtils.journalLoadingStarted()
         await testUtils.journalLoadingFinished()
 
-        const notification = await screen.findByText(UNKNOWN_ERROR_MSG)
+        const notification = await findNotification(UNKNOWN_ERROR_MSG)
         expect(notification).toBeInTheDocument()
       })
 

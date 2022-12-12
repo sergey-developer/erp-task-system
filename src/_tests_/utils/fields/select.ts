@@ -31,7 +31,7 @@ export const querySelectOption = (name: string) =>
   screen.queryByRole('option', { name })
 
 export const userClickOption = async (user: UserEvent, name: string) => {
-  const option = screen.getByText(name)
+  const option = await screen.findByText(name)
   await user.click(option)
   return option
 }

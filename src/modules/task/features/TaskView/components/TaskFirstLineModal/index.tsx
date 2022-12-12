@@ -2,7 +2,7 @@ import { Form, Input, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
-import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
+import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { TaskFirstLineFormFields, TaskFirstLineModalProps } from './interfaces'
 
@@ -61,7 +61,7 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
             data-testid='field-description'
             name='description'
             label='Причина возврата'
-            rules={BASE_LONG_TEXT_RULES}
+            rules={DEFAULT_LONG_TEXT_RULES}
           >
             <TextArea
               placeholder='Расскажите подробнее о задаче'

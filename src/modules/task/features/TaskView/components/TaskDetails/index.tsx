@@ -6,7 +6,7 @@ import React, { FC, useCallback, useEffect } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
-import useCheckUserAuthenticated from 'modules/auth/hooks/useCheckUserAuthenticated'
+import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import {
   taskImpactMap,
   taskPriorityMap,
@@ -22,7 +22,7 @@ import {
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskWorkGroupMutationArgsModel,
 } from 'modules/task/features/TaskView/models'
-import useTaskStatus from 'modules/task/hooks/useTaskStatus'
+import { useTaskStatus } from 'modules/task/hooks'
 import { TaskAssigneeModel } from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'

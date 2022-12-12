@@ -12,7 +12,7 @@ import React, { FC } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 import { ReclassificationReasonEnum } from 'modules/task/constants/common'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import { BASE_LONG_TEXT_RULES } from 'shared/constants/validation'
+import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { reclassificationReasonLabels } from './constants'
 import { TaskReclassificationRequestFormFields } from './interfaces'
@@ -105,7 +105,7 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
           data-testid='comment'
           label='Комментарий'
           name='comment'
-          rules={BASE_LONG_TEXT_RULES}
+          rules={DEFAULT_LONG_TEXT_RULES}
         >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>
