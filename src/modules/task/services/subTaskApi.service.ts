@@ -8,11 +8,14 @@ import {
   GetSubTaskListResponseModel,
   GetSubTaskTemplateListQueryArgsModel,
   GetSubTaskTemplateListResponseModel,
+  ReworkSubTaskMutationArgsModel,
+  ReworkSubTaskResponseModel,
 } from 'modules/task/features/TaskView/models'
 import {
   deleteSubTaskUrl,
   getCreateSubTaskUrl,
   getSubTaskListUrl,
+  reworkSubTaskUrl,
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
@@ -72,6 +75,16 @@ const subTaskApiService = apiService.injectEndpoints({
         body: payload,
       }),
     }),
+    reworkSubTask: build.mutation<
+      ReworkSubTaskResponseModel,
+      ReworkSubTaskMutationArgsModel
+    >({
+      query: ({ taskId, ...payload }) => ({
+        url: reworkSubTaskUrl(taskId),
+        method: HttpMethodEnum.Post,
+        body: payload,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
@@ -80,5 +93,6 @@ export const {
   useLazyGetSubTaskTemplateListQuery,
   useCreateSubTaskMutation,
   useDeleteSubTaskMutation,
+  useReworkSubTaskMutation,
   useGetSubTaskListQuery,
 } = subTaskApiService

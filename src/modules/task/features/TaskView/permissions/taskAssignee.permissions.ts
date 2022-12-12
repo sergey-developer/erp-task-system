@@ -1,4 +1,7 @@
-import { PermissionsEnum } from 'shared/constants/permissions'
+import {
+  CRUDPermissionsEnum,
+  UIPermissionsEnum,
+} from 'shared/constants/permissions'
 import { UserRolesEnum } from 'shared/constants/roles'
 import {
   ObjectPermissionConfig,
@@ -7,22 +10,22 @@ import {
 
 export const taskAssigneePermissions: ObjectPermissionConfig<'select'> = {
   select: {
-    [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanView],
-    [UserRolesEnum.Engineer]: [PermissionsEnum.CanView],
+    [UserRolesEnum.FirstLineSupport]: [UIPermissionsEnum.CanView],
+    [UserRolesEnum.Engineer]: [UIPermissionsEnum.CanView],
     [UserRolesEnum.SeniorEngineer]: [
-      PermissionsEnum.CanView,
-      PermissionsEnum.CanEdit,
+      UIPermissionsEnum.CanView,
+      UIPermissionsEnum.CanEdit,
     ],
     [UserRolesEnum.HeadOfDepartment]: [
-      PermissionsEnum.CanView,
-      PermissionsEnum.CanEdit,
+      UIPermissionsEnum.CanView,
+      UIPermissionsEnum.CanEdit,
     ],
   },
 }
 
 export const taskAssigneeApiPermissions: UserPermissionConfig = {
-  [UserRolesEnum.Engineer]: [PermissionsEnum.CanUpdate],
-  [UserRolesEnum.SeniorEngineer]: [PermissionsEnum.CanUpdate],
-  [UserRolesEnum.FirstLineSupport]: [PermissionsEnum.CanUpdate],
-  [UserRolesEnum.HeadOfDepartment]: [PermissionsEnum.CanUpdate],
+  [UserRolesEnum.Engineer]: [CRUDPermissionsEnum.CanUpdate],
+  [UserRolesEnum.SeniorEngineer]: [CRUDPermissionsEnum.CanUpdate],
+  [UserRolesEnum.FirstLineSupport]: [CRUDPermissionsEnum.CanUpdate],
+  [UserRolesEnum.HeadOfDepartment]: [CRUDPermissionsEnum.CanUpdate],
 }

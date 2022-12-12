@@ -3,10 +3,7 @@ import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskListItemModel = BaseTaskModel & {
-  assignee: Pick<
-    TaskAssigneeModel,
-    'id' | 'firstName' | 'lastName' | 'middleName'
-  >
+  assignee: TaskAssigneeModel
   lastComment: string
   workGroup: MaybeNull<Pick<WorkGroupListItemModel, 'id' | 'name'>>
 }

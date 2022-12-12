@@ -16,6 +16,7 @@ export enum TaskEndpointsEnum {
   CreateSubTask = '/tasks/:id/subtasks',
   GetSubTaskList = '/tasks/:id/subtasks',
   DeleteSubTask = '/subtasks/:id',
+  ReworkSubTask = '/subtasks/:id/rework',
 }
 
 export enum TaskEndpointsTagsEnum {

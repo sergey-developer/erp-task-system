@@ -46,3 +46,6 @@ export const getSubTaskListUrl = (taskId: number): string =>
 
 export const deleteSubTaskUrl = (taskId: number): string =>
   generatePath(TaskEndpointsEnum.DeleteSubTask, { id: String(taskId) })
+
+export const reworkSubTaskUrl = (taskId: number): string =>
+  generatePath(TaskEndpointsEnum.ReworkSubTask, { id: String(taskId) })

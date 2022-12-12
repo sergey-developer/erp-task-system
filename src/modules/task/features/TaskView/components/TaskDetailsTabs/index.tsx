@@ -29,6 +29,7 @@ export type TaskDetailsTabsProps = {
     | 'status'
     | 'assignee'
     | 'recordId'
+    | 'parentTask'
   >
 }
 
@@ -99,15 +100,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
       >
         <TaskDetailsWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <SubTaskListTab
-              taskId={details.id}
-              type={details.type}
-              status={details.status}
-              assignee={details.assignee}
-              recordId={details.recordId}
-              title={details.title}
-              description={details.description}
-            />
+            <SubTaskListTab task={details} />
           </React.Suspense>
         </TaskDetailsWrapper>
       </TabPane>

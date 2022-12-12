@@ -2,7 +2,12 @@ import { Typography } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
-import { SubTaskModel } from 'modules/task/features/TaskView/models'
+import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import {
+  SubTaskModel,
+  TaskDetailsModel,
+} from 'modules/task/features/TaskView/models'
+import { useTaskStatus } from 'modules/task/hooks'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
@@ -11,21 +16,37 @@ import SubTask from './SubTask'
 const { Text } = Typography
 
 type SubTaskListProps = {
-  data: Array<SubTaskModel>
+  task: Pick<TaskDetailsModel, 'status' | 'parentTask'>
+  list: Array<SubTaskModel>
   isError: boolean
   onClickCancel: (id: SubTaskModel['id']) => void
+  onClickRework: (id: SubTaskModel['id']) => void
 }
 
 const SubTaskList: FC<SubTaskListProps> = ({
-  data,
+  task,
+  list,
   isError,
   onClickCancel,
+  onClickRework,
 }) => {
+  const currentUserIsTaskAssignee = useCheckUserAuthenticated(
+    task.parentTask?.assignee,
+  )
+  const taskStatus = useTaskStatus(task.status)
+  const parentTaskStatus = useTaskStatus(task.parentTask?.status)
+
+  const showReworkBtn =
+    currentUserIsTaskAssignee &&
+    (taskStatus.isCompleted || taskStatus.isClosed) &&
+    !parentTaskStatus.isCompleted &&
+    !parentTaskStatus.isClosed
+
   return (
     <Space $block direction='vertical'>
-      {data.length ? (
+      {list.length ? (
         <Space $block direction='vertical' size='large'>
-          {data.map((subTask) => (
+          {list.map((subTask) => (
             <SubTask
               key={subTask.id}
               id={subTask.id}
@@ -43,6 +64,8 @@ const SubTaskList: FC<SubTaskListProps> = ({
               contactPhone={subTask.contactPhone}
               techResolution={subTask.techResolution}
               onClickCancel={onClickCancel}
+              showReworkBtn={showReworkBtn}
+              onClickRework={onClickRework}
             />
           ))}
         </Space>
