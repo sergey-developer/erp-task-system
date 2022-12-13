@@ -14,16 +14,21 @@ import getUserAbbr from 'modules/user/utils/getUserAbbr'
 
 const { Text } = Typography
 
-type AssigneeProps = {
+type TaskAssigneeProps = {
   name: string
   phone?: TaskDetailsModel['contactPhone']
   status?: TaskDetailsModel['status']
   assignee?: TaskDetailsModel['assignee']
 }
 
-const Assignee: FC<AssigneeProps> = ({ assignee, status, name, phone }) => {
+const TaskAssignee: FC<TaskAssigneeProps> = ({
+  assignee,
+  status,
+  name,
+  phone,
+}) => {
   return (
-    <Space size='middle' align='start'>
+    <Space data-testid='task-assignee' size='middle' align='start'>
       {assignee && (
         <UserAvatar src={assignee.avatar} abbr={getUserAbbr(assignee)} />
       )}
@@ -46,4 +51,4 @@ const Assignee: FC<AssigneeProps> = ({ assignee, status, name, phone }) => {
   )
 }
 
-export default Assignee
+export default TaskAssignee

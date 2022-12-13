@@ -1,13 +1,29 @@
 import times from 'lodash/times'
 
-import { SubTaskModel } from 'modules/task/features/TaskView/models'
+import {
+  generateDateString,
+  generateId,
+  generateIdStr,
+  generatePhone,
+  generateWord,
+} from '_tests_/utils'
+import { SubTaskModel } from 'modules/subTask/models'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 
-import { getTask } from './task'
 import { getTaskWorkGroup } from './taskWorkGroup'
 
 export const getSubTask = (): SubTaskModel => ({
-  ...getTask(),
+  id: generateId(),
+  recordId: generateIdStr(),
+  title: generateWord(),
+  status: TaskStatusEnum.New,
   workGroup: getTaskWorkGroup(),
+  createdAt: generateDateString(),
+  description: generateWord(),
+  externalAssigneeName: generateWord(),
+  externalAssigneePhone: generatePhone(),
+  olaNextBreachTime: generateDateString(),
+  techResolution: generateWord(),
 })
 
 export const getSubTaskList = (length: number = 1): Array<SubTaskModel> =>

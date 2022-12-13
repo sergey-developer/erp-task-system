@@ -7,14 +7,14 @@ import {
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { UserRolesEnum } from 'shared/constants/roles'
 
-import TaskAssignee, { TaskAssigneeProps } from '../index'
+import AssigneeBlock, { AssigneeBlockProps } from '../index'
 import testUtils from './utils'
 
 describe('Блок "Исполнитель заявки"', () => {
   describe('Кнопка "В работу"', () => {
     const requiredProps: Readonly<
       Pick<
-        TaskAssigneeProps,
+        AssigneeBlockProps,
         | 'takeTask'
         | 'takeTaskIsLoading'
         | 'updateAssignee'
@@ -41,7 +41,7 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        render(<TaskAssignee {...requiredProps} />, {
+        render(<AssigneeBlock {...requiredProps} />, {
           store,
         })
 
@@ -53,7 +53,7 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.Engineer,
         })
 
-        render(<TaskAssignee {...requiredProps} />, {
+        render(<AssigneeBlock {...requiredProps} />, {
           store,
         })
 
@@ -65,7 +65,7 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        render(<TaskAssignee {...requiredProps} />, { store })
+        render(<AssigneeBlock {...requiredProps} />, { store })
 
         expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
@@ -75,7 +75,7 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.HeadOfDepartment,
         })
 
-        render(<TaskAssignee {...requiredProps} />, { store })
+        render(<AssigneeBlock {...requiredProps} />, { store })
 
         expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
@@ -97,7 +97,7 @@ describe('Блок "Исполнитель заявки"', () => {
         })
 
         render(
-          <TaskAssignee
+          <AssigneeBlock
             {...requiredProps}
             {...activeBtnProps}
             status={TaskStatusEnum.InProgress}
@@ -113,7 +113,7 @@ describe('Блок "Исполнитель заявки"', () => {
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        render(<TaskAssignee {...requiredProps} {...activeBtnProps} />, {
+        render(<AssigneeBlock {...requiredProps} {...activeBtnProps} />, {
           store,
         })
 
@@ -127,7 +127,7 @@ describe('Блок "Исполнитель заявки"', () => {
         })
 
         render(
-          <TaskAssignee
+          <AssigneeBlock
             {...requiredProps}
             {...activeBtnProps}
             extendedStatus={TaskExtendedStatusEnum.InReclassification}

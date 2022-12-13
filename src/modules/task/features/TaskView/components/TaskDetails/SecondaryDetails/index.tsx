@@ -5,7 +5,7 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { TaskAssigneeModel } from 'modules/task/models'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import TaskAssignee from '../TaskAssignee'
+import TaskAssignee from '../AssigneeBlock'
 import WorkGroup, { WorkGroupProps } from '../WorkGroup'
 
 export type SecondaryDetailsProps = Pick<

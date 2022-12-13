@@ -3,10 +3,8 @@ import React, { FC } from 'react'
 
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
-import {
-  SubTaskModel,
-  TaskDetailsModel,
-} from 'modules/task/features/TaskView/models'
+import { SubTaskModel } from 'modules/subTask/models'
+import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus } from 'modules/task/hooks'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
@@ -49,7 +47,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
     !parentTaskStatus.isClosed
 
   return (
-    <Space $block direction='vertical'>
+    <Space data-testid='sub-task-list' $block direction='vertical'>
       {list.length ? (
         <Space $block direction='vertical' size='large'>
           {list.map((subTask) => (

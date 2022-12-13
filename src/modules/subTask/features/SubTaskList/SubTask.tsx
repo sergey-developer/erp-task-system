@@ -6,20 +6,19 @@ import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
+import { SubTaskModel } from 'modules/subTask/models'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
+import TaskAssignee from 'modules/task/features/TaskAssignee'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import {
   badgeByTaskStatus,
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
-import { SubTaskModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus } from 'modules/task/hooks'
-
-import Assignee from '../../TaskDetails/TaskAssignee/Assignee'
 
 const { Text, Title, Paragraph } = Typography
 
-type SubTaskProps = Omit<SubTaskModel, 'workGroup'> & {
+export type SubTaskProps = Omit<SubTaskModel, 'workGroup'> & {
   workGroupName: string
   showCancelBtn: boolean
   onClickCancel: (id: number) => void
@@ -48,17 +47,24 @@ const SubTask: FC<SubTaskProps> = ({
   const subTaskStatus = useTaskStatus(status)
 
   return (
-    <Space $block direction='vertical' size='middle'>
+    <Space
+      data-testid='sub-task-list-item'
+      $block
+      direction='vertical'
+      size='middle'
+    >
       <Row justify='space-between' align='middle'>
-        <Col>
-          <SeparatedText>
-            <Text type='secondary'>{recordId}</Text>
+        {(recordId || olaNextBreachTime) && (
+          <Col>
+            <SeparatedText>
+              {recordId && <Text type='secondary'>{recordId}</Text>}
 
-            {olaNextBreachTime && (
-              <Text type='secondary'>до {olaNextBreachTime}</Text>
-            )}
-          </SeparatedText>
-        </Col>
+              {olaNextBreachTime && (
+                <Text type='secondary'>до {olaNextBreachTime}</Text>
+              )}
+            </SeparatedText>
+          </Col>
+        )}
 
         {showCancelBtn && (
           <Col>
@@ -111,7 +117,7 @@ const SubTask: FC<SubTaskProps> = ({
         {externalAssigneeName && (
           <Col span={12}>
             <LabeledData label='Исполнитель'>
-              <Assignee
+              <TaskAssignee
                 name={externalAssigneeName}
                 phone={externalAssigneePhone}
               />
