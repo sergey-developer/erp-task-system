@@ -20,7 +20,7 @@
 - [yarn start](https://create-react-app.dev/docs/getting-started/#npm-start-or-yarn-start) Запускает приложение локально в dev режиме, по умолчанию на http://localhost:3000
 - `yarn test` Запускает тесты в обычном режиме
 - [yarn test:watch](https://create-react-app.dev/docs/getting-started/#npm-test-or-yarn-test) Запускает тесты в watch режиме
-- `yarn test:cov` Запускает тесты в обычном режиме с последующем выводом coverage отчёта
+- `yarn test:cov` Запускает тесты с последующим выводом coverage отчёта
 - `yarn test:ci` Запускает тесты с учётом их запуска в CI окружении
 - [yarn build](https://create-react-app.dev/docs/production-build/) Собирает production версию приложения
 - [yarn eject](https://create-react-app.dev/docs/available-scripts/#npm-run-eject) Команда из create-react-app
