@@ -7,7 +7,7 @@ import {
   generatePhone,
   generateWord,
 } from '_tests_/utils'
-import { taskFixtures } from 'fixtures/task'
+import taskFixtures from 'fixtures/task'
 import { SubTaskModel } from 'modules/subTask/models'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 

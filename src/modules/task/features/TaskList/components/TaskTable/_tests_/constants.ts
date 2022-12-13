@@ -1,7 +1,7 @@
 import { TablePaginationConfig } from 'antd'
 import head from 'lodash/head'
 
-import { taskFixtures } from 'fixtures/task'
+import taskFixtures from 'fixtures/task'
 
 import { DEFAULT_PAGE_SIZE } from '../../TaskListPage/constants'
 import { TaskTableProps } from '../interfaces'

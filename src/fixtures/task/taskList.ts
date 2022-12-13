@@ -6,8 +6,8 @@ import {
   generateInteger,
   generateWord,
 } from '_tests_/utils'
-import { commonFixtures } from 'fixtures/common'
-import { workGroupFixtures } from 'fixtures/workGroup'
+import commonFixtures from 'fixtures/common'
+import workGroupFixtures from 'fixtures/workGroup'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,

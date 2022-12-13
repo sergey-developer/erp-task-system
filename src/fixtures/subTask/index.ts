@@ -1,7 +1,9 @@
 import * as subTask from './subTask'
 import * as subTaskTemplate from './subTaskTemplate'
 
-export const subTaskFixtures = {
+const subTaskFixtures = {
   ...subTask,
   ...subTaskTemplate,
 }
+
+export default subTaskFixtures

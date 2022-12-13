@@ -13,7 +13,7 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
-import { taskFixtures } from 'fixtures/task'
+import taskFixtures from 'fixtures/task'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 

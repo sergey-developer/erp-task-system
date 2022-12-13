@@ -1,5 +1,5 @@
 import { generateIdStr } from '_tests_/utils'
-import { subTaskFixtures } from 'fixtures/subTask'
+import subTaskFixtures from 'fixtures/subTask'
 
 import { CreateSubTaskModalProps } from '../interfaces'
 

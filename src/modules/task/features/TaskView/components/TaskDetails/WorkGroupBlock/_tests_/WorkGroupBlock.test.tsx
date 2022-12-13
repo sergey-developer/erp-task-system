@@ -1,5 +1,5 @@
 import { getStoreWithAuth, render } from '_tests_/utils'
-import { workGroupFixtures } from 'fixtures/workGroup'
+import workGroupFixtures from 'fixtures/workGroup'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,

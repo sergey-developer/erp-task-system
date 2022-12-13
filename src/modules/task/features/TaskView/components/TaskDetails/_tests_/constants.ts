@@ -1,4 +1,4 @@
-import { taskFixtures } from 'fixtures/task'
+import taskFixtures from 'fixtures/task'
 
 import { TaskDetailsProps } from '../index'
 

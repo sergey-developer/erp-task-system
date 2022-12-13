@@ -2,6 +2,7 @@ import {
   mockCreateSubTaskBadRequestError,
   mockCreateSubTaskServerError,
   mockCreateSubTaskSuccess,
+  mockGetSubTaskListServerError,
   mockGetSubTaskListSuccess,
   mockGetSubTaskTemplateListServerError,
   mockGetSubTaskTemplateListSuccess,
@@ -9,30 +10,67 @@ import {
 import {
   findNotification,
   generateWord,
+  getButtonIn,
   getStoreWithAuth,
+  loadingFinishedBySpinner,
   render,
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { waitFor } from '@testing-library/react'
-import { subTaskFixtures } from 'fixtures/subTask'
+import { screen, waitFor } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+import subTaskFixtures from 'fixtures/subTask'
+import taskFixtures from 'fixtures/task'
+import { testUtils as subTaskTestUtils } from 'modules/subTask/features/SubTaskList/SubTask.test'
+import { testUtils as subTaskListTestUtils } from 'modules/subTask/features/SubTaskList/SubTaskList.test'
 import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
 
-import createSubTaskModalTestUtils from '../../../CreateSubTaskModal/_tests_/utils'
-import { CreateSubTaskFormErrors } from '../../../CreateSubTaskModal/interfaces'
-import SubTaskListTab from '../index'
-import { activeCreateSubTaskButtonTaskProps, requiredProps } from './constants'
-import subTaskListTabTestUtils from './utils'
+import createSubTaskModalTestUtils from '../../CreateSubTaskModal/_tests_/utils'
+import { CreateSubTaskFormErrors } from '../../CreateSubTaskModal/interfaces'
+import SubTaskListTab, { SubTaskListTabProps } from './index'
+
+// constants
+const requiredProps: Pick<SubTaskListTabProps, 'task'> = {
+  task: taskFixtures.getTask(),
+}
+
+const activeCreateSubTaskButtonTaskProps: Pick<
+  SubTaskListTabProps['task'],
+  'assignee' | 'status' | 'type'
+> = {
+  assignee: taskFixtures.getTaskAssignee(),
+  status: TaskStatusEnum.InProgress,
+  type: TaskTypeEnum.Request,
+}
+
+// utils
+const getContainer = () => screen.getByTestId('subtask-list-tab')
+
+const getCreateSubTaskButton = () =>
+  getButtonIn(getContainer(), /создать новое задание/i)
+
+const userClickCreateSubTaskButton = async (user: UserEvent) => {
+  const button = getCreateSubTaskButton()
+  await user.click(button)
+  return button
+}
+
+const testUtils = {
+  getContainer,
+
+  getCreateSubTaskButton,
+  openCreateSubTaskModal: userClickCreateSubTaskButton,
+
+  loadingFinished: loadingFinishedBySpinner('sub-task-list-spinner'),
+}
 
 setupApiTests()
 
-describe('Вкладка списка подзадач', () => {
+describe('Вкладка списка заданий', () => {
   describe('Кнопка создания задания', () => {
     test('Отображается', () => {
       render(<SubTaskListTab {...requiredProps} />)
-      expect(
-        subTaskListTabTestUtils.getCreateSubTaskButton(),
-      ).toBeInTheDocument()
+      expect(testUtils.getCreateSubTaskButton()).toBeInTheDocument()
     })
 
     test('Активна если все условия соблюдены', () => {
@@ -53,7 +91,7 @@ describe('Вкладка списка подзадач', () => {
         },
       )
 
-      expect(subTaskListTabTestUtils.getCreateSubTaskButton()).toBeEnabled()
+      expect(testUtils.getCreateSubTaskButton()).toBeEnabled()
     })
 
     describe('Не активна если все условия соблюдены', () => {
@@ -73,7 +111,7 @@ describe('Вкладка списка подзадач', () => {
           },
         )
 
-        expect(subTaskListTabTestUtils.getCreateSubTaskButton()).toBeDisabled()
+        expect(testUtils.getCreateSubTaskButton()).toBeDisabled()
       })
 
       test('Но статус заявки не - "В процессе"', () => {
@@ -95,7 +133,7 @@ describe('Вкладка списка подзадач', () => {
           },
         )
 
-        expect(subTaskListTabTestUtils.getCreateSubTaskButton()).toBeDisabled()
+        expect(testUtils.getCreateSubTaskButton()).toBeDisabled()
       })
 
       test('Но тип заявки не "Incident" и не "Request"', () => {
@@ -117,7 +155,7 @@ describe('Вкладка списка подзадач', () => {
           },
         )
 
-        expect(subTaskListTabTestUtils.getCreateSubTaskButton()).toBeDisabled()
+        expect(testUtils.getCreateSubTaskButton()).toBeDisabled()
       })
     })
 
@@ -140,7 +178,7 @@ describe('Вкладка списка подзадач', () => {
         },
       )
 
-      await subTaskListTabTestUtils.openCreateSubTaskModal(user)
+      await testUtils.openCreateSubTaskModal(user)
 
       expect(
         await createSubTaskModalTestUtils.findContainer(),
@@ -172,7 +210,7 @@ describe('Вкладка списка подзадач', () => {
             },
           )
 
-          await subTaskListTabTestUtils.openCreateSubTaskModal(user)
+          await testUtils.openCreateSubTaskModal(user)
           await createSubTaskModalTestUtils.findContainer()
           await createSubTaskModalTestUtils.template.expectLoadingFinished()
 
@@ -207,7 +245,7 @@ describe('Вкладка списка подзадач', () => {
           },
         )
 
-        await subTaskListTabTestUtils.openCreateSubTaskModal(user)
+        await testUtils.openCreateSubTaskModal(user)
         const modal = await createSubTaskModalTestUtils.findContainer()
 
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
@@ -258,7 +296,7 @@ describe('Вкладка списка подзадач', () => {
           },
         )
 
-        await subTaskListTabTestUtils.openCreateSubTaskModal(user)
+        await testUtils.openCreateSubTaskModal(user)
         await createSubTaskModalTestUtils.findContainer()
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
         await createSubTaskModalTestUtils.userFillForm(user, {
@@ -310,7 +348,7 @@ describe('Вкладка списка подзадач', () => {
           },
         )
 
-        await subTaskListTabTestUtils.openCreateSubTaskModal(user)
+        await testUtils.openCreateSubTaskModal(user)
         await createSubTaskModalTestUtils.findContainer()
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
         await createSubTaskModalTestUtils.userFillForm(user, {
@@ -327,5 +365,81 @@ describe('Вкладка списка подзадач', () => {
     })
   })
 
-  describe('Список заданий', () => {})
+  describe('Список заданий', () => {
+    describe('При успешном получении', () => {
+      test('Отображает верное количество заданий', async () => {
+        const subTaskList = subTaskFixtures.getSubTaskList()
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: subTaskList })
+
+        render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth(),
+          },
+        )
+
+        await testUtils.loadingFinished()
+
+        expect(
+          subTaskTestUtils.getAllContainerIn(testUtils.getContainer()),
+        ).toHaveLength(subTaskList.length)
+      })
+    })
+
+    describe('При не успешном получении', () => {
+      setupNotifications()
+
+      test('Отображается соответствующая ошибка вместо списка', async () => {
+        mockGetSubTaskListServerError(requiredProps.task.id)
+
+        render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth(),
+          },
+        )
+
+        await testUtils.loadingFinished()
+
+        expect(
+          subTaskListTestUtils.getChildByText('Не удалось получить задания'),
+        ).toBeInTheDocument()
+      })
+
+      test('Отображается соответствующее уведомление', async () => {
+        mockGetSubTaskListServerError(requiredProps.task.id)
+
+        render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth(),
+          },
+        )
+
+        await testUtils.loadingFinished()
+
+        expect(
+          await findNotification('Не удалось получить задания'),
+        ).toBeInTheDocument()
+      })
+    })
+  })
 })

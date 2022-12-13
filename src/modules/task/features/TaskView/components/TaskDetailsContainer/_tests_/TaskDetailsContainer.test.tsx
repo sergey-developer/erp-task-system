@@ -21,8 +21,8 @@ import {
   setupNotifications,
 } from '_tests_/utils'
 import { waitFor, within } from '@testing-library/react'
-import { taskFixtures } from 'fixtures/task'
-import { workGroupFixtures } from 'fixtures/workGroup'
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 

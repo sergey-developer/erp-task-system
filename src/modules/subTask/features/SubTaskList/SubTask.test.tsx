@@ -1,7 +1,7 @@
 import { getButtonIn, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { subTaskFixtures } from 'fixtures/subTask'
+import subTaskFixtures from 'fixtures/subTask'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'

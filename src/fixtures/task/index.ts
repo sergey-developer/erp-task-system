@@ -8,7 +8,7 @@ import * as taskReclassificationRequest from './taskReclassificationRequest'
 import * as taskTable from './taskTable'
 import * as taskWorkGroup from './taskWorkGroup'
 
-export const taskFixtures = {
+const taskFixtures = {
   ...task,
   ...taskList,
   ...taskCounters,
@@ -19,3 +19,5 @@ export const taskFixtures = {
   ...taskJournal,
   ...taskReclassificationRequest,
 }
+
+export default taskFixtures

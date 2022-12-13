@@ -13,7 +13,7 @@ import {
 } from 'modules/task/constants/common'
 import { TaskTableListItem } from 'modules/task/features/TaskList/components/TaskTable/interfaces'
 
-import { workGroupFixtures } from '../workGroup'
+import workGroupFixtures from '../workGroup'
 import { getTaskAssignee } from './taskAssignee'
 
 export const getTaskTableItem = (

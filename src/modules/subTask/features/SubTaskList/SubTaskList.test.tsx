@@ -1,6 +1,6 @@
 import { generateId, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
-import { subTaskFixtures } from 'fixtures/subTask'
+import subTaskFixtures from 'fixtures/subTask'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
