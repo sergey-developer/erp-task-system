@@ -65,9 +65,9 @@ const SubTaskList: FC<SubTaskListProps> = ({
               )}
               status={subTask.status}
               createdAt={formatDate(subTask.createdAt, DATE_TIME_FORMAT)}
-              workGroup={subTask.workGroup}
-              assignee={subTask.assignee}
-              contactPhone={subTask.contactPhone}
+              workGroupName={subTask.workGroup?.name || ''} //todo: поправить когда на бэке поправят
+              externalAssigneeName={subTask.externalAssigneeName}
+              externalAssigneePhone={subTask.externalAssigneePhone}
               techResolution={subTask.techResolution}
               showCancelBtn={showCancelBtn}
               onClickCancel={onClickCancel}

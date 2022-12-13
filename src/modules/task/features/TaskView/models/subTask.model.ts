@@ -1,8 +1,17 @@
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskStatusEnum } from 'modules/task/constants/common'
+import { TaskDetailsWorkGroupModel } from 'modules/task/features/TaskView/models'
+import { MaybeNull } from 'shared/interfaces/utils'
 
-export type SubTaskModel = Omit<
-  TaskDetailsModel,
-  'workGroup' | 'parentTask'
-> & {
-  workGroup: string
+export type SubTaskModel = {
+  id: number
+  title: string
+  status: TaskStatusEnum
+  workGroup: TaskDetailsWorkGroupModel
+  createdAt: string
+  recordId?: MaybeNull<string>
+  techResolution?: string
+  description?: string
+  olaNextBreachTime?: MaybeNull<string>
+  externalAssigneeName?: string
+  externalAssigneePhone?: string
 }

@@ -14,17 +14,14 @@ import getUserAbbr from 'modules/user/utils/getUserAbbr'
 
 const { Text } = Typography
 
-type AssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'contactPhone'> & {
+type AssigneeProps = {
   name: string
+  phone?: TaskDetailsModel['contactPhone']
   status?: TaskDetailsModel['status']
+  assignee?: TaskDetailsModel['assignee']
 }
 
-const Assignee: FC<AssigneeProps> = ({
-  assignee,
-  status,
-  name,
-  contactPhone,
-}) => {
+const Assignee: FC<AssigneeProps> = ({ assignee, status, name, phone }) => {
   return (
     <Space size='middle' align='start'>
       {assignee && (
@@ -34,7 +31,7 @@ const Assignee: FC<AssigneeProps> = ({
       <Space direction='vertical'>
         <Text>{name}</Text>
 
-        {contactPhone && <Text>{contactPhone}</Text>}
+        {phone && <Text>{phone}</Text>}
 
         {assignee && status && (
           <TaskStatus

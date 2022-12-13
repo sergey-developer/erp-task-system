@@ -14,30 +14,17 @@ import {
 } from 'modules/task/features/TaskStatus/constants'
 import { SubTaskModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus } from 'modules/task/hooks'
-import getFullUserName from 'modules/user/utils/getFullUserName'
 
 import Assignee from '../../TaskDetails/TaskAssignee/Assignee'
 
 const { Text, Title, Paragraph } = Typography
 
-type SubTaskProps = Pick<
-  SubTaskModel,
-  | 'id'
-  | 'olaNextBreachTime'
-  | 'recordId'
-  | 'title'
-  | 'description'
-  | 'status'
-  | 'createdAt'
-  | 'assignee'
-  | 'contactPhone'
-  | 'techResolution'
-> & {
-  workGroup: string
+type SubTaskProps = Omit<SubTaskModel, 'workGroup'> & {
+  workGroupName: string
   showCancelBtn: boolean
-  onClickCancel: (id: SubTaskModel['id']) => void
+  onClickCancel: (id: number) => void
   showReworkBtn: boolean
-  onClickRework: (id: SubTaskModel['id']) => void
+  onClickRework: (id: number) => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
@@ -48,9 +35,9 @@ const SubTask: FC<SubTaskProps> = ({
   recordId,
   olaNextBreachTime,
   createdAt,
-  workGroup,
-  assignee,
-  contactPhone,
+  workGroupName,
+  externalAssigneeName,
+  externalAssigneePhone,
   techResolution,
   showCancelBtn,
   onClickCancel,
@@ -118,16 +105,15 @@ const SubTask: FC<SubTaskProps> = ({
 
       <Row gutter={10}>
         <Col span={12}>
-          <LabeledData label='Рабочая группа'>{workGroup}</LabeledData>
+          <LabeledData label='Рабочая группа'>{workGroupName}</LabeledData>
         </Col>
 
-        {assignee && (
+        {externalAssigneeName && (
           <Col span={12}>
             <LabeledData label='Исполнитель'>
               <Assignee
-                name={getFullUserName(assignee)}
-                assignee={assignee}
-                contactPhone={contactPhone}
+                name={externalAssigneeName}
+                phone={externalAssigneePhone}
               />
             </LabeledData>
           </Col>

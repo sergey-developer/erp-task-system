@@ -1,13 +1,13 @@
 import times from 'lodash/times'
 
-import { generateWord } from '_tests_/utils'
 import { SubTaskModel } from 'modules/task/features/TaskView/models'
 
 import { getTask } from './task'
+import { getTaskWorkGroup } from './taskWorkGroup'
 
 export const getSubTask = (): SubTaskModel => ({
   ...getTask(),
-  workGroup: generateWord(),
+  workGroup: getTaskWorkGroup(),
 })
 
 export const getSubTaskList = (length: number = 1): Array<SubTaskModel> =>
