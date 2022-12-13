@@ -6,6 +6,8 @@ import {
   generateInteger,
   generateWord,
 } from '_tests_/utils'
+import { commonFixtures } from 'fixtures/common'
+import { workGroupFixtures } from 'fixtures/workGroup'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -17,7 +19,6 @@ import {
   TaskListItemModel,
 } from 'modules/task/features/TaskList/models'
 
-import { workGroupFixtures } from '../workGroup'
 import { getTaskAssignee } from './taskAssignee'
 
 export const getTaskListItem = (
@@ -59,9 +60,4 @@ export const getTaskList = (length: number = 1): Array<TaskListItemModel> =>
 
 export const getGetTaskListResponse = (
   list: GetTaskListResponseModel['results'],
-): GetTaskListResponseModel => ({
-  results: list,
-  count: list.length,
-  next: null,
-  previous: null,
-})
+): GetTaskListResponseModel => commonFixtures.getPaginatedListResponse(list)

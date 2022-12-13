@@ -13,7 +13,7 @@ import SubTask from './SubTask'
 
 const { Text } = Typography
 
-type SubTaskListProps = {
+export type SubTaskListProps = {
   task: Pick<TaskDetailsModel, 'status' | 'parentTask'>
   list: Array<SubTaskModel>
   isError: boolean

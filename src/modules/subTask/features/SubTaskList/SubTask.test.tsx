@@ -1,14 +1,14 @@
 import { getButtonIn, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { taskFixtures } from 'fixtures/task'
+import { subTaskFixtures } from 'fixtures/subTask'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'
 
 import SubTask, { SubTaskProps } from './SubTask'
 
-const subTask = taskFixtures.getSubTask()
+const subTask = subTaskFixtures.getSubTask()
 
 const requiredProps: Pick<
   SubTaskProps,
@@ -43,6 +43,10 @@ const notRequiredProps: Omit<SubTaskProps, keyof typeof requiredProps> = {
 }
 
 const getContainer = () => screen.getByTestId('sub-task-list-item')
+
+const getAllContainerIn = (container: HTMLElement) =>
+  within(container).getAllByTestId('sub-task-list-item')
+
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
 
@@ -58,8 +62,9 @@ const userClickDescriptionButton = async (user: UserEvent) => {
   return button
 }
 
-const testUtils = {
+export const testUtils = {
   getContainer,
+  getAllContainerIn,
   getChildByText,
   queryChildByText,
 
@@ -76,7 +81,7 @@ describe('Подзадача', () => {
     ).toBeInTheDocument()
   })
 
-  test('Отображает "olaNextBreachTime"', () => {
+  test('Отображает дату "olaNextBreachTime"', () => {
     render(
       <SubTask
         {...requiredProps}

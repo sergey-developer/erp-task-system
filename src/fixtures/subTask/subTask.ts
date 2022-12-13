@@ -7,17 +7,16 @@ import {
   generatePhone,
   generateWord,
 } from '_tests_/utils'
+import { taskFixtures } from 'fixtures/task'
 import { SubTaskModel } from 'modules/subTask/models'
 import { TaskStatusEnum } from 'modules/task/constants/common'
-
-import { getTaskWorkGroup } from './taskWorkGroup'
 
 export const getSubTask = (): SubTaskModel => ({
   id: generateId(),
   recordId: generateIdStr(),
   title: generateWord(),
   status: TaskStatusEnum.New,
-  workGroup: getTaskWorkGroup(),
+  workGroup: taskFixtures.getTaskWorkGroup(),
   createdAt: generateDateString(),
   description: generateWord(),
   externalAssigneeName: generateWord(),

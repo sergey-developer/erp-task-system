@@ -1,5 +1,3 @@
-import * as subTask from './subTask'
-import * as subTaskTemplate from './subTaskTemplate'
 import * as task from './task'
 import * as taskAssignee from './taskAssignee'
 import * as taskComment from './taskComment'
@@ -20,6 +18,4 @@ export const taskFixtures = {
   ...taskWorkGroup,
   ...taskJournal,
   ...taskReclassificationRequest,
-  ...subTask,
-  ...subTaskTemplate,
 }

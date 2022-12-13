@@ -15,7 +15,7 @@ import {
   setupNotifications,
 } from '_tests_/utils'
 import { waitFor } from '@testing-library/react'
-import { taskFixtures } from 'fixtures/task'
+import { subTaskFixtures } from 'fixtures/subTask'
 import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
 
 import createSubTaskModalTestUtils from '../../../CreateSubTaskModal/_tests_/utils'
@@ -186,9 +186,9 @@ describe('Вкладка списка подзадач', () => {
     describe('При успешном запросе', () => {
       test('Модалка создания закрывается', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
-        const templateList = taskFixtures.getSubTaskTemplateList()
+        const templateList = subTaskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({
-          body: taskFixtures.getSubTaskTemplateListResponse(templateList),
+          body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
         })
         mockCreateSubTaskSuccess(requiredProps.task.id)
 
@@ -229,9 +229,9 @@ describe('Вкладка списка подзадач', () => {
 
       test('Корректно обрабатывается ошибка - 400', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
-        const templateList = taskFixtures.getSubTaskTemplateList()
+        const templateList = subTaskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({
-          body: taskFixtures.getSubTaskTemplateListResponse(templateList),
+          body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
         })
 
         const badRequestResponse: CreateSubTaskFormErrors = {
@@ -289,9 +289,9 @@ describe('Вкладка списка подзадач', () => {
 
       test('Корректно обрабатывается ошибка - 500', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
-        const templateList = taskFixtures.getSubTaskTemplateList()
+        const templateList = subTaskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({
-          body: taskFixtures.getSubTaskTemplateListResponse(templateList),
+          body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
         })
         mockCreateSubTaskServerError(requiredProps.task.id)
 
