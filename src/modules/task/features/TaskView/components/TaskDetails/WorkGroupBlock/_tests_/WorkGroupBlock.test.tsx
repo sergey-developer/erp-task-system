@@ -209,9 +209,7 @@ describe('Блок рабочей группы', () => {
 
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
-          {
-            store,
-          },
+          { store },
         )
 
         expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
@@ -306,9 +304,7 @@ describe('Блок рабочей группы', () => {
               {...showFirstLineButtonProps}
               workGroup={null}
             />,
-            {
-              store,
-            },
+            { store },
           )
 
           expect(
@@ -364,9 +360,7 @@ describe('Блок рабочей группы', () => {
 
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
-          {
-            store,
-          },
+          { store },
         )
 
         expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
@@ -461,9 +455,7 @@ describe('Блок рабочей группы', () => {
               {...showFirstLineButtonProps}
               workGroup={null}
             />,
-            {
-              store,
-            },
+            { store },
           )
 
           expect(
@@ -482,9 +474,7 @@ describe('Блок рабочей группы', () => {
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Closed}
             />,
-            {
-              store,
-            },
+            { store },
           )
 
           expect(
@@ -503,9 +493,7 @@ describe('Блок рабочей группы', () => {
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Completed}
             />,
-            {
-              store,
-            },
+            { store },
           )
 
           expect(
@@ -523,9 +511,7 @@ describe('Блок рабочей группы', () => {
 
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
-          {
-            store,
-          },
+          { store },
         )
 
         expect(
@@ -542,9 +528,7 @@ describe('Блок рабочей группы', () => {
 
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
-          {
-            store,
-          },
+          { store },
         )
 
         expect(
