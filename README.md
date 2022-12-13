@@ -21,6 +21,7 @@
 - `yarn test` Запускает тесты в обычном режиме
 - [yarn test:watch](https://create-react-app.dev/docs/getting-started/#npm-test-or-yarn-test) Запускает тесты в watch режиме
 - `yarn test:cov` Запускает тесты в обычном режиме с последующем выводом coverage отчёта
+- `yarn test:ci` Запускает тесты с учётом их запуска в CI окружении
 - [yarn build](https://create-react-app.dev/docs/production-build/) Собирает production версию приложения
 - [yarn eject](https://create-react-app.dev/docs/available-scripts/#npm-run-eject) Команда из create-react-app
 - `yarn lint` Запускает встроенный в CRA линтер
@@ -232,7 +233,7 @@ RTK query не умеет правильно доставать ReturnType из 
 
 ## CI/CD
 ### Testing
-- Сборка и запуск приложения описаны в пункте `Запуск проекта / Testing`, но в 4-м пункте команда меняется на - `yarn test:cov`
+- Сборка и запуск приложения описаны в пункте `Запуск проекта / Testing`, но в 4-м пункте команда меняется на - `yarn test:ci`
 - Прокинуть переменную окружения [CI=true](https://create-react-app.dev/docs/advanced-configuration)
 
 После запуска тестов, в корне проекта появится папка `coverage`
