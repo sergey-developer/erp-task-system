@@ -9,7 +9,7 @@
     "test": "craco test --watchAll=false --maxWorkers=50%",
     "test:watch": "craco test --maxWorkers=25%",
     "test:cov": "craco test --coverage",
-    "test:ci": "yarn test:cov --watchAll=false",
+    "test:ci": "yarn test:cov --watchAll=false --runInBand",
     "eject": "craco eject",
     "lint": "eslint ./src"
   },
