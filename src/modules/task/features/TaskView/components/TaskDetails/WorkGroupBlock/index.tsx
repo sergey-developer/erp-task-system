@@ -27,7 +27,7 @@ const TaskSecondLineModal = React.lazy(
 
 const { Text } = Typography
 
-export type WorkGroupProps = Pick<
+export type WorkGroupBlockProps = Pick<
   TaskDetailsModel,
   'id' | 'recordId' | 'workGroup' | 'status' | 'extendedStatus'
 > & {
@@ -48,7 +48,7 @@ export type WorkGroupProps = Pick<
   transferTaskToSecondLineIsLoading: boolean
 }
 
-const WorkGroup: FC<WorkGroupProps> = ({
+const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   id,
   recordId,
 
@@ -194,4 +194,4 @@ const WorkGroup: FC<WorkGroupProps> = ({
   )
 }
 
-export default WorkGroup
+export default WorkGroupBlock

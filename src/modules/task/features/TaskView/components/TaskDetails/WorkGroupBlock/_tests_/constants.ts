@@ -6,9 +6,9 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 
-import { WorkGroupProps } from '../index'
+import { WorkGroupBlockProps } from '../index'
 
-export const requiredProps: Omit<WorkGroupProps, 'workGroup'> = {
+export const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {
   id: generateId(),
   recordId: generateWord(),
   status: TaskStatusEnum.New,
@@ -23,7 +23,7 @@ export const requiredProps: Omit<WorkGroupProps, 'workGroup'> = {
 
 // first line button
 export const showFirstLineButtonProps: Pick<
-  WorkGroupProps,
+  WorkGroupBlockProps,
   'workGroup' | 'status'
 > = {
   workGroup: taskFixtures.getTaskWorkGroup(),
@@ -31,7 +31,7 @@ export const showFirstLineButtonProps: Pick<
 }
 
 export const activeFirstLineButtonProps: Pick<
-  WorkGroupProps,
+  WorkGroupBlockProps,
   'status' | 'extendedStatus'
 > = {
   status: TaskStatusEnum.New,
@@ -39,12 +39,13 @@ export const activeFirstLineButtonProps: Pick<
 }
 
 // second line button
-export const showSecondLineButtonProps: Pick<WorkGroupProps, 'workGroup'> = {
-  workGroup: null,
-}
+export const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> =
+  {
+    workGroup: null,
+  }
 
 export const activeSecondLineButtonProps: Pick<
-  WorkGroupProps,
+  WorkGroupBlockProps,
   'status' | 'extendedStatus'
 > = {
   status: TaskStatusEnum.New,
