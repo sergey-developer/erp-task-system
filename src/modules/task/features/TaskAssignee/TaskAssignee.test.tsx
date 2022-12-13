@@ -6,3 +6,7 @@ const getContainerIn = (container: HTMLElement) =>
 export const testUtils = {
   getContainerIn,
 }
+
+describe('Исполнитель задачи', () => {
+  test('Пока нет тестов', () => {})
+})
