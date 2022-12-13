@@ -110,7 +110,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   )
 
   return (
-    <Space data-testid='task-assignee' direction='vertical' $block>
+    <Space data-testid='task-assignee-block' direction='vertical' $block>
       <Row justify='space-between'>
         <Col>
           <Text type='secondary'>Исполнитель</Text>
