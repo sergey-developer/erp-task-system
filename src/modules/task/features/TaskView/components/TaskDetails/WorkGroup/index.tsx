@@ -86,8 +86,8 @@ const WorkGroup: FC<WorkGroupProps> = ({
   )
 
   const handleTransferTaskToSecondLine: TaskSecondLineModalProps['onSubmit'] =
-    async (workGroup) => {
-      await transferTaskToSecondLine(workGroup, toggleOpenTaskSecondLineModal)
+    async (workGroupId) => {
+      await transferTaskToSecondLine(workGroupId, toggleOpenTaskSecondLineModal)
     }
 
   const handleTransferTaskToFirstLine: TaskFirstLineModalProps['onSubmit'] =

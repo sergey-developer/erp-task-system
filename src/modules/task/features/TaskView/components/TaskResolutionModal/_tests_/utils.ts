@@ -2,7 +2,7 @@ import { getButtonIn, loadingStartedByButton } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const getContainer = () => screen.getByRole('dialog')
+const getContainer = () => screen.getByTestId('task-resolution-modal')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // close button

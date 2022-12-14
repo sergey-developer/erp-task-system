@@ -55,6 +55,7 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
 
   return (
     <BaseModal
+      data-testid='task-reclassification-modal'
       visible
       title={modalTitle}
       confirmLoading={isLoading}

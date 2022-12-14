@@ -56,6 +56,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
 
   return (
     <BaseModal
+      data-testid='task-resolution-modal'
       visible
       title={modalTitle}
       confirmLoading={isLoading}

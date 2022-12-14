@@ -15,8 +15,8 @@ import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const getContainer = () => screen.getByRole('dialog')
-const findContainer = () => screen.findByRole('dialog')
+const getContainer = () => screen.getByTestId('task-second-line-modal')
+const findContainer = () => screen.findByTestId('task-second-line-modal')
 
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
