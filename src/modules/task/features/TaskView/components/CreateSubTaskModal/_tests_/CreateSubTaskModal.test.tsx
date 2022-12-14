@@ -12,8 +12,6 @@ import CreateSubTaskModal from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
 
-jest.setTimeout(10000)
-
 describe('Модалка создания задачи заявки', () => {
   test('Заголовок отображается', () => {
     render(<CreateSubTaskModal {...requiredProps} />)

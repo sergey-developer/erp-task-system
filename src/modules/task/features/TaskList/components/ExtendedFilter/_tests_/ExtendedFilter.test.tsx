@@ -37,7 +37,6 @@ import {
 import testUtils from './utils'
 
 setupApiTests()
-jest.setTimeout(20000)
 
 describe('Расширенный фильтр', () => {
   test('Отображается', () => {

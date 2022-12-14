@@ -18,8 +18,6 @@ import {
 } from './constants'
 import workGroupTestUtils from './utils'
 
-jest.setTimeout(10000)
-
 describe('Блок рабочей группы', () => {
   test('Заголовок отображается', () => {
     render(<WorkGroup {...requiredProps} />)

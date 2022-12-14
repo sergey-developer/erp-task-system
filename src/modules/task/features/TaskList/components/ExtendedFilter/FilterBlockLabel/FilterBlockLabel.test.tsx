@@ -8,8 +8,6 @@ const onReset = jest.fn()
 
 const getResetButton = () => getButton(/сбросить/i)
 
-jest.setTimeout(10000)
-
 describe('FilterBlockLabel', () => {
   test('Заголовок отображается корректно', () => {
     render(<FilterBlockLabel label={labelText} onReset={onReset} />)

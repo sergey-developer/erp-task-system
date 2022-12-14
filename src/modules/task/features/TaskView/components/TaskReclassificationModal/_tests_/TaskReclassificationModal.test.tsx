@@ -15,8 +15,6 @@ import {
 } from './constants'
 import testUtils from './utils'
 
-jest.setTimeout(10000)
-
 describe('Модалка запроса о переклассификации заявки', () => {
   test('Заголовок отображается', () => {
     render(<TaskReclassificationModal {...requiredProps} />)
