@@ -5,7 +5,7 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
-import getShortUserName from 'modules/user/utils/getShortUserName'
+import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 

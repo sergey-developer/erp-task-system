@@ -65,10 +65,12 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   return (
     <Expandable
       data-testid='task-additional-info'
-      buttonText='Дополнительная информация'
+      btnText='Дополнительная информация'
+      btnTextType='secondary'
+      btnTextUnderline
       gap='middle'
       expanded={expanded}
-      onClickExpand={handleExpand}
+      onClick={handleExpand}
     >
       <ContentWrapperStyled
         data-testid='additional-info-content'

@@ -6,7 +6,7 @@ export type SubTaskModel = {
   id: number
   title: string
   status: TaskStatusEnum
-  workGroup: TaskDetailsWorkGroupModel
+  workGroup: MaybeNull<TaskDetailsWorkGroupModel>
   createdAt: string
   recordId?: MaybeNull<string>
   techResolution?: string

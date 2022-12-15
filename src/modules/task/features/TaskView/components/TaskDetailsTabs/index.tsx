@@ -42,6 +42,7 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({ details }) => {
       $breakpoints={breakpoints}
       defaultActiveKey={TaskDetailsTabsEnum.Description}
       type='card'
+      destroyInactiveTabPane //todo: написать тесты
     >
       <TabPane
         tab={taskDetailsTabNamesDict[TaskDetailsTabsEnum.Description]}

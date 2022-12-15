@@ -10,8 +10,9 @@ import {
 import taskFixtures from 'fixtures/task'
 import { SubTaskModel } from 'modules/subTask/models'
 import { TaskStatusEnum } from 'modules/task/constants/common'
+import { NonNullableObject } from 'shared/interfaces/utils'
 
-export const getSubTask = (): SubTaskModel => ({
+export const getSubTask = (): NonNullableObject<SubTaskModel> => ({
   id: generateId(),
   recordId: generateIdStr(),
   title: generateWord(),
@@ -25,5 +26,6 @@ export const getSubTask = (): SubTaskModel => ({
   techResolution: generateWord(),
 })
 
-export const getSubTaskList = (length: number = 1): Array<SubTaskModel> =>
-  times(length, () => getSubTask())
+export const getSubTaskList = (
+  length: number = 1,
+): Array<NonNullableObject<SubTaskModel>> => times(length, () => getSubTask())

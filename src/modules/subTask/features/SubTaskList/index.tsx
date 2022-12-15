@@ -1,4 +1,4 @@
-import { Typography } from 'antd'
+import { Divider, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
@@ -50,28 +50,32 @@ const SubTaskList: FC<SubTaskListProps> = ({
     <Space data-testid='sub-task-list' $block direction='vertical'>
       {list.length ? (
         <Space $block direction='vertical' size='large'>
-          {list.map((subTask) => (
-            <SubTask
-              key={subTask.id}
-              id={subTask.id}
-              title={subTask.title}
-              description={subTask.description}
-              recordId={subTask.recordId}
-              olaNextBreachTime={formatDate(
-                subTask.olaNextBreachTime,
-                DATE_TIME_FORMAT,
-              )}
-              status={subTask.status}
-              createdAt={formatDate(subTask.createdAt, DATE_TIME_FORMAT)}
-              workGroupName={subTask.workGroup?.name || ''} //todo: поправить когда на бэке поправят
-              externalAssigneeName={subTask.externalAssigneeName}
-              externalAssigneePhone={subTask.externalAssigneePhone}
-              techResolution={subTask.techResolution}
-              showCancelBtn={showCancelBtn}
-              onClickCancel={onClickCancel}
-              showReworkBtn={showReworkBtn}
-              onClickRework={onClickRework}
-            />
+          {list.map((item, index, array) => (
+            <React.Fragment key={item.id}>
+              <SubTask
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                description={item.description}
+                recordId={item.recordId}
+                olaNextBreachTime={formatDate(
+                  item.olaNextBreachTime,
+                  DATE_TIME_FORMAT,
+                )}
+                status={item.status}
+                createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
+                workGroupName={item.workGroup?.name || ''}
+                externalAssigneeName={item.externalAssigneeName}
+                externalAssigneePhone={item.externalAssigneePhone}
+                techResolution={item.techResolution}
+                showCancelBtn={showCancelBtn}
+                onClickCancel={onClickCancel}
+                showReworkBtn={showReworkBtn}
+                onClickRework={onClickRework}
+              />
+
+              {array.length - 1 !== index && <Divider />}
+            </React.Fragment>
           ))}
         </Space>
       ) : (

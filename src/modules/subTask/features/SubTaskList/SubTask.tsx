@@ -1,6 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import { FC } from 'react'
+import React, { FC } from 'react'
 
 import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
@@ -15,6 +15,8 @@ import {
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
 import { useTaskStatus } from 'modules/task/hooks'
+import { makeUserNameObject } from 'modules/user/utils'
+import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Text, Title, Paragraph } = Typography
 
@@ -43,8 +45,12 @@ const SubTask: FC<SubTaskProps> = ({
   showReworkBtn,
   onClickRework,
 }) => {
-  const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
   const subTaskStatus = useTaskStatus(status)
+
+  const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
+
+  const [showTechResolution, { toggle: toggleShowTechResolution }] =
+    useBoolean(false)
 
   return (
     <Space
@@ -105,7 +111,17 @@ const SubTask: FC<SubTaskProps> = ({
 
         {techResolution &&
           (subTaskStatus.isCompleted || subTaskStatus.isClosed) && (
-            <Paragraph type='success'>{techResolution}</Paragraph>
+            <Expandable
+              onClick={toggleShowTechResolution}
+              expanded={showTechResolution}
+              btnText='Решение'
+              btnTextType='success'
+              arrowColor='crayola'
+            >
+              <Paragraph type='success'>
+                {renderStringWithLineBreak(techResolution)}
+              </Paragraph>
+            </Expandable>
           )}
       </Space>
 
@@ -120,6 +136,7 @@ const SubTask: FC<SubTaskProps> = ({
               <TaskAssignee
                 name={externalAssigneeName}
                 phone={externalAssigneePhone}
+                assignee={makeUserNameObject(externalAssigneeName)}
               />
             </LabeledData>
           </Col>
@@ -129,11 +146,13 @@ const SubTask: FC<SubTaskProps> = ({
       {description && (
         <Space $block direction='vertical'>
           <Expandable
-            buttonText='Подробное описание'
+            btnText='Подробное описание'
+            btnTextType='secondary'
+            btnTextUnderline
             expanded={showDescription}
-            onClickExpand={toggleShowDescription}
+            onClick={toggleShowDescription}
           >
-            <Paragraph>{description}</Paragraph>
+            <Paragraph>{renderStringWithLineBreak(description)}</Paragraph>
           </Expandable>
         </Space>
       )}
