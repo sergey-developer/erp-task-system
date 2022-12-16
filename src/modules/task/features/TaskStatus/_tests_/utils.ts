@@ -1,10 +1,13 @@
 import { BadgeProps } from 'antd'
 
 import { getIconByNameIn } from '_tests_/utils'
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 
 const getTaskStatus = (status: string) =>
   screen.getByTestId(`task-status-${status}`)
+
+const getTaskStatusIn = (container: HTMLElement, status: string) =>
+  within(container).getByTestId(`task-status-${status}`)
 
 const queryTaskStatus = (status: string) =>
   screen.queryByTestId(`task-status-${status}`)
@@ -21,6 +24,7 @@ const queryTaskStatusBadge = (
 
 const utils = {
   getTaskStatus,
+  getTaskStatusIn,
   queryTaskStatus,
   getTaskStatusIcon,
   queryTaskStatusBadge,

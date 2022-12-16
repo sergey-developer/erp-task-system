@@ -17,7 +17,7 @@ import {
   setupNotifications,
 } from '_tests_/utils'
 import { within } from '@testing-library/react'
-import { taskFixtures } from 'fixtures/task'
+import taskFixtures from 'fixtures/task'
 import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/features/TaskView/constants/messages'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 

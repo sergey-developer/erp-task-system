@@ -1,5 +1,5 @@
 import { generateId } from '_tests_/utils'
-import { workGroupFixtures } from 'fixtures/workGroup'
+import workGroupFixtures from 'fixtures/workGroup'
 
 import { TaskSecondLineModalProps } from '../index'
 

@@ -1,6 +1,7 @@
 import times from 'lodash/times'
 
 import { generateId, generateWord } from '_tests_/utils'
+import commonFixtures from 'fixtures/common'
 import {
   GetSubTaskTemplateListResponseModel,
   SubTaskTemplateModel,
@@ -18,9 +19,4 @@ export const getSubTaskTemplateList = (
 
 export const getSubTaskTemplateListResponse = (
   list: GetSubTaskTemplateListResponseModel['results'],
-): GetSubTaskTemplateListResponseModel => ({
-  results: list,
-  count: list.length,
-  next: null,
-  previous: null,
-})
+) => commonFixtures.getPaginatedListResponse(list)

@@ -1,7 +1,7 @@
 import { getButtonIn } from '_tests_/utils'
 import { screen } from '@testing-library/react'
 
-const getContainer = () => screen.getByTestId('task-assignee')
+const getContainer = () => screen.getByTestId('task-assignee-block')
 
 const getTakeTaskButton = () => getButtonIn(getContainer(), /в работу/i)
 

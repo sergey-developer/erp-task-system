@@ -1,3 +1,8 @@
+import {
+  GetSubTaskListQueryArgsModel,
+  GetSubTaskListResponseModel,
+  SubTaskModel,
+} from 'modules/subTask/models'
 import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import {
   deleteSubTaskUrl,
@@ -13,13 +18,10 @@ import {
   CreateSubTaskResponseModel,
   DeleteSubTaskMutationArgsModel,
   DeleteSubTaskResponseModel,
-  GetSubTaskListQueryArgsModel,
-  GetSubTaskListResponseModel,
   GetSubTaskTemplateListQueryArgsModel,
   GetSubTaskTemplateListResponseModel,
   ReworkSubTaskMutationArgsModel,
   ReworkSubTaskResponseModel,
-  SubTaskModel,
 } from '../features/TaskView/models'
 
 const subTaskApiService = apiService.injectEndpoints({

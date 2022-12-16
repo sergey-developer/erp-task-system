@@ -1,4 +1,4 @@
-import { SubTaskModel } from 'modules/task/features/TaskView/models'
+import { SubTaskModel } from 'modules/subTask/models'
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
 export type CreateSubTaskMutationArgsModel = BaseTaskRequestArgs & {

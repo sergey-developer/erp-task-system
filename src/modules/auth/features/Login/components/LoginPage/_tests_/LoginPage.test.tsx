@@ -17,7 +17,7 @@ import {
 } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { RoutesEnum } from 'configs/routes'
-import { authFixtures } from 'fixtures/auth'
+import authFixtures from 'fixtures/auth'
 import LoginPage from 'modules/auth/features/Login/components/LoginPage'
 import {
   LOGIN_BAD_REQUEST_ERROR_MSG,

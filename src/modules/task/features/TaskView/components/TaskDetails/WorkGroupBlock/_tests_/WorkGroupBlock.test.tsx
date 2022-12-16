@@ -1,5 +1,5 @@
 import { getStoreWithAuth, render } from '_tests_/utils'
-import { workGroupFixtures } from 'fixtures/workGroup'
+import workGroupFixtures from 'fixtures/workGroup'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
@@ -8,7 +8,7 @@ import { UserRolesEnum } from 'shared/constants/roles'
 
 import taskFirstLineModalTestUtils from '../../../TaskFirstLineModal/_tests_/utils'
 import taskSecondLineModalTestUtils from '../../../TaskSecondLineModal/_tests_/utils'
-import WorkGroup from '../index'
+import WorkGroupBlock from '../index'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,
@@ -20,7 +20,7 @@ import workGroupTestUtils from './utils'
 
 describe('Блок рабочей группы', () => {
   test('Заголовок отображается', () => {
-    render(<WorkGroup {...requiredProps} />)
+    render(<WorkGroupBlock {...requiredProps} />)
 
     expect(
       workGroupTestUtils.getChildByText('Рабочая группа'),
@@ -35,7 +35,7 @@ describe('Блок рабочей группы', () => {
         })
 
         render(
-          <WorkGroup {...requiredProps} {...showSecondLineButtonProps} />,
+          <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
           { store },
         )
 
@@ -49,7 +49,7 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showSecondLineButtonProps}
               workGroup={workGroupFixtures.getWorkGroup()}
@@ -69,7 +69,7 @@ describe('Блок рабочей группы', () => {
         })
 
         render(
-          <WorkGroup
+          <WorkGroupBlock
             {...requiredProps}
             {...showSecondLineButtonProps}
             {...activeSecondLineButtonProps}
@@ -87,7 +87,7 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showSecondLineButtonProps}
               {...activeSecondLineButtonProps}
@@ -105,7 +105,7 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showSecondLineButtonProps}
               {...activeSecondLineButtonProps}
@@ -124,7 +124,7 @@ describe('Блок рабочей группы', () => {
         })
 
         render(
-          <WorkGroup
+          <WorkGroupBlock
             {...requiredProps}
             {...showSecondLineButtonProps}
             {...activeSecondLineButtonProps}
@@ -142,7 +142,7 @@ describe('Блок рабочей группы', () => {
         })
 
         const { user } = render(
-          <WorkGroup
+          <WorkGroupBlock
             {...requiredProps}
             {...showSecondLineButtonProps}
             {...activeSecondLineButtonProps}
@@ -161,7 +161,7 @@ describe('Блок рабочей группы', () => {
     describe('Роль - инженер', () => {
       test('Не отображается', () => {
         render(
-          <WorkGroup {...requiredProps} {...showSecondLineButtonProps} />,
+          <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
           {
             store: getStoreWithAuth({
               userRole: UserRolesEnum.Engineer,
@@ -174,7 +174,7 @@ describe('Блок рабочей группы', () => {
     describe('Роль - старший инженер', () => {
       test('Не отображается', () => {
         render(
-          <WorkGroup {...requiredProps} {...showSecondLineButtonProps} />,
+          <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
           {
             store: getStoreWithAuth({
               userRole: UserRolesEnum.SeniorEngineer,
@@ -187,7 +187,7 @@ describe('Блок рабочей группы', () => {
     describe('Роль - глава отдела', () => {
       test('Не отображается', () => {
         render(
-          <WorkGroup {...requiredProps} {...showSecondLineButtonProps} />,
+          <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
           {
             store: getStoreWithAuth({
               userRole: UserRolesEnum.HeadOfDepartment,
@@ -205,9 +205,10 @@ describe('Блок рабочей группы', () => {
           userRole: UserRolesEnum.SeniorEngineer,
         })
 
-        render(<WorkGroup {...requiredProps} {...showFirstLineButtonProps} />, {
-          store,
-        })
+        render(
+          <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
+          { store },
+        )
 
         expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
       })
@@ -219,7 +220,7 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               {...activeFirstLineButtonProps}
@@ -237,7 +238,7 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               {...activeFirstLineButtonProps}
@@ -256,7 +257,7 @@ describe('Блок рабочей группы', () => {
         })
 
         render(
-          <WorkGroup
+          <WorkGroupBlock
             {...requiredProps}
             {...showFirstLineButtonProps}
             {...activeFirstLineButtonProps}
@@ -274,7 +275,7 @@ describe('Блок рабочей группы', () => {
         })
 
         const { user } = render(
-          <WorkGroup
+          <WorkGroupBlock
             {...requiredProps}
             {...showFirstLineButtonProps}
             {...activeFirstLineButtonProps}
@@ -296,14 +297,12 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               workGroup={null}
             />,
-            {
-              store,
-            },
+            { store },
           )
 
           expect(
@@ -317,7 +316,7 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Closed}
@@ -336,7 +335,7 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Completed}
@@ -357,9 +356,10 @@ describe('Блок рабочей группы', () => {
           userRole: UserRolesEnum.HeadOfDepartment,
         })
 
-        render(<WorkGroup {...requiredProps} {...showFirstLineButtonProps} />, {
-          store,
-        })
+        render(
+          <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
+          { store },
+        )
 
         expect(workGroupTestUtils.getFirstLineButton()).toBeInTheDocument()
       })
@@ -371,7 +371,7 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               {...activeFirstLineButtonProps}
@@ -389,7 +389,7 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               {...activeFirstLineButtonProps}
@@ -408,7 +408,7 @@ describe('Блок рабочей группы', () => {
         })
 
         render(
-          <WorkGroup
+          <WorkGroupBlock
             {...requiredProps}
             {...showFirstLineButtonProps}
             {...activeFirstLineButtonProps}
@@ -426,7 +426,7 @@ describe('Блок рабочей группы', () => {
         })
 
         const { user } = render(
-          <WorkGroup
+          <WorkGroupBlock
             {...requiredProps}
             {...showFirstLineButtonProps}
             {...activeFirstLineButtonProps}
@@ -448,14 +448,12 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               workGroup={null}
             />,
-            {
-              store,
-            },
+            { store },
           )
 
           expect(
@@ -469,14 +467,12 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Closed}
             />,
-            {
-              store,
-            },
+            { store },
           )
 
           expect(
@@ -490,14 +486,12 @@ describe('Блок рабочей группы', () => {
           })
 
           render(
-            <WorkGroup
+            <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Completed}
             />,
-            {
-              store,
-            },
+            { store },
           )
 
           expect(
@@ -513,9 +507,10 @@ describe('Блок рабочей группы', () => {
           userRole: UserRolesEnum.FirstLineSupport,
         })
 
-        render(<WorkGroup {...requiredProps} {...showFirstLineButtonProps} />, {
-          store,
-        })
+        render(
+          <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
+          { store },
+        )
 
         expect(
           workGroupTestUtils.queryFirstLineButton(),
@@ -529,9 +524,10 @@ describe('Блок рабочей группы', () => {
           userRole: UserRolesEnum.Engineer,
         })
 
-        render(<WorkGroup {...requiredProps} {...showFirstLineButtonProps} />, {
-          store,
-        })
+        render(
+          <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
+          { store },
+        )
 
         expect(
           workGroupTestUtils.queryFirstLineButton(),

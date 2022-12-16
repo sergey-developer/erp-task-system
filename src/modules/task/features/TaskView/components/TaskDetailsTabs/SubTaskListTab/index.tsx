@@ -6,15 +6,14 @@ import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import SubTaskList from 'modules/subTask/features/SubTaskList'
+import { useGetSubTaskList } from 'modules/subTask/hooks'
+import { SubTaskModel } from 'modules/subTask/models'
 import useCancelSubTask from 'modules/task/features/TaskView/hooks/useCancelSubTask'
 import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubTask'
-import useGetSubTaskList from 'modules/task/features/TaskView/hooks/useGetSubTaskList'
 import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
 import useReworkSubTask from 'modules/task/features/TaskView/hooks/useReworkSubTask'
-import {
-  SubTaskModel,
-  TaskDetailsModel,
-} from 'modules/task/features/TaskView/models'
+import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
@@ -32,7 +31,6 @@ import {
   ReworkSubTaskFormErrors,
   ReworkSubTaskModalProps,
 } from '../../ReworkSubTaskModal/interfaces'
-import SubTaskList from './SubTaskList'
 
 const CreateSubTaskModal = React.lazy(() => import('../../CreateSubTaskModal'))
 const CancelSubTaskModal = React.lazy(() => import('../../CancelSubTaskModal'))
@@ -223,7 +221,10 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
         </Col>
       </Row>
 
-      <LoadingArea isLoading={subTaskListIsLoading}>
+      <LoadingArea
+        data-testid='sub-task-list-spinner'
+        isLoading={subTaskListIsLoading}
+      >
         <SubTaskList
           task={task}
           list={subTaskList}

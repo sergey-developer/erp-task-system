@@ -1,5 +1,5 @@
 import { generateWord } from '_tests_/utils'
-import { taskFixtures } from 'fixtures/task'
+import taskFixtures from 'fixtures/task'
 
 import { TaskReclassificationRequestProps } from '../index'
 

@@ -1,43 +1,31 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import { FC } from 'react'
+import React, { FC } from 'react'
 
 import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
+import { SubTaskModel } from 'modules/subTask/models'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
+import TaskAssignee from 'modules/task/features/TaskAssignee'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import {
   badgeByTaskStatus,
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
-import { SubTaskModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus } from 'modules/task/hooks'
-import getFullUserName from 'modules/user/utils/getFullUserName'
-
-import Assignee from '../../TaskDetails/TaskAssignee/Assignee'
+import { makeUserNameObject } from 'modules/user/utils'
+import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Text, Title, Paragraph } = Typography
 
-type SubTaskProps = Pick<
-  SubTaskModel,
-  | 'id'
-  | 'olaNextBreachTime'
-  | 'recordId'
-  | 'title'
-  | 'description'
-  | 'status'
-  | 'createdAt'
-  | 'assignee'
-  | 'contactPhone'
-  | 'techResolution'
-> & {
-  workGroup: string
+export type SubTaskProps = Omit<SubTaskModel, 'workGroup'> & {
+  workGroupName: string
   showCancelBtn: boolean
-  onClickCancel: (id: SubTaskModel['id']) => void
+  onClickCancel: (id: number) => void
   showReworkBtn: boolean
-  onClickRework: (id: SubTaskModel['id']) => void
+  onClickRework: (id: number) => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
@@ -48,30 +36,41 @@ const SubTask: FC<SubTaskProps> = ({
   recordId,
   olaNextBreachTime,
   createdAt,
-  workGroup,
-  assignee,
-  contactPhone,
+  workGroupName,
+  externalAssigneeName,
+  externalAssigneePhone,
   techResolution,
   showCancelBtn,
   onClickCancel,
   showReworkBtn,
   onClickRework,
 }) => {
-  const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
   const subTaskStatus = useTaskStatus(status)
 
-  return (
-    <Space $block direction='vertical' size='middle'>
-      <Row justify='space-between' align='middle'>
-        <Col>
-          <SeparatedText>
-            <Text type='secondary'>{recordId}</Text>
+  const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
 
-            {olaNextBreachTime && (
-              <Text type='secondary'>до {olaNextBreachTime}</Text>
-            )}
-          </SeparatedText>
-        </Col>
+  const [showTechResolution, { toggle: toggleShowTechResolution }] =
+    useBoolean(false)
+
+  return (
+    <Space
+      data-testid='sub-task-list-item'
+      $block
+      direction='vertical'
+      size='middle'
+    >
+      <Row justify='space-between' align='middle'>
+        {(recordId || olaNextBreachTime) && (
+          <Col>
+            <SeparatedText>
+              {recordId && <Text type='secondary'>{recordId}</Text>}
+
+              {olaNextBreachTime && (
+                <Text type='secondary'>до {olaNextBreachTime}</Text>
+              )}
+            </SeparatedText>
+          </Col>
+        )}
 
         {showCancelBtn && (
           <Col>
@@ -112,22 +111,32 @@ const SubTask: FC<SubTaskProps> = ({
 
         {techResolution &&
           (subTaskStatus.isCompleted || subTaskStatus.isClosed) && (
-            <Paragraph type='success'>{techResolution}</Paragraph>
+            <Expandable
+              onClick={toggleShowTechResolution}
+              expanded={showTechResolution}
+              btnText='Решение'
+              btnTextType='success'
+              arrowColor='crayola'
+            >
+              <Paragraph type='success'>
+                {renderStringWithLineBreak(techResolution)}
+              </Paragraph>
+            </Expandable>
           )}
       </Space>
 
       <Row gutter={10}>
         <Col span={12}>
-          <LabeledData label='Рабочая группа'>{workGroup}</LabeledData>
+          <LabeledData label='Рабочая группа'>{workGroupName}</LabeledData>
         </Col>
 
-        {assignee && (
+        {externalAssigneeName && (
           <Col span={12}>
             <LabeledData label='Исполнитель'>
-              <Assignee
-                name={getFullUserName(assignee)}
-                assignee={assignee}
-                contactPhone={contactPhone}
+              <TaskAssignee
+                name={externalAssigneeName}
+                phone={externalAssigneePhone}
+                assignee={makeUserNameObject(externalAssigneeName)}
               />
             </LabeledData>
           </Col>
@@ -137,11 +146,13 @@ const SubTask: FC<SubTaskProps> = ({
       {description && (
         <Space $block direction='vertical'>
           <Expandable
-            buttonText='Подробное описание'
+            btnText='Подробное описание'
+            btnTextType='secondary'
+            btnTextUnderline
             expanded={showDescription}
-            onClickExpand={toggleShowDescription}
+            onClick={toggleShowDescription}
           >
-            <Paragraph>{description}</Paragraph>
+            <Paragraph>{renderStringWithLineBreak(description)}</Paragraph>
           </Expandable>
         </Space>
       )}

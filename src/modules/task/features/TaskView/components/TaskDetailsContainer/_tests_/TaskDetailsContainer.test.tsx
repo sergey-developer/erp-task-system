@@ -21,13 +21,13 @@ import {
   setupNotifications,
 } from '_tests_/utils'
 import { waitFor, within } from '@testing-library/react'
-import { taskFixtures } from 'fixtures/task'
-import { workGroupFixtures } from 'fixtures/workGroup'
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
 import taskDetailsTestUtils from '../../TaskDetails/_tests_/utils'
-import workGroupTestUtils from '../../TaskDetails/WorkGroup/_tests_/utils'
+import workGroupTestUtils from '../../TaskDetails/WorkGroupBlock/_tests_/utils'
 import TaskDetailsContainer from '../../TaskDetailsContainer'
 import taskFirstLineModalTestUtils from '../../TaskFirstLineModal/_tests_/utils'
 import { TaskFirstLineFormErrors } from '../../TaskFirstLineModal/interfaces'
