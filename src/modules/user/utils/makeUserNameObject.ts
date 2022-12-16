@@ -1,5 +1,5 @@
 import { UserModel } from 'modules/user/models'
-//todo: написать тесты
+
 export const makeUserNameObject = (
   value: string,
 ): Pick<UserModel, 'firstName' | 'lastName' | 'middleName'> => {

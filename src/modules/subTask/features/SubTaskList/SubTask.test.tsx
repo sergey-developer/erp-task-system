@@ -1,4 +1,4 @@
-import { getButtonIn, render } from '_tests_/utils'
+import { getButtonIn, queryButtonIn, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import subTaskFixtures from 'fixtures/subTask'
@@ -6,6 +6,7 @@ import { TaskStatusEnum } from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'
 
+import { NonNullableObject } from '../../../../shared/interfaces/utils'
 import SubTask, { SubTaskProps } from './SubTask'
 
 const subTask = subTaskFixtures.getSubTask()
@@ -33,7 +34,9 @@ const requiredProps: Pick<
   onClickRework: jest.fn(),
 }
 
-const notRequiredProps: Omit<SubTaskProps, keyof typeof requiredProps> = {
+const notRequiredProps: NonNullableObject<
+  Omit<SubTaskProps, keyof typeof requiredProps>
+> = {
   recordId: subTask.recordId,
   description: subTask.description,
   techResolution: subTask.techResolution,
@@ -53,6 +56,16 @@ const getChildByText = (text: string | RegExp) =>
 const queryChildByText = (text: string) =>
   within(getContainer()).queryByText(text)
 
+const getTechResolutionButton = () => getButtonIn(getContainer(), /решение/i)
+const queryTechResolutionButton = () =>
+  queryButtonIn(getContainer(), /решение/i)
+
+const userClickTechResolutionButton = async (user: UserEvent) => {
+  const button = getTechResolutionButton()
+  await user.click(button)
+  return button
+}
+
 const getDescriptionButton = () =>
   getButtonIn(getContainer(), /подробное описание/i)
 
@@ -68,6 +81,10 @@ export const testUtils = {
   getChildByText,
   queryChildByText,
 
+  getTechResolutionButton,
+  queryTechResolutionButton,
+  userClickTechResolutionButton,
+
   getDescriptionButton,
   userClickDescriptionButton,
 }
@@ -77,7 +94,7 @@ describe('Подзадача', () => {
     render(<SubTask {...requiredProps} recordId={notRequiredProps.recordId} />)
 
     expect(
-      testUtils.getChildByText(notRequiredProps.recordId!),
+      testUtils.getChildByText(notRequiredProps.recordId),
     ).toBeInTheDocument()
   })
 
@@ -121,46 +138,101 @@ describe('Подзадача', () => {
   })
 
   describe('Техническое решение', () => {
-    test('Отображается если статус подзадачи "Завершена"', () => {
-      render(
-        <SubTask
-          {...requiredProps}
-          status={TaskStatusEnum.Completed}
-          techResolution={notRequiredProps.techResolution}
-        />,
-      )
+    describe('Кнопка отображается корректно', () => {
+      test('Если статус подзадачи "Завершена"', () => {
+        render(
+          <SubTask
+            {...requiredProps}
+            status={TaskStatusEnum.Completed}
+            techResolution={notRequiredProps.techResolution}
+          />,
+        )
 
-      expect(
-        testUtils.getChildByText(notRequiredProps.techResolution!),
-      ).toBeInTheDocument()
+        const button = testUtils.getTechResolutionButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
+
+      test('Если статус подзадачи "Закрыта"', () => {
+        render(
+          <SubTask
+            {...requiredProps}
+            status={TaskStatusEnum.Closed}
+            techResolution={notRequiredProps.techResolution}
+          />,
+        )
+
+        const button = testUtils.getTechResolutionButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
     })
 
-    test('Отображает если статус подзадачи "Закрыта"', () => {
-      render(
-        <SubTask
-          {...requiredProps}
-          status={TaskStatusEnum.Closed}
-          techResolution={notRequiredProps.techResolution}
-        />,
-      )
+    describe('Кнопка не отображается', () => {
+      test('При не верном статусе подзадачи', () => {
+        render(
+          <SubTask
+            {...requiredProps}
+            status={TaskStatusEnum.New}
+            techResolution={notRequiredProps.techResolution}
+          />,
+        )
 
-      expect(
-        testUtils.getChildByText(notRequiredProps.techResolution!),
-      ).toBeInTheDocument()
+        expect(testUtils.queryTechResolutionButton()).not.toBeInTheDocument()
+      })
     })
 
-    test('Не отображается при не верном статусе подзадачи', () => {
-      render(
-        <SubTask
-          {...requiredProps}
-          status={TaskStatusEnum.New}
-          techResolution={notRequiredProps.techResolution}
-        />,
-      )
+    describe('Текст решения', () => {
+      test('Скрыт по умолчанию', () => {
+        render(
+          <SubTask
+            {...requiredProps}
+            status={TaskStatusEnum.Closed}
+            techResolution={notRequiredProps.techResolution}
+          />,
+        )
 
-      expect(
-        testUtils.queryChildByText(notRequiredProps.techResolution!),
-      ).not.toBeInTheDocument()
+        expect(testUtils.getTechResolutionButton()).toBeInTheDocument()
+
+        expect(
+          testUtils.queryChildByText(notRequiredProps.techResolution),
+        ).not.toBeInTheDocument()
+      })
+
+      test('Можно раскрыть', async () => {
+        const { user } = render(
+          <SubTask
+            {...requiredProps}
+            status={TaskStatusEnum.Closed}
+            techResolution={notRequiredProps.techResolution}
+          />,
+        )
+
+        await testUtils.userClickTechResolutionButton(user)
+
+        expect(
+          testUtils.getChildByText(notRequiredProps.techResolution),
+        ).toBeInTheDocument()
+      })
+
+      test('Можно скрыть', async () => {
+        const { user } = render(
+          <SubTask
+            {...requiredProps}
+            status={TaskStatusEnum.Closed}
+            techResolution={notRequiredProps.techResolution}
+          />,
+        )
+
+        await testUtils.userClickTechResolutionButton(user)
+        await testUtils.userClickTechResolutionButton(user)
+
+        expect(
+          testUtils.queryChildByText(notRequiredProps.techResolution),
+        ).not.toBeInTheDocument()
+      })
     })
   })
 
@@ -204,48 +276,52 @@ describe('Подзадача', () => {
       expect(button).toBeEnabled()
     })
 
-    test('Скрыто по умолчанию', () => {
-      render(
-        <SubTask
-          {...requiredProps}
-          description={notRequiredProps.description}
-        />,
-      )
+    describe('Текст описания', () => {
+      test('Скрыт по умолчанию', () => {
+        render(
+          <SubTask
+            {...requiredProps}
+            description={notRequiredProps.description}
+          />,
+        )
 
-      expect(
-        testUtils.queryChildByText(notRequiredProps.description!),
-      ).not.toBeInTheDocument()
-    })
+        expect(getDescriptionButton()).toBeInTheDocument()
 
-    test('Можно раскрыть', async () => {
-      const { user } = render(
-        <SubTask
-          {...requiredProps}
-          description={notRequiredProps.description}
-        />,
-      )
+        expect(
+          testUtils.queryChildByText(notRequiredProps.description),
+        ).not.toBeInTheDocument()
+      })
 
-      await userClickDescriptionButton(user)
+      test('Можно раскрыть', async () => {
+        const { user } = render(
+          <SubTask
+            {...requiredProps}
+            description={notRequiredProps.description}
+          />,
+        )
 
-      expect(
-        testUtils.getChildByText(notRequiredProps.description!),
-      ).toBeInTheDocument()
-    })
+        await userClickDescriptionButton(user)
 
-    test('Можно скрыть', async () => {
-      const { user } = render(
-        <SubTask
-          {...requiredProps}
-          description={notRequiredProps.description}
-        />,
-      )
+        expect(
+          testUtils.getChildByText(notRequiredProps.description),
+        ).toBeInTheDocument()
+      })
 
-      await userClickDescriptionButton(user)
-      await userClickDescriptionButton(user)
+      test('Можно скрыть', async () => {
+        const { user } = render(
+          <SubTask
+            {...requiredProps}
+            description={notRequiredProps.description}
+          />,
+        )
 
-      expect(
-        testUtils.queryChildByText(notRequiredProps.description!),
-      ).not.toBeInTheDocument()
+        await userClickDescriptionButton(user)
+        await userClickDescriptionButton(user)
+
+        expect(
+          testUtils.queryChildByText(notRequiredProps.description),
+        ).not.toBeInTheDocument()
+      })
     })
   })
 })
