@@ -258,6 +258,11 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickColTitle(user, 'Заявка')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
 
@@ -317,6 +322,11 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickColTitle(user, 'Внеш.номер')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
 
@@ -373,6 +383,11 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickColTitle(user, 'Объект')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
 
@@ -429,6 +444,11 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickColTitle(user, 'Тема')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
 
@@ -489,6 +509,11 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickColTitle(user, 'Исполнитель')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
 
@@ -562,6 +587,11 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
 
@@ -628,6 +658,11 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickColTitle(user, 'Выполнить до')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
 
@@ -677,13 +712,18 @@ describe('Таблица заявок', () => {
         const { user } = render(
           <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
-
+        // todo: вынести функцию сортировки и переиспользовать её здесь для тестирования
         await taskTableTestUtils.userClickColTitle(user, 'Статус')
         const headCol = taskTableTestUtils.getHeadCol('Статус')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
         await taskTableTestUtils.userClickColTitle(user, 'Статус')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
 
@@ -742,6 +782,11 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickColTitle(user, 'Комментарий')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
 
@@ -803,6 +848,11 @@ describe('Таблица заявок', () => {
 
         await taskTableTestUtils.userClickColTitle(user, 'Дата создания')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
+        })
       })
     })
   })
