@@ -1,7 +1,7 @@
 import { render } from '_tests_/utils'
 
 import assigneeTestUtils from '../../AssigneeBlock/_tests_/utils'
-import { testUtils as workGroupTestUtils } from '../../WorkGroupBlock/WorkGroup.test'
+import { testUtils as workGroupTestUtils } from '../../WorkGroupBlock/WorkGroupBlock.test'
 import SecondaryDetails from '../index'
 import { requiredProps } from './constants'
 import secondaryDetailsTestUtils from './utils'
