@@ -11,8 +11,6 @@ import TaskResolutionModal from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
 
-jest.setTimeout(15000)
-
 describe('Модалка решения по заявки', () => {
   test('Заголовок отображается', () => {
     render(<TaskResolutionModal {...requiredProps} />)

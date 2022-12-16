@@ -10,8 +10,6 @@ import CreateCommentForm from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
 
-jest.setTimeout(10000)
-
 describe('Форма добавления комментария', () => {
   describe('Поле ввода комментария', () => {
     test('Отображается корректно', () => {

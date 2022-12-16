@@ -7,22 +7,22 @@ import {
   useAuthenticatedUser,
   useCheckUserAuthenticated,
 } from 'modules/auth/hooks'
+import TaskAssignee from 'modules/task/features/TaskAssignee'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
 import { TaskAssigneeModel } from 'modules/task/models'
-import getFullUserName from 'modules/user/utils/getFullUserName'
+import { getFullUserName } from 'modules/user/utils'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import Assignee from './Assignee'
 import { SelectStyled } from './styles'
 
 const { Text } = Typography
 
 const NOT_ASSIGNED_TEXT: string = 'Не назначен'
 
-export type TaskAssigneeProps = Pick<
+export type AssigneeBlockProps = Pick<
   TaskDetailsModel,
   'status' | 'extendedStatus' | 'assignee'
 > & {
@@ -36,7 +36,7 @@ export type TaskAssigneeProps = Pick<
   takeTaskIsLoading: boolean
 }
 
-const TaskAssignee: FC<TaskAssigneeProps> = ({
+const AssigneeBlock: FC<AssigneeBlockProps> = ({
   assignee,
 
   status,
@@ -110,7 +110,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   )
 
   return (
-    <Space data-testid='task-assignee' direction='vertical' $block>
+    <Space data-testid='task-assignee-block' direction='vertical' $block>
       <Row justify='space-between'>
         <Col>
           <Text type='secondary'>Исполнитель</Text>
@@ -145,7 +145,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
           canView && !canEdit ? (
             <Space direction='vertical' size='middle' $block>
               {assignee ? (
-                <Assignee
+                <TaskAssignee
                   name={getFullUserName(assignee)}
                   status={status}
                   assignee={assignee}
@@ -187,7 +187,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                         value={id}
                         disabled={disabled}
                       >
-                        <Assignee
+                        <TaskAssignee
                           name={fullName}
                           status={status}
                           assignee={assignee}
@@ -197,7 +197,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
                   })}
                 </SelectStyled>
               ) : assignee ? (
-                <Assignee
+                <TaskAssignee
                   name={getFullUserName(assignee)}
                   status={status}
                   assignee={assignee}
@@ -237,4 +237,4 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   )
 }
 
-export default TaskAssignee
+export default AssigneeBlock

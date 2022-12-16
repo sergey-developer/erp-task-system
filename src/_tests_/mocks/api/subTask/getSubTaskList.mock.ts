@@ -4,7 +4,7 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { GetSubTaskListResponseModel } from 'modules/task/features/TaskView/models'
+import { GetSubTaskListResponseModel } from 'modules/subTask/models'
 import { getSubTaskListUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'

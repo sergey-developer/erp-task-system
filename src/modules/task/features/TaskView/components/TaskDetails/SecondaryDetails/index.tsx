@@ -5,15 +5,15 @@ import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { TaskAssigneeModel } from 'modules/task/models'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import TaskAssignee from '../TaskAssignee'
-import WorkGroup, { WorkGroupProps } from '../WorkGroup'
+import TaskAssignee from '../AssigneeBlock'
+import WorkGroupBlock, { WorkGroupBlockProps } from '../WorkGroupBlock'
 
 export type SecondaryDetailsProps = Pick<
   TaskDetailsModel,
   'id' | 'recordId' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
 > &
   Pick<
-    WorkGroupProps,
+    WorkGroupBlockProps,
     | 'workGroupList'
     | 'workGroupListIsLoading'
     | 'transferTaskToFirstLine'
@@ -63,7 +63,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   return (
     <Row data-testid='task-details-secondary' justify='space-between'>
       <Col span={11}>
-        <WorkGroup
+        <WorkGroupBlock
           id={id}
           recordId={recordId}
           status={status}

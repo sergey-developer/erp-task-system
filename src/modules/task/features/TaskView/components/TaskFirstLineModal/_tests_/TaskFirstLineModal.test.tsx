@@ -11,8 +11,6 @@ import TaskFirstLineModal from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
 
-jest.setTimeout(20000)
-
 describe('Модальное окно перевода запроса на первую линию', () => {
   test('Отображается корректно', () => {
     render(<TaskFirstLineModal {...requiredProps} />)

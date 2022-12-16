@@ -10,23 +10,27 @@ import {
 } from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import getUserAbbr from 'modules/user/utils/getUserAbbr'
+import { UserModel } from 'modules/user/models'
+import { getUserAbbr } from 'modules/user/utils'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 const { Text } = Typography
 
-type AssigneeProps = Pick<TaskDetailsModel, 'assignee' | 'contactPhone'> & {
+type TaskAssigneeProps = {
   name: string
+  phone?: TaskDetailsModel['contactPhone']
   status?: TaskDetailsModel['status']
+  assignee: MaybeNull<Pick<UserModel, 'firstName' | 'lastName' | 'avatar'>>
 }
 
-const Assignee: FC<AssigneeProps> = ({
+const TaskAssignee: FC<TaskAssigneeProps> = ({
   assignee,
   status,
   name,
-  contactPhone,
+  phone,
 }) => {
   return (
-    <Space size='middle' align='start'>
+    <Space data-testid='task-assignee' size='middle' align='start'>
       {assignee && (
         <UserAvatar src={assignee.avatar} abbr={getUserAbbr(assignee)} />
       )}
@@ -34,7 +38,7 @@ const Assignee: FC<AssigneeProps> = ({
       <Space direction='vertical'>
         <Text>{name}</Text>
 
-        {contactPhone && <Text>{contactPhone}</Text>}
+        {phone && <Text>{phone}</Text>}
 
         {assignee && status && (
           <TaskStatus
@@ -49,4 +53,4 @@ const Assignee: FC<AssigneeProps> = ({
   )
 }
 
-export default Assignee
+export default TaskAssignee

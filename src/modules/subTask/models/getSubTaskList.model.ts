@@ -1,5 +1,6 @@
+import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+
 import { SubTaskModel } from './subTask.model'
-import { TaskDetailsModel } from './taskDetails.model'
 
 export type GetSubTaskListQueryArgsModel = TaskDetailsModel['id']
 

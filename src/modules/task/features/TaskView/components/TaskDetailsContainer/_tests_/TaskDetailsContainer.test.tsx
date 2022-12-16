@@ -21,20 +21,19 @@ import {
   setupNotifications,
 } from '_tests_/utils'
 import { waitFor, within } from '@testing-library/react'
-import { taskFixtures } from 'fixtures/task'
-import { workGroupFixtures } from 'fixtures/workGroup'
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
 import { UserRolesEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
 import taskDetailsTestUtils from '../../TaskDetails/_tests_/utils'
-import { testUtils as workGroupTestUtils } from '../../TaskDetails/WorkGroup/WorkGroup.test'
+import { testUtils as workGroupTestUtils } from '../../TaskDetails/WorkGroupBlock/WorkGroup.test'
 import TaskDetailsContainer from '../../TaskDetailsContainer'
 import taskFirstLineModalTestUtils from '../../TaskFirstLineModal/_tests_/utils'
 import { TaskFirstLineFormErrors } from '../../TaskFirstLineModal/interfaces'
 import { requiredProps } from './constants'
 
 setupApiTests()
-jest.setTimeout(5000)
 
 describe('Контейнер детальной карточки заявки', () => {
   describe('Перевод заявки на 1-ю линию', () => {

@@ -1,5 +1,7 @@
 import * as login from './login'
 
-export const authFixtures = {
+const authFixtures = {
   ...login,
 }
+
+export default authFixtures

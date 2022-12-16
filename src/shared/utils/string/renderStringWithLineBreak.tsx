@@ -1,6 +1,6 @@
 import React from 'react'
 
-const renderStringWithLineBreak = (value: string): JSX.Element[] =>
+const renderStringWithLineBreak = (value: string) =>
   value.split('\n').map((item, index, array) => (
     <React.Fragment key={index}>
       {item}

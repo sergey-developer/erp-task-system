@@ -12,8 +12,8 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 import { waitFor } from '@testing-library/react'
-import { taskFixtures } from 'fixtures/task'
-import { workGroupFixtures } from 'fixtures/workGroup'
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import taskDetailsTestUtils from 'modules/task/features/TaskView/components/TaskDetails/_tests_/utils'
 import { UserRolesEnum } from 'shared/constants/roles'
@@ -34,7 +34,6 @@ import TaskListPage from '../index'
 import taskListPageTestUtils from './utils'
 
 setupApiTests()
-jest.setTimeout(30000)
 
 describe('Страница реестра заявок', () => {
   test('Отображается корректно', () => {

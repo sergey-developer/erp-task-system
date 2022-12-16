@@ -15,7 +15,7 @@ import {
   userSearchInSelect,
 } from '_tests_/utils'
 import { screen } from '@testing-library/react'
-import { workGroupFixtures } from 'fixtures/workGroup'
+import workGroupFixtures from 'fixtures/workGroup'
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import { UserRolesEnum } from 'shared/constants/roles'
@@ -37,7 +37,6 @@ import {
 import testUtils from './utils'
 
 setupApiTests()
-jest.setTimeout(20000)
 
 describe('Расширенный фильтр', () => {
   test('Отображается', () => {
