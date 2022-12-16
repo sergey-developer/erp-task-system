@@ -5,8 +5,8 @@ import subTaskFixtures from 'fixtures/subTask'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'
+import { NonNullableObject } from 'shared/interfaces/utils'
 
-import { NonNullableObject } from '../../../../shared/interfaces/utils'
 import SubTask, { SubTaskProps } from './SubTask'
 
 const subTask = subTaskFixtures.getSubTask()
@@ -57,6 +57,7 @@ const queryChildByText = (text: string) =>
   within(getContainer()).queryByText(text)
 
 const getTechResolutionButton = () => getButtonIn(getContainer(), /решение/i)
+
 const queryTechResolutionButton = () =>
   queryButtonIn(getContainer(), /решение/i)
 
