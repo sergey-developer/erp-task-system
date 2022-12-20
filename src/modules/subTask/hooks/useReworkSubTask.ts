@@ -1,24 +1,24 @@
 import { useCallback, useEffect } from 'react'
 
-import { useDeleteSubTaskMutation } from 'modules/task/services/subTaskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { DeleteSubTaskMutationArgsModel } from '../models'
+import { ReworkSubTaskMutationArgsModel } from '../models'
 import { subTaskApiPermissions } from '../permissions'
+import { useReworkSubTaskMutation } from '../services/subTaskApi.service'
 
-const useCancelSubTask = () => {
+export const useReworkSubTask = () => {
   const permissions = useUserPermissions(subTaskApiPermissions)
-  const [mutation, state] = useDeleteSubTaskMutation()
+  const [mutation, state] = useReworkSubTaskMutation()
 
   const fn = useCallback(
-    async (data: DeleteSubTaskMutationArgsModel) => {
-      if (permissions.canDelete) {
+    async (data: ReworkSubTaskMutationArgsModel) => {
+      if (permissions.canRework) {
         await mutation(data).unwrap()
       }
     },
-    [mutation, permissions.canDelete],
+    [mutation, permissions.canRework],
   )
 
   useEffect(() => {
@@ -26,11 +26,9 @@ const useCancelSubTask = () => {
     const error = state.error as ErrorResponse
 
     if (!isBadRequestError(error)) {
-      showErrorNotification('Не удалось отменить задание')
+      showErrorNotification('Не удалось вернуть задание на доработку')
     }
   }, [state.error, state.isError])
 
   return { fn, state }
 }
-
-export default useCancelSubTask

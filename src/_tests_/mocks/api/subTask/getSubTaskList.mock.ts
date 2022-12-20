@@ -5,7 +5,7 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 import { GetSubTaskListResponseModel } from 'modules/subTask/models'
-import { getSubTaskListUrl } from 'modules/task/utils/apiUrls'
+import { getSubTaskListUrl } from 'modules/subTask/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 

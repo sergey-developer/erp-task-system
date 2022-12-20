@@ -22,10 +22,8 @@ const { Text, Title, Paragraph } = Typography
 
 export type SubTaskProps = Omit<SubTaskModel, 'workGroup'> & {
   workGroupName: string
-  showCancelBtn: boolean
-  onClickCancel: (id: number) => void
-  showReworkBtn: boolean
-  onClickRework: (id: number) => void
+  onClickCancel?: (id: number) => void
+  onClickRework?: (id: number) => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
@@ -40,9 +38,7 @@ const SubTask: FC<SubTaskProps> = ({
   externalAssigneeName,
   externalAssigneePhone,
   techResolution,
-  showCancelBtn,
   onClickCancel,
-  showReworkBtn,
   onClickRework,
 }) => {
   const subTaskStatus = useTaskStatus(status)
@@ -72,13 +68,13 @@ const SubTask: FC<SubTaskProps> = ({
           </Col>
         )}
 
-        {showCancelBtn && (
+        {onClickCancel && (
           <Col>
             <Button onClick={() => onClickCancel(id)}>Отменить</Button>
           </Col>
         )}
 
-        {showReworkBtn && (
+        {onClickRework && (
           <Col>
             <Button onClick={() => onClickRework(id)}>
               Вернуть на доработку

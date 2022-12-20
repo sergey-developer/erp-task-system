@@ -13,25 +13,13 @@ const subTask = subTaskFixtures.getSubTask()
 
 const requiredProps: Pick<
   SubTaskProps,
-  | 'id'
-  | 'title'
-  | 'status'
-  | 'createdAt'
-  | 'workGroupName'
-  | 'showReworkBtn'
-  | 'onClickRework'
-  | 'showCancelBtn'
-  | 'onClickCancel'
+  'id' | 'title' | 'status' | 'createdAt' | 'workGroupName'
 > = {
   id: subTask.id,
   title: subTask.title,
   status: subTask.status,
   createdAt: subTask.createdAt,
   workGroupName: subTask.workGroup.name,
-  showCancelBtn: false,
-  onClickCancel: jest.fn(),
-  showReworkBtn: false,
-  onClickRework: jest.fn(),
 }
 
 const notRequiredProps: NonNullableObject<
@@ -43,6 +31,8 @@ const notRequiredProps: NonNullableObject<
   olaNextBreachTime: subTask.olaNextBreachTime,
   externalAssigneeName: subTask.externalAssigneeName,
   externalAssigneePhone: subTask.externalAssigneePhone,
+  onClickCancel: jest.fn(),
+  onClickRework: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('sub-task-list-item')

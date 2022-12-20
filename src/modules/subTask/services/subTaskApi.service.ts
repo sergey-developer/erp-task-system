@@ -3,29 +3,47 @@ import {
   GetSubTaskListResponseModel,
   SubTaskModel,
 } from 'modules/subTask/models'
-import { TaskEndpointsEnum } from 'modules/task/constants/api'
 import {
-  deleteSubTaskUrl,
+  cancelSubTaskUrl,
   getCreateSubTaskUrl,
   getSubTaskListUrl,
+  getSubTaskTemplateListUrl,
   reworkSubTaskUrl,
-} from 'modules/task/utils/apiUrls'
+} from 'modules/subTask/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
 import {
+  CancelSubTaskMutationArgsModel,
+  CancelSubTaskResponseModel,
   CreateSubTaskMutationArgsModel,
   CreateSubTaskResponseModel,
-  DeleteSubTaskMutationArgsModel,
-  DeleteSubTaskResponseModel,
   GetSubTaskTemplateListQueryArgsModel,
   GetSubTaskTemplateListResponseModel,
   ReworkSubTaskMutationArgsModel,
   ReworkSubTaskResponseModel,
-} from '../features/TaskView/models'
+} from '../models'
 
 const subTaskApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
+    getSubTaskList: build.query<
+      GetSubTaskListResponseModel,
+      GetSubTaskListQueryArgsModel
+    >({
+      query: (taskId) => ({
+        url: getSubTaskListUrl(taskId),
+        method: HttpMethodEnum.Get,
+      }),
+    }),
+    getSubTaskTemplateList: build.query<
+      GetSubTaskTemplateListResponseModel,
+      GetSubTaskTemplateListQueryArgsModel
+    >({
+      query: () => ({
+        url: getSubTaskTemplateListUrl(),
+        method: HttpMethodEnum.Get,
+      }),
+    }),
     createSubTask: build.mutation<
       CreateSubTaskResponseModel,
       CreateSubTaskMutationArgsModel
@@ -51,30 +69,12 @@ const subTaskApiService = apiService.injectEndpoints({
         } catch {}
       },
     }),
-    getSubTaskList: build.query<
-      GetSubTaskListResponseModel,
-      GetSubTaskListQueryArgsModel
-    >({
-      query: (taskId) => ({
-        url: getSubTaskListUrl(taskId),
-        method: HttpMethodEnum.Get,
-      }),
-    }),
-    getSubTaskTemplateList: build.query<
-      GetSubTaskTemplateListResponseModel,
-      GetSubTaskTemplateListQueryArgsModel
-    >({
-      query: () => ({
-        url: TaskEndpointsEnum.GetSubTaskTemplateList,
-        method: HttpMethodEnum.Get,
-      }),
-    }),
-    deleteSubTask: build.mutation<
-      DeleteSubTaskResponseModel,
-      DeleteSubTaskMutationArgsModel
+    cancelSubTask: build.mutation<
+      CancelSubTaskResponseModel,
+      CancelSubTaskMutationArgsModel
     >({
       query: ({ taskId, ...payload }) => ({
-        url: deleteSubTaskUrl(taskId),
+        url: cancelSubTaskUrl(taskId),
         method: HttpMethodEnum.Delete,
         body: payload,
       }),
@@ -96,7 +96,7 @@ const subTaskApiService = apiService.injectEndpoints({
 export const {
   useLazyGetSubTaskTemplateListQuery,
   useCreateSubTaskMutation,
-  useDeleteSubTaskMutation,
+  useCancelSubTaskMutation,
   useReworkSubTaskMutation,
   useGetSubTaskListQuery,
 } = subTaskApiService

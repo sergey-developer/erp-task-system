@@ -4,13 +4,13 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { TaskEndpointsEnum } from 'modules/task/constants/api'
-import { GetSubTaskTemplateListResponseModel } from 'modules/task/features/TaskView/models'
+import { GetSubTaskTemplateListResponseModel } from 'modules/subTask/models'
+import { getSubTaskTemplateListUrl } from 'modules/subTask/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
 const getGetSubTaskTemplateListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, TaskEndpointsEnum.GetSubTaskTemplateList)
+  getRequestMockFn(HttpMethodEnum.Get, getSubTaskTemplateListUrl())
 
 export const mockGetSubTaskTemplateListSuccess = (
   options?: Partial<
