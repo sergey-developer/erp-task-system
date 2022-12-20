@@ -1,11 +1,13 @@
 import { FormInstance, ModalProps } from 'antd'
 import { DebouncedFunc } from 'lodash'
 
-import { SubTaskModel } from 'modules/subTask/models'
-import { DeleteSubTaskMutationArgsModel } from 'modules/task/features/TaskView/models'
+import {
+  CancelSubTaskMutationArgsModel,
+  SubTaskModel,
+} from 'modules/subTask/models'
 import { FieldsErrors } from 'shared/services/api'
 
-type FormFields = Omit<DeleteSubTaskMutationArgsModel, 'taskId'>
+type FormFields = Omit<CancelSubTaskMutationArgsModel, 'taskId'>
 
 export type CancelSubTaskFormFields = Required<FormFields>
 

@@ -37,15 +37,3 @@ export const getTaskJournalUrl = (taskId: number): string =>
 
 export const getTaskJournalCsvUrl = (taskId: number): string =>
   generatePath(TaskEndpointsEnum.TaskJournalCsv, { id: String(taskId) })
-
-export const getCreateSubTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.CreateSubTask, { id: String(taskId) })
-
-export const getSubTaskListUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.GetSubTaskList, { id: String(taskId) })
-
-export const deleteSubTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.DeleteSubTask, { id: String(taskId) })
-
-export const reworkSubTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.ReworkSubTask, { id: String(taskId) })

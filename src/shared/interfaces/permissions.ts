@@ -1,4 +1,4 @@
-import { SubTaskApiPermissionsEnum } from 'modules/task/features/TaskView/permissions'
+import { SubTaskApiPermissionsEnum } from 'modules/subTask/permissions'
 import {
   CRUDPermissionsEnum,
   UIPermissionsEnum,

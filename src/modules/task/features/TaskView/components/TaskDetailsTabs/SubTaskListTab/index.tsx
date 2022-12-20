@@ -6,35 +6,42 @@ import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import {
+  CancelSubTaskFormErrors,
+  CancelSubTaskModalProps,
+} from 'modules/subTask/features/CancelSubTaskModal/interfaces'
+import {
+  CreateSubTaskFormErrors,
+  CreateSubTaskModalProps,
+} from 'modules/subTask/features/CreateSubTaskModal/interfaces'
+import {
+  ReworkSubTaskFormErrors,
+  ReworkSubTaskModalProps,
+} from 'modules/subTask/features/ReworkSubTaskModal/interfaces'
 import SubTaskList from 'modules/subTask/features/SubTaskList'
-import { useGetSubTaskList } from 'modules/subTask/hooks'
+import {
+  useCancelSubTask,
+  useCreateSubTask,
+  useGetSubTaskList,
+  useLazyGetSubTaskTemplateList,
+  useReworkSubTask,
+} from 'modules/subTask/hooks'
 import { SubTaskModel } from 'modules/subTask/models'
-import useCancelSubTask from 'modules/task/features/TaskView/hooks/useCancelSubTask'
-import useCreateSubTask from 'modules/task/features/TaskView/hooks/useCreateSubTask'
-import useLazyGetSubTaskTemplateList from 'modules/task/features/TaskView/hooks/useLazyGetSubTaskTemplateList'
-import useReworkSubTask from 'modules/task/features/TaskView/hooks/useReworkSubTask'
 import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 
-import {
-  CancelSubTaskFormErrors,
-  CancelSubTaskModalProps,
-} from '../../CancelSubTaskModal/interfaces'
-import {
-  CreateSubTaskFormErrors,
-  CreateSubTaskModalProps,
-} from '../../CreateSubTaskModal/interfaces'
-import {
-  ReworkSubTaskFormErrors,
-  ReworkSubTaskModalProps,
-} from '../../ReworkSubTaskModal/interfaces'
-
-const CreateSubTaskModal = React.lazy(() => import('../../CreateSubTaskModal'))
-const CancelSubTaskModal = React.lazy(() => import('../../CancelSubTaskModal'))
-const ReworkSubTaskModal = React.lazy(() => import('../../ReworkSubTaskModal'))
+const CreateSubTaskModal = React.lazy(
+  () => import('modules/subTask/features/CreateSubTaskModal'),
+)
+const CancelSubTaskModal = React.lazy(
+  () => import('modules/subTask/features/CancelSubTaskModal'),
+)
+const ReworkSubTaskModal = React.lazy(
+  () => import('modules/subTask/features/ReworkSubTaskModal'),
+)
 
 const { Title } = Typography
 
@@ -105,7 +112,11 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
 
   const taskType = useTaskType(task.type)
   const taskStatus = useTaskStatus(task.status)
-  const currentUserIsAssignee = useCheckUserAuthenticated(task.assignee?.id)
+  const parentTaskStatus = useTaskStatus(task.parentTask?.status)
+  const currentUserIsTaskAssignee = useCheckUserAuthenticated(task.assignee?.id)
+  const currentUserIsParentTaskAssignee = useCheckUserAuthenticated(
+    task.parentTask?.assignee,
+  )
 
   const handleCreateSubTask = useCallback<CreateSubTaskModalProps['onSubmit']>(
     async ({ title, description, template }, setFields) => {
@@ -125,6 +136,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
     },
     [createSubTask, task.id, toggleCreateSubTaskModalOpened],
   )
+
+  const isShowCancelBtn =
+    currentUserIsParentTaskAssignee &&
+    taskStatus.isNew &&
+    !parentTaskStatus.isCompleted &&
+    !parentTaskStatus.isClosed
 
   const handleClickCancel = useCallback(
     (id: SubTaskModel['id']) => {
@@ -153,6 +170,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
       },
       [cancelSubTask, subTaskId, toggleCancelSubTaskModalOpened],
     )
+
+  const isShowReworkBtn =
+    currentUserIsParentTaskAssignee &&
+    (taskStatus.isCompleted || taskStatus.isClosed) &&
+    !parentTaskStatus.isCompleted &&
+    !parentTaskStatus.isClosed
 
   const handleClickRework = useCallback(
     (id: SubTaskModel['id']) => {
@@ -210,7 +233,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
             onClick={debouncedToggleCreateSubTaskModalOpened}
             disabled={
               !(
-                currentUserIsAssignee &&
+                currentUserIsTaskAssignee &&
                 taskStatus.isInProgress &&
                 (taskType.isIncident || taskType.isRequest)
               )
@@ -226,11 +249,10 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
         isLoading={subTaskListIsLoading}
       >
         <SubTaskList
-          task={task}
           list={subTaskList}
           isError={isGetSubTaskListError}
-          onClickCancel={handleClickCancel}
-          onClickRework={handleClickRework}
+          onClickCancel={isShowCancelBtn ? handleClickCancel : undefined}
+          onClickRework={isShowReworkBtn ? handleClickRework : undefined}
         />
       </LoadingArea>
 

@@ -21,12 +21,12 @@ import { screen, waitFor } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
+import createSubTaskModalTestUtils from 'modules/subTask/features/CreateSubTaskModal/_tests_/utils'
+import { CreateSubTaskFormErrors } from 'modules/subTask/features/CreateSubTaskModal/interfaces'
 import { testUtils as subTaskTestUtils } from 'modules/subTask/features/SubTaskList/SubTask.test'
 import { testUtils as subTaskListTestUtils } from 'modules/subTask/features/SubTaskList/SubTaskList.test'
 import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
 
-import createSubTaskModalTestUtils from '../../CreateSubTaskModal/_tests_/utils'
-import { CreateSubTaskFormErrors } from '../../CreateSubTaskModal/interfaces'
 import SubTaskListTab, { SubTaskListTabProps } from './index'
 
 // constants
