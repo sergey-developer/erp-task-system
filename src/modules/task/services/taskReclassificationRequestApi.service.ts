@@ -12,6 +12,7 @@ import {
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 
+import { TaskEndpointNameEnum } from '../constants/api'
 import taskApiService from './taskApi.service'
 
 const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
@@ -20,10 +21,10 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
       CreateTaskReclassificationRequestResponseModel,
       CreateTaskReclassificationRequestMutationArgsModel
     >({
-      query: ({ taskId, ...body }) => ({
+      query: ({ taskId, ...payload }) => ({
         url: getCreateTaskReclassificationRequestUrl(taskId),
         method: HttpMethodEnum.Post,
-        data: body,
+        data: payload,
       }),
       onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
         try {
@@ -31,7 +32,7 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
 
           dispatch(
             taskApiService.util.updateQueryData(
-              'getTask' as never,
+              TaskEndpointNameEnum.GetTask as never,
               taskId as never,
               (task: GetTaskResponseModel) => {
                 task.extendedStatus = TaskExtendedStatusEnum.InReclassification

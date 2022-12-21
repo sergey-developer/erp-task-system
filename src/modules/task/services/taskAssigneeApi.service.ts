@@ -1,4 +1,4 @@
-import { TaskEndpointsTagsEnum } from 'modules/task/constants/api'
+import { TaskEndpointTagEnum } from 'modules/task/constants/api'
 import {
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskAssigneeResponseModel,
@@ -14,13 +14,13 @@ const taskAssigneeApiService = taskApiService.injectEndpoints({
       UpdateTaskAssigneeResponseModel,
       UpdateTaskAssigneeMutationArgsModel
     >({
-      query: ({ taskId, ...body }) => ({
+      query: ({ taskId, ...payload }) => ({
         url: getTaskAssigneeUrl(taskId),
         method: HttpMethodEnum.Post,
-        data: body,
+        data: payload,
       }),
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointsTagsEnum.Task],
+        error ? [] : [TaskEndpointTagEnum.Task],
     }),
   }),
   overrideExisting: false,

@@ -14,6 +14,7 @@ import { TaskStatusEnum } from 'modules/task/constants/common'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
+import { SubTaskEndpointNameEnum } from '../constants/api'
 import {
   CancelSubTaskMutationArgsModel,
   CancelSubTaskResponseModel,
@@ -25,17 +26,9 @@ import {
   ReworkSubTaskResponseModel,
 } from '../models'
 
-enum EndpointNameEnum {
-  GetSubTaskList = 'getSubTaskList',
-  GetSubTaskTemplateList = 'getSubTaskTemplateList',
-  CreateSubTask = 'createSubTask',
-  CancelSubTask = 'cancelSubTask',
-  ReworkSubTask = 'reworkSubTask',
-}
-
 const subTaskApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
-    [EndpointNameEnum.GetSubTaskList]: build.query<
+    [SubTaskEndpointNameEnum.GetSubTaskList]: build.query<
       GetSubTaskListResponseModel,
       GetSubTaskListQueryArgsModel
     >({
@@ -44,7 +37,7 @@ const subTaskApiService = apiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
-    [EndpointNameEnum.GetSubTaskTemplateList]: build.query<
+    [SubTaskEndpointNameEnum.GetSubTaskTemplateList]: build.query<
       GetSubTaskTemplateListResponseModel,
       GetSubTaskTemplateListQueryArgsModel
     >({
@@ -53,7 +46,7 @@ const subTaskApiService = apiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
-    [EndpointNameEnum.CreateSubTask]: build.mutation<
+    [SubTaskEndpointNameEnum.CreateSubTask]: build.mutation<
       CreateSubTaskResponseModel,
       CreateSubTaskMutationArgsModel
     >({
@@ -68,7 +61,7 @@ const subTaskApiService = apiService.injectEndpoints({
 
           dispatch(
             apiService.util.updateQueryData(
-              EndpointNameEnum.GetSubTaskList as never,
+              SubTaskEndpointNameEnum.GetSubTaskList as never,
               taskId as never,
               (subTaskList: SubTaskModel[]) => {
                 subTaskList.unshift(newSubTask)
@@ -78,7 +71,7 @@ const subTaskApiService = apiService.injectEndpoints({
         } catch {}
       },
     }),
-    [EndpointNameEnum.CancelSubTask]: build.mutation<
+    [SubTaskEndpointNameEnum.CancelSubTask]: build.mutation<
       CancelSubTaskResponseModel,
       CancelSubTaskMutationArgsModel
     >({
@@ -96,7 +89,7 @@ const subTaskApiService = apiService.injectEndpoints({
 
           dispatch(
             apiService.util.updateQueryData(
-              EndpointNameEnum.GetSubTaskList as never,
+              SubTaskEndpointNameEnum.GetSubTaskList as never,
               taskId as never,
               (subTaskList: SubTaskModel[]) => {
                 const subTask = subTaskList.find(({ id }) => id === subTaskId)
@@ -110,15 +103,37 @@ const subTaskApiService = apiService.injectEndpoints({
         } catch {}
       },
     }),
-    [EndpointNameEnum.ReworkSubTask]: build.mutation<
+    [SubTaskEndpointNameEnum.ReworkSubTask]: build.mutation<
       ReworkSubTaskResponseModel,
       ReworkSubTaskMutationArgsModel
     >({
-      query: ({ taskId, ...payload }) => ({
-        url: reworkSubTaskUrl(taskId),
+      query: ({ taskId, subTaskId, ...payload }) => ({
+        url: reworkSubTaskUrl(subTaskId),
         method: HttpMethodEnum.Post,
         data: payload,
       }),
+      onQueryStarted: async (
+        { subTaskId, taskId },
+        { dispatch, queryFulfilled },
+      ) => {
+        try {
+          await queryFulfilled
+
+          dispatch(
+            apiService.util.updateQueryData(
+              SubTaskEndpointNameEnum.GetSubTaskList as never,
+              taskId as never,
+              (subTaskList: SubTaskModel[]) => {
+                const subTask = subTaskList.find(({ id }) => id === subTaskId)
+
+                if (subTask) {
+                  subTask.status = TaskStatusEnum.InProgress
+                }
+              },
+            ),
+          )
+        } catch {}
+      },
     }),
   }),
   overrideExisting: false,

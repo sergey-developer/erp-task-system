@@ -8,11 +8,12 @@ import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
+import { TaskCommentEndpointNameEnum } from '../constants/api'
 import taskApiService from './taskApi.service'
 
 const taskCommentApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
-    createTaskComment: build.mutation<
+    [TaskCommentEndpointNameEnum.CreateTaskComment]: build.mutation<
       CreateTaskCommentResponseModel,
       CreateTaskCommentMutationArgsModel
     >({
@@ -27,7 +28,7 @@ const taskCommentApiService = taskApiService.injectEndpoints({
 
           dispatch(
             apiService.util.updateQueryData(
-              'getTaskCommentList' as never,
+              TaskCommentEndpointNameEnum.GetTaskCommentList as never,
               taskId as never,
               (commentList: GetTaskCommentListResponseModel) => {
                 commentList.unshift(newComment)
@@ -37,7 +38,7 @@ const taskCommentApiService = taskApiService.injectEndpoints({
         } catch {}
       },
     }),
-    getTaskCommentList: build.query<
+    [TaskCommentEndpointNameEnum.GetTaskCommentList]: build.query<
       GetTaskCommentListResponseModel,
       GetTaskCommentListQueryArgsModel
     >({
