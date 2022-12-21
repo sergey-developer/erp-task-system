@@ -171,7 +171,8 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
 
         try {
           await reworkSubTask({
-            taskId: subTaskId,
+            taskId: task.id,
+            subTaskId,
             returnReason: returnReason.trim(),
           })
 
@@ -181,7 +182,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
           handleSetFieldsErrors(error, setFields)
         }
       },
-      [reworkSubTask, subTaskId, toggleReworkSubTaskModalOpened],
+      [reworkSubTask, subTaskId, task.id, toggleReworkSubTaskModalOpened],
     )
 
   useEffect(() => {

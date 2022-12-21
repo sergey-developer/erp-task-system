@@ -1,5 +1,5 @@
 //todo: разделить урлы (для создания, получения списка) чтобы они не повторялись
-export enum TaskEndpointsEnum {
+export enum TaskEndpointEnum {
   TaskList = '/tasks',
   TaskCounters = '/tasks/counters',
   Task = '/tasks/:id',
@@ -14,7 +14,20 @@ export enum TaskEndpointsEnum {
   TaskJournalCsv = '/tasks/:id/journal/csv/',
 }
 
-export enum TaskEndpointsTagsEnum {
+export enum TaskEndpointTagEnum {
   Task = 'Task',
   TaskList = 'TaskList',
+}
+
+export enum TaskEndpointNameEnum {
+  GetTaskList = 'getTaskList',
+  GetTaskCounters = 'getTaskCounters',
+  GetTask = 'getTask',
+  ResolveTask = 'resolveTask',
+  TakeTask = 'takeTask',
+}
+
+export enum TaskCommentEndpointNameEnum {
+  CreateTaskComment = 'createTaskComment',
+  GetTaskCommentList = 'getTaskCommentList',
 }
