@@ -1,5 +1,4 @@
 import { FormInstance, ModalProps } from 'antd'
-import { DebouncedFunc } from 'lodash'
 
 import {
   CancelSubTaskMutationArgsModel,
@@ -16,10 +15,8 @@ export type CancelSubTaskFormErrors = FieldsErrors<FormFields>
 export type CancelSubTaskModalProps = Pick<SubTaskModel, 'recordId'> & {
   isLoading: boolean
   onCancel: NonNullable<ModalProps['onCancel']>
-  onSubmit: DebouncedFunc<
-    (
-      values: CancelSubTaskFormFields,
-      setFields: FormInstance['setFields'],
-    ) => Promise<void>
-  >
+  onSubmit: (
+    values: CancelSubTaskFormFields,
+    setFields: FormInstance['setFields'],
+  ) => Promise<void>
 }

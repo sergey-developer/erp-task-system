@@ -1,5 +1,4 @@
 import { FormInstance, ModalProps } from 'antd'
-import { DebouncedFunc } from 'lodash'
 
 import {
   ReworkSubTaskMutationArgsModel,
@@ -16,10 +15,8 @@ export type ReworkSubTaskFormErrors = FieldsErrors<FormFields>
 export type ReworkSubTaskModalProps = Pick<SubTaskModel, 'recordId'> & {
   isLoading: boolean
   onCancel: NonNullable<ModalProps['onCancel']>
-  onSubmit: DebouncedFunc<
-    (
-      values: ReworkSubTaskFormFields,
-      setFields: FormInstance['setFields'],
-    ) => Promise<void>
-  >
+  onSubmit: (
+    values: ReworkSubTaskFormFields,
+    setFields: FormInstance['setFields'],
+  ) => Promise<void>
 }
