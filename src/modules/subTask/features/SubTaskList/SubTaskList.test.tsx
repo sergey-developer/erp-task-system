@@ -1,10 +1,10 @@
 import { render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import subTaskFixtures from 'fixtures/subTask'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
-import { TaskStatusEnum } from '../../../task/constants/common'
 import SubTaskList, { SubTaskListProps } from './index'
 import { testUtils as subTaskTestUtils } from './SubTask.test'
 
