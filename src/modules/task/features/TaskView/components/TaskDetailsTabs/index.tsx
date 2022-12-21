@@ -29,7 +29,6 @@ export type TaskDetailsTabsProps = {
     | 'status'
     | 'assignee'
     | 'recordId'
-    | 'parentTask'
   >
 }
 

@@ -7,6 +7,7 @@ import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { SubTaskModel } from 'modules/subTask/models'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import TaskAssignee from 'modules/task/features/TaskAssignee'
 import TaskStatus from 'modules/task/features/TaskStatus'
@@ -21,9 +22,11 @@ import { renderStringWithLineBreak } from 'shared/utils/string'
 const { Text, Title, Paragraph } = Typography
 
 export type SubTaskProps = Omit<SubTaskModel, 'workGroup'> & {
+  taskStatus: TaskStatusEnum
+  currentUserIsTaskAssignee: boolean
   workGroupName: string
-  onClickCancel?: (id: number) => void
-  onClickRework?: (id: number) => void
+  onClickCancel: (id: number) => void
+  onClickRework: (id: number) => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
@@ -40,13 +43,28 @@ const SubTask: FC<SubTaskProps> = ({
   techResolution,
   onClickCancel,
   onClickRework,
+  taskStatus: rawTaskStatus,
+  currentUserIsTaskAssignee,
 }) => {
+  const taskStatus = useTaskStatus(rawTaskStatus)
   const subTaskStatus = useTaskStatus(status)
 
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
 
   const [showTechResolution, { toggle: toggleShowTechResolution }] =
     useBoolean(false)
+
+  const isShowCancelBtn =
+    currentUserIsTaskAssignee &&
+    subTaskStatus.isNew &&
+    !taskStatus.isCompleted &&
+    !taskStatus.isClosed
+
+  const isShowReworkBtn =
+    currentUserIsTaskAssignee &&
+    subTaskStatus.isCompleted &&
+    !taskStatus.isCompleted &&
+    !taskStatus.isClosed
 
   return (
     <Space
@@ -68,13 +86,13 @@ const SubTask: FC<SubTaskProps> = ({
           </Col>
         )}
 
-        {onClickCancel && (
+        {isShowCancelBtn && (
           <Col>
             <Button onClick={() => onClickCancel(id)}>Отменить</Button>
           </Col>
         )}
 
-        {onClickRework && (
+        {isShowReworkBtn && (
           <Col>
             <Button onClick={() => onClickRework(id)}>
               Вернуть на доработку

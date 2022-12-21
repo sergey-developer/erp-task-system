@@ -37,7 +37,6 @@ export const getTask = (
   workGroup: props?.workGroup || getTaskWorkGroup(),
   assignee: props?.assignee || getTaskAssignee(),
 
-  parentTask: null,
   recordId: generateWord(),
   name: generateWord(),
   title: generateWord(),
