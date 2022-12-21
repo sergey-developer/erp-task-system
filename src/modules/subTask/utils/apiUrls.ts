@@ -11,8 +11,8 @@ export const getSubTaskTemplateListUrl = (): string =>
 export const getCreateSubTaskUrl = (taskId: number): string =>
   generatePath(SubTaskEndpointsEnum.CreateSubTask, { id: String(taskId) })
 
-export const cancelSubTaskUrl = (taskId: number): string =>
-  generatePath(SubTaskEndpointsEnum.CancelSubTask, { id: String(taskId) })
+export const cancelSubTaskUrl = (subTaskId: number): string =>
+  generatePath(SubTaskEndpointsEnum.CancelSubTask, { id: String(subTaskId) })
 
-export const reworkSubTaskUrl = (taskId: number): string =>
-  generatePath(SubTaskEndpointsEnum.ReworkSubTask, { id: String(taskId) })
+export const reworkSubTaskUrl = (subTaskId: number): string =>
+  generatePath(SubTaskEndpointsEnum.ReworkSubTask, { id: String(subTaskId) })

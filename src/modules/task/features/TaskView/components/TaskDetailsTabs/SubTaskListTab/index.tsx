@@ -48,14 +48,7 @@ const { Title } = Typography
 export type SubTaskListTabProps = {
   task: Pick<
     TaskDetailsModel,
-    | 'id'
-    | 'assignee'
-    | 'status'
-    | 'type'
-    | 'recordId'
-    | 'title'
-    | 'description'
-    | 'parentTask'
+    'id' | 'assignee' | 'status' | 'type' | 'recordId' | 'title' | 'description'
   >
 }
 
@@ -67,6 +60,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
       currentData: templateListResponse,
     },
   } = useLazyGetSubTaskTemplateList()
+
   const templateList = templateListResponse?.results || []
 
   const {
@@ -112,11 +106,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
 
   const taskType = useTaskType(task.type)
   const taskStatus = useTaskStatus(task.status)
-  const parentTaskStatus = useTaskStatus(task.parentTask?.status)
   const currentUserIsTaskAssignee = useCheckUserAuthenticated(task.assignee?.id)
-  const currentUserIsParentTaskAssignee = useCheckUserAuthenticated(
-    task.parentTask?.assignee,
-  )
 
   const handleCreateSubTask = useCallback<CreateSubTaskModalProps['onSubmit']>(
     async ({ title, description, template }, setFields) => {
@@ -137,12 +127,6 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
     [createSubTask, task.id, toggleCreateSubTaskModalOpened],
   )
 
-  const isShowCancelBtn =
-    currentUserIsParentTaskAssignee &&
-    taskStatus.isNew &&
-    !parentTaskStatus.isCompleted &&
-    !parentTaskStatus.isClosed
-
   const handleClickCancel = useCallback(
     (id: SubTaskModel['id']) => {
       setSubTaskId(id)
@@ -158,7 +142,8 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
 
         try {
           await cancelSubTask({
-            taskId: subTaskId,
+            taskId: task.id,
+            subTaskId,
             cancelReason: cancelReason.trim(),
           })
 
@@ -168,14 +153,8 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
           handleSetFieldsErrors(error, setFields)
         }
       },
-      [cancelSubTask, subTaskId, toggleCancelSubTaskModalOpened],
+      [cancelSubTask, subTaskId, task.id, toggleCancelSubTaskModalOpened],
     )
-
-  const isShowReworkBtn =
-    currentUserIsParentTaskAssignee &&
-    (taskStatus.isCompleted || taskStatus.isClosed) &&
-    !parentTaskStatus.isCompleted &&
-    !parentTaskStatus.isClosed
 
   const handleClickRework = useCallback(
     (id: SubTaskModel['id']) => {
@@ -249,10 +228,12 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
         isLoading={subTaskListIsLoading}
       >
         <SubTaskList
+          taskStatus={task.status}
+          currentUserIsTaskAssignee={currentUserIsTaskAssignee}
           list={subTaskList}
           isError={isGetSubTaskListError}
-          onClickCancel={isShowCancelBtn ? handleClickCancel : undefined}
-          onClickRework={isShowReworkBtn ? handleClickRework : undefined}
+          onClickCancel={handleClickCancel}
+          onClickRework={handleClickRework}
         />
       </LoadingArea>
 

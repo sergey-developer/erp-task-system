@@ -4,15 +4,15 @@ import subTaskFixtures from 'fixtures/subTask'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
+import { TaskStatusEnum } from '../../../task/constants/common'
 import SubTaskList, { SubTaskListProps } from './index'
 import { testUtils as subTaskTestUtils } from './SubTask.test'
 
-const requiredProps: Pick<SubTaskListProps, 'list' | 'isError'> = {
+const requiredProps: SubTaskListProps = {
   list: subTaskFixtures.getSubTaskList(),
   isError: false,
-}
-
-const notRequiredProps: Omit<SubTaskListProps, keyof typeof requiredProps> = {
+  taskStatus: TaskStatusEnum.New,
+  currentUserIsTaskAssignee: false,
   onClickCancel: jest.fn(),
   onClickRework: jest.fn(),
 }
