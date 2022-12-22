@@ -312,7 +312,7 @@ describe('Модалка создания задачи заявки', () => {
       const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
       await testUtils.userFillForm(user, {
-        template: requiredProps.templateOptions[0].title,
+        templateX5: requiredProps.templateOptions[0].title,
         title: generateWord(),
         description: generateWord(),
       })
