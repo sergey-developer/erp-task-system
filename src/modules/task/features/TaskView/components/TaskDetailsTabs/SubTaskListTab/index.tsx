@@ -109,13 +109,13 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
   const currentUserIsTaskAssignee = useCheckUserAuthenticated(task.assignee?.id)
 
   const handleCreateSubTask = useCallback<CreateSubTaskModalProps['onSubmit']>(
-    async ({ title, description, template }, setFields) => {
+    async ({ title, description, templateX5 }, setFields) => {
       try {
         await createSubTask({
           taskId: task.id,
           title: title.trim(),
           description: description.trim(),
-          template,
+          templateX5,
         })
 
         toggleCreateSubTaskModalOpened()

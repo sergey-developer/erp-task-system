@@ -250,7 +250,7 @@ describe('Вкладка списка заданий', () => {
 
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
         await createSubTaskModalTestUtils.userFillForm(user, {
-          template: templateList[0].title,
+          templateX5: templateList[0].title,
           title: generateWord(),
           description: generateWord(),
         })
@@ -275,7 +275,7 @@ describe('Вкладка списка заданий', () => {
         const badRequestResponse: CreateSubTaskFormErrors = {
           title: [generateWord()],
           description: [generateWord()],
-          template: [generateWord()],
+          templateX5: [generateWord()],
         }
         mockCreateSubTaskBadRequestError(requiredProps.task.id, {
           body: badRequestResponse,
@@ -300,7 +300,7 @@ describe('Вкладка списка заданий', () => {
         await createSubTaskModalTestUtils.findContainer()
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
         await createSubTaskModalTestUtils.userFillForm(user, {
-          template: templateList[0].title,
+          templateX5: templateList[0].title,
           title: generateWord(),
           description: generateWord(),
         })
@@ -308,7 +308,7 @@ describe('Вкладка списка заданий', () => {
 
         expect(
           await createSubTaskModalTestUtils.template.findError(
-            badRequestResponse.template[0],
+            badRequestResponse.templateX5[0],
           ),
         ).toBeInTheDocument()
 
@@ -352,7 +352,7 @@ describe('Вкладка списка заданий', () => {
         await createSubTaskModalTestUtils.findContainer()
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
         await createSubTaskModalTestUtils.userFillForm(user, {
-          template: templateList[0].title,
+          templateX5: templateList[0].title,
           title: generateWord(),
           description: generateWord(),
         })
