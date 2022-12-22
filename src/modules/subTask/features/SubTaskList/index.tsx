@@ -36,7 +36,6 @@ const SubTaskList: FC<SubTaskListProps> = ({
             <React.Fragment key={item.id}>
               <SubTask
                 key={item.id}
-                id={item.id}
                 title={item.title}
                 description={item.description}
                 recordId={item.recordId}

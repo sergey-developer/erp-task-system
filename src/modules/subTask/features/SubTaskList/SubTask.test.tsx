@@ -13,7 +13,6 @@ const subTask = subTaskFixtures.getSubTask()
 
 const requiredProps: Pick<
   SubTaskProps,
-  | 'id'
   | 'title'
   | 'status'
   | 'createdAt'
@@ -23,7 +22,6 @@ const requiredProps: Pick<
   | 'taskStatus'
   | 'currentUserIsTaskAssignee'
 > = {
-  id: subTask.id,
   title: subTask.title,
   status: subTask.status,
   createdAt: subTask.createdAt,
