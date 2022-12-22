@@ -19,7 +19,7 @@ import { ReworkSubTaskModalProps } from './interfaces'
 
 const requiredProps: Omit<ReworkSubTaskModalProps, 'recordId'> = {
   isLoading: false,
-  onSubmit: jest.fn() as any,
+  onSubmit: jest.fn(),
   onCancel: jest.fn(),
 }
 

@@ -43,6 +43,15 @@ const notRequiredProps: NonNullableObject<
   externalAssigneePhone: subTask.externalAssigneePhone,
 }
 
+const activeReworkButtonProps: Pick<
+  SubTaskProps,
+  'currentUserIsTaskAssignee' | 'status' | 'taskStatus'
+> = {
+  currentUserIsTaskAssignee: true,
+  status: TaskStatusEnum.Completed,
+  taskStatus: TaskStatusEnum.New,
+}
+
 const getContainer = () => screen.getByTestId('sub-task-list-item')
 
 const getAllContainerIn = (container: HTMLElement) =>
@@ -74,6 +83,18 @@ const userClickDescriptionButton = async (user: UserEvent) => {
   return button
 }
 
+const getReworkButton = () =>
+  getButtonIn(getContainer(), /вернуть на доработку/i)
+
+const queryReworkButton = () =>
+  queryButtonIn(getContainer(), /вернуть на доработку/i)
+
+const userClickReworkButton = async (user: UserEvent) => {
+  const button = getReworkButton()
+  await user.click(button)
+  return button
+}
+
 export const testUtils = {
   getContainer,
   getAllContainerIn,
@@ -86,6 +107,10 @@ export const testUtils = {
 
   getDescriptionButton,
   userClickDescriptionButton,
+
+  getReworkButton,
+  queryReworkButton,
+  userClickReworkButton,
 }
 
 describe('Подзадача', () => {
@@ -321,6 +346,76 @@ describe('Подзадача', () => {
           testUtils.queryChildByText(notRequiredProps.description),
         ).not.toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Кнопка отправки на доработку', () => {
+    test('Отображается корректно если условия соблюдены', () => {
+      render(<SubTask {...requiredProps} {...activeReworkButtonProps} />)
+
+      const button = testUtils.getReworkButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    describe('Не отображается если условия соблюдены', () => {
+      test('Но текущий пользователь не исполнитель заявки', () => {
+        render(
+          <SubTask
+            {...requiredProps}
+            {...activeReworkButtonProps}
+            currentUserIsTaskAssignee={false}
+          />,
+        )
+
+        expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
+      })
+
+      test('Но подзадача не в статусе "Завершена"', () => {
+        render(
+          <SubTask
+            {...requiredProps}
+            {...activeReworkButtonProps}
+            status={TaskStatusEnum.New}
+          />,
+        )
+
+        expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
+      })
+
+      test('Но заявка в статусе "Завершена"', () => {
+        render(
+          <SubTask
+            {...requiredProps}
+            {...activeReworkButtonProps}
+            taskStatus={TaskStatusEnum.Completed}
+          />,
+        )
+
+        expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
+      })
+
+      test('Но заявка в статусе "Закрыта"', () => {
+        render(
+          <SubTask
+            {...requiredProps}
+            {...activeReworkButtonProps}
+            taskStatus={TaskStatusEnum.Closed}
+          />,
+        )
+
+        expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
+      })
+    })
+
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(
+        <SubTask {...requiredProps} {...activeReworkButtonProps} />,
+      )
+
+      await testUtils.userClickReworkButton(user)
+      expect(requiredProps.onClickRework).toBeCalledTimes(1)
     })
   })
 })
