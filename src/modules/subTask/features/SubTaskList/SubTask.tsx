@@ -21,16 +21,15 @@ import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Text, Title, Paragraph } = Typography
 
-export type SubTaskProps = Omit<SubTaskModel, 'workGroup'> & {
+export type SubTaskProps = Omit<SubTaskModel, 'id' | 'workGroup'> & {
   taskStatus: TaskStatusEnum
   currentUserIsTaskAssignee: boolean
   workGroupName: string
-  onClickCancel: (id: number) => void
-  onClickRework: (id: number) => void
+  onClickCancel: () => void
+  onClickRework: () => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
-  id,
   title,
   description,
   status,
@@ -88,15 +87,13 @@ const SubTask: FC<SubTaskProps> = ({
 
         {isShowCancelBtn && (
           <Col>
-            <Button onClick={() => onClickCancel(id)}>Отменить</Button>
+            <Button onClick={onClickCancel}>Отменить</Button>
           </Col>
         )}
 
         {isShowReworkBtn && (
           <Col>
-            <Button onClick={() => onClickRework(id)}>
-              Вернуть на доработку
-            </Button>
+            <Button onClick={onClickRework}>Вернуть на доработку</Button>
           </Col>
         )}
       </Row>

@@ -6,6 +6,9 @@ import {
   mockGetSubTaskListSuccess,
   mockGetSubTaskTemplateListServerError,
   mockGetSubTaskTemplateListSuccess,
+  mockReworkSubTaskBadRequestError,
+  mockReworkSubTaskServerError,
+  mockReworkSubTaskSuccess,
 } from '_tests_/mocks/api'
 import {
   findNotification,
@@ -23,9 +26,15 @@ import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
 import createSubTaskModalTestUtils from 'modules/subTask/features/CreateSubTaskModal/_tests_/utils'
 import { CreateSubTaskFormErrors } from 'modules/subTask/features/CreateSubTaskModal/interfaces'
-import { testUtils as subTaskTestUtils } from 'modules/subTask/features/SubTaskList/SubTask.test'
+import { ReworkSubTaskFormErrors } from 'modules/subTask/features/ReworkSubTaskModal/interfaces'
+import { testUtils as reworkSubTaskModalTestUtils } from 'modules/subTask/features/ReworkSubTaskModal/ReworkSubTaskModal.test'
+import {
+  activeReworkButtonProps,
+  testUtils as subTaskTestUtils,
+} from 'modules/subTask/features/SubTaskList/SubTask.test'
 import { testUtils as subTaskListTestUtils } from 'modules/subTask/features/SubTaskList/SubTaskList.test'
 import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
+import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'
 
 import SubTaskListTab, { SubTaskListTabProps } from './index'
 
@@ -438,6 +447,303 @@ describe('Вкладка списка заданий', () => {
 
         expect(
           await findNotification('Не удалось получить задания'),
+        ).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Модалка отправки задания на доработку', () => {
+    test('Открывается', async () => {
+      const subTask = subTaskFixtures.getSubTask({
+        status: activeReworkButtonProps.status,
+      })
+      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+
+      const { user } = render(
+        <SubTaskListTab
+          {...requiredProps}
+          task={{
+            ...requiredProps.task,
+            status: activeReworkButtonProps.taskStatus,
+          }}
+        />,
+        {
+          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+        },
+      )
+
+      await testUtils.loadingFinished()
+      await subTaskTestUtils.userClickReworkButton(user)
+      await reworkSubTaskModalTestUtils.findContainer()
+    })
+
+    test('Закрывается', async () => {
+      const subTask = subTaskFixtures.getSubTask({
+        status: activeReworkButtonProps.status,
+      })
+      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+
+      const { user } = render(
+        <SubTaskListTab
+          {...requiredProps}
+          task={{
+            ...requiredProps.task,
+            status: activeReworkButtonProps.taskStatus,
+          }}
+        />,
+        {
+          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+        },
+      )
+
+      await testUtils.loadingFinished()
+      await subTaskTestUtils.userClickReworkButton(user)
+      const modal = await reworkSubTaskModalTestUtils.findContainer()
+      await reworkSubTaskModalTestUtils.userClickCancelButton(user)
+
+      await waitFor(() => {
+        expect(modal).not.toBeInTheDocument()
+      })
+    })
+
+    test('Отображает состояние загрузки', async () => {
+      const subTask = subTaskFixtures.getSubTask({
+        status: activeReworkButtonProps.status,
+      })
+      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+      mockReworkSubTaskSuccess(subTask.id)
+
+      const { user } = render(
+        <SubTaskListTab
+          {...requiredProps}
+          task={{
+            ...requiredProps.task,
+            status: activeReworkButtonProps.taskStatus,
+          }}
+        />,
+        {
+          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+        },
+      )
+
+      await testUtils.loadingFinished()
+      await subTaskTestUtils.userClickReworkButton(user)
+      await reworkSubTaskModalTestUtils.findContainer()
+      await reworkSubTaskModalTestUtils.userSetReturnReason(
+        user,
+        generateWord(),
+      )
+      await reworkSubTaskModalTestUtils.userClickSubmitButton(user)
+      await reworkSubTaskModalTestUtils.loadingStarted()
+    })
+
+    describe('При успешной отправке данных', () => {
+      test('Модалка закрывается', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeReworkButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockReworkSubTaskSuccess(subTask.id)
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeReworkButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+        await subTaskTestUtils.userClickReworkButton(user)
+        const modal = await reworkSubTaskModalTestUtils.findContainer()
+        await reworkSubTaskModalTestUtils.userSetReturnReason(
+          user,
+          generateWord(),
+        )
+        await reworkSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
+
+      test('Статус задачи меняется на "В процессе"', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeReworkButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockReworkSubTaskSuccess(subTask.id)
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeReworkButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+
+        expect(
+          taskStatusTestUtils.getTaskStatusIn(
+            subTaskTestUtils.getContainer(),
+            activeReworkButtonProps.status,
+          ),
+        ).toBeInTheDocument()
+
+        await subTaskTestUtils.userClickReworkButton(user)
+        const modal = await reworkSubTaskModalTestUtils.findContainer()
+        await reworkSubTaskModalTestUtils.userSetReturnReason(
+          user,
+          generateWord(),
+        )
+        await reworkSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        expect(
+          taskStatusTestUtils.getTaskStatusIn(
+            subTaskTestUtils.getContainer(),
+            TaskStatusEnum.InProgress,
+          ),
+        ).toBeInTheDocument()
+      })
+
+      test('Кнопка отправки на доработку не отображается', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeReworkButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockReworkSubTaskSuccess(subTask.id)
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeReworkButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+        const reworkButton = await subTaskTestUtils.userClickReworkButton(user)
+        const modal = await reworkSubTaskModalTestUtils.findContainer()
+        await reworkSubTaskModalTestUtils.userSetReturnReason(
+          user,
+          generateWord(),
+        )
+        await reworkSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        expect(reworkButton).not.toBeInTheDocument()
+      })
+    })
+
+    describe('При не успешной отправке данных', () => {
+      setupNotifications()
+
+      test('Корректно обрабатывается ошибка - 400', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeReworkButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+
+        const badRequestResponse: ReworkSubTaskFormErrors = {
+          returnReason: [generateWord()],
+        }
+        mockReworkSubTaskBadRequestError(subTask.id, {
+          body: badRequestResponse,
+        })
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeReworkButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+        await subTaskTestUtils.userClickReworkButton(user)
+        await reworkSubTaskModalTestUtils.findContainer()
+        await reworkSubTaskModalTestUtils.userSetReturnReason(
+          user,
+          generateWord(),
+        )
+        await reworkSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        expect(
+          await reworkSubTaskModalTestUtils.findReturnReasonError(
+            badRequestResponse.returnReason[0],
+          ),
+        ).toBeInTheDocument()
+      })
+
+      test('Корректно обрабатывается ошибка - 500', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeReworkButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockReworkSubTaskServerError(subTask.id)
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeReworkButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+        await subTaskTestUtils.userClickReworkButton(user)
+        await reworkSubTaskModalTestUtils.findContainer()
+        await reworkSubTaskModalTestUtils.userSetReturnReason(
+          user,
+          generateWord(),
+        )
+        await reworkSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        expect(
+          await findNotification('Не удалось вернуть задание на доработку'),
         ).toBeInTheDocument()
       })
     })

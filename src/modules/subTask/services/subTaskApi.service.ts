@@ -4,11 +4,11 @@ import {
   SubTaskModel,
 } from 'modules/subTask/models'
 import {
-  cancelSubTaskUrl,
+  getCancelSubTaskUrl,
   getCreateSubTaskUrl,
+  getReworkSubTaskUrl,
   getSubTaskListUrl,
   getSubTaskTemplateListUrl,
-  reworkSubTaskUrl,
 } from 'modules/subTask/utils/apiUrls'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -76,7 +76,7 @@ const subTaskApiService = apiService.injectEndpoints({
       CancelSubTaskMutationArgsModel
     >({
       query: ({ taskId, subTaskId, ...payload }) => ({
-        url: cancelSubTaskUrl(subTaskId),
+        url: getCancelSubTaskUrl(subTaskId),
         method: HttpMethodEnum.Delete,
         data: payload,
       }),
@@ -108,7 +108,7 @@ const subTaskApiService = apiService.injectEndpoints({
       ReworkSubTaskMutationArgsModel
     >({
       query: ({ taskId, subTaskId, ...payload }) => ({
-        url: reworkSubTaskUrl(subTaskId),
+        url: getReworkSubTaskUrl(subTaskId),
         method: HttpMethodEnum.Post,
         data: payload,
       }),

@@ -44,7 +44,7 @@ const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
         preserve={false}
       >
         <Form.Item
-          data-testid='returnReason'
+          data-testid='return-reason'
           label='Причина возврата'
           name='returnReason'
           rules={DEFAULT_MIDDLE_TEXT_RULES}

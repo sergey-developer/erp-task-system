@@ -16,8 +16,8 @@ export type SubTaskListProps = {
   currentUserIsTaskAssignee: boolean
   list: Array<SubTaskModel>
   isError: boolean
-  onClickCancel: (id: SubTaskModel['id']) => void
-  onClickRework: (id: SubTaskModel['id']) => void
+  onClickCancel: (subTask: SubTaskModel) => void
+  onClickRework: (subTask: SubTaskModel) => void
 }
 
 const SubTaskList: FC<SubTaskListProps> = ({
@@ -36,7 +36,6 @@ const SubTaskList: FC<SubTaskListProps> = ({
             <React.Fragment key={item.id}>
               <SubTask
                 key={item.id}
-                id={item.id}
                 title={item.title}
                 description={item.description}
                 recordId={item.recordId}
@@ -50,8 +49,8 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 externalAssigneeName={item.externalAssigneeName}
                 externalAssigneePhone={item.externalAssigneePhone}
                 techResolution={item.techResolution}
-                onClickCancel={onClickCancel}
-                onClickRework={onClickRework}
+                onClickCancel={() => onClickCancel(item)}
+                onClickRework={() => onClickRework(item)}
                 taskStatus={taskStatus}
                 currentUserIsTaskAssignee={currentUserIsTaskAssignee}
               />
