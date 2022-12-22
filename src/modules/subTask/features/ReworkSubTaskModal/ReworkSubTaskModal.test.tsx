@@ -1,6 +1,7 @@
 import {
   generateWord,
   getButtonIn,
+  loadingFinishedByButton,
   loadingStartedByButton,
   render,
 } from '_tests_/utils'
@@ -30,6 +31,8 @@ const notRequiredProps: NonNullableObject<
 }
 
 const getContainer = () => screen.getByTestId('rework-sub-task-modal')
+
+const findContainer = () => screen.findByTestId('rework-sub-task-modal')
 
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
@@ -66,8 +69,9 @@ const userClickCancelButton = async (user: UserEvent) => {
   return button
 }
 
-const testUtils = {
+export const testUtils = {
   getContainer,
+  findContainer,
   getChildByText,
 
   getReturnReasonFieldContainer,
@@ -80,6 +84,9 @@ const testUtils = {
 
   getCancelButton,
   userClickCancelButton,
+
+  loadingStarted: () => loadingStartedByButton(getSubmitButton()),
+  loadingFinished: () => loadingFinishedByButton(getSubmitButton()),
 }
 
 describe('Модальное окно отправки запроса на доработку', () => {

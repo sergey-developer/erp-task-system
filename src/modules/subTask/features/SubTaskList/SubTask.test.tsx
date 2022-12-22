@@ -43,7 +43,7 @@ const notRequiredProps: NonNullableObject<
   externalAssigneePhone: subTask.externalAssigneePhone,
 }
 
-const activeReworkButtonProps: Pick<
+export const activeReworkButtonProps: Pick<
   SubTaskProps,
   'currentUserIsTaskAssignee' | 'status' | 'taskStatus'
 > = {

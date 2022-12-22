@@ -6,7 +6,7 @@ import {
 } from 'modules/subTask/models'
 import { FieldsErrors } from 'shared/services/api'
 
-type FormFields = Omit<ReworkSubTaskMutationArgsModel, 'taskId'>
+type FormFields = Omit<ReworkSubTaskMutationArgsModel, 'taskId' | 'subTaskId'>
 
 export type ReworkSubTaskFormFields = Required<FormFields>
 

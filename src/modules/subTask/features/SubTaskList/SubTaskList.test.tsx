@@ -6,7 +6,10 @@ import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
 import SubTaskList, { SubTaskListProps } from './index'
-import { testUtils as subTaskTestUtils } from './SubTask.test'
+import {
+  activeReworkButtonProps,
+  testUtils as subTaskTestUtils,
+} from './SubTask.test'
 
 const requiredProps: SubTaskListProps = {
   list: subTaskFixtures.getSubTaskList(),
@@ -72,5 +75,30 @@ describe('Список подзадач', () => {
     expect(
       testUtils.getChildByText('Не удалось получить задания'),
     ).toBeInTheDocument()
+  })
+
+  describe('Отправка на доработку', () => {
+    test('Обработчик кнопки вызывается корректно', async () => {
+      const subTask = {
+        ...subTaskFixtures.getSubTask(),
+        status: activeReworkButtonProps.status,
+      }
+
+      const { user } = render(
+        <SubTaskList
+          {...requiredProps}
+          list={[subTask]}
+          taskStatus={activeReworkButtonProps.taskStatus}
+          currentUserIsTaskAssignee={
+            activeReworkButtonProps.currentUserIsTaskAssignee
+          }
+        />,
+      )
+
+      await subTaskTestUtils.userClickReworkButton(user)
+
+      expect(requiredProps.onClickRework).toBeCalledTimes(1)
+      expect(requiredProps.onClickRework).toBeCalledWith(subTask)
+    })
   })
 })
