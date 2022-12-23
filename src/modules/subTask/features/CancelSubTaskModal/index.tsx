@@ -44,7 +44,7 @@ const CancelSubTaskModal: FC<CancelSubTaskModalProps> = ({
         preserve={false}
       >
         <Form.Item
-          data-testid='cancelReason'
+          data-testid='cancel-reason'
           label='Причина отмены'
           name='cancelReason'
           rules={DEFAULT_MIDDLE_TEXT_RULES}
