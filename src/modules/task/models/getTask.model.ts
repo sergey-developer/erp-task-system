@@ -1,4 +1,4 @@
-import { TaskListItemModel } from 'modules/task/features/TaskList/models'
+import { TaskListItemModel } from 'modules/task/models'
 
 import { TaskDetailsModel } from './taskDetails.model'
 

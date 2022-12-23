@@ -4,7 +4,7 @@ import React, { FC, useMemo } from 'react'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskDetailsModel } from 'modules/task/models'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 
 import { RecordIdStyled } from './styles'

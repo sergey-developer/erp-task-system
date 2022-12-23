@@ -1,4 +1,4 @@
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskDetailsModel } from 'modules/task/models'
 
 import { SubTaskModel } from './subTask.model'
 

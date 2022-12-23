@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
+import { DeleteTaskWorkGroupMutationArgsModel } from 'modules/task/models'
+import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
 import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
@@ -15,10 +17,7 @@ import {
   showMultipleErrorNotification,
 } from 'shared/utils/notifications'
 
-import { DeleteTaskWorkGroupMutationArgsModel } from '../models'
-import { taskWorkGroupApiPermissions } from '../permissions'
-
-const useDeleteTaskWorkGroup = () => {
+export const useDeleteTaskWorkGroup = () => {
   const permissions = useUserPermissions(taskWorkGroupApiPermissions)
   const [mutation, state] = useDeleteTaskWorkGroupMutation()
 
@@ -45,5 +44,3 @@ const useDeleteTaskWorkGroup = () => {
 
   return { fn, state }
 }
-
-export default useDeleteTaskWorkGroup

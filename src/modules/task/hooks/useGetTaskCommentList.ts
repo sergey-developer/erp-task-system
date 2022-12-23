@@ -1,27 +1,26 @@
 import { useEffect } from 'react'
 
-import { GetTaskQueryArgsModel } from 'modules/task/features/TaskView/models'
 import {
+  getTaskCommentListServerErrorMsg,
   getTaskNotFoundErrorMsg,
-  getTaskServerErrorMsg,
 } from 'modules/task/features/TaskView/utils/messages'
-import { taskApiPermissions } from 'modules/task/permissions'
-import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
+import { GetTaskCommentListQueryArgsModel } from 'modules/task/models'
+import { taskCommentApiPermissions } from 'modules/task/permissions'
+import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import {
   ErrorResponse,
-  isBadRequestError,
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-const useGetTask = (id: GetTaskQueryArgsModel) => {
-  const permissions = useUserPermissions(taskApiPermissions)
+export const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
+  const permissions = useUserPermissions(taskCommentApiPermissions)
 
-  const state = useGetTaskQuery(id, {
-    skip: !permissions.canGet,
+  const state = useGetTaskCommentListQuery(id, {
+    skip: !permissions.canGetList,
   })
 
   useEffect(() => {
@@ -31,8 +30,8 @@ const useGetTask = (id: GetTaskQueryArgsModel) => {
 
     if (isNotFoundError(error)) {
       showErrorNotification(getTaskNotFoundErrorMsg(id))
-    } else if (isBadRequestError(error) || isServerRangeError(error)) {
-      showErrorNotification(getTaskServerErrorMsg(id))
+    } else if (isServerRangeError(error)) {
+      showErrorNotification(getTaskCommentListServerErrorMsg(id))
     } else {
       showErrorNotification(UNKNOWN_ERROR_MSG)
     }
@@ -40,5 +39,3 @@ const useGetTask = (id: GetTaskQueryArgsModel) => {
 
   return state
 }
-
-export default useGetTask

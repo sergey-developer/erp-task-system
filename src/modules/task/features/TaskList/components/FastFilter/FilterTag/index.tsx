@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import { FastFilterEnum } from '../../../constants/common'
+import { FastFilterEnum } from '../constants'
 import { CheckableTagStyled } from './styles'
 
 const { Text } = Typography

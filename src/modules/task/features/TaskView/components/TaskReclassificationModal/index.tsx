@@ -11,7 +11,7 @@ import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 import { ReclassificationReasonEnum } from 'modules/task/constants/common'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskDetailsModel } from 'modules/task/models'
 import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { reclassificationReasonLabels } from './constants'

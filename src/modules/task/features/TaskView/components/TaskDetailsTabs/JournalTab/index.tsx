@@ -5,8 +5,7 @@ import React, { FC } from 'react'
 import { DownloadIcon, SyncIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
-import useGetTaskJournal from 'modules/task/features/TaskView/hooks/useGetTaskJournal'
-import useLazyGetTaskJournalCsv from 'modules/task/features/TaskView/hooks/useLazyGetTaskJournalCsv'
+import { useGetTaskJournal, useLazyGetTaskJournalCsv } from 'modules/task/hooks'
 import {
   clickDownloadLink,
   makeDownloadLink,

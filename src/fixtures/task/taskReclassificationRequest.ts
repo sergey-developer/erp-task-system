@@ -1,6 +1,6 @@
 import { generateDateString, generateId, generateWord } from '_tests_/utils'
 import commonFixtures from 'fixtures/common'
-import { TaskReclassificationRequestModel } from 'modules/task/features/TaskView/models'
+import { TaskReclassificationRequestModel } from 'modules/task/models'
 
 export const getTaskReclassificationRequest =
   (): TaskReclassificationRequestModel => ({

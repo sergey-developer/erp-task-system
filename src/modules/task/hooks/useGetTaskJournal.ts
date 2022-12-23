@@ -1,14 +1,13 @@
 import { useEffect } from 'react'
 
-import { GetTaskJournalQueryArgsModel } from 'modules/task/features/TaskView/models'
+import { GetTaskJournalQueryArgsModel } from 'modules/task/models'
+import { taskJournalApiPermissions } from 'modules/task/permissions'
 import { useGetTaskJournalQuery } from 'modules/task/services/taskJournalApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { taskJournalApiPermissions } from '../permissions'
-
-const useGetTaskJournal = (id: GetTaskJournalQueryArgsModel) => {
+export const useGetTaskJournal = (id: GetTaskJournalQueryArgsModel) => {
   const permissions = useUserPermissions(taskJournalApiPermissions.list)
   const state = useGetTaskJournalQuery(id, { skip: !permissions.canGetList })
 
@@ -20,5 +19,3 @@ const useGetTaskJournal = (id: GetTaskJournalQueryArgsModel) => {
 
   return state
 }
-
-export default useGetTaskJournal

@@ -2,8 +2,8 @@ import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import LabeledData from 'components/LabeledData'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskType } from 'modules/task/hooks'
+import { TaskDetailsModel } from 'modules/task/models'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 

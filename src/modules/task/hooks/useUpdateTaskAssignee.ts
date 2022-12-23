@@ -1,14 +1,14 @@
 import { useCallback, useEffect } from 'react'
 
+import { UpdateTaskAssigneeMutationArgsModel } from 'modules/task/models'
+import { taskAssigneeApiPermissions } from 'modules/task/permissions'
 import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskAssigneeApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG } from '../constants/messages'
-import { UpdateTaskAssigneeMutationArgsModel } from '../models'
-import { taskAssigneeApiPermissions } from '../permissions'
+import { UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG } from '../features/TaskView/constants/messages'
 
-const useUpdateTaskAssignee = () => {
+export const useUpdateTaskAssignee = () => {
   const permissions = useUserPermissions(taskAssigneeApiPermissions)
   const [mutation, state] = useUpdateTaskAssigneeMutation()
 
@@ -29,5 +29,3 @@ const useUpdateTaskAssignee = () => {
 
   return { fn, state }
 }
-
-export default useUpdateTaskAssignee

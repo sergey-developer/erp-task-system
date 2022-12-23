@@ -1,7 +1,6 @@
 import { render } from '_tests_/utils'
 
-import { FastFilterEnum } from '../../../constants/common'
-import { fastFilterNamesDict } from '../constants'
+import { FastFilterEnum, fastFilterNamesDict } from '../constants'
 import FastFilter from '../index'
 import { filterRequiredProps as requiredProps } from './constants'
 import testUtils from './utils'

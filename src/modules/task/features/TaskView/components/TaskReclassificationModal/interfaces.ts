@@ -1,4 +1,4 @@
-import { CreateTaskReclassificationRequestMutationArgsModel } from 'modules/task/features/TaskView/models'
+import { CreateTaskReclassificationRequestMutationArgsModel } from 'modules/task/models'
 import { FieldsErrors } from 'shared/services/api'
 
 type FormFields = Omit<

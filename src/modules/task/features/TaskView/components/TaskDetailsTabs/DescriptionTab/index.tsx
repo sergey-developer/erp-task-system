@@ -2,7 +2,7 @@ import { Typography } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskDetailsModel } from 'modules/task/models'
 
 const { Title, Paragraph } = Typography
 

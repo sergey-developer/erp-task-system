@@ -10,9 +10,9 @@ import {
   TaskFirstLineModalProps,
 } from 'modules/task/features/TaskView/components/TaskFirstLineModal/interfaces'
 import { TaskSecondLineModalProps } from 'modules/task/features/TaskView/components/TaskSecondLineModal'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import { taskWorkGroupPermissions } from 'modules/task/features/TaskView/permissions/taskWorkGroup.permissions'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
+import { TaskDetailsModel } from 'modules/task/models'
+import { taskWorkGroupPermissions } from 'modules/task/permissions'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import valueOr from 'shared/utils/common/valueOr'

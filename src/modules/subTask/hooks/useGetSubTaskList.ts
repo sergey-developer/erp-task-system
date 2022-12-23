@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 
+import { GetSubTaskListQueryArgsModel } from 'modules/subTask/models'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { GetSubTaskListQueryArgsModel } from '../models'
 import { subTaskApiPermissions } from '../permissions'
 import { useGetSubTaskListQuery } from '../services/subTaskApi.service'
 

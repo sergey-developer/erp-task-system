@@ -2,7 +2,7 @@ import { Typography } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
-import { GetTaskCommentListResponseModel } from 'modules/task/features/TaskView/models'
+import { GetTaskCommentListResponseModel } from 'modules/task/models'
 import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'

@@ -13,18 +13,18 @@ import {
   taskPriorityMap,
   taskSeverityMap,
 } from 'modules/task/constants/dictionary'
+import { useTaskStatus } from 'modules/task/hooks'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
   DeleteTaskWorkGroupMutationArgsModel,
   ResolveTaskMutationArgsModel,
   TakeTaskMutationArgsModel,
+  TaskAssigneeModel,
   TaskDetailsModel,
   TaskReclassificationRequestModel,
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskWorkGroupMutationArgsModel,
-} from 'modules/task/features/TaskView/models'
-import { useTaskStatus } from 'modules/task/hooks'
-import { TaskAssigneeModel } from 'modules/task/models'
+} from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import useDebounceFn from 'shared/hooks/useDebounceFn'

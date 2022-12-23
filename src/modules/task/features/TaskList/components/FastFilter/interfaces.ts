@@ -1,7 +1,7 @@
-import { FastFilterEnum } from 'modules/task/features/TaskList/constants/common'
-import { GetTaskCountersResponseModel } from 'modules/task/features/TaskList/models'
+import { GetTaskCountersResponseModel } from 'modules/task/models'
 import { MaybeUndefined, Nullable } from 'shared/interfaces/utils'
 
+import { FastFilterEnum } from './constants'
 import { FilterTagProps } from './FilterTag'
 
 export type FilterItem = Pick<FilterTagProps, 'text' | 'amount'> & {

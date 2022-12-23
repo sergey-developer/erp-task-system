@@ -2,8 +2,8 @@ import { Form, FormInstance, Input, ModalProps, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskType } from 'modules/task/hooks'
+import { TaskDetailsModel } from 'modules/task/models'
 import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { TaskResolutionFormFields } from './interfaces'

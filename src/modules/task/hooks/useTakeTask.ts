@@ -1,12 +1,11 @@
 import { useCallback, useEffect } from 'react'
 
+import { TakeTaskMutationArgsModel } from 'modules/task/models'
 import { useTakeTaskMutation } from 'modules/task/services/taskApi.service'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { TakeTaskMutationArgsModel } from '../models'
-
-const useTakeTask = () => {
+export const useTakeTask = () => {
   const [mutation, state] = useTakeTaskMutation()
 
   const fn = useCallback(
@@ -24,5 +23,3 @@ const useTakeTask = () => {
 
   return { fn, state }
 }
-
-export default useTakeTask

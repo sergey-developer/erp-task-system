@@ -16,10 +16,9 @@ import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
 import taskDetailsTestUtils from 'modules/task/features/TaskView/components/TaskDetails/_tests_/utils'
+import { GetTaskCountersResponseModel } from 'modules/task/models'
 import { UserRolesEnum } from 'shared/constants/roles'
 
-import { FastFilterEnum } from '../../../constants/common'
-import { GetTaskCountersResponseModel } from '../../../models'
 import extendedFilterTestUtils from '../../ExtendedFilter/_tests_/utils'
 import {
   searchFieldDict,
@@ -27,6 +26,7 @@ import {
   taskOverdueDict,
 } from '../../ExtendedFilter/constants'
 import fastFilterTestUtils from '../../FastFilter/_tests_/utils'
+import { FastFilterEnum } from '../../FastFilter/constants'
 import taskTableTestUtils from '../../TaskTable/_tests_/utils'
 import { paginationConfig } from '../../TaskTable/constants/pagination'
 import { DEFAULT_PAGE_SIZE } from '../constants'

@@ -9,7 +9,7 @@ import {
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskDetailsModel } from 'modules/task/models'
 import { UserModel } from 'modules/user/models'
 import { getUserAbbr } from 'modules/user/utils'
 import { MaybeNull } from 'shared/interfaces/utils'

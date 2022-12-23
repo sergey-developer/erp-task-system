@@ -1,15 +1,14 @@
 import { useEffect } from 'react'
 
+import { GetTaskReclassificationRequestQueryArgsModel } from 'modules/task/models'
+import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
 import { useGetReclassificationRequestQuery } from 'modules/task/services/taskReclassificationRequestApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import { ErrorResponse, isNotFoundError } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { GetTaskReclassificationRequestQueryArgsModel } from '../models'
-import { taskReclassificationRequestApiPermissions } from '../permissions'
-
-const useGetTaskReclassificationRequest = (
+export const useGetTaskReclassificationRequest = (
   taskId: GetTaskReclassificationRequestQueryArgsModel,
   options?: Partial<{ skip: boolean }>,
 ) => {
@@ -33,5 +32,3 @@ const useGetTaskReclassificationRequest = (
 
   return state
 }
-
-export default useGetTaskReclassificationRequest

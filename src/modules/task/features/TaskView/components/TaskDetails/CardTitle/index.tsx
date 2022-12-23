@@ -8,13 +8,13 @@ import {
   MenuIcon,
   QuestionCircleIcon,
 } from 'components/Icons'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import {
   useTaskExtendedStatus,
   useTaskOlaStatus,
   useTaskStatus,
   useTaskType,
 } from 'modules/task/hooks'
+import { TaskDetailsModel } from 'modules/task/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 
 export type CardTitleProps = Pick<

@@ -4,9 +4,8 @@ import React, { FC, useCallback } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
-import useCreateTaskComment from 'modules/task/features/TaskView/hooks/useCreateTaskComment'
-import useGetTaskCommentList from 'modules/task/features/TaskView/hooks/useGetTaskCommentList'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { useCreateTaskComment, useGetTaskCommentList } from 'modules/task/hooks'
+import { TaskDetailsModel } from 'modules/task/models'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
 

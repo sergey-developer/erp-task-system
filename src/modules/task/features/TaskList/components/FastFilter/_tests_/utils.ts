@@ -2,7 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { NumOrStr } from 'shared/interfaces/utils'
 
-import { FastFilterEnum } from '../../../constants/common'
+import { FastFilterEnum } from '../constants'
 import { filterCheckedClass, filterDisabledClass } from './constants'
 
 const getContainer = () => screen.getByTestId('filter-fast')

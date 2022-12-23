@@ -1,10 +1,9 @@
 import { Space } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import { FastFilterEnum } from 'modules/task/features/TaskList/constants/common'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import { fastFilterNamesDict } from './constants'
+import { FastFilterEnum, fastFilterNamesDict } from './constants'
 import FilterTag from './FilterTag'
 import { FastFilterProps, FilterItem } from './interfaces'
 

@@ -8,10 +8,9 @@ import {
   useCheckUserAuthenticated,
 } from 'modules/auth/hooks'
 import TaskAssignee from 'modules/task/features/TaskAssignee'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import { taskAssigneePermissions } from 'modules/task/features/TaskView/permissions'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
-import { TaskAssigneeModel } from 'modules/task/models'
+import { TaskAssigneeModel, TaskDetailsModel } from 'modules/task/models'
+import { taskAssigneePermissions } from 'modules/task/permissions'
 import { getFullUserName } from 'modules/user/utils'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { isEqual } from 'shared/utils/common/isEqual'

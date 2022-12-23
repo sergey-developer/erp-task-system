@@ -1,10 +1,10 @@
 import { useCallback, useEffect } from 'react'
 
+import { CreateSubTaskMutationArgsModel } from 'modules/subTask/models'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { CreateSubTaskMutationArgsModel } from '../models'
 import { subTaskApiPermissions } from '../permissions'
 import { useCreateSubTaskMutation } from '../services/subTaskApi.service'
 

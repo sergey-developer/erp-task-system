@@ -1,5 +1,8 @@
-import { TaskDetailsWorkGroupModel } from 'modules/task/features/TaskView/models'
-import { BaseTaskModel, TaskAssigneeModel } from 'modules/task/models'
+import {
+  BaseTaskModel,
+  TaskAssigneeModel,
+  TaskDetailsWorkGroupModel,
+} from 'modules/task/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskDetailsModel = BaseTaskModel & {

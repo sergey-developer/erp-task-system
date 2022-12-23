@@ -1,4 +1,4 @@
-import { FastFilterEnum } from 'modules/task/features/TaskList/constants/common'
+import { FastFilterEnum } from '../FastFilter/constants'
 
 export type FastFilterQueries = {
   filter?: FastFilterEnum

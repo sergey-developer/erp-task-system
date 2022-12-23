@@ -3,7 +3,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
 import Spinner from 'components/Spinner'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskDetailsModel } from 'modules/task/models'
 
 import TaskDetailsWrapper from '../TaskDetails/TaskDetailsWrapper'
 import { TaskDetailsTabsEnum, taskDetailsTabNamesDict } from './constants'

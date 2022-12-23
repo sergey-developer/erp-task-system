@@ -3,7 +3,7 @@ import React, { FC, useState } from 'react'
 
 import LabeledData from 'components/LabeledData'
 import BaseModal from 'components/Modals/BaseModal'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskDetailsModel } from 'modules/task/models'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
 import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
 import { MaybeNull } from 'shared/interfaces/utils'

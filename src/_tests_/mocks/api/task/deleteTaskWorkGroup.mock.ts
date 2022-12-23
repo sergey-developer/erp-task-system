@@ -10,7 +10,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 import {
   DeleteTaskWorkGroupMutationArgsModel,
   DeleteTaskWorkGroupResponseModel,
-} from 'modules/task/features/TaskView/models'
+} from 'modules/task/models'
 import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'

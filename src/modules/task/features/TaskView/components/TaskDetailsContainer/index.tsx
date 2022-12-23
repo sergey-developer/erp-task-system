@@ -1,15 +1,17 @@
 import React, { FC, useEffect } from 'react'
 
-import { TaskListItemModel } from 'modules/task/features/TaskList/models'
-import useCreateTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useCreateTaskReclassificationRequest'
-import useDeleteTaskWorkGroup from 'modules/task/features/TaskView/hooks/useDeleteTaskWorkGroup'
-import useGetTask from 'modules/task/features/TaskView/hooks/useGetTask'
-import useGetTaskReclassificationRequest from 'modules/task/features/TaskView/hooks/useGetTaskReclassificationRequest'
-import useResolveTask from 'modules/task/features/TaskView/hooks/useResolveTask'
-import useTakeTask from 'modules/task/features/TaskView/hooks/useTakeTask'
-import useUpdateTaskAssignee from 'modules/task/features/TaskView/hooks/useUpdateTaskAssignee'
-import useUpdateTaskWorkGroup from 'modules/task/features/TaskView/hooks/useUpdateTaskWorkGroup'
-import { useTaskExtendedStatus } from 'modules/task/hooks'
+import {
+  useCreateTaskReclassificationRequest,
+  useDeleteTaskWorkGroup,
+  useGetTask,
+  useGetTaskReclassificationRequest,
+  useResolveTask,
+  useTakeTask,
+  useTaskExtendedStatus,
+  useUpdateTaskAssignee,
+  useUpdateTaskWorkGroup,
+} from 'modules/task/hooks'
+import { TaskListItemModel } from 'modules/task/models'
 import useGetWorkGroupList from 'modules/workGroup/features/WorkGroupList/hooks/useGetWorkGroupList'
 
 import TaskDetails from '../TaskDetails'

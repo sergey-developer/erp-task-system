@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
-import { TaskJournalModel } from 'modules/task/features/TaskView/models'
+import { TaskJournalModel } from 'modules/task/models'
 import { getFullUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'

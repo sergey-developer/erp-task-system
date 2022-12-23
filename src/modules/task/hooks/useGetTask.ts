@@ -1,26 +1,27 @@
 import { useEffect } from 'react'
 
-import { GetTaskCommentListQueryArgsModel } from 'modules/task/features/TaskView/models'
-import { taskCommentApiPermissions } from 'modules/task/features/TaskView/permissions'
 import {
-  getTaskCommentListServerErrorMsg,
   getTaskNotFoundErrorMsg,
+  getTaskServerErrorMsg,
 } from 'modules/task/features/TaskView/utils/messages'
-import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi.service'
+import { GetTaskQueryArgsModel } from 'modules/task/models'
+import { taskApiPermissions } from 'modules/task/permissions'
+import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import {
   ErrorResponse,
+  isBadRequestError,
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
-  const permissions = useUserPermissions(taskCommentApiPermissions)
+export const useGetTask = (id: GetTaskQueryArgsModel) => {
+  const permissions = useUserPermissions(taskApiPermissions)
 
-  const state = useGetTaskCommentListQuery(id, {
-    skip: !permissions.canGetList,
+  const state = useGetTaskQuery(id, {
+    skip: !permissions.canGet,
   })
 
   useEffect(() => {
@@ -30,8 +31,8 @@ const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
 
     if (isNotFoundError(error)) {
       showErrorNotification(getTaskNotFoundErrorMsg(id))
-    } else if (isServerRangeError(error)) {
-      showErrorNotification(getTaskCommentListServerErrorMsg(id))
+    } else if (isBadRequestError(error) || isServerRangeError(error)) {
+      showErrorNotification(getTaskServerErrorMsg(id))
     } else {
       showErrorNotification(UNKNOWN_ERROR_MSG)
     }
@@ -39,5 +40,3 @@ const useGetTaskCommentList = (id: GetTaskCommentListQueryArgsModel) => {
 
   return state
 }
-
-export default useGetTaskCommentList

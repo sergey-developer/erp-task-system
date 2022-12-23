@@ -1,7 +1,7 @@
 import { generateWord } from '_tests_/utils'
 import taskFixtures from 'fixtures/task'
 
-import { FastFilterEnum } from '../../../constants/common'
+import { FastFilterEnum } from '../constants'
 import { FilterTagProps } from '../FilterTag'
 import { FastFilterProps } from '../interfaces'
 

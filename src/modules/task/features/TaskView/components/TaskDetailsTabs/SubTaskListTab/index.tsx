@@ -27,8 +27,8 @@ import {
   useReworkSubTask,
 } from 'modules/subTask/hooks'
 import { SubTaskModel } from 'modules/subTask/models'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
+import { TaskDetailsModel } from 'modules/task/models'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'

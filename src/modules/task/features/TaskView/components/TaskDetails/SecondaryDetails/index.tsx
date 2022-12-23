@@ -1,8 +1,7 @@
 import { Col, Row } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
-import { TaskAssigneeModel } from 'modules/task/models'
+import { TaskAssigneeModel, TaskDetailsModel } from 'modules/task/models'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import TaskAssignee from '../AssigneeBlock'

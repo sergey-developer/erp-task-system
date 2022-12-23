@@ -4,7 +4,7 @@ import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
-import { TaskDetailsModel } from 'modules/task/features/TaskView/models'
+import { TaskDetailsModel } from 'modules/task/models'
 import { UserRolesEnum } from 'shared/constants/roles'
 
 import AssigneeBlock, { AssigneeBlockProps } from '../index'

@@ -15,14 +15,9 @@ import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
 import { FilterIcon, SyncIcon } from 'components/Icons'
-import {
-  FastFilterEnum,
-  FilterTypeEnum,
-} from 'modules/task/features/TaskList/constants/common'
-import useGetTaskCounters from 'modules/task/features/TaskList/hooks/useGetTaskCounters'
-import useLazyGetTaskList from 'modules/task/features/TaskList/hooks/useLazyGetTaskList'
-import { GetTaskListQueryArgsModel } from 'modules/task/features/TaskList/models'
 import TaskDetails from 'modules/task/features/TaskView/components/TaskDetailsContainer'
+import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
+import { GetTaskListQueryArgsModel } from 'modules/task/models'
 import useUserRole from 'modules/user/hooks/useUserRole'
 import { SortOrderEnum } from 'shared/constants/sort'
 import useDebounceFn from 'shared/hooks/useDebounceFn'
@@ -36,6 +31,7 @@ import {
   ExtendedFilterQueries,
 } from '../ExtendedFilter/interfaces'
 import FastFilter from '../FastFilter'
+import { FastFilterEnum } from '../FastFilter/constants'
 import TaskTable from '../TaskTable'
 import {
   SortableField,
@@ -43,7 +39,7 @@ import {
 } from '../TaskTable/constants/sort'
 import { TaskTableListItem } from '../TaskTable/interfaces'
 import getSort from '../TaskTable/utils/getSort'
-import { DEFAULT_PAGE_SIZE } from './constants'
+import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { FastFilterQueries, TaskIdFilterQueries } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'

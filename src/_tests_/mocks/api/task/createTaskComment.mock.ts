@@ -7,7 +7,7 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { CreateTaskCommentResponseModel } from 'modules/task/features/TaskView/models'
+import { CreateTaskCommentResponseModel } from 'modules/task/models'
 import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
