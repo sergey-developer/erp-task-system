@@ -7,6 +7,7 @@ import formatDate from 'shared/utils/date/formatDate'
 
 import SubTaskList, { SubTaskListProps } from './index'
 import {
+  activeCancelButtonProps,
   activeReworkButtonProps,
   testUtils as subTaskTestUtils,
 } from './SubTask.test'
@@ -77,7 +78,7 @@ describe('Список подзадач', () => {
     ).toBeInTheDocument()
   })
 
-  describe('Отправка на доработку', () => {
+  describe('Отправка задания на доработку', () => {
     test('Обработчик кнопки вызывается корректно', async () => {
       const subTask = {
         ...subTaskFixtures.getSubTask(),
@@ -99,6 +100,31 @@ describe('Список подзадач', () => {
 
       expect(requiredProps.onClickRework).toBeCalledTimes(1)
       expect(requiredProps.onClickRework).toBeCalledWith(subTask)
+    })
+  })
+
+  describe('Отмена задания', () => {
+    test('Обработчик кнопки вызывается корректно', async () => {
+      const subTask = {
+        ...subTaskFixtures.getSubTask(),
+        status: activeCancelButtonProps.status,
+      }
+
+      const { user } = render(
+        <SubTaskList
+          {...requiredProps}
+          list={[subTask]}
+          taskStatus={activeCancelButtonProps.taskStatus}
+          currentUserIsTaskAssignee={
+            activeCancelButtonProps.currentUserIsTaskAssignee
+          }
+        />,
+      )
+
+      await subTaskTestUtils.userClickCancelButton(user)
+
+      expect(requiredProps.onClickCancel).toBeCalledTimes(1)
+      expect(requiredProps.onClickCancel).toBeCalledWith(subTask)
     })
   })
 })
