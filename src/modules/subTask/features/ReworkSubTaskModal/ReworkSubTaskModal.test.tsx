@@ -89,7 +89,7 @@ export const testUtils = {
   loadingFinished: () => loadingFinishedByButton(getSubmitButton()),
 }
 
-describe('Модальное окно отправки запроса на доработку', () => {
+describe('Модалка отправки запроса на доработку', () => {
   test('Отображается корректно', () => {
     render(<ReworkSubTaskModal {...requiredProps} />)
     expect(testUtils.getContainer()).toBeInTheDocument()
@@ -112,7 +112,7 @@ describe('Модальное окно отправки запроса на до�
     ).toBeInTheDocument()
   })
 
-  describe('Форма перевода заявки', () => {
+  describe('Форма', () => {
     describe('Поле ввода причины возврата', () => {
       test('Отображается корректно', () => {
         render(<ReworkSubTaskModal {...requiredProps} />)

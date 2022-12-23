@@ -24,7 +24,7 @@ import { screen, waitFor } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
-import createSubTaskModalTestUtils from 'modules/subTask/features/CreateSubTaskModal/_tests_/utils'
+import { testUtils as createSubTaskModalTestUtils } from 'modules/subTask/features/CreateSubTaskModal/CreateSubTaskModal.test'
 import { CreateSubTaskFormErrors } from 'modules/subTask/features/CreateSubTaskModal/interfaces'
 import { ReworkSubTaskFormErrors } from 'modules/subTask/features/ReworkSubTaskModal/interfaces'
 import { testUtils as reworkSubTaskModalTestUtils } from 'modules/subTask/features/ReworkSubTaskModal/ReworkSubTaskModal.test'
@@ -269,6 +269,54 @@ describe('Вкладка списка заданий', () => {
           expect(modal).not.toBeInTheDocument()
         })
       })
+
+      test('В список добавляется новое задание', async () => {
+        const subTaskList = subTaskFixtures.getSubTaskList()
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: subTaskList })
+
+        const templateList = subTaskFixtures.getSubTaskTemplateList()
+        mockGetSubTaskTemplateListSuccess({
+          body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
+        })
+
+        mockCreateSubTaskSuccess(requiredProps.task.id)
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.openCreateSubTaskModal(user)
+        const modal = await createSubTaskModalTestUtils.findContainer()
+
+        await createSubTaskModalTestUtils.template.expectLoadingFinished()
+        await createSubTaskModalTestUtils.userFillForm(user, {
+          templateX5: templateList[0].title,
+          title: generateWord(),
+          description: generateWord(),
+        })
+        await createSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        expect(
+          subTaskTestUtils.getAllContainerIn(
+            subTaskListTestUtils.getContainer(),
+          ),
+        ).toHaveLength(subTaskList.length + 1)
+      })
     })
 
     describe('При не успешном запросе', () => {
@@ -375,6 +423,19 @@ describe('Вкладка списка заданий', () => {
   })
 
   describe('Список заданий', () => {
+    test('Отображается', async () => {
+      mockGetSubTaskListSuccess(requiredProps.task.id, {
+        body: subTaskFixtures.getSubTaskList(),
+      })
+
+      render(<SubTaskListTab {...requiredProps} />, {
+        store: getStoreWithAuth(),
+      })
+
+      await testUtils.loadingFinished()
+      expect(subTaskListTestUtils.getContainer()).toBeInTheDocument()
+    })
+
     describe('При успешном получении', () => {
       test('Отображает верное количество заданий', async () => {
         const subTaskList = subTaskFixtures.getSubTaskList()
@@ -388,15 +449,15 @@ describe('Вкладка списка заданий', () => {
               ...activeCreateSubTaskButtonTaskProps,
             }}
           />,
-          {
-            store: getStoreWithAuth(),
-          },
+          { store: getStoreWithAuth() },
         )
 
         await testUtils.loadingFinished()
 
         expect(
-          subTaskTestUtils.getAllContainerIn(testUtils.getContainer()),
+          subTaskTestUtils.getAllContainerIn(
+            subTaskListTestUtils.getContainer(),
+          ),
         ).toHaveLength(subTaskList.length)
       })
     })
@@ -452,8 +513,8 @@ describe('Вкладка списка заданий', () => {
     })
   })
 
-  describe('Модалка отправки задания на доработку', () => {
-    test('Открывается', async () => {
+  describe('Отправка задания на доработку', () => {
+    test('Модалка открывается', async () => {
       const subTask = subTaskFixtures.getSubTask({
         status: activeReworkButtonProps.status,
       })
@@ -477,7 +538,7 @@ describe('Вкладка списка заданий', () => {
       await reworkSubTaskModalTestUtils.findContainer()
     })
 
-    test('Закрывается', async () => {
+    test('Модалка закрывается', async () => {
       const subTask = subTaskFixtures.getSubTask({
         status: activeReworkButtonProps.status,
       })
@@ -506,7 +567,7 @@ describe('Вкладка списка заданий', () => {
       })
     })
 
-    test('Отображает состояние загрузки', async () => {
+    test('Модалка отображает состояние загрузки', async () => {
       const subTask = subTaskFixtures.getSubTask({
         status: activeReworkButtonProps.status,
       })
