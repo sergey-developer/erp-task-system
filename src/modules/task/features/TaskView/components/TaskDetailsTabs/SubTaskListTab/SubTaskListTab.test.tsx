@@ -513,8 +513,8 @@ describe('Вкладка списка заданий', () => {
     })
   })
 
-  describe('Отправка задания на доработку', () => {
-    test('Модалка открывается', async () => {
+  describe('Модалка отправки задания на доработку', () => {
+    test('Открывается', async () => {
       const subTask = subTaskFixtures.getSubTask({
         status: activeReworkButtonProps.status,
       })
@@ -538,7 +538,7 @@ describe('Вкладка списка заданий', () => {
       await reworkSubTaskModalTestUtils.findContainer()
     })
 
-    test('Модалка закрывается', async () => {
+    test('Закрывается', async () => {
       const subTask = subTaskFixtures.getSubTask({
         status: activeReworkButtonProps.status,
       })
@@ -567,7 +567,7 @@ describe('Вкладка списка заданий', () => {
       })
     })
 
-    test('Модалка отображает состояние загрузки', async () => {
+    test('Отображает состояние загрузки', async () => {
       const subTask = subTaskFixtures.getSubTask({
         status: activeReworkButtonProps.status,
       })
