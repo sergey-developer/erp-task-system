@@ -1261,24 +1261,41 @@ describe('Страница реестра заявок', () => {
 
     describe('Колонка', () => {
       describe('Заявка', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
 
           const { user } = render(<TaskListPage />, {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickColTitle(user, 'Заявка')
           await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
         })
       })
 
       describe('Внешний номер', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
 
           const { user } = render(<TaskListPage />, {
             store: getStoreWithAuth(),
@@ -1288,111 +1305,226 @@ describe('Страница реестра заявок', () => {
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickColTitle(user, 'Внеш.номер')
           await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
         })
       })
 
       describe('Объект', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
 
           const { user } = render(<TaskListPage />, {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickColTitle(user, 'Объект')
           await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
         })
       })
 
       describe('Тема', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
 
           const { user } = render(<TaskListPage />, {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickColTitle(user, 'Тема')
           await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
         })
       })
 
       describe('Исполнитель', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
 
           const { user } = render(<TaskListPage />, {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickColTitle(user, 'Исполнитель')
           await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
         })
       })
 
       describe('Рабочая группа', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
 
           const { user } = render(<TaskListPage />, {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
           await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
         })
       })
 
       describe('Выполнить до', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
 
           const { user } = render(<TaskListPage />, {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickColTitle(user, 'Выполнить до')
           await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
+        })
+      })
+
+      describe('Статус', () => {
+        test('После сортировки список отображается корректно', async () => {
+          mockGetTaskCountersSuccess()
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
+
+          const { user } = render(<TaskListPage />, {
+            store: getStoreWithAuth(),
+          })
+
+          await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+          await taskTableTestUtils.userClickColTitle(user, 'Статус')
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
         })
       })
 
       describe('Комментарий', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
 
           const { user } = render(<TaskListPage />, {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickColTitle(user, 'Комментарий')
           await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
         })
       })
 
       describe('Дата создания', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+
+          const taskList = taskFixtures.getTaskList()
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.getGetTaskListResponse(taskList),
+          })
 
           const { user } = render(<TaskListPage />, {
             store: getStoreWithAuth(),
           })
 
+          await taskTableTestUtils.loadingStarted()
           await taskTableTestUtils.loadingFinished()
           await taskTableTestUtils.userClickColTitle(user, 'Дата создания')
           await taskTableTestUtils.loadingStarted()
+          await taskTableTestUtils.loadingFinished()
+
+          taskList.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
         })
       })
     })

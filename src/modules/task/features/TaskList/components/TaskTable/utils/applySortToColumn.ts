@@ -4,9 +4,9 @@ import { isEqual } from 'shared/utils/common/isEqual'
 
 import { SortValue } from '../constants/sort'
 import { TaskTableListItem } from '../interfaces'
-import parseSort from './parseSort'
+import { parseSort } from './parseSort'
 
-const applySortToColumn = (
+export const applySortToColumn = (
   column: ColumnsType<TaskTableListItem>[number],
   sort: SortValue,
 ): ColumnsType<TaskTableListItem>[number] => {
@@ -19,5 +19,3 @@ const applySortToColumn = (
     sortOrder: sorterResult.order,
   }
 }
-
-export default applySortToColumn
