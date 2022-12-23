@@ -9,7 +9,7 @@ import {
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
-import { TaskDetailsModel } from 'modules/task/models'
+import { TaskModel } from 'modules/task/models'
 import { UserModel } from 'modules/user/models'
 import { getUserAbbr } from 'modules/user/utils'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -18,8 +18,8 @@ const { Text } = Typography
 
 type TaskAssigneeProps = {
   name: string
-  phone?: TaskDetailsModel['contactPhone']
-  status?: TaskDetailsModel['status']
+  phone?: TaskModel['contactPhone']
+  status?: TaskModel['status']
   assignee: MaybeNull<Pick<UserModel, 'firstName' | 'lastName' | 'avatar'>>
 }
 

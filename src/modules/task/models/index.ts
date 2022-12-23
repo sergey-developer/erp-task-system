@@ -26,6 +26,6 @@ export * from './taskReclassificationRequest.model'
 export * from './getTaskReclassificationRequest.model'
 export * from './createTaskReclassificationRequest.model'
 
-export * from './taskDetails.model'
+export * from './task.model'
 export * from './taskComment.model'
-export * from './taskDetailsWorkGroup.model'
+export * from './taskWorkGroup.model'

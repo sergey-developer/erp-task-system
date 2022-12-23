@@ -10,7 +10,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/common'
-import { TaskDetailsModel } from 'modules/task/models'
+import { TaskModel } from 'modules/task/models'
 
 import { getTaskAssignee } from './taskAssignee'
 import { getTaskWorkGroup } from './taskWorkGroup'
@@ -18,7 +18,7 @@ import { getTaskWorkGroup } from './taskWorkGroup'
 export const getTask = (
   props?: Partial<
     Pick<
-      TaskDetailsModel,
+      TaskModel,
       | 'id'
       | 'type'
       | 'status'
@@ -28,7 +28,7 @@ export const getTask = (
       | 'assignee'
     >
   >,
-): TaskDetailsModel => ({
+): TaskModel => ({
   id: props?.id || generateId(),
   type: props?.type || TaskTypeEnum.Request,
   status: props?.status || TaskStatusEnum.New,
@@ -43,15 +43,15 @@ export const getTask = (
   initialImpact: generateInteger({
     min: 1,
     max: 4,
-  }) as TaskDetailsModel['initialImpact'],
+  }) as TaskModel['initialImpact'],
   severity: generateInteger({
     min: 1,
     max: 4,
-  }) as TaskDetailsModel['severity'],
+  }) as TaskModel['severity'],
   priorityCode: generateInteger({
     min: 1,
     max: 4,
-  }) as TaskDetailsModel['priorityCode'],
+  }) as TaskModel['priorityCode'],
   contactService: generateWord(),
   createdAt: generateDateString(),
   productClassifier1: generateWord(),

@@ -1,9 +1,5 @@
 import { useEffect } from 'react'
 
-import {
-  getTaskNotFoundErrorMsg,
-  getTaskServerErrorMsg,
-} from 'modules/task/features/TaskView/utils/messages'
 import { GetTaskQueryArgsModel } from 'modules/task/models'
 import { taskApiPermissions } from 'modules/task/permissions'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
@@ -16,6 +12,11 @@ import {
   isServerRangeError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import {
+  getTaskNotFoundErrorMsg,
+  getTaskServerErrorMsg,
+} from '../utils/messages'
 
 export const useGetTask = (id: GetTaskQueryArgsModel) => {
   const permissions = useUserPermissions(taskApiPermissions)

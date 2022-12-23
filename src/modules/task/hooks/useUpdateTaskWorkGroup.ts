@@ -12,7 +12,7 @@ import {
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG } from '../features/TaskView/constants/messages'
+import { UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG } from '../constants/messages'
 
 export const useUpdateTaskWorkGroup = () => {
   const permissions = useUserPermissions(taskWorkGroupApiPermissions)

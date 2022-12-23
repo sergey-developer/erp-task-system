@@ -1,4 +1,4 @@
-import { TaskDetailsModel } from './taskDetails.model'
+import { TaskModel } from './task.model'
 
-export type GetTaskJournalCsvQueryArgsModel = TaskDetailsModel['id']
+export type GetTaskJournalCsvQueryArgsModel = TaskModel['id']
 export type GetTaskJournalCsvResponseModel = string

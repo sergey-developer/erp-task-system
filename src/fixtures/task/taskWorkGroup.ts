@@ -1,7 +1,7 @@
 import { generateId, generateWord } from '_tests_/utils'
-import { TaskDetailsWorkGroupModel } from 'modules/task/models'
+import { TaskWorkGroupModel } from 'modules/task/models'
 
-export const getTaskWorkGroup = (): TaskDetailsWorkGroupModel => ({
+export const getTaskWorkGroup = (): TaskWorkGroupModel => ({
   id: generateId(),
   name: generateWord(),
 })
