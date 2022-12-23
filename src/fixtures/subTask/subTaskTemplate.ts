@@ -5,7 +5,7 @@ import commonFixtures from 'fixtures/common'
 import {
   GetSubTaskTemplateListResponseModel,
   SubTaskTemplateModel,
-} from 'modules/task/features/TaskView/models'
+} from 'modules/subTask/models'
 
 export const getSubTaskTemplate = (): SubTaskTemplateModel => ({
   id: generateId(),

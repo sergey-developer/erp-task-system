@@ -1,4 +1,4 @@
-import { TaskEndpointsTagsEnum } from 'modules/task/constants/api'
+import { TaskEndpointTagEnum } from 'modules/task/constants/api'
 import {
   DeleteTaskWorkGroupMutationArgsModel,
   DeleteTaskWorkGroupResponseModel,
@@ -16,25 +16,25 @@ const taskWorkGroupApiService = taskApiService.injectEndpoints({
       UpdateTaskWorkGroupResponseModel,
       UpdateTaskWorkGroupMutationArgsModel
     >({
-      query: ({ taskId, ...body }) => ({
+      query: ({ taskId, ...payload }) => ({
         url: getTaskWorkGroupUrl(taskId),
         method: HttpMethodEnum.Post,
-        data: body,
+        data: payload,
       }),
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointsTagsEnum.TaskList],
+        error ? [] : [TaskEndpointTagEnum.TaskList],
     }),
     deleteTaskWorkGroup: build.mutation<
       DeleteTaskWorkGroupResponseModel,
       DeleteTaskWorkGroupMutationArgsModel
     >({
-      query: ({ taskId, ...body }) => ({
+      query: ({ taskId, ...payload }) => ({
         url: getTaskWorkGroupUrl(taskId),
         method: HttpMethodEnum.Delete,
-        data: body,
+        data: payload,
       }),
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointsTagsEnum.TaskList],
+        error ? [] : [TaskEndpointTagEnum.TaskList],
     }),
   }),
   overrideExisting: false,

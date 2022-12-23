@@ -2,12 +2,6 @@ export * from './getTask.model'
 export * from './resolveTask.model'
 export * from './takeTask.model'
 
-export * from './createSubTask.model'
-export * from './subTaskTemplate.model'
-export * from './getSubTaskTemplateList.model'
-export * from './deleteSubTask.model'
-export * from './reworkSubTask.model'
-
 export * from './taskJournal.model'
 export * from './getTaskJournal.model'
 export * from './getTaskJournalCsv.model'

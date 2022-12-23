@@ -12,11 +12,13 @@ import { SubTaskModel } from 'modules/subTask/models'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { NonNullableObject } from 'shared/interfaces/utils'
 
-export const getSubTask = (): NonNullableObject<SubTaskModel> => ({
+export const getSubTask = (
+  props?: Partial<Pick<SubTaskModel, 'status'>>,
+): NonNullableObject<SubTaskModel> => ({
   id: generateId(),
   recordId: generateIdStr(),
   title: generateWord(),
-  status: TaskStatusEnum.New,
+  status: props?.status || TaskStatusEnum.New,
   workGroup: taskFixtures.getTaskWorkGroup(),
   createdAt: generateDateString(),
   description: generateWord(),

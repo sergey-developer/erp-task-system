@@ -129,13 +129,13 @@ const userClickCancelButton = async (user: UserEvent) => {
   return button
 }
 
-// rest
+// other
 const userFillForm = async (
   user: UserEvent,
-  values: CreateSubTaskFormFields,
+  values: Omit<CreateSubTaskFormFields, 'templateX5'> & { templateX5: string },
 ) => {
   await userOpenTemplateField(user)
-  await userSetTemplate(user, values.template)
+  await userSetTemplate(user, values.templateX5)
   await userSetTitle(user, values.title)
   await userSetDescription(user, values.description)
 }

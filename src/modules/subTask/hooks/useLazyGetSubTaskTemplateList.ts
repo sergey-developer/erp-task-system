@@ -1,12 +1,12 @@
 import { useCallback, useEffect } from 'react'
 
-import { useLazyGetSubTaskTemplateListQuery } from 'modules/task/services/subTaskApi.service'
 import useUserPermissions from 'modules/user/hooks/useUserPermissions'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { subTaskTemplateApiPermissions } from '../permissions'
+import { useLazyGetSubTaskTemplateListQuery } from '../services/subTaskApi.service'
 
-const useLazyGetSubTaskTemplateList = () => {
+export const useLazyGetSubTaskTemplateList = () => {
   const permissions = useUserPermissions(subTaskTemplateApiPermissions)
   const [trigger, state] = useLazyGetSubTaskTemplateListQuery()
 
@@ -24,5 +24,3 @@ const useLazyGetSubTaskTemplateList = () => {
 
   return { fn, state }
 }
-
-export default useLazyGetSubTaskTemplateList

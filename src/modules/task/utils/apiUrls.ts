@@ -1,51 +1,40 @@
 import { generatePath } from 'react-router-dom'
 
-import { TaskEndpointsEnum } from 'modules/task/constants/api'
+import { TaskEndpointEnum } from 'modules/task/constants/api'
 
+//todo: поправить названия
 export const getTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.Task, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.Task, { id: String(taskId) })
 
 export const getResolveTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.ResolveTask, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.ResolveTask, { id: String(taskId) })
 
 export const getTakeTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.TakeTask, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.TakeTask, { id: String(taskId) })
 
 export const getTaskWorkGroupUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.TaskWorkGroup, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.TaskWorkGroup, { id: String(taskId) })
 
 export const getTaskAssigneeUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.TaskAssignee, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.TaskAssignee, { id: String(taskId) })
 
 export const getTaskCommentUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.TaskComment, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.TaskComment, { id: String(taskId) })
 
 export const getCreateTaskReclassificationRequestUrl = (
   taskId: number,
 ): string =>
-  generatePath(TaskEndpointsEnum.CreateReclassificationRequest, {
+  generatePath(TaskEndpointEnum.CreateReclassificationRequest, {
     id: String(taskId),
   })
 
 export const getTaskReclassificationRequestUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.GetReclassificationRequest, {
+  generatePath(TaskEndpointEnum.GetReclassificationRequest, {
     id: String(taskId),
   })
 
 export const getTaskJournalUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.TaskJournal, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.TaskJournal, { id: String(taskId) })
 
 export const getTaskJournalCsvUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.TaskJournalCsv, { id: String(taskId) })
-
-export const getCreateSubTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.CreateSubTask, { id: String(taskId) })
-
-export const getSubTaskListUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.GetSubTaskList, { id: String(taskId) })
-
-export const deleteSubTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.DeleteSubTask, { id: String(taskId) })
-
-export const reworkSubTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointsEnum.ReworkSubTask, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.TaskJournalCsv, { id: String(taskId) })

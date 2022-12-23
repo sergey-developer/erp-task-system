@@ -53,7 +53,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
         <Form.Item
           data-testid='template'
           label='Шаблон'
-          name='template'
+          name='templateX5'
           rules={TEMPLATE_RULES}
         >
           <SelectStyled

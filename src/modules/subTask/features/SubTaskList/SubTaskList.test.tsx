@@ -1,4 +1,4 @@
-import { generateId, render } from '_tests_/utils'
+import { render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import subTaskFixtures from 'fixtures/subTask'
 import { TaskStatusEnum } from 'modules/task/constants/common'
@@ -6,18 +6,16 @@ import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import formatDate from 'shared/utils/date/formatDate'
 
 import SubTaskList, { SubTaskListProps } from './index'
-import { testUtils as subTaskTestUtils } from './SubTask.test'
+import {
+  activeReworkButtonProps,
+  testUtils as subTaskTestUtils,
+} from './SubTask.test'
 
 const requiredProps: SubTaskListProps = {
-  task: {
-    status: TaskStatusEnum.New,
-    parentTask: {
-      status: TaskStatusEnum.New,
-      assignee: generateId(),
-    },
-  },
   list: subTaskFixtures.getSubTaskList(),
   isError: false,
+  taskStatus: TaskStatusEnum.New,
+  currentUserIsTaskAssignee: false,
   onClickCancel: jest.fn(),
   onClickRework: jest.fn(),
 }
@@ -77,5 +75,30 @@ describe('Список подзадач', () => {
     expect(
       testUtils.getChildByText('Не удалось получить задания'),
     ).toBeInTheDocument()
+  })
+
+  describe('Отправка на доработку', () => {
+    test('Обработчик кнопки вызывается корректно', async () => {
+      const subTask = {
+        ...subTaskFixtures.getSubTask(),
+        status: activeReworkButtonProps.status,
+      }
+
+      const { user } = render(
+        <SubTaskList
+          {...requiredProps}
+          list={[subTask]}
+          taskStatus={activeReworkButtonProps.taskStatus}
+          currentUserIsTaskAssignee={
+            activeReworkButtonProps.currentUserIsTaskAssignee
+          }
+        />,
+      )
+
+      await subTaskTestUtils.userClickReworkButton(user)
+
+      expect(requiredProps.onClickRework).toBeCalledTimes(1)
+      expect(requiredProps.onClickRework).toBeCalledWith(subTask)
+    })
   })
 })

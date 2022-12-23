@@ -7,6 +7,7 @@ import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { SubTaskModel } from 'modules/subTask/models'
+import { TaskStatusEnum } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import TaskAssignee from 'modules/task/features/TaskAssignee'
 import TaskStatus from 'modules/task/features/TaskStatus'
@@ -20,16 +21,15 @@ import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Text, Title, Paragraph } = Typography
 
-export type SubTaskProps = Omit<SubTaskModel, 'workGroup'> & {
+export type SubTaskProps = Omit<SubTaskModel, 'id' | 'workGroup'> & {
+  taskStatus: TaskStatusEnum
+  currentUserIsTaskAssignee: boolean
   workGroupName: string
-  showCancelBtn: boolean
-  onClickCancel: (id: number) => void
-  showReworkBtn: boolean
-  onClickRework: (id: number) => void
+  onClickCancel: () => void
+  onClickRework: () => void
 }
 
 const SubTask: FC<SubTaskProps> = ({
-  id,
   title,
   description,
   status,
@@ -40,17 +40,30 @@ const SubTask: FC<SubTaskProps> = ({
   externalAssigneeName,
   externalAssigneePhone,
   techResolution,
-  showCancelBtn,
   onClickCancel,
-  showReworkBtn,
   onClickRework,
+  taskStatus: rawTaskStatus,
+  currentUserIsTaskAssignee,
 }) => {
+  const taskStatus = useTaskStatus(rawTaskStatus)
   const subTaskStatus = useTaskStatus(status)
 
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
 
   const [showTechResolution, { toggle: toggleShowTechResolution }] =
     useBoolean(false)
+
+  const isShowCancelBtn =
+    currentUserIsTaskAssignee &&
+    subTaskStatus.isNew &&
+    !taskStatus.isCompleted &&
+    !taskStatus.isClosed
+
+  const isShowReworkBtn =
+    currentUserIsTaskAssignee &&
+    subTaskStatus.isCompleted &&
+    !taskStatus.isCompleted &&
+    !taskStatus.isClosed
 
   return (
     <Space
@@ -72,17 +85,15 @@ const SubTask: FC<SubTaskProps> = ({
           </Col>
         )}
 
-        {showCancelBtn && (
+        {isShowCancelBtn && (
           <Col>
-            <Button onClick={() => onClickCancel(id)}>Отменить</Button>
+            <Button onClick={onClickCancel}>Отменить</Button>
           </Col>
         )}
 
-        {showReworkBtn && (
+        {isShowReworkBtn && (
           <Col>
-            <Button onClick={() => onClickRework(id)}>
-              Вернуть на доработку
-            </Button>
+            <Button onClick={onClickRework}>Вернуть на доработку</Button>
           </Col>
         )}
       </Row>
