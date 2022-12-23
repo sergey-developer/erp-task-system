@@ -6,7 +6,7 @@ import {
 } from 'modules/subTask/models'
 import { FieldsErrors } from 'shared/services/api'
 
-type FormFields = Omit<CancelSubTaskMutationArgsModel, 'taskId'>
+type FormFields = Omit<CancelSubTaskMutationArgsModel, 'taskId' | 'subTaskId'>
 
 export type CancelSubTaskFormFields = Required<FormFields>
 

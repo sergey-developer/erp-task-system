@@ -1,4 +1,7 @@
 import {
+  mockCancelSubTaskBadRequestError,
+  mockCancelSubTaskServerError,
+  mockCancelSubTaskSuccess,
   mockCreateSubTaskBadRequestError,
   mockCreateSubTaskServerError,
   mockCreateSubTaskSuccess,
@@ -24,11 +27,14 @@ import { screen, waitFor } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
+import { testUtils as cancelSubTaskModalTestUtils } from 'modules/subTask/features/CancelSubTaskModal/CancelSubTaskModal.test'
+import { CancelSubTaskFormErrors } from 'modules/subTask/features/CancelSubTaskModal/interfaces'
 import { testUtils as createSubTaskModalTestUtils } from 'modules/subTask/features/CreateSubTaskModal/CreateSubTaskModal.test'
 import { CreateSubTaskFormErrors } from 'modules/subTask/features/CreateSubTaskModal/interfaces'
 import { ReworkSubTaskFormErrors } from 'modules/subTask/features/ReworkSubTaskModal/interfaces'
 import { testUtils as reworkSubTaskModalTestUtils } from 'modules/subTask/features/ReworkSubTaskModal/ReworkSubTaskModal.test'
 import {
+  activeCancelButtonProps,
   activeReworkButtonProps,
   testUtils as subTaskTestUtils,
 } from 'modules/subTask/features/SubTaskList/SubTask.test'
@@ -805,6 +811,303 @@ describe('Вкладка списка заданий', () => {
 
         expect(
           await findNotification('Не удалось вернуть задание на доработку'),
+        ).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Модалка отмены задания', () => {
+    test('Открывается', async () => {
+      const subTask = subTaskFixtures.getSubTask({
+        status: activeCancelButtonProps.status,
+      })
+      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+
+      const { user } = render(
+        <SubTaskListTab
+          {...requiredProps}
+          task={{
+            ...requiredProps.task,
+            status: activeCancelButtonProps.taskStatus,
+          }}
+        />,
+        {
+          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+        },
+      )
+
+      await testUtils.loadingFinished()
+      await subTaskTestUtils.userClickCancelButton(user)
+      await cancelSubTaskModalTestUtils.findContainer()
+    })
+
+    test('Закрывается', async () => {
+      const subTask = subTaskFixtures.getSubTask({
+        status: activeCancelButtonProps.status,
+      })
+      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+
+      const { user } = render(
+        <SubTaskListTab
+          {...requiredProps}
+          task={{
+            ...requiredProps.task,
+            status: activeCancelButtonProps.taskStatus,
+          }}
+        />,
+        {
+          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+        },
+      )
+
+      await testUtils.loadingFinished()
+      await subTaskTestUtils.userClickCancelButton(user)
+      const modal = await cancelSubTaskModalTestUtils.findContainer()
+      await cancelSubTaskModalTestUtils.userClickCancelButton(user)
+
+      await waitFor(() => {
+        expect(modal).not.toBeInTheDocument()
+      })
+    })
+
+    test('Отображает состояние загрузки', async () => {
+      const subTask = subTaskFixtures.getSubTask({
+        status: activeCancelButtonProps.status,
+      })
+      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+      mockCancelSubTaskSuccess(subTask.id)
+
+      const { user } = render(
+        <SubTaskListTab
+          {...requiredProps}
+          task={{
+            ...requiredProps.task,
+            status: activeCancelButtonProps.taskStatus,
+          }}
+        />,
+        {
+          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+        },
+      )
+
+      await testUtils.loadingFinished()
+      await subTaskTestUtils.userClickCancelButton(user)
+      await cancelSubTaskModalTestUtils.findContainer()
+      await cancelSubTaskModalTestUtils.userSetCancelReason(
+        user,
+        generateWord(),
+      )
+      await cancelSubTaskModalTestUtils.userClickSubmitButton(user)
+      await cancelSubTaskModalTestUtils.loadingStarted()
+    })
+
+    describe('При успешной отправке данных', () => {
+      test('Модалка закрывается', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeCancelButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockCancelSubTaskSuccess(subTask.id)
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeCancelButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+        await subTaskTestUtils.userClickCancelButton(user)
+        const modal = await cancelSubTaskModalTestUtils.findContainer()
+        await cancelSubTaskModalTestUtils.userSetCancelReason(
+          user,
+          generateWord(),
+        )
+        await cancelSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
+
+      test('Статус задачи меняется на "Завершена"', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeCancelButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockCancelSubTaskSuccess(subTask.id)
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeCancelButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+
+        expect(
+          taskStatusTestUtils.getTaskStatusIn(
+            subTaskTestUtils.getContainer(),
+            activeCancelButtonProps.status,
+          ),
+        ).toBeInTheDocument()
+
+        await subTaskTestUtils.userClickCancelButton(user)
+        const modal = await cancelSubTaskModalTestUtils.findContainer()
+        await cancelSubTaskModalTestUtils.userSetCancelReason(
+          user,
+          generateWord(),
+        )
+        await cancelSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        expect(
+          taskStatusTestUtils.getTaskStatusIn(
+            subTaskTestUtils.getContainer(),
+            TaskStatusEnum.Completed,
+          ),
+        ).toBeInTheDocument()
+      })
+
+      test('Кнопка отмены не отображается', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeCancelButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockCancelSubTaskSuccess(subTask.id)
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeCancelButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+        const cancelButton = await subTaskTestUtils.userClickCancelButton(user)
+        const modal = await cancelSubTaskModalTestUtils.findContainer()
+        await cancelSubTaskModalTestUtils.userSetCancelReason(
+          user,
+          generateWord(),
+        )
+        await cancelSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        expect(cancelButton).not.toBeInTheDocument()
+      })
+    })
+
+    describe('При не успешной отправке данных', () => {
+      setupNotifications()
+
+      test('Корректно обрабатывается ошибка - 400', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeCancelButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+
+        const badRequestResponse: CancelSubTaskFormErrors = {
+          cancelReason: [generateWord()],
+        }
+        mockCancelSubTaskBadRequestError(subTask.id, {
+          body: badRequestResponse,
+        })
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeCancelButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+        await subTaskTestUtils.userClickCancelButton(user)
+        await cancelSubTaskModalTestUtils.findContainer()
+        await cancelSubTaskModalTestUtils.userSetCancelReason(
+          user,
+          generateWord(),
+        )
+        await cancelSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        expect(
+          await cancelSubTaskModalTestUtils.findCancelReasonError(
+            badRequestResponse.cancelReason[0],
+          ),
+        ).toBeInTheDocument()
+      })
+
+      test('Корректно обрабатывается ошибка - 500', async () => {
+        const subTask = subTaskFixtures.getSubTask({
+          status: activeCancelButtonProps.status,
+        })
+        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockCancelSubTaskServerError(subTask.id)
+
+        const { user } = render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              status: activeCancelButtonProps.taskStatus,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.task.assignee!.id,
+            }),
+          },
+        )
+
+        await testUtils.loadingFinished()
+        await subTaskTestUtils.userClickCancelButton(user)
+        await cancelSubTaskModalTestUtils.findContainer()
+        await cancelSubTaskModalTestUtils.userSetCancelReason(
+          user,
+          generateWord(),
+        )
+        await cancelSubTaskModalTestUtils.userClickSubmitButton(user)
+
+        expect(
+          await findNotification('Не удалось отменить задание'),
         ).toBeInTheDocument()
       })
     })
