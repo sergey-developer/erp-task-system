@@ -7,10 +7,10 @@ describe('sorters', () => {
   test('status sorter', () => {
     const array = [
       taskFixtures.getTaskTableItem({ status: TaskStatusEnum.New }),
-      taskFixtures.getTaskTableItem({ status: TaskStatusEnum.InProgress }),
       taskFixtures.getTaskTableItem({ status: TaskStatusEnum.Completed }),
-      taskFixtures.getTaskTableItem({ status: TaskStatusEnum.Closed }),
+      taskFixtures.getTaskTableItem({ status: TaskStatusEnum.InProgress }),
       taskFixtures.getTaskTableItem({ status: TaskStatusEnum.Awaiting }),
+      taskFixtures.getTaskTableItem({ status: TaskStatusEnum.Closed }),
     ]
 
     const sortedArray = [...array].sort(statusSorter)

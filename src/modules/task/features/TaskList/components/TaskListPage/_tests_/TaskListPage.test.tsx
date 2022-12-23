@@ -1261,7 +1261,7 @@ describe('Страница реестра заявок', () => {
 
     describe('Колонка', () => {
       describe('Заявка', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
@@ -1288,7 +1288,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Внешний номер', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
@@ -1315,7 +1315,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Объект', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
@@ -1342,7 +1342,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Тема', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
@@ -1369,7 +1369,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Исполнитель', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
@@ -1396,7 +1396,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Рабочая группа', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
@@ -1423,7 +1423,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Выполнить до', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
@@ -1450,7 +1450,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Статус', () => {
-        test('При сортировке список отображается корректно', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
@@ -1475,7 +1475,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Комментарий', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
@@ -1502,7 +1502,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Дата создания', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
           const taskList = taskFixtures.getTaskList()
