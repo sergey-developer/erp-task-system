@@ -712,7 +712,7 @@ describe('Таблица заявок', () => {
         const { user } = render(
           <TaskTable {...taskTableTestConstants.requiredProps} />,
         )
-        // todo: вынести функцию сортировки и переиспользовать её здесь для тестирования
+
         await taskTableTestUtils.userClickColTitle(user, 'Статус')
         const headCol = taskTableTestUtils.getHeadCol('Статус')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')

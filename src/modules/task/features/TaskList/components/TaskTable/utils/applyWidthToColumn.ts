@@ -11,7 +11,7 @@ import {
 } from '../constants/columnWidth'
 import { TaskTableListItem } from '../interfaces'
 
-const applyWidthToColumn = (
+export const applyWidthToColumn = (
   column: ColumnsType<TaskTableListItem>[number],
   breakpoints: ScreenMap,
 ): ColumnsType<TaskTableListItem>[number] => {
@@ -26,5 +26,3 @@ const applyWidthToColumn = (
     width: colWidth,
   }
 }
-
-export default applyWidthToColumn
