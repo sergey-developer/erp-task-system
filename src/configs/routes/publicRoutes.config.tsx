@@ -5,9 +5,7 @@ import PublicLayout from 'components/Layout/PublicLayout'
 
 import { RoutesEnum } from './constants'
 
-const LoginPage = React.lazy(
-  () => import('modules/auth/features/Login/components/LoginPage'),
-)
+const LoginPage = React.lazy(() => import('modules/auth/pages/LoginPage'))
 
 export default [
   {

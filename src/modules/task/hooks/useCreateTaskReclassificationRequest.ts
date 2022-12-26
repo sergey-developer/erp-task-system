@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { CreateTaskReclassificationRequestMutationArgsModel } from 'modules/task/models'
 import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskReclassificationRequestApi.service'
-import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { useUserPermissions } from 'modules/user/hooks'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import {
   ErrorResponse,

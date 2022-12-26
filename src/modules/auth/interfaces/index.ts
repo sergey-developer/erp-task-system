@@ -1,4 +1,4 @@
 export * from './common'
 export * from './login'
-export * from './refresh'
+export * from './refreshToken'
 export * from './authSlice'

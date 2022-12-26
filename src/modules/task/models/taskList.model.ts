@@ -1,5 +1,5 @@
 import { BaseTaskModel, TaskAssigneeModel } from 'modules/task/models'
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskListItemModel = BaseTaskModel & {

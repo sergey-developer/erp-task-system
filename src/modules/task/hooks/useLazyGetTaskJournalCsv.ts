@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { GetTaskJournalCsvQueryArgsModel } from 'modules/task/models'
 import { taskJournalApiPermissions } from 'modules/task/permissions'
 import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskJournalApi.service'
-import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { useUserPermissions } from 'modules/user/hooks'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import { showErrorNotification } from 'shared/utils/notifications'
 

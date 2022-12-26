@@ -1,4 +1,4 @@
-import { FastFilterEnum } from '../features/TaskList/FastFilter/constants'
+import { FastFilterEnum } from '../features/FastFilter/constants'
 
 export type GetTaskCountersQueryArgsModel = null
 

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { GetTaskJournalQueryArgsModel } from 'modules/task/models'
 import { taskJournalApiPermissions } from 'modules/task/permissions'
 import { useGetTaskJournalQuery } from 'modules/task/services/taskJournalApi.service'
-import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { useUserPermissions } from 'modules/user/hooks'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import { showErrorNotification } from 'shared/utils/notifications'
 

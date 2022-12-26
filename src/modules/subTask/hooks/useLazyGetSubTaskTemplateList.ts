@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { useUserPermissions } from 'modules/user/hooks'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { subTaskTemplateApiPermissions } from '../permissions'

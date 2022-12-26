@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { GetTaskQueryArgsModel } from 'modules/task/models'
 import { taskApiPermissions } from 'modules/task/permissions'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
-import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { useUserPermissions } from 'modules/user/hooks'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import {
   ErrorResponse,

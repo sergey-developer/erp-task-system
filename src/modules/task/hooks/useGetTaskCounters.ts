@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { taskCountersApiPermissions } from 'modules/task/permissions'
 import { useGetTaskCountersQuery } from 'modules/task/services/taskApi.service'
-import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { useUserPermissions } from 'modules/user/hooks'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -21,4 +21,3 @@ export const useGetTaskCounters = () => {
 
   return state
 }
-

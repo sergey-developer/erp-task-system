@@ -2,7 +2,7 @@ import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
 import {
   GetWorkGroupListQueryArgsModel,
   GetWorkGroupListResponseModel,
-} from 'modules/workGroup/features/WorkGroupList/models'
+} from 'modules/workGroup/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 

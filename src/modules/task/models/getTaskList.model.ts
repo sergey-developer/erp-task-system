@@ -1,11 +1,11 @@
 import { PaginatedListResponseModel } from 'shared/models'
 
-import { ExtendedFilterQueries } from '../features/TaskList/ExtendedFilter/interfaces'
+import { ExtendedFilterQueries } from '../features/ExtendedFilter/interfaces'
+import { SortValue } from '../features/TaskTable/constants/sort'
 import {
   FastFilterQueries,
   TaskIdFilterQueries,
-} from '../features/TaskList/TaskListPage/interfaces'
-import { SortValue } from '../features/TaskList/TaskTable/constants/sort'
+} from '../pages/TaskListPage/interfaces'
 import { TaskListItemModel } from './taskList.model'
 
 export type GetTaskListResponseModel =

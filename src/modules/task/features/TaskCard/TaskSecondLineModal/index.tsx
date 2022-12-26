@@ -5,7 +5,7 @@ import LabeledData from 'components/LabeledData'
 import BaseModal from 'components/Modals/BaseModal'
 import { TaskModel } from 'modules/task/models'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 const { Text, Link } = Typography

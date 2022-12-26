@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { GetSubTaskListQueryArgsModel } from 'modules/subTask/models'
-import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { useUserPermissions } from 'modules/user/hooks'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { subTaskApiPermissions } from '../permissions'

@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
 import { CancelSubTaskMutationArgsModel } from 'modules/subTask/models'
-import useUserPermissions from 'modules/user/hooks/useUserPermissions'
+import { useUserPermissions } from 'modules/user/hooks'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 

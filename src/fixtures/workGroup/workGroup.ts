@@ -1,5 +1,5 @@
 import { generateId, generateName } from '_tests_/utils'
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 export const getWorkGroup = (
   props?: Partial<{
