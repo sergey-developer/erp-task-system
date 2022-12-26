@@ -4,7 +4,7 @@ import { SortOrderEnum } from 'shared/constants/sort'
 
 import { SortValue, sortValueToSortableField } from '../constants/sort'
 
-const parseSort = (
+export const parseSort = (
   value: SortValue,
 ): { order: SortOrder; columnKey: string } => {
   const isDescend = value.startsWith('-')
@@ -15,5 +15,3 @@ const parseSort = (
     columnKey: sortValueToSortableField[parsedValue as SortValue],
   }
 }
-
-export default parseSort

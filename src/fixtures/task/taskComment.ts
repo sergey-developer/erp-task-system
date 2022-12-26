@@ -11,5 +11,6 @@ export const getTaskComment = (): TaskCommentModel => ({
   author: commonFixtures.getCommentAuthor(),
 })
 
-export const getTaskCommentList = (length: number = 1) =>
-  times(length, () => getTaskComment())
+export const getTaskCommentList = (
+  length: number = 1,
+): Array<TaskCommentModel> => times(length, () => getTaskComment())

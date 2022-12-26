@@ -35,5 +35,6 @@ export const getTaskTableItem = (
   olaNextBreachTime: generateDateString(),
 })
 
-export const getTaskTableItems = (length: number = 1) =>
-  times(length, () => getTaskTableItem())
+export const getTaskTableItems = (
+  length: number = 1,
+): Array<TaskTableListItem> => times(length, () => getTaskTableItem())
