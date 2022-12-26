@@ -40,7 +40,7 @@ import {
   sortableFieldToSortValues,
 } from '../../features/TaskTable/constants/sort'
 import { TaskTableListItem } from '../../features/TaskTable/interfaces'
-import getSort from '../../features/TaskTable/utils/getSort'
+import { getSort } from '../../features/TaskTable/utils'
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { FastFilterQueries, TaskIdFilterQueries } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
