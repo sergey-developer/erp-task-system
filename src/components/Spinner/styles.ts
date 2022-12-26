@@ -22,10 +22,11 @@ type SpinnerStyledProps = {
 }
 
 export const SpinnerStyled = styled(Spin)<SpinnerStyledProps>`
+  display: flex;
+
   ${({ $dimension }) =>
     $dimension
       ? `
-        display: flex;
         flex-direction: column;
         ${dimensionStyles[$dimension]}`
       : ''}

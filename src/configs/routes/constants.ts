@@ -3,8 +3,9 @@ export enum RoutesEnum {
   Login = '/login',
   ForgotPassword = '/forgotPassword',
   RecoveryPassword = '/recoveryPassword',
-  TaskList = '/tasks/view',
+  TaskList = '/tasks',
   WorkingGroups = '/workingGroups',
+  TaskMonitoring = '/monitoring/tasks',
   AdminPanel = '/adminPanel',
   NotFound = '*',
 }
