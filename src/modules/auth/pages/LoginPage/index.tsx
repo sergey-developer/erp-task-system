@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import Space from 'components/Space'
 import { RoutesEnum } from 'configs/routes'
-import useLogin from 'modules/auth/features/Login/hooks/useLogin'
+import { useLogin } from 'modules/auth/hooks'
 import { APP_NAME } from 'shared/constants/common'
 import { ErrorResponse } from 'shared/services/api'
 import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'

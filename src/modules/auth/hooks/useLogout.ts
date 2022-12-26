@@ -2,13 +2,13 @@ import { useCallback } from 'react'
 
 import { useLogoutMutation } from 'modules/auth/services/authApi.service'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
-import logoutAndClearTokens from 'modules/auth/utils/logoutAndClearTokens'
+import { logoutAndClearTokens } from 'modules/auth/utils'
 import useDispatch from 'shared/hooks/useDispatch'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { LOGOUT_ERROR_MSG } from '../constants/messages'
+import { LOGOUT_ERROR_MSG } from '../features/Logout/constants/messages'
 
-const useLogout = () => {
+export const useLogout = () => {
   const dispatch = useDispatch()
   const [mutation, state] = useLogoutMutation()
 
@@ -29,5 +29,3 @@ const useLogout = () => {
 
   return { fn, state }
 }
-
-export default useLogout

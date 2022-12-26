@@ -8,10 +8,8 @@ import { isAuthenticatedSelector } from '../selectors'
  * Хук возвращающий значение, авторизован пользователь или нет
  */
 
-const useIsAuthenticated = (): boolean => {
+export const useIsAuthenticated = (): boolean => {
   const isAuthenticated = useSelector(isAuthenticatedSelector)
 
   return useMemo(() => isAuthenticated, [isAuthenticated])
 }
-
-export default useIsAuthenticated

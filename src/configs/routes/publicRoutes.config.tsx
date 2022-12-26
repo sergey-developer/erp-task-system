@@ -9,13 +9,6 @@ const LoginPage = React.lazy(
   () => import('modules/auth/features/Login/components/LoginPage'),
 )
 
-const ForgotPasswordPage = React.lazy(
-  () =>
-    import(
-      'modules/auth/features/ForgotPassword/components/ForgotPasswordPage'
-    ),
-)
-
 export default [
   {
     path: RoutesEnum.Root,
@@ -28,10 +21,6 @@ export default [
       {
         path: RoutesEnum.Login,
         element: <LoginPage />,
-      },
-      {
-        path: RoutesEnum.ForgotPassword,
-        element: <ForgotPasswordPage />,
       },
       {
         path: RoutesEnum.NotFound,

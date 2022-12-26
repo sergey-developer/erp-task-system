@@ -18,11 +18,11 @@ import {
 import { screen, within } from '@testing-library/react'
 import { RoutesEnum } from 'configs/routes'
 import authFixtures from 'fixtures/auth'
-import LoginPage from 'modules/auth/features/Login/components/LoginPage'
 import {
   LOGIN_BAD_REQUEST_ERROR_MSG,
   LOGIN_WRONG_DATA_ERROR_MSG,
 } from 'modules/auth/features/Login/constants/messages'
+import LoginPage from 'modules/auth/pages/LoginPage'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { HttpCodeEnum } from 'shared/constants/http'
 import {

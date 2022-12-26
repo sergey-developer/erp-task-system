@@ -15,7 +15,7 @@ type UseAuthenticatedUserReturnType = MaybeNull<{
   Хук возвращает авторизованного пользователя
  */
 
-const useAuthenticatedUser = (): UseAuthenticatedUserReturnType => {
+export const useAuthenticatedUser = (): UseAuthenticatedUserReturnType => {
   const authenticatedUser = useSelector(authenticatedUserSelector)
 
   return useMemo(() => {
@@ -24,5 +24,3 @@ const useAuthenticatedUser = (): UseAuthenticatedUserReturnType => {
       : null
   }, [authenticatedUser])
 }
-
-export default useAuthenticatedUser

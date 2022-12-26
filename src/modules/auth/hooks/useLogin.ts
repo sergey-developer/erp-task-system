@@ -9,7 +9,7 @@ import authLocalStorageService from 'modules/auth/services/authLocalStorage.serv
 import parseJwt from 'modules/auth/utils/parseJwt'
 import useDispatch from 'shared/hooks/useDispatch'
 
-const useLogin = () => {
+export const useLogin = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [mutation, state] = useLoginMutation()
@@ -29,5 +29,3 @@ const useLogin = () => {
 
   return { fn, state }
 }
-
-export default useLogin
