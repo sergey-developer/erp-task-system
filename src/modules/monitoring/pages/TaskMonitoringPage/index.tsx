@@ -109,7 +109,7 @@ const TaskMonitoringPage: FC = () => {
                 ))}
               </Tabs>
             ) : (
-              <Text>Данных нет</Text>
+              <Text>По вашему запросу ничего не найдено</Text>
             )}
           </LoadingArea>
         </Col>
