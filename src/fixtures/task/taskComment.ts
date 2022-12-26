@@ -2,7 +2,7 @@ import times from 'lodash/times'
 
 import { generateDateString, generateId, generateWord } from '_tests_/utils'
 import commonFixtures from 'fixtures/common'
-import { TaskCommentModel } from 'modules/task/features/TaskView/models'
+import { TaskCommentModel } from 'modules/task/models'
 
 export const getTaskComment = (): TaskCommentModel => ({
   id: generateId(),

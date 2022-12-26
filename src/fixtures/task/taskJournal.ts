@@ -6,10 +6,7 @@ import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
 } from 'modules/task/constants/common'
-import {
-  TaskJournalEntryModel,
-  TaskJournalModel,
-} from 'modules/task/features/TaskView/models'
+import { TaskJournalEntryModel, TaskJournalModel } from 'modules/task/models'
 
 export const getTaskJournalEntry = (
   props?: Partial<Pick<TaskJournalEntryModel, 'type' | 'sourceSystem'>>,

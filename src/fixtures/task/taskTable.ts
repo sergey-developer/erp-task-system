@@ -11,7 +11,7 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
-import { TaskTableListItem } from 'modules/task/features/TaskList/components/TaskTable/interfaces'
+import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
 
 import workGroupFixtures from '../workGroup'
 import { getTaskAssignee } from './taskAssignee'

@@ -2,7 +2,7 @@ import { TaskEndpointTagEnum } from 'modules/task/constants/api'
 import {
   UpdateTaskAssigneeMutationArgsModel,
   UpdateTaskAssigneeResponseModel,
-} from 'modules/task/features/TaskView/models'
+} from 'modules/task/models'
 import { getTaskAssigneeUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 

@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import { getWorkGroup } from './workGroup'
 

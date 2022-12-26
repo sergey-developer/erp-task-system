@@ -3,7 +3,7 @@ import {
   GetTaskJournalCsvResponseModel,
   GetTaskJournalQueryArgsModel,
   GetTaskJournalResponseModel,
-} from 'modules/task/features/TaskView/models'
+} from 'modules/task/models'
 import {
   getTaskJournalCsvUrl,
   getTaskJournalUrl,

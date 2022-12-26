@@ -2,7 +2,7 @@ import { Button } from 'antd'
 import React, { FC } from 'react'
 
 import { LogoutIcon } from 'components/Icons'
-import useLogout from 'modules/auth/features/Logout/hooks/useLogout'
+import { useLogout } from 'modules/auth/hooks'
 
 const LogoutButton: FC = () => {
   const {

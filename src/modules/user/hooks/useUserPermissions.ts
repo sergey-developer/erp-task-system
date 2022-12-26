@@ -7,7 +7,9 @@ import {
 } from 'shared/interfaces/permissions'
 import getPermissionsMap from 'shared/utils/permissions/getPermissionsMap'
 
-const useUserPermissions = (config: UserPermissionConfig): PermissionsMap => {
+export const useUserPermissions = (
+  config: UserPermissionConfig,
+): PermissionsMap => {
   const user = useAuthenticatedUser()
 
   return useMemo(() => {
@@ -15,5 +17,3 @@ const useUserPermissions = (config: UserPermissionConfig): PermissionsMap => {
     return getPermissionsMap(permissions)
   }, [config, user])
 }
-
-export default useUserPermissions

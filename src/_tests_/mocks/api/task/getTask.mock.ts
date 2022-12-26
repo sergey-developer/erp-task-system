@@ -3,7 +3,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 import {
   GetTaskQueryArgsModel,
   GetTaskResponseModel,
-} from 'modules/task/features/TaskView/models'
+} from 'modules/task/models'
 import { getTaskUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 

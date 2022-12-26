@@ -3,7 +3,7 @@ import {
   CreateTaskCommentResponseModel,
   GetTaskCommentListQueryArgsModel,
   GetTaskCommentListResponseModel,
-} from 'modules/task/features/TaskView/models'
+} from 'modules/task/models'
 import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'

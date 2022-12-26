@@ -1,6 +1,14 @@
 import {
+  CancelSubTaskMutationArgsModel,
+  CancelSubTaskResponseModel,
+  CreateSubTaskMutationArgsModel,
+  CreateSubTaskResponseModel,
   GetSubTaskListQueryArgsModel,
   GetSubTaskListResponseModel,
+  GetSubTaskTemplateListQueryArgsModel,
+  GetSubTaskTemplateListResponseModel,
+  ReworkSubTaskMutationArgsModel,
+  ReworkSubTaskResponseModel,
   SubTaskModel,
 } from 'modules/subTask/models'
 import {
@@ -15,16 +23,6 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
 import { SubTaskEndpointNameEnum } from '../constants/api'
-import {
-  CancelSubTaskMutationArgsModel,
-  CancelSubTaskResponseModel,
-  CreateSubTaskMutationArgsModel,
-  CreateSubTaskResponseModel,
-  GetSubTaskTemplateListQueryArgsModel,
-  GetSubTaskTemplateListResponseModel,
-  ReworkSubTaskMutationArgsModel,
-  ReworkSubTaskResponseModel,
-} from '../models'
 
 const subTaskApiService = apiService.injectEndpoints({
   endpoints: (build) => ({

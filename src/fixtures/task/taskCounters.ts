@@ -1,5 +1,5 @@
 import { generateInteger } from '_tests_/utils'
-import { GetTaskCountersResponseModel } from 'modules/task/features/TaskList/models'
+import { GetTaskCountersResponseModel } from 'modules/task/models'
 
 export const getGetTaskCountersResponse = (): GetTaskCountersResponseModel => ({
   all: generateInteger({ min: 1, max: 10 }),

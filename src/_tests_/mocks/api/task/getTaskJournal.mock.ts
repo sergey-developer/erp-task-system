@@ -4,7 +4,7 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { GetTaskJournalResponseModel } from 'modules/task/features/TaskView/models'
+import { GetTaskJournalResponseModel } from 'modules/task/models'
 import {
   getTaskJournalCsvUrl,
   getTaskJournalUrl,

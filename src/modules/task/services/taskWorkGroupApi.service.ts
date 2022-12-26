@@ -4,7 +4,7 @@ import {
   DeleteTaskWorkGroupResponseModel,
   UpdateTaskWorkGroupMutationArgsModel,
   UpdateTaskWorkGroupResponseModel,
-} from 'modules/task/features/TaskView/models'
+} from 'modules/task/models'
 import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 

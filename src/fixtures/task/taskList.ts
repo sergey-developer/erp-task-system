@@ -17,7 +17,7 @@ import {
 import {
   GetTaskListResponseModel,
   TaskListItemModel,
-} from 'modules/task/features/TaskList/models'
+} from 'modules/task/models'
 
 import { getTaskAssignee } from './taskAssignee'
 

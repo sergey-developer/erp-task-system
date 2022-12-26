@@ -1,6 +1,6 @@
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { GetTaskCommentListResponseModel } from 'modules/task/features/TaskView/models'
+import { GetTaskCommentListResponseModel } from 'modules/task/models'
 import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 

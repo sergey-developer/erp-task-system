@@ -3,21 +3,19 @@ import {
   TaskEndpointNameEnum,
   TaskEndpointTagEnum,
 } from 'modules/task/constants/api'
-import { GetTaskListTransformedResponse } from 'modules/task/features/TaskList/interfaces'
+import { GetTaskListTransformedResponse } from 'modules/task/interfaces'
 import {
   GetTaskCountersQueryArgsModel,
   GetTaskCountersResponseModel,
   GetTaskListQueryArgsModel,
   GetTaskListResponseModel,
-} from 'modules/task/features/TaskList/models'
-import {
   GetTaskQueryArgsModel,
   GetTaskResponseModel,
   ResolveTaskMutationArgsModel,
   ResolveTaskResponseModel,
   TakeTaskMutationArgsModel,
   TakeTaskResponseModel,
-} from 'modules/task/features/TaskView/models'
+} from 'modules/task/models'
 import {
   getResolveTaskUrl,
   getTakeTaskUrl,
