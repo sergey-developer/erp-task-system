@@ -18,7 +18,6 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import { formatDate } from 'shared/utils/date'
 
 import { TaskTableListItem } from '../interfaces'
-import { statusSorter } from '../utils'
 
 const { Text } = Typography
 
@@ -121,7 +120,7 @@ export const getTableColumns = (
       dataIndex: 'status',
       title: 'Статус',
       ellipsis: true,
-      sorter: statusSorter,
+      // sorter: statusSorter, временно отключена сортировка
       render: (_, { status }) => taskStatusDict[status],
     },
     {
