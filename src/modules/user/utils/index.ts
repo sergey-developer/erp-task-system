@@ -1,4 +1,4 @@
-export * from './getUserRole'
+export * from './getUserRoleMap'
 export * from './getUserAbbr'
 export * from './getFullUserName'
 export * from './getShortUserName'
