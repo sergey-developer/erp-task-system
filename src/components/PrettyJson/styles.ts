@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const JsonStyled = styled.pre`
+export const PrettyJsonStyled = styled.pre`
   background: #1f4662;
   color: #fff;
   margin: 0;

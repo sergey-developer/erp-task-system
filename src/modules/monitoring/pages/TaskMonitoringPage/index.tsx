@@ -2,10 +2,10 @@ import { Col, Input, Row, Tabs, Typography } from 'antd'
 import { FC, useState } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
+import PrettyJson from 'components/PrettyJson'
 import Space from 'components/Space'
 
 import { useGetTaskMonitoringQuery } from '../../services/monitoringApi.service'
-import { JsonStyled } from './styles'
 
 const { Search } = Input
 const { Text } = Typography
@@ -104,7 +104,7 @@ const TaskMonitoringPage: FC = () => {
               <Tabs tabPosition='left'>
                 {monitoringData.map((item, index) => (
                   <Tabs.TabPane key={index} tab={item.title}>
-                    <JsonStyled>{item.data}</JsonStyled>
+                    <PrettyJson data={item.data} />
                   </Tabs.TabPane>
                 ))}
               </Tabs>
