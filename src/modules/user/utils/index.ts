@@ -1,3 +1,4 @@
+export * from './getUserRole'
 export * from './getUserAbbr'
 export * from './getFullUserName'
 export * from './getShortUserName'

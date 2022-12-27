@@ -8,10 +8,15 @@ import { NumberOrString } from 'shared/interfaces/utils'
 import { paginationConfig } from '../constants/pagination'
 import testConstants from './constants'
 
-const getTable = () => screen.getByTestId('table-task-list')
+const getContainer = () => screen.getByTestId('table-task-list')
+
+const getChildByText = (text: string) => within(getContainer()).getByText(text)
+
+const queryChildByText = (text: string) =>
+  within(getContainer()).queryByText(text)
 
 const getRow = (id: number) =>
-  getTable().querySelector(`[data-row-key='${id}']`)
+  getContainer().querySelector(`[data-row-key='${id}']`)
 
 const userClickRow = async (user: UserEvent, id: number) => {
   const row = getRow(id)
@@ -19,19 +24,20 @@ const userClickRow = async (user: UserEvent, id: number) => {
   return row
 }
 
-const getTextInTable = (text: string) => within(getTable()).getByText(text)
-
 const getHeadCol = (text: string) => {
-  return getTextInTable(text).parentElement?.parentElement!
+  return getChildByText(text).parentElement?.parentElement!
 }
 
+const getColTitle = getChildByText
+const queryColTitle = queryChildByText
+
 const userClickColTitle = async (user: UserEvent, text: string) => {
-  const col = getTextInTable(text)
+  const col = getChildByText(text)
   await user.click(col)
   return col
 }
 
-const getPaginationContainer = () => within(getTable()).getByRole('list')
+const getPaginationContainer = () => within(getContainer()).getByRole('list')
 
 const getPaginationNextButton = () =>
   within(getPaginationContainer()).getByRole('button', {
@@ -100,13 +106,13 @@ const userChangePageSize = async (
 }
 
 const loadingStarted = async () => {
-  const taskTable = getTable()
+  const taskTable = getContainer()
   await loadingStartedByIconIn(taskTable)
   return taskTable
 }
 
 const loadingFinished = async () => {
-  const taskTable = getTable()
+  const taskTable = getContainer()
   await loadingFinishedByIconIn(taskTable)
   return taskTable
 }
@@ -123,11 +129,13 @@ const onChangeTableArgs = {
 }
 
 const utils = {
-  getTable,
+  getContainer,
   getRow,
   userClickRow,
-  getTextInTable,
+  getChildByText,
   getHeadCol,
+  getColTitle,
+  queryColTitle,
   getPaginationContainer,
   getPaginationNextButton,
   getPaginationPrevButton,

@@ -19,6 +19,7 @@ import {
   TaskListItemModel,
 } from 'modules/task/models'
 
+import taskFixtures from './index'
 import { getTaskAssignee } from './taskAssignee'
 
 export const getTaskListItem = (
@@ -47,6 +48,7 @@ export const getTaskListItem = (
   createdAt: generateDateString(),
   recordId: generateWord(),
   workGroup: workGroupFixtures.getWorkGroup(),
+  supportGroup: taskFixtures.getSupportGroup(),
   title: generateWord(),
   name: generateWord(),
   productClassifier1: generateWord(),

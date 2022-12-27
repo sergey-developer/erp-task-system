@@ -14,7 +14,7 @@ import {
 import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
 
 import workGroupFixtures from '../workGroup'
-import { getTaskAssignee } from './taskAssignee'
+import taskFixtures from './index'
 
 export const getTaskTableItem = (
   props?: Partial<
@@ -25,13 +25,14 @@ export const getTaskTableItem = (
   name: generateName(),
   title: generateWord(),
   workGroup: workGroupFixtures.getWorkGroup(),
+  supportGroup: taskFixtures.getSupportGroup(),
   createdAt: generateDateString(),
   recordId: generateWord(),
   lastComment: generateWord(),
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
-  assignee: getTaskAssignee(),
+  assignee: taskFixtures.getTaskAssignee(),
   olaNextBreachTime: generateDateString(),
 })
 
