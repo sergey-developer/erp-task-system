@@ -15,6 +15,7 @@ import {
 import { TaskModel } from 'modules/task/models'
 import { UserRolesEnum } from 'shared/constants/roles'
 
+import { NonNullableObject } from '../../../../../shared/interfaces/utils'
 import AssigneeBlock, { AssigneeBlockProps } from './index'
 
 const requiredProps: Readonly<
@@ -58,6 +59,19 @@ const activeAssignOnMeButtonProps: Readonly<
   extendedStatus: TaskExtendedStatusEnum.New,
 }
 
+const showRefuseTaskButtonProps: Readonly<
+  NonNullableObject<Pick<TaskModel, 'assignee'>>
+> = {
+  assignee: taskFixtures.getTaskAssignee(),
+}
+
+const activeRefuseTaskButtonProps: Readonly<
+  Pick<TaskModel, 'status' | 'extendedStatus'>
+> = {
+  status: TaskStatusEnum.New,
+  extendedStatus: TaskExtendedStatusEnum.New,
+}
+
 const getContainer = () => screen.getByTestId('task-assignee-block')
 
 const getChildByText = (text: string | RegExp) =>
@@ -80,6 +94,15 @@ const userClickAssignOnMeButton = async (user: UserEvent) => {
   return button
 }
 
+const getRefuseTaskButton = () =>
+  getButtonIn(getContainer(), /отказаться от заявки/i)
+
+const userClickRefuseTaskButton = async (user: UserEvent) => {
+  const button = getRefuseTaskButton()
+  await user.click(button)
+  return button
+}
+
 export const testUtils = {
   getContainer,
   getChildByText,
@@ -93,6 +116,11 @@ export const testUtils = {
   userClickAssignOnMeButton,
   assignOnMeExpectLoadingStarted: () =>
     loadingStartedByButton(getAssignOnMeButton()),
+
+  getRefuseTaskButton,
+  userClickRefuseTaskButton,
+  refuseTaskExpectLoadingStarted: () =>
+    loadingStartedByButton(getRefuseTaskButton()),
 }
 
 describe('Блок "Исполнитель заявки"', () => {
@@ -206,8 +234,8 @@ describe('Блок "Исполнитель заявки"', () => {
       const { user } = render(
         <AssigneeBlock
           {...requiredProps}
+          {...showAssignOnMeButtonProps}
           {...activeAssignOnMeButtonProps}
-          assignee={null}
         />,
         { store: getStoreWithAuth({ userId: currentUserId }) },
       )
@@ -216,6 +244,129 @@ describe('Блок "Исполнитель заявки"', () => {
 
       expect(requiredProps.updateAssignee).toBeCalledTimes(1)
       expect(requiredProps.updateAssignee).toBeCalledWith(currentUserId)
+    })
+  })
+
+  describe('Кнопка "Отказаться от заявки"', () => {
+    test('Отображается', () => {
+      render(
+        <AssigneeBlock {...requiredProps} {...showRefuseTaskButtonProps} />,
+        {
+          store: getStoreWithAuth({
+            userId: showRefuseTaskButtonProps.assignee.id,
+          }),
+        },
+      )
+
+      expect(testUtils.getRefuseTaskButton()).toBeInTheDocument()
+    })
+
+    test('Отображает состояние загрузки', async () => {
+      render(
+        <AssigneeBlock
+          {...requiredProps}
+          {...showRefuseTaskButtonProps}
+          updateAssigneeIsLoading
+        />,
+        {
+          store: getStoreWithAuth({
+            userId: showRefuseTaskButtonProps.assignee.id,
+          }),
+        },
+      )
+
+      await testUtils.refuseTaskExpectLoadingStarted()
+    })
+
+    test('Активна если условия соблюдены', () => {
+      render(
+        <AssigneeBlock
+          {...requiredProps}
+          {...showRefuseTaskButtonProps}
+          {...activeRefuseTaskButtonProps}
+        />,
+        {
+          store: getStoreWithAuth({
+            userId: showRefuseTaskButtonProps.assignee.id,
+          }),
+        },
+      )
+
+      expect(testUtils.getRefuseTaskButton()).toBeEnabled()
+    })
+
+    describe('Не активна если условия соблюдены', () => {
+      test('Но статус заявки "Закрыта"', () => {
+        render(
+          <AssigneeBlock
+            {...requiredProps}
+            {...showRefuseTaskButtonProps}
+            {...activeRefuseTaskButtonProps}
+            status={TaskStatusEnum.Closed}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: showRefuseTaskButtonProps.assignee.id,
+            }),
+          },
+        )
+
+        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+      })
+
+      test('Но статус заявки "Завершена"', () => {
+        render(
+          <AssigneeBlock
+            {...requiredProps}
+            {...showRefuseTaskButtonProps}
+            {...activeRefuseTaskButtonProps}
+            status={TaskStatusEnum.Completed}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: showRefuseTaskButtonProps.assignee.id,
+            }),
+          },
+        )
+
+        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+      })
+
+      test('Но статус заявки "В ожидании"', () => {
+        render(
+          <AssigneeBlock
+            {...requiredProps}
+            {...showRefuseTaskButtonProps}
+            {...activeRefuseTaskButtonProps}
+            status={TaskStatusEnum.Awaiting}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: showRefuseTaskButtonProps.assignee.id,
+            }),
+          },
+        )
+
+        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+      })
+
+      test('Но расширенный статус заявки "На переклассификации"', () => {
+        render(
+          <AssigneeBlock
+            {...requiredProps}
+            {...showRefuseTaskButtonProps}
+            {...activeRefuseTaskButtonProps}
+            extendedStatus={TaskExtendedStatusEnum.InReclassification}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: showRefuseTaskButtonProps.assignee.id,
+            }),
+          },
+        )
+
+        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+      })
     })
   })
 
