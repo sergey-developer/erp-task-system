@@ -6,11 +6,12 @@ import {
 } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'
+import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import { UserRolesEnum } from 'shared/constants/roles'
 import formatDate from 'shared/utils/date/formatDate'
 
-import { DEFAULT_PAGE_SIZE } from '../../../pages/TaskListPage/constants'
 import { paginationConfig } from '../constants/pagination'
 import TaskTable from '../index'
 import taskTableTestConstants from './constants'
@@ -31,7 +32,7 @@ describe('Таблица заявок', () => {
       />,
     )
 
-    const table = taskTableTestUtils.getTable()
+    const table = taskTableTestUtils.getContainer()
 
     expect(table).toBeInTheDocument()
     tableItems.forEach((item) => {
@@ -209,14 +210,14 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getTextInTable('Заявка')).toBeInTheDocument()
+        expect(taskTableTestUtils.getColTitle('Заявка')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable(
+          taskTableTestUtils.getChildByText(
             String(taskTableTestConstants.firstTaskTableItem.id),
           ),
         ).toBeInTheDocument()
@@ -270,16 +271,14 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(
-          taskTableTestUtils.getTextInTable('Внеш.номер'),
-        ).toBeInTheDocument()
+        expect(taskTableTestUtils.getColTitle('Внеш.номер')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable(
+          taskTableTestUtils.getChildByText(
             taskTableTestConstants.firstTaskTableItem.recordId,
           ),
         ).toBeInTheDocument()
@@ -334,14 +333,14 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getTextInTable('Объект')).toBeInTheDocument()
+        expect(taskTableTestUtils.getColTitle('Объект')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable(
+          taskTableTestUtils.getChildByText(
             taskTableTestConstants.firstTaskTableItem.name,
           ),
         ).toBeInTheDocument()
@@ -395,14 +394,14 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getTextInTable('Тема')).toBeInTheDocument()
+        expect(taskTableTestUtils.getColTitle('Тема')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable(
+          taskTableTestUtils.getChildByText(
             taskTableTestConstants.firstTaskTableItem.title,
           ),
         ).toBeInTheDocument()
@@ -457,7 +456,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable('Исполнитель'),
+          taskTableTestUtils.getColTitle('Исполнитель'),
         ).toBeInTheDocument()
       })
 
@@ -465,7 +464,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable(
+          taskTableTestUtils.getChildByText(
             getShortUserName(
               taskTableTestConstants.firstTaskTableItem.assignee,
             ),
@@ -518,79 +517,486 @@ describe('Таблица заявок', () => {
     })
 
     describe('Рабочая группа', () => {
-      test('Отображает заголовок', () => {
-        render(<TaskTable {...taskTableTestConstants.requiredProps} />)
+      describe('Роль - первая линия поддержки', () => {
+        test('Не отображает заголовок', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.FirstLineSupport}
+            />,
+          )
 
-        expect(
-          taskTableTestUtils.getTextInTable('Рабочая группа'),
-        ).toBeInTheDocument()
+          expect(
+            taskTableTestUtils.queryColTitle('Рабочая группа'),
+          ).not.toBeInTheDocument()
+        })
       })
 
-      test('Отображает значение если оно присутствует', () => {
-        render(<TaskTable {...taskTableTestConstants.requiredProps} />)
+      describe('Роль - инженер', () => {
+        test('Отображает заголовок', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.Engineer}
+            />,
+          )
 
-        expect(
-          taskTableTestUtils.getTextInTable(
-            taskTableTestConstants.firstTaskTableItem.workGroup!.name,
-          ),
-        ).toBeInTheDocument()
+          expect(
+            taskTableTestUtils.getColTitle('Рабочая группа'),
+          ).toBeInTheDocument()
+        })
+
+        test('Отображает значение если оно присутствует', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.Engineer}
+            />,
+          )
+
+          expect(
+            taskTableTestUtils.getChildByText(
+              taskTableTestConstants.firstTaskTableItem.workGroup!.name,
+            ),
+          ).toBeInTheDocument()
+        })
+
+        test('Отображает резервный текст если значение отсутствует', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              dataSource={[
+                {
+                  ...taskTableTestConstants.firstTaskTableItem,
+                  workGroup: null,
+                },
+              ]}
+              userRole={UserRolesEnum.Engineer}
+            />,
+          )
+
+          expect(
+            taskTableTestUtils.getChildByText('I линия поддержки'),
+          ).toBeInTheDocument()
+        })
+
+        test('Сортировка включена', async () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.Engineer}
+            />,
+          )
+
+          const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+          expect(headCol).toHaveClass(
+            taskTableTestConstants.columnWithSortingClass,
+          )
+        })
+
+        test('Значение сортировки по умолчанию не установлено', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.Engineer}
+            />,
+          )
+
+          const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+          expect(headCol).not.toHaveAttribute('aria-sort')
+        })
+
+        test('При клике на заголовок обработчик вызывается корректно', async () => {
+          const { user } = render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.Engineer}
+            />,
+          )
+
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+          expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(
+            1,
+          )
+        })
+
+        test('Сортировка работает корректно', async () => {
+          const { user } = render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.Engineer}
+            />,
+          )
+
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+          const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+          expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+          expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+          taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
+        })
       })
 
-      test('Отображает резервный текст если оно отсутствует', () => {
-        render(
-          <TaskTable
-            {...taskTableTestConstants.requiredProps}
-            dataSource={[
-              { ...taskTableTestConstants.firstTaskTableItem, workGroup: null },
-            ]}
-          />,
-        )
+      describe('Роль - старший инженер', () => {
+        test('Отображает заголовок', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.SeniorEngineer}
+            />,
+          )
 
-        expect(
-          taskTableTestUtils.getTextInTable('I линия поддержки'),
-        ).toBeInTheDocument()
+          expect(
+            taskTableTestUtils.getColTitle('Рабочая группа'),
+          ).toBeInTheDocument()
+        })
+
+        test('Отображает значение если оно присутствует', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.SeniorEngineer}
+            />,
+          )
+
+          expect(
+            taskTableTestUtils.getChildByText(
+              taskTableTestConstants.firstTaskTableItem.workGroup!.name,
+            ),
+          ).toBeInTheDocument()
+        })
+
+        test('Отображает резервный текст если значение отсутствует', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              dataSource={[
+                {
+                  ...taskTableTestConstants.firstTaskTableItem,
+                  workGroup: null,
+                },
+              ]}
+              userRole={UserRolesEnum.SeniorEngineer}
+            />,
+          )
+
+          expect(
+            taskTableTestUtils.getChildByText('I линия поддержки'),
+          ).toBeInTheDocument()
+        })
+
+        test('Сортировка включена', async () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.SeniorEngineer}
+            />,
+          )
+
+          const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+          expect(headCol).toHaveClass(
+            taskTableTestConstants.columnWithSortingClass,
+          )
+        })
+
+        test('Значение сортировки по умолчанию не установлено', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.SeniorEngineer}
+            />,
+          )
+
+          const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+          expect(headCol).not.toHaveAttribute('aria-sort')
+        })
+
+        test('При клике на заголовок обработчик вызывается корректно', async () => {
+          const { user } = render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.SeniorEngineer}
+            />,
+          )
+
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+          expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(
+            1,
+          )
+        })
+
+        test('Сортировка работает корректно', async () => {
+          const { user } = render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.SeniorEngineer}
+            />,
+          )
+
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+          const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+          expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+          expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+          taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
+        })
       })
 
-      test('Сортировка включена', async () => {
-        render(<TaskTable {...taskTableTestConstants.requiredProps} />)
+      describe('Роль - глава отдела', () => {
+        test('Отображает заголовок', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.HeadOfDepartment}
+            />,
+          )
 
-        const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
-        expect(headCol).toHaveClass(
-          taskTableTestConstants.columnWithSortingClass,
-        )
+          expect(
+            taskTableTestUtils.getColTitle('Рабочая группа'),
+          ).toBeInTheDocument()
+        })
+
+        test('Отображает значение если оно присутствует', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.HeadOfDepartment}
+            />,
+          )
+
+          expect(
+            taskTableTestUtils.getChildByText(
+              taskTableTestConstants.firstTaskTableItem.workGroup!.name,
+            ),
+          ).toBeInTheDocument()
+        })
+
+        test('Отображает резервный текст если значение отсутствует', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              dataSource={[
+                {
+                  ...taskTableTestConstants.firstTaskTableItem,
+                  workGroup: null,
+                },
+              ]}
+              userRole={UserRolesEnum.HeadOfDepartment}
+            />,
+          )
+
+          expect(
+            taskTableTestUtils.getChildByText('I линия поддержки'),
+          ).toBeInTheDocument()
+        })
+
+        test('Сортировка включена', async () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.HeadOfDepartment}
+            />,
+          )
+
+          const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+          expect(headCol).toHaveClass(
+            taskTableTestConstants.columnWithSortingClass,
+          )
+        })
+
+        test('Значение сортировки по умолчанию не установлено', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.HeadOfDepartment}
+            />,
+          )
+
+          const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+          expect(headCol).not.toHaveAttribute('aria-sort')
+        })
+
+        test('При клике на заголовок обработчик вызывается корректно', async () => {
+          const { user } = render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.HeadOfDepartment}
+            />,
+          )
+
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+          expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(
+            1,
+          )
+        })
+
+        test('Сортировка работает корректно', async () => {
+          const { user } = render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.HeadOfDepartment}
+            />,
+          )
+
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+          const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
+          expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+          expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+          taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
+        })
+      })
+    })
+
+    describe('Группа поддержки', () => {
+      describe('Роль - первая линия поддержки', () => {
+        test('Отображает заголовок', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.FirstLineSupport}
+            />,
+          )
+
+          expect(
+            taskTableTestUtils.getColTitle('Группа поддержки'),
+          ).toBeInTheDocument()
+        })
+
+        test('Отображает значение', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.FirstLineSupport}
+            />,
+          )
+
+          expect(
+            taskTableTestUtils.getChildByText(
+              taskTableTestConstants.firstTaskTableItem.supportGroup.name,
+            ),
+          ).toBeInTheDocument()
+        })
+
+        test('Сортировка включена', async () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.FirstLineSupport}
+            />,
+          )
+
+          const headCol = taskTableTestUtils.getHeadCol('Группа поддержки')
+          expect(headCol).toHaveClass(
+            taskTableTestConstants.columnWithSortingClass,
+          )
+        })
+
+        test('Значение сортировки по умолчанию не установлено', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.FirstLineSupport}
+            />,
+          )
+
+          const headCol = taskTableTestUtils.getHeadCol('Группа поддержки')
+          expect(headCol).not.toHaveAttribute('aria-sort')
+        })
+
+        test('При клике на заголовок обработчик вызывается корректно', async () => {
+          const { user } = render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.FirstLineSupport}
+            />,
+          )
+
+          await taskTableTestUtils.userClickColTitle(user, 'Группа поддержки')
+          expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(
+            1,
+          )
+        })
+
+        test('Сортировка работает корректно', async () => {
+          const { user } = render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.FirstLineSupport}
+            />,
+          )
+
+          await taskTableTestUtils.userClickColTitle(user, 'Группа поддержки')
+          const headCol = taskTableTestUtils.getHeadCol('Группа поддержки')
+          expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+
+          await taskTableTestUtils.userClickColTitle(user, 'Группа поддержки')
+          expect(headCol).toHaveAttribute('aria-sort', 'descending')
+
+          taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
+            const row = taskTableTestUtils.getRow(item.id)
+            expect(row).toBeInTheDocument()
+          })
+        })
       })
 
-      test('Значение сортировки по умолчанию не установлено', () => {
-        render(<TaskTable {...taskTableTestConstants.requiredProps} />)
+      describe('Роль - инженер', () => {
+        test('Не отображает заголовок', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.Engineer}
+            />,
+          )
 
-        const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
-        expect(headCol).not.toHaveAttribute('aria-sort')
+          expect(
+            taskTableTestUtils.queryColTitle('Группа поддержки'),
+          ).not.toBeInTheDocument()
+        })
       })
 
-      test('При клике на заголовок обработчик вызывается корректно', async () => {
-        const { user } = render(
-          <TaskTable {...taskTableTestConstants.requiredProps} />,
-        )
+      describe('Роль - старший инженер', () => {
+        test('Не отображает заголовок', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.SeniorEngineer}
+            />,
+          )
 
-        await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
-        expect(taskTableTestConstants.requiredProps.onChange).toBeCalledTimes(1)
+          expect(
+            taskTableTestUtils.queryColTitle('Группа поддержки'),
+          ).not.toBeInTheDocument()
+        })
       })
 
-      test('Сортировка работает корректно', async () => {
-        const { user } = render(
-          <TaskTable {...taskTableTestConstants.requiredProps} />,
-        )
+      describe('Роль - глава отдела', () => {
+        test('Не отображает заголовок', () => {
+          render(
+            <TaskTable
+              {...taskTableTestConstants.requiredProps}
+              userRole={UserRolesEnum.HeadOfDepartment}
+            />,
+          )
 
-        await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
-        const headCol = taskTableTestUtils.getHeadCol('Рабочая группа')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
-
-        await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
-
-        taskTableTestConstants.requiredProps.dataSource.forEach((item) => {
-          const row = taskTableTestUtils.getRow(item.id)
-          expect(row).toBeInTheDocument()
+          expect(
+            taskTableTestUtils.queryColTitle('Группа поддержки'),
+          ).not.toBeInTheDocument()
         })
       })
     })
@@ -600,7 +1006,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable('Выполнить до'),
+          taskTableTestUtils.getColTitle('Выполнить до'),
         ).toBeInTheDocument()
       })
 
@@ -608,7 +1014,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable(
+          taskTableTestUtils.getChildByText(
             formatDate(
               taskTableTestConstants.firstTaskTableItem.olaNextBreachTime,
               DATE_TIME_FORMAT,
@@ -670,14 +1076,14 @@ describe('Таблица заявок', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
-        expect(taskTableTestUtils.getTextInTable('Статус')).toBeInTheDocument()
+        expect(taskTableTestUtils.getColTitle('Статус')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable(
+          taskTableTestUtils.getChildByText(
             taskStatusDict[taskTableTestConstants.firstTaskTableItem.status],
           ),
         ).toBeInTheDocument()
@@ -732,7 +1138,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable('Комментарий'),
+          taskTableTestUtils.getColTitle('Комментарий'),
         ).toBeInTheDocument()
       })
 
@@ -740,7 +1146,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable(
+          taskTableTestUtils.getChildByText(
             taskTableTestConstants.firstTaskTableItem.lastComment,
           ),
         ).toBeInTheDocument()
@@ -795,7 +1201,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable('Дата создания'),
+          taskTableTestUtils.getColTitle('Дата создания'),
         ).toBeInTheDocument()
       })
 
@@ -803,7 +1209,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...taskTableTestConstants.requiredProps} />)
 
         expect(
-          taskTableTestUtils.getTextInTable(
+          taskTableTestUtils.getChildByText(
             formatDate(
               taskTableTestConstants.firstTaskTableItem.createdAt,
               DATE_TIME_FORMAT,
@@ -1077,7 +1483,7 @@ describe('Таблица заявок', () => {
       )
 
       expect(
-        taskTableTestUtils.getTextInTable(
+        taskTableTestUtils.getChildByText(
           'По заданным параметрам фильтрации ни одна заявка не найдена',
         ),
       ).toBeInTheDocument()

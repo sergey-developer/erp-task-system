@@ -1,6 +1,7 @@
 import { TableProps } from 'antd/es/table/Table'
 
 import { TaskListItemModel } from 'modules/task/models'
+import { UserRolesEnum } from 'shared/constants/roles'
 
 import { SortValue } from './constants/sort'
 
@@ -13,6 +14,7 @@ export type TaskTableListItem = Pick<
   | 'assignee'
   | 'lastComment'
   | 'workGroup'
+  | 'supportGroup'
   | 'olaNextBreachTime'
   | 'olaStatus'
   | 'createdAt'
@@ -48,4 +50,5 @@ export type TaskTableProps = Required<
   >
 > & {
   sort?: SortValue
+  userRole: UserRolesEnum
 }

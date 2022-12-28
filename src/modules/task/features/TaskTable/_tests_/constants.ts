@@ -2,8 +2,9 @@ import { TablePaginationConfig } from 'antd'
 import head from 'lodash/head'
 
 import taskFixtures from 'fixtures/task'
+import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
+import { UserRolesEnum } from 'shared/constants/roles'
 
-import { DEFAULT_PAGE_SIZE } from '../../../pages/TaskListPage/constants'
 import { TaskTableProps } from '../interfaces'
 
 const columnWithSortingClass = 'ant-table-column-has-sorters'
@@ -15,6 +16,7 @@ const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   onChange: jest.fn(),
   pagination: false,
   rowClassName: '',
+  userRole: UserRolesEnum.FirstLineSupport,
 }
 
 const paginationProps: Readonly<

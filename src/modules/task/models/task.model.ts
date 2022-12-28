@@ -13,9 +13,5 @@ export type TaskModel = BaseTaskModel & {
   email?: string
   sapId?: string
   contactType?: string
-  supportGroup?: {
-    id: number
-    name: string
-  }
   workGroup?: MaybeNull<TaskWorkGroupModel>
 }

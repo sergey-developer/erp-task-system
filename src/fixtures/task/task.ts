@@ -12,8 +12,7 @@ import {
 } from 'modules/task/constants/common'
 import { TaskModel } from 'modules/task/models'
 
-import { getTaskAssignee } from './taskAssignee'
-import { getTaskWorkGroup } from './taskWorkGroup'
+import taskFixtures from './index'
 
 export const getTask = (
   props?: Partial<
@@ -34,8 +33,8 @@ export const getTask = (
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
-  workGroup: props?.workGroup || getTaskWorkGroup(),
-  assignee: props?.assignee || getTaskAssignee(),
+  workGroup: props?.workGroup || taskFixtures.getTaskWorkGroup(),
+  assignee: props?.assignee || taskFixtures.getTaskAssignee(),
 
   recordId: generateWord(),
   name: generateWord(),
@@ -57,6 +56,6 @@ export const getTask = (
   productClassifier1: generateWord(),
   productClassifier2: generateWord(),
   productClassifier3: generateWord(),
-  supportGroup: { id: generateId(), name: generateWord() },
+  supportGroup: taskFixtures.getSupportGroup(),
   olaEstimatedTime: Date.now(),
 })
