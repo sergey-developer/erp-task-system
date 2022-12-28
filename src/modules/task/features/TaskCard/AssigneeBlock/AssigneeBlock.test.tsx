@@ -8,14 +8,15 @@ import {
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
-import { TaskModel } from 'modules/task/models'
+import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import { UserRolesEnum } from 'shared/constants/roles'
+import { NonNullableObject } from 'shared/interfaces/utils'
 
-import { NonNullableObject } from '../../../../../shared/interfaces/utils'
 import AssigneeBlock, { AssigneeBlockProps } from './index'
 
 const requiredProps: Readonly<
@@ -42,34 +43,43 @@ const requiredProps: Readonly<
 }
 
 const activeTakeTaskButtonProps: Readonly<
-  Pick<TaskModel, 'status' | 'extendedStatus'>
+  Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>
 > = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
 }
 
-const showAssignOnMeButtonProps: Readonly<Pick<TaskModel, 'assignee'>> = {
+const showAssignOnMeButtonProps: Readonly<
+  Pick<AssigneeBlockProps, 'assignee'>
+> = {
   assignee: null,
 }
 
 const activeAssignOnMeButtonProps: Readonly<
-  Pick<TaskModel, 'status' | 'extendedStatus'>
+  Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>
 > = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
 }
 
 const showRefuseTaskButtonProps: Readonly<
-  NonNullableObject<Pick<TaskModel, 'assignee'>>
+  NonNullableObject<Pick<AssigneeBlockProps, 'assignee'>>
 > = {
   assignee: taskFixtures.getTaskAssignee(),
 }
 
 const activeRefuseTaskButtonProps: Readonly<
-  Pick<TaskModel, 'status' | 'extendedStatus'>
+  Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>
 > = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
+}
+
+const canSelectAssignee: Readonly<
+  NonNullableObject<Pick<AssigneeBlockProps, 'status' | 'workGroup'>>
+> = {
+  status: TaskStatusEnum.New,
+  workGroup: workGroupFixtures.getWorkGroup(),
 }
 
 const getContainer = () => screen.getByTestId('task-assignee-block')
@@ -514,5 +524,157 @@ describe('Блок "Исполнитель заявки"', () => {
       await testUtils.userClickTakeTaskButton(user)
       expect(requiredProps.takeTask).toBeCalledTimes(1)
     })
+  })
+
+  describe('Блок выбора исполнителя', () => {
+    describe('Роль - первая линия поддержки', () => {
+      test('Исполнитель отображается если он есть', () => {
+        render(<AssigneeBlock {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.FirstLineSupport,
+          }),
+        })
+
+        expect(
+          taskAssigneeTestUtils.getContainerIn(testUtils.getContainer()),
+        ).toBeInTheDocument()
+      })
+
+      test('Исполнитель не отображается если его нет', () => {
+        render(<AssigneeBlock {...requiredProps} assignee={null} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.FirstLineSupport,
+          }),
+        })
+
+        expect(
+          taskAssigneeTestUtils.queryContainerIn(testUtils.getContainer()),
+        ).not.toBeInTheDocument()
+      })
+
+      test('Отображается соответствующий текст если исполнителя нет', () => {
+        render(<AssigneeBlock {...requiredProps} assignee={null} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.FirstLineSupport,
+          }),
+        })
+
+        expect(testUtils.getChildByText('Не назначен')).toBeInTheDocument()
+      })
+
+      test('Отображается кнопка "В работу"', () => {
+        render(<AssigneeBlock {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.FirstLineSupport,
+          }),
+        })
+
+        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
+      })
+    })
+
+    describe('Роль - инженер', () => {
+      test('Исполнитель отображается если он есть', () => {
+        render(<AssigneeBlock {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.Engineer,
+          }),
+        })
+
+        expect(
+          taskAssigneeTestUtils.getContainerIn(testUtils.getContainer()),
+        ).toBeInTheDocument()
+      })
+
+      test('Исполнитель не отображается если его нет', () => {
+        render(<AssigneeBlock {...requiredProps} assignee={null} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.Engineer,
+          }),
+        })
+
+        expect(
+          taskAssigneeTestUtils.queryContainerIn(testUtils.getContainer()),
+        ).not.toBeInTheDocument()
+      })
+
+      test('Отображается соответствующий текст если исполнителя нет', () => {
+        render(<AssigneeBlock {...requiredProps} assignee={null} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.Engineer,
+          }),
+        })
+
+        expect(testUtils.getChildByText('Не назначен')).toBeInTheDocument()
+      })
+
+      test('Отображается кнопка "В работу"', () => {
+        render(<AssigneeBlock {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.Engineer,
+          }),
+        })
+
+        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
+      })
+    })
+
+    describe('Роль - старший инженер', () => {
+      test('Выбор исполнителя отображается если условия соблюдены', () => {})
+
+      describe('Выбор исполнителя не отображается если условия соблюдены', () => {
+        test('Но статус заявки "Закрыта"', () => {})
+
+        test('Но статус заявки "Завершена"', () => {})
+
+        test('Но старший инженер или глава отдела из рабочей группы не являются авторизованным пользователем', () => {})
+      })
+
+      test('Исполнитель отображается если его нельзя выбрать и если он уже есть', () => {
+        render(<AssigneeBlock {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          }),
+        })
+
+        expect(
+          taskAssigneeTestUtils.getContainerIn(testUtils.getContainer()),
+        ).toBeInTheDocument()
+      })
+
+      test('Исполнитель не отображается если его нельзя выбрать и если его нет', () => {
+        render(<AssigneeBlock {...requiredProps} assignee={null} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          }),
+        })
+
+        expect(
+          taskAssigneeTestUtils.queryContainerIn(testUtils.getContainer()),
+        ).not.toBeInTheDocument()
+      })
+
+      test('Отображается соответствующий текст если исполнителя нельзя выбрать и если его нет', () => {
+        render(<AssigneeBlock {...requiredProps} assignee={null} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          }),
+        })
+
+        expect(testUtils.getChildByText('Не назначен')).toBeInTheDocument()
+      })
+
+      test('Отображается кнопка "В работу"', () => {
+        render(<AssigneeBlock {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          }),
+        })
+
+        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
+      })
+    })
+
+    describe('Роль - глава отдела', () => {})
   })
 })

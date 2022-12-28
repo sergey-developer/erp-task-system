@@ -43,7 +43,7 @@ describe('Вкладка списка комментариев заявки', ()
   })
 
   describe('Кнопка раскрытия/скрытия комментариев', () => {
-    describe('Отображается корректно если все условия соблюдены', () => {
+    describe('Отображается корректно если условия соблюдены', () => {
       test('Кнопка раскрытия', async () => {
         const taskCommentList = taskFixtures.getTaskCommentList(
           DEFAULT_DISPLAYABLE_COUNT + 1,

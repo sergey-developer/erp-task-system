@@ -66,22 +66,24 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   const currentAssigneeIsCurrentUser =
     useCheckUserAuthenticated(currentAssignee)
 
-  const selectedAssigneeIsAuthenticatedUser =
+  const selectedAssigneeIsCurrentUser =
     useCheckUserAuthenticated(selectedAssignee)
 
-  const seniorEngineerFromWorkGroupIsAuthenticatedUser =
-    useCheckUserAuthenticated(workGroup?.seniorEngineer.id)
+  const seniorEngineerFromWorkGroupIsCurrentUser = useCheckUserAuthenticated(
+    workGroup?.seniorEngineer.id,
+  )
 
-  const headOfDepartmentFromWorkGroupIsAuthenticatedUser =
-    useCheckUserAuthenticated(workGroup?.groupLead.id)
+  const headOfDepartmentFromWorkGroupIsCurrentUser = useCheckUserAuthenticated(
+    workGroup?.groupLead.id,
+  )
 
   const workGroupMembers = workGroup?.members || []
 
   const canSelectAssignee: boolean =
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
-    (seniorEngineerFromWorkGroupIsAuthenticatedUser ||
-      headOfDepartmentFromWorkGroupIsAuthenticatedUser)
+    (seniorEngineerFromWorkGroupIsCurrentUser ||
+      headOfDepartmentFromWorkGroupIsCurrentUser)
 
   const handleAssignOnMe = async () => {
     await updateAssignee(authenticatedUser!.id)
@@ -219,7 +221,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                     disabled={
                       taskStatus.isAwaiting ||
                       !selectedAssignee ||
-                      selectedAssigneeIsAuthenticatedUser ||
+                      selectedAssigneeIsCurrentUser ||
                       selectedAssigneeIsCurrentAssignee ||
                       taskExtendedStatus.isInReclassification
                     }

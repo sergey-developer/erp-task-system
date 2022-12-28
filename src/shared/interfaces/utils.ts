@@ -13,6 +13,7 @@ export type StringMap<Key extends string> = Record<Key, string>
 
 export type FCWithChildren<T = {}> = FC<PropsWithChildren<T>>
 
-export type AnyFn = (...args: any) => any
+export type AnyFunction = (...args: any) => any
+export type FunctionParams<T extends AnyFunction> = Parameters<T>[number]
 
 export type NumberOrString = number | string
