@@ -187,7 +187,7 @@ describe('Блок рабочей группы', () => {
         })
       })
 
-      test('Активна если все условия соблюдены', () => {
+      test('Активна если условия соблюдены', () => {
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.FirstLineSupport,
         })
@@ -204,7 +204,7 @@ describe('Блок рабочей группы', () => {
         expect(testUtils.getSecondLineButton()).toBeEnabled()
       })
 
-      describe('Не активна если все условия соблюдены', () => {
+      describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.FirstLineSupport,
@@ -368,7 +368,7 @@ describe('Блок рабочей группы', () => {
         expect(testUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
-      describe('Не активна если все условия соблюдены', () => {
+      describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
@@ -517,7 +517,7 @@ describe('Блок рабочей группы', () => {
         expect(testUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
-      describe('Не активна если все условия соблюдены', () => {
+      describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.HeadOfDepartment,

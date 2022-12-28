@@ -19,7 +19,7 @@ import { SelectStyled } from './styles'
 
 const { Text } = Typography
 
-const NOT_ASSIGNED_TEXT: string = 'Не назначен'
+const NOT_ASSIGNED_TEXT = 'Не назначен'
 
 export type AssigneeBlockProps = Pick<
   TaskModel,
@@ -51,7 +51,9 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   takeTaskIsLoading,
 }) => {
   const currentAssignee = assignee?.id
+
   const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
+
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const authenticatedUser = useAuthenticatedUser()
@@ -61,7 +63,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
     currentAssignee,
   )
 
-  const currentAssigneeIsAuthenticatedUser =
+  const currentAssigneeIsCurrentUser =
     useCheckUserAuthenticated(currentAssignee)
 
   const selectedAssigneeIsAuthenticatedUser =
@@ -98,7 +100,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
       disabled={
         !(
           taskStatus.isNew &&
-          (currentAssigneeIsAuthenticatedUser || !currentAssignee) &&
+          (currentAssigneeIsCurrentUser || !currentAssignee) &&
           !taskExtendedStatus.isInReclassification
         )
       }
@@ -126,10 +128,10 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               taskExtendedStatus.isInReclassification
             }
             onClick={
-              currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
+              currentAssigneeIsCurrentUser ? undefined : handleAssignOnMe
             }
           >
-            {currentAssigneeIsAuthenticatedUser
+            {currentAssigneeIsCurrentUser
               ? 'Отказаться от заявки'
               : 'Назначить на себя'}
           </Button>
