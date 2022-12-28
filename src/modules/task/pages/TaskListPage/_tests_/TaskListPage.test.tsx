@@ -15,20 +15,20 @@ import { waitFor } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
-import taskCardTestUtils from 'modules/task/features/TaskCard/Card/_tests_/utils'
-import { GetTaskCountersResponseModel } from 'modules/task/models'
-import { UserRolesEnum } from 'shared/constants/roles'
-
-import extendedFilterTestUtils from '../../../features/ExtendedFilter/_tests_/utils'
+import extendedFilterTestUtils from 'modules/task/features/ExtendedFilter/_tests_/utils'
 import {
   searchFieldDict,
   taskAssignedDict,
   taskOverdueDict,
-} from '../../../features/ExtendedFilter/constants'
-import fastFilterTestUtils from '../../../features/FastFilter/_tests_/utils'
-import { FastFilterEnum } from '../../../features/FastFilter/constants'
-import taskTableTestUtils from '../../../features/TaskTable/_tests_/utils'
-import { paginationConfig } from '../../../features/TaskTable/constants/pagination'
+} from 'modules/task/features/ExtendedFilter/constants'
+import fastFilterTestUtils from 'modules/task/features/FastFilter/_tests_/utils'
+import { FastFilterEnum } from 'modules/task/features/FastFilter/constants'
+import taskCardTestUtils from 'modules/task/features/TaskCard/Card/_tests_/utils'
+import taskTableTestUtils from 'modules/task/features/TaskTable/_tests_/utils'
+import { paginationConfig } from 'modules/task/features/TaskTable/constants/pagination'
+import { GetTaskCountersResponseModel } from 'modules/task/models'
+import { UserRolesEnum } from 'shared/constants/roles'
+
 import { DEFAULT_PAGE_SIZE } from '../constants'
 import TaskListPage from '../index'
 import taskListPageTestUtils from './utils'
@@ -1396,28 +1396,219 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Рабочая группа', () => {
-        test('После сортировки список отображается корректно', async () => {
-          mockGetTaskCountersSuccess()
+        describe('Роль - первая линия поддержки', () => {
+          test('Не отображается', async () => {
+            mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.getTaskList()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.getGetTaskListResponse(taskList),
+            const taskList = taskFixtures.getTaskList()
+            mockGetTaskListSuccess({
+              once: false,
+              body: taskFixtures.getGetTaskListResponse(taskList),
+            })
+
+            render(<TaskListPage />, {
+              store: getStoreWithAuth({
+                userRole: UserRolesEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+
+            expect(
+              taskTableTestUtils.queryColTitle('Рабочая группа'),
+            ).not.toBeInTheDocument()
           })
+        })
 
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
+        describe('Роль - инженер', () => {
+          test('После сортировки список отображается корректно', async () => {
+            mockGetTaskCountersSuccess()
+
+            const taskList = taskFixtures.getTaskList()
+            mockGetTaskListSuccess({
+              once: false,
+              body: taskFixtures.getGetTaskListResponse(taskList),
+            })
+
+            const { user } = render(<TaskListPage />, {
+              store: getStoreWithAuth({ userRole: UserRolesEnum.Engineer }),
+            })
+
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+            await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+
+            taskList.forEach((item) => {
+              const row = taskTableTestUtils.getRow(item.id)
+              expect(row).toBeInTheDocument()
+            })
           })
+        })
 
-          await taskTableTestUtils.loadingStarted()
-          await taskTableTestUtils.loadingFinished()
-          await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
-          await taskTableTestUtils.loadingStarted()
-          await taskTableTestUtils.loadingFinished()
+        describe('Роль - старший инженер', () => {
+          test('После сортировки список отображается корректно', async () => {
+            mockGetTaskCountersSuccess()
 
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
+            const taskList = taskFixtures.getTaskList()
+            mockGetTaskListSuccess({
+              once: false,
+              body: taskFixtures.getGetTaskListResponse(taskList),
+            })
+
+            const { user } = render(<TaskListPage />, {
+              store: getStoreWithAuth({
+                userRole: UserRolesEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+            await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+
+            taskList.forEach((item) => {
+              const row = taskTableTestUtils.getRow(item.id)
+              expect(row).toBeInTheDocument()
+            })
+          })
+        })
+
+        describe('Роль - глава отдела', () => {
+          test('После сортировки список отображается корректно', async () => {
+            mockGetTaskCountersSuccess()
+
+            const taskList = taskFixtures.getTaskList()
+            mockGetTaskListSuccess({
+              once: false,
+              body: taskFixtures.getGetTaskListResponse(taskList),
+            })
+
+            const { user } = render(<TaskListPage />, {
+              store: getStoreWithAuth({
+                userRole: UserRolesEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+            await taskTableTestUtils.userClickColTitle(user, 'Рабочая группа')
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+
+            taskList.forEach((item) => {
+              const row = taskTableTestUtils.getRow(item.id)
+              expect(row).toBeInTheDocument()
+            })
+          })
+        })
+      })
+
+      describe('Группа поддержки', () => {
+        describe('Роль - первая линия поддержки', () => {
+          test('После сортировки список отображается корректно', async () => {
+            mockGetTaskCountersSuccess()
+
+            const taskList = taskFixtures.getTaskList()
+            mockGetTaskListSuccess({
+              once: false,
+              body: taskFixtures.getGetTaskListResponse(taskList),
+            })
+
+            const { user } = render(<TaskListPage />, {
+              store: getStoreWithAuth({
+                userRole: UserRolesEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+            await taskTableTestUtils.userClickColTitle(user, 'Группа поддержки')
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+
+            taskList.forEach((item) => {
+              const row = taskTableTestUtils.getRow(item.id)
+              expect(row).toBeInTheDocument()
+            })
+          })
+        })
+
+        describe('Роль - инженер', () => {
+          test('Не отображается', async () => {
+            mockGetTaskCountersSuccess()
+
+            const taskList = taskFixtures.getTaskList()
+            mockGetTaskListSuccess({
+              once: false,
+              body: taskFixtures.getGetTaskListResponse(taskList),
+            })
+
+            render(<TaskListPage />, {
+              store: getStoreWithAuth({
+                userRole: UserRolesEnum.Engineer,
+              }),
+            })
+
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+
+            expect(
+              taskTableTestUtils.queryColTitle('Группа поддержки'),
+            ).not.toBeInTheDocument()
+          })
+        })
+
+        describe('Роль - старший инженер', () => {
+          test('Не отображается', async () => {
+            mockGetTaskCountersSuccess()
+
+            const taskList = taskFixtures.getTaskList()
+            mockGetTaskListSuccess({
+              once: false,
+              body: taskFixtures.getGetTaskListResponse(taskList),
+            })
+
+            render(<TaskListPage />, {
+              store: getStoreWithAuth({
+                userRole: UserRolesEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+
+            expect(
+              taskTableTestUtils.queryColTitle('Группа поддержки'),
+            ).not.toBeInTheDocument()
+          })
+        })
+
+        describe('Роль - глава отдела', () => {
+          test('Не отображается', async () => {
+            mockGetTaskCountersSuccess()
+
+            const taskList = taskFixtures.getTaskList()
+            mockGetTaskListSuccess({
+              once: false,
+              body: taskFixtures.getGetTaskListResponse(taskList),
+            })
+
+            render(<TaskListPage />, {
+              store: getStoreWithAuth({
+                userRole: UserRolesEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskTableTestUtils.loadingStarted()
+            await taskTableTestUtils.loadingFinished()
+
+            expect(
+              taskTableTestUtils.queryColTitle('Группа поддержки'),
+            ).not.toBeInTheDocument()
           })
         })
       })

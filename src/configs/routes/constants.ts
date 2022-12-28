@@ -5,6 +5,5 @@ export enum RoutesEnum {
   RecoveryPassword = '/recoveryPassword',
   TaskList = '/tasks/view',
   WorkingGroups = '/workingGroups',
-  AdminPanel = '/adminPanel',
   NotFound = '*',
 }

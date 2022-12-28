@@ -23,6 +23,10 @@ export type BaseTaskModel = {
   initialImpact: 1 | 2 | 3 | 4
   severity: 1 | 2 | 3 | 4
   priorityCode: 1 | 2 | 3 | 4
+  supportGroup: {
+    id: number
+    name: string
+  }
 
   contactPhone?: string
   portablePhone?: string
