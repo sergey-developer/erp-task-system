@@ -186,6 +186,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
                     return (
                       <SelectStyled.Option
+                        data-testid={`select-option-${id}`}
                         key={id}
                         value={id}
                         disabled={disabled}
