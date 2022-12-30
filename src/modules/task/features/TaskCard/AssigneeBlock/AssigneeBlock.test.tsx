@@ -64,12 +64,6 @@ const activeTakeTaskButtonProps: Readonly<
   extendedStatus: TaskExtendedStatusEnum.New,
 }
 
-const showAssignOnMeButtonProps: Readonly<
-  Pick<AssigneeBlockProps, 'assignee'>
-> = {
-  assignee: null,
-}
-
 const activeAssignOnMeButtonProps: Readonly<
   Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>
 > = {
@@ -222,45 +216,31 @@ export const testUtils = {
 
 describe('Блок "Исполнитель заявки"', () => {
   test('Заголовок блока отображается', () => {
-    const store = getStoreWithAuth({
-      userRole: UserRolesEnum.FirstLineSupport,
-    })
-
-    render(<AssigneeBlock {...requiredProps} />, { store })
+    render(<AssigneeBlock {...requiredProps} />, { store: getStoreWithAuth() })
 
     expect(testUtils.getChildByText(/исполнитель/i)).toBeInTheDocument()
   })
 
   describe('Кнопка "Назначить на себя"', () => {
     test('Отображается', () => {
-      render(
-        <AssigneeBlock {...requiredProps} {...showAssignOnMeButtonProps} />,
-        { store: getStoreWithAuth() },
-      )
+      render(<AssigneeBlock {...requiredProps} />, {
+        store: getStoreWithAuth(),
+      })
 
       expect(testUtils.getAssignOnMeButton()).toBeInTheDocument()
     })
 
     test('Отображает состояние загрузки во время обновления исполнителя', async () => {
-      render(
-        <AssigneeBlock
-          {...requiredProps}
-          {...showAssignOnMeButtonProps}
-          updateAssigneeIsLoading
-        />,
-        { store: getStoreWithAuth() },
-      )
+      render(<AssigneeBlock {...requiredProps} updateAssigneeIsLoading />, {
+        store: getStoreWithAuth(),
+      })
 
       await testUtils.assignOnMeExpectLoadingStarted()
     })
 
     test('Активна если условия соблюдены', () => {
       render(
-        <AssigneeBlock
-          {...requiredProps}
-          {...showAssignOnMeButtonProps}
-          {...activeAssignOnMeButtonProps}
-        />,
+        <AssigneeBlock {...requiredProps} {...activeAssignOnMeButtonProps} />,
         { store: getStoreWithAuth() },
       )
 
@@ -272,7 +252,6 @@ describe('Блок "Исполнитель заявки"', () => {
         render(
           <AssigneeBlock
             {...requiredProps}
-            {...showAssignOnMeButtonProps}
             {...activeAssignOnMeButtonProps}
             status={TaskStatusEnum.Closed}
           />,
@@ -286,7 +265,6 @@ describe('Блок "Исполнитель заявки"', () => {
         render(
           <AssigneeBlock
             {...requiredProps}
-            {...showAssignOnMeButtonProps}
             {...activeAssignOnMeButtonProps}
             status={TaskStatusEnum.Completed}
           />,
@@ -300,7 +278,6 @@ describe('Блок "Исполнитель заявки"', () => {
         render(
           <AssigneeBlock
             {...requiredProps}
-            {...showAssignOnMeButtonProps}
             {...activeAssignOnMeButtonProps}
             status={TaskStatusEnum.Awaiting}
           />,
@@ -314,7 +291,6 @@ describe('Блок "Исполнитель заявки"', () => {
         render(
           <AssigneeBlock
             {...requiredProps}
-            {...showAssignOnMeButtonProps}
             {...activeAssignOnMeButtonProps}
             extendedStatus={TaskExtendedStatusEnum.InReclassification}
           />,
@@ -329,11 +305,7 @@ describe('Блок "Исполнитель заявки"', () => {
       const currentUserId = generateId()
 
       const { user } = render(
-        <AssigneeBlock
-          {...requiredProps}
-          {...showAssignOnMeButtonProps}
-          {...activeAssignOnMeButtonProps}
-        />,
+        <AssigneeBlock {...requiredProps} {...activeAssignOnMeButtonProps} />,
         { store: getStoreWithAuth({ userId: currentUserId }) },
       )
 
@@ -341,6 +313,37 @@ describe('Блок "Исполнитель заявки"', () => {
 
       expect(requiredProps.updateAssignee).toBeCalledTimes(1)
       expect(requiredProps.updateAssignee).toBeCalledWith(currentUserId)
+    })
+
+    describe('После назначения на себя', () => {
+      test('Кнопка "Назначить" становится не активна', async () => {
+        const { user } = render(
+          <AssigneeBlock
+            {...requiredProps}
+            {...activeAssignOnMeButtonProps}
+            {...canSelectAssigneeProps}
+            {...activeAssignButtonProps}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+              userRole: UserRolesEnum.SeniorEngineer,
+            }),
+          },
+        )
+
+        await testUtils.openAssigneeSelect(user)
+        await testUtils.selectAssignee(
+          user,
+          canSelectAssigneeProps.workGroup.members[0].fullName,
+        )
+
+        const button = testUtils.getAssignButton()
+        expect(button).toBeEnabled()
+
+        await testUtils.userClickAssignOnMeButton(user)
+        expect(button).toBeDisabled()
+      })
     })
   })
 
