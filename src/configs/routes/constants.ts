@@ -6,6 +6,5 @@ export enum RoutesEnum {
   TaskList = '/tasks',
   WorkingGroups = '/workingGroups',
   TaskMonitoring = '/monitoring/tasks',
-  AdminPanel = '/adminPanel',
   NotFound = '*',
 }
