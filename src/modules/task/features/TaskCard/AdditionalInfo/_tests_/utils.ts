@@ -4,6 +4,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 const getContainer = () => screen.getByTestId('task-card-additional-info')
 
+const queryContainer = () => screen.queryByTestId('task-card-additional-info')
+
 const getAdditionalInfoContent = () =>
   within(getContainer()).getByTestId('additional-info-content')
 
@@ -27,6 +29,7 @@ const getAddressIcon = () =>
 
 const utils = {
   getContainer,
+  queryContainer,
 
   getAdditionalInfoContent,
   queryAdditionalInfoContent,
