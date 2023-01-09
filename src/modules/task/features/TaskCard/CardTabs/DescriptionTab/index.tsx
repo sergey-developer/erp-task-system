@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 
 import Space from 'components/Space'
 import { TaskModel } from 'modules/task/models'
+import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Title, Paragraph } = Typography
 
@@ -15,7 +16,9 @@ const DescriptionTab: FC<DescriptionTabProps> = ({ title, description }) => {
     <Space data-testid='task-description-tab' $block direction='vertical'>
       <Title level={5}>{title}</Title>
 
-      {description && <Paragraph>{description}</Paragraph>}
+      {description && (
+        <Paragraph>{renderStringWithLineBreak(description)}</Paragraph>
+      )}
     </Space>
   )
 }

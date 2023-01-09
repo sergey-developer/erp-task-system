@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { TaskCommentModel } from 'modules/task/models'
+import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Paragraph, Text } = Typography
 
@@ -19,7 +20,7 @@ const Comment: FC<CommentProps> = ({ text, createdAt, author }) => {
         <Text type='secondary'>{createdAt}</Text>
       </SeparatedText>
 
-      <Paragraph>{text}</Paragraph>
+      <Paragraph>{renderStringWithLineBreak(text)}</Paragraph>
     </Space>
   )
 }
