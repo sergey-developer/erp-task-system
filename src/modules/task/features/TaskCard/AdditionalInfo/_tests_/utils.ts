@@ -2,7 +2,7 @@ import { getButtonIn } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-const getContainer = () => screen.getByTestId('task-additional-info')
+const getContainer = () => screen.getByTestId('task-card-additional-info')
 
 const getAdditionalInfoContent = () =>
   within(getContainer()).getByTestId('additional-info-content')

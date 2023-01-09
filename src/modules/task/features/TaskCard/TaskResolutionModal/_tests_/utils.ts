@@ -1,8 +1,15 @@
-import { getButtonIn, loadingStartedByButton } from '_tests_/utils'
+import {
+  getButtonIn,
+  loadingFinishedByButton,
+  loadingStartedByButton,
+} from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 const getContainer = () => screen.getByTestId('task-resolution-modal')
+
+const findContainer = () => screen.findByTestId('task-resolution-modal')
+
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // close button
@@ -80,8 +87,11 @@ const userSetUserResolution = async (user: UserEvent, value: string) => {
 // loading
 const loadingStarted = () => loadingStartedByButton(getSubmitButton())
 
+const loadingFinished = () => loadingFinishedByButton(getSubmitButton())
+
 const utils = {
   getContainer,
+  findContainer,
   getChildByText,
 
   getCloseButton,
@@ -107,6 +117,7 @@ const utils = {
   userSetUserResolution,
 
   loadingStarted,
+  loadingFinished,
 }
 
 export default utils
