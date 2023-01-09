@@ -10,6 +10,7 @@ import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import formatDate from 'shared/utils/date/formatDate'
+import { renderStringWithLineBreak } from 'shared/utils/string'
 
 import { WrapperStyled } from './styles'
 
@@ -49,7 +50,9 @@ const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
           <Space direction='vertical' size={4}>
             <Title level={5}>{title}</Title>
 
-            <Paragraph ellipsis={commonEllipsisConfig}>{comment}</Paragraph>
+            <Paragraph ellipsis={commonEllipsisConfig}>
+              {renderStringWithLineBreak(comment)}
+            </Paragraph>
 
             <SeparatedText>
               <Text type='secondary'>{getShortUserName(user)}</Text>
