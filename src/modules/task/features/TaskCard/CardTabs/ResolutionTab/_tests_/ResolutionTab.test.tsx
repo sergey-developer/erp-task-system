@@ -40,7 +40,7 @@ describe('Вкладка решение заявки', () => {
   })
 
   describe('Решение для пользователя', () => {
-    test('Отображается если все условия соблюдены', () => {
+    test('Отображается если условия соблюдены', () => {
       render(
         <ResolutionTab
           {...requiredProps}
@@ -54,7 +54,7 @@ describe('Вкладка решение заявки', () => {
       ).toBeInTheDocument()
     })
 
-    test('Не отображается если все условия соблюдены но решение отсутствует', () => {
+    test('Не отображается если условия соблюдены но решение отсутствует', () => {
       render(<ResolutionTab {...requiredProps} />)
 
       expect(
@@ -62,7 +62,7 @@ describe('Вкладка решение заявки', () => {
       ).not.toBeInTheDocument()
     })
 
-    test('Не отображается если все условия соблюдены но тип заявки "IncidentTask"', () => {
+    test('Не отображается если условия соблюдены но тип заявки "IncidentTask"', () => {
       render(
         <ResolutionTab
           {...requiredProps}
@@ -76,7 +76,7 @@ describe('Вкладка решение заявки', () => {
       ).not.toBeInTheDocument()
     })
 
-    test('Не отображается если все условия соблюдены но тип заявки "RequestTask"', () => {
+    test('Не отображается если условия соблюдены но тип заявки "RequestTask"', () => {
       render(
         <ResolutionTab
           {...requiredProps}

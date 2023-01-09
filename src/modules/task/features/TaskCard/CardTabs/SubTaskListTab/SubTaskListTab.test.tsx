@@ -88,7 +88,7 @@ describe('Вкладка списка заданий', () => {
       expect(testUtils.getCreateSubTaskButton()).toBeInTheDocument()
     })
 
-    test('Активна если все условия соблюдены', () => {
+    test('Активна если условия соблюдены', () => {
       mockGetSubTaskListSuccess(requiredProps.task.id)
 
       render(
@@ -109,7 +109,7 @@ describe('Вкладка списка заданий', () => {
       expect(testUtils.getCreateSubTaskButton()).toBeEnabled()
     })
 
-    describe('Не активна если все условия соблюдены', () => {
+    describe('Не активна если условия соблюдены', () => {
       test('Но текущий пользователь не является исполнителем заявки', () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
 

@@ -91,7 +91,7 @@ describe('Заголовок карточки заявки', () => {
         expect(requiredProps.onClickExecuteTask).toBeCalledTimes(1)
       })
 
-      test('Активен если все условия соблюдены', async () => {
+      test('Активен если условия соблюдены', async () => {
         const { user } = render(
           <CardTitle {...requiredProps} {...activeFirstItemProps} />,
         )
@@ -100,7 +100,7 @@ describe('Заголовок карточки заявки', () => {
         testUtils.expectMenuItemNotDisabled(testUtils.getFirstMenuItem())
       })
 
-      describe('Не активен если все условия соблюдены', () => {
+      describe('Не активен если условия соблюдены', () => {
         test('Но заявка не имеет статуса - в процессе', async () => {
           const { user } = render(
             <CardTitle
@@ -213,7 +213,7 @@ describe('Заголовок карточки заявки', () => {
         expect(requiredProps.onClickRequestReclassification).not.toBeCalled()
       })
 
-      test('Активен если все условия соблюдены', async () => {
+      test('Активен если условия соблюдены', async () => {
         const { user } = render(
           <CardTitle {...requiredProps} {...activeSecondItemProps} />,
           {
@@ -225,7 +225,7 @@ describe('Заголовок карточки заявки', () => {
         testUtils.expectMenuItemNotDisabled(testUtils.getSecondMenuItem())
       })
 
-      describe('Не активен если все условия соблюдены', () => {
+      describe('Не активен если условия соблюдены', () => {
         test('Но заявка не имеет статуса - новая', async () => {
           const { user } = render(
             <CardTitle

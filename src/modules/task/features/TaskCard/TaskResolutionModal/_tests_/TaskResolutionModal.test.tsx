@@ -181,7 +181,7 @@ describe('Модалка решения по заявке', () => {
         expect(testUtils.getUserResolutionTitle()).toBeInTheDocument()
       })
 
-      test('Отображается корректно если все условия соблюдены', () => {
+      test('Отображается корректно если условия соблюдены', () => {
         render(<TaskResolutionModal {...requiredProps} />)
 
         const field = testUtils.getUserResolutionField()
