@@ -41,7 +41,7 @@ const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof requiredProps> =
   }
 
 // first line button
-const showFirstLineButtonProps: Pick<
+export const showFirstLineButtonProps: Pick<
   WorkGroupBlockProps,
   'workGroup' | 'status'
 > = {
@@ -49,7 +49,7 @@ const showFirstLineButtonProps: Pick<
   status: TaskStatusEnum.New,
 }
 
-const activeFirstLineButtonProps: Pick<
+export const activeFirstLineButtonProps: Pick<
   WorkGroupBlockProps,
   'status' | 'extendedStatus'
 > = {
@@ -58,11 +58,12 @@ const activeFirstLineButtonProps: Pick<
 }
 
 // second line button
-const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> = {
-  workGroup: null,
-}
+export const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> =
+  {
+    workGroup: null,
+  }
 
-const activeSecondLineButtonProps: Pick<
+export const activeSecondLineButtonProps: Pick<
   WorkGroupBlockProps,
   'status' | 'extendedStatus'
 > = {

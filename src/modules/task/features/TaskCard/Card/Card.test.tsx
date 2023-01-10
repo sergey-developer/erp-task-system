@@ -8,8 +8,17 @@ import {
 import modalTestUtils from '_tests_/utils/modal'
 import { screen, waitFor } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
+import { UserRolesEnum } from 'shared/constants/roles'
 
 import additionalInfoTestUtils from '../AdditionalInfo/_tests_/utils'
+import {
+  activeAssignButtonProps,
+  activeAssignOnMeButtonProps,
+  activeTakeTaskButtonProps,
+  testUtils as assigneeBlockTestUtils,
+  canSelectAssigneeProps,
+} from '../AssigneeBlock/AssigneeBlock.test'
 import cardTabsTestUtils from '../CardTabs/_tests_/utils'
 import {
   activeFirstItemProps,
@@ -18,10 +27,19 @@ import {
 import cardTitleTestUtils from '../CardTitle/_tests_/utils'
 import mainDetailsTestUtils from '../MainDetails/_tests_/utils'
 import secondaryDetailsTestUtils from '../SecondaryDetails/_tests_/utils'
+import taskFirstLineModalTestUtils from '../TaskFirstLineModal/_tests_/utils'
 import { availableReasons } from '../TaskReclassificationModal/_tests_/constants'
 import taskReclassificationModalTestUtils from '../TaskReclassificationModal/_tests_/utils'
 import taskReclassificationRequestTestUtils from '../TaskReclassificationRequest/_tests_/utils'
 import taskResolutionModalTestUtils from '../TaskResolutionModal/_tests_/utils'
+import taskSecondLineModalTestUtils from '../TaskSecondLineModal/_tests_/utils'
+import {
+  activeFirstLineButtonProps,
+  activeSecondLineButtonProps,
+  showFirstLineButtonProps,
+  showSecondLineButtonProps,
+  testUtils as workGroupBlockTestUtils,
+} from '../WorkGroupBlock/WorkGroupBlock.test'
 import TaskCard, { TaskCardProps } from './index'
 
 const requiredProps: TaskCardProps = {
@@ -297,7 +315,7 @@ describe('Детальная карточка заявки', () => {
       })
     })
 
-    describe('При отправке данных', () => {
+    describe('При успешном запросе', () => {
       test('Переданные обработчики вызываются корректно', async () => {
         const { user } = render(
           <TaskCard
@@ -328,9 +346,9 @@ describe('Детальная карточка заявки', () => {
         )
         await taskResolutionModalTestUtils.userClickSubmitButton(user)
 
-        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         expect(requiredProps.resolveTask).toBeCalledTimes(1)
         expect(requiredProps.resolveTask).toBeCalledWith(expect.anything())
+        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
       })
     })
   })
@@ -417,7 +435,7 @@ describe('Детальная карточка заявки', () => {
       })
     })
 
-    describe('При отправке данных', () => {
+    describe('При успешном запросе', () => {
       test('Переданный обработчик вызывается корректно', async () => {
         const { user } = render(
           <TaskCard
@@ -449,9 +467,7 @@ describe('Детальная карточка заявки', () => {
           expect.anything(),
         )
       })
-    })
 
-    describe('После отправки данных', () => {
       test('Модалка закрывается', async () => {
         const { user } = render(
           <TaskCard
@@ -482,6 +498,160 @@ describe('Детальная карточка заявки', () => {
           expect(modal).not.toBeInTheDocument()
         })
       })
+    })
+  })
+
+  describe('При ошибке получения заявки', () => {
+    test('Вызывается обработчик закрытия карточки', () => {
+      render(<TaskCard {...requiredProps} isGetTaskError />)
+      expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+    })
+  })
+
+  describe('Взятие заявки в работу', () => {
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(
+        <TaskCard {...requiredProps} {...activeTakeTaskButtonProps} />,
+        {
+          store: getStoreWithAuth({
+            userId: requiredProps.details!.assignee!.id,
+            userRole: UserRolesEnum.FirstLineSupport,
+          }),
+        },
+      )
+
+      await assigneeBlockTestUtils.userClickTakeTaskButton(user)
+
+      await waitFor(() => {
+        expect(requiredProps.takeTask).toBeCalledTimes(1)
+      })
+
+      expect(requiredProps.takeTask).toBeCalledWith(expect.anything())
+    })
+  })
+
+  describe('Назначение исполнителя заявки', () => {
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(
+        <TaskCard
+          {...requiredProps}
+          workGroupList={[canSelectAssigneeProps.workGroup]}
+          details={{
+            ...requiredProps.details!,
+            ...canSelectAssigneeProps,
+            ...activeAssignButtonProps,
+          }}
+        />,
+        {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+            userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+          }),
+        },
+      )
+
+      await assigneeBlockTestUtils.openAssigneeSelect(user)
+      await assigneeBlockTestUtils.selectAssignee(
+        user,
+        canSelectAssigneeProps.workGroup.members[0].fullName,
+      )
+      await assigneeBlockTestUtils.userClickAssignButton(user)
+
+      expect(requiredProps.updateAssignee).toBeCalledTimes(1)
+      expect(requiredProps.updateAssignee).toBeCalledWith(expect.anything())
+    })
+  })
+
+  describe('Назначение заявки на себя', () => {
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(
+        <TaskCard
+          {...requiredProps}
+          details={{
+            ...requiredProps.details!,
+            ...activeAssignOnMeButtonProps,
+          }}
+        />,
+        {
+          store: getStoreWithAuth(),
+        },
+      )
+
+      await assigneeBlockTestUtils.userClickAssignOnMeButton(user)
+
+      expect(requiredProps.updateAssignee).toBeCalledTimes(1)
+      expect(requiredProps.updateAssignee).toBeCalledWith(expect.anything())
+    })
+  })
+
+  describe('Перевод заявки на 1-ю линию', () => {
+    test('Переданные обработчики вызываются корректно', async () => {
+      const { user } = render(
+        <TaskCard
+          {...requiredProps}
+          workGroupList={[
+            workGroupFixtures.getWorkGroup({
+              id: showFirstLineButtonProps.workGroup!.id,
+            }),
+          ]}
+          details={{
+            ...requiredProps.details!,
+            ...showFirstLineButtonProps,
+            ...activeFirstLineButtonProps,
+          }}
+        />,
+        {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.SeniorEngineer,
+          }),
+        },
+      )
+
+      await workGroupBlockTestUtils.userClickFirstLineButton(user)
+      await taskFirstLineModalTestUtils.findModal()
+      await taskFirstLineModalTestUtils.userSetDescription(user, generateWord())
+      await taskFirstLineModalTestUtils.userClickSubmitButton(user)
+
+      expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
+      expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
+      expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+    })
+  })
+
+  describe('Перевод заявки на 2-ю линию', () => {
+    test('Переданные обработчики вызываются корректно', async () => {
+      const workGroupList = workGroupFixtures.getWorkGroupList()
+
+      const { user } = render(
+        <TaskCard
+          {...requiredProps}
+          workGroupList={workGroupList}
+          details={{
+            ...requiredProps.details!,
+            ...showSecondLineButtonProps,
+            ...activeSecondLineButtonProps,
+          }}
+        />,
+        {
+          store: getStoreWithAuth({
+            userRole: UserRolesEnum.FirstLineSupport,
+          }),
+        },
+      )
+
+      await workGroupBlockTestUtils.userClickSecondLineButton(user)
+      await taskSecondLineModalTestUtils.findContainer()
+      const workGroup = workGroupList[0]
+      await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
+      await taskSecondLineModalTestUtils.userSelectWorkGroup(
+        user,
+        workGroup.name,
+      )
+      await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+
+      expect(requiredProps.updateWorkGroup).toBeCalledTimes(1)
+      expect(requiredProps.updateWorkGroup).toBeCalledWith(expect.anything())
+      expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
     })
   })
 })

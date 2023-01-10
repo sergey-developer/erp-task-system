@@ -15,12 +15,13 @@ export const getWorkGroupMemberList = (
 
 export const getWorkGroup = (
   props?: Partial<{
+    id: number
     seniorEngineerId: number
     groupLeadId: number
     memberAmount: number
   }>,
 ): WorkGroupListItemModel => ({
-  id: generateId(),
+  id: props?.id || generateId(),
   name: generateName(),
   members: getWorkGroupMemberList(props?.memberAmount),
   seniorEngineer: {
