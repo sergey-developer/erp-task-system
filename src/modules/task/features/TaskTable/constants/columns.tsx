@@ -1,5 +1,6 @@
 import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
+import get from 'lodash/get'
 import React from 'react'
 
 import { taskStatusDict } from 'modules/task/constants/dictionary'
@@ -12,10 +13,9 @@ import TaskStatus from 'modules/task/features/TaskStatus/index'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import { getShortUserName, getUserRoleMap } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 import { MaybeNull } from 'shared/interfaces/utils'
-import valueOr from 'shared/utils/common/valueOr'
-import formatDate from 'shared/utils/date/formatDate'
+import { formatDate } from 'shared/utils/date'
 
 import { TaskTableListItem } from '../interfaces'
 import { statusSorter } from '../utils'
@@ -23,7 +23,7 @@ import { statusSorter } from '../utils'
 const { Text } = Typography
 
 export const getTableColumns = (
-  role: UserRolesEnum,
+  role: UserRoleEnum,
 ): ColumnsType<TaskTableListItem> => {
   const roleMap = getUserRoleMap(role)
 
@@ -97,7 +97,7 @@ export const getTableColumns = (
             dataIndex: 'workGroup',
             title: 'Рабочая группа',
             render: (value: TaskTableListItem['workGroup']) =>
-              valueOr(value?.name, 'I линия поддержки'),
+              get(value, 'name', 'I линия поддержки'),
             ellipsis: true,
             sorter: true,
           },

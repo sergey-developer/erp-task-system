@@ -1,21 +1,21 @@
 import { CRUDPermissionsEnum } from 'shared/constants/permissions'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 import { UserPermissionConfig } from 'shared/interfaces/permissions'
 
 export const taskCommentApiPermissions: UserPermissionConfig = {
-  [UserRolesEnum.FirstLineSupport]: [
+  [UserRoleEnum.FirstLineSupport]: [
     CRUDPermissionsEnum.CanCreate,
     CRUDPermissionsEnum.CanGetList,
   ],
-  [UserRolesEnum.Engineer]: [
+  [UserRoleEnum.Engineer]: [
     CRUDPermissionsEnum.CanCreate,
     CRUDPermissionsEnum.CanGetList,
   ],
-  [UserRolesEnum.SeniorEngineer]: [
+  [UserRoleEnum.SeniorEngineer]: [
     CRUDPermissionsEnum.CanCreate,
     CRUDPermissionsEnum.CanGetList,
   ],
-  [UserRolesEnum.HeadOfDepartment]: [
+  [UserRoleEnum.HeadOfDepartment]: [
     CRUDPermissionsEnum.CanCreate,
     CRUDPermissionsEnum.CanGetList,
   ],

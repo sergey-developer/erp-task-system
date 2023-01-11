@@ -12,7 +12,7 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RoutesEnum } from 'configs/routes'
 import LogoutButton from 'modules/auth/features/Logout/components/LogoutButton'
 import { useUserProfileState } from 'modules/user/hooks'
-import useMatchedRoute from 'shared/hooks/useMatchedRoute'
+import { useMatchedRoute } from 'shared/hooks'
 
 import { HeaderStyled } from './styles'
 

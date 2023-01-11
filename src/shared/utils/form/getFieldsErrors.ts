@@ -5,7 +5,9 @@ import { isEqual } from 'shared/utils/common/isEqual'
 
 type FieldData = Pick<BaseFieldData, 'name' | 'errors'>
 
-const getFieldsErrors = <T extends ErrorData<T>>(data: T): Array<FieldData> => {
+export const getFieldsErrors = <T extends ErrorData<T>>(
+  data: T,
+): Array<FieldData> => {
   return Object.keys(data).reduce<Array<FieldData>>((acc, key) => {
     const fieldName = key as keyof T
     const fieldValue = data[fieldName]
@@ -20,5 +22,3 @@ const getFieldsErrors = <T extends ErrorData<T>>(data: T): Array<FieldData> => {
     return acc
   }, [])
 }
-
-export default getFieldsErrors

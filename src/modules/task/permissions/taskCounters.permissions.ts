@@ -1,10 +1,10 @@
 import { CRUDPermissionsEnum } from 'shared/constants/permissions'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 import { UserPermissionConfig } from 'shared/interfaces/permissions'
 
 export const taskCountersApiPermissions: UserPermissionConfig = {
-  [UserRolesEnum.Engineer]: [CRUDPermissionsEnum.CanGet],
-  [UserRolesEnum.SeniorEngineer]: [CRUDPermissionsEnum.CanGet],
-  [UserRolesEnum.FirstLineSupport]: [CRUDPermissionsEnum.CanGet],
-  [UserRolesEnum.HeadOfDepartment]: [CRUDPermissionsEnum.CanGet],
+  [UserRoleEnum.Engineer]: [CRUDPermissionsEnum.CanGet],
+  [UserRoleEnum.SeniorEngineer]: [CRUDPermissionsEnum.CanGet],
+  [UserRoleEnum.FirstLineSupport]: [CRUDPermissionsEnum.CanGet],
+  [UserRoleEnum.HeadOfDepartment]: [CRUDPermissionsEnum.CanGet],
 }

@@ -6,7 +6,7 @@ import Space from 'components/Space'
 import { TaskJournalModel } from 'modules/task/models'
 import { getFullUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import formatDate from 'shared/utils/date/formatDate'
+import { formatDate } from 'shared/utils/date'
 
 import { NO_DATA_MSG, journalEntryTypeDict } from './constants'
 import JournalEntry from './JournalEntry'

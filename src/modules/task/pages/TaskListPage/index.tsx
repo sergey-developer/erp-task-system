@@ -20,7 +20,7 @@ import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgsModel } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 import { SortOrderEnum } from 'shared/constants/sort'
-import useDebounceFn from 'shared/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 

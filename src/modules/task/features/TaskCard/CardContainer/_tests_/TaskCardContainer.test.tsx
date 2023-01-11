@@ -23,7 +23,7 @@ import {
 import { waitFor, within } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
 import { testUtils as workGroupTestUtils } from '../../../TaskCard/WorkGroupBlock/WorkGroupBlock.test'
@@ -50,7 +50,7 @@ describe('Контейнер детальной карточки заявки', 
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -97,7 +97,7 @@ describe('Контейнер детальной карточки заявки', 
           )
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -143,7 +143,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -186,7 +186,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -226,7 +226,7 @@ describe('Контейнер детальной карточки заявки', 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -266,7 +266,7 @@ describe('Контейнер детальной карточки заявки', 
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -313,7 +313,7 @@ describe('Контейнер детальной карточки заявки', 
           )
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -359,7 +359,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -402,7 +402,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -442,7 +442,7 @@ describe('Контейнер детальной карточки заявки', 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {

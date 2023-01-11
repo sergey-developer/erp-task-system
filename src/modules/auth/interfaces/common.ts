@@ -1,8 +1,8 @@
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 
 export type JwtPayload = {
   userId: number
-  userRole: UserRolesEnum
+  userRole: UserRoleEnum
 }
 
 export type AuthenticatedUser = JwtPayload

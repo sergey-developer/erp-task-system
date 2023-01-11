@@ -27,7 +27,7 @@ import { testUtils as taskCardTestUtils } from 'modules/task/features/TaskCard/C
 import taskTableTestUtils from 'modules/task/features/TaskTable/_tests_/utils'
 import { paginationConfig } from 'modules/task/features/TaskTable/constants/pagination'
 import { GetTaskCountersResponseModel } from 'modules/task/models'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 
 import { DEFAULT_PAGE_SIZE } from '../constants'
 import TaskListPage from '../index'
@@ -91,7 +91,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess()
 
         render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRolesEnum.FirstLineSupport }),
+          store: getStoreWithAuth({ userRole: UserRoleEnum.FirstLineSupport }),
         })
 
         await taskTableTestUtils.loadingFinished()
@@ -107,7 +107,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess()
 
         render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRolesEnum.Engineer }),
+          store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
         })
 
         await taskTableTestUtils.loadingFinished()
@@ -123,7 +123,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess()
 
         render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
+          store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
         })
 
         await taskTableTestUtils.loadingFinished()
@@ -139,7 +139,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess()
 
         render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRolesEnum.HeadOfDepartment }),
+          store: getStoreWithAuth({ userRole: UserRoleEnum.HeadOfDepartment }),
         })
 
         await taskTableTestUtils.loadingFinished()
@@ -173,7 +173,7 @@ describe('Страница реестра заявок', () => {
 
       const { user } = render(<TaskListPage />, {
         store: getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         }),
       })
 
@@ -442,7 +442,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess({ once: false })
 
         const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
+          store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
         })
 
         await taskTableTestUtils.loadingFinished()
@@ -537,7 +537,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskListSuccess()
 
       const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
+        store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
       })
 
       await taskTableTestUtils.loadingFinished()
@@ -644,7 +644,7 @@ describe('Страница реестра заявок', () => {
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           }),
         })
 
@@ -844,7 +844,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess({ once: false })
 
         const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
+          store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
         })
 
         await taskTableTestUtils.loadingStarted()
@@ -1011,7 +1011,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess({ once: false })
 
         const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRolesEnum.SeniorEngineer }),
+          store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
         })
 
         await taskTableTestUtils.loadingStarted()
@@ -1408,7 +1408,7 @@ describe('Страница реестра заявок', () => {
 
             render(<TaskListPage />, {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.FirstLineSupport,
+                userRole: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -1432,7 +1432,7 @@ describe('Страница реестра заявок', () => {
             })
 
             const { user } = render(<TaskListPage />, {
-              store: getStoreWithAuth({ userRole: UserRolesEnum.Engineer }),
+              store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
             })
 
             await taskTableTestUtils.loadingStarted()
@@ -1460,7 +1460,7 @@ describe('Страница реестра заявок', () => {
 
             const { user } = render(<TaskListPage />, {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -1489,7 +1489,7 @@ describe('Страница реестра заявок', () => {
 
             const { user } = render(<TaskListPage />, {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -1520,7 +1520,7 @@ describe('Страница реестра заявок', () => {
 
             const { user } = render(<TaskListPage />, {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.FirstLineSupport,
+                userRole: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -1549,7 +1549,7 @@ describe('Страница реестра заявок', () => {
 
             render(<TaskListPage />, {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.Engineer,
+                userRole: UserRoleEnum.Engineer,
               }),
             })
 
@@ -1574,7 +1574,7 @@ describe('Страница реестра заявок', () => {
 
             render(<TaskListPage />, {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -1599,7 +1599,7 @@ describe('Страница реестра заявок', () => {
 
             render(<TaskListPage />, {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
               }),
             })
 

@@ -29,9 +29,9 @@ import {
 import { SubTaskModel } from 'modules/subTask/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
-import useDebounceFn from 'shared/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks'
 import { ErrorResponse } from 'shared/services/api'
-import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
+import { handleSetFieldsErrors } from 'shared/utils/form'
 
 const CreateSubTaskModal = React.lazy(
   () => import('modules/subTask/features/CreateSubTaskModal'),

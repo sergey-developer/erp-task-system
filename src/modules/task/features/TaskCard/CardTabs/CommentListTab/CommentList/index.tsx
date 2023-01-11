@@ -5,7 +5,7 @@ import Space from 'components/Space'
 import { GetTaskCommentListResponseModel } from 'modules/task/models'
 import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import formatDate from 'shared/utils/date/formatDate'
+import { formatDate } from 'shared/utils/date'
 
 import Comment from './Comment'
 

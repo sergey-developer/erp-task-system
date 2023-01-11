@@ -3,7 +3,7 @@ import head from 'lodash/head'
 
 import taskFixtures from 'fixtures/task'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 
 import { TaskTableProps } from '../interfaces'
 
@@ -16,7 +16,7 @@ const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   onChange: jest.fn(),
   pagination: false,
   rowClassName: '',
-  userRole: UserRolesEnum.FirstLineSupport,
+  userRole: UserRoleEnum.FirstLineSupport,
 }
 
 const paginationProps: Readonly<

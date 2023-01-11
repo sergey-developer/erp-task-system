@@ -9,7 +9,7 @@ import modalTestUtils from '_tests_/utils/modal'
 import { screen, waitFor } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 
 import additionalInfoTestUtils from '../AdditionalInfo/_tests_/utils'
 import {
@@ -515,7 +515,7 @@ describe('Детальная карточка заявки', () => {
         {
           store: getStoreWithAuth({
             userId: requiredProps.details!.assignee!.id,
-            userRole: UserRolesEnum.FirstLineSupport,
+            userRole: UserRoleEnum.FirstLineSupport,
           }),
         },
       )
@@ -544,7 +544,7 @@ describe('Детальная карточка заявки', () => {
         />,
         {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
             userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
           }),
         },
@@ -602,7 +602,7 @@ describe('Детальная карточка заявки', () => {
         />,
         {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           }),
         },
       )
@@ -634,7 +634,7 @@ describe('Детальная карточка заявки', () => {
         />,
         {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
+            userRole: UserRoleEnum.FirstLineSupport,
           }),
         },
       )

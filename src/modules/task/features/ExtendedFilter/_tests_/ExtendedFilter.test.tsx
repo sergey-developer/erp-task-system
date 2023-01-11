@@ -18,7 +18,7 @@ import { screen } from '@testing-library/react'
 import workGroupFixtures from 'fixtures/workGroup'
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 
 import {
   TaskAssignedEnum,
@@ -571,12 +571,12 @@ describe('Расширенный фильтр', () => {
   })
 
   describe('Рабочая группа', () => {
-    describe(`Для роли ${UserRolesEnum.FirstLineSupport}`, () => {
+    describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
       test('Не отображается', () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         render(<ExtendedFilter {...requiredProps} />, { store })
@@ -586,10 +586,10 @@ describe('Расширенный фильтр', () => {
       })
     })
 
-    describe(`Для роли ${UserRolesEnum.Engineer}`, () => {
+    describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
       test('Не отображается', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.Engineer,
+          userRole: UserRoleEnum.Engineer,
         })
 
         render(<ExtendedFilter {...requiredProps} />, { store })
@@ -599,12 +599,12 @@ describe('Расширенный фильтр', () => {
       })
     })
 
-    describe(`Для роли ${UserRolesEnum.SeniorEngineer}`, () => {
+    describe(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
       test('Отображается', async () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         render(<ExtendedFilter {...requiredProps} />, { store })
@@ -615,12 +615,12 @@ describe('Расширенный фильтр', () => {
       })
     })
 
-    describe(`Для роли ${UserRolesEnum.HeadOfDepartment}`, () => {
+    describe(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
       test('Отображается', async () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.HeadOfDepartment,
+          userRole: UserRoleEnum.HeadOfDepartment,
         })
 
         render(<ExtendedFilter {...requiredProps} />, { store })
@@ -638,7 +638,7 @@ describe('Расширенный фильтр', () => {
         })
 
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         render(<ExtendedFilter {...requiredProps} />, { store })
@@ -655,7 +655,7 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         render(
@@ -680,7 +680,7 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         render(<ExtendedFilter {...requiredProps} />, { store })
@@ -696,7 +696,7 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         const { user } = render(<ExtendedFilter {...requiredProps} />, {
@@ -719,7 +719,7 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess({ body: mockedWorkGroupList })
 
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         const { user } = render(<ExtendedFilter {...requiredProps} />, {
@@ -747,7 +747,7 @@ describe('Расширенный фильтр', () => {
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<ExtendedFilter {...requiredProps} />, {
@@ -771,7 +771,7 @@ describe('Расширенный фильтр', () => {
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           const { user } = render(<ExtendedFilter {...requiredProps} />, {

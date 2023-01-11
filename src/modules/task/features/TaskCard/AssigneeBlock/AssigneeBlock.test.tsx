@@ -27,7 +27,7 @@ import {
 } from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 import { ArrayItem, NonNullableObject } from 'shared/interfaces/utils'
 
 import AssigneeBlock, { AssigneeBlockProps } from './index'
@@ -327,7 +327,7 @@ describe('Блок "Исполнитель заявки"', () => {
           {
             store: getStoreWithAuth({
               userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-              userRole: UserRolesEnum.SeniorEngineer,
+              userRole: UserRoleEnum.SeniorEngineer,
             }),
           },
         )
@@ -474,7 +474,7 @@ describe('Блок "Исполнитель заявки"', () => {
     describe('Отображается для пользователя с ролью', () => {
       test('Первая линия поддержки', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         render(<AssigneeBlock {...requiredProps} />, {
@@ -486,7 +486,7 @@ describe('Блок "Исполнитель заявки"', () => {
 
       test('Инженер', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.Engineer,
+          userRole: UserRoleEnum.Engineer,
         })
 
         render(<AssigneeBlock {...requiredProps} />, {
@@ -498,7 +498,7 @@ describe('Блок "Исполнитель заявки"', () => {
 
       test('Старший инженер', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         render(<AssigneeBlock {...requiredProps} />, { store })
@@ -508,7 +508,7 @@ describe('Блок "Исполнитель заявки"', () => {
 
       test('Глава отдела', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.HeadOfDepartment,
+          userRole: UserRoleEnum.HeadOfDepartment,
         })
 
         render(<AssigneeBlock {...requiredProps} />, { store })
@@ -520,7 +520,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Активна если условия соблюдены', () => {
       const store = getStoreWithAuth({
         userId: requiredProps.assignee!.id,
-        userRole: UserRolesEnum.FirstLineSupport,
+        userRole: UserRoleEnum.FirstLineSupport,
       })
 
       render(
@@ -535,7 +535,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Но статус заявки не "Новая"', () => {
         const store = getStoreWithAuth({
           userId: requiredProps.assignee!.id,
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         render(
@@ -552,7 +552,7 @@ describe('Блок "Исполнитель заявки"', () => {
 
       test('Но исполнитель заявки назначен и не является авторизованным пользователем', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         render(
@@ -566,7 +566,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Но расширенный статус заявки "На переклассификации"', () => {
         const store = getStoreWithAuth({
           userId: requiredProps.assignee!.id,
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         render(
@@ -585,7 +585,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображает состояние загрузки во время взятия заявки в работу', async () => {
       const store = getStoreWithAuth({
         userId: requiredProps.assignee!.id,
-        userRole: UserRolesEnum.FirstLineSupport,
+        userRole: UserRoleEnum.FirstLineSupport,
       })
 
       render(
@@ -603,7 +603,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Обработчик вызывается корректно', async () => {
       const store = getStoreWithAuth({
         userId: requiredProps.assignee!.id,
-        userRole: UserRolesEnum.FirstLineSupport,
+        userRole: UserRoleEnum.FirstLineSupport,
       })
 
       const { user } = render(
@@ -621,7 +621,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Исполнитель отображается если он есть', () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
+            userRole: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -633,7 +633,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Исполнитель не отображается если его нет', () => {
         render(<AssigneeBlock {...requiredProps} assignee={null} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
+            userRole: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -645,7 +645,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Отображается соответствующий текст если исполнителя нет', () => {
         render(<AssigneeBlock {...requiredProps} assignee={null} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
+            userRole: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -655,7 +655,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Отображается кнопка "В работу"', () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
+            userRole: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -667,7 +667,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Исполнитель отображается если он есть', () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.Engineer,
+            userRole: UserRoleEnum.Engineer,
           }),
         })
 
@@ -679,7 +679,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Исполнитель не отображается если его нет', () => {
         render(<AssigneeBlock {...requiredProps} assignee={null} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.Engineer,
+            userRole: UserRoleEnum.Engineer,
           }),
         })
 
@@ -691,7 +691,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Отображается соответствующий текст если исполнителя нет', () => {
         render(<AssigneeBlock {...requiredProps} assignee={null} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.Engineer,
+            userRole: UserRoleEnum.Engineer,
           }),
         })
 
@@ -701,7 +701,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Отображается кнопка "В работу"', () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.Engineer,
+            userRole: UserRoleEnum.Engineer,
           }),
         })
 
@@ -718,7 +718,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -733,7 +733,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -754,7 +754,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -772,7 +772,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -785,7 +785,7 @@ describe('Блок "Исполнитель заявки"', () => {
               <AssigneeBlock {...requiredProps} {...canSelectAssigneeProps} />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -800,7 +800,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
               }),
             },
           )
@@ -820,7 +820,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
               }),
             },
           )
@@ -838,7 +838,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
               }),
             },
           )
@@ -856,7 +856,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
               }),
             },
           )
@@ -870,7 +870,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
               }),
             },
           )
@@ -892,7 +892,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
               }),
             },
           )
@@ -928,7 +928,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -958,7 +958,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -975,7 +975,7 @@ describe('Блок "Исполнитель заявки"', () => {
         test('Если его нельзя выбрать и если он есть', () => {
           render(<AssigneeBlock {...requiredProps} />, {
             store: getStoreWithAuth({
-              userRole: UserRolesEnum.SeniorEngineer,
+              userRole: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -991,7 +991,7 @@ describe('Блок "Исполнитель заявки"', () => {
             <AssigneeBlock {...requiredProps} {...canSelectAssigneeProps} />,
             {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
                 userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
               }),
             },
@@ -1005,7 +1005,7 @@ describe('Блок "Исполнитель заявки"', () => {
         test('Если его нельзя выбрать и если его нет', () => {
           render(<AssigneeBlock {...requiredProps} assignee={null} />, {
             store: getStoreWithAuth({
-              userRole: UserRolesEnum.SeniorEngineer,
+              userRole: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1018,7 +1018,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Отображается соответствующий текст если исполнителя нельзя выбрать и если его нет', () => {
         render(<AssigneeBlock {...requiredProps} assignee={null} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           }),
         })
 
@@ -1028,7 +1028,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Отображается кнопка "В работу"', () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           }),
         })
 
@@ -1043,7 +1043,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -1057,7 +1057,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -1077,7 +1077,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -1095,7 +1095,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -1108,7 +1108,7 @@ describe('Блок "Исполнитель заявки"', () => {
               <AssigneeBlock {...requiredProps} {...canSelectAssigneeProps} />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -1127,7 +1127,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
                 }),
               },
@@ -1157,7 +1157,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
                 }),
               },
@@ -1179,7 +1179,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
                 }),
               },
@@ -1198,7 +1198,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
                 }),
               },
@@ -1217,7 +1217,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
                 }),
               },
@@ -1236,7 +1236,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.SeniorEngineer,
+                  userRole: UserRoleEnum.SeniorEngineer,
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
                 }),
               },
@@ -1256,7 +1256,7 @@ describe('Блок "Исполнитель заявки"', () => {
             />,
             {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
                 userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
               }),
             },
@@ -1274,7 +1274,7 @@ describe('Блок "Исполнитель заявки"', () => {
             />,
             {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.SeniorEngineer,
+                userRole: UserRoleEnum.SeniorEngineer,
                 userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
               }),
             },
@@ -1304,7 +1304,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1319,7 +1319,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1340,7 +1340,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1358,7 +1358,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1371,7 +1371,7 @@ describe('Блок "Исполнитель заявки"', () => {
               <AssigneeBlock {...requiredProps} {...canSelectAssigneeProps} />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1386,7 +1386,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
               }),
             },
           )
@@ -1406,7 +1406,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
               }),
             },
           )
@@ -1424,7 +1424,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
               }),
             },
           )
@@ -1442,7 +1442,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
               }),
             },
           )
@@ -1456,7 +1456,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
               }),
             },
           )
@@ -1478,7 +1478,7 @@ describe('Блок "Исполнитель заявки"', () => {
             {
               store: getStoreWithAuth({
                 userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
               }),
             },
           )
@@ -1514,7 +1514,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1544,7 +1544,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1561,7 +1561,7 @@ describe('Блок "Исполнитель заявки"', () => {
         test('Если его нельзя выбрать и если он есть', () => {
           render(<AssigneeBlock {...requiredProps} />, {
             store: getStoreWithAuth({
-              userRole: UserRolesEnum.HeadOfDepartment,
+              userRole: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1577,7 +1577,7 @@ describe('Блок "Исполнитель заявки"', () => {
             <AssigneeBlock {...requiredProps} {...canSelectAssigneeProps} />,
             {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
                 userId: canSelectAssigneeProps.workGroup.groupLead.id,
               }),
             },
@@ -1591,7 +1591,7 @@ describe('Блок "Исполнитель заявки"', () => {
         test('Если его нельзя выбрать и если его нет', () => {
           render(<AssigneeBlock {...requiredProps} assignee={null} />, {
             store: getStoreWithAuth({
-              userRole: UserRolesEnum.HeadOfDepartment,
+              userRole: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1604,7 +1604,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Отображается соответствующий текст если исполнителя нельзя выбрать и если его нет', () => {
         render(<AssigneeBlock {...requiredProps} assignee={null} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.HeadOfDepartment,
+            userRole: UserRoleEnum.HeadOfDepartment,
           }),
         })
 
@@ -1614,7 +1614,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Отображается кнопка "В работу"', () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
-            userRole: UserRolesEnum.HeadOfDepartment,
+            userRole: UserRoleEnum.HeadOfDepartment,
           }),
         })
 
@@ -1629,7 +1629,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1643,7 +1643,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1663,7 +1663,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1681,7 +1681,7 @@ describe('Блок "Исполнитель заявки"', () => {
               {
                 store: getStoreWithAuth({
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1694,7 +1694,7 @@ describe('Блок "Исполнитель заявки"', () => {
               <AssigneeBlock {...requiredProps} {...canSelectAssigneeProps} />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -1713,7 +1713,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
                 }),
               },
@@ -1743,7 +1743,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
                 }),
               },
@@ -1765,7 +1765,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
                 }),
               },
@@ -1784,7 +1784,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
                 }),
               },
@@ -1803,7 +1803,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
                 }),
               },
@@ -1822,7 +1822,7 @@ describe('Блок "Исполнитель заявки"', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRolesEnum.HeadOfDepartment,
+                  userRole: UserRoleEnum.HeadOfDepartment,
                   userId: canSelectAssigneeProps.workGroup.groupLead.id,
                 }),
               },
@@ -1842,7 +1842,7 @@ describe('Блок "Исполнитель заявки"', () => {
             />,
             {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
                 userId: canSelectAssigneeProps.workGroup.groupLead.id,
               }),
             },
@@ -1860,7 +1860,7 @@ describe('Блок "Исполнитель заявки"', () => {
             />,
             {
               store: getStoreWithAuth({
-                userRole: UserRolesEnum.HeadOfDepartment,
+                userRole: UserRoleEnum.HeadOfDepartment,
                 userId: canSelectAssigneeProps.workGroup.groupLead.id,
               }),
             },

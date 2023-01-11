@@ -5,7 +5,7 @@ import Space from 'components/Space'
 import { SubTaskModel } from 'modules/subTask/models'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import formatDate from 'shared/utils/date/formatDate'
+import { formatDate } from 'shared/utils/date'
 
 import SubTask from './SubTask'
 

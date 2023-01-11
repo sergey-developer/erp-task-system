@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import renderStringWithLineBreak from './renderStringWithLineBreak'
+import { renderStringWithLineBreak } from './renderStringWithLineBreak'
 
 test('Верно отображает строку с переносами', () => {
   render(renderStringWithLineBreak('q\nq\nq\n') as any)

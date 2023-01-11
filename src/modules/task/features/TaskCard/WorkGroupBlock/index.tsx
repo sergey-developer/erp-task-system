@@ -1,5 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, FormInstance, Row, Typography } from 'antd'
+import get from 'lodash/get'
 import React, { FC } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -14,8 +15,7 @@ import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
-import useDebounceFn from 'shared/hooks/useDebounceFn'
-import valueOr from 'shared/utils/common/valueOr'
+import { useDebounceFn } from 'shared/hooks'
 
 const TaskFirstLineModal = React.lazy(
   () => import('modules/task/features/TaskCard/TaskFirstLineModal'),
@@ -150,7 +150,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           </Col>
         </Row>
 
-        <Text>{valueOr(workGroup?.name, 'I линия поддержки')}</Text>
+        <Text>{get(workGroup, 'name', 'I линия поддержки')}</Text>
       </Space>
 
       {isTaskFirstLineModalOpened && (

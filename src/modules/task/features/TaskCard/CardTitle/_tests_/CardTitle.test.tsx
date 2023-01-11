@@ -5,7 +5,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/common'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 
 import CardTitle from '../index'
 import {
@@ -310,7 +310,7 @@ describe('Заголовок карточки заявки', () => {
           const { user } = render(
             <CardTitle {...requiredProps} {...activeSecondItemProps} />,
             {
-              store: getStoreWithAuth({ userRole: UserRolesEnum.Engineer }),
+              store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
             },
           )
 

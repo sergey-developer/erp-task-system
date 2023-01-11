@@ -9,8 +9,8 @@ import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import { UserRolesEnum } from 'shared/constants/roles'
-import formatDate from 'shared/utils/date/formatDate'
+import { UserRoleEnum } from 'shared/constants/roles'
+import { formatDate } from 'shared/utils/date'
 
 import { paginationConfig } from '../constants/pagination'
 import TaskTable from '../index'
@@ -522,7 +522,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.FirstLineSupport}
+              userRole={UserRoleEnum.FirstLineSupport}
             />,
           )
 
@@ -537,7 +537,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.Engineer}
+              userRole={UserRoleEnum.Engineer}
             />,
           )
 
@@ -550,7 +550,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.Engineer}
+              userRole={UserRoleEnum.Engineer}
             />,
           )
 
@@ -571,7 +571,7 @@ describe('Таблица заявок', () => {
                   workGroup: null,
                 },
               ]}
-              userRole={UserRolesEnum.Engineer}
+              userRole={UserRoleEnum.Engineer}
             />,
           )
 
@@ -584,7 +584,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.Engineer}
+              userRole={UserRoleEnum.Engineer}
             />,
           )
 
@@ -598,7 +598,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.Engineer}
+              userRole={UserRoleEnum.Engineer}
             />,
           )
 
@@ -610,7 +610,7 @@ describe('Таблица заявок', () => {
           const { user } = render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.Engineer}
+              userRole={UserRoleEnum.Engineer}
             />,
           )
 
@@ -624,7 +624,7 @@ describe('Таблица заявок', () => {
           const { user } = render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.Engineer}
+              userRole={UserRoleEnum.Engineer}
             />,
           )
 
@@ -647,7 +647,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.SeniorEngineer}
+              userRole={UserRoleEnum.SeniorEngineer}
             />,
           )
 
@@ -660,7 +660,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.SeniorEngineer}
+              userRole={UserRoleEnum.SeniorEngineer}
             />,
           )
 
@@ -681,7 +681,7 @@ describe('Таблица заявок', () => {
                   workGroup: null,
                 },
               ]}
-              userRole={UserRolesEnum.SeniorEngineer}
+              userRole={UserRoleEnum.SeniorEngineer}
             />,
           )
 
@@ -694,7 +694,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.SeniorEngineer}
+              userRole={UserRoleEnum.SeniorEngineer}
             />,
           )
 
@@ -708,7 +708,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.SeniorEngineer}
+              userRole={UserRoleEnum.SeniorEngineer}
             />,
           )
 
@@ -720,7 +720,7 @@ describe('Таблица заявок', () => {
           const { user } = render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.SeniorEngineer}
+              userRole={UserRoleEnum.SeniorEngineer}
             />,
           )
 
@@ -734,7 +734,7 @@ describe('Таблица заявок', () => {
           const { user } = render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.SeniorEngineer}
+              userRole={UserRoleEnum.SeniorEngineer}
             />,
           )
 
@@ -757,7 +757,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.HeadOfDepartment}
+              userRole={UserRoleEnum.HeadOfDepartment}
             />,
           )
 
@@ -770,7 +770,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.HeadOfDepartment}
+              userRole={UserRoleEnum.HeadOfDepartment}
             />,
           )
 
@@ -791,7 +791,7 @@ describe('Таблица заявок', () => {
                   workGroup: null,
                 },
               ]}
-              userRole={UserRolesEnum.HeadOfDepartment}
+              userRole={UserRoleEnum.HeadOfDepartment}
             />,
           )
 
@@ -804,7 +804,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.HeadOfDepartment}
+              userRole={UserRoleEnum.HeadOfDepartment}
             />,
           )
 
@@ -818,7 +818,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.HeadOfDepartment}
+              userRole={UserRoleEnum.HeadOfDepartment}
             />,
           )
 
@@ -830,7 +830,7 @@ describe('Таблица заявок', () => {
           const { user } = render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.HeadOfDepartment}
+              userRole={UserRoleEnum.HeadOfDepartment}
             />,
           )
 
@@ -844,7 +844,7 @@ describe('Таблица заявок', () => {
           const { user } = render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.HeadOfDepartment}
+              userRole={UserRoleEnum.HeadOfDepartment}
             />,
           )
 
@@ -869,7 +869,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.FirstLineSupport}
+              userRole={UserRoleEnum.FirstLineSupport}
             />,
           )
 
@@ -882,7 +882,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.FirstLineSupport}
+              userRole={UserRoleEnum.FirstLineSupport}
             />,
           )
 
@@ -897,7 +897,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.FirstLineSupport}
+              userRole={UserRoleEnum.FirstLineSupport}
             />,
           )
 
@@ -911,7 +911,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.FirstLineSupport}
+              userRole={UserRoleEnum.FirstLineSupport}
             />,
           )
 
@@ -923,7 +923,7 @@ describe('Таблица заявок', () => {
           const { user } = render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.FirstLineSupport}
+              userRole={UserRoleEnum.FirstLineSupport}
             />,
           )
 
@@ -937,7 +937,7 @@ describe('Таблица заявок', () => {
           const { user } = render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.FirstLineSupport}
+              userRole={UserRoleEnum.FirstLineSupport}
             />,
           )
 
@@ -960,7 +960,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.Engineer}
+              userRole={UserRoleEnum.Engineer}
             />,
           )
 
@@ -975,7 +975,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.SeniorEngineer}
+              userRole={UserRoleEnum.SeniorEngineer}
             />,
           )
 
@@ -990,7 +990,7 @@ describe('Таблица заявок', () => {
           render(
             <TaskTable
               {...taskTableTestConstants.requiredProps}
-              userRole={UserRolesEnum.HeadOfDepartment}
+              userRole={UserRoleEnum.HeadOfDepartment}
             />,
           )
 

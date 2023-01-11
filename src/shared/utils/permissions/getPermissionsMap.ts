@@ -15,7 +15,7 @@ const proxyHandler = {
   },
 }
 
-const getPermissionsMap = (
+export const getPermissionsMap = (
   permissions: MaybeUndefined<Array<Permissions>> = [],
 ): PermissionsMap => {
   const permissionsMap = permissions.reduce((acc, permission) => {
@@ -26,5 +26,3 @@ const getPermissionsMap = (
 
   return new Proxy(permissionsMap, proxyHandler)
 }
-
-export default getPermissionsMap

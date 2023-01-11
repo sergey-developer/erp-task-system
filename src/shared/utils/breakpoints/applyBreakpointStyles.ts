@@ -14,7 +14,7 @@ import { SimpleInterpolation } from 'styled-components'
  `breakpoints` со значением `true`
  */
 
-const applyBreakpointStyles = (
+export const applyBreakpointStyles = (
   breakpoints: StyledBreakpointsProps['$breakpoints'],
   styles: StyledBreakpointStyles,
 ): SimpleInterpolation => {
@@ -25,5 +25,3 @@ const applyBreakpointStyles = (
 
   return styles[matchedBreakpoint as BreakpointUnion] || ''
 }
-
-export default applyBreakpointStyles

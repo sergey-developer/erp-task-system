@@ -4,7 +4,7 @@ import {
   StyledBreakpointStyles,
   StyledBreakpointsProps,
 } from 'shared/interfaces/breakpoints'
-import applyBreakpointStyles from 'shared/utils/breakpoints/applyBreakpointStyles'
+import { applyBreakpointStyles } from 'shared/utils/breakpoints'
 import styled, { css } from 'styled-components'
 
 const { Search } = Input

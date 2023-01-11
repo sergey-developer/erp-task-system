@@ -16,7 +16,7 @@ import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 
 import taskFirstLineModalTestUtils from '../TaskFirstLineModal/_tests_/utils'
 import taskSecondLineModalTestUtils from '../TaskSecondLineModal/_tests_/utils'
@@ -158,7 +158,7 @@ describe('Блок рабочей группы', () => {
     describe('Роль - специалист 1-й линии', () => {
       test('Отображается если условия соблюдены', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         render(
@@ -172,7 +172,7 @@ describe('Блок рабочей группы', () => {
       describe('Не отображается если условия соблюдены', () => {
         test('Но есть рабочая группа', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
+            userRole: UserRoleEnum.FirstLineSupport,
           })
 
           render(
@@ -190,7 +190,7 @@ describe('Блок рабочей группы', () => {
 
       test('Активна если условия соблюдены', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         render(
@@ -208,7 +208,7 @@ describe('Блок рабочей группы', () => {
       describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
+            userRole: UserRoleEnum.FirstLineSupport,
           })
 
           render(
@@ -226,7 +226,7 @@ describe('Блок рабочей группы', () => {
 
         test('Но статус заявки не "Новая" и не "В процессе"', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.FirstLineSupport,
+            userRole: UserRoleEnum.FirstLineSupport,
           })
 
           render(
@@ -245,7 +245,7 @@ describe('Блок рабочей группы', () => {
 
       test('Отображает состоянии загрузки во время перевода на 2-ю линию', async () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         render(
@@ -263,7 +263,7 @@ describe('Блок рабочей группы', () => {
 
       test('При клике открывается модальное окно', async () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         const { user } = render(
@@ -289,7 +289,7 @@ describe('Блок рабочей группы', () => {
           <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
           {
             store: getStoreWithAuth({
-              userRole: UserRolesEnum.Engineer,
+              userRole: UserRoleEnum.Engineer,
             }),
           },
         )
@@ -302,7 +302,7 @@ describe('Блок рабочей группы', () => {
           <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
           {
             store: getStoreWithAuth({
-              userRole: UserRolesEnum.SeniorEngineer,
+              userRole: UserRoleEnum.SeniorEngineer,
             }),
           },
         )
@@ -315,7 +315,7 @@ describe('Блок рабочей группы', () => {
           <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
           {
             store: getStoreWithAuth({
-              userRole: UserRolesEnum.HeadOfDepartment,
+              userRole: UserRoleEnum.HeadOfDepartment,
             }),
           },
         )
@@ -326,7 +326,7 @@ describe('Блок рабочей группы', () => {
   describe('Модалка перевода на 2-ю линию', () => {
     test('При отправке обработчик вызывается корректно', async () => {
       const store = getStoreWithAuth({
-        userRole: UserRolesEnum.FirstLineSupport,
+        userRole: UserRoleEnum.FirstLineSupport,
       })
 
       const { user } = render(
@@ -356,7 +356,7 @@ describe('Блок рабочей группы', () => {
     describe('Роль - старший инженер', () => {
       test('Отображается если условия соблюдены', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         render(
@@ -372,7 +372,7 @@ describe('Блок рабочей группы', () => {
       describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           render(
@@ -390,7 +390,7 @@ describe('Блок рабочей группы', () => {
 
         test('Но статус заявки "В ожидании"', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           render(
@@ -409,7 +409,7 @@ describe('Блок рабочей группы', () => {
 
       test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         render(
@@ -427,7 +427,7 @@ describe('Блок рабочей группы', () => {
 
       test('При клике открывается модальное окно', async () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.SeniorEngineer,
+          userRole: UserRoleEnum.SeniorEngineer,
         })
 
         const { user } = render(
@@ -449,7 +449,7 @@ describe('Блок рабочей группы', () => {
       describe('Не отображается если условия соблюдены', () => {
         test('Но нет рабочей группы', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           render(
@@ -468,7 +468,7 @@ describe('Блок рабочей группы', () => {
 
         test('Но заявка закрыта', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           render(
@@ -485,7 +485,7 @@ describe('Блок рабочей группы', () => {
 
         test('Но заявка завершена', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.SeniorEngineer,
+            userRole: UserRoleEnum.SeniorEngineer,
           })
 
           render(
@@ -505,7 +505,7 @@ describe('Блок рабочей группы', () => {
     describe('Роль - глава отдела', () => {
       test('Отображается', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.HeadOfDepartment,
+          userRole: UserRoleEnum.HeadOfDepartment,
         })
 
         render(
@@ -521,7 +521,7 @@ describe('Блок рабочей группы', () => {
       describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.HeadOfDepartment,
+            userRole: UserRoleEnum.HeadOfDepartment,
           })
 
           render(
@@ -539,7 +539,7 @@ describe('Блок рабочей группы', () => {
 
         test('Но статус заявки "В ожидании"', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.HeadOfDepartment,
+            userRole: UserRoleEnum.HeadOfDepartment,
           })
 
           render(
@@ -558,7 +558,7 @@ describe('Блок рабочей группы', () => {
 
       test('Отображает состояние загрузки во время перевода на 1-ю линию', async () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.HeadOfDepartment,
+          userRole: UserRoleEnum.HeadOfDepartment,
         })
 
         render(
@@ -576,7 +576,7 @@ describe('Блок рабочей группы', () => {
 
       test('При клике открывается модальное окно', async () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.HeadOfDepartment,
+          userRole: UserRoleEnum.HeadOfDepartment,
         })
 
         const { user } = render(
@@ -598,7 +598,7 @@ describe('Блок рабочей группы', () => {
       describe('Не отображается', () => {
         test('Если нет рабочей группы', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.HeadOfDepartment,
+            userRole: UserRoleEnum.HeadOfDepartment,
           })
 
           render(
@@ -617,7 +617,7 @@ describe('Блок рабочей группы', () => {
 
         test('Если заявка закрыта', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.HeadOfDepartment,
+            userRole: UserRoleEnum.HeadOfDepartment,
           })
 
           render(
@@ -636,7 +636,7 @@ describe('Блок рабочей группы', () => {
 
         test('Если заявка завершена', () => {
           const store = getStoreWithAuth({
-            userRole: UserRolesEnum.HeadOfDepartment,
+            userRole: UserRoleEnum.HeadOfDepartment,
           })
 
           render(
@@ -658,7 +658,7 @@ describe('Блок рабочей группы', () => {
     describe('Роль - специалист 1-й линии', () => {
       test('Не отображается', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.FirstLineSupport,
+          userRole: UserRoleEnum.FirstLineSupport,
         })
 
         render(
@@ -675,7 +675,7 @@ describe('Блок рабочей группы', () => {
     describe('Роль - инженер', () => {
       test('Не отображается', () => {
         const store = getStoreWithAuth({
-          userRole: UserRolesEnum.Engineer,
+          userRole: UserRoleEnum.Engineer,
         })
 
         render(
@@ -693,7 +693,7 @@ describe('Блок рабочей группы', () => {
   describe('Модалка перевода на 1-ю линию', () => {
     test('При отправке обработчик вызывается корректно', async () => {
       const store = getStoreWithAuth({
-        userRole: UserRolesEnum.SeniorEngineer,
+        userRole: UserRoleEnum.SeniorEngineer,
       })
 
       const { user } = render(

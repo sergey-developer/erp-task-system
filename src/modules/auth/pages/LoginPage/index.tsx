@@ -7,7 +7,7 @@ import { RoutesEnum } from 'configs/routes'
 import { useLogin } from 'modules/auth/hooks'
 import { APP_NAME } from 'shared/constants/common'
 import { ErrorResponse } from 'shared/services/api'
-import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
+import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import { LoginFormFields } from './interfaces'
 import { CardStyled, FormStyled, PageTitleStyled } from './styles'

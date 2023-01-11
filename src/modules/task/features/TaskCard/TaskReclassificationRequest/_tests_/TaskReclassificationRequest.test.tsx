@@ -1,7 +1,7 @@
 import { render } from '_tests_/utils'
 import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import formatDate from 'shared/utils/date/formatDate'
+import { formatDate } from 'shared/utils/date'
 
 import TaskReclassificationRequest from '../index'
 import { requiredProps } from './constants'

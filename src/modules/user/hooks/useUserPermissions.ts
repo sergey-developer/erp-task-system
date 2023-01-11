@@ -5,7 +5,7 @@ import {
   PermissionsMap,
   UserPermissionConfig,
 } from 'shared/interfaces/permissions'
-import getPermissionsMap from 'shared/utils/permissions/getPermissionsMap'
+import { getPermissionsMap } from 'shared/utils/permissions'
 
 export const useUserPermissions = (
   config: UserPermissionConfig,

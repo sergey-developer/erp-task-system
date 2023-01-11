@@ -1,4 +1,4 @@
-import formatDate from 'shared/utils/date/formatDate'
+import { formatDate } from 'shared/utils/date'
 
 import {
   ExtendedFilterFormFields,

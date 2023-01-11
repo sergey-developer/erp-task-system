@@ -6,7 +6,7 @@ import { login as loginAction } from 'modules/auth/auth.slice'
 import { useLoginMutation } from 'modules/auth/services/authApi.service'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { parseJwt } from 'modules/auth/utils'
-import useDispatch from 'shared/hooks/useDispatch'
+import { useDispatch } from 'shared/hooks'
 
 import { LoginFormFields } from '../pages/LoginPage/interfaces'
 

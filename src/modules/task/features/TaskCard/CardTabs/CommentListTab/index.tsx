@@ -7,7 +7,7 @@ import Space from 'components/Space'
 import { useCreateTaskComment, useGetTaskCommentList } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { ErrorResponse } from 'shared/services/api'
-import handleSetFieldsErrors from 'shared/utils/form/handleSetFieldsErrors'
+import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import CommentList from './CommentList'
 import CreateCommentForm from './CreateCommentForm'

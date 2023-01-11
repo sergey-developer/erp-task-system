@@ -1,11 +1,11 @@
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type UserProfileModel = {
   id: number
   firstName: string
   lastName: string
-  role: UserRolesEnum
+  role: UserRoleEnum
   email: string
   isStaff: boolean
 

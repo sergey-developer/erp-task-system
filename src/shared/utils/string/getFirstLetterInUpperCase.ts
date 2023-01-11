@@ -1,5 +1,2 @@
-const getFirstLetterInUpperCase = (value: string): string => {
-  return value.charAt(0).toUpperCase()
-}
-
-export default getFirstLetterInUpperCase
+export const getFirstLetterInUpperCase = (value: string): string =>
+  value.charAt(0).toUpperCase()

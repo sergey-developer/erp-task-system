@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { useLogoutMutation } from 'modules/auth/services/authApi.service'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { logoutAndClearTokens } from 'modules/auth/utils'
-import useDispatch from 'shared/hooks/useDispatch'
+import { useDispatch } from 'shared/hooks'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { LOGOUT_ERROR_MSG } from '../features/Logout/constants/messages'

@@ -3,7 +3,7 @@ import { screen, within } from '@testing-library/react'
 import subTaskFixtures from 'fixtures/subTask'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import formatDate from 'shared/utils/date/formatDate'
+import { formatDate } from 'shared/utils/date'
 
 import SubTaskList, { SubTaskListProps } from './index'
 import {

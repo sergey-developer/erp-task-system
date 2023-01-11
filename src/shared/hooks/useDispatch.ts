@@ -4,6 +4,4 @@ import store from 'state/store'
 
 export type AppDispatch = typeof store.dispatch
 
-const useDispatch = () => useBaseDispatch<AppDispatch>()
-
-export default useDispatch
+export const useDispatch = () => useBaseDispatch<AppDispatch>()

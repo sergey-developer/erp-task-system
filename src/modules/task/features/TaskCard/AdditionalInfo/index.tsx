@@ -7,9 +7,8 @@ import { MapPointIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import { TaskModel } from 'modules/task/models'
-import useDebounceFn from 'shared/hooks/useDebounceFn'
-import valueOr from 'shared/utils/common/valueOr'
-import valueOrHyphen from 'shared/utils/common/valueOrHyphen'
+import { useDebounceFn } from 'shared/hooks'
+import { valueOrHyphen } from 'shared/utils/common'
 
 import { ContentWrapperStyled } from './styles'
 import { makeYandexMapLink } from './utils'
@@ -136,7 +135,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                     target='_blank'
                   >
                     <Text strong={!!address} underline={!!address}>
-                      {valueOr(address, 'Отсутствует')}
+                      {address || 'Отсутствует'}
                     </Text>
                   </Link>
                 </Space>

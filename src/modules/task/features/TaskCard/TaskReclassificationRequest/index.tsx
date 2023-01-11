@@ -9,7 +9,7 @@ import { UserModel } from 'modules/user/models'
 import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
-import formatDate from 'shared/utils/date/formatDate'
+import { formatDate } from 'shared/utils/date'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 import { WrapperStyled } from './styles'

@@ -3,7 +3,7 @@ import {
   CRUDPermissionsEnum,
   UIPermissionsEnum,
 } from 'shared/constants/permissions'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'shared/constants/roles'
 import { BooleanMap } from 'shared/interfaces/utils'
 
 export type Permissions =
@@ -12,7 +12,7 @@ export type Permissions =
   | SubTaskApiPermissionsEnum
 
 export type UserPermissionConfig = Partial<
-  Record<UserRolesEnum, Array<Permissions>>
+  Record<UserRoleEnum, Array<Permissions>>
 >
 
 export type ObjectPermissionConfig<K extends string> = Record<
