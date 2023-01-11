@@ -59,14 +59,12 @@ export const loadingFinishedByIconIn = async (container: HTMLElement) => {
   })
 }
 
-export const loadingStartedBySkeletonIn =
-  (container: HTMLElement) => async () => {
-    const skeleton = container.querySelector('.ant-skeleton-active')
-    expect(skeleton).toBeInTheDocument()
-  }
+export const loadingStartedBySkeletonIn = (container: HTMLElement) => () => {
+  const skeleton = container.querySelector('.ant-skeleton-active')
+  expect(skeleton).toBeInTheDocument()
+}
 
-export const loadingFinishedBySkeletonIn =
-  (container: HTMLElement) => async () => {
-    const skeleton = container.querySelector('.ant-skeleton-active')
-    expect(skeleton).not.toBeInTheDocument()
-  }
+export const loadingFinishedBySkeletonIn = (container: HTMLElement) => () => {
+  const skeleton = container.querySelector('.ant-skeleton-active')
+  expect(skeleton).not.toBeInTheDocument()
+}

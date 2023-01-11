@@ -3,6 +3,9 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 const getContainer = () => screen.getByTestId('task-card-title')
+
+const queryContainer = () => screen.queryByTestId('task-card-title')
+
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // menu
@@ -58,6 +61,7 @@ const userClickCloseButton = async (user: UserEvent) => {
 
 const utils = {
   getContainer,
+  queryContainer,
   getChildByText,
 
   getMenuButton,

@@ -23,7 +23,7 @@ import {
 } from 'modules/task/features/ExtendedFilter/constants'
 import fastFilterTestUtils from 'modules/task/features/FastFilter/_tests_/utils'
 import { FastFilterEnum } from 'modules/task/features/FastFilter/constants'
-import taskCardTestUtils from 'modules/task/features/TaskCard/Card/_tests_/utils'
+import { testUtils as taskCardTestUtils } from 'modules/task/features/TaskCard/Card/Card.test'
 import taskTableTestUtils from 'modules/task/features/TaskTable/_tests_/utils'
 import { paginationConfig } from 'modules/task/features/TaskTable/constants/pagination'
 import { GetTaskCountersResponseModel } from 'modules/task/models'

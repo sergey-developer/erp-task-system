@@ -1,7 +1,12 @@
 import {
   generateDateString,
+  generateEmail,
   generateId,
+  generateIdStr,
   generateInteger,
+  generateLatitude,
+  generateLongitude,
+  generatePhone,
   generateWord,
 } from '_tests_/utils'
 import {
@@ -58,4 +63,19 @@ export const getTask = (
   productClassifier3: generateWord(),
   supportGroup: taskFixtures.getSupportGroup(),
   olaEstimatedTime: Date.now(),
+
+  description: generateWord(),
+  contactPhone: generatePhone(),
+  portablePhone: generatePhone(),
+  address: generateWord(),
+  company: generateWord(),
+  contactType: generateWord(),
+  email: generateEmail(),
+  latitude: String(generateLatitude()),
+  longitude: String(generateLongitude()),
+  sapId: generateIdStr(),
+  olaNextBreachTime: generateDateString(),
+  weight: generateInteger(),
+  techResolution: generateWord(),
+  userResolution: generateWord(),
 })

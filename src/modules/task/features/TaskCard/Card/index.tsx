@@ -60,7 +60,11 @@ const TaskReclassificationModal = React.lazy(
 )
 
 const reclassificationRequestSpinner = (
-  <Spinner dimension='block' tip={reclassificationRequestLoadingMessage} />
+  <Spinner
+    data-testid='task-card-reclassification-request-spinner'
+    dimension='block'
+    tip={reclassificationRequestLoadingMessage}
+  />
 )
 
 export type TaskCardProps = {

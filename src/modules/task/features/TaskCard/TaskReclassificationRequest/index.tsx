@@ -39,7 +39,7 @@ const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
 
   return (
     <WrapperStyled
-      data-testid='task-reclassification-request'
+      data-testid='task-card-reclassification-request'
       $breakpoints={breakpoints}
       $stretch
     >

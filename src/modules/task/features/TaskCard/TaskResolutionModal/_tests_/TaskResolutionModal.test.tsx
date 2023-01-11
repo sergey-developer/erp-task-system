@@ -11,7 +11,7 @@ import TaskResolutionModal from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
 
-describe('Модалка решения по заявки', () => {
+describe('Модалка решения по заявке', () => {
   test('Заголовок отображается', () => {
     render(<TaskResolutionModal {...requiredProps} />)
 

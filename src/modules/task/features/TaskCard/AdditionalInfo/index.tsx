@@ -64,7 +64,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
 
   return (
     <Expandable
-      data-testid='task-additional-info'
+      data-testid='task-card-additional-info'
       btnText='Дополнительная информация'
       btnTextType='secondary'
       btnTextUnderline

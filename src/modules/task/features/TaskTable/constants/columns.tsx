@@ -107,7 +107,7 @@ export const getTableColumns = (
       dataIndex: 'olaNextBreachTime',
       title: 'Выполнить до',
       render: (
-        value: MaybeNull<TaskTableListItem['olaNextBreachTime']>,
+        value: TaskTableListItem['olaNextBreachTime'],
         { olaStatus },
       ) => (
         <Text type={getOlaStatusTextType(olaStatus)}>
