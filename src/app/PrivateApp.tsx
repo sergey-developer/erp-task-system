@@ -8,9 +8,11 @@ import { useGetUserProfile } from 'modules/user/hooks'
 const PrivateApp: FC = () => {
   const { data: userProfile } = useGetUserProfile()
 
-  return useRoutes(
-    getPrivateRoutesConfig({ isStaff: get(userProfile, 'isStaff', false) }),
-  )
+  const routesConfig = getPrivateRoutesConfig({
+    isStaff: get(userProfile, 'isStaff', false),
+  })
+
+  return useRoutes(routesConfig)
 }
 
 export default PrivateApp
