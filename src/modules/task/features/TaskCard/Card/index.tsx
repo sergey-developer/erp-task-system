@@ -52,13 +52,19 @@ import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 const TaskReclassificationRequest = React.lazy(
   () => import('../TaskReclassificationRequest'),
 )
+
 const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
+
 const TaskReclassificationModal = React.lazy(
   () => import('../TaskReclassificationModal'),
 )
 
 const reclassificationRequestSpinner = (
-  <Spinner dimension='block' tip={reclassificationRequestLoadingMessage} />
+  <Spinner
+    data-testid='task-card-reclassification-request-spinner'
+    dimension='block'
+    tip={reclassificationRequestLoadingMessage}
+  />
 )
 
 export type TaskCardProps = {

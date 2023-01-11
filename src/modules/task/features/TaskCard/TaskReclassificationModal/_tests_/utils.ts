@@ -6,6 +6,9 @@ import { ReclassificationReasonEnum } from 'modules/task/constants/common'
 import { reclassificationReasonLabels } from '../constants'
 
 const getContainer = () => screen.getByTestId('task-reclassification-modal')
+
+const findContainer = () => screen.findByTestId('task-reclassification-modal')
+
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // close button
@@ -87,6 +90,7 @@ const loadingStarted = () => loadingStartedByButton(getSubmitButton())
 
 const utils = {
   getContainer,
+  findContainer,
   getChildByText,
 
   getCloseButton,

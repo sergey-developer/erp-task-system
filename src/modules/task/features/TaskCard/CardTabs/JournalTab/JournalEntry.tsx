@@ -6,6 +6,7 @@ import Space from 'components/Space'
 import { TaskJournalEntryModel } from 'modules/task/models'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { MaybeNull } from 'shared/interfaces/utils'
+import { renderStringWithLineBreak } from 'shared/utils/string'
 
 import { Description } from './styles'
 
@@ -31,7 +32,9 @@ const JournalEntry: FC<JournalEntryProps> = ({
       <Space direction='vertical'>
         <Text strong>{createdAt}</Text>
 
-        <Description ellipsis={commonEllipsisConfig}>{description}</Description>
+        <Description ellipsis={commonEllipsisConfig}>
+          {renderStringWithLineBreak(description)}
+        </Description>
       </Space>
 
       <Row gutter={10}>

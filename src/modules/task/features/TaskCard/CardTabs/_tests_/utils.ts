@@ -5,6 +5,8 @@ import { TaskCardTabsEnum, taskCardTabNamesDict } from '../constants'
 
 const getContainer = () => screen.getByTestId('task-card-tabs')
 
+const queryContainer = () => screen.queryByTestId('task-card-tabs')
+
 const getTabsNav = () => within(getContainer()).getByRole('tablist')
 
 const getNavItem = (tab: TaskCardTabsEnum) =>
@@ -21,6 +23,7 @@ const userClickTab = async (user: UserEvent, tab: TaskCardTabsEnum) => {
 
 const utils = {
   getContainer,
+  queryContainer,
 
   getNavItem,
 

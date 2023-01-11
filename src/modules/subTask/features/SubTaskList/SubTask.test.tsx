@@ -407,7 +407,7 @@ describe('Задание', () => {
         expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
       })
 
-      test('Но заявка в статусе "Завершена"', () => {
+      test('Но статус заявки "Завершена"', () => {
         render(
           <SubTask
             {...requiredProps}
@@ -419,7 +419,7 @@ describe('Задание', () => {
         expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
       })
 
-      test('Но заявка в статусе "Закрыта"', () => {
+      test('Но статус заявки "Закрыта"', () => {
         render(
           <SubTask
             {...requiredProps}
@@ -477,7 +477,7 @@ describe('Задание', () => {
         expect(testUtils.queryCancelButton()).not.toBeInTheDocument()
       })
 
-      test('Но заявка в статусе "Завершена"', () => {
+      test('Но статус заявки "Завершена"', () => {
         render(
           <SubTask
             {...requiredProps}
@@ -489,7 +489,7 @@ describe('Задание', () => {
         expect(testUtils.queryCancelButton()).not.toBeInTheDocument()
       })
 
-      test('Но заявка в статусе "Закрыта"', () => {
+      test('Но статус заявки "Закрыта"', () => {
         render(
           <SubTask
             {...requiredProps}

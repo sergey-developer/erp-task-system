@@ -27,7 +27,7 @@ import { UserRolesEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
 import { testUtils as workGroupTestUtils } from '../../../TaskCard/WorkGroupBlock/WorkGroupBlock.test'
-import taskCardTestUtils from '../../Card/_tests_/utils'
+import { testUtils as taskCardTestUtils } from '../../Card/Card.test'
 import taskFirstLineModalTestUtils from '../../TaskFirstLineModal/_tests_/utils'
 import { TaskFirstLineFormErrors } from '../../TaskFirstLineModal/interfaces'
 import TaskCardContainer from '../index'

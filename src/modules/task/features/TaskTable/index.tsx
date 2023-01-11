@@ -4,6 +4,8 @@ import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import { ResizableProps } from 'react-resizable'
 
+import { ArrayItem } from 'shared/interfaces/utils'
+
 import { getTableColumns } from './constants/columns'
 import { localeConfig } from './constants/common'
 import tableComponents from './constants/components'
@@ -45,7 +47,7 @@ const TaskTable: FC<TaskTableProps> = ({
     setColumns((prevColumns) =>
       prevColumns.map((col, index) => ({
         ...col,
-        onHeaderCell: (col: ColumnsType<TaskTableListItem>[number]) => ({
+        onHeaderCell: (col: ArrayItem<ColumnsType<TaskTableListItem>>) => ({
           width: col.width,
           onResize: handleResize(index),
         }),

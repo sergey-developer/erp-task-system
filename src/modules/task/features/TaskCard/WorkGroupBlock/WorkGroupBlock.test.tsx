@@ -41,7 +41,7 @@ const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof requiredProps> =
   }
 
 // first line button
-const showFirstLineButtonProps: Pick<
+export const showFirstLineButtonProps: Pick<
   WorkGroupBlockProps,
   'workGroup' | 'status'
 > = {
@@ -49,7 +49,7 @@ const showFirstLineButtonProps: Pick<
   status: TaskStatusEnum.New,
 }
 
-const activeFirstLineButtonProps: Pick<
+export const activeFirstLineButtonProps: Pick<
   WorkGroupBlockProps,
   'status' | 'extendedStatus'
 > = {
@@ -58,11 +58,12 @@ const activeFirstLineButtonProps: Pick<
 }
 
 // second line button
-const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> = {
-  workGroup: null,
-}
+export const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> =
+  {
+    workGroup: null,
+  }
 
-const activeSecondLineButtonProps: Pick<
+export const activeSecondLineButtonProps: Pick<
   WorkGroupBlockProps,
   'status' | 'extendedStatus'
 > = {
@@ -155,7 +156,7 @@ describe('Блок рабочей группы', () => {
 
   describe('Кнопка перевода на 2-ю линию', () => {
     describe('Роль - специалист 1-й линии', () => {
-      test('Отображается если все условия соблюдены', () => {
+      test('Отображается если условия соблюдены', () => {
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.FirstLineSupport,
         })
@@ -168,7 +169,7 @@ describe('Блок рабочей группы', () => {
         expect(testUtils.getSecondLineButton()).toBeInTheDocument()
       })
 
-      describe('Не отображается если все условия соблюдены', () => {
+      describe('Не отображается если условия соблюдены', () => {
         test('Но есть рабочая группа', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.FirstLineSupport,
@@ -187,7 +188,7 @@ describe('Блок рабочей группы', () => {
         })
       })
 
-      test('Активна если все условия соблюдены', () => {
+      test('Активна если условия соблюдены', () => {
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.FirstLineSupport,
         })
@@ -204,7 +205,7 @@ describe('Блок рабочей группы', () => {
         expect(testUtils.getSecondLineButton()).toBeEnabled()
       })
 
-      describe('Не активна если все условия соблюдены', () => {
+      describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.FirstLineSupport,
@@ -353,7 +354,7 @@ describe('Блок рабочей группы', () => {
 
   describe('Кнопка перевода на 1-ю линию', () => {
     describe('Роль - старший инженер', () => {
-      test('Отображается если все условия соблюдены', () => {
+      test('Отображается если условия соблюдены', () => {
         const store = getStoreWithAuth({
           userRole: UserRolesEnum.SeniorEngineer,
         })
@@ -368,7 +369,7 @@ describe('Блок рабочей группы', () => {
         expect(testUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
-      describe('Не активна если все условия соблюдены', () => {
+      describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
@@ -387,7 +388,7 @@ describe('Блок рабочей группы', () => {
           expect(testUtils.getFirstLineButton()).toBeDisabled()
         })
 
-        test('Но заявка в статусе - "В ожидании"', () => {
+        test('Но статус заявки "В ожидании"', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
           })
@@ -445,7 +446,7 @@ describe('Блок рабочей группы', () => {
         ).toBeInTheDocument()
       })
 
-      describe('Не отображается если все условия соблюдены', () => {
+      describe('Не отображается если условия соблюдены', () => {
         test('Но нет рабочей группы', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.SeniorEngineer,
@@ -517,7 +518,7 @@ describe('Блок рабочей группы', () => {
         expect(testUtils.getFirstLineButton()).toBeInTheDocument()
       })
 
-      describe('Не активна если все условия соблюдены', () => {
+      describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.HeadOfDepartment,
@@ -536,7 +537,7 @@ describe('Блок рабочей группы', () => {
           expect(testUtils.getFirstLineButton()).toBeDisabled()
         })
 
-        test('Но заявка в статусе - "В ожидании"', () => {
+        test('Но статус заявки "В ожидании"', () => {
           const store = getStoreWithAuth({
             userRole: UserRolesEnum.HeadOfDepartment,
           })

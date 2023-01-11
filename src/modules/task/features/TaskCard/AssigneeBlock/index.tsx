@@ -19,7 +19,7 @@ import { SelectStyled } from './styles'
 
 const { Text } = Typography
 
-const NOT_ASSIGNED_TEXT: string = 'Не назначен'
+const NOT_ASSIGNED_TEXT = 'Не назначен'
 
 export type AssigneeBlockProps = Pick<
   TaskModel,
@@ -51,7 +51,9 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   takeTaskIsLoading,
 }) => {
   const currentAssignee = assignee?.id
+
   const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
+
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const authenticatedUser = useAuthenticatedUser()
@@ -61,25 +63,27 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
     currentAssignee,
   )
 
-  const currentAssigneeIsAuthenticatedUser =
+  const currentAssigneeIsCurrentUser =
     useCheckUserAuthenticated(currentAssignee)
 
-  const selectedAssigneeIsAuthenticatedUser =
+  const selectedAssigneeIsCurrentUser =
     useCheckUserAuthenticated(selectedAssignee)
 
-  const seniorEngineerFromWorkGroupIsAuthenticatedUser =
-    useCheckUserAuthenticated(workGroup?.seniorEngineer.id)
+  const seniorEngineerFromWorkGroupIsCurrentUser = useCheckUserAuthenticated(
+    workGroup?.seniorEngineer.id,
+  )
 
-  const headOfDepartmentFromWorkGroupIsAuthenticatedUser =
-    useCheckUserAuthenticated(workGroup?.groupLead.id)
+  const headOfDepartmentFromWorkGroupIsCurrentUser = useCheckUserAuthenticated(
+    workGroup?.groupLead.id,
+  )
 
   const workGroupMembers = workGroup?.members || []
 
   const canSelectAssignee: boolean =
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
-    (seniorEngineerFromWorkGroupIsAuthenticatedUser ||
-      headOfDepartmentFromWorkGroupIsAuthenticatedUser)
+    (seniorEngineerFromWorkGroupIsCurrentUser ||
+      headOfDepartmentFromWorkGroupIsCurrentUser)
 
   const handleAssignOnMe = async () => {
     await updateAssignee(authenticatedUser!.id)
@@ -98,7 +102,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
       disabled={
         !(
           taskStatus.isNew &&
-          (currentAssigneeIsAuthenticatedUser || !currentAssignee) &&
+          (currentAssigneeIsCurrentUser || !currentAssignee) &&
           !taskExtendedStatus.isInReclassification
         )
       }
@@ -126,10 +130,10 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               taskExtendedStatus.isInReclassification
             }
             onClick={
-              currentAssigneeIsAuthenticatedUser ? undefined : handleAssignOnMe
+              currentAssigneeIsCurrentUser ? undefined : handleAssignOnMe
             }
           >
-            {currentAssigneeIsAuthenticatedUser
+            {currentAssigneeIsCurrentUser
               ? 'Отказаться от заявки'
               : 'Назначить на себя'}
           </Button>
@@ -182,6 +186,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
                     return (
                       <SelectStyled.Option
+                        data-testid={`select-option-${id}`}
                         key={id}
                         value={id}
                         disabled={disabled}
@@ -217,7 +222,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                     disabled={
                       taskStatus.isAwaiting ||
                       !selectedAssignee ||
-                      selectedAssigneeIsAuthenticatedUser ||
+                      selectedAssigneeIsCurrentUser ||
                       selectedAssigneeIsCurrentAssignee ||
                       taskExtendedStatus.isInReclassification
                     }

@@ -11,7 +11,7 @@ import TaskResolutionModal from '../index'
 import { requiredProps } from './constants'
 import testUtils from './utils'
 
-describe('Модалка решения по заявки', () => {
+describe('Модалка решения по заявке', () => {
   test('Заголовок отображается', () => {
     render(<TaskResolutionModal {...requiredProps} />)
 
@@ -181,7 +181,7 @@ describe('Модалка решения по заявки', () => {
         expect(testUtils.getUserResolutionTitle()).toBeInTheDocument()
       })
 
-      test('Отображается корректно если все условия соблюдены', () => {
+      test('Отображается корректно если условия соблюдены', () => {
         render(<TaskResolutionModal {...requiredProps} />)
 
         const field = testUtils.getUserResolutionField()
