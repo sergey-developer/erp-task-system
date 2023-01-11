@@ -16,3 +16,7 @@ export const fontSizeStyles = css<Pick<IconProps, '$size'>>`
 export const colorStyles = css<Pick<IconProps, '$color'>>`
   ${({ theme, $color }) => ($color ? `color: ${theme.colors[$color]};` : '')}
 `
+
+export const cursorStyles = css<Pick<IconProps, '$cursor'>>`
+  ${({ $cursor }) => ($cursor ? `cursor: ${$cursor};` : '')}
+`

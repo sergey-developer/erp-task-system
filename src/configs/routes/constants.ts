@@ -1,9 +1,19 @@
 export enum RoutesEnum {
+  // common routes
   Root = '/',
+  NotFound = '*',
+
+  // auth routes
   Login = '/login',
   ForgotPassword = '/forgotPassword',
-  RecoveryPassword = '/recoveryPassword',
-  TaskList = '/tasks/view',
+
+  // task routes
+  TaskList = '/tasks',
+
+  // work group routes
   WorkingGroups = '/workingGroups',
-  NotFound = '*',
+
+  // monitoring routes
+  Monitoring = '/monitoring',
+  TaskMonitoring = '/monitoring/tasks',
 }
