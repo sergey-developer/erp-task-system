@@ -1,11 +1,10 @@
-import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
-
 import {
   GetTaskMonitoringQueryArgsModel,
   GetTaskMonitoringResponseModel,
-} from '../models'
-import { getTaskMonitoringUrl } from '../utils/apiUrls'
+} from 'modules/monitoring/models'
+import { getTaskMonitoringUrl } from 'modules/monitoring/utils/apiUrls'
+import { HttpMethodEnum } from 'shared/constants/http'
+import { apiService } from 'shared/services/api'
 
 const monitoringApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
