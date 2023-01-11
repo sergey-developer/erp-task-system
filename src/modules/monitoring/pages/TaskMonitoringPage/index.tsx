@@ -4,7 +4,7 @@ import { FC, useState } from 'react'
 import LoadingArea from 'components/LoadingArea'
 import PrettyJson from 'components/PrettyJson'
 import Space from 'components/Space'
-import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApi.service'
+import { useGetTaskMonitoring } from 'modules/monitoring/hooks'
 
 const { Search } = Input
 const { Text } = Typography
@@ -12,7 +12,7 @@ const { Text } = Typography
 const TaskMonitoringPage: FC = () => {
   const [recordId, setRecordId] = useState<string>('')
 
-  const { isFetching, data: monitoringData = [] } = useGetTaskMonitoringQuery(
+  const { isFetching, data: monitoringData = [] } = useGetTaskMonitoring(
     recordId,
     { skip: !recordId },
   )

@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 
+import { useGetUserProfileQuery } from 'modules/user/services/userApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { useGetUserProfileQuery } from '../services/userApi.service'
 
 export const useGetUserProfile = () => {
   const state = useGetUserProfileQuery()
