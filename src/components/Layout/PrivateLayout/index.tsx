@@ -6,15 +6,13 @@ import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import Header from 'components/Header/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
 import Spinner from 'components/Spinner'
-import { userApiEndpoints } from 'modules/user/services/userApi.service'
+import { useUserProfileState } from 'modules/user/hooks'
 
 import { ContentStyled } from './styles'
 
 const PrivateLayout: FC = () => {
   const breakpoints = useBreakpoint()
-
-  const { isFetching: userProfileIsFetching } =
-    userApiEndpoints.getUserProfile.useQueryState(undefined)
+  const { isFetching: userProfileIsFetching } = useUserProfileState()
 
   return (
     <Layout>
