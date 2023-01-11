@@ -21,7 +21,7 @@ const PrettyJson: FC<PrettyJsonProps> = ({ data }) => {
     } catch {
       setError('Не валидный формат данных')
     }
-  }, [])
+  }, [data])
 
   return error ? (
     <Text type='danger'>{error}</Text>
