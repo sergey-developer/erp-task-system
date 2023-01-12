@@ -10,6 +10,7 @@ import {
   generateWord,
 } from '_tests_/utils'
 import commonFixtures from 'fixtures/common'
+import taskFixtures from 'fixtures/task'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -17,8 +18,6 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/common'
 import { TaskModel } from 'modules/task/models'
-
-import taskFixtures from './index'
 
 export const getTask = (
   props?: Partial<

@@ -7,15 +7,14 @@ import {
   generateWord,
 } from '_tests_/utils'
 import commonFixtures from 'fixtures/common'
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
-
-import workGroupFixtures from '../workGroup'
-import taskFixtures from './index'
 
 export const getTaskTableItem = (
   props?: Partial<
