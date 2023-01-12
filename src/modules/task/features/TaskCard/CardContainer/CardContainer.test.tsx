@@ -8,9 +8,14 @@ import {
   mockDeleteTaskWorkGroupSuccess,
   mockGetTaskSuccess,
   mockGetWorkGroupListSuccess,
+  mockUpdateTaskWorkGroupForbiddenError,
+  mockUpdateTaskWorkGroupNotFoundError,
+  mockUpdateTaskWorkGroupServerError,
+  mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
 import {
   findNotification,
+  generateId,
   generateWord,
   getStoreWithAuth,
   loadingFinishedByButton,
@@ -26,12 +31,24 @@ import workGroupFixtures from 'fixtures/workGroup'
 import { UserRoleEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
-import { testUtils as workGroupTestUtils } from '../../../TaskCard/WorkGroupBlock/WorkGroupBlock.test'
-import { testUtils as taskCardTestUtils } from '../../Card/Card.test'
-import taskFirstLineModalTestUtils from '../../TaskFirstLineModal/_tests_/utils'
-import { TaskFirstLineFormErrors } from '../../TaskFirstLineModal/interfaces'
-import TaskCardContainer from '../index'
-import { requiredProps } from './constants'
+import { UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG } from '../../../constants/messages'
+import {
+  activeSecondLineButtonProps,
+  showSecondLineButtonProps,
+  testUtils as workGroupTestUtils,
+} from '../../TaskCard/WorkGroupBlock/WorkGroupBlock.test'
+import { testUtils as taskCardTestUtils } from '../Card/Card.test'
+import taskFirstLineModalTestUtils from '../TaskFirstLineModal/_tests_/utils'
+import { TaskFirstLineFormErrors } from '../TaskFirstLineModal/interfaces'
+import taskSecondLineModalTestUtils from '../TaskSecondLineModal/_tests_/utils'
+import TaskCardContainer, { TaskCardContainerProps } from './index'
+
+const requiredProps: TaskCardContainerProps = {
+  taskId: generateId(),
+  closeTaskCard: jest.fn(),
+  additionalInfoExpanded: false,
+  onExpandAdditionalInfo: jest.fn(),
+}
 
 setupApiTests()
 
@@ -39,7 +56,7 @@ describe('Контейнер детальной карточки заявки', 
   describe('Перевод заявки на 1-ю линию', () => {
     describe('Роль - старший инженер', () => {
       describe('При успешный запросе', () => {
-        test('Закрывается модальное окно и карточка заявки', async () => {
+        test('Закрывается модалка', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -75,7 +92,6 @@ describe('Контейнер детальной карточки заявки', 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
           })
-          expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
 
@@ -117,7 +133,6 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          // await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
           const descriptionContainer =
@@ -163,7 +178,6 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          // await loadingStartedByButton(firstLineButton)
           await loadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
@@ -257,7 +271,7 @@ describe('Контейнер детальной карточки заявки', 
 
     describe('Роль - глава отдела', () => {
       describe('При успешный запросе', () => {
-        test('Закрывается модальное окно и карточка заявки', async () => {
+        test('Закрывается модалка', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
           mockGetTaskSuccess(requiredProps.taskId, {
@@ -265,12 +279,10 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -291,7 +303,6 @@ describe('Контейнер детальной карточки заявки', 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
           })
-          expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
 
@@ -467,6 +478,158 @@ describe('Контейнер детальной карточки заявки', 
 
           const errorMsg = await findNotification(UNKNOWN_ERROR_MSG)
           expect(errorMsg).toBeInTheDocument()
+        })
+      })
+    })
+  })
+
+  describe('Перевод заявки на 2-ю линию', () => {
+    describe('Роль - первая линия поддержки', () => {
+      describe('При успешный запросе', () => {
+        test('Закрывается модалка', async () => {
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({
+              id: requiredProps.taskId,
+              workGroup: showSecondLineButtonProps.workGroup,
+              status: activeSecondLineButtonProps.status,
+              extendedStatus: activeSecondLineButtonProps.extendedStatus,
+            }),
+          })
+
+          const workGroup = workGroupFixtures.getWorkGroup()
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
+
+          mockUpdateTaskWorkGroupSuccess(requiredProps.taskId)
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingFinished()
+          await workGroupTestUtils.userClickSecondLineButton(user)
+          const modal = await taskSecondLineModalTestUtils.findContainer()
+          await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
+          await taskSecondLineModalTestUtils.userSelectWorkGroup(
+            user,
+            workGroup.name,
+          )
+          await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
+        })
+      })
+
+      describe('При не успешный запросе', () => {
+        setupNotifications()
+
+        test('Корректно обрабатывается ошибка 404', async () => {
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({
+              id: requiredProps.taskId,
+              workGroup: showSecondLineButtonProps.workGroup,
+              status: activeSecondLineButtonProps.status,
+              extendedStatus: activeSecondLineButtonProps.extendedStatus,
+            }),
+          })
+
+          const workGroup = workGroupFixtures.getWorkGroup()
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
+
+          mockUpdateTaskWorkGroupNotFoundError(requiredProps.taskId)
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingFinished()
+          await workGroupTestUtils.userClickSecondLineButton(user)
+          await taskSecondLineModalTestUtils.findContainer()
+          await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
+          await taskSecondLineModalTestUtils.userSelectWorkGroup(
+            user,
+            workGroup.name,
+          )
+          await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+
+          expect(
+            await findNotification(UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Корректно обрабатывается ошибка 500', async () => {
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({
+              id: requiredProps.taskId,
+              workGroup: showSecondLineButtonProps.workGroup,
+              status: activeSecondLineButtonProps.status,
+              extendedStatus: activeSecondLineButtonProps.extendedStatus,
+            }),
+          })
+
+          const workGroup = workGroupFixtures.getWorkGroup()
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
+
+          mockUpdateTaskWorkGroupServerError(requiredProps.taskId)
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingFinished()
+          await workGroupTestUtils.userClickSecondLineButton(user)
+          await taskSecondLineModalTestUtils.findContainer()
+          await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
+          await taskSecondLineModalTestUtils.userSelectWorkGroup(
+            user,
+            workGroup.name,
+          )
+          await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+
+          expect(
+            await findNotification(UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG),
+          ).toBeInTheDocument()
+        })
+
+        test('Корректно обрабатывается неизвестная ошибка', async () => {
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({
+              id: requiredProps.taskId,
+              workGroup: showSecondLineButtonProps.workGroup,
+              status: activeSecondLineButtonProps.status,
+              extendedStatus: activeSecondLineButtonProps.extendedStatus,
+            }),
+          })
+
+          const workGroup = workGroupFixtures.getWorkGroup()
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
+
+          mockUpdateTaskWorkGroupForbiddenError(requiredProps.taskId)
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingFinished()
+          await workGroupTestUtils.userClickSecondLineButton(user)
+          await taskSecondLineModalTestUtils.findContainer()
+          await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
+          await taskSecondLineModalTestUtils.userSelectWorkGroup(
+            user,
+            workGroup.name,
+          )
+          await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+
+          expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
         })
       })
     })

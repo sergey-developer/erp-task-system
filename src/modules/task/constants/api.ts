@@ -1,4 +1,4 @@
-//todo: разделить урлы (для создания, получения списка) чтобы они не повторялись
+// todo: разделить урлы (для создания, получения списка) чтобы они не повторялись
 export enum TaskEndpointEnum {
   TaskList = '/tasks',
   TaskCounters = '/tasks/counters',

@@ -43,6 +43,12 @@ export const loadingFinishedBySelect = async (container: HTMLElement) => {
   })
 }
 
+export const loadingStartedByCard = async (card: HTMLElement) => {
+  await waitFor(() => {
+    expect(card).toHaveClass('ant-card-loading')
+  })
+}
+
 export const loadingFinishedByCard = async (card: HTMLElement) => {
   await waitFor(() => {
     expect(card).not.toHaveClass('ant-card-loading')

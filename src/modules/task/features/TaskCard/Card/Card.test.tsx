@@ -1,7 +1,8 @@
 import {
   generateWord,
   getStoreWithAuth,
-  loadingStartedBySkeletonIn,
+  loadingFinishedByCard,
+  loadingStartedByCard,
   loadingStartedBySpinner,
   render,
 } from '_tests_/utils'
@@ -80,7 +81,9 @@ const getContainer = () => screen.getByTestId('task-card')
 
 const findContainer = () => screen.findByTestId('task-card')
 
-const expectLoadingStarted = () => loadingStartedBySkeletonIn(getContainer())
+const expectLoadingStarted = () => loadingStartedByCard(getContainer())
+
+const expectLoadingFinished = () => loadingFinishedByCard(getContainer())
 
 const expectReclassificationRequestLoadingStarted = () =>
   loadingStartedBySpinner('task-card-reclassification-request-spinner')
@@ -89,14 +92,15 @@ export const testUtils = {
   getContainer,
   findContainer,
   expectLoadingStarted,
+  expectLoadingFinished,
 
   expectReclassificationRequestLoadingStarted,
 }
 
 describe('Детальная карточка заявки', () => {
-  test('Отображает состояние загрузки', () => {
+  test('Отображает состояние загрузки', async () => {
     render(<TaskCard {...requiredProps} taskIsLoading />)
-    testUtils.expectLoadingStarted()
+    await testUtils.expectLoadingStarted()
   })
 
   describe('Заголовок', () => {

@@ -251,9 +251,13 @@ const TaskCard: FC<TaskCardProps> = ({
     ) => {
       if (!details?.id) return
 
-      await updateWorkGroup({ taskId: details.id, workGroup })
-      closeTaskSecondLineModal()
-      closeTaskCard()
+      try {
+        await updateWorkGroup({ taskId: details.id, workGroup })
+        closeTaskSecondLineModal()
+        closeTaskCard()
+      } catch {
+        // todo: использовать в модалке форму и реализовать обработку ошибок. затем поправить тесты
+      }
     },
     [details?.id, closeTaskCard, updateWorkGroup],
   )

@@ -10,3 +10,4 @@ export * from './createTaskComment.mock'
 export * from './getTaskCommentList.mock'
 
 export * from './deleteTaskWorkGroup.mock'
+export * from './updateTaskWorkGroup.mock'

@@ -325,17 +325,17 @@ describe('Блок рабочей группы', () => {
 
   describe('Модалка перевода на 2-ю линию', () => {
     test('При отправке обработчик вызывается корректно', async () => {
-      const store = getStoreWithAuth({
-        userRole: UserRoleEnum.FirstLineSupport,
-      })
-
       const { user } = render(
         <WorkGroupBlock
           {...requiredProps}
           {...showSecondLineButtonProps}
           {...activeSecondLineButtonProps}
         />,
-        { store },
+        {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        },
       )
 
       await testUtils.userClickSecondLineButton(user)
