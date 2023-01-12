@@ -7,8 +7,6 @@ import {
   generateWord,
 } from '_tests_/utils'
 import commonFixtures from 'fixtures/common'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -16,7 +14,10 @@ import {
 } from 'modules/task/constants/common'
 import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
 
-export const getTableItem = (
+import workGroupFixtures from '../workGroup'
+import taskFixtures from './index'
+
+export const getTaskTableItem = (
   props?: Partial<
     Pick<TaskTableListItem, 'status' | 'extendedStatus' | 'olaStatus'>
   >,
@@ -32,9 +33,10 @@ export const getTableItem = (
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
-  assignee: taskFixtures.getAssignee(),
+  assignee: taskFixtures.getTaskAssignee(),
   olaNextBreachTime: generateDateString(),
 })
 
-export const getTableItems = (length: number = 1): Array<TaskTableListItem> =>
-  times(length, () => getTableItem())
+export const getTaskTableItems = (
+  length: number = 1,
+): Array<TaskTableListItem> => times(length, () => getTaskTableItem())

@@ -54,7 +54,7 @@ const requiredProps: Readonly<
   workGroupListIsLoading: false,
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
-  assignee: taskFixtures.getAssignee(),
+  assignee: taskFixtures.getTaskAssignee(),
 }
 
 export const activeTakeTaskButtonProps: Readonly<
@@ -78,13 +78,13 @@ export const activeAssignButtonProps: Readonly<
 > = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
-  assignee: taskFixtures.getAssignee(),
+  assignee: taskFixtures.getTaskAssignee(),
 }
 
 const showRefuseTaskButtonProps: Readonly<
   NonNullableObject<Pick<AssigneeBlockProps, 'assignee'>>
 > = {
-  assignee: taskFixtures.getAssignee(),
+  assignee: taskFixtures.getTaskAssignee(),
 }
 
 const activeRefuseTaskButtonProps: Readonly<

@@ -24,7 +24,7 @@ afterEach(() => {
 
 describe('Таблица заявок', () => {
   test('Отображается корректно', () => {
-    const tableItems = taskFixtures.getTableItems(2)
+    const tableItems = taskFixtures.getTaskTableItems(2)
     render(
       <TaskTable
         {...taskTableTestConstants.requiredProps}
