@@ -6,6 +6,7 @@ import {
   generateName,
   generateWord,
 } from '_tests_/utils'
+import commonFixtures from 'fixtures/common'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -25,7 +26,7 @@ export const getTaskTableItem = (
   name: generateName(),
   title: generateWord(),
   workGroup: workGroupFixtures.getWorkGroup(),
-  supportGroup: taskFixtures.getSupportGroup(),
+  supportGroup: commonFixtures.getSupportGroup(),
   createdAt: generateDateString(),
   recordId: generateWord(),
   lastComment: generateWord(),

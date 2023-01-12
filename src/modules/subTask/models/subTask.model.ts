@@ -1,12 +1,12 @@
 import { TaskStatusEnum } from 'modules/task/constants/common'
-import { TaskWorkGroupModel } from 'modules/task/models'
 import { MaybeNull } from 'shared/interfaces/utils'
+import { SupportGroupModel } from 'shared/models'
 
 export type SubTaskModel = {
   id: number
   title: string
   status: TaskStatusEnum
-  workGroup: MaybeNull<TaskWorkGroupModel>
+  supportGroup: SupportGroupModel
   createdAt: string
   recordId?: MaybeNull<string>
   techResolution?: string

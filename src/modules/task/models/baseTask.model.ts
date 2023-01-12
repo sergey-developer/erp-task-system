@@ -5,6 +5,7 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/common'
 import { MaybeNull } from 'shared/interfaces/utils'
+import { SupportGroupModel } from 'shared/models'
 
 export type BaseTaskModel = {
   id: number
@@ -23,10 +24,7 @@ export type BaseTaskModel = {
   initialImpact: 1 | 2 | 3 | 4
   severity: 1 | 2 | 3 | 4
   priorityCode: 1 | 2 | 3 | 4
-  supportGroup: {
-    id: number
-    name: string
-  }
+  supportGroup: SupportGroupModel
 
   contactPhone?: string
   portablePhone?: string

@@ -21,10 +21,9 @@ import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Text, Title, Paragraph } = Typography
 
-export type SubTaskProps = Omit<SubTaskModel, 'id' | 'workGroup'> & {
+export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
   taskStatus: TaskStatusEnum
   currentUserIsTaskAssignee: boolean
-  workGroupName: string
   onClickCancel: () => void
   onClickRework: () => void
 }
@@ -36,7 +35,7 @@ const SubTask: FC<SubTaskProps> = ({
   recordId,
   olaNextBreachTime,
   createdAt,
-  workGroupName,
+  supportGroup,
   externalAssigneeName,
   externalAssigneePhone,
   techResolution,
@@ -138,7 +137,9 @@ const SubTask: FC<SubTaskProps> = ({
 
       <Row gutter={10}>
         <Col span={12}>
-          <LabeledData label='Рабочая группа'>{workGroupName}</LabeledData>
+          <LabeledData label='Группа поддержки'>
+            {supportGroup.name}
+          </LabeledData>
         </Col>
 
         {externalAssigneeName && (
