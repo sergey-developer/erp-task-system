@@ -37,7 +37,7 @@ const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {
 
 const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof requiredProps> =
   {
-    workGroup: taskFixtures.getTaskWorkGroup(),
+    workGroup: taskFixtures.getWorkGroup(),
   }
 
 // first line button
@@ -45,7 +45,7 @@ export const showFirstLineButtonProps: Pick<
   WorkGroupBlockProps,
   'workGroup' | 'status'
 > = {
-  workGroup: taskFixtures.getTaskWorkGroup(),
+  workGroup: taskFixtures.getWorkGroup(),
   status: TaskStatusEnum.New,
 }
 

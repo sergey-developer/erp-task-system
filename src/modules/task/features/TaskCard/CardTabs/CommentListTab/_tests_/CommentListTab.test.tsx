@@ -45,7 +45,7 @@ describe('Вкладка списка комментариев заявки', ()
   describe('Кнопка раскрытия/скрытия комментариев', () => {
     describe('Отображается корректно если условия соблюдены', () => {
       test('Кнопка раскрытия', async () => {
-        const taskCommentList = taskFixtures.getTaskCommentList(
+        const taskCommentList = taskFixtures.getCommentList(
           DEFAULT_DISPLAYABLE_COUNT + 1,
         )
         mockGetTaskCommentListSuccess(requiredProps.taskId, {
@@ -69,7 +69,7 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       test('Кнопка скрытия', async () => {
-        const taskCommentList = taskFixtures.getTaskCommentList(
+        const taskCommentList = taskFixtures.getCommentList(
           DEFAULT_DISPLAYABLE_COUNT + 1,
         )
         mockGetTaskCommentListSuccess(requiredProps.taskId, {
@@ -92,7 +92,7 @@ describe('Вкладка списка комментариев заявки', ()
     describe('Не отображается', () => {
       test('Если все условия соблюдены, но комментариев не более отображаемого кол-ва по умолчанию', async () => {
         mockGetTaskCommentListSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTaskCommentList(DEFAULT_DISPLAYABLE_COUNT),
+          body: taskFixtures.getCommentList(DEFAULT_DISPLAYABLE_COUNT),
         })
 
         render(<CommentListTab {...requiredProps} />, {
@@ -107,7 +107,7 @@ describe('Вкладка списка комментариев заявки', ()
 
       test('Если нет комментариев', async () => {
         mockGetTaskCommentListSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTaskCommentList(0),
+          body: taskFixtures.getCommentList(0),
         })
 
         render(<CommentListTab {...requiredProps} />, {
@@ -124,7 +124,7 @@ describe('Вкладка списка комментариев заявки', ()
     test('Раскрывает все комментарии', async () => {
       const allCommentCount = DEFAULT_DISPLAYABLE_COUNT + 1
       mockGetTaskCommentListSuccess(requiredProps.taskId, {
-        body: taskFixtures.getTaskCommentList(allCommentCount),
+        body: taskFixtures.getCommentList(allCommentCount),
       })
 
       const { user } = render(<CommentListTab {...requiredProps} />, {
@@ -147,7 +147,7 @@ describe('Вкладка списка комментариев заявки', ()
     test('Скрывает все комментарии', async () => {
       const allCommentCount = DEFAULT_DISPLAYABLE_COUNT + 1
       mockGetTaskCommentListSuccess(requiredProps.taskId, {
-        body: taskFixtures.getTaskCommentList(allCommentCount),
+        body: taskFixtures.getCommentList(allCommentCount),
       })
 
       const { user } = render(<CommentListTab {...requiredProps} />, {
@@ -183,12 +183,12 @@ describe('Вкладка списка комментариев заявки', ()
 
       describe('При успешном запросе', () => {
         test('Корректно добавляет комментарий в список', async () => {
-          const newComment = taskFixtures.getTaskComment()
+          const newComment = taskFixtures.getComment()
           mockCreateTaskCommentSuccess(requiredProps.taskId, {
             body: newComment,
           })
           mockGetTaskCommentListSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTaskCommentList(),
+            body: taskFixtures.getCommentList(),
           })
 
           const { user } = render(<CommentListTab {...requiredProps} />, {
@@ -212,7 +212,7 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         test('Сбрасывает значения полей', async () => {
-          const newComment = taskFixtures.getTaskComment()
+          const newComment = taskFixtures.getComment()
           mockCreateTaskCommentSuccess(requiredProps.taskId, {
             body: newComment,
           })
@@ -344,7 +344,7 @@ describe('Вкладка списка комментариев заявки', ()
     })
 
     test('Комментарии отображаются если они есть', async () => {
-      const taskCommentList = taskFixtures.getTaskCommentList(1)
+      const taskCommentList = taskFixtures.getCommentList(1)
       mockGetTaskCommentListSuccess(requiredProps.taskId, {
         body: taskCommentList,
       })
@@ -360,7 +360,7 @@ describe('Вкладка списка комментариев заявки', ()
     })
 
     test('Комментарии не отображаются если их нет', async () => {
-      const taskCommentList = taskFixtures.getTaskCommentList(0)
+      const taskCommentList = taskFixtures.getCommentList(0)
       mockGetTaskCommentListSuccess(requiredProps.taskId, {
         body: taskCommentList,
       })

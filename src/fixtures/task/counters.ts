@@ -1,7 +1,7 @@
 import { generateInteger } from '_tests_/utils'
 import { GetTaskCountersResponseModel } from 'modules/task/models'
 
-export const getGetTaskCountersResponse = (): GetTaskCountersResponseModel => ({
+export const getCountersResponse = (): GetTaskCountersResponseModel => ({
   all: generateInteger({ min: 1, max: 10 }),
   free: generateInteger({ min: 1, max: 10 }),
   overdue: generateInteger({ min: 1, max: 10 }),

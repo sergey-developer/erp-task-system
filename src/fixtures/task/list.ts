@@ -19,9 +19,9 @@ import {
   TaskListItemModel,
 } from 'modules/task/models'
 
-import { getTaskAssignee } from './taskAssignee'
+import { getAssignee } from './assignee'
 
-export const getTaskListItem = (
+export const getListItem = (
   props?: Partial<TaskListItemModel>,
 ): TaskListItemModel => ({
   status: props?.status || TaskStatusEnum.New,
@@ -30,7 +30,7 @@ export const getTaskListItem = (
   type: props?.type || TaskTypeEnum.Request,
 
   id: generateId(),
-  assignee: getTaskAssignee(),
+  assignee: getAssignee(),
   lastComment: generateWord(),
   priorityCode: generateInteger({
     min: 1,
@@ -56,9 +56,9 @@ export const getTaskListItem = (
   contactService: generateWord(),
 })
 
-export const getTaskList = (length: number = 1): Array<TaskListItemModel> =>
-  times(length, () => getTaskListItem())
+export const getList = (length: number = 1): Array<TaskListItemModel> =>
+  times(length, () => getListItem())
 
-export const getGetTaskListResponse = (
+export const getListResponse = (
   list: GetTaskListResponseModel['results'],
 ): GetTaskListResponseModel => commonFixtures.getPaginatedListResponse(list)

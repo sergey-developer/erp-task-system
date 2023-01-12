@@ -10,7 +10,7 @@ import { TaskTableProps } from '../interfaces'
 const columnWithSortingClass = 'ant-table-column-has-sorters'
 
 const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
-  dataSource: [taskFixtures.getTaskTableItem()],
+  dataSource: [taskFixtures.getTableItem()],
   loading: false,
   onRow: jest.fn(),
   onChange: jest.fn(),
