@@ -285,7 +285,9 @@ describe('Вкладка списка заданий', () => {
           body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
         })
 
-        mockCreateSubTaskSuccess(requiredProps.task.id)
+        mockCreateSubTaskSuccess(requiredProps.task.id, {
+          body: subTaskFixtures.getSubTask(),
+        })
 
         const { user } = render(
           <SubTaskListTab
