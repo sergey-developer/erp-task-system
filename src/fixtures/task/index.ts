@@ -1,5 +1,4 @@
 //todo: убрать префикс task
-import * as supportGroup from './supportGroup'
 import * as task from './task'
 import * as taskAssignee from './taskAssignee'
 import * as taskComment from './taskComment'
@@ -18,7 +17,6 @@ const taskFixtures = {
   ...taskComment,
   ...taskAssignee,
   ...taskWorkGroup,
-  ...supportGroup,
   ...taskJournal,
   ...taskReclassificationRequest,
 }

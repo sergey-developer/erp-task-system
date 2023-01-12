@@ -16,7 +16,7 @@ const requiredProps: Pick<
   | 'title'
   | 'status'
   | 'createdAt'
-  | 'workGroupName'
+  | 'supportGroup'
   | 'onClickCancel'
   | 'onClickRework'
   | 'taskStatus'
@@ -25,7 +25,7 @@ const requiredProps: Pick<
   title: subTask.title,
   status: subTask.status,
   createdAt: subTask.createdAt,
-  workGroupName: subTask.workGroup.name,
+  supportGroup: subTask.supportGroup,
   onClickCancel: jest.fn(),
   onClickRework: jest.fn(),
   taskStatus: TaskStatusEnum.New,
@@ -283,13 +283,13 @@ describe('Задание', () => {
     })
   })
 
-  test('Отображает рабочую группу', () => {
+  test('Отображает группу поддержки', () => {
     render(<SubTask {...requiredProps} />)
 
-    expect(testUtils.getChildByText(/рабочая группа/i)).toBeInTheDocument()
+    expect(testUtils.getChildByText(/группа поддержки/i)).toBeInTheDocument()
 
     expect(
-      testUtils.getChildByText(requiredProps.workGroupName),
+      testUtils.getChildByText(requiredProps.supportGroup.name),
     ).toBeInTheDocument()
   })
 

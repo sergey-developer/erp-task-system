@@ -9,6 +9,7 @@ import {
   generatePhone,
   generateWord,
 } from '_tests_/utils'
+import commonFixtures from 'fixtures/common'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -61,7 +62,7 @@ export const getTask = (
   productClassifier1: generateWord(),
   productClassifier2: generateWord(),
   productClassifier3: generateWord(),
-  supportGroup: taskFixtures.getSupportGroup(),
+  supportGroup: commonFixtures.getSupportGroup(),
   olaEstimatedTime: Date.now(),
 
   description: generateWord(),

@@ -45,7 +45,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 )}
                 status={item.status}
                 createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
-                workGroupName={item.workGroup?.name || ''}
+                supportGroup={item.supportGroup}
                 externalAssigneeName={item.externalAssigneeName}
                 externalAssigneePhone={item.externalAssigneePhone}
                 techResolution={item.techResolution}

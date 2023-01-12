@@ -7,7 +7,7 @@ import {
   generatePhone,
   generateWord,
 } from '_tests_/utils'
-import taskFixtures from 'fixtures/task'
+import commonFixtures from 'fixtures/common'
 import { SubTaskModel } from 'modules/subTask/models'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { NonNullableObject } from 'shared/interfaces/utils'
@@ -19,7 +19,7 @@ export const getSubTask = (
   recordId: generateIdStr(),
   title: generateWord(),
   status: props?.status || TaskStatusEnum.New,
-  workGroup: taskFixtures.getTaskWorkGroup(),
+  supportGroup: commonFixtures.getSupportGroup(),
   createdAt: generateDateString(),
   description: generateWord(),
   externalAssigneeName: generateWord(),
