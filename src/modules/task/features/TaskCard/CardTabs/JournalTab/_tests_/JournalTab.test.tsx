@@ -40,7 +40,7 @@ describe('Вкладка журнала задачи', () => {
 
     test('При клике отправляется запрос', async () => {
       mockGetJournalSuccess(requiredProps.taskId, {
-        body: taskFixtures.getJournal(),
+        body: taskFixtures.getTaskJournal(),
         once: false,
       })
 
@@ -58,7 +58,7 @@ describe('Вкладка журнала задачи', () => {
     describe('Если есть записи', () => {
       describe('Отображает', () => {
         test('Записи', async () => {
-          const taskJournal = taskFixtures.getJournal()
+          const taskJournal = taskFixtures.getTaskJournal()
           mockGetJournalSuccess(requiredProps.taskId, {
             body: taskJournal,
           })
@@ -77,7 +77,7 @@ describe('Вкладка журнала задачи', () => {
 
         test('Кнопку экспорта в csv', async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: taskFixtures.getJournal(),
+            body: taskFixtures.getTaskJournal(),
           })
 
           render(<JournalTab {...requiredProps} />, {
@@ -100,7 +100,7 @@ describe('Вкладка журнала задачи', () => {
       describe('Не отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: taskFixtures.getJournal(),
+            body: taskFixtures.getTaskJournal(),
           })
 
           render(<JournalTab {...requiredProps} />, {
@@ -116,7 +116,7 @@ describe('Вкладка журнала задачи', () => {
 
       test('Кнопка экспорта в csv активна', async () => {
         mockGetJournalSuccess(requiredProps.taskId, {
-          body: taskFixtures.getJournal(),
+          body: taskFixtures.getTaskJournal(),
         })
 
         render(<JournalTab {...requiredProps} />, {
@@ -139,7 +139,7 @@ describe('Вкладка журнала задачи', () => {
 
         test('Не показывает сообщение об ошибке', async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: taskFixtures.getJournal(),
+            body: taskFixtures.getTaskJournal(),
           })
           mockGetJournalCsvSuccess(requiredProps.taskId, {
             body: generateWord(),
@@ -174,7 +174,7 @@ describe('Вкладка журнала задачи', () => {
 
         test('Показывает сообщение об ошибке', async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: taskFixtures.getJournal(),
+            body: taskFixtures.getTaskJournal(),
           })
           mockGetJournalCsvServerError(requiredProps.taskId)
 
@@ -203,7 +203,7 @@ describe('Вкладка журнала задачи', () => {
       describe('Отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: taskFixtures.getJournal(0),
+            body: taskFixtures.getTaskJournal(0),
           })
 
           render(<JournalTab {...requiredProps} />, {
@@ -219,7 +219,7 @@ describe('Вкладка журнала задачи', () => {
 
       describe('Не отображает', () => {
         test('Записи', async () => {
-          const taskJournal = taskFixtures.getJournal(0)
+          const taskJournal = taskFixtures.getTaskJournal(0)
           mockGetJournalSuccess(requiredProps.taskId, {
             body: taskJournal,
           })
@@ -238,7 +238,7 @@ describe('Вкладка журнала задачи', () => {
 
         test('Кнопку экспорта в csv', async () => {
           mockGetJournalSuccess(requiredProps.taskId, {
-            body: taskFixtures.getJournal(0),
+            body: taskFixtures.getTaskJournal(0),
           })
 
           render(<JournalTab {...requiredProps} />, {

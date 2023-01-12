@@ -133,7 +133,7 @@ describe('Детальная карточка заявки', () => {
       render(
         <TaskCard
           {...requiredProps}
-          reclassificationRequest={taskFixtures.getReclassificationRequest()}
+          reclassificationRequest={taskFixtures.getTaskReclassificationRequest()}
         />,
       )
 

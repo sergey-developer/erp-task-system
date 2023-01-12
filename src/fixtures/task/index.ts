@@ -1,23 +1,24 @@
-import * as assignee from './assignee'
-import * as comment from './comment'
-import * as counters from './counters'
-import * as journal from './journal'
-import * as list from './list'
-import * as reclassificationRequest from './reclassificationRequest'
-import * as table from './table'
+//todo: убрать префикс task
 import * as task from './task'
-import * as workGroup from './workGroup'
+import * as taskAssignee from './taskAssignee'
+import * as taskComment from './taskComment'
+import * as taskCounters from './taskCounters'
+import * as taskJournal from './taskJournal'
+import * as taskList from './taskList'
+import * as taskReclassificationRequest from './taskReclassificationRequest'
+import * as taskTable from './taskTable'
+import * as taskWorkGroup from './taskWorkGroup'
 
 const taskFixtures = {
   ...task,
-  ...assignee,
-  ...comment,
-  ...counters,
-  ...journal,
-  ...list,
-  ...reclassificationRequest,
-  ...table,
-  ...workGroup,
+  ...taskList,
+  ...taskCounters,
+  ...taskTable,
+  ...taskComment,
+  ...taskAssignee,
+  ...taskWorkGroup,
+  ...taskJournal,
+  ...taskReclassificationRequest,
 }
 
 export default taskFixtures

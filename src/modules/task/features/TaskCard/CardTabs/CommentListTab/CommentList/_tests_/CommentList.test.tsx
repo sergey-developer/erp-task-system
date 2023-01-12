@@ -6,7 +6,7 @@ import testUtils from './utils'
 
 describe('Список комментариев заявки', () => {
   test('Отображает комментарии если они есть', () => {
-    const data = taskFixtures.getCommentList()
+    const data = taskFixtures.getTaskCommentList()
 
     render(<CommentList isLoading={false} data={data} />)
 

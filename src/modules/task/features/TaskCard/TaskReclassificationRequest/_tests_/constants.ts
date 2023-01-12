@@ -3,7 +3,7 @@ import taskFixtures from 'fixtures/task'
 
 import { TaskReclassificationRequestProps } from '../index'
 
-const reclassificationRequest = taskFixtures.getReclassificationRequest()
+const reclassificationRequest = taskFixtures.getTaskReclassificationRequest()
 
 export const requiredProps: TaskReclassificationRequestProps = {
   title: generateWord(),

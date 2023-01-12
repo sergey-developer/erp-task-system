@@ -8,7 +8,7 @@ import {
 } from 'modules/task/constants/common'
 import { TaskJournalEntryModel, TaskJournalModel } from 'modules/task/models'
 
-export const getJournalEntry = (
+export const getTaskJournalEntry = (
   props?: Partial<Pick<TaskJournalEntryModel, 'type' | 'sourceSystem'>>,
 ): TaskJournalEntryModel => ({
   id: generateId(),
@@ -19,5 +19,5 @@ export const getJournalEntry = (
   author: commonFixtures.getUser(),
 })
 
-export const getJournal = (length: number = 1): TaskJournalModel =>
-  times(length, () => getJournalEntry())
+export const getTaskJournal = (length: number = 1): TaskJournalModel =>
+  times(length, () => getTaskJournalEntry())
