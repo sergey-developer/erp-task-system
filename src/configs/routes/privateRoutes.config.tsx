@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
 import PrivateLayout from 'components/Layout/PrivateLayout'
-import NotFound from 'components/NotFound'
+import NotFoundPage from 'components/Pages/NotFoundPage'
 import { UserProfileModel } from 'modules/user/models'
 
 import { RoutesEnum } from './constants'
@@ -28,7 +28,7 @@ export const getPrivateRoutesConfig = ({
       ...(isStaff ? staffRoutesConfig : []),
       {
         path: RoutesEnum.NotFound,
-        element: <NotFound />,
+        element: <NotFoundPage />,
       },
     ],
   },
