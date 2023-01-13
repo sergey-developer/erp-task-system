@@ -240,7 +240,7 @@ describe('Вкладка списка комментариев заявки', ()
       describe('При не успешном запросе', () => {
         setupNotifications()
 
-        test('Корректно обрабатывается ошибка 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
 
           const badRequestErrorResponse: CreateCommentFormErrors = {
@@ -271,7 +271,7 @@ describe('Вкладка списка комментариев заявки', ()
           expect(error).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается ошибка 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
           mockCreateTaskCommentNotFoundError(requiredProps.taskId)
 
@@ -292,7 +292,7 @@ describe('Вкладка списка комментариев заявки', ()
           expect(error).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается ошибка 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
           mockCreateTaskCommentServerError(requiredProps.taskId)
 
@@ -313,7 +313,7 @@ describe('Вкладка списка комментариев заявки', ()
           expect(error).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается неизвестная ошибка', async () => {
+        test('Обрабатывается неизвестная ошибка', async () => {
           mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
           mockCreateTaskCommentForbiddenError(requiredProps.taskId)
 

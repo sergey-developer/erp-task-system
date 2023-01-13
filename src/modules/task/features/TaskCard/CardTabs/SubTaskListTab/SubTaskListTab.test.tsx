@@ -330,7 +330,7 @@ describe('Вкладка списка заданий', () => {
     describe('При не успешном запросе', () => {
       setupNotifications()
 
-      test('Корректно обрабатывается ошибка - 400', async () => {
+      test('Обрабатывается ошибка - 400', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
         const templateList = subTaskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({
@@ -390,7 +390,7 @@ describe('Вкладка списка заданий', () => {
         ).toBeInTheDocument()
       })
 
-      test('Корректно обрабатывается ошибка - 500', async () => {
+      test('Обрабатывается ошибка - 500', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
         const templateList = subTaskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({
@@ -736,7 +736,7 @@ describe('Вкладка списка заданий', () => {
     describe('При не успешной отправке данных', () => {
       setupNotifications()
 
-      test('Корректно обрабатывается ошибка - 400', async () => {
+      test('Обрабатывается ошибка - 400', async () => {
         const subTask = subTaskFixtures.getSubTask({
           status: activeReworkButtonProps.status,
         })
@@ -780,7 +780,7 @@ describe('Вкладка списка заданий', () => {
         ).toBeInTheDocument()
       })
 
-      test('Корректно обрабатывается ошибка - 500', async () => {
+      test('Обрабатывается ошибка - 500', async () => {
         const subTask = subTaskFixtures.getSubTask({
           status: activeReworkButtonProps.status,
         })
@@ -1033,7 +1033,7 @@ describe('Вкладка списка заданий', () => {
     describe('При не успешной отправке данных', () => {
       setupNotifications()
 
-      test('Корректно обрабатывается ошибка - 400', async () => {
+      test('Обрабатывается ошибка - 400', async () => {
         const subTask = subTaskFixtures.getSubTask({
           status: activeCancelButtonProps.status,
         })
@@ -1077,7 +1077,7 @@ describe('Вкладка списка заданий', () => {
         ).toBeInTheDocument()
       })
 
-      test('Корректно обрабатывается ошибка - 500', async () => {
+      test('Обрабатывается ошибка - 500', async () => {
         const subTask = subTaskFixtures.getSubTask({
           status: activeCancelButtonProps.status,
         })

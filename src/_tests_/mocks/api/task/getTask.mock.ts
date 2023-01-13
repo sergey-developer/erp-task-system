@@ -1,4 +1,11 @@
-import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import {
+  getBadRequestErrorMockFn,
+  getForbiddenErrorMockFn,
+  getNotFoundErrorMockFn,
+  getRequestMockFn,
+  getServerErrorMockFn,
+  getSuccessMockFn,
+} from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 import {
   GetTaskQueryArgsModel,
@@ -6,6 +13,7 @@ import {
 } from 'modules/task/models'
 import { getTaskUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
 
 const getTaskMockFn = (taskId: GetTaskQueryArgsModel) =>
   getRequestMockFn(HttpMethodEnum.Get, getTaskUrl(taskId))
@@ -15,4 +23,22 @@ export const mockGetTaskSuccess = (
   options?: Partial<ResponseResolverOptions<GetTaskResponseModel>>,
 ) => getSuccessMockFn(getTaskMockFn(taskId), options)()
 
-// todo: написать тесты на ошибочное получение
+export const mockGetTaskNotFoundError = <T extends object>(
+  taskId: GetTaskQueryArgsModel,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+) => getNotFoundErrorMockFn(getTaskMockFn(taskId), options)()
+
+export const mockGetTaskBadRequestError = <T extends object>(
+  taskId: GetTaskQueryArgsModel,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+) => getBadRequestErrorMockFn(getTaskMockFn(taskId), options)()
+
+export const mockGetTaskForbiddenError = <T extends object>(
+  taskId: GetTaskQueryArgsModel,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+) => getForbiddenErrorMockFn(getTaskMockFn(taskId), options)()
+
+export const mockGetTaskServerError = <T extends object>(
+  taskId: GetTaskQueryArgsModel,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+) => getServerErrorMockFn(getTaskMockFn(taskId), options)()

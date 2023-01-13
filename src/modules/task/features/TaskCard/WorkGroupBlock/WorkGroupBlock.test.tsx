@@ -157,13 +157,13 @@ describe('Блок рабочей группы', () => {
   describe('Кнопка перевода на 2-ю линию', () => {
     describe('Роль - специалист 1-й линии', () => {
       test('Отображается если условия соблюдены', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.FirstLineSupport,
-        })
-
         render(
           <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
         )
 
         expect(testUtils.getSecondLineButton()).toBeInTheDocument()
@@ -171,17 +171,17 @@ describe('Блок рабочей группы', () => {
 
       describe('Не отображается если условия соблюдены', () => {
         test('Но есть рабочая группа', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
               {...showSecondLineButtonProps}
               workGroup={workGroupFixtures.getWorkGroup()}
             />,
-            { store },
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            },
           )
 
           expect(testUtils.querySecondLineButton()).not.toBeInTheDocument()
@@ -189,17 +189,17 @@ describe('Блок рабочей группы', () => {
       })
 
       test('Активна если условия соблюдены', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.FirstLineSupport,
-        })
-
         render(
           <WorkGroupBlock
             {...requiredProps}
             {...showSecondLineButtonProps}
             {...activeSecondLineButtonProps}
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
         )
 
         expect(testUtils.getSecondLineButton()).toBeEnabled()
@@ -207,10 +207,6 @@ describe('Блок рабочей группы', () => {
 
       describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -218,17 +214,17 @@ describe('Блок рабочей группы', () => {
               {...activeSecondLineButtonProps}
               extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
-            { store },
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            },
           )
 
           expect(testUtils.getSecondLineButton()).toBeDisabled()
         })
 
         test('Но статус заявки не "Новая" и не "В процессе"', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -236,7 +232,11 @@ describe('Блок рабочей группы', () => {
               {...activeSecondLineButtonProps}
               status={TaskStatusEnum.Awaiting}
             />,
-            { store },
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            },
           )
 
           expect(testUtils.getSecondLineButton()).toBeDisabled()
@@ -244,10 +244,6 @@ describe('Блок рабочей группы', () => {
       })
 
       test('Отображает состоянии загрузки во время перевода на 2-ю линию', async () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.FirstLineSupport,
-        })
-
         render(
           <WorkGroupBlock
             {...requiredProps}
@@ -255,24 +251,28 @@ describe('Блок рабочей группы', () => {
             {...activeSecondLineButtonProps}
             transferTaskToSecondLineIsLoading
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
         )
 
         await testUtils.secondLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.FirstLineSupport,
-        })
-
         const { user } = render(
           <WorkGroupBlock
             {...requiredProps}
             {...showSecondLineButtonProps}
             {...activeSecondLineButtonProps}
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
         )
 
         await testUtils.userClickSecondLineButton(user)
@@ -355,14 +355,12 @@ describe('Блок рабочей группы', () => {
   describe('Кнопка перевода на 1-ю линию', () => {
     describe('Роль - старший инженер', () => {
       test('Отображается если условия соблюдены', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
-        })
-
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
           {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           },
         )
 
@@ -371,10 +369,6 @@ describe('Блок рабочей группы', () => {
 
       describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -382,17 +376,17 @@ describe('Блок рабочей группы', () => {
               {...activeFirstLineButtonProps}
               extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
-            { store },
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            },
           )
 
           expect(testUtils.getFirstLineButton()).toBeDisabled()
         })
 
         test('Но статус заявки "В ожидании"', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -400,7 +394,11 @@ describe('Блок рабочей группы', () => {
               {...activeFirstLineButtonProps}
               status={TaskStatusEnum.Awaiting}
             />,
-            { store },
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            },
           )
 
           expect(testUtils.getFirstLineButton()).toBeDisabled()
@@ -408,10 +406,6 @@ describe('Блок рабочей группы', () => {
       })
 
       test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
-        })
-
         render(
           <WorkGroupBlock
             {...requiredProps}
@@ -419,24 +413,28 @@ describe('Блок рабочей группы', () => {
             {...activeFirstLineButtonProps}
             transferTaskToFirstLineIsLoading
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          },
         )
 
         await testUtils.firstLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
-        })
-
         const { user } = render(
           <WorkGroupBlock
             {...requiredProps}
             {...showFirstLineButtonProps}
             {...activeFirstLineButtonProps}
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          },
         )
 
         await testUtils.userClickFirstLineButton(user)
@@ -448,10 +446,6 @@ describe('Блок рабочей группы', () => {
 
       describe('Не отображается если условия соблюдены', () => {
         test('Но нет рабочей группы', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -459,7 +453,9 @@ describe('Блок рабочей группы', () => {
               workGroup={null}
             />,
             {
-              store,
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
             },
           )
 
@@ -467,34 +463,34 @@ describe('Блок рабочей группы', () => {
         })
 
         test('Но заявка закрыта', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Closed}
             />,
-            { store },
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            },
           )
 
           expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
         })
 
         test('Но заявка завершена', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
               status={TaskStatusEnum.Completed}
             />,
-            { store },
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            },
           )
 
           expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
@@ -504,14 +500,12 @@ describe('Блок рабочей группы', () => {
 
     describe('Роль - глава отдела', () => {
       test('Отображается', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.HeadOfDepartment,
-        })
-
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
           {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
           },
         )
 
@@ -520,10 +514,6 @@ describe('Блок рабочей группы', () => {
 
       describe('Не активна если условия соблюдены', () => {
         test('Но есть запрос на переклассификацию', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.HeadOfDepartment,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -531,17 +521,17 @@ describe('Блок рабочей группы', () => {
               {...activeFirstLineButtonProps}
               extendedStatus={TaskExtendedStatusEnum.InReclassification}
             />,
-            { store },
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            },
           )
 
           expect(testUtils.getFirstLineButton()).toBeDisabled()
         })
 
         test('Но статус заявки "В ожидании"', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.HeadOfDepartment,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -549,7 +539,11 @@ describe('Блок рабочей группы', () => {
               {...activeFirstLineButtonProps}
               status={TaskStatusEnum.Awaiting}
             />,
-            { store },
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            },
           )
 
           expect(testUtils.getFirstLineButton()).toBeDisabled()
@@ -557,10 +551,6 @@ describe('Блок рабочей группы', () => {
       })
 
       test('Отображает состояние загрузки во время перевода на 1-ю линию', async () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.HeadOfDepartment,
-        })
-
         render(
           <WorkGroupBlock
             {...requiredProps}
@@ -568,24 +558,28 @@ describe('Блок рабочей группы', () => {
             {...activeFirstLineButtonProps}
             transferTaskToFirstLineIsLoading
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          },
         )
 
         await testUtils.firstLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.HeadOfDepartment,
-        })
-
         const { user } = render(
           <WorkGroupBlock
             {...requiredProps}
             {...showFirstLineButtonProps}
             {...activeFirstLineButtonProps}
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          },
         )
 
         await testUtils.userClickFirstLineButton(user)
@@ -597,10 +591,6 @@ describe('Блок рабочей группы', () => {
 
       describe('Не отображается', () => {
         test('Если нет рабочей группы', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.HeadOfDepartment,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -608,7 +598,9 @@ describe('Блок рабочей группы', () => {
               workGroup={null}
             />,
             {
-              store,
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
             },
           )
 
@@ -616,10 +608,6 @@ describe('Блок рабочей группы', () => {
         })
 
         test('Если заявка закрыта', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.HeadOfDepartment,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -627,7 +615,9 @@ describe('Блок рабочей группы', () => {
               status={TaskStatusEnum.Closed}
             />,
             {
-              store,
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
             },
           )
 
@@ -635,10 +625,6 @@ describe('Блок рабочей группы', () => {
         })
 
         test('Если заявка завершена', () => {
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.HeadOfDepartment,
-          })
-
           render(
             <WorkGroupBlock
               {...requiredProps}
@@ -646,7 +632,9 @@ describe('Блок рабочей группы', () => {
               status={TaskStatusEnum.Completed}
             />,
             {
-              store,
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
             },
           )
 
@@ -657,14 +645,12 @@ describe('Блок рабочей группы', () => {
 
     describe('Роль - специалист 1-й линии', () => {
       test('Не отображается', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.FirstLineSupport,
-        })
-
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
           {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
           },
         )
 
@@ -674,14 +660,12 @@ describe('Блок рабочей группы', () => {
 
     describe('Роль - инженер', () => {
       test('Не отображается', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.Engineer,
-        })
-
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
           {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
           },
         )
 
@@ -692,17 +676,17 @@ describe('Блок рабочей группы', () => {
 
   describe('Модалка перевода на 1-ю линию', () => {
     test('При отправке обработчик вызывается корректно', async () => {
-      const store = getStoreWithAuth({
-        userRole: UserRoleEnum.SeniorEngineer,
-      })
-
       const { user } = render(
         <WorkGroupBlock
           {...requiredProps}
           {...showFirstLineButtonProps}
           {...activeFirstLineButtonProps}
         />,
-        { store },
+        {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
+        },
       )
 
       await testUtils.userClickFirstLineButton(user)

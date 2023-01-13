@@ -8,7 +8,7 @@ import {
   render,
 } from '_tests_/utils'
 import modalTestUtils from '_tests_/utils/modal'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 import { UserRoleEnum } from 'shared/constants/roles'
@@ -89,6 +89,12 @@ const expectLoadingNotStarted = () =>
 
 const expectLoadingFinished = () => loadingFinishedByCard(getContainer())
 
+const getCardDetails = () =>
+  within(getContainer()).getByTestId('task-card-details')
+
+const queryCardDetails = () =>
+  within(getContainer()).queryByTestId('task-card-details')
+
 const expectReclassificationRequestLoadingStarted = () =>
   loadingStartedBySpinner('task-card-reclassification-request-spinner')
 
@@ -98,6 +104,9 @@ export const testUtils = {
   expectLoadingStarted,
   expectLoadingNotStarted,
   expectLoadingFinished,
+
+  getCardDetails,
+  queryCardDetails,
 
   expectReclassificationRequestLoadingStarted,
 }
@@ -137,7 +146,26 @@ describe('Детальная карточка заявки', () => {
     })
   })
 
-  describe('Блок первичной детальной информации заявки', () => {
+  describe('Основной блок заявки', () => {
+    test('Отображается если есть данные', () => {
+      render(<TaskCard {...requiredProps} />)
+      expect(testUtils.getCardDetails()).toBeInTheDocument()
+    })
+
+    describe('Не отображается', () => {
+      test('Если нет данных', () => {
+        render(<TaskCard {...requiredProps} details={null} />)
+        expect(testUtils.queryCardDetails()).not.toBeInTheDocument()
+      })
+
+      test('Во время загрузки заявки', () => {
+        render(<TaskCard {...requiredProps} taskIsLoading />)
+        expect(testUtils.queryCardDetails()).not.toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Блок первичной информации заявки', () => {
     test('Отображается', () => {
       render(<TaskCard {...requiredProps} />)
       expect(mainDetailsTestUtils.getContainer()).toBeInTheDocument()
@@ -149,7 +177,7 @@ describe('Детальная карточка заявки', () => {
     })
   })
 
-  describe('Блок вторичной детальной информации заявки', () => {
+  describe('Блок вторичной информации заявки', () => {
     test('Отображается', () => {
       render(<TaskCard {...requiredProps} />)
       expect(secondaryDetailsTestUtils.getContainer()).toBeInTheDocument()
@@ -161,7 +189,7 @@ describe('Детальная карточка заявки', () => {
     })
   })
 
-  describe('Блок дополнительной детальной информации заявки', () => {
+  describe('Блок дополнительной информации заявки', () => {
     test('Отображается', () => {
       render(<TaskCard {...requiredProps} />)
       expect(additionalInfoTestUtils.getContainer()).toBeInTheDocument()

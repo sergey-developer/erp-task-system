@@ -340,7 +340,12 @@ const TaskCard: FC<TaskCardProps> = ({
               )}
 
           {details && (
-            <Space direction='vertical' $block size='middle'>
+            <Space
+              data-testid='task-card-details'
+              direction='vertical'
+              $block
+              size='middle'
+            >
               <MainDetails
                 recordId={details.recordId}
                 title={details.title}

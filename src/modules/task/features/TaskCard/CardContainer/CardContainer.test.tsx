@@ -6,6 +6,10 @@ import {
   mockDeleteTaskWorkGroupNotFoundError,
   mockDeleteTaskWorkGroupServerError,
   mockDeleteTaskWorkGroupSuccess,
+  mockGetTaskBadRequestError,
+  mockGetTaskForbiddenError,
+  mockGetTaskNotFoundError,
+  mockGetTaskServerError,
   mockGetTaskSuccess,
   mockGetWorkGroupListSuccess,
   mockTakeTaskServerError,
@@ -33,13 +37,17 @@ import {
 import { waitFor, within } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
-import { UserRoleEnum } from 'shared/constants/roles'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
-
 import {
   UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG,
   UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG,
-} from '../../../constants/messages'
+} from 'modules/task/constants/messages'
+import {
+  getTaskNotFoundErrorMsg,
+  getTaskServerErrorMsg,
+} from 'modules/task/utils/messages'
+import { UserRoleEnum } from 'shared/constants/roles'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
+
 import {
   activeSecondLineButtonProps,
   showSecondLineButtonProps,
@@ -70,9 +78,457 @@ setupNotifications()
 
 describe('Контейнер детальной карточки заявки', () => {
   describe('Получение заявки', () => {
-    describe('При успешном запросе', () => {})
+    describe('Роль - первая линия поддержки', () => {
+      describe('При успешном запросе', () => {
+        test('Отображается основной блок заявки', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
 
-    describe('При не успешном запросе', () => {})
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          })
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(taskCardTestUtils.getCardDetails()).toBeInTheDocument()
+        })
+      })
+
+      describe('При не успешном запросе', () => {
+        test('Не отображается основной блок заявки', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskServerError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 404', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskNotFoundError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(
+              getTaskNotFoundErrorMsg(requiredProps.taskId),
+            ),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 400', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskBadRequestError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(getTaskServerErrorMsg(requiredProps.taskId)),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 500', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskServerError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(getTaskServerErrorMsg(requiredProps.taskId)),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается неизвестная ошибка', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskForbiddenError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
+        })
+      })
+    })
+
+    describe('Роль - инженер', () => {
+      describe('При успешном запросе', () => {
+        test('Отображается основной блок заявки', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          })
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(taskCardTestUtils.getCardDetails()).toBeInTheDocument()
+        })
+      })
+
+      describe('При не успешном запросе', () => {
+        test('Не отображается основной блок заявки', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskServerError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 404', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskNotFoundError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(
+              getTaskNotFoundErrorMsg(requiredProps.taskId),
+            ),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 400', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskBadRequestError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(getTaskServerErrorMsg(requiredProps.taskId)),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 500', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskServerError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(getTaskServerErrorMsg(requiredProps.taskId)),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается неизвестная ошибка', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskForbiddenError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
+        })
+      })
+    })
+
+    describe('Роль - старший инженер', () => {
+      describe('При успешном запросе', () => {
+        test('Отображается основной блок заявки', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          })
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(taskCardTestUtils.getCardDetails()).toBeInTheDocument()
+        })
+      })
+
+      describe('При не успешном запросе', () => {
+        test('Не отображается основной блок заявки', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskServerError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 404', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskNotFoundError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(
+              getTaskNotFoundErrorMsg(requiredProps.taskId),
+            ),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 400', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskBadRequestError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(getTaskServerErrorMsg(requiredProps.taskId)),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 500', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskServerError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(getTaskServerErrorMsg(requiredProps.taskId)),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается неизвестная ошибка', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskForbiddenError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
+        })
+      })
+    })
+
+    describe('Роль - глава отдела', () => {
+      describe('При успешном запросе', () => {
+        test('Отображается основной блок заявки', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          })
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(taskCardTestUtils.getCardDetails()).toBeInTheDocument()
+        })
+      })
+
+      describe('При не успешном запросе', () => {
+        test('Не отображается основной блок заявки', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskServerError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 404', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskNotFoundError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(
+              getTaskNotFoundErrorMsg(requiredProps.taskId),
+            ),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 400', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskBadRequestError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(getTaskServerErrorMsg(requiredProps.taskId)),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка - 500', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskServerError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(
+            await findNotification(getTaskServerErrorMsg(requiredProps.taskId)),
+          ).toBeInTheDocument()
+        })
+
+        test('Обрабатывается неизвестная ошибка', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetTaskForbiddenError(requiredProps.taskId)
+
+          render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+
+          expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
+        })
+      })
+    })
   })
 
   describe('Переклассификация заявки', () => {
@@ -103,7 +559,7 @@ describe('Контейнер детальной карточки заявки', 
 
   describe('Перевод заявки на 1-ю линию', () => {
     describe('Роль - старший инженер', () => {
-      describe('При успешный запросе', () => {
+      describe('При успешном запросе', () => {
         test('Закрывается модалка', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
@@ -114,12 +570,10 @@ describe('Контейнер детальной карточки заявки', 
 
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -145,7 +599,7 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       describe('При не успешном запросе', () => {
-        test('Корректно обрабатывается ошибка 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -159,12 +613,10 @@ describe('Контейнер детальной карточки заявки', 
             { body: badRequestErrorResponse },
           )
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -192,7 +644,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(errorMsg).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается ошибка 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -205,12 +657,10 @@ describe('Контейнер детальной карточки заявки', 
             body: notFoundErrorResponse,
           })
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -235,7 +685,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(errorMsg).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается ошибка 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -248,12 +698,10 @@ describe('Контейнер детальной карточки заявки', 
             body: serverErrorResponse,
           })
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -279,7 +727,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(errorMsg).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается неизвестная ошибка', async () => {
+        test('Обрабатывается неизвестная ошибка', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -289,12 +737,10 @@ describe('Контейнер детальной карточки заявки', 
 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -321,7 +767,7 @@ describe('Контейнер детальной карточки заявки', 
     })
 
     describe('Роль - глава отдела', () => {
-      describe('При успешный запросе', () => {
+      describe('При успешном запросе', () => {
         test('Закрывается модалка', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
@@ -361,7 +807,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При не успешном запросе', () => {
         setupNotifications()
 
-        test('Корректно обрабатывается ошибка 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -375,12 +821,10 @@ describe('Контейнер детальной карточки заявки', 
             { body: badRequestErrorResponse },
           )
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -409,7 +853,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(errorMsg).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается ошибка 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -422,12 +866,10 @@ describe('Контейнер детальной карточки заявки', 
             body: notFoundErrorResponse,
           })
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -453,7 +895,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(errorMsg).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается ошибка 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -466,12 +908,10 @@ describe('Контейнер детальной карточки заявки', 
             body: serverErrorResponse,
           })
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -497,7 +937,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(errorMsg).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается неизвестная ошибка', async () => {
+        test('Обрабатывается неизвестная ошибка', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -507,12 +947,10 @@ describe('Контейнер детальной карточки заявки', 
 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const taskCard = taskCardTestUtils.getContainer()
@@ -541,7 +979,7 @@ describe('Контейнер детальной карточки заявки', 
 
   describe('Перевод заявки на 2-ю линию', () => {
     describe('Роль - первая линия поддержки', () => {
-      describe('При успешный запросе', () => {
+      describe('При успешном запросе', () => {
         test('Закрывается модалка', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
             body: taskFixtures.getTask({
@@ -580,7 +1018,7 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       describe('При не успешный запросе', () => {
-        test('Корректно обрабатывается ошибка 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
             body: taskFixtures.getTask({
               id: requiredProps.taskId,
@@ -616,7 +1054,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается ошибка 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
             body: taskFixtures.getTask({
               id: requiredProps.taskId,
@@ -652,7 +1090,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Корректно обрабатывается неизвестная ошибка', async () => {
+        test('Обрабатывается неизвестная ошибка', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
             body: taskFixtures.getTask({
               id: requiredProps.taskId,
