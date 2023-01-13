@@ -86,12 +86,16 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
       headOfDepartmentFromWorkGroupIsCurrentUser)
 
   const handleAssignOnMe = async () => {
-    await updateAssignee(authenticatedUser!.id)
-    setSelectedAssignee(authenticatedUser!.id)
+    if (authenticatedUser) {
+      await updateAssignee(authenticatedUser.id)
+      setSelectedAssignee(authenticatedUser.id)
+    }
   }
 
   const handleClickAssigneeButton = async () => {
-    await updateAssignee(selectedAssignee!)
+    if (selectedAssignee) {
+      await updateAssignee(selectedAssignee)
+    }
   }
 
   const takeTaskButton = (

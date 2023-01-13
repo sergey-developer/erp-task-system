@@ -1,4 +1,5 @@
 export * from './getTask.mock'
+export * from './takeTask.mock'
 
 export * from './getTaskList.mock'
 
@@ -11,3 +12,5 @@ export * from './getTaskCommentList.mock'
 
 export * from './deleteTaskWorkGroup.mock'
 export * from './updateTaskWorkGroup.mock'
+
+export * from './updateTaskAssignee.mock'

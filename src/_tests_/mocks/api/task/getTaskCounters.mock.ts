@@ -9,11 +9,6 @@ const getGetTaskCountersMockFn = () =>
 
 export const mockGetTaskCountersSuccess = (
   options?: Partial<ResponseResolverOptions<GetTaskCountersResponseModel>>,
-) => {
-  const mockGetTaskCounters = getSuccessMockFn(
-    getGetTaskCountersMockFn(),
-    options,
-  )
+) => getSuccessMockFn(getGetTaskCountersMockFn(), options)()
 
-  mockGetTaskCounters()
-}
+// todo: написать тесты на ошибочное получение

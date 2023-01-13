@@ -18,6 +18,7 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/common'
 import { TaskModel } from 'modules/task/models'
+import { NonNullableObject } from 'shared/interfaces/utils'
 
 export const getTask = (
   props?: Partial<
@@ -32,7 +33,7 @@ export const getTask = (
       | 'assignee'
     >
   >,
-): TaskModel => ({
+): NonNullableObject<TaskModel> => ({
   id: props?.id || generateId(),
   type: props?.type || TaskTypeEnum.Request,
   status: props?.status || TaskStatusEnum.New,

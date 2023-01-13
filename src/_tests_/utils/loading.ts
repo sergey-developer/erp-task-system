@@ -49,6 +49,10 @@ export const loadingStartedByCard = async (card: HTMLElement) => {
   })
 }
 
+export const expectLoadingNotStartedByCard = (card: HTMLElement) => {
+  expect(card).not.toHaveClass('ant-card-loading')
+}
+
 export const loadingFinishedByCard = async (card: HTMLElement) => {
   await waitFor(() => {
     expect(card).not.toHaveClass('ant-card-loading')

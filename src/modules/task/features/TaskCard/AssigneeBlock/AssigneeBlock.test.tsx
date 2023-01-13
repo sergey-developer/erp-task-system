@@ -1,5 +1,6 @@
 import {
   expectOptionDisabled,
+  findSelect,
   generateId,
   getAllSelectOption,
   getButtonIn,
@@ -7,6 +8,7 @@ import {
   getSelectOption_new,
   getSelectedOption,
   getStoreWithAuth,
+  loadingFinishedByButton,
   loadingStartedByButton,
   loadingStartedBySelect,
   queryButtonIn,
@@ -131,6 +133,9 @@ const userClickAssignOnMeButton = async (user: UserEvent) => {
 const assignOnMeExpectLoadingStarted = () =>
   loadingStartedByButton(getAssignOnMeButton())
 
+const assignOnMeExpectLoadingFinished = () =>
+  loadingFinishedByButton(getAssignOnMeButton())
+
 // assign button
 const getAssignButton = () => getButtonIn(getContainer(), /назначить$/i)
 
@@ -162,6 +167,8 @@ const refuseTaskExpectLoadingStarted = () =>
 const getAssigneeSelect = () => getSelect(getContainer())
 
 const queryAssigneeSelect = () => querySelect(getContainer())
+
+const findAssigneeSelect = () => findSelect(getContainer())
 
 const getSelectedAssignee = () => getSelectedOption(getContainer())
 
@@ -197,6 +204,7 @@ export const testUtils = {
   getAssignOnMeButton,
   userClickAssignOnMeButton,
   assignOnMeExpectLoadingStarted,
+  assignOnMeExpectLoadingFinished,
 
   getRefuseTaskButton,
   userClickRefuseTaskButton,
@@ -204,6 +212,7 @@ export const testUtils = {
 
   getAssigneeSelect,
   queryAssigneeSelect,
+  findAssigneeSelect,
   getSelectedAssignee,
   openAssigneeSelect,
   selectAssignee,

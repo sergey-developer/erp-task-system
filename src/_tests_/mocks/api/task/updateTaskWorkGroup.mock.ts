@@ -8,8 +8,8 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 import {
-  DeleteTaskWorkGroupResponseModel,
   UpdateTaskWorkGroupMutationArgsModel,
+  UpdateTaskWorkGroupResponseModel,
 } from 'modules/task/models'
 import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -21,7 +21,7 @@ const updateTaskWorkGroupMockFn = (
 
 export const mockUpdateTaskWorkGroupSuccess = (
   taskId: UpdateTaskWorkGroupMutationArgsModel['taskId'],
-  options?: Partial<ResponseResolverOptions<DeleteTaskWorkGroupResponseModel>>,
+  options?: Partial<ResponseResolverOptions<UpdateTaskWorkGroupResponseModel>>,
 ) => getSuccessMockFn(updateTaskWorkGroupMockFn(taskId), options)()
 
 export const mockUpdateTaskWorkGroupBadRequestError = <T extends object>(

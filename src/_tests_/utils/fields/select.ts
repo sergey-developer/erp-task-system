@@ -9,6 +9,9 @@ export const getSelect = (container: HTMLElement, opts?: ByRoleOptions) =>
 export const querySelect = (container: HTMLElement, opts?: ByRoleOptions) =>
   within(container).queryByRole('combobox', opts)
 
+export const findSelect = (container: HTMLElement, opts?: ByRoleOptions) =>
+  within(container).findByRole('combobox', opts)
+
 export const userOpenSelect = async (
   user: UserEvent,
   container: HTMLElement,

@@ -13,7 +13,6 @@ const getTaskMockFn = (taskId: GetTaskQueryArgsModel) =>
 export const mockGetTaskSuccess = (
   taskId: GetTaskQueryArgsModel,
   options?: Partial<ResponseResolverOptions<GetTaskResponseModel>>,
-) => {
-  const mockGetTask = getSuccessMockFn(getTaskMockFn(taskId), options)
-  mockGetTask()
-}
+) => getSuccessMockFn(getTaskMockFn(taskId), options)()
+
+// todo: написать тесты на ошибочное получение

@@ -8,6 +8,10 @@ import {
   mockDeleteTaskWorkGroupSuccess,
   mockGetTaskSuccess,
   mockGetWorkGroupListSuccess,
+  mockTakeTaskServerError,
+  mockTakeTaskSuccess,
+  mockUpdateTaskAssigneeServerError,
+  mockUpdateTaskAssigneeSuccess,
   mockUpdateTaskWorkGroupForbiddenError,
   mockUpdateTaskWorkGroupNotFoundError,
   mockUpdateTaskWorkGroupServerError,
@@ -21,6 +25,7 @@ import {
   loadingFinishedByButton,
   loadingFinishedByCard,
   loadingStartedByButton,
+  queryNotification,
   render,
   setupApiTests,
   setupNotifications,
@@ -31,12 +36,22 @@ import workGroupFixtures from 'fixtures/workGroup'
 import { UserRoleEnum } from 'shared/constants/roles'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
-import { UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG } from '../../../constants/messages'
+import {
+  UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG,
+  UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG,
+} from '../../../constants/messages'
 import {
   activeSecondLineButtonProps,
   showSecondLineButtonProps,
-  testUtils as workGroupTestUtils,
+  testUtils as workGroupBlockTestUtils,
 } from '../../TaskCard/WorkGroupBlock/WorkGroupBlock.test'
+import {
+  activeAssignButtonProps,
+  activeAssignOnMeButtonProps,
+  activeTakeTaskButtonProps,
+  testUtils as assigneeBlockTestUtils,
+  canSelectAssigneeProps,
+} from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskCardTestUtils } from '../Card/Card.test'
 import taskFirstLineModalTestUtils from '../TaskFirstLineModal/_tests_/utils'
 import { TaskFirstLineFormErrors } from '../TaskFirstLineModal/interfaces'
@@ -51,8 +66,41 @@ const requiredProps: TaskCardContainerProps = {
 }
 
 setupApiTests()
+setupNotifications()
 
 describe('Контейнер детальной карточки заявки', () => {
+  describe('Получение заявки', () => {
+    describe('При успешном запросе', () => {})
+
+    describe('При не успешном запросе', () => {})
+  })
+
+  describe('Переклассификация заявки', () => {
+    describe('Получение запроса на переклассификацию', () => {
+      describe('При успешном запросе', () => {})
+
+      describe('При не успешном запросе', () => {})
+    })
+
+    describe('Создание запроса на переклассификацию', () => {
+      describe('При успешном запросе', () => {})
+
+      describe('При не успешном запросе', () => {})
+    })
+  })
+
+  describe('Получение списка рабочих групп', () => {
+    describe('При успешном запросе', () => {})
+
+    describe('При не успешном запросе', () => {})
+  })
+
+  describe('Выполнение заявки', () => {
+    describe('При успешном запросе', () => {})
+
+    describe('При не успешном запросе', () => {})
+  })
+
   describe('Перевод заявки на 1-ю линию', () => {
     describe('Роль - старший инженер', () => {
       describe('При успешный запросе', () => {
@@ -77,7 +125,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           const modal = await taskFirstLineModalTestUtils.findModal()
@@ -96,8 +145,6 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       describe('При не успешном запросе', () => {
-        setupNotifications()
-
         test('Корректно обрабатывается ошибка 400', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
@@ -123,7 +170,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -168,7 +216,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -210,7 +259,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -250,7 +300,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -288,7 +339,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           const modal = await taskFirstLineModalTestUtils.findModal()
@@ -334,7 +386,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -380,7 +433,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -423,7 +477,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -463,7 +518,8 @@ describe('Контейнер детальной карточки заявки', 
           const taskCard = taskCardTestUtils.getContainer()
           await loadingFinishedByCard(taskCard)
 
-          const firstLineButton = await workGroupTestUtils.findFirstLineButton()
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findModal()
@@ -508,7 +564,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           await taskCardTestUtils.expectLoadingFinished()
-          await workGroupTestUtils.userClickSecondLineButton(user)
+          await workGroupBlockTestUtils.userClickSecondLineButton(user)
           const modal = await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
           await taskSecondLineModalTestUtils.userSelectWorkGroup(
@@ -524,8 +580,6 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       describe('При не успешный запросе', () => {
-        setupNotifications()
-
         test('Корректно обрабатывается ошибка 404', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
             body: taskFixtures.getTask({
@@ -548,7 +602,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           await taskCardTestUtils.expectLoadingFinished()
-          await workGroupTestUtils.userClickSecondLineButton(user)
+          await workGroupBlockTestUtils.userClickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
           await taskSecondLineModalTestUtils.userSelectWorkGroup(
@@ -584,7 +638,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           await taskCardTestUtils.expectLoadingFinished()
-          await workGroupTestUtils.userClickSecondLineButton(user)
+          await workGroupBlockTestUtils.userClickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
           await taskSecondLineModalTestUtils.userSelectWorkGroup(
@@ -620,7 +674,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           await taskCardTestUtils.expectLoadingFinished()
-          await workGroupTestUtils.userClickSecondLineButton(user)
+          await workGroupBlockTestUtils.userClickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
           await taskSecondLineModalTestUtils.userSelectWorkGroup(
@@ -631,6 +685,224 @@ describe('Контейнер детальной карточки заявки', 
 
           expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
         })
+      })
+    })
+  })
+
+  describe('Назначение заявки на себя', () => {
+    describe('При успешном запросе', () => {
+      test('Уведомление об ошибке не отображается и заявка запрашивается заново', async () => {
+        mockGetTaskSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTask({
+            id: requiredProps.taskId,
+            status: activeAssignOnMeButtonProps.status,
+            extendedStatus: activeAssignOnMeButtonProps.extendedStatus,
+          }),
+          once: false,
+        })
+
+        mockGetWorkGroupListSuccess({ body: [] })
+        mockUpdateTaskAssigneeSuccess(requiredProps.taskId)
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+        await assigneeBlockTestUtils.userClickAssignOnMeButton(user)
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        expect(
+          queryNotification(UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG),
+        ).not.toBeInTheDocument()
+      })
+    })
+
+    describe('При не успешном запросе', () => {
+      test('Уведомление об ошибке отображается и заявка не запрашивается заново', async () => {
+        mockGetTaskSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTask({
+            id: requiredProps.taskId,
+            status: activeAssignOnMeButtonProps.status,
+            extendedStatus: activeAssignOnMeButtonProps.extendedStatus,
+          }),
+        })
+
+        mockGetWorkGroupListSuccess({ body: [] })
+        mockUpdateTaskAssigneeServerError(requiredProps.taskId)
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+        await assigneeBlockTestUtils.userClickAssignOnMeButton(user)
+
+        taskCardTestUtils.expectLoadingNotStarted()
+        expect(
+          await findNotification(UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG),
+        ).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Назначение исполнителя заявки', () => {
+    describe('При успешном запросе', () => {
+      test('Уведомление об ошибке не отображается и заявка запрашивается заново', async () => {
+        mockGetTaskSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTask({
+            id: requiredProps.taskId,
+            status: canSelectAssigneeProps.status,
+            extendedStatus: activeAssignButtonProps.extendedStatus,
+            assignee: activeAssignButtonProps.assignee,
+            workGroup: taskFixtures.getTaskWorkGroup({
+              id: canSelectAssigneeProps.workGroup.id,
+            }),
+          }),
+          once: false,
+        })
+
+        mockGetWorkGroupListSuccess({
+          body: [canSelectAssigneeProps.workGroup],
+        })
+
+        mockUpdateTaskAssigneeSuccess(requiredProps.taskId)
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+        await assigneeBlockTestUtils.findAssigneeSelect()
+        await assigneeBlockTestUtils.openAssigneeSelect(user)
+        await assigneeBlockTestUtils.selectAssignee(
+          user,
+          canSelectAssigneeProps.workGroup.members[0].fullName,
+        )
+        await assigneeBlockTestUtils.userClickAssignButton(user)
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        expect(
+          queryNotification(UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG),
+        ).not.toBeInTheDocument()
+      })
+    })
+
+    describe('При не успешном запросе', () => {
+      test('Уведомление об ошибке отображается и заявка не запрашивается заново', async () => {
+        mockGetTaskSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTask({
+            id: requiredProps.taskId,
+            status: canSelectAssigneeProps.status,
+            extendedStatus: activeAssignButtonProps.extendedStatus,
+            assignee: activeAssignButtonProps.assignee,
+            workGroup: taskFixtures.getTaskWorkGroup({
+              id: canSelectAssigneeProps.workGroup.id,
+            }),
+          }),
+          once: false,
+        })
+
+        mockGetWorkGroupListSuccess({
+          body: [canSelectAssigneeProps.workGroup],
+        })
+
+        mockUpdateTaskAssigneeServerError(requiredProps.taskId)
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+        await assigneeBlockTestUtils.findAssigneeSelect()
+        await assigneeBlockTestUtils.openAssigneeSelect(user)
+        await assigneeBlockTestUtils.selectAssignee(
+          user,
+          canSelectAssigneeProps.workGroup.members[0].fullName,
+        )
+        await assigneeBlockTestUtils.userClickAssignButton(user)
+
+        taskCardTestUtils.expectLoadingNotStarted()
+        expect(
+          await findNotification(UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG),
+        ).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Взятие заявки в работу', () => {
+    describe('При успешном запросе', () => {
+      test('Уведомление об ошибке не отображается и заявка запрашивается заново', async () => {
+        const task = taskFixtures.getTask({
+          id: requiredProps.taskId,
+          status: activeTakeTaskButtonProps.status,
+          extendedStatus: activeTakeTaskButtonProps.extendedStatus,
+        })
+
+        mockGetTaskSuccess(requiredProps.taskId, { body: task })
+
+        mockGetWorkGroupListSuccess({ body: [] })
+        mockTakeTaskSuccess(requiredProps.taskId)
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userId: task.assignee.id,
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+        await assigneeBlockTestUtils.userClickTakeTaskButton(user)
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+        expect(queryNotification(UNKNOWN_ERROR_MSG)).not.toBeInTheDocument()
+      })
+    })
+
+    describe('При не успешном запросе', () => {
+      test('Уведомление об ошибке отображается и заявка не запрашивается заново', async () => {
+        const task = taskFixtures.getTask({
+          id: requiredProps.taskId,
+          status: activeTakeTaskButtonProps.status,
+          extendedStatus: activeTakeTaskButtonProps.extendedStatus,
+        })
+
+        mockGetTaskSuccess(requiredProps.taskId, { body: task })
+
+        mockGetWorkGroupListSuccess({ body: [] })
+        mockTakeTaskServerError(requiredProps.taskId)
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userId: task.assignee.id,
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+        await assigneeBlockTestUtils.userClickTakeTaskButton(user)
+
+        taskCardTestUtils.expectLoadingNotStarted()
+        expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
       })
     })
   })
