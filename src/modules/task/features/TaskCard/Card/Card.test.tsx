@@ -3,6 +3,8 @@ import {
   generateWord,
   getStoreWithAuth,
   loadingFinishedByCard,
+  loadingFinishedBySpinner,
+  loadingNotStartedBySpinner,
   loadingStartedByCard,
   loadingStartedBySpinner,
   render,
@@ -95,8 +97,19 @@ const getCardDetails = () =>
 const queryCardDetails = () =>
   within(getContainer()).queryByTestId('task-card-details')
 
-const expectReclassificationRequestLoadingStarted = () =>
-  loadingStartedBySpinner('task-card-reclassification-request-spinner')
+const taskCardReclassificationRequestSpinnerTestId =
+  'task-card-reclassification-request-spinner'
+
+const expectReclassificationRequestLoadingStarted = loadingStartedBySpinner(
+  taskCardReclassificationRequestSpinnerTestId,
+)
+
+const expectReclassificationRequestLoadingNotStarted =
+  loadingNotStartedBySpinner(taskCardReclassificationRequestSpinnerTestId)
+
+const expectReclassificationRequestLoadingFinished = loadingFinishedBySpinner(
+  taskCardReclassificationRequestSpinnerTestId,
+)
 
 export const testUtils = {
   getContainer,
@@ -109,6 +122,8 @@ export const testUtils = {
   queryCardDetails,
 
   expectReclassificationRequestLoadingStarted,
+  expectReclassificationRequestLoadingNotStarted,
+  expectReclassificationRequestLoadingFinished,
 }
 
 describe('Детальная карточка заявки', () => {

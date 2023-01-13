@@ -7,11 +7,11 @@ export const taskReclassificationRequestApiPermissions: UserPermissionConfig = {
     CRUDPermissionsEnum.CanCreate,
     CRUDPermissionsEnum.CanGet,
   ],
+  [UserRoleEnum.Engineer]: [CRUDPermissionsEnum.CanGet],
   [UserRoleEnum.SeniorEngineer]: [
     CRUDPermissionsEnum.CanCreate,
     CRUDPermissionsEnum.CanGet,
   ],
-  [UserRoleEnum.Engineer]: [CRUDPermissionsEnum.CanGet],
   [UserRoleEnum.HeadOfDepartment]: [
     CRUDPermissionsEnum.CanCreate,
     CRUDPermissionsEnum.CanGet,

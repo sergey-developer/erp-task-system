@@ -19,6 +19,10 @@ export const loadingStartedBySpinner = (testId: string) => async () => {
   expect(await screen.findByTestId(testId)).toBeInTheDocument()
 }
 
+export const loadingNotStartedBySpinner = (testId: string) => () => {
+  expect(screen.queryByTestId(testId)).not.toBeInTheDocument()
+}
+
 export const loadingFinishedBySpinner = (testId: string) => async () => {
   const spinner = screen.queryByTestId(testId)
 

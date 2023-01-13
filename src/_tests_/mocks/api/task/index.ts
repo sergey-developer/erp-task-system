@@ -14,3 +14,6 @@ export * from './deleteTaskWorkGroup.mock'
 export * from './updateTaskWorkGroup.mock'
 
 export * from './updateTaskAssignee.mock'
+
+export * from './createTaskReclassificationRequest.mock'
+export * from './getTaskReclassificationRequest.mock'
