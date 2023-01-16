@@ -93,7 +93,7 @@ const subTaskApiService = apiService.injectEndpoints({
                 const subTask = subTaskList.find(({ id }) => id === subTaskId)
 
                 if (subTask) {
-                  subTask.status = TaskStatusEnum.Completed
+                  subTask.status = TaskStatusEnum.Closed
                 }
               },
             ),
