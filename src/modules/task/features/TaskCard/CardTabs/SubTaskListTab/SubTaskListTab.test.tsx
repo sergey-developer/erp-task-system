@@ -940,7 +940,7 @@ describe('Вкладка списка заданий', () => {
         })
       })
 
-      test('Статус задачи меняется на "Завершена"', async () => {
+      test('Статус задачи меняется на "Закрыта"', async () => {
         const subTask = subTaskFixtures.getSubTask({
           status: activeCancelButtonProps.status,
         })
@@ -986,7 +986,7 @@ describe('Вкладка списка заданий', () => {
         expect(
           taskStatusTestUtils.getTaskStatusIn(
             subTaskTestUtils.getContainer(),
-            TaskStatusEnum.Completed,
+            TaskStatusEnum.Closed,
           ),
         ).toBeInTheDocument()
       })
