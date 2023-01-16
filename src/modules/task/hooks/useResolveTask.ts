@@ -8,7 +8,6 @@ import {
   ErrorResponse,
   getErrorDetail,
   isBadRequestError,
-  isForbiddenError,
 } from 'shared/services/api'
 import {
   showErrorNotification,
@@ -35,9 +34,9 @@ export const useResolveTask = () => {
 
     const error = state.error as ErrorResponse
 
-    if (isForbiddenError(error)) {
+    if (isBadRequestError(error)) {
       showMultipleErrorNotification(getErrorDetail(error))
-    } else if (!isBadRequestError(error)) {
+    } else {
       showErrorNotification(RESOLVE_TASK_COMMON_ERROR_MSG)
     }
   }, [state.error, state.isError])
