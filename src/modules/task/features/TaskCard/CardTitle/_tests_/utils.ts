@@ -13,8 +13,8 @@ const getMenuButton = () => getButtonIn(getContainer(), 'menu')
 const getMenu = () => screen.getByRole('menu')
 const findMenu = () => screen.findByRole('menu')
 const getMenuItems = () => within(getMenu()).getAllByRole('menuitem')
-const getFirstMenuItem = () => getMenuItems()[0]
-const getSecondMenuItem = () => getMenuItems()[1]
+const getFirstMenuItem = () => getMenuItems()[1]
+const getSecondMenuItem = () => getMenuItems()[2]
 
 const getMenuItemIcon = (item: HTMLElement, iconName: string) =>
   getIconByNameIn(item, iconName)
