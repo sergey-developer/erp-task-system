@@ -6,11 +6,7 @@ export const RECLASSIFICATION_REASON_RULES: Rule[] = [
   { required: true },
   {
     type: 'enum',
-    enum: [
-      ReclassificationReasonEnum.WrongClassification,
-      ReclassificationReasonEnum.WrongSupportGroup,
-      ReclassificationReasonEnum.DivideTask,
-    ],
+    enum: Object.values(ReclassificationReasonEnum),
     message: 'Недопустимая причина переклассификации',
   },
 ]

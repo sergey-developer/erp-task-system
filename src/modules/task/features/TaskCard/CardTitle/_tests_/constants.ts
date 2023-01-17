@@ -17,6 +17,7 @@ export const requiredProps: CardTitleProps = {
   isAssignedToCurrentUser: false,
   onClose: jest.fn(),
   onClickExecuteTask: jest.fn(),
+  onClickRequestSuspend: jest.fn(),
   onClickRequestReclassification: jest.fn(),
 }
 

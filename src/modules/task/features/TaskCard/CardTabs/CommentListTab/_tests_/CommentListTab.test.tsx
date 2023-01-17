@@ -18,7 +18,7 @@ import {
 } from '_tests_/utils'
 import { within } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 
 import { CREATE_TASK_COMMENT_ERROR_MSG } from '../../../../../constants/messages'
 import commentListTestUtils from '../CommentList/_tests_/utils'

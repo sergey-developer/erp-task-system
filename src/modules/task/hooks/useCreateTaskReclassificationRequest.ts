@@ -4,7 +4,7 @@ import { CreateTaskReclassificationRequestMutationArgsModel } from 'modules/task
 import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskReclassificationRequestApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 import {
   ErrorResponse,
   isBadRequestError,
@@ -31,6 +31,7 @@ export const useCreateTaskReclassificationRequest = () => {
 
   useEffect(() => {
     if (!state.isError) return
+
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error)) {

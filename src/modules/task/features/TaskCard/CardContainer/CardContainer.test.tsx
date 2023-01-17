@@ -51,8 +51,8 @@ import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
 } from 'modules/task/utils/messages'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 import { UserRoleEnum } from 'shared/constants/roles'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
 import {
   activeSecondLineButtonProps,

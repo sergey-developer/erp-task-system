@@ -6,6 +6,7 @@ import {
   CheckCircleIcon,
   CloseIcon,
   MenuIcon,
+  PauseCircleIcon,
   QuestionCircleIcon,
 } from 'components/Icons'
 import {
@@ -23,6 +24,7 @@ export type CardTitleProps = Pick<
 > & {
   isAssignedToCurrentUser: boolean
   onClickExecuteTask: () => void
+  onClickRequestSuspend: () => void
   onClickRequestReclassification: () => void
   onClose: () => void
 }
@@ -36,6 +38,7 @@ const CardTitle: FC<CardTitleProps> = ({
   isAssignedToCurrentUser,
   onClose,
   onClickExecuteTask,
+  onClickRequestSuspend,
   onClickRequestReclassification,
 }) => {
   const taskType = useTaskType(type)
@@ -49,6 +52,12 @@ const CardTitle: FC<CardTitleProps> = ({
       items={[
         {
           key: 1,
+          icon: <PauseCircleIcon $size='middle' />,
+          label: 'Запросить перевод в ожидание',
+          onClick: onClickRequestSuspend,
+        },
+        {
+          key: 2,
           disabled:
             !taskStatus.isInProgress ||
             !isAssignedToCurrentUser ||
@@ -58,7 +67,7 @@ const CardTitle: FC<CardTitleProps> = ({
           onClick: onClickExecuteTask,
         },
         {
-          key: 2,
+          key: 3,
           disabled:
             !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
             taskOlaStatus.isHalfExpired ||

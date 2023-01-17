@@ -6,18 +6,9 @@ import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
-import {
-  CancelSubTaskFormErrors,
-  CancelSubTaskModalProps,
-} from 'modules/subTask/features/CancelSubTaskModal/interfaces'
-import {
-  CreateSubTaskFormErrors,
-  CreateSubTaskModalProps,
-} from 'modules/subTask/features/CreateSubTaskModal/interfaces'
-import {
-  ReworkSubTaskFormErrors,
-  ReworkSubTaskModalProps,
-} from 'modules/subTask/features/ReworkSubTaskModal/interfaces'
+import { CancelSubTaskModalProps } from 'modules/subTask/features/CancelSubTaskModal/interfaces'
+import { CreateSubTaskModalProps } from 'modules/subTask/features/CreateSubTaskModal/interfaces'
+import { ReworkSubTaskModalProps } from 'modules/subTask/features/ReworkSubTaskModal/interfaces'
 import SubTaskList from 'modules/subTask/features/SubTaskList'
 import {
   useCancelSubTask,
@@ -30,7 +21,7 @@ import { SubTaskModel } from 'modules/subTask/models'
 import { useTaskStatus, useTaskType } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { useDebounceFn } from 'shared/hooks'
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 const CreateSubTaskModal = React.lazy(
@@ -120,8 +111,10 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
 
         toggleCreateSubTaskModalOpened()
       } catch (exception) {
-        const error = exception as ErrorResponse<CreateSubTaskFormErrors>
-        handleSetFieldsErrors(error, setFields)
+        const error = exception as ErrorResponse
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, setFields)
+        }
       }
     },
     [createSubTask, task.id, toggleCreateSubTaskModalOpened],
@@ -150,8 +143,10 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
 
         toggleCancelSubTaskModalOpened()
       } catch (exception) {
-        const error = exception as ErrorResponse<CancelSubTaskFormErrors>
-        handleSetFieldsErrors(error, setFields)
+        const error = exception as ErrorResponse
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, setFields)
+        }
       }
     },
     [cancelSubTask, subTask, task.id, toggleCancelSubTaskModalOpened],
@@ -180,8 +175,10 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
 
         toggleReworkSubTaskModalOpened()
       } catch (exception) {
-        const error = exception as ErrorResponse<ReworkSubTaskFormErrors>
-        handleSetFieldsErrors(error, setFields)
+        const error = exception as ErrorResponse
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, setFields)
+        }
       }
     },
     [reworkSubTask, subTask, task.id, toggleReworkSubTaskModalOpened],

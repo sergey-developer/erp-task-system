@@ -4,7 +4,7 @@ import { CreateTaskCommentMutationArgsModel } from 'modules/task/models'
 import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useCreateTaskCommentMutation } from 'modules/task/services/taskCommentApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 import {
   ErrorResponse,
   isBadRequestError,
@@ -30,6 +30,7 @@ export const useCreateTaskComment = () => {
 
   useEffect(() => {
     if (!state.isError) return
+
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error) || isServerRangeError(error)) {

@@ -6,7 +6,7 @@ import Space from 'components/Space'
 import { RoutesEnum } from 'configs/routes'
 import { useLogin } from 'modules/auth/hooks'
 import { APP_NAME } from 'shared/constants/common'
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import { LoginFormFields } from './interfaces'
@@ -24,16 +24,16 @@ const LoginPage: FC = () => {
     state: { isLoading, error: loginErrorResponse },
   } = useLogin()
 
-  const loginError = getLoginError(
-    loginErrorResponse as ErrorResponse<LoginFormFields>,
-  )
+  const loginError = getLoginError(loginErrorResponse as ErrorResponse)
 
   const handleSubmit = async (values: LoginFormFields) => {
     try {
       await login(values)
     } catch (exception) {
-      const error = exception as ErrorResponse<LoginFormFields>
-      handleSetFieldsErrors(error, form.setFields)
+      const error = exception as ErrorResponse
+      if (isBadRequestError(error)) {
+        handleSetFieldsErrors(error, form.setFields)
+      }
     }
   }
 
