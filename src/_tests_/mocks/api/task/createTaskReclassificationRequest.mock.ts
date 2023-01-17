@@ -1,4 +1,5 @@
 import {
+  getNotFoundErrorMockFn,
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
@@ -27,6 +28,17 @@ export const mockCreateTaskReclassificationRequestSuccess = (
   >,
 ) =>
   getSuccessMockFn(createTaskReclassificationRequestMockFn(taskId), options)()
+
+export const mockCreateTaskReclassificationRequestNotFoundError = <
+  T extends object,
+>(
+  taskId: CreateTaskReclassificationRequestMutationArgsModel['taskId'],
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+) =>
+  getNotFoundErrorMockFn(
+    createTaskReclassificationRequestMockFn(taskId),
+    options,
+  )()
 
 export const mockCreateTaskReclassificationRequestServerError = <
   T extends object,

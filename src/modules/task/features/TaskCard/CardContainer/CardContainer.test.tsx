@@ -1,6 +1,8 @@
 import head from 'lodash/head'
 
 import {
+  mockCreateTaskReclassificationRequestNotFoundError,
+  mockCreateTaskReclassificationRequestSuccess,
   mockDeleteTaskWorkGroupBadRequestError,
   mockDeleteTaskWorkGroupForbiddenError,
   mockDeleteTaskWorkGroupNotFoundError,
@@ -41,6 +43,7 @@ import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import {
+  CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG,
   UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG,
   UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG,
 } from 'modules/task/constants/messages'
@@ -64,8 +67,12 @@ import {
   canSelectAssigneeProps,
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskCardTestUtils } from '../Card/Card.test'
+import { activeSecondItemProps } from '../CardTitle/_tests_/constants'
+import cardTitleTestUtils from '../CardTitle/_tests_/utils'
 import taskFirstLineModalTestUtils from '../TaskFirstLineModal/_tests_/utils'
 import { TaskFirstLineFormErrors } from '../TaskFirstLineModal/interfaces'
+import { availableReasons } from '../TaskReclassificationModal/_tests_/constants'
+import taskReclassificationModalTestUtils from '../TaskReclassificationModal/_tests_/utils'
 import taskReclassificationRequestTestUtils from '../TaskReclassificationRequest/_tests_/utils'
 import taskSecondLineModalTestUtils from '../TaskSecondLineModal/_tests_/utils'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
@@ -629,16 +636,413 @@ describe('Контейнер детальной карточки заявки', 
           })
         })
 
-        describe('Запрос не отправляется повторно если условия соблюдены', () => {
-          test('Но ранее был создан запрос на переклассификацию', async () => {})
+        describe('Запрос не отправляется повторно если', () => {
+          test.todo('Ранее был создан запрос на переклассификацию')
         })
       })
 
       describe('Создание запроса на переклассификацию', () => {
-        describe('При успешном запросе', () => {})
+        describe('При успешном запросе', () => {
+          test('Отображается запрос и закрывается модалка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-        describe('При не успешном запросе', () => {})
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                status: activeSecondItemProps.status,
+                olaStatus: activeSecondItemProps.olaStatus,
+                type: activeSecondItemProps.type,
+              }),
+            })
+
+            mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTaskReclassificationRequest(),
+            })
+            mockCreateTaskReclassificationRequestSuccess(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.userClickSecondMenuItem(user)
+            const modal =
+              await taskReclassificationModalTestUtils.findContainer()
+
+            await taskReclassificationModalTestUtils.userSetComment(
+              user,
+              generateWord(),
+            )
+            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+              user,
+              availableReasons[0],
+            )
+            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+            expect(
+              await taskReclassificationRequestTestUtils.findContainer(),
+            ).toBeInTheDocument()
+
+            expect(modal).not.toBeInTheDocument()
+          })
+        })
+
+        describe('При не успешном запросе', () => {
+          test('Корректно обрабатывается ошибка - 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                status: activeSecondItemProps.status,
+                olaStatus: activeSecondItemProps.olaStatus,
+                type: activeSecondItemProps.type,
+              }),
+            })
+
+            mockCreateTaskReclassificationRequestNotFoundError(
+              requiredProps.taskId,
+            )
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.userClickSecondMenuItem(user)
+            await taskReclassificationModalTestUtils.findContainer()
+
+            await taskReclassificationModalTestUtils.userSetComment(
+              user,
+              generateWord(),
+            )
+            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+              user,
+              availableReasons[0],
+            )
+            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG,
+              ),
+            ).toBeInTheDocument()
+          })
+        })
       })
+    })
+
+    describe('Роль - инженер', () => {
+      describe('Получение запроса на переклассификацию', () => {
+        describe('Запрос отправляется если условия соблюдены', () => {
+          describe('При успешном запросе', () => {
+            test('Запрос отображается', async () => {
+              mockGetWorkGroupListSuccess({ body: [] })
+
+              mockGetTaskSuccess(requiredProps.taskId, {
+                body: taskFixtures.getTask({
+                  id: requiredProps.taskId,
+                  extendedStatus: TaskExtendedStatusEnum.InReclassification,
+                }),
+              })
+
+              mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
+                body: taskFixtures.getTaskReclassificationRequest(),
+              })
+
+              render(<TaskCardContainer {...requiredProps} />, {
+                store: getStoreWithAuth({
+                  userRole: UserRoleEnum.Engineer,
+                }),
+              })
+
+              await taskCardTestUtils.expectLoadingStarted()
+              await taskCardTestUtils.expectLoadingFinished()
+              await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
+
+              expect(
+                await taskReclassificationRequestTestUtils.findContainer(),
+              ).toBeInTheDocument()
+            })
+          })
+
+          describe('При не успешном запросе', () => {
+            test('Обрабатывается неизвестная ошибка', async () => {
+              mockGetWorkGroupListSuccess({ body: [] })
+
+              mockGetTaskSuccess(requiredProps.taskId, {
+                body: taskFixtures.getTask({
+                  id: requiredProps.taskId,
+                  extendedStatus: TaskExtendedStatusEnum.InReclassification,
+                }),
+              })
+
+              mockGetTaskReclassificationRequestServerError(
+                requiredProps.taskId,
+              )
+
+              render(<TaskCardContainer {...requiredProps} />, {
+                store: getStoreWithAuth({
+                  userRole: UserRoleEnum.Engineer,
+                }),
+              })
+
+              await taskCardTestUtils.expectLoadingStarted()
+              await taskCardTestUtils.expectLoadingFinished()
+              await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
+
+              expect(
+                await findNotification(UNKNOWN_ERROR_MSG),
+              ).toBeInTheDocument()
+            })
+          })
+        })
+
+        describe('Запрос не отправляется если условия соблюдены', () => {
+          test('Но расширенный статус заявка не "На переклассификации"', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                extendedStatus: TaskExtendedStatusEnum.New,
+              }),
+            })
+
+            render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+            taskCardTestUtils.expectReclassificationRequestLoadingNotStarted()
+
+            expect(
+              taskReclassificationRequestTestUtils.queryContainer(),
+            ).not.toBeInTheDocument()
+          })
+        })
+
+        describe('Запрос не отправляется повторно если', () => {
+          test.todo('Ранее был создан запрос на переклассификацию')
+        })
+      })
+
+      test.todo('Создание запроса на переклассификацию')
+    })
+
+    describe('Роль - старший инженер', () => {
+      describe('Получение запроса на переклассификацию', () => {
+        describe('Запрос отправляется если условия соблюдены', () => {
+          describe('При успешном запросе', () => {
+            test('Запрос отображается', async () => {
+              mockGetWorkGroupListSuccess({ body: [] })
+
+              mockGetTaskSuccess(requiredProps.taskId, {
+                body: taskFixtures.getTask({
+                  id: requiredProps.taskId,
+                  extendedStatus: TaskExtendedStatusEnum.InReclassification,
+                }),
+              })
+
+              mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
+                body: taskFixtures.getTaskReclassificationRequest(),
+              })
+
+              render(<TaskCardContainer {...requiredProps} />, {
+                store: getStoreWithAuth({
+                  userRole: UserRoleEnum.SeniorEngineer,
+                }),
+              })
+
+              await taskCardTestUtils.expectLoadingStarted()
+              await taskCardTestUtils.expectLoadingFinished()
+              await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
+
+              expect(
+                await taskReclassificationRequestTestUtils.findContainer(),
+              ).toBeInTheDocument()
+            })
+          })
+
+          describe('При не успешном запросе', () => {
+            test('Обрабатывается неизвестная ошибка', async () => {
+              mockGetWorkGroupListSuccess({ body: [] })
+
+              mockGetTaskSuccess(requiredProps.taskId, {
+                body: taskFixtures.getTask({
+                  id: requiredProps.taskId,
+                  extendedStatus: TaskExtendedStatusEnum.InReclassification,
+                }),
+              })
+
+              mockGetTaskReclassificationRequestServerError(
+                requiredProps.taskId,
+              )
+
+              render(<TaskCardContainer {...requiredProps} />, {
+                store: getStoreWithAuth({
+                  userRole: UserRoleEnum.SeniorEngineer,
+                }),
+              })
+
+              await taskCardTestUtils.expectLoadingStarted()
+              await taskCardTestUtils.expectLoadingFinished()
+              await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
+
+              expect(
+                await findNotification(UNKNOWN_ERROR_MSG),
+              ).toBeInTheDocument()
+            })
+          })
+        })
+
+        describe('Запрос не отправляется если условия соблюдены', () => {
+          test('Но расширенный статус заявка не "На переклассификации"', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                extendedStatus: TaskExtendedStatusEnum.New,
+              }),
+            })
+
+            render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+            taskCardTestUtils.expectReclassificationRequestLoadingNotStarted()
+
+            expect(
+              taskReclassificationRequestTestUtils.queryContainer(),
+            ).not.toBeInTheDocument()
+          })
+        })
+
+        describe('Запрос не отправляется повторно если', () => {
+          test.todo('Ранее был создан запрос на переклассификацию')
+        })
+      })
+
+      test.todo('Создание запроса на переклассификацию')
+    })
+
+    describe('Роль - глава отдела', () => {
+      describe('Получение запроса на переклассификацию', () => {
+        describe('Запрос отправляется если условия соблюдены', () => {
+          describe('При успешном запросе', () => {
+            test('Запрос отображается', async () => {
+              mockGetWorkGroupListSuccess({ body: [] })
+
+              mockGetTaskSuccess(requiredProps.taskId, {
+                body: taskFixtures.getTask({
+                  id: requiredProps.taskId,
+                  extendedStatus: TaskExtendedStatusEnum.InReclassification,
+                }),
+              })
+
+              mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
+                body: taskFixtures.getTaskReclassificationRequest(),
+              })
+
+              render(<TaskCardContainer {...requiredProps} />, {
+                store: getStoreWithAuth({
+                  userRole: UserRoleEnum.HeadOfDepartment,
+                }),
+              })
+
+              await taskCardTestUtils.expectLoadingStarted()
+              await taskCardTestUtils.expectLoadingFinished()
+              await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
+
+              expect(
+                await taskReclassificationRequestTestUtils.findContainer(),
+              ).toBeInTheDocument()
+            })
+          })
+
+          describe('При не успешном запросе', () => {
+            test('Обрабатывается неизвестная ошибка', async () => {
+              mockGetWorkGroupListSuccess({ body: [] })
+
+              mockGetTaskSuccess(requiredProps.taskId, {
+                body: taskFixtures.getTask({
+                  id: requiredProps.taskId,
+                  extendedStatus: TaskExtendedStatusEnum.InReclassification,
+                }),
+              })
+
+              mockGetTaskReclassificationRequestServerError(
+                requiredProps.taskId,
+              )
+
+              render(<TaskCardContainer {...requiredProps} />, {
+                store: getStoreWithAuth({
+                  userRole: UserRoleEnum.HeadOfDepartment,
+                }),
+              })
+
+              await taskCardTestUtils.expectLoadingStarted()
+              await taskCardTestUtils.expectLoadingFinished()
+              await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
+
+              expect(
+                await findNotification(UNKNOWN_ERROR_MSG),
+              ).toBeInTheDocument()
+            })
+          })
+        })
+
+        describe('Запрос не отправляется если условия соблюдены', () => {
+          test('Но расширенный статус заявка не "На переклассификации"', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                extendedStatus: TaskExtendedStatusEnum.New,
+              }),
+            })
+
+            render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+            taskCardTestUtils.expectReclassificationRequestLoadingNotStarted()
+
+            expect(
+              taskReclassificationRequestTestUtils.queryContainer(),
+            ).not.toBeInTheDocument()
+          })
+        })
+
+        describe('Запрос не отправляется повторно если', () => {
+          test.todo('Ранее был создан запрос на переклассификацию')
+        })
+      })
+
+      test.todo('Создание запроса на переклассификацию')
     })
   })
 
@@ -902,8 +1306,6 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       describe('При не успешном запросе', () => {
-        setupNotifications()
-
         test('Обрабатывается ошибка 400', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
