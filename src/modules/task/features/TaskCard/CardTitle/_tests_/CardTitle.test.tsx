@@ -65,7 +65,7 @@ describe('Заголовок карточки заявки', () => {
       const { user } = render(<CardTitle {...requiredProps} />)
 
       await testUtils.userOpenMenu(user)
-      expect(testUtils.getMenuItems()).toHaveLength(2)
+      expect(testUtils.getMenuItems()).toHaveLength(3)
     })
 
     describe('Элемент "Выполнить заявку"', () => {
