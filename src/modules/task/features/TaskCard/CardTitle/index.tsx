@@ -52,6 +52,9 @@ const CardTitle: FC<CardTitleProps> = ({
       items={[
         {
           key: 1,
+          disabled:
+            (!taskStatus.isNew && !taskStatus.isInProgress) ||
+            (!taskType.isIncident && !taskType.isRequest),
           icon: <PauseCircleIcon $size='middle' />,
           label: 'Запросить перевод в ожидание',
           onClick: onClickRequestSuspend,
