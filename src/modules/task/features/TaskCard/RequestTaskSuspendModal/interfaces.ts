@@ -5,7 +5,7 @@ import { FieldsErrors } from 'shared/services/api'
 import { SuspendReasonDict } from './constants'
 
 type FormFields = {
-  reason: SuspendReasonDict
+  suspendReason: SuspendReasonDict
   endDate: Moment
   endTime: Moment
   comment: string

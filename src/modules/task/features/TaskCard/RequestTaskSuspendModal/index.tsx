@@ -46,7 +46,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
 }) => {
   const [form] = Form.useForm<RequestTaskSuspendFormFields>()
 
-  const reasonFieldValue = Form.useWatch('reason', form)
+  const reasonFieldValue = Form.useWatch('suspendReason', form)
 
   const isReasonMakeDateTimeFieldDisabled =
     reasonsMakeDateTimeFieldDisabled.includes(reasonFieldValue)
@@ -102,7 +102,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
         <Form.Item
           data-testid='suspend-reason'
           label='Причина ожидания'
-          name='reason'
+          name='suspendReason'
           rules={REASON_RULES}
         >
           <Radio.Group disabled={isLoading} onChange={handleChangeReason}>
