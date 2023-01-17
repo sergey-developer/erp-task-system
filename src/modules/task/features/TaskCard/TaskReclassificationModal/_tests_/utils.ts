@@ -1,4 +1,8 @@
-import { getButtonIn, loadingStartedByButton } from '_tests_/utils'
+import {
+  getButtonIn,
+  loadingFinishedByButton,
+  loadingStartedByButton,
+} from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { ReclassificationReasonEnum } from 'modules/task/constants/common'
@@ -88,6 +92,8 @@ const userSetComment = async (user: UserEvent, value: string) => {
 // loading
 const loadingStarted = () => loadingStartedByButton(getSubmitButton())
 
+const loadingFinished = () => loadingFinishedByButton(getSubmitButton())
+
 const utils = {
   getContainer,
   findContainer,
@@ -115,6 +121,7 @@ const utils = {
   userSetComment,
 
   loadingStarted,
+  loadingFinished,
 }
 
 export default utils

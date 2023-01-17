@@ -206,7 +206,7 @@ const TaskCard: FC<TaskCardProps> = ({
     TaskResolutionModalProps['onSubmit']
   >(
     async (values, setFields) => {
-      if (!details?.id) return
+      if (!details) return
 
       try {
         await resolveTask({ taskId: details.id, ...values })
@@ -216,14 +216,14 @@ const TaskCard: FC<TaskCardProps> = ({
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [details?.id, closeTaskCard, resolveTask],
+    [details, closeTaskCard, resolveTask],
   )
 
   const handleReclassificationRequestSubmit = useCallback<
     TaskReclassificationModalProps['onSubmit']
   >(
     async (values, setFields) => {
-      if (!details?.id) return
+      if (!details) return
 
       try {
         await createReclassificationRequest({
@@ -237,11 +237,7 @@ const TaskCard: FC<TaskCardProps> = ({
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [
-      closeTaskReclassificationModal,
-      createReclassificationRequest,
-      details?.id,
-    ],
+    [closeTaskReclassificationModal, createReclassificationRequest, details],
   )
 
   const handleTransferTaskToSecondLine = useCallback(
@@ -249,13 +245,17 @@ const TaskCard: FC<TaskCardProps> = ({
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
-      if (!details?.id) return
+      if (!details) return
 
-      await updateWorkGroup({ taskId: details.id, workGroup })
-      closeTaskSecondLineModal()
-      closeTaskCard()
+      try {
+        await updateWorkGroup({ taskId: details.id, workGroup })
+        closeTaskSecondLineModal()
+        closeTaskCard()
+      } catch {
+        // todo: использовать в модалке форму и реализовать обработку ошибок. затем поправить тесты
+      }
     },
-    [details?.id, closeTaskCard, updateWorkGroup],
+    [details, closeTaskCard, updateWorkGroup],
   )
 
   const handleTransferTaskToFirstLine = useCallback(
@@ -264,7 +264,7 @@ const TaskCard: FC<TaskCardProps> = ({
       setFields: FormInstance['setFields'],
       closeTaskFirstLineModal: () => void,
     ) => {
-      if (!details?.id) return
+      if (!details) return
 
       try {
         await deleteWorkGroup({ taskId: details.id, ...values })
@@ -275,23 +275,27 @@ const TaskCard: FC<TaskCardProps> = ({
         handleSetFieldsErrors(error, setFields)
       }
     },
-    [closeTaskCard, deleteWorkGroup, details?.id],
+    [closeTaskCard, deleteWorkGroup, details],
   )
 
   const handleUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
-      if (!details?.id) return
-      await updateAssignee({ taskId: details.id, assignee })
+      if (!details) return
+
+      try {
+        await updateAssignee({ taskId: details.id, assignee })
+      } catch {}
     },
-    [details?.id, updateAssignee],
+    [details, updateAssignee],
   )
 
-  const debouncedTakeTask = useDebounceFn(takeTask)
-
   const handleTakeTask = useCallback(async () => {
-    if (!details?.id) return
-    await debouncedTakeTask({ taskId: details.id })
-  }, [debouncedTakeTask, details?.id])
+    if (!details) return
+
+    try {
+      await takeTask({ taskId: details.id })
+    } catch {}
+  }, [takeTask, details])
 
   const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
@@ -336,7 +340,12 @@ const TaskCard: FC<TaskCardProps> = ({
               )}
 
           {details && (
-            <Space direction='vertical' $block size='middle'>
+            <Space
+              data-testid='task-card-details'
+              direction='vertical'
+              $block
+              size='middle'
+            >
               <MainDetails
                 recordId={details.recordId}
                 title={details.title}

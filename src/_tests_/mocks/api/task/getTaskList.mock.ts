@@ -9,7 +9,6 @@ const getGetTaskListMockFn = () =>
 
 export const mockGetTaskListSuccess = (
   options?: Partial<ResponseResolverOptions<GetTaskListResponseModel>>,
-) => {
-  const mockGetTaskList = getSuccessMockFn(getGetTaskListMockFn(), options)
-  mockGetTaskList()
-}
+) => getSuccessMockFn(getGetTaskListMockFn(), options)()
+
+// todo: написать тесты на ошибочное получение списка

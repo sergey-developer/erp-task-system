@@ -1,12 +1,16 @@
 import {
+  expectLoadingNotStartedByCard,
   generateWord,
   getStoreWithAuth,
-  loadingStartedBySkeletonIn,
+  loadingFinishedByCard,
+  loadingFinishedBySpinner,
+  loadingNotStartedBySpinner,
+  loadingStartedByCard,
   loadingStartedBySpinner,
   render,
 } from '_tests_/utils'
 import modalTestUtils from '_tests_/utils/modal'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 import { UserRoleEnum } from 'shared/constants/roles'
@@ -80,23 +84,52 @@ const getContainer = () => screen.getByTestId('task-card')
 
 const findContainer = () => screen.findByTestId('task-card')
 
-const expectLoadingStarted = () => loadingStartedBySkeletonIn(getContainer())
+const expectLoadingStarted = () => loadingStartedByCard(getContainer())
 
-const expectReclassificationRequestLoadingStarted = () =>
-  loadingStartedBySpinner('task-card-reclassification-request-spinner')
+const expectLoadingNotStarted = () =>
+  expectLoadingNotStartedByCard(getContainer())
+
+const expectLoadingFinished = () => loadingFinishedByCard(getContainer())
+
+const getCardDetails = () =>
+  within(getContainer()).getByTestId('task-card-details')
+
+const queryCardDetails = () =>
+  within(getContainer()).queryByTestId('task-card-details')
+
+const taskCardReclassificationRequestSpinnerTestId =
+  'task-card-reclassification-request-spinner'
+
+const expectReclassificationRequestLoadingStarted = loadingStartedBySpinner(
+  taskCardReclassificationRequestSpinnerTestId,
+)
+
+const expectReclassificationRequestLoadingNotStarted =
+  loadingNotStartedBySpinner(taskCardReclassificationRequestSpinnerTestId)
+
+const expectReclassificationRequestLoadingFinished = loadingFinishedBySpinner(
+  taskCardReclassificationRequestSpinnerTestId,
+)
 
 export const testUtils = {
   getContainer,
   findContainer,
   expectLoadingStarted,
+  expectLoadingNotStarted,
+  expectLoadingFinished,
+
+  getCardDetails,
+  queryCardDetails,
 
   expectReclassificationRequestLoadingStarted,
+  expectReclassificationRequestLoadingNotStarted,
+  expectReclassificationRequestLoadingFinished,
 }
 
 describe('Детальная карточка заявки', () => {
-  test('Отображает состояние загрузки', () => {
+  test('Отображает состояние загрузки', async () => {
     render(<TaskCard {...requiredProps} taskIsLoading />)
-    testUtils.expectLoadingStarted()
+    await testUtils.expectLoadingStarted()
   })
 
   describe('Заголовок', () => {
@@ -128,48 +161,26 @@ describe('Детальная карточка заявки', () => {
     })
   })
 
-  describe('Запрос на переклассификацию', () => {
-    test('Отображается если он есть', async () => {
-      render(
-        <TaskCard
-          {...requiredProps}
-          reclassificationRequest={taskFixtures.getTaskReclassificationRequest()}
-        />,
-      )
-
-      expect(
-        await taskReclassificationRequestTestUtils.findContainer(),
-      ).toBeInTheDocument()
-    })
-
-    test('Не отображается если его нет', () => {
+  describe('Основной блок заявки', () => {
+    test('Отображается если есть данные', () => {
       render(<TaskCard {...requiredProps} />)
-
-      expect(
-        taskReclassificationRequestTestUtils.queryContainer(),
-      ).not.toBeInTheDocument()
+      expect(testUtils.getCardDetails()).toBeInTheDocument()
     })
 
-    describe('Отображается состояние загрузки', () => {
-      test('При получении запроса на переклассификацию', async () => {
-        render(<TaskCard {...requiredProps} reclassificationRequestIsLoading />)
-        await testUtils.expectReclassificationRequestLoadingStarted()
+    describe('Не отображается', () => {
+      test('Если нет данных', () => {
+        render(<TaskCard {...requiredProps} details={null} />)
+        expect(testUtils.queryCardDetails()).not.toBeInTheDocument()
       })
 
-      test('При создании запроса на переклассификацию', async () => {
-        render(
-          <TaskCard
-            {...requiredProps}
-            createReclassificationRequestIsLoading
-          />,
-        )
-
-        await testUtils.expectReclassificationRequestLoadingStarted()
+      test('Во время загрузки заявки', () => {
+        render(<TaskCard {...requiredProps} taskIsLoading />)
+        expect(testUtils.queryCardDetails()).not.toBeInTheDocument()
       })
     })
   })
 
-  describe('Блок первичной детальной информации заявки', () => {
+  describe('Блок первичной информации заявки', () => {
     test('Отображается', () => {
       render(<TaskCard {...requiredProps} />)
       expect(mainDetailsTestUtils.getContainer()).toBeInTheDocument()
@@ -181,7 +192,7 @@ describe('Детальная карточка заявки', () => {
     })
   })
 
-  describe('Блок вторичной детальной информации заявки', () => {
+  describe('Блок вторичной информации заявки', () => {
     test('Отображается', () => {
       render(<TaskCard {...requiredProps} />)
       expect(secondaryDetailsTestUtils.getContainer()).toBeInTheDocument()
@@ -193,7 +204,7 @@ describe('Детальная карточка заявки', () => {
     })
   })
 
-  describe('Блок дополнительной детальной информации заявки', () => {
+  describe('Блок дополнительной информации заявки', () => {
     test('Отображается', () => {
       render(<TaskCard {...requiredProps} />)
       expect(additionalInfoTestUtils.getContainer()).toBeInTheDocument()
@@ -217,258 +228,52 @@ describe('Детальная карточка заявки', () => {
     })
   })
 
-  describe('Модалка решения по заявке', () => {
-    test('Открывается', async () => {
-      const { user } = render(
-        <TaskCard
-          {...requiredProps}
-          details={{
-            ...requiredProps.details!,
-            ...activeFirstItemProps,
-          }}
-        />,
-        {
-          store: getStoreWithAuth({
-            userId: requiredProps.details!.assignee!.id,
-          }),
-        },
-      )
-
-      await cardTitleTestUtils.userOpenMenu(user)
-      await cardTitleTestUtils.userClickFirstMenuItem(user)
-      const modal = await taskResolutionModalTestUtils.findContainer()
-
-      expect(modal).toBeInTheDocument()
-    })
-
-    describe('Закрывается', () => {
-      test('При клике на кнопку "Отмена"', async () => {
-        const { user } = render(
+  describe('Переклассификация заявки', () => {
+    describe('Запрос на переклассификацию', () => {
+      test('Отображается если он есть', async () => {
+        render(
           <TaskCard
             {...requiredProps}
-            details={{
-              ...requiredProps.details!,
-              ...activeFirstItemProps,
-            }}
+            reclassificationRequest={taskFixtures.getTaskReclassificationRequest()}
           />,
-          {
-            store: getStoreWithAuth({
-              userId: requiredProps.details!.assignee!.id,
-            }),
-          },
         )
 
-        await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickFirstMenuItem(user)
-        const modal = await taskResolutionModalTestUtils.findContainer()
-        await taskResolutionModalTestUtils.userClickCancelButton(user)
-
-        expect(modal).not.toBeInTheDocument()
+        expect(
+          await taskReclassificationRequestTestUtils.findContainer(),
+        ).toBeInTheDocument()
       })
 
-      test('При клике на кнопку закрытия', async () => {
-        const { user } = render(
-          <TaskCard
-            {...requiredProps}
-            details={{
-              ...requiredProps.details!,
-              ...activeFirstItemProps,
-            }}
-          />,
-          {
-            store: getStoreWithAuth({
-              userId: requiredProps.details!.assignee!.id,
-            }),
-          },
-        )
+      test('Не отображается если его нет', () => {
+        render(<TaskCard {...requiredProps} />)
 
-        await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickFirstMenuItem(user)
-        const modal = await taskResolutionModalTestUtils.findContainer()
-        await taskResolutionModalTestUtils.userClickCloseButton(user)
-
-        expect(modal).not.toBeInTheDocument()
+        expect(
+          taskReclassificationRequestTestUtils.queryContainer(),
+        ).not.toBeInTheDocument()
       })
 
-      test('При клике вне модалки', async () => {
-        const { user } = render(
-          <TaskCard
-            {...requiredProps}
-            details={{
-              ...requiredProps.details!,
-              ...activeFirstItemProps,
-            }}
-          />,
-          {
-            store: getStoreWithAuth({
-              userId: requiredProps.details!.assignee!.id,
-            }),
-          },
-        )
+      describe('Отображается состояние загрузки', () => {
+        test('При получении запроса на переклассификацию', async () => {
+          render(
+            <TaskCard {...requiredProps} reclassificationRequestIsLoading />,
+          )
+          await testUtils.expectReclassificationRequestLoadingStarted()
+        })
 
-        await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickFirstMenuItem(user)
-        const modal = await taskResolutionModalTestUtils.findContainer()
-        await modalTestUtils.userClickOutOfModal(user)
+        test('При создании запроса на переклассификацию', async () => {
+          render(
+            <TaskCard
+              {...requiredProps}
+              createReclassificationRequestIsLoading
+            />,
+          )
 
-        expect(modal).not.toBeInTheDocument()
+          await testUtils.expectReclassificationRequestLoadingStarted()
+        })
       })
     })
 
-    describe('При успешном запросе', () => {
-      test('Переданные обработчики вызываются корректно', async () => {
-        const { user } = render(
-          <TaskCard
-            {...requiredProps}
-            details={{
-              ...requiredProps.details!,
-              ...activeFirstItemProps,
-            }}
-          />,
-          {
-            store: getStoreWithAuth({
-              userId: requiredProps.details!.assignee!.id,
-            }),
-          },
-        )
-
-        await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickFirstMenuItem(user)
-        await taskResolutionModalTestUtils.findContainer()
-
-        await taskResolutionModalTestUtils.userSetTechResolution(
-          user,
-          generateWord(),
-        )
-        await taskResolutionModalTestUtils.userSetUserResolution(
-          user,
-          generateWord(),
-        )
-        await taskResolutionModalTestUtils.userClickSubmitButton(user)
-
-        expect(requiredProps.resolveTask).toBeCalledTimes(1)
-        expect(requiredProps.resolveTask).toBeCalledWith(expect.anything())
-        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
-      })
-    })
-  })
-
-  describe('Модалка переклассификации заявки', () => {
-    test('Открывается', async () => {
-      const { user } = render(
-        <TaskCard
-          {...requiredProps}
-          details={{
-            ...requiredProps.details!,
-            ...activeSecondItemProps,
-          }}
-        />,
-        { store: getStoreWithAuth() },
-      )
-
-      await cardTitleTestUtils.userOpenMenu(user)
-      await cardTitleTestUtils.userClickSecondMenuItem(user)
-      const modal = await taskReclassificationModalTestUtils.findContainer()
-
-      expect(modal).toBeInTheDocument()
-    })
-
-    describe('Закрывается', () => {
-      test('При клике на кнопку "Отмена"', async () => {
-        const { user } = render(
-          <TaskCard
-            {...requiredProps}
-            details={{
-              ...requiredProps.details!,
-              ...activeSecondItemProps,
-            }}
-          />,
-          { store: getStoreWithAuth() },
-        )
-
-        await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickSecondMenuItem(user)
-        const modal = await taskReclassificationModalTestUtils.findContainer()
-        await taskReclassificationModalTestUtils.userClickCancelButton(user)
-
-        expect(modal).not.toBeInTheDocument()
-      })
-
-      test('При клике на кнопку закрытия', async () => {
-        const { user } = render(
-          <TaskCard
-            {...requiredProps}
-            details={{
-              ...requiredProps.details!,
-              ...activeSecondItemProps,
-            }}
-          />,
-          { store: getStoreWithAuth() },
-        )
-
-        await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickSecondMenuItem(user)
-        const modal = await taskReclassificationModalTestUtils.findContainer()
-        await taskReclassificationModalTestUtils.userClickCloseButton(user)
-
-        expect(modal).not.toBeInTheDocument()
-      })
-
-      test('При клике вне модалки', async () => {
-        const { user } = render(
-          <TaskCard
-            {...requiredProps}
-            details={{
-              ...requiredProps.details!,
-              ...activeSecondItemProps,
-            }}
-          />,
-          { store: getStoreWithAuth() },
-        )
-
-        await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickSecondMenuItem(user)
-        const modal = await taskReclassificationModalTestUtils.findContainer()
-        await modalTestUtils.userClickOutOfModal(user)
-
-        expect(modal).not.toBeInTheDocument()
-      })
-    })
-
-    describe('При успешном запросе', () => {
-      test('Переданный обработчик вызывается корректно', async () => {
-        const { user } = render(
-          <TaskCard
-            {...requiredProps}
-            details={{
-              ...requiredProps.details!,
-              ...activeSecondItemProps,
-            }}
-          />,
-          { store: getStoreWithAuth() },
-        )
-
-        await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickSecondMenuItem(user)
-        await taskReclassificationModalTestUtils.findContainer()
-
-        await taskReclassificationModalTestUtils.userSetComment(
-          user,
-          generateWord(),
-        )
-        await taskReclassificationModalTestUtils.userSetReclassificationReason(
-          user,
-          availableReasons[0],
-        )
-        await taskReclassificationModalTestUtils.userClickSubmitButton(user)
-
-        expect(requiredProps.createReclassificationRequest).toBeCalledTimes(1)
-        expect(requiredProps.createReclassificationRequest).toBeCalledWith(
-          expect.anything(),
-        )
-      })
-
-      test('Модалка закрывается', async () => {
+    describe('Модалка переклассификации заявки', () => {
+      test('Открывается', async () => {
         const { user } = render(
           <TaskCard
             {...requiredProps}
@@ -484,27 +289,282 @@ describe('Детальная карточка заявки', () => {
         await cardTitleTestUtils.userClickSecondMenuItem(user)
         const modal = await taskReclassificationModalTestUtils.findContainer()
 
-        await taskReclassificationModalTestUtils.userSetComment(
-          user,
-          generateWord(),
-        )
-        await taskReclassificationModalTestUtils.userSetReclassificationReason(
-          user,
-          availableReasons[0],
-        )
-        await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+        expect(modal).toBeInTheDocument()
+      })
 
-        await waitFor(() => {
+      describe('Закрывается', () => {
+        test('При клике на кнопку "Отмена"', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              details={{
+                ...requiredProps.details!,
+                ...activeSecondItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          const modal = await taskReclassificationModalTestUtils.findContainer()
+          await taskReclassificationModalTestUtils.userClickCancelButton(user)
+
           expect(modal).not.toBeInTheDocument()
+        })
+
+        test('При клике на кнопку закрытия', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              details={{
+                ...requiredProps.details!,
+                ...activeSecondItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          const modal = await taskReclassificationModalTestUtils.findContainer()
+          await taskReclassificationModalTestUtils.userClickCloseButton(user)
+
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        test('При клике вне модалки', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              details={{
+                ...requiredProps.details!,
+                ...activeSecondItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          const modal = await taskReclassificationModalTestUtils.findContainer()
+          await modalTestUtils.userClickOutOfModal(user)
+
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
+
+      describe('При успешном запросе', () => {
+        test('Переданный обработчик вызывается корректно', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              details={{
+                ...requiredProps.details!,
+                ...activeSecondItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          await taskReclassificationModalTestUtils.findContainer()
+
+          await taskReclassificationModalTestUtils.userSetComment(
+            user,
+            generateWord(),
+          )
+          await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            user,
+            availableReasons[0],
+          )
+          await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+          expect(requiredProps.createReclassificationRequest).toBeCalledTimes(1)
+          expect(requiredProps.createReclassificationRequest).toBeCalledWith(
+            expect.anything(),
+          )
+        })
+
+        test('Модалка закрывается', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              details={{
+                ...requiredProps.details!,
+                ...activeSecondItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          const modal = await taskReclassificationModalTestUtils.findContainer()
+
+          await taskReclassificationModalTestUtils.userSetComment(
+            user,
+            generateWord(),
+          )
+          await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            user,
+            availableReasons[0],
+          )
+          await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
         })
       })
     })
   })
 
-  describe('При ошибке получения заявки', () => {
-    test('Вызывается обработчик закрытия карточки', () => {
-      render(<TaskCard {...requiredProps} isGetTaskError />)
-      expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+  describe('Выполнение заявки', () => {
+    describe('Модалка решения по заявке', () => {
+      test('Открывается', async () => {
+        const { user } = render(
+          <TaskCard
+            {...requiredProps}
+            details={{
+              ...requiredProps.details!,
+              ...activeFirstItemProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.details!.assignee!.id,
+            }),
+          },
+        )
+
+        await cardTitleTestUtils.userOpenMenu(user)
+        await cardTitleTestUtils.userClickFirstMenuItem(user)
+        const modal = await taskResolutionModalTestUtils.findContainer()
+
+        expect(modal).toBeInTheDocument()
+      })
+
+      describe('Закрывается', () => {
+        test('При клике на кнопку "Отмена"', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              details={{
+                ...requiredProps.details!,
+                ...activeFirstItemProps,
+              }}
+            />,
+            {
+              store: getStoreWithAuth({
+                userId: requiredProps.details!.assignee!.id,
+              }),
+            },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.userClickFirstMenuItem(user)
+          const modal = await taskResolutionModalTestUtils.findContainer()
+          await taskResolutionModalTestUtils.userClickCancelButton(user)
+
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        test('При клике на кнопку закрытия', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              details={{
+                ...requiredProps.details!,
+                ...activeFirstItemProps,
+              }}
+            />,
+            {
+              store: getStoreWithAuth({
+                userId: requiredProps.details!.assignee!.id,
+              }),
+            },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.userClickFirstMenuItem(user)
+          const modal = await taskResolutionModalTestUtils.findContainer()
+          await taskResolutionModalTestUtils.userClickCloseButton(user)
+
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        test('При клике вне модалки', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              details={{
+                ...requiredProps.details!,
+                ...activeFirstItemProps,
+              }}
+            />,
+            {
+              store: getStoreWithAuth({
+                userId: requiredProps.details!.assignee!.id,
+              }),
+            },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.userClickFirstMenuItem(user)
+          const modal = await taskResolutionModalTestUtils.findContainer()
+          await modalTestUtils.userClickOutOfModal(user)
+
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
+
+      describe('При успешном запросе', () => {
+        test('Переданные обработчики вызываются корректно', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              details={{
+                ...requiredProps.details!,
+                ...activeFirstItemProps,
+              }}
+            />,
+            {
+              store: getStoreWithAuth({
+                userId: requiredProps.details!.assignee!.id,
+              }),
+            },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.userClickFirstMenuItem(user)
+          await taskResolutionModalTestUtils.findContainer()
+
+          await taskResolutionModalTestUtils.userSetTechResolution(
+            user,
+            generateWord(),
+          )
+          await taskResolutionModalTestUtils.userSetUserResolution(
+            user,
+            generateWord(),
+          )
+          await taskResolutionModalTestUtils.userClickSubmitButton(user)
+
+          expect(requiredProps.resolveTask).toBeCalledTimes(1)
+          expect(requiredProps.resolveTask).toBeCalledWith(expect.anything())
+          expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        })
+      })
+    })
+  })
+
+  describe('Получение заявки', () => {
+    describe('При ошибке получения', () => {
+      test('Вызывается обработчик закрытия карточки', () => {
+        render(<TaskCard {...requiredProps} isGetTaskError />)
+        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+      })
     })
   })
 
@@ -522,10 +582,7 @@ describe('Детальная карточка заявки', () => {
 
       await assigneeBlockTestUtils.userClickTakeTaskButton(user)
 
-      await waitFor(() => {
-        expect(requiredProps.takeTask).toBeCalledTimes(1)
-      })
-
+      expect(requiredProps.takeTask).toBeCalledTimes(1)
       expect(requiredProps.takeTask).toBeCalledWith(expect.anything())
     })
   })

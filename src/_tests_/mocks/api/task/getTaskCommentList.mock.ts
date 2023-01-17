@@ -10,11 +10,4 @@ const getGetTaskCommentListMockFn = (taskId: number) =>
 export const mockGetTaskCommentListSuccess = (
   taskId: number,
   options?: Partial<ResponseResolverOptions<GetTaskCommentListResponseModel>>,
-) => {
-  const mockGetTaskCommentList = getSuccessMockFn(
-    getGetTaskCommentListMockFn(taskId),
-    options,
-  )
-
-  mockGetTaskCommentList()
-}
+) => getSuccessMockFn(getGetTaskCommentListMockFn(taskId), options)()

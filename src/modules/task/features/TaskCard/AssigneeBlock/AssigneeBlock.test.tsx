@@ -1,5 +1,6 @@
 import {
   expectOptionDisabled,
+  findSelect,
   generateId,
   getAllSelectOption,
   getButtonIn,
@@ -7,6 +8,7 @@ import {
   getSelectOption_new,
   getSelectedOption,
   getStoreWithAuth,
+  loadingFinishedByButton,
   loadingStartedByButton,
   loadingStartedBySelect,
   queryButtonIn,
@@ -131,6 +133,9 @@ const userClickAssignOnMeButton = async (user: UserEvent) => {
 const assignOnMeExpectLoadingStarted = () =>
   loadingStartedByButton(getAssignOnMeButton())
 
+const assignOnMeExpectLoadingFinished = () =>
+  loadingFinishedByButton(getAssignOnMeButton())
+
 // assign button
 const getAssignButton = () => getButtonIn(getContainer(), /назначить$/i)
 
@@ -162,6 +167,8 @@ const refuseTaskExpectLoadingStarted = () =>
 const getAssigneeSelect = () => getSelect(getContainer())
 
 const queryAssigneeSelect = () => querySelect(getContainer())
+
+const findAssigneeSelect = () => findSelect(getContainer())
 
 const getSelectedAssignee = () => getSelectedOption(getContainer())
 
@@ -197,6 +204,7 @@ export const testUtils = {
   getAssignOnMeButton,
   userClickAssignOnMeButton,
   assignOnMeExpectLoadingStarted,
+  assignOnMeExpectLoadingFinished,
 
   getRefuseTaskButton,
   userClickRefuseTaskButton,
@@ -204,6 +212,7 @@ export const testUtils = {
 
   getAssigneeSelect,
   queryAssigneeSelect,
+  findAssigneeSelect,
   getSelectedAssignee,
   openAssigneeSelect,
   selectAssignee,
@@ -473,59 +482,55 @@ describe('Блок "Исполнитель заявки"', () => {
   describe('Кнопка "В работу"', () => {
     describe('Отображается для пользователя с ролью', () => {
       test('Первая линия поддержки', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.FirstLineSupport,
-        })
-
         render(<AssigneeBlock {...requiredProps} />, {
-          store,
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
         })
 
         expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
 
       test('Инженер', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.Engineer,
-        })
-
         render(<AssigneeBlock {...requiredProps} />, {
-          store,
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.Engineer,
+          }),
         })
 
         expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
 
       test('Старший инженер', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
+        render(<AssigneeBlock {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
         })
-
-        render(<AssigneeBlock {...requiredProps} />, { store })
 
         expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
 
       test('Глава отдела', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.HeadOfDepartment,
+        render(<AssigneeBlock {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.HeadOfDepartment,
+          }),
         })
-
-        render(<AssigneeBlock {...requiredProps} />, { store })
 
         expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
     })
 
     test('Активна если условия соблюдены', () => {
-      const store = getStoreWithAuth({
-        userId: requiredProps.assignee!.id,
-        userRole: UserRoleEnum.FirstLineSupport,
-      })
-
       render(
         <AssigneeBlock {...requiredProps} {...activeTakeTaskButtonProps} />,
-        { store },
+        {
+          store: getStoreWithAuth({
+            userId: requiredProps.assignee!.id,
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        },
       )
 
       expect(testUtils.getTakeTaskButton()).toBeEnabled()
@@ -533,49 +538,49 @@ describe('Блок "Исполнитель заявки"', () => {
 
     describe('Не активна если условия соблюдены', () => {
       test('Но статус заявки не "Новая"', () => {
-        const store = getStoreWithAuth({
-          userId: requiredProps.assignee!.id,
-          userRole: UserRoleEnum.FirstLineSupport,
-        })
-
         render(
           <AssigneeBlock
             {...requiredProps}
             {...activeTakeTaskButtonProps}
             status={TaskStatusEnum.InProgress}
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.assignee!.id,
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
         )
 
         expect(testUtils.getTakeTaskButton()).toBeDisabled()
       })
 
       test('Но исполнитель заявки назначен и не является авторизованным пользователем', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.FirstLineSupport,
-        })
-
         render(
           <AssigneeBlock {...requiredProps} {...activeTakeTaskButtonProps} />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
         )
 
         expect(testUtils.getTakeTaskButton()).toBeDisabled()
       })
 
       test('Но расширенный статус заявки "На переклассификации"', () => {
-        const store = getStoreWithAuth({
-          userId: requiredProps.assignee!.id,
-          userRole: UserRoleEnum.FirstLineSupport,
-        })
-
         render(
           <AssigneeBlock
             {...requiredProps}
             {...activeTakeTaskButtonProps}
             extendedStatus={TaskExtendedStatusEnum.InReclassification}
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userId: requiredProps.assignee!.id,
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
         )
 
         expect(testUtils.getTakeTaskButton()).toBeDisabled()
@@ -583,32 +588,32 @@ describe('Блок "Исполнитель заявки"', () => {
     })
 
     test('Отображает состояние загрузки во время взятия заявки в работу', async () => {
-      const store = getStoreWithAuth({
-        userId: requiredProps.assignee!.id,
-        userRole: UserRoleEnum.FirstLineSupport,
-      })
-
       render(
         <AssigneeBlock
           {...requiredProps}
           {...activeTakeTaskButtonProps}
           takeTaskIsLoading
         />,
-        { store },
+        {
+          store: getStoreWithAuth({
+            userId: requiredProps.assignee!.id,
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        },
       )
 
       await testUtils.takeTaskExpectLoadingStarted()
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const store = getStoreWithAuth({
-        userId: requiredProps.assignee!.id,
-        userRole: UserRoleEnum.FirstLineSupport,
-      })
-
       const { user } = render(
         <AssigneeBlock {...requiredProps} {...activeTakeTaskButtonProps} />,
-        { store },
+        {
+          store: getStoreWithAuth({
+            userId: requiredProps.assignee!.id,
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        },
       )
 
       await testUtils.userClickTakeTaskButton(user)

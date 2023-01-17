@@ -575,11 +575,11 @@ describe('Расширенный фильтр', () => {
       test('Не отображается', () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.FirstLineSupport,
+        render(<ExtendedFilter {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
         })
-
-        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = testUtils.workGroup.queryField()
         expect(workGroupField).not.toBeInTheDocument()
@@ -588,11 +588,11 @@ describe('Расширенный фильтр', () => {
 
     describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
       test('Не отображается', () => {
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.Engineer,
+        render(<ExtendedFilter {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.Engineer,
+          }),
         })
-
-        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = testUtils.workGroup.queryField()
         expect(workGroupField).not.toBeInTheDocument()
@@ -603,11 +603,11 @@ describe('Расширенный фильтр', () => {
       test('Отображается', async () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
+        render(<ExtendedFilter {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
         })
-
-        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = await testUtils.workGroup.loadingFinished()
 
@@ -619,11 +619,11 @@ describe('Расширенный фильтр', () => {
       test('Отображается', async () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.HeadOfDepartment,
+        render(<ExtendedFilter {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.HeadOfDepartment,
+          }),
         })
-
-        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = await testUtils.workGroup.loadingFinished()
 
@@ -637,11 +637,11 @@ describe('Расширенный фильтр', () => {
           body: workGroupFixtures.getWorkGroupList(),
         })
 
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
+        render(<ExtendedFilter {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
         })
-
-        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = await testUtils.workGroup.loadingFinished()
         const selectedOption = getSelectedOption(workGroupField)
@@ -654,10 +654,6 @@ describe('Расширенный фильтр', () => {
         const workGroupId = String(workGroupList[0].id)
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
-        })
-
         render(
           <ExtendedFilter
             {...requiredProps}
@@ -666,7 +662,11 @@ describe('Расширенный фильтр', () => {
               workGroupId,
             }}
           />,
-          { store },
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          },
         )
 
         const workGroupField = await testUtils.workGroup.loadingFinished()
@@ -679,11 +679,11 @@ describe('Расширенный фильтр', () => {
       test('Доступен для редактирования после загрузки списка', async () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
+        render(<ExtendedFilter {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
         })
-
-        render(<ExtendedFilter {...requiredProps} />, { store })
 
         const workGroupField = await testUtils.workGroup.loadingFinished()
         const select = getSelect(workGroupField)
@@ -695,12 +695,10 @@ describe('Расширенный фильтр', () => {
         const workGroupListItem = workGroupFixtures.getWorkGroup()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
-        })
-
         const { user } = render(<ExtendedFilter {...requiredProps} />, {
-          store,
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
         })
 
         const workGroupField = await testUtils.workGroup.loadingFinished()
@@ -718,12 +716,10 @@ describe('Расширенный фильтр', () => {
         const mockedWorkGroupListItem2 = mockedWorkGroupList[1]
         mockGetWorkGroupListSuccess({ body: mockedWorkGroupList })
 
-        const store = getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
-        })
-
         const { user } = render(<ExtendedFilter {...requiredProps} />, {
-          store,
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
         })
 
         const workGroupField = await testUtils.workGroup.loadingFinished()
@@ -746,12 +742,10 @@ describe('Расширенный фильтр', () => {
           const workGroupListItem = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<ExtendedFilter {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const workGroupField = await testUtils.workGroup.loadingFinished()
@@ -770,12 +764,10 @@ describe('Расширенный фильтр', () => {
           const workGroupListItem = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
-          const store = getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          })
-
           const { user } = render(<ExtendedFilter {...requiredProps} />, {
-            store,
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
           })
 
           const workGroupField = await testUtils.workGroup.loadingFinished()

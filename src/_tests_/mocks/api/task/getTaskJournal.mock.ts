@@ -21,42 +21,19 @@ const getGetJournalCsvMockFn = (taskId: number) =>
 export const mockGetJournalSuccess = (
   taskId: number,
   options?: Partial<ResponseResolverOptions<GetTaskJournalResponseModel>>,
-) => {
-  const mockGetJournal = getSuccessMockFn(getGetJournalMockFn(taskId), options)
-  mockGetJournal()
-}
+) => getSuccessMockFn(getGetJournalMockFn(taskId), options)()
 
 export const mockGetJournalServerError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockGetJournal = getServerErrorMockFn(
-    getGetJournalMockFn(taskId),
-    options,
-  )
-  mockGetJournal()
-}
+) => getServerErrorMockFn(getGetJournalMockFn(taskId), options)()
 
 export const mockGetJournalCsvSuccess = (
   taskId: number,
   options?: Partial<ResponseResolverOptions>,
-) => {
-  const mockGetJournalCsv = getSuccessMockFn(
-    getGetJournalCsvMockFn(taskId),
-    options,
-  )
-
-  mockGetJournalCsv()
-}
+) => getSuccessMockFn(getGetJournalCsvMockFn(taskId), options)()
 
 export const mockGetJournalCsvServerError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockGetJournalCsv = getServerErrorMockFn(
-    getGetJournalCsvMockFn(taskId),
-    options,
-  )
-
-  mockGetJournalCsv()
-}
+) => getServerErrorMockFn(getGetJournalCsvMockFn(taskId), options)()

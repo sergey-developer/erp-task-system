@@ -11,3 +11,5 @@ export const setupNotifications = () => {
 }
 
 export const findNotification = (text: string) => screen.findByText(text)
+
+export const queryNotification = (text: string) => screen.queryByText(text)

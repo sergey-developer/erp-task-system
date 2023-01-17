@@ -19,6 +19,10 @@ export const loadingStartedBySpinner = (testId: string) => async () => {
   expect(await screen.findByTestId(testId)).toBeInTheDocument()
 }
 
+export const loadingNotStartedBySpinner = (testId: string) => () => {
+  expect(screen.queryByTestId(testId)).not.toBeInTheDocument()
+}
+
 export const loadingFinishedBySpinner = (testId: string) => async () => {
   const spinner = screen.queryByTestId(testId)
 
@@ -41,6 +45,16 @@ export const loadingFinishedBySelect = async (container: HTMLElement) => {
       container.querySelector('.ant-select-arrow-loading'),
     ).not.toBeInTheDocument()
   })
+}
+
+export const loadingStartedByCard = async (card: HTMLElement) => {
+  await waitFor(() => {
+    expect(card).toHaveClass('ant-card-loading')
+  })
+}
+
+export const expectLoadingNotStartedByCard = (card: HTMLElement) => {
+  expect(card).not.toHaveClass('ant-card-loading')
 }
 
 export const loadingFinishedByCard = async (card: HTMLElement) => {
