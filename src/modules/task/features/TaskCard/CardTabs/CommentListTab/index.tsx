@@ -6,15 +6,12 @@ import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import { useCreateTaskComment, useGetTaskCommentList } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import CommentList from './CommentList'
 import CreateCommentForm from './CreateCommentForm'
-import {
-  CreateCommentFormErrors,
-  CreateCommentFormProps,
-} from './CreateCommentForm/interfaces'
+import { CreateCommentFormProps } from './CreateCommentForm/interfaces'
 
 const { Title } = Typography
 export const DEFAULT_DISPLAYABLE_COUNT: number = 3
@@ -41,8 +38,10 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
         await createComment({ taskId, ...values })
         form.resetFields()
       } catch (exception) {
-        const error = exception as ErrorResponse<CreateCommentFormErrors>
-        handleSetFieldsErrors(error, form.setFields)
+        const error = exception as ErrorResponse
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, form.setFields)
+        }
       }
     },
     [createComment, taskId],

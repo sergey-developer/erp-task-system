@@ -14,7 +14,7 @@ import {
 } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import { NO_DATA_MSG } from '../constants'

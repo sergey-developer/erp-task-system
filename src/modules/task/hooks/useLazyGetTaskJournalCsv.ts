@@ -4,7 +4,7 @@ import { GetTaskJournalCsvQueryArgsModel } from 'modules/task/models'
 import { taskJournalApiPermissions } from 'modules/task/permissions'
 import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskJournalApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useLazyGetTaskJournalCsv = () => {

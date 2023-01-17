@@ -23,6 +23,7 @@ export const useCreateSubTask = () => {
 
   useEffect(() => {
     if (!state.isError) return
+
     const error = state.error as ErrorResponse
 
     if (!isBadRequestError(error)) {

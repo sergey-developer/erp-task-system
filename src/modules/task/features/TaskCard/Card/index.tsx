@@ -29,7 +29,7 @@ import { WorkGroupListItemModel } from 'modules/workGroup/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { formatDate } from 'shared/utils/date'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
@@ -38,15 +38,10 @@ import TaskCardTabs from '../CardTabs'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
 import SecondaryDetails from '../SecondaryDetails'
-import {
-  TaskFirstLineFormErrors,
-  TaskFirstLineFormFields,
-} from '../TaskFirstLineModal/interfaces'
+import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
 import { TaskReclassificationModalProps } from '../TaskReclassificationModal'
-import { TaskReclassificationRequestFormErrors } from '../TaskReclassificationModal/interfaces'
 import { loadingMessage as reclassificationRequestLoadingMessage } from '../TaskReclassificationRequest/constants'
 import { TaskResolutionModalProps } from '../TaskResolutionModal'
-import { TaskResolutionFormErrors } from '../TaskResolutionModal/interfaces'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const TaskReclassificationRequest = React.lazy(
@@ -57,6 +52,10 @@ const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
 
 const TaskReclassificationModal = React.lazy(
   () => import('../TaskReclassificationModal'),
+)
+
+const RequestTaskSuspendModal = React.lazy(
+  () => import('../RequestTaskSuspendModal'),
 )
 
 const reclassificationRequestSpinner = (
@@ -198,6 +197,18 @@ const TaskCard: FC<TaskCardProps> = ({
     openTaskReclassificationModal,
   )
 
+  const [
+    isRequestTaskSuspendModalOpened,
+    {
+      setTrue: openRequestTaskSuspendModal,
+      setFalse: closeRequestTaskSuspendModal,
+    },
+  ] = useBoolean(false)
+
+  const debouncedOpenRequestTaskSuspendModal = useDebounceFn(
+    openRequestTaskSuspendModal,
+  )
+
   useEffect(() => {
     if (isGetTaskError) closeTaskCard()
   }, [isGetTaskError, closeTaskCard])
@@ -212,8 +223,10 @@ const TaskCard: FC<TaskCardProps> = ({
         await resolveTask({ taskId: details.id, ...values })
         closeTaskCard()
       } catch (exception) {
-        const error = exception as ErrorResponse<TaskResolutionFormErrors>
-        handleSetFieldsErrors(error, setFields)
+        const error = exception as ErrorResponse
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, setFields)
+        }
       }
     },
     [details, closeTaskCard, resolveTask],
@@ -232,9 +245,10 @@ const TaskCard: FC<TaskCardProps> = ({
         })
         closeTaskReclassificationModal()
       } catch (exception) {
-        const error =
-          exception as ErrorResponse<TaskReclassificationRequestFormErrors>
-        handleSetFieldsErrors(error, setFields)
+        const error = exception as ErrorResponse
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, setFields)
+        }
       }
     },
     [closeTaskReclassificationModal, createReclassificationRequest, details],
@@ -271,8 +285,10 @@ const TaskCard: FC<TaskCardProps> = ({
         closeTaskFirstLineModal()
         closeTaskCard()
       } catch (exception) {
-        const error = exception as ErrorResponse<TaskFirstLineFormErrors>
-        handleSetFieldsErrors(error, setFields)
+        const error = exception as ErrorResponse
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, setFields)
+        }
       }
     },
     [closeTaskCard, deleteWorkGroup, details],
@@ -309,6 +325,7 @@ const TaskCard: FC<TaskCardProps> = ({
       isAssignedToCurrentUser={isAssignedToCurrentUser}
       onClose={debouncedCloseTaskCard}
       onClickExecuteTask={debouncedOpenTaskResolutionModal}
+      onClickRequestSuspend={debouncedOpenRequestTaskSuspendModal}
       onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
     />
   )
@@ -436,6 +453,24 @@ const TaskCard: FC<TaskCardProps> = ({
                     isLoading={createReclassificationRequestIsLoading}
                     onSubmit={handleReclassificationRequestSubmit}
                     onCancel={closeTaskReclassificationModal}
+                  />
+                </React.Suspense>
+              )}
+
+              {isRequestTaskSuspendModalOpened && (
+                <React.Suspense
+                  fallback={
+                    <ModalFallback
+                      visible={isRequestTaskSuspendModalOpened}
+                      onCancel={closeRequestTaskSuspendModal}
+                    />
+                  }
+                >
+                  <RequestTaskSuspendModal
+                    recordId={details.recordId}
+                    isLoading={false}
+                    onSubmit={async () => {}}
+                    onCancel={closeRequestTaskSuspendModal}
                   />
                 </React.Suspense>
               )}

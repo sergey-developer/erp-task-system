@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { TakeTaskMutationArgsModel } from 'modules/task/models'
 import { useTakeTaskMutation } from 'modules/task/services/taskApi.service'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useTakeTask = () => {

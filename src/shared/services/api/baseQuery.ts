@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios'
 import isPlainObject from 'lodash/isPlainObject'
 
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 
 import httpClient from './httpClient'
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'

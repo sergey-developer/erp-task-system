@@ -2,15 +2,13 @@ import {
   LOGIN_BAD_REQUEST_ERROR_MSG,
   LOGIN_WRONG_DATA_ERROR_MSG,
 } from 'modules/auth/features/Login/constants/messages'
+import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 import { HttpCodeEnum } from 'shared/constants/http'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/validation'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { ErrorResponse } from 'shared/services/api'
 
-import { LoginFormFields } from '../interfaces'
-
 const getLoginError = (
-  error: MaybeUndefined<ErrorResponse<LoginFormFields>>,
+  error: MaybeUndefined<ErrorResponse>,
 ): MaybeNull<string> => {
   if (!error) return null
 

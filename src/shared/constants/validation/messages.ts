@@ -1,35 +1,9 @@
-import { Rule } from 'rc-field-form/es/interface'
-
 import { makeMaxLengthMessage } from 'shared/utils/validation'
 
-export const DEFAULT_LONG_TEXT_LENGTH: number = 500
-
-export const DEFAULT_LONG_TEXT_RULES: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-  },
-  {
-    max: DEFAULT_LONG_TEXT_LENGTH,
-  },
-]
-
-export const DEFAULT_MIDDLE_TEXT_LENGTH: number = 250
-
-export const DEFAULT_MIDDLE_TEXT_RULES: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-  },
-  {
-    max: DEFAULT_MIDDLE_TEXT_LENGTH,
-  },
-]
+import { DEFAULT_LONG_TEXT_LENGTH, DEFAULT_MIDDLE_TEXT_LENGTH } from './rules'
 
 export const REQUIRED_FIELD_MSG = 'Обязательное поле'
 export const FIELD_CAN_NOT_BE_EMPTY_MSG = 'Поле не может быть пустым'
-
-export const UNKNOWN_ERROR_MSG = 'Неизвестная ошибка'
 
 export const INCORRECT_EMAIL_MSG = 'Введён не корректный email'
 
