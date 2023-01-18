@@ -4,8 +4,8 @@ import styled, { css } from 'styled-components'
 
 import { SpinnerProps } from './index'
 
-const dimensionStyles: Record<
-  NonNullable<SpinnerProps['dimension']>,
+const areaStyles: Record<
+  NonNullable<SpinnerProps['area']>,
   ReturnType<typeof css>
 > = {
   block: css<SpinnerStyledProps>`
@@ -17,18 +17,18 @@ const dimensionStyles: Record<
 }
 
 type SpinnerStyledProps = {
-  $dimension?: SpinnerProps['dimension']
+  $area?: SpinnerProps['area']
   $centered?: SpinnerProps['centered']
 }
 
 export const SpinnerStyled = styled(Spin)<SpinnerStyledProps>`
   display: flex;
 
-  ${({ $dimension }) =>
-    $dimension
+  ${({ $area }) =>
+    $area
       ? `
         flex-direction: column;
-        ${dimensionStyles[$dimension]}`
+        ${areaStyles[$area]}`
       : ''}
 
   ${({ $centered }) =>

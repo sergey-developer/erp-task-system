@@ -60,3 +60,11 @@ export enum TaskTypeEnum {
   IncidentTask = 'INCIDENT_TASK',
   RequestTask = 'REQUEST_TASK',
 }
+
+export enum SuspendRequestStatusEnum {
+  New = 'NEW',
+  InProgress = 'IN_PROGRESS',
+  Approved = 'APPROVED',
+  Denied = 'DENIED',
+  Canceled = 'CANCELED',
+}

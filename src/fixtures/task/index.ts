@@ -1,3 +1,4 @@
+import * as suspendRequest from './suspendRequest'
 //todo: убрать префикс task
 import * as task from './task'
 import * as taskAssignee from './taskAssignee'
@@ -19,6 +20,7 @@ const taskFixtures = {
   ...taskWorkGroup,
   ...taskJournal,
   ...taskReclassificationRequest,
+  ...suspendRequest,
 }
 
 export default taskFixtures

@@ -11,14 +11,15 @@ const findContainer = () =>
 const queryContainer = () =>
   screen.queryByTestId('task-card-reclassification-request')
 
+const getChildByText = (text: string | RegExp) =>
+  within(getContainer()).getByText(text)
+
 const getIcon = () => getIconByNameIn(getContainer(), 'question-circle')
 
-const getText = (text: string) => within(getContainer()).getByText(text)
+const getCancelButton = () => getButtonIn(getContainer(), /отменить запрос/i)
 
-const getButton = (label: string) => getButtonIn(getContainer(), label)
-
-const userClickButton = async (user: UserEvent, btnLabel: string) => {
-  const button = getButton(btnLabel)
+const userClickCancelButton = async (user: UserEvent) => {
+  const button = getCancelButton()
   await user.click(button)
   return button
 }
@@ -28,11 +29,11 @@ const utils = {
   findContainer,
   queryContainer,
 
+  getChildByText,
   getIcon,
-  getText,
 
-  getButton,
-  userClickButton,
+  getCancelButton,
+  userClickCancelButton,
 }
 
 export default utils

@@ -20,6 +20,8 @@ import {
 import { TaskModel } from 'modules/task/models'
 import { NonNullableObject } from 'shared/interfaces/utils'
 
+import { getSuspendRequest } from './suspendRequest'
+
 export const getTask = (
   props?: Partial<
     Pick<
@@ -64,6 +66,7 @@ export const getTask = (
   productClassifier3: generateWord(),
   supportGroup: commonFixtures.getSupportGroup(),
   olaEstimatedTime: Date.now(),
+  suspendRequest: getSuspendRequest(),
 
   description: generateWord(),
   contactPhone: generatePhone(),

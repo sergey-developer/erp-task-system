@@ -16,17 +16,11 @@ const PrivateLayout: FC = () => {
 
   return (
     <Layout>
-      <LoadingArea
-        isLoading={userProfileIsFetching}
-        dimension='parent'
-        size='large'
-      >
+      <LoadingArea isLoading={userProfileIsFetching} area='parent' size='large'>
         <Header />
 
         <ContentStyled $breakpoints={breakpoints}>
-          <React.Suspense
-            fallback={<Spinner dimension='parent' size='large' />}
-          >
+          <React.Suspense fallback={<Spinner area='parent' size='large' />}>
             <Outlet />
           </React.Suspense>
         </ContentStyled>

@@ -4,6 +4,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
+import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
@@ -40,7 +41,6 @@ import MainDetails from '../MainDetails'
 import SecondaryDetails from '../SecondaryDetails'
 import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
 import { TaskReclassificationModalProps } from '../TaskReclassificationModal'
-import { loadingMessage as reclassificationRequestLoadingMessage } from '../TaskReclassificationRequest/constants'
 import { TaskResolutionModalProps } from '../TaskResolutionModal'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
@@ -56,14 +56,6 @@ const TaskReclassificationModal = React.lazy(
 
 const RequestTaskSuspendModal = React.lazy(
   () => import('../RequestTaskSuspendModal'),
-)
-
-const reclassificationRequestSpinner = (
-  <Spinner
-    data-testid='task-card-reclassification-request-spinner'
-    dimension='block'
-    tip={reclassificationRequestLoadingMessage}
-  />
 )
 
 export type TaskCardProps = {
@@ -339,22 +331,29 @@ const TaskCard: FC<TaskCardProps> = ({
         $breakpoints={breakpoints}
       >
         <Space direction='vertical' $block size='middle'>
-          {reclassificationRequestIsLoading ||
-          createReclassificationRequestIsLoading
-            ? reclassificationRequestSpinner
-            : reclassificationRequest && (
-                <React.Suspense fallback={reclassificationRequestSpinner}>
+          {
+            <LoadingArea
+              data-testid='task-card-reclassification-request-spinner'
+              isLoading={
+                reclassificationRequestIsLoading ||
+                createReclassificationRequestIsLoading
+              }
+              tip='Загрузка запроса на переклассификацию...'
+              area='block'
+            >
+              {reclassificationRequest && (
+                <React.Suspense fallback={<Spinner area='block' />}>
                   <TaskReclassificationRequest
-                    title='Запрошена переклассификация:'
                     comment={reclassificationRequest.comment.text}
-                    createdAt={reclassificationRequest.createdAt}
+                    date={reclassificationRequest.createdAt}
                     user={reclassificationRequest.user}
-                    actionText='Отменить запрос'
-                    onAction={noop}
-                    actionDisabled={taskStatus.isAwaiting}
+                    onCancel={noop}
+                    cancelBtnDisabled={taskStatus.isAwaiting}
                   />
                 </React.Suspense>
               )}
+            </LoadingArea>
+          }
 
           {details && (
             <Space
