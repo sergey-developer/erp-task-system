@@ -6,6 +6,6 @@ type FormFields = Omit<
   'taskId'
 >
 
-export type TaskReclassificationRequestFormFields = Required<FormFields>
+export type RequestTaskReclassificationFormFields = FormFields
 
-export type TaskReclassificationRequestFormErrors = FieldsErrors<FormFields>
+export type RequestTaskReclassificationFormErrors = FieldsErrors<FormFields>

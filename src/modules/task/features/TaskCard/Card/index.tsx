@@ -38,25 +38,27 @@ import AdditionalInfo from '../AdditionalInfo'
 import TaskCardTabs from '../CardTabs'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
+import { RequestTaskReclassificationModalProps } from '../RequestTaskReclassificationModal'
 import SecondaryDetails from '../SecondaryDetails'
 import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
-import { TaskReclassificationModalProps } from '../TaskReclassificationModal'
 import { TaskResolutionModalProps } from '../TaskResolutionModal'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
+
+const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
+
+const RequestTaskReclassificationModal = React.lazy(
+  () => import('../RequestTaskReclassificationModal'),
+)
 
 const TaskReclassificationRequest = React.lazy(
   () => import('../TaskReclassificationRequest'),
 )
 
-const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
-
-const TaskReclassificationModal = React.lazy(
-  () => import('../TaskReclassificationModal'),
-)
-
 const RequestTaskSuspendModal = React.lazy(
   () => import('../RequestTaskSuspendModal'),
 )
+
+const TaskSuspendRequest = React.lazy(() => import('../TaskSuspendRequest'))
 
 export type TaskCardProps = {
   details: MaybeNull<
@@ -94,6 +96,7 @@ export type TaskCardProps = {
       | 'productClassifier3'
       | 'latitude'
       | 'longitude'
+      | 'suspendRequest'
     >
   >
 
@@ -225,7 +228,7 @@ const TaskCard: FC<TaskCardProps> = ({
   )
 
   const handleReclassificationRequestSubmit = useCallback<
-    TaskReclassificationModalProps['onSubmit']
+    RequestTaskReclassificationModalProps['onSubmit']
   >(
     async (values, setFields) => {
       if (!details) return
@@ -355,6 +358,19 @@ const TaskCard: FC<TaskCardProps> = ({
             </LoadingArea>
           }
 
+          {details?.suspendRequest && (
+            <React.Suspense fallback={<Spinner area='block' />}>
+              <TaskSuspendRequest
+                status={details.suspendRequest.status}
+                date={details.suspendRequest.suspendEndAt}
+                user={details.suspendRequest.author}
+                comment={details.suspendRequest.comment}
+                onCancel={noop}
+                cancelBtnDisabled={false}
+              />
+            </React.Suspense>
+          )}
+
           {details && (
             <Space
               data-testid='task-card-details'
@@ -447,7 +463,7 @@ const TaskCard: FC<TaskCardProps> = ({
                     />
                   }
                 >
-                  <TaskReclassificationModal
+                  <RequestTaskReclassificationModal
                     recordId={details.recordId}
                     isLoading={createReclassificationRequestIsLoading}
                     onSubmit={handleReclassificationRequestSubmit}

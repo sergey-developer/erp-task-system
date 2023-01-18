@@ -9,9 +9,11 @@ import { ReclassificationReasonEnum } from 'modules/task/constants/common'
 
 import { reclassificationReasonLabels } from '../constants'
 
-const getContainer = () => screen.getByTestId('task-reclassification-modal')
+const getContainer = () =>
+  screen.getByTestId('request-task-reclassification-modal')
 
-const findContainer = () => screen.findByTestId('task-reclassification-modal')
+const findContainer = () =>
+  screen.findByTestId('request-task-reclassification-modal')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
