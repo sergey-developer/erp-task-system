@@ -31,24 +31,6 @@ export const loadingFinishedBySpinner = (testId: string) => async () => {
   })
 }
 
-export const loadingStartedBySpinnerIn =
-  (container: HTMLElement) => async () => {
-    expect(await findIconByNameIn(container, 'loading')).toBeInTheDocument()
-  }
-
-export const loadingNotStartedBySpinnerIn = (container: HTMLElement) => () => {
-  expect(queryIconByNameIn(container, 'loading')).not.toBeInTheDocument()
-}
-
-export const loadingFinishedBySpinnerIn =
-  (container: HTMLElement) => async () => {
-    const spinner = queryIconByNameIn(container, 'loading')
-
-    await waitFor(() => {
-      expect(spinner).not.toBeInTheDocument()
-    })
-  }
-
 export const loadingStartedBySelect = async (container: HTMLElement) => {
   await waitFor(() => {
     expect(
