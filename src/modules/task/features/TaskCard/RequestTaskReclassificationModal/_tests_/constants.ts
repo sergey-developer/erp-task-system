@@ -1,9 +1,9 @@
 import { generateIdStr } from '_tests_/utils'
 import { ReclassificationReasonEnum } from 'modules/task/constants/common'
 
-import { TaskReclassificationModalProps } from '../index'
+import { RequestTaskReclassificationModalProps } from '../index'
 
-export const requiredProps: TaskReclassificationModalProps = {
+export const requiredProps: RequestTaskReclassificationModalProps = {
   recordId: generateIdStr(),
   isLoading: false,
   onCancel: jest.fn(),

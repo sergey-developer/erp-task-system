@@ -15,12 +15,13 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
+import { NonNullableObject } from 'shared/interfaces/utils'
 
 export const getTaskTableItem = (
   props?: Partial<
     Pick<TaskTableListItem, 'status' | 'extendedStatus' | 'olaStatus'>
   >,
-): TaskTableListItem => ({
+): NonNullableObject<TaskTableListItem> => ({
   id: generateId(),
   name: generateName(),
   title: generateWord(),

@@ -29,3 +29,5 @@ export * from './createTaskReclassificationRequest.model'
 export * from './task.model'
 export * from './taskComment.model'
 export * from './taskWorkGroup.model'
+
+export * from './suspendRequest.model'

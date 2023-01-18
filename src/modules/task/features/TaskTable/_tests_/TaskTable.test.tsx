@@ -888,7 +888,7 @@ describe('Таблица заявок', () => {
 
           expect(
             taskTableTestUtils.getChildByText(
-              taskTableTestConstants.firstTaskTableItem.supportGroup.name,
+              taskTableTestConstants.firstTaskTableItem.supportGroup!.name,
             ),
           ).toBeInTheDocument()
         })

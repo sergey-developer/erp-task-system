@@ -15,7 +15,7 @@ const ModalFallback: FC<ModalFallbackProps> = (props) => {
       footer={null}
       maskClosable={false}
     >
-      <Spinner dimension='block' />
+      <Spinner area='block' />
     </Modal>
   )
 }

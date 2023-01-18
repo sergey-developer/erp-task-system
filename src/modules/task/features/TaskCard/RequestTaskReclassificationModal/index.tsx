@@ -15,28 +15,28 @@ import { TaskModel } from 'modules/task/models'
 import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
 import { reclassificationReasonLabels } from './constants'
-import { TaskReclassificationRequestFormFields } from './interfaces'
+import { RequestTaskReclassificationFormFields } from './interfaces'
 import { RECLASSIFICATION_REASON_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-export type TaskReclassificationModalProps = Pick<TaskModel, 'recordId'> & {
+export type RequestTaskReclassificationModalProps = Pick<
+  TaskModel,
+  'recordId'
+> & {
   onSubmit: (
-    values: TaskReclassificationRequestFormFields,
+    values: RequestTaskReclassificationFormFields,
     setFields: FormInstance['setFields'],
   ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
   isLoading: boolean
 }
 
-const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
-  recordId,
-  isLoading,
-  onCancel,
-  onSubmit,
-}) => {
-  const [form] = Form.useForm<TaskReclassificationRequestFormFields>()
+const RequestTaskReclassificationModal: FC<
+  RequestTaskReclassificationModalProps
+> = ({ recordId, isLoading, onCancel, onSubmit }) => {
+  const [form] = Form.useForm<RequestTaskReclassificationFormFields>()
 
   const modalTitle = (
     <Text>
@@ -45,14 +45,14 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
   )
 
   const handleFinish = async (
-    values: TaskReclassificationRequestFormFields,
+    values: RequestTaskReclassificationFormFields,
   ) => {
     await onSubmit(values, form.setFields)
   }
 
   return (
     <BaseModal
-      data-testid='task-reclassification-modal'
+      data-testid='request-task-reclassification-modal'
       visible
       title={modalTitle}
       confirmLoading={isLoading}
@@ -60,7 +60,7 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
       okText='Запросить переклассификацию'
       onCancel={onCancel}
     >
-      <Form<TaskReclassificationRequestFormFields>
+      <Form<RequestTaskReclassificationFormFields>
         form={form}
         layout='vertical'
         onFinish={handleFinish}
@@ -112,4 +112,4 @@ const TaskReclassificationModal: FC<TaskReclassificationModalProps> = ({
   )
 }
 
-export default TaskReclassificationModal
+export default RequestTaskReclassificationModal

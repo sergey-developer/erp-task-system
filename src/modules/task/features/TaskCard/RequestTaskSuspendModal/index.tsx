@@ -15,12 +15,11 @@ import moment from 'moment'
 import React, { FC, useEffect } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
+import { SuspendReasonEnum } from 'modules/task/constants/common'
+import { suspendReasonDict } from 'modules/task/constants/dictionary'
 import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
 
-import {
-  SuspendReasonDict,
-  reasonsMakeDateTimeFieldDisabled,
-} from './constants'
+import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import { RequestTaskSuspendFormFields } from './interfaces'
 import { DatePickerStyled, TimePickerStyled } from './styles'
 import { END_DATE_RULES, END_TIME_RULES, REASON_RULES } from './validation'
@@ -107,9 +106,9 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
         >
           <Radio.Group disabled={isLoading} onChange={handleChangeReason}>
             <Space direction='vertical'>
-              {Object.values(SuspendReasonDict).map((reason, index) => (
-                <Radio key={index} value={reason}>
-                  {reason}
+              {Object.keys(suspendReasonDict).map((key, index) => (
+                <Radio key={index} value={key}>
+                  {suspendReasonDict[key as SuspendReasonEnum]}
                 </Radio>
               ))}
             </Space>

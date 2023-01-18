@@ -1,4 +1,5 @@
 import {
+  SuspendReasonEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
@@ -47,3 +48,18 @@ export const taskPriorityMap: Map<BaseTaskModel['priorityCode'], string> =
     [3, '3-средний'],
     [4, '4-низкий'],
   ])
+
+/**
+ Порядок значений имеет значение т.к. они отображаются с помощью `Object.values`
+ */
+export const suspendReasonDict: Readonly<StringMap<SuspendReasonEnum>> = {
+  [SuspendReasonEnum.AwaitingInformation]:
+    'Ожидание информации от пользователя',
+  [SuspendReasonEnum.AwaitingInformationFromFirstLine]:
+    'Ожидание информации от пользователя, уточнение через 1-ю линию',
+  [SuspendReasonEnum.AwaitingInitiator]: 'Ожидание пользователя',
+  [SuspendReasonEnum.AwaitingPurchase]: 'Ожидание закупки',
+  [SuspendReasonEnum.AwaitingRelease]: 'Ожидание релиза',
+  [SuspendReasonEnum.AwaitingNonItWork]:
+    'Ожидание работ вне зоны ответственности ИТ',
+}

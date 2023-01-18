@@ -16,19 +16,23 @@ describe('Статус запроса на переклассификацию', 
 
     test('Заголовок', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
-      expect(testUtils.getText(requiredProps.title)).toBeInTheDocument()
+      expect(
+        testUtils.getChildByText(/запрошена переклассификация/i),
+      ).toBeInTheDocument()
     })
 
     test('Комментарий', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
-      expect(testUtils.getText(requiredProps.comment)).toBeInTheDocument()
+      expect(
+        testUtils.getChildByText(requiredProps.comment),
+      ).toBeInTheDocument()
     })
 
     test('Данные пользователя', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
 
       expect(
-        testUtils.getText(getShortUserName(requiredProps.user)),
+        testUtils.getChildByText(getShortUserName(requiredProps.user)),
       ).toBeInTheDocument()
     })
 
@@ -36,8 +40,8 @@ describe('Статус запроса на переклассификацию', 
       render(<TaskReclassificationRequest {...requiredProps} />)
 
       expect(
-        testUtils.getText(
-          formatDate(requiredProps.createdAt, DATE_TIME_FORMAT),
+        testUtils.getChildByText(
+          formatDate(requiredProps.date, DATE_TIME_FORMAT),
         ),
       ).toBeInTheDocument()
     })
@@ -47,15 +51,17 @@ describe('Статус запроса на переклассификацию', 
     test('Отображается корректно', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
 
-      const button = testUtils.getButton(requiredProps.actionText)
+      const button = testUtils.getCancelButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
     })
 
     test('Можно сделать не активной', () => {
-      render(<TaskReclassificationRequest {...requiredProps} actionDisabled />)
-      expect(testUtils.getButton(requiredProps.actionText)).toBeDisabled()
+      render(
+        <TaskReclassificationRequest {...requiredProps} cancelBtnDisabled />,
+      )
+      expect(testUtils.getCancelButton()).toBeDisabled()
     })
 
     test('При клике обработчик вызывается корректно', async () => {
@@ -63,8 +69,8 @@ describe('Статус запроса на переклассификацию', 
         <TaskReclassificationRequest {...requiredProps} />,
       )
 
-      await testUtils.userClickButton(user, requiredProps.actionText)
-      expect(requiredProps.onAction).toBeCalledTimes(1)
+      await testUtils.userClickCancelButton(user)
+      expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })
 })
