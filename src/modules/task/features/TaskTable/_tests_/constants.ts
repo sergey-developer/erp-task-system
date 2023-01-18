@@ -1,5 +1,4 @@
 import { TablePaginationConfig } from 'antd'
-import head from 'lodash/head'
 
 import taskFixtures from 'fixtures/task'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
@@ -27,7 +26,7 @@ const paginationProps: Readonly<
   total: DEFAULT_PAGE_SIZE + 1,
 }
 
-const firstTaskTableItem = head(requiredProps.dataSource)!
+const firstTaskTableItem = requiredProps.dataSource[0]
 
 const testConstants = {
   columnWithSortingClass,

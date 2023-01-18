@@ -24,7 +24,7 @@ export type BaseTaskModel = {
   initialImpact: 1 | 2 | 3 | 4
   severity: 1 | 2 | 3 | 4
   priorityCode: 1 | 2 | 3 | 4
-  supportGroup: SupportGroupModel
+  supportGroup: MaybeNull<SupportGroupModel>
 
   contactPhone?: string
   portablePhone?: string
