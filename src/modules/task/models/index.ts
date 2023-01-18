@@ -31,3 +31,5 @@ export * from './taskComment.model'
 export * from './taskWorkGroup.model'
 
 export * from './suspendRequest.model'
+export * from './createTaskSuspendRequest.model'
+export * from './deleteTaskSuspendRequest.model'

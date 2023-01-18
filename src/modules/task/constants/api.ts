@@ -10,6 +10,8 @@ export enum TaskEndpointEnum {
   TaskComment = '/tasks/:id/comments/',
   CreateReclassificationRequest = '/tasks/:id/reclassification-requests/',
   GetReclassificationRequest = '/tasks/:id/reclassification-request/',
+  CreateTaskSuspendRequest = '/tasks/:id/suspend-requests/',
+  DeleteTaskSuspendRequest = '/tasks/:id/suspend-request/',
   TaskJournal = '/tasks/:id/journal/',
   TaskJournalCsv = '/tasks/:id/journal/csv/',
 }

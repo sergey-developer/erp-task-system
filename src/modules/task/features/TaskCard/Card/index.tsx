@@ -2,6 +2,7 @@ import { useBoolean } from 'ahooks'
 import { FormInstance } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
+import moment from 'moment'
 import React, { FC, useCallback, useEffect } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
@@ -14,9 +15,11 @@ import {
   taskPriorityMap,
   taskSeverityMap,
 } from 'modules/task/constants/dictionary'
-import { useTaskStatus } from 'modules/task/hooks'
+import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
+  CreateTaskSuspendRequestMutationArgsModel,
+  DeleteTaskSuspendRequestMutationArgsModel,
   DeleteTaskWorkGroupMutationArgsModel,
   ResolveTaskMutationArgsModel,
   TakeTaskMutationArgsModel,
@@ -39,6 +42,8 @@ import TaskCardTabs from '../CardTabs'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
 import { RequestTaskReclassificationModalProps } from '../RequestTaskReclassificationModal'
+import { RequestTaskSuspendModalProps } from '../RequestTaskSuspendModal'
+import { RequestTaskSuspendFormFields } from '../RequestTaskSuspendModal/interfaces'
 import SecondaryDetails from '../SecondaryDetails'
 import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
 import { TaskResolutionModalProps } from '../TaskResolutionModal'
@@ -109,6 +114,15 @@ export type TaskCardProps = {
   ) => Promise<void>
   createReclassificationRequestIsLoading: boolean
 
+  createSuspendRequest: (
+    data: CreateTaskSuspendRequestMutationArgsModel,
+  ) => Promise<void>
+  createSuspendRequestIsLoading: boolean
+  cancelSuspendRequest: (
+    data: DeleteTaskSuspendRequestMutationArgsModel,
+  ) => Promise<void>
+  cancelSuspendRequestIsLoading: boolean
+
   takeTask: (data: TakeTaskMutationArgsModel) => Promise<void>
   takeTaskIsLoading: boolean
 
@@ -147,6 +161,11 @@ const TaskCard: FC<TaskCardProps> = ({
   createReclassificationRequest,
   createReclassificationRequestIsLoading,
 
+  createSuspendRequest,
+  createSuspendRequestIsLoading,
+  cancelSuspendRequest,
+  cancelSuspendRequestIsLoading,
+
   workGroupList,
   workGroupListIsLoading,
   updateWorkGroup,
@@ -166,10 +185,15 @@ const TaskCard: FC<TaskCardProps> = ({
 }) => {
   const breakpoints = useBreakpoint()
   const taskStatus = useTaskStatus(details?.status)
+  const taskSuspendRequestStatusMap = useTaskSuspendRequestStatus(
+    details?.suspendRequest?.status,
+  )
 
   const isAssignedToCurrentUser = useCheckUserAuthenticated(
     details?.assignee?.id,
   )
+
+  const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
   const [
     isTaskResolutionModalOpened,
@@ -308,7 +332,48 @@ const TaskCard: FC<TaskCardProps> = ({
     } catch {}
   }, [takeTask, details])
 
-  const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
+  const handleCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] =
+    useCallback(
+      async (values: RequestTaskSuspendFormFields, setFields) => {
+        if (!details) return
+
+        try {
+          await createSuspendRequest({
+            taskId: details.id,
+            comment: values.comment,
+            suspendReason: values.suspendReason,
+            suspendEndAt: moment(values.endDate)
+              .set('hours', values.endTime.get('hours'))
+              .set('minutes', values.endTime.get('minutes'))
+              .toISOString(),
+          })
+
+          closeRequestTaskSuspendModal()
+        } catch (exception) {
+          const error = exception as ErrorResponse
+          if (isBadRequestError(error)) {
+            // const badRequestError = error as CreateTaskSuspendRequestBadRequestErrorResponse
+            // const errorToHandle: RequestTaskSuspendFormErrors = {
+            //   ...badRequestError,
+            //   data: {
+            //     ...badRequestError.data,
+            //
+            //   }
+            // }
+            handleSetFieldsErrors(error, setFields)
+          }
+        }
+      },
+      [closeRequestTaskSuspendModal, createSuspendRequest, details],
+    )
+
+  const handleCancelTaskSuspendRequest = useCallback(async () => {
+    if (!details) return
+
+    try {
+      await cancelSuspendRequest({ taskId: details.id })
+    } catch {}
+  }, [cancelSuspendRequest, details])
 
   const cardTitle = !taskIsLoading && details && (
     <CardTitle
@@ -361,12 +426,27 @@ const TaskCard: FC<TaskCardProps> = ({
           {details?.suspendRequest && (
             <React.Suspense fallback={<Spinner area='block' />}>
               <TaskSuspendRequest
-                status={details.suspendRequest.status}
+                title={
+                  taskSuspendRequestStatusMap.isNew
+                    ? 'Запрошено ожидание'
+                    : taskSuspendRequestStatusMap.isApproved
+                    ? 'Заявка находится в ожидании'
+                    : ''
+                }
                 date={details.suspendRequest.suspendEndAt}
                 user={details.suspendRequest.author}
                 comment={details.suspendRequest.comment}
-                onCancel={noop}
-                cancelBtnDisabled={false}
+                action={
+                  taskSuspendRequestStatusMap.isNew
+                    ? {
+                        text: 'Отменить запрос',
+                        onClick: handleCancelTaskSuspendRequest,
+                        loading: cancelSuspendRequestIsLoading,
+                      }
+                    : taskSuspendRequestStatusMap.isApproved
+                    ? { text: 'Вернуть в работу', disabled: true }
+                    : undefined
+                }
               />
             </React.Suspense>
           )}
@@ -483,8 +563,8 @@ const TaskCard: FC<TaskCardProps> = ({
                 >
                   <RequestTaskSuspendModal
                     recordId={details.recordId}
-                    isLoading={false}
-                    onSubmit={async () => {}}
+                    isLoading={createSuspendRequestIsLoading}
+                    onSubmit={handleCreateTaskSuspendRequest}
                     onCancel={closeRequestTaskSuspendModal}
                   />
                 </React.Suspense>

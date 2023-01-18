@@ -2,6 +2,8 @@ import React, { FC, useEffect } from 'react'
 
 import {
   useCreateTaskReclassificationRequest,
+  useCreateTaskSuspendRequest,
+  useDeleteTaskSuspendRequest,
   useDeleteTaskWorkGroup,
   useGetTask,
   useGetTaskReclassificationRequest,
@@ -14,7 +16,7 @@ import {
 import { TaskListItemModel } from 'modules/task/models'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
-import TaskCard from '../Card'
+import Card from '../Card'
 
 export type TaskCardContainerProps = {
   taskId: TaskListItemModel['id']
@@ -41,6 +43,16 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
   } = useGetTask(taskId)
 
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
+
+  const {
+    fn: deleteSuspendRequest,
+    state: { isLoading: deleteSuspendRequestIsLoading },
+  } = useDeleteTaskSuspendRequest()
+
+  const {
+    fn: createSuspendRequest,
+    state: { isLoading: createSuspendRequestIsLoading },
+  } = useCreateTaskSuspendRequest()
 
   const {
     fn: createReclassificationRequest,
@@ -106,7 +118,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
   ])
 
   return (
-    <TaskCard
+    <Card
       details={task}
       taskIsLoading={taskIsFetching}
       takeTask={takeTask}
@@ -123,6 +135,10 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
       createReclassificationRequestIsLoading={
         createReclassificationRequestIsLoading
       }
+      createSuspendRequest={createSuspendRequest}
+      createSuspendRequestIsLoading={createSuspendRequestIsLoading}
+      cancelSuspendRequest={deleteSuspendRequest}
+      cancelSuspendRequestIsLoading={deleteSuspendRequestIsLoading}
       workGroupList={workGroupList}
       workGroupListIsLoading={workGroupListIsFetching}
       updateWorkGroup={updateWorkGroup}

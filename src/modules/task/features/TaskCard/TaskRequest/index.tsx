@@ -20,7 +20,9 @@ export type TaskRequestProps = {
   comment: string
   user: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
   date: string
-  actions: Array<Pick<ButtonProps, 'onClick' | 'disabled'> & { text: string }>
+  actions: Array<
+    Pick<ButtonProps, 'onClick' | 'disabled' | 'loading'> & { text: string }
+  >
   icon: ReactElement
 }
 

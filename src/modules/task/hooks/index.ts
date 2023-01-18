@@ -19,6 +19,9 @@ export * from './useLazyGetTaskJournalCsv'
 export * from './useCreateTaskReclassificationRequest'
 export * from './useGetTaskReclassificationRequest'
 
+export * from './useCreateTaskSuspendRequest'
+export * from './useDeleteTaskSuspendRequest'
+
 export * from './useUpdateTaskAssignee'
 
 export * from './useUpdateTaskWorkGroup'

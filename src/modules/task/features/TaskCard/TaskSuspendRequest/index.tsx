@@ -1,61 +1,33 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 
 import { PauseCircleIcon } from 'components/Icons'
-import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
-import { useTaskSuspendRequestStatus } from 'modules/task/hooks'
+import { ArrayItem } from 'shared/interfaces/utils'
 
 import TaskRequest, { TaskRequestProps } from '../TaskRequest'
 
 export type TaskSuspendRequestProps = Omit<
   TaskRequestProps,
-  'icon' | 'title' | 'actions'
+  'icon' | 'actions'
 > & {
-  status: SuspendRequestStatusEnum
-  onCancel: () => void
-  cancelBtnDisabled: boolean
+  action?: ArrayItem<TaskRequestProps['actions']>
 }
 
 const TaskSuspendRequest: FC<TaskSuspendRequestProps> = ({
+  title,
   comment,
   date,
   user,
-  status,
-  onCancel,
-  cancelBtnDisabled,
+  action,
 }) => {
-  const statusMap = useTaskSuspendRequestStatus(status)
-
-  const actions: TaskRequestProps['actions'] = useMemo(() => {
-    const arr = []
-
-    if (statusMap.isNew) {
-      arr.push({
-        text: 'Отменить запрос',
-        onClick: onCancel,
-        disabled: cancelBtnDisabled,
-      })
-    } else if (statusMap.isApproved) {
-      arr.push({ text: 'Вернуть в работу', disabled: true })
-    }
-
-    return arr
-  }, [cancelBtnDisabled, onCancel, statusMap.isApproved, statusMap.isNew])
-
   return (
     <TaskRequest
       data-testid='task-card-suspend-request'
       icon={<PauseCircleIcon $size='large' />}
-      title={
-        statusMap.isNew
-          ? 'Запрошено ожидание'
-          : statusMap.isApproved
-          ? 'Заявка находится в ожидании'
-          : ''
-      }
+      title={title}
       comment={comment}
       user={user}
       date={date}
-      actions={actions}
+      actions={action ? [action] : []}
     />
   )
 }
