@@ -1,15 +1,14 @@
 import moment, { Moment } from 'moment'
 import { Rule } from 'rc-field-form/es/interface'
 
+import { SuspendReasonEnum } from 'modules/task/constants/common'
 import { REQUIRED_FIELD_MSG } from 'shared/constants/validation'
-
-import { SuspendReasonDict } from './constants'
 
 export const REASON_RULES: Rule[] = [
   {
     required: true,
     type: 'enum',
-    enum: Object.values(SuspendReasonDict),
+    enum: Object.values(SuspendReasonEnum),
     message: 'Недопустимая причина ожидания',
   },
 ]

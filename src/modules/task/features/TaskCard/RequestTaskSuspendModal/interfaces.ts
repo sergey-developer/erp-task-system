@@ -1,11 +1,10 @@
 import { Moment } from 'moment'
 
+import { SuspendReasonEnum } from 'modules/task/constants/common'
 import { FieldsErrors } from 'shared/services/api'
 
-import { SuspendReasonDict } from './constants'
-
 type FormFields = {
-  suspendReason: SuspendReasonDict
+  suspendReason: SuspendReasonEnum
   endDate: Moment
   endTime: Moment
   comment: string
