@@ -18,7 +18,8 @@ import {
 import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
 import {
   CreateTaskReclassificationRequestMutationArgsModel,
-  CreateTaskSuspendRequestMutationArgsModel,
+  CreateTaskSuspendRequestBadRequestErrorResponse,
+  CreateTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestMutationArgsModel,
   DeleteTaskWorkGroupMutationArgsModel,
   ResolveTaskMutationArgsModel,
@@ -43,7 +44,10 @@ import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
 import { RequestTaskReclassificationModalProps } from '../RequestTaskReclassificationModal'
 import { RequestTaskSuspendModalProps } from '../RequestTaskSuspendModal'
-import { RequestTaskSuspendFormFields } from '../RequestTaskSuspendModal/interfaces'
+import {
+  RequestTaskSuspendFormErrors,
+  RequestTaskSuspendFormFields,
+} from '../RequestTaskSuspendModal/interfaces'
 import SecondaryDetails from '../SecondaryDetails'
 import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
 import { TaskResolutionModalProps } from '../TaskResolutionModal'
@@ -115,7 +119,7 @@ export type TaskCardProps = {
   createReclassificationRequestIsLoading: boolean
 
   createSuspendRequest: (
-    data: CreateTaskSuspendRequestMutationArgsModel,
+    data: CreateTaskSuspendRequestMutationArgs,
   ) => Promise<void>
   createSuspendRequestIsLoading: boolean
   cancelSuspendRequest: (
@@ -351,16 +355,25 @@ const TaskCard: FC<TaskCardProps> = ({
           closeRequestTaskSuspendModal()
         } catch (exception) {
           const error = exception as ErrorResponse
+
           if (isBadRequestError(error)) {
-            // const badRequestError = error as CreateTaskSuspendRequestBadRequestErrorResponse
-            // const errorToHandle: RequestTaskSuspendFormErrors = {
-            //   ...badRequestError,
-            //   data: {
-            //     ...badRequestError.data,
-            //
-            //   }
-            // }
-            handleSetFieldsErrors(error, setFields)
+            const badRequestError =
+              error as CreateTaskSuspendRequestBadRequestErrorResponse
+
+            const formErrors: RequestTaskSuspendFormErrors = {
+              comment: badRequestError.data.comment,
+              suspendReason: badRequestError.data.suspendReason,
+              endDate: badRequestError.data.suspendEndAt,
+              endTime: badRequestError.data.suspendEndAt,
+            }
+
+            handleSetFieldsErrors(
+              {
+                ...badRequestError,
+                data: formErrors,
+              },
+              setFields,
+            )
           }
         }
       },

@@ -1,8 +1,9 @@
 import {
-  CreateTaskSuspendRequestMutationArgsModel,
+  CreateTaskSuspendRequestMutationArgs,
   CreateTaskSuspendRequestSuccessResponse,
   DeleteTaskSuspendRequestMutationArgsModel,
   DeleteTaskSuspendRequestResponseModel,
+  GetTaskResponseModel,
 } from 'modules/task/models'
 import {
   createTaskSuspendRequestUrl,
@@ -11,20 +12,35 @@ import {
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorResponse, isNotFoundError } from 'shared/services/api'
 
-import { TaskEndpointTagEnum } from '../constants/api'
+import { TaskEndpointNameEnum, TaskEndpointTagEnum } from '../constants/api'
 import taskApiService from './taskApi.service'
 
 const taskSuspendRequestApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
     createSuspendRequest: build.mutation<
       CreateTaskSuspendRequestSuccessResponse,
-      CreateTaskSuspendRequestMutationArgsModel
+      CreateTaskSuspendRequestMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
         url: createTaskSuspendRequestUrl(taskId),
         method: HttpMethodEnum.Post,
         data: payload,
       }),
+      onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+        try {
+          const { data: suspendRequest } = await queryFulfilled
+
+          dispatch(
+            taskApiService.util.updateQueryData(
+              TaskEndpointNameEnum.GetTask as never,
+              taskId as never,
+              (task: GetTaskResponseModel) => {
+                task.suspendRequest = suspendRequest
+              },
+            ),
+          )
+        } catch {}
+      },
     }),
     deleteSuspendRequest: build.mutation<
       DeleteTaskSuspendRequestResponseModel,

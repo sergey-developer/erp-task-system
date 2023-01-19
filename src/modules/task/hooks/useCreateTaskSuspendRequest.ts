@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { CreateTaskSuspendRequestMutationArgsModel } from 'modules/task/models'
+import { CreateTaskSuspendRequestMutationArgs } from 'modules/task/models'
 import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
 import { useUserPermissions } from 'modules/user/hooks'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
@@ -18,7 +18,7 @@ export const useCreateTaskSuspendRequest = () => {
   const [mutation, state] = useCreateSuspendRequestMutation()
 
   const fn = useCallback(
-    async (data: CreateTaskSuspendRequestMutationArgsModel) => {
+    async (data: CreateTaskSuspendRequestMutationArgs) => {
       if (!permissions.canCreate) return
 
       await mutation(data).unwrap()
