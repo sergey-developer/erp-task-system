@@ -2,28 +2,31 @@ import { generatePath } from 'react-router-dom'
 
 import { TaskEndpointEnum } from 'modules/task/constants/api'
 
-//todo: поправить названия
 export const getTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.Task, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.GetTask, { id: String(taskId) })
 
-export const getResolveTaskUrl = (taskId: number): string =>
+export const resolveTaskUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.ResolveTask, { id: String(taskId) })
 
-export const getTakeTaskUrl = (taskId: number): string =>
+export const takeTaskUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.TakeTask, { id: String(taskId) })
 
-export const getTaskWorkGroupUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.TaskWorkGroup, { id: String(taskId) })
+export const updateTaskWorkGroupUrl = (taskId: number): string =>
+  generatePath(TaskEndpointEnum.UpdateTaskWorkGroup, { id: String(taskId) })
 
-export const getTaskAssigneeUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.TaskAssignee, { id: String(taskId) })
+export const deleteTaskWorkGroupUrl = (taskId: number): string =>
+  generatePath(TaskEndpointEnum.DeleteTaskWorkGroup, { id: String(taskId) })
 
-export const getTaskCommentUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.TaskComment, { id: String(taskId) })
+export const updateTaskAssigneeUrl = (taskId: number): string =>
+  generatePath(TaskEndpointEnum.UpdateTaskAssignee, { id: String(taskId) })
 
-export const getCreateTaskReclassificationRequestUrl = (
-  taskId: number,
-): string =>
+export const createTaskCommentUrl = (taskId: number): string =>
+  generatePath(TaskEndpointEnum.CreateTaskComment, { id: String(taskId) })
+
+export const getTaskCommentListUrl = (taskId: number): string =>
+  generatePath(TaskEndpointEnum.GetTaskCommentList, { id: String(taskId) })
+
+export const createTaskReclassificationRequestUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.CreateReclassificationRequest, {
     id: String(taskId),
   })
@@ -44,7 +47,7 @@ export const deleteTaskSuspendRequestUrl = (taskId: number): string =>
   })
 
 export const getTaskJournalUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.TaskJournal, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.GetTaskJournal, { id: String(taskId) })
 
 export const getTaskJournalCsvUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.TaskJournalCsv, { id: String(taskId) })
+  generatePath(TaskEndpointEnum.GetTaskJournalCsv, { id: String(taskId) })

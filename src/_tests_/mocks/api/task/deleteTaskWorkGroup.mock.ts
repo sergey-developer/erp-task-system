@@ -11,13 +11,13 @@ import {
   DeleteTaskWorkGroupMutationArgs,
   DeleteTaskWorkGroupSuccessResponse,
 } from 'modules/task/models'
-import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
+import { deleteTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
 const deleteTaskWorkGroupMockFn = (
   taskId: DeleteTaskWorkGroupMutationArgs['taskId'],
-) => getRequestMockFn(HttpMethodEnum.Delete, getTaskWorkGroupUrl(taskId))
+) => getRequestMockFn(HttpMethodEnum.Delete, deleteTaskWorkGroupUrl(taskId))
 
 export const mockDeleteTaskWorkGroupSuccess = (
   taskId: DeleteTaskWorkGroupMutationArgs['taskId'],

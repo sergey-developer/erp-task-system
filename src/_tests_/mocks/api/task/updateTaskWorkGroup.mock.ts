@@ -11,13 +11,13 @@ import {
   UpdateTaskWorkGroupMutationArgs,
   UpdateTaskWorkGroupSuccessResponse,
 } from 'modules/task/models'
-import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
+import { updateTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
 const updateTaskWorkGroupMockFn = (
   taskId: UpdateTaskWorkGroupMutationArgs['taskId'],
-) => getRequestMockFn(HttpMethodEnum.Post, getTaskWorkGroupUrl(taskId))
+) => getRequestMockFn(HttpMethodEnum.Post, updateTaskWorkGroupUrl(taskId))
 
 export const mockUpdateTaskWorkGroupSuccess = (
   taskId: UpdateTaskWorkGroupMutationArgs['taskId'],

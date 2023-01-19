@@ -4,7 +4,10 @@ import {
   GetTaskCommentListQueryArgs,
   GetTaskCommentListSuccessResponse,
 } from 'modules/task/models'
-import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
+import {
+  createTaskCommentUrl,
+  getTaskCommentListUrl,
+} from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
@@ -18,7 +21,7 @@ const taskCommentApiService = taskApiService.injectEndpoints({
       CreateTaskCommentMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
-        url: getTaskCommentUrl(taskId),
+        url: createTaskCommentUrl(taskId),
         method: HttpMethodEnum.Post,
         data: payload,
       }),
@@ -43,7 +46,7 @@ const taskCommentApiService = taskApiService.injectEndpoints({
       GetTaskCommentListQueryArgs
     >({
       query: (taskId) => ({
-        url: getTaskCommentUrl(taskId),
+        url: getTaskCommentListUrl(taskId),
         method: HttpMethodEnum.Get,
       }),
     }),

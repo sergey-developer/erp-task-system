@@ -4,12 +4,9 @@ import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { RefreshTokenSuccessResponse } from 'modules/auth/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 
-const getRefreshTokenMockFn = () =>
+const refreshTokenMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, AuthEndpointsEnum.RefreshToken)
 
 export const mockRefreshTokenSuccess = (
   options?: Partial<ResponseResolverOptions<RefreshTokenSuccessResponse>>,
-) => {
-  const mockRefreshToken = getSuccessMockFn(getRefreshTokenMockFn(), options)
-  mockRefreshToken()
-}
+) => getSuccessMockFn(refreshTokenMockFn(), options)()

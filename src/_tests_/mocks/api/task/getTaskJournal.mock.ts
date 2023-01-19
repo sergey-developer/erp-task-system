@@ -12,28 +12,28 @@ import {
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
-const getGetJournalMockFn = (taskId: number) =>
+const getJournalMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Get, getTaskJournalUrl(taskId))
 
-const getGetJournalCsvMockFn = (taskId: number) =>
+const getJournalCsvMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Get, getTaskJournalCsvUrl(taskId))
 
 export const mockGetJournalSuccess = (
   taskId: number,
   options?: Partial<ResponseResolverOptions<GetTaskJournalSuccessResponse>>,
-) => getSuccessMockFn(getGetJournalMockFn(taskId), options)()
+) => getSuccessMockFn(getJournalMockFn(taskId), options)()
 
 export const mockGetJournalServerError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => getServerErrorMockFn(getGetJournalMockFn(taskId), options)()
+) => getServerErrorMockFn(getJournalMockFn(taskId), options)()
 
 export const mockGetJournalCsvSuccess = (
   taskId: number,
   options?: Partial<ResponseResolverOptions>,
-) => getSuccessMockFn(getGetJournalCsvMockFn(taskId), options)()
+) => getSuccessMockFn(getJournalCsvMockFn(taskId), options)()
 
 export const mockGetJournalCsvServerError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => getServerErrorMockFn(getGetJournalCsvMockFn(taskId), options)()
+) => getServerErrorMockFn(getJournalCsvMockFn(taskId), options)()

@@ -17,9 +17,9 @@ import {
   TakeTaskSuccessResponse,
 } from 'modules/task/models'
 import {
-  getResolveTaskUrl,
-  getTakeTaskUrl,
   getTaskUrl,
+  resolveTaskUrl,
+  takeTaskUrl,
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
@@ -35,7 +35,7 @@ const taskApiService = apiService
         GetTaskListQueryArgs
       >({
         query: (filter) => ({
-          url: TaskEndpointEnum.TaskList,
+          url: TaskEndpointEnum.GetTaskList,
           method: HttpMethodEnum.Get,
           params: filter,
         }),
@@ -62,7 +62,7 @@ const taskApiService = apiService
         GetTaskCountersQueryArgs
       >({
         query: () => ({
-          url: TaskEndpointEnum.TaskCounters,
+          url: TaskEndpointEnum.GetTaskCounters,
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -82,7 +82,7 @@ const taskApiService = apiService
         ResolveTaskMutationArgs
       >({
         query: ({ taskId, ...payload }) => ({
-          url: getResolveTaskUrl(taskId),
+          url: resolveTaskUrl(taskId),
           method: HttpMethodEnum.Post,
           data: payload,
         }),
@@ -94,7 +94,7 @@ const taskApiService = apiService
         TakeTaskMutationArgs
       >({
         query: ({ taskId }) => ({
-          url: getTakeTaskUrl(taskId),
+          url: takeTaskUrl(taskId),
           method: HttpMethodEnum.Post,
         }),
         invalidatesTags: (result, error) =>

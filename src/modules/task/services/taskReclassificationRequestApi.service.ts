@@ -7,7 +7,7 @@ import {
   GetTaskSuccessResponse,
 } from 'modules/task/models'
 import {
-  getCreateTaskReclassificationRequestUrl,
+  createTaskReclassificationRequestUrl,
   getTaskReclassificationRequestUrl,
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -22,7 +22,7 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
       CreateTaskReclassificationRequestMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
-        url: getCreateTaskReclassificationRequestUrl(taskId),
+        url: createTaskReclassificationRequestUrl(taskId),
         method: HttpMethodEnum.Post,
         data: payload,
       }),

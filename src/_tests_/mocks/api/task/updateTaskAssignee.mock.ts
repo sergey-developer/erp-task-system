@@ -8,13 +8,13 @@ import {
   UpdateTaskAssigneeMutationArgs,
   UpdateTaskAssigneeSuccessResponse,
 } from 'modules/task/models'
-import { getTaskAssigneeUrl } from 'modules/task/utils/apiUrls'
+import { updateTaskAssigneeUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
 const updateTaskAssigneeMockFn = (
   taskId: UpdateTaskAssigneeMutationArgs['taskId'],
-) => getRequestMockFn(HttpMethodEnum.Post, getTaskAssigneeUrl(taskId))
+) => getRequestMockFn(HttpMethodEnum.Post, updateTaskAssigneeUrl(taskId))
 
 export const mockUpdateTaskAssigneeSuccess = (
   taskId: UpdateTaskAssigneeMutationArgs['taskId'],

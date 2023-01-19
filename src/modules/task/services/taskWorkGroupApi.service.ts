@@ -5,7 +5,10 @@ import {
   UpdateTaskWorkGroupMutationArgs,
   UpdateTaskWorkGroupSuccessResponse,
 } from 'modules/task/models'
-import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
+import {
+  deleteTaskWorkGroupUrl,
+  updateTaskWorkGroupUrl,
+} from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import taskApiService from './taskApi.service'
@@ -17,7 +20,7 @@ const taskWorkGroupApiService = taskApiService.injectEndpoints({
       UpdateTaskWorkGroupMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
-        url: getTaskWorkGroupUrl(taskId),
+        url: updateTaskWorkGroupUrl(taskId),
         method: HttpMethodEnum.Post,
         data: payload,
       }),
@@ -29,7 +32,7 @@ const taskWorkGroupApiService = taskApiService.injectEndpoints({
       DeleteTaskWorkGroupMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
-        url: getTaskWorkGroupUrl(taskId),
+        url: deleteTaskWorkGroupUrl(taskId),
         method: HttpMethodEnum.Delete,
         data: payload,
       }),

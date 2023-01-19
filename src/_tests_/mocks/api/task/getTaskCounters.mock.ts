@@ -4,11 +4,11 @@ import { TaskEndpointEnum } from 'modules/task/constants/api'
 import { GetTaskCountersSuccessResponse } from 'modules/task/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 
-const getGetTaskCountersMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, TaskEndpointEnum.TaskCounters)
+const getTaskCountersMockFn = () =>
+  getRequestMockFn(HttpMethodEnum.Get, TaskEndpointEnum.GetTaskCounters)
 
 export const mockGetTaskCountersSuccess = (
   options?: Partial<ResponseResolverOptions<GetTaskCountersSuccessResponse>>,
-) => getSuccessMockFn(getGetTaskCountersMockFn(), options)()
+) => getSuccessMockFn(getTaskCountersMockFn(), options)()
 
 // todo: написать тесты на ошибочное получение

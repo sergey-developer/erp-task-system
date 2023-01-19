@@ -8,12 +8,12 @@ import {
   TakeTaskMutationArgs,
   TakeTaskSuccessResponse,
 } from 'modules/task/models'
-import { getTakeTaskUrl } from 'modules/task/utils/apiUrls'
+import { takeTaskUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
 const takeTaskMockFn = (taskId: TakeTaskMutationArgs['taskId']) =>
-  getRequestMockFn(HttpMethodEnum.Post, getTakeTaskUrl(taskId))
+  getRequestMockFn(HttpMethodEnum.Post, takeTaskUrl(taskId))
 
 export const mockTakeTaskSuccess = (
   taskId: TakeTaskMutationArgs['taskId'],

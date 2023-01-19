@@ -9,7 +9,7 @@ import {
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskReclassificationRequestSuccessResponse,
 } from 'modules/task/models'
-import { getCreateTaskReclassificationRequestUrl } from 'modules/task/utils/apiUrls'
+import { createTaskReclassificationRequestUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
@@ -18,7 +18,7 @@ const createTaskReclassificationRequestMockFn = (
 ) =>
   getRequestMockFn(
     HttpMethodEnum.Post,
-    getCreateTaskReclassificationRequestUrl(taskId),
+    createTaskReclassificationRequestUrl(taskId),
   )
 
 export const mockCreateTaskReclassificationRequestSuccess = (
