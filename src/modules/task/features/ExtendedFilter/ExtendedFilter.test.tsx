@@ -83,6 +83,7 @@ const userApplyFilter = async (user: UserEvent) => {
 
 const userClickOutOfFilter = async (user: UserEvent) => {
   const filter = getFilter()
+  // eslint-disable-next-line testing-library/no-node-access
   const overlay = filter.querySelector('.ant-drawer-mask')
   if (overlay) await user.click(overlay)
 }

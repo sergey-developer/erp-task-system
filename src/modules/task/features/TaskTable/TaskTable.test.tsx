@@ -63,6 +63,7 @@ const queryChildByText = (text: string) =>
   within(getContainer()).queryByText(text)
 
 const getRow = (id: number) =>
+  // eslint-disable-next-line testing-library/no-node-access
   getContainer().querySelector(`[data-row-key='${id}']`)
 
 const userClickRow = async (user: UserEvent, id: number) => {
@@ -72,6 +73,7 @@ const userClickRow = async (user: UserEvent, id: number) => {
 }
 
 const getHeadCol = (text: string) => {
+  // eslint-disable-next-line testing-library/no-node-access
   return getChildByText(text).parentElement?.parentElement!
 }
 
@@ -121,6 +123,7 @@ const userClickPaginationPageButton = async (
 }
 
 const getPageSizeOptionsContainer = (container: HTMLElement) =>
+  // eslint-disable-next-line testing-library/no-node-access
   container.querySelector('.rc-virtual-list') as HTMLElement
 
 const getPageSizeOption = (container: HTMLElement, pageSize: NumberOrString) =>

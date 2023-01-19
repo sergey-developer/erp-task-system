@@ -66,6 +66,7 @@ const expectFilterNotDisabled = (filter: HTMLElement) => {
 const loadingStarted = async () => {
   await waitFor(() => {
     getAllFilterTag().forEach((tag) => {
+      // eslint-disable-next-line testing-library/no-node-access
       const skeleton = tag.querySelector('.ant-skeleton-active')
       expect(skeleton).toBeInTheDocument()
     })
@@ -75,6 +76,7 @@ const loadingStarted = async () => {
 const loadingFinished = async () => {
   await waitFor(() => {
     getAllFilterTag().forEach((tag) => {
+      // eslint-disable-next-line testing-library/no-node-access
       const skeleton = tag.querySelector('.ant-skeleton-active')
       expect(skeleton).not.toBeInTheDocument()
     })
