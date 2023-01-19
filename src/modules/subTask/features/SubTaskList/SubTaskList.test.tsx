@@ -1,7 +1,10 @@
 import { render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import subTaskFixtures from 'fixtures/subTask'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
@@ -16,6 +19,8 @@ const requiredProps: SubTaskListProps = {
   list: subTaskFixtures.getSubTaskList(),
   isError: false,
   taskStatus: TaskStatusEnum.New,
+  taskExtendedStatus: TaskExtendedStatusEnum.New,
+  taskHasSuspendRequest: false,
   currentUserIsTaskAssignee: false,
   onClickCancel: jest.fn(),
   onClickRework: jest.fn(),

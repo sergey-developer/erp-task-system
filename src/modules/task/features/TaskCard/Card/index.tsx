@@ -39,7 +39,7 @@ import { formatDate } from 'shared/utils/date'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import AdditionalInfo from '../AdditionalInfo'
-import TaskCardTabs from '../CardTabs'
+import CardTabs from '../CardTabs'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
 import { RequestTaskReclassificationModalProps } from '../RequestTaskReclassificationModal'
@@ -188,6 +188,7 @@ const TaskCard: FC<TaskCardProps> = ({
   isGetTaskError,
 }) => {
   const breakpoints = useBreakpoint()
+
   const taskStatus = useTaskStatus(details?.status)
   const taskSuspendRequestStatusMap = useTaskSuspendRequestStatus(
     details?.suspendRequest?.status,
@@ -196,6 +197,7 @@ const TaskCard: FC<TaskCardProps> = ({
   const isAssignedToCurrentUser = useCheckUserAuthenticated(
     details?.assignee?.id,
   )
+  const hasSuspendRequest = !!details?.suspendRequest
 
   const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
@@ -396,6 +398,7 @@ const TaskCard: FC<TaskCardProps> = ({
       extendedStatus={details.extendedStatus}
       olaStatus={details.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
+      hasSuspendRequest={hasSuspendRequest}
       onClose={debouncedCloseTaskCard}
       onClickExecuteTask={debouncedOpenTaskResolutionModal}
       onClickRequestSuspend={debouncedOpenRequestTaskSuspendModal}
@@ -524,9 +527,10 @@ const TaskCard: FC<TaskCardProps> = ({
                 updateAssigneeIsLoading={updateAssigneeIsLoading}
                 takeTask={handleTakeTask}
                 takeTaskIsLoading={takeTaskIsLoading}
+                hasSuspendRequest={hasSuspendRequest}
               />
 
-              <TaskCardTabs details={details} />
+              <CardTabs details={details} />
 
               {isTaskResolutionModalOpened && (
                 <React.Suspense

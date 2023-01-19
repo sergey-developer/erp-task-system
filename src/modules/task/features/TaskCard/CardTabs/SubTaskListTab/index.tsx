@@ -18,7 +18,11 @@ import {
   useReworkSubTask,
 } from 'modules/subTask/hooks'
 import { SubTaskModel } from 'modules/subTask/models'
-import { useTaskStatus, useTaskType } from 'modules/task/hooks'
+import {
+  useTaskExtendedStatus,
+  useTaskStatus,
+  useTaskType,
+} from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { useDebounceFn } from 'shared/hooks'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
@@ -39,7 +43,15 @@ const { Title } = Typography
 export type SubTaskListTabProps = {
   task: Pick<
     TaskModel,
-    'id' | 'assignee' | 'status' | 'type' | 'recordId' | 'title' | 'description'
+    | 'id'
+    | 'assignee'
+    | 'status'
+    | 'extendedStatus'
+    | 'type'
+    | 'recordId'
+    | 'title'
+    | 'description'
+    | 'suspendRequest'
   >
 }
 
@@ -97,7 +109,9 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
 
   const taskType = useTaskType(task.type)
   const taskStatus = useTaskStatus(task.status)
+  const taskExtendedStatus = useTaskExtendedStatus(task.extendedStatus)
   const currentUserIsTaskAssignee = useCheckUserAuthenticated(task.assignee?.id)
+  const taskHasSuspendRequest = !!task.suspendRequest
 
   const handleCreateSubTask = useCallback<CreateSubTaskModalProps['onSubmit']>(
     async ({ title, description, templateX5 }, setFields) => {
@@ -215,7 +229,9 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
                 currentUserIsTaskAssignee &&
                 taskStatus.isInProgress &&
                 (taskType.isIncident || taskType.isRequest)
-              )
+              ) ||
+              taskHasSuspendRequest ||
+              taskExtendedStatus.isInReclassification
             }
           >
             + Создать новое задание
@@ -229,7 +245,9 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
       >
         <SubTaskList
           taskStatus={task.status}
+          taskExtendedStatus={task.extendedStatus}
           currentUserIsTaskAssignee={currentUserIsTaskAssignee}
+          taskHasSuspendRequest={taskHasSuspendRequest}
           list={subTaskList}
           isError={isGetSubTaskListError}
           onClickCancel={handleClickCancel}

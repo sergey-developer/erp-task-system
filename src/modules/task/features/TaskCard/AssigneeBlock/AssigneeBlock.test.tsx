@@ -46,6 +46,7 @@ const requiredProps: Readonly<
       | 'extendedStatus'
       | 'assignee'
       | 'workGroupListIsLoading'
+      | 'hasSuspendRequest'
     >
   >
 > = {
@@ -56,6 +57,7 @@ const requiredProps: Readonly<
   workGroupListIsLoading: false,
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
+  hasSuspendRequest: false,
   assignee: taskFixtures.getTaskAssignee(),
 }
 

@@ -23,6 +23,7 @@ export type CardTitleProps = Pick<
   'id' | 'status' | 'extendedStatus' | 'olaStatus' | 'type'
 > & {
   isAssignedToCurrentUser: boolean
+  hasSuspendRequest: boolean
   onClickExecuteTask: () => void
   onClickRequestSuspend: () => void
   onClickRequestReclassification: () => void
@@ -36,6 +37,7 @@ const CardTitle: FC<CardTitleProps> = ({
   extendedStatus,
   olaStatus,
   isAssignedToCurrentUser,
+  hasSuspendRequest,
   onClose,
   onClickExecuteTask,
   onClickRequestSuspend,
@@ -54,7 +56,8 @@ const CardTitle: FC<CardTitleProps> = ({
           key: 1,
           disabled:
             (!taskStatus.isNew && !taskStatus.isInProgress) ||
-            (!taskType.isIncident && !taskType.isRequest),
+            (!taskType.isIncident && !taskType.isRequest) ||
+            hasSuspendRequest,
           icon: <PauseCircleIcon $size='middle' />,
           label: 'Запросить перевод в ожидание',
           onClick: onClickRequestSuspend,
@@ -64,7 +67,8 @@ const CardTitle: FC<CardTitleProps> = ({
           disabled:
             !taskStatus.isInProgress ||
             !isAssignedToCurrentUser ||
-            taskExtendedStatus.isInReclassification,
+            taskExtendedStatus.isInReclassification ||
+            hasSuspendRequest,
           icon: <CheckCircleIcon $color='crayola' />,
           label: 'Выполнить заявку',
           onClick: onClickExecuteTask,
@@ -76,7 +80,8 @@ const CardTitle: FC<CardTitleProps> = ({
             taskOlaStatus.isHalfExpired ||
             taskType.isRequestTask ||
             taskType.isIncidentTask ||
-            isEngineerRole,
+            isEngineerRole ||
+            hasSuspendRequest,
           icon: <QuestionCircleIcon />,
           label: taskExtendedStatus.isInReclassification
             ? 'Отменить переклассификацию'

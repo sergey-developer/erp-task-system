@@ -2,6 +2,7 @@ import { getButtonIn, queryButtonIn, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import subTaskFixtures from 'fixtures/subTask'
+import taskFixtures from 'fixtures/task'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'
@@ -9,6 +10,7 @@ import { NonNullableObject } from 'shared/interfaces/utils'
 
 import SubTask, { SubTaskProps } from './SubTask'
 
+const task = taskFixtures.getTask()
 const subTask = subTaskFixtures.getSubTask()
 
 const requiredProps: Pick<
@@ -20,10 +22,14 @@ const requiredProps: Pick<
   | 'onClickCancel'
   | 'onClickRework'
   | 'taskStatus'
+  | 'taskExtendedStatus'
+  | 'taskHasSuspendRequest'
   | 'currentUserIsTaskAssignee'
 > = {
   title: subTask.title,
   status: subTask.status,
+  taskExtendedStatus: task.extendedStatus,
+  taskHasSuspendRequest: false,
   createdAt: subTask.createdAt,
   supportGroup: subTask.supportGroup,
   onClickCancel: jest.fn(),
