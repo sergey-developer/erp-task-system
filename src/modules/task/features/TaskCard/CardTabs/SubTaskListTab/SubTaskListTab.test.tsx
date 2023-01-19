@@ -337,7 +337,7 @@ describe('Вкладка списка заданий', () => {
           body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
         })
 
-        const badRequestResponse: CreateSubTaskFormErrors = {
+        const badRequestResponse: Required<CreateSubTaskFormErrors> = {
           title: [generateWord()],
           description: [generateWord()],
           templateX5: [generateWord()],
@@ -742,7 +742,7 @@ describe('Вкладка списка заданий', () => {
         })
         mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
 
-        const badRequestResponse: ReworkSubTaskFormErrors = {
+        const badRequestResponse: Required<ReworkSubTaskFormErrors> = {
           returnReason: [generateWord()],
         }
         mockReworkSubTaskBadRequestError(subTask.id, {
@@ -1039,7 +1039,7 @@ describe('Вкладка списка заданий', () => {
         })
         mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
 
-        const badRequestResponse: CancelSubTaskFormErrors = {
+        const badRequestResponse: Required<CancelSubTaskFormErrors> = {
           cancelReason: [generateWord()],
         }
         mockCancelSubTaskBadRequestError(subTask.id, {
