@@ -3,7 +3,10 @@ import React, { FC } from 'react'
 
 import Space from 'components/Space'
 import { SubTaskModel } from 'modules/subTask/models'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
@@ -13,7 +16,9 @@ const { Text } = Typography
 
 export type SubTaskListProps = {
   taskStatus: TaskStatusEnum
+  taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
+  taskHasSuspendRequest: boolean
   list: Array<SubTaskModel>
   isError: boolean
   onClickCancel: (subTask: SubTaskModel) => void
@@ -22,7 +27,9 @@ export type SubTaskListProps = {
 
 const SubTaskList: FC<SubTaskListProps> = ({
   taskStatus,
+  taskExtendedStatus,
   currentUserIsTaskAssignee,
+  taskHasSuspendRequest,
   list,
   isError,
   onClickCancel,
@@ -52,7 +59,9 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 onClickCancel={() => onClickCancel(item)}
                 onClickRework={() => onClickRework(item)}
                 taskStatus={taskStatus}
+                taskExtendedStatus={taskExtendedStatus}
                 currentUserIsTaskAssignee={currentUserIsTaskAssignee}
+                taskHasSuspendRequest={taskHasSuspendRequest}
               />
 
               {array.length - 1 !== index && <Divider />}

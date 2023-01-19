@@ -7,7 +7,10 @@ import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { SubTaskModel } from 'modules/subTask/models'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import TaskAssignee from 'modules/task/features/TaskAssignee'
 import TaskStatus from 'modules/task/features/TaskStatus'
@@ -15,7 +18,7 @@ import {
   badgeByTaskStatus,
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
-import { useTaskStatus } from 'modules/task/hooks'
+import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
 import { makeUserNameObject } from 'modules/user/utils'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
@@ -23,7 +26,9 @@ const { Text, Title, Paragraph } = Typography
 
 export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
   taskStatus: TaskStatusEnum
+  taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
+  taskHasSuspendRequest: boolean
   onClickCancel: () => void
   onClickRework: () => void
 }
@@ -42,9 +47,12 @@ const SubTask: FC<SubTaskProps> = ({
   onClickCancel,
   onClickRework,
   taskStatus: rawTaskStatus,
+  taskExtendedStatus: rawTaskExtendedStatus,
   currentUserIsTaskAssignee,
+  taskHasSuspendRequest,
 }) => {
   const taskStatus = useTaskStatus(rawTaskStatus)
+  const taskExtendedStatus = useTaskExtendedStatus(rawTaskExtendedStatus)
   const subTaskStatus = useTaskStatus(status)
 
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
@@ -86,13 +94,27 @@ const SubTask: FC<SubTaskProps> = ({
 
         {isShowCancelBtn && (
           <Col>
-            <Button onClick={onClickCancel}>Отменить</Button>
+            <Button
+              onClick={onClickCancel}
+              disabled={
+                taskHasSuspendRequest || taskExtendedStatus.isInReclassification
+              }
+            >
+              Отменить
+            </Button>
           </Col>
         )}
 
         {isShowReworkBtn && (
           <Col>
-            <Button onClick={onClickRework}>Вернуть на доработку</Button>
+            <Button
+              onClick={onClickRework}
+              disabled={
+                taskHasSuspendRequest || taskExtendedStatus.isInReclassification
+              }
+            >
+              Вернуть на доработку
+            </Button>
           </Col>
         )}
       </Row>

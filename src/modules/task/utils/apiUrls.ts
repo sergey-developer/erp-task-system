@@ -33,6 +33,16 @@ export const getTaskReclassificationRequestUrl = (taskId: number): string =>
     id: String(taskId),
   })
 
+export const createTaskSuspendRequestUrl = (taskId: number): string =>
+  generatePath(TaskEndpointEnum.CreateTaskSuspendRequest, {
+    id: String(taskId),
+  })
+
+export const deleteTaskSuspendRequestUrl = (taskId: number): string =>
+  generatePath(TaskEndpointEnum.DeleteTaskSuspendRequest, {
+    id: String(taskId),
+  })
+
 export const getTaskJournalUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.TaskJournal, { id: String(taskId) })
 

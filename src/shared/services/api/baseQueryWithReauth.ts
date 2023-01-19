@@ -110,4 +110,6 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   return response
 }
 
+export type CustomBaseQuery = typeof baseQueryWithReauth
+
 export default baseQueryWithReauth

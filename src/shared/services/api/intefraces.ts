@@ -5,7 +5,7 @@ import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 export type ValidationErrors = Array<string>
 
 export type FieldsErrors<T> = {
-  [key in keyof T]: ValidationErrors
+  [key in keyof T]?: ValidationErrors
 }
 
 export type ErrorData<T extends object = {}> = FieldsErrors<T> & {

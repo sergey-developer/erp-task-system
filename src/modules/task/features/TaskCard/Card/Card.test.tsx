@@ -76,6 +76,11 @@ const requiredProps: TaskCardProps = {
   createReclassificationRequest: jest.fn(),
   createReclassificationRequestIsLoading: false,
 
+  createSuspendRequest: jest.fn(),
+  createSuspendRequestIsLoading: false,
+  cancelSuspendRequest: jest.fn(),
+  cancelSuspendRequestIsLoading: false,
+
   onExpandAdditionalInfo: jest.fn(),
   additionalInfoExpanded: false,
 }

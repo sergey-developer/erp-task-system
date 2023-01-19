@@ -15,6 +15,7 @@ export const requiredProps: CardTitleProps = {
   extendedStatus: TaskExtendedStatusEnum.New,
   olaStatus: TaskOlaStatusEnum.NotExpired,
   isAssignedToCurrentUser: false,
+  hasSuspendRequest: false,
   onClose: jest.fn(),
   onClickExecuteTask: jest.fn(),
   onClickRequestSuspend: jest.fn(),

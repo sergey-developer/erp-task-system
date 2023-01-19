@@ -27,8 +27,10 @@ export type TaskCardTabsProps = {
     | 'techResolution'
     | 'type'
     | 'status'
+    | 'extendedStatus'
     | 'assignee'
     | 'recordId'
+    | 'suspendRequest'
   >
 }
 

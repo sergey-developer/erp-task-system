@@ -33,6 +33,7 @@ const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {
   transferTaskToFirstLineIsLoading: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
+  hasSuspendRequest: false,
 }
 
 const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof requiredProps> =
