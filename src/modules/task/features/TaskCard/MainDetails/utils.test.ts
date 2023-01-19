@@ -1,7 +1,7 @@
 import setupMoment from 'lib/moment/setup'
 import { TaskOlaStatusEnum } from 'modules/task/constants/common'
 
-import { getCompleteAt } from '../utils'
+import { getCompleteAt } from './utils'
 
 beforeAll(() => {
   setupMoment()
