@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { ResolveTaskMutationArgsModel } from 'modules/task/models'
+import { ResolveTaskMutationArgs } from 'modules/task/models'
 import { taskResolutionApiPermissions } from 'modules/task/permissions'
 import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -21,7 +21,7 @@ export const useResolveTask = () => {
   const [mutation, state] = useResolveTaskMutation()
 
   const fn = useCallback(
-    async (data: ResolveTaskMutationArgsModel) => {
+    async (data: ResolveTaskMutationArgs) => {
       if (!permissions.canUpdate) return
 
       await mutation(data).unwrap()

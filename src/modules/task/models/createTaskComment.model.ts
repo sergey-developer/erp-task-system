@@ -1,7 +1,7 @@
 import { BaseTaskRequestArgs } from '../interfaces'
 import { TaskCommentModel } from './taskComment.model'
 
-export type CreateTaskCommentMutationArgsModel = BaseTaskRequestArgs & {
+export type CreateTaskCommentMutationArgs = BaseTaskRequestArgs & {
   comment: string
 }
-export type CreateTaskCommentResponseModel = TaskCommentModel
+export type CreateTaskCommentSuccessResponse = TaskCommentModel

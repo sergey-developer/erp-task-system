@@ -3,11 +3,11 @@ import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
 import { TaskReclassificationRequestModel } from './taskReclassificationRequest.model'
 
-export type CreateTaskReclassificationRequestMutationArgsModel =
+export type CreateTaskReclassificationRequestMutationArgs =
   BaseTaskRequestArgs & {
     comment: string
     reclassificationReason: ReclassificationReasonEnum
   }
 
-export type CreateTaskReclassificationRequestResponseModel =
+export type CreateTaskReclassificationRequestSuccessResponse =
   TaskReclassificationRequestModel

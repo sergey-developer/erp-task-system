@@ -1,9 +1,9 @@
-export type LoginResponseModel = {
+export type LoginSuccessResponse = {
   access: string
   refresh: string
 }
 
-export type LoginMutationArgsModel = {
+export type LoginMutationArgs = {
   email: string
   password: string
 }

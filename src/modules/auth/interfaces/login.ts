@@ -1,6 +1,6 @@
-import { LoginResponseModel } from '../models'
+import { LoginSuccessResponse } from '../models'
 import { JwtPayload } from './common'
 
-export type LoginActionPayload = LoginResponseModel & {
+export type LoginActionPayload = LoginSuccessResponse & {
   user: JwtPayload
 }

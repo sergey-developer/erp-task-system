@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { GetTaskQueryArgsModel } from 'modules/task/models'
+import { GetTaskQueryArgs } from 'modules/task/models'
 import { taskApiPermissions } from 'modules/task/permissions'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -18,7 +18,7 @@ import {
   getTaskServerErrorMsg,
 } from '../utils/messages'
 
-export const useGetTask = (id: GetTaskQueryArgsModel) => {
+export const useGetTask = (id: GetTaskQueryArgs) => {
   const permissions = useUserPermissions(taskApiPermissions)
 
   const state = useGetTaskQuery(id, {

@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 
-import { GetSubTaskListQueryArgsModel } from 'modules/subTask/models'
+import { GetSubTaskListQueryArgs } from 'modules/subTask/models'
 import { useUserPermissions } from 'modules/user/hooks'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { subTaskApiPermissions } from '../permissions'
 import { useGetSubTaskListQuery } from '../services/subTaskApi.service'
 
-export const useGetSubTaskList = (id: GetSubTaskListQueryArgsModel) => {
+export const useGetSubTaskList = (id: GetSubTaskListQueryArgs) => {
   const permissions = useUserPermissions(subTaskApiPermissions)
   const state = useGetSubTaskListQuery(id, { skip: !permissions.canGetList })
 

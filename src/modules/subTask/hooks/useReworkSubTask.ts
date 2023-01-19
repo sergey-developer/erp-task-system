@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { ReworkSubTaskMutationArgsModel } from 'modules/subTask/models'
+import { ReworkSubTaskMutationArgs } from 'modules/subTask/models'
 import { useUserPermissions } from 'modules/user/hooks'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -13,7 +13,7 @@ export const useReworkSubTask = () => {
   const [mutation, state] = useReworkSubTaskMutation()
 
   const fn = useCallback(
-    async (data: ReworkSubTaskMutationArgsModel) => {
+    async (data: ReworkSubTaskMutationArgs) => {
       if (permissions.canRework) {
         await mutation(data).unwrap()
       }

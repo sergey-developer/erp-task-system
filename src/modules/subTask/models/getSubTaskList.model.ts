@@ -2,6 +2,6 @@ import { TaskModel } from 'modules/task/models'
 
 import { SubTaskModel } from './subTask.model'
 
-export type GetSubTaskListQueryArgsModel = TaskModel['id']
+export type GetSubTaskListQueryArgs = TaskModel['id']
 
-export type GetSubTaskListResponseModel = Array<SubTaskModel>
+export type GetSubTaskListSuccessResponse = Array<SubTaskModel>

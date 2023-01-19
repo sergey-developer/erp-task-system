@@ -1,6 +1,6 @@
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { GetTaskCommentListResponseModel } from 'modules/task/models'
+import { GetTaskCommentListSuccessResponse } from 'modules/task/models'
 import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -9,5 +9,5 @@ const getGetTaskCommentListMockFn = (taskId: number) =>
 
 export const mockGetTaskCommentListSuccess = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<GetTaskCommentListResponseModel>>,
+  options?: Partial<ResponseResolverOptions<GetTaskCommentListSuccessResponse>>,
 ) => getSuccessMockFn(getGetTaskCommentListMockFn(taskId), options)()

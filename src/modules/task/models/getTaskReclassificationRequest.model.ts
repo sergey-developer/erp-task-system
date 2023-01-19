@@ -2,8 +2,8 @@ import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
 import { TaskReclassificationRequestModel } from './taskReclassificationRequest.model'
 
-export type GetTaskReclassificationRequestQueryArgsModel =
+export type GetTaskReclassificationRequestQueryArgs =
   BaseTaskRequestArgs['taskId']
 
-export type GetTaskReclassificationRequestResponseModel =
+export type GetTaskReclassificationRequestSuccessResponse =
   TaskReclassificationRequestModel

@@ -2,9 +2,9 @@ import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
 import { BaseSubTaskRequestArgs } from '../interfaces'
 
-export type CancelSubTaskMutationArgsModel = BaseTaskRequestArgs &
+export type CancelSubTaskMutationArgs = BaseTaskRequestArgs &
   BaseSubTaskRequestArgs & {
     cancelReason: string
   }
 
-export type CancelSubTaskResponseModel = void
+export type CancelSubTaskSuccessResponse = void

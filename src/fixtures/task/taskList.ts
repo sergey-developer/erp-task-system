@@ -15,7 +15,7 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/common'
 import {
-  GetTaskListResponseModel,
+  GetTaskListSuccessResponse,
   TaskListItemModel,
 } from 'modules/task/models'
 
@@ -60,5 +60,5 @@ export const getTaskList = (length: number = 1): Array<TaskListItemModel> =>
   times(length, () => getTaskListItem())
 
 export const getGetTaskListResponse = (
-  list: GetTaskListResponseModel['results'],
-): GetTaskListResponseModel => commonFixtures.getPaginatedListResponse(list)
+  list: GetTaskListSuccessResponse['results'],
+): GetTaskListSuccessResponse => commonFixtures.getPaginatedListResponse(list)

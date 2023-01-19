@@ -1,12 +1,9 @@
 import { FormInstance, ModalProps } from 'antd'
 
-import {
-  CancelSubTaskMutationArgsModel,
-  SubTaskModel,
-} from 'modules/subTask/models'
+import { CancelSubTaskMutationArgs, SubTaskModel } from 'modules/subTask/models'
 import { FieldsErrors } from 'shared/services/api'
 
-type FormFields = Omit<CancelSubTaskMutationArgsModel, 'taskId' | 'subTaskId'>
+type FormFields = Omit<CancelSubTaskMutationArgs, 'taskId' | 'subTaskId'>
 
 export type CancelSubTaskFormFields = Required<FormFields>
 

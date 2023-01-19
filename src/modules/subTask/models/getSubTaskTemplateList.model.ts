@@ -1,8 +1,8 @@
-import { PaginatedListResponseModel } from 'shared/models'
+import { PaginatedListSuccessResponse } from 'shared/models'
 
 import { SubTaskTemplateModel } from './subTaskTemplate.model'
 
-export type GetSubTaskTemplateListQueryArgsModel = void
+export type GetSubTaskTemplateListQueryArgs = void
 
-export type GetSubTaskTemplateListResponseModel =
-  PaginatedListResponseModel<SubTaskTemplateModel>
+export type GetSubTaskTemplateListSuccessResponse =
+  PaginatedListSuccessResponse<SubTaskTemplateModel>

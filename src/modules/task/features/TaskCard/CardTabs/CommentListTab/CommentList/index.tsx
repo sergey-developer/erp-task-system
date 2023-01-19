@@ -2,7 +2,7 @@ import { Typography } from 'antd'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
-import { GetTaskCommentListResponseModel } from 'modules/task/models'
+import { GetTaskCommentListSuccessResponse } from 'modules/task/models'
 import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
@@ -12,7 +12,7 @@ import Comment from './Comment'
 const { Text } = Typography
 
 export type CommentListProps = {
-  data: GetTaskCommentListResponseModel
+  data: GetTaskCommentListSuccessResponse
   isLoading: boolean
 }
 

@@ -17,18 +17,18 @@ import {
 } from 'modules/task/constants/dictionary'
 import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
 import {
-  CreateTaskReclassificationRequestMutationArgsModel,
+  CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
   CreateTaskSuspendRequestMutationArgs,
-  DeleteTaskSuspendRequestMutationArgsModel,
-  DeleteTaskWorkGroupMutationArgsModel,
-  ResolveTaskMutationArgsModel,
-  TakeTaskMutationArgsModel,
+  DeleteTaskSuspendRequestMutationArgs,
+  DeleteTaskWorkGroupMutationArgs,
+  ResolveTaskMutationArgs,
+  TakeTaskMutationArgs,
   TaskAssigneeModel,
   TaskModel,
   TaskReclassificationRequestModel,
-  UpdateTaskAssigneeMutationArgsModel,
-  UpdateTaskWorkGroupMutationArgsModel,
+  UpdateTaskAssigneeMutationArgs,
+  UpdateTaskWorkGroupMutationArgs,
 } from 'modules/task/models'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
@@ -114,7 +114,7 @@ export type TaskCardProps = {
   reclassificationRequest: MaybeNull<TaskReclassificationRequestModel>
   reclassificationRequestIsLoading: boolean
   createReclassificationRequest: (
-    data: CreateTaskReclassificationRequestMutationArgsModel,
+    data: CreateTaskReclassificationRequestMutationArgs,
   ) => Promise<void>
   createReclassificationRequestIsLoading: boolean
 
@@ -123,24 +123,24 @@ export type TaskCardProps = {
   ) => Promise<void>
   createSuspendRequestIsLoading: boolean
   cancelSuspendRequest: (
-    data: DeleteTaskSuspendRequestMutationArgsModel,
+    data: DeleteTaskSuspendRequestMutationArgs,
   ) => Promise<void>
   cancelSuspendRequestIsLoading: boolean
 
-  takeTask: (data: TakeTaskMutationArgsModel) => Promise<void>
+  takeTask: (data: TakeTaskMutationArgs) => Promise<void>
   takeTaskIsLoading: boolean
 
-  resolveTask: (data: ResolveTaskMutationArgsModel) => Promise<void>
+  resolveTask: (data: ResolveTaskMutationArgs) => Promise<void>
   isTaskResolving: boolean
 
-  updateAssignee: (data: UpdateTaskAssigneeMutationArgsModel) => Promise<void>
+  updateAssignee: (data: UpdateTaskAssigneeMutationArgs) => Promise<void>
   updateAssigneeIsLoading: boolean
 
   workGroupList: Array<WorkGroupListItemModel>
   workGroupListIsLoading: boolean
-  updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgsModel) => Promise<void>
+  updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgs) => Promise<void>
   updateWorkGroupIsLoading: boolean
-  deleteWorkGroup: (data: DeleteTaskWorkGroupMutationArgsModel) => Promise<void>
+  deleteWorkGroup: (data: DeleteTaskWorkGroupMutationArgs) => Promise<void>
   deleteWorkGroupIsLoading: boolean
 
   additionalInfoExpanded: boolean

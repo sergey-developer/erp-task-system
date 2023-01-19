@@ -26,7 +26,7 @@ import { FastFilterEnum } from 'modules/task/features/FastFilter/constants'
 import { testUtils as taskCardTestUtils } from 'modules/task/features/TaskCard/Card/Card.test'
 import taskTableTestUtils from 'modules/task/features/TaskTable/_tests_/utils'
 import { paginationConfig } from 'modules/task/features/TaskTable/constants/pagination'
-import { GetTaskCountersResponseModel } from 'modules/task/models'
+import { GetTaskCountersSuccessResponse } from 'modules/task/models'
 import { UserRoleEnum } from 'shared/constants/roles'
 
 import { DEFAULT_PAGE_SIZE } from '../constants'
@@ -73,7 +73,7 @@ describe('Страница реестра заявок', () => {
         const counterName = filter.toLowerCase()
         const taskCount =
           taskCountersResponse[
-            counterName as keyof GetTaskCountersResponseModel
+            counterName as keyof GetTaskCountersSuccessResponse
           ]
 
         const counter = fastFilterTestUtils.getByTextInCheckableTag(

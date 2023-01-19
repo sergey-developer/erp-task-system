@@ -5,15 +5,15 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 import {
-  GetTaskReclassificationRequestQueryArgsModel,
-  GetTaskReclassificationRequestResponseModel,
+  GetTaskReclassificationRequestQueryArgs,
+  GetTaskReclassificationRequestSuccessResponse,
 } from 'modules/task/models'
 import { getTaskReclassificationRequestUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
 const getTaskReclassificationRequestMockFn = (
-  taskId: GetTaskReclassificationRequestQueryArgsModel,
+  taskId: GetTaskReclassificationRequestQueryArgs,
 ) =>
   getRequestMockFn(
     HttpMethodEnum.Get,
@@ -21,14 +21,14 @@ const getTaskReclassificationRequestMockFn = (
   )
 
 export const mockGetTaskReclassificationRequestSuccess = (
-  taskId: GetTaskReclassificationRequestQueryArgsModel,
+  taskId: GetTaskReclassificationRequestQueryArgs,
   options?: Partial<
-    ResponseResolverOptions<GetTaskReclassificationRequestResponseModel>
+    ResponseResolverOptions<GetTaskReclassificationRequestSuccessResponse>
   >,
 ) => getSuccessMockFn(getTaskReclassificationRequestMockFn(taskId), options)()
 
 export const mockGetTaskReclassificationRequestServerError = <T extends object>(
-  taskId: GetTaskReclassificationRequestQueryArgsModel,
+  taskId: GetTaskReclassificationRequestQueryArgs,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) =>
   getServerErrorMockFn(getTaskReclassificationRequestMockFn(taskId), options)()

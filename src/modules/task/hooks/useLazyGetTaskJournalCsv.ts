@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { GetTaskJournalCsvQueryArgsModel } from 'modules/task/models'
+import { GetTaskJournalCsvQueryArgs } from 'modules/task/models'
 import { taskJournalApiPermissions } from 'modules/task/permissions'
 import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskJournalApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -12,7 +12,7 @@ export const useLazyGetTaskJournalCsv = () => {
   const [trigger, state] = useLazyGetTaskJournalCsvQuery()
 
   const fn = useCallback(
-    async (data: GetTaskJournalCsvQueryArgsModel) => {
+    async (data: GetTaskJournalCsvQueryArgs) => {
       if (permissions.canGet) {
         return trigger(data).unwrap()
       }

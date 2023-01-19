@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { CreateSubTaskMutationArgsModel } from 'modules/subTask/models'
+import { CreateSubTaskMutationArgs } from 'modules/subTask/models'
 import { useUserPermissions } from 'modules/user/hooks'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -13,7 +13,7 @@ export const useCreateSubTask = () => {
   const [mutation, state] = useCreateSubTaskMutation()
 
   const fn = useCallback(
-    async (data: CreateSubTaskMutationArgsModel) => {
+    async (data: CreateSubTaskMutationArgs) => {
       if (permissions.canCreate) {
         await mutation(data).unwrap()
       }

@@ -1,7 +1,7 @@
 import { TaskEndpointTagEnum } from 'modules/task/constants/api'
 import {
-  UpdateTaskAssigneeMutationArgsModel,
-  UpdateTaskAssigneeResponseModel,
+  UpdateTaskAssigneeMutationArgs,
+  UpdateTaskAssigneeSuccessResponse,
 } from 'modules/task/models'
 import { getTaskAssigneeUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -11,8 +11,8 @@ import taskApiService from './taskApi.service'
 const taskAssigneeApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
     updateTaskAssignee: build.mutation<
-      UpdateTaskAssigneeResponseModel,
-      UpdateTaskAssigneeMutationArgsModel
+      UpdateTaskAssigneeSuccessResponse,
+      UpdateTaskAssigneeMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
         url: getTaskAssigneeUrl(taskId),

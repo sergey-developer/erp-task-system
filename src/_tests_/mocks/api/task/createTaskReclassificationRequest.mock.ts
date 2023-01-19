@@ -6,15 +6,15 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 import {
-  CreateTaskReclassificationRequestMutationArgsModel,
-  CreateTaskReclassificationRequestResponseModel,
+  CreateTaskReclassificationRequestMutationArgs,
+  CreateTaskReclassificationRequestSuccessResponse,
 } from 'modules/task/models'
 import { getCreateTaskReclassificationRequestUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
 const createTaskReclassificationRequestMockFn = (
-  taskId: CreateTaskReclassificationRequestMutationArgsModel['taskId'],
+  taskId: CreateTaskReclassificationRequestMutationArgs['taskId'],
 ) =>
   getRequestMockFn(
     HttpMethodEnum.Post,
@@ -22,9 +22,9 @@ const createTaskReclassificationRequestMockFn = (
   )
 
 export const mockCreateTaskReclassificationRequestSuccess = (
-  taskId: CreateTaskReclassificationRequestMutationArgsModel['taskId'],
+  taskId: CreateTaskReclassificationRequestMutationArgs['taskId'],
   options?: Partial<
-    ResponseResolverOptions<CreateTaskReclassificationRequestResponseModel>
+    ResponseResolverOptions<CreateTaskReclassificationRequestSuccessResponse>
   >,
 ) =>
   getSuccessMockFn(createTaskReclassificationRequestMockFn(taskId), options)()
@@ -32,7 +32,7 @@ export const mockCreateTaskReclassificationRequestSuccess = (
 export const mockCreateTaskReclassificationRequestNotFoundError = <
   T extends object,
 >(
-  taskId: CreateTaskReclassificationRequestMutationArgsModel['taskId'],
+  taskId: CreateTaskReclassificationRequestMutationArgs['taskId'],
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) =>
   getNotFoundErrorMockFn(
@@ -43,7 +43,7 @@ export const mockCreateTaskReclassificationRequestNotFoundError = <
 export const mockCreateTaskReclassificationRequestServerError = <
   T extends object,
 >(
-  taskId: CreateTaskReclassificationRequestMutationArgsModel['taskId'],
+  taskId: CreateTaskReclassificationRequestMutationArgs['taskId'],
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) =>
   getServerErrorMockFn(

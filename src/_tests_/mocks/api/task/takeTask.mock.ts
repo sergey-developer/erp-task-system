@@ -5,22 +5,22 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 import {
-  TakeTaskMutationArgsModel,
-  TakeTaskResponseModel,
+  TakeTaskMutationArgs,
+  TakeTaskSuccessResponse,
 } from 'modules/task/models'
 import { getTakeTaskUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
-const takeTaskMockFn = (taskId: TakeTaskMutationArgsModel['taskId']) =>
+const takeTaskMockFn = (taskId: TakeTaskMutationArgs['taskId']) =>
   getRequestMockFn(HttpMethodEnum.Post, getTakeTaskUrl(taskId))
 
 export const mockTakeTaskSuccess = (
-  taskId: TakeTaskMutationArgsModel['taskId'],
-  options?: Partial<ResponseResolverOptions<TakeTaskResponseModel>>,
+  taskId: TakeTaskMutationArgs['taskId'],
+  options?: Partial<ResponseResolverOptions<TakeTaskSuccessResponse>>,
 ) => getSuccessMockFn(takeTaskMockFn(taskId), options)()
 
 export const mockTakeTaskServerError = <T extends object>(
-  taskId: TakeTaskMutationArgsModel['taskId'],
+  taskId: TakeTaskMutationArgs['taskId'],
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getServerErrorMockFn(takeTaskMockFn(taskId), options)()

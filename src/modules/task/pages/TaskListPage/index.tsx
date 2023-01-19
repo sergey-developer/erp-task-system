@@ -17,7 +17,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react'
 import { FilterIcon, SyncIcon } from 'components/Icons'
 import TaskCard from 'modules/task/features/TaskCard/CardContainer'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
-import { GetTaskListQueryArgsModel } from 'modules/task/models'
+import { GetTaskListQueryArgs } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks'
@@ -61,7 +61,7 @@ const TaskListPage: FC = () => {
     ? FastFilterEnum.Mine
     : FastFilterEnum.All
 
-  const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgsModel>({
+  const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>({
     filter: initialFastFilter,
     limit: DEFAULT_PAGE_SIZE,
     offset: 0,

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { GetTaskListQueryArgsModel } from 'modules/task/models'
+import { GetTaskListQueryArgs } from 'modules/task/models'
 import { taskApiPermissions } from 'modules/task/permissions'
 import { useLazyGetTaskListQuery } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -12,7 +12,7 @@ export const useLazyGetTaskList = () => {
   const [trigger, state] = useLazyGetTaskListQuery()
 
   const fn = useCallback(
-    (filter: GetTaskListQueryArgsModel) => {
+    (filter: GetTaskListQueryArgs) => {
       if (permissions.canGetList) {
         trigger(filter)
       }

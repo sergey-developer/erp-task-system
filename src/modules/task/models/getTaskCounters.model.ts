@@ -1,8 +1,8 @@
 import { FastFilterEnum } from '../features/FastFilter/constants'
 
-export type GetTaskCountersQueryArgsModel = null
+export type GetTaskCountersQueryArgs = null
 
-export type GetTaskCountersResponseModel = Record<
+export type GetTaskCountersSuccessResponse = Record<
   Lowercase<FastFilterEnum>,
   number
 >

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { CancelSubTaskMutationArgsModel } from 'modules/subTask/models'
+import { CancelSubTaskMutationArgs } from 'modules/subTask/models'
 import { useUserPermissions } from 'modules/user/hooks'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -13,7 +13,7 @@ export const useCancelSubTask = () => {
   const [mutation, state] = useCancelSubTaskMutation()
 
   const fn = useCallback(
-    async (data: CancelSubTaskMutationArgsModel) => {
+    async (data: CancelSubTaskMutationArgs) => {
       if (permissions.canDelete) {
         await mutation(data).unwrap()
       }

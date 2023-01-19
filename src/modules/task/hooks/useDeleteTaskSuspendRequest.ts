@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { DeleteTaskSuspendRequestMutationArgsModel } from 'modules/task/models'
+import { DeleteTaskSuspendRequestMutationArgs } from 'modules/task/models'
 import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
 import { useUserPermissions } from 'modules/user/hooks'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
@@ -22,7 +22,7 @@ export const useDeleteTaskSuspendRequest = () => {
   const [mutation, state] = useDeleteSuspendRequestMutation()
 
   const fn = useCallback(
-    async (data: DeleteTaskSuspendRequestMutationArgsModel) => {
+    async (data: DeleteTaskSuspendRequestMutationArgs) => {
       if (!permissions.canDelete) return
 
       await mutation(data).unwrap()

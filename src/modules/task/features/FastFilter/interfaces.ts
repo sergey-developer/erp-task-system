@@ -1,4 +1,4 @@
-import { GetTaskCountersResponseModel } from 'modules/task/models'
+import { GetTaskCountersSuccessResponse } from 'modules/task/models'
 import { MaybeUndefined, Nullable } from 'shared/interfaces/utils'
 
 import { FastFilterEnum } from './constants'
@@ -9,7 +9,7 @@ export type FilterItem = Pick<FilterTagProps, 'text' | 'amount'> & {
 }
 
 export type FastFilterProps = {
-  data: MaybeUndefined<GetTaskCountersResponseModel>
+  data: MaybeUndefined<GetTaskCountersSuccessResponse>
   selectedFilter: Nullable<FastFilterEnum>
   isError: boolean
   isLoading: boolean

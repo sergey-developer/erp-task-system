@@ -1,8 +1,8 @@
 import {
-  GetTaskJournalCsvQueryArgsModel,
-  GetTaskJournalCsvResponseModel,
-  GetTaskJournalQueryArgsModel,
-  GetTaskJournalResponseModel,
+  GetTaskJournalCsvQueryArgs,
+  GetTaskJournalCsvSuccessResponse,
+  GetTaskJournalQueryArgs,
+  GetTaskJournalSuccessResponse,
 } from 'modules/task/models'
 import {
   getTaskJournalCsvUrl,
@@ -15,8 +15,8 @@ import taskApiService from './taskApi.service'
 const taskJournalApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
     getTaskJournal: build.query<
-      GetTaskJournalResponseModel,
-      GetTaskJournalQueryArgsModel
+      GetTaskJournalSuccessResponse,
+      GetTaskJournalQueryArgs
     >({
       query: (taskId) => ({
         url: getTaskJournalUrl(taskId),
@@ -24,8 +24,8 @@ const taskJournalApiService = taskApiService.injectEndpoints({
       }),
     }),
     getTaskJournalCsv: build.query<
-      GetTaskJournalCsvResponseModel,
-      GetTaskJournalCsvQueryArgsModel
+      GetTaskJournalCsvSuccessResponse,
+      GetTaskJournalCsvQueryArgs
     >({
       query: (taskId) => ({
         url: getTaskJournalCsvUrl(taskId),

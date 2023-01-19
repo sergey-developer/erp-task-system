@@ -5,7 +5,7 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { ReworkSubTaskResponseModel } from 'modules/subTask/models'
+import { ReworkSubTaskSuccessResponse } from 'modules/subTask/models'
 import { getCancelSubTaskUrl } from 'modules/subTask/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
@@ -15,7 +15,7 @@ const getCancelSubTaskMockFn = (subTaskId: number) =>
 
 export const mockCancelSubTaskSuccess = (
   subTaskId: number,
-  options?: Partial<ResponseResolverOptions<ReworkSubTaskResponseModel>>,
+  options?: Partial<ResponseResolverOptions<ReworkSubTaskSuccessResponse>>,
 ) => getSuccessMockFn(getCancelSubTaskMockFn(subTaskId), options)()
 
 export const mockCancelSubTaskBadRequestError = <T extends object>(

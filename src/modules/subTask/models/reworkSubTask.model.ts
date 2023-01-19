@@ -2,9 +2,9 @@ import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
 import { BaseSubTaskRequestArgs } from '../interfaces'
 
-export type ReworkSubTaskMutationArgsModel = BaseTaskRequestArgs &
+export type ReworkSubTaskMutationArgs = BaseTaskRequestArgs &
   BaseSubTaskRequestArgs & {
     returnReason: string
   }
 
-export type ReworkSubTaskResponseModel = void
+export type ReworkSubTaskSuccessResponse = void

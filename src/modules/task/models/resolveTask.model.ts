@@ -1,9 +1,9 @@
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
-export type ResolveTaskMutationArgsModel = BaseTaskRequestArgs &
+export type ResolveTaskMutationArgs = BaseTaskRequestArgs &
   Partial<{
     techResolution: string
     userResolution: string
   }>
 
-export type ResolveTaskResponseModel = void
+export type ResolveTaskSuccessResponse = void

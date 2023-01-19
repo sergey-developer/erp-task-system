@@ -1,6 +1,6 @@
-import { RefreshTokenResponseModel } from '../models'
+import { RefreshTokenSuccessResponse } from '../models'
 import { JwtPayload } from './common'
 
-export type RefreshTokenActionPayload = RefreshTokenResponseModel & {
+export type RefreshTokenActionPayload = RefreshTokenSuccessResponse & {
   user: JwtPayload
 }

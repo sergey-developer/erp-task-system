@@ -5,7 +5,7 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { CreateSubTaskResponseModel } from 'modules/subTask/models'
+import { CreateSubTaskSuccessResponse } from 'modules/subTask/models'
 import { getCreateSubTaskUrl } from 'modules/subTask/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
@@ -15,7 +15,7 @@ const getCreateSubTaskMockFn = (taskId: number) =>
 
 export const mockCreateSubTaskSuccess = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<CreateSubTaskResponseModel>>,
+  options?: Partial<ResponseResolverOptions<CreateSubTaskSuccessResponse>>,
 ) => {
   getSuccessMockFn(getCreateSubTaskMockFn(taskId), options)()
 }

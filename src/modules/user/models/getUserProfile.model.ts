@@ -1,5 +1,5 @@
 import { UserProfileModel } from './userProfile.model'
 
-export type GetUserProfileQueryArgsModel = void
+export type GetUserProfileQueryArgs = void
 
-export type GetUserProfileResponseModel = UserProfileModel
+export type GetUserProfileSuccessResponse = UserProfileModel

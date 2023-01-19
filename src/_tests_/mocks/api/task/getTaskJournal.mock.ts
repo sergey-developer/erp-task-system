@@ -4,7 +4,7 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { GetTaskJournalResponseModel } from 'modules/task/models'
+import { GetTaskJournalSuccessResponse } from 'modules/task/models'
 import {
   getTaskJournalCsvUrl,
   getTaskJournalUrl,
@@ -20,7 +20,7 @@ const getGetJournalCsvMockFn = (taskId: number) =>
 
 export const mockGetJournalSuccess = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<GetTaskJournalResponseModel>>,
+  options?: Partial<ResponseResolverOptions<GetTaskJournalSuccessResponse>>,
 ) => getSuccessMockFn(getGetJournalMockFn(taskId), options)()
 
 export const mockGetJournalServerError = <T extends object>(

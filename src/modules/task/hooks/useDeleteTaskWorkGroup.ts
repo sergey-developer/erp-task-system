@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { DeleteTaskWorkGroupMutationArgsModel } from 'modules/task/models'
+import { DeleteTaskWorkGroupMutationArgs } from 'modules/task/models'
 import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
 import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -22,7 +22,7 @@ export const useDeleteTaskWorkGroup = () => {
   const [mutation, state] = useDeleteTaskWorkGroupMutation()
 
   const fn = useCallback(
-    async (data: DeleteTaskWorkGroupMutationArgsModel) => {
+    async (data: DeleteTaskWorkGroupMutationArgs) => {
       if (!permissions.canDelete) return
 
       await mutation(data).unwrap()

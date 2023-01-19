@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 
-import { GetTaskMonitoringQueryArgsModel } from 'modules/monitoring/models'
+import { GetTaskMonitoringQueryArgs } from 'modules/monitoring/models'
 import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskMonitoring = (
-  args: GetTaskMonitoringQueryArgsModel,
+  args: GetTaskMonitoringQueryArgs,
   options?: Partial<{ skip: boolean }>,
 ) => {
   const state = useGetTaskMonitoringQuery(args, options)

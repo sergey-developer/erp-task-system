@@ -1,7 +1,7 @@
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
-export type DeleteTaskWorkGroupMutationArgsModel = BaseTaskRequestArgs & {
+export type DeleteTaskWorkGroupMutationArgs = BaseTaskRequestArgs & {
   description: string
 }
 
-export type DeleteTaskWorkGroupResponseModel = void
+export type DeleteTaskWorkGroupSuccessResponse = void

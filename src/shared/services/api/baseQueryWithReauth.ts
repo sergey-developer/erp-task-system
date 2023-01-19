@@ -3,7 +3,7 @@ import { Mutex } from 'async-mutex'
 import { refreshToken as refreshTokenAction } from 'modules/auth/auth.slice'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
-import { RefreshTokenResponseModel } from 'modules/auth/models'
+import { RefreshTokenSuccessResponse } from 'modules/auth/models'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { logoutAndClearTokens, parseJwt } from 'modules/auth/utils'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -69,7 +69,8 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           }
 
           if (refreshResult.data) {
-            const refreshData = refreshResult.data as RefreshTokenResponseModel
+            const refreshData =
+              refreshResult.data as RefreshTokenSuccessResponse
 
             authLocalStorageService.setAccessToken(refreshData.access)
             authLocalStorageService.setRefreshToken(refreshData.refresh)

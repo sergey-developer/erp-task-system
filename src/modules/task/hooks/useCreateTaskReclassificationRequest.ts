@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { CreateTaskReclassificationRequestMutationArgsModel } from 'modules/task/models'
+import { CreateTaskReclassificationRequestMutationArgs } from 'modules/task/models'
 import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskReclassificationRequestApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -21,7 +21,7 @@ export const useCreateTaskReclassificationRequest = () => {
   const [mutation, state] = useCreateReclassificationRequestMutation()
 
   const fn = useCallback(
-    async (data: CreateTaskReclassificationRequestMutationArgsModel) => {
+    async (data: CreateTaskReclassificationRequestMutationArgs) => {
       if (!permissions.canCreate) return
 
       await mutation(data).unwrap()

@@ -1,10 +1,10 @@
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import {
-  CreateTaskReclassificationRequestMutationArgsModel,
-  CreateTaskReclassificationRequestResponseModel,
-  GetTaskReclassificationRequestQueryArgsModel,
-  GetTaskReclassificationRequestResponseModel,
-  GetTaskResponseModel,
+  CreateTaskReclassificationRequestMutationArgs,
+  CreateTaskReclassificationRequestSuccessResponse,
+  GetTaskReclassificationRequestQueryArgs,
+  GetTaskReclassificationRequestSuccessResponse,
+  GetTaskSuccessResponse,
 } from 'modules/task/models'
 import {
   getCreateTaskReclassificationRequestUrl,
@@ -18,8 +18,8 @@ import taskApiService from './taskApi.service'
 const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
     createReclassificationRequest: build.mutation<
-      CreateTaskReclassificationRequestResponseModel,
-      CreateTaskReclassificationRequestMutationArgsModel
+      CreateTaskReclassificationRequestSuccessResponse,
+      CreateTaskReclassificationRequestMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
         url: getCreateTaskReclassificationRequestUrl(taskId),
@@ -34,7 +34,7 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
             taskApiService.util.updateQueryData(
               TaskEndpointNameEnum.GetTask as never,
               taskId as never,
-              (task: GetTaskResponseModel) => {
+              (task: GetTaskSuccessResponse) => {
                 task.extendedStatus = TaskExtendedStatusEnum.InReclassification
               },
             ),
@@ -43,8 +43,8 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
       },
     }),
     getReclassificationRequest: build.query<
-      GetTaskReclassificationRequestResponseModel,
-      GetTaskReclassificationRequestQueryArgsModel
+      GetTaskReclassificationRequestSuccessResponse,
+      GetTaskReclassificationRequestQueryArgs
     >({
       query: (taskId) => ({
         url: getTaskReclassificationRequestUrl(taskId),

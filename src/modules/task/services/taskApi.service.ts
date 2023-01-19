@@ -5,16 +5,16 @@ import {
 } from 'modules/task/constants/api'
 import { GetTaskListTransformedResponse } from 'modules/task/interfaces'
 import {
-  GetTaskCountersQueryArgsModel,
-  GetTaskCountersResponseModel,
-  GetTaskListQueryArgsModel,
-  GetTaskListResponseModel,
-  GetTaskQueryArgsModel,
-  GetTaskResponseModel,
-  ResolveTaskMutationArgsModel,
-  ResolveTaskResponseModel,
-  TakeTaskMutationArgsModel,
-  TakeTaskResponseModel,
+  GetTaskCountersQueryArgs,
+  GetTaskCountersSuccessResponse,
+  GetTaskListQueryArgs,
+  GetTaskListSuccessResponse,
+  GetTaskQueryArgs,
+  GetTaskSuccessResponse,
+  ResolveTaskMutationArgs,
+  ResolveTaskSuccessResponse,
+  TakeTaskMutationArgs,
+  TakeTaskSuccessResponse,
 } from 'modules/task/models'
 import {
   getResolveTaskUrl,
@@ -32,7 +32,7 @@ const taskApiService = apiService
     endpoints: (build) => ({
       [TaskEndpointNameEnum.GetTaskList]: build.query<
         GetTaskListTransformedResponse,
-        GetTaskListQueryArgsModel
+        GetTaskListQueryArgs
       >({
         query: (filter) => ({
           url: TaskEndpointEnum.TaskList,
@@ -40,7 +40,11 @@ const taskApiService = apiService
           params: filter,
         }),
         // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
-        transformResponse: (response: GetTaskListResponseModel, meta, arg) => {
+        transformResponse: (
+          response: GetTaskListSuccessResponse,
+          meta,
+          arg,
+        ) => {
           return {
             pagination: {
               current: arg.offset / arg.limit + 1,
@@ -54,8 +58,8 @@ const taskApiService = apiService
           error ? [] : [TaskEndpointTagEnum.TaskList],
       }),
       [TaskEndpointNameEnum.GetTaskCounters]: build.query<
-        GetTaskCountersResponseModel,
-        GetTaskCountersQueryArgsModel
+        GetTaskCountersSuccessResponse,
+        GetTaskCountersQueryArgs
       >({
         query: () => ({
           url: TaskEndpointEnum.TaskCounters,
@@ -63,8 +67,8 @@ const taskApiService = apiService
         }),
       }),
       [TaskEndpointNameEnum.GetTask]: build.query<
-        GetTaskResponseModel,
-        GetTaskQueryArgsModel
+        GetTaskSuccessResponse,
+        GetTaskQueryArgs
       >({
         query: (taskId) => ({
           url: getTaskUrl(taskId),
@@ -74,8 +78,8 @@ const taskApiService = apiService
           error ? [] : [TaskEndpointTagEnum.Task],
       }),
       [TaskEndpointNameEnum.ResolveTask]: build.mutation<
-        ResolveTaskResponseModel,
-        ResolveTaskMutationArgsModel
+        ResolveTaskSuccessResponse,
+        ResolveTaskMutationArgs
       >({
         query: ({ taskId, ...payload }) => ({
           url: getResolveTaskUrl(taskId),
@@ -86,8 +90,8 @@ const taskApiService = apiService
           error ? [] : [TaskEndpointTagEnum.TaskList],
       }),
       [TaskEndpointNameEnum.TakeTask]: build.mutation<
-        TakeTaskResponseModel,
-        TakeTaskMutationArgsModel
+        TakeTaskSuccessResponse,
+        TakeTaskMutationArgs
       >({
         query: ({ taskId }) => ({
           url: getTakeTaskUrl(taskId),

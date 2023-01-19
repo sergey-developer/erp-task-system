@@ -7,7 +7,7 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { CreateTaskCommentResponseModel } from 'modules/task/models'
+import { CreateTaskCommentSuccessResponse } from 'modules/task/models'
 import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
@@ -17,7 +17,7 @@ const getCreateTaskCommentMockFn = (taskId: number) =>
 
 export const mockCreateTaskCommentSuccess = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<CreateTaskCommentResponseModel>>,
+  options?: Partial<ResponseResolverOptions<CreateTaskCommentSuccessResponse>>,
 ) => getSuccessMockFn(getCreateTaskCommentMockFn(taskId), options)()
 
 export const mockCreateTaskCommentBadRequestError = <T extends object>(

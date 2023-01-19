@@ -1,9 +1,9 @@
 import {
   CreateTaskSuspendRequestMutationArgs,
   CreateTaskSuspendRequestSuccessResponse,
-  DeleteTaskSuspendRequestMutationArgsModel,
-  DeleteTaskSuspendRequestResponseModel,
-  GetTaskResponseModel,
+  DeleteTaskSuspendRequestMutationArgs,
+  DeleteTaskSuspendRequestSuccessResponse,
+  GetTaskSuccessResponse,
 } from 'modules/task/models'
 import {
   createTaskSuspendRequestUrl,
@@ -34,7 +34,7 @@ const taskSuspendRequestApiService = taskApiService.injectEndpoints({
             taskApiService.util.updateQueryData(
               TaskEndpointNameEnum.GetTask as never,
               taskId as never,
-              (task: GetTaskResponseModel) => {
+              (task: GetTaskSuccessResponse) => {
                 task.suspendRequest = suspendRequest
               },
             ),
@@ -43,8 +43,8 @@ const taskSuspendRequestApiService = taskApiService.injectEndpoints({
       },
     }),
     deleteSuspendRequest: build.mutation<
-      DeleteTaskSuspendRequestResponseModel,
-      DeleteTaskSuspendRequestMutationArgsModel
+      DeleteTaskSuspendRequestSuccessResponse,
+      DeleteTaskSuspendRequestMutationArgs
     >({
       query: ({ taskId }) => ({
         url: deleteTaskSuspendRequestUrl(taskId),

@@ -1,5 +1,5 @@
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
-export type DeleteTaskSuspendRequestMutationArgsModel = BaseTaskRequestArgs
+export type DeleteTaskSuspendRequestMutationArgs = BaseTaskRequestArgs
 
-export type DeleteTaskSuspendRequestResponseModel = void
+export type DeleteTaskSuspendRequestSuccessResponse = void

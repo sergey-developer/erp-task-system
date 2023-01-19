@@ -1,7 +1,7 @@
 import { UserEndpointEnum } from 'modules/user/constants/api'
 import {
-  GetUserProfileQueryArgsModel,
-  GetUserProfileResponseModel,
+  GetUserProfileQueryArgs,
+  GetUserProfileSuccessResponse,
 } from 'modules/user/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
@@ -9,8 +9,8 @@ import { apiService } from 'shared/services/api'
 const userApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
     getUserProfile: build.query<
-      GetUserProfileResponseModel,
-      GetUserProfileQueryArgsModel
+      GetUserProfileSuccessResponse,
+      GetUserProfileQueryArgs
     >({
       query: () => ({
         url: UserEndpointEnum.GetUserProfile,

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { CreateTaskCommentMutationArgsModel } from 'modules/task/models'
+import { CreateTaskCommentMutationArgs } from 'modules/task/models'
 import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useCreateTaskCommentMutation } from 'modules/task/services/taskCommentApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -20,7 +20,7 @@ export const useCreateTaskComment = () => {
   const [mutation, state] = useCreateTaskCommentMutation()
 
   const fn = useCallback(
-    async (data: CreateTaskCommentMutationArgsModel) => {
+    async (data: CreateTaskCommentMutationArgs) => {
       if (!permissions.canCreate) return
 
       await mutation(data).unwrap()

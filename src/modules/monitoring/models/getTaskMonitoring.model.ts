@@ -1,5 +1,5 @@
 import { TaskMonitoringModel } from './taskMonitoring.model'
 
-export type GetTaskMonitoringQueryArgsModel = string
+export type GetTaskMonitoringQueryArgs = string
 
-export type GetTaskMonitoringResponseModel = Array<TaskMonitoringModel>
+export type GetTaskMonitoringSuccessResponse = Array<TaskMonitoringModel>

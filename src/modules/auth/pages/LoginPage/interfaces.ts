@@ -1,3 +1,3 @@
-import { LoginMutationArgsModel } from 'modules/auth/models'
+import { LoginMutationArgs } from 'modules/auth/models'
 
-export type LoginFormFields = LoginMutationArgsModel
+export type LoginFormFields = LoginMutationArgs

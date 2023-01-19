@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { UpdateTaskAssigneeMutationArgsModel } from 'modules/task/models'
+import { UpdateTaskAssigneeMutationArgs } from 'modules/task/models'
 import { taskAssigneeApiPermissions } from 'modules/task/permissions'
 import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskAssigneeApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -13,7 +13,7 @@ export const useUpdateTaskAssignee = () => {
   const [mutation, state] = useUpdateTaskAssigneeMutation()
 
   const fn = useCallback(
-    async (data: UpdateTaskAssigneeMutationArgsModel) => {
+    async (data: UpdateTaskAssigneeMutationArgs) => {
       if (!permissions.canUpdate) return
 
       await mutation(data).unwrap()

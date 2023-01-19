@@ -1,14 +1,14 @@
 import {
-  CancelSubTaskMutationArgsModel,
-  CancelSubTaskResponseModel,
-  CreateSubTaskMutationArgsModel,
-  CreateSubTaskResponseModel,
-  GetSubTaskListQueryArgsModel,
-  GetSubTaskListResponseModel,
-  GetSubTaskTemplateListQueryArgsModel,
-  GetSubTaskTemplateListResponseModel,
-  ReworkSubTaskMutationArgsModel,
-  ReworkSubTaskResponseModel,
+  CancelSubTaskMutationArgs,
+  CancelSubTaskSuccessResponse,
+  CreateSubTaskMutationArgs,
+  CreateSubTaskSuccessResponse,
+  GetSubTaskListQueryArgs,
+  GetSubTaskListSuccessResponse,
+  GetSubTaskTemplateListQueryArgs,
+  GetSubTaskTemplateListSuccessResponse,
+  ReworkSubTaskMutationArgs,
+  ReworkSubTaskSuccessResponse,
   SubTaskModel,
 } from 'modules/subTask/models'
 import {
@@ -27,8 +27,8 @@ import { SubTaskEndpointNameEnum } from '../constants/api'
 const subTaskApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
     [SubTaskEndpointNameEnum.GetSubTaskList]: build.query<
-      GetSubTaskListResponseModel,
-      GetSubTaskListQueryArgsModel
+      GetSubTaskListSuccessResponse,
+      GetSubTaskListQueryArgs
     >({
       query: (taskId) => ({
         url: getSubTaskListUrl(taskId),
@@ -36,8 +36,8 @@ const subTaskApiService = apiService.injectEndpoints({
       }),
     }),
     [SubTaskEndpointNameEnum.GetSubTaskTemplateList]: build.query<
-      GetSubTaskTemplateListResponseModel,
-      GetSubTaskTemplateListQueryArgsModel
+      GetSubTaskTemplateListSuccessResponse,
+      GetSubTaskTemplateListQueryArgs
     >({
       query: () => ({
         url: getSubTaskTemplateListUrl(),
@@ -45,8 +45,8 @@ const subTaskApiService = apiService.injectEndpoints({
       }),
     }),
     [SubTaskEndpointNameEnum.CreateSubTask]: build.mutation<
-      CreateSubTaskResponseModel,
-      CreateSubTaskMutationArgsModel
+      CreateSubTaskSuccessResponse,
+      CreateSubTaskMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
         url: getCreateSubTaskUrl(taskId),
@@ -70,8 +70,8 @@ const subTaskApiService = apiService.injectEndpoints({
       },
     }),
     [SubTaskEndpointNameEnum.CancelSubTask]: build.mutation<
-      CancelSubTaskResponseModel,
-      CancelSubTaskMutationArgsModel
+      CancelSubTaskSuccessResponse,
+      CancelSubTaskMutationArgs
     >({
       query: ({ taskId, subTaskId, ...payload }) => ({
         url: getCancelSubTaskUrl(subTaskId),
@@ -102,8 +102,8 @@ const subTaskApiService = apiService.injectEndpoints({
       },
     }),
     [SubTaskEndpointNameEnum.ReworkSubTask]: build.mutation<
-      ReworkSubTaskResponseModel,
-      ReworkSubTaskMutationArgsModel
+      ReworkSubTaskSuccessResponse,
+      ReworkSubTaskMutationArgs
     >({
       query: ({ taskId, subTaskId, ...payload }) => ({
         url: getReworkSubTaskUrl(subTaskId),

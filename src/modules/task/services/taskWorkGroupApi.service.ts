@@ -1,9 +1,9 @@
 import { TaskEndpointTagEnum } from 'modules/task/constants/api'
 import {
-  DeleteTaskWorkGroupMutationArgsModel,
-  DeleteTaskWorkGroupResponseModel,
-  UpdateTaskWorkGroupMutationArgsModel,
-  UpdateTaskWorkGroupResponseModel,
+  DeleteTaskWorkGroupMutationArgs,
+  DeleteTaskWorkGroupSuccessResponse,
+  UpdateTaskWorkGroupMutationArgs,
+  UpdateTaskWorkGroupSuccessResponse,
 } from 'modules/task/models'
 import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -13,8 +13,8 @@ import taskApiService from './taskApi.service'
 const taskWorkGroupApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
     updateTaskWorkGroup: build.mutation<
-      UpdateTaskWorkGroupResponseModel,
-      UpdateTaskWorkGroupMutationArgsModel
+      UpdateTaskWorkGroupSuccessResponse,
+      UpdateTaskWorkGroupMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
         url: getTaskWorkGroupUrl(taskId),
@@ -25,8 +25,8 @@ const taskWorkGroupApiService = taskApiService.injectEndpoints({
         error ? [] : [TaskEndpointTagEnum.TaskList],
     }),
     deleteTaskWorkGroup: build.mutation<
-      DeleteTaskWorkGroupResponseModel,
-      DeleteTaskWorkGroupMutationArgsModel
+      DeleteTaskWorkGroupSuccessResponse,
+      DeleteTaskWorkGroupMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
         url: getTaskWorkGroupUrl(taskId),

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { UpdateTaskWorkGroupMutationArgsModel } from 'modules/task/models'
+import { UpdateTaskWorkGroupMutationArgs } from 'modules/task/models'
 import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
 import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -19,7 +19,7 @@ export const useUpdateTaskWorkGroup = () => {
   const [mutation, state] = useUpdateTaskWorkGroupMutation()
 
   const fn = useCallback(
-    async (data: UpdateTaskWorkGroupMutationArgsModel) => {
+    async (data: UpdateTaskWorkGroupMutationArgs) => {
       if (!permissions.canUpdate) return
 
       await mutation(data).unwrap()
