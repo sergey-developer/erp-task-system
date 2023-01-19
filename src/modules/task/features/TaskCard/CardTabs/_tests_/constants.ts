@@ -9,7 +9,7 @@ import {
 import { TaskCardTabsProps } from '../index'
 
 export const requiredProps: TaskCardTabsProps = {
-  details: {
+  task: {
     id: generateId(),
     type: TaskTypeEnum.Request,
     title: generateWord(),

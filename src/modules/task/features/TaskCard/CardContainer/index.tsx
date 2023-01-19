@@ -119,7 +119,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
 
   return (
     <Card
-      details={task}
+      task={task}
       taskIsLoading={taskIsFetching}
       takeTask={takeTask}
       takeTaskIsLoading={takeTaskIsLoading}

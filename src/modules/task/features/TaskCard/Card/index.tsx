@@ -70,7 +70,7 @@ const RequestTaskSuspendModal = React.lazy(
 const TaskSuspendRequest = React.lazy(() => import('../TaskSuspendRequest'))
 
 export type TaskCardProps = {
-  details: MaybeNull<
+  task: MaybeNull<
     Pick<
       TaskModel,
       | 'id'
@@ -152,7 +152,7 @@ export type TaskCardProps = {
 }
 
 const TaskCard: FC<TaskCardProps> = ({
-  details,
+  task,
 
   taskIsLoading,
   takeTask,
@@ -189,15 +189,13 @@ const TaskCard: FC<TaskCardProps> = ({
 }) => {
   const breakpoints = useBreakpoint()
 
-  const taskStatus = useTaskStatus(details?.status)
+  const taskStatus = useTaskStatus(task?.status)
   const taskSuspendRequestStatusMap = useTaskSuspendRequestStatus(
-    details?.suspendRequest?.status,
+    task?.suspendRequest?.status,
   )
 
-  const isAssignedToCurrentUser = useCheckUserAuthenticated(
-    details?.assignee?.id,
-  )
-  const hasSuspendRequest = !!details?.suspendRequest
+  const isAssignedToCurrentUser = useCheckUserAuthenticated(task?.assignee?.id)
+  const hasSuspendRequest = !!task?.suspendRequest
 
   const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
@@ -242,10 +240,10 @@ const TaskCard: FC<TaskCardProps> = ({
     TaskResolutionModalProps['onSubmit']
   >(
     async (values, setFields) => {
-      if (!details) return
+      if (!task) return
 
       try {
-        await resolveTask({ taskId: details.id, ...values })
+        await resolveTask({ taskId: task.id, ...values })
         closeTaskCard()
       } catch (exception) {
         const error = exception as ErrorResponse
@@ -254,18 +252,18 @@ const TaskCard: FC<TaskCardProps> = ({
         }
       }
     },
-    [details, closeTaskCard, resolveTask],
+    [task, closeTaskCard, resolveTask],
   )
 
   const handleReclassificationRequestSubmit = useCallback<
     RequestTaskReclassificationModalProps['onSubmit']
   >(
     async (values, setFields) => {
-      if (!details) return
+      if (!task) return
 
       try {
         await createReclassificationRequest({
-          taskId: details.id,
+          taskId: task.id,
           ...values,
         })
         closeTaskReclassificationModal()
@@ -276,7 +274,7 @@ const TaskCard: FC<TaskCardProps> = ({
         }
       }
     },
-    [closeTaskReclassificationModal, createReclassificationRequest, details],
+    [closeTaskReclassificationModal, createReclassificationRequest, task],
   )
 
   const handleTransferTaskToSecondLine = useCallback(
@@ -284,17 +282,17 @@ const TaskCard: FC<TaskCardProps> = ({
       workGroup: WorkGroupListItemModel['id'],
       closeTaskSecondLineModal: () => void,
     ) => {
-      if (!details) return
+      if (!task) return
 
       try {
-        await updateWorkGroup({ taskId: details.id, workGroup })
+        await updateWorkGroup({ taskId: task.id, workGroup })
         closeTaskSecondLineModal()
         closeTaskCard()
       } catch {
         // todo: использовать в модалке форму и реализовать обработку ошибок. затем поправить тесты
       }
     },
-    [details, closeTaskCard, updateWorkGroup],
+    [task, closeTaskCard, updateWorkGroup],
   )
 
   const handleTransferTaskToFirstLine = useCallback(
@@ -303,10 +301,10 @@ const TaskCard: FC<TaskCardProps> = ({
       setFields: FormInstance['setFields'],
       closeTaskFirstLineModal: () => void,
     ) => {
-      if (!details) return
+      if (!task) return
 
       try {
-        await deleteWorkGroup({ taskId: details.id, ...values })
+        await deleteWorkGroup({ taskId: task.id, ...values })
         closeTaskFirstLineModal()
         closeTaskCard()
       } catch (exception) {
@@ -316,36 +314,36 @@ const TaskCard: FC<TaskCardProps> = ({
         }
       }
     },
-    [closeTaskCard, deleteWorkGroup, details],
+    [closeTaskCard, deleteWorkGroup, task],
   )
 
   const handleUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
-      if (!details) return
+      if (!task) return
 
       try {
-        await updateAssignee({ taskId: details.id, assignee })
+        await updateAssignee({ taskId: task.id, assignee })
       } catch {}
     },
-    [details, updateAssignee],
+    [task, updateAssignee],
   )
 
   const handleTakeTask = useCallback(async () => {
-    if (!details) return
+    if (!task) return
 
     try {
-      await takeTask({ taskId: details.id })
+      await takeTask({ taskId: task.id })
     } catch {}
-  }, [takeTask, details])
+  }, [takeTask, task])
 
   const handleCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] =
     useCallback(
       async (values: RequestTaskSuspendFormFields, setFields) => {
-        if (!details) return
+        if (!task) return
 
         try {
           await createSuspendRequest({
-            taskId: details.id,
+            taskId: task.id,
             comment: values.comment,
             suspendReason: values.suspendReason,
             suspendEndAt: moment(values.endDate)
@@ -379,24 +377,24 @@ const TaskCard: FC<TaskCardProps> = ({
           }
         }
       },
-      [closeRequestTaskSuspendModal, createSuspendRequest, details],
+      [closeRequestTaskSuspendModal, createSuspendRequest, task],
     )
 
   const handleCancelTaskSuspendRequest = useCallback(async () => {
-    if (!details) return
+    if (!task) return
 
     try {
-      await cancelSuspendRequest({ taskId: details.id })
+      await cancelSuspendRequest({ taskId: task.id })
     } catch {}
-  }, [cancelSuspendRequest, details])
+  }, [cancelSuspendRequest, task])
 
-  const cardTitle = !taskIsLoading && details && (
+  const cardTitle = !taskIsLoading && task && (
     <CardTitle
-      id={details.id}
-      type={details.type}
-      status={details.status}
-      extendedStatus={details.extendedStatus}
-      olaStatus={details.olaStatus}
+      id={task.id}
+      type={task.type}
+      status={task.status}
+      extendedStatus={task.extendedStatus}
+      olaStatus={task.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
       hasSuspendRequest={hasSuspendRequest}
       onClose={debouncedCloseTaskCard}
@@ -439,7 +437,7 @@ const TaskCard: FC<TaskCardProps> = ({
             </LoadingArea>
           }
 
-          {details?.suspendRequest && (
+          {task?.suspendRequest && (
             <React.Suspense fallback={<Spinner area='block' />}>
               <TaskSuspendRequest
                 title={
@@ -449,9 +447,9 @@ const TaskCard: FC<TaskCardProps> = ({
                     ? 'Заявка находится в ожидании'
                     : ''
                 }
-                date={details.suspendRequest.suspendEndAt}
-                user={details.suspendRequest.author}
-                comment={details.suspendRequest.comment}
+                date={task.suspendRequest.suspendEndAt}
+                user={task.suspendRequest.author}
+                comment={task.suspendRequest.comment}
                 action={
                   taskSuspendRequestStatusMap.isNew
                     ? {
@@ -467,7 +465,7 @@ const TaskCard: FC<TaskCardProps> = ({
             </React.Suspense>
           )}
 
-          {details && (
+          {task && (
             <Space
               data-testid='task-card-details'
               direction='vertical'
@@ -475,35 +473,35 @@ const TaskCard: FC<TaskCardProps> = ({
               size='middle'
             >
               <MainDetails
-                recordId={details.recordId}
-                title={details.title}
-                createdAt={formatDate(details.createdAt, DATE_TIME_FORMAT)}
-                name={details.name}
-                address={details.address}
-                contactService={details.contactService}
-                contactPhone={details.contactPhone}
-                portablePhone={details.portablePhone}
-                olaStatus={details.olaStatus}
-                olaEstimatedTime={details.olaEstimatedTime}
-                olaNextBreachTime={details.olaNextBreachTime}
+                recordId={task.recordId}
+                title={task.title}
+                createdAt={formatDate(task.createdAt, DATE_TIME_FORMAT)}
+                name={task.name}
+                address={task.address}
+                contactService={task.contactService}
+                contactPhone={task.contactPhone}
+                portablePhone={task.portablePhone}
+                olaStatus={task.olaStatus}
+                olaEstimatedTime={task.olaEstimatedTime}
+                olaNextBreachTime={task.olaNextBreachTime}
               />
 
               <AdditionalInfo
-                email={details.email}
-                sapId={details.sapId}
-                weight={details.weight}
-                address={details.address}
-                company={details.company}
-                contactType={details.contactType}
-                severity={taskSeverityMap.get(details.severity)!}
-                priority={taskPriorityMap.get(details.priorityCode)!}
-                impact={taskImpactMap.get(details.initialImpact)!}
-                supportGroup={details.supportGroup?.name}
-                productClassifier1={details.productClassifier1}
-                productClassifier2={details.productClassifier2}
-                productClassifier3={details.productClassifier3}
-                latitude={details.latitude}
-                longitude={details.longitude}
+                email={task.email}
+                sapId={task.sapId}
+                weight={task.weight}
+                address={task.address}
+                company={task.company}
+                contactType={task.contactType}
+                severity={taskSeverityMap.get(task.severity)!}
+                priority={taskPriorityMap.get(task.priorityCode)!}
+                impact={taskImpactMap.get(task.initialImpact)!}
+                supportGroup={task.supportGroup?.name}
+                productClassifier1={task.productClassifier1}
+                productClassifier2={task.productClassifier2}
+                productClassifier3={task.productClassifier3}
+                latitude={task.latitude}
+                longitude={task.longitude}
                 expanded={additionalInfoExpanded}
                 onExpand={onExpandAdditionalInfo}
               />
@@ -511,12 +509,12 @@ const TaskCard: FC<TaskCardProps> = ({
               {!additionalInfoExpanded && <DividerStyled />}
 
               <SecondaryDetails
-                id={details.id}
-                recordId={details.recordId}
-                status={details.status}
-                extendedStatus={details.extendedStatus}
-                assignee={details.assignee}
-                workGroup={details.workGroup}
+                id={task.id}
+                recordId={task.recordId}
+                status={task.status}
+                extendedStatus={task.extendedStatus}
+                assignee={task.assignee}
+                workGroup={task.workGroup}
                 workGroupList={workGroupList}
                 workGroupListIsLoading={workGroupListIsLoading}
                 transferTaskToFirstLine={handleTransferTaskToFirstLine}
@@ -530,7 +528,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 hasSuspendRequest={hasSuspendRequest}
               />
 
-              <CardTabs details={details} />
+              <CardTabs task={task} />
 
               {isTaskResolutionModalOpened && (
                 <React.Suspense
@@ -542,8 +540,8 @@ const TaskCard: FC<TaskCardProps> = ({
                   }
                 >
                   <TaskResolutionModal
-                    type={details.type}
-                    recordId={details.recordId}
+                    type={task.type}
+                    recordId={task.recordId}
                     isLoading={isTaskResolving}
                     onCancel={closeTaskResolutionModal}
                     onSubmit={handleResolutionSubmit}
@@ -561,7 +559,7 @@ const TaskCard: FC<TaskCardProps> = ({
                   }
                 >
                   <RequestTaskReclassificationModal
-                    recordId={details.recordId}
+                    recordId={task.recordId}
                     isLoading={createReclassificationRequestIsLoading}
                     onSubmit={handleReclassificationRequestSubmit}
                     onCancel={closeTaskReclassificationModal}
@@ -579,7 +577,7 @@ const TaskCard: FC<TaskCardProps> = ({
                   }
                 >
                   <RequestTaskSuspendModal
-                    recordId={details.recordId}
+                    recordId={task.recordId}
                     isLoading={createSuspendRequestIsLoading}
                     onSubmit={handleCreateTaskSuspendRequest}
                     onCancel={closeRequestTaskSuspendModal}

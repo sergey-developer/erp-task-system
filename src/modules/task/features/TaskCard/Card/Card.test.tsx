@@ -47,7 +47,7 @@ import {
 import TaskCard, { TaskCardProps } from './index'
 
 const requiredProps: TaskCardProps = {
-  details: taskFixtures.getTask(),
+  task: taskFixtures.getTask(),
   closeTaskCard: jest.fn(),
 
   taskIsLoading: false,
@@ -150,7 +150,7 @@ describe('Карточка заявки', () => {
       })
 
       test('Если нет данных заявки', () => {
-        render(<TaskCard {...requiredProps} details={null} />)
+        render(<TaskCard {...requiredProps} task={null} />)
         expect(cardTitleTestUtils.queryContainer()).not.toBeInTheDocument()
       })
     })
@@ -174,7 +174,7 @@ describe('Карточка заявки', () => {
 
     describe('Не отображается', () => {
       test('Если нет данных', () => {
-        render(<TaskCard {...requiredProps} details={null} />)
+        render(<TaskCard {...requiredProps} task={null} />)
         expect(testUtils.queryCardDetails()).not.toBeInTheDocument()
       })
 
@@ -192,7 +192,7 @@ describe('Карточка заявки', () => {
     })
 
     test('Не отображается если нет данных заявки', () => {
-      render(<TaskCard {...requiredProps} details={null} />)
+      render(<TaskCard {...requiredProps} task={null} />)
       expect(mainDetailsTestUtils.queryContainer()).not.toBeInTheDocument()
     })
   })
@@ -204,7 +204,7 @@ describe('Карточка заявки', () => {
     })
 
     test('Не отображается если нет данных заявки', () => {
-      render(<TaskCard {...requiredProps} details={null} />)
+      render(<TaskCard {...requiredProps} task={null} />)
       expect(secondaryDetailsTestUtils.queryContainer()).not.toBeInTheDocument()
     })
   })
@@ -216,7 +216,7 @@ describe('Карточка заявки', () => {
     })
 
     test('Не отображается если нет данных заявки', () => {
-      render(<TaskCard {...requiredProps} details={null} />)
+      render(<TaskCard {...requiredProps} task={null} />)
       expect(additionalInfoTestUtils.queryContainer()).not.toBeInTheDocument()
     })
   })
@@ -228,7 +228,7 @@ describe('Карточка заявки', () => {
     })
 
     test('Не отображается если нет данных заявки', () => {
-      render(<TaskCard {...requiredProps} details={null} />)
+      render(<TaskCard {...requiredProps} task={null} />)
       expect(cardTabsTestUtils.queryContainer()).not.toBeInTheDocument()
     })
   })
@@ -282,8 +282,8 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...requiredProps}
-            details={{
-              ...requiredProps.details!,
+            task={{
+              ...requiredProps.task!,
               ...activeSecondItemProps,
             }}
           />,
@@ -302,8 +302,8 @@ describe('Карточка заявки', () => {
           const { user } = render(
             <TaskCard
               {...requiredProps}
-              details={{
-                ...requiredProps.details!,
+              task={{
+                ...requiredProps.task!,
                 ...activeSecondItemProps,
               }}
             />,
@@ -322,8 +322,8 @@ describe('Карточка заявки', () => {
           const { user } = render(
             <TaskCard
               {...requiredProps}
-              details={{
-                ...requiredProps.details!,
+              task={{
+                ...requiredProps.task!,
                 ...activeSecondItemProps,
               }}
             />,
@@ -342,8 +342,8 @@ describe('Карточка заявки', () => {
           const { user } = render(
             <TaskCard
               {...requiredProps}
-              details={{
-                ...requiredProps.details!,
+              task={{
+                ...requiredProps.task!,
                 ...activeSecondItemProps,
               }}
             />,
@@ -364,8 +364,8 @@ describe('Карточка заявки', () => {
           const { user } = render(
             <TaskCard
               {...requiredProps}
-              details={{
-                ...requiredProps.details!,
+              task={{
+                ...requiredProps.task!,
                 ...activeSecondItemProps,
               }}
             />,
@@ -396,8 +396,8 @@ describe('Карточка заявки', () => {
           const { user } = render(
             <TaskCard
               {...requiredProps}
-              details={{
-                ...requiredProps.details!,
+              task={{
+                ...requiredProps.task!,
                 ...activeSecondItemProps,
               }}
             />,
@@ -432,14 +432,14 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...requiredProps}
-            details={{
-              ...requiredProps.details!,
+            task={{
+              ...requiredProps.task!,
               ...activeFirstItemProps,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.details!.assignee!.id,
+              userId: requiredProps.task!.assignee!.id,
             }),
           },
         )
@@ -456,14 +456,14 @@ describe('Карточка заявки', () => {
           const { user } = render(
             <TaskCard
               {...requiredProps}
-              details={{
-                ...requiredProps.details!,
+              task={{
+                ...requiredProps.task!,
                 ...activeFirstItemProps,
               }}
             />,
             {
               store: getStoreWithAuth({
-                userId: requiredProps.details!.assignee!.id,
+                userId: requiredProps.task!.assignee!.id,
               }),
             },
           )
@@ -480,14 +480,14 @@ describe('Карточка заявки', () => {
           const { user } = render(
             <TaskCard
               {...requiredProps}
-              details={{
-                ...requiredProps.details!,
+              task={{
+                ...requiredProps.task!,
                 ...activeFirstItemProps,
               }}
             />,
             {
               store: getStoreWithAuth({
-                userId: requiredProps.details!.assignee!.id,
+                userId: requiredProps.task!.assignee!.id,
               }),
             },
           )
@@ -504,14 +504,14 @@ describe('Карточка заявки', () => {
           const { user } = render(
             <TaskCard
               {...requiredProps}
-              details={{
-                ...requiredProps.details!,
+              task={{
+                ...requiredProps.task!,
                 ...activeFirstItemProps,
               }}
             />,
             {
               store: getStoreWithAuth({
-                userId: requiredProps.details!.assignee!.id,
+                userId: requiredProps.task!.assignee!.id,
               }),
             },
           )
@@ -530,14 +530,14 @@ describe('Карточка заявки', () => {
           const { user } = render(
             <TaskCard
               {...requiredProps}
-              details={{
-                ...requiredProps.details!,
+              task={{
+                ...requiredProps.task!,
                 ...activeFirstItemProps,
               }}
             />,
             {
               store: getStoreWithAuth({
-                userId: requiredProps.details!.assignee!.id,
+                userId: requiredProps.task!.assignee!.id,
               }),
             },
           )
@@ -579,7 +579,7 @@ describe('Карточка заявки', () => {
         <TaskCard {...requiredProps} {...activeTakeTaskButtonProps} />,
         {
           store: getStoreWithAuth({
-            userId: requiredProps.details!.assignee!.id,
+            userId: requiredProps.task!.assignee!.id,
             userRole: UserRoleEnum.FirstLineSupport,
           }),
         },
@@ -598,8 +598,8 @@ describe('Карточка заявки', () => {
         <TaskCard
           {...requiredProps}
           workGroupList={[canSelectAssigneeProps.workGroup]}
-          details={{
-            ...requiredProps.details!,
+          task={{
+            ...requiredProps.task!,
             ...canSelectAssigneeProps,
             ...activeAssignButtonProps,
           }}
@@ -629,8 +629,8 @@ describe('Карточка заявки', () => {
       const { user } = render(
         <TaskCard
           {...requiredProps}
-          details={{
-            ...requiredProps.details!,
+          task={{
+            ...requiredProps.task!,
             ...activeAssignOnMeButtonProps,
           }}
         />,
@@ -656,8 +656,8 @@ describe('Карточка заявки', () => {
               id: showFirstLineButtonProps.workGroup!.id,
             }),
           ]}
-          details={{
-            ...requiredProps.details!,
+          task={{
+            ...requiredProps.task!,
             ...showFirstLineButtonProps,
             ...activeFirstLineButtonProps,
           }}
@@ -688,8 +688,8 @@ describe('Карточка заявки', () => {
         <TaskCard
           {...requiredProps}
           workGroupList={workGroupList}
-          details={{
-            ...requiredProps.details!,
+          task={{
+            ...requiredProps.task!,
             ...showSecondLineButtonProps,
             ...activeSecondLineButtonProps,
           }}

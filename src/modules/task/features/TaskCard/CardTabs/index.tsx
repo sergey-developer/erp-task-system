@@ -18,7 +18,7 @@ const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
 const { TabPane } = Tabs
 
 export type TaskCardTabsProps = {
-  details: Pick<
+  task: Pick<
     TaskModel,
     | 'id'
     | 'title'
@@ -34,7 +34,7 @@ export type TaskCardTabsProps = {
   >
 }
 
-const TaskCardTabs: FC<TaskCardTabsProps> = ({ details }) => {
+const TaskCardTabs: FC<TaskCardTabsProps> = ({ task }) => {
   const breakpoints = useBreakpoint()
 
   return (
@@ -52,7 +52,7 @@ const TaskCardTabs: FC<TaskCardTabsProps> = ({ details }) => {
         <TaskCardWrapper>
           <DescriptionTab
             title={taskCardTabNamesDict[TaskCardTabsEnum.Description]}
-            description={details.description}
+            description={task.description}
           />
         </TaskCardWrapper>
       </TabPane>
@@ -65,7 +65,7 @@ const TaskCardTabs: FC<TaskCardTabsProps> = ({ details }) => {
           <React.Suspense fallback={<Spinner />}>
             <CommentListTab
               title={taskCardTabNamesDict[TaskCardTabsEnum.CommentList]}
-              taskId={details.id}
+              taskId={task.id}
             />
           </React.Suspense>
         </TaskCardWrapper>
@@ -77,10 +77,10 @@ const TaskCardTabs: FC<TaskCardTabsProps> = ({ details }) => {
       >
         <TaskCardWrapper>
           <ResolutionTab
-            type={details.type}
+            type={task.type}
             title={taskCardTabNamesDict[TaskCardTabsEnum.Resolution]}
-            techResolution={details.techResolution}
-            userResolution={details.userResolution}
+            techResolution={task.techResolution}
+            userResolution={task.userResolution}
           />
         </TaskCardWrapper>
       </TabPane>
@@ -91,7 +91,7 @@ const TaskCardTabs: FC<TaskCardTabsProps> = ({ details }) => {
       >
         <TaskCardWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <JournalTab taskId={details.id} />
+            <JournalTab taskId={task.id} />
           </React.Suspense>
         </TaskCardWrapper>
       </TabPane>
@@ -102,7 +102,7 @@ const TaskCardTabs: FC<TaskCardTabsProps> = ({ details }) => {
       >
         <TaskCardWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <SubTaskListTab task={details} />
+            <SubTaskListTab task={task} />
           </React.Suspense>
         </TaskCardWrapper>
       </TabPane>
