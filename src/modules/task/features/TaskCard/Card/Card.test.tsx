@@ -15,7 +15,7 @@ import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 import { UserRoleEnum } from 'shared/constants/roles'
 
-import additionalInfoTestUtils from '../AdditionalInfo/_tests_/utils'
+import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
 import {
   activeAssignButtonProps,
   activeAssignOnMeButtonProps,
@@ -23,20 +23,22 @@ import {
   testUtils as assigneeBlockTestUtils,
   canSelectAssigneeProps,
 } from '../AssigneeBlock/AssigneeBlock.test'
-import cardTabsTestUtils from '../CardTabs/_tests_/utils'
+import { testUtils as cardTabsTestUtils } from '../CardTabs/CardTabs.test'
 import {
   activeFirstItemProps,
   activeSecondItemProps,
-} from '../CardTitle/_tests_/constants'
-import cardTitleTestUtils from '../CardTitle/_tests_/utils'
-import mainDetailsTestUtils from '../MainDetails/_tests_/utils'
-import { availableReasons } from '../RequestTaskReclassificationModal/_tests_/constants'
-import taskReclassificationModalTestUtils from '../RequestTaskReclassificationModal/_tests_/utils'
-import secondaryDetailsTestUtils from '../SecondaryDetails/_tests_/utils'
-import taskFirstLineModalTestUtils from '../TaskFirstLineModal/_tests_/utils'
-import taskReclassificationRequestTestUtils from '../TaskReclassificationRequest/_tests_/utils'
-import taskResolutionModalTestUtils from '../TaskResolutionModal/_tests_/utils'
-import taskSecondLineModalTestUtils from '../TaskSecondLineModal/_tests_/utils'
+  testUtils as cardTitleTestUtils,
+} from '../CardTitle/CardTitle.test'
+import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
+import {
+  availableReasons,
+  testUtils as taskReclassificationModalTestUtils,
+} from '../RequestTaskReclassificationModal/TaskReclassificationModal.test'
+import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
+import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
+import { testUtils as taskReclassificationRequestTestUtils } from '../TaskReclassificationRequest/TaskReclassificationRequest.test'
+import { testUtils as taskResolutionModalTestUtils } from '../TaskResolutionModal/TaskResolutionModal.test'
+import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,

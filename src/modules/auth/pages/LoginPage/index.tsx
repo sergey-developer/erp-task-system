@@ -11,7 +11,7 @@ import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import { LoginFormFields } from './interfaces'
 import { CardStyled, FormStyled, PageTitleStyled } from './styles'
-import getLoginError from './utils/getLoginError'
+import { getLoginError } from './utils'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
 const { Text, Title } = Typography

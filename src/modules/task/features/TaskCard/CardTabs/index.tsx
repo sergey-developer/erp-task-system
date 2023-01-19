@@ -17,7 +17,7 @@ const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
 
 const { TabPane } = Tabs
 
-export type TaskCardTabsProps = {
+export type CardTabsProps = {
   task: Pick<
     TaskModel,
     | 'id'
@@ -34,7 +34,7 @@ export type TaskCardTabsProps = {
   >
 }
 
-const TaskCardTabs: FC<TaskCardTabsProps> = ({ task }) => {
+const CardTabs: FC<CardTabsProps> = ({ task }) => {
   const breakpoints = useBreakpoint()
 
   return (
@@ -110,4 +110,4 @@ const TaskCardTabs: FC<TaskCardTabsProps> = ({ task }) => {
   )
 }
 
-export default TaskCardTabs
+export default CardTabs

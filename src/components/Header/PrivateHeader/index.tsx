@@ -10,7 +10,7 @@ import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RoutesEnum } from 'configs/routes'
-import LogoutButton from 'modules/auth/features/Logout/components/LogoutButton'
+import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
 import { useUserProfileState } from 'modules/user/hooks'
 import { useMatchedRoute } from 'shared/hooks'
 

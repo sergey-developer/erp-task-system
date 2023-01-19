@@ -110,10 +110,10 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/build/",
       "<rootDir>/node_modules/",
-      "_tests_",
       "fixtures",
-      "interfaces.ts",
+      "_tests_",
       "interfaces",
+      "interfaces.ts",
       "models"
     ]
   },

@@ -40,7 +40,7 @@ import {
 } from 'modules/subTask/features/SubTaskList/SubTask.test'
 import { testUtils as subTaskListTestUtils } from 'modules/subTask/features/SubTaskList/SubTaskList.test'
 import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
-import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'
+import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
 import SubTaskListTab, { SubTaskListTabProps } from './index'
 
