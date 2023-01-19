@@ -18,8 +18,8 @@ import {
 } from 'modules/task/constants/common'
 import { UserRoleEnum } from 'shared/constants/roles'
 
-import taskFirstLineModalTestUtils from '../TaskFirstLineModal/_tests_/utils'
-import taskSecondLineModalTestUtils from '../TaskSecondLineModal/_tests_/utils'
+import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
+import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
 
 const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {

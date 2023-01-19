@@ -67,14 +67,18 @@ import {
   canSelectAssigneeProps,
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskCardTestUtils } from '../Card/Card.test'
-import { activeSecondItemProps } from '../CardTitle/_tests_/constants'
-import cardTitleTestUtils from '../CardTitle/_tests_/utils'
-import { availableReasons } from '../RequestTaskReclassificationModal/_tests_/constants'
-import taskReclassificationModalTestUtils from '../RequestTaskReclassificationModal/_tests_/utils'
-import taskFirstLineModalTestUtils from '../TaskFirstLineModal/_tests_/utils'
+import {
+  activeSecondItemProps,
+  testUtils as cardTitleTestUtils,
+} from '../CardTitle/CardTitle.test'
+import {
+  availableReasons,
+  testUtils as taskReclassificationModalTestUtils,
+} from '../RequestTaskReclassificationModal/TaskReclassificationModal.test'
 import { TaskFirstLineFormErrors } from '../TaskFirstLineModal/interfaces'
-import taskReclassificationRequestTestUtils from '../TaskReclassificationRequest/_tests_/utils'
-import taskSecondLineModalTestUtils from '../TaskSecondLineModal/_tests_/utils'
+import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
+import { testUtils as taskReclassificationRequestTestUtils } from '../TaskReclassificationRequest/TaskReclassificationRequest.test'
+import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
 
 const requiredProps: TaskCardContainerProps = {

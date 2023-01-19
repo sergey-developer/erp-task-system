@@ -6,7 +6,7 @@ import { logoutAndClearTokens } from 'modules/auth/utils'
 import { useDispatch } from 'shared/hooks'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { LOGOUT_ERROR_MSG } from '../features/Logout/constants/messages'
+import { LOGOUT_ERROR_MSG } from '../constants/errors'
 
 export const useLogout = () => {
   const dispatch = useDispatch()

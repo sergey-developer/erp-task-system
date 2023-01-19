@@ -13,7 +13,7 @@ import React, { FC, useEffect } from 'react'
 
 import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/permissions'
-import { workGroupListSelectFieldNames } from 'modules/workGroup/features/WorkGroupList/constants/selectFieldNames'
+import { workGroupListSelectFieldNames } from 'modules/workGroup/constants/selectFieldNames'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 import { isEqualDeep } from 'shared/utils/common/isEqual'
 

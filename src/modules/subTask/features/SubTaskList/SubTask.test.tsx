@@ -5,7 +5,7 @@ import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
 import { TaskStatusEnum } from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
-import taskStatusTestUtils from 'modules/task/features/TaskStatus/_tests_/utils'
+import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { NonNullableObject } from 'shared/interfaces/utils'
 
 import SubTask, { SubTaskProps } from './SubTask'
