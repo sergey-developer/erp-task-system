@@ -18,9 +18,6 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/common'
 import { TaskModel } from 'modules/task/models'
-import { NonNullableObject } from 'shared/interfaces/utils'
-
-import { getSuspendRequest } from './suspendRequest'
 
 export const getTask = (
   props?: Partial<
@@ -35,7 +32,7 @@ export const getTask = (
       | 'assignee'
     >
   >,
-): NonNullableObject<TaskModel> => ({
+): TaskModel => ({
   id: props?.id || generateId(),
   type: props?.type || TaskTypeEnum.Request,
   status: props?.status || TaskStatusEnum.New,
@@ -66,7 +63,7 @@ export const getTask = (
   productClassifier3: generateWord(),
   supportGroup: commonFixtures.getSupportGroup(),
   olaEstimatedTime: Date.now(),
-  suspendRequest: getSuspendRequest(),
+  suspendRequest: null,
 
   description: generateWord(),
   contactPhone: generatePhone(),

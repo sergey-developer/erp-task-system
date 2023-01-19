@@ -131,7 +131,7 @@ export const testUtils = {
   expectReclassificationRequestLoadingFinished,
 }
 
-describe('Детальная карточка заявки', () => {
+describe('Карточка заявки', () => {
   test('Отображает состояние загрузки', async () => {
     render(<TaskCard {...requiredProps} taskIsLoading />)
     await testUtils.expectLoadingStarted()

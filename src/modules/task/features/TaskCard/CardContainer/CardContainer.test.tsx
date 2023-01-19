@@ -1799,7 +1799,7 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...requiredProps} />, {
           store: getStoreWithAuth({
-            userId: task.assignee.id,
+            userId: task.assignee!.id,
             userRole: UserRoleEnum.FirstLineSupport,
           }),
         })
@@ -1829,7 +1829,7 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...requiredProps} />, {
           store: getStoreWithAuth({
-            userId: task.assignee.id,
+            userId: task.assignee!.id,
             userRole: UserRoleEnum.FirstLineSupport,
           }),
         })
