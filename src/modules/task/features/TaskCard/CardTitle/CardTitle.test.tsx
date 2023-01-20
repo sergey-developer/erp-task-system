@@ -49,6 +49,15 @@ export const activeRequestReclassificationItemProps: Pick<
   type: TaskTypeEnum.Request,
 }
 
+export const activeRequestSuspendItemProps: Pick<
+  CardTitleProps,
+  'status' | 'type' | 'hasSuspendRequest'
+> = {
+  status: TaskStatusEnum.New,
+  type: TaskTypeEnum.Request,
+  hasSuspendRequest: false,
+}
+
 const getContainer = () => screen.getByTestId('task-card-title')
 
 const queryContainer = () => screen.queryByTestId('task-card-title')
@@ -131,6 +140,13 @@ const queryCancelReclassificationItem = () =>
 const clickCancelReclassificationItem = (user: UserEvent) =>
   userClickItem(user, /отменить переклассификацию/i)
 
+// request suspend
+
+const getRequestSuspendItem = () => getMenuItem(/запросить перевод в ожидание/i)
+
+const clickRequestSuspendItem = (user: UserEvent) =>
+  userClickItem(user, /запросить перевод в ожидание/i)
+
 export const testUtils = {
   getContainer,
   queryContainer,
@@ -155,6 +171,9 @@ export const testUtils = {
   getCancelReclassificationItem,
   queryCancelReclassificationItem,
   clickCancelReclassificationItem,
+
+  getRequestSuspendItem,
+  clickRequestSuspendItem,
 
   getCloseButton,
   userClickCloseButton,
@@ -245,7 +264,7 @@ describe('Заголовок карточки заявки', () => {
       })
 
       describe('Не активен если условия соблюдены', () => {
-        test('Но заявка не имеет статуса - в процессе', async () => {
+        test('Но заявка не в статусе - "В процессе"', async () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
@@ -351,7 +370,7 @@ describe('Заголовок карточки заявки', () => {
       })
 
       describe('Не активен если условия соблюдены', () => {
-        test('Но заявка не имеет статуса - новая', async () => {
+        test('Но заявка не в статусе - новая', async () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}
@@ -490,6 +509,79 @@ describe('Заголовок карточки заявки', () => {
         expect(
           testUtils.queryCancelReclassificationItem(),
         ).not.toBeInTheDocument()
+      })
+    })
+
+    describe('Элемент "Запросить перевод в ожидание"', () => {
+      test('Отображается корректно', async () => {
+        const { user } = render(<CardTitle {...requiredProps} />)
+
+        await testUtils.userOpenMenu(user)
+        const item = testUtils.getRequestSuspendItem()
+        const icon = testUtils.getMenuItemIcon(item, 'pause-circle')
+
+        expect(item).toBeInTheDocument()
+        expect(icon).toBeInTheDocument()
+      })
+
+      test('При клике обработчик вызывается корректно', async () => {
+        const { user } = render(
+          <CardTitle {...requiredProps} {...activeRequestSuspendItemProps} />,
+        )
+
+        await testUtils.userOpenMenu(user)
+        await testUtils.clickRequestSuspendItem(user)
+        expect(requiredProps.onClickRequestSuspend).toBeCalledTimes(1)
+      })
+
+      test('Активен если условия соблюдены', async () => {
+        const { user } = render(
+          <CardTitle {...requiredProps} {...activeRequestSuspendItemProps} />,
+        )
+
+        await testUtils.userOpenMenu(user)
+        testUtils.expectMenuItemNotDisabled(testUtils.getRequestSuspendItem())
+      })
+
+      describe('Не активен если условия соблюдены', () => {
+        test('Но заявка не в статусе - "Новая" или "В процессе"', async () => {
+          const { user } = render(
+            <CardTitle
+              {...requiredProps}
+              {...activeRequestSuspendItemProps}
+              status={TaskStatusEnum.Completed}
+            />,
+          )
+
+          await testUtils.userOpenMenu(user)
+          testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
+        })
+
+        test('Но тип заявки не - "Request" или "Incident"', async () => {
+          const { user } = render(
+            <CardTitle
+              {...requiredProps}
+              {...activeRequestSuspendItemProps}
+              type={TaskTypeEnum.RequestTask}
+            />,
+          )
+
+          await testUtils.userOpenMenu(user)
+          testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
+        })
+
+        test('Но заявка имеет запрос на ожидание', async () => {
+          const { user } = render(
+            <CardTitle
+              {...requiredProps}
+              {...activeRequestSuspendItemProps}
+              hasSuspendRequest
+            />,
+          )
+
+          await testUtils.userOpenMenu(user)
+          testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
+        })
       })
     })
   })
