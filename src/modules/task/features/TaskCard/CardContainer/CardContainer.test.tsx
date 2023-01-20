@@ -68,7 +68,7 @@ import {
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskCardTestUtils } from '../Card/Card.test'
 import {
-  activeSecondItemProps,
+  activeRequestReclassificationItemProps,
   testUtils as cardTitleTestUtils,
 } from '../CardTitle/CardTitle.test'
 import {
@@ -653,9 +653,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(requiredProps.taskId, {
               body: taskFixtures.getTask({
                 id: requiredProps.taskId,
-                status: activeSecondItemProps.status,
-                olaStatus: activeSecondItemProps.olaStatus,
-                type: activeSecondItemProps.type,
+                status: activeRequestReclassificationItemProps.status,
+                olaStatus: activeRequestReclassificationItemProps.olaStatus,
+                type: activeRequestReclassificationItemProps.type,
               }),
             })
 
@@ -674,7 +674,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             await cardTitleTestUtils.userOpenMenu(user)
-            await cardTitleTestUtils.userClickSecondMenuItem(user)
+            await cardTitleTestUtils.clickRequestReclassificationItem(user)
             const modal =
               await taskReclassificationModalTestUtils.findContainer()
 
@@ -703,9 +703,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(requiredProps.taskId, {
               body: taskFixtures.getTask({
                 id: requiredProps.taskId,
-                status: activeSecondItemProps.status,
-                olaStatus: activeSecondItemProps.olaStatus,
-                type: activeSecondItemProps.type,
+                status: activeRequestReclassificationItemProps.status,
+                olaStatus: activeRequestReclassificationItemProps.olaStatus,
+                type: activeRequestReclassificationItemProps.type,
               }),
             })
 
@@ -723,7 +723,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             await cardTitleTestUtils.userOpenMenu(user)
-            await cardTitleTestUtils.userClickSecondMenuItem(user)
+            await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
             await taskReclassificationModalTestUtils.userSetComment(

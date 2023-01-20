@@ -25,8 +25,8 @@ import {
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as cardTabsTestUtils } from '../CardTabs/CardTabs.test'
 import {
-  activeFirstItemProps,
-  activeSecondItemProps,
+  activeExecuteTaskItemProps,
+  activeRequestReclassificationItemProps,
   testUtils as cardTitleTestUtils,
 } from '../CardTitle/CardTitle.test'
 import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
@@ -286,14 +286,14 @@ describe('Карточка заявки', () => {
             {...requiredProps}
             task={{
               ...requiredProps.task!,
-              ...activeSecondItemProps,
+              ...activeRequestReclassificationItemProps,
             }}
           />,
           { store: getStoreWithAuth() },
         )
 
         await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickSecondMenuItem(user)
+        await cardTitleTestUtils.clickRequestReclassificationItem(user)
         const modal = await taskReclassificationModalTestUtils.findContainer()
 
         expect(modal).toBeInTheDocument()
@@ -306,14 +306,14 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeSecondItemProps,
+                ...activeRequestReclassificationItemProps,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
           await taskReclassificationModalTestUtils.userClickCancelButton(user)
 
@@ -326,14 +326,14 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeSecondItemProps,
+                ...activeRequestReclassificationItemProps,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
           await taskReclassificationModalTestUtils.userClickCloseButton(user)
 
@@ -346,14 +346,14 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeSecondItemProps,
+                ...activeRequestReclassificationItemProps,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
           await modalTestUtils.userClickOutOfModal(user)
 
@@ -368,14 +368,14 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeSecondItemProps,
+                ...activeRequestReclassificationItemProps,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
           await taskReclassificationModalTestUtils.findContainer()
 
           await taskReclassificationModalTestUtils.userSetComment(
@@ -400,14 +400,14 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeSecondItemProps,
+                ...activeRequestReclassificationItemProps,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.userClickSecondMenuItem(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
 
           await taskReclassificationModalTestUtils.userSetComment(
@@ -436,7 +436,7 @@ describe('Карточка заявки', () => {
             {...requiredProps}
             task={{
               ...requiredProps.task!,
-              ...activeFirstItemProps,
+              ...activeExecuteTaskItemProps,
             }}
           />,
           {
@@ -447,7 +447,7 @@ describe('Карточка заявки', () => {
         )
 
         await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.userClickFirstMenuItem(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
         const modal = await taskResolutionModalTestUtils.findContainer()
 
         expect(modal).toBeInTheDocument()
@@ -460,7 +460,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeFirstItemProps,
+                ...activeExecuteTaskItemProps,
               }}
             />,
             {
@@ -471,7 +471,7 @@ describe('Карточка заявки', () => {
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.userClickFirstMenuItem(user)
+          await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
           await taskResolutionModalTestUtils.userClickCancelButton(user)
 
@@ -484,7 +484,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeFirstItemProps,
+                ...activeExecuteTaskItemProps,
               }}
             />,
             {
@@ -495,7 +495,7 @@ describe('Карточка заявки', () => {
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.userClickFirstMenuItem(user)
+          await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
           await taskResolutionModalTestUtils.userClickCloseButton(user)
 
@@ -508,7 +508,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeFirstItemProps,
+                ...activeExecuteTaskItemProps,
               }}
             />,
             {
@@ -519,7 +519,7 @@ describe('Карточка заявки', () => {
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.userClickFirstMenuItem(user)
+          await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
           await modalTestUtils.userClickOutOfModal(user)
 
@@ -534,7 +534,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeFirstItemProps,
+                ...activeExecuteTaskItemProps,
               }}
             />,
             {
@@ -545,7 +545,7 @@ describe('Карточка заявки', () => {
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.userClickFirstMenuItem(user)
+          await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
           await taskResolutionModalTestUtils.userSetTechResolution(
