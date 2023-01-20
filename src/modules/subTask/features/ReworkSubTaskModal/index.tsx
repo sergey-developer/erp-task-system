@@ -2,7 +2,7 @@ import { Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
-import { DEFAULT_MIDDLE_TEXT_RULES } from 'shared/constants/validation'
+import { validationRules } from 'shared/constants/validation'
 
 import { ReworkSubTaskFormFields, ReworkSubTaskModalProps } from './interfaces'
 
@@ -47,7 +47,7 @@ const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
           data-testid='return-reason'
           label='Причина возврата'
           name='returnReason'
-          rules={DEFAULT_MIDDLE_TEXT_RULES}
+          rules={validationRules.string.middle}
         >
           <TextArea
             placeholder='Опишите причину возврата'

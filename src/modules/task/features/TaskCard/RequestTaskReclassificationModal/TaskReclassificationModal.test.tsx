@@ -11,10 +11,8 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { ReclassificationReasonEnum } from 'modules/task/constants/common'
 import {
-  DEFAULT_LONG_TEXT_LENGTH,
-  DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
-  FIELD_CAN_NOT_BE_EMPTY_MSG,
-  REQUIRED_FIELD_MSG,
+  validationMessages,
+  validationSizes,
 } from 'shared/constants/validation'
 
 import { reclassificationReasonLabels } from './constants'
@@ -304,7 +302,9 @@ describe('Модалка запроса о переклассификации з
           await testUtils.userClickSubmitButton(user)
 
           expect(
-            await testUtils.findReclassificationReasonError(REQUIRED_FIELD_MSG),
+            await testUtils.findReclassificationReasonError(
+              validationMessages.required,
+            ),
           ).toBeInTheDocument()
         })
       })
@@ -353,7 +353,7 @@ describe('Модалка запроса о переклассификации з
           await testUtils.userSetComment(user, ' ')
 
           expect(
-            await testUtils.findCommentError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+            await testUtils.findCommentError(validationMessages.canNotBeEmpty),
           ).toBeInTheDocument()
         })
 
@@ -365,7 +365,7 @@ describe('Модалка запроса о переклассификации з
           await testUtils.userClickSubmitButton(user)
 
           expect(
-            await testUtils.findCommentError(REQUIRED_FIELD_MSG),
+            await testUtils.findCommentError(validationMessages.required),
           ).toBeInTheDocument()
         })
 
@@ -376,11 +376,13 @@ describe('Модалка запроса о переклассификации з
 
           await testUtils.userSetComment(
             user,
-            generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
+            generateWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(
-            await testUtils.findCommentError(DEFAULT_LONG_TEXT_MAX_LENGTH_MSG),
+            await testUtils.findCommentError(
+              validationMessages.string.max.long,
+            ),
           ).toBeInTheDocument()
         })
       })

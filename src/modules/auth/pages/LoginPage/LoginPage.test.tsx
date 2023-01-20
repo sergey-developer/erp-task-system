@@ -34,10 +34,7 @@ import {
 import LoginPage from 'modules/auth/pages/LoginPage'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { HttpCodeEnum } from 'shared/constants/http'
-import {
-  INCORRECT_EMAIL_MSG,
-  REQUIRED_FIELD_MSG,
-} from 'shared/constants/validation'
+import { validationMessages } from 'shared/constants/validation'
 import { setupStore } from 'state/store'
 
 setupApiTests()
@@ -159,7 +156,7 @@ describe('Страница авторизации', () => {
     await testUtils.userClickSubmitButton(user)
 
     expect(
-      await within(emailField).findByText(INCORRECT_EMAIL_MSG),
+      await within(emailField).findByText(validationMessages.email.incorrect),
     ).toBeInTheDocument()
   })
 
@@ -189,11 +186,11 @@ describe('Страница авторизации', () => {
       await testUtils.userClickSubmitButton(user)
 
       expect(
-        await within(emailField).findByText(REQUIRED_FIELD_MSG),
+        await within(emailField).findByText(validationMessages.required),
       ).toBeInTheDocument()
 
       expect(
-        await within(passwordField).findByText(REQUIRED_FIELD_MSG),
+        await within(passwordField).findByText(validationMessages.required),
       ).toBeInTheDocument()
     })
   })
