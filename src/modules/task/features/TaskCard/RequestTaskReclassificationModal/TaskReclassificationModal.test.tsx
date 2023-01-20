@@ -83,7 +83,7 @@ const getReclassificationReasonTitle = () =>
 const getReclassificationReasonField = (
   reason: ReclassificationReasonEnum,
 ): HTMLInputElement =>
-  within(getContainer()).getByRole('radio', {
+  within(getReclassificationReasonBlock()).getByRole('radio', {
     name: reclassificationReasonLabels[reason],
   })
 
@@ -392,7 +392,7 @@ describe('Модалка запроса о переклассификации з
       <RequestTaskReclassificationModal {...requiredProps} />,
     )
 
-    await modalTestUtils.userClickOutOfModal(user)
+    await modalTestUtils.clickOutOfModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })

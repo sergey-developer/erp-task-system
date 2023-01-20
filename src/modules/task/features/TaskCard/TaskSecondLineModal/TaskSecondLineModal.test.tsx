@@ -307,7 +307,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
     const { user } = render(<TaskSecondLineModal {...requiredProps} />)
 
-    await modalTestUtils.userClickOutOfModal(user)
+    await modalTestUtils.clickOutOfModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })

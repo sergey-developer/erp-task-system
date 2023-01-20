@@ -642,7 +642,10 @@ describe('Расширенный фильтр', () => {
       const endDateField = testUtils.completeAt.getEndDateField()
 
       expect(startDateField).toBeInTheDocument()
+      expect(startDateField).toBeEnabled()
+
       expect(endDateField).toBeInTheDocument()
+      expect(endDateField).toBeEnabled()
     })
 
     test('Имеет корректные значения по умолчанию', () => {

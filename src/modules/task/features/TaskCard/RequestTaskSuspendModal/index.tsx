@@ -63,6 +63,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
     await onSubmit(values, form.setFields)
   }
 
+  //todo: do test
   const handleChangeReason: RadioGroupProps['onChange'] = (
     event: RadioChangeEvent,
   ) => {
@@ -76,6 +77,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
     }
   }
 
+  //todo: do test
   useEffect(() => {
     if (!isReasonMakeDateTimeFieldDisabled) {
       form.resetFields(['endDate', 'endTime'])
@@ -115,18 +117,29 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item label='Время возврата'>
+        <Form.Item data-testid='return-time' label='Время возврата'>
           <Row justify='space-between'>
             <Col span={11}>
-              <Form.Item name='endDate' rules={END_DATE_RULES}>
-                <DatePickerStyled disabled={isDateTimeFieldDisabled} />
+              <Form.Item
+                data-testid='end-date'
+                name='endDate'
+                rules={END_DATE_RULES}
+              >
+                <DatePickerStyled
+                  disabled={isDateTimeFieldDisabled || isLoading}
+                />
               </Form.Item>
             </Col>
 
             <Col span={11}>
-              <Form.Item name='endTime' rules={END_TIME_RULES}>
+              <Form.Item
+                data-testid='end-time'
+                name='endTime'
+                dependencies={['endDate']}
+                rules={END_TIME_RULES}
+              >
                 <TimePickerStyled
-                  disabled={isDateTimeFieldDisabled}
+                  disabled={isDateTimeFieldDisabled || isLoading}
                   format='HH:mm'
                 />
               </Form.Item>

@@ -355,7 +355,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.userOpenMenu(user)
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
-          await modalTestUtils.userClickOutOfModal(user)
+          await modalTestUtils.clickOutOfModal(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -521,7 +521,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.userOpenMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
-          await modalTestUtils.userClickOutOfModal(user)
+          await modalTestUtils.clickOutOfModal(user)
 
           expect(modal).not.toBeInTheDocument()
         })
