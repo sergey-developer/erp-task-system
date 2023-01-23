@@ -394,7 +394,7 @@ describe('Модалка запроса о переклассификации з
       <RequestTaskReclassificationModal {...requiredProps} />,
     )
 
-    await modalTestUtils.clickOutOfModal(user)
+    await modalTestUtils.clickOutsideModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })

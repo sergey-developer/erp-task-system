@@ -13,7 +13,10 @@ import modalTestUtils from '_tests_/utils/modal'
 import { screen, waitFor, within } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
-import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
+import {
+  SuspendReasonEnum,
+  SuspendRequestStatusEnum,
+} from 'modules/task/constants/common'
 import { UserRoleEnum } from 'shared/constants/roles'
 
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
@@ -28,6 +31,7 @@ import { testUtils as cardTabsTestUtils } from '../CardTabs/CardTabs.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,
+  activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
 } from '../CardTitle/CardTitle.test'
 import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
@@ -35,6 +39,7 @@ import {
   availableReasons,
   testUtils as taskReclassificationModalTestUtils,
 } from '../RequestTaskReclassificationModal/TaskReclassificationModal.test'
+import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
 import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskReclassificationRequestTestUtils } from '../TaskReclassificationRequest/TaskReclassificationRequest.test'
@@ -357,7 +362,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.userOpenMenu(user)
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
-          await modalTestUtils.clickOutOfModal(user)
+          await modalTestUtils.clickOutsideModal(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -523,7 +528,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.userOpenMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
-          await modalTestUtils.clickOutOfModal(user)
+          await modalTestUtils.clickOutsideModal(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -887,15 +892,17 @@ describe('Карточка заявки', () => {
             {...requiredProps}
             task={{
               ...requiredProps.task!,
-              ...activeRequestReclassificationItemProps,
+              status: activeRequestSuspendItemProps.status,
+              type: activeRequestSuspendItemProps.type,
+              suspendRequest: null,
             }}
           />,
           { store: getStoreWithAuth() },
         )
 
         await cardTitleTestUtils.userOpenMenu(user)
-        await cardTitleTestUtils.clickRequestReclassificationItem(user)
-        const modal = await taskReclassificationModalTestUtils.findContainer()
+        await cardTitleTestUtils.clickRequestSuspendItem(user)
+        const modal = await requestTaskSuspendModalTestUtils.findContainer()
 
         expect(modal).toBeInTheDocument()
       })
@@ -907,16 +914,18 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeRequestReclassificationItemProps,
+                status: activeRequestSuspendItemProps.status,
+                type: activeRequestSuspendItemProps.type,
+                suspendRequest: null,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-          await taskReclassificationModalTestUtils.userClickCancelButton(user)
+          await cardTitleTestUtils.clickRequestSuspendItem(user)
+          const modal = await requestTaskSuspendModalTestUtils.findContainer()
+          await requestTaskSuspendModalTestUtils.clickCancelButton(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -927,16 +936,18 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeRequestReclassificationItemProps,
+                status: activeRequestSuspendItemProps.status,
+                type: activeRequestSuspendItemProps.type,
+                suspendRequest: null,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-          await taskReclassificationModalTestUtils.userClickCloseButton(user)
+          await cardTitleTestUtils.clickRequestSuspendItem(user)
+          const modal = await requestTaskSuspendModalTestUtils.findContainer()
+          await requestTaskSuspendModalTestUtils.clickCancelButton(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -947,16 +958,18 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeRequestReclassificationItemProps,
+                status: activeRequestSuspendItemProps.status,
+                type: activeRequestSuspendItemProps.type,
+                suspendRequest: null,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-          await modalTestUtils.clickOutOfModal(user)
+          await cardTitleTestUtils.clickRequestSuspendItem(user)
+          const modal = await requestTaskSuspendModalTestUtils.findContainer()
+          await modalTestUtils.clickOutsideModal(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -969,28 +982,30 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeRequestReclassificationItemProps,
+                status: activeRequestSuspendItemProps.status,
+                type: activeRequestSuspendItemProps.type,
+                suspendRequest: null,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          await taskReclassificationModalTestUtils.findContainer()
+          await cardTitleTestUtils.clickRequestSuspendItem(user)
+          await requestTaskSuspendModalTestUtils.findContainer()
 
-          await taskReclassificationModalTestUtils.userSetComment(
+          await requestTaskSuspendModalTestUtils.setSuspendReason(
+            user,
+            SuspendReasonEnum.AwaitingInformation,
+          )
+          await requestTaskSuspendModalTestUtils.setComment(
             user,
             generateWord(),
           )
-          await taskReclassificationModalTestUtils.userSetReclassificationReason(
-            user,
-            availableReasons[0],
-          )
-          await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+          await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-          expect(requiredProps.createReclassificationRequest).toBeCalledTimes(1)
-          expect(requiredProps.createReclassificationRequest).toBeCalledWith(
+          expect(requiredProps.createSuspendRequest).toBeCalledTimes(1)
+          expect(requiredProps.createSuspendRequest).toBeCalledWith(
             expect.anything(),
           )
         })
@@ -1001,25 +1016,27 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                ...activeRequestReclassificationItemProps,
+                status: activeRequestSuspendItemProps.status,
+                type: activeRequestSuspendItemProps.type,
+                suspendRequest: null,
               }}
             />,
             { store: getStoreWithAuth() },
           )
 
           await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
+          await cardTitleTestUtils.clickRequestSuspendItem(user)
+          const modal = await requestTaskSuspendModalTestUtils.findContainer()
 
-          await taskReclassificationModalTestUtils.userSetComment(
+          await requestTaskSuspendModalTestUtils.setSuspendReason(
+            user,
+            SuspendReasonEnum.AwaitingInformation,
+          )
+          await requestTaskSuspendModalTestUtils.setComment(
             user,
             generateWord(),
           )
-          await taskReclassificationModalTestUtils.userSetReclassificationReason(
-            user,
-            availableReasons[0],
-          )
-          await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+          await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()

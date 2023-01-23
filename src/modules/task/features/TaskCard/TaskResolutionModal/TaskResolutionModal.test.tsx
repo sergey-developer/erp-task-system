@@ -407,7 +407,7 @@ describe('Модалка решения по заявке', () => {
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
     const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-    await modalTestUtils.clickOutOfModal(user)
+    await modalTestUtils.clickOutsideModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })

@@ -202,7 +202,7 @@ describe('Модалка создания запроса о переводе в 
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
     const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
 
-    await modalTestUtils.clickOutOfModal(user)
+    await modalTestUtils.clickOutsideModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 
