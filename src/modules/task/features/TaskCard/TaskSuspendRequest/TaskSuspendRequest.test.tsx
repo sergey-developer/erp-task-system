@@ -1,4 +1,5 @@
 import {
+  generateDateString,
   generateWord,
   getButtonIn,
   getIconByNameIn,
@@ -8,20 +9,18 @@ import {
 } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
+import commonFixtures from 'fixtures/common'
 import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
 import TaskSuspendRequest, { TaskSuspendRequestProps } from './index'
 
-const reclassificationRequest = taskFixtures.getTaskReclassificationRequest()
-
 const requiredProps: Omit<TaskSuspendRequestProps, 'action'> = {
-  user: reclassificationRequest.user,
+  user: commonFixtures.getUser(),
   title: generateWord(),
-  comment: reclassificationRequest.comment.text,
-  date: reclassificationRequest.createdAt,
+  comment: generateWord(),
+  date: generateDateString(),
 }
 
 export const cancelRequestAction: TaskSuspendRequestProps['action'] = {
