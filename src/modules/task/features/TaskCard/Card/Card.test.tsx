@@ -13,6 +13,7 @@ import modalTestUtils from '_tests_/utils/modal'
 import { screen, waitFor, within } from '@testing-library/react'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
 import { UserRoleEnum } from 'shared/constants/roles'
 
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
@@ -39,6 +40,7 @@ import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/
 import { testUtils as taskReclassificationRequestTestUtils } from '../TaskReclassificationRequest/TaskReclassificationRequest.test'
 import { testUtils as taskResolutionModalTestUtils } from '../TaskResolutionModal/TaskResolutionModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
+import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,
@@ -716,6 +718,314 @@ describe('Карточка заявки', () => {
       expect(requiredProps.updateWorkGroup).toBeCalledTimes(1)
       expect(requiredProps.updateWorkGroup).toBeCalledWith(expect.anything())
       expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+    })
+  })
+
+  describe('Перевод заявки в ожидание', () => {
+    describe('Запрос перевода заявки в ожидание', () => {
+      test('Отображается если он есть', async () => {
+        render(
+          <TaskCard
+            {...requiredProps}
+            task={{
+              ...requiredProps.task!,
+              suspendRequest: taskFixtures.getSuspendRequest(),
+            }}
+          />,
+        )
+
+        expect(
+          await taskSuspendRequestTestUtils.findContainer(),
+        ).toBeInTheDocument()
+      })
+
+      test('Не отображается если его нет', () => {
+        render(
+          <TaskCard
+            {...requiredProps}
+            task={{
+              ...requiredProps.task!,
+              suspendRequest: null,
+            }}
+          />,
+        )
+
+        expect(
+          taskSuspendRequestTestUtils.queryContainer(),
+        ).not.toBeInTheDocument()
+      })
+
+      describe('Заголовок отображается корректно', () => {
+        test(`Если статус запроса "${SuspendRequestStatusEnum.New}"`, () => {
+          render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                suspendRequest: taskFixtures.getSuspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
+              }}
+            />,
+          )
+
+          expect(
+            taskSuspendRequestTestUtils.getChildByText(/запрошено ожидание/i),
+          ).toBeInTheDocument()
+        })
+
+        test(`Если статус запроса "${SuspendRequestStatusEnum.Approved}"`, () => {
+          render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                suspendRequest: taskFixtures.getSuspendRequest({
+                  status: SuspendRequestStatusEnum.Approved,
+                }),
+              }}
+            />,
+          )
+
+          expect(
+            taskSuspendRequestTestUtils.getChildByText(
+              /заявка находится в ожидании/i,
+            ),
+          ).toBeInTheDocument()
+        })
+      })
+
+      describe('Кнопка отмены запроса', () => {
+        test(`Отображается если статус запроса "${SuspendRequestStatusEnum.New}"`, async () => {
+          render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                suspendRequest: taskFixtures.getSuspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
+              }}
+            />,
+          )
+
+          await taskSuspendRequestTestUtils.findContainer()
+          const button = taskSuspendRequestTestUtils.getCancelButton()
+
+          expect(button).toBeInTheDocument()
+          expect(button).toBeEnabled()
+        })
+
+        test('Отображает состояние загрузки', async () => {
+          render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                suspendRequest: taskFixtures.getSuspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
+              }}
+              cancelSuspendRequestIsLoading
+            />,
+          )
+
+          await taskSuspendRequestTestUtils.findContainer()
+          await taskSuspendRequestTestUtils.expectCancelRequestLoadingStarted()
+        })
+
+        test('Обработчик вызывается корректно', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                suspendRequest: taskFixtures.getSuspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
+              }}
+            />,
+          )
+
+          await taskSuspendRequestTestUtils.findContainer()
+          await taskSuspendRequestTestUtils.userClickCancelButton(user)
+
+          expect(requiredProps.cancelSuspendRequest).toBeCalledTimes(1)
+          expect(requiredProps.cancelSuspendRequest).toBeCalledWith(
+            expect.anything(),
+          )
+        })
+      })
+
+      describe('Кнопка возврата в работу', () => {
+        test(`Отображается если статус запроса "${SuspendRequestStatusEnum.Approved}"`, async () => {
+          render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                suspendRequest: taskFixtures.getSuspendRequest({
+                  status: SuspendRequestStatusEnum.Approved,
+                }),
+              }}
+            />,
+          )
+
+          await taskSuspendRequestTestUtils.findContainer()
+          const button = taskSuspendRequestTestUtils.getReturnToWorkButton()
+
+          expect(button).toBeInTheDocument()
+          expect(button).not.toBeEnabled()
+        })
+      })
+    })
+
+    describe('Модалка перевода заявки в ожидание', () => {
+      test('Открывается', async () => {
+        const { user } = render(
+          <TaskCard
+            {...requiredProps}
+            task={{
+              ...requiredProps.task!,
+              ...activeRequestReclassificationItemProps,
+            }}
+          />,
+          { store: getStoreWithAuth() },
+        )
+
+        await cardTitleTestUtils.userOpenMenu(user)
+        await cardTitleTestUtils.clickRequestReclassificationItem(user)
+        const modal = await taskReclassificationModalTestUtils.findContainer()
+
+        expect(modal).toBeInTheDocument()
+      })
+
+      describe('Закрывается', () => {
+        test('При клике на кнопку "Отмена"', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                ...activeRequestReclassificationItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
+          const modal = await taskReclassificationModalTestUtils.findContainer()
+          await taskReclassificationModalTestUtils.userClickCancelButton(user)
+
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        test('При клике на кнопку закрытия', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                ...activeRequestReclassificationItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
+          const modal = await taskReclassificationModalTestUtils.findContainer()
+          await taskReclassificationModalTestUtils.userClickCloseButton(user)
+
+          expect(modal).not.toBeInTheDocument()
+        })
+
+        test('При клике вне модалки', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                ...activeRequestReclassificationItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
+          const modal = await taskReclassificationModalTestUtils.findContainer()
+          await modalTestUtils.clickOutOfModal(user)
+
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
+
+      describe('При успешном запросе', () => {
+        test('Переданный обработчик вызывается корректно', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                ...activeRequestReclassificationItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
+          await taskReclassificationModalTestUtils.findContainer()
+
+          await taskReclassificationModalTestUtils.userSetComment(
+            user,
+            generateWord(),
+          )
+          await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            user,
+            availableReasons[0],
+          )
+          await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+          expect(requiredProps.createReclassificationRequest).toBeCalledTimes(1)
+          expect(requiredProps.createReclassificationRequest).toBeCalledWith(
+            expect.anything(),
+          )
+        })
+
+        test('Модалка закрывается', async () => {
+          const { user } = render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                ...activeRequestReclassificationItemProps,
+              }}
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.clickRequestReclassificationItem(user)
+          const modal = await taskReclassificationModalTestUtils.findContainer()
+
+          await taskReclassificationModalTestUtils.userSetComment(
+            user,
+            generateWord(),
+          )
+          await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            user,
+            availableReasons[0],
+          )
+          await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
+        })
+      })
     })
   })
 })
