@@ -58,12 +58,13 @@ const TaskRequest: FC<TaskRequestProps> = ({
           </Space>
 
           <Space>
-            {actions.map(({ onClick, disabled, text }, index) => (
+            {actions.map(({ onClick, disabled, loading, text }, index) => (
               <Button
                 key={index}
                 type='link'
                 onClick={onClick}
                 disabled={disabled}
+                loading={loading}
               >
                 {text}
               </Button>

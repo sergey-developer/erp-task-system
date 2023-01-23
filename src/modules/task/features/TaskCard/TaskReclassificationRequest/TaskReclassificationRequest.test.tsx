@@ -1,7 +1,13 @@
-import { getButtonIn, getIconByNameIn, render } from '_tests_/utils'
+import {
+  generateDateString,
+  generateWord,
+  getButtonIn,
+  getIconByNameIn,
+  render,
+} from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
+import commonFixtures from 'fixtures/common'
 import { getShortUserName } from 'modules/user/utils'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
@@ -10,12 +16,10 @@ import TaskReclassificationRequest, {
   TaskReclassificationRequestProps,
 } from './index'
 
-const reclassificationRequest = taskFixtures.getTaskReclassificationRequest()
-
 const requiredProps: TaskReclassificationRequestProps = {
-  user: reclassificationRequest.user,
-  comment: reclassificationRequest.comment.text,
-  date: reclassificationRequest.createdAt,
+  user: commonFixtures.getUser(),
+  comment: generateWord(),
+  date: generateDateString(),
   onCancel: jest.fn(),
   cancelBtnDisabled: false,
 }
@@ -54,7 +58,7 @@ export const testUtils = {
   userClickCancelButton,
 }
 
-describe('Статус запроса на переклассификацию', () => {
+describe('Запрос заявки на переклассификацию', () => {
   describe('Отображается корректно', () => {
     test('Иконка', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
