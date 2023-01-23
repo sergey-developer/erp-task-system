@@ -49,10 +49,11 @@ const getChildByText = (text: string | RegExp) =>
 const getIcon = () => getIconByNameIn(getContainer(), 'pause-circle')
 
 // cancel button
-const getCancelButton = () => getButtonIn(getContainer(), /отменить запрос/i)
+const getCancelButton = () =>
+  getButtonIn(getContainer(), new RegExp(cancelRequestAction.text))
 
 const queryCancelButton = () =>
-  queryButtonIn(getContainer(), /отменить запрос/i)
+  queryButtonIn(getContainer(), new RegExp(cancelRequestAction.text))
 
 const userClickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -65,10 +66,10 @@ const expectCancelRequestLoadingStarted = () =>
 
 // return button
 const getReturnToWorkButton = () =>
-  getButtonIn(getContainer(), /вернуть в работу/i)
+  getButtonIn(getContainer(), new RegExp(returnInWorkAction.text))
 
 const queryReturnToWorkButton = () =>
-  queryButtonIn(getContainer(), /вернуть в работу/i)
+  queryButtonIn(getContainer(), new RegExp(returnInWorkAction.text))
 
 const userClickReturnToWorkButton = async (user: UserEvent) => {
   const button = getReturnToWorkButton()
