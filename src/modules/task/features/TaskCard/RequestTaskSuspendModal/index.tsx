@@ -63,7 +63,6 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
     await onSubmit(values, form.setFields)
   }
 
-  //todo: do test
   const handleChangeReason: RadioGroupProps['onChange'] = (
     event: RadioChangeEvent,
   ) => {
@@ -77,7 +76,6 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
     }
   }
 
-  //todo: do test
   useEffect(() => {
     if (!isReasonMakeDateTimeFieldDisabled) {
       form.resetFields(['endDate', 'endTime'])
