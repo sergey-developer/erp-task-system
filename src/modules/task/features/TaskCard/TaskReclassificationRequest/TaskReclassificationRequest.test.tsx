@@ -54,7 +54,7 @@ export const testUtils = {
   userClickCancelButton,
 }
 
-describe('Статус запроса на переклассификацию', () => {
+describe('Запрос заявки на переклассификацию', () => {
   describe('Отображается корректно', () => {
     test('Иконка', () => {
       render(<TaskReclassificationRequest {...requiredProps} />)
