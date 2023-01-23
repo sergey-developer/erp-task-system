@@ -9,7 +9,7 @@ import {
   modalTestUtils,
   render,
 } from '_tests_/utils'
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { SuspendReasonEnum } from 'modules/task/constants/common'
 import { suspendReasonDict } from 'modules/task/constants/dictionary'
@@ -476,11 +476,9 @@ describe('Модалка создания запроса о переводе в 
             SuspendReasonEnum.AwaitingRelease,
           )
 
-          await waitFor(() => {
-            expect(testUtils.getEndDateField()).not.toHaveDisplayValue(
-              field.value,
-            )
-          })
+          expect(testUtils.getEndDateField()).not.toHaveDisplayValue(
+            field.value,
+          )
         })
       })
 
@@ -621,11 +619,9 @@ describe('Модалка создания запроса о переводе в 
             SuspendReasonEnum.AwaitingRelease,
           )
 
-          await waitFor(() => {
-            expect(testUtils.getEndTimeField()).not.toHaveDisplayValue(
-              field.value,
-            )
-          })
+          expect(testUtils.getEndTimeField()).not.toHaveDisplayValue(
+            field.value,
+          )
         })
       })
     })
