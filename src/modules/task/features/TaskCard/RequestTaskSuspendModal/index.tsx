@@ -17,7 +17,7 @@ import React, { FC, useEffect } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 import { SuspendReasonEnum } from 'modules/task/constants/common'
 import { suspendReasonDict } from 'modules/task/constants/dictionary'
-import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
+import { validationRules } from 'shared/constants/validation'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import { RequestTaskSuspendFormFields } from './interfaces'
@@ -115,18 +115,29 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item label='Время возврата'>
+        <Form.Item data-testid='return-time' label='Время возврата'>
           <Row justify='space-between'>
             <Col span={11}>
-              <Form.Item name='endDate' rules={END_DATE_RULES}>
-                <DatePickerStyled disabled={isDateTimeFieldDisabled} />
+              <Form.Item
+                data-testid='end-date'
+                name='endDate'
+                rules={END_DATE_RULES}
+              >
+                <DatePickerStyled
+                  disabled={isDateTimeFieldDisabled || isLoading}
+                />
               </Form.Item>
             </Col>
 
             <Col span={11}>
-              <Form.Item name='endTime' rules={END_TIME_RULES}>
+              <Form.Item
+                data-testid='end-time'
+                name='endTime'
+                dependencies={['endDate']}
+                rules={END_TIME_RULES}
+              >
                 <TimePickerStyled
-                  disabled={isDateTimeFieldDisabled}
+                  disabled={isDateTimeFieldDisabled || isLoading}
                   format='HH:mm'
                 />
               </Form.Item>
@@ -138,7 +149,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           data-testid='comment'
           label='Комментарий'
           name='comment'
-          rules={DEFAULT_LONG_TEXT_RULES}
+          rules={validationRules.string.long}
         >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>

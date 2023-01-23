@@ -1,21 +1,35 @@
 import { Rule } from 'rc-field-form/es/interface'
 
-export const DEFAULT_LONG_TEXT_LENGTH: number = 500
-
-export const DEFAULT_MIDDLE_TEXT_LENGTH: number = 250
-
-export const DEFAULT_LONG_TEXT_RULES: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: DEFAULT_LONG_TEXT_LENGTH,
+export const validationSizes = {
+  string: {
+    short: 100,
+    middle: 250,
+    long: 500,
   },
-]
+} as const
 
-export const DEFAULT_MIDDLE_TEXT_RULES: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: DEFAULT_MIDDLE_TEXT_LENGTH,
+export const validationRules = {
+  string: {
+    short: [
+      {
+        required: true,
+        whitespace: true,
+        max: validationSizes.string.short,
+      },
+    ] as Rule[],
+    middle: [
+      {
+        required: true,
+        whitespace: true,
+        max: validationSizes.string.middle,
+      },
+    ] as Rule[],
+    long: [
+      {
+        required: true,
+        whitespace: true,
+        max: validationSizes.string.long,
+      },
+    ] as Rule[],
   },
-]
+} as const

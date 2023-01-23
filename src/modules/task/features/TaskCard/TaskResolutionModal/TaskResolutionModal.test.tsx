@@ -11,10 +11,8 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { TaskTypeEnum } from 'modules/task/constants/common'
 import {
-  DEFAULT_LONG_TEXT_LENGTH,
-  DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
-  FIELD_CAN_NOT_BE_EMPTY_MSG,
-  REQUIRED_FIELD_MSG,
+  validationMessages,
+  validationSizes,
 } from 'shared/constants/validation'
 
 import TaskResolutionModal, { TaskResolutionModalProps } from './index'
@@ -274,7 +272,9 @@ describe('Модалка решения по заявке', () => {
           await testUtils.userSetTechResolution(user, ' ')
 
           expect(
-            await testUtils.findTechResolutionError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+            await testUtils.findTechResolutionError(
+              validationMessages.canNotBeEmpty,
+            ),
           ).toBeInTheDocument()
         })
 
@@ -284,7 +284,9 @@ describe('Модалка решения по заявке', () => {
           await testUtils.userClickSubmitButton(user)
 
           expect(
-            await testUtils.findTechResolutionError(REQUIRED_FIELD_MSG),
+            await testUtils.findTechResolutionError(
+              validationMessages.required,
+            ),
           ).toBeInTheDocument()
         })
 
@@ -293,12 +295,12 @@ describe('Модалка решения по заявке', () => {
 
           await testUtils.userSetTechResolution(
             user,
-            generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
+            generateWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(
             await testUtils.findTechResolutionError(
-              DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+              validationMessages.string.max.long,
             ),
           ).toBeInTheDocument()
         })
@@ -366,7 +368,9 @@ describe('Модалка решения по заявке', () => {
           await testUtils.userSetUserResolution(user, ' ')
 
           expect(
-            await testUtils.findUserResolutionError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+            await testUtils.findUserResolutionError(
+              validationMessages.canNotBeEmpty,
+            ),
           ).toBeInTheDocument()
         })
 
@@ -376,7 +380,9 @@ describe('Модалка решения по заявке', () => {
           await testUtils.userClickSubmitButton(user)
 
           expect(
-            await testUtils.findUserResolutionError(REQUIRED_FIELD_MSG),
+            await testUtils.findUserResolutionError(
+              validationMessages.required,
+            ),
           ).toBeInTheDocument()
         })
 
@@ -385,12 +391,12 @@ describe('Модалка решения по заявке', () => {
 
           await testUtils.userSetUserResolution(
             user,
-            generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
+            generateWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(
             await testUtils.findUserResolutionError(
-              DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+              validationMessages.string.max.long,
             ),
           ).toBeInTheDocument()
         })
@@ -401,7 +407,7 @@ describe('Модалка решения по заявке', () => {
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
     const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-    await modalTestUtils.userClickOutOfModal(user)
+    await modalTestUtils.clickOutOfModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })

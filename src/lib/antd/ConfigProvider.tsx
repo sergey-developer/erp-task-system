@@ -4,10 +4,8 @@ import { FC } from 'react'
 import { ConfigProviderProps as BaseConfigProviderProps } from 'antd/lib/config-provider'
 import ruRU from 'antd/lib/locale/ru_RU'
 import {
-  FIELD_CAN_NOT_BE_EMPTY_MSG,
-  INCORRECT_EMAIL_MSG,
-  REQUIRED_FIELD_MSG,
-  TEXT_MAX_LENGTH_MSG,
+  validationMessages,
+  validationTemplateMessages,
 } from 'shared/constants/validation'
 
 import setupAntd from './setup'
@@ -18,13 +16,13 @@ const globalFormConfig: BaseConfigProviderProps['form'] = {
   colon: false,
   requiredMark: false,
   validateMessages: {
-    required: REQUIRED_FIELD_MSG,
-    whitespace: FIELD_CAN_NOT_BE_EMPTY_MSG,
+    required: validationMessages.required,
+    whitespace: validationMessages.canNotBeEmpty,
     string: {
-      max: TEXT_MAX_LENGTH_MSG,
+      max: validationTemplateMessages.string.max,
     },
     types: {
-      email: INCORRECT_EMAIL_MSG,
+      email: validationMessages.email.incorrect,
     },
   },
 }

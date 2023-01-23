@@ -16,13 +16,9 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import subTaskFixtures from 'fixtures/subTask'
 import {
-  DEFAULT_LONG_TEXT_LENGTH,
-  DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
-  FIELD_CAN_NOT_BE_EMPTY_MSG,
-  REQUIRED_FIELD_MSG,
-  TEXT_MAX_LENGTH_MSG,
+  validationMessages,
+  validationSizes,
 } from 'shared/constants/validation'
-import { makeMaxLengthMessage } from 'shared/utils/validation'
 
 import CreateSubTaskModal from './index'
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'
@@ -299,7 +295,7 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.userClickSubmitButton(user)
 
           expect(
-            await testUtils.template.findError(REQUIRED_FIELD_MSG),
+            await testUtils.template.findError(validationMessages.required),
           ).toBeInTheDocument()
         })
       })
@@ -363,7 +359,7 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.userClickSubmitButton(user)
 
           expect(
-            await testUtils.title.findError(REQUIRED_FIELD_MSG),
+            await testUtils.title.findError(validationMessages.required),
           ).toBeInTheDocument()
         })
 
@@ -373,18 +369,21 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.title.setValue(user, ' ')
 
           expect(
-            await testUtils.title.findError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+            await testUtils.title.findError(validationMessages.canNotBeEmpty),
           ).toBeInTheDocument()
         })
 
         test('Если превысить лимит символов', async () => {
           const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-          await testUtils.title.setValue(user, generateWord({ length: 101 }))
+          await testUtils.title.setValue(
+            user,
+            generateWord({ length: validationSizes.string.short + 1 }),
+          )
 
           expect(
             await testUtils.title.findError(
-              makeMaxLengthMessage(TEXT_MAX_LENGTH_MSG, 100),
+              validationMessages.string.max.short,
             ),
           ).toBeInTheDocument()
         })
@@ -451,7 +450,7 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.userClickSubmitButton(user)
 
           expect(
-            await testUtils.description.findError(REQUIRED_FIELD_MSG),
+            await testUtils.description.findError(validationMessages.required),
           ).toBeInTheDocument()
         })
 
@@ -461,7 +460,9 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.description.setValue(user, ' ')
 
           expect(
-            await testUtils.description.findError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+            await testUtils.description.findError(
+              validationMessages.canNotBeEmpty,
+            ),
           ).toBeInTheDocument()
         })
 
@@ -470,12 +471,12 @@ describe('Модалка создания задачи заявки', () => {
 
           await testUtils.description.setValue(
             user,
-            generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
+            generateWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(
             await testUtils.description.findError(
-              DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+              validationMessages.string.max.long,
             ),
           ).toBeInTheDocument()
         })

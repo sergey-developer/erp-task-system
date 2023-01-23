@@ -7,10 +7,8 @@ import {
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
-  DEFAULT_LONG_TEXT_LENGTH,
-  DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
-  FIELD_CAN_NOT_BE_EMPTY_MSG,
-  REQUIRED_FIELD_MSG,
+  validationMessages,
+  validationSizes,
 } from 'shared/constants/validation'
 
 import TaskFirstLineModal from './index'
@@ -132,7 +130,7 @@ describe('Модальное окно перевода запроса на пе�
           await user.type(description, ' ')
 
           const errorMessage = await screen.findByText(
-            FIELD_CAN_NOT_BE_EMPTY_MSG,
+            validationMessages.canNotBeEmpty,
           )
           expect(errorMessage).toBeInTheDocument()
         })
@@ -143,11 +141,11 @@ describe('Модальное окно перевода запроса на пе�
           const field = testUtils.getDescriptionField()
           await user.type(
             field,
-            generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
+            generateWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(
-            await screen.findByText(DEFAULT_LONG_TEXT_MAX_LENGTH_MSG),
+            await screen.findByText(validationMessages.string.max.long),
           ).toBeInTheDocument()
         })
 
@@ -157,7 +155,9 @@ describe('Модальное окно перевода запроса на пе�
           const submitButton = testUtils.getSubmitButton()
           await user.click(submitButton)
 
-          const errorMessage = await screen.findByText(REQUIRED_FIELD_MSG)
+          const errorMessage = await screen.findByText(
+            validationMessages.required,
+          )
           expect(errorMessage).toBeInTheDocument()
         })
       })

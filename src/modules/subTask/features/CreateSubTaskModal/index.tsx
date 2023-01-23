@@ -2,12 +2,12 @@ import { Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
-import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
+import { validationRules } from 'shared/constants/validation'
 
 import { templateFieldNames } from './constants'
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'
 import { SelectStyled } from './styles'
-import { TEMPLATE_RULES, TITLE_RULES } from './validation'
+import { TEMPLATE_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -69,7 +69,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           data-testid='title'
           label='Краткое описание'
           name='title'
-          rules={TITLE_RULES}
+          rules={validationRules.string.short}
         >
           <Input
             placeholder='Опишите коротко задачу'
@@ -82,7 +82,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           data-testid='description'
           label='Подробное описание'
           name='description'
-          rules={DEFAULT_LONG_TEXT_RULES}
+          rules={validationRules.string.long}
         >
           <TextArea
             placeholder='Расскажите подробнее о задаче'

@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 import { useTaskType } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
-import { DEFAULT_LONG_TEXT_RULES } from 'shared/constants/validation'
+import { validationRules } from 'shared/constants/validation'
 
 import { TaskResolutionFormFields } from './interfaces'
 
@@ -83,7 +83,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
             data-testid='tech-resolution'
             label='Техническое решение'
             name='techResolution'
-            rules={DEFAULT_LONG_TEXT_RULES}
+            rules={validationRules.string.long}
           >
             <TextArea
               placeholder='Расскажите о работах на объекте'
@@ -96,7 +96,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
               data-testid='user-resolution'
               label='Решение для пользователя'
               name='userResolution'
-              rules={DEFAULT_LONG_TEXT_RULES}
+              rules={validationRules.string.long}
             >
               <TextArea
                 placeholder='Расскажите заявителю о решении'

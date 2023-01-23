@@ -8,10 +8,8 @@ import {
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
-  DEFAULT_MIDDLE_TEXT_LENGTH,
-  DEFAULT_MIDDLE_TEXT_MAX_LENGTH_MSG,
-  FIELD_CAN_NOT_BE_EMPTY_MSG,
-  REQUIRED_FIELD_MSG,
+  validationMessages,
+  validationSizes,
 } from 'shared/constants/validation'
 import { NonNullableObject } from 'shared/interfaces/utils'
 
@@ -145,7 +143,9 @@ describe('Модалка отправки запроса на доработку
           await testUtils.userSetReturnReason(user, ' ')
 
           expect(
-            await testUtils.findReturnReasonError(FIELD_CAN_NOT_BE_EMPTY_MSG),
+            await testUtils.findReturnReasonError(
+              validationMessages.canNotBeEmpty,
+            ),
           ).toBeInTheDocument()
         })
 
@@ -154,12 +154,12 @@ describe('Модалка отправки запроса на доработку
 
           await testUtils.userSetReturnReason(
             user,
-            generateWord({ length: DEFAULT_MIDDLE_TEXT_LENGTH + 1 }),
+            generateWord({ length: validationSizes.string.middle + 1 }),
           )
 
           expect(
             await testUtils.findReturnReasonError(
-              DEFAULT_MIDDLE_TEXT_MAX_LENGTH_MSG,
+              validationMessages.string.max.middle,
             ),
           ).toBeInTheDocument()
         })
@@ -170,7 +170,7 @@ describe('Модалка отправки запроса на доработку
           await testUtils.userClickSubmitButton(user)
 
           expect(
-            await testUtils.findReturnReasonError(REQUIRED_FIELD_MSG),
+            await testUtils.findReturnReasonError(validationMessages.required),
           ).toBeInTheDocument()
         })
       })

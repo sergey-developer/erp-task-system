@@ -9,10 +9,8 @@ import {
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
-  DEFAULT_LONG_TEXT_LENGTH,
-  DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
-  FIELD_CAN_NOT_BE_EMPTY_MSG,
-  REQUIRED_FIELD_MSG,
+  validationMessages,
+  validationSizes,
 } from 'shared/constants/validation'
 
 import CreateCommentForm from './index'
@@ -121,12 +119,12 @@ describe('Форма добавления комментария', () => {
 
         await testUtils.userEntersComment(
           user,
-          generateWord({ length: DEFAULT_LONG_TEXT_LENGTH + 1 }),
+          generateWord({ length: validationSizes.string.long + 1 }),
         )
 
         expect(
           await testUtils.findCommentFieldError(
-            DEFAULT_LONG_TEXT_MAX_LENGTH_MSG,
+            validationMessages.string.max.long,
           ),
         ).toBeInTheDocument()
       })
@@ -136,7 +134,7 @@ describe('Форма добавления комментария', () => {
 
         await testUtils.userEntersComment(user, ' ')
         const error = await testUtils.findCommentFieldError(
-          FIELD_CAN_NOT_BE_EMPTY_MSG,
+          validationMessages.canNotBeEmpty,
         )
 
         expect(error).toBeInTheDocument()
@@ -146,7 +144,9 @@ describe('Форма добавления комментария', () => {
         const { user } = render(<CreateCommentForm {...requiredProps} />)
 
         await testUtils.userClickSubmitButton(user)
-        const error = await testUtils.findCommentFieldError(REQUIRED_FIELD_MSG)
+        const error = await testUtils.findCommentFieldError(
+          validationMessages.required,
+        )
 
         expect(error).toBeInTheDocument()
       })
