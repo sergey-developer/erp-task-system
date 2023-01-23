@@ -53,7 +53,7 @@ const activeCreateSubTaskButtonTaskProps: Pick<
   SubTaskListTabProps['task'],
   'assignee' | 'status' | 'type'
 > = {
-  assignee: taskFixtures.getTaskAssignee(),
+  assignee: taskFixtures.getAssignee(),
   status: TaskStatusEnum.InProgress,
   type: TaskTypeEnum.Request,
 }

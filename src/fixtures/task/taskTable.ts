@@ -33,7 +33,7 @@ export const getTaskTableItem = (
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
-  assignee: taskFixtures.getTaskAssignee(),
+  assignee: taskFixtures.getAssignee(),
   olaNextBreachTime: generateDateString(),
 })
 

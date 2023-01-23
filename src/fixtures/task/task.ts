@@ -38,8 +38,8 @@ export const getTask = (
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
-  workGroup: props?.workGroup || taskFixtures.getTaskWorkGroup(),
-  assignee: props?.assignee || taskFixtures.getTaskAssignee(),
+  workGroup: props?.workGroup || taskFixtures.getWorkGroup(),
+  assignee: props?.assignee || taskFixtures.getAssignee(),
 
   recordId: generateWord(),
   name: generateWord(),

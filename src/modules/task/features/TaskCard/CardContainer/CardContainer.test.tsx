@@ -562,7 +562,7 @@ describe('Контейнер детальной карточки заявки', 
               })
 
               mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTaskReclassificationRequest(),
+                body: taskFixtures.getReclassificationRequest(),
               })
 
               render(<TaskCardContainer {...requiredProps} />, {
@@ -660,7 +660,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTaskReclassificationRequest(),
+              body: taskFixtures.getReclassificationRequest(),
             })
             mockCreateTaskReclassificationRequestSuccess(requiredProps.taskId)
 
@@ -761,7 +761,7 @@ describe('Контейнер детальной карточки заявки', 
               })
 
               mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTaskReclassificationRequest(),
+                body: taskFixtures.getReclassificationRequest(),
               })
 
               render(<TaskCardContainer {...requiredProps} />, {
@@ -862,7 +862,7 @@ describe('Контейнер детальной карточки заявки', 
               })
 
               mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTaskReclassificationRequest(),
+                body: taskFixtures.getReclassificationRequest(),
               })
 
               render(<TaskCardContainer {...requiredProps} />, {
@@ -963,7 +963,7 @@ describe('Контейнер детальной карточки заявки', 
               })
 
               mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTaskReclassificationRequest(),
+                body: taskFixtures.getReclassificationRequest(),
               })
 
               render(<TaskCardContainer {...requiredProps} />, {
@@ -1703,7 +1703,7 @@ describe('Контейнер детальной карточки заявки', 
             status: canSelectAssigneeProps.status,
             extendedStatus: activeAssignButtonProps.extendedStatus,
             assignee: activeAssignButtonProps.assignee,
-            workGroup: taskFixtures.getTaskWorkGroup({
+            workGroup: taskFixtures.getWorkGroup({
               id: canSelectAssigneeProps.workGroup.id,
             }),
           }),
@@ -1749,7 +1749,7 @@ describe('Контейнер детальной карточки заявки', 
             status: canSelectAssigneeProps.status,
             extendedStatus: activeAssignButtonProps.extendedStatus,
             assignee: activeAssignButtonProps.assignee,
-            workGroup: taskFixtures.getTaskWorkGroup({
+            workGroup: taskFixtures.getWorkGroup({
               id: canSelectAssigneeProps.workGroup.id,
             }),
           }),
