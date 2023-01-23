@@ -6,7 +6,7 @@ import { PrettyJsonStyled } from './styles'
 const { Text } = Typography
 
 type PrettyJsonProps = {
-  data: string
+  data: any
 }
 
 const PrettyJson: FC<PrettyJsonProps> = ({ data }) => {
@@ -15,9 +15,8 @@ const PrettyJson: FC<PrettyJsonProps> = ({ data }) => {
 
   useEffect(() => {
     try {
-      const parsed = JSON.parse(data)
-      const jsonString = JSON.stringify(parsed, null, 2)
-      setJson(jsonString)
+      const json = JSON.stringify(data, null, 2)
+      setJson(json)
     } catch {
       setError('Не валидный формат данных')
     }
