@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 
 import { GetTaskMonitoringQueryArgs } from 'modules/monitoring/models'
 import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApi.service'
-import { showErrorNotification } from 'shared/utils/notifications'
+import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import { showMultipleErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskMonitoring = (
   args: GetTaskMonitoringQueryArgs,
@@ -13,8 +14,10 @@ export const useGetTaskMonitoring = (
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification('Не удалось получить данные мониторинга заявок')
-  }, [state.isError])
+    const error = state.error as ErrorResponse
+
+    showMultipleErrorNotification(getErrorDetail(error))
+  }, [state.error, state.isError])
 
   return state
 }
