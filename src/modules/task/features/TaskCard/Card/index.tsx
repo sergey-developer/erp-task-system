@@ -345,7 +345,7 @@ const TaskCard: FC<TaskCardProps> = ({
           await createSuspendRequest({
             taskId: task.id,
             comment: values.comment,
-            suspendReason: values.suspendReason,
+            suspendReason: values.reason,
             suspendEndAt: moment(values.endDate)
               .set('hours', values.endTime.get('hours'))
               .set('minutes', values.endTime.get('minutes'))
@@ -362,7 +362,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
             const formErrors: RequestTaskSuspendFormErrors = {
               comment: badRequestError.data.comment,
-              suspendReason: badRequestError.data.suspendReason,
+              reason: badRequestError.data.suspendReason,
               endDate: badRequestError.data.suspendEndAt,
               endTime: badRequestError.data.suspendEndAt,
             }
@@ -380,7 +380,7 @@ const TaskCard: FC<TaskCardProps> = ({
       [closeRequestTaskSuspendModal, createSuspendRequest, task],
     )
 
-  const handleCancelTaskSuspendRequest = useCallback(async () => {
+  const handleCancelTaskSuspendRequest = useDebounceFn(async () => {
     if (!task) return
 
     try {
