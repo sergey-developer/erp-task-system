@@ -16,7 +16,9 @@ export const useGetTaskMonitoring = (
 
     const error = state.error as ErrorResponse
 
-    showMultipleErrorNotification(getErrorDetail(error))
+    if (error) {
+      showMultipleErrorNotification(getErrorDetail(error))
+    }
   }, [state.error, state.isError])
 
   return state

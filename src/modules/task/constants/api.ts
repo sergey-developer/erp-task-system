@@ -18,8 +18,8 @@ export enum TaskEndpointEnum {
   CreateReclassificationRequest = '/tasks/:id/reclassification-requests/',
   GetReclassificationRequest = '/tasks/:id/reclassification-request/',
 
-  CreateTaskSuspendRequest = '/tasks/:id/suspend-requests/',
-  DeleteTaskSuspendRequest = '/tasks/:id/suspend-request/',
+  CreateTaskSuspendRequest = '/tasks/:id/suspend_request/',
+  DeleteTaskSuspendRequest = '/tasks/:id/suspend_request/',
 
   GetTaskJournal = '/tasks/:id/journal/',
   GetTaskJournalCsv = '/tasks/:id/journal/csv/',
