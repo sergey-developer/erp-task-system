@@ -859,8 +859,6 @@ describe('Контейнер детальной карточки заявки', 
           test.todo('Ранее был создан запрос на переклассификацию')
         })
       })
-
-      test.todo('Создание запроса на переклассификацию')
     })
 
     describe('Роль - старший инженер', () => {
@@ -961,7 +959,105 @@ describe('Контейнер детальной карточки заявки', 
         })
       })
 
-      test.todo('Создание запроса на переклассификацию')
+      describe('Создание запроса на переклассификацию', () => {
+        describe('При успешном запросе', () => {
+          test('Отображается запрос и закрывается модалка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                status: activeRequestReclassificationItemProps.status,
+                olaStatus: activeRequestReclassificationItemProps.olaStatus,
+                type: activeRequestReclassificationItemProps.type,
+              }),
+            })
+
+            mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
+              body: taskFixtures.getReclassificationRequest(),
+            })
+            mockCreateTaskReclassificationRequestSuccess(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestReclassificationItem(user)
+            const modal =
+              await taskReclassificationModalTestUtils.findContainer()
+
+            await taskReclassificationModalTestUtils.userSetComment(
+              user,
+              generateWord(),
+            )
+            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+              user,
+              availableReasons[0],
+            )
+            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+            expect(
+              await taskReclassificationRequestTestUtils.findContainer(),
+            ).toBeInTheDocument()
+
+            expect(modal).not.toBeInTheDocument()
+          })
+        })
+
+        describe('При не успешном запросе', () => {
+          test('Корректно обрабатывается ошибка - 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                status: activeRequestReclassificationItemProps.status,
+                olaStatus: activeRequestReclassificationItemProps.olaStatus,
+                type: activeRequestReclassificationItemProps.type,
+              }),
+            })
+
+            mockCreateTaskReclassificationRequestNotFoundError(
+              requiredProps.taskId,
+            )
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestReclassificationItem(user)
+            await taskReclassificationModalTestUtils.findContainer()
+
+            await taskReclassificationModalTestUtils.userSetComment(
+              user,
+              generateWord(),
+            )
+            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+              user,
+              availableReasons[0],
+            )
+            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG,
+              ),
+            ).toBeInTheDocument()
+          })
+        })
+      })
     })
 
     describe('Роль - глава отдела', () => {
@@ -1062,7 +1158,105 @@ describe('Контейнер детальной карточки заявки', 
         })
       })
 
-      test.todo('Создание запроса на переклассификацию')
+      describe('Создание запроса на переклассификацию', () => {
+        describe('При успешном запросе', () => {
+          test('Отображается запрос и закрывается модалка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                status: activeRequestReclassificationItemProps.status,
+                olaStatus: activeRequestReclassificationItemProps.olaStatus,
+                type: activeRequestReclassificationItemProps.type,
+              }),
+            })
+
+            mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
+              body: taskFixtures.getReclassificationRequest(),
+            })
+            mockCreateTaskReclassificationRequestSuccess(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestReclassificationItem(user)
+            const modal =
+              await taskReclassificationModalTestUtils.findContainer()
+
+            await taskReclassificationModalTestUtils.userSetComment(
+              user,
+              generateWord(),
+            )
+            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+              user,
+              availableReasons[0],
+            )
+            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+            expect(
+              await taskReclassificationRequestTestUtils.findContainer(),
+            ).toBeInTheDocument()
+
+            expect(modal).not.toBeInTheDocument()
+          })
+        })
+
+        describe('При не успешном запросе', () => {
+          test('Корректно обрабатывается ошибка - 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                status: activeRequestReclassificationItemProps.status,
+                olaStatus: activeRequestReclassificationItemProps.olaStatus,
+                type: activeRequestReclassificationItemProps.type,
+              }),
+            })
+
+            mockCreateTaskReclassificationRequestNotFoundError(
+              requiredProps.taskId,
+            )
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestReclassificationItem(user)
+            await taskReclassificationModalTestUtils.findContainer()
+
+            await taskReclassificationModalTestUtils.userSetComment(
+              user,
+              generateWord(),
+            )
+            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+              user,
+              availableReasons[0],
+            )
+            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG,
+              ),
+            ).toBeInTheDocument()
+          })
+        })
+      })
     })
   })
 
