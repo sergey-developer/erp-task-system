@@ -64,23 +64,22 @@ const clickSubmitButton = async (user: UserEvent) => {
   return button
 }
 
-// suspend reason
-const getSuspendReasonBlock = () =>
-  within(getContainer()).getByTestId('suspend-reason')
+// reason
+const getReasonBlock = () => within(getContainer()).getByTestId('reason')
 
-const getSuspendReasonTitle = () =>
-  within(getSuspendReasonBlock()).getByTitle('Причина ожидания')
+const getReasonTitle = () =>
+  within(getReasonBlock()).getByTitle('Причина ожидания')
 
-const getSuspendReasonField = (reason: SuspendReasonEnum): HTMLInputElement =>
-  within(getSuspendReasonBlock()).getByRole('radio', {
+const getReasonField = (reason: SuspendReasonEnum): HTMLInputElement =>
+  within(getReasonBlock()).getByRole('radio', {
     name: suspendReasonDict[reason],
   })
 
-const findSuspendReasonError = (text: string) =>
-  within(getSuspendReasonBlock()).findByText(text)
+const findReasonError = (text: string) =>
+  within(getReasonBlock()).findByText(text)
 
-const setSuspendReason = async (user: UserEvent, reason: SuspendReasonEnum) => {
-  const field = getSuspendReasonField(reason)
+const setReason = async (user: UserEvent, reason: SuspendReasonEnum) => {
+  const field = getReasonField(reason)
   await user.click(field)
   return field
 }
@@ -161,11 +160,11 @@ export const testUtils = {
   getSubmitButton,
   clickSubmitButton,
 
-  getSuspendReasonBlock,
-  getSuspendReasonTitle,
-  getSuspendReasonField,
-  findSuspendReasonError,
-  setSuspendReason,
+  getReasonBlock,
+  getReasonTitle,
+  getReasonField,
+  findReasonError,
+  setReason,
 
   getReturnTimeBlock,
   getReturnTimeTitle,
@@ -260,10 +259,7 @@ describe('Модалка создания запроса о переводе в 
       test('Если поля заполнены', async () => {
         const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
 
-        await testUtils.setSuspendReason(
-          user,
-          SuspendReasonEnum.AwaitingInformation,
-        )
+        await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
         await testUtils.setComment(user, generateWord())
         await testUtils.clickSubmitButton(user)
 
@@ -287,14 +283,14 @@ describe('Модалка создания запроса о переводе в 
     describe('Поле причины ожидания', () => {
       test('Заголовок отображается', () => {
         render(<RequestTaskSuspendModal {...requiredProps} />)
-        expect(testUtils.getSuspendReasonTitle()).toBeInTheDocument()
+        expect(testUtils.getReasonTitle()).toBeInTheDocument()
       })
 
       test('Отображается корректно', () => {
         render(<RequestTaskSuspendModal {...requiredProps} />)
 
         Object.values(SuspendReasonEnum).forEach((reason) => {
-          const field = testUtils.getSuspendReasonField(reason)
+          const field = testUtils.getReasonField(reason)
           expect(field).toBeInTheDocument()
           expect(field).toBeEnabled()
           expect(field.value).toBe(reason)
@@ -306,7 +302,7 @@ describe('Модалка создания запроса о переводе в 
         const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
 
         for await (const reason of Object.values(SuspendReasonEnum)) {
-          const field = await testUtils.setSuspendReason(user, reason)
+          const field = await testUtils.setReason(user, reason)
           expect(field).toBeChecked()
         }
       })
@@ -315,7 +311,7 @@ describe('Модалка создания запроса о переводе в 
         render(<RequestTaskSuspendModal {...requiredProps} isLoading />)
 
         Object.values(SuspendReasonEnum).forEach((reason) => {
-          const field = testUtils.getSuspendReasonField(reason)
+          const field = testUtils.getReasonField(reason)
           expect(field).toBeDisabled()
         })
       })
@@ -329,7 +325,7 @@ describe('Модалка создания запроса о переводе в 
           await testUtils.clickSubmitButton(user)
 
           expect(
-            await testUtils.findSuspendReasonError(validationMessages.required),
+            await testUtils.findReasonError(validationMessages.required),
           ).toBeInTheDocument()
         })
       })
@@ -360,7 +356,7 @@ describe('Модалка создания запроса о переводе в 
           for await (const reason of Object.values(SuspendReasonEnum)) {
             if (reasonsMakeDateTimeFieldDisabled.includes(reason)) return
 
-            await testUtils.setSuspendReason(user, reason)
+            await testUtils.setReason(user, reason)
             expect(testUtils.getEndDateField()).toBeEnabled()
           }
         })
@@ -379,7 +375,7 @@ describe('Модалка создания запроса о переводе в 
             for await (const reason of Object.values(SuspendReasonEnum)) {
               if (!reasonsMakeDateTimeFieldDisabled.includes(reason)) return
 
-              await testUtils.setSuspendReason(user, reason)
+              await testUtils.setReason(user, reason)
               expect(testUtils.getEndDateField()).toBeDisabled()
             }
           })
@@ -395,10 +391,7 @@ describe('Модалка создания запроса о переводе в 
             <RequestTaskSuspendModal {...requiredProps} />,
           )
 
-          await testUtils.setSuspendReason(
-            user,
-            SuspendReasonEnum.AwaitingPurchase,
-          )
+          await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
           const value = formatDate(new Date(), 'YYYY-MM-DD')
           const field = await testUtils.setEndDate(user, value)
@@ -411,10 +404,7 @@ describe('Модалка создания запроса о переводе в 
             <RequestTaskSuspendModal {...requiredProps} />,
           )
 
-          await testUtils.setSuspendReason(
-            user,
-            SuspendReasonEnum.AwaitingInformation,
-          )
+          await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
           const field = testUtils.getEndDateField()
           const plusFiveDaysDate = moment()
@@ -442,10 +432,7 @@ describe('Модалка создания запроса о переводе в 
               <RequestTaskSuspendModal {...requiredProps} />,
             )
 
-            await testUtils.setSuspendReason(
-              user,
-              SuspendReasonEnum.AwaitingPurchase,
-            )
+            await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
             const value = formatDate(moment().subtract(1, 'day'), 'YYYY-MM-DD')
             await testUtils.setEndDate(user, value)
@@ -463,18 +450,12 @@ describe('Модалка создания запроса о переводе в 
             <RequestTaskSuspendModal {...requiredProps} />,
           )
 
-          await testUtils.setSuspendReason(
-            user,
-            SuspendReasonEnum.AwaitingInformation,
-          )
+          await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
           const field = testUtils.getEndDateField()
           expect(field).toHaveDisplayValue(field.value)
 
-          await testUtils.setSuspendReason(
-            user,
-            SuspendReasonEnum.AwaitingRelease,
-          )
+          await testUtils.setReason(user, SuspendReasonEnum.AwaitingRelease)
 
           expect(testUtils.getEndDateField()).not.toHaveDisplayValue(
             field.value,
@@ -501,7 +482,7 @@ describe('Модалка создания запроса о переводе в 
           for await (const reason of Object.values(SuspendReasonEnum)) {
             if (reasonsMakeDateTimeFieldDisabled.includes(reason)) return
 
-            await testUtils.setSuspendReason(user, reason)
+            await testUtils.setReason(user, reason)
             expect(testUtils.getEndTimeField()).toBeEnabled()
           }
         })
@@ -520,7 +501,7 @@ describe('Модалка создания запроса о переводе в 
             for await (const reason of Object.values(SuspendReasonEnum)) {
               if (!reasonsMakeDateTimeFieldDisabled.includes(reason)) return
 
-              await testUtils.setSuspendReason(user, reason)
+              await testUtils.setReason(user, reason)
               expect(testUtils.getEndTimeField()).toBeDisabled()
             }
           })
@@ -536,10 +517,7 @@ describe('Модалка создания запроса о переводе в 
             <RequestTaskSuspendModal {...requiredProps} />,
           )
 
-          await testUtils.setSuspendReason(
-            user,
-            SuspendReasonEnum.AwaitingPurchase,
-          )
+          await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
           const value = formatDate(new Date(), 'HH:mm')
           const field = await testUtils.setEndTime(user, value)
@@ -552,10 +530,7 @@ describe('Модалка создания запроса о переводе в 
             <RequestTaskSuspendModal {...requiredProps} />,
           )
 
-          await testUtils.setSuspendReason(
-            user,
-            SuspendReasonEnum.AwaitingInformation,
-          )
+          await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
           const field = testUtils.getEndTimeField()
           const plusFiveDaysTime = moment().add('5', 'days').format('HH:mm')
@@ -582,10 +557,7 @@ describe('Модалка создания запроса о переводе в 
               <RequestTaskSuspendModal {...requiredProps} />,
             )
 
-            await testUtils.setSuspendReason(
-              user,
-              SuspendReasonEnum.AwaitingPurchase,
-            )
+            await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
             const dateValue = formatDate(moment().add(1, 'day'), 'YYYY-MM-DD')
             await testUtils.setEndDate(user, dateValue)
@@ -606,18 +578,12 @@ describe('Модалка создания запроса о переводе в 
             <RequestTaskSuspendModal {...requiredProps} />,
           )
 
-          await testUtils.setSuspendReason(
-            user,
-            SuspendReasonEnum.AwaitingInformation,
-          )
+          await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
           const field = testUtils.getEndTimeField()
           expect(field).toHaveDisplayValue(field.value)
 
-          await testUtils.setSuspendReason(
-            user,
-            SuspendReasonEnum.AwaitingRelease,
-          )
+          await testUtils.setReason(user, SuspendReasonEnum.AwaitingRelease)
 
           expect(testUtils.getEndTimeField()).not.toHaveDisplayValue(
             field.value,
