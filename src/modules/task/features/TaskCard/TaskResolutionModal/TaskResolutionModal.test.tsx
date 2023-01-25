@@ -34,7 +34,7 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 // close button
 const getCloseButton = () => getButtonIn(getContainer(), /close/i)
 
-const userClickCloseButton = async (user: UserEvent) => {
+const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
   return button
@@ -43,7 +43,7 @@ const userClickCloseButton = async (user: UserEvent) => {
 // cancel button
 const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
-const userClickCancelButton = async (user: UserEvent) => {
+const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
   return button
@@ -52,7 +52,7 @@ const userClickCancelButton = async (user: UserEvent) => {
 // submit button
 const getSubmitButton = () => getButtonIn(getContainer(), /выполнить заявку/i)
 
-const userClickSubmitButton = async (user: UserEvent) => {
+const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
@@ -114,13 +114,13 @@ export const testUtils = {
   getChildByText,
 
   getCloseButton,
-  userClickCloseButton,
+  clickCloseButton,
 
   getCancelButton,
-  userClickCancelButton,
+  clickCancelButton,
 
   getSubmitButton,
-  userClickSubmitButton,
+  clickSubmitButton,
 
   getTechResolutionBlock,
   getTechResolutionTitle,
@@ -176,7 +176,7 @@ describe('Модалка решения по заявке', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-      await testUtils.userClickCloseButton(user)
+      await testUtils.clickCloseButton(user)
       expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })
@@ -194,7 +194,7 @@ describe('Модалка решения по заявке', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-      await testUtils.userClickCancelButton(user)
+      await testUtils.clickCancelButton(user)
       expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })
@@ -220,7 +220,7 @@ describe('Модалка решения по заявке', () => {
 
         await testUtils.userSetTechResolution(user, generateWord())
         await testUtils.userSetUserResolution(user, generateWord())
-        await testUtils.userClickSubmitButton(user)
+        await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
       })
@@ -228,7 +228,7 @@ describe('Модалка решения по заявке', () => {
       test('Если поля не заполнены', async () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        await testUtils.userClickSubmitButton(user)
+        await testUtils.clickSubmitButton(user)
         expect(requiredProps.onSubmit).not.toBeCalled()
       })
     })
@@ -281,7 +281,7 @@ describe('Модалка решения по заявке', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-          await testUtils.userClickSubmitButton(user)
+          await testUtils.clickSubmitButton(user)
 
           expect(
             await testUtils.findTechResolutionError(
@@ -377,7 +377,7 @@ describe('Модалка решения по заявке', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-          await testUtils.userClickSubmitButton(user)
+          await testUtils.clickSubmitButton(user)
 
           expect(
             await testUtils.findUserResolutionError(
@@ -407,7 +407,7 @@ describe('Модалка решения по заявке', () => {
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
     const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-    await modalTestUtils.clickOutOfModal(user)
+    await modalTestUtils.clickOutsideModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })

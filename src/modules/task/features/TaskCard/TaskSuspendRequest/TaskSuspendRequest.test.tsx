@@ -55,7 +55,7 @@ const getCancelButton = () =>
 const queryCancelButton = () =>
   queryButtonIn(getContainer(), new RegExp(cancelRequestAction.text))
 
-const userClickCancelButton = async (user: UserEvent) => {
+const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
   return button
@@ -90,7 +90,7 @@ export const testUtils = {
 
   getCancelButton,
   queryCancelButton,
-  userClickCancelButton,
+  clickCancelButton,
   expectCancelRequestLoadingStarted,
 
   getReturnToWorkButton,
@@ -181,7 +181,7 @@ describe('Запрос заявки на ожидание', () => {
         <TaskSuspendRequest {...requiredProps} action={cancelRequestAction} />,
       )
 
-      await testUtils.userClickCancelButton(user)
+      await testUtils.clickCancelButton(user)
       expect(cancelRequestAction.onClick).toBeCalledTimes(1)
     })
   })

@@ -2,6 +2,8 @@ import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/react'
 import { BaseQueryApi } from '@reduxjs/toolkit/src/query/baseQueryTypes'
 import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 
+import { HttpCodeEnum } from 'shared/constants/http'
+
 export type ValidationErrors = Array<string>
 
 export type FieldsErrors<T> = {
@@ -14,7 +16,7 @@ export type ErrorData<T extends object = {}> = FieldsErrors<T> & {
 
 export type ErrorResponse<T extends object = {}> = {
   data: ErrorData<T>
-  status: number
+  status: HttpCodeEnum
 }
 
 /**

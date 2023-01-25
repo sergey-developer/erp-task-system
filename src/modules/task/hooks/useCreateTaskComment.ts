@@ -13,7 +13,7 @@ import {
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { CREATE_TASK_COMMENT_ERROR_MSG } from '../constants/messages'
+import { CREATE_TASK_COMMENT_ERROR_MSG } from '../constants/errorMessages'
 
 export const useCreateTaskComment = () => {
   const permissions = useUserPermissions(taskCommentApiPermissions)

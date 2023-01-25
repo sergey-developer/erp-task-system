@@ -22,7 +22,7 @@ import {
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import taskFixtures from 'fixtures/task'
-import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/constants/messages'
+import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/constants/errorMessages'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 
 import { testUtils as commentListTestUtils } from './CommentList/CommentList.test'
@@ -253,7 +253,7 @@ describe('Вкладка списка комментариев заявки', ()
             user,
             newComment.text,
           )
-          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
@@ -280,7 +280,7 @@ describe('Вкладка списка комментариев заявки', ()
             user,
             newComment.text,
           )
-          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
@@ -313,7 +313,7 @@ describe('Вкладка списка комментариев заявки', ()
             user,
             generateWord(),
           )
-          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
@@ -337,7 +337,7 @@ describe('Вкладка списка комментариев заявки', ()
             user,
             generateWord(),
           )
-          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
@@ -358,7 +358,7 @@ describe('Вкладка списка комментариев заявки', ()
             user,
             generateWord(),
           )
-          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
@@ -379,7 +379,7 @@ describe('Вкладка списка комментариев заявки', ()
             user,
             generateWord(),
           )
-          await createCommentFormTestUtils.userClickSubmitButton(user)
+          await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 

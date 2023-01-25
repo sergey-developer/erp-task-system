@@ -52,7 +52,7 @@ const commentValidatingFinished = async () => {
 const getSubmitButton = () =>
   getButtonIn(getContainer(), /опубликовать комментарий/i)
 
-const userClickSubmitButton = async (user: UserEvent) => {
+const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
@@ -79,7 +79,7 @@ export const testUtils = {
   commentValidatingFinished,
 
   getSubmitButton,
-  userClickSubmitButton,
+  clickSubmitButton,
 
   loadingStarted,
   loadingFinished,
@@ -143,7 +143,7 @@ describe('Форма добавления комментария', () => {
       test('Если не заполнить поле и нажать кнопку отправки', async () => {
         const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-        await testUtils.userClickSubmitButton(user)
+        await testUtils.clickSubmitButton(user)
         const error = await testUtils.findCommentFieldError(
           validationMessages.required,
         )
@@ -172,7 +172,7 @@ describe('Форма добавления комментария', () => {
       const { user } = render(<CreateCommentForm {...requiredProps} />)
 
       await testUtils.userEntersComment(user, generateWord())
-      await testUtils.userClickSubmitButton(user)
+      await testUtils.clickSubmitButton(user)
 
       expect(requiredProps.onSubmit).toBeCalledTimes(1)
     })

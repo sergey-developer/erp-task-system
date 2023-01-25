@@ -12,7 +12,7 @@ import {
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG } from '../constants/messages'
+import { CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG } from '../constants/errorMessages'
 
 export const useCreateTaskReclassificationRequest = () => {
   const permissions = useUserPermissions(
