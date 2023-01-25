@@ -855,7 +855,10 @@ describe('Карточка заявки', () => {
           await taskSuspendRequestTestUtils.findContainer()
           await taskSuspendRequestTestUtils.userClickCancelButton(user)
 
-          expect(requiredProps.cancelSuspendRequest).toBeCalledTimes(1)
+          await waitFor(() => {
+            expect(requiredProps.cancelSuspendRequest).toBeCalledTimes(1)
+          })
+
           expect(requiredProps.cancelSuspendRequest).toBeCalledWith(
             expect.anything(),
           )
