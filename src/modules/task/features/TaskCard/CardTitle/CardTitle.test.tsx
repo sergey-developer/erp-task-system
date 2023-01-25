@@ -107,7 +107,7 @@ const expectMenuItemNotDisabled = (item: HTMLElement) =>
 // close button
 const getCloseButton = () => getButtonIn(getContainer(), 'close')
 
-const userClickCloseButton = async (user: UserEvent) => {
+const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
   return button
@@ -176,7 +176,7 @@ export const testUtils = {
   clickRequestSuspendItem,
 
   getCloseButton,
-  userClickCloseButton,
+  clickCloseButton,
 }
 
 describe('Заголовок карточки заявки', () => {
@@ -201,7 +201,7 @@ describe('Заголовок карточки заявки', () => {
     test('При клике обработчик вызывается корректно', async () => {
       const { user } = render(<CardTitle {...requiredProps} />)
 
-      await testUtils.userClickCloseButton(user)
+      await testUtils.clickCloseButton(user)
       expect(requiredProps.onClose).toBeCalledTimes(1)
     })
   })

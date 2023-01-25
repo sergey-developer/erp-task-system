@@ -136,7 +136,7 @@ const findDescriptionFieldError = (error: string) =>
 // submit button
 const getSubmitButton = () => getButtonIn(getContainer(), /создать задание/i)
 
-const userClickSubmitButton = async (user: UserEvent) => {
+const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
@@ -145,7 +145,7 @@ const userClickSubmitButton = async (user: UserEvent) => {
 // cancel button
 const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
-const userClickCancelButton = async (user: UserEvent) => {
+const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
   return button
@@ -199,10 +199,10 @@ export const testUtils = {
   userFillForm,
 
   getSubmitButton,
-  userClickSubmitButton,
+  clickSubmitButton,
 
   getCancelButton,
-  userClickCancelButton,
+  clickCancelButton,
 
   loadingStarted: () => loadingStartedByButton(getSubmitButton()),
   loadingFinished: () => loadingFinishedByButton(getSubmitButton()),
@@ -292,7 +292,7 @@ describe('Модалка создания задачи заявки', () => {
         test('Если не выбрать значение и нажать кнопку отправки', async () => {
           const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-          await testUtils.userClickSubmitButton(user)
+          await testUtils.clickSubmitButton(user)
 
           expect(
             await testUtils.template.findError(validationMessages.required),
@@ -356,7 +356,7 @@ describe('Модалка создания задачи заявки', () => {
         test('Если не ввести значение и нажать кнопку отправки', async () => {
           const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-          await testUtils.userClickSubmitButton(user)
+          await testUtils.clickSubmitButton(user)
 
           expect(
             await testUtils.title.findError(validationMessages.required),
@@ -447,7 +447,7 @@ describe('Модалка создания задачи заявки', () => {
         test('Если не ввести значение и нажать кнопку отправки', async () => {
           const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-          await testUtils.userClickSubmitButton(user)
+          await testUtils.clickSubmitButton(user)
 
           expect(
             await testUtils.description.findError(validationMessages.required),
@@ -507,7 +507,7 @@ describe('Модалка создания задачи заявки', () => {
         title: generateWord(),
         description: generateWord(),
       })
-      await testUtils.userClickSubmitButton(user)
+      await testUtils.clickSubmitButton(user)
 
       expect(requiredProps.onSubmit).toBeCalledTimes(1)
     })
@@ -526,7 +526,7 @@ describe('Модалка создания задачи заявки', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-      await testUtils.userClickCancelButton(user)
+      await testUtils.clickCancelButton(user)
       expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })

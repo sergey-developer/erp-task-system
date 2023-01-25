@@ -167,7 +167,7 @@ describe('Карточка заявки', () => {
     test('При клике на кнопку закрытия обработчик вызывается корректно', async () => {
       const { user } = render(<TaskCard {...requiredProps} />)
 
-      await cardTitleTestUtils.userClickCloseButton(user)
+      await cardTitleTestUtils.clickCloseButton(user)
 
       await waitFor(() => {
         expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
@@ -322,7 +322,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.userOpenMenu(user)
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
-          await taskReclassificationModalTestUtils.userClickCancelButton(user)
+          await taskReclassificationModalTestUtils.clickCancelButton(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -342,7 +342,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.userOpenMenu(user)
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
-          await taskReclassificationModalTestUtils.userClickCloseButton(user)
+          await taskReclassificationModalTestUtils.clickCloseButton(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -393,7 +393,7 @@ describe('Карточка заявки', () => {
             user,
             availableReasons[0],
           )
-          await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+          await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
           expect(requiredProps.createReclassificationRequest).toBeCalledTimes(1)
           expect(requiredProps.createReclassificationRequest).toBeCalledWith(
@@ -425,7 +425,7 @@ describe('Карточка заявки', () => {
             user,
             availableReasons[0],
           )
-          await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+          await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
@@ -480,7 +480,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.userOpenMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
-          await taskResolutionModalTestUtils.userClickCancelButton(user)
+          await taskResolutionModalTestUtils.clickCancelButton(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -504,7 +504,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.userOpenMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
-          await taskResolutionModalTestUtils.userClickCloseButton(user)
+          await taskResolutionModalTestUtils.clickCloseButton(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -563,7 +563,7 @@ describe('Карточка заявки', () => {
             user,
             generateWord(),
           )
-          await taskResolutionModalTestUtils.userClickSubmitButton(user)
+          await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(requiredProps.resolveTask).toBeCalledTimes(1)
           expect(requiredProps.resolveTask).toBeCalledWith(expect.anything())
@@ -681,7 +681,7 @@ describe('Карточка заявки', () => {
       await workGroupBlockTestUtils.userClickFirstLineButton(user)
       await taskFirstLineModalTestUtils.findModal()
       await taskFirstLineModalTestUtils.userSetDescription(user, generateWord())
-      await taskFirstLineModalTestUtils.userClickSubmitButton(user)
+      await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
       expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
       expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
@@ -718,7 +718,7 @@ describe('Карточка заявки', () => {
         user,
         workGroup.name,
       )
-      await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+      await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
       expect(requiredProps.updateWorkGroup).toBeCalledTimes(1)
       expect(requiredProps.updateWorkGroup).toBeCalledWith(expect.anything())
@@ -853,7 +853,7 @@ describe('Карточка заявки', () => {
           )
 
           await taskSuspendRequestTestUtils.findContainer()
-          await taskSuspendRequestTestUtils.userClickCancelButton(user)
+          await taskSuspendRequestTestUtils.clickCancelButton(user)
 
           await waitFor(() => {
             expect(requiredProps.cancelSuspendRequest).toBeCalledTimes(1)

@@ -702,7 +702,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               availableReasons[0],
             )
-            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+            await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
             expect(
               await taskReclassificationRequestTestUtils.findContainer(),
@@ -750,7 +750,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               availableReasons[0],
             )
-            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+            await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
             expect(
               await findNotification(
@@ -1000,7 +1000,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               availableReasons[0],
             )
-            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+            await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
             expect(
               await taskReclassificationRequestTestUtils.findContainer(),
@@ -1048,7 +1048,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               availableReasons[0],
             )
-            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+            await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
             expect(
               await findNotification(
@@ -1199,7 +1199,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               availableReasons[0],
             )
-            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+            await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
             expect(
               await taskReclassificationRequestTestUtils.findContainer(),
@@ -1247,7 +1247,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               availableReasons[0],
             )
-            await taskReclassificationModalTestUtils.userClickSubmitButton(user)
+            await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
             expect(
               await findNotification(
@@ -1722,7 +1722,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
-          await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+          await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
@@ -1760,7 +1760,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
-          await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+          await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
             await findNotification(UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG),
@@ -1796,7 +1796,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
-          await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+          await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
             await findNotification(UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG),
@@ -1832,7 +1832,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
-          await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+          await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
         })
@@ -2936,7 +2936,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
           })
@@ -2964,7 +2964,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
 
@@ -3000,7 +3000,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
 
             expect(
               await findNotification(badRequestResponse.detail[0]),
@@ -3027,7 +3027,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
 
             expect(
               await findNotification(UNKNOWN_ERROR_MSG),
@@ -3059,7 +3059,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
           })
@@ -3087,7 +3087,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
 
@@ -3123,7 +3123,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
 
             expect(
               await findNotification(badRequestResponse.detail[0]),
@@ -3150,7 +3150,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
 
             expect(
               await findNotification(UNKNOWN_ERROR_MSG),
@@ -3182,7 +3182,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
           })
@@ -3210,7 +3210,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
 
@@ -3246,7 +3246,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
 
             expect(
               await findNotification(badRequestResponse.detail[0]),
@@ -3273,7 +3273,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
             await taskSuspendRequestTestUtils.findContainer()
-            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskSuspendRequestTestUtils.clickCancelButton(user)
 
             expect(
               await findNotification(UNKNOWN_ERROR_MSG),

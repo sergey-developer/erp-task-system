@@ -54,14 +54,14 @@ const findReturnReasonError = async (error: string) =>
 
 const getSubmitButton = () => getButtonIn(getContainer(), /сохранить/i)
 
-const userClickSubmitButton = async (user: UserEvent) => {
+const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
 }
 const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
-const userClickCancelButton = async (user: UserEvent) => {
+const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
   return button
@@ -78,10 +78,10 @@ export const testUtils = {
   findReturnReasonError,
 
   getSubmitButton,
-  userClickSubmitButton,
+  clickSubmitButton,
 
   getCancelButton,
-  userClickCancelButton,
+  clickCancelButton,
 
   loadingStarted: () => loadingStartedByButton(getSubmitButton()),
   loadingFinished: () => loadingFinishedByButton(getSubmitButton()),
@@ -167,7 +167,7 @@ describe('Модалка отправки запроса на доработку
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
 
-          await testUtils.userClickSubmitButton(user)
+          await testUtils.clickSubmitButton(user)
 
           expect(
             await testUtils.findReturnReasonError(validationMessages.required),
@@ -197,7 +197,7 @@ describe('Модалка отправки запроса на доработку
         const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
 
         await testUtils.userSetReturnReason(user, generateWord())
-        await testUtils.userClickSubmitButton(user)
+        await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
       })
@@ -216,7 +216,7 @@ describe('Модалка отправки запроса на доработку
       test('Обработчик вызывается корректно', async () => {
         const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
 
-        await testUtils.userClickCancelButton(user)
+        await testUtils.clickCancelButton(user)
         expect(requiredProps.onCancel).toBeCalledTimes(1)
       })
     })

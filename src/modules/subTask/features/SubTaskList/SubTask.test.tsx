@@ -114,7 +114,7 @@ const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
 const queryCancelButton = () => queryButtonIn(getContainer(), /отменить/i)
 
-const userClickCancelButton = async (user: UserEvent) => {
+const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
   return button
@@ -139,7 +139,7 @@ export const testUtils = {
 
   getCancelButton,
   queryCancelButton,
-  userClickCancelButton,
+  clickCancelButton,
 }
 
 describe('Задание', () => {
@@ -513,7 +513,7 @@ describe('Задание', () => {
         <SubTask {...requiredProps} {...activeCancelButtonProps} />,
       )
 
-      await testUtils.userClickCancelButton(user)
+      await testUtils.clickCancelButton(user)
       expect(requiredProps.onClickCancel).toBeCalledTimes(1)
     })
   })

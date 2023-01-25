@@ -126,7 +126,7 @@ describe('Список подзадач', () => {
         />,
       )
 
-      await subTaskTestUtils.userClickCancelButton(user)
+      await subTaskTestUtils.clickCancelButton(user)
 
       expect(requiredProps.onClickCancel).toBeCalledTimes(1)
       expect(requiredProps.onClickCancel).toBeCalledWith(subTask)
