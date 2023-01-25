@@ -6,7 +6,7 @@ import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskAssigne
 import { useUserPermissions } from 'modules/user/hooks'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG } from '../constants/messages'
+import { UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG } from '../constants/errorMessages'
 
 export const useUpdateTaskAssignee = () => {
   const permissions = useUserPermissions(taskAssigneeApiPermissions)

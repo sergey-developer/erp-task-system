@@ -994,7 +994,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.clickRequestSuspendItem(user)
           await requestTaskSuspendModalTestUtils.findContainer()
 
-          await requestTaskSuspendModalTestUtils.setSuspendReason(
+          await requestTaskSuspendModalTestUtils.setReason(
             user,
             SuspendReasonEnum.AwaitingInformation,
           )
@@ -1028,7 +1028,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.clickRequestSuspendItem(user)
           const modal = await requestTaskSuspendModalTestUtils.findContainer()
 
-          await requestTaskSuspendModalTestUtils.setSuspendReason(
+          await requestTaskSuspendModalTestUtils.setReason(
             user,
             SuspendReasonEnum.AwaitingInformation,
           )
