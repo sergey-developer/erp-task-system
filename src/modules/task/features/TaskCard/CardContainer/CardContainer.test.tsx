@@ -2059,317 +2059,1226 @@ describe('Контейнер детальной карточки заявки', 
 
   describe('Перевод заявки в ожидание', () => {
     describe('Создание запроса', () => {
-      describe('При успешном запросе', () => {
-        test('Созданный запрос отображается', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+      describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
+        describe('При успешном запросе', () => {
+          test('Созданный запрос отображается', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
-              id: requiredProps.taskId,
-              type: activeRequestSuspendItemProps.type,
-              status: activeRequestSuspendItemProps.status,
-              suspendRequest: null,
-            }),
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestSuccess(requiredProps.taskId, {
+              body: taskFixtures.getSuspendRequest(),
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await taskSuspendRequestTestUtils.findContainer(),
+            ).toBeInTheDocument()
+          })
+        })
+
+        describe('При не успешном запросе', () => {
+          test('Обрабатывается ошибка 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestNotFoundError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                'Невозможно перевести заявку в ожидание - заявка не найдена',
+              ),
+            ).toBeInTheDocument()
           })
 
-          mockCreateTaskSuspendRequestSuccess(requiredProps.taskId, {
-            body: taskFixtures.getSuspendRequest(),
+          test('Обрабатывается ошибка 400', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            const badRequestResponse: Required<
+              Omit<
+                CreateTaskSuspendRequestBadRequestErrorResponse['data'],
+                'detail'
+              >
+            > = {
+              comment: [generateWord()],
+              suspendEndAt: [generateWord()],
+              suspendReason: [generateWord()],
+            }
+
+            mockCreateTaskSuspendRequestBadRequestError(requiredProps.taskId, {
+              body: badRequestResponse,
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findReasonError(
+                badRequestResponse.suspendReason[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findCommentError(
+                badRequestResponse.comment[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndDateError(
+                badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
           })
 
-          const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store: getStoreWithAuth(),
+          test('Обрабатывается неизвестная ошибка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestServerError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(UNKNOWN_ERROR_MSG),
+            ).toBeInTheDocument()
           })
-
-          await taskCardTestUtils.expectLoadingFinished()
-
-          await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          await requestTaskSuspendModalTestUtils.findContainer()
-
-          await requestTaskSuspendModalTestUtils.setReason(
-            user,
-            SuspendReasonEnum.AwaitingInformation,
-          )
-          await requestTaskSuspendModalTestUtils.setComment(
-            user,
-            generateWord(),
-          )
-          await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
-
-          expect(
-            await taskSuspendRequestTestUtils.findContainer(),
-          ).toBeInTheDocument()
         })
       })
 
-      describe('При не успешном запросе', () => {
-        test('Обрабатывается ошибка 404', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+      describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
+        describe('При успешном запросе', () => {
+          test('Созданный запрос отображается', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
-              id: requiredProps.taskId,
-              type: activeRequestSuspendItemProps.type,
-              status: activeRequestSuspendItemProps.status,
-              suspendRequest: null,
-            }),
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestSuccess(requiredProps.taskId, {
+              body: taskFixtures.getSuspendRequest(),
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await taskSuspendRequestTestUtils.findContainer(),
+            ).toBeInTheDocument()
           })
-
-          mockCreateTaskSuspendRequestNotFoundError(requiredProps.taskId)
-
-          const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskCardTestUtils.expectLoadingFinished()
-
-          await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          await requestTaskSuspendModalTestUtils.findContainer()
-
-          await requestTaskSuspendModalTestUtils.setReason(
-            user,
-            SuspendReasonEnum.AwaitingInformation,
-          )
-          await requestTaskSuspendModalTestUtils.setComment(
-            user,
-            generateWord(),
-          )
-          await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
-
-          expect(
-            await findNotification(
-              'Невозможно перевести заявку в ожидание - заявка не найдена',
-            ),
-          ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+        describe('При не успешном запросе', () => {
+          test('Обрабатывается ошибка 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
-              id: requiredProps.taskId,
-              type: activeRequestSuspendItemProps.type,
-              status: activeRequestSuspendItemProps.status,
-              suspendRequest: null,
-            }),
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestNotFoundError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                'Невозможно перевести заявку в ожидание - заявка не найдена',
+              ),
+            ).toBeInTheDocument()
           })
 
-          const badRequestResponse: Required<
-            Omit<
-              CreateTaskSuspendRequestBadRequestErrorResponse['data'],
-              'detail'
-            >
-          > = {
-            comment: [generateWord()],
-            suspendEndAt: [generateWord()],
-            suspendReason: [generateWord()],
-          }
+          test('Обрабатывается ошибка 400', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          mockCreateTaskSuspendRequestBadRequestError(requiredProps.taskId, {
-            body: badRequestResponse,
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            const badRequestResponse: Required<
+              Omit<
+                CreateTaskSuspendRequestBadRequestErrorResponse['data'],
+                'detail'
+              >
+            > = {
+              comment: [generateWord()],
+              suspendEndAt: [generateWord()],
+              suspendReason: [generateWord()],
+            }
+
+            mockCreateTaskSuspendRequestBadRequestError(requiredProps.taskId, {
+              body: badRequestResponse,
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findReasonError(
+                badRequestResponse.suspendReason[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findCommentError(
+                badRequestResponse.comment[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndDateError(
+                badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
           })
 
-          const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store: getStoreWithAuth(),
+          test('Обрабатывается неизвестная ошибка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestServerError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(UNKNOWN_ERROR_MSG),
+            ).toBeInTheDocument()
           })
+        })
+      })
 
-          await taskCardTestUtils.expectLoadingFinished()
+      describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
+        describe('При успешном запросе', () => {
+          test('Созданный запрос отображается', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          await requestTaskSuspendModalTestUtils.findContainer()
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
 
-          await requestTaskSuspendModalTestUtils.setReason(
-            user,
-            SuspendReasonEnum.AwaitingInformation,
-          )
-          await requestTaskSuspendModalTestUtils.setComment(
-            user,
-            generateWord(),
-          )
-          await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+            mockCreateTaskSuspendRequestSuccess(requiredProps.taskId, {
+              body: taskFixtures.getSuspendRequest(),
+            })
 
-          expect(
-            await findNotification(
-              'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
-            ),
-          ).toBeInTheDocument()
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
 
-          expect(
-            await requestTaskSuspendModalTestUtils.findReasonError(
-              badRequestResponse.suspendReason[0],
-            ),
-          ).toBeInTheDocument()
+            await taskCardTestUtils.expectLoadingFinished()
 
-          expect(
-            await requestTaskSuspendModalTestUtils.findCommentError(
-              badRequestResponse.comment[0],
-            ),
-          ).toBeInTheDocument()
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
 
-          expect(
-            await requestTaskSuspendModalTestUtils.findEndDateError(
-              badRequestResponse.suspendEndAt[0],
-            ),
-          ).toBeInTheDocument()
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-          expect(
-            await requestTaskSuspendModalTestUtils.findEndTimeError(
-              badRequestResponse.suspendEndAt[0],
-            ),
-          ).toBeInTheDocument()
+            expect(
+              await taskSuspendRequestTestUtils.findContainer(),
+            ).toBeInTheDocument()
+          })
         })
 
-        test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+        describe('При не успешном запросе', () => {
+          test('Обрабатывается ошибка 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
-              id: requiredProps.taskId,
-              type: activeRequestSuspendItemProps.type,
-              status: activeRequestSuspendItemProps.status,
-              suspendRequest: null,
-            }),
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestNotFoundError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                'Невозможно перевести заявку в ожидание - заявка не найдена',
+              ),
+            ).toBeInTheDocument()
           })
 
-          mockCreateTaskSuspendRequestServerError(requiredProps.taskId)
+          test('Обрабатывается ошибка 400', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store: getStoreWithAuth(),
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            const badRequestResponse: Required<
+              Omit<
+                CreateTaskSuspendRequestBadRequestErrorResponse['data'],
+                'detail'
+              >
+            > = {
+              comment: [generateWord()],
+              suspendEndAt: [generateWord()],
+              suspendReason: [generateWord()],
+            }
+
+            mockCreateTaskSuspendRequestBadRequestError(requiredProps.taskId, {
+              body: badRequestResponse,
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findReasonError(
+                badRequestResponse.suspendReason[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findCommentError(
+                badRequestResponse.comment[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndDateError(
+                badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
           })
 
-          await taskCardTestUtils.expectLoadingFinished()
+          test('Обрабатывается неизвестная ошибка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          await cardTitleTestUtils.userOpenMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          await requestTaskSuspendModalTestUtils.findContainer()
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
 
-          await requestTaskSuspendModalTestUtils.setReason(
-            user,
-            SuspendReasonEnum.AwaitingInformation,
-          )
-          await requestTaskSuspendModalTestUtils.setComment(
-            user,
-            generateWord(),
-          )
-          await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+            mockCreateTaskSuspendRequestServerError(requiredProps.taskId)
 
-          expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(UNKNOWN_ERROR_MSG),
+            ).toBeInTheDocument()
+          })
+        })
+      })
+
+      describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
+        describe('При успешном запросе', () => {
+          test('Созданный запрос отображается', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestSuccess(requiredProps.taskId, {
+              body: taskFixtures.getSuspendRequest(),
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await taskSuspendRequestTestUtils.findContainer(),
+            ).toBeInTheDocument()
+          })
+        })
+
+        describe('При не успешном запросе', () => {
+          test('Обрабатывается ошибка 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestNotFoundError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                'Невозможно перевести заявку в ожидание - заявка не найдена',
+              ),
+            ).toBeInTheDocument()
+          })
+
+          test('Обрабатывается ошибка 400', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            const badRequestResponse: Required<
+              Omit<
+                CreateTaskSuspendRequestBadRequestErrorResponse['data'],
+                'detail'
+              >
+            > = {
+              comment: [generateWord()],
+              suspendEndAt: [generateWord()],
+              suspendReason: [generateWord()],
+            }
+
+            mockCreateTaskSuspendRequestBadRequestError(requiredProps.taskId, {
+              body: badRequestResponse,
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(
+                'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findReasonError(
+                badRequestResponse.suspendReason[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findCommentError(
+                badRequestResponse.comment[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndDateError(
+                badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+          })
+
+          test('Обрабатывается неизвестная ошибка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                type: activeRequestSuspendItemProps.type,
+                status: activeRequestSuspendItemProps.status,
+                suspendRequest: null,
+              }),
+            })
+
+            mockCreateTaskSuspendRequestServerError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+
+            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.clickRequestSuspendItem(user)
+            await requestTaskSuspendModalTestUtils.findContainer()
+
+            await requestTaskSuspendModalTestUtils.setReason(
+              user,
+              SuspendReasonEnum.AwaitingInformation,
+            )
+            await requestTaskSuspendModalTestUtils.setComment(
+              user,
+              generateWord(),
+            )
+            await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
+
+            expect(
+              await findNotification(UNKNOWN_ERROR_MSG),
+            ).toBeInTheDocument()
+          })
         })
       })
     })
 
     describe('Отмена запроса', () => {
-      describe('При успешном запросе', () => {
-        test('Заявка перезапрашивается с сервера', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+      describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
+        describe('При успешном запросе', () => {
+          test('Заявка перезапрашивается с сервера', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
-              id: requiredProps.taskId,
-              suspendRequest: taskFixtures.getSuspendRequest(),
-            }),
-            once: false,
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+              once: false,
+            })
+
+            mockDeleteTaskSuspendRequestSuccess(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+          })
+        })
+
+        describe('При не успешном запросе', () => {
+          test('Обрабатывается ошибка 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+              once: false,
+            })
+
+            mockDeleteTaskSuspendRequestNotFoundError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+
+            expect(
+              await findNotification(
+                'Заявка не найдена или не находится в ожидании',
+              ),
+            ).toBeInTheDocument()
           })
 
-          mockDeleteTaskSuspendRequestSuccess(requiredProps.taskId)
+          test('Обрабатывается ошибка 400', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store: getStoreWithAuth(),
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+            })
+
+            const badRequestResponse: Required<ErrorResponse['data']> = {
+              detail: [generateWord()],
+            }
+            mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
+              body: badRequestResponse,
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+
+            expect(
+              await findNotification(badRequestResponse.detail[0]),
+            ).toBeInTheDocument()
           })
 
-          await taskCardTestUtils.expectLoadingFinished()
-          await taskSuspendRequestTestUtils.findContainer()
-          await taskSuspendRequestTestUtils.userClickCancelButton(user)
-          await taskCardTestUtils.expectLoadingStarted()
-          await taskCardTestUtils.expectLoadingFinished()
+          test('Обрабатывается неизвестная ошибка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+            })
+
+            mockDeleteTaskSuspendRequestServerError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+
+            expect(
+              await findNotification(UNKNOWN_ERROR_MSG),
+            ).toBeInTheDocument()
+          })
         })
       })
 
-      describe('При не успешном запросе', () => {
-        test('Обрабатывается ошибка 404', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+      describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
+        describe('При успешном запросе', () => {
+          test('Заявка перезапрашивается с сервера', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
-              id: requiredProps.taskId,
-              suspendRequest: taskFixtures.getSuspendRequest(),
-            }),
-            once: false,
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+              once: false,
+            })
+
+            mockDeleteTaskSuspendRequestSuccess(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
           })
-
-          mockDeleteTaskSuspendRequestNotFoundError(requiredProps.taskId)
-
-          const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskCardTestUtils.expectLoadingFinished()
-          await taskSuspendRequestTestUtils.findContainer()
-          await taskSuspendRequestTestUtils.userClickCancelButton(user)
-          await taskCardTestUtils.expectLoadingStarted()
-          await taskCardTestUtils.expectLoadingFinished()
-
-          expect(
-            await findNotification(
-              'Заявка не найдена или не находится в ожидании',
-            ),
-          ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+        describe('При не успешном запросе', () => {
+          test('Обрабатывается ошибка 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
-              id: requiredProps.taskId,
-              suspendRequest: taskFixtures.getSuspendRequest(),
-            }),
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+              once: false,
+            })
+
+            mockDeleteTaskSuspendRequestNotFoundError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+
+            expect(
+              await findNotification(
+                'Заявка не найдена или не находится в ожидании',
+              ),
+            ).toBeInTheDocument()
           })
 
-          const badRequestResponse: Required<ErrorResponse['data']> = {
-            detail: [generateWord()],
-          }
-          mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
-            body: badRequestResponse,
+          test('Обрабатывается ошибка 400', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+            })
+
+            const badRequestResponse: Required<ErrorResponse['data']> = {
+              detail: [generateWord()],
+            }
+            mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
+              body: badRequestResponse,
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+
+            expect(
+              await findNotification(badRequestResponse.detail[0]),
+            ).toBeInTheDocument()
           })
 
-          const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store: getStoreWithAuth(),
+          test('Обрабатывается неизвестная ошибка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
+
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+            })
+
+            mockDeleteTaskSuspendRequestServerError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.SeniorEngineer,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+
+            expect(
+              await findNotification(UNKNOWN_ERROR_MSG),
+            ).toBeInTheDocument()
           })
+        })
+      })
 
-          await taskCardTestUtils.expectLoadingFinished()
-          await taskSuspendRequestTestUtils.findContainer()
-          await taskSuspendRequestTestUtils.userClickCancelButton(user)
+      describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
+        describe('При успешном запросе', () => {
+          test('Заявка перезапрашивается с сервера', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          expect(
-            await findNotification(badRequestResponse.detail[0]),
-          ).toBeInTheDocument()
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+              once: false,
+            })
+
+            mockDeleteTaskSuspendRequestSuccess(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+          })
         })
 
-        test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+        describe('При не успешном запросе', () => {
+          test('Обрабатывается ошибка 404', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
-              id: requiredProps.taskId,
-              suspendRequest: taskFixtures.getSuspendRequest(),
-            }),
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+              once: false,
+            })
+
+            mockDeleteTaskSuspendRequestNotFoundError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+            await taskCardTestUtils.expectLoadingStarted()
+            await taskCardTestUtils.expectLoadingFinished()
+
+            expect(
+              await findNotification(
+                'Заявка не найдена или не находится в ожидании',
+              ),
+            ).toBeInTheDocument()
           })
 
-          mockDeleteTaskSuspendRequestServerError(requiredProps.taskId)
+          test('Обрабатывается ошибка 400', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          const { user } = render(<TaskCardContainer {...requiredProps} />, {
-            store: getStoreWithAuth(),
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+            })
+
+            const badRequestResponse: Required<ErrorResponse['data']> = {
+              detail: [generateWord()],
+            }
+            mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
+              body: badRequestResponse,
+            })
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+
+            expect(
+              await findNotification(badRequestResponse.detail[0]),
+            ).toBeInTheDocument()
           })
 
-          await taskCardTestUtils.expectLoadingFinished()
-          await taskSuspendRequestTestUtils.findContainer()
-          await taskSuspendRequestTestUtils.userClickCancelButton(user)
+          test('Обрабатывается неизвестная ошибка', async () => {
+            mockGetWorkGroupListSuccess({ body: [] })
 
-          expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
+            mockGetTaskSuccess(requiredProps.taskId, {
+              body: taskFixtures.getTask({
+                id: requiredProps.taskId,
+                suspendRequest: taskFixtures.getSuspendRequest(),
+              }),
+            })
+
+            mockDeleteTaskSuspendRequestServerError(requiredProps.taskId)
+
+            const { user } = render(<TaskCardContainer {...requiredProps} />, {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.HeadOfDepartment,
+              }),
+            })
+
+            await taskCardTestUtils.expectLoadingFinished()
+            await taskSuspendRequestTestUtils.findContainer()
+            await taskSuspendRequestTestUtils.userClickCancelButton(user)
+
+            expect(
+              await findNotification(UNKNOWN_ERROR_MSG),
+            ).toBeInTheDocument()
+          })
         })
       })
     })
