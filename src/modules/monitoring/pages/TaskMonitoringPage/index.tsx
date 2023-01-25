@@ -12,7 +12,7 @@ const { Text } = Typography
 const TaskMonitoringPage: FC = () => {
   const [recordId, setRecordId] = useState<string>('')
 
-  const { isFetching, data: monitoringData = [] } = useGetTaskMonitoring(
+  const { isFetching, currentData: monitoringData = [] } = useGetTaskMonitoring(
     recordId,
     { skip: !recordId },
   )
