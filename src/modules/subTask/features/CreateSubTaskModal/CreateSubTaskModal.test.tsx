@@ -1,4 +1,5 @@
 import {
+  clickSelectOption,
   generateIdStr,
   generateWord,
   getButtonIn,
@@ -9,7 +10,6 @@ import {
   loadingStartedBySelect,
   querySelect,
   render,
-  userClickOption,
   userOpenSelect,
 } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
@@ -56,7 +56,7 @@ const getTemplateFieldPlaceholder = () =>
 const getTemplateFieldLabel = () =>
   within(getTemplateFieldContainer()).getByTitle('Шаблон')
 
-const userSetTemplate = userClickOption
+const userSetTemplate = clickSelectOption
 
 const getTemplateOption = (name: string) =>
   within(screen.getByRole('listbox')).getByRole('option', { name })

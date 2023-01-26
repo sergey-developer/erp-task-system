@@ -71,7 +71,7 @@ const getReturnToWorkButton = () =>
 const queryReturnToWorkButton = () =>
   queryButtonIn(getContainer(), new RegExp(returnInWorkAction.text))
 
-const userClickReturnToWorkButton = async (user: UserEvent) => {
+const clickReturnToWorkButton = async (user: UserEvent) => {
   const button = getReturnToWorkButton()
   await user.click(button)
   return button
@@ -95,7 +95,7 @@ export const testUtils = {
 
   getReturnToWorkButton,
   queryReturnToWorkButton,
-  userClickReturnToWorkButton,
+  clickReturnToWorkButton,
   expectReturnToWorkLoadingStarted,
 }
 
@@ -233,7 +233,7 @@ describe('Запрос заявки на ожидание', () => {
         />,
       )
 
-      await testUtils.userClickReturnToWorkButton(user)
+      await testUtils.clickReturnToWorkButton(user)
       expect(returnInWorkAction.onClick).toBeCalledTimes(1)
     })
   })

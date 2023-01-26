@@ -41,7 +41,7 @@ const getOpenedTab = (tab: TaskCardTabsEnum) =>
     name: taskCardTabNamesDict[tab],
   })
 
-const userClickTab = async (user: UserEvent, tab: TaskCardTabsEnum) => {
+const clickTab = async (user: UserEvent, tab: TaskCardTabsEnum) => {
   await user.click(getNavItem(tab))
 }
 
@@ -53,7 +53,7 @@ export const testUtils = {
 
   getOpenedTab,
 
-  userClickTab,
+  clickTab,
 }
 
 describe('Вкладки карточки заявки', () => {
@@ -77,7 +77,7 @@ describe('Вкладки карточки заявки', () => {
     const { user } = render(<CardTabs {...requiredProps} />)
 
     for await (const tab of Object.values(TaskCardTabsEnum)) {
-      await testUtils.userClickTab(user, tab)
+      await testUtils.clickTab(user, tab)
       expect(testUtils.getOpenedTab(tab)).toBeInTheDocument()
     }
   })

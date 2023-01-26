@@ -61,7 +61,7 @@ const queryExpandButton = (commentCount?: number) =>
       : /Отобразить все комментарии/,
   )
 
-const userClickExpandButton = async (user: UserEvent) => {
+const clickExpandButton = async (user: UserEvent) => {
   const button = getExpandButton()
   await user.click(button)
   return button
@@ -70,7 +70,7 @@ const userClickExpandButton = async (user: UserEvent) => {
 const getCollapseButton = () =>
   getButtonIn(getContainer(), /скрыть комментарии/i)
 
-const userClickCollapseButton = async (user: UserEvent) => {
+const clickCollapseButton = async (user: UserEvent) => {
   const button = getCollapseButton()
   await user.click(button)
   return button
@@ -82,10 +82,10 @@ export const testUtils = {
 
   getExpandButton,
   queryExpandButton,
-  userClickExpandButton,
+  clickExpandButton,
 
   getCollapseButton,
-  userClickCollapseButton,
+  clickCollapseButton,
 }
 
 setupApiTests()
@@ -134,7 +134,7 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         await commentListTestUtils.loadingFinished()
-        await testUtils.userClickExpandButton(user)
+        await testUtils.clickExpandButton(user)
         const button = testUtils.getCollapseButton()
 
         expect(button).toBeInTheDocument()
@@ -190,7 +190,7 @@ describe('Вкладка списка комментариев заявки', ()
         DEFAULT_DISPLAYABLE_COUNT,
       )
 
-      await testUtils.userClickExpandButton(user)
+      await testUtils.clickExpandButton(user)
 
       expect(commentListTestUtils.getAllComments()).toHaveLength(
         allCommentCount,
@@ -213,13 +213,13 @@ describe('Вкладка списка комментариев заявки', ()
         DEFAULT_DISPLAYABLE_COUNT,
       )
 
-      await testUtils.userClickExpandButton(user)
+      await testUtils.clickExpandButton(user)
 
       expect(commentListTestUtils.getAllComments()).toHaveLength(
         allCommentCount,
       )
 
-      await testUtils.userClickCollapseButton(user)
+      await testUtils.clickCollapseButton(user)
 
       expect(commentListTestUtils.getAllComments()).toHaveLength(
         DEFAULT_DISPLAYABLE_COUNT,

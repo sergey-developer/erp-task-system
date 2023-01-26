@@ -64,7 +64,7 @@ const getContainer = () => screen.getByTestId('subtask-list-tab')
 const getCreateSubTaskButton = () =>
   getButtonIn(getContainer(), /создать новое задание/i)
 
-const userClickCreateSubTaskButton = async (user: UserEvent) => {
+const clickCreateSubTaskButton = async (user: UserEvent) => {
   const button = getCreateSubTaskButton()
   await user.click(button)
   return button
@@ -74,7 +74,7 @@ const testUtils = {
   getContainer,
 
   getCreateSubTaskButton,
-  openCreateSubTaskModal: userClickCreateSubTaskButton,
+  openCreateSubTaskModal: clickCreateSubTaskButton,
 
   loadingFinished: loadingFinishedBySpinner('sub-task-list-spinner'),
 }

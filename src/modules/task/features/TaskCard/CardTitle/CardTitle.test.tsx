@@ -85,7 +85,7 @@ const getMenuItemIcon = (item: HTMLElement, iconName: string) =>
 const queryMenuItemText = (item: HTMLElement, text: string) =>
   within(item).queryByText(text)
 
-const userClickItem = async (user: UserEvent, name: string | RegExp) => {
+const clickMenuItem = async (user: UserEvent, name: string | RegExp) => {
   const item = getMenuItem(name)
   await user.click(item)
   return item
@@ -117,7 +117,7 @@ const clickCloseButton = async (user: UserEvent) => {
 const getExecuteTaskItem = () => getMenuItem(/выполнить заявку/i)
 
 const clickExecuteTaskItem = (user: UserEvent) =>
-  userClickItem(user, /выполнить заявку/i)
+  clickMenuItem(user, /выполнить заявку/i)
 
 // request reclassification
 const getRequestReclassificationItem = () =>
@@ -127,7 +127,7 @@ const queryRequestReclassificationItem = () =>
   queryMenuItem(/запросить переклассификацию/i)
 
 const clickRequestReclassificationItem = (user: UserEvent) =>
-  userClickItem(user, /запросить переклассификацию/i)
+  clickMenuItem(user, /запросить переклассификацию/i)
 
 // cancel reclassification
 
@@ -138,14 +138,14 @@ const queryCancelReclassificationItem = () =>
   queryMenuItem(/отменить переклассификацию/i)
 
 const clickCancelReclassificationItem = (user: UserEvent) =>
-  userClickItem(user, /отменить переклассификацию/i)
+  clickMenuItem(user, /отменить переклассификацию/i)
 
 // request suspend
 
 const getRequestSuspendItem = () => getMenuItem(/запросить перевод в ожидание/i)
 
 const clickRequestSuspendItem = (user: UserEvent) =>
-  userClickItem(user, /запросить перевод в ожидание/i)
+  clickMenuItem(user, /запросить перевод в ожидание/i)
 
 export const testUtils = {
   getContainer,

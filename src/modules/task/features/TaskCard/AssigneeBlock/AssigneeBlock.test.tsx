@@ -1,4 +1,5 @@
 import {
+  clickSelectOption,
   expectOptionDisabled,
   findSelect,
   generateId,
@@ -16,7 +17,6 @@ import {
   render,
   selectDisabled,
   selectNotDisabled,
-  userClickOption,
   userOpenSelect,
 } from '_tests_/utils'
 import { screen, waitFor, within } from '@testing-library/react'
@@ -113,7 +113,7 @@ const getChildByText = (text: string | RegExp) =>
 // take task
 const getTakeTaskButton = () => getButtonIn(getContainer(), /в работу/i)
 
-const userClickTakeTaskButton = async (user: UserEvent) => {
+const clickTakeTaskButton = async (user: UserEvent) => {
   const button = getTakeTaskButton()
   await user.click(button)
   return button
@@ -126,7 +126,7 @@ const takeTaskExpectLoadingStarted = () =>
 const getAssignOnMeButton = () =>
   getButtonIn(getContainer(), /назначить на себя$/i)
 
-const userClickAssignOnMeButton = async (user: UserEvent) => {
+const clickAssignOnMeButton = async (user: UserEvent) => {
   const button = getAssignOnMeButton()
   await user.click(button)
   return button
@@ -143,7 +143,7 @@ const getAssignButton = () => getButtonIn(getContainer(), /назначить$/i
 
 const queryAssignButton = () => queryButtonIn(getContainer(), /назначить$/i)
 
-const userClickAssignButton = async (user: UserEvent) => {
+const clickAssignButton = async (user: UserEvent) => {
   const button = getAssignButton()
   await user.click(button)
   return button
@@ -177,7 +177,7 @@ const getSelectedAssignee = () => getSelectedOption(getContainer())
 const openAssigneeSelect = (user: UserEvent) =>
   userOpenSelect(user, getContainer())
 
-const selectAssignee = userClickOption
+const selectAssignee = clickSelectOption
 
 const getAssigneeOption = getSelectOption_new
 
@@ -195,16 +195,16 @@ export const testUtils = {
   getChildByText,
 
   getTakeTaskButton,
-  userClickTakeTaskButton,
+  clickTakeTaskButton,
   takeTaskExpectLoadingStarted,
 
   getAssignButton,
   queryAssignButton,
-  userClickAssignButton,
+  clickAssignButton,
   assignExpectLoadingStarted,
 
   getAssignOnMeButton,
-  userClickAssignOnMeButton,
+  clickAssignOnMeButton,
   assignOnMeExpectLoadingStarted,
   assignOnMeExpectLoadingFinished,
 
@@ -320,7 +320,7 @@ describe('Блок "Исполнитель заявки"', () => {
         { store: getStoreWithAuth({ userId: currentUserId }) },
       )
 
-      await testUtils.userClickAssignOnMeButton(user)
+      await testUtils.clickAssignOnMeButton(user)
 
       expect(requiredProps.updateAssignee).toBeCalledTimes(1)
       expect(requiredProps.updateAssignee).toBeCalledWith(currentUserId)
@@ -352,7 +352,7 @@ describe('Блок "Исполнитель заявки"', () => {
         const button = testUtils.getAssignButton()
         expect(button).toBeEnabled()
 
-        await testUtils.userClickAssignOnMeButton(user)
+        await testUtils.clickAssignOnMeButton(user)
         expect(button).toBeDisabled()
       })
     })
@@ -618,7 +618,7 @@ describe('Блок "Исполнитель заявки"', () => {
         },
       )
 
-      await testUtils.userClickTakeTaskButton(user)
+      await testUtils.clickTakeTaskButton(user)
       expect(requiredProps.takeTask).toBeCalledTimes(1)
     })
   })
@@ -1292,7 +1292,7 @@ describe('Блок "Исполнитель заявки"', () => {
             user,
             canSelectAssigneeProps.workGroup.members[0].fullName,
           )
-          await testUtils.userClickAssignButton(user)
+          await testUtils.clickAssignButton(user)
 
           expect(requiredProps.updateAssignee).toBeCalledTimes(1)
           expect(requiredProps.updateAssignee).toBeCalledWith(
@@ -1878,7 +1878,7 @@ describe('Блок "Исполнитель заявки"', () => {
             user,
             canSelectAssigneeProps.workGroup.members[0].fullName,
           )
-          await testUtils.userClickAssignButton(user)
+          await testUtils.clickAssignButton(user)
 
           expect(requiredProps.updateAssignee).toBeCalledTimes(1)
           expect(requiredProps.updateAssignee).toBeCalledWith(

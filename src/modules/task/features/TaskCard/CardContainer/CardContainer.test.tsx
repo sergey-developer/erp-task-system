@@ -1715,7 +1715,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           await taskCardTestUtils.expectLoadingFinished()
-          await workGroupBlockTestUtils.userClickSecondLineButton(user)
+          await workGroupBlockTestUtils.clickSecondLineButton(user)
           const modal = await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
           await taskSecondLineModalTestUtils.userSelectWorkGroup(
@@ -1753,7 +1753,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           await taskCardTestUtils.expectLoadingFinished()
-          await workGroupBlockTestUtils.userClickSecondLineButton(user)
+          await workGroupBlockTestUtils.clickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
           await taskSecondLineModalTestUtils.userSelectWorkGroup(
@@ -1789,7 +1789,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           await taskCardTestUtils.expectLoadingFinished()
-          await workGroupBlockTestUtils.userClickSecondLineButton(user)
+          await workGroupBlockTestUtils.clickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
           await taskSecondLineModalTestUtils.userSelectWorkGroup(
@@ -1825,7 +1825,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           await taskCardTestUtils.expectLoadingFinished()
-          await workGroupBlockTestUtils.userClickSecondLineButton(user)
+          await workGroupBlockTestUtils.clickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
           await taskSecondLineModalTestUtils.userSelectWorkGroup(
@@ -1863,7 +1863,7 @@ describe('Контейнер детальной карточки заявки', 
 
         await taskCardTestUtils.expectLoadingStarted()
         await taskCardTestUtils.expectLoadingFinished()
-        await assigneeBlockTestUtils.userClickAssignOnMeButton(user)
+        await assigneeBlockTestUtils.clickAssignOnMeButton(user)
         await taskCardTestUtils.expectLoadingStarted()
         await taskCardTestUtils.expectLoadingFinished()
 
@@ -1894,7 +1894,7 @@ describe('Контейнер детальной карточки заявки', 
 
         await taskCardTestUtils.expectLoadingStarted()
         await taskCardTestUtils.expectLoadingFinished()
-        await assigneeBlockTestUtils.userClickAssignOnMeButton(user)
+        await assigneeBlockTestUtils.clickAssignOnMeButton(user)
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
@@ -1941,7 +1941,7 @@ describe('Контейнер детальной карточки заявки', 
           user,
           canSelectAssigneeProps.workGroup.members[0].fullName,
         )
-        await assigneeBlockTestUtils.userClickAssignButton(user)
+        await assigneeBlockTestUtils.clickAssignButton(user)
         await taskCardTestUtils.expectLoadingStarted()
         await taskCardTestUtils.expectLoadingFinished()
 
@@ -1987,7 +1987,7 @@ describe('Контейнер детальной карточки заявки', 
           user,
           canSelectAssigneeProps.workGroup.members[0].fullName,
         )
-        await assigneeBlockTestUtils.userClickAssignButton(user)
+        await assigneeBlockTestUtils.clickAssignButton(user)
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
@@ -2020,7 +2020,7 @@ describe('Контейнер детальной карточки заявки', 
 
         await taskCardTestUtils.expectLoadingStarted()
         await taskCardTestUtils.expectLoadingFinished()
-        await assigneeBlockTestUtils.userClickTakeTaskButton(user)
+        await assigneeBlockTestUtils.clickTakeTaskButton(user)
 
         await taskCardTestUtils.expectLoadingStarted()
         await taskCardTestUtils.expectLoadingFinished()
@@ -2049,7 +2049,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         await taskCardTestUtils.expectLoadingFinished()
-        await assigneeBlockTestUtils.userClickTakeTaskButton(user)
+        await assigneeBlockTestUtils.clickTakeTaskButton(user)
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(await findNotification(UNKNOWN_ERROR_MSG)).toBeInTheDocument()
