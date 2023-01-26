@@ -2,6 +2,7 @@ import moment from 'moment'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
+  clickSelectOption,
   generateName,
   generateWord,
   getButtonIn,
@@ -15,7 +16,6 @@ import {
   querySelectOption,
   render,
   setupApiTests,
-  userClickOption,
   userOpenSelect,
   userSearchInSelect,
 } from '_tests_/utils'
@@ -54,16 +54,13 @@ const getApplyButton = () => getButtonIn(getFilter(), /применить/i)
 const getResetAllButton = () => getButtonIn(getFilter(), /сбросить все/i)
 
 // actions
-const userClickResetButtonIn = async (
-  user: UserEvent,
-  container: HTMLElement,
-) => {
+const clickResetButtonIn = async (user: UserEvent, container: HTMLElement) => {
   const button = getButtonIn(container, /сбросить/i)
   await user.click(button)
   return button
 }
 
-const userClickResetAllButton = async (user: UserEvent) => {
+const clickResetAllButton = async (user: UserEvent) => {
   const button = getResetAllButton()
   await user.click(button)
   return button
@@ -81,7 +78,7 @@ const userApplyFilter = async (user: UserEvent) => {
   return button
 }
 
-const userClickOutOfFilter = async (user: UserEvent) => {
+const clickOutOfFilter = async (user: UserEvent) => {
   const filter = getFilter()
   // eslint-disable-next-line testing-library/no-node-access
   const overlay = filter.querySelector('.ant-drawer-mask')
@@ -235,7 +232,7 @@ const workGroup = {
   getField: getWorkGroupField,
   queryField: queryWorkGroupField,
   openField: userOpenSelect,
-  userSetValue: userClickOption,
+  userSetValue: clickSelectOption,
   loadingFinished: workGroupLoadingFinished,
 }
 
@@ -307,11 +304,11 @@ export const testUtils = {
   getCloseButton,
   getApplyButton,
   getResetAllButton,
-  userClickResetButtonIn,
-  userClickResetAllButton,
+  clickResetButtonIn,
+  clickResetAllButton,
   userCloseFilter,
   userApplyFilter,
-  userClickOutOfFilter,
+  clickOutOfFilter,
   searchByColumn,
   status,
   assigned,
@@ -440,7 +437,7 @@ describe('Расширенный фильтр', () => {
           await user.click(checkbox)
         }
 
-        await testUtils.userClickResetButtonIn(user, container)
+        await testUtils.clickResetButtonIn(user, container)
 
         taskExtendedStatusDictValues.forEach((value) => {
           const checkbox = getCheckboxIn(container, new RegExp(value))
@@ -458,7 +455,7 @@ describe('Расширенный фильтр', () => {
           await user.click(checkbox)
         }
 
-        await testUtils.userClickResetAllButton(user)
+        await testUtils.clickResetAllButton(user)
 
         taskExtendedStatusDictValues.forEach((value) => {
           const checkbox = getCheckboxIn(container, new RegExp(value))
@@ -525,7 +522,7 @@ describe('Расширенный фильтр', () => {
           ),
         )
 
-        await testUtils.userClickResetButtonIn(user, container)
+        await testUtils.clickResetButtonIn(user, container)
 
         expect(
           getRadioButtonIn(
@@ -547,7 +544,7 @@ describe('Расширенный фильтр', () => {
           ),
         )
 
-        await testUtils.userClickResetAllButton(user)
+        await testUtils.clickResetAllButton(user)
 
         expect(
           getRadioButtonIn(
@@ -611,7 +608,7 @@ describe('Расширенный фильтр', () => {
 
         await user.click(getRadioButtonIn(container, taskOverdueDict.False))
 
-        await testUtils.userClickResetButtonIn(user, container)
+        await testUtils.clickResetButtonIn(user, container)
 
         expect(
           getRadioButtonIn(container, taskOverdueDict.False),
@@ -625,7 +622,7 @@ describe('Расширенный фильтр', () => {
 
         await user.click(getRadioButtonIn(container, taskOverdueDict.True))
 
-        await testUtils.userClickResetAllButton(user)
+        await testUtils.clickResetAllButton(user)
 
         expect(
           getRadioButtonIn(container, taskOverdueDict.True),
@@ -699,7 +696,7 @@ describe('Расширенный фильтр', () => {
           await testUtils.completeAt.userSetValue(user)
 
         const container = testUtils.completeAt.getContainer()
-        await testUtils.userClickResetButtonIn(user, container)
+        await testUtils.clickResetButtonIn(user, container)
 
         expect(testUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
           startDateValue,
@@ -715,7 +712,7 @@ describe('Расширенный фильтр', () => {
         const { startDateValue, endDateValue } =
           await testUtils.completeAt.userSetValue(user)
 
-        await testUtils.userClickResetAllButton(user)
+        await testUtils.clickResetAllButton(user)
 
         expect(testUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
           startDateValue,
@@ -823,7 +820,7 @@ describe('Расширенный фильтр', () => {
           getRadioButtonIn(container, searchFieldDict.searchByName),
         )
 
-        await testUtils.userClickResetButtonIn(user, container)
+        await testUtils.clickResetButtonIn(user, container)
 
         expect(
           testUtils.searchByColumn.getKeywordField(),
@@ -845,7 +842,7 @@ describe('Расширенный фильтр', () => {
           getRadioButtonIn(container, searchFieldDict.searchByName),
         )
 
-        await testUtils.userClickResetAllButton(user)
+        await testUtils.clickResetAllButton(user)
 
         expect(
           testUtils.searchByColumn.getKeywordField(),
@@ -1041,7 +1038,7 @@ describe('Расширенный фильтр', () => {
           await testUtils.workGroup.userSetValue(user, workGroupListItem.name)
 
           const container = testUtils.workGroup.getContainer()
-          await testUtils.userClickResetButtonIn(user, container)
+          await testUtils.clickResetButtonIn(user, container)
 
           const selectedOption = getSelectedOption(workGroupField)
           expect(selectedOption).not.toBeInTheDocument()
@@ -1061,7 +1058,7 @@ describe('Расширенный фильтр', () => {
           await testUtils.workGroup.openField(user, workGroupField)
 
           await testUtils.workGroup.userSetValue(user, workGroupListItem.name)
-          await testUtils.userClickResetAllButton(user)
+          await testUtils.clickResetAllButton(user)
 
           const selectedOption = getSelectedOption(workGroupField)
           expect(selectedOption).not.toBeInTheDocument()

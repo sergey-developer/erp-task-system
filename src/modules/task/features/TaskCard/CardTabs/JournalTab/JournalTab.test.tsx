@@ -38,15 +38,13 @@ const getDownloadButton = () => screen.getByTestId('journal-btn-download')
 
 const getReloadButton = () => getButtonIn(getTaskJournal(), 'sync')
 
-const userClickReloadButton = async (user: UserEvent) => {
+const clickReloadButton = async (user: UserEvent) => {
   const button = getReloadButton()
   await user.click(button)
   return button
 }
 
-const userClickDownloadButton = async (
-  user: UserEvent,
-): Promise<HTMLElement> => {
+const clickDownloadButton = async (user: UserEvent): Promise<HTMLElement> => {
   const button = getDownloadButton()
   await user.click(button)
   return button
@@ -63,8 +61,8 @@ export const testUtils = {
   getTaskJournal,
   getDownloadButton,
   getReloadButton,
-  userClickReloadButton,
-  userClickDownloadButton,
+  clickReloadButton,
+  clickDownloadButton,
   journalLoadingStarted,
   journalLoadingFinished,
   journalCsvLoadingStarted,
@@ -93,7 +91,7 @@ describe('Вкладка журнала задачи', () => {
       })
 
       await testUtils.journalLoadingFinished()
-      await testUtils.userClickReloadButton(user)
+      await testUtils.clickReloadButton(user)
       await testUtils.journalLoadingStarted()
     })
   })
@@ -196,7 +194,7 @@ describe('Вкладка журнала задачи', () => {
           await testUtils.journalLoadingStarted()
           await testUtils.journalLoadingFinished()
 
-          const downloadButton = await testUtils.userClickDownloadButton(user)
+          const downloadButton = await testUtils.clickDownloadButton(user)
 
           await testUtils.journalCsvLoadingStarted(downloadButton)
           await testUtils.journalCsvLoadingFinished(downloadButton)
@@ -229,7 +227,7 @@ describe('Вкладка журнала задачи', () => {
           await testUtils.journalLoadingStarted()
           await testUtils.journalLoadingFinished()
 
-          const downloadButton = await testUtils.userClickDownloadButton(user)
+          const downloadButton = await testUtils.clickDownloadButton(user)
 
           await testUtils.journalCsvLoadingStarted(downloadButton)
           await testUtils.journalCsvLoadingFinished(downloadButton)

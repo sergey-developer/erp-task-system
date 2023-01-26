@@ -86,7 +86,7 @@ const findFirstLineButton = () =>
 const queryFirstLineButton = () =>
   queryButtonIn(getContainer(), /вернуть на I линию/i)
 
-const userClickFirstLineButton = async (user: UserEvent) => {
+const clickFirstLineButton = async (user: UserEvent) => {
   const button = getFirstLineButton()
   await user.click(button)
   return button
@@ -103,7 +103,7 @@ const getSecondLineButton = () =>
 const querySecondLineButton = () =>
   queryButtonIn(getContainer(), /перевести на II линию/i)
 
-const userClickSecondLineButton = async (user: UserEvent) => {
+const clickSecondLineButton = async (user: UserEvent) => {
   const button = getSecondLineButton()
   await user.click(button)
   return button
@@ -120,12 +120,12 @@ export const testUtils = {
   getFirstLineButton,
   findFirstLineButton,
   queryFirstLineButton,
-  userClickFirstLineButton,
+  clickFirstLineButton,
   firstLineLoadingStarted,
 
   getSecondLineButton,
   querySecondLineButton,
-  userClickSecondLineButton,
+  clickSecondLineButton,
   secondLineLoadingStarted,
 }
 
@@ -276,7 +276,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.userClickSecondLineButton(user)
+        await testUtils.clickSecondLineButton(user)
 
         expect(
           await taskSecondLineModalTestUtils.findContainer(),
@@ -339,7 +339,7 @@ describe('Блок рабочей группы', () => {
         },
       )
 
-      await testUtils.userClickSecondLineButton(user)
+      await testUtils.clickSecondLineButton(user)
       await taskSecondLineModalTestUtils.findContainer()
       const workGroup = requiredProps.workGroupList[0]
       await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
@@ -438,7 +438,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.userClickFirstLineButton(user)
+        await testUtils.clickFirstLineButton(user)
 
         expect(
           await taskFirstLineModalTestUtils.findModal(),
@@ -583,7 +583,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.userClickFirstLineButton(user)
+        await testUtils.clickFirstLineButton(user)
 
         expect(
           await taskFirstLineModalTestUtils.findModal(),
@@ -690,7 +690,7 @@ describe('Блок рабочей группы', () => {
         },
       )
 
-      await testUtils.userClickFirstLineButton(user)
+      await testUtils.clickFirstLineButton(user)
       await taskFirstLineModalTestUtils.findModal()
       await taskFirstLineModalTestUtils.userSetDescription(user, generateWord())
       await taskFirstLineModalTestUtils.clickSubmitButton(user)

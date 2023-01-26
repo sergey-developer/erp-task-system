@@ -66,7 +66,7 @@ const getRow = (id: number) =>
   // eslint-disable-next-line testing-library/no-node-access
   getContainer().querySelector(`[data-row-key='${id}']`)
 
-const userClickRow = async (user: UserEvent, id: number) => {
+const clickRow = async (user: UserEvent, id: number) => {
   const row = getRow(id)
   await user.click(row!)
   return row
@@ -181,7 +181,7 @@ const onChangeTableArgs = {
 export const testUtils = {
   getContainer,
   getRow,
-  userClickRow,
+  clickRow,
   getChildByText,
   getHeadCol,
   getColTitle,
@@ -1586,7 +1586,7 @@ describe('Таблица заявок', () => {
 
     const index = 0
 
-    await testUtils.userClickRow(user, testConstants.firstTaskTableItem.id)
+    await testUtils.clickRow(user, testConstants.firstTaskTableItem.id)
     expect(onRow).toBeCalled()
     expect(onRow).toBeCalledWith(testConstants.firstTaskTableItem, index)
   })

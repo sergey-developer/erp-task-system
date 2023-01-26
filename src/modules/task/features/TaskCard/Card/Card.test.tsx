@@ -594,7 +594,7 @@ describe('Карточка заявки', () => {
         },
       )
 
-      await assigneeBlockTestUtils.userClickTakeTaskButton(user)
+      await assigneeBlockTestUtils.clickTakeTaskButton(user)
 
       expect(requiredProps.takeTask).toBeCalledTimes(1)
       expect(requiredProps.takeTask).toBeCalledWith(expect.anything())
@@ -626,7 +626,7 @@ describe('Карточка заявки', () => {
         user,
         canSelectAssigneeProps.workGroup.members[0].fullName,
       )
-      await assigneeBlockTestUtils.userClickAssignButton(user)
+      await assigneeBlockTestUtils.clickAssignButton(user)
 
       expect(requiredProps.updateAssignee).toBeCalledTimes(1)
       expect(requiredProps.updateAssignee).toBeCalledWith(expect.anything())
@@ -648,7 +648,7 @@ describe('Карточка заявки', () => {
         },
       )
 
-      await assigneeBlockTestUtils.userClickAssignOnMeButton(user)
+      await assigneeBlockTestUtils.clickAssignOnMeButton(user)
 
       expect(requiredProps.updateAssignee).toBeCalledTimes(1)
       expect(requiredProps.updateAssignee).toBeCalledWith(expect.anything())
@@ -678,7 +678,7 @@ describe('Карточка заявки', () => {
         },
       )
 
-      await workGroupBlockTestUtils.userClickFirstLineButton(user)
+      await workGroupBlockTestUtils.clickFirstLineButton(user)
       await taskFirstLineModalTestUtils.findModal()
       await taskFirstLineModalTestUtils.userSetDescription(user, generateWord())
       await taskFirstLineModalTestUtils.clickSubmitButton(user)
@@ -710,7 +710,7 @@ describe('Карточка заявки', () => {
         },
       )
 
-      await workGroupBlockTestUtils.userClickSecondLineButton(user)
+      await workGroupBlockTestUtils.clickSecondLineButton(user)
       await taskSecondLineModalTestUtils.findContainer()
       const workGroup = workGroupList[0]
       await taskSecondLineModalTestUtils.userOpenWorkGroup(user)

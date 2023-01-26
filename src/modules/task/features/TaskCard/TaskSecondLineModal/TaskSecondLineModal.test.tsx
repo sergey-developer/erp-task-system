@@ -1,4 +1,5 @@
 import {
+  clickSelectOption,
   generateId,
   getAllSelectOption,
   getButtonIn,
@@ -11,7 +12,6 @@ import {
   querySelect,
   render,
   selectDisabled,
-  userClickOption,
   userOpenSelect,
 } from '_tests_/utils'
 import { ByRoleOptions } from '@testing-library/dom/types/queries'
@@ -58,7 +58,7 @@ const userOpenWorkGroup = async (user: UserEvent) => {
   await userOpenSelect(user, getWorkGroup())
 }
 
-const userSelectWorkGroup = userClickOption
+const userSelectWorkGroup = clickSelectOption
 
 // submit button
 const getSubmitButton = () => getButtonIn(getContainer(), /перевести заявку/i)

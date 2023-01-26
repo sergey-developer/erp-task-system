@@ -61,7 +61,7 @@ const queryAdditionalInfoContent = () =>
 const getExpandButton = () =>
   getButtonIn(getContainer(), /дополнительная информация/i)
 
-const userClickExpandButton = async (user: UserEvent) => {
+const clickExpandButton = async (user: UserEvent) => {
   const button = getExpandButton()
   await user.click(button)
   return button
@@ -80,7 +80,7 @@ export const testUtils = {
   queryAdditionalInfoContent,
 
   getExpandButton,
-  userClickExpandButton,
+  clickExpandButton,
 
   getAddress,
   getAddressIcon,
@@ -107,7 +107,7 @@ describe('Блок дополнительной информации', () => {
     test('callback "onExpand" вызывается', async () => {
       const { user } = render(<AdditionalInfo {...requiredProps} />)
 
-      await testUtils.userClickExpandButton(user)
+      await testUtils.clickExpandButton(user)
 
       await waitFor(() => {
         expect(requiredProps.onExpand).toBeCalledTimes(1)

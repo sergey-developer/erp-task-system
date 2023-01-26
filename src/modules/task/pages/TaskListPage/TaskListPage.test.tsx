@@ -45,7 +45,7 @@ const getSearchButton = () => getButtonIn(getContainer(), /search/)
 
 const getSearchClearButton = () => getButtonIn(getContainer(), 'close-circle')
 
-const userClickSearchClearButton = async (user: UserEvent) => {
+const clickSearchClearButton = async (user: UserEvent) => {
   const button = getSearchClearButton()
   await user.click(button)
   return button
@@ -53,7 +53,7 @@ const userClickSearchClearButton = async (user: UserEvent) => {
 
 const getReloadListButton = () => getButtonIn(getContainer(), /sync/)
 
-const userClickReloadListButton = async (user: UserEvent) => {
+const clickReloadListButton = async (user: UserEvent) => {
   const button = getReloadListButton()
   await user.click(button)
   return button
@@ -95,12 +95,12 @@ const testUtils = {
   getSearchButton,
 
   getSearchClearButton,
-  userClickSearchClearButton,
+  clickSearchClearButton,
 
   userClearSearchFieldByBackspace,
 
   getReloadListButton,
-  userClickReloadListButton,
+  clickReloadListButton,
 
   getCreateTaskButton,
 
@@ -348,7 +348,7 @@ describe('Страница реестра заявок', () => {
       const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
       await taskTableTestUtils.loadingFinished()
-      await taskTableTestUtils.userClickRow(user, taskListItem.id)
+      await taskTableTestUtils.clickRow(user, taskListItem.id)
       const taskCard = await taskCardTestUtils.findContainer()
 
       await fastFilterTestUtils.userChangeFilter(user, FastFilterEnum.Free)
@@ -452,7 +452,7 @@ describe('Страница реестра заявок', () => {
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
         await taskTableTestUtils.loadingFinished()
-        await taskTableTestUtils.userClickRow(user, taskListItem.id)
+        await taskTableTestUtils.clickRow(user, taskListItem.id)
         const taskCard = await taskCardTestUtils.findContainer()
 
         await testUtils.userOpenExtendedFilter(user)
@@ -498,7 +498,7 @@ describe('Страница реестра заявок', () => {
 
         await testUtils.userOpenExtendedFilter(user)
         const filter = await extendedFilterTestUtils.findFilter()
-        await extendedFilterTestUtils.userClickOutOfFilter(user)
+        await extendedFilterTestUtils.clickOutOfFilter(user)
 
         await waitFor(() => {
           expect(filter).not.toBeInTheDocument()
@@ -781,7 +781,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await taskTableTestUtils.loadingFinished()
-        await taskTableTestUtils.userClickRow(user, taskListItem.id)
+        await taskTableTestUtils.clickRow(user, taskListItem.id)
         const taskCard = await taskCardTestUtils.findContainer()
         await testUtils.userFillSearchInput(user, generateWord(), true)
         await waitFor(() => {
@@ -1002,7 +1002,7 @@ describe('Страница реестра заявок', () => {
         const { user } = render(<TaskListPage />)
 
         const input = await testUtils.userFillSearchInput(user, generateWord())
-        await testUtils.userClickSearchClearButton(user)
+        await testUtils.clickSearchClearButton(user)
 
         expect(input).not.toHaveValue()
       })
@@ -1018,7 +1018,7 @@ describe('Страница реестра заявок', () => {
           fastFilterTestUtils.expectFilterNotChecked(fastFilter)
         })
 
-        await testUtils.userClickSearchClearButton(user)
+        await testUtils.clickSearchClearButton(user)
         await waitFor(() => {
           fastFilterTestUtils.expectFilterChecked(fastFilter)
         })
@@ -1035,7 +1035,7 @@ describe('Страница реестра заявок', () => {
           expect(extendedFilterButton).toBeDisabled()
         })
 
-        await testUtils.userClickSearchClearButton(user)
+        await testUtils.clickSearchClearButton(user)
         await waitFor(() => {
           expect(extendedFilterButton).toBeEnabled()
         })
@@ -1097,7 +1097,7 @@ describe('Страница реестра заявок', () => {
         await testUtils.userFillSearchInput(user, generateWord(), true)
         await taskTableTestUtils.loadingStarted()
         await taskTableTestUtils.loadingFinished()
-        await testUtils.userClickSearchClearButton(user)
+        await testUtils.clickSearchClearButton(user)
         await taskTableTestUtils.loadingStarted()
         await taskTableTestUtils.loadingFinished()
 
@@ -1165,7 +1165,7 @@ describe('Страница реестра заявок', () => {
       })
 
       await taskTableTestUtils.loadingFinished()
-      await testUtils.userClickReloadListButton(user)
+      await testUtils.clickReloadListButton(user)
       await taskTableTestUtils.loadingStarted()
     })
 
@@ -1179,7 +1179,7 @@ describe('Страница реестра заявок', () => {
 
       await taskTableTestUtils.loadingFinished()
       await fastFilterTestUtils.loadingFinished()
-      await testUtils.userClickReloadListButton(user)
+      await testUtils.clickReloadListButton(user)
       await fastFilterTestUtils.loadingStarted()
     })
 
@@ -1197,9 +1197,9 @@ describe('Страница реестра заявок', () => {
       const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
       await taskTableTestUtils.loadingFinished()
-      await taskTableTestUtils.userClickRow(user, taskListItem.id)
+      await taskTableTestUtils.clickRow(user, taskListItem.id)
       const taskCard = await taskCardTestUtils.findContainer()
-      await testUtils.userClickReloadListButton(user)
+      await testUtils.clickReloadListButton(user)
 
       await waitFor(() => {
         expect(taskCard).not.toBeInTheDocument()
@@ -1265,7 +1265,7 @@ describe('Страница реестра заявок', () => {
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
         await taskTableTestUtils.loadingFinished()
-        const row = await taskTableTestUtils.userClickRow(user, taskListItem.id)
+        const row = await taskTableTestUtils.clickRow(user, taskListItem.id)
 
         await waitFor(() => {
           expect(row).toHaveClass('table-row--selected')
@@ -1285,7 +1285,7 @@ describe('Страница реестра заявок', () => {
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
         await taskTableTestUtils.loadingFinished()
-        await taskTableTestUtils.userClickRow(user, taskListItem.id)
+        await taskTableTestUtils.clickRow(user, taskListItem.id)
 
         const taskCard = await taskCardTestUtils.findContainer()
         expect(taskCard).toBeInTheDocument()

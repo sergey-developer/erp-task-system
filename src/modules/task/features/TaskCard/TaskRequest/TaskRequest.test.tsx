@@ -52,7 +52,7 @@ const getActionButton = (label: string) =>
 const queryActionButton = (label: string) =>
   queryButtonIn(getContainer(), new RegExp(label))
 
-const userClickActionButton = async (user: UserEvent, label: string) => {
+const clickActionButton = async (user: UserEvent, label: string) => {
   const button = getActionButton(label)
   await user.click(button)
   return button
@@ -71,7 +71,7 @@ export const testUtils = {
 
   getActionButton,
   queryActionButton,
-  userClickActionButton,
+  clickActionButton,
   expectActionLoadingStarted,
 }
 
@@ -166,7 +166,7 @@ describe('Запрос заявки', () => {
     test('При клике обработчик вызывается корректно', async () => {
       const { user } = render(<TaskRequest {...requiredProps} />)
 
-      await testUtils.userClickActionButton(user, action.text)
+      await testUtils.clickActionButton(user, action.text)
       expect(action.onClick).toBeCalledTimes(1)
     })
   })
