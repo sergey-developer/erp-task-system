@@ -4,19 +4,20 @@ import {
   GetWorkGroupListSuccessResponse,
 } from 'modules/workGroup/models'
 import { HttpMethodEnum } from 'shared/constants/http'
+import { MaybeUndefined } from 'shared/interfaces/utils'
 import { apiService } from 'shared/services/api'
 
 const workGroupApiService = apiService.injectEndpoints({
   endpoints: (build) => ({
     getWorkGroupList: build.query<
       GetWorkGroupListSuccessResponse,
-      GetWorkGroupListQueryArgs
+      MaybeUndefined<GetWorkGroupListQueryArgs>
     >({
-      query: () => ({
+      query: (filter) => ({
         url: WorkGroupEndpointsEnum.WorkGroupList,
         method: HttpMethodEnum.Get,
+        params: filter,
       }),
-      keepUnusedDataFor: 30,
     }),
   }),
   overrideExisting: false,
