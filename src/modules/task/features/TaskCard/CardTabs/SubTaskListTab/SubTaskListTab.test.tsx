@@ -330,7 +330,7 @@ describe('Вкладка списка заданий', () => {
     describe('При не успешном запросе', () => {
       setupNotifications()
 
-      test('Обрабатывается ошибка - 400', async () => {
+      test('Обрабатывается ошибка клиента', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
         const templateList = subTaskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({
@@ -388,9 +388,13 @@ describe('Вкладка списка заданий', () => {
             badRequestResponse.description[0],
           ),
         ).toBeInTheDocument()
+
+        expect(
+          await findNotification('Не удалось создать задание'),
+        ).toBeInTheDocument()
       })
 
-      test('Обрабатывается ошибка - 500', async () => {
+      test('Обрабатывается ошибка сервера', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
         const templateList = subTaskFixtures.getSubTaskTemplateList()
         mockGetSubTaskTemplateListSuccess({
