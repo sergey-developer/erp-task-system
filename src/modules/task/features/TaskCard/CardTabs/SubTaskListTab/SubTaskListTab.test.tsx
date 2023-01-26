@@ -542,7 +542,7 @@ describe('Вкладка списка заданий', () => {
       )
 
       await testUtils.loadingFinished()
-      await subTaskTestUtils.userClickReworkButton(user)
+      await subTaskTestUtils.clickReworkButton(user)
       await reworkSubTaskModalTestUtils.findContainer()
     })
 
@@ -566,7 +566,7 @@ describe('Вкладка списка заданий', () => {
       )
 
       await testUtils.loadingFinished()
-      await subTaskTestUtils.userClickReworkButton(user)
+      await subTaskTestUtils.clickReworkButton(user)
       const modal = await reworkSubTaskModalTestUtils.findContainer()
       await reworkSubTaskModalTestUtils.clickCancelButton(user)
 
@@ -596,7 +596,7 @@ describe('Вкладка списка заданий', () => {
       )
 
       await testUtils.loadingFinished()
-      await subTaskTestUtils.userClickReworkButton(user)
+      await subTaskTestUtils.clickReworkButton(user)
       await reworkSubTaskModalTestUtils.findContainer()
       await reworkSubTaskModalTestUtils.userSetReturnReason(
         user,
@@ -630,7 +630,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        await subTaskTestUtils.userClickReworkButton(user)
+        await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,
@@ -674,7 +674,7 @@ describe('Вкладка списка заданий', () => {
           ),
         ).toBeInTheDocument()
 
-        await subTaskTestUtils.userClickReworkButton(user)
+        await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,
@@ -717,7 +717,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        const reworkButton = await subTaskTestUtils.userClickReworkButton(user)
+        const reworkButton = await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,
@@ -765,7 +765,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        await subTaskTestUtils.userClickReworkButton(user)
+        await subTaskTestUtils.clickReworkButton(user)
         await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,
@@ -803,7 +803,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        await subTaskTestUtils.userClickReworkButton(user)
+        await subTaskTestUtils.clickReworkButton(user)
         await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,

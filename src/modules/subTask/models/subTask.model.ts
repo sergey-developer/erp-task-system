@@ -8,6 +8,8 @@ export type SubTaskModel = {
   status: TaskStatusEnum
   supportGroup: SupportGroupModel
   createdAt: string
+  cancelReason: MaybeNull<string>
+  returnReason: MaybeNull<string>
   recordId?: MaybeNull<string>
   techResolution?: string
   description?: string

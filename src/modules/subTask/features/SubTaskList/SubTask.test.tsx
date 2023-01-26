@@ -25,6 +25,8 @@ const requiredProps: Pick<
   | 'taskExtendedStatus'
   | 'taskHasSuspendRequest'
   | 'currentUserIsTaskAssignee'
+  | 'returnReason'
+  | 'cancelReason'
 > = {
   title: subTask.title,
   status: subTask.status,
@@ -36,6 +38,8 @@ const requiredProps: Pick<
   onClickRework: jest.fn(),
   taskStatus: TaskStatusEnum.New,
   currentUserIsTaskAssignee: false,
+  returnReason: null,
+  cancelReason: null,
 }
 
 const notRequiredProps: NonNullableObject<
@@ -78,38 +82,68 @@ const getChildByText = (text: string | RegExp) =>
 const queryChildByText = (text: string) =>
   within(getContainer()).queryByText(text)
 
+// tech resolution
 const getTechResolutionButton = () => getButtonIn(getContainer(), /решение/i)
 
 const queryTechResolutionButton = () =>
   queryButtonIn(getContainer(), /решение/i)
 
-const userClickTechResolutionButton = async (user: UserEvent) => {
+const clickTechResolutionButton = async (user: UserEvent) => {
   const button = getTechResolutionButton()
   await user.click(button)
   return button
 }
 
+// return reason
+const getReturnReasonButton = () =>
+  getButtonIn(getContainer(), /причина возврата/i)
+
+const queryReturnReasonButton = () =>
+  queryButtonIn(getContainer(), /причина возврата/i)
+
+const clickReturnReasonButton = async (user: UserEvent) => {
+  const button = getReturnReasonButton()
+  await user.click(button)
+  return button
+}
+
+// cancel reason
+const getCancelReasonButton = () =>
+  getButtonIn(getContainer(), /причина отмены/i)
+
+const queryCancelReasonButton = () =>
+  queryButtonIn(getContainer(), /причина отмены/i)
+
+const clickCancelReasonButton = async (user: UserEvent) => {
+  const button = getCancelReasonButton()
+  await user.click(button)
+  return button
+}
+
+// description button
 const getDescriptionButton = () =>
   getButtonIn(getContainer(), /подробное описание/i)
 
-const userClickDescriptionButton = async (user: UserEvent) => {
+const clickDescriptionButton = async (user: UserEvent) => {
   const button = getDescriptionButton()
   await user.click(button)
   return button
 }
 
+// rework button
 const getReworkButton = () =>
   getButtonIn(getContainer(), /вернуть на доработку/i)
 
 const queryReworkButton = () =>
   queryButtonIn(getContainer(), /вернуть на доработку/i)
 
-const userClickReworkButton = async (user: UserEvent) => {
+const clickReworkButton = async (user: UserEvent) => {
   const button = getReworkButton()
   await user.click(button)
   return button
 }
 
+// cancel button
 const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
 const queryCancelButton = () => queryButtonIn(getContainer(), /отменить/i)
@@ -128,14 +162,22 @@ export const testUtils = {
 
   getTechResolutionButton,
   queryTechResolutionButton,
-  userClickTechResolutionButton,
+  clickTechResolutionButton,
+
+  getReturnReasonButton,
+  queryReturnReasonButton,
+  clickReturnReasonButton,
+
+  getCancelReasonButton,
+  queryCancelReasonButton,
+  clickCancelReasonButton,
 
   getDescriptionButton,
-  userClickDescriptionButton,
+  clickDescriptionButton,
 
   getReworkButton,
   queryReworkButton,
-  userClickReworkButton,
+  clickReworkButton,
 
   getCancelButton,
   queryCancelButton,
@@ -263,7 +305,7 @@ describe('Задание', () => {
           />,
         )
 
-        await testUtils.userClickTechResolutionButton(user)
+        await testUtils.clickTechResolutionButton(user)
 
         expect(
           testUtils.getChildByText(notRequiredProps.techResolution),
@@ -279,11 +321,121 @@ describe('Задание', () => {
           />,
         )
 
-        await testUtils.userClickTechResolutionButton(user)
-        await testUtils.userClickTechResolutionButton(user)
+        await testUtils.clickTechResolutionButton(user)
+        await testUtils.clickTechResolutionButton(user)
 
         expect(
           testUtils.queryChildByText(notRequiredProps.techResolution),
+        ).not.toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Причина возврата', () => {
+    test('Кнопка отображается если причина присутствует', () => {
+      render(<SubTask {...requiredProps} returnReason={subTask.returnReason} />)
+
+      const button = testUtils.getReturnReasonButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Кнопка не отображается если причина отсутствует', () => {
+      render(<SubTask {...requiredProps} returnReason={null} />)
+      expect(testUtils.queryReturnReasonButton()).not.toBeInTheDocument()
+    })
+
+    describe('Текст причины', () => {
+      test('Скрыт по умолчанию', () => {
+        render(
+          <SubTask {...requiredProps} returnReason={subTask.returnReason} />,
+        )
+
+        expect(testUtils.getReturnReasonButton()).toBeInTheDocument()
+
+        expect(
+          testUtils.queryChildByText(subTask.returnReason),
+        ).not.toBeInTheDocument()
+      })
+
+      test('Можно раскрыть', async () => {
+        const { user } = render(
+          <SubTask {...requiredProps} returnReason={subTask.returnReason} />,
+        )
+
+        await testUtils.clickReturnReasonButton(user)
+
+        expect(
+          testUtils.getChildByText(subTask.returnReason),
+        ).toBeInTheDocument()
+      })
+
+      test('Можно скрыть', async () => {
+        const { user } = render(
+          <SubTask {...requiredProps} returnReason={subTask.returnReason} />,
+        )
+
+        await testUtils.clickReturnReasonButton(user)
+        await testUtils.clickReturnReasonButton(user)
+
+        expect(
+          testUtils.queryChildByText(subTask.returnReason),
+        ).not.toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Причина отмены', () => {
+    test('Кнопка отображается если причина присутствует', () => {
+      render(<SubTask {...requiredProps} cancelReason={subTask.cancelReason} />)
+
+      const button = testUtils.getCancelReasonButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Кнопка не отображается если причина отсутствует', () => {
+      render(<SubTask {...requiredProps} cancelReason={null} />)
+      expect(testUtils.queryCancelReasonButton()).not.toBeInTheDocument()
+    })
+
+    describe('Текст причины', () => {
+      test('Скрыт по умолчанию', () => {
+        render(
+          <SubTask {...requiredProps} cancelReason={subTask.cancelReason} />,
+        )
+
+        expect(testUtils.getCancelReasonButton()).toBeInTheDocument()
+
+        expect(
+          testUtils.queryChildByText(subTask.cancelReason),
+        ).not.toBeInTheDocument()
+      })
+
+      test('Можно раскрыть', async () => {
+        const { user } = render(
+          <SubTask {...requiredProps} cancelReason={subTask.cancelReason} />,
+        )
+
+        await testUtils.clickCancelReasonButton(user)
+
+        expect(
+          testUtils.getChildByText(subTask.cancelReason),
+        ).toBeInTheDocument()
+      })
+
+      test('Можно скрыть', async () => {
+        const { user } = render(
+          <SubTask {...requiredProps} cancelReason={subTask.cancelReason} />,
+        )
+
+        await testUtils.clickCancelReasonButton(user)
+        await testUtils.clickCancelReasonButton(user)
+
+        expect(
+          testUtils.queryChildByText(subTask.cancelReason),
         ).not.toBeInTheDocument()
       })
     })
@@ -353,7 +505,7 @@ describe('Задание', () => {
           />,
         )
 
-        await userClickDescriptionButton(user)
+        await clickDescriptionButton(user)
 
         expect(
           testUtils.getChildByText(notRequiredProps.description),
@@ -368,8 +520,8 @@ describe('Задание', () => {
           />,
         )
 
-        await userClickDescriptionButton(user)
-        await userClickDescriptionButton(user)
+        await clickDescriptionButton(user)
+        await clickDescriptionButton(user)
 
         expect(
           testUtils.queryChildByText(notRequiredProps.description),
@@ -443,7 +595,7 @@ describe('Задание', () => {
         <SubTask {...requiredProps} {...activeReworkButtonProps} />,
       )
 
-      await testUtils.userClickReworkButton(user)
+      await testUtils.clickReworkButton(user)
       expect(requiredProps.onClickRework).toBeCalledTimes(1)
     })
   })

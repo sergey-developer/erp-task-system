@@ -62,6 +62,8 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 taskExtendedStatus={taskExtendedStatus}
                 currentUserIsTaskAssignee={currentUserIsTaskAssignee}
                 taskHasSuspendRequest={taskHasSuspendRequest}
+                returnReason={item.returnReason}
+                cancelReason={item.cancelReason}
               />
 
               {array.length - 1 !== index && <Divider />}
