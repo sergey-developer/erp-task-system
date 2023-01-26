@@ -111,7 +111,7 @@ const validatingFinished = async (
   await baseValidatingFinished(passwordField)
 }
 
-const userClickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
+const clickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
   const submitBtn = getSubmitBtn()
   await user.click(submitBtn)
   return submitBtn
@@ -132,7 +132,7 @@ const testUtils = {
   userEntersWrongPassword,
   validatingStarted,
   validatingFinished,
-  userClickSubmitButton,
+  clickSubmitButton,
 }
 
 describe('Страница авторизации', () => {
@@ -153,7 +153,7 @@ describe('Страница авторизации', () => {
 
     const emailField = testUtils.getEmailField()
     await testUtils.userEntersIncorrectEmail(user)
-    await testUtils.userClickSubmitButton(user)
+    await testUtils.clickSubmitButton(user)
 
     expect(
       await within(emailField).findByText(validationMessages.email.incorrect),
@@ -170,7 +170,7 @@ describe('Страница авторизации', () => {
       const emailField = testUtils.getEmailField()
       const passwordField = testUtils.getPasswordField()
 
-      await testUtils.userClickSubmitButton(user)
+      await testUtils.clickSubmitButton(user)
       await testUtils.validatingStarted(emailField, passwordField)
       await testUtils.validatingFinished(emailField, passwordField)
 
@@ -183,7 +183,7 @@ describe('Страница авторизации', () => {
       const emailField = testUtils.getEmailField()
       const passwordField = testUtils.getPasswordField()
 
-      await testUtils.userClickSubmitButton(user)
+      await testUtils.clickSubmitButton(user)
 
       expect(
         await within(emailField).findByText(validationMessages.required),
@@ -207,7 +207,7 @@ describe('Страница авторизации', () => {
 
         await testUtils.userEntersCorrectEmail(user)
         await testUtils.userEntersCorrectPassword(user)
-        const submitBtn = await testUtils.userClickSubmitButton(user)
+        const submitBtn = await testUtils.clickSubmitButton(user)
         await loadingStartedByButton(submitBtn)
         await loadingFinishedByButton(submitBtn)
 
@@ -226,7 +226,7 @@ describe('Страница авторизации', () => {
 
           await testUtils.userEntersCorrectEmail(user)
           await testUtils.userEntersCorrectPassword(user)
-          const submitBtn = await testUtils.userClickSubmitButton(user)
+          const submitBtn = await testUtils.clickSubmitButton(user)
           await loadingStartedByButton(submitBtn)
           await loadingFinishedByButton(submitBtn)
 
@@ -242,7 +242,7 @@ describe('Страница авторизации', () => {
 
           await testUtils.userEntersCorrectEmail(user)
           await testUtils.userEntersCorrectPassword(user)
-          const submitBtn = await testUtils.userClickSubmitButton(user)
+          const submitBtn = await testUtils.clickSubmitButton(user)
           await loadingStartedByButton(submitBtn)
           await loadingFinishedByButton(submitBtn)
 
@@ -260,7 +260,7 @@ describe('Страница авторизации', () => {
 
         await testUtils.userEntersCorrectEmail(user)
         await testUtils.userEntersCorrectPassword(user)
-        const submitBtn = await testUtils.userClickSubmitButton(user)
+        const submitBtn = await testUtils.clickSubmitButton(user)
         await loadingStartedByButton(submitBtn)
         await loadingFinishedByButton(submitBtn)
 
@@ -288,7 +288,7 @@ describe('Страница авторизации', () => {
 
         await testUtils.userEntersNotExistingEmail(user)
         await testUtils.userEntersWrongPassword(user)
-        const submitBtn = await testUtils.userClickSubmitButton(user)
+        const submitBtn = await testUtils.clickSubmitButton(user)
         await loadingStartedByButton(submitBtn)
         await loadingFinishedByButton(submitBtn)
 
@@ -303,7 +303,7 @@ describe('Страница авторизации', () => {
 
           await testUtils.userEntersNotExistingEmail(user)
           await testUtils.userEntersWrongPassword(user)
-          const submitBtn = await testUtils.userClickSubmitButton(user)
+          const submitBtn = await testUtils.clickSubmitButton(user)
           await loadingStartedByButton(submitBtn)
           await loadingFinishedByButton(submitBtn)
 
@@ -322,7 +322,7 @@ describe('Страница авторизации', () => {
 
           await testUtils.userEntersNotExistingEmail(user)
           await testUtils.userEntersWrongPassword(user)
-          const submitBtn = await testUtils.userClickSubmitButton(user)
+          const submitBtn = await testUtils.clickSubmitButton(user)
           await loadingStartedByButton(submitBtn)
           await loadingFinishedByButton(submitBtn)
 
@@ -340,7 +340,7 @@ describe('Страница авторизации', () => {
 
           await testUtils.userEntersNotExistingEmail(user)
           await testUtils.userEntersWrongPassword(user)
-          const submitBtn = await testUtils.userClickSubmitButton(user)
+          const submitBtn = await testUtils.clickSubmitButton(user)
           await loadingStartedByButton(submitBtn)
           await loadingFinishedByButton(submitBtn)
 

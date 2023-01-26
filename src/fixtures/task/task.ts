@@ -30,6 +30,7 @@ export const getTask = (
       | 'olaStatus'
       | 'workGroup'
       | 'assignee'
+      | 'suspendRequest'
     >
   >,
 ): TaskModel => ({
@@ -40,6 +41,7 @@ export const getTask = (
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   workGroup: props?.workGroup || taskFixtures.getWorkGroup(),
   assignee: props?.assignee || taskFixtures.getAssignee(),
+  suspendRequest: props?.suspendRequest || null,
 
   recordId: generateWord(),
   name: generateWord(),
@@ -63,7 +65,6 @@ export const getTask = (
   productClassifier3: generateWord(),
   supportGroup: commonFixtures.getSupportGroup(),
   olaEstimatedTime: Date.now(),
-  suspendRequest: null,
 
   description: generateWord(),
   contactPhone: generatePhone(),

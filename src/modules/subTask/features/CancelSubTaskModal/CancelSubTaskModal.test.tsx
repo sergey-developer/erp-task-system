@@ -55,7 +55,7 @@ const findCancelReasonError = async (error: string) =>
 
 const getSubmitButton = () => getButtonIn(getContainer(), /сохранить/i)
 
-const userClickSubmitButton = async (user: UserEvent) => {
+const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
@@ -80,7 +80,7 @@ export const testUtils = {
   findCancelReasonError,
 
   getSubmitButton,
-  userClickSubmitButton,
+  clickSubmitButton,
 
   getCancelButton,
   clickCancelButton,
@@ -167,7 +167,7 @@ describe('Модальное окно отправки запроса на до�
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           const { user } = render(<CancelSubTaskModal {...requiredProps} />)
 
-          await testUtils.userClickSubmitButton(user)
+          await testUtils.clickSubmitButton(user)
 
           expect(
             await testUtils.findCancelReasonError(validationMessages.required),
@@ -197,7 +197,7 @@ describe('Модальное окно отправки запроса на до�
         const { user } = render(<CancelSubTaskModal {...requiredProps} />)
 
         await testUtils.userSetCancelReason(user, generateWord())
-        await testUtils.userClickSubmitButton(user)
+        await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
       })

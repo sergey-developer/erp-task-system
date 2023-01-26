@@ -39,7 +39,7 @@ const userSetDescription = async (user: UserEvent, value: string) => {
 }
 
 const getSubmitButton = () => getButtonIn(getModal(), /вернуть заявку/i)
-const userClickSubmitButton = async (user: UserEvent) => {
+const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
@@ -55,7 +55,7 @@ export const testUtils = {
   userSetDescription,
 
   getSubmitButton,
-  userClickSubmitButton,
+  clickSubmitButton,
 
   getCancelButton,
 }

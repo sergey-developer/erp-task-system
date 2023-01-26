@@ -347,7 +347,7 @@ describe('Блок рабочей группы', () => {
         user,
         workGroup.name,
       )
-      await taskSecondLineModalTestUtils.userClickSubmitButton(user)
+      await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
       expect(requiredProps.transferTaskToSecondLine).toBeCalledTimes(1)
     })
@@ -693,7 +693,7 @@ describe('Блок рабочей группы', () => {
       await testUtils.userClickFirstLineButton(user)
       await taskFirstLineModalTestUtils.findModal()
       await taskFirstLineModalTestUtils.userSetDescription(user, generateWord())
-      await taskFirstLineModalTestUtils.userClickSubmitButton(user)
+      await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
       expect(requiredProps.transferTaskToFirstLine).toBeCalledTimes(1)
     })

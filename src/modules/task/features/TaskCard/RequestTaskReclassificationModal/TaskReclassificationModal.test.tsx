@@ -44,7 +44,7 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 // close button
 const getCloseButton = () => getButtonIn(getContainer(), /close/i)
 
-const userClickCloseButton = async (user: UserEvent) => {
+const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
   return button
@@ -63,7 +63,7 @@ const clickCancelButton = async (user: UserEvent) => {
 const getSubmitButton = () =>
   getButtonIn(getContainer(), /запросить переклассификацию/i)
 
-const userClickSubmitButton = async (user: UserEvent) => {
+const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
@@ -126,13 +126,13 @@ export const testUtils = {
   getChildByText,
 
   getCloseButton,
-  userClickCloseButton,
+  clickCloseButton,
 
   getCancelButton,
   clickCancelButton,
 
   getSubmitButton,
-  userClickSubmitButton,
+  clickSubmitButton,
 
   getReclassificationReasonBlock,
   getReclassificationReasonTitle,
@@ -174,7 +174,7 @@ describe('Модалка запроса о переклассификации з
         <RequestTaskReclassificationModal {...requiredProps} />,
       )
 
-      await testUtils.userClickCloseButton(user)
+      await testUtils.clickCloseButton(user)
       expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })
@@ -224,7 +224,7 @@ describe('Модалка запроса о переклассификации з
           await testUtils.userSetReclassificationReason(user, reason)
         }
         await testUtils.userSetComment(user, generateWord())
-        await testUtils.userClickSubmitButton(user)
+        await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
       })
@@ -234,7 +234,7 @@ describe('Модалка запроса о переклассификации з
           <RequestTaskReclassificationModal {...requiredProps} />,
         )
 
-        await testUtils.userClickSubmitButton(user)
+        await testUtils.clickSubmitButton(user)
         expect(requiredProps.onSubmit).not.toBeCalled()
       })
     })
@@ -299,7 +299,7 @@ describe('Модалка запроса о переклассификации з
             <RequestTaskReclassificationModal {...requiredProps} />,
           )
 
-          await testUtils.userClickSubmitButton(user)
+          await testUtils.clickSubmitButton(user)
 
           expect(
             await testUtils.findReclassificationReasonError(
@@ -362,7 +362,7 @@ describe('Модалка запроса о переклассификации з
             <RequestTaskReclassificationModal {...requiredProps} />,
           )
 
-          await testUtils.userClickSubmitButton(user)
+          await testUtils.clickSubmitButton(user)
 
           expect(
             await testUtils.findCommentError(validationMessages.required),
@@ -394,7 +394,7 @@ describe('Модалка запроса о переклассификации з
       <RequestTaskReclassificationModal {...requiredProps} />,
     )
 
-    await modalTestUtils.clickOutOfModal(user)
+    await modalTestUtils.clickOutsideModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })

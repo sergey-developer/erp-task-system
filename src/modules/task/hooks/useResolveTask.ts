@@ -14,7 +14,7 @@ import {
   showMultipleErrorNotification,
 } from 'shared/utils/notifications'
 
-import { RESOLVE_TASK_COMMON_ERROR_MSG } from '../constants/messages'
+import { RESOLVE_TASK_COMMON_ERROR_MSG } from '../constants/errorMessages'
 
 export const useResolveTask = () => {
   const permissions = useUserPermissions(taskResolutionApiPermissions)

@@ -17,3 +17,6 @@ export * from './updateTaskAssignee.mock'
 
 export * from './createTaskReclassificationRequest.mock'
 export * from './getTaskReclassificationRequest.mock'
+
+export * from './createTaskSuspendRequest.mock'
+export * from './deleteTaskSuspendRequest.mock'

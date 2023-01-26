@@ -63,7 +63,7 @@ const userSelectWorkGroup = userClickOption
 // submit button
 const getSubmitButton = () => getButtonIn(getContainer(), /перевести заявку/i)
 
-const userClickSubmitButton = async (user: UserEvent) => {
+const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
@@ -81,7 +81,7 @@ const clickCancelButton = async (user: UserEvent) => {
 // close button
 const getCloseButton = () => getButtonIn(getContainer(), /close/i)
 
-const userClickCloseButton = async (user: UserEvent) => {
+const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
   return button
@@ -106,13 +106,13 @@ export const testUtils = {
   userSelectWorkGroup,
 
   getSubmitButton,
-  userClickSubmitButton,
+  clickSubmitButton,
 
   getCancelButton,
   clickCancelButton,
 
   getCloseButton,
-  userClickCloseButton,
+  clickCloseButton,
 
   loadingStarted,
 }
@@ -261,7 +261,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
       await testUtils.userOpenWorkGroup(user)
       await testUtils.userSelectWorkGroup(user, workGroup.name)
-      await testUtils.userClickSubmitButton(user)
+      await testUtils.clickSubmitButton(user)
 
       expect(requiredProps.onSubmit).toBeCalledTimes(1)
       expect(requiredProps.onSubmit).toBeCalledWith(workGroup.id)
@@ -299,7 +299,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<TaskSecondLineModal {...requiredProps} />)
 
-      await testUtils.userClickCloseButton(user)
+      await testUtils.clickCloseButton(user)
       expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })
@@ -307,7 +307,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
     const { user } = render(<TaskSecondLineModal {...requiredProps} />)
 
-    await modalTestUtils.clickOutOfModal(user)
+    await modalTestUtils.clickOutsideModal(user)
     expect(requiredProps.onCancel).toBeCalledTimes(1)
   })
 })
