@@ -61,7 +61,7 @@ const userClickSubmitButton = async (user: UserEvent) => {
 }
 const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
-const userClickCancelButton = async (user: UserEvent) => {
+const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
   return button
@@ -81,7 +81,7 @@ export const testUtils = {
   userClickSubmitButton,
 
   getCancelButton,
-  userClickCancelButton,
+  clickCancelButton,
 
   loadingStarted: () => loadingStartedByButton(getSubmitButton()),
   loadingFinished: () => loadingFinishedByButton(getSubmitButton()),
@@ -216,7 +216,7 @@ describe('Модалка отправки запроса на доработку
       test('Обработчик вызывается корректно', async () => {
         const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
 
-        await testUtils.userClickCancelButton(user)
+        await testUtils.clickCancelButton(user)
         expect(requiredProps.onCancel).toBeCalledTimes(1)
       })
     })

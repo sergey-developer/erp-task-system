@@ -72,7 +72,7 @@ const userClickSubmitButton = async (user: UserEvent) => {
 // cancel button
 const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
-const userClickCancelButton = async (user: UserEvent) => {
+const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
   return button
@@ -109,7 +109,7 @@ export const testUtils = {
   userClickSubmitButton,
 
   getCancelButton,
-  userClickCancelButton,
+  clickCancelButton,
 
   getCloseButton,
   userClickCloseButton,
@@ -281,7 +281,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<TaskSecondLineModal {...requiredProps} />)
 
-      await testUtils.userClickCancelButton(user)
+      await testUtils.clickCancelButton(user)
       expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })

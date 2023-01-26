@@ -53,7 +53,7 @@ const userClickCloseButton = async (user: UserEvent) => {
 // cancel button
 const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
-const userClickCancelButton = async (user: UserEvent) => {
+const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
   return button
@@ -129,7 +129,7 @@ export const testUtils = {
   userClickCloseButton,
 
   getCancelButton,
-  userClickCancelButton,
+  clickCancelButton,
 
   getSubmitButton,
   userClickSubmitButton,
@@ -194,7 +194,7 @@ describe('Модалка запроса о переклассификации з
         <RequestTaskReclassificationModal {...requiredProps} />,
       )
 
-      await testUtils.userClickCancelButton(user)
+      await testUtils.clickCancelButton(user)
       expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })

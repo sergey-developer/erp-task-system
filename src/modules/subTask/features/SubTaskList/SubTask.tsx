@@ -50,6 +50,8 @@ const SubTask: FC<SubTaskProps> = ({
   taskExtendedStatus: rawTaskExtendedStatus,
   currentUserIsTaskAssignee,
   taskHasSuspendRequest,
+  returnReason,
+  cancelReason,
 }) => {
   const taskStatus = useTaskStatus(rawTaskStatus)
   const taskExtendedStatus = useTaskExtendedStatus(rawTaskExtendedStatus)
@@ -58,6 +60,12 @@ const SubTask: FC<SubTaskProps> = ({
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
 
   const [showTechResolution, { toggle: toggleShowTechResolution }] =
+    useBoolean(false)
+
+  const [showReturnReason, { toggle: toggleShowReturnReason }] =
+    useBoolean(false)
+
+  const [showCancelReason, { toggle: toggleShowCancelReason }] =
     useBoolean(false)
 
   const isShowCancelBtn =
@@ -155,6 +163,30 @@ const SubTask: FC<SubTaskProps> = ({
               </Paragraph>
             </Expandable>
           )}
+
+        {returnReason && (
+          <Expandable
+            onClick={toggleShowReturnReason}
+            expanded={showReturnReason}
+            btnText='Причина возврата'
+            btnTextType='secondary'
+            btnTextUnderline
+          >
+            <Paragraph>{renderStringWithLineBreak(returnReason)}</Paragraph>
+          </Expandable>
+        )}
+
+        {cancelReason && (
+          <Expandable
+            onClick={toggleShowCancelReason}
+            expanded={showCancelReason}
+            btnText='Причина отмены'
+            btnTextType='secondary'
+            btnTextUnderline
+          >
+            <Paragraph>{renderStringWithLineBreak(cancelReason)}</Paragraph>
+          </Expandable>
+        )}
       </Space>
 
       <Row gutter={10}>

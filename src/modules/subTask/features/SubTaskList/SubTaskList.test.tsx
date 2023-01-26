@@ -101,7 +101,7 @@ describe('Список подзадач', () => {
         />,
       )
 
-      await subTaskTestUtils.userClickReworkButton(user)
+      await subTaskTestUtils.clickReworkButton(user)
 
       expect(requiredProps.onClickRework).toBeCalledTimes(1)
       expect(requiredProps.onClickRework).toBeCalledWith(subTask)
@@ -126,7 +126,7 @@ describe('Список подзадач', () => {
         />,
       )
 
-      await subTaskTestUtils.userClickCancelButton(user)
+      await subTaskTestUtils.clickCancelButton(user)
 
       expect(requiredProps.onClickCancel).toBeCalledTimes(1)
       expect(requiredProps.onClickCancel).toBeCalledWith(subTask)

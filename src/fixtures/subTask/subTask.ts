@@ -26,6 +26,8 @@ export const getSubTask = (
   externalAssigneePhone: generatePhone(),
   olaNextBreachTime: generateDateString(),
   techResolution: generateWord(),
+  returnReason: generateWord(),
+  cancelReason: generateWord(),
 })
 
 export const getSubTaskList = (

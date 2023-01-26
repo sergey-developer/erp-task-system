@@ -40,7 +40,7 @@ const getIcon = () => getIconByNameIn(getContainer(), 'question-circle')
 
 const getCancelButton = () => getButtonIn(getContainer(), /отменить запрос/i)
 
-const userClickCancelButton = async (user: UserEvent) => {
+const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
   return button
@@ -55,7 +55,7 @@ export const testUtils = {
   getIcon,
 
   getCancelButton,
-  userClickCancelButton,
+  clickCancelButton,
 }
 
 describe('Запрос заявки на переклассификацию', () => {
@@ -120,7 +120,7 @@ describe('Запрос заявки на переклассификацию', ()
         <TaskReclassificationRequest {...requiredProps} />,
       )
 
-      await testUtils.userClickCancelButton(user)
+      await testUtils.clickCancelButton(user)
       expect(requiredProps.onCancel).toBeCalledTimes(1)
     })
   })

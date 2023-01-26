@@ -542,7 +542,7 @@ describe('Вкладка списка заданий', () => {
       )
 
       await testUtils.loadingFinished()
-      await subTaskTestUtils.userClickReworkButton(user)
+      await subTaskTestUtils.clickReworkButton(user)
       await reworkSubTaskModalTestUtils.findContainer()
     })
 
@@ -566,9 +566,9 @@ describe('Вкладка списка заданий', () => {
       )
 
       await testUtils.loadingFinished()
-      await subTaskTestUtils.userClickReworkButton(user)
+      await subTaskTestUtils.clickReworkButton(user)
       const modal = await reworkSubTaskModalTestUtils.findContainer()
-      await reworkSubTaskModalTestUtils.userClickCancelButton(user)
+      await reworkSubTaskModalTestUtils.clickCancelButton(user)
 
       await waitFor(() => {
         expect(modal).not.toBeInTheDocument()
@@ -596,7 +596,7 @@ describe('Вкладка списка заданий', () => {
       )
 
       await testUtils.loadingFinished()
-      await subTaskTestUtils.userClickReworkButton(user)
+      await subTaskTestUtils.clickReworkButton(user)
       await reworkSubTaskModalTestUtils.findContainer()
       await reworkSubTaskModalTestUtils.userSetReturnReason(
         user,
@@ -630,7 +630,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        await subTaskTestUtils.userClickReworkButton(user)
+        await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,
@@ -674,7 +674,7 @@ describe('Вкладка списка заданий', () => {
           ),
         ).toBeInTheDocument()
 
-        await subTaskTestUtils.userClickReworkButton(user)
+        await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,
@@ -717,7 +717,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        const reworkButton = await subTaskTestUtils.userClickReworkButton(user)
+        const reworkButton = await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,
@@ -765,7 +765,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        await subTaskTestUtils.userClickReworkButton(user)
+        await subTaskTestUtils.clickReworkButton(user)
         await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,
@@ -803,7 +803,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        await subTaskTestUtils.userClickReworkButton(user)
+        await subTaskTestUtils.clickReworkButton(user)
         await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.userSetReturnReason(
           user,
@@ -839,7 +839,7 @@ describe('Вкладка списка заданий', () => {
       )
 
       await testUtils.loadingFinished()
-      await subTaskTestUtils.userClickCancelButton(user)
+      await subTaskTestUtils.clickCancelButton(user)
       await cancelSubTaskModalTestUtils.findContainer()
     })
 
@@ -863,9 +863,9 @@ describe('Вкладка списка заданий', () => {
       )
 
       await testUtils.loadingFinished()
-      await subTaskTestUtils.userClickCancelButton(user)
+      await subTaskTestUtils.clickCancelButton(user)
       const modal = await cancelSubTaskModalTestUtils.findContainer()
-      await cancelSubTaskModalTestUtils.userClickCancelButton(user)
+      await cancelSubTaskModalTestUtils.clickCancelButton(user)
 
       await waitFor(() => {
         expect(modal).not.toBeInTheDocument()
@@ -893,7 +893,7 @@ describe('Вкладка списка заданий', () => {
       )
 
       await testUtils.loadingFinished()
-      await subTaskTestUtils.userClickCancelButton(user)
+      await subTaskTestUtils.clickCancelButton(user)
       await cancelSubTaskModalTestUtils.findContainer()
       await cancelSubTaskModalTestUtils.userSetCancelReason(
         user,
@@ -927,7 +927,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        await subTaskTestUtils.userClickCancelButton(user)
+        await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
         await cancelSubTaskModalTestUtils.userSetCancelReason(
           user,
@@ -971,7 +971,7 @@ describe('Вкладка списка заданий', () => {
           ),
         ).toBeInTheDocument()
 
-        await subTaskTestUtils.userClickCancelButton(user)
+        await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
         await cancelSubTaskModalTestUtils.userSetCancelReason(
           user,
@@ -1014,7 +1014,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        const cancelButton = await subTaskTestUtils.userClickCancelButton(user)
+        const cancelButton = await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
         await cancelSubTaskModalTestUtils.userSetCancelReason(
           user,
@@ -1062,7 +1062,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        await subTaskTestUtils.userClickCancelButton(user)
+        await subTaskTestUtils.clickCancelButton(user)
         await cancelSubTaskModalTestUtils.findContainer()
         await cancelSubTaskModalTestUtils.userSetCancelReason(
           user,
@@ -1100,7 +1100,7 @@ describe('Вкладка списка заданий', () => {
         )
 
         await testUtils.loadingFinished()
-        await subTaskTestUtils.userClickCancelButton(user)
+        await subTaskTestUtils.clickCancelButton(user)
         await cancelSubTaskModalTestUtils.findContainer()
         await cancelSubTaskModalTestUtils.userSetCancelReason(
           user,
