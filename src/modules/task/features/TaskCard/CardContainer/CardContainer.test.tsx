@@ -28,8 +28,8 @@ import {
   mockTakeTaskSuccess,
   mockUpdateTaskAssigneeServerError,
   mockUpdateTaskAssigneeSuccess,
+  mockUpdateTaskWorkGroupBadRequestError,
   mockUpdateTaskWorkGroupForbiddenError,
-  mockUpdateTaskWorkGroupNotFoundError,
   mockUpdateTaskWorkGroupServerError,
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
@@ -1731,7 +1731,7 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       describe('При не успешный запросе', () => {
-        test('Обрабатывается ошибка 404', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
             body: taskFixtures.getTask({
               id: requiredProps.taskId,
@@ -1742,9 +1742,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const workGroup = workGroupFixtures.getWorkGroup()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
-          mockUpdateTaskWorkGroupNotFoundError(requiredProps.taskId)
+          mockUpdateTaskWorkGroupBadRequestError(requiredProps.taskId)
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
             store: getStoreWithAuth({

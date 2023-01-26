@@ -83,7 +83,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
             data-testid='tech-resolution'
             label='Техническое решение'
             name='techResolution'
-            rules={validationRules.string.long}
+            rules={[validationRules.string.long]}
           >
             <TextArea
               placeholder='Расскажите о работах на объекте'
@@ -96,7 +96,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
               data-testid='user-resolution'
               label='Решение для пользователя'
               name='userResolution'
-              rules={validationRules.string.long}
+              rules={[validationRules.string.long]}
             >
               <TextArea
                 placeholder='Расскажите заявителю о решении'

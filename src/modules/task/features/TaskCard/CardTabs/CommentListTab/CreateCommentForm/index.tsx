@@ -33,7 +33,7 @@ const CreateCommentForm: FC<CreateCommentFormProps> = ({
         <Form.Item
           data-testid='field-comment'
           name='comment'
-          rules={validationRules.string.long}
+          rules={[validationRules.string.long]}
         >
           <TextArea
             placeholder='Дополните информацию о заявке'

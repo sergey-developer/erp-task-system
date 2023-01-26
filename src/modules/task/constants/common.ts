@@ -40,6 +40,8 @@ export enum TaskJournalTypeEnum {
   AwaitingApproved = 'AWAITING_APPROVED',
   AwaitingRejected = 'AWAITING_REJECTED',
   FirstLineReturned = 'FIRST_LINE_RETURNED',
+  AwaitingCanceled = 'AWAITING_CANCELED',
+  AutoEscalation = 'AUTO_ESCALATION',
   Other = 'OTHER',
 }
 

@@ -30,7 +30,7 @@ import {
   UpdateTaskAssigneeMutationArgs,
   UpdateTaskWorkGroupMutationArgs,
 } from 'modules/task/models'
-import { WorkGroupListItemModel } from 'modules/workGroup/models'
+import { WorkGroupListModel } from 'modules/workGroup/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -51,6 +51,7 @@ import {
 import SecondaryDetails from '../SecondaryDetails'
 import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
 import { TaskResolutionModalProps } from '../TaskResolutionModal'
+import { TaskSecondLineFormFields } from '../TaskSecondLineModal/interfaces'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
@@ -136,7 +137,7 @@ export type TaskCardProps = {
   updateAssignee: (data: UpdateTaskAssigneeMutationArgs) => Promise<void>
   updateAssigneeIsLoading: boolean
 
-  workGroupList: Array<WorkGroupListItemModel>
+  workGroupList: WorkGroupListModel
   workGroupListIsLoading: boolean
   updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgs) => Promise<void>
   updateWorkGroupIsLoading: boolean
@@ -279,17 +280,22 @@ const TaskCard: FC<TaskCardProps> = ({
 
   const handleTransferTaskToSecondLine = useCallback(
     async (
-      workGroup: WorkGroupListItemModel['id'],
+      values: TaskSecondLineFormFields,
+      setFields: FormInstance['setFields'],
       closeTaskSecondLineModal: () => void,
     ) => {
       if (!task) return
 
       try {
-        await updateWorkGroup({ taskId: task.id, workGroup })
+        await updateWorkGroup({ taskId: task.id, ...values })
         closeTaskSecondLineModal()
         closeTaskCard()
-      } catch {
-        // todo: использовать в модалке форму и реализовать обработку ошибок. затем поправить тесты
+      } catch (exception) {
+        // todo: написать тесты
+        const error = exception as ErrorResponse
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, setFields)
+        }
       }
     },
     [task, closeTaskCard, updateWorkGroup],

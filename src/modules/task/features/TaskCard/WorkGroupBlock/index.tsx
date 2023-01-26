@@ -10,12 +10,15 @@ import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
 } from 'modules/task/features/TaskCard/TaskFirstLineModal/interfaces'
-import { TaskSecondLineModalProps } from 'modules/task/features/TaskCard/TaskSecondLineModal'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
-import { WorkGroupListItemModel } from 'modules/workGroup/models'
 import { useDebounceFn } from 'shared/hooks'
+
+import {
+  TaskSecondLineFormFields,
+  TaskSecondLineModalProps,
+} from '../TaskSecondLineModal/interfaces'
 
 const TaskFirstLineModal = React.lazy(
   () => import('modules/task/features/TaskCard/TaskFirstLineModal'),
@@ -33,9 +36,6 @@ export type WorkGroupBlockProps = Pick<
 > & {
   hasSuspendRequest: boolean
 
-  workGroupList: Array<WorkGroupListItemModel>
-  workGroupListIsLoading: boolean
-
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
     setFields: FormInstance['setFields'],
@@ -44,7 +44,8 @@ export type WorkGroupBlockProps = Pick<
   transferTaskToFirstLineIsLoading: boolean
 
   transferTaskToSecondLine: (
-    workGroup: WorkGroupListItemModel['id'],
+    values: TaskSecondLineFormFields,
+    setFields: FormInstance['setFields'],
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
@@ -59,9 +60,6 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
 
   status,
   extendedStatus,
-
-  workGroupList,
-  workGroupListIsLoading,
 
   transferTaskToFirstLine,
   transferTaskToFirstLineIsLoading,
@@ -89,8 +87,12 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   )
 
   const handleTransferTaskToSecondLine: TaskSecondLineModalProps['onSubmit'] =
-    async (workGroupId) => {
-      await transferTaskToSecondLine(workGroupId, toggleOpenTaskSecondLineModal)
+    async (values, setFields) => {
+      await transferTaskToSecondLine(
+        values,
+        setFields,
+        toggleOpenTaskSecondLineModal,
+      )
     }
 
   const handleTransferTaskToFirstLine: TaskFirstLineModalProps['onSubmit'] =
@@ -187,9 +189,8 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
         >
           <TaskSecondLineModal
             id={id}
+            recordId={recordId}
             onCancel={debouncedToggleOpenTaskSecondLineModal}
-            workGroupList={workGroupList}
-            workGroupListIsLoading={workGroupListIsLoading}
             onSubmit={handleTransferTaskToSecondLine}
             isLoading={transferTaskToSecondLineIsLoading}
           />
