@@ -6,7 +6,7 @@ export type SubTaskModel = {
   id: number
   title: string
   status: TaskStatusEnum
-  supportGroup: SupportGroupModel
+  supportGroup: MaybeNull<SupportGroupModel>
   createdAt: string
   cancelReason: MaybeNull<string>
   returnReason: MaybeNull<string>

@@ -33,7 +33,7 @@ const requiredProps: Pick<
   taskExtendedStatus: task.extendedStatus,
   taskHasSuspendRequest: false,
   createdAt: subTask.createdAt,
-  supportGroup: subTask.supportGroup,
+  supportGroup: null,
   onClickCancel: jest.fn(),
   onClickRework: jest.fn(),
   taskStatus: TaskStatusEnum.New,
@@ -441,14 +441,24 @@ describe('Задание', () => {
     })
   })
 
-  test('Отображает группу поддержки', () => {
-    render(<SubTask {...requiredProps} />)
+  test('Отображает группу поддержки если она есть', () => {
+    render(<SubTask {...requiredProps} supportGroup={subTask.supportGroup} />)
 
     expect(testUtils.getChildByText(/группа поддержки/i)).toBeInTheDocument()
 
     expect(
-      testUtils.getChildByText(requiredProps.supportGroup.name),
+      testUtils.getChildByText(subTask.supportGroup.name),
     ).toBeInTheDocument()
+  })
+
+  test('Не отображает группу поддержки если её нет', () => {
+    render(<SubTask {...requiredProps} supportGroup={null} />)
+
+    expect(testUtils.getChildByText(/группа поддержки/i)).toBeInTheDocument()
+
+    expect(
+      testUtils.queryChildByText(subTask.supportGroup.name),
+    ).not.toBeInTheDocument()
   })
 
   test('Отображает блок исполнителя', () => {

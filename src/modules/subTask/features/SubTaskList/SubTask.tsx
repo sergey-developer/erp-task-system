@@ -192,7 +192,7 @@ const SubTask: FC<SubTaskProps> = ({
       <Row gutter={10}>
         <Col span={12}>
           <LabeledData label='Группа поддержки'>
-            {supportGroup.name}
+            {supportGroup?.name}
           </LabeledData>
         </Col>
 
