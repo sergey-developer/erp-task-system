@@ -1,3 +1,4 @@
+import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   expectLoadingNotStartedByCard,
   generateWord,
@@ -656,73 +657,123 @@ describe('Карточка заявки', () => {
   })
 
   describe('Перевод заявки на 1-ю линию', () => {
-    test('Переданные обработчики вызываются корректно', async () => {
-      const { user } = render(
-        <TaskCard
-          {...requiredProps}
-          workGroupList={[
-            workGroupFixtures.getWorkGroup({
-              id: showFirstLineButtonProps.workGroup!.id,
+    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
+      test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
+        const { user } = render(
+          <TaskCard
+            {...requiredProps}
+            workGroupList={[
+              workGroupFixtures.getWorkGroup({
+                id: showFirstLineButtonProps.workGroup!.id,
+              }),
+            ]}
+            task={{
+              ...requiredProps.task!,
+              ...showFirstLineButtonProps,
+              ...activeFirstLineButtonProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
             }),
-          ]}
-          task={{
-            ...requiredProps.task!,
-            ...showFirstLineButtonProps,
-            ...activeFirstLineButtonProps,
-          }}
-        />,
-        {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          }),
-        },
-      )
+          },
+        )
 
-      await workGroupBlockTestUtils.clickFirstLineButton(user)
-      await taskFirstLineModalTestUtils.findModal()
-      await taskFirstLineModalTestUtils.userSetDescription(user, generateWord())
-      await taskFirstLineModalTestUtils.clickSubmitButton(user)
+        await workGroupBlockTestUtils.clickFirstLineButton(user)
+        const modal = await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
-      expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
-      expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
-      expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
+        expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
+        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
+    })
+
+    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
+      test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
+        const { user } = render(
+          <TaskCard
+            {...requiredProps}
+            workGroupList={[
+              workGroupFixtures.getWorkGroup({
+                id: showFirstLineButtonProps.workGroup!.id,
+              }),
+            ]}
+            task={{
+              ...requiredProps.task!,
+              ...showFirstLineButtonProps,
+              ...activeFirstLineButtonProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          },
+        )
+
+        await workGroupBlockTestUtils.clickFirstLineButton(user)
+        const modal = await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.clickSubmitButton(user)
+
+        expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
+        expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
+        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
     })
   })
 
   describe('Перевод заявки на 2-ю линию', () => {
-    test('Переданные обработчики вызываются корректно', async () => {
-      const workGroupList = workGroupFixtures.getWorkGroupList()
+    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
+      test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
+        const workGroupList = workGroupFixtures.getWorkGroupList()
+        mockGetWorkGroupListSuccess({ body: workGroupList })
 
-      const { user } = render(
-        <TaskCard
-          {...requiredProps}
-          workGroupList={workGroupList}
-          task={{
-            ...requiredProps.task!,
-            ...showSecondLineButtonProps,
-            ...activeSecondLineButtonProps,
-          }}
-        />,
-        {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
-          }),
-        },
-      )
+        const { user } = render(
+          <TaskCard
+            {...requiredProps}
+            task={{
+              ...requiredProps.task!,
+              ...showSecondLineButtonProps,
+              ...activeSecondLineButtonProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
+        )
 
-      await workGroupBlockTestUtils.clickSecondLineButton(user)
-      await taskSecondLineModalTestUtils.findContainer()
-      const workGroup = workGroupList[0]
-      await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
-      await taskSecondLineModalTestUtils.userSelectWorkGroup(
-        user,
-        workGroup.name,
-      )
-      await taskSecondLineModalTestUtils.clickSubmitButton(user)
+        await workGroupBlockTestUtils.clickSecondLineButton(user)
+        const modal = await taskSecondLineModalTestUtils.findContainer()
+        await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
+        await taskSecondLineModalTestUtils.openWorkGroup(user)
+        await taskSecondLineModalTestUtils.selectWorkGroup(
+          user,
+          workGroupList[0].name,
+        )
+        await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
-      expect(requiredProps.updateWorkGroup).toBeCalledTimes(1)
-      expect(requiredProps.updateWorkGroup).toBeCalledWith(expect.anything())
-      expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        expect(requiredProps.updateWorkGroup).toBeCalledTimes(1)
+        expect(requiredProps.updateWorkGroup).toBeCalledWith(expect.anything())
+        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
     })
   })
 

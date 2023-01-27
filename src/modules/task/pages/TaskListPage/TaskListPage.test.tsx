@@ -159,7 +159,7 @@ describe('Страница реестра заявок', () => {
     })
 
     describe('Имеет корректное значение по умолчанию', () => {
-      test('Роль - первая линия поддержки', async () => {
+      test(`Роль - ${UserRoleEnum.FirstLineSupport}`, async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -175,7 +175,7 @@ describe('Страница реестра заявок', () => {
         )
       })
 
-      test('Роль - инженер', async () => {
+      test(`Роль - ${UserRoleEnum.Engineer}`, async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -191,7 +191,7 @@ describe('Страница реестра заявок', () => {
         )
       })
 
-      test('Роль - старший инженер', async () => {
+      test(`Роль - ${UserRoleEnum.SeniorEngineer}`, async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -207,7 +207,7 @@ describe('Страница реестра заявок', () => {
         )
       })
 
-      test('Роль - глава отдела', async () => {
+      test(`Роль - ${UserRoleEnum.HeadOfDepartment}`, async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -1429,7 +1429,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Рабочая группа', () => {
-        describe('Роль - первая линия поддержки', () => {
+        describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1454,7 +1454,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - инженер', () => {
+        describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1481,7 +1481,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - старший инженер', () => {
+        describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1510,7 +1510,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - глава отдела', () => {
+        describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1541,7 +1541,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Группа поддержки', () => {
-        describe('Роль - первая линия поддержки', () => {
+        describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1570,7 +1570,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - инженер', () => {
+        describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1595,7 +1595,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - старший инженер', () => {
+        describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1620,7 +1620,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - глава отдела', () => {
+        describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 

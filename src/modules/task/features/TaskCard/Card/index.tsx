@@ -291,7 +291,6 @@ const TaskCard: FC<TaskCardProps> = ({
         closeTaskSecondLineModal()
         closeTaskCard()
       } catch (exception) {
-        // todo: написать тесты
         const error = exception as ErrorResponse
         if (isBadRequestError(error)) {
           handleSetFieldsErrors(error, setFields)

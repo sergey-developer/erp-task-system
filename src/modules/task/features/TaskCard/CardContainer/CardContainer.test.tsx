@@ -58,7 +58,10 @@ import {
   UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG,
   UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG,
 } from 'modules/task/constants/errorMessages'
-import { CreateTaskSuspendRequestBadRequestErrorResponse } from 'modules/task/models'
+import {
+  CreateTaskSuspendRequestBadRequestErrorResponse,
+  UpdateTaskWorkGroupBadRequestErrorResponse,
+} from 'modules/task/models'
 import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
@@ -109,7 +112,7 @@ setupNotifications()
 
 describe('Контейнер детальной карточки заявки', () => {
   describe('Получение заявки', () => {
-    describe('Роль - первая линия поддержки', () => {
+    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       describe('При успешном запросе', () => {
         test('Отображается основной блок заявки', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
@@ -222,7 +225,7 @@ describe('Контейнер детальной карточки заявки', 
       })
     })
 
-    describe('Роль - инженер', () => {
+    describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
       describe('При успешном запросе', () => {
         test('Отображается основной блок заявки', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
@@ -335,7 +338,7 @@ describe('Контейнер детальной карточки заявки', 
       })
     })
 
-    describe('Роль - старший инженер', () => {
+    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       describe('При успешном запросе', () => {
         test('Отображается основной блок заявки', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
@@ -448,7 +451,7 @@ describe('Контейнер детальной карточки заявки', 
       })
     })
 
-    describe('Роль - глава отдела', () => {
+    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       describe('При успешном запросе', () => {
         test('Отображается основной блок заявки', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
@@ -563,7 +566,7 @@ describe('Контейнер детальной карточки заявки', 
   })
 
   describe('Переклассификация заявки', () => {
-    describe('Роль - первая линия поддержки', () => {
+    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       describe('Получение запроса на переклассификацию', () => {
         describe('Запрос отправляется если условия соблюдены', () => {
           describe('При успешном запросе', () => {
@@ -762,7 +765,7 @@ describe('Контейнер детальной карточки заявки', 
       })
     })
 
-    describe('Роль - инженер', () => {
+    describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
       describe('Получение запроса на переклассификацию', () => {
         describe('Запрос отправляется если условия соблюдены', () => {
           describe('При успешном запросе', () => {
@@ -861,7 +864,7 @@ describe('Контейнер детальной карточки заявки', 
       })
     })
 
-    describe('Роль - старший инженер', () => {
+    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       describe('Получение запроса на переклассификацию', () => {
         describe('Запрос отправляется если условия соблюдены', () => {
           describe('При успешном запросе', () => {
@@ -1060,7 +1063,7 @@ describe('Контейнер детальной карточки заявки', 
       })
     })
 
-    describe('Роль - глава отдела', () => {
+    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       describe('Получение запроса на переклассификацию', () => {
         describe('Запрос отправляется если условия соблюдены', () => {
           describe('При успешном запросе', () => {
@@ -1273,9 +1276,9 @@ describe('Контейнер детальной карточки заявки', 
   })
 
   describe('Перевод заявки на 1-ю линию', () => {
-    describe('Роль - старший инженер', () => {
+    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       describe('При успешном запросе', () => {
-        test('Закрывается модалка', async () => {
+        test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
@@ -1310,6 +1313,8 @@ describe('Контейнер детальной карточки заявки', 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
           })
+
+          expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
 
@@ -1481,9 +1486,9 @@ describe('Контейнер детальной карточки заявки', 
       })
     })
 
-    describe('Роль - глава отдела', () => {
+    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       describe('При успешном запросе', () => {
-        test('Закрывается модалка', async () => {
+        test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
           mockGetTaskSuccess(requiredProps.taskId, {
@@ -1516,6 +1521,8 @@ describe('Контейнер детальной карточки заявки', 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
           })
+
+          expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
 
@@ -1691,9 +1698,9 @@ describe('Контейнер детальной карточки заявки', 
   })
 
   describe('Перевод заявки на 2-ю линию', () => {
-    describe('Роль - первая линия поддержки', () => {
+    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       describe('При успешном запросе', () => {
-        test('Закрывается модалка', async () => {
+        test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
             body: taskFixtures.getTask({
               id: requiredProps.taskId,
@@ -1704,7 +1711,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const workGroup = workGroupFixtures.getWorkGroup()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
           mockUpdateTaskWorkGroupSuccess(requiredProps.taskId)
 
@@ -1717,8 +1724,9 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
           await workGroupBlockTestUtils.clickSecondLineButton(user)
           const modal = await taskSecondLineModalTestUtils.findContainer()
-          await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
-          await taskSecondLineModalTestUtils.userSelectWorkGroup(
+          await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
+          await taskSecondLineModalTestUtils.openWorkGroup(user)
+          await taskSecondLineModalTestUtils.selectWorkGroup(
             user,
             workGroup.name,
           )
@@ -1727,6 +1735,8 @@ describe('Контейнер детальной карточки заявки', 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
           })
+
+          expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
 
@@ -1744,7 +1754,14 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = workGroupFixtures.getWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
-          mockUpdateTaskWorkGroupBadRequestError(requiredProps.taskId)
+          const badRequestResponse: UpdateTaskWorkGroupBadRequestErrorResponse['data'] =
+            {
+              workGroup: [generateWord()],
+            }
+
+          mockUpdateTaskWorkGroupBadRequestError(requiredProps.taskId, {
+            body: badRequestResponse,
+          })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
             store: getStoreWithAuth({
@@ -1755,12 +1772,19 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
           await workGroupBlockTestUtils.clickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
-          await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
-          await taskSecondLineModalTestUtils.userSelectWorkGroup(
+          await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
+          await taskSecondLineModalTestUtils.openWorkGroup(user)
+          await taskSecondLineModalTestUtils.selectWorkGroup(
             user,
             workGroup.name,
           )
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
+
+          expect(
+            await taskSecondLineModalTestUtils.findWorkGroupFieldError(
+              badRequestResponse.workGroup![0],
+            ),
+          ).toBeInTheDocument()
 
           expect(
             await findNotification(UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG),
@@ -1778,7 +1802,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const workGroup = workGroupFixtures.getWorkGroup()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
           mockUpdateTaskWorkGroupServerError(requiredProps.taskId)
 
@@ -1791,8 +1815,9 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
           await workGroupBlockTestUtils.clickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
-          await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
-          await taskSecondLineModalTestUtils.userSelectWorkGroup(
+          await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
+          await taskSecondLineModalTestUtils.openWorkGroup(user)
+          await taskSecondLineModalTestUtils.selectWorkGroup(
             user,
             workGroup.name,
           )
@@ -1814,7 +1839,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const workGroup = workGroupFixtures.getWorkGroup()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
           mockUpdateTaskWorkGroupForbiddenError(requiredProps.taskId)
 
@@ -1827,8 +1852,9 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
           await workGroupBlockTestUtils.clickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
-          await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
-          await taskSecondLineModalTestUtils.userSelectWorkGroup(
+          await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
+          await taskSecondLineModalTestUtils.openWorkGroup(user)
+          await taskSecondLineModalTestUtils.selectWorkGroup(
             user,
             workGroup.name,
           )

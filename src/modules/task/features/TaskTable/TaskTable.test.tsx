@@ -661,7 +661,7 @@ describe('Таблица заявок', () => {
     })
 
     describe('Рабочая группа', () => {
-      describe('Роль - первая линия поддержки', () => {
+      describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
         test('Не отображает заголовок', () => {
           render(
             <TaskTable
@@ -676,7 +676,7 @@ describe('Таблица заявок', () => {
         })
       })
 
-      describe('Роль - инженер', () => {
+      describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
         test('Отображает заголовок', () => {
           render(
             <TaskTable
@@ -780,7 +780,7 @@ describe('Таблица заявок', () => {
         })
       })
 
-      describe('Роль - старший инженер', () => {
+      describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
         test('Отображает заголовок', () => {
           render(
             <TaskTable
@@ -884,7 +884,7 @@ describe('Таблица заявок', () => {
         })
       })
 
-      describe('Роль - глава отдела', () => {
+      describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
         test('Отображает заголовок', () => {
           render(
             <TaskTable
@@ -990,7 +990,7 @@ describe('Таблица заявок', () => {
     })
 
     describe('Группа поддержки', () => {
-      describe('Роль - первая линия поддержки', () => {
+      describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
         test('Отображает заголовок', () => {
           render(
             <TaskTable
@@ -1075,7 +1075,7 @@ describe('Таблица заявок', () => {
         })
       })
 
-      describe('Роль - инженер', () => {
+      describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
         test('Не отображает заголовок', () => {
           render(
             <TaskTable
@@ -1090,7 +1090,7 @@ describe('Таблица заявок', () => {
         })
       })
 
-      describe('Роль - старший инженер', () => {
+      describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
         test('Не отображает заголовок', () => {
           render(
             <TaskTable
@@ -1105,7 +1105,7 @@ describe('Таблица заявок', () => {
         })
       })
 
-      describe('Роль - глава отдела', () => {
+      describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
         test('Не отображает заголовок', () => {
           render(
             <TaskTable

@@ -94,7 +94,12 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
               disabled={isLoading}
             >
               {workGroupList.map(({ id, name, priority, description }) => (
-                <Select.Option key={id} value={id} title={description}>
+                <Select.Option
+                  data-testid={`select-option-${id}`}
+                  key={id}
+                  value={id}
+                  title={description}
+                >
                   <OptionTextStyled $isBold={priority ? priority < 4 : false}>
                     {name}
                   </OptionTextStyled>

@@ -56,7 +56,7 @@ const getTemplateFieldPlaceholder = () =>
 const getTemplateFieldLabel = () =>
   within(getTemplateFieldContainer()).getByTitle('Шаблон')
 
-const userSetTemplate = clickSelectOption
+const setTemplate = clickSelectOption
 
 const getTemplateOption = (name: string) =>
   within(screen.getByRole('listbox')).getByRole('option', { name })
@@ -119,7 +119,7 @@ const getDescriptionField = () =>
 const getDescriptionFieldLabel = () =>
   within(getDescriptionFieldContainer()).getByTitle('Подробное описание')
 
-const userSetDescription = async (user: UserEvent, value: string) => {
+const setDescription = async (user: UserEvent, value: string) => {
   const field = getDescriptionField()
   await user.type(field, value)
   return field
@@ -157,9 +157,9 @@ const userFillForm = async (
   values: Omit<CreateSubTaskFormFields, 'templateX5'> & { templateX5: string },
 ) => {
   await userOpenTemplateField(user)
-  await userSetTemplate(user, values.templateX5)
+  await setTemplate(user, values.templateX5)
   await userSetTitle(user, values.title)
-  await userSetDescription(user, values.description)
+  await setDescription(user, values.description)
 }
 
 export const testUtils = {
@@ -175,7 +175,7 @@ export const testUtils = {
     getLabel: getTemplateFieldLabel,
     getValue: getSelectedTemplate,
     queryValue: querySelectedTemplate,
-    setValue: userSetTemplate,
+    setValue: setTemplate,
     openField: userOpenTemplateField,
     getOption: getTemplateOption,
     findError: findTemplateFieldError,
@@ -192,7 +192,7 @@ export const testUtils = {
   description: {
     getField: getDescriptionField,
     getLabel: getDescriptionFieldLabel,
-    setValue: userSetDescription,
+    setValue: setDescription,
     resetValue: userResetDescription,
     findError: findDescriptionFieldError,
   },

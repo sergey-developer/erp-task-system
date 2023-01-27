@@ -6,7 +6,7 @@ import {
   getAllSelectOption,
   getButtonIn,
   getSelect,
-  getSelectOption_new,
+  getSelectOptionById,
   getSelectedOption,
   getStoreWithAuth,
   loadingFinishedByButton,
@@ -179,7 +179,7 @@ const openAssigneeSelect = (user: UserEvent) =>
 
 const selectAssignee = clickSelectOption
 
-const getAssigneeOption = getSelectOption_new
+const getAssigneeOption = getSelectOptionById
 
 const getAllAssigneeOption = getAllSelectOption
 
@@ -483,7 +483,7 @@ describe('Блок "Исполнитель заявки"', () => {
 
   describe('Кнопка "В работу"', () => {
     describe('Отображается для пользователя с ролью', () => {
-      test('Первая линия поддержки', () => {
+      test(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.FirstLineSupport,
@@ -493,7 +493,7 @@ describe('Блок "Исполнитель заявки"', () => {
         expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
 
-      test('Инженер', () => {
+      test(`Роль - ${UserRoleEnum.Engineer}`, () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.Engineer,
@@ -503,7 +503,7 @@ describe('Блок "Исполнитель заявки"', () => {
         expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
 
-      test('Старший инженер', () => {
+      test(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.SeniorEngineer,
@@ -513,7 +513,7 @@ describe('Блок "Исполнитель заявки"', () => {
         expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
       })
 
-      test('Глава отдела', () => {
+      test(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.HeadOfDepartment,
@@ -624,7 +624,7 @@ describe('Блок "Исполнитель заявки"', () => {
   })
 
   describe('Блок выбора исполнителя', () => {
-    describe('Роль - первая линия поддержки', () => {
+    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       test('Исполнитель отображается если он есть', () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
@@ -670,7 +670,7 @@ describe('Блок "Исполнитель заявки"', () => {
       })
     })
 
-    describe('Роль - инженер', () => {
+    describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
       test('Исполнитель отображается если он есть', () => {
         render(<AssigneeBlock {...requiredProps} />, {
           store: getStoreWithAuth({
@@ -716,7 +716,7 @@ describe('Блок "Исполнитель заявки"', () => {
       })
     })
 
-    describe('Роль - старший инженер', () => {
+    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       describe('Выбор исполнителя', () => {
         describe('Отображается корректно если условия соблюдены', () => {
           test('И старший инженер из рабочей группы является авторизованным пользователем', async () => {
@@ -1302,7 +1302,7 @@ describe('Блок "Исполнитель заявки"', () => {
       })
     })
 
-    describe('Роль - глава отдела', () => {
+    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       describe('Выбор исполнителя', () => {
         describe('Отображается корректно если условия соблюдены', () => {
           test('И старший инженер из рабочей группы является авторизованным пользователем', async () => {

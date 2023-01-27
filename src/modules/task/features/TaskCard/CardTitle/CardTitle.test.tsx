@@ -460,7 +460,7 @@ describe('Заголовок карточки заявки', () => {
           )
         })
 
-        test('Но у пользователя роль - инженер', async () => {
+        test(`Но у пользователя роль - ${UserRoleEnum.Engineer}`, async () => {
           const { user } = render(
             <CardTitle
               {...requiredProps}

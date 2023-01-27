@@ -1,3 +1,4 @@
+import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   findButtonIn,
   generateId,
@@ -154,7 +155,7 @@ describe('Блок рабочей группы', () => {
   })
 
   describe('Кнопка перевода на 2-ю линию', () => {
-    describe('Роль - специалист 1-й линии', () => {
+    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       test('Отображается если условия соблюдены', () => {
         render(
           <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
@@ -282,7 +283,7 @@ describe('Блок рабочей группы', () => {
       })
     })
 
-    describe('Роль - инженер', () => {
+    describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
       test('Не отображается', () => {
         render(
           <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
@@ -295,7 +296,7 @@ describe('Блок рабочей группы', () => {
       })
     })
 
-    describe('Роль - старший инженер', () => {
+    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       test('Не отображается', () => {
         render(
           <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
@@ -308,7 +309,7 @@ describe('Блок рабочей группы', () => {
       })
     })
 
-    describe('Роль - глава отдела', () => {
+    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       test('Не отображается', () => {
         render(
           <WorkGroupBlock {...requiredProps} {...showSecondLineButtonProps} />,
@@ -322,37 +323,77 @@ describe('Блок рабочей группы', () => {
     })
   })
 
-  // describe('Модалка перевода на 2-ю линию', () => {
-  //   test('При отправке обработчик вызывается корректно', async () => {
-  //     const { user } = render(
-  //       <WorkGroupBlock
-  //         {...requiredProps}
-  //         {...showSecondLineButtonProps}
-  //         {...activeSecondLineButtonProps}
-  //       />,
-  //       {
-  //         store: getStoreWithAuth({
-  //           userRole: UserRoleEnum.FirstLineSupport,
-  //         }),
-  //       },
-  //     )
-  //
-  //     await testUtils.clickSecondLineButton(user)
-  //     await taskSecondLineModalTestUtils.findContainer()
-  //     const workGroup = requiredProps.workGroupList[0]
-  //     await taskSecondLineModalTestUtils.userOpenWorkGroup(user)
-  //     await taskSecondLineModalTestUtils.userSelectWorkGroup(
-  //       user,
-  //       workGroup.name,
-  //     )
-  //     await taskSecondLineModalTestUtils.clickSubmitButton(user)
-  //
-  //     expect(requiredProps.transferTaskToSecondLine).toBeCalledTimes(1)
-  //   })
-  // })
+  describe('Модалка перевода на 2-ю линию', () => {
+    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
+      test('При отправке обработчик вызывается корректно', async () => {
+        const workGroupList = workGroupFixtures.getWorkGroupList()
+        mockGetWorkGroupListSuccess({ body: workGroupList })
+
+        const { user } = render(
+          <WorkGroupBlock
+            {...requiredProps}
+            {...showSecondLineButtonProps}
+            {...activeSecondLineButtonProps}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
+        )
+
+        await testUtils.clickSecondLineButton(user)
+        await taskSecondLineModalTestUtils.findContainer()
+        await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
+        await taskSecondLineModalTestUtils.openWorkGroup(user)
+        await taskSecondLineModalTestUtils.selectWorkGroup(
+          user,
+          workGroupList[0].name,
+        )
+        await taskSecondLineModalTestUtils.clickSubmitButton(user)
+
+        expect(requiredProps.transferTaskToSecondLine).toBeCalledTimes(1)
+        expect(requiredProps.transferTaskToSecondLine).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+    })
+  })
 
   describe('Кнопка перевода на 1-ю линию', () => {
-    describe('Роль - старший инженер', () => {
+    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
+      test('Не отображается', () => {
+        render(
+          <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
+        )
+
+        expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+      })
+    })
+
+    describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
+      test('Не отображается', () => {
+        render(
+          <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          },
+        )
+
+        expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+      })
+    })
+
+    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       test('Отображается если условия соблюдены', () => {
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
@@ -497,7 +538,7 @@ describe('Блок рабочей группы', () => {
       })
     })
 
-    describe('Роль - глава отдела', () => {
+    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       test('Отображается', () => {
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
@@ -641,59 +682,65 @@ describe('Блок рабочей группы', () => {
         })
       })
     })
-
-    describe('Роль - специалист 1-й линии', () => {
-      test('Не отображается', () => {
-        render(
-          <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
-          {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
-            }),
-          },
-        )
-
-        expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-      })
-    })
-
-    describe('Роль - инженер', () => {
-      test('Не отображается', () => {
-        render(
-          <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
-          {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
-            }),
-          },
-        )
-
-        expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-      })
-    })
   })
 
   describe('Модалка перевода на 1-ю линию', () => {
-    test('При отправке обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <WorkGroupBlock
-          {...requiredProps}
-          {...showFirstLineButtonProps}
-          {...activeFirstLineButtonProps}
-        />,
-        {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          }),
-        },
-      )
+    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
+      test('При отправке обработчик вызывается корректно', async () => {
+        const { user } = render(
+          <WorkGroupBlock
+            {...requiredProps}
+            {...showFirstLineButtonProps}
+            {...activeFirstLineButtonProps}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.SeniorEngineer,
+            }),
+          },
+        )
 
-      await testUtils.clickFirstLineButton(user)
-      await taskFirstLineModalTestUtils.findModal()
-      await taskFirstLineModalTestUtils.userSetDescription(user, generateWord())
-      await taskFirstLineModalTestUtils.clickSubmitButton(user)
+        await testUtils.clickFirstLineButton(user)
+        await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
-      expect(requiredProps.transferTaskToFirstLine).toBeCalledTimes(1)
+        expect(requiredProps.transferTaskToFirstLine).toBeCalledTimes(1)
+        expect(requiredProps.transferTaskToFirstLine).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+    })
+
+    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
+      test('При отправке обработчик вызывается корректно', async () => {
+        const { user } = render(
+          <WorkGroupBlock
+            {...requiredProps}
+            {...showFirstLineButtonProps}
+            {...activeFirstLineButtonProps}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.HeadOfDepartment,
+            }),
+          },
+        )
+
+        await testUtils.clickFirstLineButton(user)
+        await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.clickSubmitButton(user)
+
+        expect(requiredProps.transferTaskToFirstLine).toBeCalledTimes(1)
+        expect(requiredProps.transferTaskToFirstLine).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
     })
   })
 })

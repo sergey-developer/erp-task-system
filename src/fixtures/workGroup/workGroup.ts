@@ -23,11 +23,11 @@ export const getWorkGroupMemberList = (
 
 export const getWorkGroup = (
   props?: Partial<{
-    id: number
     seniorEngineerId: number
     groupLeadId: number
     memberAmount: number
-  }>,
+  }> &
+    Partial<Pick<WorkGroupListItemModel, 'id' | 'type' | 'priority'>>,
 ): NonNullable<WorkGroupListItemModel> => ({
   id: props?.id || generateId(),
   name: generateName(),
@@ -40,10 +40,12 @@ export const getWorkGroup = (
     id: props?.groupLeadId || generateId(),
     fullName: generateName(),
   },
-  type: WorkGroupTypeEnum.DefaultForSupportGroup,
+  type: props?.type || WorkGroupTypeEnum.NoType,
   description: generateWord(),
-  priority: generateInteger({
-    min: 1,
-    max: 4,
-  }) as WorkGroupListItemModel['priority'],
+  priority:
+    props?.priority ||
+    (generateInteger({
+      min: 1,
+      max: 4,
+    }) as WorkGroupListItemModel['priority']),
 })
