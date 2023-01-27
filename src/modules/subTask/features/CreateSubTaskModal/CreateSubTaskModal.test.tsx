@@ -125,7 +125,7 @@ const setDescription = async (user: UserEvent, value: string) => {
   return field
 }
 
-const userResetDescription = async (user: UserEvent) => {
+const resetDescription = async (user: UserEvent) => {
   const button = getButtonIn(getDescriptionFieldContainer(), 'close-circle')
   await user.click(button)
 }
@@ -193,7 +193,7 @@ export const testUtils = {
     getField: getDescriptionField,
     getLabel: getDescriptionFieldLabel,
     setValue: setDescription,
-    resetValue: userResetDescription,
+    resetValue: resetDescription,
     findError: findDescriptionFieldError,
   },
   userFillForm,
