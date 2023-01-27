@@ -1,4 +1,5 @@
-import { WorkGroupListItemModel } from './workGroupList.model'
+import { WorkGroupListModel } from './workGroupList.model'
 
-export type GetWorkGroupListQueryArgs = null
-export type GetWorkGroupListSuccessResponse = Array<WorkGroupListItemModel>
+export type GetWorkGroupListQueryArgs = Partial<{ taskId: number }>
+
+export type GetWorkGroupListSuccessResponse = WorkGroupListModel

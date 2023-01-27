@@ -61,7 +61,7 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
             data-testid='field-description'
             name='description'
             label='Причина возврата'
-            rules={validationRules.string.long}
+            rules={[validationRules.string.long]}
           >
             <TextArea
               placeholder='Расскажите подробнее о задаче'

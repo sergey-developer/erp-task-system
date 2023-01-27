@@ -149,7 +149,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           data-testid='comment'
           label='Комментарий'
           name='comment'
-          rules={validationRules.string.long}
+          rules={[validationRules.string.long]}
         >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>

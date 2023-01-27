@@ -47,7 +47,7 @@ const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
           data-testid='return-reason'
           label='Причина возврата'
           name='returnReason'
-          rules={validationRules.string.middle}
+          rules={[validationRules.string.middle]}
         >
           <TextArea
             placeholder='Опишите причину возврата'

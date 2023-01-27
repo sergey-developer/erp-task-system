@@ -159,7 +159,7 @@ describe('Страница реестра заявок', () => {
     })
 
     describe('Имеет корректное значение по умолчанию', () => {
-      test('Роль - первая линия поддержки', async () => {
+      test(`Роль - ${UserRoleEnum.FirstLineSupport}`, async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -175,7 +175,7 @@ describe('Страница реестра заявок', () => {
         )
       })
 
-      test('Роль - инженер', async () => {
+      test(`Роль - ${UserRoleEnum.Engineer}`, async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -191,7 +191,7 @@ describe('Страница реестра заявок', () => {
         )
       })
 
-      test('Роль - старший инженер', async () => {
+      test(`Роль - ${UserRoleEnum.SeniorEngineer}`, async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -207,7 +207,7 @@ describe('Страница реестра заявок', () => {
         )
       })
 
-      test('Роль - глава отдела', async () => {
+      test(`Роль - ${UserRoleEnum.HeadOfDepartment}`, async () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
 
@@ -256,28 +256,28 @@ describe('Страница реестра заявок', () => {
       await testUtils.userOpenExtendedFilter(user)
       await extendedFilterTestUtils.findFilter()
 
-      await extendedFilterTestUtils.status.userSetValue(
+      await extendedFilterTestUtils.status.setValue(
         user,
         taskExtendedStatusDict.NEW!,
       )
 
-      await extendedFilterTestUtils.assigned.userSetValue(
+      await extendedFilterTestUtils.assigned.setValue(
         user,
         taskAssignedDict.True,
       )
 
-      await extendedFilterTestUtils.overdue.userSetValue(
+      await extendedFilterTestUtils.overdue.setValue(
         user,
         taskOverdueDict.False,
       )
 
       const { startDateValue, endDateValue } =
-        await extendedFilterTestUtils.completeAt.userSetValue(user)
+        await extendedFilterTestUtils.completeAt.setValue(user)
 
       const { keyword: searchByColumnKeywordValue } =
-        await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+        await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-      await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+      await extendedFilterTestUtils.searchByColumn.setColumnValue(
         user,
         searchFieldDict.searchByName,
       )
@@ -285,7 +285,7 @@ describe('Страница реестра заявок', () => {
       const workGroupField =
         await extendedFilterTestUtils.workGroup.loadingFinished()
       await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-      await extendedFilterTestUtils.workGroup.userSetValue(
+      await extendedFilterTestUtils.workGroup.setValue(
         user,
         workGroupListItem.name,
       )
@@ -519,28 +519,28 @@ describe('Страница реестра заявок', () => {
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
 
-        await extendedFilterTestUtils.status.userSetValue(
+        await extendedFilterTestUtils.status.setValue(
           user,
           taskExtendedStatusDict.NEW!,
         )
 
-        await extendedFilterTestUtils.assigned.userSetValue(
+        await extendedFilterTestUtils.assigned.setValue(
           user,
           taskAssignedDict.True,
         )
 
-        await extendedFilterTestUtils.overdue.userSetValue(
+        await extendedFilterTestUtils.overdue.setValue(
           user,
           taskOverdueDict.False,
         )
 
         const { startDateValue, endDateValue } =
-          await extendedFilterTestUtils.completeAt.userSetValue(user)
+          await extendedFilterTestUtils.completeAt.setValue(user)
 
         const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+          await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-        await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+        await extendedFilterTestUtils.searchByColumn.setColumnValue(
           user,
           searchFieldDict.searchByName,
         )
@@ -548,7 +548,7 @@ describe('Страница реестра заявок', () => {
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.userSetValue(
+        await extendedFilterTestUtils.workGroup.setValue(
           user,
           workGroupListItem.name,
         )
@@ -614,28 +614,28 @@ describe('Страница реестра заявок', () => {
       await testUtils.userOpenExtendedFilter(user)
       const filter = await extendedFilterTestUtils.findFilter()
 
-      await extendedFilterTestUtils.status.userSetValue(
+      await extendedFilterTestUtils.status.setValue(
         user,
         taskExtendedStatusDict.NEW!,
       )
 
-      await extendedFilterTestUtils.assigned.userSetValue(
+      await extendedFilterTestUtils.assigned.setValue(
         user,
         taskAssignedDict.True,
       )
 
-      await extendedFilterTestUtils.overdue.userSetValue(
+      await extendedFilterTestUtils.overdue.setValue(
         user,
         taskOverdueDict.False,
       )
 
       const { startDateValue, endDateValue } =
-        await extendedFilterTestUtils.completeAt.userSetValue(user)
+        await extendedFilterTestUtils.completeAt.setValue(user)
 
       const { keyword: searchByColumnKeywordValue } =
-        await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+        await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-      await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+      await extendedFilterTestUtils.searchByColumn.setColumnValue(
         user,
         searchFieldDict.searchByName,
       )
@@ -643,7 +643,7 @@ describe('Страница реестра заявок', () => {
       const workGroupField =
         await extendedFilterTestUtils.workGroup.loadingFinished()
       await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-      await extendedFilterTestUtils.workGroup.userSetValue(
+      await extendedFilterTestUtils.workGroup.setValue(
         user,
         workGroupListItem.name,
       )
@@ -904,28 +904,28 @@ describe('Страница реестра заявок', () => {
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
 
-        await extendedFilterTestUtils.status.userSetValue(
+        await extendedFilterTestUtils.status.setValue(
           user,
           taskExtendedStatusDict.NEW!,
         )
 
-        await extendedFilterTestUtils.assigned.userSetValue(
+        await extendedFilterTestUtils.assigned.setValue(
           user,
           taskAssignedDict.True,
         )
 
-        await extendedFilterTestUtils.overdue.userSetValue(
+        await extendedFilterTestUtils.overdue.setValue(
           user,
           taskOverdueDict.False,
         )
 
         const { startDateValue, endDateValue } =
-          await extendedFilterTestUtils.completeAt.userSetValue(user)
+          await extendedFilterTestUtils.completeAt.setValue(user)
 
         const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+          await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-        await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+        await extendedFilterTestUtils.searchByColumn.setColumnValue(
           user,
           searchFieldDict.searchByName,
         )
@@ -933,7 +933,7 @@ describe('Страница реестра заявок', () => {
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.userSetValue(
+        await extendedFilterTestUtils.workGroup.setValue(
           user,
           workGroupListItem.name,
         )
@@ -1056,28 +1056,28 @@ describe('Страница реестра заявок', () => {
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
 
-        await extendedFilterTestUtils.status.userSetValue(
+        await extendedFilterTestUtils.status.setValue(
           user,
           taskExtendedStatusDict.NEW!,
         )
 
-        await extendedFilterTestUtils.assigned.userSetValue(
+        await extendedFilterTestUtils.assigned.setValue(
           user,
           taskAssignedDict.True,
         )
 
-        await extendedFilterTestUtils.overdue.userSetValue(
+        await extendedFilterTestUtils.overdue.setValue(
           user,
           taskOverdueDict.False,
         )
 
         const { startDateValue, endDateValue } =
-          await extendedFilterTestUtils.completeAt.userSetValue(user)
+          await extendedFilterTestUtils.completeAt.setValue(user)
 
         const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+          await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-        await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+        await extendedFilterTestUtils.searchByColumn.setColumnValue(
           user,
           searchFieldDict.searchByName,
         )
@@ -1085,7 +1085,7 @@ describe('Страница реестра заявок', () => {
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.userSetValue(
+        await extendedFilterTestUtils.workGroup.setValue(
           user,
           workGroupListItem.name,
         )
@@ -1429,7 +1429,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Рабочая группа', () => {
-        describe('Роль - первая линия поддержки', () => {
+        describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1454,7 +1454,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - инженер', () => {
+        describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1481,7 +1481,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - старший инженер', () => {
+        describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1510,7 +1510,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - глава отдела', () => {
+        describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1541,7 +1541,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Группа поддержки', () => {
-        describe('Роль - первая линия поддержки', () => {
+        describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1570,7 +1570,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - инженер', () => {
+        describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1595,7 +1595,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - старший инженер', () => {
+        describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
@@ -1620,7 +1620,7 @@ describe('Страница реестра заявок', () => {
           })
         })
 
-        describe('Роль - глава отдела', () => {
+        describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 

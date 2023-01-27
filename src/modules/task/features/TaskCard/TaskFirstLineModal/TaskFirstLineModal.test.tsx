@@ -32,7 +32,7 @@ const getDescriptionField = () =>
 const getDescriptionFieldContainer = () =>
   within(getModal()).getByTestId('field-description')
 
-const userSetDescription = async (user: UserEvent, value: string) => {
+const setDescription = async (user: UserEvent, value: string) => {
   const field = getDescriptionField()
   await user.type(field, value)
   return field
@@ -52,7 +52,7 @@ export const testUtils = {
 
   getDescriptionField,
   getDescriptionFieldContainer,
-  userSetDescription,
+  setDescription,
 
   getSubmitButton,
   clickSubmitButton,

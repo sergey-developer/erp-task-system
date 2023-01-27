@@ -1,33 +1,44 @@
-import { Col, Row } from 'antd'
+import { Col, FormInstance, Row } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
+import { WorkGroupListModel } from 'modules/workGroup/models'
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import TaskAssignee from '../AssigneeBlock'
-import WorkGroupBlock, { WorkGroupBlockProps } from '../WorkGroupBlock'
+import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
+import { TaskSecondLineFormFields } from '../TaskSecondLineModal/interfaces'
+import WorkGroupBlock from '../WorkGroupBlock'
 
 export type SecondaryDetailsProps = Pick<
   TaskModel,
   'id' | 'recordId' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
-> &
-  Pick<
-    WorkGroupBlockProps,
-    | 'workGroupList'
-    | 'workGroupListIsLoading'
-    | 'transferTaskToFirstLine'
-    | 'transferTaskToFirstLineIsLoading'
-    | 'transferTaskToSecondLine'
-    | 'transferTaskToSecondLineIsLoading'
-  > & {
-    takeTask: () => Promise<void>
-    takeTaskIsLoading: boolean
+> & {
+  workGroupList: WorkGroupListModel
+  workGroupListIsLoading: boolean
 
-    updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
-    updateAssigneeIsLoading: boolean
+  transferTaskToFirstLine: (
+    values: TaskFirstLineFormFields,
+    setFields: FormInstance['setFields'],
+    closeTaskFirstLineModal: () => void,
+  ) => Promise<void>
+  transferTaskToFirstLineIsLoading: boolean
 
-    hasSuspendRequest: boolean
-  }
+  transferTaskToSecondLine: (
+    values: TaskSecondLineFormFields,
+    setFields: FormInstance['setFields'],
+    closeTaskSecondLineModal: () => void,
+  ) => Promise<void>
+  transferTaskToSecondLineIsLoading: boolean
+
+  takeTask: () => Promise<void>
+  takeTaskIsLoading: boolean
+
+  updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
+  updateAssigneeIsLoading: boolean
+
+  hasSuspendRequest: boolean
+}
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   id,
@@ -72,8 +83,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           extendedStatus={extendedStatus}
           hasSuspendRequest={hasSuspendRequest}
           workGroup={workGroup}
-          workGroupList={workGroupList}
-          workGroupListIsLoading={workGroupListIsLoading}
           transferTaskToFirstLine={transferTaskToFirstLine}
           transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
           transferTaskToSecondLine={transferTaskToSecondLine}

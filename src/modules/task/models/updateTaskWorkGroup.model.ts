@@ -1,8 +1,12 @@
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { ErrorResponse } from 'shared/services/api'
 
 export type UpdateTaskWorkGroupMutationArgs = BaseTaskRequestArgs & {
-  workGroup: MaybeNull<number>
+  workGroup: number
 }
 
 export type UpdateTaskWorkGroupSuccessResponse = void
+
+export type UpdateTaskWorkGroupBadRequestErrorResponse = ErrorResponse<
+  Omit<UpdateTaskWorkGroupMutationArgs, 'taskId'>
+>

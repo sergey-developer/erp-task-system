@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
+import { UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG } from 'modules/task/constants/errorMessages'
 import { UpdateTaskWorkGroupMutationArgs } from 'modules/task/models'
 import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
 import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
@@ -7,12 +8,10 @@ import { useUserPermissions } from 'modules/user/hooks'
 import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
 import {
   ErrorResponse,
-  isNotFoundError,
+  isBadRequestError,
   isServerRangeError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG } from '../constants/errorMessages'
 
 export const useUpdateTaskWorkGroup = () => {
   const permissions = useUserPermissions(taskWorkGroupApiPermissions)
@@ -32,7 +31,7 @@ export const useUpdateTaskWorkGroup = () => {
 
     const error = state.error as ErrorResponse
 
-    if (isNotFoundError(error) || isServerRangeError(error)) {
+    if (isBadRequestError(error) || isServerRangeError(error)) {
       showErrorNotification(UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG)
     } else {
       showErrorNotification(UNKNOWN_ERROR_MSG)

@@ -25,12 +25,15 @@ export const getSelectedOption = (
 ): MaybeNull<HTMLElement> =>
   container.querySelector('.ant-select-selection-item')
 
+export const getSelectedOptionText = (option: HTMLElement, text: string) =>
+  within(option).getByText(text)
+
 export const getAllSelectOption = () => screen.getAllByRole('option')
 
 export const getSelectOption = (name: string) =>
   screen.getByRole('option', { name })
 
-export const getSelectOption_new = (id: NumberOrString | RegExp) =>
+export const getSelectOptionById = (id: NumberOrString | RegExp) =>
   screen.getByTestId(`select-option-${id}`)
 
 export const querySelectOption = (name: string) =>

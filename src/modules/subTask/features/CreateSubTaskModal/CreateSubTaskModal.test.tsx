@@ -56,7 +56,7 @@ const getTemplateFieldPlaceholder = () =>
 const getTemplateFieldLabel = () =>
   within(getTemplateFieldContainer()).getByTitle('Шаблон')
 
-const userSetTemplate = clickSelectOption
+const setTemplate = clickSelectOption
 
 const getTemplateOption = (name: string) =>
   within(screen.getByRole('listbox')).getByRole('option', { name })
@@ -93,13 +93,13 @@ const getTitleField = () =>
 const getTitleFieldLabel = () =>
   within(getTitleFieldContainer()).getByTitle('Краткое описание')
 
-const userSetTitle = async (user: UserEvent, value: string) => {
+const setTitle = async (user: UserEvent, value: string) => {
   const field = getTitleField()
   await user.type(field, value)
   return field
 }
 
-const userResetTitle = async (user: UserEvent) => {
+const resetTitle = async (user: UserEvent) => {
   const button = getButtonIn(getTitleFieldContainer(), 'close-circle')
   await user.click(button)
 }
@@ -119,13 +119,13 @@ const getDescriptionField = () =>
 const getDescriptionFieldLabel = () =>
   within(getDescriptionFieldContainer()).getByTitle('Подробное описание')
 
-const userSetDescription = async (user: UserEvent, value: string) => {
+const setDescription = async (user: UserEvent, value: string) => {
   const field = getDescriptionField()
   await user.type(field, value)
   return field
 }
 
-const userResetDescription = async (user: UserEvent) => {
+const resetDescription = async (user: UserEvent) => {
   const button = getButtonIn(getDescriptionFieldContainer(), 'close-circle')
   await user.click(button)
 }
@@ -157,9 +157,9 @@ const userFillForm = async (
   values: Omit<CreateSubTaskFormFields, 'templateX5'> & { templateX5: string },
 ) => {
   await userOpenTemplateField(user)
-  await userSetTemplate(user, values.templateX5)
-  await userSetTitle(user, values.title)
-  await userSetDescription(user, values.description)
+  await setTemplate(user, values.templateX5)
+  await setTitle(user, values.title)
+  await setDescription(user, values.description)
 }
 
 export const testUtils = {
@@ -175,7 +175,7 @@ export const testUtils = {
     getLabel: getTemplateFieldLabel,
     getValue: getSelectedTemplate,
     queryValue: querySelectedTemplate,
-    setValue: userSetTemplate,
+    setValue: setTemplate,
     openField: userOpenTemplateField,
     getOption: getTemplateOption,
     findError: findTemplateFieldError,
@@ -185,15 +185,15 @@ export const testUtils = {
   title: {
     getField: getTitleField,
     getLabel: getTitleFieldLabel,
-    setValue: userSetTitle,
-    resetValue: userResetTitle,
+    setValue: setTitle,
+    resetValue: resetTitle,
     findError: findTitleFieldError,
   },
   description: {
     getField: getDescriptionField,
     getLabel: getDescriptionFieldLabel,
-    setValue: userSetDescription,
-    resetValue: userResetDescription,
+    setValue: setDescription,
+    resetValue: resetDescription,
     findError: findDescriptionFieldError,
   },
   userFillForm,

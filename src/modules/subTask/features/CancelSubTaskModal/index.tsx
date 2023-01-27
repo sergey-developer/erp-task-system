@@ -47,7 +47,7 @@ const CancelSubTaskModal: FC<CancelSubTaskModalProps> = ({
           data-testid='cancel-reason'
           label='Причина отмены'
           name='cancelReason'
-          rules={validationRules.string.middle}
+          rules={[validationRules.string.middle]}
         >
           <TextArea placeholder='Опишите причину отмены' disabled={isLoading} />
         </Form.Item>

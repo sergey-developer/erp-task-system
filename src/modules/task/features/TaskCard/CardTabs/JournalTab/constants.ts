@@ -22,5 +22,7 @@ export const journalEntryTypeDict: Readonly<StringMap<TaskJournalTypeEnum>> = {
   [TaskJournalTypeEnum.ReclassificationCancelled]:
     'Запрос на переклассификацию отменен',
   [TaskJournalTypeEnum.FirstLineReturned]: 'Возврат на первую линию',
+  [TaskJournalTypeEnum.AwaitingCanceled]: 'Перевод в ожидание отменен',
+  [TaskJournalTypeEnum.AutoEscalation]: 'Автоэскалация',
   [TaskJournalTypeEnum.Other]: 'Другое',
 }

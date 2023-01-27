@@ -1,47 +1,56 @@
-import { ModalProps, Select, Space, Typography } from 'antd'
-import React, { FC, useState } from 'react'
+import { Form, Select, Space, Typography } from 'antd'
+import React, { FC, useEffect } from 'react'
 
-import LabeledData from 'components/LabeledData'
 import BaseModal from 'components/Modals/BaseModal'
-import { TaskModel } from 'modules/task/models'
-import { workGroupListSelectFieldNames } from 'modules/workGroup/constants/selectFieldNames'
-import { WorkGroupListItemModel } from 'modules/workGroup/models'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { useGetWorkGroupList } from 'modules/workGroup/hooks'
+import { WorkGroupTypeEnum } from 'modules/workGroup/models'
+import { validationRules } from 'shared/constants/validation'
+import { isEqual } from 'shared/utils/common'
+
+import {
+  TaskSecondLineFormFields,
+  TaskSecondLineModalProps,
+} from './interfaces'
+import { OptionTextStyled, SelectStyled } from './styles'
 
 const { Text, Link } = Typography
 
 const OK_BUTTON_TEXT: string = 'Перевести заявку'
 
-export type TaskSecondLineModalProps = Pick<TaskModel, 'id'> & {
-  workGroupList: Array<WorkGroupListItemModel>
-  workGroupListIsLoading: boolean
-
-  isLoading: boolean
-  onSubmit: (value: WorkGroupListItemModel['id']) => Promise<void>
-  onCancel: NonNullable<ModalProps['onCancel']>
-}
-
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
-
-  workGroupList,
-  workGroupListIsLoading,
-
+  recordId,
   isLoading,
   onSubmit,
   onCancel,
 }) => {
-  const [selectedWorkGroup, setSelectedWorkGroup] =
-    useState<MaybeNull<WorkGroupListItemModel['id']>>(null)
+  const { data: workGroupList = [], isFetching: workGroupListIsFetching } =
+    useGetWorkGroupList({ taskId: id })
+
+  const [form] = Form.useForm<TaskSecondLineFormFields>()
+
+  useEffect(() => {
+    if (!workGroupList.length) return
+
+    const workGroup = workGroupList.find(
+      (workGroup) =>
+        isEqual(workGroup.type, WorkGroupTypeEnum.AssociatedWithSapId) ||
+        isEqual(workGroup.type, WorkGroupTypeEnum.DefaultForSupportGroup),
+    )
+
+    if (workGroup) {
+      form.setFieldsValue({ workGroup: workGroup.id })
+    }
+  }, [form, workGroupList])
 
   const modalTitle = (
     <Text>
-      Перевод заявки <Link>{id}</Link> на II линию
+      Перевод заявки <Link>{recordId}</Link> на II линию
     </Text>
   )
 
-  const handleFinish = () => {
-    selectedWorkGroup && onSubmit(selectedWorkGroup)
+  const handleFinish = async (values: TaskSecondLineFormFields) => {
+    await onSubmit(values, form.setFields)
   }
 
   return (
@@ -51,11 +60,8 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
       title={modalTitle}
       confirmLoading={isLoading}
       okText={OK_BUTTON_TEXT}
-      onOk={handleFinish}
+      onOk={form.submit}
       onCancel={onCancel}
-      okButtonProps={{
-        disabled: !selectedWorkGroup,
-      }}
     >
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>
@@ -70,16 +76,38 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           </Text>
         </Space>
 
-        <LabeledData data-testid='work-group' label='Рабочая группа'>
-          <Select
-            placeholder='Выберите рабочую группу'
-            options={workGroupList}
-            loading={workGroupListIsLoading}
-            disabled={isLoading}
-            fieldNames={workGroupListSelectFieldNames}
-            onSelect={setSelectedWorkGroup}
-          />
-        </LabeledData>
+        <Form<TaskSecondLineFormFields>
+          form={form}
+          layout='vertical'
+          onFinish={handleFinish}
+          preserve={false}
+        >
+          <Form.Item
+            data-testid='work-group'
+            name='workGroup'
+            label='Рабочая группа'
+            rules={[validationRules.required]}
+          >
+            <SelectStyled
+              placeholder='Выберите рабочую группу'
+              loading={workGroupListIsFetching}
+              disabled={isLoading}
+            >
+              {workGroupList.map(({ id, name, priority, description }) => (
+                <Select.Option
+                  data-testid={`select-option-${id}`}
+                  key={id}
+                  value={id}
+                  title={description}
+                >
+                  <OptionTextStyled $isBold={priority ? priority < 4 : false}>
+                    {name}
+                  </OptionTextStyled>
+                </Select.Option>
+              ))}
+            </SelectStyled>
+          </Form.Item>
+        </Form>
       </Space>
     </BaseModal>
   )

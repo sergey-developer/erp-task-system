@@ -1,16 +1,16 @@
 import { useEffect } from 'react'
 
 import { useUserPermissions } from 'modules/user/hooks'
+import { GET_WORK_GROUP_LIST_SERVER_ERROR_MSG } from 'modules/workGroup/constants/errors'
+import { GetWorkGroupListQueryArgs } from 'modules/workGroup/models'
 import { workGroupApiPermissions } from 'modules/workGroup/permissions'
 import { useGetWorkGroupListQuery } from 'modules/workGroup/services/workGroupApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { GET_WORK_GROUP_LIST_SERVER_ERROR_MSG } from '../constants/errors'
-
-export const useGetWorkGroupList = () => {
+export const useGetWorkGroupList = (args?: GetWorkGroupListQueryArgs) => {
   const permissions = useUserPermissions(workGroupApiPermissions)
 
-  const state = useGetWorkGroupListQuery(null, {
+  const state = useGetWorkGroupListQuery(args, {
     skip: !permissions.canGetList,
   })
 

@@ -7,7 +7,6 @@ import { validationRules } from 'shared/constants/validation'
 import { templateFieldNames } from './constants'
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'
 import { SelectStyled } from './styles'
-import { TEMPLATE_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -54,7 +53,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           data-testid='template'
           label='Шаблон'
           name='templateX5'
-          rules={TEMPLATE_RULES}
+          rules={[validationRules.required]}
         >
           <SelectStyled
             placeholder='Наименование шаблона'
@@ -69,7 +68,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           data-testid='title'
           label='Краткое описание'
           name='title'
-          rules={validationRules.string.short}
+          rules={[validationRules.string.short]}
         >
           <Input
             placeholder='Опишите коротко задачу'
@@ -82,7 +81,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           data-testid='description'
           label='Подробное описание'
           name='description'
-          rules={validationRules.string.long}
+          rules={[validationRules.string.long]}
         >
           <TextArea
             placeholder='Расскажите подробнее о задаче'

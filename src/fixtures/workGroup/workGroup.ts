@@ -1,7 +1,15 @@
 import times from 'lodash/times'
 
-import { generateId, generateName } from '_tests_/utils'
-import { WorkGroupListItemModel } from 'modules/workGroup/models'
+import {
+  generateId,
+  generateInteger,
+  generateName,
+  generateWord,
+} from '_tests_/utils'
+import {
+  WorkGroupListItemModel,
+  WorkGroupTypeEnum,
+} from 'modules/workGroup/models'
 import { ArrayItem } from 'shared/interfaces/utils'
 
 export const getWorkGroupMember = (): ArrayItem<
@@ -15,12 +23,12 @@ export const getWorkGroupMemberList = (
 
 export const getWorkGroup = (
   props?: Partial<{
-    id: number
     seniorEngineerId: number
     groupLeadId: number
     memberAmount: number
-  }>,
-): WorkGroupListItemModel => ({
+  }> &
+    Partial<Pick<WorkGroupListItemModel, 'id' | 'type' | 'priority'>>,
+): NonNullable<WorkGroupListItemModel> => ({
   id: props?.id || generateId(),
   name: generateName(),
   members: getWorkGroupMemberList(props?.memberAmount),
@@ -32,4 +40,12 @@ export const getWorkGroup = (
     id: props?.groupLeadId || generateId(),
     fullName: generateName(),
   },
+  type: props?.type || WorkGroupTypeEnum.NoType,
+  description: generateWord(),
+  priority:
+    props?.priority ||
+    (generateInteger({
+      min: 1,
+      max: 4,
+    }) as WorkGroupListItemModel['priority']),
 })

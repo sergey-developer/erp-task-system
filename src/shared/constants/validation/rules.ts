@@ -9,27 +9,22 @@ export const validationSizes = {
 } as const
 
 export const validationRules = {
+  required: { required: true } as Rule,
   string: {
-    short: [
-      {
-        required: true,
-        whitespace: true,
-        max: validationSizes.string.short,
-      },
-    ] as Rule[],
-    middle: [
-      {
-        required: true,
-        whitespace: true,
-        max: validationSizes.string.middle,
-      },
-    ] as Rule[],
-    long: [
-      {
-        required: true,
-        whitespace: true,
-        max: validationSizes.string.long,
-      },
-    ] as Rule[],
+    short: {
+      required: true,
+      whitespace: true,
+      max: validationSizes.string.short,
+    } as Rule,
+    middle: {
+      required: true,
+      whitespace: true,
+      max: validationSizes.string.middle,
+    } as Rule,
+    long: {
+      required: true,
+      whitespace: true,
+      max: validationSizes.string.long,
+    } as Rule,
   },
 } as const

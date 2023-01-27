@@ -1,7 +1,6 @@
 import {
   getBadRequestErrorMockFn,
   getForbiddenErrorMockFn,
-  getNotFoundErrorMockFn,
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
@@ -26,11 +25,6 @@ export const mockUpdateTaskWorkGroupBadRequestError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(updateTaskWorkGroupMockFn(taskId), options)()
-
-export const mockUpdateTaskWorkGroupNotFoundError = <T extends object>(
-  taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => getNotFoundErrorMockFn(updateTaskWorkGroupMockFn(taskId), options)()
 
 export const mockUpdateTaskWorkGroupServerError = <T extends object>(
   taskId: number,
