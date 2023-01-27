@@ -110,7 +110,7 @@ const expectStatusHasCorrectInitialValues = () => {
 const status = {
   getContainer: getStatusContainer,
   getField: getStatusField,
-  userSetValue: userSelectStatus,
+  setValue: userSelectStatus,
   expectHasCorrectInitialValues: expectStatusHasCorrectInitialValues,
 }
 
@@ -140,7 +140,7 @@ const expectAssignedHasCorrectInitialValues = () => {
 const assigned = {
   getContainer: getAssignedContainer,
   getField: getAssignedField,
-  userSetValue: userSelectAssigned,
+  setValue: userSelectAssigned,
   expectHasCorrectInitialValues: expectAssignedHasCorrectInitialValues,
 }
 
@@ -170,7 +170,7 @@ const expectOverdueHasCorrectInitialValues = () => {
 const overdue = {
   getContainer: getOverdueContainer,
   getField: getOverdueField,
-  userSetValue: userSelectOverdue,
+  setValue: userSelectOverdue,
   expectHasCorrectInitialValues: expectOverdueHasCorrectInitialValues,
 }
 
@@ -207,7 +207,7 @@ const completeAt = {
   getContainer: getCompleteAtContainer,
   getStartDateField: getStartDateField,
   getEndDateField: getEndDateField,
-  userSetValue: userFillCompleteAtField,
+  setValue: userFillCompleteAtField,
   expectHasCorrectInitialValues: expectCompleteAtHasCorrectInitialValues,
 }
 
@@ -232,7 +232,7 @@ const workGroup = {
   getField: getWorkGroupField,
   queryField: queryWorkGroupField,
   openField: userOpenSelect,
-  userSetValue: clickSelectOption,
+  setValue: clickSelectOption,
   loadingFinished: workGroupLoadingFinished,
 }
 
@@ -293,8 +293,8 @@ const searchByColumn = {
   getContainer: getSearchByColumnContainer,
   getColumnField: getSearchByColumnColumnField,
   getKeywordField: getSearchByColumnKeywordField,
-  userSetKeywordValue: userEntersSearchByColumnKeyword,
-  userSetColumnValue: userSelectSearchByColumnField,
+  setKeywordValue: userEntersSearchByColumnKeyword,
+  setColumnValue: userSelectSearchByColumnField,
   expectHasCorrectInitialValues: expectSearchByColumnHasCorrectInitialValues,
 }
 
@@ -421,7 +421,7 @@ describe('Расширенный фильтр', () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       for await (const value of taskExtendedStatusDictValues) {
-        const checkbox = await testUtils.status.userSetValue(user, value)
+        const checkbox = await testUtils.status.setValue(user, value)
         expect(checkbox).toBeChecked()
       }
     })
@@ -504,7 +504,7 @@ describe('Расширенный фильтр', () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       for await (const value of taskAssignedDictValues) {
-        const radioButton = await testUtils.assigned.userSetValue(user, value)
+        const radioButton = await testUtils.assigned.setValue(user, value)
         expect(radioButton).toBeChecked()
       }
     })
@@ -595,7 +595,7 @@ describe('Расширенный фильтр', () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       for await (const value of taskOverdueDictValues) {
-        const radioButton = await testUtils.overdue.userSetValue(user, value)
+        const radioButton = await testUtils.overdue.setValue(user, value)
         expect(radioButton).toBeChecked()
       }
     })
@@ -682,7 +682,7 @@ describe('Расширенный фильтр', () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       const { startDateField, startDateValue, endDateField, endDateValue } =
-        await testUtils.completeAt.userSetValue(user)
+        await testUtils.completeAt.setValue(user)
 
       expect(startDateField).toHaveDisplayValue(startDateValue)
       expect(endDateField).toHaveDisplayValue(endDateValue)
@@ -693,7 +693,7 @@ describe('Расширенный фильтр', () => {
         const { user } = render(<ExtendedFilter {...requiredProps} />)
 
         const { startDateValue, endDateValue } =
-          await testUtils.completeAt.userSetValue(user)
+          await testUtils.completeAt.setValue(user)
 
         const container = testUtils.completeAt.getContainer()
         await testUtils.clickResetButtonIn(user, container)
@@ -710,7 +710,7 @@ describe('Расширенный фильтр', () => {
         const { user } = render(<ExtendedFilter {...requiredProps} />)
 
         const { startDateValue, endDateValue } =
-          await testUtils.completeAt.userSetValue(user)
+          await testUtils.completeAt.setValue(user)
 
         await testUtils.clickResetAllButton(user)
 
@@ -789,7 +789,7 @@ describe('Расширенный фильтр', () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       const { keywordField, keyword } =
-        await testUtils.searchByColumn.userSetKeywordValue(user)
+        await testUtils.searchByColumn.setKeywordValue(user)
 
       expect(keywordField).toHaveDisplayValue(keyword)
     })
@@ -798,7 +798,7 @@ describe('Расширенный фильтр', () => {
       const { user } = render(<ExtendedFilter {...requiredProps} />)
 
       for await (const value of searchFieldDictValues) {
-        const radioButton = await testUtils.searchByColumn.userSetColumnValue(
+        const radioButton = await testUtils.searchByColumn.setColumnValue(
           user,
           value,
         )
@@ -987,7 +987,7 @@ describe('Расширенный фильтр', () => {
 
         const workGroupField = await testUtils.workGroup.loadingFinished()
         await testUtils.workGroup.openField(user, workGroupField)
-        await testUtils.workGroup.userSetValue(user, workGroupListItem.name)
+        await testUtils.workGroup.setValue(user, workGroupListItem.name)
 
         const selectedOption = getSelectedOption(workGroupField)
         expect(selectedOption).toHaveTextContent(workGroupListItem.name)
@@ -1035,7 +1035,7 @@ describe('Расширенный фильтр', () => {
           const workGroupField = await testUtils.workGroup.loadingFinished()
           await testUtils.workGroup.openField(user, workGroupField)
 
-          await testUtils.workGroup.userSetValue(user, workGroupListItem.name)
+          await testUtils.workGroup.setValue(user, workGroupListItem.name)
 
           const container = testUtils.workGroup.getContainer()
           await testUtils.clickResetButtonIn(user, container)
@@ -1057,7 +1057,7 @@ describe('Расширенный фильтр', () => {
           const workGroupField = await testUtils.workGroup.loadingFinished()
           await testUtils.workGroup.openField(user, workGroupField)
 
-          await testUtils.workGroup.userSetValue(user, workGroupListItem.name)
+          await testUtils.workGroup.setValue(user, workGroupListItem.name)
           await testUtils.clickResetAllButton(user)
 
           const selectedOption = getSelectedOption(workGroupField)

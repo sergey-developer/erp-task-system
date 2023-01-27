@@ -881,10 +881,7 @@ describe('Вкладка списка заданий', () => {
       await testUtils.loadingFinished()
       await subTaskTestUtils.clickCancelButton(user)
       await cancelSubTaskModalTestUtils.findContainer()
-      await cancelSubTaskModalTestUtils.userSetCancelReason(
-        user,
-        generateWord(),
-      )
+      await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
       await cancelSubTaskModalTestUtils.clickSubmitButton(user)
       await cancelSubTaskModalTestUtils.loadingStarted()
     })
@@ -915,10 +912,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.loadingFinished()
         await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.userSetCancelReason(
-          user,
-          generateWord(),
-        )
+        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         await waitFor(() => {
@@ -959,10 +953,7 @@ describe('Вкладка списка заданий', () => {
 
         await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.userSetCancelReason(
-          user,
-          generateWord(),
-        )
+        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         await waitFor(() => {
@@ -1002,10 +993,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.loadingFinished()
         const cancelButton = await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.userSetCancelReason(
-          user,
-          generateWord(),
-        )
+        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         await waitFor(() => {
@@ -1050,10 +1038,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.loadingFinished()
         await subTaskTestUtils.clickCancelButton(user)
         await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.userSetCancelReason(
-          user,
-          generateWord(),
-        )
+        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
@@ -1088,10 +1073,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.loadingFinished()
         await subTaskTestUtils.clickCancelButton(user)
         await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.userSetCancelReason(
-          user,
-          generateWord(),
-        )
+        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(

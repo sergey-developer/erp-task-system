@@ -88,7 +88,7 @@ const getReclassificationReasonField = (
 const findReclassificationReasonError = (text: string) =>
   within(getReclassificationReasonBlock()).findByText(text)
 
-const userSetReclassificationReason = async (
+const setReclassificationReason = async (
   user: UserEvent,
   reason: ReclassificationReasonEnum,
 ) => {
@@ -109,7 +109,7 @@ const getCommentField = () =>
 const findCommentError = (text: string) =>
   within(getCommentBlock()).findByText(text)
 
-const userSetComment = async (user: UserEvent, value: string) => {
+const setComment = async (user: UserEvent, value: string) => {
   const field = getCommentField()
   await user.type(field, value)
   return field
@@ -138,13 +138,13 @@ export const testUtils = {
   getReclassificationReasonTitle,
   getReclassificationReasonField,
   findReclassificationReasonError,
-  userSetReclassificationReason,
+  setReclassificationReason,
 
   getCommentBlock,
   getCommentTitle,
   getCommentField,
   findCommentError,
-  userSetComment,
+  setComment,
 
   loadingStarted,
   loadingFinished,
@@ -221,9 +221,9 @@ describe('Модалка запроса о переклассификации з
         )
 
         for await (const reason of Object.values(ReclassificationReasonEnum)) {
-          await testUtils.userSetReclassificationReason(user, reason)
+          await testUtils.setReclassificationReason(user, reason)
         }
-        await testUtils.userSetComment(user, generateWord())
+        await testUtils.setComment(user, generateWord())
         await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
@@ -274,10 +274,7 @@ describe('Модалка запроса о переклассификации з
         )
 
         for await (const reason of availableReasons) {
-          const field = await testUtils.userSetReclassificationReason(
-            user,
-            reason,
-          )
+          const field = await testUtils.setReclassificationReason(user, reason)
           expect(field).toBeChecked()
         }
       })
@@ -332,7 +329,7 @@ describe('Модалка запроса о переклассификации з
         )
 
         const value = generateWord()
-        const field = await testUtils.userSetComment(user, value)
+        const field = await testUtils.setComment(user, value)
 
         expect(field).toHaveDisplayValue(value)
       })
@@ -350,7 +347,7 @@ describe('Модалка запроса о переклассификации з
             <RequestTaskReclassificationModal {...requiredProps} />,
           )
 
-          await testUtils.userSetComment(user, ' ')
+          await testUtils.setComment(user, ' ')
 
           expect(
             await testUtils.findCommentError(validationMessages.canNotBeEmpty),
@@ -374,7 +371,7 @@ describe('Модалка запроса о переклассификации з
             <RequestTaskReclassificationModal {...requiredProps} />,
           )
 
-          await testUtils.userSetComment(
+          await testUtils.setComment(
             user,
             generateWord({ length: validationSizes.string.long + 1 }),
           )

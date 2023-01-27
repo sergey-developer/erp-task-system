@@ -93,13 +93,13 @@ const getTitleField = () =>
 const getTitleFieldLabel = () =>
   within(getTitleFieldContainer()).getByTitle('Краткое описание')
 
-const userSetTitle = async (user: UserEvent, value: string) => {
+const setTitle = async (user: UserEvent, value: string) => {
   const field = getTitleField()
   await user.type(field, value)
   return field
 }
 
-const userResetTitle = async (user: UserEvent) => {
+const resetTitle = async (user: UserEvent) => {
   const button = getButtonIn(getTitleFieldContainer(), 'close-circle')
   await user.click(button)
 }
@@ -158,7 +158,7 @@ const userFillForm = async (
 ) => {
   await userOpenTemplateField(user)
   await setTemplate(user, values.templateX5)
-  await userSetTitle(user, values.title)
+  await setTitle(user, values.title)
   await setDescription(user, values.description)
 }
 
@@ -185,8 +185,8 @@ export const testUtils = {
   title: {
     getField: getTitleField,
     getLabel: getTitleFieldLabel,
-    setValue: userSetTitle,
-    resetValue: userResetTitle,
+    setValue: setTitle,
+    resetValue: resetTitle,
     findError: findTitleFieldError,
   },
   description: {

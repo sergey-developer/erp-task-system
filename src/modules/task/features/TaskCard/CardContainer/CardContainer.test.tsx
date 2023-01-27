@@ -697,11 +697,11 @@ describe('Контейнер детальной карточки заявки', 
             const modal =
               await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.userSetComment(
+            await taskReclassificationModalTestUtils.setComment(
               user,
               generateWord(),
             )
-            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
@@ -745,11 +745,11 @@ describe('Контейнер детальной карточки заявки', 
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.userSetComment(
+            await taskReclassificationModalTestUtils.setComment(
               user,
               generateWord(),
             )
-            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
@@ -995,11 +995,11 @@ describe('Контейнер детальной карточки заявки', 
             const modal =
               await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.userSetComment(
+            await taskReclassificationModalTestUtils.setComment(
               user,
               generateWord(),
             )
-            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
@@ -1043,11 +1043,11 @@ describe('Контейнер детальной карточки заявки', 
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.userSetComment(
+            await taskReclassificationModalTestUtils.setComment(
               user,
               generateWord(),
             )
-            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
@@ -1194,11 +1194,11 @@ describe('Контейнер детальной карточки заявки', 
             const modal =
               await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.userSetComment(
+            await taskReclassificationModalTestUtils.setComment(
               user,
               generateWord(),
             )
-            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
@@ -1242,11 +1242,11 @@ describe('Контейнер детальной карточки заявки', 
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.userSetComment(
+            await taskReclassificationModalTestUtils.setComment(
               user,
               generateWord(),
             )
-            await taskReclassificationModalTestUtils.userSetReclassificationReason(
+            await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )

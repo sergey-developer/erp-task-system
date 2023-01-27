@@ -386,11 +386,11 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           await taskReclassificationModalTestUtils.findContainer()
 
-          await taskReclassificationModalTestUtils.userSetComment(
+          await taskReclassificationModalTestUtils.setComment(
             user,
             generateWord(),
           )
-          await taskReclassificationModalTestUtils.userSetReclassificationReason(
+          await taskReclassificationModalTestUtils.setReclassificationReason(
             user,
             availableReasons[0],
           )
@@ -418,11 +418,11 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
 
-          await taskReclassificationModalTestUtils.userSetComment(
+          await taskReclassificationModalTestUtils.setComment(
             user,
             generateWord(),
           )
-          await taskReclassificationModalTestUtils.userSetReclassificationReason(
+          await taskReclassificationModalTestUtils.setReclassificationReason(
             user,
             availableReasons[0],
           )
@@ -556,11 +556,11 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.userSetTechResolution(
+          await taskResolutionModalTestUtils.setTechResolution(
             user,
             generateWord(),
           )
-          await taskResolutionModalTestUtils.userSetUserResolution(
+          await taskResolutionModalTestUtils.setUserResolution(
             user,
             generateWord(),
           )

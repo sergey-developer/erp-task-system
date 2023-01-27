@@ -44,7 +44,7 @@ const getCancelReasonField = () =>
     /опишите причину отмены/i,
   )
 
-const userSetCancelReason = async (user: UserEvent, value: string) => {
+const setCancelReason = async (user: UserEvent, value: string) => {
   const field = getCancelReasonField()
   await user.type(field, value)
   return field
@@ -76,7 +76,7 @@ export const testUtils = {
 
   getCancelReasonFieldContainer,
   getCancelReasonField,
-  userSetCancelReason,
+  setCancelReason,
   findCancelReasonError,
 
   getSubmitButton,
@@ -131,7 +131,7 @@ describe('Модальное окно отправки запроса на до�
         const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
 
         const value = generateWord()
-        const field = await testUtils.userSetCancelReason(user, value)
+        const field = await testUtils.setCancelReason(user, value)
 
         expect(field).toHaveValue(value)
       })
@@ -140,7 +140,7 @@ describe('Модальное окно отправки запроса на до�
         test('Если ввести только пробелы', async () => {
           const { user } = render(<CancelSubTaskModal {...requiredProps} />)
 
-          await testUtils.userSetCancelReason(user, ' ')
+          await testUtils.setCancelReason(user, ' ')
 
           expect(
             await testUtils.findCancelReasonError(
@@ -152,7 +152,7 @@ describe('Модальное окно отправки запроса на до�
         test('Если превысить лимит символов', async () => {
           const { user } = render(<CancelSubTaskModal {...requiredProps} />)
 
-          await testUtils.userSetCancelReason(
+          await testUtils.setCancelReason(
             user,
             generateWord({ length: validationSizes.string.middle + 1 }),
           )
@@ -196,7 +196,7 @@ describe('Модальное окно отправки запроса на до�
       test('Обработчик вызывается корректно', async () => {
         const { user } = render(<CancelSubTaskModal {...requiredProps} />)
 
-        await testUtils.userSetCancelReason(user, generateWord())
+        await testUtils.setCancelReason(user, generateWord())
         await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)

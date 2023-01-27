@@ -256,28 +256,28 @@ describe('Страница реестра заявок', () => {
       await testUtils.userOpenExtendedFilter(user)
       await extendedFilterTestUtils.findFilter()
 
-      await extendedFilterTestUtils.status.userSetValue(
+      await extendedFilterTestUtils.status.setValue(
         user,
         taskExtendedStatusDict.NEW!,
       )
 
-      await extendedFilterTestUtils.assigned.userSetValue(
+      await extendedFilterTestUtils.assigned.setValue(
         user,
         taskAssignedDict.True,
       )
 
-      await extendedFilterTestUtils.overdue.userSetValue(
+      await extendedFilterTestUtils.overdue.setValue(
         user,
         taskOverdueDict.False,
       )
 
       const { startDateValue, endDateValue } =
-        await extendedFilterTestUtils.completeAt.userSetValue(user)
+        await extendedFilterTestUtils.completeAt.setValue(user)
 
       const { keyword: searchByColumnKeywordValue } =
-        await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+        await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-      await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+      await extendedFilterTestUtils.searchByColumn.setColumnValue(
         user,
         searchFieldDict.searchByName,
       )
@@ -285,7 +285,7 @@ describe('Страница реестра заявок', () => {
       const workGroupField =
         await extendedFilterTestUtils.workGroup.loadingFinished()
       await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-      await extendedFilterTestUtils.workGroup.userSetValue(
+      await extendedFilterTestUtils.workGroup.setValue(
         user,
         workGroupListItem.name,
       )
@@ -519,28 +519,28 @@ describe('Страница реестра заявок', () => {
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
 
-        await extendedFilterTestUtils.status.userSetValue(
+        await extendedFilterTestUtils.status.setValue(
           user,
           taskExtendedStatusDict.NEW!,
         )
 
-        await extendedFilterTestUtils.assigned.userSetValue(
+        await extendedFilterTestUtils.assigned.setValue(
           user,
           taskAssignedDict.True,
         )
 
-        await extendedFilterTestUtils.overdue.userSetValue(
+        await extendedFilterTestUtils.overdue.setValue(
           user,
           taskOverdueDict.False,
         )
 
         const { startDateValue, endDateValue } =
-          await extendedFilterTestUtils.completeAt.userSetValue(user)
+          await extendedFilterTestUtils.completeAt.setValue(user)
 
         const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+          await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-        await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+        await extendedFilterTestUtils.searchByColumn.setColumnValue(
           user,
           searchFieldDict.searchByName,
         )
@@ -548,7 +548,7 @@ describe('Страница реестра заявок', () => {
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.userSetValue(
+        await extendedFilterTestUtils.workGroup.setValue(
           user,
           workGroupListItem.name,
         )
@@ -614,28 +614,28 @@ describe('Страница реестра заявок', () => {
       await testUtils.userOpenExtendedFilter(user)
       const filter = await extendedFilterTestUtils.findFilter()
 
-      await extendedFilterTestUtils.status.userSetValue(
+      await extendedFilterTestUtils.status.setValue(
         user,
         taskExtendedStatusDict.NEW!,
       )
 
-      await extendedFilterTestUtils.assigned.userSetValue(
+      await extendedFilterTestUtils.assigned.setValue(
         user,
         taskAssignedDict.True,
       )
 
-      await extendedFilterTestUtils.overdue.userSetValue(
+      await extendedFilterTestUtils.overdue.setValue(
         user,
         taskOverdueDict.False,
       )
 
       const { startDateValue, endDateValue } =
-        await extendedFilterTestUtils.completeAt.userSetValue(user)
+        await extendedFilterTestUtils.completeAt.setValue(user)
 
       const { keyword: searchByColumnKeywordValue } =
-        await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+        await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-      await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+      await extendedFilterTestUtils.searchByColumn.setColumnValue(
         user,
         searchFieldDict.searchByName,
       )
@@ -643,7 +643,7 @@ describe('Страница реестра заявок', () => {
       const workGroupField =
         await extendedFilterTestUtils.workGroup.loadingFinished()
       await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-      await extendedFilterTestUtils.workGroup.userSetValue(
+      await extendedFilterTestUtils.workGroup.setValue(
         user,
         workGroupListItem.name,
       )
@@ -904,28 +904,28 @@ describe('Страница реестра заявок', () => {
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
 
-        await extendedFilterTestUtils.status.userSetValue(
+        await extendedFilterTestUtils.status.setValue(
           user,
           taskExtendedStatusDict.NEW!,
         )
 
-        await extendedFilterTestUtils.assigned.userSetValue(
+        await extendedFilterTestUtils.assigned.setValue(
           user,
           taskAssignedDict.True,
         )
 
-        await extendedFilterTestUtils.overdue.userSetValue(
+        await extendedFilterTestUtils.overdue.setValue(
           user,
           taskOverdueDict.False,
         )
 
         const { startDateValue, endDateValue } =
-          await extendedFilterTestUtils.completeAt.userSetValue(user)
+          await extendedFilterTestUtils.completeAt.setValue(user)
 
         const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+          await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-        await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+        await extendedFilterTestUtils.searchByColumn.setColumnValue(
           user,
           searchFieldDict.searchByName,
         )
@@ -933,7 +933,7 @@ describe('Страница реестра заявок', () => {
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.userSetValue(
+        await extendedFilterTestUtils.workGroup.setValue(
           user,
           workGroupListItem.name,
         )
@@ -1056,28 +1056,28 @@ describe('Страница реестра заявок', () => {
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
 
-        await extendedFilterTestUtils.status.userSetValue(
+        await extendedFilterTestUtils.status.setValue(
           user,
           taskExtendedStatusDict.NEW!,
         )
 
-        await extendedFilterTestUtils.assigned.userSetValue(
+        await extendedFilterTestUtils.assigned.setValue(
           user,
           taskAssignedDict.True,
         )
 
-        await extendedFilterTestUtils.overdue.userSetValue(
+        await extendedFilterTestUtils.overdue.setValue(
           user,
           taskOverdueDict.False,
         )
 
         const { startDateValue, endDateValue } =
-          await extendedFilterTestUtils.completeAt.userSetValue(user)
+          await extendedFilterTestUtils.completeAt.setValue(user)
 
         const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.userSetKeywordValue(user)
+          await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-        await extendedFilterTestUtils.searchByColumn.userSetColumnValue(
+        await extendedFilterTestUtils.searchByColumn.setColumnValue(
           user,
           searchFieldDict.searchByName,
         )
@@ -1085,7 +1085,7 @@ describe('Страница реестра заявок', () => {
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.userSetValue(
+        await extendedFilterTestUtils.workGroup.setValue(
           user,
           workGroupListItem.name,
         )

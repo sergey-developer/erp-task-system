@@ -71,7 +71,7 @@ const getTechResolutionField = () =>
 const findTechResolutionError = (text: string) =>
   within(getTechResolutionBlock()).findByText(text)
 
-const userSetTechResolution = async (user: UserEvent, value: string) => {
+const setTechResolution = async (user: UserEvent, value: string) => {
   const field = getTechResolutionField()
   await user.type(field, value)
   return field
@@ -97,7 +97,7 @@ const queryUserResolutionField = () =>
 const findUserResolutionError = (text: string) =>
   within(getUserResolutionBlock()).findByText(text)
 
-const userSetUserResolution = async (user: UserEvent, value: string) => {
+const setUserResolution = async (user: UserEvent, value: string) => {
   const field = getUserResolutionField()
   await user.type(field, value)
   return field
@@ -126,14 +126,14 @@ export const testUtils = {
   getTechResolutionTitle,
   getTechResolutionField,
   findTechResolutionError,
-  userSetTechResolution,
+  setTechResolution,
 
   getUserResolutionBlock,
   getUserResolutionTitle,
   getUserResolutionField,
   queryUserResolutionField,
   findUserResolutionError,
-  userSetUserResolution,
+  setUserResolution,
 
   loadingStarted,
   loadingFinished,
@@ -218,8 +218,8 @@ describe('Модалка решения по заявке', () => {
       test('Если поля заполнены', async () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        await testUtils.userSetTechResolution(user, generateWord())
-        await testUtils.userSetUserResolution(user, generateWord())
+        await testUtils.setTechResolution(user, generateWord())
+        await testUtils.setUserResolution(user, generateWord())
         await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
@@ -255,7 +255,7 @@ describe('Модалка решения по заявке', () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
         const value = generateWord()
-        const field = await testUtils.userSetTechResolution(user, value)
+        const field = await testUtils.setTechResolution(user, value)
 
         expect(field).toHaveDisplayValue(value)
       })
@@ -269,7 +269,7 @@ describe('Модалка решения по заявке', () => {
         test('Если ввести только пробелы', async () => {
           const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-          await testUtils.userSetTechResolution(user, ' ')
+          await testUtils.setTechResolution(user, ' ')
 
           expect(
             await testUtils.findTechResolutionError(
@@ -293,7 +293,7 @@ describe('Модалка решения по заявке', () => {
         test('Если превысить лимит символов', async () => {
           const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-          await testUtils.userSetTechResolution(
+          await testUtils.setTechResolution(
             user,
             generateWord({ length: validationSizes.string.long + 1 }),
           )
@@ -351,7 +351,7 @@ describe('Модалка решения по заявке', () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
         const value = generateWord()
-        const field = await testUtils.userSetUserResolution(user, value)
+        const field = await testUtils.setUserResolution(user, value)
 
         expect(field).toHaveDisplayValue(value)
       })
@@ -365,7 +365,7 @@ describe('Модалка решения по заявке', () => {
         test('Если ввести только пробелы', async () => {
           const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-          await testUtils.userSetUserResolution(user, ' ')
+          await testUtils.setUserResolution(user, ' ')
 
           expect(
             await testUtils.findUserResolutionError(
@@ -389,7 +389,7 @@ describe('Модалка решения по заявке', () => {
         test('Если превысить лимит символов', async () => {
           const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-          await testUtils.userSetUserResolution(
+          await testUtils.setUserResolution(
             user,
             generateWord({ length: validationSizes.string.long + 1 }),
           )
