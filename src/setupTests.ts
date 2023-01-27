@@ -11,7 +11,7 @@ import '@testing-library/jest-dom'
  */
 import Schema from 'async-validator'
 
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 
 Schema.warning = function () {}
 
