@@ -703,7 +703,6 @@ describe('Страница реестра заявок', () => {
 
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
-        await extendedFilterTestUtils.workGroup.loadingFinished()
 
         extendedFilterTestUtils.status.expectHasCorrectInitialValues()
         extendedFilterTestUtils.assigned.expectHasCorrectInitialValues()
