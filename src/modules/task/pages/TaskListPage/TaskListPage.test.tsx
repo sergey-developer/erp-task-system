@@ -240,7 +240,7 @@ describe('Страница реестра заявок', () => {
 
     test('Сбрасывает расширенный фильтр', async () => {
       const workGroupListItem = workGroupFixtures.getWorkGroup()
-      mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
+      mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess({ once: false })
 
@@ -255,6 +255,7 @@ describe('Страница реестра заявок', () => {
 
       await testUtils.userOpenExtendedFilter(user)
       await extendedFilterTestUtils.findFilter()
+      await extendedFilterTestUtils.workGroup.loadingFinished()
 
       await extendedFilterTestUtils.status.setValue(
         user,
@@ -298,6 +299,7 @@ describe('Страница реестра заявок', () => {
 
       await testUtils.userOpenExtendedFilter(user)
       await extendedFilterTestUtils.findFilter()
+      await extendedFilterTestUtils.workGroup.loadingFinished()
 
       expect(
         extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
@@ -507,7 +509,7 @@ describe('Страница реестра заявок', () => {
 
       test('Значения сохраняются если другой фильтр не применялся', async () => {
         const workGroupListItem = workGroupFixtures.getWorkGroup()
-        mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
+        mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
@@ -518,6 +520,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.loadingFinished()
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
+        await extendedFilterTestUtils.workGroup.loadingFinished()
 
         await extendedFilterTestUtils.status.setValue(
           user,
@@ -558,6 +561,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.loadingFinished()
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
+        await extendedFilterTestUtils.workGroup.loadingFinished()
 
         const statusField = extendedFilterTestUtils.status.getField(
           taskExtendedStatusDict.NEW!,
@@ -855,14 +859,17 @@ describe('Страница реестра заявок', () => {
           generateWord({ length: 1 }),
           true,
         )
+
         const fastFilter = fastFilterTestUtils.getCheckableTag(
           FastFilterEnum.All,
         )
+
         await waitFor(() => {
           fastFilterTestUtils.expectFilterNotChecked(fastFilter)
         })
 
         await testUtils.userClearSearchFieldByBackspace(user, input)
+
         await waitFor(() => {
           fastFilterTestUtils.expectFilterChecked(fastFilter)
         })
@@ -891,7 +898,7 @@ describe('Страница реестра заявок', () => {
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
         const workGroupListItem = workGroupFixtures.getWorkGroup()
-        mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
+        mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
@@ -903,6 +910,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.loadingFinished()
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
+        await extendedFilterTestUtils.workGroup.loadingFinished()
 
         await extendedFilterTestUtils.status.setValue(
           user,
@@ -955,6 +963,7 @@ describe('Страница реестра заявок', () => {
 
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
+        await extendedFilterTestUtils.workGroup.loadingFinished()
 
         const statusField = extendedFilterTestUtils.status.getField(
           taskExtendedStatusDict.NEW!,
@@ -1043,7 +1052,7 @@ describe('Страница реестра заявок', () => {
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
         const workGroupListItem = workGroupFixtures.getWorkGroup()
-        mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
+        mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
@@ -1055,6 +1064,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.loadingFinished()
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
+        await extendedFilterTestUtils.workGroup.loadingFinished()
 
         await extendedFilterTestUtils.status.setValue(
           user,
@@ -1084,6 +1094,7 @@ describe('Страница реестра заявок', () => {
 
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
+
         await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
         await extendedFilterTestUtils.workGroup.setValue(
           user,
@@ -1103,6 +1114,7 @@ describe('Страница реестра заявок', () => {
 
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
+        await extendedFilterTestUtils.workGroup.loadingFinished()
 
         const statusField = extendedFilterTestUtils.status.getField(
           taskExtendedStatusDict.NEW!,

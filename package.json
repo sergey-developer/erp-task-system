@@ -6,10 +6,10 @@
     "install:dev": "yarn install & husky install",
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test --watchAll=false --maxWorkers=50% --testTimeout=10000",
+    "test": "craco test --watchAll=false --maxWorkers=50%",
     "test:watch": "craco test --maxWorkers=25%",
     "test:cov": "craco test --coverage",
-    "test:ci": "yarn test:cov --watchAll=false --runInBand --testTimeout=15000",
+    "test:ci": "yarn test:cov --watchAll=false --runInBand",
     "eject": "craco eject",
     "lint": "eslint ./src"
   },
