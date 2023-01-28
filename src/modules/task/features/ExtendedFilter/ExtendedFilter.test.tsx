@@ -66,7 +66,7 @@ const clickResetAllButton = async (user: UserEvent) => {
   return button
 }
 
-const userCloseFilter = async (user: UserEvent) => {
+const closeFilter = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
   return button
@@ -306,7 +306,7 @@ export const testUtils = {
   getResetAllButton,
   clickResetButtonIn,
   clickResetAllButton,
-  userCloseFilter,
+  closeFilter,
   userApplyFilter,
   clickOutOfFilter,
   searchByColumn,

@@ -488,7 +488,7 @@ describe('Страница реестра заявок', () => {
 
         await testUtils.userOpenExtendedFilter(user)
         const filter = await extendedFilterTestUtils.findFilter()
-        await extendedFilterTestUtils.userCloseFilter(user)
+        await extendedFilterTestUtils.closeFilter(user)
 
         await waitFor(() => {
           expect(filter).not.toBeInTheDocument()
@@ -617,6 +617,7 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.loadingFinished()
       await testUtils.userOpenExtendedFilter(user)
       const filter = await extendedFilterTestUtils.findFilter()
+      await extendedFilterTestUtils.workGroup.loadingFinished()
 
       await extendedFilterTestUtils.status.setValue(
         user,
@@ -652,13 +653,14 @@ describe('Страница реестра заявок', () => {
         workGroupListItem.name,
       )
 
-      await extendedFilterTestUtils.userCloseFilter(user)
+      await extendedFilterTestUtils.closeFilter(user)
       await waitFor(() => {
         expect(filter).not.toBeInTheDocument()
       })
 
       await testUtils.userOpenExtendedFilter(user)
       await extendedFilterTestUtils.findFilter()
+      await extendedFilterTestUtils.workGroup.loadingFinished()
 
       expect(
         extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
@@ -701,6 +703,7 @@ describe('Страница реестра заявок', () => {
 
         await testUtils.userOpenExtendedFilter(user)
         await extendedFilterTestUtils.findFilter()
+        await extendedFilterTestUtils.workGroup.loadingFinished()
 
         extendedFilterTestUtils.status.expectHasCorrectInitialValues()
         extendedFilterTestUtils.assigned.expectHasCorrectInitialValues()
@@ -728,6 +731,7 @@ describe('Страница реестра заявок', () => {
 
         const workGroupField =
           await extendedFilterTestUtils.workGroup.loadingFinished()
+
         const selectedOption = getSelectedOption(workGroupField)
 
         expect(selectedOption).not.toBeInTheDocument()
