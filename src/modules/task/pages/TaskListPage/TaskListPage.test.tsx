@@ -292,9 +292,11 @@ describe('Страница реестра заявок', () => {
       )
 
       await extendedFilterTestUtils.userApplyFilter(user)
+      await taskTableTestUtils.loadingStarted()
       await taskTableTestUtils.loadingFinished()
 
       await fastFilterTestUtils.userChangeFilter(user, FastFilterEnum.Free)
+      await taskTableTestUtils.loadingStarted()
       await taskTableTestUtils.loadingFinished()
 
       await testUtils.userOpenExtendedFilter(user)
