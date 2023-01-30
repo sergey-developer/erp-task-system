@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios'
 import isPlainObject from 'lodash/isPlainObject'
 
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 
 import httpClient from './httpClient'
@@ -38,7 +38,7 @@ const baseQuery =
           status,
           data: isPlainObject(errorData)
             ? errorData
-            : { detail: UNKNOWN_ERROR_MSG },
+            : { detail: commonApiMessages.unknownError },
         },
       }
     }

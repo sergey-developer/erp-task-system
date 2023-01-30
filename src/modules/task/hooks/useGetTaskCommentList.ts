@@ -4,7 +4,7 @@ import { GetTaskCommentListQueryArgs } from 'modules/task/models'
 import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import {
   ErrorResponse,
   isNotFoundError,
@@ -34,7 +34,7 @@ export const useGetTaskCommentList = (id: GetTaskCommentListQueryArgs) => {
     } else if (isServerRangeError(error)) {
       showErrorNotification(getTaskCommentListServerErrorMsg(id))
     } else {
-      showErrorNotification(UNKNOWN_ERROR_MSG)
+      showErrorNotification(commonApiMessages.unknownError)
     }
   }, [id, state.error, state.isError])
 

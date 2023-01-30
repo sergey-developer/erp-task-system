@@ -1,17 +1,17 @@
 import { useCallback, useEffect } from 'react'
 
+import { suspendRequestApiMessages } from 'modules/task/constants/errorMessages'
 import { CreateTaskSuspendRequestMutationArgs } from 'modules/task/models'
 import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
+import { useCreateSuspendRequestMutation } from 'modules/task/services/taskSuspendRequestApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import {
   ErrorResponse,
   isBadRequestError,
   isNotFoundError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { useCreateSuspendRequestMutation } from '../services/taskSuspendRequestApi.service'
 
 export const useCreateTaskSuspendRequest = () => {
   const permissions = useUserPermissions(taskSuspendRequestApiPermissions)
@@ -32,15 +32,11 @@ export const useCreateTaskSuspendRequest = () => {
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error)) {
-      showErrorNotification(
-        'Невозможно перевести заявку в ожидание - заявка не найдена',
-      )
+      showErrorNotification(suspendRequestApiMessages.create.notFoundError)
     } else if (isBadRequestError(error)) {
-      showErrorNotification(
-        'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
-      )
+      showErrorNotification(suspendRequestApiMessages.create.badRequestError)
     } else {
-      showErrorNotification(UNKNOWN_ERROR_MSG)
+      showErrorNotification(commonApiMessages.unknownError)
     }
   }, [state.error, state.isError])
 

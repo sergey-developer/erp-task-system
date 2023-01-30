@@ -1,18 +1,17 @@
 import { useCallback, useEffect } from 'react'
 
+import { reclassificationRequestApiMessages } from 'modules/task/constants/errorMessages'
 import { CreateTaskReclassificationRequestMutationArgs } from 'modules/task/models'
 import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskReclassificationRequestApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import {
   ErrorResponse,
   isBadRequestError,
   isNotFoundError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG } from '../constants/errorMessages'
 
 export const useCreateTaskReclassificationRequest = () => {
   const permissions = useUserPermissions(
@@ -36,10 +35,10 @@ export const useCreateTaskReclassificationRequest = () => {
 
     if (isNotFoundError(error)) {
       showErrorNotification(
-        CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG,
+        reclassificationRequestApiMessages.create.notFoundError,
       )
     } else if (!isBadRequestError(error)) {
-      showErrorNotification(UNKNOWN_ERROR_MSG)
+      showErrorNotification(commonApiMessages.unknownError)
     }
   }, [state.error, state.isError])
 

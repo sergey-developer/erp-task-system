@@ -22,8 +22,8 @@ import {
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import taskFixtures from 'fixtures/task'
-import { CREATE_TASK_COMMENT_ERROR_MSG } from 'modules/task/constants/errorMessages'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { taskCommentApiMessages } from 'modules/task/constants/errorMessages'
+import { commonApiMessages } from 'shared/constants/errors'
 
 import { testUtils as commentListTestUtils } from './CommentList/CommentList.test'
 import { testUtils as createCommentFormTestUtils } from './CreateCommentForm/CreateCommentForm.test'
@@ -341,7 +341,9 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          const error = await findNotification(CREATE_TASK_COMMENT_ERROR_MSG)
+          const error = await findNotification(
+            taskCommentApiMessages.create.commonError,
+          )
           expect(error).toBeInTheDocument()
         })
 
@@ -362,7 +364,9 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          const error = await findNotification(CREATE_TASK_COMMENT_ERROR_MSG)
+          const error = await findNotification(
+            taskCommentApiMessages.create.commonError,
+          )
           expect(error).toBeInTheDocument()
         })
 
@@ -383,7 +387,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingStarted()
           await createCommentFormTestUtils.loadingFinished()
 
-          const error = await findNotification(UNKNOWN_ERROR_MSG)
+          const error = await findNotification(commonApiMessages.unknownError)
           expect(error).toBeInTheDocument()
         })
       })

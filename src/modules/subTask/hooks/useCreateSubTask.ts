@@ -1,6 +1,8 @@
 import { useCallback, useEffect } from 'react'
 
 import { CreateSubTaskMutationArgs } from 'modules/subTask/models'
+import { subTaskApiPermissions } from 'modules/subTask/permissions'
+import { useCreateSubTaskMutation } from 'modules/subTask/services/subTaskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 import {
   ErrorResponse,
@@ -8,9 +10,6 @@ import {
   isServerRangeError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { subTaskApiPermissions } from '../permissions'
-import { useCreateSubTaskMutation } from '../services/subTaskApi.service'
 
 export const useCreateSubTask = () => {
   const permissions = useUserPermissions(subTaskApiPermissions)

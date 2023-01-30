@@ -4,7 +4,7 @@ import { GetTaskQueryArgs } from 'modules/task/models'
 import { taskApiPermissions } from 'modules/task/permissions'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import {
   ErrorResponse,
   isBadRequestError,
@@ -35,7 +35,7 @@ export const useGetTask = (id: GetTaskQueryArgs) => {
     } else if (isBadRequestError(error) || isServerRangeError(error)) {
       showErrorNotification(getTaskServerErrorMsg(id))
     } else {
-      showErrorNotification(UNKNOWN_ERROR_MSG)
+      showErrorNotification(commonApiMessages.unknownError)
     }
   }, [id, state.error, state.isError])
 
