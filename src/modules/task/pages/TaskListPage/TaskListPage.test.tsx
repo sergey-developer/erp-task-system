@@ -301,9 +301,11 @@ describe('Страница реестра заявок', () => {
       await extendedFilterTestUtils.findFilter()
       await extendedFilterTestUtils.workGroup.loadingFinished()
 
-      expect(
-        extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
-      ).not.toBeChecked()
+      await waitFor(() => {
+        expect(
+          extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
+        ).not.toBeChecked()
+      })
 
       expect(
         extendedFilterTestUtils.assigned.getField(taskAssignedDict.True),
