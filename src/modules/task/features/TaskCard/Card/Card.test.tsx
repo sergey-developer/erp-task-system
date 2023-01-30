@@ -866,10 +866,102 @@ describe('Карточка заявки', () => {
           )
 
           await taskSuspendRequestTestUtils.findContainer()
-          const button = taskSuspendRequestTestUtils.getCancelButton()
 
-          expect(button).toBeInTheDocument()
-          expect(button).toBeEnabled()
+          expect(
+            taskSuspendRequestTestUtils.getCancelButton(),
+          ).toBeInTheDocument()
+        })
+
+        describe('Активна', () => {
+          test(`Для роли - ${UserRoleEnum.FirstLineSupport}`, async () => {
+            render(
+              <TaskCard
+                {...requiredProps}
+                task={{
+                  ...requiredProps.task!,
+                  suspendRequest: taskFixtures.getSuspendRequest({
+                    status: SuspendRequestStatusEnum.New,
+                  }),
+                }}
+              />,
+              {
+                store: getStoreWithAuth({
+                  userRole: UserRoleEnum.FirstLineSupport,
+                }),
+              },
+            )
+
+            await taskSuspendRequestTestUtils.findContainer()
+
+            expect(taskSuspendRequestTestUtils.getCancelButton()).toBeEnabled()
+          })
+
+          test(`Для роли - ${UserRoleEnum.SeniorEngineer}`, async () => {
+            render(
+              <TaskCard
+                {...requiredProps}
+                task={{
+                  ...requiredProps.task!,
+                  suspendRequest: taskFixtures.getSuspendRequest({
+                    status: SuspendRequestStatusEnum.New,
+                  }),
+                }}
+              />,
+              {
+                store: getStoreWithAuth({
+                  userRole: UserRoleEnum.SeniorEngineer,
+                }),
+              },
+            )
+
+            await taskSuspendRequestTestUtils.findContainer()
+
+            expect(taskSuspendRequestTestUtils.getCancelButton()).toBeEnabled()
+          })
+
+          test(`Для роли - ${UserRoleEnum.HeadOfDepartment}`, async () => {
+            render(
+              <TaskCard
+                {...requiredProps}
+                task={{
+                  ...requiredProps.task!,
+                  suspendRequest: taskFixtures.getSuspendRequest({
+                    status: SuspendRequestStatusEnum.New,
+                  }),
+                }}
+              />,
+              {
+                store: getStoreWithAuth({
+                  userRole: UserRoleEnum.HeadOfDepartment,
+                }),
+              },
+            )
+
+            await taskSuspendRequestTestUtils.findContainer()
+
+            expect(taskSuspendRequestTestUtils.getCancelButton()).toBeEnabled()
+          })
+        })
+
+        describe('Не активна', () => {
+          test(`Для роли - ${UserRoleEnum.Engineer}`, async () => {
+            render(
+              <TaskCard
+                {...requiredProps}
+                task={{
+                  ...requiredProps.task!,
+                  suspendRequest: taskFixtures.getSuspendRequest({
+                    status: SuspendRequestStatusEnum.New,
+                  }),
+                }}
+              />,
+              { store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }) },
+            )
+
+            await taskSuspendRequestTestUtils.findContainer()
+
+            expect(taskSuspendRequestTestUtils.getCancelButton()).toBeDisabled()
+          })
         })
 
         test('Отображает состояние загрузки', async () => {

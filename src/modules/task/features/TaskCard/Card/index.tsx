@@ -30,6 +30,7 @@ import {
   UpdateTaskAssigneeMutationArgs,
   UpdateTaskWorkGroupMutationArgs,
 } from 'modules/task/models'
+import { useUserRole } from 'modules/user/hooks'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
@@ -195,6 +196,7 @@ const TaskCard: FC<TaskCardProps> = ({
     task?.suspendRequest?.status,
   )
 
+  const userRole = useUserRole()
   const isAssignedToCurrentUser = useCheckUserAuthenticated(task?.assignee?.id)
   const hasSuspendRequest = !!task?.suspendRequest
 
@@ -461,6 +463,7 @@ const TaskCard: FC<TaskCardProps> = ({
                         text: 'Отменить запрос',
                         onClick: handleCancelTaskSuspendRequest,
                         loading: cancelSuspendRequestIsLoading,
+                        disabled: userRole.isEngineerRole,
                       }
                     : taskSuspendRequestStatusMap.isApproved
                     ? { text: 'Вернуть в работу', disabled: true }
