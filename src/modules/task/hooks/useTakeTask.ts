@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { TakeTaskMutationArgs } from 'modules/task/models'
 import { useTakeTaskMutation } from 'modules/task/services/taskApi.service'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useTakeTask = () => {
@@ -18,7 +18,7 @@ export const useTakeTask = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(UNKNOWN_ERROR_MSG)
+    showErrorNotification(commonApiMessages.unknownError)
   }, [state.isError])
 
   return { fn, state }

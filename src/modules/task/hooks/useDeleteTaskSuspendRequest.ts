@@ -1,9 +1,11 @@
 import { useCallback, useEffect } from 'react'
 
+import { suspendRequestApiMessages } from 'modules/task/constants/errorMessages'
 import { DeleteTaskSuspendRequestMutationArgs } from 'modules/task/models'
 import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
+import { useDeleteSuspendRequestMutation } from 'modules/task/services/taskSuspendRequestApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import {
   ErrorResponse,
   getErrorDetail,
@@ -14,8 +16,6 @@ import {
   showErrorNotification,
   showMultipleErrorNotification,
 } from 'shared/utils/notifications'
-
-import { useDeleteSuspendRequestMutation } from '../services/taskSuspendRequestApi.service'
 
 export const useDeleteTaskSuspendRequest = () => {
   const permissions = useUserPermissions(taskSuspendRequestApiPermissions)
@@ -36,11 +36,11 @@ export const useDeleteTaskSuspendRequest = () => {
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error)) {
-      showErrorNotification('Заявка не найдена или не находится в ожидании')
+      showErrorNotification(suspendRequestApiMessages.delete.notFoundError)
     } else if (isBadRequestError(error)) {
       showMultipleErrorNotification(getErrorDetail(error))
     } else {
-      showErrorNotification(UNKNOWN_ERROR_MSG)
+      showErrorNotification(commonApiMessages.unknownError)
     }
   }, [state.error, state.isError])
 

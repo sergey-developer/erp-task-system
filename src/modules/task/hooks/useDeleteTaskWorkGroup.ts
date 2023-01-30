@@ -4,7 +4,7 @@ import { DeleteTaskWorkGroupMutationArgs } from 'modules/task/models'
 import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
 import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import {
   ErrorResponse,
   getErrorDetail,
@@ -38,7 +38,7 @@ export const useDeleteTaskWorkGroup = () => {
     if (isNotFoundError(error) || isServerRangeError(error)) {
       showMultipleErrorNotification(getErrorDetail(error))
     } else if (!isBadRequestError(error)) {
-      showErrorNotification(UNKNOWN_ERROR_MSG)
+      showErrorNotification(commonApiMessages.unknownError)
     }
   }, [state.error, state.isError])
 

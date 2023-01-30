@@ -1,1 +1,3 @@
-export const UNKNOWN_ERROR_MSG = 'Неизвестная ошибка'
+export const commonApiMessages = {
+  unknownError: 'Неизвестная ошибка',
+} as const

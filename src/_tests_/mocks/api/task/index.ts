@@ -1,5 +1,6 @@
 export * from './getTask.mock'
 export * from './takeTask.mock'
+export * from './resolveTask.mock'
 
 export * from './getTaskList.mock'
 

@@ -20,7 +20,7 @@ import {
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import taskFixtures from 'fixtures/task'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import { NO_DATA_MSG } from './constants'
@@ -202,7 +202,9 @@ describe('Вкладка журнала задачи', () => {
           expect(makeDownloadLinkSpy).toBeCalledTimes(1)
           expect(clickDownloadLinkSpy).toBeCalledTimes(1)
 
-          const notification = screen.queryByText(UNKNOWN_ERROR_MSG)
+          const notification = screen.queryByText(
+            commonApiMessages.unknownError,
+          )
           expect(notification).not.toBeInTheDocument()
         })
       })
@@ -235,7 +237,9 @@ describe('Вкладка журнала задачи', () => {
           expect(makeDownloadLinkSpy).not.toBeCalled()
           expect(clickDownloadLinkSpy).not.toBeCalled()
 
-          const notification = await findNotification(UNKNOWN_ERROR_MSG)
+          const notification = await findNotification(
+            commonApiMessages.unknownError,
+          )
           expect(notification).toBeInTheDocument()
         })
       })
@@ -304,7 +308,7 @@ describe('Вкладка журнала задачи', () => {
 
   describe('При не успешном запросе журнала', () => {
     describe('Отображает', () => {
-      test(`Ошибку "${UNKNOWN_ERROR_MSG}"`, async () => {
+      test('Соответствующую ошибку', async () => {
         mockGetJournalServerError(requiredProps.taskId)
 
         render(<JournalTab {...requiredProps} />, {
@@ -314,11 +318,13 @@ describe('Вкладка журнала задачи', () => {
         await testUtils.journalLoadingStarted()
         await testUtils.journalLoadingFinished()
 
-        const notification = await findNotification(UNKNOWN_ERROR_MSG)
+        const notification = await findNotification(
+          commonApiMessages.unknownError,
+        )
         expect(notification).toBeInTheDocument()
       })
 
-      test(`Текст "${NO_DATA_MSG}"`, async () => {
+      test('Соответствующий текст', async () => {
         mockGetJournalServerError(requiredProps.taskId)
 
         render(<JournalTab {...requiredProps} />, {

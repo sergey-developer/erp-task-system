@@ -1,13 +1,41 @@
-export const UPDATE_TASK_ASSIGNEE_COMMON_ERROR_MSG =
-  'Невозможно изменить исполнителя'
+export const taskApiMessages = {
+  resolve: {
+    commonError: 'Невозможно выполнить заявку',
+  },
+} as const
 
-export const CREATE_TASK_RECLASSIFICATION_REQUEST_NOT_FOUND_ERROR_MSG =
-  'Невозможно создать запрос на переклассификацию - заявка не найдена'
+export const taskCommentApiMessages = {
+  create: {
+    commonError: 'Возникла ошибка при добавлении комментария',
+  },
+} as const
 
-export const RESOLVE_TASK_COMMON_ERROR_MSG = 'Невозможно выполнить заявку'
+export const taskWorkGroupApiMessages = {
+  update: {
+    commonError: 'Возникла ошибка при назначении рабочей группы',
+  },
+} as const
 
-export const UPDATE_TASK_WORK_GROUP_COMMON_ERROR_MSG =
-  'Возникла ошибка при назначении рабочей группы'
+export const reclassificationRequestApiMessages = {
+  create: {
+    notFoundError:
+      'Невозможно создать запрос на переклассификацию - заявка не найдена',
+  },
+} as const
 
-export const CREATE_TASK_COMMENT_ERROR_MSG =
-  'Возникла ошибка при добавлении комментария'
+export const suspendRequestApiMessages = {
+  create: {
+    notFoundError: 'Невозможно перевести заявку в ожидание - заявка не найдена',
+    badRequestError:
+      'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
+  },
+  delete: {
+    notFoundError: 'Заявка не найдена или не находится в ожидании',
+  },
+} as const
+
+export const taskAssigneeApiMessages = {
+  update: {
+    commonError: 'Невозможно изменить исполнителя',
+  },
+} as const

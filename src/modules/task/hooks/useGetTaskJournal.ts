@@ -4,7 +4,7 @@ import { GetTaskJournalQueryArgs } from 'modules/task/models'
 import { taskJournalApiPermissions } from 'modules/task/permissions'
 import { useGetTaskJournalQuery } from 'modules/task/services/taskJournalApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskJournal = (id: GetTaskJournalQueryArgs) => {
@@ -14,7 +14,7 @@ export const useGetTaskJournal = (id: GetTaskJournalQueryArgs) => {
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(UNKNOWN_ERROR_MSG)
+    showErrorNotification(commonApiMessages.unknownError)
   }, [state.isError])
 
   return state

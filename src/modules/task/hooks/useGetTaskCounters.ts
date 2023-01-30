@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { taskCountersApiPermissions } from 'modules/task/permissions'
 import { useGetTaskCountersQuery } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
-import { UNKNOWN_ERROR_MSG } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/errors'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskCounters = () => {
@@ -16,7 +16,7 @@ export const useGetTaskCounters = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(UNKNOWN_ERROR_MSG)
+    showErrorNotification(commonApiMessages.unknownError)
   }, [state.isError])
 
   return state
