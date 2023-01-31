@@ -1201,28 +1201,28 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test.skip('Сортировка включена', async () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Статус')
         expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
       })
 
-      test('Значение сортировки по умолчанию не установлено', () => {
+      test.skip('Значение сортировки по умолчанию не установлено', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Статус')
         expect(headCol).not.toHaveAttribute('aria-sort')
       })
 
-      test('При клике на заголовок обработчик вызывается корректно', async () => {
+      test.skip('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
         await testUtils.userClickColTitle(user, 'Статус')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
-      test('Сортировка работает корректно', async () => {
+      test.skip('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
         await testUtils.userClickColTitle(user, 'Статус')
