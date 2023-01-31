@@ -18,7 +18,7 @@ import {
 } from 'modules/task/features/TaskList/models'
 
 import { workGroupFixtures } from '../workGroup'
-import { getTaskAssignee } from './taskAssignee'
+import { taskFixtures } from './index'
 
 export const getTaskListItem = (
   props?: Partial<TaskListItemModel>,
@@ -29,7 +29,7 @@ export const getTaskListItem = (
   type: props?.type || TaskTypeEnum.Request,
 
   id: generateId(),
-  assignee: getTaskAssignee(),
+  assignee: taskFixtures.getTaskAssignee(),
   lastComment: generateWord(),
   priorityCode: generateInteger({
     min: 1,
@@ -46,6 +46,7 @@ export const getTaskListItem = (
   createdAt: generateDateString(),
   recordId: generateWord(),
   workGroup: workGroupFixtures.getWorkGroup(),
+  supportGroup: taskFixtures.getSupportGroup(),
   title: generateWord(),
   name: generateWord(),
   productClassifier1: generateWord(),
