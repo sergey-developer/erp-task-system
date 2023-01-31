@@ -50,7 +50,7 @@ import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
 const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
-  const { isEngineerRole } = useUserRole()
+  const { isEngineerRole, role } = useUserRole()
 
   const {
     data: taskCounters,
@@ -335,6 +335,7 @@ const TaskListPage: FC = () => {
                 loading={taskListIsFetching}
                 onChange={handleChangeTable}
                 pagination={taskListResponse?.pagination || false}
+                userRole={role!}
               />
             </Col>
 

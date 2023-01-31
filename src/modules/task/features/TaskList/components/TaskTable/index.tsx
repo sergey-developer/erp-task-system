@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import { ResizableProps } from 'react-resizable'
 
-import { tableColumns } from './constants/columns'
+import { getTableColumns } from './constants/columns'
 import { localeConfig } from './constants/common'
 import tableComponents from './constants/components'
 import { paginationConfig } from './constants/pagination'
@@ -20,10 +20,12 @@ const TaskTable: FC<TaskTableProps> = ({
   onRow,
   pagination,
   rowClassName,
+  userRole,
 }) => {
   const breakpoints = useBreakpoint()
-  const [columns, setColumns] =
-    useState<ColumnsType<TaskTableListItem>>(tableColumns)
+  const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(
+    getTableColumns(userRole),
+  )
 
   const handleResize =
     (index: number): ResizableProps['onResize'] =>

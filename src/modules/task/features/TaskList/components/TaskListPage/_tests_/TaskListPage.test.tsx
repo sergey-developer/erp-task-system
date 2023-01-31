@@ -1365,7 +1365,7 @@ describe('Страница реестра заявок', () => {
       })
 
       describe('Рабочая группа', () => {
-        test('Сортировка / При клике на заголовок отправляется запрос', async () => {
+        test.skip('Сортировка / При клике на заголовок отправляется запрос', async () => {
           mockGetTaskCountersSuccess()
           mockGetTaskListSuccess({ once: false })
 

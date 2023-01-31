@@ -9,6 +9,7 @@ export type AscendSortValue =
   | 'assignee__last_name'
   | 'record_id'
   | 'work_group__name'
+  | 'support_group__name'
   | 'created_at'
   | 'ola_next_breach_time'
 
@@ -26,6 +27,7 @@ export type SortableField = keyof Pick<
   | 'assignee'
   | 'recordId'
   | 'workGroup'
+  | 'supportGroup'
   | 'createdAt'
   | 'olaNextBreachTime'
 >
@@ -42,6 +44,7 @@ export const sortableFieldToSortValues: Record<
   assignee: ['assignee__last_name', '-assignee__last_name'],
   recordId: ['record_id', '-record_id'],
   workGroup: ['work_group__name', '-work_group__name'],
+  supportGroup: ['support_group__name', '-support_group__name'],
   createdAt: ['created_at', '-created_at'],
   olaNextBreachTime: ['ola_next_breach_time', '-ola_next_breach_time'],
 }
