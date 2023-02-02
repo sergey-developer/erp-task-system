@@ -16,7 +16,7 @@ const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   onChange: jest.fn(),
   pagination: false,
   rowClassName: '',
-  userRole: UserRolesEnum.FirstLineSupport,
+  userRole: UserRolesEnum.Engineer,
 }
 
 const paginationProps: Readonly<
