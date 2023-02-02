@@ -2,14 +2,20 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 
 /**
  * При срабатывании валидации формы ant design показывался warning, даже если валидация сработала правильно
  * Пример проблемы - https://stackoverflow.com/questions/64128556/ant-design-form-async-validator-warning
  * Решение - https://github.com/yiminghe/async-validator
  */
-import Schema from 'async-validator'
+import Schema from "async-validator";
+
+if (process.env.REACT_APP_ENVIRONMENT === 'test' && process.env.CI) {
+  jest.setTimeout(15000)
+} else {
+  jest.setTimeout(10000)
+}
 
 Schema.warning = function () {}
 
