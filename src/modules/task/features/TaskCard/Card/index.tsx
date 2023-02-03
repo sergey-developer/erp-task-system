@@ -458,7 +458,8 @@ const TaskCard: FC<TaskCardProps> = ({
                 user={task.suspendRequest.author}
                 comment={task.suspendRequest.comment}
                 action={
-                  taskSuspendRequestStatusMap.isNew
+                  taskSuspendRequestStatusMap.isNew ||
+                  taskSuspendRequestStatusMap.isInProgress
                     ? {
                         text: 'Отменить запрос',
                         onClick: handleCancelTaskSuspendRequest,
