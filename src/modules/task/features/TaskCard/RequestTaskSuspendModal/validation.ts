@@ -18,9 +18,9 @@ export const END_DATE_RULES: Rule[] = [
     required: true,
     validator: (rule, value: Moment) =>
       value
-        ? value.isSameOrAfter(new Date(), 'days')
-          ? Promise.resolve()
-          : Promise.reject(new Error(validationMessages.date.canNotBeInPast))
+        ? value.isBefore(new Date(), 'day')
+          ? Promise.reject(new Error(validationMessages.date.canNotBeInPast))
+          : Promise.resolve()
         : Promise.reject(validationMessages.required),
   },
 ]
@@ -29,13 +29,23 @@ export const END_TIME_RULES: Rule[] = [
   ({ getFieldValue }) => ({
     type: 'date',
     required: true,
-    validator: (rule, value: Moment) =>
-      value
-        ? getFieldValue('endDate')
-          ? value.isSameOrAfter(new Date(), 'minutes')
-            ? Promise.resolve()
-            : Promise.reject(new Error(validationMessages.time.canNotBeInPast))
+    validator: (rule, value: Moment) => {
+      if (!value) return Promise.reject(validationMessages.required)
+
+      const endDate: Moment = getFieldValue('endDate')
+      const currentDate = new Date()
+
+      if (!endDate || endDate.isAfter(currentDate, 'day')) {
+        return Promise.resolve()
+      }
+
+      if (endDate.isSame(currentDate, 'day')) {
+        return value.isBefore(currentDate, 'minute')
+          ? Promise.reject(new Error(validationMessages.time.canNotBeInPast))
           : Promise.resolve()
-        : Promise.reject(validationMessages.required),
+      } else {
+        return Promise.resolve()
+      }
+    },
   }),
 ]
