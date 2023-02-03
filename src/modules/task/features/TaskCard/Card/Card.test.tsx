@@ -872,6 +872,26 @@ describe('Карточка заявки', () => {
           ).toBeInTheDocument()
         })
 
+        test(`Отображается если статус запроса "${SuspendRequestStatusEnum.InProgress}"`, async () => {
+          render(
+            <TaskCard
+              {...requiredProps}
+              task={{
+                ...requiredProps.task!,
+                suspendRequest: taskFixtures.getSuspendRequest({
+                  status: SuspendRequestStatusEnum.InProgress,
+                }),
+              }}
+            />,
+          )
+
+          await taskSuspendRequestTestUtils.findContainer()
+
+          expect(
+            taskSuspendRequestTestUtils.getCancelButton(),
+          ).toBeInTheDocument()
+        })
+
         describe('Активна', () => {
           test(`Для роли - ${UserRoleEnum.FirstLineSupport}`, async () => {
             render(
