@@ -552,14 +552,14 @@ describe('Модалка создания запроса о переводе в 
           })
 
           // todo: выяснить почему тест падает но всё написано корректно
-          test.skip('Если выбрана дата и если время в прошлом времени', async () => {
+          test.skip('Если выбран сегодняшний день и если время в прошлом времени', async () => {
             const { user } = render(
               <RequestTaskSuspendModal {...requiredProps} />,
             )
 
             await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
-            const dateValue = formatDate(moment().add(1, 'day'), 'YYYY-MM-DD')
+            const dateValue = formatDate(new Date(), 'YYYY-MM-DD')
             await testUtils.setEndDate(user, dateValue)
 
             const timeValue = formatDate(moment().subtract(1, 'hour'), 'HH:mm')
