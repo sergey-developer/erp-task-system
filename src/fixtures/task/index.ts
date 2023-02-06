@@ -4,6 +4,7 @@ import * as counters from './counters'
 import * as journal from './journal'
 import * as reclassificationRequest from './reclassificationRequest'
 import * as suspendRequest from './suspendRequest'
+import * as supportGroup from './supportGroup'
 import * as task from './task'
 import * as taskList from './taskList'
 import * as taskTable from './taskTable'
@@ -20,6 +21,7 @@ const taskFixtures = {
   ...journal,
   ...reclassificationRequest,
   ...suspendRequest,
+  ...supportGroup,
 }
 
 export default taskFixtures

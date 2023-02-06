@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import { ResizableProps } from 'react-resizable'
 
+import { getTableColumns } from './constants/columns'
 import { ArrayItem } from 'shared/interfaces/utils'
 
 import { getTableColumns } from './constants/columns'
