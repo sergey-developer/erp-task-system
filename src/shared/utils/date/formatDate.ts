@@ -1,6 +1,6 @@
 import moment, { Moment } from 'moment'
 
-const formatDate = (
+export const formatDate = (
   date: moment.MomentInput,
   format: string,
 ): ReturnType<Moment['format']> => {
@@ -8,5 +8,3 @@ const formatDate = (
   const momentDate = moment(date)
   return momentDate.isValid() ? momentDate.format(format) : 'Некорректная дата'
 }
-
-export default formatDate

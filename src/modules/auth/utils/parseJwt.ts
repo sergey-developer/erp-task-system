@@ -2,7 +2,7 @@ import { camelizeKeys } from 'humps'
 
 import { JwtPayload } from '../interfaces'
 
-const parseJwt = (token: string): JwtPayload => {
+export const parseJwt = (token: string): JwtPayload => {
   const base64Url = token.split('.')[1]
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
   const jsonPayload = decodeURIComponent(
@@ -16,5 +16,3 @@ const parseJwt = (token: string): JwtPayload => {
   )
   return camelizeKeys(JSON.parse(jsonPayload)) as unknown as JwtPayload
 }
-
-export default parseJwt

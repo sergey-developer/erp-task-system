@@ -4,22 +4,24 @@ import { Link } from 'react-router-dom'
 
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import UserAvatar from 'components/Avatars/UserAvatar'
+import { MonitoringIcon } from 'components/Icons'
 import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 import { getNavMenuConfig } from 'configs/navMenu/utils'
-import LogoutButton from 'modules/auth/features/Logout/components/LogoutButton'
-import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
-import useMatchedRoute from 'shared/hooks/useMatchedRoute'
+import { RoutesEnum } from 'configs/routes'
+import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
+import { useUserProfileState } from 'modules/user/hooks'
+import { useMatchedRoute } from 'shared/hooks'
 
 import { HeaderStyled } from './styles'
 
 const PrivateHeader: FC = () => {
   const breakpoints = useBreakpoint()
-  const user = useAuthenticatedUser()
+  const { data: userProfile } = useUserProfileState()
 
   const navMenu = useMemo(() => {
-    const userRole = user?.role
+    const userRole = userProfile?.role
 
     const items: NavMenuProps['items'] = userRole
       ? getNavMenuConfig(userRole).map(({ key, icon: Icon, link, text }) => ({
@@ -32,7 +34,7 @@ const PrivateHeader: FC = () => {
     const itemsKeys = items.map(({ key }) => key)
 
     return { items, itemsKeys }
-  }, [user?.role])
+  }, [userProfile?.role])
 
   const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
   const activeNavKey = matchedRoute?.pathnameBase
@@ -53,7 +55,19 @@ const PrivateHeader: FC = () => {
           <Row justify='end'>
             <Space size='large'>
               <NotificationCounter />
-              <UserAvatar size='large' dot />
+
+              {userProfile?.isStaff && (
+                <Link to={RoutesEnum.TaskMonitoring}>
+                  <MonitoringIcon
+                    $color='black'
+                    $size='large'
+                    $cursor='pointer'
+                  />
+                </Link>
+              )}
+
+              <UserAvatar size='large' dot abbr='' />
+
               <LogoutButton />
             </Space>
           </Row>

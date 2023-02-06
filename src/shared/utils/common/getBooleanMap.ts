@@ -1,7 +1,7 @@
 import { BooleanMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-const getBooleanMap = <T, O extends object>(
+export const getBooleanMap = <T, O extends object>(
   type: T,
   obj: O,
   customizeKey?: (key: string) => string,
@@ -12,5 +12,3 @@ const getBooleanMap = <T, O extends object>(
     acc[newKey] = isEqual(value, type)
     return acc
   }, {})
-
-export default getBooleanMap

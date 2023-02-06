@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useSelector from 'shared/hooks/useSelector'
+import { useSelector } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import { AuthenticatedUser } from '../interfaces'
@@ -15,7 +15,7 @@ type UseAuthenticatedUserReturnType = MaybeNull<{
   Хук возвращает авторизованного пользователя
  */
 
-const useAuthenticatedUser = (): UseAuthenticatedUserReturnType => {
+export const useAuthenticatedUser = (): UseAuthenticatedUserReturnType => {
   const authenticatedUser = useSelector(authenticatedUserSelector)
 
   return useMemo(() => {
@@ -24,5 +24,3 @@ const useAuthenticatedUser = (): UseAuthenticatedUserReturnType => {
       : null
   }, [authenticatedUser])
 }
-
-export default useAuthenticatedUser

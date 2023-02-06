@@ -6,6 +6,10 @@ import {
   generateInteger,
   generateWord,
 } from '_tests_/utils'
+import commonFixtures from 'fixtures/common'
+import workGroupFixtures from 'fixtures/workGroup'
+import taskFixtures from 'fixtures/task'
+
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -13,12 +17,10 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/common'
 import {
-  GetTaskListResponseModel,
+  GetTaskListSuccessResponse,
   TaskListItemModel,
-} from 'modules/task/features/TaskList/models'
+} from 'modules/task/models'
 
-import { workGroupFixtures } from '../workGroup'
-import { taskFixtures } from './index'
 
 export const getTaskListItem = (
   props?: Partial<TaskListItemModel>,
@@ -29,7 +31,7 @@ export const getTaskListItem = (
   type: props?.type || TaskTypeEnum.Request,
 
   id: generateId(),
-  assignee: taskFixtures.getTaskAssignee(),
+  assignee: taskFixtures.getAssignee(),
   lastComment: generateWord(),
   priorityCode: generateInteger({
     min: 1,
@@ -46,7 +48,7 @@ export const getTaskListItem = (
   createdAt: generateDateString(),
   recordId: generateWord(),
   workGroup: workGroupFixtures.getWorkGroup(),
-  supportGroup: taskFixtures.getSupportGroup(),
+  supportGroup: commonFixtures.getSupportGroup(),
   title: generateWord(),
   name: generateWord(),
   productClassifier1: generateWord(),
@@ -58,11 +60,6 @@ export const getTaskListItem = (
 export const getTaskList = (length: number = 1): Array<TaskListItemModel> =>
   times(length, () => getTaskListItem())
 
-export const getGetTaskListResponse = (
-  taskList: GetTaskListResponseModel['results'],
-): GetTaskListResponseModel => ({
-  results: taskList,
-  count: taskList.length,
-  next: null,
-  previous: null,
-})
+export const getTaskListResponse = (
+  list: GetTaskListSuccessResponse['results'],
+): GetTaskListSuccessResponse => commonFixtures.getPaginatedListResponse(list)

@@ -1,5 +1,3 @@
-import valueOr from './valueOr'
+import defaultTo from 'lodash/defaultTo'
 
-const valueOrHyphen = (value: any) => valueOr(value, '-')
-
-export default valueOrHyphen
+export const valueOrHyphen = (value: any) => defaultTo(value, '-')

@@ -2,9 +2,9 @@ import {
   CORRECT_ACCESS_TOKEN,
   CORRECT_REFRESH_TOKEN,
 } from '_tests_/constants/auth'
-import { LoginResponseModel } from 'modules/auth/models'
+import { LoginSuccessResponse } from 'modules/auth/models'
 
-export const loginResponseSuccess: LoginResponseModel = {
+export const loginResponseSuccess: LoginSuccessResponse = {
   access: CORRECT_ACCESS_TOKEN,
   refresh: CORRECT_REFRESH_TOKEN,
 }

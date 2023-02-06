@@ -4,7 +4,7 @@ import { TaskStatusEnum } from 'modules/task/constants/common'
 import { BooleanMap, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-const useTaskStatus = (
+export const useTaskStatus = (
   status: MaybeUndefined<TaskStatusEnum>,
 ): BooleanMap<`is${keyof typeof TaskStatusEnum}`> => {
   return useMemo(
@@ -18,5 +18,3 @@ const useTaskStatus = (
     [status],
   )
 }
-
-export default useTaskStatus

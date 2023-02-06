@@ -1,47 +1,50 @@
 import {
-  TaskEndpointsEnum,
-  TaskEndpointsTagsEnum,
+  TaskEndpointEnum,
+  TaskEndpointNameEnum,
+  TaskEndpointTagEnum,
 } from 'modules/task/constants/api'
-import { GetTaskListTransformedResponse } from 'modules/task/features/TaskList/interfaces'
+import { GetTaskListTransformedResponse } from 'modules/task/interfaces'
 import {
-  GetTaskCountersQueryArgsModel,
-  GetTaskCountersResponseModel,
-  GetTaskListQueryArgsModel,
-  GetTaskListResponseModel,
-} from 'modules/task/features/TaskList/models'
+  GetTaskCountersQueryArgs,
+  GetTaskCountersSuccessResponse,
+  GetTaskListQueryArgs,
+  GetTaskListSuccessResponse,
+  GetTaskQueryArgs,
+  GetTaskSuccessResponse,
+  ResolveTaskMutationArgs,
+  ResolveTaskSuccessResponse,
+  TakeTaskMutationArgs,
+  TakeTaskSuccessResponse,
+} from 'modules/task/models'
 import {
-  GetTaskQueryArgsModel,
-  GetTaskResponseModel,
-  ResolveTaskMutationArgsModel,
-  ResolveTaskResponseModel,
-  TakeTaskMutationArgsModel,
-  TakeTaskResponseModel,
-} from 'modules/task/features/TaskView/models'
-import {
-  getResolveTaskUrl,
-  getTakeTaskUrl,
   getTaskUrl,
+  resolveTaskUrl,
+  takeTaskUrl,
 } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
 const taskApiService = apiService
   .enhanceEndpoints({
-    addTagTypes: [TaskEndpointsTagsEnum.Task, TaskEndpointsTagsEnum.TaskList],
+    addTagTypes: [TaskEndpointTagEnum.Task, TaskEndpointTagEnum.TaskList],
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getTaskList: build.query<
+      [TaskEndpointNameEnum.GetTaskList]: build.query<
         GetTaskListTransformedResponse,
-        GetTaskListQueryArgsModel
+        GetTaskListQueryArgs
       >({
         query: (filter) => ({
-          url: TaskEndpointsEnum.TaskList,
+          url: TaskEndpointEnum.GetTaskList,
           method: HttpMethodEnum.Get,
           params: filter,
         }),
         // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
-        transformResponse: (response: GetTaskListResponseModel, meta, arg) => {
+        transformResponse: (
+          response: GetTaskListSuccessResponse,
+          meta,
+          arg,
+        ) => {
           return {
             pagination: {
               current: arg.offset / arg.limit + 1,
@@ -52,47 +55,50 @@ const taskApiService = apiService
           }
         },
         providesTags: (result, error) =>
-          error ? [] : [TaskEndpointsTagsEnum.TaskList],
+          error ? [] : [TaskEndpointTagEnum.TaskList],
       }),
-      getTaskCounters: build.query<
-        GetTaskCountersResponseModel,
-        GetTaskCountersQueryArgsModel
+      [TaskEndpointNameEnum.GetTaskCounters]: build.query<
+        GetTaskCountersSuccessResponse,
+        GetTaskCountersQueryArgs
       >({
         query: () => ({
-          url: TaskEndpointsEnum.TaskCounters,
+          url: TaskEndpointEnum.GetTaskCounters,
           method: HttpMethodEnum.Get,
         }),
       }),
-      getTask: build.query<GetTaskResponseModel, GetTaskQueryArgsModel>({
+      [TaskEndpointNameEnum.GetTask]: build.query<
+        GetTaskSuccessResponse,
+        GetTaskQueryArgs
+      >({
         query: (taskId) => ({
           url: getTaskUrl(taskId),
           method: HttpMethodEnum.Get,
         }),
         providesTags: (result, error) =>
-          error ? [] : [TaskEndpointsTagsEnum.Task],
+          error ? [] : [TaskEndpointTagEnum.Task],
       }),
-      resolveTask: build.mutation<
-        ResolveTaskResponseModel,
-        ResolveTaskMutationArgsModel
+      [TaskEndpointNameEnum.ResolveTask]: build.mutation<
+        ResolveTaskSuccessResponse,
+        ResolveTaskMutationArgs
       >({
-        query: ({ taskId, ...body }) => ({
-          url: getResolveTaskUrl(taskId),
+        query: ({ taskId, ...payload }) => ({
+          url: resolveTaskUrl(taskId),
           method: HttpMethodEnum.Post,
-          data: body,
+          data: payload,
         }),
         invalidatesTags: (result, error) =>
-          error ? [] : [TaskEndpointsTagsEnum.TaskList],
+          error ? [] : [TaskEndpointTagEnum.TaskList],
       }),
-      takeTask: build.mutation<
-        TakeTaskResponseModel,
-        TakeTaskMutationArgsModel
+      [TaskEndpointNameEnum.TakeTask]: build.mutation<
+        TakeTaskSuccessResponse,
+        TakeTaskMutationArgs
       >({
         query: ({ taskId }) => ({
-          url: getTakeTaskUrl(taskId),
+          url: takeTaskUrl(taskId),
           method: HttpMethodEnum.Post,
         }),
         invalidatesTags: (result, error) =>
-          error ? [] : [TaskEndpointsTagsEnum.Task],
+          error ? [] : [TaskEndpointTagEnum.Task],
       }),
     }),
     overrideExisting: false,

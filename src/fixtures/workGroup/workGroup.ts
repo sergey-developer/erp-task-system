@@ -1,15 +1,37 @@
-import { generateId, generateName } from '_tests_/utils'
-import { WorkGroupListItemModel } from 'modules/workGroup/features/WorkGroupList/models'
+import times from 'lodash/times'
+
+import {
+  generateId,
+  generateInteger,
+  generateName,
+  generateWord,
+} from '_tests_/utils'
+import {
+  WorkGroupListItemModel,
+  WorkGroupTypeEnum,
+} from 'modules/workGroup/models'
+import { ArrayItem } from 'shared/interfaces/utils'
+
+export const getWorkGroupMember = (): ArrayItem<
+  WorkGroupListItemModel['members']
+> => ({ id: generateId(), fullName: generateName() })
+
+export const getWorkGroupMemberList = (
+  length: number = 1,
+): WorkGroupListItemModel['members'] =>
+  times(length, () => getWorkGroupMember())
 
 export const getWorkGroup = (
   props?: Partial<{
     seniorEngineerId: number
     groupLeadId: number
-  }>,
-): WorkGroupListItemModel => ({
-  id: generateId(),
+    memberAmount: number
+  }> &
+    Partial<Pick<WorkGroupListItemModel, 'id' | 'type' | 'priority'>>,
+): NonNullable<WorkGroupListItemModel> => ({
+  id: props?.id || generateId(),
   name: generateName(),
-  members: [{ id: generateId(), fullName: generateName() }],
+  members: getWorkGroupMemberList(props?.memberAmount),
   seniorEngineer: {
     id: props?.seniorEngineerId || generateId(),
     fullName: generateName(),
@@ -18,4 +40,12 @@ export const getWorkGroup = (
     id: props?.groupLeadId || generateId(),
     fullName: generateName(),
   },
+  type: props?.type || WorkGroupTypeEnum.NoType,
+  description: generateWord(),
+  priority:
+    props?.priority ||
+    (generateInteger({
+      min: 1,
+      max: 4,
+    }) as WorkGroupListItemModel['priority']),
 })

@@ -4,7 +4,7 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { GetTaskJournalResponseModel } from 'modules/task/features/TaskView/models'
+import { GetTaskJournalSuccessResponse } from 'modules/task/models'
 import {
   getTaskJournalCsvUrl,
   getTaskJournalUrl,
@@ -12,51 +12,28 @@ import {
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
-const getGetJournalMockFn = (taskId: number) =>
+const getJournalMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Get, getTaskJournalUrl(taskId))
 
-const getGetJournalCsvMockFn = (taskId: number) =>
+const getJournalCsvMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Get, getTaskJournalCsvUrl(taskId))
 
 export const mockGetJournalSuccess = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<GetTaskJournalResponseModel>>,
-) => {
-  const mockGetJournal = getSuccessMockFn(getGetJournalMockFn(taskId), options)
-  mockGetJournal()
-}
+  options?: Partial<ResponseResolverOptions<GetTaskJournalSuccessResponse>>,
+) => getSuccessMockFn(getJournalMockFn(taskId), options)()
 
 export const mockGetJournalServerError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockGetJournal = getServerErrorMockFn(
-    getGetJournalMockFn(taskId),
-    options,
-  )
-  mockGetJournal()
-}
+) => getServerErrorMockFn(getJournalMockFn(taskId), options)()
 
 export const mockGetJournalCsvSuccess = (
   taskId: number,
   options?: Partial<ResponseResolverOptions>,
-) => {
-  const mockGetJournalCsv = getSuccessMockFn(
-    getGetJournalCsvMockFn(taskId),
-    options,
-  )
-
-  mockGetJournalCsv()
-}
+) => getSuccessMockFn(getJournalCsvMockFn(taskId), options)()
 
 export const mockGetJournalCsvServerError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockGetJournalCsv = getServerErrorMockFn(
-    getGetJournalCsvMockFn(taskId),
-    options,
-  )
-
-  mockGetJournalCsv()
-}
+) => getServerErrorMockFn(getJournalCsvMockFn(taskId), options)()

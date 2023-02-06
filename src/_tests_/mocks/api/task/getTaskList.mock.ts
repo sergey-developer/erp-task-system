@@ -1,15 +1,14 @@
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { TaskEndpointsEnum } from 'modules/task/constants/api'
-import { GetTaskListResponseModel } from 'modules/task/features/TaskList/models'
+import { TaskEndpointEnum } from 'modules/task/constants/api'
+import { GetTaskListSuccessResponse } from 'modules/task/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 
-const getGetTaskListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, TaskEndpointsEnum.TaskList)
+const getTaskListMockFn = () =>
+  getRequestMockFn(HttpMethodEnum.Get, TaskEndpointEnum.GetTaskList)
 
 export const mockGetTaskListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetTaskListResponseModel>>,
-) => {
-  const mockGetTaskList = getSuccessMockFn(getGetTaskListMockFn(), options)
-  mockGetTaskList()
-}
+  options?: Partial<ResponseResolverOptions<GetTaskListSuccessResponse>>,
+) => getSuccessMockFn(getTaskListMockFn(), options)()
+
+// todo: написать тесты на ошибочное получение списка

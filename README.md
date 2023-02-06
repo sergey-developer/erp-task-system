@@ -16,9 +16,12 @@
 
 ## Команды
 - `yarn install:dev` Установка зависимостей для dev режима
-  - `husky install` нужен для настройки [husky](https://typicode.github.io/husky/#/?id=usage)
+  - `husky install` Нужен для настройки [husky](https://typicode.github.io/husky/#/?id=usage)
 - [yarn start](https://create-react-app.dev/docs/getting-started/#npm-start-or-yarn-start) Запускает приложение локально в dev режиме, по умолчанию на http://localhost:3000
-- [yarn test](https://create-react-app.dev/docs/getting-started/#npm-test-or-yarn-test) Запускает тесты используя watch mode
+- `yarn test` Запускает тесты в обычном режиме
+- [yarn test:watch](https://create-react-app.dev/docs/getting-started/#npm-test-or-yarn-test) Запускает тесты в watch режиме
+- `yarn test:cov` Запускает тесты с последующим выводом coverage отчёта
+- `yarn test:ci` Запускает тесты с учётом их запуска в CI окружении
 - [yarn build](https://create-react-app.dev/docs/production-build/) Собирает production версию приложения
 - [yarn eject](https://create-react-app.dev/docs/available-scripts/#npm-run-eject) Команда из create-react-app
 - `yarn lint` Запускает встроенный в CRA линтер
@@ -69,7 +72,7 @@
    - `REACT_APP_API_URL=http://localhost:3000`
    - `REACT_APP_ENVIRONMENT=test`
 3. Установить зависимости `yarn install`
-4. Запустить тесты `yarn test`
+4. Запустить тесты `yarn test` или `yarn test:watch`
 
 ## Архитектура
 - `.husky` Создаётся при запуске команды `husky install` вместе с папкой `_`
@@ -174,7 +177,7 @@ RTK query не умеет правильно доставать ReturnType из 
 ## Permissions
 Пермишены ролей реализованы на фронте.
 
-- Перечисленны в `PermissionsEnum`
+- Перечисленны в `UIPermissionsEnum`, `CRUDPermissionsEnum`
 - Конфиги описываются в файле `*.permissions.ts`
 - Хук `useUserPermissions` для получения пермишенов в зависимости от роли пользователя
 - Функция `getPermissionsMap` для получения пермишенов вне хука `useUserPermissions`
@@ -183,14 +186,8 @@ RTK query не умеет правильно доставать ReturnType из 
 - Общая папка для тестов лежит в `src/_tests_`.
 Содержит всё что может понадобится в любом из тестов
   - Название `_tests_` используется вместо `__tests__` чтобы на эту папку не реагировал `jest` иначе тесты завершатся с ошибками.
-Вместо этого `jest` будет искать тесты только в файлах с названием `*.test.*` `*.spec.*`
-- Файлы с тестами создаются в
-  - Папке где лежит сам файл для которого пишутся тесты
-  - Папке `_tests_` которая создаётся рядом с файлом для которого пишутся тесты.
-Данная папка может содержать помимо файла с тестами:
-     - `mocks.ts` моки `api`
-     - `utils.ts` утилиты для тестов
-     - `constants.ts` константы для тестов
+Вместо этого `jest` будет искать тесты в файлах с названием `*.test.*`
+- Файлы с тестами создаются в папке где лежит сам файл для которого пишутся тесты
 - Для удобства нахождения элементов, к ним добавляется
 дата атрибут `data-testid`, он используется для написания `unit-tests`
 с помощью `react-testing-library` и для `e2e-tests`, которые пишутся тестировщиком.
@@ -230,7 +227,7 @@ RTK query не умеет правильно доставать ReturnType из 
 
 ## CI/CD
 ### Testing
-- Сборка и запуск приложения описаны в пункте `Запуск проекта / Testing`, но в 4-м пункте команда меняется на - `yarn test --coverage`
+- Сборка и запуск приложения описаны в пункте `Запуск проекта / Testing`, но в 4-м пункте команда меняется на - `yarn test:ci`
 - Прокинуть переменную окружения [CI=true](https://create-react-app.dev/docs/advanced-configuration)
 
-После запуска тестов, появится папка `coverage`
+После запуска тестов, в корне проекта появится папка `coverage`

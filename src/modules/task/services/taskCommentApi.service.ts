@@ -1,23 +1,27 @@
 import {
-  CreateTaskCommentMutationArgsModel,
-  CreateTaskCommentResponseModel,
-  GetTaskCommentListQueryArgsModel,
-  GetTaskCommentListResponseModel,
-} from 'modules/task/features/TaskView/models'
-import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
+  CreateTaskCommentMutationArgs,
+  CreateTaskCommentSuccessResponse,
+  GetTaskCommentListQueryArgs,
+  GetTaskCommentListSuccessResponse,
+} from 'modules/task/models'
+import {
+  createTaskCommentUrl,
+  getTaskCommentListUrl,
+} from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 
+import { TaskCommentEndpointNameEnum } from '../constants/api'
 import taskApiService from './taskApi.service'
 
 const taskCommentApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
-    createTaskComment: build.mutation<
-      CreateTaskCommentResponseModel,
-      CreateTaskCommentMutationArgsModel
+    [TaskCommentEndpointNameEnum.CreateTaskComment]: build.mutation<
+      CreateTaskCommentSuccessResponse,
+      CreateTaskCommentMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
-        url: getTaskCommentUrl(taskId),
+        url: createTaskCommentUrl(taskId),
         method: HttpMethodEnum.Post,
         data: payload,
       }),
@@ -27,9 +31,9 @@ const taskCommentApiService = taskApiService.injectEndpoints({
 
           dispatch(
             apiService.util.updateQueryData(
-              'getTaskCommentList' as never,
+              TaskCommentEndpointNameEnum.GetTaskCommentList as never,
               taskId as never,
-              (commentList: GetTaskCommentListResponseModel) => {
+              (commentList: GetTaskCommentListSuccessResponse) => {
                 commentList.unshift(newComment)
               },
             ),
@@ -37,12 +41,12 @@ const taskCommentApiService = taskApiService.injectEndpoints({
         } catch {}
       },
     }),
-    getTaskCommentList: build.query<
-      GetTaskCommentListResponseModel,
-      GetTaskCommentListQueryArgsModel
+    [TaskCommentEndpointNameEnum.GetTaskCommentList]: build.query<
+      GetTaskCommentListSuccessResponse,
+      GetTaskCommentListQueryArgs
     >({
       query: (taskId) => ({
-        url: getTaskCommentUrl(taskId),
+        url: getTaskCommentListUrl(taskId),
         method: HttpMethodEnum.Get,
       }),
     }),

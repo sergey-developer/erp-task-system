@@ -19,6 +19,10 @@ export const loadingStartedBySpinner = (testId: string) => async () => {
   expect(await screen.findByTestId(testId)).toBeInTheDocument()
 }
 
+export const loadingNotStartedBySpinner = (testId: string) => () => {
+  expect(screen.queryByTestId(testId)).not.toBeInTheDocument()
+}
+
 export const loadingFinishedBySpinner = (testId: string) => async () => {
   const spinner = screen.queryByTestId(testId)
 
@@ -43,6 +47,16 @@ export const loadingFinishedBySelect = async (container: HTMLElement) => {
   })
 }
 
+export const loadingStartedByCard = async (card: HTMLElement) => {
+  await waitFor(() => {
+    expect(card).toHaveClass('ant-card-loading')
+  })
+}
+
+export const expectLoadingNotStartedByCard = (card: HTMLElement) => {
+  expect(card).not.toHaveClass('ant-card-loading')
+}
+
 export const loadingFinishedByCard = async (card: HTMLElement) => {
   await waitFor(() => {
     expect(card).not.toHaveClass('ant-card-loading')
@@ -59,14 +73,12 @@ export const loadingFinishedByIconIn = async (container: HTMLElement) => {
   })
 }
 
-export const loadingStartedBySkeletonIn =
-  (container: HTMLElement) => async () => {
-    const skeleton = container.querySelector('.ant-skeleton-active')
-    expect(skeleton).toBeInTheDocument()
-  }
+export const loadingStartedBySkeletonIn = (container: HTMLElement) => () => {
+  const skeleton = container.querySelector('.ant-skeleton-active')
+  expect(skeleton).toBeInTheDocument()
+}
 
-export const loadingFinishedBySkeletonIn =
-  (container: HTMLElement) => async () => {
-    const skeleton = container.querySelector('.ant-skeleton-active')
-    expect(skeleton).not.toBeInTheDocument()
-  }
+export const loadingFinishedBySkeletonIn = (container: HTMLElement) => () => {
+  const skeleton = container.querySelector('.ant-skeleton-active')
+  expect(skeleton).not.toBeInTheDocument()
+}

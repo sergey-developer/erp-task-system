@@ -1,19 +1,14 @@
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { TaskEndpointsEnum } from 'modules/task/constants/api'
-import { GetTaskCountersResponseModel } from 'modules/task/features/TaskList/models'
+import { TaskEndpointEnum } from 'modules/task/constants/api'
+import { GetTaskCountersSuccessResponse } from 'modules/task/models'
 import { HttpMethodEnum } from 'shared/constants/http'
 
-const getGetTaskCountersMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, TaskEndpointsEnum.TaskCounters)
+const getTaskCountersMockFn = () =>
+  getRequestMockFn(HttpMethodEnum.Get, TaskEndpointEnum.GetTaskCounters)
 
 export const mockGetTaskCountersSuccess = (
-  options?: Partial<ResponseResolverOptions<GetTaskCountersResponseModel>>,
-) => {
-  const mockGetTaskCounters = getSuccessMockFn(
-    getGetTaskCountersMockFn(),
-    options,
-  )
+  options?: Partial<ResponseResolverOptions<GetTaskCountersSuccessResponse>>,
+) => getSuccessMockFn(getTaskCountersMockFn(), options)()
 
-  mockGetTaskCounters()
-}
+// todo: написать тесты на ошибочное получение

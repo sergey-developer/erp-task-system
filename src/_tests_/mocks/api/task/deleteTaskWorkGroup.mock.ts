@@ -7,74 +7,37 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import {
-  DeleteTaskWorkGroupMutationArgsModel,
-  DeleteTaskWorkGroupResponseModel,
-} from 'modules/task/features/TaskView/models'
-import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
+import { DeleteTaskWorkGroupSuccessResponse } from 'modules/task/models'
+import { deleteTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
-const deleteTaskWorkGroupMockFn = (
-  taskId: DeleteTaskWorkGroupMutationArgsModel['taskId'],
-) => getRequestMockFn(HttpMethodEnum.Delete, getTaskWorkGroupUrl(taskId))
+const deleteTaskWorkGroupMockFn = (taskId: number) =>
+  getRequestMockFn(HttpMethodEnum.Delete, deleteTaskWorkGroupUrl(taskId))
 
 export const mockDeleteTaskWorkGroupSuccess = (
-  taskId: DeleteTaskWorkGroupMutationArgsModel['taskId'],
-  options?: Partial<ResponseResolverOptions<DeleteTaskWorkGroupResponseModel>>,
-) => {
-  const mockDeleteTaskWorkGroup = getSuccessMockFn(
-    deleteTaskWorkGroupMockFn(taskId),
-    options,
-  )
-
-  mockDeleteTaskWorkGroup()
-}
+  taskId: number,
+  options?: Partial<
+    ResponseResolverOptions<DeleteTaskWorkGroupSuccessResponse>
+  >,
+) => getSuccessMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
 
 export const mockDeleteTaskWorkGroupBadRequestError = <T extends object>(
-  taskId: DeleteTaskWorkGroupMutationArgsModel['taskId'],
+  taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockDeleteTaskWorkGroup = getBadRequestErrorMockFn(
-    deleteTaskWorkGroupMockFn(taskId),
-    options,
-  )
-
-  mockDeleteTaskWorkGroup()
-}
+) => getBadRequestErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
 
 export const mockDeleteTaskWorkGroupNotFoundError = <T extends object>(
-  taskId: DeleteTaskWorkGroupMutationArgsModel['taskId'],
+  taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockDeleteTaskWorkGroup = getNotFoundErrorMockFn(
-    deleteTaskWorkGroupMockFn(taskId),
-    options,
-  )
-
-  mockDeleteTaskWorkGroup()
-}
+) => getNotFoundErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
 
 export const mockDeleteTaskWorkGroupServerError = <T extends object>(
-  taskId: DeleteTaskWorkGroupMutationArgsModel['taskId'],
+  taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockDeleteTaskWorkGroup = getServerErrorMockFn(
-    deleteTaskWorkGroupMockFn(taskId),
-    options,
-  )
-
-  mockDeleteTaskWorkGroup()
-}
+) => getServerErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
 
 export const mockDeleteTaskWorkGroupForbiddenError = <T extends object>(
-  taskId: DeleteTaskWorkGroupMutationArgsModel['taskId'],
+  taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockDeleteTaskWorkGroup = getForbiddenErrorMockFn(
-    deleteTaskWorkGroupMockFn(taskId),
-    options,
-  )
-
-  mockDeleteTaskWorkGroup()
-}
+) => getForbiddenErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()

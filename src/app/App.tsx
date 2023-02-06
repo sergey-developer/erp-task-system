@@ -1,14 +1,15 @@
 import 'styles/index.less'
 
 import { FC } from 'react'
-import { useRoutes } from 'react-router-dom'
 
-import { privateRoutesConfig, publicRoutesConfig } from 'configs/routes'
-import useIsAuthenticated from 'modules/auth/hooks/useIsAuthenticated'
+import { useIsAuthenticated } from 'modules/auth/hooks'
+
+import PrivateApp from './PrivateApp'
+import PublicApp from './PublicApp'
 
 const App: FC = () => {
   const isAuthenticated = useIsAuthenticated()
-  return useRoutes(isAuthenticated ? privateRoutesConfig : publicRoutesConfig)
+  return isAuthenticated ? <PrivateApp /> : <PublicApp />
 }
 
 export default App
