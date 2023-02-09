@@ -1,9 +1,9 @@
-import { Col, Popover, Row, Space, Typography } from 'antd'
-import pick from 'lodash/pick'
+import { Col, Row, Space, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
+import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
 import { MonitoringIcon } from 'components/Icons'
 import Logo from 'components/Logo'
@@ -14,7 +14,6 @@ import { RoutesEnum } from 'configs/routes'
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
 import { useUserProfileState } from 'modules/user/hooks'
 import { useGetUserCodeQuery } from 'modules/user/services/userApi.service'
-import { getFullUserName } from 'modules/user/utils'
 import { useMatchedRoute } from 'shared/hooks'
 
 import { HeaderStyled } from './styles'
@@ -81,26 +80,9 @@ const PrivateHeader: FC = () => {
             )}
 
             {userProfile ? (
-              <Popover
-                visible
-                placement='bottomRight'
-                title={getFullUserName(
-                  pick(userProfile, 'firstName', 'lastName', 'middleName'),
-                )}
-                content={
-                  <div style={{ width: 200 }}>
-                    <Space direction='vertical'>
-                      <Text>Email: {userProfile.email}</Text>
-
-                      <Text>Роль: Инженер</Text>
-                    </Space>
-                  </div>
-                }
-              >
-                <UserAvatar size='large' dot abbr='' />
-              </Popover>
+              <ContentfulUserAvatar profile={userProfile} />
             ) : (
-              <UserAvatar size='large' dot abbr='' />
+              <UserAvatar size='large' />
             )}
 
             <LogoutButton />

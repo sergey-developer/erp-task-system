@@ -29,7 +29,7 @@ import { testUtils as taskCardTestUtils } from 'modules/task/features/TaskCard/C
 import { paginationConfig } from 'modules/task/features/TaskTable/constants/pagination'
 import { testUtils as taskTableTestUtils } from 'modules/task/features/TaskTable/TaskTable.test'
 import { GetTaskCountersSuccessResponse } from 'modules/task/models'
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { DEFAULT_PAGE_SIZE } from './constants'
 import TaskListPage from './index'
