@@ -1,4 +1,4 @@
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type UserProfileModel = {

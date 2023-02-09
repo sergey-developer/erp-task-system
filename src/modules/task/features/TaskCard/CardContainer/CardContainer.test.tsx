@@ -73,9 +73,9 @@ import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
 } from 'modules/task/utils/messages'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 import { GET_WORK_GROUP_LIST_SERVER_ERROR_MSG } from 'modules/workGroup/constants/errors'
 import { commonApiMessages } from 'shared/constants/errors'
-import { UserRoleEnum } from 'shared/constants/roles'
 import { ErrorResponse } from 'shared/services/api'
 
 import {

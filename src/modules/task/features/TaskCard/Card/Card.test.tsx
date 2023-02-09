@@ -18,7 +18,7 @@ import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/common'
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
 import {

@@ -17,7 +17,7 @@ import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'

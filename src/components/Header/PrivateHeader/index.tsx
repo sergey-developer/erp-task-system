@@ -3,6 +3,7 @@ import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
+import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
 import { MonitoringIcon } from 'components/Icons'
 import Logo from 'components/Logo'
@@ -78,7 +79,11 @@ const PrivateHeader: FC = () => {
               </Link>
             )}
 
-            <UserAvatar size='large' dot abbr='' />
+            {userProfile ? (
+              <ContentfulUserAvatar profile={userProfile} />
+            ) : (
+              <UserAvatar size='large' />
+            )}
 
             <LogoutButton />
           </Space>

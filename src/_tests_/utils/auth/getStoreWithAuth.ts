@@ -1,6 +1,6 @@
 import { generateId } from '_tests_/utils'
 import { AuthenticatedUser } from 'modules/auth/interfaces'
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 import { setupStore } from 'state/store'
 
 import getAuthState from './getAuthState'

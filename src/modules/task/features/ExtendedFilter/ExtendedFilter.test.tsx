@@ -24,7 +24,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import workGroupFixtures from 'fixtures/workGroup'
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import {
   TaskAssignedEnum,

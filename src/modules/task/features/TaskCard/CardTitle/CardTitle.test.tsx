@@ -13,7 +13,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/common'
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import CardTitle, { CardTitleProps } from './index'
 
