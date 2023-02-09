@@ -1,4 +1,4 @@
-import { Col, Row, Space } from 'antd'
+import { Col, Row, Space, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -12,12 +12,16 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RoutesEnum } from 'configs/routes'
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
 import { useUserProfileState } from 'modules/user/hooks'
+import { useGetUserCodeQuery } from 'modules/user/services/userApi.service'
 import { useMatchedRoute } from 'shared/hooks'
 
 import { HeaderStyled } from './styles'
 
+const { Text } = Typography
+
 const PrivateHeader: FC = () => {
   const breakpoints = useBreakpoint()
+  const { data: userCode } = useGetUserCodeQuery()
   const { data: userProfile } = useUserProfileState()
 
   const navMenu = useMemo(() => {
@@ -43,34 +47,41 @@ const PrivateHeader: FC = () => {
   return (
     <HeaderStyled $breakpoints={breakpoints}>
       <Row justify='space-between' align='middle'>
-        <Col span={4}>
-          <Logo />
-        </Col>
+        <Col span={12}>
+          <Row align='middle'>
+            <Col span={7}>
+              <Logo />
+            </Col>
 
-        <Col span={18}>
-          <NavMenu selectedKeys={navMenuSelectedKeys} items={navMenu.items} />
-        </Col>
-
-        <Col span={2}>
-          <Row justify='end'>
-            <Space size='large'>
-              <NotificationCounter />
-
-              {userProfile?.isStaff && (
-                <Link to={RoutesEnum.TaskMonitoring}>
-                  <MonitoringIcon
-                    $color='black'
-                    $size='large'
-                    $cursor='pointer'
-                  />
-                </Link>
-              )}
-
-              <UserAvatar size='large' dot abbr='' />
-
-              <LogoutButton />
-            </Space>
+            <Col span={17}>
+              <NavMenu
+                selectedKeys={navMenuSelectedKeys}
+                items={navMenu.items}
+              />
+            </Col>
           </Row>
+        </Col>
+
+        <Col>
+          <Space size='large'>
+            {userCode && <Text title='user code'>{userCode.code}</Text>}
+
+            <NotificationCounter />
+
+            {userProfile?.isStaff && (
+              <Link to={RoutesEnum.TaskMonitoring}>
+                <MonitoringIcon
+                  $color='black'
+                  $size='large'
+                  $cursor='pointer'
+                />
+              </Link>
+            )}
+
+            <UserAvatar size='large' dot abbr='' />
+
+            <LogoutButton />
+          </Space>
         </Col>
       </Row>
     </HeaderStyled>
