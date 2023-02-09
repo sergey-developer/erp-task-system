@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useAuthenticatedUser } from 'modules/auth/hooks'
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { getUserRoleMap } from '../utils'
 
