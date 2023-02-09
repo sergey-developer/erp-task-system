@@ -1,5 +1,5 @@
 import { StorageKeysEnum } from 'shared/constants/storage'
-import localStorageService from 'shared/services/localStorage'
+import { localStorageService } from 'shared/services/localStorage.service'
 
 const setAccessToken = (token: string) => {
   return localStorageService.setItem(StorageKeysEnum.accessToken, token)
