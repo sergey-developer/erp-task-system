@@ -32,9 +32,13 @@ export const useCreateTaskSuspendRequest = () => {
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error)) {
-      showErrorNotification(suspendRequestApiMessages.create.notFoundError)
+      showErrorNotification(
+        suspendRequestApiMessages.createRequest.notFoundError,
+      )
     } else if (isBadRequestError(error)) {
-      showErrorNotification(suspendRequestApiMessages.create.badRequestError)
+      showErrorNotification(
+        suspendRequestApiMessages.createRequest.badRequestError,
+      )
     } else {
       showErrorNotification(commonApiMessages.unknownError)
     }
