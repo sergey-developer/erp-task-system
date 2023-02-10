@@ -7,7 +7,7 @@ import { WorkGroupListModel } from 'modules/workGroup/models'
 
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import TaskAssignee from '../AssigneeBlock'
+import AssigneeBlock from '../AssigneeBlock'
 import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
 import { TaskSecondLineFormFields } from '../TaskSecondLineModal/interfaces'
 import WorkGroupBlock from '../WorkGroupBlock'
@@ -94,7 +94,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
       </Col>
 
       <Col span={11}>
-        <TaskAssignee
+        <AssigneeBlock
           status={status}
           extendedStatus={extendedStatus}
           assignee={assignee}
