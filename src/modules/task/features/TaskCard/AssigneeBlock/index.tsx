@@ -158,7 +158,6 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               {assignee ? (
                 <TaskAssignee
                   name={getFullUserName(assignee)}
-                  status={status}
                   assignee={assignee}
                 />
               ) : (
@@ -199,11 +198,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                         value={id}
                         disabled={disabled}
                       >
-                        <TaskAssignee
-                          name={fullName}
-                          status={status}
-                          assignee={assignee}
-                        />
+                        <TaskAssignee name={fullName} assignee={assignee} />
                       </SelectStyled.Option>
                     )
                   })}
@@ -211,7 +206,6 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               ) : assignee ? (
                 <TaskAssignee
                   name={getFullUserName(assignee)}
-                  status={status}
                   assignee={assignee}
                 />
               ) : (

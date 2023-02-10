@@ -4,6 +4,12 @@ import React, { FC, useMemo } from 'react'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
+import { taskStatusDict } from 'modules/task/constants/dictionary'
+import TaskStatus from 'modules/task/features/TaskStatus'
+import {
+  badgeByTaskStatus,
+  iconByTaskStatus,
+} from 'modules/task/features/TaskStatus/constants'
 import { TaskModel } from 'modules/task/models'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 
@@ -16,6 +22,7 @@ export type MainDetailsProps = Pick<
   TaskModel,
   | 'recordId'
   | 'title'
+  | 'status'
   | 'createdAt'
   | 'name'
   | 'address'
@@ -29,6 +36,7 @@ export type MainDetailsProps = Pick<
 
 const MainDetails: FC<MainDetailsProps> = ({
   recordId,
+  status,
   title,
   createdAt,
   name,
@@ -40,7 +48,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   olaNextBreachTime,
   olaEstimatedTime,
 }) => {
-  const completeAtTime = useMemo(() => {
+  const { olaStatusTextType, completeAt } = useMemo(() => {
     const olaStatusTextType = getOlaStatusTextType(olaStatus)
     const completeAt = getCompleteAt({
       olaStatus,
@@ -48,7 +56,7 @@ const MainDetails: FC<MainDetailsProps> = ({
       olaNextBreachTime,
     })
 
-    return <Text type={olaStatusTextType}>{completeAt}</Text>
+    return { olaStatusTextType, completeAt }
   }, [olaEstimatedTime, olaStatus, olaNextBreachTime])
 
   return (
@@ -63,7 +71,18 @@ const MainDetails: FC<MainDetailsProps> = ({
           {recordId}
         </RecordIdStyled>
 
-        {olaNextBreachTime && completeAtTime}
+        <Space>
+          {olaNextBreachTime && (
+            <Text type={olaStatusTextType}>{completeAt}</Text>
+          )}
+
+          <TaskStatus
+            status={status}
+            text={taskStatusDict[status]}
+            icon={iconByTaskStatus[status]}
+            badge={badgeByTaskStatus[status]}
+          />
+        </Space>
       </SeparatedText>
 
       <Space direction='vertical' size={4} $block>
