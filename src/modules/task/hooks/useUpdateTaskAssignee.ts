@@ -23,7 +23,7 @@ export const useUpdateTaskAssignee = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(taskAssigneeApiMessages.update.commonError)
+    showErrorNotification(taskAssigneeApiMessages.updateAssignee.commonError)
   }, [state.isError])
 
   return { fn, state }

@@ -58,6 +58,7 @@ import TaskCard, { TaskCardProps } from './index'
 
 const requiredProps: TaskCardProps = {
   task: taskFixtures.getTask(),
+  refetchTask: jest.fn(),
   closeTaskCard: jest.fn(),
 
   taskIsLoading: false,
@@ -172,6 +173,16 @@ describe('Карточка заявки', () => {
 
       await waitFor(() => {
         expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+      })
+    })
+
+    test('При клике на кнопку перезапроса заявки обработчик вызывается корректно', async () => {
+      const { user } = render(<TaskCard {...requiredProps} />)
+
+      await cardTitleTestUtils.clickReloadButton(user)
+
+      await waitFor(() => {
+        expect(requiredProps.refetchTask).toBeCalledTimes(1)
       })
     })
   })

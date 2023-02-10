@@ -33,7 +33,7 @@ export const useCreateTaskComment = () => {
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error) || isServerRangeError(error)) {
-      showErrorNotification(taskCommentApiMessages.create.commonError)
+      showErrorNotification(taskCommentApiMessages.createComment.commonError)
     } else if (!isBadRequestError(error)) {
       showErrorNotification(commonApiMessages.unknownError)
     }

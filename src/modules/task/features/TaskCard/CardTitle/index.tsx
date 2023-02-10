@@ -8,6 +8,7 @@ import {
   MenuIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
+  SyncIcon,
 } from 'components/Icons'
 import {
   useTaskExtendedStatus,
@@ -24,9 +25,10 @@ export type CardTitleProps = Pick<
 > & {
   isAssignedToCurrentUser: boolean
   hasSuspendRequest: boolean
-  onClickExecuteTask: () => void
-  onClickRequestSuspend: () => void
-  onClickRequestReclassification: () => void
+  onReloadTask: () => void
+  onExecuteTask: () => void
+  onRequestSuspend: () => void
+  onRequestReclassification: () => void
   onClose: () => void
 }
 
@@ -39,9 +41,10 @@ const CardTitle: FC<CardTitleProps> = ({
   isAssignedToCurrentUser,
   hasSuspendRequest,
   onClose,
-  onClickExecuteTask,
-  onClickRequestSuspend,
-  onClickRequestReclassification,
+  onReloadTask,
+  onExecuteTask,
+  onRequestSuspend,
+  onRequestReclassification,
 }) => {
   const taskType = useTaskType(type)
   const taskStatus = useTaskStatus(status)
@@ -60,7 +63,7 @@ const CardTitle: FC<CardTitleProps> = ({
             hasSuspendRequest,
           icon: <PauseCircleIcon $size='middle' />,
           label: 'Запросить перевод в ожидание',
-          onClick: onClickRequestSuspend,
+          onClick: onRequestSuspend,
         },
         {
           key: 2,
@@ -71,7 +74,7 @@ const CardTitle: FC<CardTitleProps> = ({
             hasSuspendRequest,
           icon: <CheckCircleIcon $color='crayola' />,
           label: 'Выполнить заявку',
-          onClick: onClickExecuteTask,
+          onClick: onExecuteTask,
         },
         {
           key: 3,
@@ -88,7 +91,7 @@ const CardTitle: FC<CardTitleProps> = ({
             : 'Запросить переклассификацию',
           onClick: taskExtendedStatus.isInReclassification
             ? noop
-            : onClickRequestReclassification,
+            : onRequestReclassification,
         },
       ]}
     />
@@ -98,7 +101,9 @@ const CardTitle: FC<CardTitleProps> = ({
     <Row data-testid='task-card-title' justify='space-between' align='middle'>
       <Typography.Text>{id}</Typography.Text>
 
-      <Space>
+      <Space size='middle'>
+        <Button type='text' icon={<SyncIcon />} onClick={onReloadTask} />
+
         <Dropdown overlay={actionMenu}>
           <Button type='text' icon={<MenuIcon />} />
         </Dropdown>

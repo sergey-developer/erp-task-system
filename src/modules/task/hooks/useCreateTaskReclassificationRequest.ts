@@ -35,7 +35,7 @@ export const useCreateTaskReclassificationRequest = () => {
 
     if (isNotFoundError(error)) {
       showErrorNotification(
-        reclassificationRequestApiMessages.create.notFoundError,
+        reclassificationRequestApiMessages.createRequest.notFoundError,
       )
     } else if (!isBadRequestError(error)) {
       showErrorNotification(commonApiMessages.unknownError)

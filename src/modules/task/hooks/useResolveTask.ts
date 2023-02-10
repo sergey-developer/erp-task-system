@@ -36,7 +36,7 @@ export const useResolveTask = () => {
     if (isBadRequestError(error)) {
       showMultipleErrorNotification(getErrorDetail(error))
     } else {
-      showErrorNotification(taskApiMessages.resolve.commonError)
+      showErrorNotification(taskApiMessages.resolveTask.commonError)
     }
   }, [state.error, state.isError])
 

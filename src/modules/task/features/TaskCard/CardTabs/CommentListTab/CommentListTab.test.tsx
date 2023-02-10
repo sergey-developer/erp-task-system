@@ -342,7 +342,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingFinished()
 
           const error = await findNotification(
-            taskCommentApiMessages.create.commonError,
+            taskCommentApiMessages.createComment.commonError,
           )
           expect(error).toBeInTheDocument()
         })
@@ -365,7 +365,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.loadingFinished()
 
           const error = await findNotification(
-            taskCommentApiMessages.create.commonError,
+            taskCommentApiMessages.createComment.commonError,
           )
           expect(error).toBeInTheDocument()
         })
