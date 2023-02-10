@@ -217,10 +217,14 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       test(`Если есть группа с типом ${WorkGroupTypeEnum.AssociatedWithSapId}`, async () => {
         const workGroupList = [
           workGroupFixtures.getWorkGroup({
-            type: WorkGroupTypeEnum.AssociatedWithSapId,
+            priority: workGroupFixtures.getWorkGroupPriority({
+              type: WorkGroupTypeEnum.AssociatedWithSapId,
+            }),
           }),
           workGroupFixtures.getWorkGroup({
-            type: WorkGroupTypeEnum.NoType,
+            priority: workGroupFixtures.getWorkGroupPriority({
+              type: WorkGroupTypeEnum.NoType,
+            }),
           }),
         ]
 
@@ -247,10 +251,14 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       test(`Если есть группа с типом ${WorkGroupTypeEnum.DefaultForSupportGroup}`, async () => {
         const workGroupList = [
           workGroupFixtures.getWorkGroup({
-            type: WorkGroupTypeEnum.DefaultForSupportGroup,
+            priority: workGroupFixtures.getWorkGroupPriority({
+              type: WorkGroupTypeEnum.DefaultForSupportGroup,
+            }),
           }),
           workGroupFixtures.getWorkGroup({
-            type: WorkGroupTypeEnum.NoType,
+            priority: workGroupFixtures.getWorkGroupPriority({
+              type: WorkGroupTypeEnum.NoType,
+            }),
           }),
         ]
 
@@ -345,13 +353,17 @@ describe('Модалка перевода заявки на 2-ю линию', ()
           workGroup.name,
         )
 
-        expect(option.title).toBe(workGroup.description)
+        expect(option.title).toBe(workGroup.priority!.description)
         expect(optionText).toBeInTheDocument()
       })
     })
 
     test('Корректно отображает варианты с приоритетом >= 4', async () => {
-      const workGroupList = [workGroupFixtures.getWorkGroup({ priority: 4 })]
+      const workGroupList = [
+        workGroupFixtures.getWorkGroup({
+          priority: workGroupFixtures.getWorkGroupPriority({ value: 4 }),
+        }),
+      ]
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...requiredProps} />, {
@@ -373,7 +385,11 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Корректно отображает варианты с приоритетом < 4', async () => {
-      const workGroupList = [workGroupFixtures.getWorkGroup({ priority: 3 })]
+      const workGroupList = [
+        workGroupFixtures.getWorkGroup({
+          priority: workGroupFixtures.getWorkGroupPriority({ value: 3 }),
+        }),
+      ]
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...requiredProps} />, {
