@@ -9,5 +9,7 @@ export const SelectStyled = styled(Select)`
 `
 
 export const OptionTextStyled = styled.span<{ $isBold: boolean }>`
+  font-weight: normal;
+
   ${({ $isBold }) => ($isBold ? 'font-weight: 500;' : '')}
 `
