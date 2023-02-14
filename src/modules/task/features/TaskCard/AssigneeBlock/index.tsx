@@ -25,8 +25,6 @@ export type AssigneeBlockProps = Pick<
   TaskModel,
   'status' | 'extendedStatus' | 'assignee'
 > & {
-  hasSuspendRequest: boolean
-
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
@@ -39,7 +37,6 @@ export type AssigneeBlockProps = Pick<
 
 const AssigneeBlock: FC<AssigneeBlockProps> = ({
   assignee,
-  hasSuspendRequest,
 
   status,
   extendedStatus,
@@ -111,7 +108,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
           taskStatus.isNew &&
           (currentAssigneeIsCurrentUser || !currentAssignee) &&
           !taskExtendedStatus.isInReclassification
-        ) || hasSuspendRequest
+        )
       }
       onClick={takeTask}
     >
@@ -134,8 +131,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               taskStatus.isClosed ||
               taskStatus.isCompleted ||
               taskStatus.isAwaiting ||
-              taskExtendedStatus.isInReclassification ||
-              hasSuspendRequest
+              taskExtendedStatus.isInReclassification
             }
             onClick={
               currentAssigneeIsCurrentUser ? undefined : handleAssignOnMe
@@ -232,8 +228,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                       !selectedAssignee ||
                       selectedAssigneeIsCurrentUser ||
                       selectedAssigneeIsCurrentAssignee ||
-                      taskExtendedStatus.isInReclassification ||
-                      hasSuspendRequest
+                      taskExtendedStatus.isInReclassification
                     }
                   >
                     Назначить

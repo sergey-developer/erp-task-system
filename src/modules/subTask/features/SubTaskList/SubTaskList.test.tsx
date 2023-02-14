@@ -20,7 +20,6 @@ const requiredProps: SubTaskListProps = {
   isError: false,
   taskStatus: TaskStatusEnum.New,
   taskExtendedStatus: TaskExtendedStatusEnum.New,
-  taskHasSuspendRequest: false,
   currentUserIsTaskAssignee: false,
   onClickCancel: jest.fn(),
   onClickRework: jest.fn(),

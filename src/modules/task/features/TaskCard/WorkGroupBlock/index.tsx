@@ -34,8 +34,6 @@ export type WorkGroupBlockProps = Pick<
   TaskModel,
   'id' | 'recordId' | 'workGroup' | 'status' | 'extendedStatus'
 > & {
-  hasSuspendRequest: boolean
-
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
     setFields: FormInstance['setFields'],
@@ -54,7 +52,6 @@ export type WorkGroupBlockProps = Pick<
 const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   id,
   recordId,
-  hasSuspendRequest,
 
   workGroup,
 
@@ -124,8 +121,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                     loading={transferTaskToFirstLineIsLoading}
                     disabled={
                       taskStatus.isAwaiting ||
-                      taskExtendedStatus.isInReclassification ||
-                      hasSuspendRequest
+                      taskExtendedStatus.isInReclassification
                     }
                   >
                     Вернуть на I линию
@@ -145,8 +141,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                     loading={transferTaskToSecondLineIsLoading}
                     disabled={
                       taskExtendedStatus.isInReclassification ||
-                      (!taskStatus.isNew && !taskStatus.isInProgress) ||
-                      hasSuspendRequest
+                      (!taskStatus.isNew && !taskStatus.isInProgress)
                     }
                   >
                     Перевести на II линию

@@ -28,7 +28,6 @@ export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
   taskStatus: TaskStatusEnum
   taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
-  taskHasSuspendRequest: boolean
   onClickCancel: () => void
   onClickRework: () => void
 }
@@ -49,7 +48,6 @@ const SubTask: FC<SubTaskProps> = ({
   taskStatus: rawTaskStatus,
   taskExtendedStatus: rawTaskExtendedStatus,
   currentUserIsTaskAssignee,
-  taskHasSuspendRequest,
   returnReason,
   cancelReason,
 }) => {
@@ -104,9 +102,7 @@ const SubTask: FC<SubTaskProps> = ({
           <Col>
             <Button
               onClick={onClickCancel}
-              disabled={
-                taskHasSuspendRequest || taskExtendedStatus.isInReclassification
-              }
+              disabled={taskExtendedStatus.isInReclassification}
             >
               Отменить
             </Button>
@@ -117,9 +113,7 @@ const SubTask: FC<SubTaskProps> = ({
           <Col>
             <Button
               onClick={onClickRework}
-              disabled={
-                taskHasSuspendRequest || taskExtendedStatus.isInReclassification
-              }
+              disabled={taskExtendedStatus.isInReclassification}
             >
               Вернуть на доработку
             </Button>

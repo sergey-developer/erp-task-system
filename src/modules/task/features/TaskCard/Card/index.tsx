@@ -534,7 +534,6 @@ const TaskCard: FC<TaskCardProps> = ({
                 updateAssigneeIsLoading={updateAssigneeIsLoading}
                 takeTask={handleTakeTask}
                 takeTaskIsLoading={takeTaskIsLoading}
-                hasSuspendRequest={hasSuspendRequest}
               />
 
               <CardTabs task={task} />
