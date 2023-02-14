@@ -36,6 +36,8 @@ export type SecondaryDetailsProps = Pick<
 
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
+
+  hasSuspendRequest: boolean
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
@@ -61,6 +63,8 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   updateAssignee,
   updateAssigneeIsLoading,
+
+  hasSuspendRequest,
 }) => {
   const workGroup = useMemo(
     () =>
@@ -83,6 +87,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
           transferTaskToSecondLine={transferTaskToSecondLine}
           transferTaskToSecondLineIsLoading={transferTaskToSecondLineIsLoading}
+          hasSuspendRequest={hasSuspendRequest}
         />
       </Col>
 
@@ -97,6 +102,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           updateAssigneeIsLoading={updateAssigneeIsLoading}
           takeTask={takeTask}
           takeTaskIsLoading={takeTaskIsLoading}
+          hasSuspendRequest={hasSuspendRequest}
         />
       </Col>
     </Row>

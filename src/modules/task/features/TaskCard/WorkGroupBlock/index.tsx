@@ -47,6 +47,8 @@ export type WorkGroupBlockProps = Pick<
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
+
+  hasSuspendRequest: boolean
 }
 
 const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
@@ -62,6 +64,8 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   transferTaskToFirstLineIsLoading,
   transferTaskToSecondLine,
   transferTaskToSecondLineIsLoading,
+
+  hasSuspendRequest,
 }) => {
   const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] =
     useBoolean(false)
@@ -120,8 +124,10 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                     onClick={debouncedToggleOpenTaskFirstLineModal}
                     loading={transferTaskToFirstLineIsLoading}
                     disabled={
-                      taskStatus.isAwaiting ||
-                      taskExtendedStatus.isInReclassification
+                      hasSuspendRequest
+                        ? false
+                        : taskStatus.isAwaiting ||
+                          taskExtendedStatus.isInReclassification
                     }
                   >
                     Вернуть на I линию
@@ -140,8 +146,10 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                     onClick={debouncedToggleOpenTaskSecondLineModal}
                     loading={transferTaskToSecondLineIsLoading}
                     disabled={
-                      taskExtendedStatus.isInReclassification ||
-                      (!taskStatus.isNew && !taskStatus.isInProgress)
+                      hasSuspendRequest
+                        ? false
+                        : taskExtendedStatus.isInReclassification ||
+                          (!taskStatus.isNew && !taskStatus.isInProgress)
                     }
                   >
                     Перевести на II линию

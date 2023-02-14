@@ -27,6 +27,7 @@ const { Text, Title, Paragraph } = Typography
 export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
   taskStatus: TaskStatusEnum
   taskExtendedStatus: TaskExtendedStatusEnum
+  taskHasSuspendRequest: boolean
   currentUserIsTaskAssignee: boolean
   onClickCancel: () => void
   onClickRework: () => void
@@ -50,6 +51,7 @@ const SubTask: FC<SubTaskProps> = ({
   currentUserIsTaskAssignee,
   returnReason,
   cancelReason,
+  taskHasSuspendRequest,
 }) => {
   const taskStatus = useTaskStatus(rawTaskStatus)
   const taskExtendedStatus = useTaskExtendedStatus(rawTaskExtendedStatus)
@@ -102,7 +104,11 @@ const SubTask: FC<SubTaskProps> = ({
           <Col>
             <Button
               onClick={onClickCancel}
-              disabled={taskExtendedStatus.isInReclassification}
+              disabled={
+                taskHasSuspendRequest
+                  ? false
+                  : taskExtendedStatus.isInReclassification
+              }
             >
               Отменить
             </Button>
@@ -113,7 +119,11 @@ const SubTask: FC<SubTaskProps> = ({
           <Col>
             <Button
               onClick={onClickRework}
-              disabled={taskExtendedStatus.isInReclassification}
+              disabled={
+                taskHasSuspendRequest
+                  ? false
+                  : taskExtendedStatus.isInReclassification
+              }
             >
               Вернуть на доработку
             </Button>

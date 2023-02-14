@@ -25,6 +25,7 @@ const requiredProps: Omit<SecondaryDetailsProps, 'workGroup'> = {
   takeTaskIsLoading: false,
   updateAssignee: jest.fn(),
   updateAssigneeIsLoading: false,
+  hasSuspendRequest: false,
 }
 
 const getContainer = () => screen.getByTestId('task-card-secondary-details')

@@ -33,6 +33,8 @@ export type AssigneeBlockProps = Pick<
 
   takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
+
+  hasSuspendRequest: boolean
 }
 
 const AssigneeBlock: FC<AssigneeBlockProps> = ({
@@ -49,6 +51,8 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
   takeTask,
   takeTaskIsLoading,
+
+  hasSuspendRequest,
 }) => {
   const currentAssignee = assignee?.id
 
@@ -104,11 +108,13 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
       ghost
       loading={takeTaskIsLoading}
       disabled={
-        !(
-          taskStatus.isNew &&
-          (currentAssigneeIsCurrentUser || !currentAssignee) &&
-          !taskExtendedStatus.isInReclassification
-        )
+        hasSuspendRequest
+          ? false
+          : !(
+              taskStatus.isNew &&
+              (currentAssigneeIsCurrentUser || !currentAssignee) &&
+              !taskExtendedStatus.isInReclassification
+            )
       }
       onClick={takeTask}
     >
@@ -128,10 +134,12 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
             type='link'
             loading={updateAssigneeIsLoading}
             disabled={
-              taskStatus.isClosed ||
-              taskStatus.isCompleted ||
-              taskStatus.isAwaiting ||
-              taskExtendedStatus.isInReclassification
+              hasSuspendRequest
+                ? false
+                : taskStatus.isClosed ||
+                  taskStatus.isCompleted ||
+                  taskStatus.isAwaiting ||
+                  taskExtendedStatus.isInReclassification
             }
             onClick={
               currentAssigneeIsCurrentUser ? undefined : handleAssignOnMe
@@ -218,11 +226,13 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                     onClick={handleClickAssigneeButton}
                     loading={updateAssigneeIsLoading}
                     disabled={
-                      taskStatus.isAwaiting ||
-                      !selectedAssignee ||
-                      selectedAssigneeIsCurrentUser ||
-                      selectedAssigneeIsCurrentAssignee ||
-                      taskExtendedStatus.isInReclassification
+                      hasSuspendRequest
+                        ? false
+                        : taskStatus.isAwaiting ||
+                          !selectedAssignee ||
+                          selectedAssigneeIsCurrentUser ||
+                          selectedAssigneeIsCurrentAssignee ||
+                          taskExtendedStatus.isInReclassification
                     }
                   >
                     Назначить
