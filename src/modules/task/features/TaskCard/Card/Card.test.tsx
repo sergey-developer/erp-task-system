@@ -1057,7 +1057,7 @@ describe('Карточка заявки', () => {
           const button = taskSuspendRequestTestUtils.getReturnToWorkButton()
 
           expect(button).toBeInTheDocument()
-          expect(button).not.toBeEnabled()
+          expect(button).toBeEnabled()
         })
       })
     })
