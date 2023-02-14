@@ -36,14 +36,11 @@ export type SecondaryDetailsProps = Pick<
 
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
-
-  hasSuspendRequest: boolean
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   id,
   recordId,
-  hasSuspendRequest,
 
   assignee,
 
@@ -81,7 +78,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           recordId={recordId}
           status={status}
           extendedStatus={extendedStatus}
-          hasSuspendRequest={hasSuspendRequest}
           workGroup={workGroup}
           transferTaskToFirstLine={transferTaskToFirstLine}
           transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
@@ -94,7 +90,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
         <AssigneeBlock
           status={status}
           extendedStatus={extendedStatus}
-          hasSuspendRequest={hasSuspendRequest}
           assignee={assignee}
           workGroup={workGroup}
           workGroupListIsLoading={workGroupListIsLoading}

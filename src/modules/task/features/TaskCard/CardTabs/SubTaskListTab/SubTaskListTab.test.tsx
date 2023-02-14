@@ -172,6 +172,8 @@ describe('Вкладка списка заданий', () => {
 
         expect(testUtils.getCreateSubTaskButton()).toBeDisabled()
       })
+
+      test.todo('Но у заявки есть запрос на ожидание')
     })
 
     test('При нажатии открывает модалку создания задания', async () => {
