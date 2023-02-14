@@ -442,7 +442,8 @@ const TaskCard: FC<TaskCardProps> = ({
             <React.Suspense fallback={<Spinner area='block' />}>
               <TaskSuspendRequest
                 title={
-                  taskSuspendRequestStatusMap.isNew
+                  taskSuspendRequestStatusMap.isNew ||
+                  taskSuspendRequestStatusMap.isInProgress
                     ? 'Запрошено ожидание'
                     : taskSuspendRequestStatusMap.isApproved
                     ? 'Заявка находится в ожидании'
