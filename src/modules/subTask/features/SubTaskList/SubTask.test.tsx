@@ -546,7 +546,11 @@ describe('Задание', () => {
   describe('Кнопка отправки на доработку', () => {
     test('Отображается корректно если условия соблюдены', () => {
       render(<SubTask {...requiredProps} {...activeReworkButtonProps} />)
-      expect(testUtils.getReworkButton()).toBeInTheDocument()
+
+      const button = testUtils.getReworkButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
     })
 
     describe('Не отображается если условия соблюдены', () => {
