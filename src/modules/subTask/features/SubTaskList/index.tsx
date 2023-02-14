@@ -19,6 +19,7 @@ export type SubTaskListProps = {
   taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
   list: Array<SubTaskModel>
+  taskHasSuspendRequest: boolean
   isError: boolean
   onClickCancel: (subTask: SubTaskModel) => void
   onClickRework: (subTask: SubTaskModel) => void
@@ -32,6 +33,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
   isError,
   onClickCancel,
   onClickRework,
+  taskHasSuspendRequest,
 }) => {
   return (
     <Space data-testid='sub-task-list' $block direction='vertical'>
@@ -61,6 +63,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 currentUserIsTaskAssignee={currentUserIsTaskAssignee}
                 returnReason={item.returnReason}
                 cancelReason={item.cancelReason}
+                taskHasSuspendRequest={taskHasSuspendRequest}
               />
 
               {array.length - 1 !== index && <Divider />}

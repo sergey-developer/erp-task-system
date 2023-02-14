@@ -64,10 +64,11 @@ const CardTitle: FC<CardTitleProps> = ({
         },
         {
           key: 2,
-          disabled:
-            !taskStatus.isInProgress ||
-            !isAssignedToCurrentUser ||
-            taskExtendedStatus.isInReclassification,
+          disabled: hasSuspendRequest
+            ? false
+            : !taskStatus.isInProgress ||
+              !isAssignedToCurrentUser ||
+              taskExtendedStatus.isInReclassification,
           icon: <CheckCircleIcon $color='crayola' />,
           label: 'Выполнить заявку',
           onClick: onClickExecuteTask,

@@ -251,6 +251,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
           isError={isGetSubTaskListError}
           onClickCancel={handleClickCancel}
           onClickRework={handleClickRework}
+          taskHasSuspendRequest={taskHasSuspendRequest}
         />
       </LoadingArea>
 

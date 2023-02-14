@@ -23,6 +23,7 @@ const requiredProps: SubTaskListProps = {
   currentUserIsTaskAssignee: false,
   onClickCancel: jest.fn(),
   onClickRework: jest.fn(),
+  taskHasSuspendRequest: false,
 }
 
 const getContainer = () => screen.getByTestId('sub-task-list')

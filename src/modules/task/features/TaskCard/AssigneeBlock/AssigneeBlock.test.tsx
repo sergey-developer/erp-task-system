@@ -46,6 +46,7 @@ const requiredProps: Readonly<
       | 'extendedStatus'
       | 'assignee'
       | 'workGroupListIsLoading'
+      | 'hasSuspendRequest'
     >
   >
 > = {
@@ -57,6 +58,7 @@ const requiredProps: Readonly<
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
   assignee: taskFixtures.getAssignee(),
+  hasSuspendRequest: false,
 }
 
 export const activeTakeTaskButtonProps: Readonly<
