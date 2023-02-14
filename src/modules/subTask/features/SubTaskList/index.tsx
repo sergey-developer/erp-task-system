@@ -18,7 +18,6 @@ export type SubTaskListProps = {
   taskStatus: TaskStatusEnum
   taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
-  taskHasSuspendRequest: boolean
   list: Array<SubTaskModel>
   isError: boolean
   onClickCancel: (subTask: SubTaskModel) => void
@@ -29,7 +28,6 @@ const SubTaskList: FC<SubTaskListProps> = ({
   taskStatus,
   taskExtendedStatus,
   currentUserIsTaskAssignee,
-  taskHasSuspendRequest,
   list,
   isError,
   onClickCancel,
@@ -61,7 +59,6 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 taskStatus={taskStatus}
                 taskExtendedStatus={taskExtendedStatus}
                 currentUserIsTaskAssignee={currentUserIsTaskAssignee}
-                taskHasSuspendRequest={taskHasSuspendRequest}
                 returnReason={item.returnReason}
                 cancelReason={item.cancelReason}
               />

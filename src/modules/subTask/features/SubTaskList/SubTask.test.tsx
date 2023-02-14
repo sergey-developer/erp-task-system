@@ -23,7 +23,6 @@ const requiredProps: Pick<
   | 'onClickRework'
   | 'taskStatus'
   | 'taskExtendedStatus'
-  | 'taskHasSuspendRequest'
   | 'currentUserIsTaskAssignee'
   | 'returnReason'
   | 'cancelReason'
@@ -31,7 +30,6 @@ const requiredProps: Pick<
   title: subTask.title,
   status: subTask.status,
   taskExtendedStatus: task.extendedStatus,
-  taskHasSuspendRequest: false,
   createdAt: subTask.createdAt,
   supportGroup: null,
   onClickCancel: jest.fn(),
@@ -608,6 +606,8 @@ describe('Задание', () => {
       await testUtils.clickReworkButton(user)
       expect(requiredProps.onClickRework).toBeCalledTimes(1)
     })
+
+    test.todo('Не активна - если заявка на переклассификации')
   })
 
   describe('Кнопка отмены', () => {
@@ -678,5 +678,7 @@ describe('Задание', () => {
       await testUtils.clickCancelButton(user)
       expect(requiredProps.onClickCancel).toBeCalledTimes(1)
     })
+
+    test.todo('Не активна - если заявка на переклассификации')
   })
 })

@@ -42,11 +42,12 @@ export const activeExecuteTaskItemProps: Pick<
 
 export const activeRequestReclassificationItemProps: Pick<
   CardTitleProps,
-  'status' | 'olaStatus' | 'type'
+  'status' | 'olaStatus' | 'type' | 'hasSuspendRequest'
 > = {
   status: TaskStatusEnum.New,
   olaStatus: TaskOlaStatusEnum.NotExpired,
   type: TaskTypeEnum.Request,
+  hasSuspendRequest: false,
 }
 
 export const activeRequestSuspendItemProps: Pick<
@@ -383,6 +384,7 @@ describe('Заголовок карточки заявки', () => {
           )
 
           await testUtils.userOpenMenu(user)
+
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
           )
@@ -401,6 +403,7 @@ describe('Заголовок карточки заявки', () => {
           )
 
           await testUtils.userOpenMenu(user)
+
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
           )
@@ -419,6 +422,7 @@ describe('Заголовок карточки заявки', () => {
           )
 
           await testUtils.userOpenMenu(user)
+
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
           )
@@ -437,6 +441,7 @@ describe('Заголовок карточки заявки', () => {
           )
 
           await testUtils.userOpenMenu(user)
+
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
           )
@@ -449,12 +454,11 @@ describe('Заголовок карточки заявки', () => {
               {...activeRequestReclassificationItemProps}
               type={TaskTypeEnum.IncidentTask}
             />,
-            {
-              store: getStoreWithAuth(),
-            },
+            { store: getStoreWithAuth() },
           )
 
           await testUtils.userOpenMenu(user)
+
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
           )
@@ -472,6 +476,23 @@ describe('Заголовок карточки заявки', () => {
           )
 
           await testUtils.userOpenMenu(user)
+          testUtils.expectMenuItemDisabled(
+            testUtils.getRequestReclassificationItem(),
+          )
+        })
+
+        test('Но у заявки есть запрос на ожидание', async () => {
+          const { user } = render(
+            <CardTitle
+              {...requiredProps}
+              {...activeRequestReclassificationItemProps}
+              hasSuspendRequest
+            />,
+            { store: getStoreWithAuth() },
+          )
+
+          await testUtils.userOpenMenu(user)
+
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
           )
