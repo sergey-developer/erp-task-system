@@ -468,7 +468,7 @@ const TaskCard: FC<TaskCardProps> = ({
                         disabled: userRole.isEngineerRole,
                       }
                     : taskSuspendRequestStatusMap.isApproved
-                    ? { text: 'Вернуть в работу', disabled: !hasSuspendRequest }
+                    ? { text: 'Вернуть в работу' }
                     : undefined
                 }
               />
