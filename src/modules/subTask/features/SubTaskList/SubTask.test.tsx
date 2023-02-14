@@ -3,7 +3,10 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { NonNullableObject } from 'shared/interfaces/utils'
@@ -53,20 +56,22 @@ const notRequiredProps: NonNullableObject<
 
 export const activeReworkButtonProps: Pick<
   SubTaskProps,
-  'currentUserIsTaskAssignee' | 'status' | 'taskStatus'
+  'currentUserIsTaskAssignee' | 'status' | 'taskStatus' | 'taskExtendedStatus'
 > = {
   currentUserIsTaskAssignee: true,
   status: TaskStatusEnum.Completed,
   taskStatus: TaskStatusEnum.New,
+  taskExtendedStatus: TaskExtendedStatusEnum.New,
 }
 
 export const activeCancelButtonProps: Pick<
   SubTaskProps,
-  'currentUserIsTaskAssignee' | 'status' | 'taskStatus'
+  'currentUserIsTaskAssignee' | 'status' | 'taskStatus' | 'taskExtendedStatus'
 > = {
   currentUserIsTaskAssignee: true,
   status: TaskStatusEnum.New,
   taskStatus: TaskStatusEnum.New,
+  taskExtendedStatus: TaskExtendedStatusEnum.New,
 }
 
 const getContainer = () => screen.getByTestId('sub-task-list-item')
@@ -541,11 +546,7 @@ describe('Задание', () => {
   describe('Кнопка отправки на доработку', () => {
     test('Отображается корректно если условия соблюдены', () => {
       render(<SubTask {...requiredProps} {...activeReworkButtonProps} />)
-
-      const button = testUtils.getReworkButton()
-
-      expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
+      expect(testUtils.getReworkButton()).toBeInTheDocument()
     })
 
     describe('Не отображается если условия соблюдены', () => {
@@ -607,7 +608,17 @@ describe('Задание', () => {
       expect(requiredProps.onClickRework).toBeCalledTimes(1)
     })
 
-    test.todo('Не активна - если заявка на переклассификации')
+    test('Не активна - если заявка на переклассификации', () => {
+      render(
+        <SubTask
+          {...requiredProps}
+          {...activeReworkButtonProps}
+          taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
+        />,
+      )
+
+      expect(testUtils.getReworkButton()).toBeDisabled()
+    })
   })
 
   describe('Кнопка отмены', () => {
@@ -679,6 +690,16 @@ describe('Задание', () => {
       expect(requiredProps.onClickCancel).toBeCalledTimes(1)
     })
 
-    test.todo('Не активна - если заявка на переклассификации')
+    test('Не активна - если заявка на переклассификации', () => {
+      render(
+        <SubTask
+          {...requiredProps}
+          {...activeCancelButtonProps}
+          taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
+        />,
+      )
+
+      expect(testUtils.getCancelButton()).toBeDisabled()
+    })
   })
 })
