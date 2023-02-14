@@ -29,6 +29,7 @@ const requiredProps: Pick<
   | 'currentUserIsTaskAssignee'
   | 'returnReason'
   | 'cancelReason'
+  | 'taskHasSuspendRequest'
 > = {
   title: subTask.title,
   status: subTask.status,
@@ -41,6 +42,7 @@ const requiredProps: Pick<
   currentUserIsTaskAssignee: false,
   returnReason: null,
   cancelReason: null,
+  taskHasSuspendRequest: false,
 }
 
 const notRequiredProps: NonNullableObject<
