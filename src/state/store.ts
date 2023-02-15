@@ -1,5 +1,4 @@
 import { PreloadedState, configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/query'
 
 import { env } from 'configs/env'
 import { apiService } from 'shared/services/api'
@@ -24,8 +23,6 @@ const setupStore = ({ preloadedState }: SetupStoreSettings = {}) => {
 }
 
 const store = setupStore()
-
-setupListeners(store.dispatch)
 
 export { setupStore }
 export default store
