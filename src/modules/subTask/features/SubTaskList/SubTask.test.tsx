@@ -4,6 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
 import {
+  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
@@ -29,7 +30,7 @@ const requiredProps: Pick<
   | 'currentUserIsTaskAssignee'
   | 'returnReason'
   | 'cancelReason'
-  | 'taskHasSuspendRequest'
+  | 'taskSuspendRequestStatus'
 > = {
   title: subTask.title,
   status: subTask.status,
@@ -42,7 +43,7 @@ const requiredProps: Pick<
   currentUserIsTaskAssignee: false,
   returnReason: null,
   cancelReason: null,
-  taskHasSuspendRequest: false,
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
 const notRequiredProps: NonNullableObject<

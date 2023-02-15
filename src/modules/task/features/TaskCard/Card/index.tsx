@@ -198,7 +198,6 @@ const TaskCard: FC<TaskCardProps> = ({
 
   const userRole = useUserRole()
   const isAssignedToCurrentUser = useCheckUserAuthenticated(task?.assignee?.id)
-  const hasSuspendRequest = !!task?.suspendRequest
 
   const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
@@ -535,7 +534,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 updateAssigneeIsLoading={updateAssigneeIsLoading}
                 takeTask={handleTakeTask}
                 takeTaskIsLoading={takeTaskIsLoading}
-                hasSuspendRequest={hasSuspendRequest}
+                taskSuspendRequestStatus={taskSuspendRequestStatusMap}
               />
 
               <CardTabs task={task} />

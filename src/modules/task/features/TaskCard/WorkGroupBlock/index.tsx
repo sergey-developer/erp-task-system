@@ -6,11 +6,16 @@ import React, { FC } from 'react'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
 import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
 } from 'modules/task/features/TaskCard/TaskFirstLineModal/interfaces'
-import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
+import {
+  useTaskExtendedStatus,
+  useTaskStatus,
+  useTaskSuspendRequestStatus,
+} from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
 import { useDebounceFn } from 'shared/hooks'
@@ -48,7 +53,7 @@ export type WorkGroupBlockProps = Pick<
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
 
-  hasSuspendRequest: boolean
+  taskSuspendRequestStatus: SuspendRequestStatusEnum
 }
 
 const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
@@ -65,7 +70,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   transferTaskToSecondLine,
   transferTaskToSecondLineIsLoading,
 
-  hasSuspendRequest,
+  taskSuspendRequestStatus: rawTaskSuspendRequestStatus,
 }) => {
   const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] =
     useBoolean(false)
@@ -77,6 +82,10 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
 
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
+  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(
+    rawTaskSuspendRequestStatus,
+  )
+
   const hasWorkGroup: boolean = !!workGroup
 
   const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(
@@ -124,9 +133,11 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                     onClick={debouncedToggleOpenTaskFirstLineModal}
                     loading={transferTaskToFirstLineIsLoading}
                     disabled={
-                      hasSuspendRequest
+                      taskSuspendRequestStatus.isApproved
                         ? false
-                        : taskStatus.isAwaiting ||
+                        : taskSuspendRequestStatus.isNew ||
+                          taskSuspendRequestStatus.isInProgress ||
+                          taskStatus.isAwaiting ||
                           taskExtendedStatus.isInReclassification
                     }
                   >
@@ -146,9 +157,11 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                     onClick={debouncedToggleOpenTaskSecondLineModal}
                     loading={transferTaskToSecondLineIsLoading}
                     disabled={
-                      hasSuspendRequest
+                      taskSuspendRequestStatus.isApproved
                         ? false
-                        : taskExtendedStatus.isInReclassification ||
+                        : taskSuspendRequestStatus.isNew ||
+                          taskSuspendRequestStatus.isInProgress ||
+                          taskExtendedStatus.isInReclassification ||
                           (!taskStatus.isNew && !taskStatus.isInProgress)
                     }
                   >
