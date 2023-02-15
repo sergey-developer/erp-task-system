@@ -24,6 +24,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 import {
+  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
@@ -46,7 +47,7 @@ const requiredProps: Readonly<
       | 'extendedStatus'
       | 'assignee'
       | 'workGroupListIsLoading'
-      | 'hasSuspendRequest'
+      | 'taskSuspendRequestStatus'
     >
   >
 > = {
@@ -58,7 +59,7 @@ const requiredProps: Readonly<
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
   assignee: taskFixtures.getAssignee(),
-  hasSuspendRequest: false,
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
 export const activeTakeTaskButtonProps: Readonly<

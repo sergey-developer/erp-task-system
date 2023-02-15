@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 import Space from 'components/Space'
 import { SubTaskModel } from 'modules/subTask/models'
 import {
+  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
@@ -19,10 +20,11 @@ export type SubTaskListProps = {
   taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
   list: Array<SubTaskModel>
-  taskHasSuspendRequest: boolean
   isError: boolean
   onClickCancel: (subTask: SubTaskModel) => void
   onClickRework: (subTask: SubTaskModel) => void
+
+  taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
 const SubTaskList: FC<SubTaskListProps> = ({
@@ -33,7 +35,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
   isError,
   onClickCancel,
   onClickRework,
-  taskHasSuspendRequest,
+  taskSuspendRequestStatus,
 }) => {
   return (
     <Space data-testid='sub-task-list' $block direction='vertical'>
@@ -63,7 +65,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 currentUserIsTaskAssignee={currentUserIsTaskAssignee}
                 returnReason={item.returnReason}
                 cancelReason={item.cancelReason}
-                taskHasSuspendRequest={taskHasSuspendRequest}
+                taskSuspendRequestStatus={taskSuspendRequestStatus}
               />
 
               {array.length - 1 !== index && <Divider />}

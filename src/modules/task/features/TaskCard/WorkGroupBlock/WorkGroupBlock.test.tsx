@@ -14,6 +14,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 import {
+  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
@@ -23,7 +24,9 @@ import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/
 import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
 
-const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {
+const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> & {
+  taskSuspendRequestStatus: SuspendRequestStatusEnum
+} = {
   id: generateId(),
   recordId: generateWord(),
   status: TaskStatusEnum.New,
@@ -32,7 +35,7 @@ const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {
   transferTaskToFirstLineIsLoading: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
-  hasSuspendRequest: false,
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
 const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof requiredProps> =

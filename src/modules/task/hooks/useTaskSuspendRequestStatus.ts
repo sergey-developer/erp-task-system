@@ -4,9 +4,12 @@ import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
 import { BooleanMap, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
+export type UseTaskSuspendRequestStatusResult =
+  BooleanMap<`is${keyof typeof SuspendRequestStatusEnum}`>
+
 export const useTaskSuspendRequestStatus = (
   status: MaybeUndefined<SuspendRequestStatusEnum>,
-): BooleanMap<`is${keyof typeof SuspendRequestStatusEnum}`> => {
+): UseTaskSuspendRequestStatusResult => {
   return useMemo(
     () => ({
       isNew: isEqual(status, SuspendRequestStatusEnum.New),
