@@ -39,7 +39,7 @@ export type AssigneeBlockProps = Pick<
   takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
 
-  taskSuspendRequestStatus: SuspendRequestStatusEnum
+  taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
 const AssigneeBlock: FC<AssigneeBlockProps> = ({

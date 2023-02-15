@@ -192,7 +192,7 @@ const TaskCard: FC<TaskCardProps> = ({
   const breakpoints = useBreakpoint()
 
   const taskStatus = useTaskStatus(task?.status)
-  const taskSuspendRequestStatusMap = useTaskSuspendRequestStatus(
+  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(
     task?.suspendRequest?.status,
   )
 
@@ -447,10 +447,10 @@ const TaskCard: FC<TaskCardProps> = ({
             <React.Suspense fallback={<Spinner area='block' />}>
               <TaskSuspendRequest
                 title={
-                  taskSuspendRequestStatusMap.isNew ||
-                  taskSuspendRequestStatusMap.isInProgress
+                  taskSuspendRequestStatus.isNew ||
+                  taskSuspendRequestStatus.isInProgress
                     ? 'Запрошено ожидание'
-                    : taskSuspendRequestStatusMap.isApproved
+                    : taskSuspendRequestStatus.isApproved
                     ? 'Заявка находится в ожидании'
                     : ''
                 }
@@ -458,15 +458,15 @@ const TaskCard: FC<TaskCardProps> = ({
                 user={task.suspendRequest.author}
                 comment={task.suspendRequest.comment}
                 action={
-                  taskSuspendRequestStatusMap.isNew ||
-                  taskSuspendRequestStatusMap.isInProgress
+                  taskSuspendRequestStatus.isNew ||
+                  taskSuspendRequestStatus.isInProgress
                     ? {
                         text: 'Отменить запрос',
                         onClick: handleCancelTaskSuspendRequest,
                         loading: cancelSuspendRequestIsLoading,
                         disabled: userRole.isEngineerRole,
                       }
-                    : taskSuspendRequestStatusMap.isApproved
+                    : taskSuspendRequestStatus.isApproved
                     ? { text: 'Вернуть в работу' }
                     : undefined
                 }
@@ -534,7 +534,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 updateAssigneeIsLoading={updateAssigneeIsLoading}
                 takeTask={handleTakeTask}
                 takeTaskIsLoading={takeTaskIsLoading}
-                taskSuspendRequestStatus={taskSuspendRequestStatusMap}
+                taskSuspendRequestStatus={task.suspendRequest?.status}
               />
 
               <CardTabs task={task} />

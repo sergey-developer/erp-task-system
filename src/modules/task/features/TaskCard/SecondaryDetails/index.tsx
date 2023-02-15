@@ -1,7 +1,7 @@
 import { Col, FormInstance, Row } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import { UseTaskSuspendRequestStatusResult } from 'modules/task/hooks'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 import { isEqual } from 'shared/utils/common/isEqual'
@@ -38,7 +38,7 @@ export type SecondaryDetailsProps = Pick<
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
 
-  taskSuspendRequestStatus: UseTaskSuspendRequestStatusResult
+  taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({

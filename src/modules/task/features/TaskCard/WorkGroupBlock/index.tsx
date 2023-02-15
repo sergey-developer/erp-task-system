@@ -53,7 +53,7 @@ export type WorkGroupBlockProps = Pick<
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
 
-  taskSuspendRequestStatus: SuspendRequestStatusEnum
+  taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
 const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
