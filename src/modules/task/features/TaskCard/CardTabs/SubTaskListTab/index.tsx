@@ -247,11 +247,11 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
           taskStatus={task.status}
           taskExtendedStatus={task.extendedStatus}
           currentUserIsTaskAssignee={currentUserIsTaskAssignee}
-          taskHasSuspendRequest={taskHasSuspendRequest}
           list={subTaskList}
           isError={isGetSubTaskListError}
           onClickCancel={handleClickCancel}
           onClickRework={handleClickRework}
+          taskSuspendRequestStatus={task.suspendRequest?.status}
         />
       </LoadingArea>
 

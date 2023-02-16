@@ -39,7 +39,11 @@ import {
   testUtils as subTaskTestUtils,
 } from 'modules/subTask/features/SubTaskList/SubTask.test'
 import { testUtils as subTaskListTestUtils } from 'modules/subTask/features/SubTaskList/SubTaskList.test'
-import { TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/common'
+import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+  TaskTypeEnum,
+} from 'modules/task/constants/common'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
 import SubTaskListTab, { SubTaskListTabProps } from './index'
@@ -51,11 +55,13 @@ const requiredProps: Pick<SubTaskListTabProps, 'task'> = {
 
 const activeCreateSubTaskButtonTaskProps: Pick<
   SubTaskListTabProps['task'],
-  'assignee' | 'status' | 'type'
+  'assignee' | 'status' | 'extendedStatus' | 'type' | 'suspendRequest'
 > = {
   assignee: taskFixtures.getAssignee(),
   status: TaskStatusEnum.InProgress,
+  extendedStatus: TaskExtendedStatusEnum.New,
   type: TaskTypeEnum.Request,
+  suspendRequest: null,
 }
 
 // utils
@@ -161,6 +167,50 @@ describe('Вкладка списка заданий', () => {
               ...requiredProps.task,
               ...activeCreateSubTaskButtonTaskProps,
               type: TaskTypeEnum.RequestTask,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
+            }),
+          },
+        )
+
+        expect(testUtils.getCreateSubTaskButton()).toBeDisabled()
+      })
+
+      test('Но заявка на переклассификации', () => {
+        mockGetSubTaskListSuccess(requiredProps.task.id)
+
+        render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+              extendedStatus: TaskExtendedStatusEnum.InReclassification,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
+            }),
+          },
+        )
+
+        expect(testUtils.getCreateSubTaskButton()).toBeDisabled()
+      })
+
+      test('Но у заявки есть запрос на ожидание', () => {
+        mockGetSubTaskListSuccess(requiredProps.task.id)
+
+        render(
+          <SubTaskListTab
+            {...requiredProps}
+            task={{
+              ...requiredProps.task,
+              ...activeCreateSubTaskButtonTaskProps,
+              suspendRequest: taskFixtures.getSuspendRequest(),
             }}
           />,
           {

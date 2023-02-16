@@ -6,11 +6,16 @@ import React, { FC } from 'react'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
 import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
 } from 'modules/task/features/TaskCard/TaskFirstLineModal/interfaces'
-import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
+import {
+  useTaskExtendedStatus,
+  useTaskStatus,
+  useTaskSuspendRequestStatus,
+} from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
 import { useDebounceFn } from 'shared/hooks'
@@ -34,8 +39,6 @@ export type WorkGroupBlockProps = Pick<
   TaskModel,
   'id' | 'recordId' | 'workGroup' | 'status' | 'extendedStatus'
 > & {
-  hasSuspendRequest: boolean
-
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
     setFields: FormInstance['setFields'],
@@ -49,12 +52,13 @@ export type WorkGroupBlockProps = Pick<
     closeTaskSecondLineModal: () => void,
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
+
+  taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
 const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   id,
   recordId,
-  hasSuspendRequest,
 
   workGroup,
 
@@ -65,6 +69,8 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   transferTaskToFirstLineIsLoading,
   transferTaskToSecondLine,
   transferTaskToSecondLineIsLoading,
+
+  taskSuspendRequestStatus: rawTaskSuspendRequestStatus,
 }) => {
   const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] =
     useBoolean(false)
@@ -76,6 +82,10 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
 
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
+  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(
+    rawTaskSuspendRequestStatus,
+  )
+
   const hasWorkGroup: boolean = !!workGroup
 
   const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(
@@ -123,9 +133,12 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                     onClick={debouncedToggleOpenTaskFirstLineModal}
                     loading={transferTaskToFirstLineIsLoading}
                     disabled={
-                      taskStatus.isAwaiting ||
-                      taskExtendedStatus.isInReclassification ||
-                      hasSuspendRequest
+                      taskSuspendRequestStatus.isApproved
+                        ? false
+                        : taskSuspendRequestStatus.isNew ||
+                          taskSuspendRequestStatus.isInProgress ||
+                          taskStatus.isAwaiting ||
+                          taskExtendedStatus.isInReclassification
                     }
                   >
                     Вернуть на I линию
@@ -144,9 +157,12 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                     onClick={debouncedToggleOpenTaskSecondLineModal}
                     loading={transferTaskToSecondLineIsLoading}
                     disabled={
-                      taskExtendedStatus.isInReclassification ||
-                      (!taskStatus.isNew && !taskStatus.isInProgress) ||
-                      hasSuspendRequest
+                      taskSuspendRequestStatus.isApproved
+                        ? false
+                        : taskSuspendRequestStatus.isNew ||
+                          taskSuspendRequestStatus.isInProgress ||
+                          taskExtendedStatus.isInReclassification ||
+                          (!taskStatus.isNew && !taskStatus.isInProgress)
                     }
                   >
                     Перевести на II линию

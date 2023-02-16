@@ -3,7 +3,11 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import {
+  SuspendRequestStatusEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { NonNullableObject } from 'shared/interfaces/utils'
@@ -23,15 +27,14 @@ const requiredProps: Pick<
   | 'onClickRework'
   | 'taskStatus'
   | 'taskExtendedStatus'
-  | 'taskHasSuspendRequest'
   | 'currentUserIsTaskAssignee'
   | 'returnReason'
   | 'cancelReason'
+  | 'taskSuspendRequestStatus'
 > = {
   title: subTask.title,
   status: subTask.status,
   taskExtendedStatus: task.extendedStatus,
-  taskHasSuspendRequest: false,
   createdAt: subTask.createdAt,
   supportGroup: null,
   onClickCancel: jest.fn(),
@@ -40,6 +43,7 @@ const requiredProps: Pick<
   currentUserIsTaskAssignee: false,
   returnReason: null,
   cancelReason: null,
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
 const notRequiredProps: NonNullableObject<
@@ -55,20 +59,22 @@ const notRequiredProps: NonNullableObject<
 
 export const activeReworkButtonProps: Pick<
   SubTaskProps,
-  'currentUserIsTaskAssignee' | 'status' | 'taskStatus'
+  'currentUserIsTaskAssignee' | 'status' | 'taskStatus' | 'taskExtendedStatus'
 > = {
   currentUserIsTaskAssignee: true,
   status: TaskStatusEnum.Completed,
   taskStatus: TaskStatusEnum.New,
+  taskExtendedStatus: TaskExtendedStatusEnum.New,
 }
 
 export const activeCancelButtonProps: Pick<
   SubTaskProps,
-  'currentUserIsTaskAssignee' | 'status' | 'taskStatus'
+  'currentUserIsTaskAssignee' | 'status' | 'taskStatus' | 'taskExtendedStatus'
 > = {
   currentUserIsTaskAssignee: true,
   status: TaskStatusEnum.New,
   taskStatus: TaskStatusEnum.New,
+  taskExtendedStatus: TaskExtendedStatusEnum.New,
 }
 
 const getContainer = () => screen.getByTestId('sub-task-list-item')
@@ -608,6 +614,18 @@ describe('Задание', () => {
       await testUtils.clickReworkButton(user)
       expect(requiredProps.onClickRework).toBeCalledTimes(1)
     })
+
+    test('Не активна - если заявка на переклассификации', () => {
+      render(
+        <SubTask
+          {...requiredProps}
+          {...activeReworkButtonProps}
+          taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
+        />,
+      )
+
+      expect(testUtils.getReworkButton()).toBeDisabled()
+    })
   })
 
   describe('Кнопка отмены', () => {
@@ -677,6 +695,18 @@ describe('Задание', () => {
 
       await testUtils.clickCancelButton(user)
       expect(requiredProps.onClickCancel).toBeCalledTimes(1)
+    })
+
+    test('Не активна - если заявка на переклассификации', () => {
+      render(
+        <SubTask
+          {...requiredProps}
+          {...activeCancelButtonProps}
+          taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
+        />,
+      )
+
+      expect(testUtils.getCancelButton()).toBeDisabled()
     })
   })
 })

@@ -8,6 +8,7 @@ import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 import { SubTaskModel } from 'modules/subTask/models'
 import {
+  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
@@ -18,7 +19,11 @@ import {
   badgeByTaskStatus,
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
-import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks'
+import {
+  useTaskExtendedStatus,
+  useTaskStatus,
+  useTaskSuspendRequestStatus,
+} from 'modules/task/hooks'
 import { makeUserNameObject } from 'modules/user/utils'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
@@ -28,9 +33,9 @@ export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
   taskStatus: TaskStatusEnum
   taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
-  taskHasSuspendRequest: boolean
   onClickCancel: () => void
   onClickRework: () => void
+  taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
 const SubTask: FC<SubTaskProps> = ({
@@ -49,12 +54,15 @@ const SubTask: FC<SubTaskProps> = ({
   taskStatus: rawTaskStatus,
   taskExtendedStatus: rawTaskExtendedStatus,
   currentUserIsTaskAssignee,
-  taskHasSuspendRequest,
   returnReason,
   cancelReason,
+  taskSuspendRequestStatus: rawTaskSuspendRequestStatus,
 }) => {
   const taskStatus = useTaskStatus(rawTaskStatus)
   const taskExtendedStatus = useTaskExtendedStatus(rawTaskExtendedStatus)
+  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(
+    rawTaskSuspendRequestStatus,
+  )
   const subTaskStatus = useTaskStatus(status)
 
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
@@ -105,7 +113,11 @@ const SubTask: FC<SubTaskProps> = ({
             <Button
               onClick={onClickCancel}
               disabled={
-                taskHasSuspendRequest || taskExtendedStatus.isInReclassification
+                taskSuspendRequestStatus.isApproved
+                  ? false
+                  : taskExtendedStatus.isInReclassification ||
+                    taskSuspendRequestStatus.isNew ||
+                    taskSuspendRequestStatus.isInProgress
               }
             >
               Отменить
@@ -118,7 +130,11 @@ const SubTask: FC<SubTaskProps> = ({
             <Button
               onClick={onClickRework}
               disabled={
-                taskHasSuspendRequest || taskExtendedStatus.isInReclassification
+                taskSuspendRequestStatus.isApproved
+                  ? false
+                  : taskExtendedStatus.isInReclassification ||
+                    taskSuspendRequestStatus.isNew ||
+                    taskSuspendRequestStatus.isInProgress
               }
             >
               Вернуть на доработку

@@ -2,6 +2,7 @@ import { render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import subTaskFixtures from 'fixtures/subTask'
 import {
+  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
@@ -20,10 +21,10 @@ const requiredProps: SubTaskListProps = {
   isError: false,
   taskStatus: TaskStatusEnum.New,
   taskExtendedStatus: TaskExtendedStatusEnum.New,
-  taskHasSuspendRequest: false,
   currentUserIsTaskAssignee: false,
   onClickCancel: jest.fn(),
   onClickRework: jest.fn(),
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
 const getContainer = () => screen.getByTestId('sub-task-list')
