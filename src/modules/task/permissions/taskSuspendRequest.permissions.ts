@@ -7,7 +7,10 @@ export const taskSuspendRequestApiPermissions: UserPermissionConfig = {
     CRUDPermissionsEnum.CanCreate,
     CRUDPermissionsEnum.CanDelete,
   ],
-  [UserRoleEnum.Engineer]: [CRUDPermissionsEnum.CanCreate],
+  [UserRoleEnum.Engineer]: [
+    CRUDPermissionsEnum.CanCreate,
+    CRUDPermissionsEnum.CanDelete,
+  ],
   [UserRoleEnum.SeniorEngineer]: [
     CRUDPermissionsEnum.CanCreate,
     CRUDPermissionsEnum.CanDelete,

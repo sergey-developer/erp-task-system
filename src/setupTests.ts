@@ -11,11 +11,7 @@ import '@testing-library/jest-dom'
  */
 import Schema from 'async-validator'
 
-if (process.env.REACT_APP_ENVIRONMENT === 'test' && process.env.CI) {
-  jest.setTimeout(15000)
-} else {
-  jest.setTimeout(10000)
-}
+jest.setTimeout(15000)
 
 Schema.warning = function () {}
 
