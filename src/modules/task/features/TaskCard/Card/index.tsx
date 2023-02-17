@@ -469,8 +469,8 @@ const TaskCard: FC<TaskCardProps> = ({
                     : taskSuspendRequestStatus.isApproved
                     ? {
                         text: 'Вернуть в работу',
-                        onClick: handleCancelTaskSuspendRequest,
-                        loading: cancelSuspendRequestIsLoading,
+                        onClick: handleTakeTask,
+                        loading: takeTaskIsLoading,
                       }
                     : undefined
                 }
