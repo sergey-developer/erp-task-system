@@ -1,14 +1,6 @@
 import times from 'lodash/times'
 
 import {
-  generateDateString,
-  generateId,
-  generateInteger,
-  generateWord,
-} from '_tests_/utils'
-import commonFixtures from 'fixtures/common'
-import workGroupFixtures from 'fixtures/workGroup'
-import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
@@ -18,6 +10,16 @@ import {
   GetTaskListSuccessResponse,
   TaskListItemModel,
 } from 'modules/task/models'
+
+import commonFixtures from 'fixtures/common'
+import workGroupFixtures from 'fixtures/workGroup'
+
+import {
+  generateDateString,
+  generateId,
+  generateInteger,
+  generateWord,
+} from '_tests_/utils'
 
 import { getAssignee } from './assignee'
 

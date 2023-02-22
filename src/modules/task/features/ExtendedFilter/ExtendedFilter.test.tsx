@@ -1,4 +1,13 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 import moment from 'moment'
+
+import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
+import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
+
+import { UserRoleEnum } from 'shared/constants/roles'
+
+import workGroupFixtures from 'fixtures/workGroup'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
@@ -19,12 +28,6 @@ import {
   userOpenSelect,
   userSearchInSelect,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import workGroupFixtures from 'fixtures/workGroup'
-import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
-import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
-import { UserRoleEnum } from 'shared/constants/roles'
 
 import {
   TaskAssignedEnum,

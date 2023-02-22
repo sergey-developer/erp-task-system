@@ -1,8 +1,8 @@
 import { ConfigProvider as BaseConfigProvider } from 'antd'
-import { FC } from 'react'
-
 import { ConfigProviderProps as BaseConfigProviderProps } from 'antd/lib/config-provider'
 import ruRU from 'antd/lib/locale/ru_RU'
+import { FC } from 'react'
+
 import {
   validationMessages,
   validationTemplateMessages,

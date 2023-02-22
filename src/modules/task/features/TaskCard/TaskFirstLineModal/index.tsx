@@ -2,6 +2,7 @@ import { Form, Input, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
+
 import { validationRules } from 'shared/constants/validation'
 
 import { TaskFirstLineFormFields, TaskFirstLineModalProps } from './interfaces'

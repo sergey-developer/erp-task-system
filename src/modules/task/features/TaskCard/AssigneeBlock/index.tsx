@@ -1,8 +1,6 @@
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
-import Permissions from 'components/Permissions'
-import Space from 'components/Space'
 import {
   useAuthenticatedUser,
   useCheckUserAuthenticated,
@@ -18,6 +16,10 @@ import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { taskAssigneePermissions } from 'modules/task/permissions'
 import { getFullUserName } from 'modules/user/utils'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
+
+import Permissions from 'components/Permissions'
+import Space from 'components/Space'
+
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import { SelectStyled } from './styles'

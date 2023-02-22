@@ -1,3 +1,20 @@
+import { screen, waitFor, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import {
+  SuspendRequestStatusEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
+import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
+import { WorkGroupListItemModel } from 'modules/workGroup/models'
+
+import { UserRoleEnum } from 'shared/constants/roles'
+import { ArrayItem, NonNullableObject } from 'shared/interfaces/utils'
+
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
+
 import {
   clickSelectOption,
   expectOptionDisabled,
@@ -19,19 +36,6 @@ import {
   selectNotDisabled,
   userOpenSelect,
 } from '_tests_/utils'
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-import {
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
-import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
-import { WorkGroupListItemModel } from 'modules/workGroup/models'
-import { UserRoleEnum } from 'shared/constants/roles'
-import { ArrayItem, NonNullableObject } from 'shared/interfaces/utils'
 
 import AssigneeBlock, { AssigneeBlockProps } from './index'
 

@@ -1,5 +1,4 @@
 import { Spin } from 'antd'
-
 import styled, { css } from 'styled-components'
 
 import { SpinnerProps } from './index'

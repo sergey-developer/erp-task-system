@@ -1,6 +1,7 @@
 import { FormInstance, ModalProps } from 'antd'
 
 import { TaskModel } from 'modules/task/models'
+
 import { FieldsErrors } from 'shared/services/api'
 
 export type TaskFirstLineFormFields = { description: string }

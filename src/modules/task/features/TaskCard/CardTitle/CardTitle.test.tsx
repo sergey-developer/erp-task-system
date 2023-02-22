@@ -1,3 +1,15 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import {
+  TaskExtendedStatusEnum,
+  TaskOlaStatusEnum,
+  TaskStatusEnum,
+  TaskTypeEnum,
+} from 'modules/task/constants/common'
+
+import { UserRoleEnum } from 'shared/constants/roles'
+
 import {
   generateId,
   getButtonIn,
@@ -5,15 +17,6 @@ import {
   getStoreWithAuth,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import {
-  TaskExtendedStatusEnum,
-  TaskOlaStatusEnum,
-  TaskStatusEnum,
-  TaskTypeEnum,
-} from 'modules/task/constants/common'
-import { UserRoleEnum } from 'shared/constants/roles'
 
 import CardTitle, { CardTitleProps } from './index'
 

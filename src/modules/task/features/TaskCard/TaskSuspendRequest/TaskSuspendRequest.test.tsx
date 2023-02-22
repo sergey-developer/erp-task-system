@@ -1,3 +1,13 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { getShortUserName } from 'modules/user/utils'
+
+import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import { formatDate } from 'shared/utils/date'
+
+import commonFixtures from 'fixtures/common'
+
 import {
   generateDateString,
   generateWord,
@@ -7,12 +17,6 @@ import {
   queryButtonIn,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import commonFixtures from 'fixtures/common'
-import { getShortUserName } from 'modules/user/utils'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import { formatDate } from 'shared/utils/date'
 
 import TaskSuspendRequest, { TaskSuspendRequestProps } from './index'
 
@@ -26,15 +30,11 @@ const requiredProps: Omit<TaskSuspendRequestProps, 'action'> = {
 export const cancelRequestAction: TaskSuspendRequestProps['action'] = {
   text: 'Отменить запрос',
   onClick: jest.fn(),
-  loading: false,
-  disabled: false,
 }
 
 export const returnInWorkAction: TaskSuspendRequestProps['action'] = {
   text: 'Вернуть в работу',
   onClick: jest.fn(),
-  loading: false,
-  disabled: false,
 }
 
 const getContainer = () => screen.getByTestId('task-card-suspend-request')
@@ -227,10 +227,7 @@ describe('Запрос заявки на ожидание', () => {
 
     test('При клике обработчик вызывается корректно', async () => {
       const { user } = render(
-        <TaskSuspendRequest
-          {...requiredProps}
-          action={{ ...returnInWorkAction, disabled: false }}
-        />,
+        <TaskSuspendRequest {...requiredProps} action={returnInWorkAction} />,
       )
 
       await testUtils.clickReturnToWorkButton(user)

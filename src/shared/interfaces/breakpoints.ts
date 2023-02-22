@@ -2,7 +2,6 @@ import {
   Breakpoint as BaseBreakpoint,
   ScreenMap as BaseScreenMap,
 } from 'antd/es/_util/responsiveObserve'
-
 import { FlattenSimpleInterpolation } from 'styled-components'
 
 /**

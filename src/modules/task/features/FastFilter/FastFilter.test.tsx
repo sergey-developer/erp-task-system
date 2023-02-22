@@ -1,8 +1,11 @@
-import { render } from '_tests_/utils'
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
+
 import { NumberOrString } from 'shared/interfaces/utils'
+
+import taskFixtures from 'fixtures/task'
+
+import { render } from '_tests_/utils'
 
 import { FastFilterEnum, fastFilterNamesDict } from './constants'
 import FastFilter from './index'

@@ -1,3 +1,11 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { commonApiMessages } from 'shared/constants/errors'
+import * as downloadLink from 'shared/utils/common/downloadLink'
+
+import taskFixtures from 'fixtures/task'
+
 import {
   mockGetJournalCsvServerError,
   mockGetJournalCsvSuccess,
@@ -17,11 +25,6 @@ import {
   render,
   setupApiTests,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
-import { commonApiMessages } from 'shared/constants/errors'
-import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import { NO_DATA_MSG } from './constants'
 import JournalTab, { JournalTabProps } from './index'

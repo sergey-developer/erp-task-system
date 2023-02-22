@@ -4,6 +4,7 @@ import React, { FC, useMemo } from 'react'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
+
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import TaskAssignee from '../AssigneeBlock'

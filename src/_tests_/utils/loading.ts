@@ -1,5 +1,6 @@
-import { findIconByNameIn, queryIconByNameIn } from '_tests_/utils'
 import { screen, waitFor } from '@testing-library/react'
+
+import { findIconByNameIn, queryIconByNameIn } from '_tests_/utils'
 
 const btnLoadingClass = 'ant-btn-loading'
 

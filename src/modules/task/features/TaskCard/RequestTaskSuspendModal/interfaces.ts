@@ -1,6 +1,7 @@
 import { Moment } from 'moment'
 
 import { SuspendReasonEnum } from 'modules/task/constants/common'
+
 import { FieldsErrors } from 'shared/services/api'
 
 type FormFields = {

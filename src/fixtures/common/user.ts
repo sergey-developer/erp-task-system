@@ -1,5 +1,6 @@
-import { generateId, generateUrl, generateWord } from '_tests_/utils'
 import { UserModel } from 'modules/user/models'
+
+import { generateId, generateUrl, generateWord } from '_tests_/utils'
 
 export const getUser = (): UserModel => ({
   id: generateId(),

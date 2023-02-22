@@ -1,8 +1,9 @@
+import { AuthSliceState, AuthenticatedUser } from 'modules/auth/interfaces'
+
 import {
   CORRECT_ACCESS_TOKEN,
   CORRECT_REFRESH_TOKEN,
 } from '_tests_/constants/auth'
-import { AuthSliceState, AuthenticatedUser } from 'modules/auth/interfaces'
 
 type GetAuthStateConfig = { user: AuthenticatedUser } & Partial<
   Pick<AuthSliceState, 'accessToken' | 'refreshToken'>

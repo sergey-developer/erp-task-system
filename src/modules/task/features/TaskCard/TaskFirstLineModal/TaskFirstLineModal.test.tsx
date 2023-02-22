@@ -1,15 +1,17 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import {
+  validationMessages,
+  validationSizes,
+} from 'shared/constants/validation'
+
 import {
   generateWord,
   getButtonIn,
   loadingStartedByButton,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
 
 import TaskFirstLineModal from './index'
 import { TaskFirstLineModalProps } from './interfaces'

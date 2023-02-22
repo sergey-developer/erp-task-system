@@ -1,5 +1,6 @@
-import taskFixtures from 'fixtures/task'
 import { TaskStatusEnum } from 'modules/task/constants/common'
+
+import taskFixtures from 'fixtures/task'
 
 import { statusSorter } from './sorters'
 

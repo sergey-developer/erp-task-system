@@ -1,11 +1,12 @@
+import { screen } from '@testing-library/react'
 import React from 'react'
 
-import { generateDateString, generateWord, render } from '_tests_/utils'
-import { screen } from '@testing-library/react'
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
 } from 'modules/task/constants/common'
+
+import { generateDateString, generateWord, render } from '_tests_/utils'
 
 import JournalEntry, { JournalEntryProps } from './JournalEntry'
 

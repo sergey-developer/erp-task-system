@@ -1,3 +1,5 @@
+import { screen, waitFor, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 import omit from 'lodash/omit'
 
 import {
@@ -7,8 +9,6 @@ import {
   getIconByNameIn,
   render,
 } from '_tests_/utils'
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import AdditionalInfo, { AdditionalInfoProps } from './index'
 
