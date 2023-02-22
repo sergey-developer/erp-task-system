@@ -1,3 +1,12 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import {
+  validationMessages,
+  validationSizes,
+} from 'shared/constants/validation'
+import { NonNullableObject } from 'shared/interfaces/utils'
+
 import {
   generateWord,
   getButtonIn,
@@ -5,13 +14,6 @@ import {
   loadingStartedByButton,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
-import { NonNullableObject } from 'shared/interfaces/utils'
 
 import ReworkSubTaskModal from './index'
 import { ReworkSubTaskModalProps } from './interfaces'

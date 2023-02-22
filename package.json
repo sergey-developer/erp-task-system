@@ -11,7 +11,8 @@
     "test:cov": "craco test --coverage",
     "test:ci": "yarn test:cov --watchAll=false --runInBand",
     "eject": "craco eject",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "prettier": "prettier --write ./src"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -40,6 +41,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.4.3",
+    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@types/chance": "^1.1.3",
     "@types/craco__craco": "^6.4.0",
     "@types/humps": "^2.0.1",
@@ -58,7 +60,6 @@
     "lint-staged": "^12.3.8",
     "msw": "^0.45.0",
     "prettier": "^2.6.2",
-    "prettier-plugin-sorted": "^2.0.0",
     "typescript": "^4.4.2"
   },
   "eslintConfig": {
@@ -69,30 +70,9 @@
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,json,css}": [
-      "prettier --write",
-      "eslint"
+      "prettier --write ./src",
+      "eslint ./src"
     ]
-  },
-  "importSort": {
-    ".ts, .tsx": {
-      "options": {
-        "cacheStrategy": "never",
-        "extraAliases": [
-          "lib",
-          "configs",
-          "modules",
-          "components",
-          "state",
-          "shared",
-          "styles",
-          "app",
-          "fixtures",
-          "_tests_"
-        ],
-        "ignoredAliases": [],
-        "bottomAliases": []
-      }
-    }
   },
   "jest": {
     "transformIgnorePatterns": [

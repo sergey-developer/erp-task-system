@@ -3,6 +3,7 @@ import {
   TaskJournalTypeEnum,
 } from 'modules/task/constants/common'
 import { UserModel } from 'modules/user/models'
+
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskJournalEntryModel = {

@@ -1,3 +1,15 @@
+import { screen, waitFor, within } from '@testing-library/react'
+
+import {
+  SuspendReasonEnum,
+  SuspendRequestStatusEnum,
+} from 'modules/task/constants/common'
+
+import { UserRoleEnum } from 'shared/constants/roles'
+
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
+
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   expectLoadingNotStartedByCard,
@@ -11,14 +23,6 @@ import {
   render,
 } from '_tests_/utils'
 import modalTestUtils from '_tests_/utils/modal'
-import { screen, waitFor, within } from '@testing-library/react'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-import {
-  SuspendReasonEnum,
-  SuspendRequestStatusEnum,
-} from 'modules/task/constants/common'
-import { UserRoleEnum } from 'shared/constants/roles'
 
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
 import {

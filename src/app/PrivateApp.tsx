@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import { getPrivateRoutesConfig } from 'configs/routes'
+
 import { useGetUserProfile } from 'modules/user/hooks'
 
 const PrivateApp: FC = () => {

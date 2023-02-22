@@ -14,9 +14,11 @@ import {
 import moment from 'moment'
 import React, { FC, useEffect } from 'react'
 
-import BaseModal from 'components/Modals/BaseModal'
 import { SuspendReasonEnum } from 'modules/task/constants/common'
 import { suspendReasonDict } from 'modules/task/constants/dictionary'
+
+import BaseModal from 'components/Modals/BaseModal'
+
 import { validationRules } from 'shared/constants/validation'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'

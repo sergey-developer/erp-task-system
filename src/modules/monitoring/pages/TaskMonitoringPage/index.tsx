@@ -1,10 +1,11 @@
 import { Col, Input, Row, Tabs, Typography } from 'antd'
 import { FC, useState } from 'react'
 
+import { useGetTaskMonitoring } from 'modules/monitoring/hooks'
+
 import LoadingArea from 'components/LoadingArea'
 import PrettyJson from 'components/PrettyJson'
 import Space from 'components/Space'
-import { useGetTaskMonitoring } from 'modules/monitoring/hooks'
 
 const { Search } = Input
 const { Text } = Typography

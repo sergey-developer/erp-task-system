@@ -2,10 +2,12 @@ import { Button, Row } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
+import { useGetTaskJournal, useLazyGetTaskJournalCsv } from 'modules/task/hooks'
+
 import { DownloadIcon, SyncIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
-import { useGetTaskJournal, useLazyGetTaskJournalCsv } from 'modules/task/hooks'
+
 import {
   clickDownloadLink,
   makeDownloadLink,

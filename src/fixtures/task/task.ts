@@ -1,4 +1,15 @@
 import {
+  TaskExtendedStatusEnum,
+  TaskOlaStatusEnum,
+  TaskStatusEnum,
+  TaskTypeEnum,
+} from 'modules/task/constants/common'
+import { TaskModel } from 'modules/task/models'
+
+import commonFixtures from 'fixtures/common'
+import taskFixtures from 'fixtures/task'
+
+import {
   generateDateString,
   generateEmail,
   generateId,
@@ -9,15 +20,6 @@ import {
   generatePhone,
   generateWord,
 } from '_tests_/utils'
-import commonFixtures from 'fixtures/common'
-import taskFixtures from 'fixtures/task'
-import {
-  TaskExtendedStatusEnum,
-  TaskOlaStatusEnum,
-  TaskStatusEnum,
-  TaskTypeEnum,
-} from 'modules/task/constants/common'
-import { TaskModel } from 'modules/task/models'
 
 export const getTask = (
   props?: Partial<

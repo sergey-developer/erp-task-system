@@ -3,9 +3,6 @@ import { Button, Col, FormInstance, Row, Typography } from 'antd'
 import get from 'lodash/get'
 import React, { FC } from 'react'
 
-import ModalFallback from 'components/Modals/ModalFallback'
-import Permissions from 'components/Permissions'
-import Space from 'components/Space'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
 import {
   TaskFirstLineFormFields,
@@ -18,6 +15,11 @@ import {
 } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
+
+import ModalFallback from 'components/Modals/ModalFallback'
+import Permissions from 'components/Permissions'
+import Space from 'components/Space'
+
 import { useDebounceFn } from 'shared/hooks'
 
 import {

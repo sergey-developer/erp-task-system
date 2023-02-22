@@ -2,6 +2,7 @@ import { Moment } from 'moment'
 import { Rule } from 'rc-field-form/es/interface'
 
 import { SuspendReasonEnum } from 'modules/task/constants/common'
+
 import { validationMessages } from 'shared/constants/validation'
 
 export const REASON_RULES: Rule[] = [

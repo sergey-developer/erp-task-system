@@ -1,3 +1,9 @@
+import { DeleteTaskSuspendRequestSuccessResponse } from 'modules/task/models'
+import { deleteTaskSuspendRequestUrl } from 'modules/task/utils/apiUrls'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
 import {
   getBadRequestErrorMockFn,
   getNotFoundErrorMockFn,
@@ -6,10 +12,6 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { DeleteTaskSuspendRequestSuccessResponse } from 'modules/task/models'
-import { deleteTaskSuspendRequestUrl } from 'modules/task/utils/apiUrls'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 const deleteTaskSuspendRequestMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Delete, deleteTaskSuspendRequestUrl(taskId))

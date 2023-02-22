@@ -1,4 +1,12 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 import head from 'lodash/head'
+
+import { taskCommentApiMessages } from 'modules/task/constants/errorMessages'
+
+import { commonApiMessages } from 'shared/constants/errors'
+
+import taskFixtures from 'fixtures/task'
 
 import {
   mockCreateTaskCommentBadRequestError,
@@ -19,11 +27,6 @@ import {
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
-import { taskCommentApiMessages } from 'modules/task/constants/errorMessages'
-import { commonApiMessages } from 'shared/constants/errors'
 
 import { testUtils as commentListTestUtils } from './CommentList/CommentList.test'
 import { testUtils as createCommentFormTestUtils } from './CreateCommentForm/CreateCommentForm.test'

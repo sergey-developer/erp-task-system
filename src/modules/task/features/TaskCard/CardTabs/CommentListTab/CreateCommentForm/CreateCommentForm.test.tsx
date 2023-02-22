@@ -1,3 +1,11 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import {
+  validationMessages,
+  validationSizes,
+} from 'shared/constants/validation'
+
 import {
   generateWord,
   getButtonIn,
@@ -6,12 +14,6 @@ import {
   render,
   validatingFinished,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
 
 import CreateCommentForm from './index'
 import { CreateCommentFormProps } from './interfaces'

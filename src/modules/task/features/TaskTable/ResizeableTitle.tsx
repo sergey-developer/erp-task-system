@@ -1,7 +1,6 @@
+import { ColumnsType } from 'antd/lib/table'
 import React from 'react'
 import { Resizable, ResizableProps } from 'react-resizable'
-
-import { ColumnsType } from 'antd/lib/table'
 
 import { TaskTableListItem } from './interfaces'
 

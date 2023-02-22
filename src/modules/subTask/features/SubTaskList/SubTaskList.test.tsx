@@ -1,20 +1,24 @@
-import { render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
-import subTaskFixtures from 'fixtures/subTask'
+
 import {
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
+
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
-import SubTaskList, { SubTaskListProps } from './index'
+import subTaskFixtures from 'fixtures/subTask'
+
+import { render } from '_tests_/utils'
+
 import {
   activeCancelButtonProps,
   activeReworkButtonProps,
   testUtils as subTaskTestUtils,
 } from './SubTask.test'
+import SubTaskList, { SubTaskListProps } from './index'
 
 const requiredProps: SubTaskListProps = {
   list: subTaskFixtures.getSubTaskList(),

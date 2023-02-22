@@ -1,6 +1,8 @@
-import { generateWord, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
+
 import { TaskTypeEnum } from 'modules/task/constants/common'
+
+import { generateWord, render } from '_tests_/utils'
 
 import ResolutionTab, { ResolutionTabProps } from './index'
 

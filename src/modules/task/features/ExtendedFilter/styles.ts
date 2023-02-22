@@ -1,11 +1,11 @@
 import { Checkbox, DatePicker, Drawer } from 'antd'
+import styled, { css } from 'styled-components'
 
 import {
   StyledBreakpointStyles,
   StyledBreakpointsProps,
 } from 'shared/interfaces/breakpoints'
 import { applyBreakpointStyles } from 'shared/utils/breakpoints'
-import styled, { css } from 'styled-components'
 
 export const CheckboxGroupStyled = styled(Checkbox.Group)`
   && {

@@ -2,10 +2,10 @@
  * Описание настройки:
  * https://testing-library.com/docs/example-react-router/#reducing-boilerplate
  */
-
 import { ReactElement } from 'react'
 
-import { RoutesEnum } from 'configs/routes'
+import { RouteEnum } from 'configs/routes'
+
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import renderInAppProvider, {
@@ -14,7 +14,7 @@ import renderInAppProvider, {
 
 const renderInRoute = (
   ui: ReactElement,
-  route: RoutesEnum,
+  route: RouteEnum,
   options?: RenderInAppProviderOptions,
 ) => {
   window.history.pushState({}, '', route)

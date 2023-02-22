@@ -1,6 +1,8 @@
-import { loadingFinishedBySpinner, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
+
 import taskFixtures from 'fixtures/task'
+
+import { loadingFinishedBySpinner, render } from '_tests_/utils'
 
 import CommentList from './index'
 

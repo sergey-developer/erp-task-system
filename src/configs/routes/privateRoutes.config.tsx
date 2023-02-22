@@ -1,11 +1,12 @@
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
-import PrivateLayout from 'components/Layout/PrivateLayout'
-import NotFoundPage from 'components/Pages/NotFoundPage'
 import { UserProfileModel } from 'modules/user/models'
 
-import { RoutesEnum } from './constants'
+import PrivateLayout from 'components/Layout/PrivateLayout'
+import NotFoundPage from 'components/Pages/NotFoundPage'
+
+import { RouteEnum } from './constants'
 import { staffRoutesConfig } from './staffRoutes.config'
 
 const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
@@ -14,20 +15,20 @@ export const getPrivateRoutesConfig = ({
   isStaff,
 }: Pick<UserProfileModel, 'isStaff'>): Array<RouteObject> => [
   {
-    path: RoutesEnum.Root,
+    path: RouteEnum.Root,
     element: <PrivateLayout />,
     children: [
       {
         index: true,
-        element: <Navigate to={RoutesEnum.TaskList} />,
+        element: <Navigate to={RouteEnum.TaskList} />,
       },
       {
-        path: RoutesEnum.TaskList,
+        path: RouteEnum.TaskList,
         element: <TaskListPage />,
       },
       ...(isStaff ? staffRoutesConfig : []),
       {
-        path: RoutesEnum.NotFound,
+        path: RouteEnum.NotFound,
         element: <NotFoundPage />,
       },
     ],
