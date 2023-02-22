@@ -1,14 +1,15 @@
-import isUndefined from 'lodash/isUndefined'
-
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import commonConfig from './common.config'
-import developmentConfig, { DevelopmentKeysUnion } from './development.config'
-import { ConfigType, EnvUnion, ParsedValueUnion } from './interfaces'
-import productionConfig, { ProductionKeysUnion } from './production.config'
-import testConfig, { TestKeysUnion } from './test.config'
+import { commonConfig } from './common.config'
+import {
+  developmentConfig,
+  DevelopmentEnvConfigKeys,
+} from './development.config'
+import { ConfigType, Environment, ParsedEnvConfigValue } from './interfaces'
+import { productionConfig, ProductionEnvConfigKeys } from './production.config'
+import { testConfig, TestEnvConfigKeys } from './test.config'
 
-type ConfigsType = Record<EnvUnion, ConfigType>
+type ConfigsType = Record<Environment, ConfigType>
 
 const configs: ConfigsType = {
   development: developmentConfig,
@@ -16,38 +17,39 @@ const configs: ConfigsType = {
   test: testConfig,
 }
 
-type ConfigKeysUnion =
-  | DevelopmentKeysUnion
-  | ProductionKeysUnion
-  | TestKeysUnion
+type EnvConfigKeys =
+  | DevelopmentEnvConfigKeys
+  | ProductionEnvConfigKeys
+  | TestEnvConfigKeys
 
-type ValidatedConfigType = Record<string, ParsedValueUnion>
+type ValidatedEnvConfig = Record<string, ParsedEnvConfigValue>
 
 interface IEnvConfig {
   isDevelopment: boolean
   isProduction: boolean
-  get<T extends ParsedValueUnion>(key: ConfigKeysUnion): T
+
+  get<T extends ParsedEnvConfigValue>(key: EnvConfigKeys): T
 }
 
 class EnvConfig implements IEnvConfig {
   private static instance: EnvConfig
-  private readonly config: ValidatedConfigType
+  private readonly config: ValidatedEnvConfig
 
-  private validate = (config: ConfigType): ValidatedConfigType => {
+  private validate = (config: ConfigType): ValidatedEnvConfig => {
     for (const [key, value] of Object.entries(config)) {
-      if (isUndefined(value)) {
+      if (typeof value === 'undefined') {
         throw new Error(`Missing key "${key}" in process.env`)
       }
     }
 
-    return config as ValidatedConfigType
+    return config as ValidatedEnvConfig
   }
 
   private constructor(configs: ConfigsType) {
     const env = commonConfig.env as keyof ConfigsType
-    const rawConfig = configs[env] || configs.development
+    const config = configs[env] || configs.development
 
-    this.config = this.validate(rawConfig)
+    this.config = this.validate(config)
     this.isDevelopment = isEqual(env, 'development')
     this.isProduction = isEqual(env, 'production')
   }
@@ -63,11 +65,9 @@ class EnvConfig implements IEnvConfig {
     return EnvConfig.instance
   }
 
-  public get<T extends ParsedValueUnion>(key: ConfigKeysUnion): T {
+  public get<T extends ParsedEnvConfigValue>(key: EnvConfigKeys): T {
     return this.config[key] as T
   }
 }
 
-const config = EnvConfig.getInstance(configs)
-
-export default config
+export const env = EnvConfig.getInstance(configs)

@@ -20,6 +20,6 @@ const taskFixtures = {
   ...journal,
   ...reclassificationRequest,
   ...suspendRequest,
-}
+} as const
 
 export default taskFixtures

@@ -1,7 +1,7 @@
 import { MaybeUndefined } from 'shared/interfaces/utils'
 
-export type EnvUnion = 'development' | 'production' | 'test'
+export type Environment = 'development' | 'production' | 'test'
 
-export type ParsedValueUnion = string | number | boolean
+export type ParsedEnvConfigValue = string | number | boolean
 
-export type ConfigType = Record<string, MaybeUndefined<ParsedValueUnion>>
+export type ConfigType = Record<string, MaybeUndefined<ParsedEnvConfigValue>>
