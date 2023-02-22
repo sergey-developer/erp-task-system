@@ -1,16 +1,18 @@
 import times from 'lodash/times'
 
 import {
+  WorkGroupListItemModel,
+  WorkGroupTypeEnum,
+} from 'modules/workGroup/models'
+
+import { ArrayItem } from 'shared/interfaces/utils'
+
+import {
   generateId,
   generateInteger,
   generateName,
   generateWord,
 } from '_tests_/utils'
-import {
-  WorkGroupListItemModel,
-  WorkGroupTypeEnum,
-} from 'modules/workGroup/models'
-import { ArrayItem } from 'shared/interfaces/utils'
 
 export const getWorkGroupMember = (): ArrayItem<
   WorkGroupListItemModel['members']

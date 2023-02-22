@@ -2,11 +2,13 @@ import { Col, Row, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
+import { TaskModel } from 'modules/task/models'
+
 import Expandable from 'components/Expandable'
 import { MapPointIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
-import { TaskModel } from 'modules/task/models'
+
 import { useDebounceFn } from 'shared/hooks'
 import { valueOrHyphen } from 'shared/utils/common'
 

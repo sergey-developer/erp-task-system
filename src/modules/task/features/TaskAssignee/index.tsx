@@ -6,6 +6,7 @@ import Space from 'components/Space'
 import { TaskModel } from 'modules/task/models'
 import { UserModel } from 'modules/user/models'
 import { getUserAbbr } from 'modules/user/utils'
+
 import { MaybeNull } from 'shared/interfaces/utils'
 
 const { Text } = Typography

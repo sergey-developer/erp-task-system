@@ -1,12 +1,14 @@
 import times from 'lodash/times'
 
-import { generateDateString, generateId, generateWord } from '_tests_/utils'
-import commonFixtures from 'fixtures/common'
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
 } from 'modules/task/constants/common'
 import { TaskJournalEntryModel, TaskJournalModel } from 'modules/task/models'
+
+import commonFixtures from 'fixtures/common'
+
+import { generateDateString, generateId, generateWord } from '_tests_/utils'
 
 export const getJournalEntry = (
   props?: Partial<Pick<TaskJournalEntryModel, 'type' | 'sourceSystem'>>,

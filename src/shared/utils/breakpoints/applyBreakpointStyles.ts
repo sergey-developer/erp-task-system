@@ -1,9 +1,10 @@
+import { SimpleInterpolation } from 'styled-components'
+
 import {
   BreakpointUnion,
   StyledBreakpointStyles,
   StyledBreakpointsProps,
 } from 'shared/interfaces/breakpoints'
-import { SimpleInterpolation } from 'styled-components'
 
 /**
  @param breakpoints - результат вызова хука `useBreakpoint` из `antd`

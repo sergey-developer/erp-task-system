@@ -1,3 +1,16 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { getShortUserName } from 'modules/user/utils'
+
+import { PauseCircleIcon } from 'components/Icons'
+
+import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import { ArrayItem } from 'shared/interfaces/utils'
+import { formatDate } from 'shared/utils/date'
+
+import commonFixtures from 'fixtures/common'
+
 import {
   generateDateString,
   generateWord,
@@ -7,14 +20,6 @@ import {
   queryButtonIn,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { PauseCircleIcon } from 'components/Icons'
-import commonFixtures from 'fixtures/common'
-import { getShortUserName } from 'modules/user/utils'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import { ArrayItem } from 'shared/interfaces/utils'
-import { formatDate } from 'shared/utils/date'
 
 import TaskRequest, { TaskRequestProps } from './index'
 

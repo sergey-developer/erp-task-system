@@ -1,4 +1,15 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 import moment from 'moment'
+
+import { SuspendReasonEnum } from 'modules/task/constants/common'
+import { suspendReasonDict } from 'modules/task/constants/dictionary'
+
+import {
+  validationMessages,
+  validationSizes,
+} from 'shared/constants/validation'
+import { formatDate } from 'shared/utils/date'
 
 import {
   generateIdStr,
@@ -9,15 +20,6 @@ import {
   modalTestUtils,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { SuspendReasonEnum } from 'modules/task/constants/common'
-import { suspendReasonDict } from 'modules/task/constants/dictionary'
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
-import { formatDate } from 'shared/utils/date'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import RequestTaskSuspendModal, { RequestTaskSuspendModalProps } from './index'

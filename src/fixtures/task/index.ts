@@ -22,6 +22,6 @@ const taskFixtures = {
   ...reclassificationRequest,
   ...suspendRequest,
   ...supportGroup,
-}
+} as const
 
 export default taskFixtures

@@ -1,3 +1,13 @@
+import { ByRoleOptions } from '@testing-library/dom/types/queries'
+import { screen, waitFor, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { WorkGroupTypeEnum } from 'modules/workGroup/models'
+
+import { validationMessages } from 'shared/constants/validation'
+
+import workGroupFixtures from 'fixtures/workGroup'
+
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   clickSelectOption,
@@ -19,12 +29,6 @@ import {
   setupApiTests,
   userOpenSelect,
 } from '_tests_/utils'
-import { ByRoleOptions } from '@testing-library/dom/types/queries'
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import workGroupFixtures from 'fixtures/workGroup'
-import { WorkGroupTypeEnum } from 'modules/workGroup/models'
-import { validationMessages } from 'shared/constants/validation'
 
 import TaskSecondLineModal from './index'
 import { TaskSecondLineModalProps } from './interfaces'

@@ -7,9 +7,8 @@ import {
   generateWord,
 } from '_tests_/utils'
 import commonFixtures from 'fixtures/common'
-import workGroupFixtures from 'fixtures/workGroup'
 import taskFixtures from 'fixtures/task'
-
+import workGroupFixtures from 'fixtures/workGroup'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -20,7 +19,6 @@ import {
   GetTaskListSuccessResponse,
   TaskListItemModel,
 } from 'modules/task/models'
-
 
 export const getTaskListItem = (
   props?: Partial<TaskListItemModel>,

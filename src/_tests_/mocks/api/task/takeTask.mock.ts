@@ -1,13 +1,15 @@
+import { TakeTaskSuccessResponse } from 'modules/task/models'
+import { takeTaskUrl } from 'modules/task/utils/apiUrls'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
 import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { TakeTaskSuccessResponse } from 'modules/task/models'
-import { takeTaskUrl } from 'modules/task/utils/apiUrls'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 const takeTaskMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Post, takeTaskUrl(taskId))

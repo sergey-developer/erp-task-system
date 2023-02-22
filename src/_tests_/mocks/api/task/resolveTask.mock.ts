@@ -1,17 +1,19 @@
 import {
+  ResolveTaskBadRequestErrorResponse,
+  ResolveTaskSuccessResponse,
+} from 'modules/task/models'
+import { resolveTaskUrl } from 'modules/task/utils/apiUrls'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
+import {
   getBadRequestErrorMockFn,
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import {
-  ResolveTaskBadRequestErrorResponse,
-  ResolveTaskSuccessResponse,
-} from 'modules/task/models'
-import { resolveTaskUrl } from 'modules/task/utils/apiUrls'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 const resolveTaskMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Post, resolveTaskUrl(taskId))

@@ -1,3 +1,9 @@
+import { CreateTaskCommentSuccessResponse } from 'modules/task/models'
+import { createTaskCommentUrl } from 'modules/task/utils/apiUrls'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
 import {
   getBadRequestErrorMockFn,
   getForbiddenErrorMockFn,
@@ -7,10 +13,6 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { CreateTaskCommentSuccessResponse } from 'modules/task/models'
-import { createTaskCommentUrl } from 'modules/task/utils/apiUrls'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 const createTaskCommentMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Post, createTaskCommentUrl(taskId))

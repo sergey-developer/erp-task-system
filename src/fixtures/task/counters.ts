@@ -1,5 +1,6 @@
-import { generateInteger } from '_tests_/utils'
 import { GetTaskCountersSuccessResponse } from 'modules/task/models'
+
+import { generateInteger } from '_tests_/utils'
 
 export const getTaskCountersResponse = (): GetTaskCountersSuccessResponse => ({
   all: generateInteger({ min: 1, max: 10 }),

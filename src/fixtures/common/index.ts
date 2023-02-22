@@ -8,6 +8,6 @@ const commonFixtures = {
   ...commentAuthor,
   ...pagination,
   ...supportGroup,
-}
+} as const
 
 export default commonFixtures

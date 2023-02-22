@@ -2,10 +2,6 @@ import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import Expandable from 'components/Expandable'
-import LabeledData from 'components/LabeledData'
-import Space from 'components/Space'
-import SeparatedText from 'components/Texts/SeparatedText'
 import { SubTaskModel } from 'modules/subTask/models'
 import {
   SuspendRequestStatusEnum,
@@ -25,6 +21,12 @@ import {
   useTaskSuspendRequestStatus,
 } from 'modules/task/hooks'
 import { makeUserNameObject } from 'modules/user/utils'
+
+import Expandable from 'components/Expandable'
+import LabeledData from 'components/LabeledData'
+import Space from 'components/Space'
+import SeparatedText from 'components/Texts/SeparatedText'
+
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Text, Title, Paragraph } = Typography

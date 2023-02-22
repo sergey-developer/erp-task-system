@@ -1,8 +1,6 @@
-import commonConfig, { CommonKeysUnion } from './common.config'
+import { commonConfig, CommonConfigKeys } from './common.config'
 import { ConfigType } from './interfaces'
 
-export type TestKeysUnion = CommonKeysUnion
+export type TestEnvConfigKeys = CommonConfigKeys
 
-const testConfig: ConfigType = commonConfig
-
-export default testConfig
+export const testConfig: ConfigType = commonConfig

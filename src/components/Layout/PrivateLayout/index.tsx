@@ -1,12 +1,13 @@
 import { Layout } from 'antd'
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
+import { useUserProfileState } from 'modules/user/hooks'
+
 import Header from 'components/Header/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
 import Spinner from 'components/Spinner'
-import { useUserProfileState } from 'modules/user/hooks'
 
 import { ContentStyled } from './styles'
 

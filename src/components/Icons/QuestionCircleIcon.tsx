@@ -1,5 +1,4 @@
 import { QuestionCircleTwoTone } from '@ant-design/icons'
-
 import styled from 'styled-components'
 
 import { IconProps } from './interfaces'

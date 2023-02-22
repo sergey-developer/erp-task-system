@@ -1,8 +1,9 @@
 import { GetTaskCountersSuccessResponse } from 'modules/task/models'
+
 import { MaybeUndefined, Nullable } from 'shared/interfaces/utils'
 
-import { FastFilterEnum } from './constants'
 import { FilterTagProps } from './FilterTag'
+import { FastFilterEnum } from './constants'
 
 export type FilterItem = Pick<FilterTagProps, 'text' | 'amount'> & {
   value: FastFilterEnum

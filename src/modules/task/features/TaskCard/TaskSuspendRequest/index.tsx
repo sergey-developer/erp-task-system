@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 
 import { PauseCircleIcon } from 'components/Icons'
+
 import { ArrayItem } from 'shared/interfaces/utils'
 
 import TaskRequest, { TaskRequestProps } from '../TaskRequest'

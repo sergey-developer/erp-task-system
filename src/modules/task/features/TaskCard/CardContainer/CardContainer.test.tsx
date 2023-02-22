@@ -1,4 +1,34 @@
+import { waitFor, within } from '@testing-library/react'
 import head from 'lodash/head'
+
+import {
+  SuspendReasonEnum,
+  SuspendRequestStatusEnum,
+  TaskExtendedStatusEnum,
+} from 'modules/task/constants/common'
+import {
+  reclassificationRequestApiMessages,
+  suspendRequestApiMessages,
+  taskApiMessages,
+  taskAssigneeApiMessages,
+  taskWorkGroupApiMessages,
+} from 'modules/task/constants/errorMessages'
+import {
+  CreateTaskSuspendRequestBadRequestErrorResponse,
+  ResolveTaskBadRequestErrorResponse,
+  UpdateTaskWorkGroupBadRequestErrorResponse,
+} from 'modules/task/models'
+import {
+  getTaskNotFoundErrorMsg,
+  getTaskServerErrorMsg,
+} from 'modules/task/utils/messages'
+
+import { commonApiMessages } from 'shared/constants/errors'
+import { UserRoleEnum } from 'modules/user/constants/roles'
+import { ErrorResponse } from 'shared/services/api'
+
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
 
 import {
   mockCreateTaskReclassificationRequestNotFoundError,
@@ -50,33 +80,6 @@ import {
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { waitFor, within } from '@testing-library/react'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-import {
-  SuspendReasonEnum,
-  TaskExtendedStatusEnum,
-} from 'modules/task/constants/common'
-import {
-  reclassificationRequestApiMessages,
-  suspendRequestApiMessages,
-  taskApiMessages,
-  taskAssigneeApiMessages,
-  taskWorkGroupApiMessages,
-} from 'modules/task/constants/errorMessages'
-import {
-  CreateTaskSuspendRequestBadRequestErrorResponse,
-  ResolveTaskBadRequestErrorResponse,
-  UpdateTaskWorkGroupBadRequestErrorResponse,
-} from 'modules/task/models'
-import {
-  getTaskNotFoundErrorMsg,
-  getTaskServerErrorMsg,
-} from 'modules/task/utils/messages'
-import { UserRoleEnum } from 'modules/user/constants/roles'
-import { workGroupApiMessages } from 'modules/workGroup/constants/errorMessages'
-import { commonApiMessages } from 'shared/constants/errors'
-import { ErrorResponse } from 'shared/services/api'
 
 import {
   activeSecondLineButtonProps,
@@ -87,8 +90,8 @@ import {
   activeAssignButtonProps,
   activeAssignOnMeButtonProps,
   activeTakeTaskButtonProps,
-  testUtils as assigneeBlockTestUtils,
   canSelectAssigneeProps,
+  testUtils as assigneeBlockTestUtils,
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskCardTestUtils } from '../Card/Card.test'
 import {
@@ -102,13 +105,14 @@ import {
   testUtils as taskReclassificationModalTestUtils,
 } from '../RequestTaskReclassificationModal/TaskReclassificationModal.test'
 import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
-import { TaskFirstLineFormErrors } from '../TaskFirstLineModal/interfaces'
 import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
+import { TaskFirstLineFormErrors } from '../TaskFirstLineModal/interfaces'
 import { testUtils as taskReclassificationRequestTestUtils } from '../TaskReclassificationRequest/TaskReclassificationRequest.test'
 import { testUtils as taskResolutionModalTestUtils } from '../TaskResolutionModal/TaskResolutionModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
+import { workGroupApiMessages } from "../../../../workGroup/constants/errorMessages";
 
 const requiredProps: TaskCardContainerProps = {
   taskId: generateId(),
@@ -4128,6 +4132,65 @@ describe('Контейнер детальной карточки заявки', 
       })
     })
 
-    describe.skip('Вернуть в работу (Ещё не реализовано)', () => {})
+    describe('Вернуть в работу', () => {
+      describe('При успешном запросе', () => {
+        test('Заявка перезапрашивается с сервера', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({
+              id: requiredProps.taskId,
+              suspendRequest: taskFixtures.getSuspendRequest({
+                status: SuspendRequestStatusEnum.Approved,
+              }),
+            }),
+            once: false,
+          })
+
+          mockTakeTaskSuccess(requiredProps.taskId)
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+          await taskSuspendRequestTestUtils.findContainer()
+          await taskSuspendRequestTestUtils.clickReturnToWorkButton(user)
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+        })
+      })
+
+      describe('При не успешном запросе', () => {
+        test('Обрабатывается неизвестная ошибка', async () => {
+          mockGetWorkGroupListSuccess({ body: [] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.getTask({
+              id: requiredProps.taskId,
+              suspendRequest: taskFixtures.getSuspendRequest({
+                status: SuspendRequestStatusEnum.Approved,
+              }),
+            }),
+          })
+
+          mockTakeTaskServerError(requiredProps.taskId)
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth(),
+          })
+
+          await taskCardTestUtils.expectLoadingStarted()
+          await taskCardTestUtils.expectLoadingFinished()
+          await taskSuspendRequestTestUtils.findContainer()
+          await taskSuspendRequestTestUtils.clickReturnToWorkButton(user)
+
+          expect(
+            await findNotification(commonApiMessages.unknownError),
+          ).toBeInTheDocument()
+        })
+      })
+    })
   })
 })

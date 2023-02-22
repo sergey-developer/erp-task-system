@@ -1,9 +1,11 @@
 import { Typography } from 'antd'
 import React, { FC } from 'react'
 
+import { TaskCommentModel } from 'modules/task/models'
+
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
-import { TaskCommentModel } from 'modules/task/models'
+
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Paragraph, Text } = Typography

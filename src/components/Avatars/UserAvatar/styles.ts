@@ -1,5 +1,4 @@
 import { Avatar, Badge } from 'antd'
-
 import styled from 'styled-components'
 
 export const BadgeStyled = styled(Badge).attrs({

@@ -1,5 +1,12 @@
 import times from 'lodash/times'
 
+import { SubTaskModel } from 'modules/subTask/models'
+import { TaskStatusEnum } from 'modules/task/constants/common'
+
+import { NonNullableObject } from 'shared/interfaces/utils'
+
+import commonFixtures from 'fixtures/common'
+
 import {
   generateDateString,
   generateId,
@@ -7,10 +14,6 @@ import {
   generatePhone,
   generateWord,
 } from '_tests_/utils'
-import commonFixtures from 'fixtures/common'
-import { SubTaskModel } from 'modules/subTask/models'
-import { TaskStatusEnum } from 'modules/task/constants/common'
-import { NonNullableObject } from 'shared/interfaces/utils'
 
 export const getSubTask = (
   props?: Partial<Pick<SubTaskModel, 'status'>>,
