@@ -34,7 +34,7 @@ export const returnInWorkAction: TaskSuspendRequestProps['action'] = {
   text: 'Вернуть в работу',
   onClick: jest.fn(),
   loading: false,
-  disabled: true,
+  disabled: false,
 }
 
 const getContainer = () => screen.getByTestId('task-card-suspend-request')
@@ -195,7 +195,7 @@ describe('Запрос заявки на ожидание', () => {
       const button = testUtils.getReturnToWorkButton()
 
       expect(button).toBeInTheDocument()
-      expect(button).not.toBeEnabled()
+      expect(button).toBeEnabled()
     })
 
     test('Не отображается если отсутствует', () => {

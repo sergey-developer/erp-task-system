@@ -461,7 +461,11 @@ const TaskCard: FC<TaskCardProps> = ({
                         disabled: userRole.isEngineerRole,
                       }
                     : taskSuspendRequestStatus.isApproved
-                    ? { text: 'Вернуть в работу' }
+                    ? {
+                        text: 'Вернуть в работу',
+                        onClick: handleTakeTask,
+                        loading: takeTaskIsLoading,
+                      }
                     : undefined
                 }
               />
