@@ -1,3 +1,7 @@
+import { screen, within } from '@testing-library/react'
+
+import { TaskOlaStatusEnum } from 'modules/task/constants/common'
+
 import {
   generateAddress,
   generateDateString,
@@ -6,8 +10,6 @@ import {
   generateWord,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { TaskOlaStatusEnum } from 'modules/task/constants/common'
 
 import MainDetails, { MainDetailsProps } from './index'
 

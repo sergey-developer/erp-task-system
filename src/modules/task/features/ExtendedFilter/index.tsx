@@ -11,20 +11,22 @@ import {
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, useEffect } from 'react'
 
-import Permissions from 'components/Permissions'
 import { extendedFilterPermissions } from 'modules/task/permissions'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/constants/selectFieldNames'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
+
+import Permissions from 'components/Permissions'
+
 import { isEqualDeep } from 'shared/utils/common/isEqual'
 
+import FilterBlock from './FilterBlock'
+import FilterBlockLabel from './FilterBlockLabel'
 import {
   searchFieldOptions,
   taskAssignedOptions,
   taskExtendedStatusOptions,
   taskOverdueOptions,
 } from './constants'
-import FilterBlock from './FilterBlock'
-import FilterBlockLabel from './FilterBlockLabel'
 import { ExtendedFilterFormFields } from './interfaces'
 import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
 

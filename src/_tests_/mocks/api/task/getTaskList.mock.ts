@@ -1,8 +1,10 @@
-import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
 import { TaskEndpointEnum } from 'modules/task/constants/api'
 import { GetTaskListSuccessResponse } from 'modules/task/models'
+
 import { HttpMethodEnum } from 'shared/constants/http'
+
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getTaskListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, TaskEndpointEnum.GetTaskList)

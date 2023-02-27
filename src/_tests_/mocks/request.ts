@@ -1,14 +1,15 @@
 import curry from 'lodash/curry'
 import { rest } from 'msw'
 
+import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
+import { makeAbsoluteApiUrl } from 'shared/services/api'
+
 import { api } from '_tests_/mocks/api'
 import {
   ResponseResolver,
   ResponseResolverOptions,
   getResponseResolver,
 } from '_tests_/mocks/response'
-import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
-import { makeAbsoluteApiUrl } from 'shared/services/api'
 
 export type AddMockFn = () => void
 

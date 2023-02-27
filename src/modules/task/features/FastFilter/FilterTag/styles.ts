@@ -1,5 +1,4 @@
 import { Tag } from 'antd'
-
 import styled from 'styled-components'
 
 export const CheckableTagStyled = styled(Tag.CheckableTag)`

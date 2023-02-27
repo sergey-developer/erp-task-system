@@ -1,12 +1,13 @@
+import { screen, within } from '@testing-library/react'
 import { BadgeProps } from 'antd'
 import React from 'react'
 
-import { getIconByName, getIconByNameIn, render } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
+
+import { getIconByName, getIconByNameIn, render } from '_tests_/utils'
 
 import {
   badgeByTaskExtendedStatus,

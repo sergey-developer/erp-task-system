@@ -1,6 +1,5 @@
-import { notification } from 'antd'
-
 import { act, screen } from '@testing-library/react'
+import { notification } from 'antd'
 
 export const setupNotifications = () => {
   afterEach(async () => {

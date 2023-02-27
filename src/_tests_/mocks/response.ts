@@ -5,8 +5,9 @@ import {
   RestContext,
 } from 'msw'
 
-import { API_RESPONSE_DELAY } from '_tests_/constants/api'
 import { HttpCodeEnum } from 'shared/constants/http'
+
+import { API_RESPONSE_DELAY } from '_tests_/constants/api'
 
 export type ResponseResolver = BaseResponseResolver<MockedRequest, RestContext>
 

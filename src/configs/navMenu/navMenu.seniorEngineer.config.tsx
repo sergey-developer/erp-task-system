@@ -1,13 +1,14 @@
+import { RouteEnum } from 'configs/routes'
+
 import { TeamIcon } from 'components/Icons'
-import { RoutesEnum } from 'configs/routes'
 
 import { NavMenuItem } from './interfaces'
 
 const navMenuSeniorEngineerConfig: Array<NavMenuItem> = [
   {
-    key: RoutesEnum.WorkingGroups,
+    key: RouteEnum.WorkingGroups,
     icon: TeamIcon,
-    link: RoutesEnum.WorkingGroups,
+    link: RouteEnum.WorkingGroups,
     text: 'Рабочие группы',
   },
 ]

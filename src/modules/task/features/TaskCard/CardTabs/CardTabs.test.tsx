@@ -1,12 +1,15 @@
-import { generateId, generateIdStr, generateWord, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
+
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/common'
+
+import taskFixtures from 'fixtures/task'
+
+import { generateId, generateIdStr, generateWord, render } from '_tests_/utils'
 
 import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
 import CardTabs, { CardTabsProps } from './index'

@@ -1,8 +1,6 @@
-import { getButtonIn, queryButtonIn, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import subTaskFixtures from 'fixtures/subTask'
-import taskFixtures from 'fixtures/task'
+
 import {
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
@@ -10,7 +8,13 @@ import {
 } from 'modules/task/constants/common'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
+
 import { NonNullableObject } from 'shared/interfaces/utils'
+
+import subTaskFixtures from 'fixtures/subTask'
+import taskFixtures from 'fixtures/task'
+
+import { getButtonIn, queryButtonIn, render } from '_tests_/utils'
 
 import SubTask, { SubTaskProps } from './SubTask'
 

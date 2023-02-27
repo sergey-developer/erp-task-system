@@ -21,6 +21,7 @@ import {
   resolveTaskUrl,
   takeTaskUrl,
 } from 'modules/task/utils/apiUrls'
+
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 

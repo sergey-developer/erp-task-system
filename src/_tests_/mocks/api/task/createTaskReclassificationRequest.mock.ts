@@ -1,3 +1,9 @@
+import { CreateTaskReclassificationRequestSuccessResponse } from 'modules/task/models'
+import { createTaskReclassificationRequestUrl } from 'modules/task/utils/apiUrls'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
 import {
   getNotFoundErrorMockFn,
   getRequestMockFn,
@@ -5,10 +11,6 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { CreateTaskReclassificationRequestSuccessResponse } from 'modules/task/models'
-import { createTaskReclassificationRequestUrl } from 'modules/task/utils/apiUrls'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 const createTaskReclassificationRequestMockFn = (taskId: number) =>
   getRequestMockFn(

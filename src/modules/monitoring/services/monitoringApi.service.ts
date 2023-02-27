@@ -3,6 +3,7 @@ import {
   GetTaskMonitoringSuccessResponse,
 } from 'modules/monitoring/models'
 import { getTaskMonitoringUrl } from 'modules/monitoring/utils/apiUrls'
+
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 

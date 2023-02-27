@@ -1,9 +1,11 @@
 import { Form, Select, Space, Typography } from 'antd'
 import React, { FC, useEffect } from 'react'
 
-import BaseModal from 'components/Modals/BaseModal'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 import { WorkGroupTypeEnum } from 'modules/workGroup/models'
+
+import BaseModal from 'components/Modals/BaseModal'
+
 import { validationRules } from 'shared/constants/validation'
 import { isEqual } from 'shared/utils/common'
 

@@ -2,14 +2,16 @@ import { Divider, Typography } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
-import Space from 'components/Space'
 import { TaskJournalModel } from 'modules/task/models'
 import { getFullUserName } from 'modules/user/utils'
+
+import Space from 'components/Space'
+
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
-import { NO_DATA_MSG, journalEntryTypeDict } from './constants'
 import JournalEntry from './JournalEntry'
+import { NO_DATA_MSG, journalEntryTypeDict } from './constants'
 
 const { Text } = Typography
 

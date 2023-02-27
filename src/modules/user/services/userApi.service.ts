@@ -3,6 +3,7 @@ import {
   GetUserProfileQueryArgs,
   GetUserProfileSuccessResponse,
 } from 'modules/user/models'
+
 import { HttpMethodEnum } from 'shared/constants/http'
 import { apiService } from 'shared/services/api'
 

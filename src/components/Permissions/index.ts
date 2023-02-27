@@ -1,6 +1,7 @@
 import { FC, ReactElement } from 'react'
 
 import { useUserPermissions } from 'modules/user/hooks'
+
 import {
   PermissionsMap,
   UserPermissionConfig,

@@ -2,9 +2,12 @@ import { Button, Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import Space from 'components/Space'
-import { RoutesEnum } from 'configs/routes'
+import { RouteEnum } from 'configs/routes'
+
 import { useLogin } from 'modules/auth/hooks'
+
+import Space from 'components/Space'
+
 import { APP_NAME } from 'shared/constants/common'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
@@ -98,7 +101,7 @@ const LoginPage: FC = () => {
 
               <Link
                 data-testid='btn-forgotPassword'
-                to={RoutesEnum.ForgotPassword}
+                to={RouteEnum.ForgotPassword}
               >
                 <Button type='link' block>
                   Забыли пароль?

@@ -1,9 +1,11 @@
 import { Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import { TaskJournalEntryModel } from 'modules/task/models'
+
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
-import { TaskJournalEntryModel } from 'modules/task/models'
+
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { renderStringWithLineBreak } from 'shared/utils/string'

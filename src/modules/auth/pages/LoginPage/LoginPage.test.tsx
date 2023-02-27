@@ -1,4 +1,22 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
+
+import { RouteEnum } from 'configs/routes'
+
+import {
+  LOGIN_BAD_REQUEST_ERROR_MSG,
+  LOGIN_WRONG_DATA_ERROR_MSG,
+} from 'modules/auth/constants/errors'
+import LoginPage from 'modules/auth/pages/LoginPage'
+import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
+
+import { setupStore } from 'state/store'
+
+import { HttpCodeEnum } from 'shared/constants/http'
+import { validationMessages } from 'shared/constants/validation'
+
+import authFixtures from 'fixtures/auth'
 
 import {
   CORRECT_EMAIL,
@@ -15,27 +33,14 @@ import {
   mockRefreshTokenSuccess,
 } from '_tests_/mocks/api'
 import {
-  validatingFinished as baseValidatingFinished,
-  validatingStarted as baseValidatingStarted,
   loadingFinishedByButton,
   loadingStartedByButton,
   render,
   renderInRoute,
   setupApiTests,
+  validatingFinished as baseValidatingFinished,
+  validatingStarted as baseValidatingStarted,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { RoutesEnum } from 'configs/routes'
-import authFixtures from 'fixtures/auth'
-import {
-  LOGIN_BAD_REQUEST_ERROR_MSG,
-  LOGIN_WRONG_DATA_ERROR_MSG,
-} from 'modules/auth/constants/errors'
-import LoginPage from 'modules/auth/pages/LoginPage'
-import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
-import { HttpCodeEnum } from 'shared/constants/http'
-import { validationMessages } from 'shared/constants/validation'
-import { setupStore } from 'state/store'
 
 setupApiTests()
 
@@ -164,7 +169,7 @@ describe('Страница авторизации', () => {
     test('Пользователь остаётся на странице авторизации', async () => {
       const { user, checkRouteChanged } = renderInRoute(
         <LoginPage />,
-        RoutesEnum.Login,
+        RouteEnum.Login,
       )
 
       const emailField = testUtils.getEmailField()
@@ -202,7 +207,7 @@ describe('Страница авторизации', () => {
 
         const { user, checkRouteChanged } = renderInRoute(
           <LoginPage />,
-          RoutesEnum.Login,
+          RouteEnum.Login,
         )
 
         await testUtils.userEntersCorrectEmail(user)
@@ -283,7 +288,7 @@ describe('Страница авторизации', () => {
 
         const { user, checkRouteChanged } = renderInRoute(
           <LoginPage />,
-          RoutesEnum.Login,
+          RouteEnum.Login,
         )
 
         await testUtils.userEntersNotExistingEmail(user)

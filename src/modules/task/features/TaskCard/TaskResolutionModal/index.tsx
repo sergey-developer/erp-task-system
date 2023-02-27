@@ -1,9 +1,11 @@
 import { Form, FormInstance, Input, ModalProps, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import BaseModal from 'components/Modals/BaseModal'
 import { useTaskType } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
+
+import BaseModal from 'components/Modals/BaseModal'
+
 import { validationRules } from 'shared/constants/validation'
 
 import { TaskResolutionFormFields } from './interfaces'
