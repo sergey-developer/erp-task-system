@@ -9,19 +9,21 @@ import {
 } from 'shared/interfaces/permissions'
 
 export const taskWorkGroupPermissions: ObjectPermissionConfig<
-  'transferSecondLineBtn' | 'transferFirstLineBtn'
+  'transferToSecondLineBtn' | 'transferToFirstLineBtn'
 > = {
-  transferFirstLineBtn: {
+  transferToFirstLineBtn: {
+    [UserRoleEnum.Engineer]: [UIPermissionsEnum.CanView],
     [UserRoleEnum.SeniorEngineer]: [UIPermissionsEnum.CanView],
     [UserRoleEnum.HeadOfDepartment]: [UIPermissionsEnum.CanView],
   },
-  transferSecondLineBtn: {
+  transferToSecondLineBtn: {
     [UserRoleEnum.FirstLineSupport]: [UIPermissionsEnum.CanView],
   },
 }
 
 export const taskWorkGroupApiPermissions: UserPermissionConfig = {
   [UserRoleEnum.FirstLineSupport]: [CRUDPermissionsEnum.CanUpdate],
+  [UserRoleEnum.Engineer]: [CRUDPermissionsEnum.CanDelete],
   [UserRoleEnum.SeniorEngineer]: [CRUDPermissionsEnum.CanDelete],
   [UserRoleEnum.HeadOfDepartment]: [CRUDPermissionsEnum.CanDelete],
 }
