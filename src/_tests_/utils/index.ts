@@ -1,4 +1,4 @@
-export * from './fakeGenerator'
+export * from './fakes'
 
 export * from './auth'
 
