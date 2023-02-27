@@ -12,6 +12,7 @@ import {
 } from 'modules/task/models'
 
 import commonFixtures from 'fixtures/common'
+import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 
 import {
@@ -20,8 +21,6 @@ import {
   generateInteger,
   generateWord,
 } from '_tests_/utils'
-
-import { getAssignee } from './assignee'
 
 export const getTaskListItem = (
   props?: Partial<TaskListItemModel>,
@@ -32,7 +31,7 @@ export const getTaskListItem = (
   type: props?.type || TaskTypeEnum.Request,
 
   id: generateId(),
-  assignee: getAssignee(),
+  assignee: taskFixtures.getAssignee(),
   lastComment: generateWord(),
   priorityCode: generateInteger({
     min: 1,

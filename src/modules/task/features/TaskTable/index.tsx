@@ -6,13 +6,12 @@ import { ResizableProps } from 'react-resizable'
 
 import { ArrayItem } from 'shared/interfaces/utils'
 
-import { getTableColumns } from './constants/columns'
 import { localeConfig } from './constants/common'
 import tableComponents from './constants/components'
 import { paginationConfig } from './constants/pagination'
 import { TaskTableListItem, TaskTableProps } from './interfaces'
 import { TableStyled, TableWrapperStyled } from './styles'
-import { applySortToColumn, applyWidthToColumn } from './utils'
+import { applySortToColumn, applyWidthToColumn, getTableColumns } from './utils'
 
 const TaskTable: FC<TaskTableProps> = ({
   dataSource,
