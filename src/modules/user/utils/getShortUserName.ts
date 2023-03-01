@@ -1,11 +1,14 @@
 import { UserModel } from 'modules/user/models'
+
 import {
   addDotToEnd,
   getFirstLetterInUpperCase,
   makeString,
 } from 'shared/utils/string'
 
-const getShortUserName = <T extends Omit<UserModel, 'id'>>({
+export const getShortUserName = <
+  T extends Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>,
+>({
   firstName,
   lastName,
   middleName,
@@ -16,5 +19,3 @@ const getShortUserName = <T extends Omit<UserModel, 'id'>>({
     addDotToEnd(getFirstLetterInUpperCase(firstName)),
     middleName ? addDotToEnd(getFirstLetterInUpperCase(middleName)) : null,
   )
-
-export default getShortUserName

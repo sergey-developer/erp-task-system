@@ -3,7 +3,9 @@ import { matchPath, useLocation } from 'react-router-dom'
 
 type UseMatchedRouteResult = ReturnType<typeof matchPath>
 
-const useMatchedRoute = (routes: Array<string>): UseMatchedRouteResult => {
+export const useMatchedRoute = (
+  routes: Array<string>,
+): UseMatchedRouteResult => {
   const location = useLocation()
 
   return useMemo(() => {
@@ -14,5 +16,3 @@ const useMatchedRoute = (routes: Array<string>): UseMatchedRouteResult => {
     }, null)
   }, [routes, location])
 }
-
-export default useMatchedRoute

@@ -5,6 +5,4 @@ import {
 
 import { RootState } from 'state/store'
 
-const useSelector: TypedUseSelectorHook<RootState> = useBaseSelector
-
-export default useSelector
+export const useSelector: TypedUseSelectorHook<RootState> = useBaseSelector

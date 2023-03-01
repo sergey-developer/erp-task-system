@@ -1,5 +1,1 @@
-const addDotAtEnd = (value: string): `${string}.` => {
-  return `${value}.`
-}
-
-export default addDotAtEnd
+export const addDotToEnd = (value: string): `${string}.` => `${value}.`

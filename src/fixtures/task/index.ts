@@ -1,23 +1,27 @@
+import * as assignee from './assignee'
+import * as comment from './comment'
+import * as counters from './counters'
+import * as journal from './journal'
+import * as reclassificationRequest from './reclassificationRequest'
 import * as supportGroup from './supportGroup'
+import * as suspendRequest from './suspendRequest'
 import * as task from './task'
-import * as taskAssignee from './taskAssignee'
-import * as taskComment from './taskComment'
-import * as taskCounters from './taskCounters'
-import * as taskJournal from './taskJournal'
 import * as taskList from './taskList'
-import * as taskReclassificationRequest from './taskReclassificationRequest'
 import * as taskTable from './taskTable'
-import * as taskWorkGroup from './taskWorkGroup'
+import * as workGroup from './workGroup'
 
-export const taskFixtures = {
+const taskFixtures = {
   ...task,
   ...taskList,
-  ...taskCounters,
+  ...counters,
   ...taskTable,
-  ...taskComment,
-  ...taskAssignee,
-  ...taskWorkGroup,
+  ...comment,
+  ...assignee,
+  ...workGroup,
+  ...journal,
+  ...reclassificationRequest,
+  ...suspendRequest,
   ...supportGroup,
-  ...taskJournal,
-  ...taskReclassificationRequest,
-}
+} as const
+
+export default taskFixtures

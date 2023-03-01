@@ -1,22 +1,22 @@
-import { PermissionsEnum } from 'shared/constants/permissions'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { CRUDPermissionsEnum } from 'shared/constants/permissions'
+import { UserRoleEnum } from 'shared/constants/roles'
 import { UserPermissionConfig } from 'shared/interfaces/permissions'
 
 export const taskApiPermissions: UserPermissionConfig = {
-  [UserRolesEnum.Engineer]: [
-    PermissionsEnum.CanGet,
-    PermissionsEnum.CanGetList,
+  [UserRoleEnum.Engineer]: [
+    CRUDPermissionsEnum.CanGet,
+    CRUDPermissionsEnum.CanGetList,
   ],
-  [UserRolesEnum.SeniorEngineer]: [
-    PermissionsEnum.CanGet,
-    PermissionsEnum.CanGetList,
+  [UserRoleEnum.SeniorEngineer]: [
+    CRUDPermissionsEnum.CanGet,
+    CRUDPermissionsEnum.CanGetList,
   ],
-  [UserRolesEnum.FirstLineSupport]: [
-    PermissionsEnum.CanGet,
-    PermissionsEnum.CanGetList,
+  [UserRoleEnum.FirstLineSupport]: [
+    CRUDPermissionsEnum.CanGet,
+    CRUDPermissionsEnum.CanGetList,
   ],
-  [UserRolesEnum.HeadOfDepartment]: [
-    PermissionsEnum.CanGet,
-    PermissionsEnum.CanGetList,
+  [UserRoleEnum.HeadOfDepartment]: [
+    CRUDPermissionsEnum.CanGet,
+    CRUDPermissionsEnum.CanGetList,
   ],
 }

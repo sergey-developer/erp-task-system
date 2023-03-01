@@ -1,10 +1,11 @@
 import { useMemo } from 'react'
 
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
+
 import { BooleanMap, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-const useTaskExtendedStatus = (
+export const useTaskExtendedStatus = (
   status: MaybeUndefined<TaskExtendedStatusEnum>,
 ): BooleanMap<`is${keyof typeof TaskExtendedStatusEnum}`> => {
   return useMemo(
@@ -27,5 +28,3 @@ const useTaskExtendedStatus = (
     [status],
   )
 }
-
-export default useTaskExtendedStatus

@@ -40,6 +40,8 @@ export enum TaskJournalTypeEnum {
   AwaitingApproved = 'AWAITING_APPROVED',
   AwaitingRejected = 'AWAITING_REJECTED',
   FirstLineReturned = 'FIRST_LINE_RETURNED',
+  AwaitingCanceled = 'AWAITING_CANCELED',
+  AutoEscalation = 'AUTO_ESCALATION',
   Other = 'OTHER',
 }
 
@@ -59,4 +61,21 @@ export enum TaskTypeEnum {
   Request = 'REQUEST',
   IncidentTask = 'INCIDENT_TASK',
   RequestTask = 'REQUEST_TASK',
+}
+
+export enum SuspendReasonEnum {
+  AwaitingInformation = 'AWAITING_INFORMATION',
+  AwaitingInformationFromFirstLine = 'AWAITING_INFORMATION_FROM_FIRST_LINE',
+  AwaitingInitiator = 'AWAITING_INITIATOR',
+  AwaitingPurchase = 'AWAITING_PURCHASE',
+  AwaitingRelease = 'AWAITING_RELEASE',
+  AwaitingNonItWork = 'AWAITING_NON_IT_WORK',
+}
+
+export enum SuspendRequestStatusEnum {
+  New = 'NEW',
+  InProgress = 'IN_PROGRESS',
+  Approved = 'APPROVED',
+  Denied = 'DENIED',
+  Canceled = 'CANCELED',
 }

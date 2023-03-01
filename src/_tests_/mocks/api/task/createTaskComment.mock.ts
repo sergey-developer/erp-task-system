@@ -1,3 +1,9 @@
+import { CreateTaskCommentSuccessResponse } from 'modules/task/models'
+import { createTaskCommentUrl } from 'modules/task/utils/apiUrls'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
 import {
   getBadRequestErrorMockFn,
   getForbiddenErrorMockFn,
@@ -7,70 +13,31 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { CreateTaskCommentResponseModel } from 'modules/task/features/TaskView/models'
-import { getTaskCommentUrl } from 'modules/task/utils/apiUrls'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
-const getCreateTaskCommentMockFn = (taskId: number) =>
-  getRequestMockFn(HttpMethodEnum.Post, getTaskCommentUrl(taskId))
+const createTaskCommentMockFn = (taskId: number) =>
+  getRequestMockFn(HttpMethodEnum.Post, createTaskCommentUrl(taskId))
 
 export const mockCreateTaskCommentSuccess = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<CreateTaskCommentResponseModel>>,
-) => {
-  const mockCreateTaskComment = getSuccessMockFn(
-    getCreateTaskCommentMockFn(taskId),
-    options,
-  )
-
-  mockCreateTaskComment()
-}
+  options?: Partial<ResponseResolverOptions<CreateTaskCommentSuccessResponse>>,
+) => getSuccessMockFn(createTaskCommentMockFn(taskId), options)()
 
 export const mockCreateTaskCommentBadRequestError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockCreateTaskComment = getBadRequestErrorMockFn(
-    getCreateTaskCommentMockFn(taskId),
-    options,
-  )
-
-  mockCreateTaskComment()
-}
+) => getBadRequestErrorMockFn(createTaskCommentMockFn(taskId), options)()
 
 export const mockCreateTaskCommentNotFoundError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockCreateTaskComment = getNotFoundErrorMockFn(
-    getCreateTaskCommentMockFn(taskId),
-    options,
-  )
-
-  mockCreateTaskComment()
-}
+) => getNotFoundErrorMockFn(createTaskCommentMockFn(taskId), options)()
 
 export const mockCreateTaskCommentForbiddenError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockCreateTaskComment = getForbiddenErrorMockFn(
-    getCreateTaskCommentMockFn(taskId),
-    options,
-  )
-
-  mockCreateTaskComment()
-}
+) => getForbiddenErrorMockFn(createTaskCommentMockFn(taskId), options)()
 
 export const mockCreateTaskCommentServerError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  const mockCreateTaskComment = getServerErrorMockFn(
-    getCreateTaskCommentMockFn(taskId),
-    options,
-  )
-
-  mockCreateTaskComment()
-}
+) => getServerErrorMockFn(createTaskCommentMockFn(taskId), options)()

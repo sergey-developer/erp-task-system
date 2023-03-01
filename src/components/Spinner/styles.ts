@@ -1,11 +1,10 @@
 import { Spin } from 'antd'
-
 import styled, { css } from 'styled-components'
 
 import { SpinnerProps } from './index'
 
-const dimensionStyles: Record<
-  NonNullable<SpinnerProps['dimension']>,
+const areaStyles: Record<
+  NonNullable<SpinnerProps['area']>,
   ReturnType<typeof css>
 > = {
   block: css<SpinnerStyledProps>`
@@ -17,27 +16,20 @@ const dimensionStyles: Record<
 }
 
 type SpinnerStyledProps = {
-  $dimension?: SpinnerProps['dimension']
-  $offset?: SpinnerProps['offset']
+  $area?: SpinnerProps['area']
   $centered?: SpinnerProps['centered']
 }
 
 export const SpinnerStyled = styled(Spin)<SpinnerStyledProps>`
-  ${({ $dimension }) =>
-    $dimension
+  display: flex;
+
+  ${({ $area }) =>
+    $area
       ? `
-        display: flex;
         flex-direction: column;
-        ${dimensionStyles[$dimension]}`
+        ${areaStyles[$area]}`
       : ''}
 
   ${({ $centered }) =>
     $centered ? 'justify-content: center; align-items: center;' : ''}
-
-  ${({ $offset }) => {
-    if (!$offset) return ''
-
-    const [direction, value] = $offset
-    return `margin-${direction}: ${value}px;`
-  }}
 `

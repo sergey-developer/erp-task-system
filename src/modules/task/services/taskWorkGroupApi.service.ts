@@ -1,11 +1,15 @@
-import { TaskEndpointsTagsEnum } from 'modules/task/constants/api'
+import { TaskEndpointTagEnum } from 'modules/task/constants/api'
 import {
-  DeleteTaskWorkGroupMutationArgsModel,
-  DeleteTaskWorkGroupResponseModel,
-  UpdateTaskWorkGroupMutationArgsModel,
-  UpdateTaskWorkGroupResponseModel,
-} from 'modules/task/features/TaskView/models'
-import { getTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
+  DeleteTaskWorkGroupMutationArgs,
+  DeleteTaskWorkGroupSuccessResponse,
+  UpdateTaskWorkGroupMutationArgs,
+  UpdateTaskWorkGroupSuccessResponse,
+} from 'modules/task/models'
+import {
+  deleteTaskWorkGroupUrl,
+  updateTaskWorkGroupUrl,
+} from 'modules/task/utils/apiUrls'
+
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import taskApiService from './taskApi.service'
@@ -13,28 +17,28 @@ import taskApiService from './taskApi.service'
 const taskWorkGroupApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
     updateTaskWorkGroup: build.mutation<
-      UpdateTaskWorkGroupResponseModel,
-      UpdateTaskWorkGroupMutationArgsModel
+      UpdateTaskWorkGroupSuccessResponse,
+      UpdateTaskWorkGroupMutationArgs
     >({
-      query: ({ taskId, ...body }) => ({
-        url: getTaskWorkGroupUrl(taskId),
+      query: ({ taskId, ...payload }) => ({
+        url: updateTaskWorkGroupUrl(taskId),
         method: HttpMethodEnum.Post,
-        data: body,
+        data: payload,
       }),
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointsTagsEnum.TaskList],
+        error ? [] : [TaskEndpointTagEnum.TaskList],
     }),
     deleteTaskWorkGroup: build.mutation<
-      DeleteTaskWorkGroupResponseModel,
-      DeleteTaskWorkGroupMutationArgsModel
+      DeleteTaskWorkGroupSuccessResponse,
+      DeleteTaskWorkGroupMutationArgs
     >({
-      query: ({ taskId, ...body }) => ({
-        url: getTaskWorkGroupUrl(taskId),
+      query: ({ taskId, ...payload }) => ({
+        url: deleteTaskWorkGroupUrl(taskId),
         method: HttpMethodEnum.Delete,
-        data: body,
+        data: payload,
       }),
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointsTagsEnum.TaskList],
+        error ? [] : [TaskEndpointTagEnum.TaskList],
     }),
   }),
   overrideExisting: false,

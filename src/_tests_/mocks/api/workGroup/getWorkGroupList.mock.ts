@@ -1,17 +1,23 @@
-import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
 import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
-import { GetWorkGroupListResponseModel } from 'modules/workGroup/features/WorkGroupList/models'
-import { HttpMethodEnum } from 'shared/constants/http'
+import { GetWorkGroupListSuccessResponse } from 'modules/workGroup/models'
 
-const getWorkGroupListMockFn = getRequestMockFn(
-  HttpMethodEnum.Get,
-  WorkGroupEndpointsEnum.WorkGroupList,
-)
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
+import {
+  getRequestMockFn,
+  getServerErrorMockFn,
+  getSuccessMockFn,
+} from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
+
+const getWorkGroupListMockFn = () =>
+  getRequestMockFn(HttpMethodEnum.Get, WorkGroupEndpointsEnum.WorkGroupList)
 
 export const mockGetWorkGroupListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetWorkGroupListResponseModel>>,
-) => {
-  const mockGetWorkGroupList = getSuccessMockFn(getWorkGroupListMockFn, options)
-  mockGetWorkGroupList()
-}
+  options?: Partial<ResponseResolverOptions<GetWorkGroupListSuccessResponse>>,
+) => getSuccessMockFn(getWorkGroupListMockFn(), options)()
+
+export const mockGetWorkGroupListServerError = <T extends object>(
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+) => getServerErrorMockFn(getWorkGroupListMockFn(), options)()

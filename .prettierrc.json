@@ -3,5 +3,19 @@
   "singleQuote": true,
   "jsxSingleQuote": true,
   "trailingComma": "all",
-  "plugins": ["prettier-plugin-sorted"]
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^lib/(.*)$",
+    "^configs/(.*)$",
+    "^modules/(.*)$",
+    "^components/(.*)$",
+    "^state/(.*)$",
+    "^shared/(.*)$",
+    "^styles/(.*)$",
+    "^app/(.*)$",
+    "^fixtures/(.*)$",
+    "^_tests_/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true
 }

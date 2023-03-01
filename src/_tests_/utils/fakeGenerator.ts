@@ -9,6 +9,8 @@ export const generateWord = chance.word.bind(chance)
 export const generatePhone = chance.phone.bind(chance)
 export const generateAddress = chance.address.bind(chance)
 export const generateUrl = chance.url.bind(chance)
+export const generateLatitude = chance.latitude.bind(chance)
+export const generateLongitude = chance.longitude.bind(chance)
 
 export const generateDate = chance.date.bind(chance)
 export const generateDateString = () => generateDate().toISOString()

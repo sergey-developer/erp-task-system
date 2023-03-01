@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 
-import useAuthenticatedUser from 'modules/auth/hooks/useAuthenticatedUser'
-import { UserRolesEnum } from 'shared/constants/roles'
+import { useAuthenticatedUser } from 'modules/auth/hooks'
+
+import { UserRoleEnum } from 'shared/constants/roles'
 
 import { getUserRoleMap } from '../utils'
 
-const useUserRole = (): ReturnType<typeof getUserRoleMap> & {
-  role?: UserRolesEnum
+export const useUserRole = (): ReturnType<typeof getUserRoleMap> & {
+  role?: UserRoleEnum
 } => {
   const user = useAuthenticatedUser()
 
@@ -19,5 +20,3 @@ const useUserRole = (): ReturnType<typeof getUserRoleMap> & {
     }
   }, [user?.role])
 }
-
-export default useUserRole

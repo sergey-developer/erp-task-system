@@ -13,7 +13,7 @@ export * from './button'
 export { default as modalTestUtils } from './modal'
 
 export * from './setupApiTests'
-export * from './setupNotifications'
+export * from './notifications'
 
 export { default as render } from './renderInAppProvider'
 export { default as renderInRoute } from './renderInRoute'

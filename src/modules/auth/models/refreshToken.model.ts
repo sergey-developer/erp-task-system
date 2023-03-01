@@ -1,4 +1,4 @@
-export type RefreshTokenResponseModel = {
+export type RefreshTokenSuccessResponse = {
   access: string
   refresh: string
 }

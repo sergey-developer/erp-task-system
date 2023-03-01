@@ -36,7 +36,7 @@ Tests:
     - export REACT_APP_ENVIRONMENT=test
     - export CI=true
     - yarn install
-    - yarn test --coverage
+    - yarn test:ci
   cache:
     - key:
         files:
@@ -45,9 +45,9 @@ Tests:
         - node_modules/
       policy: pull
   only:
-#    - rc
+    - rc
     - master
-#    - develop
+    - develop
   tags:
     - docker
 

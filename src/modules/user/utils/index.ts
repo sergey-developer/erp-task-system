@@ -1,4 +1,5 @@
 export * from './getUserRoleMap'
-export { default as getUserAbbr } from './getUserAbbr'
-export { default as getFullUserName } from './getFullUserName'
-export { default as getShortUserName } from './getShortUserName'
+export * from './getUserAbbr'
+export * from './getFullUserName'
+export * from './getShortUserName'
+export * from './makeUserNameObject'

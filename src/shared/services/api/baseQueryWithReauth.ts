@@ -3,12 +3,13 @@ import { Mutex } from 'async-mutex'
 import { refreshToken as refreshTokenAction } from 'modules/auth/auth.slice'
 import { AuthEndpointsEnum } from 'modules/auth/constants/api'
 import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
-import { RefreshTokenResponseModel } from 'modules/auth/models'
+import { RefreshTokenSuccessResponse } from 'modules/auth/models'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
-import logoutAndClearTokens from 'modules/auth/utils/logoutAndClearTokens'
-import parseJwt from 'modules/auth/utils/parseJwt'
-import { HttpMethodEnum } from 'shared/constants/http'
+import { logoutAndClearTokens, parseJwt } from 'modules/auth/utils'
+
 import { RootState } from 'state/store'
+
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import baseQuery from './baseQuery'
 import { apiPath, currentApiVersion } from './constants'
@@ -70,7 +71,8 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           }
 
           if (refreshResult.data) {
-            const refreshData = refreshResult.data as RefreshTokenResponseModel
+            const refreshData =
+              refreshResult.data as RefreshTokenSuccessResponse
 
             authLocalStorageService.setAccessToken(refreshData.access)
             authLocalStorageService.setRefreshToken(refreshData.refresh)
@@ -88,7 +90,6 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           }
         } catch (exception) {
           const error = exception as ErrorResponse
-
           if (isClientRangeError(error)) {
             logoutAndClearTokens(api.dispatch)
           }
@@ -111,5 +112,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
 
   return response
 }
+
+export type CustomBaseQuery = typeof baseQueryWithReauth
 
 export default baseQueryWithReauth

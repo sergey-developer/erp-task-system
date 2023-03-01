@@ -1,9 +1,10 @@
-import { TaskEndpointsTagsEnum } from 'modules/task/constants/api'
+import { TaskEndpointTagEnum } from 'modules/task/constants/api'
 import {
-  UpdateTaskAssigneeMutationArgsModel,
-  UpdateTaskAssigneeResponseModel,
-} from 'modules/task/features/TaskView/models'
-import { getTaskAssigneeUrl } from 'modules/task/utils/apiUrls'
+  UpdateTaskAssigneeMutationArgs,
+  UpdateTaskAssigneeSuccessResponse,
+} from 'modules/task/models'
+import { updateTaskAssigneeUrl } from 'modules/task/utils/apiUrls'
+
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import taskApiService from './taskApi.service'
@@ -11,16 +12,16 @@ import taskApiService from './taskApi.service'
 const taskAssigneeApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
     updateTaskAssignee: build.mutation<
-      UpdateTaskAssigneeResponseModel,
-      UpdateTaskAssigneeMutationArgsModel
+      UpdateTaskAssigneeSuccessResponse,
+      UpdateTaskAssigneeMutationArgs
     >({
-      query: ({ taskId, ...body }) => ({
-        url: getTaskAssigneeUrl(taskId),
+      query: ({ taskId, ...payload }) => ({
+        url: updateTaskAssigneeUrl(taskId),
         method: HttpMethodEnum.Post,
-        data: body,
+        data: payload,
       }),
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointsTagsEnum.Task],
+        error ? [] : [TaskEndpointTagEnum.Task],
     }),
   }),
   overrideExisting: false,

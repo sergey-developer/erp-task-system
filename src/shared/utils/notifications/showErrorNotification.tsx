@@ -1,7 +1,7 @@
 import { notification } from 'antd'
 import { ArgsProps as NotificationProps } from 'antd/es/notification'
 
-const showErrorNotification = (
+export const showErrorNotification = (
   error: string,
   options: Omit<NotificationProps, 'message'> = {},
 ): void => {
@@ -10,5 +10,3 @@ const showErrorNotification = (
     ...options,
   })
 }
-
-export default showErrorNotification

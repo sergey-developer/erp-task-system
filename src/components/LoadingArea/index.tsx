@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Spinner, { SpinnerProps } from 'components/Spinner'
+
 import { FCWithChildren } from 'shared/interfaces/utils'
 
 type LoadingAreaProps = SpinnerProps & {

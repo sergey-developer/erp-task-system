@@ -1,11 +1,11 @@
 import { Layout } from 'antd'
+import styled, { css } from 'styled-components'
 
 import {
   StyledBreakpointStyles,
   StyledBreakpointsProps,
 } from 'shared/interfaces/breakpoints'
-import applyBreakpointStyles from 'shared/utils/breakpoints/applyBreakpointStyles'
-import styled, { css } from 'styled-components'
+import { applyBreakpointStyles } from 'shared/utils/breakpoints'
 
 const { Header } = Layout
 

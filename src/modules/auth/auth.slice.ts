@@ -6,7 +6,7 @@ import {
   RefreshTokenActionPayload,
 } from './interfaces'
 import authLocalStorageService from './services/authLocalStorage.service'
-import parseJwt from './utils/parseJwt'
+import { parseJwt } from './utils'
 
 export const getInitialState = (): AuthSliceState => {
   const accessToken = authLocalStorageService.getAccessToken()

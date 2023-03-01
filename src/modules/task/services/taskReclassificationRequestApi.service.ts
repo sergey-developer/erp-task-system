@@ -1,29 +1,31 @@
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import {
-  CreateTaskReclassificationRequestMutationArgsModel,
-  CreateTaskReclassificationRequestResponseModel,
-  GetTaskReclassificationRequestQueryArgsModel,
-  GetTaskReclassificationRequestResponseModel,
-  GetTaskResponseModel,
-} from 'modules/task/features/TaskView/models'
+  CreateTaskReclassificationRequestMutationArgs,
+  CreateTaskReclassificationRequestSuccessResponse,
+  GetTaskReclassificationRequestQueryArgs,
+  GetTaskReclassificationRequestSuccessResponse,
+  GetTaskSuccessResponse,
+} from 'modules/task/models'
 import {
-  getCreateTaskReclassificationRequestUrl,
+  createTaskReclassificationRequestUrl,
   getTaskReclassificationRequestUrl,
 } from 'modules/task/utils/apiUrls'
+
 import { HttpMethodEnum } from 'shared/constants/http'
 
+import { TaskEndpointNameEnum } from '../constants/api'
 import taskApiService from './taskApi.service'
 
 const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
     createReclassificationRequest: build.mutation<
-      CreateTaskReclassificationRequestResponseModel,
-      CreateTaskReclassificationRequestMutationArgsModel
+      CreateTaskReclassificationRequestSuccessResponse,
+      CreateTaskReclassificationRequestMutationArgs
     >({
-      query: ({ taskId, ...body }) => ({
-        url: getCreateTaskReclassificationRequestUrl(taskId),
+      query: ({ taskId, ...payload }) => ({
+        url: createTaskReclassificationRequestUrl(taskId),
         method: HttpMethodEnum.Post,
-        data: body,
+        data: payload,
       }),
       onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
         try {
@@ -31,9 +33,9 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
 
           dispatch(
             taskApiService.util.updateQueryData(
-              'getTask' as never,
+              TaskEndpointNameEnum.GetTask as never,
               taskId as never,
-              (task: GetTaskResponseModel) => {
+              (task: GetTaskSuccessResponse) => {
                 task.extendedStatus = TaskExtendedStatusEnum.InReclassification
               },
             ),
@@ -42,8 +44,8 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
       },
     }),
     getReclassificationRequest: build.query<
-      GetTaskReclassificationRequestResponseModel,
-      GetTaskReclassificationRequestQueryArgsModel
+      GetTaskReclassificationRequestSuccessResponse,
+      GetTaskReclassificationRequestQueryArgs
     >({
       query: (taskId) => ({
         url: getTaskReclassificationRequestUrl(taskId),
