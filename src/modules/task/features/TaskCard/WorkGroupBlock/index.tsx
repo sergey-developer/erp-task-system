@@ -125,7 +125,9 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           </Col>
 
           <Col>
-            <Permissions config={taskWorkGroupPermissions.transferFirstLineBtn}>
+            <Permissions
+              config={taskWorkGroupPermissions.transferToFirstLineBtn}
+            >
               {() =>
                 hasWorkGroup &&
                 !taskStatus.isClosed &&
@@ -150,7 +152,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
             </Permissions>
 
             <Permissions
-              config={taskWorkGroupPermissions.transferSecondLineBtn}
+              config={taskWorkGroupPermissions.transferToSecondLineBtn}
             >
               {() =>
                 hasWorkGroup ? null : (
