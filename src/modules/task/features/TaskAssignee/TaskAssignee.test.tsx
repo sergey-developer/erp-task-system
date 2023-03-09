@@ -14,4 +14,4 @@ export const testUtils = {
   queryContainerIn,
 }
 
-describe.skip('Исполнитель заявки', () => {})
+test.todo('Исполнитель заявки')
