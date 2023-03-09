@@ -14,6 +14,4 @@ export const testUtils = {
   queryContainerIn,
 }
 
-describe('Исполнитель задачи', () => {
-  test('Пока нет тестов', () => {})
-})
+describe.skip('Исполнитель заявки', () => {})
