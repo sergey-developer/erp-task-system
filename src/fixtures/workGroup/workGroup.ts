@@ -18,6 +18,21 @@ export const getWorkGroupMember = (): ArrayItem<
   WorkGroupListItemModel['members']
 > => ({ id: generateId(), fullName: generateName() })
 
+export const getWorkGroupPriority = (
+  props?: Partial<
+    Omit<NonNullable<WorkGroupListItemModel['priority']>, 'description'>
+  >,
+): NonNullable<WorkGroupListItemModel['priority']> => ({
+  type: props?.type || WorkGroupTypeEnum.NoType,
+  value:
+    props?.value ||
+    (generateInteger({
+      min: 1,
+      max: 4,
+    }) as NonNullable<WorkGroupListItemModel['priority']>['value']),
+  description: generateWord(),
+})
+
 export const getWorkGroupMemberList = (
   length: number = 1,
 ): WorkGroupListItemModel['members'] =>
@@ -29,7 +44,7 @@ export const getWorkGroup = (
     groupLeadId: number
     memberAmount: number
   }> &
-    Partial<Pick<WorkGroupListItemModel, 'id' | 'type' | 'priority'>>,
+    Partial<Pick<WorkGroupListItemModel, 'id' | 'priority'>>,
 ): NonNullable<WorkGroupListItemModel> => ({
   id: props?.id || generateId(),
   name: generateName(),
@@ -42,12 +57,5 @@ export const getWorkGroup = (
     id: props?.groupLeadId || generateId(),
     fullName: generateName(),
   },
-  type: props?.type || WorkGroupTypeEnum.NoType,
-  description: generateWord(),
-  priority:
-    props?.priority ||
-    (generateInteger({
-      min: 1,
-      max: 4,
-    }) as WorkGroupListItemModel['priority']),
+  priority: props?.priority || getWorkGroupPriority(),
 })
