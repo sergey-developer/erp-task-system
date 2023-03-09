@@ -2,13 +2,14 @@ import { Tabs } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
-import Spinner from 'components/Spinner'
 import { TaskModel } from 'modules/task/models'
 
+import Spinner from 'components/Spinner'
+
 import TaskCardWrapper from '../TaskCardWrapper'
-import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
 import DescriptionTab from './DescriptionTab'
 import ResolutionTab from './ResolutionTab'
+import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
 import { TabsStyled } from './styles'
 
 const JournalTab = React.lazy(() => import('./JournalTab'))

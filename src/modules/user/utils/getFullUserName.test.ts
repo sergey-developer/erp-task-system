@@ -1,5 +1,6 @@
-import { generateWord } from '_tests_/utils'
 import { FunctionParams } from 'shared/interfaces/utils'
+
+import { generateWord } from '_tests_/utils'
 
 import { getFullUserName } from './getFullUserName'
 

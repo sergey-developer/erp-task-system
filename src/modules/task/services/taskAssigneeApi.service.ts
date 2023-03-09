@@ -4,6 +4,7 @@ import {
   UpdateTaskAssigneeSuccessResponse,
 } from 'modules/task/models'
 import { updateTaskAssigneeUrl } from 'modules/task/utils/apiUrls'
+
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import taskApiService from './taskApi.service'

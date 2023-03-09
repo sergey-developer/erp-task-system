@@ -5,10 +5,6 @@ import noop from 'lodash/noop'
 import moment from 'moment'
 import React, { FC, useCallback, useEffect } from 'react'
 
-import LoadingArea from 'components/LoadingArea'
-import ModalFallback from 'components/Modals/ModalFallback'
-import Space from 'components/Space'
-import Spinner from 'components/Spinner'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import {
   taskImpactMap,
@@ -32,6 +28,12 @@ import {
 } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 import { WorkGroupListModel } from 'modules/workGroup/models'
+
+import LoadingArea from 'components/LoadingArea'
+import ModalFallback from 'components/Modals/ModalFallback'
+import Space from 'components/Space'
+import Spinner from 'components/Spinner'
+
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -190,13 +192,12 @@ const TaskCard: FC<TaskCardProps> = ({
   const breakpoints = useBreakpoint()
 
   const taskStatus = useTaskStatus(task?.status)
-  const taskSuspendRequestStatusMap = useTaskSuspendRequestStatus(
+  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(
     task?.suspendRequest?.status,
   )
 
   const userRole = useUserRole()
   const isAssignedToCurrentUser = useCheckUserAuthenticated(task?.assignee?.id)
-  const hasSuspendRequest = !!task?.suspendRequest
 
   const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
@@ -396,7 +397,7 @@ const TaskCard: FC<TaskCardProps> = ({
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
-      hasSuspendRequest={hasSuspendRequest}
+      suspendRequest={task.suspendRequest}
       onClose={debouncedCloseTaskCard}
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={debouncedOpenTaskResolutionModal}
@@ -442,9 +443,10 @@ const TaskCard: FC<TaskCardProps> = ({
             <React.Suspense fallback={<Spinner area='block' />}>
               <TaskSuspendRequest
                 title={
-                  taskSuspendRequestStatusMap.isNew
+                  taskSuspendRequestStatus.isNew ||
+                  taskSuspendRequestStatus.isInProgress
                     ? 'Запрошено ожидание'
-                    : taskSuspendRequestStatusMap.isApproved
+                    : taskSuspendRequestStatus.isApproved
                     ? 'Заявка находится в ожидании'
                     : ''
                 }
@@ -452,16 +454,20 @@ const TaskCard: FC<TaskCardProps> = ({
                 user={task.suspendRequest.author}
                 comment={task.suspendRequest.comment}
                 action={
-                  taskSuspendRequestStatusMap.isNew ||
-                  taskSuspendRequestStatusMap.isInProgress
+                  taskSuspendRequestStatus.isNew ||
+                  taskSuspendRequestStatus.isInProgress
                     ? {
                         text: 'Отменить запрос',
                         onClick: handleCancelTaskSuspendRequest,
                         loading: cancelSuspendRequestIsLoading,
                         disabled: userRole.isEngineerRole,
                       }
-                    : taskSuspendRequestStatusMap.isApproved
-                    ? { text: 'Вернуть в работу', disabled: true }
+                    : taskSuspendRequestStatus.isApproved
+                    ? {
+                        text: 'Вернуть в работу',
+                        onClick: handleTakeTask,
+                        loading: takeTaskIsLoading,
+                      }
                     : undefined
                 }
               />
@@ -529,7 +535,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 updateAssigneeIsLoading={updateAssigneeIsLoading}
                 takeTask={handleTakeTask}
                 takeTaskIsLoading={takeTaskIsLoading}
-                hasSuspendRequest={hasSuspendRequest}
+                taskSuspendRequestStatus={task.suspendRequest?.status}
               />
 
               <CardTabs task={task} />

@@ -1,4 +1,5 @@
 import { UserModel } from 'modules/user/models'
+
 import {
   addDotToEnd,
   getFirstLetterInUpperCase,

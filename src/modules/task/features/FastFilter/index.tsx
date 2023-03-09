@@ -3,8 +3,8 @@ import React, { FC, useMemo } from 'react'
 
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import { FastFilterEnum, fastFilterNamesDict } from './constants'
 import FilterTag from './FilterTag'
+import { FastFilterEnum, fastFilterNamesDict } from './constants'
 import { FastFilterProps, FilterItem } from './interfaces'
 
 const FastFilter: FC<FastFilterProps> = ({

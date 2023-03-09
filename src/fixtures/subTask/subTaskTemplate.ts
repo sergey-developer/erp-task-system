@@ -1,11 +1,13 @@
 import times from 'lodash/times'
 
-import { generateId, generateWord } from '_tests_/utils'
-import commonFixtures from 'fixtures/common'
 import {
   GetSubTaskTemplateListSuccessResponse,
   SubTaskTemplateModel,
 } from 'modules/subTask/models'
+
+import commonFixtures from 'fixtures/common'
+
+import { generateId, generateWord } from '_tests_/utils'
 
 export const getSubTaskTemplate = (): SubTaskTemplateModel => ({
   id: generateId(),

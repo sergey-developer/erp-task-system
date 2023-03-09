@@ -2,9 +2,6 @@ import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
-import LoadingArea from 'components/LoadingArea'
-import ModalFallback from 'components/Modals/ModalFallback'
-import Space from 'components/Space'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import { CancelSubTaskModalProps } from 'modules/subTask/features/CancelSubTaskModal/interfaces'
 import { CreateSubTaskModalProps } from 'modules/subTask/features/CreateSubTaskModal/interfaces'
@@ -24,6 +21,11 @@ import {
   useTaskType,
 } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
+
+import LoadingArea from 'components/LoadingArea'
+import ModalFallback from 'components/Modals/ModalFallback'
+import Space from 'components/Space'
+
 import { useDebounceFn } from 'shared/hooks'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
@@ -247,11 +249,11 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
           taskStatus={task.status}
           taskExtendedStatus={task.extendedStatus}
           currentUserIsTaskAssignee={currentUserIsTaskAssignee}
-          taskHasSuspendRequest={taskHasSuspendRequest}
           list={subTaskList}
           isError={isGetSubTaskListError}
           onClickCancel={handleClickCancel}
           onClickRework={handleClickRework}
+          taskSuspendRequestStatus={task.suspendRequest?.status}
         />
       </LoadingArea>
 

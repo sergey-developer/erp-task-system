@@ -1,3 +1,8 @@
+import { screen, within } from '@testing-library/react'
+
+import { TaskOlaStatusEnum, TaskStatusEnum } from 'modules/task/constants/common'
+import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
+
 import {
   generateAddress,
   generateDateString,
@@ -6,12 +11,6 @@ import {
   generateWord,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import {
-  TaskOlaStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
-import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
 import MainDetails, { MainDetailsProps } from './index'
 

@@ -6,8 +6,10 @@ import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
 import { RefreshTokenSuccessResponse } from 'modules/auth/models'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { logoutAndClearTokens, parseJwt } from 'modules/auth/utils'
-import { HttpMethodEnum } from 'shared/constants/http'
+
 import { RootState } from 'state/store'
+
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import baseQuery from './baseQuery'
 import { apiPath, currentApiVersion } from './constants'

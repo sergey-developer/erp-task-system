@@ -1,14 +1,8 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { TablePaginationConfig } from 'antd'
 import { TableAction } from 'antd/es/table/interface'
 
-import {
-  loadingFinishedByIconIn,
-  loadingStartedByIconIn,
-  render,
-} from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
@@ -18,9 +12,18 @@ import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStat
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { getShortUserName } from 'modules/user/utils'
+
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { NumberOrString } from 'shared/interfaces/utils'
 import { formatDate } from 'shared/utils/date'
+
+import taskFixtures from 'fixtures/task'
+
+import {
+  loadingFinishedByIconIn,
+  loadingStartedByIconIn,
+  render,
+} from '_tests_/utils'
 
 import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'

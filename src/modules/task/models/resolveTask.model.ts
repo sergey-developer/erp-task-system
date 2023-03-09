@@ -1,4 +1,5 @@
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
+
 import { ErrorResponse } from 'shared/services/api'
 
 export type ResolveTaskMutationArgs = BaseTaskRequestArgs &

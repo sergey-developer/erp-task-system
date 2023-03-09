@@ -14,11 +14,13 @@ import isArray from 'lodash/isArray'
 import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
-import { FilterIcon, SyncIcon } from 'components/Icons'
 import TaskCard from 'modules/task/features/TaskCard/CardContainer'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
+
+import { FilterIcon, SyncIcon } from 'components/Icons'
+
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'

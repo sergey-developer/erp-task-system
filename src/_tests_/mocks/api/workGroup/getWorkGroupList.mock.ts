@@ -1,13 +1,15 @@
+import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
+import { GetWorkGroupListSuccessResponse } from 'modules/workGroup/models'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
 import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
-import { GetWorkGroupListSuccessResponse } from 'modules/workGroup/models'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 const getWorkGroupListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, WorkGroupEndpointsEnum.WorkGroupList)

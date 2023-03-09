@@ -1,5 +1,6 @@
-import { generateWord, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
+
+import { generateWord, render } from '_tests_/utils'
 
 import Comment, { CommentProps } from './index'
 

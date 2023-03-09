@@ -1,3 +1,15 @@
+import { screen, waitFor, within } from '@testing-library/react'
+
+import {
+  SuspendReasonEnum,
+  SuspendRequestStatusEnum,
+} from 'modules/task/constants/common'
+
+import { UserRoleEnum } from 'modules/user/constants/roles'
+
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
+
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   expectLoadingNotStartedByCard,
@@ -11,14 +23,6 @@ import {
   render,
 } from '_tests_/utils'
 import modalTestUtils from '_tests_/utils/modal'
-import { screen, waitFor, within } from '@testing-library/react'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-import {
-  SuspendReasonEnum,
-  SuspendRequestStatusEnum,
-} from 'modules/task/constants/common'
-import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
 import {
@@ -668,6 +672,44 @@ describe('Карточка заявки', () => {
   })
 
   describe('Перевод заявки на 1-ю линию', () => {
+    describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
+      test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
+        const { user } = render(
+          <TaskCard
+            {...requiredProps}
+            workGroupList={[
+              workGroupFixtures.getWorkGroup({
+                id: showFirstLineButtonProps.workGroup!.id,
+              }),
+            ]}
+            task={{
+              ...requiredProps.task!,
+              ...showFirstLineButtonProps,
+              ...activeFirstLineButtonProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          },
+        )
+
+        await workGroupBlockTestUtils.clickFirstLineButton(user)
+        const modal = await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.clickSubmitButton(user)
+
+        expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
+        expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
+        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
+    })
+
     describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
         const { user } = render(
@@ -1057,7 +1099,7 @@ describe('Карточка заявки', () => {
           const button = taskSuspendRequestTestUtils.getReturnToWorkButton()
 
           expect(button).toBeInTheDocument()
-          expect(button).not.toBeEnabled()
+          expect(button).toBeEnabled()
         })
       })
     })

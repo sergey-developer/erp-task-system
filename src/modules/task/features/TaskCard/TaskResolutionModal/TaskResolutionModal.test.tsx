@@ -1,3 +1,13 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { TaskTypeEnum } from 'modules/task/constants/common'
+
+import {
+  validationMessages,
+  validationSizes,
+} from 'shared/constants/validation'
+
 import {
   generateIdStr,
   generateWord,
@@ -7,13 +17,6 @@ import {
   modalTestUtils,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { TaskTypeEnum } from 'modules/task/constants/common'
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
 
 import TaskResolutionModal, { TaskResolutionModalProps } from './index'
 

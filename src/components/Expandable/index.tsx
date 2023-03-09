@@ -1,11 +1,12 @@
 import { Button, Typography } from 'antd'
 import { BaseType } from 'antd/es/typography/Base'
 import React from 'react'
+import { DefaultTheme } from 'styled-components'
 
 import { DownIcon, UpIcon } from 'components/Icons'
 import Space, { SpaceProps } from 'components/Space'
+
 import { FCWithChildren } from 'shared/interfaces/utils'
-import { DefaultTheme } from 'styled-components'
 
 const { Text } = Typography
 

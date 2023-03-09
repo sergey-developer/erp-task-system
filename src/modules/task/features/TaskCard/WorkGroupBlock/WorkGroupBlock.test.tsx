@@ -1,3 +1,17 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import {
+  SuspendRequestStatusEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
+
+import { UserRoleEnum } from 'modules/user/constants/roles'
+
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
+
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   findButtonIn,
@@ -9,21 +23,14 @@ import {
   queryButtonIn,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-import {
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
-import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
 
-const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {
+const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> & {
+  taskSuspendRequestStatus: SuspendRequestStatusEnum
+} = {
   id: generateId(),
   recordId: generateWord(),
   status: TaskStatusEnum.New,
@@ -32,7 +39,7 @@ const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {
   transferTaskToFirstLineIsLoading: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
-  hasSuspendRequest: false,
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
 const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof requiredProps> =
@@ -379,7 +386,7 @@ describe('Блок рабочей группы', () => {
     })
 
     describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
-      test('Не отображается', () => {
+      test('Отображается если условия соблюдены', () => {
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
           {
@@ -389,7 +396,137 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+        expect(testUtils.getFirstLineButton()).toBeInTheDocument()
+      })
+
+      describe('Не активна если условия соблюдены', () => {
+        test('Но есть запрос на переклассификацию', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              extendedStatus={TaskExtendedStatusEnum.InReclassification}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.getFirstLineButton()).toBeDisabled()
+        })
+
+        test('Но статус заявки "В ожидании"', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              status={TaskStatusEnum.Awaiting}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.getFirstLineButton()).toBeDisabled()
+        })
+      })
+
+      test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
+        render(
+          <WorkGroupBlock
+            {...requiredProps}
+            {...showFirstLineButtonProps}
+            {...activeFirstLineButtonProps}
+            transferTaskToFirstLineIsLoading
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          },
+        )
+
+        await testUtils.firstLineLoadingStarted()
+      })
+
+      test('При клике открывается модальное окно', async () => {
+        const { user } = render(
+          <WorkGroupBlock
+            {...requiredProps}
+            {...showFirstLineButtonProps}
+            {...activeFirstLineButtonProps}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          },
+        )
+
+        await testUtils.clickFirstLineButton(user)
+
+        expect(
+          await taskFirstLineModalTestUtils.findModal(),
+        ).toBeInTheDocument()
+      })
+
+      describe('Не отображается если условия соблюдены', () => {
+        test('Но нет рабочей группы', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              workGroup={null}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+        })
+
+        test('Но заявка закрыта', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              status={TaskStatusEnum.Closed}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+        })
+
+        test('Но заявка завершена', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              status={TaskStatusEnum.Completed}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+        })
       })
     })
 

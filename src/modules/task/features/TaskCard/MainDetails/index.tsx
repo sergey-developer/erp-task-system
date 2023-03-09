@@ -1,6 +1,9 @@
 import { Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
+import { TaskModel } from 'modules/task/models'
+import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
+
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
@@ -10,8 +13,6 @@ import {
   badgeByTaskStatus,
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
-import { TaskModel } from 'modules/task/models'
-import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 
 import { RecordIdStyled } from './styles'
 import { getCompleteAt } from './utils'

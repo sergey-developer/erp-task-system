@@ -1,3 +1,13 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import {
+  validationMessages,
+  validationSizes,
+} from 'shared/constants/validation'
+
+import subTaskFixtures from 'fixtures/subTask'
+
 import {
   clickSelectOption,
   generateIdStr,
@@ -12,13 +22,6 @@ import {
   render,
   userOpenSelect,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import subTaskFixtures from 'fixtures/subTask'
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
 
 import CreateSubTaskModal from './index'
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'

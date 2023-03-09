@@ -1,3 +1,13 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { getShortUserName } from 'modules/user/utils'
+
+import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import { formatDate } from 'shared/utils/date'
+
+import commonFixtures from 'fixtures/common'
+
 import {
   generateDateString,
   generateWord,
@@ -5,12 +15,6 @@ import {
   getIconByNameIn,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import commonFixtures from 'fixtures/common'
-import { getShortUserName } from 'modules/user/utils'
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import { formatDate } from 'shared/utils/date'
 
 import TaskReclassificationRequest, {
   TaskReclassificationRequestProps,

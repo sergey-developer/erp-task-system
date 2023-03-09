@@ -2,10 +2,12 @@ import { Button, ButtonProps, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, ReactElement } from 'react'
 
-import Space from 'components/Space'
-import SeparatedText from 'components/Texts/SeparatedText'
 import { UserModel } from 'modules/user/models'
 import { getShortUserName } from 'modules/user/utils'
+
+import Space from 'components/Space'
+import SeparatedText from 'components/Texts/SeparatedText'
+
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { formatDate } from 'shared/utils/date'

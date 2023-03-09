@@ -8,6 +8,7 @@ import {
   getTaskJournalCsvUrl,
   getTaskJournalUrl,
 } from 'modules/task/utils/apiUrls'
+
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import taskApiService from './taskApi.service'

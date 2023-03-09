@@ -1,3 +1,25 @@
+import { screen, waitFor, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
+import { testUtils as extendedFilterTestUtils } from 'modules/task/features/ExtendedFilter/ExtendedFilter.test'
+import {
+  searchFieldDict,
+  taskAssignedDict,
+  taskOverdueDict,
+} from 'modules/task/features/ExtendedFilter/constants'
+import { testUtils as fastFilterTestUtils } from 'modules/task/features/FastFilter/FastFilter.test'
+import { FastFilterEnum } from 'modules/task/features/FastFilter/constants'
+import { testUtils as taskCardTestUtils } from 'modules/task/features/TaskCard/Card/Card.test'
+import { testUtils as taskTableTestUtils } from 'modules/task/features/TaskTable/TaskTable.test'
+import { paginationConfig } from 'modules/task/features/TaskTable/constants/pagination'
+import { GetTaskCountersSuccessResponse } from 'modules/task/models'
+
+import { UserRoleEnum } from 'modules/user/constants/roles'
+
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
+
 import {
   mockGetTaskCountersSuccess,
   mockGetTaskListSuccess,
@@ -12,24 +34,6 @@ import {
   render,
   setupApiTests,
 } from '_tests_/utils'
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
-import {
-  searchFieldDict,
-  taskAssignedDict,
-  taskOverdueDict,
-} from 'modules/task/features/ExtendedFilter/constants'
-import { testUtils as extendedFilterTestUtils } from 'modules/task/features/ExtendedFilter/ExtendedFilter.test'
-import { FastFilterEnum } from 'modules/task/features/FastFilter/constants'
-import { testUtils as fastFilterTestUtils } from 'modules/task/features/FastFilter/FastFilter.test'
-import { testUtils as taskCardTestUtils } from 'modules/task/features/TaskCard/Card/Card.test'
-import { paginationConfig } from 'modules/task/features/TaskTable/constants/pagination'
-import { testUtils as taskTableTestUtils } from 'modules/task/features/TaskTable/TaskTable.test'
-import { GetTaskCountersSuccessResponse } from 'modules/task/models'
-import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { DEFAULT_PAGE_SIZE } from './constants'
 import TaskListPage from './index'
