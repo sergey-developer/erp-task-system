@@ -1,11 +1,12 @@
 import { Typography } from 'antd'
 import React, { FC } from 'react'
 
-import UserAvatar from 'components/Avatars/UserAvatar'
-import Space from 'components/Space'
 import { TaskModel } from 'modules/task/models'
 import { UserModel } from 'modules/user/models'
 import { getUserAbbr } from 'modules/user/utils'
+
+import UserAvatar from 'components/Avatars/UserAvatar'
+import Space from 'components/Space'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 

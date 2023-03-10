@@ -1,6 +1,12 @@
 import { Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
+import { taskStatusDict } from 'modules/task/constants/dictionary'
+import TaskStatus from 'modules/task/features/TaskStatus'
+import {
+  badgeByTaskStatus,
+  iconByTaskStatus,
+} from 'modules/task/features/TaskStatus/constants'
 import { TaskModel } from 'modules/task/models'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 
@@ -99,7 +105,7 @@ const MainDetails: FC<MainDetailsProps> = ({
           <LabeledData label='Адрес'>
             <Text strong>{name}</Text>
 
-            {!!address && <Text>{address}</Text>}
+            <Text>{address ? address : 'Не определено'}</Text>
           </LabeledData>
         </Col>
 
