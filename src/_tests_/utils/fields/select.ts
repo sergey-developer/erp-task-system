@@ -13,7 +13,7 @@ export const querySelect = (container: HTMLElement, opts?: ByRoleOptions) =>
 export const findSelect = (container: HTMLElement, opts?: ByRoleOptions) =>
   within(container).findByRole('combobox', opts)
 
-export const userOpenSelect = async (
+export const openSelect = async (
   user: UserEvent,
   container: HTMLElement,
 ) => {
