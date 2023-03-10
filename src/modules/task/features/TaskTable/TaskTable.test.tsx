@@ -410,7 +410,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Заявка')
@@ -463,7 +463,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Внеш.номер')
@@ -517,7 +517,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Объект')
@@ -570,7 +570,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Тема')
@@ -625,7 +625,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Исполнитель')
@@ -725,7 +725,7 @@ describe('Таблица заявок', () => {
           ).toBeInTheDocument()
         })
 
-        test('Сортировка включена', async () => {
+        test('Сортировка включена', () => {
           render(
             <TaskTable
               {...testConstants.requiredProps}
@@ -829,7 +829,7 @@ describe('Таблица заявок', () => {
           ).toBeInTheDocument()
         })
 
-        test('Сортировка включена', async () => {
+        test('Сортировка включена', () => {
           render(
             <TaskTable
               {...testConstants.requiredProps}
@@ -933,7 +933,7 @@ describe('Таблица заявок', () => {
           ).toBeInTheDocument()
         })
 
-        test('Сортировка включена', async () => {
+        test('Сортировка включена', () => {
           render(
             <TaskTable
               {...testConstants.requiredProps}
@@ -1020,7 +1020,7 @@ describe('Таблица заявок', () => {
           ).toBeInTheDocument()
         })
 
-        test('Сортировка включена', async () => {
+        test('Сортировка включена', () => {
           render(
             <TaskTable
               {...testConstants.requiredProps}
@@ -1144,7 +1144,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Выполнить до')
@@ -1204,11 +1204,11 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test.skip('Сортировка включена', async () => {
+      test('Сортировка отключена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Статус')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).not.toHaveClass(testConstants.columnWithSortingClass)
       })
 
       test.skip('Значение сортировки по умолчанию не установлено', () => {
@@ -1242,6 +1242,30 @@ describe('Таблица заявок', () => {
       })
     })
 
+    describe('Выполненные задания', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...testConstants.requiredProps} />)
+        expect(testUtils.getColTitle('Выполненные задания')).toBeInTheDocument()
+      })
+
+      test('Отображает значение', () => {
+        render(<TaskTable {...testConstants.requiredProps} />)
+
+        expect(
+          testUtils.getChildByText(
+            `${testConstants.firstTaskTableItem.subtasksCounter.completed}/${testConstants.firstTaskTableItem.subtasksCounter.all}`,
+          ),
+        ).toBeInTheDocument()
+      })
+
+      test('Сортировка отключена', () => {
+        render(<TaskTable {...testConstants.requiredProps} />)
+
+        const headCol = testUtils.getHeadCol('Выполненные задания')
+        expect(headCol).not.toHaveClass(testConstants.columnWithSortingClass)
+      })
+    })
+
     describe('Комментарий', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
@@ -1259,7 +1283,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Комментарий')
@@ -1317,7 +1341,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Дата создания')
