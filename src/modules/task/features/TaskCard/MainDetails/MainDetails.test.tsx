@@ -1,6 +1,10 @@
 import { screen, within } from '@testing-library/react'
 
-import { TaskOlaStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskOlaStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
+import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
 import {
   generateAddress,
@@ -16,6 +20,7 @@ import MainDetails, { MainDetailsProps } from './index'
 const requiredProps: Pick<
   MainDetailsProps,
   | 'recordId'
+  | 'status'
   | 'title'
   | 'createdAt'
   | 'name'
@@ -26,6 +31,7 @@ const requiredProps: Pick<
   name: generateWord(),
   title: generateWord(),
   recordId: generateIdStr(),
+  status: TaskStatusEnum.New,
   createdAt: generateDateString(),
   contactService: generateWord(),
   olaEstimatedTime: Date.now(),
@@ -75,6 +81,17 @@ describe('Блок детальной информации заявки', () => 
     )
 
     expect(testUtils.getChildByText(/до/)).toBeInTheDocument()
+  })
+
+  test('Статус заявки отображается', () => {
+    render(<MainDetails {...requiredProps} />)
+
+    expect(
+      taskStatusTestUtils.getTaskStatusIn(
+        testUtils.getContainer(),
+        requiredProps.status,
+      ),
+    ).toBeInTheDocument()
   })
 
   test('Заголовок отображается', () => {

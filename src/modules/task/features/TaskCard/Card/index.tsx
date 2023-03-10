@@ -489,6 +489,7 @@ const TaskCard: FC<TaskCardProps> = ({
             >
               <MainDetails
                 recordId={task.recordId}
+                status={task.status}
                 title={task.title}
                 createdAt={formatDate(task.createdAt, DATE_TIME_FORMAT)}
                 name={task.name}

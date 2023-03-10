@@ -661,6 +661,44 @@ describe('Карточка заявки', () => {
   })
 
   describe('Перевод заявки на 1-ю линию', () => {
+    describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
+      test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
+        const { user } = render(
+          <TaskCard
+            {...requiredProps}
+            workGroupList={[
+              workGroupFixtures.getWorkGroup({
+                id: showFirstLineButtonProps.workGroup!.id,
+              }),
+            ]}
+            task={{
+              ...requiredProps.task!,
+              ...showFirstLineButtonProps,
+              ...activeFirstLineButtonProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          },
+        )
+
+        await workGroupBlockTestUtils.clickFirstLineButton(user)
+        const modal = await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.clickSubmitButton(user)
+
+        expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
+        expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
+        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
+      })
+    })
+
     describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
         const { user } = render(
