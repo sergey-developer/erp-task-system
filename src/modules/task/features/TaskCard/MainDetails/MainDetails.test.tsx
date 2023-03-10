@@ -87,7 +87,7 @@ describe('Блок детальной информации заявки', () => 
     render(<MainDetails {...requiredProps} />)
 
     expect(
-      taskStatusTestUtils.getTaskStatusIn(
+      taskStatusTestUtils.getContainerIn(
         testUtils.getContainer(),
         requiredProps.status,
       ),

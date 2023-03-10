@@ -1,6 +1,6 @@
 import * as utils from './utils'
 
-test(`Функция "${utils.makeYandexMapLink.name}" возвращает корректное значение`, () => {
+test('makeYandexMapLink возвращает корректное значение', () => {
   const makeYandexMapLinkSpy = jest.spyOn(utils, 'makeYandexMapLink')
 
   const coords = {

@@ -18,31 +18,28 @@ import {
 import TaskStatus from './index'
 import { BadgeStyled } from './styles'
 
-const getTaskStatus = (status: string) =>
+const getContainer = (status: string) =>
   screen.getByTestId(`task-status-${status}`)
 
-const getTaskStatusIn = (container: HTMLElement, status: string) =>
+const getContainerIn = (container: HTMLElement, status: string) =>
   within(container).getByTestId(`task-status-${status}`)
 
-const queryTaskStatus = (status: string) =>
+const queryContainer = (status: string) =>
   screen.queryByTestId(`task-status-${status}`)
 
-const getTaskStatusIcon = (status: string, name: string) =>
-  getIconByNameIn(getTaskStatus(status), name)
+const getIcon = (status: string, name: string) =>
+  getIconByNameIn(getContainer(status), name)
 
-const queryTaskStatusBadge = (
-  status: string,
-  badgeStatus: BadgeProps['status'],
-) =>
+const queryBadge = (status: string, badgeStatus: BadgeProps['status']) =>
   // eslint-disable-next-line testing-library/no-node-access
-  getTaskStatus(status).querySelector(`.ant-badge-status-${badgeStatus}`)
+  getContainer(status).querySelector(`.ant-badge-status-${badgeStatus}`)
 
 export const testUtils = {
-  getTaskStatus,
-  getTaskStatusIn,
-  queryTaskStatus,
-  getTaskStatusIcon,
-  queryTaskStatusBadge,
+  getContainer,
+  getContainerIn,
+  queryContainer,
+  getIcon,
+  queryBadge,
 }
 
 describe('Получение значка работает корректно по статусу заявки', () => {
@@ -155,8 +152,8 @@ describe('TaskStatus', () => {
       />,
     )
 
-    const status = testUtils.getTaskStatus(TaskExtendedStatusEnum.Completed)
-    const badge = testUtils.queryTaskStatusBadge(
+    const status = testUtils.getContainer(TaskExtendedStatusEnum.Completed)
+    const badge = testUtils.queryBadge(
       TaskExtendedStatusEnum.Completed,
       'success',
     )
@@ -173,8 +170,8 @@ describe('TaskStatus', () => {
       />,
     )
 
-    const status = testUtils.getTaskStatus(TaskExtendedStatusEnum.Awaiting)
-    const icon = testUtils.getTaskStatusIcon(
+    const status = testUtils.getContainer(TaskExtendedStatusEnum.Awaiting)
+    const icon = testUtils.getIcon(
       TaskExtendedStatusEnum.Awaiting,
       'pause-circle',
     )
@@ -209,11 +206,11 @@ describe('TaskStatus', () => {
       />,
     )
 
-    const icon = testUtils.getTaskStatusIcon(
+    const icon = testUtils.getIcon(
       TaskExtendedStatusEnum.Awaiting,
       'pause-circle',
     )
-    const badge = testUtils.queryTaskStatusBadge(
+    const badge = testUtils.queryBadge(
       TaskExtendedStatusEnum.Awaiting,
       'success',
     )
@@ -226,7 +223,7 @@ describe('TaskStatus', () => {
     const fakeStatus = 'status'
     render(<TaskStatus status={fakeStatus} />)
 
-    const status = testUtils.queryTaskStatus(fakeStatus)
+    const status = testUtils.queryContainer(fakeStatus)
     expect(status).not.toBeInTheDocument()
   })
 })

@@ -32,8 +32,8 @@ const TaskMonitoringPage: FC = () => {
         </Col>
       </Row>
 
-      <Row justify='center'>
-        <Col span={12}>
+      <Row>
+        <Col span={24}>
           <LoadingArea isLoading={isFetching}>
             {monitoringData.length ? (
               <Tabs tabPosition='left'>
