@@ -13,12 +13,6 @@ import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
-import { taskStatusDict } from 'modules/task/constants/dictionary'
-import TaskStatus from 'modules/task/features/TaskStatus'
-import {
-  badgeByTaskStatus,
-  iconByTaskStatus,
-} from 'modules/task/features/TaskStatus/constants'
 
 import { RecordIdStyled } from './styles'
 import { getCompleteAt } from './utils'
