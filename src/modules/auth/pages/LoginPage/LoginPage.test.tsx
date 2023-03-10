@@ -29,8 +29,8 @@ import {
 import {
   generateEmail,
   generateWord,
-  loadingFinishedByButton,
-  loadingStartedByButton,
+  expectLoadingFinishedByButton,
+  expectLoadingStartedByButton,
   render,
   renderInRoute,
   setupApiTests,
@@ -41,34 +41,34 @@ const getContainer = () => screen.getByTestId('login-card')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // email field
-const getEmailField = () => within(getContainer()).getByTestId('field-email')
+const getEmailFieldContainer = () => within(getContainer()).getByTestId('field-email')
 
-const getEmailInput = (): HTMLInputElement =>
-  within(getEmailField()).getByTestId('input-email')
+const getEmailField = (): HTMLInputElement =>
+  within(getEmailFieldContainer()).getByPlaceholderText('ober@obermeister.ru')
 
-const findEmailError = (error: string) =>
-  within(getEmailField()).findByText(error)
+const findEmailFieldError = (error: string) =>
+  within(getEmailFieldContainer()).findByText(error)
 
 const setEmail = async (user: UserEvent, value: string) => {
-  const input = getEmailInput()
-  await user.type(input, value)
-  return input
+  const field = getEmailField()
+  await user.type(field, value)
+  return field
 }
 
 // password field
-const getPasswordField = () =>
+const getPasswordFieldContainer = () =>
   within(getContainer()).getByTestId('field-password')
 
-const getPasswordInput = (): HTMLInputElement =>
-  within(getPasswordField()).getByTestId('input-password')
+const getPasswordField = (): HTMLInputElement =>
+  within(getPasswordFieldContainer()).getByPlaceholderText('••••••••')
 
-const findPasswordError = (error: string) =>
-  within(getPasswordField()).findByText(error)
+const findPasswordFieldError = (error: string) =>
+  within(getPasswordFieldContainer()).findByText(error)
 
 const setPassword = async (user: UserEvent, value: string) => {
-  const input = getPasswordInput()
-  await user.type(input, value)
-  return input
+  const field = getPasswordField()
+  await user.type(field, value)
+  return field
 }
 
 // submit button
@@ -80,23 +80,22 @@ const clickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
   return submitBtn
 }
 
-// loading
-const expectLoadingStarted = () => loadingStartedByButton(getSubmitBtn())
-
-const expectLoadingFinished = () => loadingFinishedByButton(getSubmitBtn())
+// other
+const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitBtn())
+const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitBtn())
 
 const testUtils = {
   getContainer,
   getChildByText,
 
+  getEmailFieldContainer,
   getEmailField,
-  getEmailInput,
-  findEmailError,
+  findEmailFieldError,
   setEmail,
 
+  getPasswordFieldContainer,
   getPasswordField,
-  getPasswordInput,
-  findPasswordError,
+  findPasswordFieldError,
   setPassword,
 
   getSubmitBtn,
@@ -113,20 +112,20 @@ describe('Страница авторизации', () => {
     test('Отображается корректно', () => {
       render(<LoginPage />)
 
-      const input = testUtils.getEmailInput()
+      const field = testUtils.getEmailField()
 
-      expect(input).toBeInTheDocument()
-      expect(input).toBeEnabled()
-      expect(input).not.toHaveValue()
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).not.toHaveValue()
     })
 
     test('Можно установить значение', async () => {
       const { user } = render(<LoginPage />)
 
       const value = generateEmail()
-      const input = await testUtils.setEmail(user, value)
+      const field = await testUtils.setEmail(user, value)
 
-      expect(input).toHaveValue(value)
+      expect(field).toHaveValue(value)
     })
 
     describe('Показывается ошибка под полем', () => {
@@ -137,7 +136,7 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findEmailError(validationMessages.email.incorrect),
+          await testUtils.findEmailFieldError(validationMessages.email.incorrect),
         ).toBeInTheDocument()
       })
 
@@ -148,7 +147,7 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findEmailError(validationMessages.email.incorrect),
+          await testUtils.findEmailFieldError(validationMessages.email.incorrect),
         ).toBeInTheDocument()
       })
 
@@ -158,7 +157,7 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findEmailError(validationMessages.required),
+          await testUtils.findEmailFieldError(validationMessages.required),
         ).toBeInTheDocument()
       })
     })
@@ -168,21 +167,21 @@ describe('Страница авторизации', () => {
     test('Отображается корректно', () => {
       render(<LoginPage />)
 
-      const input = testUtils.getPasswordInput()
+      const field = testUtils.getPasswordField()
 
-      expect(input).toBeInTheDocument()
-      expect(input).toBeEnabled()
-      expect(input).toHaveAttribute('type', 'password')
-      expect(input).not.toHaveValue()
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).toHaveAttribute('type', 'password')
+      expect(field).not.toHaveValue()
     })
 
     test('Можно установить значение', async () => {
       const { user } = render(<LoginPage />)
 
       const value = generateWord()
-      const input = await testUtils.setPassword(user, value)
+      const field = await testUtils.setPassword(user, value)
 
-      expect(input).toHaveValue(value)
+      expect(field).toHaveValue(value)
     })
 
     describe('Показывается ошибка под полем', () => {
@@ -192,7 +191,7 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findPasswordError(validationMessages.required),
+          await testUtils.findPasswordFieldError(validationMessages.required),
         ).toBeInTheDocument()
       })
 
@@ -203,7 +202,7 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findPasswordError(validationMessages.canNotBeEmpty),
+          await testUtils.findPasswordFieldError(validationMessages.canNotBeEmpty),
         ).toBeInTheDocument()
       })
     })
