@@ -16,6 +16,7 @@ import workGroupFixtures from 'fixtures/workGroup'
 import {
   generateDateString,
   generateId,
+  generateInteger,
   generateName,
   generateWord,
 } from '_tests_/utils'
@@ -38,6 +39,7 @@ export const getTaskTableItem = (
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   assignee: taskFixtures.getAssignee(),
   olaNextBreachTime: generateDateString(),
+  subtasksCounter: { all: generateInteger(), completed: generateInteger() },
 })
 
 export const getTaskTableItems = (
