@@ -12,7 +12,6 @@ import {
   loadingFinishedByButton,
   loadingStartedByButton,
   render,
-  validatingFinished,
 } from '_tests_/utils'
 
 import CreateCommentForm from './index'
@@ -45,12 +44,6 @@ const userEntersComment = async (user: UserEvent, comment: string) => {
   return input
 }
 
-const commentValidatingFinished = async () => {
-  const commentField = getCommentField()
-  await validatingFinished(commentField)
-  return commentField
-}
-
 const getSubmitButton = () =>
   getButtonIn(getContainer(), /опубликовать комментарий/i)
 
@@ -78,7 +71,6 @@ export const testUtils = {
   findCommentFieldError,
   getCommentInput,
   userEntersComment,
-  commentValidatingFinished,
 
   getSubmitButton,
   clickSubmitButton,

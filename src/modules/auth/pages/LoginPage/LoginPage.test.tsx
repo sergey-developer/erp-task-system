@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
@@ -13,18 +13,12 @@ import authLocalStorageService from 'modules/auth/services/authLocalStorage.serv
 
 import { setupStore } from 'state/store'
 
+import { commonApiMessages } from 'shared/constants/errors'
 import { HttpCodeEnum } from 'shared/constants/http'
 import { validationMessages } from 'shared/constants/validation'
 
 import authFixtures from 'fixtures/auth'
 
-import {
-  CORRECT_EMAIL,
-  CORRECT_PASSWORD,
-  INCORRECT_EMAIL,
-  NOT_EXISTING_EMAIL,
-  WRONG_PASSWORD,
-} from '_tests_/constants/auth'
 import {
   mockLoginBadRequestError,
   mockLoginServerError,
@@ -33,88 +27,52 @@ import {
   mockRefreshTokenSuccess,
 } from '_tests_/mocks/api'
 import {
+  generateEmail,
+  generateWord,
   loadingFinishedByButton,
   loadingStartedByButton,
   render,
   renderInRoute,
   setupApiTests,
-  validatingFinished as baseValidatingFinished,
-  validatingStarted as baseValidatingStarted,
 } from '_tests_/utils'
 
-setupApiTests()
+const getContainer = () => screen.getByTestId('login-card')
 
-const getEmailField = () => screen.getByTestId('field-email')
-const getEmailInput = () => screen.getByTestId('input-email')
+const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
-const getPasswordField = () => screen.getByTestId('field-password')
-const getPasswordInput = () => screen.getByTestId('input-password')
+// email field
+const getEmailField = () => within(getContainer()).getByTestId('field-email')
 
+const getEmailInput = (): HTMLInputElement =>
+  within(getEmailField()).getByTestId('input-email')
+
+const findEmailError = (error: string) =>
+  within(getEmailField()).findByText(error)
+
+const setEmail = async (user: UserEvent, value: string) => {
+  const input = getEmailInput()
+  await user.type(input, value)
+  return input
+}
+
+// password field
+const getPasswordField = () =>
+  within(getContainer()).getByTestId('field-password')
+
+const getPasswordInput = (): HTMLInputElement =>
+  within(getPasswordField()).getByTestId('input-password')
+
+const findPasswordError = (error: string) =>
+  within(getPasswordField()).findByText(error)
+
+const setPassword = async (user: UserEvent, value: string) => {
+  const input = getPasswordInput()
+  await user.type(input, value)
+  return input
+}
+
+// submit button
 const getSubmitBtn = () => screen.getByTestId('btn-submit')
-
-const userEntersEmail = async (
-  user: UserEvent,
-  email: string,
-): Promise<HTMLElement> => {
-  const emailInput = getEmailInput()
-  await user.type(emailInput, email)
-  return emailInput
-}
-
-const userEntersCorrectEmail = async (
-  user: UserEvent,
-): Promise<HTMLElement> => {
-  return userEntersEmail(user, CORRECT_EMAIL)
-}
-
-const userEntersIncorrectEmail = async (
-  user: UserEvent,
-): Promise<HTMLElement> => {
-  return userEntersEmail(user, INCORRECT_EMAIL)
-}
-
-const userEntersNotExistingEmail = async (
-  user: UserEvent,
-): Promise<HTMLElement> => {
-  return userEntersEmail(user, NOT_EXISTING_EMAIL)
-}
-
-const userEntersPassword = async (
-  user: UserEvent,
-  password: string,
-): Promise<HTMLElement> => {
-  const passwordInput = getPasswordInput()
-  await user.type(passwordInput, password)
-  return passwordInput
-}
-
-const userEntersCorrectPassword = async (
-  user: UserEvent,
-): Promise<HTMLElement> => {
-  return userEntersPassword(user, CORRECT_PASSWORD)
-}
-
-const userEntersWrongPassword = async (
-  user: UserEvent,
-): Promise<HTMLElement> => {
-  return userEntersPassword(user, WRONG_PASSWORD)
-}
-
-const validatingStarted = async (
-  emailField: HTMLElement,
-  passwordField: HTMLElement,
-) => {
-  await baseValidatingStarted(emailField)
-  await baseValidatingStarted(passwordField)
-}
-
-const validatingFinished = async (
-  emailField: HTMLElement,
-  passwordField: HTMLElement,
-) => {
-  await baseValidatingFinished(emailField)
-  await baseValidatingFinished(passwordField)
-}
 
 const clickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
   const submitBtn = getSubmitBtn()
@@ -122,236 +80,276 @@ const clickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
   return submitBtn
 }
 
+// loading
+const expectLoadingStarted = () => loadingStartedByButton(getSubmitBtn())
+
+const expectLoadingFinished = () => loadingFinishedByButton(getSubmitBtn())
+
 const testUtils = {
+  getContainer,
+  getChildByText,
+
   getEmailField,
   getEmailInput,
+  findEmailError,
+  setEmail,
+
   getPasswordField,
   getPasswordInput,
+  findPasswordError,
+  setPassword,
+
   getSubmitBtn,
-  userEntersEmail,
-  userEntersCorrectEmail,
-  userEntersIncorrectEmail,
-  userEntersNotExistingEmail,
-  userEntersPassword,
-  userEntersCorrectPassword,
-  userEntersWrongPassword,
-  validatingStarted,
-  validatingFinished,
   clickSubmitButton,
+
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
+setupApiTests()
+
 describe('Страница авторизации', () => {
-  test('Пользователь может ввести email', async () => {
-    const { user } = render(<LoginPage />)
-    const emailInput = await testUtils.userEntersCorrectEmail(user)
-    expect(emailInput).toHaveValue(CORRECT_EMAIL)
+  describe('Поле email', () => {
+    test('Отображается корректно', () => {
+      render(<LoginPage />)
+
+      const input = testUtils.getEmailInput()
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(input).not.toHaveValue()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<LoginPage />)
+
+      const value = generateEmail()
+      const input = await testUtils.setEmail(user, value)
+
+      expect(input).toHaveValue(value)
+    })
+
+    describe('Показывается ошибка под полем', () => {
+      test('Если ввести некорректный email', async () => {
+        const { user } = render(<LoginPage />)
+
+        await testUtils.setEmail(user, generateWord())
+        await testUtils.clickSubmitButton(user)
+
+        expect(
+          await testUtils.findEmailError(validationMessages.email.incorrect),
+        ).toBeInTheDocument()
+      })
+
+      test('Если ввести только пробелы', async () => {
+        const { user } = render(<LoginPage />)
+
+        await testUtils.setEmail(user, ' ')
+        await testUtils.clickSubmitButton(user)
+
+        expect(
+          await testUtils.findEmailError(validationMessages.email.incorrect),
+        ).toBeInTheDocument()
+      })
+
+      test('Если не заполнить поле и нажать кнопку отправки', async () => {
+        const { user } = render(<LoginPage />)
+
+        await testUtils.clickSubmitButton(user)
+
+        expect(
+          await testUtils.findEmailError(validationMessages.required),
+        ).toBeInTheDocument()
+      })
+    })
   })
 
-  test('Пользователь может ввести пароль', async () => {
-    const { user } = render(<LoginPage />)
-    const passwordInput = await testUtils.userEntersCorrectPassword(user)
-    expect(passwordInput).toHaveValue(CORRECT_PASSWORD)
+  describe('Поле пароля', () => {
+    test('Отображается корректно', () => {
+      render(<LoginPage />)
+
+      const input = testUtils.getPasswordInput()
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(input).toHaveAttribute('type', 'password')
+      expect(input).not.toHaveValue()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<LoginPage />)
+
+      const value = generateWord()
+      const input = await testUtils.setPassword(user, value)
+
+      expect(input).toHaveValue(value)
+    })
+
+    describe('Показывается ошибка под полем', () => {
+      test('Если не заполнить поле и нажать кнопку отправки', async () => {
+        const { user } = render(<LoginPage />)
+
+        await testUtils.clickSubmitButton(user)
+
+        expect(
+          await testUtils.findPasswordError(validationMessages.required),
+        ).toBeInTheDocument()
+      })
+
+      test('Если ввести только пробелы', async () => {
+        const { user } = render(<LoginPage />)
+
+        await testUtils.setPassword(user, ' ')
+        await testUtils.clickSubmitButton(user)
+
+        expect(
+          await testUtils.findPasswordError(validationMessages.canNotBeEmpty),
+        ).toBeInTheDocument()
+      })
+    })
   })
 
-  test('Если пользователь вводит некорректный email, то под полем показывается ошибка', async () => {
-    const { user } = render(<LoginPage />)
+  test('Пользователь остаётся на странице если не заполнить поля и нажать кнопку отправки', async () => {
+    const { user, checkRouteChanged } = renderInRoute(
+      <LoginPage />,
+      RouteEnum.Login,
+    )
 
-    const emailField = testUtils.getEmailField()
-    await testUtils.userEntersIncorrectEmail(user)
     await testUtils.clickSubmitButton(user)
 
-    expect(
-      await within(emailField).findByText(validationMessages.email.incorrect),
-    ).toBeInTheDocument()
+    await waitFor(() => {
+      expect(checkRouteChanged()).toBe(false)
+    })
   })
 
-  describe('Если обязательные поля не заполнены и нажать кнопку "Войти"', () => {
-    test('Пользователь остаётся на странице авторизации', async () => {
+  describe('При успешном запросе', () => {
+    test('Пользователь покидает страницу авторизации', async () => {
+      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+
       const { user, checkRouteChanged } = renderInRoute(
         <LoginPage />,
         RouteEnum.Login,
       )
 
-      const emailField = testUtils.getEmailField()
-      const passwordField = testUtils.getPasswordField()
-
+      await testUtils.setEmail(user, generateEmail())
+      await testUtils.setPassword(user, generateWord())
       await testUtils.clickSubmitButton(user)
-      await testUtils.validatingStarted(emailField, passwordField)
-      await testUtils.validatingFinished(emailField, passwordField)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
+
+      expect(checkRouteChanged()).toBe(true)
+    })
+
+    test('В localStorage сохраняются access/refresh token', async () => {
+      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+
+      const { user } = render(<LoginPage />)
+
+      await testUtils.setEmail(user, generateEmail())
+      await testUtils.setPassword(user, generateWord())
+      await testUtils.clickSubmitButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
+
+      expect(authLocalStorageService.getAccessToken()).toBe(
+        authFixtures.loginResponseSuccess.access,
+      )
+
+      expect(authLocalStorageService.getRefreshToken()).toBe(
+        authFixtures.loginResponseSuccess.refresh,
+      )
+    })
+
+    test('Данные сохраняются в store', async () => {
+      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+      const store = setupStore()
+
+      const { user } = render(<LoginPage />, { store })
+
+      await testUtils.setEmail(user, generateEmail())
+      await testUtils.setPassword(user, generateWord())
+      await testUtils.clickSubmitButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
+
+      const authState = store.getState().auth
+
+      expect(authState.user).not.toBe(null)
+      expect(authState.accessToken).toBe(
+        authFixtures.loginResponseSuccess.access,
+      )
+      expect(authState.refreshToken).toBe(
+        authFixtures.loginResponseSuccess.refresh,
+      )
+      expect(authState.isAuthenticated).toBe(true)
+    })
+  })
+
+  describe('При не успешном запросе', () => {
+    test('Пользователь остаётся на странице авторизации', async () => {
+      mockLoginBadRequestError()
+
+      const { user, checkRouteChanged } = renderInRoute(
+        <LoginPage />,
+        RouteEnum.Login,
+      )
+
+      await testUtils.setEmail(user, generateEmail())
+      await testUtils.setPassword(user, generateWord())
+      await testUtils.clickSubmitButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
 
       expect(checkRouteChanged()).toBe(false)
     })
 
-    test('Появляются ошибки под обязательными полями', async () => {
+    test(`Корректно обрабатывается ошибка ${HttpCodeEnum.BadRequest}`, async () => {
+      mockLoginBadRequestError()
+
       const { user } = render(<LoginPage />)
 
-      const emailField = testUtils.getEmailField()
-      const passwordField = testUtils.getPasswordField()
-
+      await testUtils.setEmail(user, generateEmail())
+      await testUtils.setPassword(user, generateWord())
       await testUtils.clickSubmitButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
 
       expect(
-        await within(emailField).findByText(validationMessages.required),
+        testUtils.getChildByText(LOGIN_BAD_REQUEST_ERROR_MSG),
       ).toBeInTheDocument()
+    })
+
+    test(`Корректно обрабатывается ошибка ${HttpCodeEnum.Unauthorized}`, async () => {
+      mockLoginUnauthorizedError()
+      mockRefreshTokenSuccess()
+
+      const { user } = render(<LoginPage />)
+
+      await testUtils.setEmail(user, generateEmail())
+      await testUtils.setPassword(user, generateWord())
+      await testUtils.clickSubmitButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
 
       expect(
-        await within(passwordField).findByText(validationMessages.required),
+        testUtils.getChildByText(LOGIN_WRONG_DATA_ERROR_MSG),
       ).toBeInTheDocument()
     })
-  })
 
-  describe('Если заполнить поля и нажать кнопку "Войти"', () => {
-    describe('При успешном запросе', () => {
-      test('Пользователь покидает страницу авторизации', async () => {
-        mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+    test(`Корректно обрабатывается ошибка ${HttpCodeEnum.ServerError}`, async () => {
+      mockLoginServerError()
 
-        const { user, checkRouteChanged } = renderInRoute(
-          <LoginPage />,
-          RouteEnum.Login,
-        )
+      const { user } = render(<LoginPage />)
 
-        await testUtils.userEntersCorrectEmail(user)
-        await testUtils.userEntersCorrectPassword(user)
-        const submitBtn = await testUtils.clickSubmitButton(user)
-        await loadingStartedByButton(submitBtn)
-        await loadingFinishedByButton(submitBtn)
+      await testUtils.setEmail(user, generateEmail())
+      await testUtils.setPassword(user, generateWord())
+      await testUtils.clickSubmitButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
 
-        expect(checkRouteChanged()).toBe(true)
-      })
-
-      describe('В localStorage сохраняется', () => {
-        afterEach(() => {
-          localStorage.clear()
-        })
-
-        test('access token', async () => {
-          mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
-
-          const { user } = render(<LoginPage />)
-
-          await testUtils.userEntersCorrectEmail(user)
-          await testUtils.userEntersCorrectPassword(user)
-          const submitBtn = await testUtils.clickSubmitButton(user)
-          await loadingStartedByButton(submitBtn)
-          await loadingFinishedByButton(submitBtn)
-
-          expect(authLocalStorageService.getAccessToken()).toBe(
-            authFixtures.loginResponseSuccess.access,
-          )
-        })
-
-        test('refresh token', async () => {
-          mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
-
-          const { user } = render(<LoginPage />)
-
-          await testUtils.userEntersCorrectEmail(user)
-          await testUtils.userEntersCorrectPassword(user)
-          const submitBtn = await testUtils.clickSubmitButton(user)
-          await loadingStartedByButton(submitBtn)
-          await loadingFinishedByButton(submitBtn)
-
-          expect(authLocalStorageService.getRefreshToken()).toBe(
-            authFixtures.loginResponseSuccess.refresh,
-          )
-        })
-      })
-
-      test('данные сохраняются в store', async () => {
-        mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
-        const store = setupStore()
-
-        const { user } = render(<LoginPage />, { store })
-
-        await testUtils.userEntersCorrectEmail(user)
-        await testUtils.userEntersCorrectPassword(user)
-        const submitBtn = await testUtils.clickSubmitButton(user)
-        await loadingStartedByButton(submitBtn)
-        await loadingFinishedByButton(submitBtn)
-
-        const authState = store.getState().auth
-
-        expect(authState.user).not.toBe(null)
-        expect(authState.accessToken).toBe(
-          authFixtures.loginResponseSuccess.access,
-        )
-        expect(authState.refreshToken).toBe(
-          authFixtures.loginResponseSuccess.refresh,
-        )
-        expect(authState.isAuthenticated).toBe(true)
-      })
-    })
-
-    describe('При не успешном запросе', () => {
-      test('Пользователь остаётся на странице авторизации', async () => {
-        mockLoginBadRequestError()
-
-        const { user, checkRouteChanged } = renderInRoute(
-          <LoginPage />,
-          RouteEnum.Login,
-        )
-
-        await testUtils.userEntersNotExistingEmail(user)
-        await testUtils.userEntersWrongPassword(user)
-        const submitBtn = await testUtils.clickSubmitButton(user)
-        await loadingStartedByButton(submitBtn)
-        await loadingFinishedByButton(submitBtn)
-
-        expect(checkRouteChanged()).toBe(false)
-      })
-
-      describe(`Если код ошибки "${HttpCodeEnum.BadRequest}"`, () => {
-        test(`В форме показывается ошибка - ${LOGIN_BAD_REQUEST_ERROR_MSG}`, async () => {
-          mockLoginBadRequestError()
-
-          const { user } = render(<LoginPage />)
-
-          await testUtils.userEntersNotExistingEmail(user)
-          await testUtils.userEntersWrongPassword(user)
-          const submitBtn = await testUtils.clickSubmitButton(user)
-          await loadingStartedByButton(submitBtn)
-          await loadingFinishedByButton(submitBtn)
-
-          expect(
-            await screen.findByText(LOGIN_BAD_REQUEST_ERROR_MSG),
-          ).toBeInTheDocument()
-        })
-      })
-
-      describe(`Если код ошибки "${HttpCodeEnum.Unauthorized}"`, () => {
-        test(`В форме показывается ошибка - ${LOGIN_WRONG_DATA_ERROR_MSG}`, async () => {
-          mockLoginUnauthorizedError()
-          mockRefreshTokenSuccess()
-
-          const { user } = render(<LoginPage />)
-
-          await testUtils.userEntersNotExistingEmail(user)
-          await testUtils.userEntersWrongPassword(user)
-          const submitBtn = await testUtils.clickSubmitButton(user)
-          await loadingStartedByButton(submitBtn)
-          await loadingFinishedByButton(submitBtn)
-
-          expect(
-            await screen.findByText(LOGIN_WRONG_DATA_ERROR_MSG),
-          ).toBeInTheDocument()
-        })
-      })
-
-      describe('Если любой другой код ошибки', () => {
-        test('В форме показывается ошибка', async () => {
-          mockLoginServerError()
-
-          const { user } = render(<LoginPage />)
-
-          await testUtils.userEntersNotExistingEmail(user)
-          await testUtils.userEntersWrongPassword(user)
-          const submitBtn = await testUtils.clickSubmitButton(user)
-          await loadingStartedByButton(submitBtn)
-          await loadingFinishedByButton(submitBtn)
-
-          expect(await screen.findByTestId('login-error')).toBeInTheDocument()
-        })
-      })
+      expect(
+        testUtils.getChildByText(commonApiMessages.unknownError),
+      ).toBeInTheDocument()
     })
   })
 })
