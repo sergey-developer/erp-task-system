@@ -137,7 +137,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                     target='_blank'
                   >
                     <Text strong={!!address} underline={!!address}>
-                      {address || 'Отсутствует'}
+                      {address || 'Не определено'}
                     </Text>
                   </Link>
                 </Space>
