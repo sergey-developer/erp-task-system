@@ -99,7 +99,7 @@ const MainDetails: FC<MainDetailsProps> = ({
           <LabeledData label='Адрес'>
             <Text strong>{name}</Text>
 
-            {!!address && <Text>{address}</Text>}
+            <Text>{address ? address : 'Не определено'}</Text>
           </LabeledData>
         </Col>
 
