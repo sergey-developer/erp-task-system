@@ -13,7 +13,7 @@ import {
   generateWord,
   getButtonIn,
   getIconByNameIn,
-  loadingStartedByButton,
+  expectLoadingStartedByButton,
   queryButtonIn,
   render,
 } from '_tests_/utils'
@@ -62,7 +62,7 @@ const clickCancelButton = async (user: UserEvent) => {
 }
 
 const expectCancelRequestLoadingStarted = () =>
-  loadingStartedByButton(getCancelButton())
+  expectLoadingStartedByButton(getCancelButton())
 
 // return button
 const getReturnToWorkButton = () =>
@@ -78,7 +78,7 @@ const clickReturnToWorkButton = async (user: UserEvent) => {
 }
 
 const expectReturnToWorkLoadingStarted = () =>
-  loadingStartedByButton(getReturnToWorkButton())
+  expectLoadingStartedByButton(getReturnToWorkButton())
 
 export const testUtils = {
   getContainer,

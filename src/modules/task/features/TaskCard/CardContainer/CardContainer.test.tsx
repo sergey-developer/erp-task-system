@@ -72,9 +72,9 @@ import {
   generateId,
   generateWord,
   getStoreWithAuth,
-  loadingFinishedByButton,
-  loadingFinishedByCard,
-  loadingStartedByButton,
+  expectLoadingFinishedByButton,
+  expectLoadingFinishedByCard,
+  expectLoadingStartedByButton,
   queryNotification,
   render,
   setupApiTests,
@@ -341,7 +341,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             const modal =
               await taskReclassificationModalTestUtils.findContainer()
@@ -390,7 +390,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
@@ -639,7 +639,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             const modal =
               await taskReclassificationModalTestUtils.findContainer()
@@ -688,7 +688,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
@@ -838,7 +838,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             const modal =
               await taskReclassificationModalTestUtils.findContainer()
@@ -887,7 +887,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingStarted()
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
@@ -937,7 +937,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -990,7 +990,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1043,7 +1043,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1088,7 +1088,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1141,7 +1141,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1194,7 +1194,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1239,7 +1239,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1292,7 +1292,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1345,7 +1345,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1390,7 +1390,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1443,7 +1443,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -1496,7 +1496,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -2325,20 +2325,20 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          const modal = await taskFirstLineModalTestUtils.findModal()
+          const modal = await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
@@ -2370,20 +2370,20 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const descriptionContainer =
             taskFirstLineModalTestUtils.getDescriptionFieldContainer()
@@ -2414,20 +2414,20 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
             head(notFoundErrorResponse.detail)!,
@@ -2455,21 +2455,21 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
             head(serverErrorResponse.detail)!,
@@ -2494,21 +2494,21 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
             commonApiMessages.unknownError,
@@ -2537,20 +2537,20 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          const modal = await taskFirstLineModalTestUtils.findModal()
+          const modal = await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
@@ -2582,20 +2582,20 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const descriptionContainer =
             taskFirstLineModalTestUtils.getDescriptionFieldContainer()
@@ -2626,20 +2626,20 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
             head(notFoundErrorResponse.detail)!,
@@ -2667,21 +2667,21 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
             head(serverErrorResponse.detail)!,
@@ -2706,21 +2706,21 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
             commonApiMessages.unknownError,
@@ -2747,20 +2747,20 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          const modal = await taskFirstLineModalTestUtils.findModal()
+          const modal = await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
@@ -2792,21 +2792,21 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const descriptionContainer =
             taskFirstLineModalTestUtils.getDescriptionFieldContainer()
@@ -2837,21 +2837,21 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
             head(notFoundErrorResponse.detail)!,
@@ -2879,21 +2879,21 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
             head(serverErrorResponse.detail)!,
@@ -2918,21 +2918,21 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await loadingFinishedByCard(taskCard)
+          await expectLoadingFinishedByCard(taskCard)
 
           const firstLineButton =
             await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
-          await taskFirstLineModalTestUtils.findModal()
+          await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
           await user.type(description, generateWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await loadingStartedByButton(firstLineButton)
-          await loadingFinishedByButton(firstLineButton)
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
 
           const errorMsg = await findNotification(
             commonApiMessages.unknownError,
@@ -3146,7 +3146,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3189,7 +3189,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3245,7 +3245,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3312,7 +3312,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3359,7 +3359,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3402,7 +3402,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3458,7 +3458,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3525,7 +3525,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3572,7 +3572,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3615,7 +3615,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3671,7 +3671,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3738,7 +3738,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3785,7 +3785,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3828,7 +3828,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3884,7 +3884,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -3951,7 +3951,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskCardTestUtils.expectLoadingFinished()
 
-            await cardTitleTestUtils.userOpenMenu(user)
+            await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestSuspendItem(user)
             await requestTaskSuspendModalTestUtils.findContainer()
 

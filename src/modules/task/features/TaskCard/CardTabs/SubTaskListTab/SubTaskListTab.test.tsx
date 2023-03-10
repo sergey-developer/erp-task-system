@@ -43,7 +43,7 @@ import {
   generateWord,
   getButtonIn,
   getStoreWithAuth,
-  loadingFinishedBySpinner,
+  expectLoadingFinishedBySpinner,
   render,
   setupApiTests,
   setupNotifications,
@@ -85,7 +85,7 @@ const testUtils = {
   getCreateSubTaskButton,
   openCreateSubTaskModal: clickCreateSubTaskButton,
 
-  loadingFinished: loadingFinishedBySpinner('sub-task-list-spinner'),
+  expectLoadingFinished: expectLoadingFinishedBySpinner('sub-task-list-spinner'),
 }
 
 setupApiTests()
@@ -497,7 +497,7 @@ describe('Вкладка списка заданий', () => {
         store: getStoreWithAuth(),
       })
 
-      await testUtils.loadingFinished()
+      await testUtils.expectLoadingFinished()
       expect(subTaskListTestUtils.getContainer()).toBeInTheDocument()
     })
 
@@ -517,7 +517,7 @@ describe('Вкладка списка заданий', () => {
           { store: getStoreWithAuth() },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
 
         expect(
           subTaskTestUtils.getAllContainerIn(
@@ -546,7 +546,7 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
 
         expect(
           subTaskListTestUtils.getChildByText('Не удалось получить задания'),
@@ -569,7 +569,7 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
 
         expect(
           await findNotification('Не удалось получить задания'),
@@ -598,7 +598,7 @@ describe('Вкладка списка заданий', () => {
         },
       )
 
-      await testUtils.loadingFinished()
+      await testUtils.expectLoadingFinished()
       await subTaskTestUtils.clickReworkButton(user)
       await reworkSubTaskModalTestUtils.findContainer()
     })
@@ -622,7 +622,7 @@ describe('Вкладка списка заданий', () => {
         },
       )
 
-      await testUtils.loadingFinished()
+      await testUtils.expectLoadingFinished()
       await subTaskTestUtils.clickReworkButton(user)
       const modal = await reworkSubTaskModalTestUtils.findContainer()
       await reworkSubTaskModalTestUtils.clickCancelButton(user)
@@ -652,12 +652,12 @@ describe('Вкладка списка заданий', () => {
         },
       )
 
-      await testUtils.loadingFinished()
+      await testUtils.expectLoadingFinished()
       await subTaskTestUtils.clickReworkButton(user)
       await reworkSubTaskModalTestUtils.findContainer()
       await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
       await reworkSubTaskModalTestUtils.clickSubmitButton(user)
-      await reworkSubTaskModalTestUtils.loadingStarted()
+      await reworkSubTaskModalTestUtils.expectLoadingStarted()
     })
 
     describe('При успешной отправке данных', () => {
@@ -683,7 +683,7 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
@@ -716,10 +716,10 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
 
         expect(
-          taskStatusTestUtils.getTaskStatusIn(
+          taskStatusTestUtils.getContainerIn(
             subTaskTestUtils.getContainer(),
             activeReworkButtonProps.status,
           ),
@@ -735,7 +735,7 @@ describe('Вкладка списка заданий', () => {
         })
 
         expect(
-          taskStatusTestUtils.getTaskStatusIn(
+          taskStatusTestUtils.getContainerIn(
             subTaskTestUtils.getContainer(),
             TaskStatusEnum.InProgress,
           ),
@@ -764,7 +764,7 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
         const reworkButton = await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
@@ -809,14 +809,14 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickReworkButton(user)
         await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
-          await reworkSubTaskModalTestUtils.findReturnReasonError(
+          await reworkSubTaskModalTestUtils.findReturnReasonFieldError(
             badRequestResponse.returnReason[0],
           ),
         ).toBeInTheDocument()
@@ -844,7 +844,7 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickReworkButton(user)
         await reworkSubTaskModalTestUtils.findContainer()
         await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
@@ -877,7 +877,7 @@ describe('Вкладка списка заданий', () => {
         },
       )
 
-      await testUtils.loadingFinished()
+      await testUtils.expectLoadingFinished()
       await subTaskTestUtils.clickCancelButton(user)
       await cancelSubTaskModalTestUtils.findContainer()
     })
@@ -901,7 +901,7 @@ describe('Вкладка списка заданий', () => {
         },
       )
 
-      await testUtils.loadingFinished()
+      await testUtils.expectLoadingFinished()
       await subTaskTestUtils.clickCancelButton(user)
       const modal = await cancelSubTaskModalTestUtils.findContainer()
       await cancelSubTaskModalTestUtils.clickCancelButton(user)
@@ -931,12 +931,12 @@ describe('Вкладка списка заданий', () => {
         },
       )
 
-      await testUtils.loadingFinished()
+      await testUtils.expectLoadingFinished()
       await subTaskTestUtils.clickCancelButton(user)
       await cancelSubTaskModalTestUtils.findContainer()
       await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
       await cancelSubTaskModalTestUtils.clickSubmitButton(user)
-      await cancelSubTaskModalTestUtils.loadingStarted()
+      await cancelSubTaskModalTestUtils.expectLoadingStarted()
     })
 
     describe('При успешной отправке данных', () => {
@@ -962,7 +962,7 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
         await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
@@ -995,10 +995,10 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
 
         expect(
-          taskStatusTestUtils.getTaskStatusIn(
+          taskStatusTestUtils.getContainerIn(
             subTaskTestUtils.getContainer(),
             activeCancelButtonProps.status,
           ),
@@ -1014,7 +1014,7 @@ describe('Вкладка списка заданий', () => {
         })
 
         expect(
-          taskStatusTestUtils.getTaskStatusIn(
+          taskStatusTestUtils.getContainerIn(
             subTaskTestUtils.getContainer(),
             TaskStatusEnum.Closed,
           ),
@@ -1043,7 +1043,7 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
         const cancelButton = await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
         await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
@@ -1088,14 +1088,14 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickCancelButton(user)
         await cancelSubTaskModalTestUtils.findContainer()
         await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
-          await cancelSubTaskModalTestUtils.findCancelReasonError(
+          await cancelSubTaskModalTestUtils.findCancelReasonFieldError(
             badRequestResponse.cancelReason[0],
           ),
         ).toBeInTheDocument()
@@ -1123,7 +1123,7 @@ describe('Вкладка списка заданий', () => {
           },
         )
 
-        await testUtils.loadingFinished()
+        await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickCancelButton(user)
         await cancelSubTaskModalTestUtils.findContainer()
         await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())

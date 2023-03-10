@@ -15,11 +15,11 @@ import {
   expectLoadingNotStartedByCard,
   generateWord,
   getStoreWithAuth,
-  loadingFinishedByCard,
-  loadingFinishedBySpinner,
-  loadingNotStartedBySpinner,
-  loadingStartedByCard,
-  loadingStartedBySpinner,
+  expectLoadingFinishedByCard,
+  expectLoadingFinishedBySpinner,
+  expectLoadingNotStartedBySpinner,
+  expectLoadingStartedByCard,
+  expectLoadingStartedBySpinner,
   render,
 } from '_tests_/utils'
 import modalTestUtils from '_tests_/utils/modal'
@@ -104,12 +104,12 @@ const getContainer = () => screen.getByTestId('task-card')
 
 const findContainer = () => screen.findByTestId('task-card')
 
-const expectLoadingStarted = () => loadingStartedByCard(getContainer())
+const expectLoadingStarted = () => expectLoadingStartedByCard(getContainer())
 
 const expectLoadingNotStarted = () =>
   expectLoadingNotStartedByCard(getContainer())
 
-const expectLoadingFinished = () => loadingFinishedByCard(getContainer())
+const expectLoadingFinished = () => expectLoadingFinishedByCard(getContainer())
 
 const getCardDetails = () =>
   within(getContainer()).getByTestId('task-card-details')
@@ -120,14 +120,14 @@ const queryCardDetails = () =>
 const taskCardReclassificationRequestSpinnerTestId =
   'task-card-reclassification-request-spinner'
 
-const expectReclassificationRequestLoadingStarted = loadingStartedBySpinner(
+const expectReclassificationRequestLoadingStarted = expectLoadingStartedBySpinner(
   taskCardReclassificationRequestSpinnerTestId,
 )
 
 const expectReclassificationRequestLoadingNotStarted =
-  loadingNotStartedBySpinner(taskCardReclassificationRequestSpinnerTestId)
+  expectLoadingNotStartedBySpinner(taskCardReclassificationRequestSpinnerTestId)
 
-const expectReclassificationRequestLoadingFinished = loadingFinishedBySpinner(
+const expectReclassificationRequestLoadingFinished = expectLoadingFinishedBySpinner(
   taskCardReclassificationRequestSpinnerTestId,
 )
 
@@ -315,7 +315,7 @@ describe('Карточка заявки', () => {
           { store: getStoreWithAuth() },
         )
 
-        await cardTitleTestUtils.userOpenMenu(user)
+        await cardTitleTestUtils.openMenu(user)
         await cardTitleTestUtils.clickRequestReclassificationItem(user)
         const modal = await taskReclassificationModalTestUtils.findContainer()
 
@@ -335,7 +335,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
           await taskReclassificationModalTestUtils.clickCancelButton(user)
@@ -355,7 +355,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
           await taskReclassificationModalTestUtils.clickCloseButton(user)
@@ -375,7 +375,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
           await modalTestUtils.clickOutsideModal(user)
@@ -397,7 +397,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           await taskReclassificationModalTestUtils.findContainer()
 
@@ -429,7 +429,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
 
@@ -469,7 +469,7 @@ describe('Карточка заявки', () => {
           },
         )
 
-        await cardTitleTestUtils.userOpenMenu(user)
+        await cardTitleTestUtils.openMenu(user)
         await cardTitleTestUtils.clickExecuteTaskItem(user)
         const modal = await taskResolutionModalTestUtils.findContainer()
 
@@ -493,7 +493,7 @@ describe('Карточка заявки', () => {
             },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
           await taskResolutionModalTestUtils.clickCancelButton(user)
@@ -517,7 +517,7 @@ describe('Карточка заявки', () => {
             },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
           await taskResolutionModalTestUtils.clickCloseButton(user)
@@ -541,7 +541,7 @@ describe('Карточка заявки', () => {
             },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           const modal = await taskResolutionModalTestUtils.findContainer()
           await modalTestUtils.clickOutsideModal(user)
@@ -567,7 +567,7 @@ describe('Карточка заявки', () => {
             },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
@@ -696,7 +696,7 @@ describe('Карточка заявки', () => {
         )
 
         await workGroupBlockTestUtils.clickFirstLineButton(user)
-        const modal = await taskFirstLineModalTestUtils.findModal()
+        const modal = await taskFirstLineModalTestUtils.findContainer()
         await taskFirstLineModalTestUtils.setDescription(user, generateWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
@@ -734,7 +734,7 @@ describe('Карточка заявки', () => {
         )
 
         await workGroupBlockTestUtils.clickFirstLineButton(user)
-        const modal = await taskFirstLineModalTestUtils.findModal()
+        const modal = await taskFirstLineModalTestUtils.findContainer()
         await taskFirstLineModalTestUtils.setDescription(user, generateWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
@@ -772,7 +772,7 @@ describe('Карточка заявки', () => {
         )
 
         await workGroupBlockTestUtils.clickFirstLineButton(user)
-        const modal = await taskFirstLineModalTestUtils.findModal()
+        const modal = await taskFirstLineModalTestUtils.findContainer()
         await taskFirstLineModalTestUtils.setDescription(user, generateWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
@@ -1119,7 +1119,7 @@ describe('Карточка заявки', () => {
           { store: getStoreWithAuth() },
         )
 
-        await cardTitleTestUtils.userOpenMenu(user)
+        await cardTitleTestUtils.openMenu(user)
         await cardTitleTestUtils.clickRequestSuspendItem(user)
         const modal = await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -1141,7 +1141,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestSuspendItem(user)
           const modal = await requestTaskSuspendModalTestUtils.findContainer()
           await requestTaskSuspendModalTestUtils.clickCancelButton(user)
@@ -1163,7 +1163,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestSuspendItem(user)
           const modal = await requestTaskSuspendModalTestUtils.findContainer()
           await requestTaskSuspendModalTestUtils.clickCancelButton(user)
@@ -1185,7 +1185,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestSuspendItem(user)
           const modal = await requestTaskSuspendModalTestUtils.findContainer()
           await modalTestUtils.clickOutsideModal(user)
@@ -1209,7 +1209,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestSuspendItem(user)
           await requestTaskSuspendModalTestUtils.findContainer()
 
@@ -1243,7 +1243,7 @@ describe('Карточка заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await cardTitleTestUtils.userOpenMenu(user)
+          await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickRequestSuspendItem(user)
           const modal = await requestTaskSuspendModalTestUtils.findContainer()
 

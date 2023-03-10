@@ -16,7 +16,7 @@ import {
   generateWord,
   getButtonIn,
   getIconByNameIn,
-  loadingStartedByButton,
+  expectLoadingStartedByButton,
   queryButtonIn,
   render,
 } from '_tests_/utils'
@@ -64,7 +64,7 @@ const clickActionButton = async (user: UserEvent, label: string) => {
 }
 
 const expectActionLoadingStarted = (label: string) =>
-  loadingStartedByButton(getActionButton(label))
+  expectLoadingStartedByButton(getActionButton(label))
 
 export const testUtils = {
   getContainer,

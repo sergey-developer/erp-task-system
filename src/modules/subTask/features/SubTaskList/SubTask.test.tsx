@@ -92,7 +92,7 @@ const getChildByText = (text: string | RegExp) =>
 const queryChildByText = (text: string) =>
   within(getContainer()).queryByText(text)
 
-// tech resolution
+// tech resolution button
 const getTechResolutionButton = () => getButtonIn(getContainer(), /решение/i)
 
 const queryTechResolutionButton = () =>
@@ -104,7 +104,7 @@ const clickTechResolutionButton = async (user: UserEvent) => {
   return button
 }
 
-// return reason
+// return reason button
 const getReturnReasonButton = () =>
   getButtonIn(getContainer(), /причина возврата/i)
 
@@ -117,7 +117,7 @@ const clickReturnReasonButton = async (user: UserEvent) => {
   return button
 }
 
-// cancel reason
+// cancel reason button
 const getCancelReasonButton = () =>
   getButtonIn(getContainer(), /причина отмены/i)
 
@@ -195,7 +195,7 @@ export const testUtils = {
 }
 
 describe('Задание', () => {
-  test('Отображает "recordId"', () => {
+  test('Отображает recordId', () => {
     render(<SubTask {...requiredProps} recordId={notRequiredProps.recordId} />)
 
     expect(
@@ -225,7 +225,7 @@ describe('Задание', () => {
     render(<SubTask {...requiredProps} />)
 
     expect(
-      taskStatusTestUtils.getTaskStatusIn(
+      taskStatusTestUtils.getContainerIn(
         testUtils.getContainer(),
         requiredProps.status,
       ),
