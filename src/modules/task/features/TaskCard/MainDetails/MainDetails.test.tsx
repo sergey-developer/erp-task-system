@@ -122,6 +122,11 @@ describe('Блок детальной информации заявки', () => 
         testUtils.getChildByText(notRequiredProps.address!),
       ).toBeInTheDocument()
     })
+
+    test('Если его нет, отображается соответствующий текст', () => {
+      render(<MainDetails {...requiredProps} />)
+      expect(testUtils.getChildByText('Не определено')).toBeInTheDocument()
+    })
   })
 
   describe('Блок заявителя', () => {

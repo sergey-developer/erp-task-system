@@ -173,11 +173,11 @@ describe('Блок дополнительной информации', () => {
       })
 
       describe('Если отсутствует', () => {
-        test('Вместо него отображается текст "Отсутствует"', () => {
+        test('Вместо него отображается соответствующий текст', () => {
           render(<AdditionalInfo {...requiredProps} expanded />)
 
           const address = testUtils.getAddress()
-          expect(within(address).getByText('Отсутствует')).toBeInTheDocument()
+          expect(within(address).getByText('Не определено')).toBeInTheDocument()
         })
 
         test('Не является ссылкой', () => {
@@ -186,7 +186,7 @@ describe('Блок дополнительной информации', () => {
           const address = testUtils.getAddress()
 
           const link = within(address).queryByRole('link', {
-            name: 'Отсутствует',
+            name: 'Не определено',
           })
 
           expect(link).not.toBeInTheDocument()
