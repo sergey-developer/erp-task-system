@@ -55,6 +55,7 @@ export const getTaskListItem = (
   productClassifier2: generateWord(),
   productClassifier3: generateWord(),
   contactService: generateWord(),
+  subtasksCounter: { all: generateInteger(), completed: generateInteger() },
 })
 
 export const getTaskList = (length: number = 1): Array<TaskListItemModel> =>

@@ -121,8 +121,17 @@ export const getTableColumns = (
       dataIndex: 'status',
       title: 'Статус',
       ellipsis: true,
-      // sorter: statusSorter, временно отключена сортировка
       render: (_, { status }) => taskStatusDict[status],
+    },
+    {
+      key: 'subtasksCounter',
+      dataIndex: 'subtasksCounter',
+      title: 'Выполненные задания',
+      ellipsis: true,
+      render: (_, { subtasksCounter }) =>
+        subtasksCounter?.all && subtasksCounter?.completed
+          ? `${subtasksCounter.completed}/${subtasksCounter.all}`
+          : '-',
     },
     {
       key: 'lastComment',

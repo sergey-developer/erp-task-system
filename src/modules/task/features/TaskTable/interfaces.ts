@@ -21,6 +21,7 @@ export type TaskTableListItem = Pick<
   | 'createdAt'
   | 'status'
   | 'extendedStatus'
+  | 'subtasksCounter'
 >
 
 export type TaskTableColumnKey =
@@ -36,6 +37,7 @@ export type TaskTableColumnKey =
       | 'supportGroup'
       | 'olaNextBreachTime'
       | 'status'
+      | 'subtasksCounter'
       | 'lastComment'
       | 'createdAt'
     >
