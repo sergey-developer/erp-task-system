@@ -8,7 +8,7 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/common'
 
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import {
   generateId,
@@ -29,9 +29,10 @@ const requiredProps: CardTitleProps = {
   isAssignedToCurrentUser: false,
   suspendRequest: null,
   onClose: jest.fn(),
-  onClickExecuteTask: jest.fn(),
-  onClickRequestSuspend: jest.fn(),
-  onClickRequestReclassification: jest.fn(),
+  onExecuteTask: jest.fn(),
+  onReloadTask: jest.fn(),
+  onRequestSuspend: jest.fn(),
+  onRequestReclassification: jest.fn(),
 }
 
 export const activeExecuteTaskItemProps: Pick<
@@ -118,6 +119,15 @@ const clickCloseButton = async (user: UserEvent) => {
   return button
 }
 
+// reload button
+const getReloadButton = () => getButtonIn(getContainer(), 'sync')
+
+const clickReloadButton = async (user: UserEvent) => {
+  const button = getReloadButton()
+  await user.click(button)
+  return button
+}
+
 // execute task
 const getExecuteTaskItem = () => getMenuItem(/выполнить заявку/i)
 
@@ -182,6 +192,9 @@ export const testUtils = {
 
   getCloseButton,
   clickCloseButton,
+
+  getReloadButton,
+  clickReloadButton,
 }
 
 describe('Заголовок карточки заявки', () => {
@@ -208,6 +221,24 @@ describe('Заголовок карточки заявки', () => {
 
       await testUtils.clickCloseButton(user)
       expect(requiredProps.onClose).toBeCalledTimes(1)
+    })
+  })
+
+  describe('Кнопка перезапроса заявки', () => {
+    test('Отображается корректно', () => {
+      render(<CardTitle {...requiredProps} />)
+
+      const button = testUtils.getReloadButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('При клике обработчик вызывается корректно', async () => {
+      const { user } = render(<CardTitle {...requiredProps} />)
+
+      await testUtils.clickReloadButton(user)
+      expect(requiredProps.onReloadTask).toBeCalledTimes(1)
     })
   })
 
@@ -256,7 +287,7 @@ describe('Заголовок карточки заявки', () => {
 
         await testUtils.openMenu(user)
         await testUtils.clickExecuteTaskItem(user)
-        expect(requiredProps.onClickExecuteTask).toBeCalledTimes(1)
+        expect(requiredProps.onExecuteTask).toBeCalledTimes(1)
       })
 
       test('Активен если условия соблюдены', async () => {
@@ -354,7 +385,7 @@ describe('Заголовок карточки заявки', () => {
 
         await testUtils.openMenu(user)
         await testUtils.clickRequestReclassificationItem(user)
-        expect(requiredProps.onClickRequestReclassification).toBeCalledTimes(1)
+        expect(requiredProps.onRequestReclassification).toBeCalledTimes(1)
       })
 
       test('Активен если условия соблюдены', async () => {
@@ -557,7 +588,7 @@ describe('Заголовок карточки заявки', () => {
 
         await testUtils.openMenu(user)
         await testUtils.clickRequestSuspendItem(user)
-        expect(requiredProps.onClickRequestSuspend).toBeCalledTimes(1)
+        expect(requiredProps.onRequestSuspend).toBeCalledTimes(1)
       })
 
       test('Активен если условия соблюдены', async () => {

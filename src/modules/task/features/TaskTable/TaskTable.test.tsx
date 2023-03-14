@@ -10,10 +10,10 @@ import {
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 import { getShortUserName } from 'modules/user/utils'
 
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import { UserRoleEnum } from 'shared/constants/roles'
 import { NumberOrString } from 'shared/interfaces/utils'
 import { formatDate } from 'shared/utils/date'
 

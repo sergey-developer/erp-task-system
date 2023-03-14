@@ -5,7 +5,7 @@ import {
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/common'
 
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
@@ -62,6 +62,7 @@ import TaskCard, { TaskCardProps } from './index'
 
 const requiredProps: TaskCardProps = {
   task: taskFixtures.getTask(),
+  refetchTask: jest.fn(),
   closeTaskCard: jest.fn(),
 
   taskIsLoading: false,
@@ -176,6 +177,16 @@ describe('Карточка заявки', () => {
 
       await waitFor(() => {
         expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+      })
+    })
+
+    test('При клике на кнопку перезапроса заявки обработчик вызывается корректно', async () => {
+      const { user } = render(<TaskCard {...requiredProps} />)
+
+      await cardTitleTestUtils.clickReloadButton(user)
+
+      await waitFor(() => {
+        expect(requiredProps.refetchTask).toBeCalledTimes(1)
       })
     })
   })

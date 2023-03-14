@@ -15,7 +15,7 @@ import { testUtils as taskTableTestUtils } from 'modules/task/features/TaskTable
 import { paginationConfig } from 'modules/task/features/TaskTable/constants/pagination'
 import { GetTaskCountersSuccessResponse } from 'modules/task/models'
 
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'

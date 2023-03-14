@@ -22,10 +22,10 @@ import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
 } from 'modules/task/utils/messages'
-import { GET_WORK_GROUP_LIST_SERVER_ERROR_MSG } from 'modules/workGroup/constants/errors'
+import { UserRoleEnum } from 'modules/user/constants/roles'
+import { workGroupApiMessages } from 'modules/workGroup/constants/errorMessages'
 
 import { commonApiMessages } from 'shared/constants/errors'
-import { UserRoleEnum } from 'shared/constants/roles'
 import { ErrorResponse } from 'shared/services/api'
 
 import taskFixtures from 'fixtures/task'
@@ -147,7 +147,9 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(GET_WORK_GROUP_LIST_SERVER_ERROR_MSG),
+            await findNotification(
+              workGroupApiMessages.getWorkGroupList.commonError,
+            ),
           ).toBeInTheDocument()
         })
       })
@@ -174,7 +176,9 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(GET_WORK_GROUP_LIST_SERVER_ERROR_MSG),
+            await findNotification(
+              workGroupApiMessages.getWorkGroupList.commonError,
+            ),
           ).toBeInTheDocument()
         })
       })
@@ -201,7 +205,9 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(GET_WORK_GROUP_LIST_SERVER_ERROR_MSG),
+            await findNotification(
+              workGroupApiMessages.getWorkGroupList.commonError,
+            ),
           ).toBeInTheDocument()
         })
       })
@@ -400,7 +406,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                reclassificationRequestApiMessages.create.notFoundError,
+                reclassificationRequestApiMessages.createRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -698,7 +704,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                reclassificationRequestApiMessages.create.notFoundError,
+                reclassificationRequestApiMessages.createRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -897,7 +903,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                reclassificationRequestApiMessages.create.notFoundError,
+                reclassificationRequestApiMessages.createRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -1052,7 +1058,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(taskApiMessages.resolve.commonError),
+            await findNotification(taskApiMessages.resolveTask.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1203,7 +1209,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(taskApiMessages.resolve.commonError),
+            await findNotification(taskApiMessages.resolveTask.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1354,7 +1360,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(taskApiMessages.resolve.commonError),
+            await findNotification(taskApiMessages.resolveTask.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1505,7 +1511,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(taskApiMessages.resolve.commonError),
+            await findNotification(taskApiMessages.resolveTask.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1626,6 +1632,31 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
       })
+
+      test('При успешном перезапросе заявки отображается основной блок заявки', async () => {
+        mockGetWorkGroupListSuccess({ body: [] })
+
+        mockGetTaskSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          once: false,
+        })
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        await cardTitleTestUtils.clickReloadButton(user)
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        expect(taskCardTestUtils.getCardDetails()).toBeInTheDocument()
+      })
     })
 
     describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
@@ -1740,6 +1771,31 @@ describe('Контейнер детальной карточки заявки', 
             await findNotification(commonApiMessages.unknownError),
           ).toBeInTheDocument()
         })
+      })
+
+      test('При успешном перезапросе заявки отображается основной блок заявки', async () => {
+        mockGetWorkGroupListSuccess({ body: [] })
+
+        mockGetTaskSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          once: false,
+        })
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.Engineer,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        await cardTitleTestUtils.clickReloadButton(user)
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        expect(taskCardTestUtils.getCardDetails()).toBeInTheDocument()
       })
     })
 
@@ -1856,6 +1912,31 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
       })
+
+      test('При успешном перезапросе заявки отображается основной блок заявки', async () => {
+        mockGetWorkGroupListSuccess({ body: [] })
+
+        mockGetTaskSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          once: false,
+        })
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.SeniorEngineer,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        await cardTitleTestUtils.clickReloadButton(user)
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        expect(taskCardTestUtils.getCardDetails()).toBeInTheDocument()
+      })
     })
 
     describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
@@ -1971,6 +2052,31 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
       })
+
+      test('При успешном перезапросе заявки отображается основной блок заявки', async () => {
+        mockGetWorkGroupListSuccess({ body: [] })
+
+        mockGetTaskSuccess(requiredProps.taskId, {
+          body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          once: false,
+        })
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userRole: UserRoleEnum.HeadOfDepartment,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        await cardTitleTestUtils.clickReloadButton(user)
+
+        await taskCardTestUtils.expectLoadingStarted()
+        await taskCardTestUtils.expectLoadingFinished()
+
+        expect(taskCardTestUtils.getCardDetails()).toBeInTheDocument()
+      })
     })
   })
 
@@ -2080,7 +2186,7 @@ describe('Контейнер детальной карточки заявки', 
         await taskCardTestUtils.expectLoadingFinished()
 
         expect(
-          queryNotification(taskAssigneeApiMessages.update.commonError),
+          queryNotification(taskAssigneeApiMessages.updateAssignee.commonError),
         ).not.toBeInTheDocument()
       })
     })
@@ -2125,7 +2231,9 @@ describe('Контейнер детальной карточки заявки', 
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
-          await findNotification(taskAssigneeApiMessages.update.commonError),
+          await findNotification(
+            taskAssigneeApiMessages.updateAssignee.commonError,
+          ),
         ).toBeInTheDocument()
       })
     })
@@ -2159,7 +2267,7 @@ describe('Контейнер детальной карточки заявки', 
         await taskCardTestUtils.expectLoadingFinished()
 
         expect(
-          queryNotification(taskAssigneeApiMessages.update.commonError),
+          queryNotification(taskAssigneeApiMessages.updateAssignee.commonError),
         ).not.toBeInTheDocument()
       })
     })
@@ -2189,7 +2297,9 @@ describe('Контейнер детальной карточки заявки', 
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
-          await findNotification(taskAssigneeApiMessages.update.commonError),
+          await findNotification(
+            taskAssigneeApiMessages.updateAssignee.commonError,
+          ),
         ).toBeInTheDocument()
       })
     })
@@ -2923,7 +3033,9 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
 
           expect(
-            await findNotification(taskWorkGroupApiMessages.update.commonError),
+            await findNotification(
+              taskWorkGroupApiMessages.updateWorkGroup.commonError,
+            ),
           ).toBeInTheDocument()
         })
 
@@ -2960,7 +3072,9 @@ describe('Контейнер детальной карточки заявки', 
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(taskWorkGroupApiMessages.update.commonError),
+            await findNotification(
+              taskWorkGroupApiMessages.updateWorkGroup.commonError,
+            ),
           ).toBeInTheDocument()
         })
 
@@ -3091,7 +3205,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.create.notFoundError,
+                suspendRequestApiMessages.createRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -3147,7 +3261,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.create.badRequestError,
+                suspendRequestApiMessages.createRequest.badRequestError,
               ),
             ).toBeInTheDocument()
 
@@ -3304,7 +3418,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.create.notFoundError,
+                suspendRequestApiMessages.createRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -3360,7 +3474,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.create.badRequestError,
+                suspendRequestApiMessages.createRequest.badRequestError,
               ),
             ).toBeInTheDocument()
 
@@ -3517,7 +3631,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.create.notFoundError,
+                suspendRequestApiMessages.createRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -3573,7 +3687,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.create.badRequestError,
+                suspendRequestApiMessages.createRequest.badRequestError,
               ),
             ).toBeInTheDocument()
 
@@ -3730,7 +3844,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.create.notFoundError,
+                suspendRequestApiMessages.createRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -3786,7 +3900,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.create.badRequestError,
+                suspendRequestApiMessages.createRequest.badRequestError,
               ),
             ).toBeInTheDocument()
 
@@ -3917,7 +4031,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.delete.notFoundError,
+                suspendRequestApiMessages.deleteRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -4040,7 +4154,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.delete.notFoundError,
+                suspendRequestApiMessages.deleteRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -4163,7 +4277,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.delete.notFoundError,
+                suspendRequestApiMessages.deleteRequest.notFoundError,
               ),
             ).toBeInTheDocument()
           })

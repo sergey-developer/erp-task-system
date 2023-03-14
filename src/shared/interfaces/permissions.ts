@@ -1,10 +1,10 @@
 import { SubTaskApiPermissionsEnum } from 'modules/subTask/permissions'
 
+import { UserRoleEnum } from 'modules/user/constants/roles'
 import {
   CRUDPermissionsEnum,
   UIPermissionsEnum,
 } from 'shared/constants/permissions'
-import { UserRoleEnum } from 'shared/constants/roles'
 import { BooleanMap } from 'shared/interfaces/utils'
 
 export type Permissions =

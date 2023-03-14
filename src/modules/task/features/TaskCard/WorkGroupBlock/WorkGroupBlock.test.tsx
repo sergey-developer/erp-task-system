@@ -7,7 +7,7 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'

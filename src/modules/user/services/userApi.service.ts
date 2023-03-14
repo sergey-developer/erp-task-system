@@ -1,5 +1,7 @@
 import { UserEndpointEnum } from 'modules/user/constants/api'
 import {
+  GetUserCodeQueryArgs,
+  GetUserCodeSuccessResponse,
   GetUserProfileQueryArgs,
   GetUserProfileSuccessResponse,
 } from 'modules/user/models'
@@ -18,9 +20,18 @@ const userApiService = apiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getUserCode: build.query<GetUserCodeSuccessResponse, GetUserCodeQueryArgs>({
+      query: () => ({
+        url: UserEndpointEnum.GetUserCode,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetUserProfileQuery, endpoints: userApiEndpoints } =
-  userApiService
+export const {
+  useGetUserProfileQuery,
+  useGetUserCodeQuery,
+  endpoints: userApiEndpoints,
+} = userApiService

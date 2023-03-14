@@ -47,10 +47,8 @@ import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
 import { RequestTaskReclassificationModalProps } from '../RequestTaskReclassificationModal'
 import { RequestTaskSuspendModalProps } from '../RequestTaskSuspendModal'
-import {
-  RequestTaskSuspendFormErrors,
-  RequestTaskSuspendFormFields,
-} from '../RequestTaskSuspendModal/interfaces'
+import { RequestTaskSuspendFormFields } from '../RequestTaskSuspendModal/interfaces'
+import { getFormErrorsFromBadRequestError } from '../RequestTaskSuspendModal/utils'
 import SecondaryDetails from '../SecondaryDetails'
 import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
 import { TaskResolutionModalProps } from '../TaskResolutionModal'
@@ -114,7 +112,7 @@ export type TaskCardProps = {
   >
 
   taskIsLoading: boolean
-
+  refetchTask: () => void
   reclassificationRequest: MaybeNull<TaskReclassificationRequestModel>
   reclassificationRequestIsLoading: boolean
   createReclassificationRequest: (
@@ -157,8 +155,8 @@ export type TaskCardProps = {
 
 const TaskCard: FC<TaskCardProps> = ({
   task,
-
   taskIsLoading,
+  refetchTask,
   takeTask,
   takeTaskIsLoading,
   resolveTask,
@@ -202,6 +200,8 @@ const TaskCard: FC<TaskCardProps> = ({
   const isAssignedToCurrentUser = useCheckUserAuthenticated(task?.assignee?.id)
 
   const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
+
+  const debouncedRefetchTask = useDebounceFn(refetchTask)
 
   const [
     isTaskResolutionModalOpened,
@@ -368,17 +368,10 @@ const TaskCard: FC<TaskCardProps> = ({
             const badRequestError =
               error as CreateTaskSuspendRequestBadRequestErrorResponse
 
-            const formErrors: RequestTaskSuspendFormErrors = {
-              comment: badRequestError.data.comment,
-              reason: badRequestError.data.suspendReason,
-              endDate: badRequestError.data.suspendEndAt,
-              endTime: badRequestError.data.suspendEndAt,
-            }
-
             handleSetFieldsErrors(
               {
                 ...badRequestError,
-                data: formErrors,
+                data: getFormErrorsFromBadRequestError(badRequestError),
               },
               setFields,
             )
@@ -406,9 +399,10 @@ const TaskCard: FC<TaskCardProps> = ({
       isAssignedToCurrentUser={isAssignedToCurrentUser}
       suspendRequest={task.suspendRequest}
       onClose={debouncedCloseTaskCard}
-      onClickExecuteTask={debouncedOpenTaskResolutionModal}
-      onClickRequestSuspend={debouncedOpenRequestTaskSuspendModal}
-      onClickRequestReclassification={debouncedOpenTaskReclassificationModal}
+      onReloadTask={debouncedRefetchTask}
+      onExecuteTask={debouncedOpenTaskResolutionModal}
+      onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
+      onRequestReclassification={debouncedOpenTaskReclassificationModal}
     />
   )
 
