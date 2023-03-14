@@ -97,7 +97,7 @@ const clickMenuItem = async (user: UserEvent, name: string | RegExp) => {
   return item
 }
 
-const userOpenMenu = async (user: UserEvent) => {
+const openMenu = async (user: UserEvent) => {
   const button = getMenuButton()
   await user.hover(button)
   const menu = await findMenu()
@@ -172,7 +172,7 @@ export const testUtils = {
   getMenuItems,
   getMenuItemIcon,
   queryMenuItemText,
-  userOpenMenu,
+  openMenu,
   expectMenuItemDisabled,
   expectMenuItemNotDisabled,
 
@@ -255,7 +255,7 @@ describe('Заголовок карточки заявки', () => {
     test('Открывает меню', async () => {
       const { user } = render(<CardTitle {...requiredProps} />)
 
-      const { menu } = await testUtils.userOpenMenu(user)
+      const { menu } = await testUtils.openMenu(user)
       expect(menu).toBeInTheDocument()
     })
   })
@@ -264,7 +264,7 @@ describe('Заголовок карточки заявки', () => {
     test('Отображает корректное количество элементов', async () => {
       const { user } = render(<CardTitle {...requiredProps} />)
 
-      await testUtils.userOpenMenu(user)
+      await testUtils.openMenu(user)
       expect(testUtils.getMenuItems()).toHaveLength(3)
     })
 
@@ -272,7 +272,7 @@ describe('Заголовок карточки заявки', () => {
       test('Отображается корректно', async () => {
         const { user } = render(<CardTitle {...requiredProps} />)
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         const item = testUtils.getExecuteTaskItem()
         const icon = testUtils.getMenuItemIcon(item, 'check-circle')
 
@@ -285,7 +285,7 @@ describe('Заголовок карточки заявки', () => {
           <CardTitle {...requiredProps} {...activeExecuteTaskItemProps} />,
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         await testUtils.clickExecuteTaskItem(user)
         expect(requiredProps.onExecuteTask).toBeCalledTimes(1)
       })
@@ -295,7 +295,7 @@ describe('Заголовок карточки заявки', () => {
           <CardTitle {...requiredProps} {...activeExecuteTaskItemProps} />,
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         testUtils.expectMenuItemNotDisabled(testUtils.getExecuteTaskItem())
       })
 
@@ -309,7 +309,7 @@ describe('Заголовок карточки заявки', () => {
             />,
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
           testUtils.expectMenuItemDisabled(testUtils.getExecuteTaskItem())
         })
 
@@ -322,7 +322,7 @@ describe('Заголовок карточки заявки', () => {
             />,
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
           testUtils.expectMenuItemDisabled(testUtils.getExecuteTaskItem())
         })
 
@@ -335,7 +335,7 @@ describe('Заголовок карточки заявки', () => {
             />,
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
           testUtils.expectMenuItemDisabled(testUtils.getExecuteTaskItem())
         })
       })
@@ -350,7 +350,7 @@ describe('Заголовок карточки заявки', () => {
           />,
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         const item = testUtils.getRequestReclassificationItem()
         const icon = testUtils.getMenuItemIcon(item, 'question-circle')
 
@@ -366,7 +366,7 @@ describe('Заголовок карточки заявки', () => {
           />,
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
 
         expect(
           testUtils.queryRequestReclassificationItem(),
@@ -383,7 +383,7 @@ describe('Заголовок карточки заявки', () => {
           { store: getStoreWithAuth() },
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         await testUtils.clickRequestReclassificationItem(user)
         expect(requiredProps.onRequestReclassification).toBeCalledTimes(1)
       })
@@ -399,7 +399,7 @@ describe('Заголовок карточки заявки', () => {
           },
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         testUtils.expectMenuItemNotDisabled(
           testUtils.getRequestReclassificationItem(),
         )
@@ -418,7 +418,7 @@ describe('Заголовок карточки заявки', () => {
             },
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
 
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
@@ -437,7 +437,7 @@ describe('Заголовок карточки заявки', () => {
             },
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
 
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
@@ -456,7 +456,7 @@ describe('Заголовок карточки заявки', () => {
             },
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
 
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
@@ -475,7 +475,7 @@ describe('Заголовок карточки заявки', () => {
             },
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
 
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
@@ -492,7 +492,7 @@ describe('Заголовок карточки заявки', () => {
             { store: getStoreWithAuth() },
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
 
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
@@ -510,7 +510,7 @@ describe('Заголовок карточки заявки', () => {
             },
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
           testUtils.expectMenuItemDisabled(
             testUtils.getRequestReclassificationItem(),
           )
@@ -527,7 +527,7 @@ describe('Заголовок карточки заявки', () => {
         //     { store: getStoreWithAuth() },
         //   )
         //
-        //   await testUtils.userOpenMenu(user)
+        //   await testUtils.openMenu(user)
         //
         //   testUtils.expectMenuItemDisabled(
         //     testUtils.getRequestReclassificationItem(),
@@ -545,7 +545,7 @@ describe('Заголовок карточки заявки', () => {
           />,
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         const item = testUtils.getCancelReclassificationItem()
         const icon = testUtils.getMenuItemIcon(item, 'question-circle')
 
@@ -561,7 +561,7 @@ describe('Заголовок карточки заявки', () => {
           />,
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
 
         expect(
           testUtils.queryCancelReclassificationItem(),
@@ -573,7 +573,7 @@ describe('Заголовок карточки заявки', () => {
       test('Отображается корректно', async () => {
         const { user } = render(<CardTitle {...requiredProps} />)
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         const item = testUtils.getRequestSuspendItem()
         const icon = testUtils.getMenuItemIcon(item, 'pause-circle')
 
@@ -586,7 +586,7 @@ describe('Заголовок карточки заявки', () => {
           <CardTitle {...requiredProps} {...activeRequestSuspendItemProps} />,
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         await testUtils.clickRequestSuspendItem(user)
         expect(requiredProps.onRequestSuspend).toBeCalledTimes(1)
       })
@@ -596,7 +596,7 @@ describe('Заголовок карточки заявки', () => {
           <CardTitle {...requiredProps} {...activeRequestSuspendItemProps} />,
         )
 
-        await testUtils.userOpenMenu(user)
+        await testUtils.openMenu(user)
         testUtils.expectMenuItemNotDisabled(testUtils.getRequestSuspendItem())
       })
 
@@ -610,7 +610,7 @@ describe('Заголовок карточки заявки', () => {
             />,
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
           testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
         })
 
@@ -623,7 +623,7 @@ describe('Заголовок карточки заявки', () => {
             />,
           )
 
-          await testUtils.userOpenMenu(user)
+          await testUtils.openMenu(user)
           testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
         })
 
@@ -637,7 +637,7 @@ describe('Заголовок карточки заявки', () => {
         //     />,
         //   )
         //
-        //   await testUtils.userOpenMenu(user)
+        //   await testUtils.openMenu(user)
         //   testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
         // })
       })

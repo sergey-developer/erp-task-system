@@ -14,13 +14,13 @@ import {
   generateWord,
   getButtonIn,
   getSelect,
-  loadingFinishedByButton,
-  loadingFinishedBySelect,
-  loadingStartedByButton,
-  loadingStartedBySelect,
+  expectLoadingFinishedByButton,
+  expectLoadingFinishedBySelect,
+  expectLoadingStartedByButton,
+  expectLoadingStartedBySelect,
   querySelect,
   render,
-  userOpenSelect,
+  openSelect,
 } from '_tests_/utils'
 
 import CreateSubTaskModal from './index'
@@ -70,20 +70,18 @@ const getSelectedTemplate = (value: string) =>
 const querySelectedTemplate = (value: string) =>
   within(getTemplateFieldContainer()).queryByTitle(value)
 
-const userOpenTemplateField = async (user: UserEvent) => {
-  await userOpenSelect(user, getTemplateFieldContainer())
+const openTemplateField = async (user: UserEvent) => {
+  await openSelect(user, getTemplateFieldContainer())
 }
 
 const findTemplateFieldError = (error: string) =>
   within(getTemplateFieldContainer()).findByText(error)
 
-const templateFieldExpectLoadingStarted = async () => {
-  await loadingStartedBySelect(getTemplateFieldContainer())
-}
+const templateFieldExpectLoadingStarted = () =>
+  expectLoadingStartedBySelect(getTemplateFieldContainer())
 
-const templateFieldExpectLoadingFinished = async () => {
-  await loadingFinishedBySelect(getTemplateFieldContainer())
-}
+const templateFieldExpectLoadingFinished = () =>
+  expectLoadingFinishedBySelect(getTemplateFieldContainer())
 
 // title field
 const getTitleFieldContainer = () => within(getContainer()).getByTestId('title')
@@ -159,11 +157,14 @@ const userFillForm = async (
   user: UserEvent,
   values: Omit<CreateSubTaskFormFields, 'templateX5'> & { templateX5: string },
 ) => {
-  await userOpenTemplateField(user)
+  await openTemplateField(user)
   await setTemplate(user, values.templateX5)
   await setTitle(user, values.title)
   await setDescription(user, values.description)
 }
+
+const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -179,7 +180,7 @@ export const testUtils = {
     getValue: getSelectedTemplate,
     queryValue: querySelectedTemplate,
     setValue: setTemplate,
-    openField: userOpenTemplateField,
+    openField: openTemplateField,
     getOption: getTemplateOption,
     findError: findTemplateFieldError,
     expectLoadingStarted: templateFieldExpectLoadingStarted,
@@ -207,8 +208,8 @@ export const testUtils = {
   getCancelButton,
   clickCancelButton,
 
-  loadingStarted: () => loadingStartedByButton(getSubmitButton()),
-  loadingFinished: () => loadingFinishedByButton(getSubmitButton()),
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
 describe('Модалка создания задачи заявки', () => {
@@ -499,7 +500,7 @@ describe('Модалка создания задачи заявки', () => {
 
     test('Отображает состояние загрузки', async () => {
       render(<CreateSubTaskModal {...requiredProps} isLoading />)
-      await testUtils.loadingStarted()
+      await testUtils.expectLoadingStarted()
     })
 
     test('Обработчик вызывается корректно', async () => {

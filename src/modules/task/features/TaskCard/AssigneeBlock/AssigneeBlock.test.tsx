@@ -26,15 +26,15 @@ import {
   getSelectOptionById,
   getSelectedOption,
   getStoreWithAuth,
-  loadingFinishedByButton,
-  loadingStartedByButton,
-  loadingStartedBySelect,
+  expectLoadingFinishedByButton,
+  expectLoadingStartedByButton,
+  expectLoadingStartedBySelect,
   queryButtonIn,
   querySelect,
   render,
   selectDisabled,
   selectNotDisabled,
-  userOpenSelect,
+  openSelect,
 } from '_tests_/utils'
 
 import AssigneeBlock, { AssigneeBlockProps } from './index'
@@ -125,7 +125,7 @@ const clickTakeTaskButton = async (user: UserEvent) => {
 }
 
 const takeTaskExpectLoadingStarted = () =>
-  loadingStartedByButton(getTakeTaskButton())
+  expectLoadingStartedByButton(getTakeTaskButton())
 
 // assign on me button
 const getAssignOnMeButton = () =>
@@ -138,10 +138,10 @@ const clickAssignOnMeButton = async (user: UserEvent) => {
 }
 
 const assignOnMeExpectLoadingStarted = () =>
-  loadingStartedByButton(getAssignOnMeButton())
+  expectLoadingStartedByButton(getAssignOnMeButton())
 
 const assignOnMeExpectLoadingFinished = () =>
-  loadingFinishedByButton(getAssignOnMeButton())
+  expectLoadingFinishedByButton(getAssignOnMeButton())
 
 // assign button
 const getAssignButton = () => getButtonIn(getContainer(), /назначить$/i)
@@ -155,7 +155,7 @@ const clickAssignButton = async (user: UserEvent) => {
 }
 
 const assignExpectLoadingStarted = () =>
-  loadingStartedByButton(getAssignButton())
+  expectLoadingStartedByButton(getAssignButton())
 
 // refuse task
 const getRefuseTaskButton = () =>
@@ -168,7 +168,7 @@ const userClickRefuseTaskButton = async (user: UserEvent) => {
 }
 
 const refuseTaskExpectLoadingStarted = () =>
-  loadingStartedByButton(getRefuseTaskButton())
+  expectLoadingStartedByButton(getRefuseTaskButton())
 
 // assignee select
 const getAssigneeSelect = () => getSelect(getContainer())
@@ -180,7 +180,7 @@ const findAssigneeSelect = () => findSelect(getContainer())
 const getSelectedAssignee = () => getSelectedOption(getContainer())
 
 const openAssigneeSelect = (user: UserEvent) =>
-  userOpenSelect(user, getContainer())
+  openSelect(user, getContainer())
 
 const selectAssignee = clickSelectOption
 
@@ -189,7 +189,7 @@ const getAssigneeOption = getSelectOptionById
 const getAllAssigneeOption = getAllSelectOption
 
 const expectAssigneeSelectLoadingStarted = () =>
-  loadingStartedBySelect(getContainer())
+  expectLoadingStartedBySelect(getContainer())
 
 const expectAssigneeSelectDisabled = () => selectDisabled(getContainer())
 

@@ -19,7 +19,7 @@ import {
   generateWord,
   getButtonIn,
   getStoreWithAuth,
-  loadingStartedByButton,
+  expectLoadingStartedByButton,
   queryButtonIn,
   render,
 } from '_tests_/utils'
@@ -98,8 +98,8 @@ const clickFirstLineButton = async (user: UserEvent) => {
   return button
 }
 
-const firstLineLoadingStarted = async () => {
-  await loadingStartedByButton(getFirstLineButton())
+const expectFirstLineLoadingStarted = async () => {
+  await expectLoadingStartedByButton(getFirstLineButton())
 }
 
 // second line button
@@ -115,8 +115,8 @@ const clickSecondLineButton = async (user: UserEvent) => {
   return button
 }
 
-const secondLineLoadingStarted = async () => {
-  await loadingStartedByButton(getSecondLineButton())
+const expectSecondLineLoadingStarted = async () => {
+  await expectLoadingStartedByButton(getSecondLineButton())
 }
 
 export const testUtils = {
@@ -127,12 +127,12 @@ export const testUtils = {
   findFirstLineButton,
   queryFirstLineButton,
   clickFirstLineButton,
-  firstLineLoadingStarted,
+  expectFirstLineLoadingStarted,
 
   getSecondLineButton,
   querySecondLineButton,
   clickSecondLineButton,
-  secondLineLoadingStarted,
+  expectSecondLineLoadingStarted,
 }
 
 describe('Блок рабочей группы', () => {
@@ -265,7 +265,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.secondLineLoadingStarted()
+        await testUtils.expectSecondLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
@@ -452,7 +452,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.firstLineLoadingStarted()
+        await testUtils.expectFirstLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
@@ -472,7 +472,7 @@ describe('Блок рабочей группы', () => {
         await testUtils.clickFirstLineButton(user)
 
         expect(
-          await taskFirstLineModalTestUtils.findModal(),
+          await taskFirstLineModalTestUtils.findContainer(),
         ).toBeInTheDocument()
       })
 
@@ -597,7 +597,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.firstLineLoadingStarted()
+        await testUtils.expectFirstLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
@@ -617,7 +617,7 @@ describe('Блок рабочей группы', () => {
         await testUtils.clickFirstLineButton(user)
 
         expect(
-          await taskFirstLineModalTestUtils.findModal(),
+          await taskFirstLineModalTestUtils.findContainer(),
         ).toBeInTheDocument()
       })
 
@@ -742,7 +742,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.firstLineLoadingStarted()
+        await testUtils.expectFirstLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
@@ -762,7 +762,7 @@ describe('Блок рабочей группы', () => {
         await testUtils.clickFirstLineButton(user)
 
         expect(
-          await taskFirstLineModalTestUtils.findModal(),
+          await taskFirstLineModalTestUtils.findContainer(),
         ).toBeInTheDocument()
       })
 
@@ -838,7 +838,7 @@ describe('Блок рабочей группы', () => {
         )
 
         await testUtils.clickFirstLineButton(user)
-        await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.findContainer()
         await taskFirstLineModalTestUtils.setDescription(user, generateWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
@@ -867,7 +867,7 @@ describe('Блок рабочей группы', () => {
         )
 
         await testUtils.clickFirstLineButton(user)
-        await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.findContainer()
         await taskFirstLineModalTestUtils.setDescription(user, generateWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 

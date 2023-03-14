@@ -1,6 +1,9 @@
 import { screen, within } from '@testing-library/react'
 
-import { TaskOlaStatusEnum, TaskStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskOlaStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
 import {
@@ -84,7 +87,7 @@ describe('Блок детальной информации заявки', () => 
     render(<MainDetails {...requiredProps} />)
 
     expect(
-      taskStatusTestUtils.getTaskStatusIn(
+      taskStatusTestUtils.getContainerIn(
         testUtils.getContainer(),
         requiredProps.status,
       ),
@@ -118,6 +121,11 @@ describe('Блок детальной информации заявки', () => 
       expect(
         testUtils.getChildByText(notRequiredProps.address!),
       ).toBeInTheDocument()
+    })
+
+    test('Если его нет, отображается соответствующий текст', () => {
+      render(<MainDetails {...requiredProps} />)
+      expect(testUtils.getChildByText('Не определено')).toBeInTheDocument()
     })
   })
 

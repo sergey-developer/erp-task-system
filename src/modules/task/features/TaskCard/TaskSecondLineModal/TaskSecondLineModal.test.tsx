@@ -19,15 +19,15 @@ import {
   getSelectedOption,
   getSelectedOptionText,
   getStoreWithAuth,
-  loadingFinishedBySelect,
-  loadingStartedByButton,
-  loadingStartedBySelect,
+  expectLoadingFinishedBySelect,
+  expectLoadingStartedByButton,
+  expectLoadingStartedBySelect,
   modalTestUtils,
   querySelect,
   render,
   selectDisabled,
   setupApiTests,
-  userOpenSelect,
+  openSelect,
 } from '_tests_/utils'
 
 import TaskSecondLineModal from './index'
@@ -68,15 +68,15 @@ const getWorkGroupOptionText = (option: HTMLElement, text: string) =>
   within(option).getByText(text)
 
 const expectWorkGroupLoadingStarted = () =>
-  loadingStartedBySelect(getWorkGroupBlock())
+  expectLoadingStartedBySelect(getWorkGroupBlock())
 
 const expectWorkGroupLoadingFinished = () =>
-  loadingFinishedBySelect(getWorkGroupBlock())
+  expectLoadingFinishedBySelect(getWorkGroupBlock())
 
 const expectWorkGroupSelectDisabled = () => selectDisabled(getWorkGroupBlock())
 
 const openWorkGroup = async (user: UserEvent) => {
-  await userOpenSelect(user, getWorkGroupBlock())
+  await openSelect(user, getWorkGroupBlock())
 }
 
 const selectWorkGroup = clickSelectOption
@@ -109,7 +109,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // loading
-const loadingStarted = () => loadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -143,7 +143,7 @@ export const testUtils = {
   getCloseButton,
   clickCloseButton,
 
-  loadingStarted,
+  expectLoadingStarted,
 }
 
 setupApiTests()
@@ -484,7 +484,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
         store: getStoreWithAuth(),
       })
 
-      await testUtils.loadingStarted()
+      await testUtils.expectLoadingStarted()
     })
 
     describe('Обработчик вызывается корректно', () => {

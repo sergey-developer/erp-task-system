@@ -41,7 +41,7 @@ const LoginPage: FC = () => {
   }
 
   return (
-    <CardStyled>
+    <CardStyled data-testid='login-card'>
       <Space direction='vertical' size='large'>
         <Space direction='vertical' size={48} $block>
           <PageTitleStyled level={4}>{APP_NAME}</PageTitleStyled>
@@ -50,11 +50,7 @@ const LoginPage: FC = () => {
         </Space>
 
         <Space direction='vertical'>
-          {loginError && (
-            <Text data-testid='login-error' type='danger'>
-              {loginError}
-            </Text>
-          )}
+          {loginError && <Text type='danger'>{loginError}</Text>}
 
           <FormStyled<LoginFormFields>
             form={form}

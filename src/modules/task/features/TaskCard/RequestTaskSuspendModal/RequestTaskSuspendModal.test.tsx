@@ -15,8 +15,8 @@ import {
   generateIdStr,
   generateWord,
   getButtonIn,
-  loadingFinishedByButton,
-  loadingStartedByButton,
+  expectLoadingFinishedByButton,
+  expectLoadingStartedByButton,
   modalTestUtils,
   render,
 } from '_tests_/utils'
@@ -144,9 +144,9 @@ const setComment = async (user: UserEvent, value: string) => {
 }
 
 // loading
-const loadingStarted = () => loadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
 
-const loadingFinished = () => loadingFinishedByButton(getSubmitButton())
+const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -185,8 +185,8 @@ export const testUtils = {
   findCommentError,
   setComment,
 
-  loadingStarted,
-  loadingFinished,
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
 describe('Модалка создания запроса о переводе в ожидание', () => {
@@ -254,7 +254,7 @@ describe('Модалка создания запроса о переводе в 
 
     test('Отображает состояние загрузки', async () => {
       render(<RequestTaskSuspendModal {...requiredProps} isLoading />)
-      await testUtils.loadingStarted()
+      await testUtils.expectLoadingStarted()
     })
 
     describe('При клике обработчик вызывается корректно', () => {

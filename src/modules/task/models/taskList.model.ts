@@ -7,4 +7,8 @@ export type TaskListItemModel = BaseTaskModel & {
   assignee: TaskAssigneeModel
   lastComment: string
   workGroup: MaybeNull<Pick<WorkGroupListItemModel, 'id' | 'name'>>
+  subtasksCounter: {
+    completed: number
+    all: number
+  }
 }
