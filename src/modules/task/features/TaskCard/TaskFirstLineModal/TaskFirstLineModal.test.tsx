@@ -1,15 +1,17 @@
-import {
-  generateWord,
-  getButtonIn,
-  loadingStartedByButton,
-  render,
-} from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+
 import {
   validationMessages,
   validationSizes,
 } from 'shared/constants/validation'
+
+import {
+  generateWord,
+  getButtonIn,
+  expectLoadingStartedByButton,
+  render,
+} from '_tests_/utils'
 
 import TaskFirstLineModal from './index'
 import { TaskFirstLineModalProps } from './interfaces'
@@ -21,16 +23,16 @@ const requiredProps: TaskFirstLineModalProps = {
   onCancel: jest.fn(),
 }
 
-const getModal = () => screen.getByTestId('modal-task-first-line')
-const findModal = () => screen.findByTestId('modal-task-first-line')
+const getContainer = () => screen.getByTestId('modal-task-first-line')
+const findContainer = () => screen.findByTestId('modal-task-first-line')
 
 const getDescriptionField = () =>
-  within(getModal()).getByRole('textbox', {
+  within(getContainer()).getByRole('textbox', {
     name: 'Причина возврата',
   })
 
 const getDescriptionFieldContainer = () =>
-  within(getModal()).getByTestId('field-description')
+  within(getContainer()).getByTestId('field-description')
 
 const setDescription = async (user: UserEvent, value: string) => {
   const field = getDescriptionField()
@@ -38,17 +40,17 @@ const setDescription = async (user: UserEvent, value: string) => {
   return field
 }
 
-const getSubmitButton = () => getButtonIn(getModal(), /вернуть заявку/i)
+const getSubmitButton = () => getButtonIn(getContainer(), /вернуть заявку/i)
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
 }
-const getCancelButton = () => getButtonIn(getModal(), /отменить/i)
+const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
 export const testUtils = {
-  getModal,
-  findModal,
+  getContainer,
+  findContainer,
 
   getDescriptionField,
   getDescriptionFieldContainer,
@@ -64,14 +66,14 @@ describe('Модальное окно перевода запроса на пе�
   test('Отображается корректно', () => {
     render(<TaskFirstLineModal {...requiredProps} />)
 
-    const modal = testUtils.getModal()
+    const modal = testUtils.getContainer()
     expect(modal).toBeInTheDocument()
   })
 
   test('Заголовок отображается корректно', () => {
     render(<TaskFirstLineModal {...requiredProps} />)
 
-    const modal = testUtils.getModal()
+    const modal = testUtils.getContainer()
     const recordId = within(modal).getByText(requiredProps.recordId)
 
     expect(recordId).toBeInTheDocument()
@@ -80,7 +82,7 @@ describe('Модальное окно перевода запроса на пе�
   test('Текст отображается корректно', () => {
     render(<TaskFirstLineModal {...requiredProps} />)
 
-    const modal = testUtils.getModal()
+    const modal = testUtils.getContainer()
     const text1 = within(modal).getByText(
       /Укажите причину возврата. Нажмите кнопку «Вернуть заявку»/i,
     )
@@ -177,7 +179,7 @@ describe('Модальное окно перевода запроса на пе�
         render(<TaskFirstLineModal {...requiredProps} isLoading />)
 
         const submitButton = testUtils.getSubmitButton()
-        await loadingStartedByButton(submitButton)
+        await expectLoadingStartedByButton(submitButton)
       })
 
       test('Обработчик вызывается корректно', async () => {

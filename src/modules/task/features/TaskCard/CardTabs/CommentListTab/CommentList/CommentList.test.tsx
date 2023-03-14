@@ -1,6 +1,8 @@
-import { loadingFinishedBySpinner, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
+
 import taskFixtures from 'fixtures/task'
+
+import { expectLoadingFinishedBySpinner, render } from '_tests_/utils'
 
 import CommentList from './index'
 
@@ -16,7 +18,9 @@ const queryAllComments = () =>
 
 const getFirstComment = () => getAllComments()[0]
 
-const loadingFinished = loadingFinishedBySpinner('task-comment-list-spinner')
+const expectLoadingFinished = expectLoadingFinishedBySpinner(
+  'task-comment-list-spinner',
+)
 
 export const testUtils = {
   getContainer,
@@ -26,7 +30,7 @@ export const testUtils = {
   queryAllComments,
   getFirstComment,
 
-  loadingFinished,
+  expectLoadingFinished,
 }
 
 describe('Список комментариев заявки', () => {

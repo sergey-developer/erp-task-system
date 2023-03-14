@@ -1,18 +1,21 @@
 import { Col, Row, Space, Typography } from 'antd'
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
-import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
+import { getNavMenuConfig } from 'configs/navMenu/utils'
+import { RouteEnum } from 'configs/routes'
+
+import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
+import { useUserProfileState } from 'modules/user/hooks'
+import { useGetUserCodeQuery } from 'modules/user/services/userApi.service'
+
 import UserAvatar from 'components/Avatars/UserAvatar'
 import { MonitoringIcon } from 'components/Icons'
 import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
-import { getNavMenuConfig } from 'configs/navMenu/utils'
-import { RoutesEnum } from 'configs/routes'
-import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
-import { useUserProfileState } from 'modules/user/hooks'
-import { useGetUserCodeQuery } from 'modules/user/services/userApi.service'
+
 import { useMatchedRoute } from 'shared/hooks'
 
 import { HeaderStyled } from './styles'
@@ -69,7 +72,7 @@ const PrivateHeader: FC = () => {
             <NotificationCounter />
 
             {userProfile?.isStaff && (
-              <Link to={RoutesEnum.TaskMonitoring}>
+              <Link to={RouteEnum.TaskMonitoring}>
                 <MonitoringIcon
                   $color='black'
                   $size='large'

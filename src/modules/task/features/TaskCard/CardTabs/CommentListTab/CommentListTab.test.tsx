@@ -1,4 +1,12 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 import head from 'lodash/head'
+
+import { taskCommentApiMessages } from 'modules/task/constants/errorMessages'
+
+import { commonApiMessages } from 'shared/constants/errors'
+
+import taskFixtures from 'fixtures/task'
 
 import {
   mockCreateTaskCommentBadRequestError,
@@ -19,11 +27,6 @@ import {
   setupApiTests,
   setupNotifications,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
-import { taskCommentApiMessages } from 'modules/task/constants/errorMessages'
-import { commonApiMessages } from 'shared/constants/errors'
 
 import { testUtils as commentListTestUtils } from './CommentList/CommentList.test'
 import { testUtils as createCommentFormTestUtils } from './CreateCommentForm/CreateCommentForm.test'
@@ -111,7 +114,7 @@ describe('Вкладка списка комментариев заявки', ()
           store: getStoreWithAuth(),
         })
 
-        await commentListTestUtils.loadingFinished()
+        await commentListTestUtils.expectLoadingFinished()
         const button = testUtils.getExpandButton(taskCommentList.length)
 
         expect(button).toBeInTheDocument()
@@ -133,7 +136,7 @@ describe('Вкладка списка комментариев заявки', ()
           store: getStoreWithAuth(),
         })
 
-        await commentListTestUtils.loadingFinished()
+        await commentListTestUtils.expectLoadingFinished()
         await testUtils.clickExpandButton(user)
         const button = testUtils.getCollapseButton()
 
@@ -152,7 +155,7 @@ describe('Вкладка списка комментариев заявки', ()
           store: getStoreWithAuth(),
         })
 
-        await commentListTestUtils.loadingFinished()
+        await commentListTestUtils.expectLoadingFinished()
         const button = testUtils.queryExpandButton()
 
         expect(button).not.toBeInTheDocument()
@@ -167,7 +170,7 @@ describe('Вкладка списка комментариев заявки', ()
           store: getStoreWithAuth(),
         })
 
-        await commentListTestUtils.loadingFinished()
+        await commentListTestUtils.expectLoadingFinished()
         const button = testUtils.queryExpandButton()
 
         expect(button).not.toBeInTheDocument()
@@ -184,7 +187,7 @@ describe('Вкладка списка комментариев заявки', ()
         store: getStoreWithAuth(),
       })
 
-      await commentListTestUtils.loadingFinished()
+      await commentListTestUtils.expectLoadingFinished()
 
       expect(commentListTestUtils.getAllComments()).toHaveLength(
         DEFAULT_DISPLAYABLE_COUNT,
@@ -207,7 +210,7 @@ describe('Вкладка списка комментариев заявки', ()
         store: getStoreWithAuth(),
       })
 
-      await commentListTestUtils.loadingFinished()
+      await commentListTestUtils.expectLoadingFinished()
 
       expect(commentListTestUtils.getAllComments()).toHaveLength(
         DEFAULT_DISPLAYABLE_COUNT,
@@ -248,14 +251,14 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          await commentListTestUtils.loadingFinished()
-          await createCommentFormTestUtils.userEntersComment(
+          await commentListTestUtils.expectLoadingFinished()
+          await createCommentFormTestUtils.setComment(
             user,
             newComment.text,
           )
           await createCommentFormTestUtils.clickSubmitButton(user)
-          await createCommentFormTestUtils.loadingStarted()
-          await createCommentFormTestUtils.loadingFinished()
+          await createCommentFormTestUtils.expectLoadingStarted()
+          await createCommentFormTestUtils.expectLoadingFinished()
 
           const newCommentText = within(
             commentListTestUtils.getFirstComment(),
@@ -275,17 +278,17 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          await commentListTestUtils.loadingFinished()
-          await createCommentFormTestUtils.userEntersComment(
+          await commentListTestUtils.expectLoadingFinished()
+          await createCommentFormTestUtils.setComment(
             user,
             newComment.text,
           )
           await createCommentFormTestUtils.clickSubmitButton(user)
-          await createCommentFormTestUtils.loadingStarted()
-          await createCommentFormTestUtils.loadingFinished()
+          await createCommentFormTestUtils.expectLoadingStarted()
+          await createCommentFormTestUtils.expectLoadingFinished()
 
           expect(
-            createCommentFormTestUtils.getCommentInput(),
+            createCommentFormTestUtils.getCommentField(),
           ).not.toHaveDisplayValue(newComment.text)
         })
       })
@@ -308,14 +311,14 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          await commentListTestUtils.loadingFinished()
-          await createCommentFormTestUtils.userEntersComment(
+          await commentListTestUtils.expectLoadingFinished()
+          await createCommentFormTestUtils.setComment(
             user,
             generateWord(),
           )
           await createCommentFormTestUtils.clickSubmitButton(user)
-          await createCommentFormTestUtils.loadingStarted()
-          await createCommentFormTestUtils.loadingFinished()
+          await createCommentFormTestUtils.expectLoadingStarted()
+          await createCommentFormTestUtils.expectLoadingFinished()
 
           const error = await createCommentFormTestUtils.findCommentFieldError(
             head(badRequestErrorResponse.comment)!,
@@ -332,14 +335,14 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          await commentListTestUtils.loadingFinished()
-          await createCommentFormTestUtils.userEntersComment(
+          await commentListTestUtils.expectLoadingFinished()
+          await createCommentFormTestUtils.setComment(
             user,
             generateWord(),
           )
           await createCommentFormTestUtils.clickSubmitButton(user)
-          await createCommentFormTestUtils.loadingStarted()
-          await createCommentFormTestUtils.loadingFinished()
+          await createCommentFormTestUtils.expectLoadingStarted()
+          await createCommentFormTestUtils.expectLoadingFinished()
 
           const error = await findNotification(
             taskCommentApiMessages.create.commonError,
@@ -355,14 +358,14 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          await commentListTestUtils.loadingFinished()
-          await createCommentFormTestUtils.userEntersComment(
+          await commentListTestUtils.expectLoadingFinished()
+          await createCommentFormTestUtils.setComment(
             user,
             generateWord(),
           )
           await createCommentFormTestUtils.clickSubmitButton(user)
-          await createCommentFormTestUtils.loadingStarted()
-          await createCommentFormTestUtils.loadingFinished()
+          await createCommentFormTestUtils.expectLoadingStarted()
+          await createCommentFormTestUtils.expectLoadingFinished()
 
           const error = await findNotification(
             taskCommentApiMessages.create.commonError,
@@ -378,14 +381,14 @@ describe('Вкладка списка комментариев заявки', ()
             store: getStoreWithAuth(),
           })
 
-          await commentListTestUtils.loadingFinished()
-          await createCommentFormTestUtils.userEntersComment(
+          await commentListTestUtils.expectLoadingFinished()
+          await createCommentFormTestUtils.setComment(
             user,
             generateWord(),
           )
           await createCommentFormTestUtils.clickSubmitButton(user)
-          await createCommentFormTestUtils.loadingStarted()
-          await createCommentFormTestUtils.loadingFinished()
+          await createCommentFormTestUtils.expectLoadingStarted()
+          await createCommentFormTestUtils.expectLoadingFinished()
 
           const error = await findNotification(commonApiMessages.unknownError)
           expect(error).toBeInTheDocument()
@@ -410,7 +413,7 @@ describe('Вкладка списка комментариев заявки', ()
         store: getStoreWithAuth(),
       })
 
-      await commentListTestUtils.loadingFinished()
+      await commentListTestUtils.expectLoadingFinished()
       const commentList = commentListTestUtils.getAllComments()
 
       expect(commentList).toHaveLength(taskCommentList.length)
@@ -426,7 +429,7 @@ describe('Вкладка списка комментариев заявки', ()
         store: getStoreWithAuth(),
       })
 
-      await commentListTestUtils.loadingFinished()
+      await commentListTestUtils.expectLoadingFinished()
       const commentList = commentListTestUtils.queryAllComments()
 
       expect(commentList).toHaveLength(taskCommentList.length)

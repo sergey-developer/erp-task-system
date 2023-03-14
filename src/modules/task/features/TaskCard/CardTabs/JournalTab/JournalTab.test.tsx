@@ -1,3 +1,11 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { commonApiMessages } from 'shared/constants/errors'
+import * as downloadLink from 'shared/utils/common/downloadLink'
+
+import taskFixtures from 'fixtures/task'
+
 import {
   mockGetJournalCsvServerError,
   mockGetJournalCsvSuccess,
@@ -10,33 +18,25 @@ import {
   generateWord,
   getButtonIn,
   getStoreWithAuth,
-  loadingFinishedByButton,
-  loadingFinishedBySpinner,
-  loadingStartedByButton,
-  loadingStartedBySpinner,
+  expectLoadingFinishedByButton,
+  expectLoadingFinishedBySpinner,
+  expectLoadingStartedByButton,
+  expectLoadingStartedBySpinner,
   render,
   setupApiTests,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
-import { commonApiMessages } from 'shared/constants/errors'
-import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import { NO_DATA_MSG } from './constants'
 import JournalTab, { JournalTabProps } from './index'
-
-setupApiTests()
 
 const requiredProps: JournalTabProps = {
   taskId: generateId(),
 }
 
-const getTaskJournal = () => screen.getByTestId('task-journal')
+const getContainer = () => screen.getByTestId('task-journal')
 
-const getDownloadButton = () => screen.getByTestId('journal-btn-download')
-
-const getReloadButton = () => getButtonIn(getTaskJournal(), 'sync')
+// reload button
+const getReloadButton = () => getButtonIn(getContainer(), 'sync')
 
 const clickReloadButton = async (user: UserEvent) => {
   const button = getReloadButton()
@@ -44,30 +44,41 @@ const clickReloadButton = async (user: UserEvent) => {
   return button
 }
 
+// download button
+const getDownloadButton = () => screen.getByTestId('journal-btn-download')
+
 const clickDownloadButton = async (user: UserEvent): Promise<HTMLElement> => {
   const button = getDownloadButton()
   await user.click(button)
   return button
 }
 
-const journalLoadingStarted = loadingStartedBySpinner('journal-spinner')
+const expectJournalLoadingStarted =
+  expectLoadingStartedBySpinner('journal-spinner')
 
-const journalLoadingFinished = loadingFinishedBySpinner('journal-spinner')
+const expectJournalLoadingFinished =
+  expectLoadingFinishedBySpinner('journal-spinner')
 
-const journalCsvLoadingStarted = loadingStartedByButton
-const journalCsvLoadingFinished = loadingFinishedByButton
+const expectJournalCsvLoadingStarted = expectLoadingStartedByButton
+const expectJournalCsvLoadingFinished = expectLoadingFinishedByButton
 
 export const testUtils = {
-  getTaskJournal,
+  getContainer,
+
   getDownloadButton,
+  clickDownloadButton,
+
   getReloadButton,
   clickReloadButton,
-  clickDownloadButton,
-  journalLoadingStarted,
-  journalLoadingFinished,
-  journalCsvLoadingStarted,
-  journalCsvLoadingFinished,
+
+  expectJournalLoadingStarted,
+  expectJournalLoadingFinished,
+
+  expectJournalCsvLoadingStarted,
+  expectJournalCsvLoadingFinished,
 }
+
+setupApiTests()
 
 describe('Вкладка журнала задачи', () => {
   describe('Кнопка обновления журнала', () => {
@@ -90,9 +101,9 @@ describe('Вкладка журнала задачи', () => {
         store: getStoreWithAuth(),
       })
 
-      await testUtils.journalLoadingFinished()
+      await testUtils.expectJournalLoadingFinished()
       await testUtils.clickReloadButton(user)
-      await testUtils.journalLoadingStarted()
+      await testUtils.expectJournalLoadingStarted()
     })
   })
 
@@ -109,8 +120,8 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await testUtils.journalLoadingStarted()
-          await testUtils.journalLoadingFinished()
+          await testUtils.expectJournalLoadingStarted()
+          await testUtils.expectJournalLoadingFinished()
 
           expect(screen.getAllByTestId('journalEntry')).toHaveLength(
             taskJournal.length,
@@ -126,8 +137,8 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await testUtils.journalLoadingStarted()
-          await testUtils.journalLoadingFinished()
+          await testUtils.expectJournalLoadingStarted()
+          await testUtils.expectJournalLoadingFinished()
 
           const downloadButton = testUtils.getDownloadButton()
 
@@ -149,8 +160,8 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await testUtils.journalLoadingStarted()
-          await testUtils.journalLoadingFinished()
+          await testUtils.expectJournalLoadingStarted()
+          await testUtils.expectJournalLoadingFinished()
 
           expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
         })
@@ -165,8 +176,8 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await testUtils.journalLoadingStarted()
-        await testUtils.journalLoadingFinished()
+        await testUtils.expectJournalLoadingStarted()
+        await testUtils.expectJournalLoadingFinished()
 
         const downloadButton = testUtils.getDownloadButton()
         expect(downloadButton).toBeEnabled()
@@ -191,13 +202,13 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await testUtils.journalLoadingStarted()
-          await testUtils.journalLoadingFinished()
+          await testUtils.expectJournalLoadingStarted()
+          await testUtils.expectJournalLoadingFinished()
 
           const downloadButton = await testUtils.clickDownloadButton(user)
 
-          await testUtils.journalCsvLoadingStarted(downloadButton)
-          await testUtils.journalCsvLoadingFinished(downloadButton)
+          await testUtils.expectJournalCsvLoadingStarted(downloadButton)
+          await testUtils.expectJournalCsvLoadingFinished(downloadButton)
 
           expect(makeDownloadLinkSpy).toBeCalledTimes(1)
           expect(clickDownloadLinkSpy).toBeCalledTimes(1)
@@ -226,13 +237,13 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await testUtils.journalLoadingStarted()
-          await testUtils.journalLoadingFinished()
+          await testUtils.expectJournalLoadingStarted()
+          await testUtils.expectJournalLoadingFinished()
 
           const downloadButton = await testUtils.clickDownloadButton(user)
 
-          await testUtils.journalCsvLoadingStarted(downloadButton)
-          await testUtils.journalCsvLoadingFinished(downloadButton)
+          await testUtils.expectJournalCsvLoadingStarted(downloadButton)
+          await testUtils.expectJournalCsvLoadingFinished(downloadButton)
 
           expect(makeDownloadLinkSpy).not.toBeCalled()
           expect(clickDownloadLinkSpy).not.toBeCalled()
@@ -256,8 +267,8 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await testUtils.journalLoadingStarted()
-          await testUtils.journalLoadingFinished()
+          await testUtils.expectJournalLoadingStarted()
+          await testUtils.expectJournalLoadingFinished()
 
           expect(screen.getByText(NO_DATA_MSG)).toBeInTheDocument()
         })
@@ -274,8 +285,8 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await testUtils.journalLoadingStarted()
-          await testUtils.journalLoadingFinished()
+          await testUtils.expectJournalLoadingStarted()
+          await testUtils.expectJournalLoadingFinished()
 
           expect(screen.queryAllByTestId('journalEntry')).toHaveLength(
             taskJournal.length,
@@ -291,8 +302,8 @@ describe('Вкладка журнала задачи', () => {
             store: getStoreWithAuth(),
           })
 
-          await testUtils.journalLoadingStarted()
-          await testUtils.journalLoadingFinished()
+          await testUtils.expectJournalLoadingStarted()
+          await testUtils.expectJournalLoadingFinished()
 
           expect(
             screen.queryByTestId('journal-btn-download'),
@@ -315,8 +326,8 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await testUtils.journalLoadingStarted()
-        await testUtils.journalLoadingFinished()
+        await testUtils.expectJournalLoadingStarted()
+        await testUtils.expectJournalLoadingFinished()
 
         const notification = await findNotification(
           commonApiMessages.unknownError,
@@ -331,8 +342,8 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await testUtils.journalLoadingStarted()
-        await testUtils.journalLoadingFinished()
+        await testUtils.expectJournalLoadingStarted()
+        await testUtils.expectJournalLoadingFinished()
 
         expect(await screen.findByText(NO_DATA_MSG)).toBeInTheDocument()
       })

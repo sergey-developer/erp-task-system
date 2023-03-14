@@ -1,21 +1,25 @@
 import times from 'lodash/times'
 
 import {
-  generateDateString,
-  generateId,
-  generateName,
-  generateWord,
-} from '_tests_/utils'
-import commonFixtures from 'fixtures/common'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
+
 import { NonNullableObject } from 'shared/interfaces/utils'
+
+import commonFixtures from 'fixtures/common'
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
+
+import {
+  generateDateString,
+  generateId,
+  generateInteger,
+  generateName,
+  generateWord,
+} from '_tests_/utils'
 
 export const getTaskTableItem = (
   props?: Partial<
@@ -35,6 +39,7 @@ export const getTaskTableItem = (
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   assignee: taskFixtures.getAssignee(),
   olaNextBreachTime: generateDateString(),
+  subtasksCounter: { all: generateInteger(), completed: generateInteger() },
 })
 
 export const getTaskTableItems = (

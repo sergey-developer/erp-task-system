@@ -1,7 +1,7 @@
-import { PreloadedState, configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/query'
+import { configureStore, PreloadedState } from '@reduxjs/toolkit'
 
 import { env } from 'configs/env'
+
 import { apiService } from 'shared/services/api'
 
 import { rootReducer } from './rootReducer'
@@ -13,7 +13,7 @@ type SetupStoreSettings = {
   preloadedState?: PreloadedState<RootState>
 }
 
-const setupStore = ({ preloadedState }: SetupStoreSettings = {}) => {
+export const setupStore = ({ preloadedState }: SetupStoreSettings = {}) => {
   return configureStore({
     reducer: rootReducer,
     preloadedState,
@@ -23,9 +23,4 @@ const setupStore = ({ preloadedState }: SetupStoreSettings = {}) => {
   })
 }
 
-const store = setupStore()
-
-setupListeners(store.dispatch)
-
-export { setupStore }
-export default store
+export const store = setupStore()

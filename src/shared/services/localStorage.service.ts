@@ -13,10 +13,8 @@ const getItem = (key: StorageKeysEnum): MaybeNull<string> => {
   return localStorage.getItem(key)
 }
 
-const localStorageService = {
+export const localStorageService = {
   setItem,
   getItem,
   removeItem,
 }
-
-export default localStorageService

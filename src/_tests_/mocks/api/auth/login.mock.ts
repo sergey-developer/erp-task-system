@@ -1,3 +1,9 @@
+import { AuthEndpointsEnum } from 'modules/auth/constants/api'
+import { LoginSuccessResponse } from 'modules/auth/models'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
 import {
   getBadRequestErrorMockFn,
   getRequestMockFn,
@@ -6,10 +12,6 @@ import {
   getUnauthorizedErrorMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { AuthEndpointsEnum } from 'modules/auth/constants/api'
-import { LoginSuccessResponse } from 'modules/auth/models'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 const loginMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, AuthEndpointsEnum.Login)

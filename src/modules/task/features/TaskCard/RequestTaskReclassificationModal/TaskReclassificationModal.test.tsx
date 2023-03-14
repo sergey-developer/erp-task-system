@@ -1,19 +1,22 @@
-import {
-  generateIdStr,
-  generateWord,
-  getButtonIn,
-  loadingFinishedByButton,
-  loadingStartedByButton,
-  modalTestUtils,
-  render,
-} from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+
 import { ReclassificationReasonEnum } from 'modules/task/constants/common'
+
 import {
   validationMessages,
   validationSizes,
 } from 'shared/constants/validation'
+
+import {
+  generateIdStr,
+  generateWord,
+  getButtonIn,
+  expectLoadingFinishedByButton,
+  expectLoadingStartedByButton,
+  modalTestUtils,
+  render,
+} from '_tests_/utils'
 
 import { reclassificationReasonLabels } from './constants'
 import RequestTaskReclassificationModal, {
@@ -116,9 +119,9 @@ const setComment = async (user: UserEvent, value: string) => {
 }
 
 // loading
-const loadingStarted = () => loadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
 
-const loadingFinished = () => loadingFinishedByButton(getSubmitButton())
+const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -146,8 +149,8 @@ export const testUtils = {
   findCommentError,
   setComment,
 
-  loadingStarted,
-  loadingFinished,
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
 describe('Модалка запроса о переклассификации заявки', () => {
@@ -211,7 +214,7 @@ describe('Модалка запроса о переклассификации з
 
     test('Отображает состояние загрузки', async () => {
       render(<RequestTaskReclassificationModal {...requiredProps} isLoading />)
-      await testUtils.loadingStarted()
+      await testUtils.expectLoadingStarted()
     })
 
     describe('При клике обработчик вызывается корректно', () => {

@@ -8,6 +8,7 @@ import {
   iconByTaskExtendedStatus,
 } from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
+
 import { StringMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 

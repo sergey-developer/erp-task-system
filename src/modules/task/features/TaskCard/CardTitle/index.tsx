@@ -3,27 +3,30 @@ import noop from 'lodash/noop'
 import React, { FC } from 'react'
 
 import {
+  useTaskExtendedStatus,
+  useTaskOlaStatus,
+  useTaskStatus,
+  useTaskSuspendRequestStatus,
+  useTaskType,
+} from 'modules/task/hooks'
+import { TaskModel } from 'modules/task/models'
+import { useUserRole } from 'modules/user/hooks'
+
+import {
   CheckCircleIcon,
   CloseIcon,
   MenuIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
 } from 'components/Icons'
-import {
-  useTaskExtendedStatus,
-  useTaskOlaStatus,
-  useTaskStatus,
-  useTaskType,
-} from 'modules/task/hooks'
-import { TaskModel } from 'modules/task/models'
-import { useUserRole } from 'modules/user/hooks'
 
 export type CardTitleProps = Pick<
   TaskModel,
   'id' | 'status' | 'extendedStatus' | 'olaStatus' | 'type'
 > & {
+  suspendRequest: TaskModel['suspendRequest']
   isAssignedToCurrentUser: boolean
-  hasSuspendRequest: boolean
+
   onClickExecuteTask: () => void
   onClickRequestSuspend: () => void
   onClickRequestReclassification: () => void
@@ -37,7 +40,7 @@ const CardTitle: FC<CardTitleProps> = ({
   extendedStatus,
   olaStatus,
   isAssignedToCurrentUser,
-  hasSuspendRequest,
+  suspendRequest,
   onClose,
   onClickExecuteTask,
   onClickRequestSuspend,
@@ -48,6 +51,11 @@ const CardTitle: FC<CardTitleProps> = ({
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskOlaStatus = useTaskOlaStatus(olaStatus)
   const { isEngineerRole } = useUserRole()
+  const suspendRequestStatus = useTaskSuspendRequestStatus(
+    suspendRequest?.status,
+  )
+
+  const suspendRequestExist = !!suspendRequest
 
   const actionMenu = (
     <Menu
@@ -57,39 +65,57 @@ const CardTitle: FC<CardTitleProps> = ({
           disabled:
             (!taskStatus.isNew && !taskStatus.isInProgress) ||
             (!taskType.isIncident && !taskType.isRequest) ||
-            hasSuspendRequest,
+            suspendRequestExist,
           icon: <PauseCircleIcon $size='middle' />,
           label: 'Запросить перевод в ожидание',
           onClick: onClickRequestSuspend,
         },
         {
           key: 2,
-          disabled:
-            !taskStatus.isInProgress ||
-            !isAssignedToCurrentUser ||
-            taskExtendedStatus.isInReclassification ||
-            hasSuspendRequest,
+          disabled: suspendRequestStatus.isApproved
+            ? false
+            : !taskStatus.isInProgress ||
+              !isAssignedToCurrentUser ||
+              taskExtendedStatus.isInReclassification ||
+              suspendRequestStatus.isNew ||
+              suspendRequestStatus.isInProgress,
           icon: <CheckCircleIcon $color='crayola' />,
           label: 'Выполнить заявку',
           onClick: onClickExecuteTask,
         },
-        {
-          key: 3,
-          disabled:
-            !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
-            taskOlaStatus.isHalfExpired ||
-            taskType.isRequestTask ||
-            taskType.isIncidentTask ||
-            isEngineerRole ||
-            hasSuspendRequest,
-          icon: <QuestionCircleIcon />,
-          label: taskExtendedStatus.isInReclassification
-            ? 'Отменить переклассификацию'
-            : 'Запросить переклассификацию',
-          onClick: taskExtendedStatus.isInReclassification
-            ? noop
-            : onClickRequestReclassification,
-        },
+        ...(taskExtendedStatus.isInReclassification
+          ? [
+              {
+                key: 3,
+                disabled: suspendRequestStatus.isApproved
+                  ? false
+                  : !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
+                    taskOlaStatus.isHalfExpired ||
+                    taskType.isRequestTask ||
+                    taskType.isIncidentTask ||
+                    isEngineerRole ||
+                    suspendRequestStatus.isNew ||
+                    suspendRequestStatus.isInProgress,
+                icon: <QuestionCircleIcon />,
+                label: 'Отменить переклассификацию',
+                onClick: noop,
+              },
+            ]
+          : [
+              {
+                key: 3,
+                disabled:
+                  !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
+                  taskOlaStatus.isHalfExpired ||
+                  taskType.isRequestTask ||
+                  taskType.isIncidentTask ||
+                  isEngineerRole ||
+                  suspendRequestExist,
+                icon: <QuestionCircleIcon />,
+                label: 'Запросить переклассификацию',
+                onClick: onClickRequestReclassification,
+              },
+            ]),
       ]}
     />
   )

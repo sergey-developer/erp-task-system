@@ -1,9 +1,12 @@
-import { generateId, generateIdStr, render } from '_tests_/utils'
 import { screen } from '@testing-library/react'
+
 import {
+  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
+
+import { generateId, generateIdStr, render } from '_tests_/utils'
 
 import { testUtils as assigneeTestUtils } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as workGroupTestUtils } from '../WorkGroupBlock/WorkGroupBlock.test'
@@ -25,7 +28,7 @@ const requiredProps: Omit<SecondaryDetailsProps, 'workGroup'> = {
   takeTaskIsLoading: false,
   updateAssignee: jest.fn(),
   updateAssigneeIsLoading: false,
-  hasSuspendRequest: false,
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
 const getContainer = () => screen.getByTestId('task-card-secondary-details')

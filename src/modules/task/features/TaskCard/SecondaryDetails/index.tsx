@@ -1,11 +1,13 @@
 import { Col, FormInstance, Row } from 'antd'
 import React, { FC, useMemo } from 'react'
 
+import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
+
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import TaskAssignee from '../AssigneeBlock'
+import AssigneeBlock from '../AssigneeBlock'
 import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
 import { TaskSecondLineFormFields } from '../TaskSecondLineModal/interfaces'
 import WorkGroupBlock from '../WorkGroupBlock'
@@ -37,13 +39,12 @@ export type SecondaryDetailsProps = Pick<
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
 
-  hasSuspendRequest: boolean
+  taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
 const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   id,
   recordId,
-  hasSuspendRequest,
 
   assignee,
 
@@ -64,6 +65,8 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   updateAssignee,
   updateAssigneeIsLoading,
+
+  taskSuspendRequestStatus,
 }) => {
   const workGroup = useMemo(
     () =>
@@ -81,20 +84,19 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           recordId={recordId}
           status={status}
           extendedStatus={extendedStatus}
-          hasSuspendRequest={hasSuspendRequest}
           workGroup={workGroup}
           transferTaskToFirstLine={transferTaskToFirstLine}
           transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
           transferTaskToSecondLine={transferTaskToSecondLine}
           transferTaskToSecondLineIsLoading={transferTaskToSecondLineIsLoading}
+          taskSuspendRequestStatus={taskSuspendRequestStatus}
         />
       </Col>
 
       <Col span={11}>
-        <TaskAssignee
+        <AssigneeBlock
           status={status}
           extendedStatus={extendedStatus}
-          hasSuspendRequest={hasSuspendRequest}
           assignee={assignee}
           workGroup={workGroup}
           workGroupListIsLoading={workGroupListIsLoading}
@@ -102,6 +104,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           updateAssigneeIsLoading={updateAssigneeIsLoading}
           takeTask={takeTask}
           takeTaskIsLoading={takeTaskIsLoading}
+          taskSuspendRequestStatus={taskSuspendRequestStatus}
         />
       </Col>
     </Row>

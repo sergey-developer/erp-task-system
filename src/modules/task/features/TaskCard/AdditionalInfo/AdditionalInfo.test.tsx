@@ -1,3 +1,5 @@
+import { screen, waitFor, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 import omit from 'lodash/omit'
 
 import {
@@ -7,8 +9,6 @@ import {
   getIconByNameIn,
   render,
 } from '_tests_/utils'
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import AdditionalInfo, { AdditionalInfoProps } from './index'
 
@@ -173,11 +173,11 @@ describe('Блок дополнительной информации', () => {
       })
 
       describe('Если отсутствует', () => {
-        test('Вместо него отображается текст "Отсутствует"', () => {
+        test('Вместо него отображается соответствующий текст', () => {
           render(<AdditionalInfo {...requiredProps} expanded />)
 
           const address = testUtils.getAddress()
-          expect(within(address).getByText('Отсутствует')).toBeInTheDocument()
+          expect(within(address).getByText('Не определено')).toBeInTheDocument()
         })
 
         test('Не является ссылкой', () => {
@@ -186,7 +186,7 @@ describe('Блок дополнительной информации', () => {
           const address = testUtils.getAddress()
 
           const link = within(address).queryByRole('link', {
-            name: 'Отсутствует',
+            name: 'Не определено',
           })
 
           expect(link).not.toBeInTheDocument()

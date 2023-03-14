@@ -1,8 +1,6 @@
-import {
-  CORRECT_ACCESS_TOKEN,
-  CORRECT_REFRESH_TOKEN,
-} from '_tests_/constants/auth'
 import { AuthSliceState, AuthenticatedUser } from 'modules/auth/interfaces'
+
+import authFixtures from 'fixtures/auth'
 
 type GetAuthStateConfig = { user: AuthenticatedUser } & Partial<
   Pick<AuthSliceState, 'accessToken' | 'refreshToken'>
@@ -10,8 +8,8 @@ type GetAuthStateConfig = { user: AuthenticatedUser } & Partial<
 
 const getAuthState = ({
   user,
-  accessToken = CORRECT_ACCESS_TOKEN,
-  refreshToken = CORRECT_REFRESH_TOKEN,
+  accessToken = authFixtures.fakeAccessToken,
+  refreshToken = authFixtures.fakeRefreshToken,
 }: GetAuthStateConfig) => ({
   user,
   isAuthenticated: !!accessToken && !!refreshToken,

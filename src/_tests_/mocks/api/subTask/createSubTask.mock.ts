@@ -1,3 +1,9 @@
+import { CreateSubTaskSuccessResponse } from 'modules/subTask/models'
+import { createSubTaskUrl } from 'modules/subTask/utils/apiUrls'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
+
 import {
   getBadRequestErrorMockFn,
   getRequestMockFn,
@@ -5,10 +11,6 @@ import {
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
-import { CreateSubTaskSuccessResponse } from 'modules/subTask/models'
-import { createSubTaskUrl } from 'modules/subTask/utils/apiUrls'
-import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 const createSubTaskMockFn = (taskId: number) =>
   getRequestMockFn(HttpMethodEnum.Post, createSubTaskUrl(taskId))

@@ -1,9 +1,11 @@
 import { Form, Select, Space, Typography } from 'antd'
 import React, { FC, useEffect } from 'react'
 
-import BaseModal from 'components/Modals/BaseModal'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 import { WorkGroupTypeEnum } from 'modules/workGroup/models'
+
+import BaseModal from 'components/Modals/BaseModal'
+
 import { validationRules } from 'shared/constants/validation'
 import { isEqual } from 'shared/utils/common'
 
@@ -34,8 +36,14 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
 
     const workGroup = workGroupList.find(
       (workGroup) =>
-        isEqual(workGroup.type, WorkGroupTypeEnum.AssociatedWithSapId) ||
-        isEqual(workGroup.type, WorkGroupTypeEnum.DefaultForSupportGroup),
+        isEqual(
+          workGroup.priority?.type,
+          WorkGroupTypeEnum.AssociatedWithSapId,
+        ) ||
+        isEqual(
+          workGroup.priority?.type,
+          WorkGroupTypeEnum.DefaultForSupportGroup,
+        ),
     )
 
     if (workGroup) {
@@ -93,14 +101,16 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
               loading={workGroupListIsFetching}
               disabled={isLoading}
             >
-              {workGroupList.map(({ id, name, priority, description }) => (
+              {workGroupList.map(({ id, name, priority }) => (
                 <Select.Option
                   data-testid={`select-option-${id}`}
                   key={id}
                   value={id}
-                  title={description}
+                  title={priority?.description}
                 >
-                  <OptionTextStyled $isBold={priority ? priority < 4 : false}>
+                  <OptionTextStyled
+                    $isBold={priority ? priority.value < 4 : false}
+                  >
                     {name}
                   </OptionTextStyled>
                 </Select.Option>

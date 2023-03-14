@@ -1,19 +1,22 @@
-import {
-  generateIdStr,
-  generateWord,
-  getButtonIn,
-  loadingFinishedByButton,
-  loadingStartedByButton,
-  modalTestUtils,
-  render,
-} from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+
 import { TaskTypeEnum } from 'modules/task/constants/common'
+
 import {
   validationMessages,
   validationSizes,
 } from 'shared/constants/validation'
+
+import {
+  generateIdStr,
+  generateWord,
+  getButtonIn,
+  expectLoadingFinishedByButton,
+  expectLoadingStartedByButton,
+  modalTestUtils,
+  render,
+} from '_tests_/utils'
 
 import TaskResolutionModal, { TaskResolutionModalProps } from './index'
 
@@ -104,9 +107,9 @@ const setUserResolution = async (user: UserEvent, value: string) => {
 }
 
 // loading
-const loadingStarted = () => loadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
 
-const loadingFinished = () => loadingFinishedByButton(getSubmitButton())
+const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -135,8 +138,8 @@ export const testUtils = {
   findUserResolutionError,
   setUserResolution,
 
-  loadingStarted,
-  loadingFinished,
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
 describe('Модалка решения по заявке', () => {
@@ -211,7 +214,7 @@ describe('Модалка решения по заявке', () => {
 
     test('Отображает состояние загрузки', async () => {
       render(<TaskResolutionModal {...requiredProps} isLoading />)
-      await testUtils.loadingStarted()
+      await testUtils.expectLoadingStarted()
     })
 
     describe('При клике обработчик вызывается корректно', () => {

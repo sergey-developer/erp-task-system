@@ -1,16 +1,17 @@
 import React, { ReactElement } from 'react'
 
 import {
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
+
+import {
   CheckCircleIcon,
   ExclamationCircleIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
   RightCircleIcon,
 } from 'components/Icons'
-import {
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
 
 import { BadgeStyled } from './styles'
 

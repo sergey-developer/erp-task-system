@@ -1,6 +1,8 @@
-import { generateWord, render } from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
+
 import { TaskTypeEnum } from 'modules/task/constants/common'
+
+import { generateWord, render } from '_tests_/utils'
 
 import ResolutionTab, { ResolutionTabProps } from './index'
 
@@ -16,27 +18,26 @@ const notRequiredProps: Omit<ResolutionTabProps, keyof typeof requiredProps> = {
 
 const getContainer = () => screen.getByTestId('task-resolution-tab')
 
-const getElementByText = (text: string) =>
-  within(getContainer()).getByText(text)
+const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
-const queryElementByText = (text: string) =>
+const queryChildByText = (text: string) =>
   within(getContainer()).queryByText(text)
 
 export const testUtils = {
   getContainer,
-  getElementByText,
-  queryElementByText,
+  getChildByText,
+  queryChildByText,
 }
 
 describe('Вкладка решение заявки', () => {
   test('Заголовок отображается', () => {
     render(<ResolutionTab {...requiredProps} />)
-    expect(testUtils.getElementByText(requiredProps.title)).toBeInTheDocument()
+    expect(testUtils.getChildByText(requiredProps.title)).toBeInTheDocument()
   })
 
   test('Если все решения отсутствуют, отображается прочерк', () => {
     render(<ResolutionTab {...requiredProps} />)
-    expect(testUtils.getElementByText('-')).toBeInTheDocument()
+    expect(testUtils.getChildByText('-')).toBeInTheDocument()
   })
 
   describe('Техническое решение', () => {
@@ -49,7 +50,7 @@ describe('Вкладка решение заявки', () => {
       )
 
       expect(
-        testUtils.getElementByText(notRequiredProps.techResolution!),
+        testUtils.getChildByText(notRequiredProps.techResolution!),
       ).toBeInTheDocument()
     })
 
@@ -57,7 +58,7 @@ describe('Вкладка решение заявки', () => {
       render(<ResolutionTab {...requiredProps} />)
 
       expect(
-        testUtils.queryElementByText(notRequiredProps.techResolution!),
+        testUtils.queryChildByText(notRequiredProps.techResolution!),
       ).not.toBeInTheDocument()
     })
   })
@@ -73,7 +74,7 @@ describe('Вкладка решение заявки', () => {
       )
 
       expect(
-        testUtils.getElementByText(notRequiredProps.userResolution!),
+        testUtils.getChildByText(notRequiredProps.userResolution!),
       ).toBeInTheDocument()
     })
 
@@ -81,7 +82,7 @@ describe('Вкладка решение заявки', () => {
       render(<ResolutionTab {...requiredProps} />)
 
       expect(
-        testUtils.queryElementByText(notRequiredProps.userResolution!),
+        testUtils.queryChildByText(notRequiredProps.userResolution!),
       ).not.toBeInTheDocument()
     })
 
@@ -95,7 +96,7 @@ describe('Вкладка решение заявки', () => {
       )
 
       expect(
-        testUtils.queryElementByText(notRequiredProps.userResolution!),
+        testUtils.queryChildByText(notRequiredProps.userResolution!),
       ).not.toBeInTheDocument()
     })
 
@@ -109,7 +110,7 @@ describe('Вкладка решение заявки', () => {
       )
 
       expect(
-        testUtils.queryElementByText(notRequiredProps.userResolution!),
+        testUtils.queryChildByText(notRequiredProps.userResolution!),
       ).not.toBeInTheDocument()
     })
   })

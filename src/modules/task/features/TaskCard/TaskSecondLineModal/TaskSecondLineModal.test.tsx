@@ -1,3 +1,13 @@
+import { ByRoleOptions } from '@testing-library/dom/types/queries'
+import { screen, waitFor, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { WorkGroupTypeEnum } from 'modules/workGroup/models'
+
+import { validationMessages } from 'shared/constants/validation'
+
+import workGroupFixtures from 'fixtures/workGroup'
+
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   clickSelectOption,
@@ -9,22 +19,16 @@ import {
   getSelectedOption,
   getSelectedOptionText,
   getStoreWithAuth,
-  loadingFinishedBySelect,
-  loadingStartedByButton,
-  loadingStartedBySelect,
+  expectLoadingFinishedBySelect,
+  expectLoadingStartedByButton,
+  expectLoadingStartedBySelect,
   modalTestUtils,
   querySelect,
   render,
   selectDisabled,
   setupApiTests,
-  userOpenSelect,
+  openSelect,
 } from '_tests_/utils'
-import { ByRoleOptions } from '@testing-library/dom/types/queries'
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import workGroupFixtures from 'fixtures/workGroup'
-import { WorkGroupTypeEnum } from 'modules/workGroup/models'
-import { validationMessages } from 'shared/constants/validation'
 
 import TaskSecondLineModal from './index'
 import { TaskSecondLineModalProps } from './interfaces'
@@ -64,15 +68,15 @@ const getWorkGroupOptionText = (option: HTMLElement, text: string) =>
   within(option).getByText(text)
 
 const expectWorkGroupLoadingStarted = () =>
-  loadingStartedBySelect(getWorkGroupBlock())
+  expectLoadingStartedBySelect(getWorkGroupBlock())
 
 const expectWorkGroupLoadingFinished = () =>
-  loadingFinishedBySelect(getWorkGroupBlock())
+  expectLoadingFinishedBySelect(getWorkGroupBlock())
 
 const expectWorkGroupSelectDisabled = () => selectDisabled(getWorkGroupBlock())
 
 const openWorkGroup = async (user: UserEvent) => {
-  await userOpenSelect(user, getWorkGroupBlock())
+  await openSelect(user, getWorkGroupBlock())
 }
 
 const selectWorkGroup = clickSelectOption
@@ -105,7 +109,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // loading
-const loadingStarted = () => loadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -139,7 +143,7 @@ export const testUtils = {
   getCloseButton,
   clickCloseButton,
 
-  loadingStarted,
+  expectLoadingStarted,
 }
 
 setupApiTests()
@@ -217,10 +221,14 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       test(`Если есть группа с типом ${WorkGroupTypeEnum.AssociatedWithSapId}`, async () => {
         const workGroupList = [
           workGroupFixtures.getWorkGroup({
-            type: WorkGroupTypeEnum.AssociatedWithSapId,
+            priority: workGroupFixtures.getWorkGroupPriority({
+              type: WorkGroupTypeEnum.AssociatedWithSapId,
+            }),
           }),
           workGroupFixtures.getWorkGroup({
-            type: WorkGroupTypeEnum.NoType,
+            priority: workGroupFixtures.getWorkGroupPriority({
+              type: WorkGroupTypeEnum.NoType,
+            }),
           }),
         ]
 
@@ -247,10 +255,14 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       test(`Если есть группа с типом ${WorkGroupTypeEnum.DefaultForSupportGroup}`, async () => {
         const workGroupList = [
           workGroupFixtures.getWorkGroup({
-            type: WorkGroupTypeEnum.DefaultForSupportGroup,
+            priority: workGroupFixtures.getWorkGroupPriority({
+              type: WorkGroupTypeEnum.DefaultForSupportGroup,
+            }),
           }),
           workGroupFixtures.getWorkGroup({
-            type: WorkGroupTypeEnum.NoType,
+            priority: workGroupFixtures.getWorkGroupPriority({
+              type: WorkGroupTypeEnum.NoType,
+            }),
           }),
         ]
 
@@ -345,13 +357,17 @@ describe('Модалка перевода заявки на 2-ю линию', ()
           workGroup.name,
         )
 
-        expect(option.title).toBe(workGroup.description)
+        expect(option.title).toBe(workGroup.priority!.description)
         expect(optionText).toBeInTheDocument()
       })
     })
 
     test('Корректно отображает варианты с приоритетом >= 4', async () => {
-      const workGroupList = [workGroupFixtures.getWorkGroup({ priority: 4 })]
+      const workGroupList = [
+        workGroupFixtures.getWorkGroup({
+          priority: workGroupFixtures.getWorkGroupPriority({ value: 4 }),
+        }),
+      ]
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...requiredProps} />, {
@@ -373,7 +389,11 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Корректно отображает варианты с приоритетом < 4', async () => {
-      const workGroupList = [workGroupFixtures.getWorkGroup({ priority: 3 })]
+      const workGroupList = [
+        workGroupFixtures.getWorkGroup({
+          priority: workGroupFixtures.getWorkGroupPriority({ value: 3 }),
+        }),
+      ]
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...requiredProps} />, {
@@ -464,7 +484,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
         store: getStoreWithAuth(),
       })
 
-      await testUtils.loadingStarted()
+      await testUtils.expectLoadingStarted()
     })
 
     describe('Обработчик вызывается корректно', () => {

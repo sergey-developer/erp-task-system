@@ -1,10 +1,11 @@
 import { Col, Input, Row, Tabs, Typography } from 'antd'
 import { FC, useState } from 'react'
 
+import { useGetTaskMonitoring } from 'modules/monitoring/hooks'
+
 import LoadingArea from 'components/LoadingArea'
 import PrettyJson from 'components/PrettyJson'
 import Space from 'components/Space'
-import { useGetTaskMonitoring } from 'modules/monitoring/hooks'
 
 const { Search } = Input
 const { Text } = Typography
@@ -31,8 +32,8 @@ const TaskMonitoringPage: FC = () => {
         </Col>
       </Row>
 
-      <Row justify='center'>
-        <Col span={12}>
+      <Row>
+        <Col span={24}>
           <LoadingArea isLoading={isFetching}>
             {monitoringData.length ? (
               <Tabs tabPosition='left'>

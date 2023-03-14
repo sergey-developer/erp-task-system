@@ -2,9 +2,12 @@ import { Button, Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import Space from 'components/Space'
-import { RoutesEnum } from 'configs/routes'
+import { RouteEnum } from 'configs/routes'
+
 import { useLogin } from 'modules/auth/hooks'
+
+import Space from 'components/Space'
+
 import { APP_NAME } from 'shared/constants/common'
 import { ErrorResponse, isBadRequestError } from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
@@ -38,7 +41,7 @@ const LoginPage: FC = () => {
   }
 
   return (
-    <CardStyled>
+    <CardStyled data-testid='login-card'>
       <Space direction='vertical' size='large'>
         <Space direction='vertical' size={48} $block>
           <PageTitleStyled level={4}>{APP_NAME}</PageTitleStyled>
@@ -47,11 +50,7 @@ const LoginPage: FC = () => {
         </Space>
 
         <Space direction='vertical'>
-          {loginError && (
-            <Text data-testid='login-error' type='danger'>
-              {loginError}
-            </Text>
-          )}
+          {loginError && <Text type='danger'>{loginError}</Text>}
 
           <FormStyled<LoginFormFields>
             form={form}
@@ -98,7 +97,7 @@ const LoginPage: FC = () => {
 
               <Link
                 data-testid='btn-forgotPassword'
-                to={RoutesEnum.ForgotPassword}
+                to={RouteEnum.ForgotPassword}
               >
                 <Button type='link' block>
                   Забыли пароль?

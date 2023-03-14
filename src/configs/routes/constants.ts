@@ -1,4 +1,4 @@
-export enum RoutesEnum {
+export enum RouteEnum {
   // common routes
   Root = '/',
   NotFound = '*',

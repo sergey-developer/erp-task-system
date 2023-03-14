@@ -12,6 +12,7 @@ import {
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import { getShortUserName, getUserRoleMap } from 'modules/user/utils'
+
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { UserRoleEnum } from 'shared/constants/roles'
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -120,8 +121,17 @@ export const getTableColumns = (
       dataIndex: 'status',
       title: 'Статус',
       ellipsis: true,
-      // sorter: statusSorter, временно отключена сортировка
       render: (_, { status }) => taskStatusDict[status],
+    },
+    {
+      key: 'subtasksCounter',
+      dataIndex: 'subtasksCounter',
+      title: 'Выполненные задания',
+      ellipsis: true,
+      render: (_, { subtasksCounter }) =>
+        subtasksCounter?.all && subtasksCounter?.completed
+          ? `${subtasksCounter.completed}/${subtasksCounter.all}`
+          : '-',
     },
     {
       key: 'lastComment',

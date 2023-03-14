@@ -1,17 +1,19 @@
-import {
-  generateWord,
-  getButtonIn,
-  loadingFinishedByButton,
-  loadingStartedByButton,
-  render,
-} from '_tests_/utils'
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+
 import {
   validationMessages,
   validationSizes,
 } from 'shared/constants/validation'
 import { NonNullableObject } from 'shared/interfaces/utils'
+
+import {
+  generateWord,
+  getButtonIn,
+  expectLoadingFinishedByButton,
+  expectLoadingStartedByButton,
+  render,
+} from '_tests_/utils'
 
 import ReworkSubTaskModal from './index'
 import { ReworkSubTaskModalProps } from './interfaces'
@@ -35,6 +37,7 @@ const findContainer = () => screen.findByTestId('rework-sub-task-modal')
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
 
+// return reason
 const getReturnReasonFieldContainer = () =>
   within(getContainer()).getByTestId('return-reason')
 
@@ -49,9 +52,10 @@ const setReturnReason = async (user: UserEvent, value: string) => {
   return field
 }
 
-const findReturnReasonError = async (error: string) =>
+const findReturnReasonFieldError = async (error: string) =>
   within(getReturnReasonFieldContainer()).findByText(error)
 
+// submit button
 const getSubmitButton = () => getButtonIn(getContainer(), /сохранить/i)
 
 const clickSubmitButton = async (user: UserEvent) => {
@@ -59,6 +63,8 @@ const clickSubmitButton = async (user: UserEvent) => {
   await user.click(button)
   return button
 }
+
+// cancel button
 const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
 
 const clickCancelButton = async (user: UserEvent) => {
@@ -66,6 +72,12 @@ const clickCancelButton = async (user: UserEvent) => {
   await user.click(button)
   return button
 }
+
+// other
+const expectLoadingStarted = () =>
+  expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingFinished = () =>
+  expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -75,7 +87,7 @@ export const testUtils = {
   getReturnReasonFieldContainer,
   getReturnReasonField,
   setReturnReason,
-  findReturnReasonError,
+  findReturnReasonFieldError,
 
   getSubmitButton,
   clickSubmitButton,
@@ -83,8 +95,8 @@ export const testUtils = {
   getCancelButton,
   clickCancelButton,
 
-  loadingStarted: () => loadingStartedByButton(getSubmitButton()),
-  loadingFinished: () => loadingFinishedByButton(getSubmitButton()),
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
 describe('Модалка отправки запроса на доработку', () => {
@@ -143,7 +155,7 @@ describe('Модалка отправки запроса на доработку
           await testUtils.setReturnReason(user, ' ')
 
           expect(
-            await testUtils.findReturnReasonError(
+            await testUtils.findReturnReasonFieldError(
               validationMessages.canNotBeEmpty,
             ),
           ).toBeInTheDocument()
@@ -158,7 +170,7 @@ describe('Модалка отправки запроса на доработку
           )
 
           expect(
-            await testUtils.findReturnReasonError(
+            await testUtils.findReturnReasonFieldError(
               validationMessages.string.max.middle,
             ),
           ).toBeInTheDocument()
@@ -170,7 +182,9 @@ describe('Модалка отправки запроса на доработку
           await testUtils.clickSubmitButton(user)
 
           expect(
-            await testUtils.findReturnReasonError(validationMessages.required),
+            await testUtils.findReturnReasonFieldError(
+              validationMessages.required,
+            ),
           ).toBeInTheDocument()
         })
       })
@@ -190,7 +204,7 @@ describe('Модалка отправки запроса на доработку
         render(<ReworkSubTaskModal {...requiredProps} isLoading />)
 
         const submitButton = testUtils.getSubmitButton()
-        await loadingStartedByButton(submitButton)
+        await expectLoadingStartedByButton(submitButton)
       })
 
       test('Обработчик вызывается корректно', async () => {

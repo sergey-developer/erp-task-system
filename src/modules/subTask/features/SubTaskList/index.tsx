@@ -1,12 +1,15 @@
 import { Divider, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import Space from 'components/Space'
 import { SubTaskModel } from 'modules/subTask/models'
 import {
+  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
+
+import Space from 'components/Space'
+
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
@@ -18,22 +21,23 @@ export type SubTaskListProps = {
   taskStatus: TaskStatusEnum
   taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
-  taskHasSuspendRequest: boolean
   list: Array<SubTaskModel>
   isError: boolean
   onClickCancel: (subTask: SubTaskModel) => void
   onClickRework: (subTask: SubTaskModel) => void
+
+  taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
 const SubTaskList: FC<SubTaskListProps> = ({
   taskStatus,
   taskExtendedStatus,
   currentUserIsTaskAssignee,
-  taskHasSuspendRequest,
   list,
   isError,
   onClickCancel,
   onClickRework,
+  taskSuspendRequestStatus,
 }) => {
   return (
     <Space data-testid='sub-task-list' $block direction='vertical'>
@@ -61,9 +65,9 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 taskStatus={taskStatus}
                 taskExtendedStatus={taskExtendedStatus}
                 currentUserIsTaskAssignee={currentUserIsTaskAssignee}
-                taskHasSuspendRequest={taskHasSuspendRequest}
                 returnReason={item.returnReason}
                 cancelReason={item.cancelReason}
+                taskSuspendRequestStatus={taskSuspendRequestStatus}
               />
 
               {array.length - 1 !== index && <Divider />}

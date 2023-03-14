@@ -1,3 +1,17 @@
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import {
+  SuspendRequestStatusEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/common'
+
+import { UserRoleEnum } from 'shared/constants/roles'
+
+import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
+
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   findButtonIn,
@@ -5,25 +19,18 @@ import {
   generateWord,
   getButtonIn,
   getStoreWithAuth,
-  loadingStartedByButton,
+  expectLoadingStartedByButton,
   queryButtonIn,
   render,
 } from '_tests_/utils'
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-import {
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
-import { UserRoleEnum } from 'shared/constants/roles'
 
 import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
 
-const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {
+const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> & {
+  taskSuspendRequestStatus: SuspendRequestStatusEnum
+} = {
   id: generateId(),
   recordId: generateWord(),
   status: TaskStatusEnum.New,
@@ -32,7 +39,7 @@ const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> = {
   transferTaskToFirstLineIsLoading: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
-  hasSuspendRequest: false,
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
 const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof requiredProps> =
@@ -91,8 +98,8 @@ const clickFirstLineButton = async (user: UserEvent) => {
   return button
 }
 
-const firstLineLoadingStarted = async () => {
-  await loadingStartedByButton(getFirstLineButton())
+const expectFirstLineLoadingStarted = async () => {
+  await expectLoadingStartedByButton(getFirstLineButton())
 }
 
 // second line button
@@ -108,8 +115,8 @@ const clickSecondLineButton = async (user: UserEvent) => {
   return button
 }
 
-const secondLineLoadingStarted = async () => {
-  await loadingStartedByButton(getSecondLineButton())
+const expectSecondLineLoadingStarted = async () => {
+  await expectLoadingStartedByButton(getSecondLineButton())
 }
 
 export const testUtils = {
@@ -120,12 +127,12 @@ export const testUtils = {
   findFirstLineButton,
   queryFirstLineButton,
   clickFirstLineButton,
-  firstLineLoadingStarted,
+  expectFirstLineLoadingStarted,
 
   getSecondLineButton,
   querySecondLineButton,
   clickSecondLineButton,
-  secondLineLoadingStarted,
+  expectSecondLineLoadingStarted,
 }
 
 describe('Блок рабочей группы', () => {
@@ -258,7 +265,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.secondLineLoadingStarted()
+        await testUtils.expectSecondLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
@@ -379,7 +386,7 @@ describe('Блок рабочей группы', () => {
     })
 
     describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
-      test('Не отображается', () => {
+      test('Отображается если условия соблюдены', () => {
         render(
           <WorkGroupBlock {...requiredProps} {...showFirstLineButtonProps} />,
           {
@@ -389,7 +396,137 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+        expect(testUtils.getFirstLineButton()).toBeInTheDocument()
+      })
+
+      describe('Не активна если условия соблюдены', () => {
+        test('Но есть запрос на переклассификацию', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              extendedStatus={TaskExtendedStatusEnum.InReclassification}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.getFirstLineButton()).toBeDisabled()
+        })
+
+        test('Но статус заявки "В ожидании"', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              {...activeFirstLineButtonProps}
+              status={TaskStatusEnum.Awaiting}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.getFirstLineButton()).toBeDisabled()
+        })
+      })
+
+      test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
+        render(
+          <WorkGroupBlock
+            {...requiredProps}
+            {...showFirstLineButtonProps}
+            {...activeFirstLineButtonProps}
+            transferTaskToFirstLineIsLoading
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          },
+        )
+
+        await testUtils.expectFirstLineLoadingStarted()
+      })
+
+      test('При клике открывается модальное окно', async () => {
+        const { user } = render(
+          <WorkGroupBlock
+            {...requiredProps}
+            {...showFirstLineButtonProps}
+            {...activeFirstLineButtonProps}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.Engineer,
+            }),
+          },
+        )
+
+        await testUtils.clickFirstLineButton(user)
+
+        expect(
+          await taskFirstLineModalTestUtils.findContainer(),
+        ).toBeInTheDocument()
+      })
+
+      describe('Не отображается если условия соблюдены', () => {
+        test('Но нет рабочей группы', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              workGroup={null}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+        })
+
+        test('Но заявка закрыта', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              status={TaskStatusEnum.Closed}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+        })
+
+        test('Но заявка завершена', () => {
+          render(
+            <WorkGroupBlock
+              {...requiredProps}
+              {...showFirstLineButtonProps}
+              status={TaskStatusEnum.Completed}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.Engineer,
+              }),
+            },
+          )
+
+          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
+        })
       })
     })
 
@@ -460,7 +597,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.firstLineLoadingStarted()
+        await testUtils.expectFirstLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
@@ -480,7 +617,7 @@ describe('Блок рабочей группы', () => {
         await testUtils.clickFirstLineButton(user)
 
         expect(
-          await taskFirstLineModalTestUtils.findModal(),
+          await taskFirstLineModalTestUtils.findContainer(),
         ).toBeInTheDocument()
       })
 
@@ -605,7 +742,7 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        await testUtils.firstLineLoadingStarted()
+        await testUtils.expectFirstLineLoadingStarted()
       })
 
       test('При клике открывается модальное окно', async () => {
@@ -625,7 +762,7 @@ describe('Блок рабочей группы', () => {
         await testUtils.clickFirstLineButton(user)
 
         expect(
-          await taskFirstLineModalTestUtils.findModal(),
+          await taskFirstLineModalTestUtils.findContainer(),
         ).toBeInTheDocument()
       })
 
@@ -701,7 +838,7 @@ describe('Блок рабочей группы', () => {
         )
 
         await testUtils.clickFirstLineButton(user)
-        await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.findContainer()
         await taskFirstLineModalTestUtils.setDescription(user, generateWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
@@ -730,7 +867,7 @@ describe('Блок рабочей группы', () => {
         )
 
         await testUtils.clickFirstLineButton(user)
-        await taskFirstLineModalTestUtils.findModal()
+        await taskFirstLineModalTestUtils.findContainer()
         await taskFirstLineModalTestUtils.setDescription(user, generateWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 

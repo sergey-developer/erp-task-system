@@ -1,8 +1,8 @@
 import { generateWord, render } from '_tests_/utils'
 
-import { FastFilterEnum } from '../constants'
 import { testUtils } from '../FastFilter.test'
 import FilterTag, { FilterTagProps } from '../FilterTag'
+import { FastFilterEnum } from '../constants'
 
 export const requiredProps: Readonly<
   Pick<FilterTagProps, 'text' | 'checked' | 'amount' | 'value'>
@@ -16,7 +16,7 @@ export const requiredProps: Readonly<
 describe('Элемент быстрого фильтра', () => {
   test('Отображает состояние загрузки', async () => {
     render(<FilterTag {...requiredProps} loading />)
-    await testUtils.loadingStarted()
+    await testUtils.expectLoadingStarted()
   })
 
   test('Отображает текст', () => {
@@ -96,7 +96,7 @@ describe('Элемент быстрого фильтра', () => {
         <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
       )
 
-      await testUtils.userChangeFilter(user, requiredProps.value)
+      await testUtils.changeFilter(user, requiredProps.value)
       expect(onChange).toBeCalledTimes(1)
     })
 
@@ -105,7 +105,7 @@ describe('Элемент быстрого фильтра', () => {
         <FilterTag {...requiredProps} disabled onChange={onChange} />,
       )
 
-      await testUtils.userChangeFilter(user, requiredProps.value)
+      await testUtils.changeFilter(user, requiredProps.value)
       expect(onChange).not.toBeCalled()
     })
   })

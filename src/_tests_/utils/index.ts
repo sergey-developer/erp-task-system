@@ -1,4 +1,4 @@
-export * from './fakeGenerator'
+export * from './fakes'
 
 export * from './auth'
 
@@ -7,7 +7,6 @@ export * from './fields/radioButton'
 export * from './fields/checkbox'
 
 export * from './loading'
-export * from './validating'
 export * from './icon'
 export * from './button'
 export { default as modalTestUtils } from './modal'

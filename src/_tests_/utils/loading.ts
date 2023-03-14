@@ -1,29 +1,30 @@
-import { findIconByNameIn, queryIconByNameIn } from '_tests_/utils'
 import { screen, waitFor } from '@testing-library/react'
+
+import { findIconByNameIn, queryIconByNameIn } from '_tests_/utils'
 
 const btnLoadingClass = 'ant-btn-loading'
 
-export const loadingStartedByButton = async (button: HTMLElement) => {
+export const expectLoadingStartedByButton = async (button: HTMLElement) => {
   await waitFor(() => {
     expect(button).toHaveClass(btnLoadingClass)
   })
 }
 
-export const loadingFinishedByButton = async (button: HTMLElement) => {
+export const expectLoadingFinishedByButton = async (button: HTMLElement) => {
   await waitFor(() => {
     expect(button).not.toHaveClass(btnLoadingClass)
   })
 }
 
-export const loadingStartedBySpinner = (testId: string) => async () => {
+export const expectLoadingStartedBySpinner = (testId: string) => async () => {
   expect(await screen.findByTestId(testId)).toBeInTheDocument()
 }
 
-export const loadingNotStartedBySpinner = (testId: string) => () => {
+export const expectLoadingNotStartedBySpinner = (testId: string) => () => {
   expect(screen.queryByTestId(testId)).not.toBeInTheDocument()
 }
 
-export const loadingFinishedBySpinner = (testId: string) => async () => {
+export const expectLoadingFinishedBySpinner = (testId: string) => async () => {
   const spinner = screen.queryByTestId(testId)
 
   await waitFor(() => {
@@ -31,54 +32,46 @@ export const loadingFinishedBySpinner = (testId: string) => async () => {
   })
 }
 
-export const loadingStartedBySelect = async (container: HTMLElement) => {
+const selectArrowLoadingClass = '.ant-select-arrow-loading'
+
+export const expectLoadingStartedBySelect = async (container: HTMLElement) => {
   await waitFor(() => {
-    expect(
-      container.querySelector('.ant-select-arrow-loading'),
-    ).toBeInTheDocument()
+    expect(container.querySelector(selectArrowLoadingClass)).toBeInTheDocument()
   })
 }
 
-export const loadingFinishedBySelect = async (container: HTMLElement) => {
+export const expectLoadingFinishedBySelect = async (container: HTMLElement) => {
   await waitFor(() => {
     expect(
-      container.querySelector('.ant-select-arrow-loading'),
+      container.querySelector(selectArrowLoadingClass),
     ).not.toBeInTheDocument()
   })
 }
 
-export const loadingStartedByCard = async (card: HTMLElement) => {
+const cardLoadingClass = 'ant-card-loading'
+
+export const expectLoadingStartedByCard = async (card: HTMLElement) => {
   await waitFor(() => {
-    expect(card).toHaveClass('ant-card-loading')
+    expect(card).toHaveClass(cardLoadingClass)
   })
 }
 
 export const expectLoadingNotStartedByCard = (card: HTMLElement) => {
-  expect(card).not.toHaveClass('ant-card-loading')
+  expect(card).not.toHaveClass(cardLoadingClass)
 }
 
-export const loadingFinishedByCard = async (card: HTMLElement) => {
+export const expectLoadingFinishedByCard = async (card: HTMLElement) => {
   await waitFor(() => {
-    expect(card).not.toHaveClass('ant-card-loading')
+    expect(card).not.toHaveClass(cardLoadingClass)
   })
 }
 
-export const loadingStartedByIconIn = async (container: HTMLElement) => {
+export const expectLoadingStartedByIconIn = async (container: HTMLElement) => {
   expect(await findIconByNameIn(container, 'loading')).toBeInTheDocument()
 }
 
-export const loadingFinishedByIconIn = async (container: HTMLElement) => {
+export const expectLoadingFinishedByIconIn = async (container: HTMLElement) => {
   await waitFor(() => {
     expect(queryIconByNameIn(container, 'loading')).not.toBeInTheDocument()
   })
-}
-
-export const loadingStartedBySkeletonIn = (container: HTMLElement) => () => {
-  const skeleton = container.querySelector('.ant-skeleton-active')
-  expect(skeleton).toBeInTheDocument()
-}
-
-export const loadingFinishedBySkeletonIn = (container: HTMLElement) => () => {
-  const skeleton = container.querySelector('.ant-skeleton-active')
-  expect(skeleton).not.toBeInTheDocument()
 }

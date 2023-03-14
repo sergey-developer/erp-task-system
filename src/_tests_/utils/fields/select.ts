@@ -1,6 +1,7 @@
 import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+
 import { MaybeNull, NumberOrString } from 'shared/interfaces/utils'
 
 export const getSelect = (container: HTMLElement, opts?: ByRoleOptions) =>
@@ -12,7 +13,7 @@ export const querySelect = (container: HTMLElement, opts?: ByRoleOptions) =>
 export const findSelect = (container: HTMLElement, opts?: ByRoleOptions) =>
   within(container).findByRole('combobox', opts)
 
-export const userOpenSelect = async (
+export const openSelect = async (
   user: UserEvent,
   container: HTMLElement,
 ) => {

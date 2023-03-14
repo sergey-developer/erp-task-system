@@ -3,26 +3,26 @@ import { Navigate, RouteObject } from 'react-router-dom'
 
 import PublicLayout from 'components/Layout/PublicLayout'
 
-import { RoutesEnum } from './constants'
+import { RouteEnum } from "./constants";
 
 const LoginPage = React.lazy(() => import('modules/auth/pages/LoginPage'))
 
 export const publicRoutesConfig: Array<RouteObject> = [
   {
-    path: RoutesEnum.Root,
+    path: RouteEnum.Root,
     element: <PublicLayout />,
     children: [
       {
         index: true,
-        element: <Navigate to={RoutesEnum.Login} />,
+        element: <Navigate to={RouteEnum.Login} />,
       },
       {
-        path: RoutesEnum.Login,
+        path: RouteEnum.Login,
         element: <LoginPage />,
       },
       {
-        path: RoutesEnum.NotFound,
-        element: <Navigate to={RoutesEnum.Login} replace />,
+        path: RouteEnum.NotFound,
+        element: <Navigate to={RouteEnum.Login} replace />,
       },
     ],
   },
