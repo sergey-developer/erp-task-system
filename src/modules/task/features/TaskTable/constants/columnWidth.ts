@@ -13,7 +13,7 @@ export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
   supportGroup: 130,
   olaNextBreachTime: 105,
   status: 110,
-  subtasksCounter: 110,
+  subtasksCounter: 55,
   lastComment: 160,
   createdAt: 105,
 }
@@ -30,7 +30,7 @@ export const xxlColumnWidthMap: Record<XxlColumnWidthMap, number> = {
   supportGroup: 140,
   olaNextBreachTime: 140,
   status: 110,
-  subtasksCounter: 110,
+  subtasksCounter: 55,
   lastComment: 200,
   createdAt: 140,
 }
