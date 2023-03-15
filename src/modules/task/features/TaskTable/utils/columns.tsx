@@ -126,10 +126,9 @@ export const getTableColumns = (
     {
       key: 'subtasksCounter',
       dataIndex: 'subtasksCounter',
-      title: 'Выполненные задания',
-      ellipsis: true,
+      title: <Text title='Выполнено/Всего'>Задания</Text>,
       render: (_, { subtasksCounter }) =>
-        subtasksCounter?.all && subtasksCounter?.completed
+        subtasksCounter.all
           ? `${subtasksCounter.completed}/${subtasksCounter.all}`
           : '-',
     },

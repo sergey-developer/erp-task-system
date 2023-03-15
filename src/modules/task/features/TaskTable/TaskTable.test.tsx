@@ -1234,10 +1234,10 @@ describe('Таблица заявок', () => {
       })
     })
 
-    describe('Выполненные задания', () => {
+    describe('Задания', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
-        expect(testUtils.getColTitle('Выполненные задания')).toBeInTheDocument()
+        expect(testUtils.getColTitle('Задания')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
@@ -1253,7 +1253,7 @@ describe('Таблица заявок', () => {
       test('Сортировка отключена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
-        const headCol = testUtils.getHeadCol('Выполненные задания')
+        const headCol = testUtils.getHeadCol('Задания')
         expect(headCol).not.toHaveClass(testConstants.columnWithSortingClass)
       })
     })
