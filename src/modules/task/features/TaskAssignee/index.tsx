@@ -14,7 +14,9 @@ const { Text } = Typography
 
 type TaskAssigneeProps = {
   name: string
-  assignee: MaybeNull<Pick<UserModel, 'firstName' | 'lastName' | 'avatar'>>
+  assignee: MaybeNull<
+    Pick<UserModel, 'firstName' | 'lastName'> & { avatar?: UserModel['avatar'] }
+  >
   phone?: TaskModel['contactPhone']
 }
 

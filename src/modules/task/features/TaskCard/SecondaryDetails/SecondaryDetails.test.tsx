@@ -6,15 +6,15 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 
-import { generateId, generateIdStr, render } from '_tests_/utils'
+import { fakeId, fakeIdStr, render } from '_tests_/utils'
 
 import { testUtils as assigneeTestUtils } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as workGroupTestUtils } from '../WorkGroupBlock/WorkGroupBlock.test'
 import SecondaryDetails, { SecondaryDetailsProps } from './index'
 
-const requiredProps: Omit<SecondaryDetailsProps, 'workGroup'> = {
-  id: generateId(),
-  recordId: generateIdStr(),
+const requiredProps: SecondaryDetailsProps = {
+  id: fakeId(),
+  recordId: fakeIdStr(),
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
   workGroupList: [],
@@ -29,6 +29,7 @@ const requiredProps: Omit<SecondaryDetailsProps, 'workGroup'> = {
   updateAssignee: jest.fn(),
   updateAssigneeIsLoading: false,
   taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
+  workGroup: null,
 }
 
 const getContainer = () => screen.getByTestId('task-card-secondary-details')

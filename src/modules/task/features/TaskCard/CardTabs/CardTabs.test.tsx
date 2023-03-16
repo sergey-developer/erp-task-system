@@ -9,22 +9,22 @@ import {
 
 import taskFixtures from 'fixtures/task'
 
-import { generateId, generateIdStr, generateWord, render } from '_tests_/utils'
+import { fakeId, fakeIdStr, fakeWord, render } from '_tests_/utils'
 
 import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
 import CardTabs, { CardTabsProps } from './index'
 
 const requiredProps: CardTabsProps = {
   task: {
-    id: generateId(),
+    id: fakeId(),
     type: TaskTypeEnum.Request,
-    title: generateWord(),
-    description: generateWord(),
-    userResolution: generateWord(),
-    techResolution: generateWord(),
+    title: fakeWord(),
+    description: fakeWord(),
+    userResolution: fakeWord(),
+    techResolution: fakeWord(),
     status: TaskStatusEnum.New,
     extendedStatus: TaskExtendedStatusEnum.New,
-    recordId: generateIdStr(),
+    recordId: fakeIdStr(),
     suspendRequest: taskFixtures.getSuspendRequest(),
     assignee: null,
   },

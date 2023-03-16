@@ -1,13 +1,13 @@
 import { screen, within } from '@testing-library/react'
 
-import { generateWord, render } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/utils'
 
 import Comment, { CommentProps } from './index'
 
 const requiredProps: Readonly<CommentProps> = {
-  text: generateWord(),
-  author: generateWord(),
-  createdAt: generateWord(),
+  text: fakeWord(),
+  author: fakeWord(),
+  createdAt: fakeWord(),
 }
 
 const getContainer = () => screen.getByTestId('task-comment')

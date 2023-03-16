@@ -7,12 +7,12 @@ import {
 
 import commonFixtures from 'fixtures/common'
 
-import { generateId, generateWord } from '_tests_/utils'
+import { fakeId, fakeWord } from '_tests_/utils'
 
 export const getSubTaskTemplate = (): SubTaskTemplateModel => ({
-  id: generateId(),
-  title: generateWord(),
-  code: generateWord(),
+  id: fakeId(),
+  title: fakeWord(),
+  code: fakeWord(),
 })
 
 export const getSubTaskTemplateList = (

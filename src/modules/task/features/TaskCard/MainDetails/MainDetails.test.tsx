@@ -7,45 +7,29 @@ import {
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
 import {
-  generateAddress,
-  generateDateString,
-  generateIdStr,
-  generatePhone,
-  generateWord,
+  fakeAddress,
+  fakeDateString,
+  fakeIdStr,
+  fakePhone,
+  fakeWord,
   render,
 } from '_tests_/utils'
 
 import MainDetails, { MainDetailsProps } from './index'
 
-const requiredProps: Pick<
-  MainDetailsProps,
-  | 'recordId'
-  | 'status'
-  | 'title'
-  | 'createdAt'
-  | 'name'
-  | 'contactService'
-  | 'olaStatus'
-  | 'olaEstimatedTime'
-> = {
-  name: generateWord(),
-  title: generateWord(),
-  recordId: generateIdStr(),
+const requiredProps: MainDetailsProps = {
+  name: fakeWord(),
+  title: fakeWord(),
+  recordId: fakeIdStr(),
   status: TaskStatusEnum.New,
-  createdAt: generateDateString(),
-  contactService: generateWord(),
+  createdAt: fakeDateString(),
+  contactService: fakeWord(),
   olaEstimatedTime: Date.now(),
   olaStatus: TaskOlaStatusEnum.NotExpired,
-}
-
-const notRequiredProps: Pick<
-  MainDetailsProps,
-  'address' | 'olaNextBreachTime' | 'contactPhone' | 'portablePhone'
-> = {
-  olaNextBreachTime: generateDateString(),
-  address: generateAddress(),
-  contactPhone: generatePhone(),
-  portablePhone: generatePhone(),
+  olaNextBreachTime: null,
+  address: null,
+  contactPhone: null,
+  portablePhone: null,
 }
 
 const getContainer = () => screen.getByTestId('task-card-main-details')
@@ -72,14 +56,10 @@ describe('Блок детальной информации заявки', () => 
     expect(testUtils.getChildByText(requiredProps.recordId)).toBeInTheDocument()
   })
 
-  test('Срок выполнения отображается если он есть', () => {
+  test('Срок выполнения отображается если присутствует', () => {
     render(
-      <MainDetails
-        {...requiredProps}
-        olaNextBreachTime={notRequiredProps.olaNextBreachTime}
-      />,
+      <MainDetails {...requiredProps} olaNextBreachTime={fakeDateString()} />,
     )
-
     expect(testUtils.getChildByText(/до/)).toBeInTheDocument()
   })
 
@@ -108,28 +88,34 @@ describe('Блок детальной информации заявки', () => 
   })
 
   describe('Блок адреса', () => {
+    test('Заголовок отображается', () => {
+      render(<MainDetails {...requiredProps} />)
+      expect(testUtils.getChildByText('Адрес')).toBeInTheDocument()
+    })
+
     test('Название отображается', () => {
       render(<MainDetails {...requiredProps} />)
       expect(testUtils.getChildByText(requiredProps.name)).toBeInTheDocument()
     })
 
-    test('Адрес отображается если он есть', () => {
-      render(
-        <MainDetails {...requiredProps} address={notRequiredProps.address} />,
-      )
-
-      expect(
-        testUtils.getChildByText(notRequiredProps.address!),
-      ).toBeInTheDocument()
+    test('Адрес отображается если присутствует', () => {
+      const address = fakeAddress()
+      render(<MainDetails {...requiredProps} address={address} />)
+      expect(testUtils.getChildByText(address)).toBeInTheDocument()
     })
 
-    test('Если его нет, отображается соответствующий текст', () => {
+    test('Если отсутствует отображается соответствующий текст', () => {
       render(<MainDetails {...requiredProps} />)
       expect(testUtils.getChildByText('Не определено')).toBeInTheDocument()
     })
   })
 
   describe('Блок заявителя', () => {
+    test('Заголовок отображается', () => {
+      render(<MainDetails {...requiredProps} />)
+      expect(testUtils.getChildByText('Заявитель')).toBeInTheDocument()
+    })
+
     test('Заявитель отображается', () => {
       render(<MainDetails {...requiredProps} />)
 
@@ -138,30 +124,16 @@ describe('Блок детальной информации заявки', () => 
       ).toBeInTheDocument()
     })
 
-    test('Контактный телефон 1 отображается', () => {
-      render(
-        <MainDetails
-          {...requiredProps}
-          contactPhone={notRequiredProps.contactPhone}
-        />,
-      )
-
-      expect(
-        testUtils.getChildByText(notRequiredProps.contactPhone!),
-      ).toBeInTheDocument()
+    test('Контактный телефон 1 отображается если присутствует', () => {
+      const contactPhone = fakePhone()
+      render(<MainDetails {...requiredProps} contactPhone={contactPhone} />)
+      expect(testUtils.getChildByText(contactPhone)).toBeInTheDocument()
     })
 
-    test('Контактный телефон 2 отображается', () => {
-      render(
-        <MainDetails
-          {...requiredProps}
-          portablePhone={notRequiredProps.portablePhone}
-        />,
-      )
-
-      expect(
-        testUtils.getChildByText(notRequiredProps.portablePhone!),
-      ).toBeInTheDocument()
+    test('Контактный телефон 2 отображается если присутствует', () => {
+      const portablePhone = fakePhone()
+      render(<MainDetails {...requiredProps} portablePhone={portablePhone} />)
+      expect(testUtils.getChildByText(portablePhone)).toBeInTheDocument()
     })
   })
 })

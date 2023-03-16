@@ -8,15 +8,15 @@ import { TaskJournalEntryModel, TaskJournalModel } from 'modules/task/models'
 
 import commonFixtures from 'fixtures/common'
 
-import { generateDateString, generateId, generateWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
 export const getJournalEntry = (
   props?: Partial<Pick<TaskJournalEntryModel, 'type' | 'sourceSystem'>>,
 ): TaskJournalEntryModel => ({
-  id: generateId(),
+  id: fakeId(),
   type: props?.type || TaskJournalTypeEnum.AssigneeChange,
-  description: generateWord(),
-  createdAt: generateDateString(),
+  description: fakeWord(),
+  createdAt: fakeDateString(),
   sourceSystem: props?.sourceSystem || TaskJournalSourceEnum.ITSM,
   author: commonFixtures.getUser(),
 })

@@ -5,30 +5,24 @@ import {
   validationMessages,
   validationSizes,
 } from 'shared/constants/validation'
-import { NonNullableObject } from 'shared/interfaces/utils'
 
 import {
-  generateWord,
+  fakeWord,
   getButtonIn,
   expectLoadingFinishedByButton,
   expectLoadingStartedByButton,
   render,
+  fakeIdStr,
 } from '_tests_/utils'
 
-import ReworkSubTaskModal from './index'
 import CancelSubTaskModal from './index'
 import { CancelSubTaskModalProps } from './interfaces'
 
-const requiredProps: Omit<CancelSubTaskModalProps, 'recordId'> = {
+const requiredProps: CancelSubTaskModalProps = {
   isLoading: false,
+  recordId: null,
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
-}
-
-const notRequiredProps: NonNullableObject<
-  Omit<CancelSubTaskModalProps, keyof typeof requiredProps>
-> = {
-  recordId: generateWord(),
 }
 
 const getContainer = () => screen.getByTestId('cancel-sub-task-modal')
@@ -75,9 +69,11 @@ const clickCancelButton = async (user: UserEvent) => {
 }
 
 // loading
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () =>
+  expectLoadingStartedByButton(getSubmitButton())
 
-const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
+const expectLoadingFinished = () =>
+  expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -106,18 +102,11 @@ describe('Модальное окно отправки запроса на до�
   })
 
   test('Заголовок отображается корректно', () => {
-    render(
-      <CancelSubTaskModal
-        {...requiredProps}
-        recordId={notRequiredProps.recordId}
-      />,
-    )
+    const recordId = fakeIdStr()
+    render(<CancelSubTaskModal {...requiredProps} recordId={recordId} />)
 
     expect(testUtils.getChildByText(/отмена задания/i)).toBeInTheDocument()
-
-    expect(
-      testUtils.getChildByText(notRequiredProps.recordId),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText(recordId)).toBeInTheDocument()
   })
 
   describe('Форма перевода заявки', () => {
@@ -138,9 +127,9 @@ describe('Модальное окно отправки запроса на до�
       })
 
       test('Можно ввести значение', async () => {
-        const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
+        const { user } = render(<CancelSubTaskModal {...requiredProps} />)
 
-        const value = generateWord()
+        const value = fakeWord()
         const field = await testUtils.setCancelReason(user, value)
 
         expect(field).toHaveValue(value)
@@ -164,7 +153,7 @@ describe('Модальное окно отправки запроса на до�
 
           await testUtils.setCancelReason(
             user,
-            generateWord({ length: validationSizes.string.middle + 1 }),
+            fakeWord({ length: validationSizes.string.middle + 1 }),
           )
 
           expect(
@@ -180,7 +169,9 @@ describe('Модальное окно отправки запроса на до�
           await testUtils.clickSubmitButton(user)
 
           expect(
-            await testUtils.findCancelReasonFieldError(validationMessages.required),
+            await testUtils.findCancelReasonFieldError(
+              validationMessages.required,
+            ),
           ).toBeInTheDocument()
         })
       })
@@ -206,7 +197,7 @@ describe('Модальное окно отправки запроса на до�
       test('Обработчик вызывается корректно', async () => {
         const { user } = render(<CancelSubTaskModal {...requiredProps} />)
 
-        await testUtils.setCancelReason(user, generateWord())
+        await testUtils.setCancelReason(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)

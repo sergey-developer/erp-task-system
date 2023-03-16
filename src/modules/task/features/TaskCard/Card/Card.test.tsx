@@ -4,7 +4,6 @@ import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/common'
-
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import taskFixtures from 'fixtures/task'
@@ -13,7 +12,7 @@ import workGroupFixtures from 'fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   expectLoadingNotStartedByCard,
-  generateWord,
+  fakeWord,
   getStoreWithAuth,
   expectLoadingFinishedByCard,
   expectLoadingFinishedBySpinner,
@@ -120,16 +119,14 @@ const queryCardDetails = () =>
 const taskCardReclassificationRequestSpinnerTestId =
   'task-card-reclassification-request-spinner'
 
-const expectReclassificationRequestLoadingStarted = expectLoadingStartedBySpinner(
-  taskCardReclassificationRequestSpinnerTestId,
-)
+const expectReclassificationRequestLoadingStarted =
+  expectLoadingStartedBySpinner(taskCardReclassificationRequestSpinnerTestId)
 
 const expectReclassificationRequestLoadingNotStarted =
   expectLoadingNotStartedBySpinner(taskCardReclassificationRequestSpinnerTestId)
 
-const expectReclassificationRequestLoadingFinished = expectLoadingFinishedBySpinner(
-  taskCardReclassificationRequestSpinnerTestId,
-)
+const expectReclassificationRequestLoadingFinished =
+  expectLoadingFinishedBySpinner(taskCardReclassificationRequestSpinnerTestId)
 
 export const testUtils = {
   getContainer,
@@ -401,10 +398,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           await taskReclassificationModalTestUtils.findContainer()
 
-          await taskReclassificationModalTestUtils.setComment(
-            user,
-            generateWord(),
-          )
+          await taskReclassificationModalTestUtils.setComment(user, fakeWord())
           await taskReclassificationModalTestUtils.setReclassificationReason(
             user,
             availableReasons[0],
@@ -433,10 +427,7 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.clickRequestReclassificationItem(user)
           const modal = await taskReclassificationModalTestUtils.findContainer()
 
-          await taskReclassificationModalTestUtils.setComment(
-            user,
-            generateWord(),
-          )
+          await taskReclassificationModalTestUtils.setComment(user, fakeWord())
           await taskReclassificationModalTestUtils.setReclassificationReason(
             user,
             availableReasons[0],
@@ -571,14 +562,8 @@ describe('Карточка заявки', () => {
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(requiredProps.resolveTask).toBeCalledTimes(1)
@@ -697,7 +682,7 @@ describe('Карточка заявки', () => {
 
         await workGroupBlockTestUtils.clickFirstLineButton(user)
         const modal = await taskFirstLineModalTestUtils.findContainer()
-        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
         expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
@@ -735,7 +720,7 @@ describe('Карточка заявки', () => {
 
         await workGroupBlockTestUtils.clickFirstLineButton(user)
         const modal = await taskFirstLineModalTestUtils.findContainer()
-        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
         expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
@@ -773,7 +758,7 @@ describe('Карточка заявки', () => {
 
         await workGroupBlockTestUtils.clickFirstLineButton(user)
         const modal = await taskFirstLineModalTestUtils.findContainer()
-        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
         expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
@@ -1217,10 +1202,7 @@ describe('Карточка заявки', () => {
             user,
             SuspendReasonEnum.AwaitingInformation,
           )
-          await requestTaskSuspendModalTestUtils.setComment(
-            user,
-            generateWord(),
-          )
+          await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
           await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
           expect(requiredProps.createSuspendRequest).toBeCalledTimes(1)
@@ -1251,10 +1233,7 @@ describe('Карточка заявки', () => {
             user,
             SuspendReasonEnum.AwaitingInformation,
           )
-          await requestTaskSuspendModalTestUtils.setComment(
-            user,
-            generateWord(),
-          )
+          await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
           await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
