@@ -15,6 +15,6 @@ describe('Корректно возвращает все поля', () => {
 
     expect(result.firstName).toBe('')
     expect(result.lastName).toBe('')
-    expect(result.middleName).toBeUndefined()
+    expect(result.middleName).toBe('')
   })
 })
