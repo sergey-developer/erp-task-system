@@ -12,8 +12,8 @@ import {
 import { formatDate } from 'shared/utils/date'
 
 import {
-  generateIdStr,
-  generateWord,
+  fakeIdStr,
+  fakeWord,
   getButtonIn,
   expectLoadingFinishedByButton,
   expectLoadingStartedByButton,
@@ -25,7 +25,7 @@ import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import RequestTaskSuspendModal, { RequestTaskSuspendModalProps } from './index'
 
 const requiredProps: RequestTaskSuspendModalProps = {
-  recordId: generateIdStr(),
+  recordId: fakeIdStr(),
   isLoading: false,
   onCancel: jest.fn(),
   onSubmit: jest.fn(),
@@ -144,9 +144,11 @@ const setComment = async (user: UserEvent, value: string) => {
 }
 
 // loading
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () =>
+  expectLoadingStartedByButton(getSubmitButton())
 
-const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
+const expectLoadingFinished = () =>
+  expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -262,7 +264,7 @@ describe('Модалка создания запроса о переводе в 
         const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
 
         await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
-        await testUtils.setComment(user, generateWord())
+        await testUtils.setComment(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
@@ -613,7 +615,7 @@ describe('Модалка создания запроса о переводе в 
       test('Можно установить значение', async () => {
         const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
 
-        const value = generateWord()
+        const value = fakeWord()
         const field = await testUtils.setComment(user, value)
 
         expect(field).toHaveDisplayValue(value)
@@ -656,7 +658,7 @@ describe('Модалка создания запроса о переводе в 
 
           await testUtils.setComment(
             user,
-            generateWord({ length: validationSizes.string.long + 1 }),
+            fakeWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(

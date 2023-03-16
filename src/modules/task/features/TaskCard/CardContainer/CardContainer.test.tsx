@@ -22,6 +22,7 @@ import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
 } from 'modules/task/utils/messages'
+import { workGroupApiMessages } from 'modules/workGroup/constants/errorMessages'
 
 import { commonApiMessages } from 'shared/constants/errors'
 import { UserRoleEnum } from 'modules/user/constants/roles'
@@ -69,8 +70,8 @@ import {
 } from '_tests_/mocks/api'
 import {
   findNotification,
-  generateId,
-  generateWord,
+  fakeId,
+  fakeWord,
   getStoreWithAuth,
   expectLoadingFinishedByButton,
   expectLoadingFinishedByCard,
@@ -112,10 +113,9 @@ import { testUtils as taskResolutionModalTestUtils } from '../TaskResolutionModa
 import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
-import { workGroupApiMessages } from "../../../../workGroup/constants/errorMessages";
 
 const requiredProps: TaskCardContainerProps = {
-  taskId: generateId(),
+  taskId: fakeId(),
   closeTaskCard: jest.fn(),
   additionalInfoExpanded: false,
   onExpandAdditionalInfo: jest.fn(),
@@ -348,7 +348,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskReclassificationModalTestUtils.setComment(
               user,
-              generateWord(),
+              fakeWord(),
             )
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
@@ -396,7 +396,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskReclassificationModalTestUtils.setComment(
               user,
-              generateWord(),
+              fakeWord(),
             )
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
@@ -646,7 +646,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskReclassificationModalTestUtils.setComment(
               user,
-              generateWord(),
+              fakeWord(),
             )
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
@@ -694,7 +694,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskReclassificationModalTestUtils.setComment(
               user,
-              generateWord(),
+              fakeWord(),
             )
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
@@ -845,7 +845,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskReclassificationModalTestUtils.setComment(
               user,
-              generateWord(),
+              fakeWord(),
             )
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
@@ -893,7 +893,7 @@ describe('Контейнер детальной карточки заявки', 
 
             await taskReclassificationModalTestUtils.setComment(
               user,
-              generateWord(),
+              fakeWord(),
             )
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
@@ -941,14 +941,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -971,9 +965,9 @@ describe('Контейнер детальной карточки заявки', 
           const badRequestResponse: Required<
             ResolveTaskBadRequestErrorResponse['data']
           > = {
-            detail: [generateWord()],
-            userResolution: [generateWord()],
-            techResolution: [generateWord()],
+            detail: [fakeWord()],
+            userResolution: [fakeWord()],
+            techResolution: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -994,14 +988,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1047,14 +1035,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1092,14 +1074,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -1122,9 +1098,9 @@ describe('Контейнер детальной карточки заявки', 
           const badRequestResponse: Required<
             ResolveTaskBadRequestErrorResponse['data']
           > = {
-            detail: [generateWord()],
-            userResolution: [generateWord()],
-            techResolution: [generateWord()],
+            detail: [fakeWord()],
+            userResolution: [fakeWord()],
+            techResolution: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -1145,14 +1121,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1198,14 +1168,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1243,14 +1207,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -1273,9 +1231,9 @@ describe('Контейнер детальной карточки заявки', 
           const badRequestResponse: Required<
             ResolveTaskBadRequestErrorResponse['data']
           > = {
-            detail: [generateWord()],
-            userResolution: [generateWord()],
-            techResolution: [generateWord()],
+            detail: [fakeWord()],
+            userResolution: [fakeWord()],
+            techResolution: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -1296,14 +1254,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1349,14 +1301,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1394,14 +1340,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -1424,9 +1364,9 @@ describe('Контейнер детальной карточки заявки', 
           const badRequestResponse: Required<
             ResolveTaskBadRequestErrorResponse['data']
           > = {
-            detail: [generateWord()],
-            userResolution: [generateWord()],
-            techResolution: [generateWord()],
+            detail: [fakeWord()],
+            userResolution: [fakeWord()],
+            techResolution: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -1447,14 +1387,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1500,14 +1434,8 @@ describe('Контейнер детальной карточки заявки', 
           await cardTitleTestUtils.clickExecuteTaskItem(user)
           await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(
-            user,
-            generateWord(),
-          )
-          await taskResolutionModalTestUtils.setUserResolution(
-            user,
-            generateWord(),
-          )
+          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -2333,7 +2261,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const modal = await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2357,7 +2285,7 @@ describe('Контейнер детальной карточки заявки', 
             body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
-          const badRequestErrorResponse = { description: [generateWord()] }
+          const badRequestErrorResponse = { description: [fakeWord()] }
           mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
             requiredProps.taskId,
             { body: badRequestErrorResponse },
@@ -2378,7 +2306,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2402,7 +2330,7 @@ describe('Контейнер детальной карточки заявки', 
             body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
-          const notFoundErrorResponse = { detail: [generateWord()] }
+          const notFoundErrorResponse = { detail: [fakeWord()] }
           mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
             body: notFoundErrorResponse,
           })
@@ -2422,7 +2350,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2443,7 +2371,7 @@ describe('Контейнер детальной карточки заявки', 
             body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
-          const serverErrorResponse = { detail: [generateWord()] }
+          const serverErrorResponse = { detail: [fakeWord()] }
           mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
             body: serverErrorResponse,
           })
@@ -2463,7 +2391,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2502,7 +2430,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2545,7 +2473,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const modal = await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2569,7 +2497,7 @@ describe('Контейнер детальной карточки заявки', 
             body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
-          const badRequestErrorResponse = { description: [generateWord()] }
+          const badRequestErrorResponse = { description: [fakeWord()] }
           mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
             requiredProps.taskId,
             { body: badRequestErrorResponse },
@@ -2590,7 +2518,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2614,7 +2542,7 @@ describe('Контейнер детальной карточки заявки', 
             body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
-          const notFoundErrorResponse = { detail: [generateWord()] }
+          const notFoundErrorResponse = { detail: [fakeWord()] }
           mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
             body: notFoundErrorResponse,
           })
@@ -2634,7 +2562,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2655,7 +2583,7 @@ describe('Контейнер детальной карточки заявки', 
             body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
-          const serverErrorResponse = { detail: [generateWord()] }
+          const serverErrorResponse = { detail: [fakeWord()] }
           mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
             body: serverErrorResponse,
           })
@@ -2675,7 +2603,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2714,7 +2642,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2755,7 +2683,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const modal = await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2779,7 +2707,7 @@ describe('Контейнер детальной карточки заявки', 
             body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
-          const badRequestErrorResponse = { description: [generateWord()] }
+          const badRequestErrorResponse = { description: [fakeWord()] }
           mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
             requiredProps.taskId,
             { body: badRequestErrorResponse },
@@ -2800,7 +2728,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2825,7 +2753,7 @@ describe('Контейнер детальной карточки заявки', 
             body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
-          const notFoundErrorResponse = { detail: [generateWord()] }
+          const notFoundErrorResponse = { detail: [fakeWord()] }
           mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
             body: notFoundErrorResponse,
           })
@@ -2845,7 +2773,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2867,7 +2795,7 @@ describe('Контейнер детальной карточки заявки', 
             body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
           })
 
-          const serverErrorResponse = { detail: [generateWord()] }
+          const serverErrorResponse = { detail: [fakeWord()] }
           mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
             body: serverErrorResponse,
           })
@@ -2887,7 +2815,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -2926,7 +2854,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskFirstLineModalTestUtils.findContainer()
           const description = taskFirstLineModalTestUtils.getDescriptionField()
-          await user.type(description, generateWord())
+          await user.type(description, fakeWord())
 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
@@ -3002,7 +2930,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const badRequestResponse: UpdateTaskWorkGroupBadRequestErrorResponse['data'] =
             {
-              workGroup: [generateWord()],
+              workGroup: [fakeWord()],
             }
 
           mockUpdateTaskWorkGroupBadRequestError(requiredProps.taskId, {
@@ -3154,10 +3082,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3197,10 +3122,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3228,9 +3150,9 @@ describe('Контейнер детальной карточки заявки', 
                 'detail'
               >
             > = {
-              comment: [generateWord()],
-              suspendEndAt: [generateWord()],
-              suspendReason: [generateWord()],
+              comment: [fakeWord()],
+              suspendEndAt: [fakeWord()],
+              suspendReason: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(requiredProps.taskId, {
@@ -3253,10 +3175,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3320,10 +3239,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3367,10 +3283,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3410,10 +3323,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3441,9 +3351,9 @@ describe('Контейнер детальной карточки заявки', 
                 'detail'
               >
             > = {
-              comment: [generateWord()],
-              suspendEndAt: [generateWord()],
-              suspendReason: [generateWord()],
+              comment: [fakeWord()],
+              suspendEndAt: [fakeWord()],
+              suspendReason: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(requiredProps.taskId, {
@@ -3466,10 +3376,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3533,10 +3440,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3580,10 +3484,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3623,10 +3524,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3654,9 +3552,9 @@ describe('Контейнер детальной карточки заявки', 
                 'detail'
               >
             > = {
-              comment: [generateWord()],
-              suspendEndAt: [generateWord()],
-              suspendReason: [generateWord()],
+              comment: [fakeWord()],
+              suspendEndAt: [fakeWord()],
+              suspendReason: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(requiredProps.taskId, {
@@ -3679,10 +3577,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3746,10 +3641,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3793,10 +3685,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3836,10 +3725,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3867,9 +3753,9 @@ describe('Контейнер детальной карточки заявки', 
                 'detail'
               >
             > = {
-              comment: [generateWord()],
-              suspendEndAt: [generateWord()],
-              suspendReason: [generateWord()],
+              comment: [fakeWord()],
+              suspendEndAt: [fakeWord()],
+              suspendReason: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(requiredProps.taskId, {
@@ -3892,10 +3778,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -3959,10 +3842,7 @@ describe('Контейнер детальной карточки заявки', 
               user,
               SuspendReasonEnum.AwaitingInformation,
             )
-            await requestTaskSuspendModalTestUtils.setComment(
-              user,
-              generateWord(),
-            )
+            await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
@@ -4047,7 +3927,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             const badRequestResponse: Required<ErrorResponse['data']> = {
-              detail: [generateWord()],
+              detail: [fakeWord()],
             }
             mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
               body: badRequestResponse,
@@ -4170,7 +4050,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             const badRequestResponse: Required<ErrorResponse['data']> = {
-              detail: [generateWord()],
+              detail: [fakeWord()],
             }
             mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
               body: badRequestResponse,
@@ -4293,7 +4173,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             const badRequestResponse: Required<ErrorResponse['data']> = {
-              detail: [generateWord()],
+              detail: [fakeWord()],
             }
             mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
               body: badRequestResponse,

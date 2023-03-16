@@ -3,14 +3,6 @@ import noop from 'lodash/noop'
 import React, { FC } from 'react'
 
 import {
-  CheckCircleIcon,
-  CloseIcon,
-  MenuIcon,
-  PauseCircleIcon,
-  QuestionCircleIcon,
-  SyncIcon,
-} from 'components/Icons'
-import {
   useTaskExtendedStatus,
   useTaskOlaStatus,
   useTaskStatus,
@@ -19,6 +11,15 @@ import {
 } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
+
+import {
+  CheckCircleIcon,
+  CloseIcon,
+  MenuIcon,
+  PauseCircleIcon,
+  QuestionCircleIcon,
+  SyncIcon,
+} from 'components/Icons'
 
 export type CardTitleProps = Pick<
   TaskModel,

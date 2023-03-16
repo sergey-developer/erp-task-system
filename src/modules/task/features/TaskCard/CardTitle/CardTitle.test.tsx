@@ -10,7 +10,7 @@ import {
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import {
-  generateId,
+  fakeId,
   getButtonIn,
   getIconByNameIn,
   getStoreWithAuth,
@@ -20,7 +20,7 @@ import {
 import CardTitle, { CardTitleProps } from './index'
 
 const requiredProps: CardTitleProps = {
-  id: generateId(),
+  id: fakeId(),
   type: TaskTypeEnum.Request,
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,

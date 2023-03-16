@@ -27,7 +27,7 @@ import {
   mockGetWorkGroupListSuccess,
 } from '_tests_/mocks/api'
 import {
-  generateWord,
+  fakeWord,
   getButtonIn,
   getSelectedOption,
   getStoreWithAuth,
@@ -377,7 +377,7 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.expectLoadingFinished()
       await fastFilterTestUtils.expectLoadingFinished()
 
-      const searchValue = generateWord()
+      const searchValue = fakeWord()
       const searchInput = await testUtils.setSearchValue(user, searchValue)
 
       await fastFilterTestUtils.changeFilter(user, FastFilterEnum.Closed)
@@ -760,7 +760,7 @@ describe('Страница реестра заявок', () => {
     test('Можно ввести значение', async () => {
       const { user } = render(<TaskListPage />)
 
-      const value = generateWord()
+      const value = fakeWord()
       const input = await testUtils.setSearchValue(user, value)
 
       expect(input).toHaveValue(value)
@@ -798,7 +798,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingFinished()
         await taskTableTestUtils.clickRow(user, taskListItem.id)
         const taskCard = await taskCardTestUtils.findContainer()
-        await testUtils.setSearchValue(user, generateWord(), true)
+        await testUtils.setSearchValue(user, fakeWord(), true)
         await waitFor(() => {
           expect(taskCard).not.toBeInTheDocument()
         })
@@ -814,7 +814,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.expectLoadingFinished()
-          await testUtils.setSearchValue(user, generateWord())
+          await testUtils.setSearchValue(user, fakeWord())
           await user.click(testUtils.getSearchButton())
           await taskTableTestUtils.expectLoadingStarted()
         })
@@ -828,7 +828,7 @@ describe('Страница реестра заявок', () => {
           })
 
           await taskTableTestUtils.expectLoadingFinished()
-          await testUtils.setSearchValue(user, generateWord(), true)
+          await testUtils.setSearchValue(user, fakeWord(), true)
           await taskTableTestUtils.expectLoadingStarted()
         })
       })
@@ -836,7 +836,7 @@ describe('Страница реестра заявок', () => {
       test('Кнопка открытия расширенного фильтра недоступна', async () => {
         const { user } = render(<TaskListPage />)
 
-        await testUtils.setSearchValue(user, generateWord(), true)
+        await testUtils.setSearchValue(user, fakeWord(), true)
 
         const extendedFilterButton = testUtils.getExtendedFilterButton()
 
@@ -853,7 +853,7 @@ describe('Страница реестра заявок', () => {
         )
         fastFilterTestUtils.expectFilterChecked(fastFilter)
 
-        await testUtils.setSearchValue(user, generateWord(), true)
+        await testUtils.setSearchValue(user, fakeWord(), true)
 
         await waitFor(() => {
           fastFilterTestUtils.expectFilterNotChecked(fastFilter)
@@ -867,7 +867,7 @@ describe('Страница реестра заявок', () => {
 
         const input = await testUtils.setSearchValue(
           user,
-          generateWord({ length: 1 }),
+          fakeWord({ length: 1 }),
           true,
         )
 
@@ -894,7 +894,7 @@ describe('Страница реестра заявок', () => {
 
         const input = await testUtils.setSearchValue(
           user,
-          generateWord({ length: 1 }),
+          fakeWord({ length: 1 }),
           true,
         )
         await waitFor(() => {
@@ -963,7 +963,7 @@ describe('Страница реестра заявок', () => {
 
         const searchInput = await testUtils.setSearchValue(
           user,
-          generateWord({ length: 1 }),
+          fakeWord({ length: 1 }),
           true,
         )
         await taskTableTestUtils.expectLoadingStarted()
@@ -1021,7 +1021,7 @@ describe('Страница реестра заявок', () => {
       test('Очищает поле ввода', async () => {
         const { user } = render(<TaskListPage />)
 
-        const input = await testUtils.setSearchValue(user, generateWord())
+        const input = await testUtils.setSearchValue(user, fakeWord())
         await testUtils.clickSearchClearButton(user)
 
         expect(input).not.toHaveValue()
@@ -1030,7 +1030,7 @@ describe('Страница реестра заявок', () => {
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
         const { user } = render(<TaskListPage />)
 
-        await testUtils.setSearchValue(user, generateWord(), true)
+        await testUtils.setSearchValue(user, fakeWord(), true)
         const fastFilter = fastFilterTestUtils.getCheckableTag(
           FastFilterEnum.All,
         )
@@ -1050,7 +1050,7 @@ describe('Страница реестра заявок', () => {
         const extendedFilterButton = testUtils.getExtendedFilterButton()
         expect(extendedFilterButton).toBeEnabled()
 
-        await testUtils.setSearchValue(user, generateWord(), true)
+        await testUtils.setSearchValue(user, fakeWord(), true)
         await waitFor(() => {
           expect(extendedFilterButton).toBeDisabled()
         })
@@ -1116,7 +1116,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
 
-        await testUtils.setSearchValue(user, generateWord(), true)
+        await testUtils.setSearchValue(user, fakeWord(), true)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickSearchClearButton(user)

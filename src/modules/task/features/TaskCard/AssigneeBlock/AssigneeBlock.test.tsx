@@ -19,7 +19,7 @@ import {
   clickSelectOption,
   expectOptionDisabled,
   findSelect,
-  generateId,
+  fakeId,
   getAllSelectOption,
   getButtonIn,
   getSelect,
@@ -179,8 +179,7 @@ const findAssigneeSelect = () => findSelect(getContainer())
 
 const getSelectedAssignee = () => getSelectedOption(getContainer())
 
-const openAssigneeSelect = (user: UserEvent) =>
-  openSelect(user, getContainer())
+const openAssigneeSelect = (user: UserEvent) => openSelect(user, getContainer())
 
 const selectAssignee = clickSelectOption
 
@@ -318,7 +317,7 @@ describe('Блок "Исполнитель заявки"', () => {
     })
 
     test('Переданный обработчик вызывается корректно', async () => {
-      const currentUserId = generateId()
+      const currentUserId = fakeId()
 
       const { user } = render(
         <AssigneeBlock {...requiredProps} {...activeAssignOnMeButtonProps} />,

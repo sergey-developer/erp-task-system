@@ -7,6 +7,8 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
+import { useUserProfileState } from 'modules/user/hooks'
+import { useGetUserCodeQuery } from 'modules/user/services/userApi.service'
 
 import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -14,8 +16,7 @@ import { MonitoringIcon } from 'components/Icons'
 import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
-import { useUserProfileState } from 'modules/user/hooks'
-import { useGetUserCodeQuery } from 'modules/user/services/userApi.service'
+
 import { useMatchedRoute } from 'shared/hooks'
 
 import { HeaderStyled } from './styles'

@@ -6,16 +6,16 @@ import {
   TaskJournalTypeEnum,
 } from 'modules/task/constants/common'
 
-import { generateDateString, generateWord, render } from '_tests_/utils'
+import { fakeDateString, fakeWord, render } from '_tests_/utils'
 
 import JournalEntry, { JournalEntryProps } from './JournalEntry'
 
 const requiredProps: JournalEntryProps = {
   type: TaskJournalTypeEnum.StatusChange,
-  createdAt: generateDateString(),
-  description: generateWord(),
+  createdAt: fakeDateString(),
+  description: fakeWord(),
   sourceSystem: TaskJournalSourceEnum.X5,
-  author: generateWord(),
+  author: fakeWord(),
 }
 
 describe('Элемент журнала', () => {

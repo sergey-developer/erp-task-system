@@ -1,6 +1,7 @@
 import { SubTaskApiPermissionsEnum } from 'modules/subTask/permissions'
 
 import { UserRoleEnum } from 'modules/user/constants/roles'
+
 import {
   CRUDPermissionsEnum,
   UIPermissionsEnum,

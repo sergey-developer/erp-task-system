@@ -7,16 +7,11 @@ import {
 
 import { ArrayItem } from 'shared/interfaces/utils'
 
-import {
-  generateId,
-  generateInteger,
-  generateName,
-  generateWord,
-} from '_tests_/utils'
+import { fakeId, fakeInteger, fakeName, fakeWord } from '_tests_/utils'
 
 export const getWorkGroupMember = (): ArrayItem<
   WorkGroupListItemModel['members']
-> => ({ id: generateId(), fullName: generateName() })
+> => ({ id: fakeId(), fullName: fakeName() })
 
 export const getWorkGroupPriority = (
   props?: Partial<
@@ -26,11 +21,11 @@ export const getWorkGroupPriority = (
   type: props?.type || WorkGroupTypeEnum.NoType,
   value:
     props?.value ||
-    (generateInteger({
+    (fakeInteger({
       min: 1,
       max: 4,
     }) as NonNullable<WorkGroupListItemModel['priority']>['value']),
-  description: generateWord(),
+  description: fakeWord(),
 })
 
 export const getWorkGroupMemberList = (
@@ -46,16 +41,16 @@ export const getWorkGroup = (
   }> &
     Partial<Pick<WorkGroupListItemModel, 'id' | 'priority'>>,
 ): NonNullable<WorkGroupListItemModel> => ({
-  id: props?.id || generateId(),
-  name: generateName(),
+  id: props?.id || fakeId(),
+  name: fakeName(),
   members: getWorkGroupMemberList(props?.memberAmount),
   seniorEngineer: {
-    id: props?.seniorEngineerId || generateId(),
-    fullName: generateName(),
+    id: props?.seniorEngineerId || fakeId(),
+    fullName: fakeName(),
   },
   groupLead: {
-    id: props?.groupLeadId || generateId(),
-    fullName: generateName(),
+    id: props?.groupLeadId || fakeId(),
+    fullName: fakeName(),
   },
   priority: props?.priority || getWorkGroupPriority(),
 })

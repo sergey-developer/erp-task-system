@@ -6,7 +6,6 @@ import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants/common'
-
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import taskFixtures from 'fixtures/task'
@@ -15,13 +14,14 @@ import workGroupFixtures from 'fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   findButtonIn,
-  generateId,
-  generateWord,
+  fakeId,
+  fakeWord,
   getButtonIn,
   getStoreWithAuth,
   expectLoadingStartedByButton,
   queryButtonIn,
   render,
+  fakeIdStr,
 } from '_tests_/utils'
 
 import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
@@ -31,8 +31,8 @@ import WorkGroupBlock, { WorkGroupBlockProps } from './index'
 const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> & {
   taskSuspendRequestStatus: SuspendRequestStatusEnum
 } = {
-  id: generateId(),
-  recordId: generateWord(),
+  id: fakeId(),
+  recordId: fakeIdStr(),
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
   transferTaskToFirstLine: jest.fn(),
@@ -44,7 +44,7 @@ const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> & {
 
 const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof requiredProps> =
   {
-    workGroup: taskFixtures.getWorkGroup(),
+    workGroup: workGroupFixtures.getWorkGroup(),
   }
 
 // first line button
@@ -52,7 +52,7 @@ export const showFirstLineButtonProps: Pick<
   WorkGroupBlockProps,
   'workGroup' | 'status'
 > = {
-  workGroup: taskFixtures.getWorkGroup(),
+  workGroup: workGroupFixtures.getWorkGroup(),
   status: TaskStatusEnum.New,
 }
 
@@ -67,7 +67,7 @@ export const activeFirstLineButtonProps: Pick<
 // second line button
 export const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> =
   {
-    workGroup: null,
+    workGroup: undefined,
   }
 
 export const activeSecondLineButtonProps: Pick<
@@ -482,7 +482,7 @@ describe('Блок рабочей группы', () => {
             <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
-              workGroup={null}
+              workGroup={undefined}
             />,
             {
               store: getStoreWithAuth({
@@ -627,7 +627,7 @@ describe('Блок рабочей группы', () => {
             <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
-              workGroup={null}
+              workGroup={undefined}
             />,
             {
               store: getStoreWithAuth({
@@ -772,7 +772,7 @@ describe('Блок рабочей группы', () => {
             <WorkGroupBlock
               {...requiredProps}
               {...showFirstLineButtonProps}
-              workGroup={null}
+              workGroup={undefined}
             />,
             {
               store: getStoreWithAuth({
@@ -839,7 +839,7 @@ describe('Блок рабочей группы', () => {
 
         await testUtils.clickFirstLineButton(user)
         await taskFirstLineModalTestUtils.findContainer()
-        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
         expect(requiredProps.transferTaskToFirstLine).toBeCalledTimes(1)
@@ -868,7 +868,7 @@ describe('Блок рабочей группы', () => {
 
         await testUtils.clickFirstLineButton(user)
         await taskFirstLineModalTestUtils.findContainer()
-        await taskFirstLineModalTestUtils.setDescription(user, generateWord())
+        await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
         expect(requiredProps.transferTaskToFirstLine).toBeCalledTimes(1)

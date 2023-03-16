@@ -13,10 +13,7 @@ export const querySelect = (container: HTMLElement, opts?: ByRoleOptions) =>
 export const findSelect = (container: HTMLElement, opts?: ByRoleOptions) =>
   within(container).findByRole('combobox', opts)
 
-export const openSelect = async (
-  user: UserEvent,
-  container: HTMLElement,
-) => {
+export const openSelect = async (user: UserEvent, container: HTMLElement) => {
   const selectInput = getSelect(container)
   await user.click(selectInput)
 }
