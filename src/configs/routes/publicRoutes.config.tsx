@@ -3,7 +3,7 @@ import { Navigate, RouteObject } from 'react-router-dom'
 
 import PublicLayout from 'components/Layout/PublicLayout'
 
-import { RouteEnum } from "./constants";
+import { RouteEnum } from './constants'
 
 const LoginPage = React.lazy(() => import('modules/auth/pages/LoginPage'))
 
