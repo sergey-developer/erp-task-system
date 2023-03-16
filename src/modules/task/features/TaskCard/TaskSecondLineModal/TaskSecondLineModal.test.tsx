@@ -11,8 +11,8 @@ import workGroupFixtures from 'fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   clickSelectOption,
-  generateId,
-  generateIdStr,
+  fakeId,
+  fakeIdStr,
   getButtonIn,
   getSelect,
   getSelectOptionById,
@@ -34,8 +34,8 @@ import TaskSecondLineModal from './index'
 import { TaskSecondLineModalProps } from './interfaces'
 
 const requiredProps: TaskSecondLineModalProps = {
-  id: generateId(),
-  recordId: generateIdStr(),
+  id: fakeId(),
+  recordId: fakeIdStr(),
   isLoading: false,
   onCancel: jest.fn(),
   onSubmit: jest.fn(),
@@ -109,7 +109,8 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // loading
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () =>
+  expectLoadingStartedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,

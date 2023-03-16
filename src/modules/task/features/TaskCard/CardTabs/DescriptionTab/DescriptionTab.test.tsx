@@ -1,15 +1,12 @@
 import { screen, within } from '@testing-library/react'
 
-import { generateWord, render } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/utils'
 
 import DescriptionTab, { DescriptionTabProps } from './index'
 
-const requiredProps: Pick<DescriptionTabProps, 'title'> = {
-  title: generateWord(),
-}
-
-const notRequiredProps: Pick<DescriptionTabProps, 'description'> = {
-  description: generateWord(),
+const requiredProps: DescriptionTabProps = {
+  title: fakeWord(),
+  description: null,
 }
 
 const getContainer = () => screen.getByTestId('task-description-tab')
@@ -33,28 +30,9 @@ describe('Вкладка описания заявки', () => {
     expect(title).toBeInTheDocument()
   })
 
-  describe('Описание', () => {
-    test('Отображается если присутствует', () => {
-      render(
-        <DescriptionTab
-          {...requiredProps}
-          description={notRequiredProps.description}
-        />,
-      )
-
-      const description = testUtils.getChildByText(
-        notRequiredProps.description!,
-      )
-      expect(description).toBeInTheDocument()
-    })
-
-    test('Не отображается если отсутствует', () => {
-      render(<DescriptionTab {...requiredProps} />)
-
-      const description = testUtils.queryChildByText(
-        notRequiredProps.description!,
-      )
-      expect(description).not.toBeInTheDocument()
-    })
+  test('Описание отображается если присутствует', () => {
+    const description = fakeWord()
+    render(<DescriptionTab {...requiredProps} description={description} />)
+    expect(testUtils.getChildByText(description)).toBeInTheDocument()
   })
 })

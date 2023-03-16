@@ -1,10 +1,9 @@
 import { AuthenticatedUser } from 'modules/auth/interfaces'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { setupStore } from 'state/store'
 
-import { UserRoleEnum } from 'shared/constants/roles'
-
-import { generateId } from '_tests_/utils'
+import { fakeId } from '_tests_/utils'
 
 import getAuthState from './getAuthState'
 
@@ -13,7 +12,7 @@ const getStoreWithAuth = (user?: Partial<AuthenticatedUser>) =>
     preloadedState: {
       auth: getAuthState({
         user: {
-          userId: user?.userId || generateId(),
+          userId: user?.userId || fakeId(),
           userRole: user?.userRole || UserRoleEnum.FirstLineSupport,
         },
       }),

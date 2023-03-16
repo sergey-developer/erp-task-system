@@ -26,14 +26,13 @@ export type BaseTaskModel = {
   severity: 1 | 2 | 3 | 4
   priorityCode: 1 | 2 | 3 | 4
   supportGroup: MaybeNull<SupportGroupModel>
-
-  contactPhone?: string
-  portablePhone?: string
-  olaNextBreachTime?: MaybeNull<string>
-  description?: string
-  techResolution?: string
-  userResolution?: string
-  address?: string
-  latitude?: string
-  longitude?: string
+  contactPhone: MaybeNull<string>
+  portablePhone: MaybeNull<string>
+  olaNextBreachTime: MaybeNull<string>
+  description: MaybeNull<string>
+  techResolution: MaybeNull<string>
+  userResolution: MaybeNull<string>
+  address: MaybeNull<string>
+  latitude: MaybeNull<string>
+  longitude: MaybeNull<string>
 }

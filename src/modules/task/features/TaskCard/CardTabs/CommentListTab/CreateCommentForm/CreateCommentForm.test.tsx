@@ -7,7 +7,7 @@ import {
 } from 'shared/constants/validation'
 
 import {
-  generateWord,
+  fakeWord,
   getButtonIn,
   expectLoadingFinishedByButton,
   expectLoadingStartedByButton,
@@ -101,7 +101,7 @@ describe('Форма добавления комментария', () => {
     test('Можно ввести значение', async () => {
       const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-      const commentText = generateWord()
+      const commentText = fakeWord()
       const commentInput = await testUtils.setComment(user, commentText)
 
       expect(commentInput).toHaveValue(commentText)
@@ -113,7 +113,7 @@ describe('Форма добавления комментария', () => {
 
         await testUtils.setComment(
           user,
-          generateWord({ length: validationSizes.string.long + 1 }),
+          fakeWord({ length: validationSizes.string.long + 1 }),
         )
 
         expect(
@@ -165,7 +165,7 @@ describe('Форма добавления комментария', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-      await testUtils.setComment(user, generateWord())
+      await testUtils.setComment(user, fakeWord())
       await testUtils.clickSubmitButton(user)
 
       expect(requiredProps.onSubmit).toBeCalledTimes(1)

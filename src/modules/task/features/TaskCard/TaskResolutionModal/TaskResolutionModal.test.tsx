@@ -9,8 +9,8 @@ import {
 } from 'shared/constants/validation'
 
 import {
-  generateIdStr,
-  generateWord,
+  fakeIdStr,
+  fakeWord,
   getButtonIn,
   expectLoadingFinishedByButton,
   expectLoadingStartedByButton,
@@ -22,7 +22,7 @@ import TaskResolutionModal, { TaskResolutionModalProps } from './index'
 
 const requiredProps: TaskResolutionModalProps = {
   type: TaskTypeEnum.Request,
-  recordId: generateIdStr(),
+  recordId: fakeIdStr(),
   isLoading: false,
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
@@ -107,9 +107,11 @@ const setUserResolution = async (user: UserEvent, value: string) => {
 }
 
 // loading
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () =>
+  expectLoadingStartedByButton(getSubmitButton())
 
-const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
+const expectLoadingFinished = () =>
+  expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -221,8 +223,8 @@ describe('Модалка решения по заявке', () => {
       test('Если поля заполнены', async () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        await testUtils.setTechResolution(user, generateWord())
-        await testUtils.setUserResolution(user, generateWord())
+        await testUtils.setTechResolution(user, fakeWord())
+        await testUtils.setUserResolution(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
@@ -257,7 +259,7 @@ describe('Модалка решения по заявке', () => {
       test('Можно заполнить', async () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        const value = generateWord()
+        const value = fakeWord()
         const field = await testUtils.setTechResolution(user, value)
 
         expect(field).toHaveDisplayValue(value)
@@ -298,7 +300,7 @@ describe('Модалка решения по заявке', () => {
 
           await testUtils.setTechResolution(
             user,
-            generateWord({ length: validationSizes.string.long + 1 }),
+            fakeWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(
@@ -353,7 +355,7 @@ describe('Модалка решения по заявке', () => {
       test('Можно заполнить', async () => {
         const { user } = render(<TaskResolutionModal {...requiredProps} />)
 
-        const value = generateWord()
+        const value = fakeWord()
         const field = await testUtils.setUserResolution(user, value)
 
         expect(field).toHaveDisplayValue(value)
@@ -394,7 +396,7 @@ describe('Модалка решения по заявке', () => {
 
           await testUtils.setUserResolution(
             user,
-            generateWord({ length: validationSizes.string.long + 1 }),
+            fakeWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(

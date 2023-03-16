@@ -18,8 +18,8 @@ import {
 } from '_tests_/mocks/api'
 import {
   findNotification,
-  generateId,
-  generateWord,
+  fakeId,
+  fakeWord,
   getButtonIn,
   getStoreWithAuth,
   queryButtonIn,
@@ -40,8 +40,8 @@ import CommentListTab, {
 } from './index'
 
 const requiredProps: Readonly<CommentListTabProps> = {
-  title: generateWord(),
-  taskId: generateId(),
+  title: fakeWord(),
+  taskId: fakeId(),
 }
 
 const getContainer = () => screen.getByTestId('task-comment-list-tab')
@@ -252,10 +252,7 @@ describe('Вкладка списка комментариев заявки', ()
           })
 
           await commentListTestUtils.expectLoadingFinished()
-          await createCommentFormTestUtils.setComment(
-            user,
-            newComment.text,
-          )
+          await createCommentFormTestUtils.setComment(user, newComment.text)
           await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
@@ -279,10 +276,7 @@ describe('Вкладка списка комментариев заявки', ()
           })
 
           await commentListTestUtils.expectLoadingFinished()
-          await createCommentFormTestUtils.setComment(
-            user,
-            newComment.text,
-          )
+          await createCommentFormTestUtils.setComment(user, newComment.text)
           await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
@@ -300,7 +294,7 @@ describe('Вкладка списка комментариев заявки', ()
           mockGetTaskCommentListSuccess(requiredProps.taskId, { body: [] })
 
           const badRequestErrorResponse: CreateCommentFormErrors = {
-            comment: [generateWord()],
+            comment: [fakeWord()],
           }
           mockCreateTaskCommentBadRequestError<CreateCommentFormFields>(
             requiredProps.taskId,
@@ -312,10 +306,7 @@ describe('Вкладка списка комментариев заявки', ()
           })
 
           await commentListTestUtils.expectLoadingFinished()
-          await createCommentFormTestUtils.setComment(
-            user,
-            generateWord(),
-          )
+          await createCommentFormTestUtils.setComment(user, fakeWord())
           await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
@@ -336,16 +327,13 @@ describe('Вкладка списка комментариев заявки', ()
           })
 
           await commentListTestUtils.expectLoadingFinished()
-          await createCommentFormTestUtils.setComment(
-            user,
-            generateWord(),
-          )
+          await createCommentFormTestUtils.setComment(user, fakeWord())
           await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
           const error = await findNotification(
-            taskCommentApiMessages.create.commonError,
+            taskCommentApiMessages.createComment.commonError,
           )
           expect(error).toBeInTheDocument()
         })
@@ -359,16 +347,13 @@ describe('Вкладка списка комментариев заявки', ()
           })
 
           await commentListTestUtils.expectLoadingFinished()
-          await createCommentFormTestUtils.setComment(
-            user,
-            generateWord(),
-          )
+          await createCommentFormTestUtils.setComment(user, fakeWord())
           await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
           const error = await findNotification(
-            taskCommentApiMessages.create.commonError,
+            taskCommentApiMessages.createComment.commonError,
           )
           expect(error).toBeInTheDocument()
         })
@@ -382,10 +367,7 @@ describe('Вкладка списка комментариев заявки', ()
           })
 
           await commentListTestUtils.expectLoadingFinished()
-          await createCommentFormTestUtils.setComment(
-            user,
-            generateWord(),
-          )
+          await createCommentFormTestUtils.setComment(user, fakeWord())
           await createCommentFormTestUtils.clickSubmitButton(user)
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()

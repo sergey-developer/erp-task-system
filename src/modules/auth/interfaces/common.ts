@@ -1,4 +1,4 @@
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 export type JwtPayload = {
   userId: number

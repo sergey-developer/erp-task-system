@@ -1,7 +1,9 @@
+import { MaybeNull } from 'shared/interfaces/utils'
+
 export type UserModel = {
   id: number
   firstName: string
   lastName: string
-  middleName?: string
-  avatar?: string
+  middleName: MaybeNull<string>
+  avatar: MaybeNull<string>
 }

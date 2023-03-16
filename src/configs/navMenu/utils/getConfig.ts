@@ -1,4 +1,5 @@
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
+
 import { isEqual } from 'shared/utils/common/isEqual'
 
 import { NavMenuItem } from '../interfaces'

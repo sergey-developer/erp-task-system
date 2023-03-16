@@ -1,8 +1,7 @@
 import { TableProps } from 'antd/es/table/Table'
 
 import { TaskListItemModel } from 'modules/task/models'
-
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { SortValue } from './constants/sort'
 
@@ -21,6 +20,7 @@ export type TaskTableListItem = Pick<
   | 'createdAt'
   | 'status'
   | 'extendedStatus'
+  | 'subtasksCounter'
 >
 
 export type TaskTableColumnKey =
@@ -36,6 +36,7 @@ export type TaskTableColumnKey =
       | 'supportGroup'
       | 'olaNextBreachTime'
       | 'status'
+      | 'subtasksCounter'
       | 'lastComment'
       | 'createdAt'
     >

@@ -33,7 +33,9 @@ export const useUpdateTaskWorkGroup = () => {
     const error = state.error as ErrorResponse
 
     if (isBadRequestError(error) || isServerRangeError(error)) {
-      showErrorNotification(taskWorkGroupApiMessages.update.commonError)
+      showErrorNotification(
+        taskWorkGroupApiMessages.updateWorkGroup.commonError,
+      )
     } else {
       showErrorNotification(commonApiMessages.unknownError)
     }

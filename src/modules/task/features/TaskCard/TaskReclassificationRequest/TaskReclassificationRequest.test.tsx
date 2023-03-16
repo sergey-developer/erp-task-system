@@ -9,8 +9,8 @@ import { formatDate } from 'shared/utils/date'
 import commonFixtures from 'fixtures/common'
 
 import {
-  generateDateString,
-  generateWord,
+  fakeDateString,
+  fakeWord,
   getButtonIn,
   getIconByNameIn,
   render,
@@ -22,8 +22,8 @@ import TaskReclassificationRequest, {
 
 const requiredProps: TaskReclassificationRequestProps = {
   user: commonFixtures.getUser(),
-  comment: generateWord(),
-  date: generateDateString(),
+  comment: fakeWord(),
+  date: fakeDateString(),
   onCancel: jest.fn(),
   cancelBtnDisabled: false,
 }

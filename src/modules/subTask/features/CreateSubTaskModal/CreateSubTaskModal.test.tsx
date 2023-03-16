@@ -10,8 +10,8 @@ import subTaskFixtures from 'fixtures/subTask'
 
 import {
   clickSelectOption,
-  generateIdStr,
-  generateWord,
+  fakeIdStr,
+  fakeWord,
   getButtonIn,
   getSelect,
   expectLoadingFinishedByButton,
@@ -27,7 +27,7 @@ import CreateSubTaskModal from './index'
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'
 
 const requiredProps: CreateSubTaskModalProps = {
-  recordId: generateIdStr(),
+  recordId: fakeIdStr(),
   initialFormValues: {},
   isLoading: false,
   templateOptions: subTaskFixtures.getSubTaskTemplateList(2),
@@ -163,8 +163,10 @@ const userFillForm = async (
   await setDescription(user, values.description)
 }
 
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
-const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
+const expectLoadingStarted = () =>
+  expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingFinished = () =>
+  expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -325,7 +327,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Можно ввести значение', async () => {
         const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-        const value = generateWord()
+        const value = fakeWord()
         const field = await testUtils.title.setValue(user, value)
 
         expect(field).toHaveDisplayValue(value)
@@ -334,7 +336,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Можно очистить значение', async () => {
         const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-        const value = generateWord()
+        const value = fakeWord()
         await testUtils.title.setValue(user, value)
         await testUtils.title.resetValue(user)
 
@@ -342,7 +344,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Можно установить значение по умолчанию', () => {
-        const initialValue = generateWord()
+        const initialValue = fakeWord()
 
         render(
           <CreateSubTaskModal
@@ -382,7 +384,7 @@ describe('Модалка создания задачи заявки', () => {
 
           await testUtils.title.setValue(
             user,
-            generateWord({ length: validationSizes.string.short + 1 }),
+            fakeWord({ length: validationSizes.string.short + 1 }),
           )
 
           expect(
@@ -414,7 +416,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Можно ввести значение', async () => {
         const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-        const value = generateWord()
+        const value = fakeWord()
         const field = await testUtils.description.setValue(user, value)
 
         expect(field).toHaveDisplayValue(value)
@@ -423,7 +425,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Можно очистить значение', async () => {
         const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
-        const value = generateWord()
+        const value = fakeWord()
         await testUtils.description.setValue(user, value)
         await testUtils.description.resetValue(user)
 
@@ -431,7 +433,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Можно установить значение по умолчанию', () => {
-        const initialValue = generateWord()
+        const initialValue = fakeWord()
 
         render(
           <CreateSubTaskModal
@@ -475,7 +477,7 @@ describe('Модалка создания задачи заявки', () => {
 
           await testUtils.description.setValue(
             user,
-            generateWord({ length: validationSizes.string.long + 1 }),
+            fakeWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(
@@ -508,8 +510,8 @@ describe('Модалка создания задачи заявки', () => {
 
       await testUtils.userFillForm(user, {
         templateX5: requiredProps.templateOptions[0].title,
-        title: generateWord(),
-        description: generateWord(),
+        title: fakeWord(),
+        description: fakeWord(),
       })
       await testUtils.clickSubmitButton(user)
 

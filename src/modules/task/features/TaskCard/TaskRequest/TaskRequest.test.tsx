@@ -12,8 +12,8 @@ import { formatDate } from 'shared/utils/date'
 import commonFixtures from 'fixtures/common'
 
 import {
-  generateDateString,
-  generateWord,
+  fakeDateString,
+  fakeWord,
   getButtonIn,
   getIconByNameIn,
   expectLoadingStartedByButton,
@@ -24,7 +24,7 @@ import {
 import TaskRequest, { TaskRequestProps } from './index'
 
 const action: ArrayItem<TaskRequestProps['actions']> = {
-  text: generateWord(),
+  text: fakeWord(),
   onClick: jest.fn(),
   disabled: false,
   loading: false,
@@ -32,9 +32,9 @@ const action: ArrayItem<TaskRequestProps['actions']> = {
 
 const requiredProps: TaskRequestProps & { 'data-testid': string } = {
   user: commonFixtures.getUser(),
-  title: generateWord(),
-  comment: generateWord(),
-  date: generateDateString(),
+  title: fakeWord(),
+  comment: fakeWord(),
+  date: fakeDateString(),
   icon: <PauseCircleIcon />,
   actions: [action],
   'data-testid': 'task-request',
@@ -120,7 +120,7 @@ describe('Запрос заявки', () => {
   })
 
   test('Можно отобразить несколько кнопок', () => {
-    const actions = [...requiredProps.actions, { text: generateWord() }]
+    const actions = [...requiredProps.actions, { text: fakeWord() }]
 
     render(<TaskRequest {...requiredProps} actions={actions} />)
 
