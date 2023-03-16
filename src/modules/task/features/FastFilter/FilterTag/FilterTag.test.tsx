@@ -16,7 +16,7 @@ export const requiredProps: Readonly<
 describe('Элемент быстрого фильтра', () => {
   test('Отображает состояние загрузки', async () => {
     render(<FilterTag {...requiredProps} loading />)
-    await testUtils.loadingStarted()
+    await testUtils.expectLoadingStarted()
   })
 
   test('Отображает текст', () => {
@@ -96,7 +96,7 @@ describe('Элемент быстрого фильтра', () => {
         <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
       )
 
-      await testUtils.userChangeFilter(user, requiredProps.value)
+      await testUtils.changeFilter(user, requiredProps.value)
       expect(onChange).toBeCalledTimes(1)
     })
 
@@ -105,7 +105,7 @@ describe('Элемент быстрого фильтра', () => {
         <FilterTag {...requiredProps} disabled onChange={onChange} />,
       )
 
-      await testUtils.userChangeFilter(user, requiredProps.value)
+      await testUtils.changeFilter(user, requiredProps.value)
       expect(onChange).not.toBeCalled()
     })
   })

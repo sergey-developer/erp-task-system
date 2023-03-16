@@ -10,18 +10,18 @@ import {
 import { taskStatusDict } from 'modules/task/constants/dictionary'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 import { getShortUserName } from 'modules/user/utils'
 
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
-import { UserRoleEnum } from 'shared/constants/roles'
 import { NumberOrString } from 'shared/interfaces/utils'
 import { formatDate } from 'shared/utils/date'
 
 import taskFixtures from 'fixtures/task'
 
 import {
-  loadingFinishedByIconIn,
-  loadingStartedByIconIn,
+  expectLoadingFinishedByIconIn,
+  expectLoadingStartedByIconIn,
   render,
 } from '_tests_/utils'
 
@@ -83,7 +83,7 @@ const getHeadCol = (text: string) => {
 const getColTitle = getChildByText
 const queryColTitle = queryChildByText
 
-const userClickColTitle = async (user: UserEvent, text: string) => {
+const clickColTitle = async (user: UserEvent, text: string) => {
   const col = getChildByText(text)
   await user.click(col)
   return col
@@ -96,7 +96,7 @@ const getPaginationNextButton = () =>
     name: 'right',
   })
 
-const userClickPaginationNextButton = async (user: UserEvent) => {
+const clickPaginationNextButton = async (user: UserEvent) => {
   const button = getPaginationNextButton()
   await user.click(button)
   return button
@@ -107,7 +107,7 @@ const getPaginationPrevButton = () =>
     name: 'left',
   })
 
-const userClickPaginationPrevButton = async (user: UserEvent) => {
+const clickPaginationPrevButton = async (user: UserEvent) => {
   const button = getPaginationPrevButton()
   await user.click(button)
   return button
@@ -116,7 +116,7 @@ const userClickPaginationPrevButton = async (user: UserEvent) => {
 const getPaginationPageButton = (pageNumber: string) =>
   within(getPaginationContainer()).getByRole('listitem', { name: pageNumber })
 
-const userClickPaginationPageButton = async (
+const clickPaginationPageButton = async (
   user: UserEvent,
   pageNumber: string,
 ) => {
@@ -132,10 +132,7 @@ const getPageSizeOptionsContainer = (container: HTMLElement) =>
 const getPageSizeOption = (container: HTMLElement, pageSize: NumberOrString) =>
   within(container).getByText(`${pageSize} / стр.`)
 
-const userOpenPageSizeOptions = async (
-  user: UserEvent,
-  container: HTMLElement,
-) => {
+const openPageSizeOptions = async (user: UserEvent, container: HTMLElement) => {
   const button = within(container).getByRole('combobox', {
     expanded: false,
   })
@@ -143,12 +140,9 @@ const userOpenPageSizeOptions = async (
   await user.click(button)
 }
 
-const userChangePageSize = async (
-  user: UserEvent,
-  pageSize: NumberOrString,
-) => {
+const changePageSize = async (user: UserEvent, pageSize: NumberOrString) => {
   const pagination = getPaginationContainer()
-  await userOpenPageSizeOptions(user, pagination)
+  await openPageSizeOptions(user, pagination)
   const pageSizeOption = getPageSizeOption(
     getPageSizeOptionsContainer(pagination),
     pageSize,
@@ -158,15 +152,15 @@ const userChangePageSize = async (
   return pageSizeOption
 }
 
-const loadingStarted = async () => {
+const expectLoadingStarted = async () => {
   const taskTable = getContainer()
-  await loadingStartedByIconIn(taskTable)
+  await expectLoadingStartedByIconIn(taskTable)
   return taskTable
 }
 
-const loadingFinished = async () => {
+const expectLoadingFinished = async () => {
   const taskTable = getContainer()
-  await loadingFinishedByIconIn(taskTable)
+  await expectLoadingFinishedByIconIn(taskTable)
   return taskTable
 }
 
@@ -196,15 +190,15 @@ export const testUtils = {
   getPageSizeOptionsContainer,
   getPageSizeOption,
 
-  userClickColTitle,
-  userClickPaginationNextButton,
-  userClickPaginationPrevButton,
-  userClickPaginationPageButton,
-  userOpenPageSizeOptions,
-  userChangePageSize,
+  clickColTitle,
+  clickPaginationNextButton,
+  clickPaginationPrevButton,
+  clickPaginationPageButton,
+  openPageSizeOptions,
+  changePageSize,
 
-  loadingStarted,
-  loadingFinished,
+  expectLoadingStarted,
+  expectLoadingFinished,
 
   onChangeTableArgs,
 }
@@ -232,7 +226,7 @@ describe('Таблица заявок', () => {
 
   test('Отображает состояние загрузки', async () => {
     render(<TaskTable {...testConstants.requiredProps} loading />)
-    await testUtils.loadingStarted()
+    await testUtils.expectLoadingStarted()
   })
 
   describe('Колонка', () => {
@@ -251,7 +245,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getTaskStatus(TaskStatusEnum.New)
+          const status = taskStatusTestUtils.getContainer(TaskStatusEnum.New)
           expect(status).toBeInTheDocument()
         })
 
@@ -268,7 +262,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getTaskStatus(
+          const status = taskStatusTestUtils.getContainer(
             TaskStatusEnum.InProgress,
           )
           expect(status).toBeInTheDocument()
@@ -287,7 +281,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getTaskStatus(
+          const status = taskStatusTestUtils.getContainer(
             TaskStatusEnum.Completed,
           )
           expect(status).toBeInTheDocument()
@@ -306,7 +300,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getTaskStatus(
+          const status = taskStatusTestUtils.getContainer(
             TaskStatusEnum.Awaiting,
           )
           expect(status).toBeInTheDocument()
@@ -325,9 +319,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getTaskStatus(
-            TaskStatusEnum.Closed,
-          )
+          const status = taskStatusTestUtils.getContainer(TaskStatusEnum.Closed)
           expect(status).toBeInTheDocument()
         })
       })
@@ -347,7 +339,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getTaskStatus(
+          const status = taskStatusTestUtils.getContainer(
             TaskExtendedStatusEnum.Returned,
           )
           expect(status).toBeInTheDocument()
@@ -367,7 +359,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getTaskStatus(
+          const status = taskStatusTestUtils.getContainer(
             TaskExtendedStatusEnum.InReclassification,
           )
           expect(status).toBeInTheDocument()
@@ -387,7 +379,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getTaskStatus(
+          const status = taskStatusTestUtils.getContainer(
             TaskExtendedStatusEnum.FirstLineReturned,
           )
           expect(status).toBeInTheDocument()
@@ -410,7 +402,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Заявка')
@@ -427,18 +419,18 @@ describe('Таблица заявок', () => {
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Заявка')
+        await testUtils.clickColTitle(user, 'Заявка')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
       test('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Заявка')
+        await testUtils.clickColTitle(user, 'Заявка')
         const headCol = testUtils.getHeadCol('Заявка')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-        await testUtils.userClickColTitle(user, 'Заявка')
+        await testUtils.clickColTitle(user, 'Заявка')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
         testConstants.requiredProps.dataSource.forEach((item) => {
@@ -463,7 +455,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Внеш.номер')
@@ -480,19 +472,19 @@ describe('Таблица заявок', () => {
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Внеш.номер')
+        await testUtils.clickColTitle(user, 'Внеш.номер')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
       test('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Внеш.номер')
+        await testUtils.clickColTitle(user, 'Внеш.номер')
         const headCol = testUtils.getHeadCol('Внеш.номер')
 
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-        await testUtils.userClickColTitle(user, 'Внеш.номер')
+        await testUtils.clickColTitle(user, 'Внеш.номер')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
         testConstants.requiredProps.dataSource.forEach((item) => {
@@ -517,7 +509,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Объект')
@@ -534,18 +526,18 @@ describe('Таблица заявок', () => {
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Объект')
+        await testUtils.clickColTitle(user, 'Объект')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
       test('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Объект')
+        await testUtils.clickColTitle(user, 'Объект')
         const headCol = testUtils.getHeadCol('Объект')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-        await testUtils.userClickColTitle(user, 'Объект')
+        await testUtils.clickColTitle(user, 'Объект')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
         testConstants.requiredProps.dataSource.forEach((item) => {
@@ -570,7 +562,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Тема')
@@ -587,18 +579,18 @@ describe('Таблица заявок', () => {
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Тема')
+        await testUtils.clickColTitle(user, 'Тема')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
       test('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Тема')
+        await testUtils.clickColTitle(user, 'Тема')
         const headCol = testUtils.getHeadCol('Тема')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-        await testUtils.userClickColTitle(user, 'Тема')
+        await testUtils.clickColTitle(user, 'Тема')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
         testConstants.requiredProps.dataSource.forEach((item) => {
@@ -625,7 +617,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Исполнитель')
@@ -642,18 +634,18 @@ describe('Таблица заявок', () => {
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Исполнитель')
+        await testUtils.clickColTitle(user, 'Исполнитель')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
       test('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Исполнитель')
+        await testUtils.clickColTitle(user, 'Исполнитель')
         const headCol = testUtils.getHeadCol('Исполнитель')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-        await testUtils.userClickColTitle(user, 'Исполнитель')
+        await testUtils.clickColTitle(user, 'Исполнитель')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
         testConstants.requiredProps.dataSource.forEach((item) => {
@@ -725,7 +717,7 @@ describe('Таблица заявок', () => {
           ).toBeInTheDocument()
         })
 
-        test('Сортировка включена', async () => {
+        test('Сортировка включена', () => {
           render(
             <TaskTable
               {...testConstants.requiredProps}
@@ -757,7 +749,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          await testUtils.userClickColTitle(user, 'Рабочая группа')
+          await testUtils.clickColTitle(user, 'Рабочая группа')
           expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
         })
 
@@ -769,11 +761,11 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          await testUtils.userClickColTitle(user, 'Рабочая группа')
+          await testUtils.clickColTitle(user, 'Рабочая группа')
           const headCol = testUtils.getHeadCol('Рабочая группа')
           expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-          await testUtils.userClickColTitle(user, 'Рабочая группа')
+          await testUtils.clickColTitle(user, 'Рабочая группа')
           expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
           testConstants.requiredProps.dataSource.forEach((item) => {
@@ -829,7 +821,7 @@ describe('Таблица заявок', () => {
           ).toBeInTheDocument()
         })
 
-        test('Сортировка включена', async () => {
+        test('Сортировка включена', () => {
           render(
             <TaskTable
               {...testConstants.requiredProps}
@@ -861,7 +853,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          await testUtils.userClickColTitle(user, 'Рабочая группа')
+          await testUtils.clickColTitle(user, 'Рабочая группа')
           expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
         })
 
@@ -873,11 +865,11 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          await testUtils.userClickColTitle(user, 'Рабочая группа')
+          await testUtils.clickColTitle(user, 'Рабочая группа')
           const headCol = testUtils.getHeadCol('Рабочая группа')
           expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-          await testUtils.userClickColTitle(user, 'Рабочая группа')
+          await testUtils.clickColTitle(user, 'Рабочая группа')
           expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
           testConstants.requiredProps.dataSource.forEach((item) => {
@@ -933,7 +925,7 @@ describe('Таблица заявок', () => {
           ).toBeInTheDocument()
         })
 
-        test('Сортировка включена', async () => {
+        test('Сортировка включена', () => {
           render(
             <TaskTable
               {...testConstants.requiredProps}
@@ -965,7 +957,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          await testUtils.userClickColTitle(user, 'Рабочая группа')
+          await testUtils.clickColTitle(user, 'Рабочая группа')
           expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
         })
 
@@ -977,11 +969,11 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          await testUtils.userClickColTitle(user, 'Рабочая группа')
+          await testUtils.clickColTitle(user, 'Рабочая группа')
           const headCol = testUtils.getHeadCol('Рабочая группа')
           expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-          await testUtils.userClickColTitle(user, 'Рабочая группа')
+          await testUtils.clickColTitle(user, 'Рабочая группа')
           expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
           testConstants.requiredProps.dataSource.forEach((item) => {
@@ -1020,7 +1012,7 @@ describe('Таблица заявок', () => {
           ).toBeInTheDocument()
         })
 
-        test('Сортировка включена', async () => {
+        test('Сортировка включена', () => {
           render(
             <TaskTable
               {...testConstants.requiredProps}
@@ -1052,7 +1044,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          await testUtils.userClickColTitle(user, 'Группа поддержки')
+          await testUtils.clickColTitle(user, 'Группа поддержки')
           expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
         })
 
@@ -1064,11 +1056,11 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          await testUtils.userClickColTitle(user, 'Группа поддержки')
+          await testUtils.clickColTitle(user, 'Группа поддержки')
           const headCol = testUtils.getHeadCol('Группа поддержки')
           expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-          await testUtils.userClickColTitle(user, 'Группа поддержки')
+          await testUtils.clickColTitle(user, 'Группа поддержки')
           expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
           testConstants.requiredProps.dataSource.forEach((item) => {
@@ -1144,7 +1136,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Выполнить до')
@@ -1166,18 +1158,18 @@ describe('Таблица заявок', () => {
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Выполнить до')
+        await testUtils.clickColTitle(user, 'Выполнить до')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
       test('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Выполнить до')
+        await testUtils.clickColTitle(user, 'Выполнить до')
         const headCol = testUtils.getHeadCol('Выполнить до')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-        await testUtils.userClickColTitle(user, 'Выполнить до')
+        await testUtils.clickColTitle(user, 'Выполнить до')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
         testConstants.requiredProps.dataSource.forEach((item) => {
@@ -1204,11 +1196,11 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test.skip('Сортировка включена', async () => {
+      test('Сортировка отключена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Статус')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).not.toHaveClass(testConstants.columnWithSortingClass)
       })
 
       test.skip('Значение сортировки по умолчанию не установлено', () => {
@@ -1221,24 +1213,48 @@ describe('Таблица заявок', () => {
       test.skip('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Статус')
+        await testUtils.clickColTitle(user, 'Статус')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
       test.skip('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Статус')
+        await testUtils.clickColTitle(user, 'Статус')
         const headCol = testUtils.getHeadCol('Статус')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-        await testUtils.userClickColTitle(user, 'Статус')
+        await testUtils.clickColTitle(user, 'Статус')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
         testConstants.requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
           expect(row).toBeInTheDocument()
         })
+      })
+    })
+
+    describe('Задания', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...testConstants.requiredProps} />)
+        expect(testUtils.getColTitle('Задания')).toBeInTheDocument()
+      })
+
+      test('Отображает значение', () => {
+        render(<TaskTable {...testConstants.requiredProps} />)
+
+        expect(
+          testUtils.getChildByText(
+            `${testConstants.firstTaskTableItem.subtasksCounter.completed}/${testConstants.firstTaskTableItem.subtasksCounter.all}`,
+          ),
+        ).toBeInTheDocument()
+      })
+
+      test('Сортировка отключена', () => {
+        render(<TaskTable {...testConstants.requiredProps} />)
+
+        const headCol = testUtils.getHeadCol('Задания')
+        expect(headCol).not.toHaveClass(testConstants.columnWithSortingClass)
       })
     })
 
@@ -1259,7 +1275,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Комментарий')
@@ -1276,18 +1292,18 @@ describe('Таблица заявок', () => {
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Комментарий')
+        await testUtils.clickColTitle(user, 'Комментарий')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
       test('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Комментарий')
+        await testUtils.clickColTitle(user, 'Комментарий')
         const headCol = testUtils.getHeadCol('Комментарий')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-        await testUtils.userClickColTitle(user, 'Комментарий')
+        await testUtils.clickColTitle(user, 'Комментарий')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
         testConstants.requiredProps.dataSource.forEach((item) => {
@@ -1317,7 +1333,7 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
-      test('Сортировка включена', async () => {
+      test('Сортировка включена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Дата создания')
@@ -1334,18 +1350,18 @@ describe('Таблица заявок', () => {
       test('При клике на заголовок обработчик вызывается корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Дата создания')
+        await testUtils.clickColTitle(user, 'Дата создания')
         expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       })
 
       test('Сортировка работает корректно', async () => {
         const { user } = render(<TaskTable {...testConstants.requiredProps} />)
 
-        await testUtils.userClickColTitle(user, 'Дата создания')
+        await testUtils.clickColTitle(user, 'Дата создания')
         const headCol = testUtils.getHeadCol('Дата создания')
         expect(headCol).toHaveAttribute('aria-sort', 'ascending')
 
-        await testUtils.userClickColTitle(user, 'Дата создания')
+        await testUtils.clickColTitle(user, 'Дата создания')
         expect(headCol).toHaveAttribute('aria-sort', 'descending')
 
         testConstants.requiredProps.dataSource.forEach((item) => {
@@ -1453,7 +1469,7 @@ describe('Таблица заявок', () => {
 
       const pagination = testUtils.getPaginationContainer()
 
-      await testUtils.userOpenPageSizeOptions(user, pagination)
+      await testUtils.openPageSizeOptions(user, pagination)
 
       const pageSizeOptionsContainer =
         testUtils.getPageSizeOptionsContainer(pagination)
@@ -1477,7 +1493,7 @@ describe('Таблица заявок', () => {
 
       const pageSize = paginationConfig.pageSizeOptions[0]
 
-      await testUtils.userChangePageSize(user, pageSize)
+      await testUtils.changePageSize(user, pageSize)
       expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       expect(testConstants.requiredProps.onChange).toBeCalledWith(
         testUtils.onChangeTableArgs.pagination({
@@ -1501,7 +1517,7 @@ describe('Таблица заявок', () => {
         />,
       )
 
-      await testUtils.userClickPaginationNextButton(user)
+      await testUtils.clickPaginationNextButton(user)
       expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       expect(testConstants.requiredProps.onChange).toBeCalledWith(
         testUtils.onChangeTableArgs.pagination({
@@ -1528,7 +1544,7 @@ describe('Таблица заявок', () => {
         />,
       )
 
-      await testUtils.userClickPaginationPrevButton(user)
+      await testUtils.clickPaginationPrevButton(user)
       expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       expect(testConstants.requiredProps.onChange).toBeCalledWith(
         testUtils.onChangeTableArgs.pagination({
@@ -1552,7 +1568,7 @@ describe('Таблица заявок', () => {
         />,
       )
 
-      await testUtils.userClickPaginationPageButton(user, '2')
+      await testUtils.clickPaginationPageButton(user, '2')
       expect(testConstants.requiredProps.onChange).toBeCalledTimes(1)
       expect(testConstants.requiredProps.onChange).toBeCalledWith(
         testUtils.onChangeTableArgs.pagination({

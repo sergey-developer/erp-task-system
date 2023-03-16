@@ -37,7 +37,9 @@ export const useDeleteTaskSuspendRequest = () => {
     const error = state.error as ErrorResponse
 
     if (isNotFoundError(error)) {
-      showErrorNotification(suspendRequestApiMessages.delete.notFoundError)
+      showErrorNotification(
+        suspendRequestApiMessages.deleteRequest.notFoundError,
+      )
     } else if (isBadRequestError(error)) {
       showMultipleErrorNotification(getErrorDetail(error))
     } else {

@@ -9,10 +9,9 @@ import {
 import {
   generateWord,
   getButtonIn,
-  loadingFinishedByButton,
-  loadingStartedByButton,
+  expectLoadingFinishedByButton,
+  expectLoadingStartedByButton,
   render,
-  validatingFinished,
 } from '_tests_/utils'
 
 import CreateCommentForm from './index'
@@ -28,27 +27,21 @@ const getContainer = () => screen.getByTestId('create-comment-form')
 const findChildByText = (text: string) =>
   within(getContainer()).findByText(text)
 
-const getCommentField = () =>
+const getCommentFieldContainer = () =>
   within(getContainer()).getByTestId('field-comment')
 
 const findCommentFieldError = (error: string) =>
-  within(getCommentField()).findByText(error)
+  within(getCommentFieldContainer()).findByText(error)
 
-const getCommentInput = () =>
-  within(getCommentField()).getByPlaceholderText(
+const getCommentField = () =>
+  within(getCommentFieldContainer()).getByPlaceholderText(
     'Дополните информацию о заявке',
   )
 
-const userEntersComment = async (user: UserEvent, comment: string) => {
-  const input = getCommentInput()
+const setComment = async (user: UserEvent, comment: string) => {
+  const input = getCommentField()
   await user.type(input, comment)
   return input
-}
-
-const commentValidatingFinished = async () => {
-  const commentField = getCommentField()
-  await validatingFinished(commentField)
-  return commentField
 }
 
 const getSubmitButton = () =>
@@ -60,31 +53,30 @@ const clickSubmitButton = async (user: UserEvent) => {
   return button
 }
 
-const loadingStarted = async () => {
+const expectLoadingStarted = async () => {
   const submitButton = getSubmitButton()
-  await loadingStartedByButton(submitButton)
+  await expectLoadingStartedByButton(submitButton)
 }
 
-const loadingFinished = async () => {
+const expectLoadingFinished = async () => {
   const submitButton = getSubmitButton()
-  await loadingFinishedByButton(submitButton)
+  await expectLoadingFinishedByButton(submitButton)
 }
 
 export const testUtils = {
   getContainer,
   findChildByText,
 
-  getCommentField,
+  getCommentFieldContainer,
   findCommentFieldError,
-  getCommentInput,
-  userEntersComment,
-  commentValidatingFinished,
+  getCommentField,
+  setComment,
 
   getSubmitButton,
   clickSubmitButton,
 
-  loadingStarted,
-  loadingFinished,
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
 describe('Форма добавления комментария', () => {
@@ -92,7 +84,7 @@ describe('Форма добавления комментария', () => {
     test('Отображается корректно', () => {
       render(<CreateCommentForm {...requiredProps} />)
 
-      const commentInput = testUtils.getCommentInput()
+      const commentInput = testUtils.getCommentField()
 
       expect(commentInput).toBeInTheDocument()
       expect(commentInput).not.toHaveValue()
@@ -102,7 +94,7 @@ describe('Форма добавления комментария', () => {
     test('Не активно при загрузке', () => {
       render(<CreateCommentForm {...requiredProps} isLoading />)
 
-      const commentInput = testUtils.getCommentInput()
+      const commentInput = testUtils.getCommentField()
       expect(commentInput).toBeDisabled()
     })
 
@@ -110,7 +102,7 @@ describe('Форма добавления комментария', () => {
       const { user } = render(<CreateCommentForm {...requiredProps} />)
 
       const commentText = generateWord()
-      const commentInput = await testUtils.userEntersComment(user, commentText)
+      const commentInput = await testUtils.setComment(user, commentText)
 
       expect(commentInput).toHaveValue(commentText)
     })
@@ -119,7 +111,7 @@ describe('Форма добавления комментария', () => {
       test('Если превысить лимит символов', async () => {
         const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-        await testUtils.userEntersComment(
+        await testUtils.setComment(
           user,
           generateWord({ length: validationSizes.string.long + 1 }),
         )
@@ -134,7 +126,7 @@ describe('Форма добавления комментария', () => {
       test('Если ввести только пробелы', async () => {
         const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-        await testUtils.userEntersComment(user, ' ')
+        await testUtils.setComment(user, ' ')
         const error = await testUtils.findCommentFieldError(
           validationMessages.canNotBeEmpty,
         )
@@ -167,13 +159,13 @@ describe('Форма добавления комментария', () => {
 
     test('Отображает процесс загрузки', async () => {
       render(<CreateCommentForm {...requiredProps} isLoading />)
-      await testUtils.loadingStarted()
+      await testUtils.expectLoadingStarted()
     })
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<CreateCommentForm {...requiredProps} />)
 
-      await testUtils.userEntersComment(user, generateWord())
+      await testUtils.setComment(user, generateWord())
       await testUtils.clickSubmitButton(user)
 
       expect(requiredProps.onSubmit).toBeCalledTimes(1)

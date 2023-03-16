@@ -36,6 +36,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
   closeTaskCard,
 }) => {
   const {
+    refetch: refetchTask,
     currentData: task = null,
     isFetching: taskIsFetching,
     isError: isGetTaskError,
@@ -121,6 +122,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
     <Card
       task={task}
       taskIsLoading={taskIsFetching}
+      refetchTask={refetchTask}
       takeTask={takeTask}
       takeTaskIsLoading={takeTaskIsLoading}
       resolveTask={resolveTask}

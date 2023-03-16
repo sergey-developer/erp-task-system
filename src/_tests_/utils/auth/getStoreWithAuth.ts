@@ -2,7 +2,7 @@ import { AuthenticatedUser } from 'modules/auth/interfaces'
 
 import { setupStore } from 'state/store'
 
-import { UserRoleEnum } from 'shared/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { generateId } from '_tests_/utils'
 

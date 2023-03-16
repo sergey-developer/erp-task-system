@@ -41,7 +41,7 @@ const queryByTextInCheckableTag = (
   text: NumberOrString,
 ) => within(getCheckableTag(filter)).queryByText(text)
 
-const userChangeFilter = async (
+const changeFilter = async (
   user: UserEvent,
   filter: FastFilterEnum,
 ): Promise<HTMLElement> => {
@@ -66,7 +66,7 @@ const expectFilterNotDisabled = (filter: HTMLElement) => {
   expect(filter).not.toHaveClass(filterDisabledClass)
 }
 
-const loadingStarted = async () => {
+const expectLoadingStarted = async () => {
   await waitFor(() => {
     getAllFilterTag().forEach((tag) => {
       // eslint-disable-next-line testing-library/no-node-access
@@ -76,7 +76,7 @@ const loadingStarted = async () => {
   })
 }
 
-const loadingFinished = async () => {
+const expectLoadingFinished = async () => {
   await waitFor(() => {
     getAllFilterTag().forEach((tag) => {
       // eslint-disable-next-line testing-library/no-node-access
@@ -108,10 +108,10 @@ export const testUtils = {
   getByTextInCheckableTag,
   queryByTextInCheckableTag,
 
-  userChangeFilter,
+  changeFilter,
 
-  loadingStarted,
-  loadingFinished,
+  expectLoadingStarted,
+  expectLoadingFinished,
 
   expectFilterChecked,
   expectFilterNotChecked,
@@ -161,13 +161,13 @@ describe('Быстрый фильтр', () => {
 
   test('Отображает состояние загрузки', async () => {
     render(<FastFilter {...requiredProps} isLoading />)
-    await testUtils.loadingStarted()
+    await testUtils.expectLoadingStarted()
   })
 
   test('Обработчик onChange вызывается корректно', async () => {
     const { user } = render(<FastFilter {...requiredProps} />)
 
-    await testUtils.userChangeFilter(user, FastFilterEnum.Free)
+    await testUtils.changeFilter(user, FastFilterEnum.Free)
 
     expect(requiredProps.onChange).toBeCalledTimes(1)
     expect(requiredProps.onChange).toHaveBeenCalledWith(FastFilterEnum.Free)
