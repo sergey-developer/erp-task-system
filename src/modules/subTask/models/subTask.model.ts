@@ -11,10 +11,10 @@ export type SubTaskModel = {
   createdAt: string
   cancelReason: MaybeNull<string>
   returnReason: MaybeNull<string>
-  recordId?: MaybeNull<string>
-  techResolution?: string
-  description?: string
-  olaNextBreachTime?: MaybeNull<string>
-  externalAssigneeName?: string
-  externalAssigneePhone?: string
+  recordId: MaybeNull<string>
+  techResolution: MaybeNull<string>
+  description: MaybeNull<string>
+  olaNextBreachTime: MaybeNull<string>
+  externalAssigneeName: MaybeNull<string>
+  externalAssigneePhone: MaybeNull<string>
 }

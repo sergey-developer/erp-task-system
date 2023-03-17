@@ -4,7 +4,6 @@ import moment from 'moment'
 
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
-
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import workGroupFixtures from 'fixtures/workGroup'
@@ -12,8 +11,8 @@ import workGroupFixtures from 'fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   clickSelectOption,
-  generateName,
-  generateWord,
+  fakeName,
+  fakeWord,
   getButtonIn,
   getCheckboxIn,
   getRadioButtonIn,
@@ -87,7 +86,8 @@ const applyFilter = async (user: UserEvent) => {
 }
 
 // status
-const getStatusFieldContainer = () => screen.getByTestId('filter-extended-status')
+const getStatusFieldContainer = () =>
+  screen.getByTestId('filter-extended-status')
 
 const getStatusField = (label: string) =>
   getCheckboxIn(getStatusFieldContainer(), new RegExp(label))
@@ -242,24 +242,23 @@ const getSearchByColumnFieldContainer = () =>
   screen.getByTestId('filter-extended-search-by-column')
 
 const getSearchByColumnKeywordField = (): HTMLInputElement =>
-  within(getSearchByColumnFieldContainer()).getByPlaceholderText('Ключевое слово')
+  within(getSearchByColumnFieldContainer()).getByPlaceholderText(
+    'Ключевое слово',
+  )
 
 const getSearchByColumnColumnField = (label: string) =>
   getRadioButtonIn(getSearchByColumnFieldContainer(), label)
 
 const setSearchByColumnKeyword = async (user: UserEvent) => {
   const keywordField = getSearchByColumnKeywordField()
-  const keyword = generateWord()
+  const keyword = fakeWord()
 
   await user.type(keywordField, keyword)
 
   return { keywordField, keyword }
 }
 
-const setSearchByColumnField = async (
-  user: UserEvent,
-  label: string,
-) => {
+const setSearchByColumnField = async (user: UserEvent, label: string) => {
   const radioButton = getRadioButtonIn(getSearchByColumnFieldContainer(), label)
   await user.click(radioButton)
   return radioButton
@@ -826,7 +825,7 @@ describe('Расширенный фильтр', () => {
 
         const container = testUtils.searchByColumn.getContainer()
 
-        const keyword = generateName()
+        const keyword = fakeName()
         await user.type(testUtils.searchByColumn.getKeywordField(), keyword)
 
         await user.click(
@@ -848,7 +847,7 @@ describe('Расширенный фильтр', () => {
 
         const container = testUtils.searchByColumn.getContainer()
 
-        const keyword = generateName()
+        const keyword = fakeName()
         await user.type(testUtils.searchByColumn.getKeywordField(), keyword)
 
         await user.click(
@@ -1045,7 +1044,8 @@ describe('Расширенный фильтр', () => {
             }),
           })
 
-          const workGroupField = await testUtils.workGroup.expectLoadingFinished()
+          const workGroupField =
+            await testUtils.workGroup.expectLoadingFinished()
           await testUtils.workGroup.openField(user, workGroupField)
 
           await testUtils.workGroup.setValue(user, workGroupListItem.name)
@@ -1067,7 +1067,8 @@ describe('Расширенный фильтр', () => {
             }),
           })
 
-          const workGroupField = await testUtils.workGroup.expectLoadingFinished()
+          const workGroupField =
+            await testUtils.workGroup.expectLoadingFinished()
           await testUtils.workGroup.openField(user, workGroupField)
 
           await testUtils.workGroup.setValue(user, workGroupListItem.name)

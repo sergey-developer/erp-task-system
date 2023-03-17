@@ -15,6 +15,7 @@ import {
 } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
+import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Permissions from 'components/Permissions'
@@ -39,7 +40,7 @@ const { Text } = Typography
 
 export type WorkGroupBlockProps = Pick<
   TaskModel,
-  'id' | 'recordId' | 'workGroup' | 'status' | 'extendedStatus'
+  'id' | 'recordId' | 'status' | 'extendedStatus'
 > & {
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
@@ -56,6 +57,7 @@ export type WorkGroupBlockProps = Pick<
   transferTaskToSecondLineIsLoading: boolean
 
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
+  workGroup?: WorkGroupListItemModel
 }
 
 const WorkGroupBlock: FC<WorkGroupBlockProps> = ({

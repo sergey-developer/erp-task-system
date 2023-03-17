@@ -40,7 +40,7 @@ import {
 } from '_tests_/mocks/api'
 import {
   findNotification,
-  generateWord,
+  fakeWord,
   getButtonIn,
   getStoreWithAuth,
   expectLoadingFinishedBySpinner,
@@ -85,7 +85,9 @@ const testUtils = {
   getCreateSubTaskButton,
   openCreateSubTaskModal: clickCreateSubTaskButton,
 
-  expectLoadingFinished: expectLoadingFinishedBySpinner('sub-task-list-spinner'),
+  expectLoadingFinished: expectLoadingFinishedBySpinner(
+    'sub-task-list-spinner',
+  ),
 }
 
 setupApiTests()
@@ -319,8 +321,8 @@ describe('Вкладка списка заданий', () => {
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
         await createSubTaskModalTestUtils.userFillForm(user, {
           templateX5: templateList[0].title,
-          title: generateWord(),
-          description: generateWord(),
+          title: fakeWord(),
+          description: fakeWord(),
         })
         await createSubTaskModalTestUtils.clickSubmitButton(user)
 
@@ -363,8 +365,8 @@ describe('Вкладка списка заданий', () => {
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
         await createSubTaskModalTestUtils.userFillForm(user, {
           templateX5: templateList[0].title,
-          title: generateWord(),
-          description: generateWord(),
+          title: fakeWord(),
+          description: fakeWord(),
         })
         await createSubTaskModalTestUtils.clickSubmitButton(user)
 
@@ -391,9 +393,9 @@ describe('Вкладка списка заданий', () => {
         })
 
         const badRequestResponse: Required<CreateSubTaskFormErrors> = {
-          title: [generateWord()],
-          description: [generateWord()],
-          templateX5: [generateWord()],
+          title: [fakeWord()],
+          description: [fakeWord()],
+          templateX5: [fakeWord()],
         }
         mockCreateSubTaskBadRequestError(requiredProps.task.id, {
           body: badRequestResponse,
@@ -419,8 +421,8 @@ describe('Вкладка списка заданий', () => {
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
         await createSubTaskModalTestUtils.userFillForm(user, {
           templateX5: templateList[0].title,
-          title: generateWord(),
-          description: generateWord(),
+          title: fakeWord(),
+          description: fakeWord(),
         })
         await createSubTaskModalTestUtils.clickSubmitButton(user)
 
@@ -475,8 +477,8 @@ describe('Вкладка списка заданий', () => {
         await createSubTaskModalTestUtils.template.expectLoadingFinished()
         await createSubTaskModalTestUtils.userFillForm(user, {
           templateX5: templateList[0].title,
-          title: generateWord(),
-          description: generateWord(),
+          title: fakeWord(),
+          description: fakeWord(),
         })
         await createSubTaskModalTestUtils.clickSubmitButton(user)
 
@@ -655,7 +657,7 @@ describe('Вкладка списка заданий', () => {
       await testUtils.expectLoadingFinished()
       await subTaskTestUtils.clickReworkButton(user)
       await reworkSubTaskModalTestUtils.findContainer()
-      await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
+      await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
       await reworkSubTaskModalTestUtils.clickSubmitButton(user)
       await reworkSubTaskModalTestUtils.expectLoadingStarted()
     })
@@ -686,7 +688,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
-        await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
+        await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
         await waitFor(() => {
@@ -727,7 +729,7 @@ describe('Вкладка списка заданий', () => {
 
         await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
-        await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
+        await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
         await waitFor(() => {
@@ -767,7 +769,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.expectLoadingFinished()
         const reworkButton = await subTaskTestUtils.clickReworkButton(user)
         const modal = await reworkSubTaskModalTestUtils.findContainer()
-        await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
+        await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
         await waitFor(() => {
@@ -788,7 +790,7 @@ describe('Вкладка списка заданий', () => {
         mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
 
         const badRequestResponse: Required<ReworkSubTaskFormErrors> = {
-          returnReason: [generateWord()],
+          returnReason: [fakeWord()],
         }
         mockReworkSubTaskBadRequestError(subTask.id, {
           body: badRequestResponse,
@@ -812,7 +814,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickReworkButton(user)
         await reworkSubTaskModalTestUtils.findContainer()
-        await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
+        await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
@@ -847,7 +849,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickReworkButton(user)
         await reworkSubTaskModalTestUtils.findContainer()
-        await reworkSubTaskModalTestUtils.setReturnReason(user, generateWord())
+        await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
@@ -934,7 +936,7 @@ describe('Вкладка списка заданий', () => {
       await testUtils.expectLoadingFinished()
       await subTaskTestUtils.clickCancelButton(user)
       await cancelSubTaskModalTestUtils.findContainer()
-      await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
+      await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
       await cancelSubTaskModalTestUtils.clickSubmitButton(user)
       await cancelSubTaskModalTestUtils.expectLoadingStarted()
     })
@@ -965,7 +967,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
+        await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         await waitFor(() => {
@@ -1006,7 +1008,7 @@ describe('Вкладка списка заданий', () => {
 
         await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
+        await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         await waitFor(() => {
@@ -1046,7 +1048,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.expectLoadingFinished()
         const cancelButton = await subTaskTestUtils.clickCancelButton(user)
         const modal = await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
+        await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         await waitFor(() => {
@@ -1067,7 +1069,7 @@ describe('Вкладка списка заданий', () => {
         mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
 
         const badRequestResponse: Required<CancelSubTaskFormErrors> = {
-          cancelReason: [generateWord()],
+          cancelReason: [fakeWord()],
         }
         mockCancelSubTaskBadRequestError(subTask.id, {
           body: badRequestResponse,
@@ -1091,7 +1093,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickCancelButton(user)
         await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
+        await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
@@ -1126,7 +1128,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.expectLoadingFinished()
         await subTaskTestUtils.clickCancelButton(user)
         await cancelSubTaskModalTestUtils.findContainer()
-        await cancelSubTaskModalTestUtils.setCancelReason(user, generateWord())
+        await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(

@@ -9,8 +9,8 @@ import {
 } from 'shared/constants/validation'
 
 import {
-  generateIdStr,
-  generateWord,
+  fakeIdStr,
+  fakeWord,
   getButtonIn,
   expectLoadingFinishedByButton,
   expectLoadingStartedByButton,
@@ -24,7 +24,7 @@ import RequestTaskReclassificationModal, {
 } from './index'
 
 const requiredProps: RequestTaskReclassificationModalProps = {
-  recordId: generateIdStr(),
+  recordId: fakeIdStr(),
   isLoading: false,
   onCancel: jest.fn(),
   onSubmit: jest.fn(),
@@ -119,9 +119,11 @@ const setComment = async (user: UserEvent, value: string) => {
 }
 
 // loading
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () =>
+  expectLoadingStartedByButton(getSubmitButton())
 
-const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
+const expectLoadingFinished = () =>
+  expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -226,7 +228,7 @@ describe('Модалка запроса о переклассификации з
         for await (const reason of Object.values(ReclassificationReasonEnum)) {
           await testUtils.setReclassificationReason(user, reason)
         }
-        await testUtils.setComment(user, generateWord())
+        await testUtils.setComment(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
@@ -331,7 +333,7 @@ describe('Модалка запроса о переклассификации з
           <RequestTaskReclassificationModal {...requiredProps} />,
         )
 
-        const value = generateWord()
+        const value = fakeWord()
         const field = await testUtils.setComment(user, value)
 
         expect(field).toHaveDisplayValue(value)
@@ -376,7 +378,7 @@ describe('Модалка запроса о переклассификации з
 
           await testUtils.setComment(
             user,
-            generateWord({ length: validationSizes.string.long + 1 }),
+            fakeWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(

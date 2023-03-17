@@ -1,8 +1,12 @@
-import { UserModel } from 'modules/user/models'
+type MakeUserNameObjectReturnType = {
+  firstName: string
+  lastName: string
+  middleName: string
+}
 
 export const makeUserNameObject = (
   value: string,
-): Pick<UserModel, 'firstName' | 'lastName' | 'middleName'> => {
+): MakeUserNameObjectReturnType => {
   const fullNameParts = value.split(' ')
   const firstName = fullNameParts[1]
   const lastName = fullNameParts[0]
@@ -11,6 +15,6 @@ export const makeUserNameObject = (
   return {
     firstName: firstName || '',
     lastName: lastName || '',
-    middleName,
+    middleName: middleName || '',
   }
 }

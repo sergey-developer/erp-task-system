@@ -16,10 +16,15 @@ import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 
 import {
-  generateDateString,
-  generateId,
-  generateInteger,
-  generateWord,
+  fakeAddress,
+  fakeDateString,
+  fakeId,
+  fakeIdStr,
+  fakeInteger,
+  fakeLatitude,
+  fakeLongitude,
+  fakePhone,
+  fakeWord,
 } from '_tests_/utils'
 
 export const getTaskListItem = (
@@ -30,32 +35,41 @@ export const getTaskListItem = (
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   type: props?.type || TaskTypeEnum.Request,
 
-  id: generateId(),
+  id: fakeId(),
   assignee: taskFixtures.getAssignee(),
-  lastComment: generateWord(),
-  priorityCode: generateInteger({
+  lastComment: fakeWord(),
+  priorityCode: fakeInteger({
     min: 1,
     max: 4,
   }) as TaskListItemModel['priorityCode'],
-  severity: generateInteger({
+  severity: fakeInteger({
     min: 1,
     max: 4,
   }) as TaskListItemModel['severity'],
-  initialImpact: generateInteger({
+  initialImpact: fakeInteger({
     min: 1,
     max: 4,
   }) as TaskListItemModel['initialImpact'],
-  createdAt: generateDateString(),
-  recordId: generateWord(),
+  createdAt: fakeDateString(),
+  recordId: fakeIdStr(),
   workGroup: workGroupFixtures.getWorkGroup(),
   supportGroup: commonFixtures.getSupportGroup(),
-  title: generateWord(),
-  name: generateWord(),
-  productClassifier1: generateWord(),
-  productClassifier2: generateWord(),
-  productClassifier3: generateWord(),
-  contactService: generateWord(),
-  subtasksCounter: { all: generateInteger(), completed: generateInteger() },
+  title: fakeWord(),
+  name: fakeWord(),
+  productClassifier1: fakeWord(),
+  productClassifier2: fakeWord(),
+  productClassifier3: fakeWord(),
+  contactService: fakeWord(),
+  subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
+  longitude: String(fakeLongitude()),
+  latitude: String(fakeLatitude()),
+  userResolution: fakeWord(),
+  techResolution: fakeWord(),
+  portablePhone: fakePhone(),
+  olaNextBreachTime: fakeDateString(),
+  description: fakeWord(),
+  address: fakeAddress(),
+  contactPhone: fakePhone(),
 })
 
 export const getTaskList = (length: number = 1): Array<TaskListItemModel> =>

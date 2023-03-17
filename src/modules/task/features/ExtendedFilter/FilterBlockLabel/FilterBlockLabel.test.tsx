@@ -1,12 +1,12 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { generateWord, getButtonIn, render } from '_tests_/utils'
+import { fakeWord, getButtonIn, render } from '_tests_/utils'
 
 import FilterBlockLabel, { FilterBlockLabelProps } from './index'
 
 const requiredProps: FilterBlockLabelProps = {
-  label: generateWord(),
+  label: fakeWord(),
   onReset: jest.fn(),
 }
 

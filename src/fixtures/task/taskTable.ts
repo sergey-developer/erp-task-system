@@ -14,11 +14,12 @@ import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 
 import {
-  generateDateString,
-  generateId,
-  generateInteger,
-  generateName,
-  generateWord,
+  fakeDateString,
+  fakeId,
+  fakeIdStr,
+  fakeInteger,
+  fakeName,
+  fakeWord,
 } from '_tests_/utils'
 
 export const getTaskTableItem = (
@@ -26,20 +27,20 @@ export const getTaskTableItem = (
     Pick<TaskTableListItem, 'status' | 'extendedStatus' | 'olaStatus'>
   >,
 ): NonNullableObject<TaskTableListItem> => ({
-  id: generateId(),
-  name: generateName(),
-  title: generateWord(),
+  id: fakeId(),
+  name: fakeName(),
+  title: fakeWord(),
   workGroup: workGroupFixtures.getWorkGroup(),
   supportGroup: commonFixtures.getSupportGroup(),
-  createdAt: generateDateString(),
-  recordId: generateWord(),
-  lastComment: generateWord(),
+  createdAt: fakeDateString(),
+  recordId: fakeIdStr(),
+  lastComment: fakeWord(),
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   assignee: taskFixtures.getAssignee(),
-  olaNextBreachTime: generateDateString(),
-  subtasksCounter: { all: generateInteger(), completed: generateInteger() },
+  olaNextBreachTime: fakeDateString(),
+  subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
 })
 
 export const getTaskTableItems = (

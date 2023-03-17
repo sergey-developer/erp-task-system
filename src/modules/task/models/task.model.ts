@@ -12,11 +12,10 @@ export type TaskModel = BaseTaskModel & {
   assignee: MaybeNull<TaskAssigneeModel>
   olaEstimatedTime: number
   suspendRequest: MaybeNull<SuspendRequestModel>
-
-  weight?: number
-  company?: string
-  email?: string
-  sapId?: string
-  contactType?: string
-  workGroup?: MaybeNull<TaskWorkGroupModel>
+  weight: MaybeNull<number>
+  company: MaybeNull<string>
+  email: MaybeNull<string>
+  sapId: MaybeNull<string>
+  contactType: MaybeNull<string>
+  workGroup: MaybeNull<TaskWorkGroupModel>
 }

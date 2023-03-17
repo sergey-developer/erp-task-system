@@ -4,12 +4,12 @@ import { TaskCommentModel } from 'modules/task/models'
 
 import commonFixtures from 'fixtures/common'
 
-import { generateDateString, generateId, generateWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
 export const getComment = (): TaskCommentModel => ({
-  id: generateId(),
-  text: generateWord(),
-  createdAt: generateDateString(),
+  id: fakeId(),
+  text: fakeWord(),
+  createdAt: fakeDateString(),
   author: commonFixtures.getCommentAuthor(),
 })
 
