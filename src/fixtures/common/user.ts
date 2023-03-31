@@ -1,11 +1,11 @@
 import { UserModel } from 'modules/user/models'
 
-import { generateId, generateUrl, generateWord } from '_tests_/utils'
+import { fakeId, fakeUrl, fakeWord } from '_tests_/utils'
 
 export const getUser = (): UserModel => ({
-  id: generateId(),
-  firstName: generateWord(),
-  lastName: generateWord(),
-  middleName: generateWord(),
-  avatar: generateUrl(),
+  id: fakeId(),
+  firstName: fakeWord(),
+  lastName: fakeWord(),
+  middleName: fakeWord(),
+  avatar: fakeUrl(),
 })

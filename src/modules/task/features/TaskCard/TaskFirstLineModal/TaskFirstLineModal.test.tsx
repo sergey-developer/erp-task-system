@@ -7,17 +7,18 @@ import {
 } from 'shared/constants/validation'
 
 import {
-  generateWord,
+  fakeWord,
   getButtonIn,
   expectLoadingStartedByButton,
   render,
+  fakeIdStr,
 } from '_tests_/utils'
 
 import TaskFirstLineModal from './index'
 import { TaskFirstLineModalProps } from './interfaces'
 
 const requiredProps: TaskFirstLineModalProps = {
-  recordId: generateWord(),
+  recordId: fakeIdStr(),
   isLoading: false,
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
@@ -117,7 +118,7 @@ describe('Модальное окно перевода запроса на пе�
         const { user } = render(<TaskFirstLineModal {...requiredProps} />)
 
         const description = testUtils.getDescriptionField()
-        const descriptionText = generateWord()
+        const descriptionText = fakeWord()
         await user.type(description, descriptionText)
 
         expect(description).toHaveValue(descriptionText)
@@ -143,7 +144,7 @@ describe('Модальное окно перевода запроса на пе�
           const field = testUtils.getDescriptionField()
           await user.type(
             field,
-            generateWord({ length: validationSizes.string.long + 1 }),
+            fakeWord({ length: validationSizes.string.long + 1 }),
           )
 
           expect(
@@ -188,7 +189,7 @@ describe('Модальное окно перевода запроса на пе�
         const description = testUtils.getDescriptionField()
         const submitButton = testUtils.getSubmitButton()
 
-        await user.type(description, generateWord())
+        await user.type(description, fakeWord())
         await user.click(submitButton)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)

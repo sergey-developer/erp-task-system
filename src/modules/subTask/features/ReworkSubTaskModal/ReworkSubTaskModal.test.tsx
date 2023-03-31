@@ -5,29 +5,24 @@ import {
   validationMessages,
   validationSizes,
 } from 'shared/constants/validation'
-import { NonNullableObject } from 'shared/interfaces/utils'
 
 import {
-  generateWord,
+  fakeWord,
   getButtonIn,
   expectLoadingFinishedByButton,
   expectLoadingStartedByButton,
   render,
+  fakeIdStr,
 } from '_tests_/utils'
 
 import ReworkSubTaskModal from './index'
 import { ReworkSubTaskModalProps } from './interfaces'
 
-const requiredProps: Omit<ReworkSubTaskModalProps, 'recordId'> = {
+const requiredProps: ReworkSubTaskModalProps = {
   isLoading: false,
+  recordId: null,
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
-}
-
-const notRequiredProps: NonNullableObject<
-  Omit<ReworkSubTaskModalProps, keyof typeof requiredProps>
-> = {
-  recordId: generateWord(),
 }
 
 const getContainer = () => screen.getByTestId('rework-sub-task-modal')
@@ -106,20 +101,14 @@ describe('Модалка отправки запроса на доработку
   })
 
   test('Заголовок отображается корректно', () => {
-    render(
-      <ReworkSubTaskModal
-        {...requiredProps}
-        recordId={notRequiredProps.recordId}
-      />,
-    )
+    const recordId = fakeIdStr()
+    render(<ReworkSubTaskModal {...requiredProps} recordId={recordId} />)
 
     expect(
       testUtils.getChildByText(/возврат на доработку задания/i),
     ).toBeInTheDocument()
 
-    expect(
-      testUtils.getChildByText(notRequiredProps.recordId),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText(recordId)).toBeInTheDocument()
   })
 
   describe('Форма', () => {
@@ -142,7 +131,7 @@ describe('Модалка отправки запроса на доработку
       test('Можно ввести значение', async () => {
         const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
 
-        const value = generateWord()
+        const value = fakeWord()
         const field = await testUtils.setReturnReason(user, value)
 
         expect(field).toHaveValue(value)
@@ -166,7 +155,7 @@ describe('Модалка отправки запроса на доработку
 
           await testUtils.setReturnReason(
             user,
-            generateWord({ length: validationSizes.string.middle + 1 }),
+            fakeWord({ length: validationSizes.string.middle + 1 }),
           )
 
           expect(
@@ -210,7 +199,7 @@ describe('Модалка отправки запроса на доработку
       test('Обработчик вызывается корректно', async () => {
         const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
 
-        await testUtils.setReturnReason(user, generateWord())
+        await testUtils.setReturnReason(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)

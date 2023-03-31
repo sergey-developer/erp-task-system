@@ -1,11 +1,11 @@
 import { GetTaskCountersSuccessResponse } from 'modules/task/models'
 
-import { generateInteger } from '_tests_/utils'
+import { fakeInteger } from '_tests_/utils'
 
 export const getTaskCountersResponse = (): GetTaskCountersSuccessResponse => ({
-  all: generateInteger({ min: 1, max: 10 }),
-  free: generateInteger({ min: 1, max: 10 }),
-  overdue: generateInteger({ min: 1, max: 10 }),
-  mine: generateInteger({ min: 1, max: 10 }),
-  closed: generateInteger({ min: 1, max: 10 }),
+  all: fakeInteger({ min: 1, max: 10 }),
+  free: fakeInteger({ min: 1, max: 10 }),
+  overdue: fakeInteger({ min: 1, max: 10 }),
+  mine: fakeInteger({ min: 1, max: 10 }),
+  closed: fakeInteger({ min: 1, max: 10 }),
 })

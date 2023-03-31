@@ -27,8 +27,8 @@ import {
   mockRefreshTokenSuccess,
 } from '_tests_/mocks/api'
 import {
-  generateEmail,
-  generateWord,
+  fakeEmail,
+  fakeWord,
   expectLoadingFinishedByButton,
   expectLoadingStartedByButton,
   render,
@@ -41,7 +41,8 @@ const getContainer = () => screen.getByTestId('login-card')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // email field
-const getEmailFieldContainer = () => within(getContainer()).getByTestId('field-email')
+const getEmailFieldContainer = () =>
+  within(getContainer()).getByTestId('field-email')
 
 const getEmailField = (): HTMLInputElement =>
   within(getEmailFieldContainer()).getByPlaceholderText('ober@obermeister.ru')
@@ -82,7 +83,8 @@ const clickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
 
 // other
 const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitBtn())
-const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitBtn())
+const expectLoadingFinished = () =>
+  expectLoadingFinishedByButton(getSubmitBtn())
 
 const testUtils = {
   getContainer,
@@ -122,7 +124,7 @@ describe('Страница авторизации', () => {
     test('Можно установить значение', async () => {
       const { user } = render(<LoginPage />)
 
-      const value = generateEmail()
+      const value = fakeEmail()
       const field = await testUtils.setEmail(user, value)
 
       expect(field).toHaveValue(value)
@@ -132,11 +134,13 @@ describe('Страница авторизации', () => {
       test('Если ввести некорректный email', async () => {
         const { user } = render(<LoginPage />)
 
-        await testUtils.setEmail(user, generateWord())
+        await testUtils.setEmail(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findEmailFieldError(validationMessages.email.incorrect),
+          await testUtils.findEmailFieldError(
+            validationMessages.email.incorrect,
+          ),
         ).toBeInTheDocument()
       })
 
@@ -147,7 +151,9 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findEmailFieldError(validationMessages.email.incorrect),
+          await testUtils.findEmailFieldError(
+            validationMessages.email.incorrect,
+          ),
         ).toBeInTheDocument()
       })
 
@@ -178,7 +184,7 @@ describe('Страница авторизации', () => {
     test('Можно установить значение', async () => {
       const { user } = render(<LoginPage />)
 
-      const value = generateWord()
+      const value = fakeWord()
       const field = await testUtils.setPassword(user, value)
 
       expect(field).toHaveValue(value)
@@ -202,7 +208,9 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findPasswordFieldError(validationMessages.canNotBeEmpty),
+          await testUtils.findPasswordFieldError(
+            validationMessages.canNotBeEmpty,
+          ),
         ).toBeInTheDocument()
       })
     })
@@ -230,8 +238,8 @@ describe('Страница авторизации', () => {
         RouteEnum.Login,
       )
 
-      await testUtils.setEmail(user, generateEmail())
-      await testUtils.setPassword(user, generateWord())
+      await testUtils.setEmail(user, fakeEmail())
+      await testUtils.setPassword(user, fakeWord())
       await testUtils.clickSubmitButton(user)
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
@@ -244,8 +252,8 @@ describe('Страница авторизации', () => {
 
       const { user } = render(<LoginPage />)
 
-      await testUtils.setEmail(user, generateEmail())
-      await testUtils.setPassword(user, generateWord())
+      await testUtils.setEmail(user, fakeEmail())
+      await testUtils.setPassword(user, fakeWord())
       await testUtils.clickSubmitButton(user)
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
@@ -265,8 +273,8 @@ describe('Страница авторизации', () => {
 
       const { user } = render(<LoginPage />, { store })
 
-      await testUtils.setEmail(user, generateEmail())
-      await testUtils.setPassword(user, generateWord())
+      await testUtils.setEmail(user, fakeEmail())
+      await testUtils.setPassword(user, fakeWord())
       await testUtils.clickSubmitButton(user)
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
@@ -293,8 +301,8 @@ describe('Страница авторизации', () => {
         RouteEnum.Login,
       )
 
-      await testUtils.setEmail(user, generateEmail())
-      await testUtils.setPassword(user, generateWord())
+      await testUtils.setEmail(user, fakeEmail())
+      await testUtils.setPassword(user, fakeWord())
       await testUtils.clickSubmitButton(user)
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
@@ -307,8 +315,8 @@ describe('Страница авторизации', () => {
 
       const { user } = render(<LoginPage />)
 
-      await testUtils.setEmail(user, generateEmail())
-      await testUtils.setPassword(user, generateWord())
+      await testUtils.setEmail(user, fakeEmail())
+      await testUtils.setPassword(user, fakeWord())
       await testUtils.clickSubmitButton(user)
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
@@ -324,8 +332,8 @@ describe('Страница авторизации', () => {
 
       const { user } = render(<LoginPage />)
 
-      await testUtils.setEmail(user, generateEmail())
-      await testUtils.setPassword(user, generateWord())
+      await testUtils.setEmail(user, fakeEmail())
+      await testUtils.setPassword(user, fakeWord())
       await testUtils.clickSubmitButton(user)
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
@@ -340,8 +348,8 @@ describe('Страница авторизации', () => {
 
       const { user } = render(<LoginPage />)
 
-      await testUtils.setEmail(user, generateEmail())
-      await testUtils.setPassword(user, generateWord())
+      await testUtils.setEmail(user, fakeEmail())
+      await testUtils.setPassword(user, fakeWord())
       await testUtils.clickSubmitButton(user)
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()

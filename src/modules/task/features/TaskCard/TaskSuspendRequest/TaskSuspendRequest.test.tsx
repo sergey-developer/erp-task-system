@@ -9,8 +9,8 @@ import { formatDate } from 'shared/utils/date'
 import commonFixtures from 'fixtures/common'
 
 import {
-  generateDateString,
-  generateWord,
+  fakeDateString,
+  fakeWord,
   getButtonIn,
   getIconByNameIn,
   expectLoadingStartedByButton,
@@ -22,9 +22,9 @@ import TaskSuspendRequest, { TaskSuspendRequestProps } from './index'
 
 const requiredProps: Omit<TaskSuspendRequestProps, 'action'> = {
   user: commonFixtures.getUser(),
-  title: generateWord(),
-  comment: generateWord(),
-  date: generateDateString(),
+  title: fakeWord(),
+  comment: fakeWord(),
+  date: fakeDateString(),
 }
 
 export const cancelRequestAction: TaskSuspendRequestProps['action'] = {

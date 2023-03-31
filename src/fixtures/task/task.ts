@@ -10,15 +10,15 @@ import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'
 
 import {
-  generateDateString,
-  generateEmail,
-  generateId,
-  generateIdStr,
-  generateInteger,
-  generateLatitude,
-  generateLongitude,
-  generatePhone,
-  generateWord,
+  fakeDateString,
+  fakeEmail,
+  fakeId,
+  fakeIdStr,
+  fakeInteger,
+  fakeLatitude,
+  fakeLongitude,
+  fakePhone,
+  fakeWord,
 } from '_tests_/utils'
 
 export const getTask = (
@@ -36,7 +36,7 @@ export const getTask = (
     >
   >,
 ): TaskModel => ({
-  id: props?.id || generateId(),
+  id: props?.id || fakeId(),
   type: props?.type || TaskTypeEnum.Request,
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
@@ -44,42 +44,40 @@ export const getTask = (
   workGroup: props?.workGroup || taskFixtures.getWorkGroup(),
   assignee: props?.assignee || taskFixtures.getAssignee(),
   suspendRequest: props?.suspendRequest || null,
-
-  recordId: generateWord(),
-  name: generateWord(),
-  title: generateWord(),
-  initialImpact: generateInteger({
+  recordId: fakeIdStr(),
+  name: fakeWord(),
+  title: fakeWord(),
+  initialImpact: fakeInteger({
     min: 1,
     max: 4,
   }) as TaskModel['initialImpact'],
-  severity: generateInteger({
+  severity: fakeInteger({
     min: 1,
     max: 4,
   }) as TaskModel['severity'],
-  priorityCode: generateInteger({
+  priorityCode: fakeInteger({
     min: 1,
     max: 4,
   }) as TaskModel['priorityCode'],
-  contactService: generateWord(),
-  createdAt: generateDateString(),
-  productClassifier1: generateWord(),
-  productClassifier2: generateWord(),
-  productClassifier3: generateWord(),
+  contactService: fakeWord(),
+  createdAt: fakeDateString(),
+  productClassifier1: fakeWord(),
+  productClassifier2: fakeWord(),
+  productClassifier3: fakeWord(),
   supportGroup: commonFixtures.getSupportGroup(),
   olaEstimatedTime: Date.now(),
-
-  description: generateWord(),
-  contactPhone: generatePhone(),
-  portablePhone: generatePhone(),
-  address: generateWord(),
-  company: generateWord(),
-  contactType: generateWord(),
-  email: generateEmail(),
-  latitude: String(generateLatitude()),
-  longitude: String(generateLongitude()),
-  sapId: generateIdStr(),
-  olaNextBreachTime: generateDateString(),
-  weight: generateInteger(),
-  techResolution: generateWord(),
-  userResolution: generateWord(),
+  description: fakeWord(),
+  contactPhone: fakePhone(),
+  portablePhone: fakePhone(),
+  address: fakeWord(),
+  company: fakeWord(),
+  contactType: fakeWord(),
+  email: fakeEmail(),
+  latitude: String(fakeLatitude()),
+  longitude: String(fakeLongitude()),
+  sapId: fakeIdStr(),
+  olaNextBreachTime: fakeDateString(),
+  weight: fakeInteger(),
+  techResolution: fakeWord(),
+  userResolution: fakeWord(),
 })

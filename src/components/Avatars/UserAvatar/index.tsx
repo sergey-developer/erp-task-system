@@ -1,13 +1,15 @@
 import { AvatarProps, BadgeProps } from 'antd'
 import React, { FC } from 'react'
 
+import { MaybeNull } from 'shared/interfaces/utils'
+
 import { AvatarStyled, BadgeStyled } from './styles'
 
 type UserAvatarProps = Omit<AvatarProps, 'src' | 'alt'> &
   Pick<BadgeProps, 'dot'> &
   Partial<{
     abbr: string
-    src: string
+    src: MaybeNull<string>
     className: string
   }>
 

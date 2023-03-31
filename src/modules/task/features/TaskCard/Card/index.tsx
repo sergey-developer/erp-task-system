@@ -108,6 +108,8 @@ export type TaskCardProps = {
       | 'latitude'
       | 'longitude'
       | 'suspendRequest'
+      | 'techResolution'
+      | 'userResolution'
     >
   >
 

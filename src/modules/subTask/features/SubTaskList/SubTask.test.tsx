@@ -9,8 +9,6 @@ import {
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
-import { NonNullableObject } from 'shared/interfaces/utils'
-
 import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
 
@@ -21,21 +19,7 @@ import SubTask, { SubTaskProps } from './SubTask'
 const task = taskFixtures.getTask()
 const subTask = subTaskFixtures.getSubTask()
 
-const requiredProps: Pick<
-  SubTaskProps,
-  | 'title'
-  | 'status'
-  | 'createdAt'
-  | 'supportGroup'
-  | 'onClickCancel'
-  | 'onClickRework'
-  | 'taskStatus'
-  | 'taskExtendedStatus'
-  | 'currentUserIsTaskAssignee'
-  | 'returnReason'
-  | 'cancelReason'
-  | 'taskSuspendRequestStatus'
-> = {
+const requiredProps: SubTaskProps = {
   title: subTask.title,
   status: subTask.status,
   taskExtendedStatus: task.extendedStatus,
@@ -48,11 +32,6 @@ const requiredProps: Pick<
   returnReason: null,
   cancelReason: null,
   taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
-}
-
-const notRequiredProps: NonNullableObject<
-  Omit<SubTaskProps, keyof typeof requiredProps>
-> = {
   recordId: subTask.recordId,
   description: subTask.description,
   techResolution: subTask.techResolution,
@@ -196,23 +175,17 @@ export const testUtils = {
 
 describe('Задание', () => {
   test('Отображает recordId', () => {
-    render(<SubTask {...requiredProps} recordId={notRequiredProps.recordId} />)
-
+    render(<SubTask {...requiredProps} />)
     expect(
-      testUtils.getChildByText(notRequiredProps.recordId),
+      testUtils.getChildByText(requiredProps.recordId!),
     ).toBeInTheDocument()
   })
 
   test('Отображает дату "olaNextBreachTime"', () => {
-    render(
-      <SubTask
-        {...requiredProps}
-        olaNextBreachTime={notRequiredProps.olaNextBreachTime}
-      />,
-    )
+    render(<SubTask {...requiredProps} />)
 
     expect(
-      testUtils.getChildByText(`до ${notRequiredProps.olaNextBreachTime!}`),
+      testUtils.getChildByText(`до ${requiredProps.olaNextBreachTime!}`),
     ).toBeInTheDocument()
   })
 
@@ -245,13 +218,7 @@ describe('Задание', () => {
   describe('Техническое решение', () => {
     describe('Кнопка отображается корректно', () => {
       test('Если статус подзадачи "Завершена"', () => {
-        render(
-          <SubTask
-            {...requiredProps}
-            status={TaskStatusEnum.Completed}
-            techResolution={notRequiredProps.techResolution}
-          />,
-        )
+        render(<SubTask {...requiredProps} status={TaskStatusEnum.Completed} />)
 
         const button = testUtils.getTechResolutionButton()
 
@@ -260,13 +227,7 @@ describe('Задание', () => {
       })
 
       test('Если статус подзадачи "Закрыта"', () => {
-        render(
-          <SubTask
-            {...requiredProps}
-            status={TaskStatusEnum.Closed}
-            techResolution={notRequiredProps.techResolution}
-          />,
-        )
+        render(<SubTask {...requiredProps} status={TaskStatusEnum.Closed} />)
 
         const button = testUtils.getTechResolutionButton()
 
@@ -277,65 +238,43 @@ describe('Задание', () => {
 
     describe('Кнопка не отображается', () => {
       test('При не верном статусе подзадачи', () => {
-        render(
-          <SubTask
-            {...requiredProps}
-            status={TaskStatusEnum.New}
-            techResolution={notRequiredProps.techResolution}
-          />,
-        )
-
+        render(<SubTask {...requiredProps} status={TaskStatusEnum.New} />)
         expect(testUtils.queryTechResolutionButton()).not.toBeInTheDocument()
       })
     })
 
     describe('Текст решения', () => {
       test('Скрыт по умолчанию', () => {
-        render(
-          <SubTask
-            {...requiredProps}
-            status={TaskStatusEnum.Closed}
-            techResolution={notRequiredProps.techResolution}
-          />,
-        )
+        render(<SubTask {...requiredProps} status={TaskStatusEnum.Closed} />)
 
         expect(testUtils.getTechResolutionButton()).toBeInTheDocument()
-
         expect(
-          testUtils.queryChildByText(notRequiredProps.techResolution),
+          testUtils.queryChildByText(requiredProps.techResolution!),
         ).not.toBeInTheDocument()
       })
 
       test('Можно раскрыть', async () => {
         const { user } = render(
-          <SubTask
-            {...requiredProps}
-            status={TaskStatusEnum.Closed}
-            techResolution={notRequiredProps.techResolution}
-          />,
+          <SubTask {...requiredProps} status={TaskStatusEnum.Closed} />,
         )
 
         await testUtils.clickTechResolutionButton(user)
 
         expect(
-          testUtils.getChildByText(notRequiredProps.techResolution),
+          testUtils.getChildByText(requiredProps.techResolution!),
         ).toBeInTheDocument()
       })
 
       test('Можно скрыть', async () => {
         const { user } = render(
-          <SubTask
-            {...requiredProps}
-            status={TaskStatusEnum.Closed}
-            techResolution={notRequiredProps.techResolution}
-          />,
+          <SubTask {...requiredProps} status={TaskStatusEnum.Closed} />,
         )
 
         await testUtils.clickTechResolutionButton(user)
         await testUtils.clickTechResolutionButton(user)
 
         expect(
-          testUtils.queryChildByText(notRequiredProps.techResolution),
+          testUtils.queryChildByText(requiredProps.techResolution!),
         ).not.toBeInTheDocument()
       })
     })
@@ -472,15 +411,9 @@ describe('Задание', () => {
   })
 
   test('Отображает блок исполнителя', () => {
-    render(
-      <SubTask
-        {...requiredProps}
-        externalAssigneeName={notRequiredProps.externalAssigneeName}
-      />,
-    )
+    render(<SubTask {...requiredProps} />)
 
     expect(testUtils.getChildByText(/исполнитель/i)).toBeInTheDocument()
-
     expect(
       taskAssigneeTestUtils.getContainerIn(testUtils.getContainer()),
     ).toBeInTheDocument()
@@ -488,12 +421,7 @@ describe('Задание', () => {
 
   describe('Описание', () => {
     test('Кнопка отображается корректно', () => {
-      render(
-        <SubTask
-          {...requiredProps}
-          description={notRequiredProps.description}
-        />,
-      )
+      render(<SubTask {...requiredProps} />)
 
       const button = getDescriptionButton()
 
@@ -503,48 +431,33 @@ describe('Задание', () => {
 
     describe('Текст описания', () => {
       test('Скрыт по умолчанию', () => {
-        render(
-          <SubTask
-            {...requiredProps}
-            description={notRequiredProps.description}
-          />,
-        )
+        render(<SubTask {...requiredProps} />)
 
         expect(getDescriptionButton()).toBeInTheDocument()
 
         expect(
-          testUtils.queryChildByText(notRequiredProps.description),
+          testUtils.queryChildByText(requiredProps.description!),
         ).not.toBeInTheDocument()
       })
 
       test('Можно раскрыть', async () => {
-        const { user } = render(
-          <SubTask
-            {...requiredProps}
-            description={notRequiredProps.description}
-          />,
-        )
+        const { user } = render(<SubTask {...requiredProps} />)
 
         await clickDescriptionButton(user)
 
         expect(
-          testUtils.getChildByText(notRequiredProps.description),
+          testUtils.getChildByText(requiredProps.description!),
         ).toBeInTheDocument()
       })
 
       test('Можно скрыть', async () => {
-        const { user } = render(
-          <SubTask
-            {...requiredProps}
-            description={notRequiredProps.description}
-          />,
-        )
+        const { user } = render(<SubTask {...requiredProps} />)
 
         await clickDescriptionButton(user)
         await clickDescriptionButton(user)
 
         expect(
-          testUtils.queryChildByText(notRequiredProps.description),
+          testUtils.queryChildByText(requiredProps.description!),
         ).not.toBeInTheDocument()
       })
     })

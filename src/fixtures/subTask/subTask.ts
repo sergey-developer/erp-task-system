@@ -8,29 +8,29 @@ import { NonNullableObject } from 'shared/interfaces/utils'
 import commonFixtures from 'fixtures/common'
 
 import {
-  generateDateString,
-  generateId,
-  generateIdStr,
-  generatePhone,
-  generateWord,
+  fakeDateString,
+  fakeId,
+  fakeIdStr,
+  fakePhone,
+  fakeWord,
 } from '_tests_/utils'
 
 export const getSubTask = (
   props?: Partial<Pick<SubTaskModel, 'status'>>,
 ): NonNullableObject<SubTaskModel> => ({
-  id: generateId(),
-  recordId: generateIdStr(),
-  title: generateWord(),
+  id: fakeId(),
+  recordId: fakeIdStr(),
+  title: fakeWord(),
   status: props?.status || TaskStatusEnum.New,
   supportGroup: commonFixtures.getSupportGroup(),
-  createdAt: generateDateString(),
-  description: generateWord(),
-  externalAssigneeName: generateWord(),
-  externalAssigneePhone: generatePhone(),
-  olaNextBreachTime: generateDateString(),
-  techResolution: generateWord(),
-  returnReason: generateWord(),
-  cancelReason: generateWord(),
+  createdAt: fakeDateString(),
+  description: fakeWord(),
+  externalAssigneeName: fakeWord(),
+  externalAssigneePhone: fakePhone(),
+  olaNextBreachTime: fakeDateString(),
+  techResolution: fakeWord(),
+  returnReason: fakeWord(),
+  cancelReason: fakeWord(),
 })
 
 export const getSubTaskList = (

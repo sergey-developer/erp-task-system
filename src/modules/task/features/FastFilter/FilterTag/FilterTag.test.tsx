@@ -1,4 +1,4 @@
-import { generateWord, render } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/utils'
 
 import { testUtils } from '../FastFilter.test'
 import FilterTag, { FilterTagProps } from '../FilterTag'
@@ -7,7 +7,7 @@ import { FastFilterEnum } from '../constants'
 export const requiredProps: Readonly<
   Pick<FilterTagProps, 'text' | 'checked' | 'amount' | 'value'>
 > = {
-  text: generateWord(),
+  text: fakeWord(),
   value: FastFilterEnum.All,
   amount: 1,
   checked: false,

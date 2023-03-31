@@ -1,4 +1,5 @@
 import { UserRoleEnum } from 'modules/user/constants/roles'
+
 import { CRUDPermissionsEnum } from 'shared/constants/permissions'
 import { ObjectPermissionConfig } from 'shared/interfaces/permissions'
 

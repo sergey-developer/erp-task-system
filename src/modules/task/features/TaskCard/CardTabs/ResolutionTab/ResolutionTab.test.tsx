@@ -2,18 +2,18 @@ import { screen, within } from '@testing-library/react'
 
 import { TaskTypeEnum } from 'modules/task/constants/common'
 
-import { generateWord, render } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/utils'
 
 import ResolutionTab, { ResolutionTabProps } from './index'
 
-const requiredProps: Pick<ResolutionTabProps, 'title' | 'type'> = {
+const requiredProps: Pick<
+  ResolutionTabProps,
+  'title' | 'type' | 'techResolution' | 'userResolution'
+> = {
   type: TaskTypeEnum.Request,
-  title: generateWord(),
-}
-
-const notRequiredProps: Omit<ResolutionTabProps, keyof typeof requiredProps> = {
-  techResolution: generateWord(),
-  userResolution: generateWord(),
+  title: fakeWord(),
+  techResolution: null,
+  userResolution: null,
 }
 
 const getContainer = () => screen.getByTestId('task-resolution-tab')
@@ -40,78 +40,56 @@ describe('Вкладка решение заявки', () => {
     expect(testUtils.getChildByText('-')).toBeInTheDocument()
   })
 
-  describe('Техническое решение', () => {
-    test('Отображается если присутствует', () => {
-      render(
-        <ResolutionTab
-          {...requiredProps}
-          techResolution={notRequiredProps.techResolution}
-        />,
-      )
+  test('Техническое решение отображается если присутствует', () => {
+    const techResolution = fakeWord()
+    render(<ResolutionTab {...requiredProps} techResolution={techResolution} />)
 
-      expect(
-        testUtils.getChildByText(notRequiredProps.techResolution!),
-      ).toBeInTheDocument()
-    })
-
-    test('Не отображается если отсутствует', () => {
-      render(<ResolutionTab {...requiredProps} />)
-
-      expect(
-        testUtils.queryChildByText(notRequiredProps.techResolution!),
-      ).not.toBeInTheDocument()
-    })
+    expect(testUtils.getChildByText('Техническое решение')).toBeInTheDocument()
+    expect(testUtils.getChildByText(techResolution)).toBeInTheDocument()
   })
 
   describe('Решение для пользователя', () => {
     test('Отображается если условия соблюдены', () => {
+      const userResolution = fakeWord()
       render(
         <ResolutionTab
           {...requiredProps}
-          userResolution={notRequiredProps.userResolution}
           type={TaskTypeEnum.Request}
+          userResolution={userResolution}
         />,
       )
 
       expect(
-        testUtils.getChildByText(notRequiredProps.userResolution!),
+        testUtils.getChildByText('Решение для пользователя'),
       ).toBeInTheDocument()
-    })
 
-    test('Не отображается если условия соблюдены но решение отсутствует', () => {
-      render(<ResolutionTab {...requiredProps} />)
-
-      expect(
-        testUtils.queryChildByText(notRequiredProps.userResolution!),
-      ).not.toBeInTheDocument()
+      expect(testUtils.getChildByText(userResolution)).toBeInTheDocument()
     })
 
     test('Не отображается если условия соблюдены но тип заявки "IncidentTask"', () => {
+      const userResolution = fakeWord()
       render(
         <ResolutionTab
           {...requiredProps}
-          userResolution={notRequiredProps.userResolution}
           type={TaskTypeEnum.IncidentTask}
+          userResolution={userResolution}
         />,
       )
 
-      expect(
-        testUtils.queryChildByText(notRequiredProps.userResolution!),
-      ).not.toBeInTheDocument()
+      expect(testUtils.queryChildByText(userResolution)).not.toBeInTheDocument()
     })
 
     test('Не отображается если условия соблюдены но тип заявки "RequestTask"', () => {
+      const userResolution = fakeWord()
       render(
         <ResolutionTab
           {...requiredProps}
-          userResolution={notRequiredProps.userResolution}
           type={TaskTypeEnum.RequestTask}
+          userResolution={userResolution}
         />,
       )
 
-      expect(
-        testUtils.queryChildByText(notRequiredProps.userResolution!),
-      ).not.toBeInTheDocument()
+      expect(testUtils.queryChildByText(userResolution)).not.toBeInTheDocument()
     })
   })
 })

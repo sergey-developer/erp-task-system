@@ -14,8 +14,8 @@ import {
 } from '_tests_/mocks/api'
 import {
   findNotification,
-  generateId,
-  generateWord,
+  fakeId,
+  fakeWord,
   getButtonIn,
   getStoreWithAuth,
   expectLoadingFinishedByButton,
@@ -30,7 +30,7 @@ import { NO_DATA_MSG } from './constants'
 import JournalTab, { JournalTabProps } from './index'
 
 const requiredProps: JournalTabProps = {
-  taskId: generateId(),
+  taskId: fakeId(),
 }
 
 const getContainer = () => screen.getByTestId('task-journal')
@@ -195,7 +195,7 @@ describe('Вкладка журнала задачи', () => {
             body: taskFixtures.getJournal(),
           })
           mockGetJournalCsvSuccess(requiredProps.taskId, {
-            body: generateWord(),
+            body: fakeWord(),
           })
 
           const { user } = render(<JournalTab {...requiredProps} />, {
