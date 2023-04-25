@@ -9,7 +9,13 @@ import { WorkGroupListItemModel } from 'modules/workGroup/models'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { SupportGroupModel } from 'shared/models'
 
-export type TaskWorkGroup = Pick<WorkGroupListItemModel, 'id' | 'name'>
+export type TaskWorkGroupModel = Pick<WorkGroupListItemModel, 'id' | 'name'>
+
+export type TaskResponseTimeModel = {
+  progress: number
+  timedelta: number
+  value: string
+}
 
 export type BaseTaskModel = {
   id: number
@@ -28,12 +34,8 @@ export type BaseTaskModel = {
   initialImpact: 1 | 2 | 3 | 4
   severity: 1 | 2 | 3 | 4
   priorityCode: 1 | 2 | 3 | 4
-  workGroup: MaybeNull<TaskWorkGroup>
-  responseTime: MaybeNull<{
-    progress: number
-    timedelta: number
-    value: string
-  }>
+  workGroup: MaybeNull<TaskWorkGroupModel>
+  responseTime: MaybeNull<TaskResponseTimeModel>
   supportGroup: MaybeNull<SupportGroupModel>
   contactPhone: MaybeNull<string>
   portablePhone: MaybeNull<string>

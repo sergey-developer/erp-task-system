@@ -4,7 +4,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/common'
-import { TaskModel } from 'modules/task/models'
+import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
 
 import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'
@@ -21,9 +21,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const getTaskResponseTime = (): NonNullable<
-  TaskModel['responseTime']
-> => {
+export const getTaskResponseTime = (): TaskResponseTimeModel => {
   return {
     value: fakeDateString(),
     timedelta: 7200000, // 2h in milliseconds
@@ -46,7 +44,7 @@ export const getTask = (
     >
   >,
 ): Omit<TaskModel, 'responseTime'> & {
-  responseTime: NonNullable<TaskModel['responseTime']>
+  responseTime: TaskResponseTimeModel
 } => ({
   id: props?.id || fakeId(),
   type: props?.type || TaskTypeEnum.Request,

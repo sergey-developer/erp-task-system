@@ -1,7 +1,11 @@
 import { BlockProps } from 'antd/es/typography/Base'
 import { DurationFormatSettings } from 'moment'
 
-import { BaseTaskModel, TaskModel } from 'modules/task/models'
+import {
+  BaseTaskModel,
+  TaskModel,
+  TaskResponseTimeModel,
+} from 'modules/task/models'
 import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
 
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
@@ -47,8 +51,8 @@ const responseTimeDurationSettings: DurationFormatSettings = {
 }
 
 export const humanizeResponseTime = (
-  responseTime: NonNullable<BaseTaskModel['responseTime']>,
-) =>
+  responseTime: TaskResponseTimeModel,
+): string =>
   humanizeDuration(
     responseTime.timedelta,
     'milliseconds',
