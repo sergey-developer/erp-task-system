@@ -68,7 +68,7 @@ const MainDetails: FC<MainDetailsProps> = ({
     () => parseResponseTime(rawResponseTime, workGroup),
     [rawResponseTime, workGroup],
   )
-  console.log({ rawResponseTime, workGroup, responseTime })
+
   return (
     <Space
       data-testid='task-card-main-details'

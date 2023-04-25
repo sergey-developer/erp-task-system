@@ -38,14 +38,7 @@ export const getTaskTableItem = (
   assignee: taskFixtures.getAssignee(),
   olaNextBreachTime: fakeDateString(),
   subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
-  responseTime: {
-    value: fakeDateString(),
-    timedelta: 2398698985,
-    progress: fakeInteger({
-      min: 0,
-      max: 1,
-    }),
-  },
+  responseTime: taskFixtures.getTaskResponseTime(),
 
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,

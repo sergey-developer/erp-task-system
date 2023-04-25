@@ -5,6 +5,7 @@ import { BaseTaskModel, TaskModel } from 'modules/task/models'
 import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
 
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import { MaybeNull } from 'shared/interfaces/utils'
 import { formatDate, humanizeDuration } from 'shared/utils/date'
 import { makeString } from 'shared/utils/string'
 
@@ -57,7 +58,7 @@ export const humanizeResponseTime = (
 export const parseResponseTime = (
   responseTime: BaseTaskModel['responseTime'],
   workGroup: BaseTaskModel['workGroup'],
-) => {
+): MaybeNull<{ type: BlockProps['type']; value: string }> => {
   if (!responseTime || !!workGroup) return null
 
   const parsedProgress = Number(responseTime.progress.toFixed(1))

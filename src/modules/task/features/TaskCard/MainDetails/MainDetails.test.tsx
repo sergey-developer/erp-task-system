@@ -6,6 +6,8 @@ import {
 } from 'modules/task/constants/common'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
+import taskFixtures from 'fixtures/task'
+
 import {
   fakeAddress,
   fakeDateString,
@@ -16,6 +18,7 @@ import {
 } from '_tests_/utils'
 
 import MainDetails, { MainDetailsProps } from './index'
+import { parseResponseTime } from './utils'
 
 const requiredProps: MainDetailsProps = {
   name: fakeWord(),
@@ -41,10 +44,15 @@ const queryContainer = () => screen.queryByTestId('task-card-main-details')
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
 
+const queryChildByText = (text: string | RegExp) =>
+  within(getContainer()).queryByText(text)
+
 export const testUtils = {
   getContainer,
   queryContainer,
+
   getChildByText,
+  queryChildByText,
 }
 
 describe('Блок детальной информации заявки', () => {
@@ -74,6 +82,55 @@ describe('Блок детальной информации заявки', () => 
         requiredProps.status,
       ),
     ).toBeInTheDocument()
+  })
+
+  describe('Срок реакции', () => {
+    test('Отображается если условия соблюдены', () => {
+      const fakeResponseTime = taskFixtures.getTaskResponseTime()
+
+      render(
+        <MainDetails
+          {...requiredProps}
+          responseTime={fakeResponseTime}
+          workGroup={null}
+        />,
+      )
+
+      const responseTime = parseResponseTime(fakeResponseTime, null)
+
+      expect(testUtils.getChildByText(/Срок реакции:/)).toBeInTheDocument()
+      expect(testUtils.getChildByText(responseTime!.value)).toBeInTheDocument()
+    })
+
+    describe('Не отображается если условия соблюдены', () => {
+      test('Но срок реакции отсутствует', () => {
+        render(
+          <MainDetails
+            {...requiredProps}
+            workGroup={null}
+            responseTime={null}
+          />,
+        )
+
+        expect(
+          testUtils.queryChildByText(/Срок реакции:/),
+        ).not.toBeInTheDocument()
+      })
+
+      test('Но есть рабочая группа', () => {
+        render(
+          <MainDetails
+            {...requiredProps}
+            responseTime={taskFixtures.getTaskResponseTime()}
+            workGroup={taskFixtures.getWorkGroup()}
+          />,
+        )
+
+        expect(
+          testUtils.queryChildByText(/Срок реакции:/),
+        ).not.toBeInTheDocument()
+      })
+    })
   })
 
   test('Заголовок отображается', () => {

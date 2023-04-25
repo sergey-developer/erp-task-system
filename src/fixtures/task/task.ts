@@ -21,6 +21,16 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
+export const getTaskResponseTime = (): NonNullable<
+  TaskModel['responseTime']
+> => {
+  return {
+    value: fakeDateString(),
+    timedelta: 7200000, // 2h in milliseconds
+    progress: 0.8,
+  }
+}
+
 export const getTask = (
   props?: Partial<
     Pick<
@@ -35,7 +45,9 @@ export const getTask = (
       | 'suspendRequest'
     >
   >,
-): TaskModel => ({
+): Omit<TaskModel, 'responseTime'> & {
+  responseTime: NonNullable<TaskModel['responseTime']>
+} => ({
   id: props?.id || fakeId(),
   type: props?.type || TaskTypeEnum.Request,
   status: props?.status || TaskStatusEnum.New,
@@ -45,7 +57,7 @@ export const getTask = (
   assignee: props?.assignee || taskFixtures.getAssignee(),
   suspendRequest: props?.suspendRequest || null,
 
-  responseTime: null,
+  responseTime: getTaskResponseTime(),
   recordId: fakeIdStr(),
   name: fakeWord(),
   title: fakeWord(),
