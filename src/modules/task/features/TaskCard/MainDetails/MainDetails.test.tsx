@@ -30,6 +30,8 @@ const requiredProps: MainDetailsProps = {
   address: null,
   contactPhone: null,
   portablePhone: null,
+  responseTime: null,
+  workGroup: null,
 }
 
 const getContainer = () => screen.getByTestId('task-card-main-details')

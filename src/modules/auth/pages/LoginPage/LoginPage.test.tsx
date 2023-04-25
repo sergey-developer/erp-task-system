@@ -281,7 +281,7 @@ describe('Страница авторизации', () => {
 
       const authState = store.getState().auth
 
-      expect(authState.user).not.toBe(null)
+      expect(authState.user).not.toBeNull()
       expect(authState.accessToken).toBe(
         authFixtures.loginResponseSuccess.access,
       )

@@ -35,12 +35,21 @@ export const getTaskTableItem = (
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),
   lastComment: fakeWord(),
-  status: props?.status || TaskStatusEnum.New,
-  extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
-  olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   assignee: taskFixtures.getAssignee(),
   olaNextBreachTime: fakeDateString(),
   subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
+  responseTime: {
+    value: fakeDateString(),
+    timedelta: Date.now(),
+    progress: fakeInteger({
+      min: 0,
+      max: 1,
+    }),
+  },
+
+  status: props?.status || TaskStatusEnum.New,
+  extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
+  olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
 })
 
 export const getTaskTableItems = (

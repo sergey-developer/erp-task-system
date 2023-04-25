@@ -44,6 +44,8 @@ export const getTask = (
   workGroup: props?.workGroup || taskFixtures.getWorkGroup(),
   assignee: props?.assignee || taskFixtures.getAssignee(),
   suspendRequest: props?.suspendRequest || null,
+
+  responseTime: null,
   recordId: fakeIdStr(),
   name: fakeWord(),
   title: fakeWord(),
