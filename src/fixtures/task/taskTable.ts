@@ -40,7 +40,7 @@ export const getTaskTableItem = (
   subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
   responseTime: {
     value: fakeDateString(),
-    timedelta: Date.now(),
+    timedelta: 2398698985,
     progress: fakeInteger({
       min: 0,
       max: 1,

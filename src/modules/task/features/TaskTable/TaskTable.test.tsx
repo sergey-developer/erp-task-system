@@ -8,6 +8,7 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
+import { humanizeResponseTime } from 'modules/task/features/TaskCard/MainDetails/utils'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
@@ -19,6 +20,7 @@ import { formatDate } from 'shared/utils/date'
 
 import taskFixtures from 'fixtures/task'
 
+import { columnWithSortingClass } from '_tests_/constants/components'
 import {
   expectLoadingFinishedByIconIn,
   expectLoadingStartedByIconIn,
@@ -28,8 +30,6 @@ import {
 import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
 import { TaskTableProps } from './interfaces'
-
-const columnWithSortingClass = 'ant-table-column-has-sorters'
 
 const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   dataSource: [taskFixtures.getTaskTableItem()],
@@ -52,7 +52,6 @@ const paginationProps: Readonly<
 const firstTaskTableItem = requiredProps.dataSource[0]
 
 export const testConstants = {
-  columnWithSortingClass,
   requiredProps,
   paginationProps,
   firstTaskTableItem,
@@ -406,7 +405,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Заявка')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Значение сортировки по умолчанию не установлено', () => {
@@ -459,7 +458,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Внеш.номер')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Значение сортировки по умолчанию не установлено', () => {
@@ -513,7 +512,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Объект')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Значение сортировки по умолчанию не установлено', () => {
@@ -566,7 +565,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Тема')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Значение сортировки по умолчанию не установлено', () => {
@@ -621,7 +620,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Исполнитель')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Значение сортировки по умолчанию не установлено', () => {
@@ -726,7 +725,7 @@ describe('Таблица заявок', () => {
           )
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+          expect(headCol).toHaveClass(columnWithSortingClass)
         })
 
         test('Значение сортировки по умолчанию не установлено', () => {
@@ -830,7 +829,7 @@ describe('Таблица заявок', () => {
           )
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+          expect(headCol).toHaveClass(columnWithSortingClass)
         })
 
         test('Значение сортировки по умолчанию не установлено', () => {
@@ -934,7 +933,7 @@ describe('Таблица заявок', () => {
           )
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+          expect(headCol).toHaveClass(columnWithSortingClass)
         })
 
         test('Значение сортировки по умолчанию не установлено', () => {
@@ -1021,7 +1020,7 @@ describe('Таблица заявок', () => {
           )
 
           const headCol = testUtils.getHeadCol('Группа поддержки')
-          expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+          expect(headCol).toHaveClass(columnWithSortingClass)
         })
 
         test('Значение сортировки по умолчанию не установлено', () => {
@@ -1116,6 +1115,33 @@ describe('Таблица заявок', () => {
       })
     })
 
+    describe('Срок реакции', () => {
+      test('Отображает заголовок', () => {
+        render(<TaskTable {...testConstants.requiredProps} />)
+
+        expect(testUtils.getColTitle('Срок реакции')).toBeInTheDocument()
+      })
+
+      test('Отображает значение', () => {
+        render(<TaskTable {...testConstants.requiredProps} />)
+
+        expect(
+          testUtils.getChildByText(
+            humanizeResponseTime(
+              testConstants.firstTaskTableItem.responseTime!,
+            ),
+          ),
+        ).toBeInTheDocument()
+      })
+
+      test('Сортировка отключена', () => {
+        render(<TaskTable {...testConstants.requiredProps} />)
+
+        const headCol = testUtils.getHeadCol('Срок реакции')
+        expect(headCol).not.toHaveClass(columnWithSortingClass)
+      })
+    })
+
     describe('Выполнить до', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
@@ -1140,7 +1166,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Выполнить до')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Имеет корректное значение сортировки по умолчанию', () => {
@@ -1196,11 +1222,12 @@ describe('Таблица заявок', () => {
         ).toBeInTheDocument()
       })
 
+      // Временно отключена сортировка
       test('Сортировка отключена', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Статус')
-        expect(headCol).not.toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).not.toHaveClass(columnWithSortingClass)
       })
 
       test.skip('Значение сортировки по умолчанию не установлено', () => {
@@ -1254,7 +1281,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Задания')
-        expect(headCol).not.toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).not.toHaveClass(columnWithSortingClass)
       })
     })
 
@@ -1279,7 +1306,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Комментарий')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Значение сортировки по умолчанию не установлено', () => {
@@ -1337,7 +1364,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Дата создания')
-        expect(headCol).toHaveClass(testConstants.columnWithSortingClass)
+        expect(headCol).toHaveClass(columnWithSortingClass)
       })
 
       test('Значение сортировки по умолчанию не установлено', () => {
