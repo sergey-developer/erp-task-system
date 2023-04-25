@@ -35,6 +35,7 @@ export const getTaskListItem = (
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   type: props?.type || TaskTypeEnum.Request,
 
+  responseTime: null,
   id: fakeId(),
   assignee: taskFixtures.getAssignee(),
   lastComment: fakeWord(),

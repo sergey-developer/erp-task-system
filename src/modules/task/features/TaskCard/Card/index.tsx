@@ -110,6 +110,7 @@ export type TaskCardProps = {
       | 'suspendRequest'
       | 'techResolution'
       | 'userResolution'
+      | 'responseTime'
     >
   >
 
@@ -496,6 +497,8 @@ const TaskCard: FC<TaskCardProps> = ({
                 olaStatus={task.olaStatus}
                 olaEstimatedTime={task.olaEstimatedTime}
                 olaNextBreachTime={task.olaNextBreachTime}
+                responseTime={task.responseTime}
+                workGroup={task.workGroup}
               />
 
               <AdditionalInfo
