@@ -15,7 +15,7 @@ import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 
 import { RecordIdStyled } from './styles'
-import { getCompleteAt } from './utils'
+import { getCompleteAt, parseResponseTime } from './utils'
 
 const { Text, Title } = Typography
 
@@ -33,6 +33,8 @@ export type MainDetailsProps = Pick<
   | 'olaEstimatedTime'
   | 'contactPhone'
   | 'portablePhone'
+  | 'responseTime'
+  | 'workGroup'
 >
 
 const MainDetails: FC<MainDetailsProps> = ({
@@ -48,6 +50,8 @@ const MainDetails: FC<MainDetailsProps> = ({
   olaStatus,
   olaNextBreachTime,
   olaEstimatedTime,
+  responseTime: rawResponseTime,
+  workGroup,
 }) => {
   const { olaStatusTextType, completeAt } = useMemo(() => {
     const olaStatusTextType = getOlaStatusTextType(olaStatus)
@@ -60,6 +64,11 @@ const MainDetails: FC<MainDetailsProps> = ({
     return { olaStatusTextType, completeAt }
   }, [olaEstimatedTime, olaStatus, olaNextBreachTime])
 
+  const responseTime = useMemo(
+    () => parseResponseTime(rawResponseTime, workGroup),
+    [rawResponseTime, workGroup],
+  )
+
   return (
     <Space
       data-testid='task-card-main-details'
@@ -67,24 +76,35 @@ const MainDetails: FC<MainDetailsProps> = ({
       size='middle'
       $block
     >
-      <SeparatedText>
-        <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
-          {recordId}
-        </RecordIdStyled>
+      <Space direction='vertical' $block>
+        <SeparatedText>
+          <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
+            {recordId}
+          </RecordIdStyled>
 
-        <Space>
-          {olaNextBreachTime && (
-            <Text type={olaStatusTextType}>{completeAt}</Text>
-          )}
+          <Space>
+            {olaNextBreachTime && (
+              <Text type={olaStatusTextType}>{completeAt}</Text>
+            )}
 
-          <TaskStatus
-            status={status}
-            text={taskStatusDict[status]}
-            icon={iconByTaskStatus[status]}
-            badge={badgeByTaskStatus[status]}
-          />
-        </Space>
-      </SeparatedText>
+            <TaskStatus
+              status={status}
+              text={taskStatusDict[status]}
+              icon={iconByTaskStatus[status]}
+              badge={badgeByTaskStatus[status]}
+            />
+          </Space>
+        </SeparatedText>
+
+        {responseTime && (
+          <Space>
+            <Text>
+              Срок реакции:{' '}
+              <Text type={responseTime.type}>{responseTime.value}</Text>
+            </Text>
+          </Space>
+        )}
+      </Space>
 
       <Space direction='vertical' size={4} $block>
         <Title level={4} ellipsis title={title}>

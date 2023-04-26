@@ -1,8 +1,4 @@
-import {
-  BaseTaskModel,
-  TaskAssigneeModel,
-  TaskWorkGroupModel,
-} from 'modules/task/models'
+import { BaseTaskModel, TaskAssigneeModel } from 'modules/task/models'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 
@@ -17,5 +13,4 @@ export type TaskModel = BaseTaskModel & {
   email: MaybeNull<string>
   sapId: MaybeNull<string>
   contactType: MaybeNull<string>
-  workGroup: MaybeNull<TaskWorkGroupModel>
 }

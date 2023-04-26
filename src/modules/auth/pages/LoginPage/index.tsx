@@ -9,7 +9,11 @@ import { useLogin } from 'modules/auth/hooks'
 import Space from 'components/Space'
 
 import { APP_NAME } from 'shared/constants/common'
-import { ErrorResponse, isBadRequestError } from 'shared/services/api'
+import {
+  ErrorResponse,
+  isBadRequestError,
+  isErrorResponse,
+} from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import { LoginFormFields } from './interfaces'
@@ -32,9 +36,8 @@ const LoginPage: FC = () => {
   const handleSubmit = async (values: LoginFormFields) => {
     try {
       await login(values)
-    } catch (exception) {
-      const error = exception as ErrorResponse
-      if (isBadRequestError(error)) {
+    } catch (error) {
+      if (isErrorResponse(error) && isBadRequestError(error)) {
         handleSetFieldsErrors(error, form.setFields)
       }
     }
