@@ -13,7 +13,7 @@ export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
   supportGroup: 130,
   responseTime: 110,
   olaNextBreachTime: 105,
-  status: 110,
+  status: 100,
   subtasksCounter: 55,
   lastComment: 160,
   createdAt: 105,
