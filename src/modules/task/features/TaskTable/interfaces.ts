@@ -21,6 +21,7 @@ export type TaskTableListItem = Pick<
   | 'status'
   | 'extendedStatus'
   | 'subtasksCounter'
+  | 'responseTime'
 >
 
 export type TaskTableColumnKey =
@@ -39,6 +40,7 @@ export type TaskTableColumnKey =
       | 'subtasksCounter'
       | 'lastComment'
       | 'createdAt'
+      | 'responseTime'
     >
 
 export type TaskTableProps = Required<

@@ -4,6 +4,7 @@ import get from 'lodash/get'
 import React from 'react'
 
 import { taskStatusDict } from 'modules/task/constants/dictionary'
+import { parseResponseTime } from 'modules/task/features/TaskCard/MainDetails/utils'
 import {
   badgeByTaskStatus,
   iconByTaskExtendedStatus,
@@ -102,6 +103,19 @@ export const getTableColumns = (
             sorter: true,
           },
         ]),
+    {
+      key: 'responseTime',
+      dataIndex: 'responseTime',
+      title: 'Срок реакции',
+      render: (value: TaskTableListItem['responseTime'], { workGroup }) => {
+        const responseTime = parseResponseTime(value, workGroup)
+
+        return responseTime ? (
+          <Text type={responseTime.type}>{responseTime.value}</Text>
+        ) : null
+      },
+      ellipsis: true,
+    },
     {
       key: 'olaNextBreachTime',
       dataIndex: 'olaNextBreachTime',

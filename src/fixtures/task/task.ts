@@ -4,7 +4,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/common'
-import { TaskModel } from 'modules/task/models'
+import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
 
 import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'
@@ -21,6 +21,14 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
+export const getTaskResponseTime = (): TaskResponseTimeModel => {
+  return {
+    value: fakeDateString(),
+    timedelta: 7200000, // 2h in milliseconds
+    progress: 0.8,
+  }
+}
+
 export const getTask = (
   props?: Partial<
     Pick<
@@ -35,7 +43,9 @@ export const getTask = (
       | 'suspendRequest'
     >
   >,
-): TaskModel => ({
+): Omit<TaskModel, 'responseTime'> & {
+  responseTime: TaskResponseTimeModel
+} => ({
   id: props?.id || fakeId(),
   type: props?.type || TaskTypeEnum.Request,
   status: props?.status || TaskStatusEnum.New,
@@ -44,6 +54,8 @@ export const getTask = (
   workGroup: props?.workGroup || taskFixtures.getWorkGroup(),
   assignee: props?.assignee || taskFixtures.getAssignee(),
   suspendRequest: props?.suspendRequest || null,
+
+  responseTime: getTaskResponseTime(),
   recordId: fakeIdStr(),
   name: fakeWord(),
   title: fakeWord(),
