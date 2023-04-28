@@ -65,9 +65,8 @@ export const parseResponseTime = (
 ): MaybeNull<{ type: BlockProps['type']; value: string }> => {
   if (!responseTime || !!workGroup) return null
 
-  const parsedProgress = Number(responseTime.progress.toFixed(1))
-  const isExpired = parsedProgress === 1
-  const isExpiredMoreThanHalf = parsedProgress > 0.5
+  const isExpired = responseTime.progress === 1
+  const isExpiredMoreThanHalf = responseTime.progress > 0.5
 
   const humanizedValue = humanizeResponseTime(responseTime)
   let value = humanizedValue
