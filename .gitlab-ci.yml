@@ -133,6 +133,7 @@ Deploy to Staging:
 
 Deploy to Production:
   <<: *base_deploy
+  when: manual
   dependencies:
     - Build for Production
   variables:
