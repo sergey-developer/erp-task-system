@@ -46,7 +46,7 @@ export const getCompleteAt = ({
 }
 
 const responseTimeDurationSettings: DurationFormatSettings = {
-  template: 'Dд hhч mmмин',
+  template: 'Dд hhч mmмин ssсек',
   trim: 'all',
 }
 
@@ -65,9 +65,8 @@ export const parseResponseTime = (
 ): MaybeNull<{ type: BlockProps['type']; value: string }> => {
   if (!responseTime || !!workGroup) return null
 
-  const parsedProgress = Number(responseTime.progress.toFixed(1))
-  const isExpired = parsedProgress === 1
-  const isExpiredMoreThanHalf = parsedProgress > 0.5
+  const isExpired = responseTime.progress === 1
+  const isExpiredMoreThanHalf = responseTime.progress > 0.5
 
   const humanizedValue = humanizeResponseTime(responseTime)
   let value = humanizedValue
@@ -77,21 +76,24 @@ export const parseResponseTime = (
   const days = daysString?.split('д')[0]
   const parsedDays = days ? parseInt(days) : 0
   const moreThanFiveDays = parsedDays > 5
-  const lessThanFiveDays = parsedDays < 5
+  const lessOrEqualFiveDays = parsedDays <= 5
 
   let type: BlockProps['type']
-  if (!isExpired && isExpiredMoreThanHalf) type = 'success'
-  else if (isExpired && !isExpiredMoreThanHalf) type = 'warning'
-  else if (!isExpired && lessThanFiveDays) type = 'danger'
-  else if (!isExpired && moreThanFiveDays) {
-    type = 'danger'
-    value = 'более 5 дней'
+
+  if (isExpired) {
+    if (lessOrEqualFiveDays) {
+      type = 'danger'
+    } else if (moreThanFiveDays) {
+      type = 'danger'
+      value = 'более 5 дней'
+    }
   } else {
-    return null
+    if (isExpiredMoreThanHalf) {
+      type = 'warning'
+    } else {
+      type = 'success'
+    }
   }
 
-  return {
-    value,
-    type,
-  }
+  return { value, type }
 }
