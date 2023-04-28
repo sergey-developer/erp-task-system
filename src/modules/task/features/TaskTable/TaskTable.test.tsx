@@ -8,7 +8,7 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { taskStatusDict } from 'modules/task/constants/dictionary'
-import { humanizeResponseTime } from 'modules/task/features/TaskCard/MainDetails/utils'
+import { parseResponseTime } from 'modules/task/features/TaskCard/MainDetails/utils'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
@@ -1117,20 +1117,26 @@ describe('Таблица заявок', () => {
 
     describe('Срок реакции', () => {
       test('Отображает заголовок', () => {
-        render(<TaskTable {...testConstants.requiredProps} />)
+        render(<TaskTable {...requiredProps} />)
 
         expect(testUtils.getColTitle('Срок реакции')).toBeInTheDocument()
       })
 
       test('Отображает значение', () => {
-        render(<TaskTable {...testConstants.requiredProps} />)
+        const taskTableItem: typeof firstTaskTableItem = {
+          ...firstTaskTableItem,
+          workGroup: null,
+        }
+
+        render(<TaskTable {...requiredProps} dataSource={[taskTableItem]} />)
+
+        const responseTime = parseResponseTime(
+          taskTableItem.responseTime!,
+          taskTableItem.workGroup,
+        )
 
         expect(
-          testUtils.getChildByText(
-            humanizeResponseTime(
-              testConstants.firstTaskTableItem.responseTime!,
-            ),
-          ),
+          testUtils.getChildByText(responseTime!.value),
         ).toBeInTheDocument()
       })
 
