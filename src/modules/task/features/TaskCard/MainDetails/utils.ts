@@ -75,15 +75,15 @@ export const parseResponseTime = (
   const daysString = daysRegexpResult?.[0]
   const days = daysString?.split('д')[0]
   const parsedDays = days ? parseInt(days) : 0
-  const moreThanFiveDays = parsedDays > 5
-  const lessOrEqualFiveDays = parsedDays <= 5
+  const moreOrEqualFiveDays = parsedDays >= 5
+  const lessThanFiveDays = parsedDays < 5
 
   let type: BlockProps['type']
 
   if (isExpired) {
-    if (lessOrEqualFiveDays) {
+    if (lessThanFiveDays) {
       type = 'danger'
-    } else if (moreThanFiveDays) {
+    } else if (moreOrEqualFiveDays) {
       type = 'danger'
       value = 'более 5 дней'
     }
