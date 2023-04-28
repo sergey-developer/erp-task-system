@@ -80,8 +80,8 @@ export const parseResponseTime = (
   const lessThanFiveDays = parsedDays < 5
 
   let type: BlockProps['type']
-  if (!isExpired && isExpiredMoreThanHalf) type = 'success'
-  else if (isExpired && !isExpiredMoreThanHalf) type = 'warning'
+  if (!isExpired && isExpiredMoreThanHalf) type = 'warning'
+  else if (!isExpired && !isExpiredMoreThanHalf) type = 'success'
   else if (!isExpired && lessThanFiveDays) type = 'danger'
   else if (!isExpired && moreThanFiveDays) {
     type = 'danger'
