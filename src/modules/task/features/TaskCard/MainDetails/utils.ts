@@ -46,7 +46,7 @@ export const getCompleteAt = ({
 }
 
 const responseTimeDurationSettings: DurationFormatSettings = {
-  template: 'Dд hhч mmмин',
+  template: 'Dд hhч mmмин ssсек',
   trim: 'all',
 }
 
