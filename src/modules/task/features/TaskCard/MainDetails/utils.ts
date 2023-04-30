@@ -95,17 +95,5 @@ export const parseResponseTime = (
     }
   }
 
-  console.log({
-    responseTime,
-    value,
-    type,
-    isExpired,
-    isExpiredMoreThanHalf,
-    humanizedValue,
-    days,
-    moreOrEqualFiveDays,
-    lessThanFiveDays,
-  })
-
   return { value, type }
 }
