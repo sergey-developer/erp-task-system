@@ -71,7 +71,7 @@ export const parseResponseTime = (
   const humanizedValue = humanizeResponseTime(responseTime)
   let value = humanizedValue
 
-  const daysRegexpResult = /(\dд)/g.exec(humanizedValue)
+  const daysRegexpResult = /(\d+д)/g.exec(humanizedValue)
   const daysString = daysRegexpResult?.[0]
   const days = daysString?.split('д')[0]
   const parsedDays = days ? parseInt(days) : 0
@@ -94,6 +94,18 @@ export const parseResponseTime = (
       type = 'success'
     }
   }
+
+  console.log({
+    responseTime,
+    value,
+    type,
+    isExpired,
+    isExpiredMoreThanHalf,
+    humanizedValue,
+    days,
+    moreOrEqualFiveDays,
+    lessThanFiveDays,
+  })
 
   return { value, type }
 }
