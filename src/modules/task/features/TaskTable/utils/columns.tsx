@@ -88,7 +88,6 @@ export const getTableColumns = (
             dataIndex: 'supportGroup',
             title: 'Группа поддержки',
             render: (value: TaskTableListItem['supportGroup']) => value?.name,
-            ellipsis: true,
             sorter: true,
           },
         ]
@@ -99,7 +98,6 @@ export const getTableColumns = (
             title: 'Рабочая группа',
             render: (value: TaskTableListItem['workGroup']) =>
               get(value, 'name', 'I линия поддержки'),
-            ellipsis: true,
             sorter: true,
           },
         ]),
