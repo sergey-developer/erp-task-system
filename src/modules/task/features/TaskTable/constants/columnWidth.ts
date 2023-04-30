@@ -14,7 +14,7 @@ export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
   responseTime: 110,
   olaNextBreachTime: 105,
   status: 100,
-  subtasksCounter: 55,
+  subtasksCounter: 65,
   lastComment: 160,
   createdAt: 105,
 }
