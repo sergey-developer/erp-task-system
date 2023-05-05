@@ -6,7 +6,7 @@ import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getTimeZoneListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, BaseApiEnum.GetTimeZones)
+  getRequestMockFn(HttpMethodEnum.Get, BaseApiEnum.GetTimeZoneList)
 
 export const mockGetTimeZoneListSuccess = (
   options?: Partial<ResponseResolverOptions<GetTimeZoneListSuccessResponse>>,

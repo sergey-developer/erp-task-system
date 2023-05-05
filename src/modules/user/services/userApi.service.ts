@@ -7,9 +7,9 @@ import {
 } from 'modules/user/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/api'
 
-const userApiService = apiService.injectEndpoints({
+const userApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     getUserProfile: build.query<
       GetUserProfileSuccessResponse,

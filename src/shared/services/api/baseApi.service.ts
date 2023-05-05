@@ -9,7 +9,7 @@ import {
   GetTimeZoneListSuccessResponse,
 } from './models'
 
-export const apiService = createApi({
+export const baseApiService = createApi({
   baseQuery: baseQueryWithReauth,
   keepUnusedDataFor: CACHE_TIME_LIFE,
   endpoints: (build) => ({
@@ -18,7 +18,7 @@ export const apiService = createApi({
       GetTimeZoneListQueryArgs
     >({
       query: () => ({
-        url: BaseApiEnum.GetTimeZones,
+        url: BaseApiEnum.GetTimeZoneList,
         method: HttpMethodEnum.Get,
       }),
     }),
@@ -26,4 +26,4 @@ export const apiService = createApi({
 })
 
 export const { useGetTimeZoneListQuery, endpoints: baseApiEndpoints } =
-  apiService
+  baseApiService

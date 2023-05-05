@@ -21,11 +21,11 @@ import {
 import { TaskStatusEnum } from 'modules/task/constants/common'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/api'
 
 import { SubTaskEndpointNameEnum } from '../constants/api'
 
-const subTaskApiService = apiService.injectEndpoints({
+const subTaskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     [SubTaskEndpointNameEnum.GetSubTaskList]: build.query<
       GetSubTaskListSuccessResponse,
@@ -59,7 +59,7 @@ const subTaskApiService = apiService.injectEndpoints({
           const { data: newSubTask } = await queryFulfilled
 
           dispatch(
-            apiService.util.updateQueryData(
+            baseApiService.util.updateQueryData(
               SubTaskEndpointNameEnum.GetSubTaskList as never,
               taskId as never,
               (subTaskList: SubTaskModel[]) => {
@@ -87,7 +87,7 @@ const subTaskApiService = apiService.injectEndpoints({
           await queryFulfilled
 
           dispatch(
-            apiService.util.updateQueryData(
+            baseApiService.util.updateQueryData(
               SubTaskEndpointNameEnum.GetSubTaskList as never,
               taskId as never,
               (subTaskList: SubTaskModel[]) => {
@@ -119,7 +119,7 @@ const subTaskApiService = apiService.injectEndpoints({
           await queryFulfilled
 
           dispatch(
-            apiService.util.updateQueryData(
+            baseApiService.util.updateQueryData(
               SubTaskEndpointNameEnum.GetSubTaskList as never,
               taskId as never,
               (subTaskList: SubTaskModel[]) => {

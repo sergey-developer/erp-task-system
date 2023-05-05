@@ -1,3 +1,3 @@
 export enum BaseApiEnum {
-  GetTimeZones = '/catalogs/time-zones/',
+  GetTimeZoneList = '/catalogs/time-zones/',
 }

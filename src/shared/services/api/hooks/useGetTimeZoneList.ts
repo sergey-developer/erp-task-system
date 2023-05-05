@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { useGetTimeZoneListQuery } from '../api.service'
+import { useGetTimeZoneListQuery } from '../baseApi.service'
 import { baseApiMessages } from '../constants'
 import { CustomBaseQueryFn } from '../intefraces'
 import {

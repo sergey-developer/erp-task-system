@@ -2,6 +2,7 @@ import { testUtils as privateHeaderTestUtils } from 'components/Header/PrivateHe
 import { testUtils as privateLayoutTestUtils } from 'components/Layout/PrivateLayout/PrivateLayout.test'
 
 import timeZoneFixtures from 'fixtures/timeZone'
+import userFixtures from 'fixtures/user'
 
 import {
   mockGetTimeZoneListSuccess,
@@ -9,7 +10,6 @@ import {
 } from '_tests_/mocks/api'
 import { render, setupApiTests } from '_tests_/utils'
 
-import userFixtures from '../fixtures/user'
 import PrivateApp from './PrivateApp'
 
 setupApiTests()

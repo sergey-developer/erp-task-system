@@ -23,9 +23,9 @@ import {
 } from 'modules/task/utils/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/api'
 
-const taskApiService = apiService
+const taskApiService = baseApiService
   .enhanceEndpoints({
     addTagTypes: [TaskEndpointTagEnum.Task, TaskEndpointTagEnum.TaskList],
   })

@@ -1,6 +1,6 @@
 import { SkipToken } from '@reduxjs/toolkit/query'
 
-import { baseApiEndpoints } from '../api.service'
+import { baseApiEndpoints } from '../baseApi.service'
 import { GetTimeZoneListQueryArgs } from '../models'
 
 export const useTimeZoneListState = (
