@@ -54,10 +54,10 @@ const clickDownloadButton = async (user: UserEvent): Promise<HTMLElement> => {
 }
 
 const expectJournalLoadingStarted =
-  expectLoadingStartedBySpinner('journal-spinner')
+  expectLoadingStartedBySpinner('journal-loading')
 
 const expectJournalLoadingFinished =
-  expectLoadingFinishedBySpinner('journal-spinner')
+  expectLoadingFinishedBySpinner('journal-loading')
 
 const expectJournalCsvLoadingStarted = expectLoadingStartedByButton
 const expectJournalCsvLoadingFinished = expectLoadingFinishedByButton

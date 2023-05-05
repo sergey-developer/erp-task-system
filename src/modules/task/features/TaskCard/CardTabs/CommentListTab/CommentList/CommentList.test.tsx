@@ -19,7 +19,7 @@ const queryAllComments = () =>
 const getFirstComment = () => getAllComments()[0]
 
 const expectLoadingFinished = expectLoadingFinishedBySpinner(
-  'task-comment-list-spinner',
+  'task-comment-list-loading',
 )
 
 export const testUtils = {

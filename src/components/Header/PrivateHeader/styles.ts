@@ -1,4 +1,4 @@
-import { Layout } from 'antd'
+import { Layout, Select } from 'antd'
 import styled, { css } from 'styled-components'
 
 import {
@@ -21,4 +21,8 @@ const headerBreakpointStyles: StyledBreakpointStyles = {
 export const HeaderStyled = styled(Header)<StyledBreakpointsProps>`
   ${({ $breakpoints }) =>
     applyBreakpointStyles($breakpoints, headerBreakpointStyles)}
+`
+
+export const TimeZoneSelectStyled = styled(Select)`
+  width: 150px;
 `

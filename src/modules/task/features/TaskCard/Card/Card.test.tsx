@@ -117,7 +117,7 @@ const queryCardDetails = () =>
   within(getContainer()).queryByTestId('task-card-details')
 
 const taskCardReclassificationRequestSpinnerTestId =
-  'task-card-reclassification-request-spinner'
+  'task-card-reclassification-request-loading'
 
 const expectReclassificationRequestLoadingStarted =
   expectLoadingStartedBySpinner(taskCardReclassificationRequestSpinnerTestId)
