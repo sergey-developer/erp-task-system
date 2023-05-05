@@ -109,8 +109,10 @@ export const getTableColumns = (
             title: 'Срок реакции',
             render: (
               value: TaskTableListItem['responseTime'],
-              { workGroup }: TaskTableListItem,
+              { workGroup, assignee }: TaskTableListItem,
             ) => {
+              if (roleMap.isFirstLineSupportRole && !!assignee) return null
+
               const responseTime = parseResponseTime(value, workGroup)
 
               return responseTime ? (
