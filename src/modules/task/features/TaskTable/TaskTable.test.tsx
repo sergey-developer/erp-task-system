@@ -31,8 +31,10 @@ import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
 import { TaskTableProps } from './interfaces'
 
+const fakeTaskTableItem = taskFixtures.getTaskTableItem()
+
 const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
-  dataSource: [taskFixtures.getTaskTableItem()],
+  dataSource: [fakeTaskTableItem],
   loading: false,
   onRow: jest.fn(),
   onChange: jest.fn(),
@@ -49,7 +51,7 @@ const paginationProps: Readonly<
   total: DEFAULT_PAGE_SIZE + 1,
 }
 
-const firstTaskTableItem = requiredProps.dataSource[0]
+const firstTaskTableItem = fakeTaskTableItem
 
 export const testConstants = {
   requiredProps,
@@ -179,6 +181,7 @@ export const testUtils = {
   getRow,
   clickRow,
   getChildByText,
+  queryChildByText,
   getHeadCol,
   getColTitle,
   queryColTitle,
@@ -609,7 +612,7 @@ describe('Таблица заявок', () => {
 
         expect(
           testUtils.getChildByText(
-            getShortUserName(firstTaskTableItem.assignee),
+            getShortUserName(firstTaskTableItem.assignee!),
           ),
         ).toBeInTheDocument()
       })
@@ -1102,18 +1105,24 @@ describe('Таблица заявок', () => {
         })
       })
 
-      test('Отображает заголовок', () => {
+      test('Заголовок отображается если условия соблюдены', () => {
         render(<TaskTable {...requiredProps} />)
         expect(testUtils.getColTitle('Срок реакции')).toBeInTheDocument()
       })
 
-      test('Отображает значение', () => {
+      test('Значение отображается если условия соблюдены', () => {
         const taskTableItem: typeof firstTaskTableItem = {
           ...firstTaskTableItem,
           workGroup: null,
         }
 
-        render(<TaskTable {...requiredProps} dataSource={[taskTableItem]} />)
+        render(
+          <TaskTable
+            {...requiredProps}
+            dataSource={[taskTableItem]}
+            userRole={UserRoleEnum.SeniorEngineer}
+          />,
+        )
 
         const responseTime = parseResponseTime(
           taskTableItem.responseTime!,
@@ -1123,6 +1132,33 @@ describe('Таблица заявок', () => {
         expect(
           testUtils.getChildByText(responseTime!.value),
         ).toBeInTheDocument()
+      })
+
+      describe('Значение не отображается', () => {
+        test(`Для роли ${UserRoleEnum.FirstLineSupport} если есть исполнитель`, () => {
+          const taskTableItem: typeof firstTaskTableItem = {
+            ...firstTaskTableItem,
+            workGroup: null,
+            assignee: taskFixtures.getAssignee(),
+          }
+
+          render(
+            <TaskTable
+              {...requiredProps}
+              dataSource={[taskTableItem]}
+              userRole={UserRoleEnum.FirstLineSupport}
+            />,
+          )
+
+          const responseTime = parseResponseTime(
+            taskTableItem.responseTime!,
+            taskTableItem.workGroup,
+          )
+
+          expect(
+            testUtils.queryChildByText(responseTime!.value),
+          ).not.toBeInTheDocument()
+        })
       })
 
       test('Сортировка отключена', () => {
