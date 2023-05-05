@@ -7,7 +7,10 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
+import { userApiMessages } from 'modules/user/constants/errorMessages'
 import { useUserCodeState, useUserMeState } from 'modules/user/hooks'
+import { UserModel } from 'modules/user/models'
+import { useUpdateUserMutation } from 'modules/user/services/userApi.service'
 
 import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -17,7 +20,9 @@ import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
 import { useMatchedRoute } from 'shared/hooks'
+import { isErrorResponse } from 'shared/services/api'
 import { useTimeZoneListState } from 'shared/services/api/hooks'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { HeaderStyled, TimeZoneSelectStyled } from './styles'
 
@@ -31,6 +36,9 @@ const PrivateHeader: FC = () => {
 
   const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
     useTimeZoneListState()
+
+  const [updateUserMutation, { isLoading: updateUserIsLoading }] =
+    useUpdateUserMutation()
 
   const navMenu = useMemo(() => {
     const userRole = userMe?.role
@@ -51,6 +59,18 @@ const PrivateHeader: FC = () => {
   const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
   const activeNavKey = matchedRoute?.pathnameBase
   const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
+
+  const handleUpdateTimeZone = async (timezone: UserModel['timezone']) => {
+    if (!userMe) return
+
+    try {
+      await updateUserMutation({ userId: userMe.id, timezone }).unwrap()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        showErrorNotification(userApiMessages.updateUser.commonError)
+      }
+    }
+  }
 
   return (
     <HeaderStyled data-testid='private-header' $breakpoints={breakpoints}>
@@ -90,10 +110,11 @@ const PrivateHeader: FC = () => {
               data-testid='timezone-select'
               aria-label='Временная зона'
               placeholder='Выберите временную зону'
-              loading={timeZoneListIsFetching}
-              disabled={timeZoneListIsFetching}
+              loading={timeZoneListIsFetching || updateUserIsLoading}
+              disabled={timeZoneListIsFetching || updateUserIsLoading}
               options={timeZoneList}
               defaultValue={userMe?.timezone || null}
+              onChange={(value) => handleUpdateTimeZone(value as string)}
             />
 
             {userMe ? (

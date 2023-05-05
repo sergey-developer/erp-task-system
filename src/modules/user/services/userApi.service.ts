@@ -24,14 +24,14 @@ const userApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Patch,
         data: payload,
       }),
-      onQueryStarted: async ({ userId }, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
         try {
           const { data: updatedUser } = await queryFulfilled
 
           dispatch(
             baseApiService.util.updateQueryData(
               'getUserMe' as never,
-              userId as never,
+              undefined as never,
               (user: UserModel) => {
                 Object.assign(user, updatedUser)
               },

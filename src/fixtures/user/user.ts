@@ -4,7 +4,7 @@ import { UserModel } from 'modules/user/models'
 import { fakeEmail, fakeId, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'
 
 export const fakeUser = (
-  props?: Partial<Pick<UserModel, 'role' | 'isStaff'>>,
+  props?: Partial<Pick<UserModel, 'role' | 'isStaff' | 'timezone'>>,
 ): UserModel => ({
   id: fakeId(),
   avatar: fakeUrl(),
@@ -13,8 +13,8 @@ export const fakeUser = (
   middleName: fakeWord(),
   email: fakeEmail(),
   phone: fakePhone(),
-  timezone: fakeWord(),
 
+  timezone: props?.timezone || fakeWord(),
   isStaff: props?.isStaff || false,
   role: props?.role || UserRoleEnum.FirstLineSupport,
 })
