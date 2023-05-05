@@ -1,11 +1,11 @@
 import { UserRoleEnum } from 'modules/user/constants/roles'
-import { UserProfileModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 
 import { fakeEmail, fakeId, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'
 
-export const fakeUserProfile = (
-  props?: Partial<Pick<UserProfileModel, 'role' | 'isStaff'>>,
-): UserProfileModel => ({
+export const fakeUser = (
+  props?: Partial<Pick<UserModel, 'role' | 'isStaff'>>,
+): UserModel => ({
   id: fakeId(),
   avatar: fakeUrl(),
   firstName: fakeWord(),

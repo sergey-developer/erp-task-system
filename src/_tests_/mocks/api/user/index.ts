@@ -1,1 +1,1 @@
-export * from './getUserProfile.mock'
+export * from './getUserMe.mock'

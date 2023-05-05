@@ -7,7 +7,7 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
-import { useUserCodeState, useUserProfileState } from 'modules/user/hooks'
+import { useUserCodeState, useUserMeState } from 'modules/user/hooks'
 
 import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -27,13 +27,13 @@ const PrivateHeader: FC = () => {
   const breakpoints = useBreakpoint()
 
   const { data: userCode } = useUserCodeState()
-  const { data: userProfile } = useUserProfileState()
+  const { data: userMe } = useUserMeState()
 
   const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
     useTimeZoneListState()
 
   const navMenu = useMemo(() => {
-    const userRole = userProfile?.role
+    const userRole = userMe?.role
 
     const items: NavMenuProps['items'] = userRole
       ? getNavMenuConfig(userRole).map(({ key, icon: Icon, link, text }) => ({
@@ -46,7 +46,7 @@ const PrivateHeader: FC = () => {
     const itemsKeys = items.map(({ key }) => key)
 
     return { items, itemsKeys }
-  }, [userProfile?.role])
+  }, [userMe?.role])
 
   const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
   const activeNavKey = matchedRoute?.pathnameBase
@@ -76,7 +76,7 @@ const PrivateHeader: FC = () => {
 
             <NotificationCounter />
 
-            {userProfile?.isStaff && (
+            {userMe?.isStaff && (
               <Link to={RouteEnum.TaskMonitoring}>
                 <MonitoringIcon
                   $color='black'
@@ -93,11 +93,11 @@ const PrivateHeader: FC = () => {
               loading={timeZoneListIsFetching}
               disabled={timeZoneListIsFetching}
               options={timeZoneList}
-              defaultValue={userProfile?.timezone || null}
+              defaultValue={userMe?.timezone || null}
             />
 
-            {userProfile ? (
-              <ContentfulUserAvatar profile={userProfile} />
+            {userMe ? (
+              <ContentfulUserAvatar profile={userMe} />
             ) : (
               <UserAvatar size='large' />
             )}

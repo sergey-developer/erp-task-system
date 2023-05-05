@@ -1,9 +1,9 @@
-import { UserModel } from 'modules/user/models'
+import { BaseUserModel } from 'modules/user/models'
 
 import { makeString } from 'shared/utils/string'
 
 export const getFullUserName = <
-  T extends Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>,
+  T extends Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>,
 >({
   firstName,
   lastName,

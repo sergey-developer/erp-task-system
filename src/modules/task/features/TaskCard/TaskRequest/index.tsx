@@ -2,7 +2,7 @@ import { Button, ButtonProps, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, ReactElement } from 'react'
 
-import { UserModel } from 'modules/user/models'
+import { BaseUserModel } from 'modules/user/models'
 import { getShortUserName } from 'modules/user/utils'
 
 import Space from 'components/Space'
@@ -20,7 +20,7 @@ const { Text, Title, Paragraph } = Typography
 export type TaskRequestProps = {
   title: string
   comment: string
-  user: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
+  user: Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>
   date: string
   actions: Array<
     Pick<ButtonProps, 'onClick' | 'disabled' | 'loading'> & { text: string }

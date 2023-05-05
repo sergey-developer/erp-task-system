@@ -6,7 +6,7 @@ import userFixtures from 'fixtures/user'
 
 import {
   mockGetTimeZoneListSuccess,
-  mockGetUserProfileSuccess,
+  mockGetUserMeSuccess,
 } from '_tests_/mocks/api'
 import { render, setupApiTests } from '_tests_/utils'
 
@@ -22,7 +22,7 @@ describe('Private app', () => {
           body: [timeZoneFixtures.fakeTimeZoneListItem()],
         })
 
-        mockGetUserProfileSuccess({ body: userFixtures.fakeUserProfile() })
+        mockGetUserMeSuccess({ body: userFixtures.fakeUser() })
 
         render(<PrivateApp />)
 
@@ -34,8 +34,8 @@ describe('Private app', () => {
         const fakeTimeZoneListItem = timeZoneFixtures.fakeTimeZoneListItem()
         mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
 
-        const fakeUserProfile = userFixtures.fakeUserProfile()
-        mockGetUserProfileSuccess({ body: fakeUserProfile })
+        const fakeUser = userFixtures.fakeUser()
+        mockGetUserMeSuccess({ body: fakeUser })
 
         render(<PrivateApp />)
 
@@ -43,15 +43,15 @@ describe('Private app', () => {
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         const option = privateHeaderTestUtils.getSelectedTimeZone()
 
-        expect(option).toHaveTextContent(fakeUserProfile.timezone)
+        expect(option).toHaveTextContent(fakeUser.timezone)
       })
 
       test('Отображается верное количество временных зон', async () => {
         const fakeTimeZoneList = timeZoneFixtures.fakeTimeZoneList()
         mockGetTimeZoneListSuccess({ body: fakeTimeZoneList })
 
-        const fakeUserProfile = userFixtures.fakeUserProfile()
-        mockGetUserProfileSuccess({ body: fakeUserProfile })
+        const fakeUser = userFixtures.fakeUser()
+        mockGetUserMeSuccess({ body: fakeUser })
 
         const { user } = render(<PrivateApp />)
 

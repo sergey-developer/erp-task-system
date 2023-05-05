@@ -1,7 +1,7 @@
-import * as userProfile from './userProfile'
+import * as user from './user'
 
 const userFixtures = {
-  ...userProfile,
+  ...user,
 } as const
 
 export default userFixtures

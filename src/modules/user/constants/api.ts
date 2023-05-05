@@ -1,4 +1,5 @@
 export enum UserEndpointEnum {
-  GetUserProfile = '/users/me/',
+  UpdateUser = '/users/:id/',
+  GetUserMe = '/users/me/',
   GetUserCode = '/users/me/code/',
 }
