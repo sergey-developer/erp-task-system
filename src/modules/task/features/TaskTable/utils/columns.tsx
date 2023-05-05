@@ -101,19 +101,26 @@ export const getTableColumns = (
             sorter: true,
           },
         ]),
-    {
-      key: 'responseTime',
-      dataIndex: 'responseTime',
-      title: 'Срок реакции',
-      render: (value: TaskTableListItem['responseTime'], { workGroup }) => {
-        const responseTime = parseResponseTime(value, workGroup)
+    ...(!roleMap.isEngineerRole
+      ? [
+          {
+            key: 'responseTime',
+            dataIndex: 'responseTime',
+            title: 'Срок реакции',
+            render: (
+              value: TaskTableListItem['responseTime'],
+              { workGroup }: TaskTableListItem,
+            ) => {
+              const responseTime = parseResponseTime(value, workGroup)
 
-        return responseTime ? (
-          <Text type={responseTime.type}>{responseTime.value}</Text>
-        ) : null
-      },
-      ellipsis: true,
-    },
+              return responseTime ? (
+                <Text type={responseTime.type}>{responseTime.value}</Text>
+              ) : null
+            },
+            ellipsis: true,
+          },
+        ]
+      : []),
     {
       key: 'olaNextBreachTime',
       dataIndex: 'olaNextBreachTime',
