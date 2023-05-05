@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
-import { UserProfileModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 
 import PrivateLayout from 'components/Layout/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
@@ -13,7 +13,7 @@ const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
 
 export const getPrivateRoutesConfig = ({
   isStaff,
-}: Pick<UserProfileModel, 'isStaff'>): Array<RouteObject> => [
+}: Pick<UserModel, 'isStaff'>): Array<RouteObject> => [
   {
     path: RouteEnum.Root,
     element: <PrivateLayout />,

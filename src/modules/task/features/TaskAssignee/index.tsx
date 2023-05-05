@@ -2,7 +2,7 @@ import { Typography } from 'antd'
 import React, { FC } from 'react'
 
 import { TaskModel } from 'modules/task/models'
-import { UserModel } from 'modules/user/models'
+import { BaseUserModel } from 'modules/user/models'
 import { getUserAbbr } from 'modules/user/utils'
 
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -15,7 +15,9 @@ const { Text } = Typography
 type TaskAssigneeProps = {
   name: string
   assignee: MaybeNull<
-    Pick<UserModel, 'firstName' | 'lastName'> & { avatar?: UserModel['avatar'] }
+    Pick<BaseUserModel, 'firstName' | 'lastName'> & {
+      avatar?: BaseUserModel['avatar']
+    }
   >
   phone?: TaskModel['contactPhone']
 }

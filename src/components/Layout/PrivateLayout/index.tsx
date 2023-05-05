@@ -3,7 +3,7 @@ import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import { useUserProfileState } from 'modules/user/hooks'
+import { useUserMeState } from 'modules/user/hooks'
 
 import Header from 'components/Header/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
@@ -13,13 +13,13 @@ import { ContentStyled } from './styles'
 
 const PrivateLayout: FC = () => {
   const breakpoints = useBreakpoint()
-  const { isFetching: userProfileIsFetching } = useUserProfileState()
+  const { isFetching: userMeIsFetching } = useUserMeState()
 
   return (
     <Layout>
       <LoadingArea
         data-testid='private-layout-loading'
-        isLoading={userProfileIsFetching}
+        isLoading={userMeIsFetching}
         area='parent'
         size='large'
       >
