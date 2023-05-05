@@ -1,19 +1,31 @@
+import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
 
+import { userProfileApiMessages } from 'modules/user/constants/errorMessages'
 import { useGetUserProfileQuery } from 'modules/user/services/userApi.service'
 
+import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { userProfileApiMessages } from '../constants/errorMessages'
+import {
+  GetUserProfileQueryArgs,
+  GetUserProfileSuccessResponse,
+} from '../models'
 
-export const useGetUserProfile = () => {
+export const useGetUserProfile = (): TypedUseQueryHookResult<
+  GetUserProfileSuccessResponse,
+  GetUserProfileQueryArgs,
+  CustomBaseQueryFn
+> => {
   const state = useGetUserProfileQuery()
 
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(userProfileApiMessages.getProfile.commonError)
-  }, [state.isError])
+    if (isErrorResponse(state.error)) {
+      showErrorNotification(userProfileApiMessages.getProfile.commonError)
+    }
+  }, [state.error, state.isError])
 
   return state
 }

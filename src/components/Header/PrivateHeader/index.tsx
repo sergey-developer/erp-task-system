@@ -7,8 +7,7 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
-import { useUserProfileState } from 'modules/user/hooks'
-import { useGetUserCodeQuery } from 'modules/user/services/userApi.service'
+import { useUserCodeState, useUserProfileState } from 'modules/user/hooks'
 
 import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -18,15 +17,20 @@ import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
 import { useMatchedRoute } from 'shared/hooks'
+import { useTimeZoneListState } from 'shared/services/api/hooks'
 
-import { HeaderStyled } from './styles'
+import { HeaderStyled, TimeZoneSelectStyled } from './styles'
 
 const { Text } = Typography
 
 const PrivateHeader: FC = () => {
   const breakpoints = useBreakpoint()
-  const { data: userCode } = useGetUserCodeQuery()
+
+  const { data: userCode } = useUserCodeState()
   const { data: userProfile } = useUserProfileState()
+
+  const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
+    useTimeZoneListState()
 
   const navMenu = useMemo(() => {
     const userRole = userProfile?.role
@@ -49,7 +53,7 @@ const PrivateHeader: FC = () => {
   const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
 
   return (
-    <HeaderStyled $breakpoints={breakpoints}>
+    <HeaderStyled data-testid='private-header' $breakpoints={breakpoints}>
       <Row justify='space-between' align='middle'>
         <Col span={12}>
           <Row align='middle'>
@@ -81,6 +85,16 @@ const PrivateHeader: FC = () => {
                 />
               </Link>
             )}
+
+            <TimeZoneSelectStyled
+              data-testid='timezone-select'
+              aria-label='Временная зона'
+              placeholder='Выберите временную зону'
+              loading={timeZoneListIsFetching}
+              disabled={timeZoneListIsFetching}
+              options={timeZoneList}
+              defaultValue={userProfile?.timezone || null}
+            />
 
             {userProfile ? (
               <ContentfulUserAvatar profile={userProfile} />

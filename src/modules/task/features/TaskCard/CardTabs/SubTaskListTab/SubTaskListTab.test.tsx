@@ -86,7 +86,7 @@ const testUtils = {
   openCreateSubTaskModal: clickCreateSubTaskButton,
 
   expectLoadingFinished: expectLoadingFinishedBySpinner(
-    'sub-task-list-spinner',
+    'sub-task-list-loading',
   ),
 }
 

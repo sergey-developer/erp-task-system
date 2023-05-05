@@ -10,7 +10,7 @@ import {
 } from 'modules/task/utils/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/api'
 
 import { TaskCommentEndpointNameEnum } from '../constants/api'
 import taskApiService from './taskApi.service'
@@ -31,7 +31,7 @@ const taskCommentApiService = taskApiService.injectEndpoints({
           const { data: newComment } = await queryFulfilled
 
           dispatch(
-            apiService.util.updateQueryData(
+            baseApiService.util.updateQueryData(
               TaskCommentEndpointNameEnum.GetTaskCommentList as never,
               taskId as never,
               (commentList: GetTaskCommentListSuccessResponse) => {

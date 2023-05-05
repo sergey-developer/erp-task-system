@@ -7,9 +7,9 @@ import {
 } from 'modules/auth/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/api'
 
-const authApiService = apiService.injectEndpoints({
+const authApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation<LoginSuccessResponse, LoginMutationArgs>({
       query: (payload) => ({

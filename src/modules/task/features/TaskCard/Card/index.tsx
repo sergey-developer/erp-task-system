@@ -420,7 +420,7 @@ const TaskCard: FC<TaskCardProps> = ({
         <Space direction='vertical' $block size='middle'>
           {
             <LoadingArea
-              data-testid='task-card-reclassification-request-spinner'
+              data-testid='task-card-reclassification-request-loading'
               isLoading={
                 reclassificationRequestIsLoading ||
                 createReclassificationRequestIsLoading

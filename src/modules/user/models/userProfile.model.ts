@@ -9,6 +9,7 @@ export type UserProfileModel = {
   middleName: MaybeNull<string>
   role: UserRoleEnum
   email: string
+  timezone: string
   isStaff: boolean
   avatar: MaybeNull<string>
   phone: MaybeNull<string>
