@@ -1090,9 +1090,20 @@ describe('Таблица заявок', () => {
     })
 
     describe('Срок реакции', () => {
+      describe('Не отображается', () => {
+        test(`Для роли ${UserRoleEnum.Engineer}`, () => {
+          render(
+            <TaskTable {...requiredProps} userRole={UserRoleEnum.Engineer} />,
+          )
+
+          expect(
+            testUtils.queryColTitle('Срок реакции'),
+          ).not.toBeInTheDocument()
+        })
+      })
+
       test('Отображает заголовок', () => {
         render(<TaskTable {...requiredProps} />)
-
         expect(testUtils.getColTitle('Срок реакции')).toBeInTheDocument()
       })
 
