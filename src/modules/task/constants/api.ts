@@ -3,9 +3,9 @@ export enum TaskEndpointEnum {
   ResolveTask = '/tasks/:id/resolution/',
   TakeTask = '/tasks/:id/execution/',
 
-  GetTaskList = '/tasks',
+  GetTaskList = '/tasks/',
 
-  GetTaskCounters = '/tasks/counters',
+  GetTaskCounters = '/tasks/counters/',
 
   UpdateTaskWorkGroup = '/tasks/:id/work-group/',
   DeleteTaskWorkGroup = '/tasks/:id/work-group/',

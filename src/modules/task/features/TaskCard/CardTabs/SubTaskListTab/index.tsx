@@ -242,7 +242,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
       </Row>
 
       <LoadingArea
-        data-testid='sub-task-list-spinner'
+        data-testid='sub-task-list-loading'
         isLoading={subTaskListIsLoading}
       >
         <SubTaskList

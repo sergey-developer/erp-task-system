@@ -17,7 +17,12 @@ const PrivateLayout: FC = () => {
 
   return (
     <Layout>
-      <LoadingArea isLoading={userProfileIsFetching} area='parent' size='large'>
+      <LoadingArea
+        data-testid='private-layout-loading'
+        isLoading={userProfileIsFetching}
+        area='parent'
+        size='large'
+      >
         <Header />
 
         <ContentStyled $breakpoints={breakpoints}>
