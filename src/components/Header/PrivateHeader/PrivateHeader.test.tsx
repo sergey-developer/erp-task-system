@@ -2,6 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {
+  clickSelectOption,
   expectLoadingFinishedBySelect,
   expectLoadingStartedBySelect,
   getAllSelectOption,
@@ -31,6 +32,8 @@ const getSelectedTimeZone = () =>
 const openTimeZoneSelect = (user: UserEvent) =>
   openSelect(user, getTimeZoneSelectContainer())
 
+const setTimeZone = clickSelectOption
+
 const getAllTimeZoneOption = getAllSelectOption
 
 const expectTimeZoneLoadingStarted = () =>
@@ -46,6 +49,7 @@ export const testUtils = {
   getTimeZoneSelect,
   getSelectedTimeZone,
   openTimeZoneSelect,
+  setTimeZone,
   getAllTimeZoneOption,
   expectTimeZoneLoadingStarted,
   expectTimeZoneLoadingFinished,
