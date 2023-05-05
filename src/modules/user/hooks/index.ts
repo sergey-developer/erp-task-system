@@ -4,4 +4,4 @@ export * from './useUserPermissions'
 export * from './useUserMeState'
 export * from './useGetUserMe'
 
-export * from './useUserCodeState'
+export * from './useUserMeCodeState'

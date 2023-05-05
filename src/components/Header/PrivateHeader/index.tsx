@@ -8,7 +8,7 @@ import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
 import { userApiMessages } from 'modules/user/constants/errorMessages'
-import { useUserCodeState, useUserMeState } from 'modules/user/hooks'
+import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 import { useUpdateUserMutation } from 'modules/user/services/userApi.service'
 
@@ -31,7 +31,7 @@ const { Text } = Typography
 const PrivateHeader: FC = () => {
   const breakpoints = useBreakpoint()
 
-  const { data: userCode } = useUserCodeState()
+  const { data: userMeCode } = useUserMeCodeState()
   const { data: userMe } = useUserMeState()
 
   const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
@@ -92,7 +92,7 @@ const PrivateHeader: FC = () => {
 
         <Col>
           <Space size='large'>
-            {userCode && <Text title='user code'>{userCode.code}</Text>}
+            {userMeCode && <Text title='user code'>{userMeCode.code}</Text>}
 
             <NotificationCounter />
 
@@ -113,7 +113,7 @@ const PrivateHeader: FC = () => {
               loading={timeZoneListIsFetching || updateUserIsLoading}
               disabled={timeZoneListIsFetching || updateUserIsLoading}
               options={timeZoneList}
-              defaultValue={userMe?.timezone || null}
+              value={userMe?.timezone || null}
               onChange={(value) => handleUpdateTimeZone(value as string)}
             />
 

@@ -1,7 +1,7 @@
 import { UserEndpointEnum } from 'modules/user/constants/api'
 import {
-  GetUserCodeQueryArgs,
-  GetUserCodeSuccessResponse,
+  GetUserMeCodeQueryArgs,
+  GetUserMeCodeSuccessResponse,
   GetUserMeQueryArgs,
   GetUserMeSuccessResponse,
   UpdateUserMutationArgs,
@@ -46,9 +46,12 @@ const userApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
-    getUserCode: build.query<GetUserCodeSuccessResponse, GetUserCodeQueryArgs>({
+    getUserMeCode: build.query<
+      GetUserMeCodeSuccessResponse,
+      GetUserMeCodeQueryArgs
+    >({
       query: () => ({
-        url: UserEndpointEnum.GetUserCode,
+        url: UserEndpointEnum.GetUserMeCode,
         method: HttpMethodEnum.Get,
       }),
     }),
@@ -58,7 +61,7 @@ const userApiService = baseApiService.injectEndpoints({
 
 export const {
   useGetUserMeQuery,
-  useGetUserCodeQuery,
+  useGetUserMeCodeQuery,
   useUpdateUserMutation,
   endpoints: userApiEndpoints,
 } = userApiService
