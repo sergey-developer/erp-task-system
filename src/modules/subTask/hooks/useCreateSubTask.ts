@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
+import { subTaskApiMessages } from 'modules/subTask/constants/errorMessages'
 import { CreateSubTaskMutationArgs } from 'modules/subTask/models'
 import { subTaskApiPermissions } from 'modules/subTask/permissions'
 import { useCreateSubTaskMutation } from 'modules/subTask/services/subTaskApi.service'
@@ -31,7 +32,7 @@ export const useCreateSubTask = () => {
     const error = state.error as ErrorResponse
 
     if (isClientRangeError(error) || isServerRangeError(error)) {
-      showErrorNotification('Не удалось создать задание')
+      showErrorNotification(subTaskApiMessages.createSubTask.commonError)
     }
   }, [state.error, state.isError])
 

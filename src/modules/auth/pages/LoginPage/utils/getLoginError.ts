@@ -5,13 +5,11 @@ import {
 
 import { commonApiMessages } from 'shared/constants/errors'
 import { HttpCodeEnum } from 'shared/constants/http'
-import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
-import { ErrorResponse } from 'shared/services/api'
+import { MaybeNull } from 'shared/interfaces/utils'
+import { isErrorResponse } from 'shared/services/api'
 
-export const getLoginError = (
-  error: MaybeUndefined<ErrorResponse>,
-): MaybeNull<string> => {
-  if (!error) return null
+export const getLoginError = (error: unknown): MaybeNull<string> => {
+  if (!error || !isErrorResponse(error)) return null
 
   switch (error.status) {
     case HttpCodeEnum.BadRequest:

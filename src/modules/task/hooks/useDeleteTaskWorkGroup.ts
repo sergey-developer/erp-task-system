@@ -7,9 +7,9 @@ import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/errors'
 import {
-  ErrorResponse,
   getErrorDetail,
   isBadRequestError,
+  isErrorResponse,
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
@@ -34,12 +34,12 @@ export const useDeleteTaskWorkGroup = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as ErrorResponse
-
-    if (isNotFoundError(error) || isServerRangeError(error)) {
-      showMultipleErrorNotification(getErrorDetail(error))
-    } else if (!isBadRequestError(error)) {
-      showErrorNotification(commonApiMessages.unknownError)
+    if (isErrorResponse(state.error)) {
+      if (isNotFoundError(state.error) || isServerRangeError(state.error)) {
+        showMultipleErrorNotification(getErrorDetail(state.error))
+      } else if (!isBadRequestError(state.error)) {
+        showErrorNotification(commonApiMessages.unknownError)
+      }
     }
   }, [state.error, state.isError])
 

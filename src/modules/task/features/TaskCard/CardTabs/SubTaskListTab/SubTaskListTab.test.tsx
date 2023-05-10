@@ -1,10 +1,13 @@
-import { screen, waitFor } from '@testing-library/react'
+import {
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as cancelSubTaskModalTestUtils } from 'modules/subTask/features/CancelSubTaskModal/CancelSubTaskModal.test'
 import { CancelSubTaskFormErrors } from 'modules/subTask/features/CancelSubTaskModal/interfaces'
 import { testUtils as createSubTaskModalTestUtils } from 'modules/subTask/features/CreateSubTaskModal/CreateSubTaskModal.test'
-import { CreateSubTaskFormErrors } from 'modules/subTask/features/CreateSubTaskModal/interfaces'
 import { testUtils as reworkSubTaskModalTestUtils } from 'modules/subTask/features/ReworkSubTaskModal/ReworkSubTaskModal.test'
 import { ReworkSubTaskFormErrors } from 'modules/subTask/features/ReworkSubTaskModal/interfaces'
 import {
@@ -21,19 +24,18 @@ import {
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
 import subTaskFixtures from 'fixtures/subTask'
+import supportGroupFixtures from 'fixtures/supportGroup'
 import taskFixtures from 'fixtures/task'
 
 import {
   mockCancelSubTaskBadRequestError,
   mockCancelSubTaskServerError,
   mockCancelSubTaskSuccess,
-  mockCreateSubTaskBadRequestError,
-  mockCreateSubTaskServerError,
   mockCreateSubTaskSuccess,
   mockGetSubTaskListServerError,
   mockGetSubTaskListSuccess,
-  mockGetSubTaskTemplateListServerError,
   mockGetSubTaskTemplateListSuccess,
+  mockGetSupportGroupListSuccess,
   mockReworkSubTaskBadRequestError,
   mockReworkSubTaskServerError,
   mockReworkSubTaskSuccess,
@@ -91,6 +93,7 @@ const testUtils = {
 }
 
 setupApiTests()
+setupNotifications()
 
 describe('Вкладка списка заданий', () => {
   describe('Кнопка создания задания', () => {
@@ -257,46 +260,16 @@ describe('Вкладка списка заданий', () => {
   })
 
   describe('Модалка создания задания', () => {
-    describe('Список шаблонов', () => {
-      describe('При не успешном запросе', () => {
-        setupNotifications()
-
-        test('Отображается соответствующее уведомление', async () => {
-          mockGetSubTaskListSuccess(requiredProps.task.id)
-          mockGetSubTaskTemplateListServerError()
-
-          const { user } = render(
-            <SubTaskListTab
-              {...requiredProps}
-              task={{
-                ...requiredProps.task,
-                ...activeCreateSubTaskButtonTaskProps,
-              }}
-            />,
-            {
-              store: getStoreWithAuth({
-                userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
-              }),
-            },
-          )
-
-          await testUtils.openCreateSubTaskModal(user)
-          await createSubTaskModalTestUtils.findContainer()
-          await createSubTaskModalTestUtils.service.expectLoadingFinished()
-
-          expect(
-            await findNotification('Не удалось получить шаблоны заданий'),
-          ).toBeInTheDocument()
-        })
-      })
-    })
-
     describe('При успешном запросе', () => {
       test('Модалка создания закрывается', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
 
-        const templateList = subTaskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({ body: templateList })
+        const fakeSupportGroupListItem =
+          supportGroupFixtures.fakeSupportGroupListItem()
+        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+
+        const templateListItem = subTaskFixtures.getSubTaskTemplate()
+        mockGetSubTaskTemplateListSuccess({ body: [templateListItem] })
 
         mockCreateSubTaskSuccess(requiredProps.task.id)
 
@@ -318,11 +291,12 @@ describe('Вкладка списка заданий', () => {
         await testUtils.openCreateSubTaskModal(user)
         const modal = await createSubTaskModalTestUtils.findContainer()
 
-        await createSubTaskModalTestUtils.service.expectLoadingFinished()
-        await createSubTaskModalTestUtils.fillForm(user, {
-          templateX5: templateList[0].title,
+        await createSubTaskModalTestUtils.supportGroup.expectLoadingFinished()
+        await createSubTaskModalTestUtils.setFormValues(user, {
           title: fakeWord(),
           description: fakeWord(),
+          templateX5: templateListItem.title,
+          supportGroup: fakeSupportGroupListItem.name,
         })
         await createSubTaskModalTestUtils.clickSubmitButton(user)
 
@@ -335,8 +309,12 @@ describe('Вкладка списка заданий', () => {
         const subTaskList = subTaskFixtures.getSubTaskList()
         mockGetSubTaskListSuccess(requiredProps.task.id, { body: subTaskList })
 
-        const templateList = subTaskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({ body: templateList })
+        const fakeSupportGroupListItem =
+          supportGroupFixtures.fakeSupportGroupListItem()
+        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+
+        const templateListItem = subTaskFixtures.getSubTaskTemplate()
+        mockGetSubTaskTemplateListSuccess({ body: [templateListItem] })
 
         mockCreateSubTaskSuccess(requiredProps.task.id, {
           body: subTaskFixtures.getSubTask(),
@@ -359,129 +337,22 @@ describe('Вкладка списка заданий', () => {
 
         await testUtils.openCreateSubTaskModal(user)
         const modal = await createSubTaskModalTestUtils.findContainer()
-
-        await createSubTaskModalTestUtils.service.expectLoadingFinished()
-        await createSubTaskModalTestUtils.fillForm(user, {
-          templateX5: templateList[0].title,
+        await createSubTaskModalTestUtils.supportGroup.expectLoadingFinished()
+        await createSubTaskModalTestUtils.setFormValues(user, {
           title: fakeWord(),
           description: fakeWord(),
+          templateX5: templateListItem.title,
+          supportGroup: fakeSupportGroupListItem.name,
         })
         await createSubTaskModalTestUtils.clickSubmitButton(user)
 
-        await waitFor(() => {
-          expect(modal).not.toBeInTheDocument()
-        })
+        await waitForElementToBeRemoved(modal)
 
         expect(
           subTaskTestUtils.getAllContainerIn(
             subTaskListTestUtils.getContainer(),
           ),
         ).toHaveLength(subTaskList.length + 1)
-      })
-    })
-
-    describe('При не успешном запросе', () => {
-      setupNotifications()
-
-      test('Обрабатывается ошибка клиента', async () => {
-        mockGetSubTaskListSuccess(requiredProps.task.id)
-
-        const templateList = subTaskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({ body: templateList })
-
-        const badRequestResponse: Required<CreateSubTaskFormErrors> = {
-          title: [fakeWord()],
-          description: [fakeWord()],
-          templateX5: [fakeWord()],
-        }
-        mockCreateSubTaskBadRequestError(requiredProps.task.id, {
-          body: badRequestResponse,
-        })
-
-        const { user } = render(
-          <SubTaskListTab
-            {...requiredProps}
-            task={{
-              ...requiredProps.task,
-              ...activeCreateSubTaskButtonTaskProps,
-            }}
-          />,
-          {
-            store: getStoreWithAuth({
-              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
-            }),
-          },
-        )
-
-        await testUtils.openCreateSubTaskModal(user)
-        await createSubTaskModalTestUtils.findContainer()
-        await createSubTaskModalTestUtils.service.expectLoadingFinished()
-        await createSubTaskModalTestUtils.fillForm(user, {
-          templateX5: templateList[0].title,
-          title: fakeWord(),
-          description: fakeWord(),
-        })
-        await createSubTaskModalTestUtils.clickSubmitButton(user)
-
-        expect(
-          await createSubTaskModalTestUtils.service.findError(
-            badRequestResponse.templateX5[0],
-          ),
-        ).toBeInTheDocument()
-
-        expect(
-          await createSubTaskModalTestUtils.title.findError(
-            badRequestResponse.title[0],
-          ),
-        ).toBeInTheDocument()
-
-        expect(
-          await createSubTaskModalTestUtils.description.findError(
-            badRequestResponse.description[0],
-          ),
-        ).toBeInTheDocument()
-
-        expect(
-          await findNotification('Не удалось создать задание'),
-        ).toBeInTheDocument()
-      })
-
-      test('Обрабатывается ошибка сервера', async () => {
-        mockGetSubTaskListSuccess(requiredProps.task.id)
-
-        const templateList = subTaskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({ body: templateList })
-
-        mockCreateSubTaskServerError(requiredProps.task.id)
-
-        const { user } = render(
-          <SubTaskListTab
-            {...requiredProps}
-            task={{
-              ...requiredProps.task,
-              ...activeCreateSubTaskButtonTaskProps,
-            }}
-          />,
-          {
-            store: getStoreWithAuth({
-              userId: activeCreateSubTaskButtonTaskProps.assignee!.id,
-            }),
-          },
-        )
-
-        await testUtils.openCreateSubTaskModal(user)
-        await createSubTaskModalTestUtils.findContainer()
-        await createSubTaskModalTestUtils.service.expectLoadingFinished()
-        await createSubTaskModalTestUtils.fillForm(user, {
-          templateX5: templateList[0].title,
-          title: fakeWord(),
-          description: fakeWord(),
-        })
-        await createSubTaskModalTestUtils.clickSubmitButton(user)
-
-        expect(
-          await findNotification('Не удалось создать задание'),
-        ).toBeInTheDocument()
       })
     })
   })
@@ -527,8 +398,6 @@ describe('Вкладка списка заданий', () => {
     })
 
     describe('При не успешном получении', () => {
-      setupNotifications()
-
       test('Отображается соответствующая ошибка вместо списка', async () => {
         mockGetSubTaskListServerError(requiredProps.task.id)
 
@@ -778,8 +647,6 @@ describe('Вкладка списка заданий', () => {
     })
 
     describe('При не успешной отправке данных', () => {
-      setupNotifications()
-
       test('Обрабатывается ошибка - 400', async () => {
         const subTask = subTaskFixtures.getSubTask({
           status: activeReworkButtonProps.status,
@@ -1057,8 +924,6 @@ describe('Вкладка списка заданий', () => {
     })
 
     describe('При не успешной отправке данных', () => {
-      setupNotifications()
-
       test('Обрабатывается ошибка - 400', async () => {
         const subTask = subTaskFixtures.getSubTask({
           status: activeCancelButtonProps.status,

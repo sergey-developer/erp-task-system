@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react'
+import { FC, ReactNode } from 'react'
 
 export type Nullable<T> = T | null | undefined
 export type MaybeNull<T> = T | null
@@ -11,7 +11,7 @@ export type NonNullableObject<T extends object> = Required<{
 export type BooleanMap<Key extends string> = Record<Key, boolean>
 export type StringMap<Key extends string> = Record<Key, string>
 
-export type FCWithChildren<T = {}> = FC<PropsWithChildren<T>>
+export type FCWithChildren<P = unknown> = FC<P & { children: ReactNode }>
 
 export type AnyFunction = (...args: any) => any
 export type FunctionParams<T extends AnyFunction> = ArrayItem<Parameters<T>>
