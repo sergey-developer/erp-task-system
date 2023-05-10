@@ -8,8 +8,8 @@ import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/errors'
 import {
-  ErrorResponse,
   isBadRequestError,
+  isErrorResponse,
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
@@ -31,12 +31,12 @@ export const useCreateTaskComment = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as ErrorResponse
-
-    if (isNotFoundError(error) || isServerRangeError(error)) {
-      showErrorNotification(taskCommentApiMessages.createComment.commonError)
-    } else if (!isBadRequestError(error)) {
-      showErrorNotification(commonApiMessages.unknownError)
+    if (isErrorResponse(state.error)) {
+      if (isNotFoundError(state.error) || isServerRangeError(state.error)) {
+        showErrorNotification(taskCommentApiMessages.createComment.commonError)
+      } else if (!isBadRequestError(state.error)) {
+        showErrorNotification(commonApiMessages.unknownError)
+      }
     }
   }, [state.error, state.isError])
 
