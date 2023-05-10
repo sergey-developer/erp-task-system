@@ -12,7 +12,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getWorkGroupListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, WorkGroupEndpointsEnum.WorkGroupList)
+  getRequestMockFn(HttpMethodEnum.Get, WorkGroupEndpointsEnum.GetWorkGroupList)
 
 export const mockGetWorkGroupListSuccess = (
   options?: Partial<ResponseResolverOptions<GetWorkGroupListSuccessResponse>>,

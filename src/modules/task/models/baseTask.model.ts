@@ -1,3 +1,4 @@
+import { SupportGroupModel } from 'modules/supportGroup/models'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -7,7 +8,6 @@ import {
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import { MaybeNull } from 'shared/interfaces/utils'
-import { SupportGroupModel } from 'shared/models'
 
 export type TaskWorkGroupModel = Pick<WorkGroupListItemModel, 'id' | 'name'>
 
