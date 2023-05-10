@@ -1,7 +1,7 @@
+import { SupportGroupModel } from 'modules/supportGroup/models'
 import { TaskModel } from 'modules/task/models'
 
 import { MaybeUndefined } from 'shared/interfaces/utils'
-import { SupportGroupModel } from 'shared/models'
 
 import { SubTaskTemplateModel } from './subTaskTemplate.model'
 

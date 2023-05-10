@@ -1,6 +1,6 @@
 import { FieldNames } from 'rc-select/lib/Select'
 
-export const serviceFieldNames: Readonly<FieldNames> = {
+export const templateSelectFieldNames: Readonly<FieldNames> = {
   value: 'id',
   label: 'title',
 }

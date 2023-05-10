@@ -1,6 +1,7 @@
 import { Form, Input, Select, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 
+import { templateSelectFieldNames } from 'modules/subTask/constants/selectFieldNames'
 import {
   useCreateSubTask,
   useGetSubTaskTemplateList,
@@ -16,7 +17,6 @@ import { MaybeUndefined } from 'shared/interfaces/utils'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
-import { serviceFieldNames } from './constants'
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'
 
 const { Text, Link } = Typography
@@ -120,7 +120,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
             loading={templateListIsFetching}
             options={templateList}
             disabled={createSubTaskIsLoading || !selectedSupportGroup}
-            fieldNames={serviceFieldNames}
+            fieldNames={templateSelectFieldNames}
           />
         </Form.Item>
 
