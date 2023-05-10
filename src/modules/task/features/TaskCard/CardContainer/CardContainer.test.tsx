@@ -14,6 +14,11 @@ import {
   taskWorkGroupApiMessages,
 } from 'modules/task/constants/errorMessages'
 import {
+  activeSecondLineButtonProps,
+  showSecondLineButtonProps,
+  testUtils as workGroupBlockTestUtils,
+} from 'modules/task/features/TaskCard/WorkGroupBlock/WorkGroupBlock.test'
+import {
   CreateTaskSuspendRequestBadRequestErrorResponse,
   ResolveTaskBadRequestErrorResponse,
   UpdateTaskWorkGroupBadRequestErrorResponse,
@@ -82,11 +87,6 @@ import {
   setupNotifications,
 } from '_tests_/utils'
 
-import {
-  activeSecondLineButtonProps,
-  showSecondLineButtonProps,
-  testUtils as workGroupBlockTestUtils,
-} from '../../TaskCard/WorkGroupBlock/WorkGroupBlock.test'
 import {
   activeAssignButtonProps,
   activeAssignOnMeButtonProps,

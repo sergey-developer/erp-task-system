@@ -70,8 +70,10 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
 
       onCancel()
     } catch (error) {
-      if (isErrorResponse(error) && isBadRequestError(error)) {
-        handleSetFieldsErrors(error, form.setFields)
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, form.setFields)
+        }
       }
     }
   }

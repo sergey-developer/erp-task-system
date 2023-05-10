@@ -8,9 +8,9 @@ import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/errors'
 import {
-  ErrorResponse,
   getErrorDetail,
   isBadRequestError,
+  isErrorResponse,
   isNotFoundError,
 } from 'shared/services/api'
 import {
@@ -34,16 +34,16 @@ export const useDeleteTaskSuspendRequest = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as ErrorResponse
-
-    if (isNotFoundError(error)) {
-      showErrorNotification(
-        suspendRequestApiMessages.deleteRequest.notFoundError,
-      )
-    } else if (isBadRequestError(error)) {
-      showMultipleErrorNotification(getErrorDetail(error))
-    } else {
-      showErrorNotification(commonApiMessages.unknownError)
+    if (isErrorResponse(state.error)) {
+      if (isNotFoundError(state.error)) {
+        showErrorNotification(
+          suspendRequestApiMessages.deleteRequest.notFoundError,
+        )
+      } else if (isBadRequestError(state.error)) {
+        showMultipleErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(commonApiMessages.unknownError)
+      }
     }
   }, [state.error, state.isError])
 
