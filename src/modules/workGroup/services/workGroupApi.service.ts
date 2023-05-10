@@ -15,7 +15,7 @@ const workGroupApiService = apiService.injectEndpoints({
       MaybeUndefined<GetWorkGroupListQueryArgs>
     >({
       query: (filter) => ({
-        url: WorkGroupEndpointsEnum.WorkGroupList,
+        url: WorkGroupEndpointsEnum.GetWorkGroupList,
         method: HttpMethodEnum.Get,
         params: filter,
       }),

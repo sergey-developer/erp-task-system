@@ -282,7 +282,7 @@ describe('Вкладка списка заданий', () => {
 
           await testUtils.openCreateSubTaskModal(user)
           await createSubTaskModalTestUtils.findContainer()
-          await createSubTaskModalTestUtils.template.expectLoadingFinished()
+          await createSubTaskModalTestUtils.service.expectLoadingFinished()
 
           expect(
             await findNotification('Не удалось получить шаблоны заданий'),
@@ -294,10 +294,10 @@ describe('Вкладка списка заданий', () => {
     describe('При успешном запросе', () => {
       test('Модалка создания закрывается', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
+
         const templateList = subTaskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({
-          body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
-        })
+        mockGetSubTaskTemplateListSuccess({ body: templateList })
+
         mockCreateSubTaskSuccess(requiredProps.task.id)
 
         const { user } = render(
@@ -318,8 +318,8 @@ describe('Вкладка списка заданий', () => {
         await testUtils.openCreateSubTaskModal(user)
         const modal = await createSubTaskModalTestUtils.findContainer()
 
-        await createSubTaskModalTestUtils.template.expectLoadingFinished()
-        await createSubTaskModalTestUtils.userFillForm(user, {
+        await createSubTaskModalTestUtils.service.expectLoadingFinished()
+        await createSubTaskModalTestUtils.fillForm(user, {
           templateX5: templateList[0].title,
           title: fakeWord(),
           description: fakeWord(),
@@ -336,9 +336,7 @@ describe('Вкладка списка заданий', () => {
         mockGetSubTaskListSuccess(requiredProps.task.id, { body: subTaskList })
 
         const templateList = subTaskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({
-          body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
-        })
+        mockGetSubTaskTemplateListSuccess({ body: templateList })
 
         mockCreateSubTaskSuccess(requiredProps.task.id, {
           body: subTaskFixtures.getSubTask(),
@@ -362,8 +360,8 @@ describe('Вкладка списка заданий', () => {
         await testUtils.openCreateSubTaskModal(user)
         const modal = await createSubTaskModalTestUtils.findContainer()
 
-        await createSubTaskModalTestUtils.template.expectLoadingFinished()
-        await createSubTaskModalTestUtils.userFillForm(user, {
+        await createSubTaskModalTestUtils.service.expectLoadingFinished()
+        await createSubTaskModalTestUtils.fillForm(user, {
           templateX5: templateList[0].title,
           title: fakeWord(),
           description: fakeWord(),
@@ -387,10 +385,9 @@ describe('Вкладка списка заданий', () => {
 
       test('Обрабатывается ошибка клиента', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
+
         const templateList = subTaskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({
-          body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
-        })
+        mockGetSubTaskTemplateListSuccess({ body: templateList })
 
         const badRequestResponse: Required<CreateSubTaskFormErrors> = {
           title: [fakeWord()],
@@ -418,8 +415,8 @@ describe('Вкладка списка заданий', () => {
 
         await testUtils.openCreateSubTaskModal(user)
         await createSubTaskModalTestUtils.findContainer()
-        await createSubTaskModalTestUtils.template.expectLoadingFinished()
-        await createSubTaskModalTestUtils.userFillForm(user, {
+        await createSubTaskModalTestUtils.service.expectLoadingFinished()
+        await createSubTaskModalTestUtils.fillForm(user, {
           templateX5: templateList[0].title,
           title: fakeWord(),
           description: fakeWord(),
@@ -427,7 +424,7 @@ describe('Вкладка списка заданий', () => {
         await createSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
-          await createSubTaskModalTestUtils.template.findError(
+          await createSubTaskModalTestUtils.service.findError(
             badRequestResponse.templateX5[0],
           ),
         ).toBeInTheDocument()
@@ -451,10 +448,10 @@ describe('Вкладка списка заданий', () => {
 
       test('Обрабатывается ошибка сервера', async () => {
         mockGetSubTaskListSuccess(requiredProps.task.id)
+
         const templateList = subTaskFixtures.getSubTaskTemplateList()
-        mockGetSubTaskTemplateListSuccess({
-          body: subTaskFixtures.getSubTaskTemplateListResponse(templateList),
-        })
+        mockGetSubTaskTemplateListSuccess({ body: templateList })
+
         mockCreateSubTaskServerError(requiredProps.task.id)
 
         const { user } = render(
@@ -474,8 +471,8 @@ describe('Вкладка списка заданий', () => {
 
         await testUtils.openCreateSubTaskModal(user)
         await createSubTaskModalTestUtils.findContainer()
-        await createSubTaskModalTestUtils.template.expectLoadingFinished()
-        await createSubTaskModalTestUtils.userFillForm(user, {
+        await createSubTaskModalTestUtils.service.expectLoadingFinished()
+        await createSubTaskModalTestUtils.fillForm(user, {
           templateX5: templateList[0].title,
           title: fakeWord(),
           description: fakeWord(),
