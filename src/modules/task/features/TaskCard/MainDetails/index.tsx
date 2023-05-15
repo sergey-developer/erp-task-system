@@ -9,6 +9,7 @@ import {
 } from 'modules/task/features/TaskStatus/constants'
 import { TaskModel } from 'modules/task/models'
 import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
+import { useUserRole } from 'modules/user/hooks'
 
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
@@ -35,6 +36,7 @@ export type MainDetailsProps = Pick<
   | 'portablePhone'
   | 'responseTime'
   | 'workGroup'
+  | 'assignee'
 >
 
 const MainDetails: FC<MainDetailsProps> = ({
@@ -52,7 +54,10 @@ const MainDetails: FC<MainDetailsProps> = ({
   olaEstimatedTime,
   responseTime: rawResponseTime,
   workGroup,
+  assignee,
 }) => {
+  const { isFirstLineSupportRole } = useUserRole()
+
   const { olaStatusTextType, completeAt } = useMemo(() => {
     const olaStatusTextType = getOlaStatusTextType(olaStatus)
     const completeAt = getCompleteAt({
@@ -96,14 +101,16 @@ const MainDetails: FC<MainDetailsProps> = ({
           </Space>
         </SeparatedText>
 
-        {responseTime && (
-          <Space>
-            <Text>
-              Срок реакции:{' '}
-              <Text type={responseTime.type}>{responseTime.value}</Text>
-            </Text>
-          </Space>
-        )}
+        {responseTime ? (
+          isFirstLineSupportRole && !!assignee ? null : (
+            <Space>
+              <Text>
+                Срок реакции:{' '}
+                <Text type={responseTime.type}>{responseTime.value}</Text>
+              </Text>
+            </Space>
+          )
+        ) : null}
       </Space>
 
       <Space direction='vertical' size={4} $block>
