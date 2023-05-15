@@ -9,6 +9,8 @@ import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 
+import { TaskAssigneeModel } from './taskAssignee.model'
+
 export type TaskWorkGroupModel = Pick<WorkGroupListItemModel, 'id' | 'name'>
 
 export type TaskResponseTimeModel = {
@@ -35,6 +37,7 @@ export type BaseTaskModel = {
   severity: 1 | 2 | 3 | 4
   priorityCode: 1 | 2 | 3 | 4
   workGroup: MaybeNull<TaskWorkGroupModel>
+  assignee: MaybeNull<TaskAssigneeModel>
   responseTime: MaybeNull<TaskResponseTimeModel>
   supportGroup: MaybeNull<SupportGroupModel>
   contactPhone: MaybeNull<string>

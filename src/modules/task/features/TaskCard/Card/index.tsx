@@ -499,6 +499,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 olaNextBreachTime={task.olaNextBreachTime}
                 responseTime={task.responseTime}
                 workGroup={task.workGroup}
+                assignee={task.assignee}
               />
 
               <AdditionalInfo
