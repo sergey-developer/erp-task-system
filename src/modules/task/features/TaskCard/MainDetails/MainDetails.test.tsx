@@ -5,6 +5,7 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import taskFixtures from 'fixtures/task'
 
@@ -14,6 +15,7 @@ import {
   fakeIdStr,
   fakePhone,
   fakeWord,
+  getStoreWithAuth,
   render,
 } from '_tests_/utils'
 
@@ -35,6 +37,7 @@ const requiredProps: MainDetailsProps = {
   portablePhone: null,
   responseTime: null,
   workGroup: null,
+  assignee: null,
 }
 
 const getContainer = () => screen.getByTestId('task-card-main-details')
@@ -93,7 +96,11 @@ describe('Блок детальной информации заявки', () => 
           {...requiredProps}
           responseTime={fakeResponseTime}
           workGroup={null}
+          assignee={null}
         />,
+        {
+          store: getStoreWithAuth({ userRole: UserRoleEnum.FirstLineSupport }),
+        },
       )
 
       const responseTime = parseResponseTime(fakeResponseTime, null)
@@ -124,6 +131,26 @@ describe('Блок детальной информации заявки', () => 
             responseTime={taskFixtures.getTaskResponseTime()}
             workGroup={taskFixtures.getWorkGroup()}
           />,
+        )
+
+        expect(
+          testUtils.queryChildByText(/Срок реакции:/),
+        ).not.toBeInTheDocument()
+      })
+
+      test(`Но пользователь с ролью ${UserRoleEnum.FirstLineSupport} и у заявки есть исполнитель`, () => {
+        render(
+          <MainDetails
+            {...requiredProps}
+            responseTime={taskFixtures.getTaskResponseTime()}
+            workGroup={taskFixtures.getWorkGroup()}
+            assignee={taskFixtures.getAssignee()}
+          />,
+          {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          },
         )
 
         expect(
