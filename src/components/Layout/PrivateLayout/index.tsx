@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 
 import { useUserMeState } from 'modules/user/hooks'
 
-import Header from 'components/Header/PrivateHeader'
+import PrivateHeader from 'components/Header/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
 import Spinner from 'components/Spinner'
 
@@ -23,7 +23,7 @@ const PrivateLayout: FC = () => {
         area='parent'
         size='large'
       >
-        <Header />
+        <PrivateHeader />
 
         <ContentStyled $breakpoints={breakpoints}>
           <React.Suspense fallback={<Spinner area='parent' size='large' />}>
