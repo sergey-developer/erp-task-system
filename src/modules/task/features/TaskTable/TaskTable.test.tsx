@@ -1103,6 +1103,32 @@ describe('Таблица заявок', () => {
             testUtils.queryColTitle('Срок реакции'),
           ).not.toBeInTheDocument()
         })
+
+        test(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
+          render(
+            <TaskTable
+              {...requiredProps}
+              userRole={UserRoleEnum.SeniorEngineer}
+            />,
+          )
+
+          expect(
+            testUtils.queryColTitle('Срок реакции'),
+          ).not.toBeInTheDocument()
+        })
+
+        test(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
+          render(
+            <TaskTable
+              {...requiredProps}
+              userRole={UserRoleEnum.HeadOfDepartment}
+            />,
+          )
+
+          expect(
+            testUtils.queryColTitle('Срок реакции'),
+          ).not.toBeInTheDocument()
+        })
       })
 
       test('Заголовок отображается если условия соблюдены', () => {
@@ -1114,13 +1140,14 @@ describe('Таблица заявок', () => {
         const taskTableItem: typeof firstTaskTableItem = {
           ...firstTaskTableItem,
           workGroup: null,
+          assignee: null,
         }
 
         render(
           <TaskTable
             {...requiredProps}
             dataSource={[taskTableItem]}
-            userRole={UserRoleEnum.SeniorEngineer}
+            userRole={UserRoleEnum.FirstLineSupport}
           />,
         )
 
