@@ -1,5 +1,5 @@
 import { BlockProps } from 'antd/es/typography/Base'
-import { DurationFormatSettings } from 'moment'
+import { DurationFormatSettings } from 'moment-timezone'
 
 import {
   BaseTaskModel,

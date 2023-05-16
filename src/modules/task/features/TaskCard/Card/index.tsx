@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { FormInstance } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import React, { FC, useCallback, useEffect } from 'react'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
