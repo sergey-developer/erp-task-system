@@ -1,5 +1,6 @@
 import get from 'lodash/get'
-import { FC } from 'react'
+import moment from 'moment-timezone'
+import { FC, useEffect } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import { getPrivateRoutesConfig } from 'configs/routes'
@@ -10,9 +11,18 @@ import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
 import { useGetTimeZoneList } from 'shared/services/api/hooks'
 
 const PrivateApp: FC = () => {
-  const { data: userMe } = useGetUserMe()
+  const { data: userMe, isSuccess: userMeLoadedSuccess } = useGetUserMe()
   useGetTimeZoneList()
   useGetUserMeCodeQuery()
+
+  /* Предполагается что в компоненте PrivateLayout отображается спиннер
+   во время загрузки данных пользователя, прежде чем отобразить страницу
+  */
+  useEffect(() => {
+    if (userMeLoadedSuccess && userMe) {
+      moment.tz.setDefault(userMe.timezone)
+    }
+  }, [userMeLoadedSuccess, userMe])
 
   const routesConfig = getPrivateRoutesConfig({
     isStaff: get(userMe, 'isStaff', false),
