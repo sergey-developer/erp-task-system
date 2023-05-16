@@ -1,4 +1,4 @@
-import moment, { DurationFormatSettings } from 'moment'
+import moment, { DurationFormatSettings } from 'moment-timezone'
 
 export const humanizeDuration = (
   duration: moment.DurationInputArg1,
