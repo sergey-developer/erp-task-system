@@ -1,5 +1,5 @@
-import * as moment from 'moment'
 import momentDurationFormat from 'moment-duration-format'
+import * as moment from 'moment-timezone'
 import 'moment/locale/ru'
 
 const setup = () => {
