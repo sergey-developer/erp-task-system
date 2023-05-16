@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment'
+import moment, { Moment } from 'moment-timezone'
 
 export const formatDate = (
   date: moment.MomentInput,

@@ -11,7 +11,7 @@ import {
   Space,
   Typography,
 } from 'antd'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import React, { FC, useEffect } from 'react'
 
 import { SuspendReasonEnum } from 'modules/task/constants/common'

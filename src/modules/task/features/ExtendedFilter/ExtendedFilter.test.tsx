@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
