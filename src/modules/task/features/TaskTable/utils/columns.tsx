@@ -101,7 +101,7 @@ export const getTableColumns = (
             sorter: true,
           },
         ]),
-    ...(!roleMap.isEngineerRole
+    ...(roleMap.isFirstLineSupportRole
       ? [
           {
             key: 'responseTime',
@@ -111,7 +111,7 @@ export const getTableColumns = (
               value: TaskTableListItem['responseTime'],
               { workGroup, assignee }: TaskTableListItem,
             ) => {
-              if (roleMap.isFirstLineSupportRole && !!assignee) return null
+              if (!!assignee) return null
 
               const responseTime = parseResponseTime(value, workGroup)
 
