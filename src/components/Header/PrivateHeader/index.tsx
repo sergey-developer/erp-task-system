@@ -1,5 +1,6 @@
 import { Col, Row, Select, Space, Typography } from 'antd'
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
+import moment from 'moment-timezone'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +11,7 @@ import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
 import { userApiMessages } from 'modules/user/constants/errorMessages'
 import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
-import { useUpdateUserMutation } from 'modules/user/services/userApi.service'
+import { useUpdateUserTimeZoneMutation } from 'modules/user/services/userApi.service'
 
 import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -37,8 +38,10 @@ const PrivateHeader: FC = () => {
   const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
     useTimeZoneListState()
 
-  const [updateUserMutation, { isLoading: updateUserIsLoading }] =
-    useUpdateUserMutation()
+  const [
+    updateUserTimeZoneMutation,
+    { isLoading: updateUserTimeZoneIsLoading },
+  ] = useUpdateUserTimeZoneMutation()
 
   const navMenu = useMemo(() => {
     const userRole = userMe?.role
@@ -64,10 +67,11 @@ const PrivateHeader: FC = () => {
     if (!userMe) return
 
     try {
-      await updateUserMutation({ userId: userMe.id, timezone }).unwrap()
+      await updateUserTimeZoneMutation({ userId: userMe.id, timezone }).unwrap()
+      moment.tz.setDefault(timezone)
     } catch (error) {
       if (isErrorResponse(error)) {
-        showErrorNotification(userApiMessages.updateUser.commonError)
+        showErrorNotification(userApiMessages.updateUserTimeZone.commonError)
       }
     }
   }
@@ -96,8 +100,8 @@ const PrivateHeader: FC = () => {
               data-testid='timezone-select'
               aria-label='Временная зона'
               placeholder='Выберите временную зону'
-              loading={timeZoneListIsFetching || updateUserIsLoading}
-              disabled={timeZoneListIsFetching || updateUserIsLoading}
+              loading={timeZoneListIsFetching || updateUserTimeZoneIsLoading}
+              disabled={timeZoneListIsFetching || updateUserTimeZoneIsLoading}
               options={timeZoneList}
               value={userMe?.timezone || null}
               onChange={(value) => handleUpdateTimeZone(value as string)}
