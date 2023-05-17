@@ -1,6 +1,6 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/interfaces/utils'
-import { apiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/api'
 
 import { SupportGroupEndpointsEnum } from '../constants/api'
 import {
@@ -8,7 +8,7 @@ import {
   GetSupportGroupListSuccessResponse,
 } from '../models'
 
-const supportGroupApiService = apiService.injectEndpoints({
+const supportGroupApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     getSupportGroupList: build.query<
       GetSupportGroupListSuccessResponse,
