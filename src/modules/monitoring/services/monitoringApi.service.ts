@@ -5,9 +5,9 @@ import {
 import { getTaskMonitoringUrl } from 'modules/monitoring/utils/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { apiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/api'
 
-const monitoringApiService = apiService.injectEndpoints({
+const monitoringApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     getTaskMonitoring: build.query<
       GetTaskMonitoringSuccessResponse,

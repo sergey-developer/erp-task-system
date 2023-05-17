@@ -1,4 +1,4 @@
-import { Moment } from 'moment/moment'
+import { Moment } from 'moment-timezone'
 
 import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
 

@@ -6,9 +6,9 @@ import {
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/interfaces/utils'
-import { apiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/api'
 
-const workGroupApiService = apiService.injectEndpoints({
+const workGroupApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     getWorkGroupList: build.query<
       GetWorkGroupListSuccessResponse,

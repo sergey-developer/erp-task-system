@@ -1,5 +1,6 @@
-import { Col, Row, Space, Typography } from 'antd'
+import { Col, Row, Select, Space, Typography } from 'antd'
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
+import moment from 'moment-timezone'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -7,8 +8,10 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
-import { useUserProfileState } from 'modules/user/hooks'
-import { useGetUserCodeQuery } from 'modules/user/services/userApi.service'
+import { userApiMessages } from 'modules/user/constants/errorMessages'
+import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
+import { UserModel } from 'modules/user/models'
+import { useUpdateUserTimeZoneMutation } from 'modules/user/services/userApi.service'
 
 import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -18,18 +21,30 @@ import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
 import { useMatchedRoute } from 'shared/hooks'
+import { isErrorResponse } from 'shared/services/api'
+import { useTimeZoneListState } from 'shared/services/api/hooks'
+import { showErrorNotification } from 'shared/utils/notifications'
 
-import { HeaderStyled } from './styles'
+import { HeaderStyled, timeZoneDropdownStyles } from './styles'
 
 const { Text } = Typography
 
 const PrivateHeader: FC = () => {
   const breakpoints = useBreakpoint()
-  const { data: userCode } = useGetUserCodeQuery()
-  const { data: userProfile } = useUserProfileState()
+
+  const { data: userMeCode } = useUserMeCodeState()
+  const { data: userMe } = useUserMeState()
+
+  const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
+    useTimeZoneListState()
+
+  const [
+    updateUserTimeZoneMutation,
+    { isLoading: updateUserTimeZoneIsLoading },
+  ] = useUpdateUserTimeZoneMutation()
 
   const navMenu = useMemo(() => {
-    const userRole = userProfile?.role
+    const userRole = userMe?.role
 
     const items: NavMenuProps['items'] = userRole
       ? getNavMenuConfig(userRole).map(({ key, icon: Icon, link, text }) => ({
@@ -42,14 +57,27 @@ const PrivateHeader: FC = () => {
     const itemsKeys = items.map(({ key }) => key)
 
     return { items, itemsKeys }
-  }, [userProfile?.role])
+  }, [userMe?.role])
 
   const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
   const activeNavKey = matchedRoute?.pathnameBase
   const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
 
+  const handleUpdateTimeZone = async (timezone: UserModel['timezone']) => {
+    if (!userMe) return
+
+    try {
+      await updateUserTimeZoneMutation({ userId: userMe.id, timezone }).unwrap()
+      moment.tz.setDefault(timezone)
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        showErrorNotification(userApiMessages.updateUserTimeZone.commonError)
+      }
+    }
+  }
+
   return (
-    <HeaderStyled $breakpoints={breakpoints}>
+    <HeaderStyled data-testid='private-header' $breakpoints={breakpoints}>
       <Row justify='space-between' align='middle'>
         <Col span={12}>
           <Row align='middle'>
@@ -68,11 +96,23 @@ const PrivateHeader: FC = () => {
 
         <Col>
           <Space size='large'>
-            {userCode && <Text title='user code'>{userCode.code}</Text>}
+            <Select
+              data-testid='timezone-select'
+              aria-label='Временная зона'
+              placeholder='Выберите временную зону'
+              loading={timeZoneListIsFetching || updateUserTimeZoneIsLoading}
+              disabled={timeZoneListIsFetching || updateUserTimeZoneIsLoading}
+              options={timeZoneList}
+              value={userMe?.timezone || null}
+              onChange={(value) => handleUpdateTimeZone(value as string)}
+              dropdownStyle={timeZoneDropdownStyles}
+            />
+
+            {userMeCode && <Text title='user code'>{userMeCode.code}</Text>}
 
             <NotificationCounter />
 
-            {userProfile?.isStaff && (
+            {userMe?.isStaff && (
               <Link to={RouteEnum.TaskMonitoring}>
                 <MonitoringIcon
                   $color='black'
@@ -82,8 +122,8 @@ const PrivateHeader: FC = () => {
               </Link>
             )}
 
-            {userProfile ? (
-              <ContentfulUserAvatar profile={userProfile} />
+            {userMe ? (
+              <ContentfulUserAvatar profile={userMe} />
             ) : (
               <UserAvatar size='large' />
             )}

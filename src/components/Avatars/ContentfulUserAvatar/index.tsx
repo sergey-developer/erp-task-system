@@ -3,7 +3,7 @@ import pick from 'lodash/pick'
 import React, { FC } from 'react'
 
 import { userRoleDict } from 'modules/user/constants/roles'
-import { UserProfileModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 import { getFullUserName, getUserAbbr } from 'modules/user/utils'
 
 import { UserAvatarStyled, overlayInnerStyle } from './styles'
@@ -15,7 +15,7 @@ export type ContentfulUserAvatarProps = Pick<
   'trigger' | 'placement'
 > & {
   profile: Pick<
-    UserProfileModel,
+    UserModel,
     'firstName' | 'lastName' | 'middleName' | 'email' | 'role' | 'avatar'
   >
 }

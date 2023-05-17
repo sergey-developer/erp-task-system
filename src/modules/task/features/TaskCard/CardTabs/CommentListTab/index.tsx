@@ -82,7 +82,7 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
       />
 
       <LoadingArea
-        data-testid='task-comment-list-spinner'
+        data-testid='task-comment-list-loading'
         isLoading={commentListIsFetching}
       >
         <CommentList

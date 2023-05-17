@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 import { Rule } from 'rc-field-form/es/interface'
 
 import { SuspendReasonEnum } from 'modules/task/constants/common'

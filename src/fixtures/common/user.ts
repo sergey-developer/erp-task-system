@@ -1,8 +1,8 @@
-import { UserModel } from 'modules/user/models'
+import { BaseUserModel } from 'modules/user/models'
 
 import { fakeId, fakeUrl, fakeWord } from '_tests_/utils'
 
-export const getUser = (): UserModel => ({
+export const getUser = (): BaseUserModel => ({
   id: fakeId(),
   firstName: fakeWord(),
   lastName: fakeWord(),
