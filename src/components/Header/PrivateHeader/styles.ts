@@ -1,4 +1,5 @@
-import { Layout, Select } from 'antd'
+import { Layout } from 'antd'
+import { CSSProperties } from 'react'
 import styled, { css } from 'styled-components'
 
 import {
@@ -23,6 +24,6 @@ export const HeaderStyled = styled(Header)<StyledBreakpointsProps>`
     applyBreakpointStyles($breakpoints, headerBreakpointStyles)}
 `
 
-export const TimeZoneSelectStyled = styled(Select)`
-  width: 150px;
-`
+export const timeZoneDropdownStyles: Pick<CSSProperties, 'minWidth'> = {
+  minWidth: 'max-content',
+}
