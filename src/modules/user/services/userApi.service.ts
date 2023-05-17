@@ -1,11 +1,12 @@
+import { TaskEndpointTagEnum } from 'modules/task/constants/api'
 import { UserEndpointEnum } from 'modules/user/constants/api'
 import {
   GetUserMeCodeQueryArgs,
   GetUserMeCodeSuccessResponse,
   GetUserMeQueryArgs,
   GetUserMeSuccessResponse,
-  UpdateUserMutationArgs,
-  UpdateUserSuccessResponse,
+  UpdateUserTimeZoneMutationArgs,
+  UpdateUserTimeZoneSuccessResponse,
   UserModel,
 } from 'modules/user/models'
 import { updateUserUrl } from 'modules/user/utils'
@@ -15,15 +16,17 @@ import { baseApiService } from 'shared/services/api'
 
 const userApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
-    updateUser: build.mutation<
-      UpdateUserSuccessResponse,
-      UpdateUserMutationArgs
+    updateUserTimeZone: build.mutation<
+      UpdateUserTimeZoneSuccessResponse,
+      UpdateUserTimeZoneMutationArgs
     >({
       query: ({ userId, ...payload }) => ({
         url: updateUserUrl(userId),
         method: HttpMethodEnum.Patch,
         data: payload,
       }),
+      invalidatesTags: (result, error) =>
+        error ? [] : [TaskEndpointTagEnum.TaskList, TaskEndpointTagEnum.Task],
       onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
         try {
           const { data: updatedUser } = await queryFulfilled
@@ -62,6 +65,6 @@ const userApiService = baseApiService.injectEndpoints({
 export const {
   useGetUserMeQuery,
   useGetUserMeCodeQuery,
-  useUpdateUserMutation,
+  useUpdateUserTimeZoneMutation,
   endpoints: userApiEndpoints,
 } = userApiService

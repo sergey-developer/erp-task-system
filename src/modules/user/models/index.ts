@@ -5,3 +5,5 @@ export * from './getUserMeCode.model'
 
 export * from './user.model'
 export * from './updateUser.model'
+
+export * from './updateUserTimeZone.model'
