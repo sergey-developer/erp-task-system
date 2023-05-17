@@ -40,9 +40,10 @@ const subTaskApiService = apiService.injectEndpoints({
       GetSubTaskTemplateListSuccessResponse,
       GetSubTaskTemplateListQueryArgs
     >({
-      query: () => ({
+      query: (params) => ({
         url: getSubTaskTemplateListUrl(),
         method: HttpMethodEnum.Get,
+        params,
       }),
     }),
     [SubTaskEndpointNameEnum.CreateSubTask]: build.mutation<
@@ -139,7 +140,7 @@ const subTaskApiService = apiService.injectEndpoints({
 })
 
 export const {
-  useLazyGetSubTaskTemplateListQuery,
+  useGetSubTaskTemplateListQuery,
   useCreateSubTaskMutation,
   useCancelSubTaskMutation,
   useReworkSubTaskMutation,

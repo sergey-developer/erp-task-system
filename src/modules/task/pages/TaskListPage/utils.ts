@@ -1,9 +1,10 @@
-import { formatDate } from 'shared/utils/date'
-
 import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
-} from '../../features/ExtendedFilter/interfaces'
+} from 'modules/task/features/ExtendedFilter/interfaces'
+
+import { formatDate } from 'shared/utils/date'
+
 import { DATE_FILTER_FORMAT } from './constants'
 
 /**

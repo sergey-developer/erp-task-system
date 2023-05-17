@@ -14,7 +14,24 @@ import isArray from 'lodash/isArray'
 import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
+import ExtendedFilter, {
+  ExtendedFilterProps,
+} from 'modules/task/features/ExtendedFilter'
+import { initialExtendedFilterFormValues } from 'modules/task/features/ExtendedFilter/constants'
+import {
+  ExtendedFilterFormFields,
+  ExtendedFilterQueries,
+} from 'modules/task/features/ExtendedFilter/interfaces'
+import FastFilter from 'modules/task/features/FastFilter'
+import { FastFilterEnum } from 'modules/task/features/FastFilter/constants'
 import TaskCard from 'modules/task/features/TaskCard/CardContainer'
+import TaskTable from 'modules/task/features/TaskTable'
+import {
+  SortableField,
+  sortableFieldToSortValues,
+} from 'modules/task/features/TaskTable/constants/sort'
+import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
+import { getSort } from 'modules/task/features/TaskTable/utils'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
@@ -26,23 +43,6 @@ import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-import ExtendedFilter, {
-  ExtendedFilterProps,
-} from '../../features/ExtendedFilter'
-import { initialExtendedFilterFormValues } from '../../features/ExtendedFilter/constants'
-import {
-  ExtendedFilterFormFields,
-  ExtendedFilterQueries,
-} from '../../features/ExtendedFilter/interfaces'
-import FastFilter from '../../features/FastFilter'
-import { FastFilterEnum } from '../../features/FastFilter/constants'
-import TaskTable from '../../features/TaskTable'
-import {
-  SortableField,
-  sortableFieldToSortValues,
-} from '../../features/TaskTable/constants/sort'
-import { TaskTableListItem } from '../../features/TaskTable/interfaces'
-import { getSort } from '../../features/TaskTable/utils'
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { FastFilterQueries, TaskIdFilterQueries } from './interfaces'
 import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
