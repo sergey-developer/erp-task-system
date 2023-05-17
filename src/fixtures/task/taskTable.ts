@@ -7,8 +7,6 @@ import {
 } from 'modules/task/constants/common'
 import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
 
-import { NonNullableObject } from 'shared/interfaces/utils'
-
 import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
@@ -26,7 +24,7 @@ export const getTaskTableItem = (
   props?: Partial<
     Pick<TaskTableListItem, 'status' | 'extendedStatus' | 'olaStatus'>
   >,
-): NonNullableObject<TaskTableListItem> => ({
+): TaskTableListItem => ({
   id: fakeId(),
   name: fakeName(),
   title: fakeWord(),
