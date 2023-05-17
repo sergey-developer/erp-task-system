@@ -1,10 +1,12 @@
 import { waitFor } from '@testing-library/react'
 
+import { testUtils as taskTableTestUtils } from 'modules/task/features/TaskTable/TaskTable.test'
 import { userApiMessages } from 'modules/user/constants/errorMessages'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Header/PrivateHeader/PrivateHeader.test'
 import { testUtils as privateLayoutTestUtils } from 'components/Layout/PrivateLayout/PrivateLayout.test'
 
+// import { testUtils as taskCardTestUtils } from 'modules/task/features/TaskCard/Card/Card.test'
 import timeZoneFixtures from 'fixtures/timeZone'
 import userFixtures from 'fixtures/user'
 
@@ -66,6 +68,34 @@ describe('Private app', () => {
           fakeTimeZoneListItem.label,
         )
         await privateHeaderTestUtils.expectTimeZoneLoadingStarted()
+      })
+
+      // todo: выяснить почему не проходит
+      test.skip('Перезагружает реестр заявок и карточку заявки после обновления временной зоны', async () => {
+        mockGetUserMeCodeSuccess()
+
+        const fakeTimeZoneListItem = timeZoneFixtures.fakeTimeZoneListItem()
+        mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
+
+        const fakeUser = userFixtures.fakeUser()
+        mockGetUserMeSuccess({ body: fakeUser })
+
+        mockUpdateUserSuccess(fakeUser.id)
+
+        const { user } = render(<PrivateApp />)
+
+        await privateLayoutTestUtils.expectLoadingFinished()
+        await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
+        await taskTableTestUtils.expectLoadingFinished()
+        // await taskCardTestUtils.expectLoadingStarted()
+        await privateHeaderTestUtils.openTimeZoneSelect(user)
+        await privateHeaderTestUtils.setTimeZone(
+          user,
+          fakeTimeZoneListItem.label,
+        )
+        await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
+        await taskTableTestUtils.expectLoadingStarted()
+        // await taskCardTestUtils.expectLoadingStarted()
       })
 
       test('Отображается временная зона пользователя', async () => {
@@ -171,7 +201,7 @@ describe('Private app', () => {
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
 
         const error = await findNotification(
-          userApiMessages.updateUser.commonError,
+          userApiMessages.updateUserTimeZone.commonError,
         )
 
         expect(error).toBeInTheDocument()
