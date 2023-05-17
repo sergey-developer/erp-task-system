@@ -1,4 +1,4 @@
-import { Col, Row, Space, Typography } from 'antd'
+import { Col, Row, Select, Space, Typography } from 'antd'
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
@@ -24,7 +24,7 @@ import { isErrorResponse } from 'shared/services/api'
 import { useTimeZoneListState } from 'shared/services/api/hooks'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { HeaderStyled, TimeZoneSelectStyled } from './styles'
+import { HeaderStyled, timeZoneDropdownStyles } from './styles'
 
 const { Text } = Typography
 
@@ -92,6 +92,18 @@ const PrivateHeader: FC = () => {
 
         <Col>
           <Space size='large'>
+            <Select
+              data-testid='timezone-select'
+              aria-label='Временная зона'
+              placeholder='Выберите временную зону'
+              loading={timeZoneListIsFetching || updateUserIsLoading}
+              disabled={timeZoneListIsFetching || updateUserIsLoading}
+              options={timeZoneList}
+              value={userMe?.timezone || null}
+              onChange={(value) => handleUpdateTimeZone(value as string)}
+              dropdownStyle={timeZoneDropdownStyles}
+            />
+
             {userMeCode && <Text title='user code'>{userMeCode.code}</Text>}
 
             <NotificationCounter />
@@ -105,17 +117,6 @@ const PrivateHeader: FC = () => {
                 />
               </Link>
             )}
-
-            <TimeZoneSelectStyled
-              data-testid='timezone-select'
-              aria-label='Временная зона'
-              placeholder='Выберите временную зону'
-              loading={timeZoneListIsFetching || updateUserIsLoading}
-              disabled={timeZoneListIsFetching || updateUserIsLoading}
-              options={timeZoneList}
-              value={userMe?.timezone || null}
-              onChange={(value) => handleUpdateTimeZone(value as string)}
-            />
 
             {userMe ? (
               <ContentfulUserAvatar profile={userMe} />
