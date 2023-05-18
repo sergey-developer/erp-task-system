@@ -1,17 +1,14 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import { CancelSubTaskModalProps } from 'modules/subTask/features/CancelSubTaskModal/interfaces'
-import { CreateSubTaskModalProps } from 'modules/subTask/features/CreateSubTaskModal/interfaces'
 import { ReworkSubTaskModalProps } from 'modules/subTask/features/ReworkSubTaskModal/interfaces'
 import SubTaskList from 'modules/subTask/features/SubTaskList'
 import {
   useCancelSubTask,
-  useCreateSubTask,
   useGetSubTaskList,
-  useLazyGetSubTaskTemplateList,
   useReworkSubTask,
 } from 'modules/subTask/hooks'
 import { SubTaskModel } from 'modules/subTask/models'
@@ -59,21 +56,6 @@ export type SubTaskListTabProps = {
 
 const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
   const {
-    fn: getTemplateList,
-    state: {
-      isFetching: templateListIsFetching,
-      currentData: templateListResponse,
-    },
-  } = useLazyGetSubTaskTemplateList()
-
-  const templateList = templateListResponse?.results || []
-
-  const {
-    fn: createSubTask,
-    state: { isLoading: createSubTaskIsLoading },
-  } = useCreateSubTask()
-
-  const {
     isLoading: subTaskListIsLoading,
     currentData: subTaskList = [],
     isError: isGetSubTaskListError,
@@ -114,27 +96,6 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
   const taskExtendedStatus = useTaskExtendedStatus(task.extendedStatus)
   const currentUserIsTaskAssignee = useCheckUserAuthenticated(task.assignee?.id)
   const taskHasSuspendRequest = !!task.suspendRequest
-
-  const handleCreateSubTask = useCallback<CreateSubTaskModalProps['onSubmit']>(
-    async ({ title, description, templateX5 }, setFields) => {
-      try {
-        await createSubTask({
-          taskId: task.id,
-          title: title.trim(),
-          description: description.trim(),
-          templateX5,
-        })
-
-        toggleCreateSubTaskModalOpened()
-      } catch (exception) {
-        const error = exception as ErrorResponse
-        if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, setFields)
-        }
-      }
-    },
-    [createSubTask, task.id, toggleCreateSubTaskModalOpened],
-  )
 
   const handleClickCancel = useCallback(
     (subTask: SubTaskModel) => {
@@ -200,14 +161,6 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
     [reworkSubTask, subTask, task.id, toggleReworkSubTaskModalOpened],
   )
 
-  useEffect(() => {
-    if (createSubTaskModalOpened) {
-      ;(async () => {
-        await getTemplateList()
-      })()
-    }
-  }, [getTemplateList, createSubTaskModalOpened])
-
   return (
     <Space
       data-testid='subtask-list-tab'
@@ -242,7 +195,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
       </Row>
 
       <LoadingArea
-        data-testid='sub-task-list-spinner'
+        data-testid='sub-task-list-loading'
         isLoading={subTaskListIsLoading}
       >
         <SubTaskList
@@ -267,15 +220,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
           }
         >
           <CreateSubTaskModal
-            initialFormValues={{
-              title: task.title,
-              description: task.description,
-            }}
-            recordId={task.recordId}
-            templateOptions={templateList}
-            templateOptionsIsLoading={templateListIsFetching}
-            isLoading={createSubTaskIsLoading}
-            onSubmit={handleCreateSubTask}
+            task={task}
             onCancel={debouncedToggleCreateSubTaskModalOpened}
           />
         </React.Suspense>

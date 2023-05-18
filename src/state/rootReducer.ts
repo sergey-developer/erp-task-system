@@ -2,9 +2,9 @@ import { combineReducers } from '@reduxjs/toolkit'
 
 import authReducer from 'modules/auth/auth.slice'
 
-import { apiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/api'
 
 export const rootReducer = combineReducers({
-  [apiService.reducerPath]: apiService.reducer,
+  [baseApiService.reducerPath]: baseApiService.reducer,
   auth: authReducer,
 })

@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 
 import { SuspendReasonEnum } from 'modules/task/constants/common'
 

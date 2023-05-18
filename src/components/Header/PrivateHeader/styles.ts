@@ -1,4 +1,5 @@
 import { Layout } from 'antd'
+import { CSSProperties } from 'react'
 import styled, { css } from 'styled-components'
 
 import {
@@ -22,3 +23,7 @@ export const HeaderStyled = styled(Header)<StyledBreakpointsProps>`
   ${({ $breakpoints }) =>
     applyBreakpointStyles($breakpoints, headerBreakpointStyles)}
 `
+
+export const timeZoneDropdownStyles: Pick<CSSProperties, 'minWidth'> = {
+  minWidth: 'max-content',
+}

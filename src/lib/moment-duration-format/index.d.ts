@@ -3,7 +3,7 @@
  2. Типы скопированы из @types/moment-duration-format т.к. почему-то ts их не видит автоматически
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import * as moment from 'moment'
+import * as moment from 'moment-timezone'
 
 declare module 'moment' {
   namespace duration {

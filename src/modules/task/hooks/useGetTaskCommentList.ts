@@ -3,20 +3,19 @@ import { useEffect } from 'react'
 import { GetTaskCommentListQueryArgs } from 'modules/task/models'
 import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi.service'
+import {
+  getTaskCommentListServerErrorMsg,
+  getTaskNotFoundErrorMsg,
+} from 'modules/task/utils/messages'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/errors'
 import {
-  ErrorResponse,
+  isErrorResponse,
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import {
-  getTaskCommentListServerErrorMsg,
-  getTaskNotFoundErrorMsg,
-} from '../utils/messages'
 
 export const useGetTaskCommentList = (id: GetTaskCommentListQueryArgs) => {
   const permissions = useUserPermissions(taskCommentApiPermissions)
@@ -28,14 +27,14 @@ export const useGetTaskCommentList = (id: GetTaskCommentListQueryArgs) => {
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as ErrorResponse
-
-    if (isNotFoundError(error)) {
-      showErrorNotification(getTaskNotFoundErrorMsg(id))
-    } else if (isServerRangeError(error)) {
-      showErrorNotification(getTaskCommentListServerErrorMsg(id))
-    } else {
-      showErrorNotification(commonApiMessages.unknownError)
+    if (isErrorResponse(state.error)) {
+      if (isNotFoundError(state.error)) {
+        showErrorNotification(getTaskNotFoundErrorMsg(id))
+      } else if (isServerRangeError(state.error)) {
+        showErrorNotification(getTaskCommentListServerErrorMsg(id))
+      } else {
+        showErrorNotification(commonApiMessages.unknownError)
+      }
     }
   }, [id, state.error, state.isError])
 

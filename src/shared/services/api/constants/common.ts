@@ -1,4 +1,4 @@
-import { ApiVersionUnion } from './intefraces'
+import { ApiVersionUnion } from '../intefraces'
 
 export const CACHE_TIME_LIFE: number = 0.001
 

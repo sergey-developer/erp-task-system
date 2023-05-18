@@ -1,8 +1,15 @@
-import { PaginatedListSuccessResponse } from 'shared/models'
+import { SupportGroupModel } from 'modules/supportGroup/models'
+import { TaskModel } from 'modules/task/models'
+
+import { MaybeUndefined } from 'shared/interfaces/utils'
 
 import { SubTaskTemplateModel } from './subTaskTemplate.model'
 
-export type GetSubTaskTemplateListQueryArgs = void
+export type GetSubTaskTemplateListQueryArgs = MaybeUndefined<
+  Partial<{
+    type: TaskModel['type']
+    supportGroup: SupportGroupModel['id']
+  }>
+>
 
-export type GetSubTaskTemplateListSuccessResponse =
-  PaginatedListSuccessResponse<SubTaskTemplateModel>
+export type GetSubTaskTemplateListSuccessResponse = Array<SubTaskTemplateModel>

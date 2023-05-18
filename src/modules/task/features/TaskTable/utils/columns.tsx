@@ -88,7 +88,6 @@ export const getTableColumns = (
             dataIndex: 'supportGroup',
             title: 'Группа поддержки',
             render: (value: TaskTableListItem['supportGroup']) => value?.name,
-            ellipsis: true,
             sorter: true,
           },
         ]
@@ -99,23 +98,31 @@ export const getTableColumns = (
             title: 'Рабочая группа',
             render: (value: TaskTableListItem['workGroup']) =>
               get(value, 'name', 'I линия поддержки'),
-            ellipsis: true,
             sorter: true,
           },
         ]),
-    {
-      key: 'responseTime',
-      dataIndex: 'responseTime',
-      title: 'Срок реакции',
-      render: (value: TaskTableListItem['responseTime'], { workGroup }) => {
-        const responseTime = parseResponseTime(value, workGroup)
+    ...(roleMap.isFirstLineSupportRole
+      ? [
+          {
+            key: 'responseTime',
+            dataIndex: 'responseTime',
+            title: 'Срок реакции',
+            render: (
+              value: TaskTableListItem['responseTime'],
+              { workGroup, assignee }: TaskTableListItem,
+            ) => {
+              if (!!assignee) return null
 
-        return responseTime ? (
-          <Text type={responseTime.type}>{responseTime.value}</Text>
-        ) : null
-      },
-      ellipsis: true,
-    },
+              const responseTime = parseResponseTime(value, workGroup)
+
+              return responseTime ? (
+                <Text type={responseTime.type}>{responseTime.value}</Text>
+              ) : null
+            },
+            ellipsis: true,
+          },
+        ]
+      : []),
     {
       key: 'olaNextBreachTime',
       dataIndex: 'olaNextBreachTime',
