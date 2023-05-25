@@ -968,6 +968,7 @@ describe('Контейнер детальной карточки заявки', 
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
+            attachments: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -1101,6 +1102,7 @@ describe('Контейнер детальной карточки заявки', 
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
+            attachments: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -1234,6 +1236,7 @@ describe('Контейнер детальной карточки заявки', 
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
+            attachments: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -1367,6 +1370,7 @@ describe('Контейнер детальной карточки заявки', 
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
+            attachments: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {

@@ -1,4 +1,15 @@
-import { Form, FormInstance, Input, ModalProps, Space, Typography } from 'antd'
+import { PaperClipOutlined } from '@ant-design/icons'
+import {
+  Button,
+  Form,
+  FormInstance,
+  Input,
+  ModalProps,
+  Space,
+  Typography,
+  Upload,
+} from 'antd'
+import stubFalse from 'lodash/stubFalse'
 import React, { FC } from 'react'
 
 import { useTaskType } from 'modules/task/hooks'
@@ -7,6 +18,7 @@ import { TaskModel } from 'modules/task/models'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { validationRules } from 'shared/constants/validation'
+import { getFilesFromEvent } from 'shared/utils/form'
 
 import { TaskResolutionFormFields } from './interfaces'
 
@@ -40,17 +52,8 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async ({
-    techResolution,
-    userResolution,
-  }: TaskResolutionFormFields) => {
-    await onSubmit(
-      {
-        techResolution: techResolution?.trim(),
-        userResolution: userResolution?.trim(),
-      },
-      form.setFields,
-    )
+  const handleFinish = async (values: TaskResolutionFormFields) => {
+    await onSubmit(values, form.setFields)
   }
 
   return (
@@ -106,6 +109,19 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
               />
             </Form.Item>
           )}
+
+          <Form.Item
+            data-testid='attachments'
+            name='attachments'
+            valuePropName='fileList'
+            getValueFromEvent={getFilesFromEvent}
+          >
+            <Upload beforeUpload={stubFalse}>
+              <Button type='link' icon={<PaperClipOutlined />}>
+                Добавить вложение
+              </Button>
+            </Upload>
+          </Form.Item>
         </Form>
       </Space>
     </BaseModal>

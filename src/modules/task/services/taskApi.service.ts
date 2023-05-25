@@ -1,3 +1,5 @@
+import { decamelize } from 'humps'
+
 import {
   TaskEndpointEnum,
   TaskEndpointNameEnum,
@@ -74,11 +76,27 @@ const taskApiService = baseApiService.injectEndpoints({
       ResolveTaskSuccessResponse,
       ResolveTaskMutationArgs
     >({
-      query: ({ taskId, ...payload }) => ({
-        url: resolveTaskUrl(taskId),
-        method: HttpMethodEnum.Post,
-        data: payload,
-      }),
+      query: ({ taskId, techResolution, userResolution, attachments }) => {
+        const formData = new FormData()
+
+        formData.append(decamelize('techResolution'), techResolution)
+
+        if (userResolution) {
+          formData.append(decamelize('userResolution'), userResolution)
+        }
+
+        if (attachments?.length) {
+          attachments.forEach((att) => {
+            formData.append('attachments', att)
+          })
+        }
+
+        return {
+          url: resolveTaskUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data: formData,
+        }
+      },
       invalidatesTags: (result, error) =>
         error ? [] : [TaskEndpointTagEnum.TaskList],
     }),

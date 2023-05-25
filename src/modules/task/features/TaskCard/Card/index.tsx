@@ -37,7 +37,11 @@ import Spinner from 'components/Spinner'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
-import { ErrorResponse, isBadRequestError } from 'shared/services/api'
+import {
+  ErrorResponse,
+  isBadRequestError,
+  isErrorResponse,
+} from 'shared/services/api'
 import { formatDate } from 'shared/utils/date'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
@@ -250,11 +254,18 @@ const TaskCard: FC<TaskCardProps> = ({
       if (!task) return
 
       try {
-        await resolveTask({ taskId: task.id, ...values })
+        await resolveTask({
+          taskId: task.id,
+          techResolution: values.techResolution.trim(),
+          userResolution: values.userResolution?.trim(),
+          attachments: values.attachments
+            ? values.attachments.map((att) => att.originFileObj!)
+            : undefined,
+        })
+
         closeTaskCard()
-      } catch (exception) {
-        const error = exception as ErrorResponse
-        if (isBadRequestError(error)) {
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
           handleSetFieldsErrors(error, setFields)
         }
       }
