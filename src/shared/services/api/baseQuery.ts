@@ -16,7 +16,15 @@ const baseQuery =
   }: CustomBaseQueryConfig): CustomBaseQueryFn =>
   async ({ url, method = HttpMethodEnum.Get, data, params }, api) => {
     const headers = prepareHeaders
-      ? prepareHeaders(httpClient.defaults.headers.common, api)
+      ? prepareHeaders(
+          data instanceof FormData
+            ? {
+                ...httpClient.defaults.headers.common,
+                'Content-Type': 'multipart/form-data',
+              }
+            : httpClient.defaults.headers.common,
+          api,
+        )
       : undefined
 
     try {

@@ -78,8 +78,8 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
       >
         <TaskCardWrapper>
           <ResolutionTab
-            type={task.type}
             title={taskCardTabNamesDict[TaskCardTabsEnum.Resolution]}
+            type={task.type}
             techResolution={task.techResolution}
             userResolution={task.userResolution}
           />
