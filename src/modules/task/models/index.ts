@@ -1,4 +1,8 @@
 export * from './baseTask.model'
+export * from './task.model'
+
+export * from './taskComment.model'
+export * from './taskAttachment.model'
 
 export * from './getTask.model'
 export * from './resolveTask.model'
@@ -25,9 +29,6 @@ export * from './deleteTaskWorkGroup.model'
 export * from './taskReclassificationRequest.model'
 export * from './getTaskReclassificationRequest.model'
 export * from './createTaskReclassificationRequest.model'
-
-export * from './task.model'
-export * from './taskComment.model'
 
 export * from './suspendRequest.model'
 export * from './createTaskSuspendRequest.model'

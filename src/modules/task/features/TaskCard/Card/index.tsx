@@ -114,6 +114,7 @@ export type TaskCardProps = {
       | 'suspendRequest'
       | 'techResolution'
       | 'userResolution'
+      | 'resolution'
       | 'responseTime'
     >
   >

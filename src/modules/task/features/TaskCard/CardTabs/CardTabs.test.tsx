@@ -22,6 +22,9 @@ const requiredProps: CardTabsProps = {
     description: fakeWord(),
     userResolution: fakeWord(),
     techResolution: fakeWord(),
+    resolution: {
+      attachments: [],
+    },
     status: TaskStatusEnum.New,
     extendedStatus: TaskExtendedStatusEnum.New,
     recordId: fakeIdStr(),
