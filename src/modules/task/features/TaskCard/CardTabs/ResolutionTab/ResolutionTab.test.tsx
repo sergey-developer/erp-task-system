@@ -8,12 +8,13 @@ import ResolutionTab, { ResolutionTabProps } from './index'
 
 const requiredProps: Pick<
   ResolutionTabProps,
-  'title' | 'type' | 'techResolution' | 'userResolution'
+  'title' | 'type' | 'techResolution' | 'userResolution' | 'attachments'
 > = {
   type: TaskTypeEnum.Request,
   title: fakeWord(),
   techResolution: null,
   userResolution: null,
+  attachments: [],
 }
 
 const getContainer = () => screen.getByTestId('task-resolution-tab')
