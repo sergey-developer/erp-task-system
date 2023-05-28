@@ -56,7 +56,7 @@ export const getTask = (
   suspendRequest: props?.suspendRequest || null,
 
   resolution: {
-    attachments: [],
+    attachments: [taskFixtures.fakeAttachment()],
   },
   responseTime: getTaskResponseTime(),
   recordId: fakeIdStr(),
