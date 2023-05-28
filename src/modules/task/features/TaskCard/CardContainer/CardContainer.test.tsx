@@ -943,6 +943,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -991,6 +992,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1006,6 +1008,12 @@ describe('Контейнер детальной карточки заявки', 
           expect(
             await taskResolutionModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
+            ),
+          ).toBeInTheDocument()
+
+          expect(
+            await taskResolutionModalTestUtils.findAttachmentsError(
+              badRequestResponse.attachments[0],
             ),
           ).toBeInTheDocument()
         })
@@ -1038,6 +1046,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1077,6 +1086,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -1125,6 +1135,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1140,6 +1151,12 @@ describe('Контейнер детальной карточки заявки', 
           expect(
             await taskResolutionModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
+            ),
+          ).toBeInTheDocument()
+
+          expect(
+            await taskResolutionModalTestUtils.findAttachmentsError(
+              badRequestResponse.attachments[0],
             ),
           ).toBeInTheDocument()
         })
@@ -1172,6 +1189,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1211,6 +1229,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -1259,6 +1278,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1274,6 +1294,12 @@ describe('Контейнер детальной карточки заявки', 
           expect(
             await taskResolutionModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
+            ),
+          ).toBeInTheDocument()
+
+          expect(
+            await taskResolutionModalTestUtils.findAttachmentsError(
+              badRequestResponse.attachments[0],
             ),
           ).toBeInTheDocument()
         })
@@ -1306,6 +1332,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1345,6 +1372,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -1393,6 +1421,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1408,6 +1437,12 @@ describe('Контейнер детальной карточки заявки', 
           expect(
             await taskResolutionModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
+            ),
+          ).toBeInTheDocument()
+
+          expect(
+            await taskResolutionModalTestUtils.findAttachmentsError(
+              badRequestResponse.attachments[0],
             ),
           ).toBeInTheDocument()
         })
@@ -1440,6 +1475,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
