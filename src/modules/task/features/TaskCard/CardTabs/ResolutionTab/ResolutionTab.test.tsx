@@ -2,6 +2,10 @@ import { screen, within } from '@testing-library/react'
 
 import { TaskTypeEnum } from 'modules/task/constants/common'
 
+import { prettyBytes } from 'shared/utils/file'
+
+import taskFixtures from 'fixtures/task'
+
 import { fakeWord, render } from '_tests_/utils'
 
 import ResolutionTab, { ResolutionTabProps } from './index'
@@ -14,20 +18,27 @@ const requiredProps: Pick<
   title: fakeWord(),
   techResolution: null,
   userResolution: null,
-  attachments: [],
+  attachments: [taskFixtures.fakeAttachment()],
 }
 
 const getContainer = () => screen.getByTestId('task-resolution-tab')
 
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) =>
+  within(getContainer()).getByText(text)
 
-const queryChildByText = (text: string) =>
+const queryChildByText = (text: string | RegExp) =>
   within(getContainer()).queryByText(text)
+
+// attachment
+const getAttachmentLink = (name: string | RegExp) =>
+  within(getContainer()).getByRole('link', { name })
 
 export const testUtils = {
   getContainer,
   getChildByText,
   queryChildByText,
+
+  getAttachmentLink,
 }
 
 describe('Вкладка решение заявки', () => {
@@ -39,6 +50,43 @@ describe('Вкладка решение заявки', () => {
   test('Если все решения отсутствуют, отображается прочерк', () => {
     render(<ResolutionTab {...requiredProps} />)
     expect(testUtils.getChildByText('-')).toBeInTheDocument()
+  })
+
+  describe('Вложения', () => {
+    test('Отображаются корректно если присутствуют', () => {
+      render(<ResolutionTab {...requiredProps} />)
+
+      const fakeAttachment = requiredProps.attachments[0]
+
+      const allAttachmentLinks = requiredProps.attachments.map((att) =>
+        testUtils.getAttachmentLink(new RegExp(att.name)),
+      )
+      const attachmentLink = allAttachmentLinks[0]
+
+      const attachmentSize = testUtils.getChildByText(
+        new RegExp(prettyBytes(fakeAttachment.size)),
+      )
+      const externalIdText = testUtils.queryChildByText('Не передано в Х5')
+
+      expect(externalIdText).not.toBeInTheDocument()
+      expect(attachmentSize).toBeInTheDocument()
+      expect(attachmentLink).toBeInTheDocument()
+      expect(attachmentLink).toHaveAttribute('download')
+      expect(attachmentLink).toHaveAttribute('href', fakeAttachment.url)
+      expect(allAttachmentLinks).toHaveLength(requiredProps.attachments.length)
+    })
+
+    test('Текст "Не передано в Х5" отображается если у вложения нет externalId', () => {
+      render(
+        <ResolutionTab
+          {...requiredProps}
+          attachments={[taskFixtures.fakeAttachment({ externalId: '' })]}
+        />,
+      )
+
+      const externalIdText = testUtils.getChildByText('Не передано в Х5')
+      expect(externalIdText).toBeInTheDocument()
+    })
   })
 
   test('Техническое решение отображается если присутствует', () => {
