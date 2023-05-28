@@ -111,13 +111,17 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
           )}
 
           <Form.Item
-            data-testid='attachments'
+            data-testid='attachments-form-item'
             name='attachments'
             valuePropName='fileList'
             getValueFromEvent={getFilesFromEvent}
           >
-            <Upload beforeUpload={stubFalse}>
-              <Button type='link' icon={<PaperClipOutlined />}>
+            <Upload beforeUpload={stubFalse} multiple disabled={isLoading}>
+              <Button
+                type='link'
+                icon={<PaperClipOutlined />}
+                disabled={isLoading}
+              >
                 Добавить вложение
               </Button>
             </Upload>

@@ -266,8 +266,10 @@ const TaskCard: FC<TaskCardProps> = ({
 
         closeTaskCard()
       } catch (error) {
-        if (isErrorResponse(error) && isBadRequestError(error)) {
-          handleSetFieldsErrors(error, setFields)
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            handleSetFieldsErrors(error, setFields)
+          }
         }
       }
     },
