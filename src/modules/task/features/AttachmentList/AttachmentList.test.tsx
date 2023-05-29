@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react'
 
 const getContainer = () => screen.getByTestId('attachment-list')
+const queryContainer = () => screen.queryByTestId('attachment-list')
 
 const getAttachmentContainer = (name: string) =>
   within(getContainer()).getByTestId(`attachment-${name}`)
@@ -12,6 +13,7 @@ const getAttachmentLink = (name: string) =>
 
 export const testUtils = {
   getContainer,
+  queryContainer,
   getAttachmentContainer,
   getAttachmentLink,
 }
