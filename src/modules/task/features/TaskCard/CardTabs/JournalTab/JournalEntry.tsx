@@ -1,6 +1,7 @@
 import { Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import AttachmentList from 'modules/task/features/AttachmentList'
 import { TaskJournalEntryModel } from 'modules/task/models'
 
 import LabeledData from 'components/LabeledData'
@@ -16,7 +17,7 @@ const { Text } = Typography
 
 export type JournalEntryProps = Pick<
   TaskJournalEntryModel,
-  'createdAt' | 'description' | 'sourceSystem'
+  'createdAt' | 'description' | 'sourceSystem' | 'attachments'
 > & {
   type: string
   author: MaybeNull<string>
@@ -28,6 +29,7 @@ const JournalEntry: FC<JournalEntryProps> = ({
   type,
   description,
   author,
+  attachments,
 }) => {
   return (
     <Space data-testid='journalEntry' direction='vertical' size='middle' $block>
@@ -38,6 +40,13 @@ const JournalEntry: FC<JournalEntryProps> = ({
           {renderStringWithLineBreak(description)}
         </Description>
       </Space>
+
+      {!!attachments.length && (
+        <Space direction='vertical'>
+          <Description>Добавлен комментарий</Description>
+          <AttachmentList attachments={attachments} />
+        </Space>
+      )}
 
       <Row gutter={10}>
         <Col span={8}>

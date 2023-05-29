@@ -10,14 +10,20 @@ import commonFixtures from 'fixtures/common'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
+import taskFixtures from './index'
+
 export const getJournalEntry = (
-  props?: Partial<Pick<TaskJournalEntryModel, 'type' | 'sourceSystem'>>,
+  props?: Partial<
+    Pick<TaskJournalEntryModel, 'type' | 'sourceSystem' | 'attachments'>
+  >,
 ): TaskJournalEntryModel => ({
-  id: fakeId(),
   type: props?.type || TaskJournalTypeEnum.AssigneeChange,
+  sourceSystem: props?.sourceSystem || TaskJournalSourceEnum.ITSM,
+  attachments: props?.attachments || [taskFixtures.fakeAttachment()],
+
+  id: fakeId(),
   description: fakeWord(),
   createdAt: fakeDateString(),
-  sourceSystem: props?.sourceSystem || TaskJournalSourceEnum.ITSM,
   author: commonFixtures.getUser(),
 })
 

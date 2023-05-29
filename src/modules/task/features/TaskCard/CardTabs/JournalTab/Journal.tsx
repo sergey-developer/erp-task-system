@@ -37,6 +37,7 @@ const Journal: FC<JournalProps> = ({ data, isLoading }) => {
                 author={item.author ? getFullUserName(item.author) : null}
                 description={item.description}
                 sourceSystem={item.sourceSystem}
+                attachments={item.attachments}
               />
 
               {!isLastItem && <Divider />}
