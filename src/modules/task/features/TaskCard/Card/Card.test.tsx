@@ -564,6 +564,7 @@ describe('Карточка заявки', () => {
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(requiredProps.resolveTask).toBeCalledTimes(1)
