@@ -54,14 +54,26 @@ describe('Элемент журнала', () => {
     expect(description).toBeInTheDocument()
   })
 
-  test('Отображает вложения', () => {
-    render(<JournalEntry {...props} />)
+  describe('Вложения', () => {
+    test('Отображается если есть', () => {
+      render(<JournalEntry {...props} />)
 
-    const title = testUtils.getChildByText(props.id, 'Добавлен комментарий')
-    const attachmentList = attachmentListTestUtils.getContainer()
+      const title = testUtils.getChildByText(props.id, 'Добавлен комментарий')
+      const attachmentList = attachmentListTestUtils.getContainer()
 
-    expect(title).toBeInTheDocument()
-    expect(attachmentList).toBeInTheDocument()
+      expect(title).toBeInTheDocument()
+      expect(attachmentList).toBeInTheDocument()
+    })
+
+    test('Не отображаются если их нет', () => {
+      render(<JournalEntry {...props} attachments={[]} />)
+
+      const title = testUtils.queryChildByText(props.id, 'Добавлен комментарий')
+      const attachmentList = attachmentListTestUtils.queryContainer()
+
+      expect(title).not.toBeInTheDocument()
+      expect(attachmentList).not.toBeInTheDocument()
+    })
   })
 
   test('Отображает тип', () => {
@@ -84,19 +96,21 @@ describe('Элемент журнала', () => {
     expect(sourceSystem).toBeInTheDocument()
   })
 
-  test('Отображает автора', () => {
-    render(<JournalEntry {...props} />)
+  describe('Автор', () => {
+    test('Отображается если есть', () => {
+      render(<JournalEntry {...props} />)
 
-    const label = testUtils.getChildByText(props.id, 'Кем добавлено')
-    const author = testUtils.getChildByText(props.id, props.author!)
+      const label = testUtils.getChildByText(props.id, 'Кем добавлено')
+      const author = testUtils.getChildByText(props.id, props.author!)
 
-    expect(label).toBeInTheDocument()
-    expect(author).toBeInTheDocument()
-  })
+      expect(label).toBeInTheDocument()
+      expect(author).toBeInTheDocument()
+    })
 
-  test('Не отображает автора если его нет', () => {
-    render(<JournalEntry {...props} author={null} />)
-    const author = testUtils.queryChildByText(props.id, props.author!)
-    expect(author).not.toBeInTheDocument()
+    test('Не отображает если его нет', () => {
+      render(<JournalEntry {...props} author={null} />)
+      const author = testUtils.queryChildByText(props.id, props.author!)
+      expect(author).not.toBeInTheDocument()
+    })
   })
 })

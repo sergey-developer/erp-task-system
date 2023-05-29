@@ -116,6 +116,7 @@ export type TaskCardProps = {
       | 'userResolution'
       | 'resolution'
       | 'responseTime'
+      | 'attachments'
     >
   >
 
