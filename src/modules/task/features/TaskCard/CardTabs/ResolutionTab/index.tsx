@@ -38,8 +38,8 @@ const ResolutionTab: FC<ResolutionTabProps> = ({
         {!!attachments.length && (
           <Space direction='vertical'>
             {attachments.map((att, index) => (
-              <Space>
-                <Link key={index} download href={att.url}>
+              <Space key={index}>
+                <Link download href={att.url}>
                   <Space>
                     <PaperClipOutlined />
                     {att.name}

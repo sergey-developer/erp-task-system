@@ -1,4 +1,5 @@
 import * as assignee from './assignee'
+import * as attachment from './attachment'
 import * as comment from './comment'
 import * as counters from './counters'
 import * as journal from './journal'
@@ -16,6 +17,7 @@ const taskFixtures = {
   ...counters,
   ...taskTable,
   ...comment,
+  ...attachment,
   ...assignee,
   ...workGroup,
   ...journal,

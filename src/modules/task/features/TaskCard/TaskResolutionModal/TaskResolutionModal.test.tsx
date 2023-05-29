@@ -16,11 +16,12 @@ import {
   expectLoadingStartedByButton,
   modalTestUtils,
   render,
+  getAllButtonIn,
 } from '_tests_/utils'
 
 import TaskResolutionModal, { TaskResolutionModalProps } from './index'
 
-const requiredProps: TaskResolutionModalProps = {
+const props: TaskResolutionModalProps = {
   type: TaskTypeEnum.Request,
   recordId: fakeIdStr(),
   isLoading: false,
@@ -106,6 +107,38 @@ const setUserResolution = async (user: UserEvent, value: string) => {
   return field
 }
 
+// attachments
+const getAttachmentsFormItem = () =>
+  within(getContainer()).getByTestId('attachments-form-item')
+
+const getAddAttachmentsButton = () =>
+  getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
+
+const getAddAttachmentsZoneButton = () =>
+  getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[0]
+
+const clickAddAttachmentsButton = async (user: UserEvent) => {
+  const button = getAddAttachmentsButton()
+  await user.click(button)
+}
+
+const setAttachment = async (
+  user: UserEvent,
+  file: File = new File([], '', { type: 'image/png' }),
+) => {
+  const button = getAddAttachmentsZoneButton()
+  // eslint-disable-next-line testing-library/no-node-access
+  const input = button.querySelector('input[type="file"]') as HTMLInputElement
+  await user.upload(input, file)
+  return { input, file }
+}
+
+const getUploadedAttachment = (filename: string) =>
+  within(getAttachmentsFormItem()).getByTitle(filename)
+
+const findAttachmentsError = (error: string) =>
+  within(getAttachmentsFormItem()).findByText(error)
+
 // loading
 const expectLoadingStarted = () =>
   expectLoadingStartedByButton(getSubmitButton())
@@ -140,20 +173,26 @@ export const testUtils = {
   findUserResolutionError,
   setUserResolution,
 
+  getAddAttachmentsButton,
+  clickAddAttachmentsButton,
+  setAttachment,
+  getUploadedAttachment,
+  findAttachmentsError,
+
   expectLoadingStarted,
   expectLoadingFinished,
 }
 
 describe('Модалка решения по заявке', () => {
   test('Заголовок отображается', () => {
-    render(<TaskResolutionModal {...requiredProps} />)
+    render(<TaskResolutionModal {...props} />)
 
     expect(testUtils.getChildByText('Решение по заявке')).toBeInTheDocument()
-    expect(testUtils.getChildByText(requiredProps.recordId)).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
   })
 
   test('Текст отображается', () => {
-    render(<TaskResolutionModal {...requiredProps} />)
+    render(<TaskResolutionModal {...props} />)
 
     expect(
       testUtils.getChildByText(
@@ -170,7 +209,7 @@ describe('Модалка решения по заявке', () => {
 
   describe('Кнопка закрытия', () => {
     test('Отображается корректно', () => {
-      render(<TaskResolutionModal {...requiredProps} />)
+      render(<TaskResolutionModal {...props} />)
 
       const button = testUtils.getCloseButton()
 
@@ -179,16 +218,16 @@ describe('Модалка решения по заявке', () => {
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<TaskResolutionModal {...requiredProps} />)
+      const { user } = render(<TaskResolutionModal {...props} />)
 
       await testUtils.clickCloseButton(user)
-      expect(requiredProps.onCancel).toBeCalledTimes(1)
+      expect(props.onCancel).toBeCalledTimes(1)
     })
   })
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
-      render(<TaskResolutionModal {...requiredProps} />)
+      render(<TaskResolutionModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -197,16 +236,16 @@ describe('Модалка решения по заявке', () => {
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<TaskResolutionModal {...requiredProps} />)
+      const { user } = render(<TaskResolutionModal {...props} />)
 
       await testUtils.clickCancelButton(user)
-      expect(requiredProps.onCancel).toBeCalledTimes(1)
+      expect(props.onCancel).toBeCalledTimes(1)
     })
   })
 
   describe('Кнопка отправки', () => {
     test('Отображается корректно', () => {
-      render(<TaskResolutionModal {...requiredProps} />)
+      render(<TaskResolutionModal {...props} />)
 
       const button = testUtils.getSubmitButton()
 
@@ -215,26 +254,31 @@ describe('Модалка решения по заявке', () => {
     })
 
     test('Отображает состояние загрузки', async () => {
-      render(<TaskResolutionModal {...requiredProps} isLoading />)
+      render(<TaskResolutionModal {...props} isLoading />)
       await testUtils.expectLoadingStarted()
     })
 
     describe('При клике обработчик вызывается корректно', () => {
       test('Если поля заполнены', async () => {
-        const { user } = render(<TaskResolutionModal {...requiredProps} />)
+        const { user } = render(<TaskResolutionModal {...props} />)
 
         await testUtils.setTechResolution(user, fakeWord())
         await testUtils.setUserResolution(user, fakeWord())
+        await testUtils.setAttachment(user)
         await testUtils.clickSubmitButton(user)
 
-        expect(requiredProps.onSubmit).toBeCalledTimes(1)
+        expect(props.onSubmit).toBeCalledTimes(1)
+        expect(props.onSubmit).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+        )
       })
 
       test('Если поля не заполнены', async () => {
-        const { user } = render(<TaskResolutionModal {...requiredProps} />)
+        const { user } = render(<TaskResolutionModal {...props} />)
 
         await testUtils.clickSubmitButton(user)
-        expect(requiredProps.onSubmit).not.toBeCalled()
+        expect(props.onSubmit).not.toBeCalled()
       })
     })
   })
@@ -242,12 +286,12 @@ describe('Модалка решения по заявке', () => {
   describe('Форма', () => {
     describe('Поле технического решения', () => {
       test('Заголовок отображается', () => {
-        render(<TaskResolutionModal {...requiredProps} />)
+        render(<TaskResolutionModal {...props} />)
         expect(testUtils.getTechResolutionTitle()).toBeInTheDocument()
       })
 
       test('Отображается корректно', () => {
-        render(<TaskResolutionModal {...requiredProps} />)
+        render(<TaskResolutionModal {...props} />)
 
         const field = testUtils.getTechResolutionField()
 
@@ -257,7 +301,7 @@ describe('Модалка решения по заявке', () => {
       })
 
       test('Можно заполнить', async () => {
-        const { user } = render(<TaskResolutionModal {...requiredProps} />)
+        const { user } = render(<TaskResolutionModal {...props} />)
 
         const value = fakeWord()
         const field = await testUtils.setTechResolution(user, value)
@@ -266,13 +310,13 @@ describe('Модалка решения по заявке', () => {
       })
 
       test('Не активно во время загрузки', () => {
-        render(<TaskResolutionModal {...requiredProps} isLoading />)
+        render(<TaskResolutionModal {...props} isLoading />)
         expect(testUtils.getTechResolutionField()).toBeDisabled()
       })
 
       describe('Отображается ошибка', () => {
         test('Если ввести только пробелы', async () => {
-          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+          const { user } = render(<TaskResolutionModal {...props} />)
 
           await testUtils.setTechResolution(user, ' ')
 
@@ -284,7 +328,7 @@ describe('Модалка решения по заявке', () => {
         })
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+          const { user } = render(<TaskResolutionModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
 
@@ -296,7 +340,7 @@ describe('Модалка решения по заявке', () => {
         })
 
         test('Если превысить лимит символов', async () => {
-          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+          const { user } = render(<TaskResolutionModal {...props} />)
 
           await testUtils.setTechResolution(
             user,
@@ -314,12 +358,12 @@ describe('Модалка решения по заявке', () => {
 
     describe('Поле решения для пользователя', () => {
       test('Заголовок отображается', () => {
-        render(<TaskResolutionModal {...requiredProps} />)
+        render(<TaskResolutionModal {...props} />)
         expect(testUtils.getUserResolutionTitle()).toBeInTheDocument()
       })
 
       test('Отображается корректно если условия соблюдены', () => {
-        render(<TaskResolutionModal {...requiredProps} />)
+        render(<TaskResolutionModal {...props} />)
 
         const field = testUtils.getUserResolutionField()
 
@@ -331,10 +375,7 @@ describe('Модалка решения по заявке', () => {
       describe('Не отображается', () => {
         test('Если тип заявки - incident task', () => {
           render(
-            <TaskResolutionModal
-              {...requiredProps}
-              type={TaskTypeEnum.IncidentTask}
-            />,
+            <TaskResolutionModal {...props} type={TaskTypeEnum.IncidentTask} />,
           )
 
           expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
@@ -342,10 +383,7 @@ describe('Модалка решения по заявке', () => {
 
         test('Если тип заявки - request task', () => {
           render(
-            <TaskResolutionModal
-              {...requiredProps}
-              type={TaskTypeEnum.RequestTask}
-            />,
+            <TaskResolutionModal {...props} type={TaskTypeEnum.RequestTask} />,
           )
 
           expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
@@ -353,7 +391,7 @@ describe('Модалка решения по заявке', () => {
       })
 
       test('Можно заполнить', async () => {
-        const { user } = render(<TaskResolutionModal {...requiredProps} />)
+        const { user } = render(<TaskResolutionModal {...props} />)
 
         const value = fakeWord()
         const field = await testUtils.setUserResolution(user, value)
@@ -362,13 +400,13 @@ describe('Модалка решения по заявке', () => {
       })
 
       test('Не активно во время загрузки', () => {
-        render(<TaskResolutionModal {...requiredProps} isLoading />)
+        render(<TaskResolutionModal {...props} isLoading />)
         expect(testUtils.getUserResolutionField()).toBeDisabled()
       })
 
       describe('Отображается ошибка', () => {
         test('Если ввести только пробелы', async () => {
-          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+          const { user } = render(<TaskResolutionModal {...props} />)
 
           await testUtils.setUserResolution(user, ' ')
 
@@ -380,7 +418,7 @@ describe('Модалка решения по заявке', () => {
         })
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+          const { user } = render(<TaskResolutionModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
 
@@ -392,7 +430,7 @@ describe('Модалка решения по заявке', () => {
         })
 
         test('Если превысить лимит символов', async () => {
-          const { user } = render(<TaskResolutionModal {...requiredProps} />)
+          const { user } = render(<TaskResolutionModal {...props} />)
 
           await testUtils.setUserResolution(
             user,
@@ -407,12 +445,47 @@ describe('Модалка решения по заявке', () => {
         })
       })
     })
+
+    describe('Поле добавления вложения', () => {
+      test('Кнопка отображается корректно', () => {
+        render(<TaskResolutionModal {...props} />)
+
+        const button = testUtils.getAddAttachmentsButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
+
+      test('Можно загрузить вложение', async () => {
+        const { user } = render(<TaskResolutionModal {...props} />)
+
+        const { input, file } = await testUtils.setAttachment(user)
+
+        expect(input.files!.item(0)).toBe(file)
+        expect(input.files).toHaveLength(1)
+      })
+
+      test('После загрузки вложение отображается', async () => {
+        const { user } = render(<TaskResolutionModal {...props} />)
+
+        const { file } = await testUtils.setAttachment(user)
+
+        const uploadedAttachment = testUtils.getUploadedAttachment(file.name)
+        expect(uploadedAttachment).toBeInTheDocument()
+      })
+
+      test('Кнопка не активна во время загрузки', () => {
+        render(<TaskResolutionModal {...props} isLoading />)
+        const button = testUtils.getAddAttachmentsButton()
+        expect(button).toBeDisabled()
+      })
+    })
   })
 
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
-    const { user } = render(<TaskResolutionModal {...requiredProps} />)
+    const { user } = render(<TaskResolutionModal {...props} />)
 
     await modalTestUtils.clickOutsideModal(user)
-    expect(requiredProps.onCancel).toBeCalledTimes(1)
+    expect(props.onCancel).toBeCalledTimes(1)
   })
 })
