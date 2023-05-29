@@ -40,7 +40,7 @@ export const testUtils = {
 
   getAttachmentLink,
 }
-
+// todo: поправить тесты отображения вложений
 describe('Вкладка решение заявки', () => {
   test('Заголовок отображается', () => {
     render(<ResolutionTab {...requiredProps} />)
