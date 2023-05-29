@@ -26,6 +26,7 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
+import { testUtils as journalEntryTestUtils } from '../JournalTab/JournalEntry.test'
 import { NO_DATA_MSG } from './constants'
 import JournalTab, { JournalTabProps } from './index'
 
@@ -123,9 +124,11 @@ describe('Вкладка журнала задачи', () => {
           await testUtils.expectJournalLoadingStarted()
           await testUtils.expectJournalLoadingFinished()
 
-          expect(screen.getAllByTestId('journalEntry')).toHaveLength(
-            taskJournal.length,
+          const journalEntries = taskJournal.map((entry) =>
+            journalEntryTestUtils.getContainer(entry.id),
           )
+
+          expect(journalEntries).toHaveLength(taskJournal.length)
         })
 
         test('Кнопку экспорта в csv', async () => {
@@ -288,9 +291,11 @@ describe('Вкладка журнала задачи', () => {
           await testUtils.expectJournalLoadingStarted()
           await testUtils.expectJournalLoadingFinished()
 
-          expect(screen.queryAllByTestId('journalEntry')).toHaveLength(
-            taskJournal.length,
-          )
+          const journalEntries = taskJournal
+            .map((entry) => journalEntryTestUtils.queryContainer(entry.id))
+            .filter(Boolean)
+
+          expect(journalEntries).toHaveLength(taskJournal.length)
         })
 
         test('Кнопку экспорта в csv', async () => {

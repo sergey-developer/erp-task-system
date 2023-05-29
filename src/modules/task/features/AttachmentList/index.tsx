@@ -14,10 +14,10 @@ export type AttachmentListProps = {
 
 const AttachmentList: FC<AttachmentListProps> = ({ attachments }) => {
   return (
-    <Space direction='vertical'>
+    <Space data-testid='attachment-list' direction='vertical'>
       {attachments.map((att, index) => (
-        <Space>
-          <Link key={index} download href={att.url}>
+        <Space data-testid={`attachment-${att.name}`} key={index}>
+          <Link download href={att.url}>
             <Space>
               <PaperClipOutlined />
               {att.name}

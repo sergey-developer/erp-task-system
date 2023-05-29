@@ -17,13 +17,14 @@ const { Text } = Typography
 
 export type JournalEntryProps = Pick<
   TaskJournalEntryModel,
-  'createdAt' | 'description' | 'sourceSystem' | 'attachments'
+  'id' | 'createdAt' | 'description' | 'sourceSystem' | 'attachments'
 > & {
   type: string
   author: MaybeNull<string>
 }
 
 const JournalEntry: FC<JournalEntryProps> = ({
+  id,
   createdAt,
   sourceSystem,
   type,
@@ -32,7 +33,12 @@ const JournalEntry: FC<JournalEntryProps> = ({
   attachments,
 }) => {
   return (
-    <Space data-testid='journalEntry' direction='vertical' size='middle' $block>
+    <Space
+      data-testid={`journal-entry-${id}`}
+      direction='vertical'
+      size='middle'
+      $block
+    >
       <Space direction='vertical'>
         <Text strong>{createdAt}</Text>
 
@@ -63,10 +69,7 @@ const JournalEntry: FC<JournalEntryProps> = ({
 
         {author && (
           <Col span={8}>
-            <LabeledData
-              data-testid='journalEntry-author'
-              label='Кем добавлено'
-            >
+            <LabeledData label='Кем добавлено'>
               <Text>{author}</Text>
             </LabeledData>
           </Col>

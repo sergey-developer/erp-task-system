@@ -1,19 +1,20 @@
-import { screen } from '@testing-library/react'
-import omit from 'lodash/omit'
+import { screen, within } from '@testing-library/react'
 import React from 'react'
 
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
 } from 'modules/task/constants/common'
+import { testUtils as attachmentListTestUtils } from 'modules/task/features/AttachmentList/AttachmentList.test'
 
 import taskFixtures from 'fixtures/task'
 
-import { fakeDateString, fakeWord, render } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeWord, render } from '_tests_/utils'
 
 import JournalEntry, { JournalEntryProps } from './JournalEntry'
 
 const props: JournalEntryProps = {
+  id: fakeId(),
   type: TaskJournalTypeEnum.StatusChange,
   createdAt: fakeDateString(),
   description: fakeWord(),
@@ -22,17 +23,80 @@ const props: JournalEntryProps = {
   attachments: [taskFixtures.fakeAttachment()],
 }
 
-describe('Элемент журнала', () => {
-  test('Отображается корректно со всеми данными', () => {
-    render(<JournalEntry {...props} />)
+const getContainer = (id: number) => screen.getByTestId(`journal-entry-${id}`)
 
-    Object.values(omit(props, 'attachments')).forEach((item) => {
-      expect(screen.getByText(item!)).toBeInTheDocument()
-    })
+const queryContainer = (id: number) =>
+  screen.queryByTestId(`journal-entry-${id}`)
+
+const getChildByText = (id: number, text: string) =>
+  within(getContainer(id)).getByText(text)
+
+const queryChildByText = (id: number, text: string) =>
+  within(getContainer(id)).queryByText(text)
+
+export const testUtils = {
+  getContainer,
+  queryContainer,
+  getChildByText,
+  queryChildByText,
+}
+
+describe('Элемент журнала', () => {
+  test('Отображает дату создания', () => {
+    render(<JournalEntry {...props} />)
+    const createdAt = testUtils.getChildByText(props.id, props.createdAt)
+    expect(createdAt).toBeInTheDocument()
   })
 
-  test('Не отображает автора если не передать его', () => {
+  test('Отображает описание', () => {
+    render(<JournalEntry {...props} />)
+    const description = testUtils.getChildByText(props.id, props.description)
+    expect(description).toBeInTheDocument()
+  })
+
+  test('Отображает вложения', () => {
+    render(<JournalEntry {...props} />)
+
+    const title = testUtils.getChildByText(props.id, 'Добавлен комментарий')
+    const attachmentList = attachmentListTestUtils.getContainer()
+
+    expect(title).toBeInTheDocument()
+    expect(attachmentList).toBeInTheDocument()
+  })
+
+  test('Отображает тип', () => {
+    render(<JournalEntry {...props} />)
+
+    const label = testUtils.getChildByText(props.id, 'Тип')
+    const type = testUtils.getChildByText(props.id, props.type)
+
+    expect(label).toBeInTheDocument()
+    expect(type).toBeInTheDocument()
+  })
+
+  test('Отображает источник добавления', () => {
+    render(<JournalEntry {...props} />)
+
+    const label = testUtils.getChildByText(props.id, 'Где добавлено')
+    const sourceSystem = testUtils.getChildByText(props.id, props.sourceSystem)
+
+    expect(label).toBeInTheDocument()
+    expect(sourceSystem).toBeInTheDocument()
+  })
+
+  test('Отображает автора', () => {
+    render(<JournalEntry {...props} />)
+
+    const label = testUtils.getChildByText(props.id, 'Кем добавлено')
+    const author = testUtils.getChildByText(props.id, props.author!)
+
+    expect(label).toBeInTheDocument()
+    expect(author).toBeInTheDocument()
+  })
+
+  test('Не отображает автора если его нет', () => {
     render(<JournalEntry {...props} author={null} />)
-    expect(screen.queryByTestId('journalEntry-author')).not.toBeInTheDocument()
+    const author = testUtils.queryChildByText(props.id, props.author!)
+    expect(author).not.toBeInTheDocument()
   })
 })
