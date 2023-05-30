@@ -8,6 +8,8 @@ export type NonNullableObject<T extends object> = Required<{
   [K in keyof T]: NonNullable<T[K]>
 }>
 
+export type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T
+
 export type BooleanMap<Key extends string> = Record<Key, boolean>
 export type StringMap<Key extends string> = Record<Key, string>
 

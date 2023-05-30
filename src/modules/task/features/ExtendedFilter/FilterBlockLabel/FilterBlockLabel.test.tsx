@@ -5,7 +5,7 @@ import { fakeWord, getButtonIn, render } from '_tests_/utils'
 
 import FilterBlockLabel, { FilterBlockLabelProps } from './index'
 
-const requiredProps: FilterBlockLabelProps = {
+const requiredProps: Readonly<FilterBlockLabelProps> = {
   label: fakeWord(),
   onReset: jest.fn(),
 }

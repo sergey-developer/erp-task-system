@@ -114,7 +114,7 @@ import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModa
 import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
 
-const requiredProps: TaskCardContainerProps = {
+const requiredProps: Readonly<TaskCardContainerProps> = {
   taskId: fakeId(),
   closeTaskCard: jest.fn(),
   additionalInfoExpanded: false,

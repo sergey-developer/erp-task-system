@@ -21,11 +21,22 @@ const taskCommentApiService = taskApiService.injectEndpoints({
       CreateTaskCommentSuccessResponse,
       CreateTaskCommentMutationArgs
     >({
-      query: ({ taskId, ...payload }) => ({
-        url: createTaskCommentUrl(taskId),
-        method: HttpMethodEnum.Post,
-        data: payload,
-      }),
+      query: ({ taskId, comment, attachments }) => {
+        const formData = new FormData()
+        formData.append('comment', comment)
+
+        if (attachments?.length) {
+          attachments.forEach((att) => {
+            formData.append('attachments', att)
+          })
+        }
+
+        return {
+          url: createTaskCommentUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data: formData,
+        }
+      },
       onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
         try {
           const { data: newComment } = await queryFulfilled

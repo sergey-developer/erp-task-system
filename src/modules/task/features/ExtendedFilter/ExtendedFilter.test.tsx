@@ -43,7 +43,7 @@ const taskOverdueDictValues = Object.values(taskOverdueDict)
 const taskAssignedDictValues = Object.values(taskAssignedDict)
 const searchFieldDictValues = Object.values(searchFieldDict)
 
-const requiredProps: ExtendedFilterProps = {
+const requiredProps: Readonly<ExtendedFilterProps> = {
   formValues: initialExtendedFilterFormValues,
   initialFormValues: initialExtendedFilterFormValues,
   onClose: jest.fn(),

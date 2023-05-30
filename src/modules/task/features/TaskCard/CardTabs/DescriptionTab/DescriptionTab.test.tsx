@@ -8,7 +8,7 @@ import { fakeWord, render } from '_tests_/utils'
 
 import DescriptionTab, { DescriptionTabProps } from './index'
 
-const props: DescriptionTabProps = {
+const props: Readonly<DescriptionTabProps> = {
   title: fakeWord(),
   description: fakeWord(),
   attachments: [taskFixtures.fakeAttachment()],

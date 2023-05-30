@@ -60,7 +60,7 @@ import {
 } from '../WorkGroupBlock/WorkGroupBlock.test'
 import TaskCard, { TaskCardProps } from './index'
 
-const requiredProps: TaskCardProps = {
+const requiredProps: Readonly<TaskCardProps> = {
   task: taskFixtures.getTask(),
   refetchTask: jest.fn(),
   closeTaskCard: jest.fn(),

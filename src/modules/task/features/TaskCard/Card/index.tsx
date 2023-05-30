@@ -43,6 +43,7 @@ import {
   isErrorResponse,
 } from 'shared/services/api'
 import { formatDate } from 'shared/utils/date'
+import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import AdditionalInfo from '../AdditionalInfo'
@@ -261,7 +262,7 @@ const TaskCard: FC<TaskCardProps> = ({
           techResolution: values.techResolution.trim(),
           userResolution: values.userResolution?.trim(),
           attachments: values.attachments
-            ? values.attachments.map((att) => att.originFileObj!)
+            ? mapUploadedFiles(values.attachments)
             : undefined,
         })
 
