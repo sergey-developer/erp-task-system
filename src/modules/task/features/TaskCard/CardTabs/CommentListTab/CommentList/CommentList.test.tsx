@@ -4,7 +4,12 @@ import taskFixtures from 'fixtures/task'
 
 import { expectLoadingFinishedBySpinner, render } from '_tests_/utils'
 
-import CommentList from './index'
+import CommentList, { CommentListProps } from './index'
+
+const props: CommentListProps = {
+  comments: taskFixtures.getCommentList(),
+  isLoading: false,
+}
 
 const getContainer = () => screen.getByTestId('task-comment-list')
 
@@ -35,15 +40,12 @@ export const testUtils = {
 
 describe('Список комментариев заявки', () => {
   test('Отображает комментарии если они есть', () => {
-    const data = taskFixtures.getCommentList()
-
-    render(<CommentList isLoading={false} data={data} />)
-
-    expect(testUtils.getAllComments()).toHaveLength(data.length)
+    render(<CommentList {...props} />)
+    expect(testUtils.getAllComments()).toHaveLength(props.comments.length)
   })
 
   test('Отображает соответствующий текст, если загрузка завершена и комментариев нет', () => {
-    render(<CommentList isLoading={false} data={[]} />)
+    render(<CommentList {...props} isLoading={false} comments={[]} />)
 
     expect(
       testUtils.getChildByText('Комментариев пока нет'),
