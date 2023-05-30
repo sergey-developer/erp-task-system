@@ -7,7 +7,7 @@ import {
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskModel = BaseTaskModel & {
-  attachments: Array<TaskAttachmentModel>
+  attachments: MaybeNull<Array<TaskAttachmentModel>>
   olaEstimatedTime: number
   suspendRequest: MaybeNull<SuspendRequestModel>
   weight: MaybeNull<number>
