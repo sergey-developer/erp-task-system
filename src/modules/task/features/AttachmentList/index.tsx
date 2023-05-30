@@ -2,14 +2,14 @@ import { PaperClipOutlined } from '@ant-design/icons'
 import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskAttachmentModel } from 'modules/task/models'
+import { TaskAttachmentListModel } from 'modules/task/models'
 
 import { prettyBytes } from 'shared/utils/file'
 
 const { Link, Text } = Typography
 
 export type AttachmentListProps = {
-  attachments: Array<TaskAttachmentModel>
+  attachments: TaskAttachmentListModel
 }
 
 const AttachmentList: FC<AttachmentListProps> = ({ attachments }) => {

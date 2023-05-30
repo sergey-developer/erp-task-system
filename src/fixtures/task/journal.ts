@@ -7,10 +7,9 @@ import {
 import { TaskJournalEntryModel, TaskJournalModel } from 'modules/task/models'
 
 import commonFixtures from 'fixtures/common'
+import taskFixtures from 'fixtures/task'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
-
-import taskFixtures from './index'
 
 export const getJournalEntry = (
   props?: Partial<
