@@ -1,19 +1,7 @@
-import { UploadFile } from 'antd/lib/upload/interface'
+import { UploadFile } from 'shared/interfaces/file'
 
 export type TaskResolutionFormFields = {
   techResolution: string
   userResolution?: string
-  attachments?: Array<
-    Pick<
-      UploadFile,
-      | 'uid'
-      | 'type'
-      | 'size'
-      | 'percent'
-      | 'originFileObj'
-      | 'name'
-      | 'lastModified'
-      | 'lastModifiedDate'
-    >
-  >
+  attachments?: Array<UploadFile>
 }

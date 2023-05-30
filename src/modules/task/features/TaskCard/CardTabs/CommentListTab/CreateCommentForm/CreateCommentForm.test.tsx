@@ -27,14 +27,14 @@ const getContainer = () => screen.getByTestId('create-comment-form')
 const findChildByText = (text: string) =>
   within(getContainer()).findByText(text)
 
-const getCommentFieldContainer = () =>
-  within(getContainer()).getByTestId('field-comment')
+const getCommentFormItem = () =>
+  within(getContainer()).getByTestId('comment-form-item')
 
 const findCommentFieldError = (error: string) =>
-  within(getCommentFieldContainer()).findByText(error)
+  within(getCommentFormItem()).findByText(error)
 
 const getCommentField = () =>
-  within(getCommentFieldContainer()).getByPlaceholderText(
+  within(getCommentFormItem()).getByPlaceholderText(
     'Дополните информацию о заявке',
   )
 
@@ -67,7 +67,7 @@ export const testUtils = {
   getContainer,
   findChildByText,
 
-  getCommentFieldContainer,
+  getCommentFormItem,
   findCommentFieldError,
   getCommentField,
   setComment,
