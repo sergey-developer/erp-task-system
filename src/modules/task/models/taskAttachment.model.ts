@@ -4,3 +4,5 @@ export type TaskAttachmentModel = {
   url: string
   externalId: string
 }
+
+export type TaskAttachmentListModel = Array<TaskAttachmentModel>
