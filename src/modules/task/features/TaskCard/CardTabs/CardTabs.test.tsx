@@ -14,7 +14,7 @@ import { fakeId, fakeIdStr, fakeWord, render } from '_tests_/utils'
 import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
 import CardTabs, { CardTabsProps } from './index'
 
-const props: CardTabsProps = {
+const props: Readonly<CardTabsProps> = {
   task: {
     id: fakeId(),
     type: TaskTypeEnum.Request,

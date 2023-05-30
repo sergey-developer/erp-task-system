@@ -20,7 +20,7 @@ import TaskReclassificationRequest, {
   TaskReclassificationRequestProps,
 } from './index'
 
-const requiredProps: TaskReclassificationRequestProps = {
+const requiredProps: Readonly<TaskReclassificationRequestProps> = {
   user: commonFixtures.getUser(),
   comment: fakeWord(),
   date: fakeDateString(),

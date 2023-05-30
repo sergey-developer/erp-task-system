@@ -20,7 +20,7 @@ import {
 } from './SubTask.test'
 import SubTaskList, { SubTaskListProps } from './index'
 
-const requiredProps: SubTaskListProps = {
+const requiredProps: Readonly<SubTaskListProps> = {
   list: subTaskFixtures.getSubTaskList(),
   isError: false,
   taskStatus: TaskStatusEnum.New,

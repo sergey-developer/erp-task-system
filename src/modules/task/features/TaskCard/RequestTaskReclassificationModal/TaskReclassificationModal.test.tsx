@@ -23,7 +23,7 @@ import RequestTaskReclassificationModal, {
   RequestTaskReclassificationModalProps,
 } from './index'
 
-const requiredProps: RequestTaskReclassificationModalProps = {
+const requiredProps: Readonly<RequestTaskReclassificationModalProps> = {
   recordId: fakeIdStr(),
   isLoading: false,
   onCancel: jest.fn(),

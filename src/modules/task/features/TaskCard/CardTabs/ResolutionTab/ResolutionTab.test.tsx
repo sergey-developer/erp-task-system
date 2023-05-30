@@ -10,9 +10,11 @@ import { fakeWord, render } from '_tests_/utils'
 
 import ResolutionTab, { ResolutionTabProps } from './index'
 
-const requiredProps: Pick<
-  ResolutionTabProps,
-  'title' | 'type' | 'techResolution' | 'userResolution' | 'attachments'
+const requiredProps: Readonly<
+  Pick<
+    ResolutionTabProps,
+    'title' | 'type' | 'techResolution' | 'userResolution' | 'attachments'
+  >
 > = {
   type: TaskTypeEnum.Request,
   title: fakeWord(),

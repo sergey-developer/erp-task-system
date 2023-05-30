@@ -54,7 +54,7 @@ import {
 import SubTaskListTab, { SubTaskListTabProps } from './index'
 
 // constants
-const requiredProps: Pick<SubTaskListTabProps, 'task'> = {
+const requiredProps: Readonly<Pick<SubTaskListTabProps, 'task'>> = {
   task: taskFixtures.getTask(),
 }
 
