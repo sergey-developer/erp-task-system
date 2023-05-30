@@ -17,7 +17,7 @@ const AttachmentList: FC<AttachmentListProps> = ({ attachments }) => {
     <Space data-testid='attachment-list' direction='vertical'>
       {attachments.map((att, index) => (
         <Space data-testid={`attachment-${att.name}`} key={index}>
-          <Link download href={att.url}>
+          <Link download href={att.url} target='_blank'>
             <Space>
               <PaperClipOutlined />
               {att.name}
