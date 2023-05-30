@@ -48,9 +48,11 @@ import {
   CreateSubTaskModalProps,
 } from './interfaces'
 
-const requiredProps: Readonly<CreateSubTaskModalProps> = {
+const onCancel = jest.fn()
+
+const props: Readonly<CreateSubTaskModalProps> = {
   task: taskFixtures.getTask(),
-  onCancel: jest.fn(),
+  onCancel,
 }
 
 const getContainer = () => screen.getByTestId('create-sub-task-modal')
@@ -303,7 +305,6 @@ setupApiTests()
 setupNotifications()
 
 afterEach(() => {
-  const onCancel = requiredProps.onCancel as jest.Mock
   onCancel.mockReset()
 })
 
@@ -311,12 +312,10 @@ describe('Модалка создания задачи заявки', () => {
   test('Заголовок отображается', () => {
     mockGetSupportGroupListSuccess()
 
-    render(<CreateSubTaskModal {...requiredProps} />)
+    render(<CreateSubTaskModal {...props} />)
 
     expect(testUtils.getChildByText(/задание по заявке/i)).toBeInTheDocument()
-    expect(
-      testUtils.getChildByText(requiredProps.task.recordId),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.task.recordId)).toBeInTheDocument()
   })
 
   describe('Форма создания', () => {
@@ -324,7 +323,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Отображается корректно', async () => {
         mockGetSupportGroupListSuccess()
 
-        render(<CreateSubTaskModal {...requiredProps} />)
+        render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         const field = testUtils.supportGroup.getField()
@@ -340,7 +339,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Закрыто по умолчанию', async () => {
         mockGetSupportGroupListSuccess()
 
-        render(<CreateSubTaskModal {...requiredProps} />)
+        render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
 
@@ -355,9 +354,9 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplate = subTaskFixtures.getSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
 
-        mockCreateSubTaskSuccess(requiredProps.task.id)
+        mockCreateSubTaskSuccess(props.task.id)
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />, {
+        const { user } = render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -377,7 +376,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Отображает состояние загрузки во время загрузки групп поддержки', async () => {
         mockGetSupportGroupListSuccess()
 
-        render(<CreateSubTaskModal {...requiredProps} />)
+        render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingStarted()
       })
@@ -388,7 +387,7 @@ describe('Модалка создания задачи заявки', () => {
         ]
         mockGetSupportGroupListSuccess({ body: fakeSupportGroupList })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
@@ -405,7 +404,7 @@ describe('Модалка создания задачи заявки', () => {
         ]
         mockGetSupportGroupListSuccess({ body: fakeSupportGroupList })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
@@ -421,7 +420,7 @@ describe('Модалка создания задачи заявки', () => {
           supportGroupFixtures.fakeSupportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
@@ -441,7 +440,7 @@ describe('Модалка создания задачи заявки', () => {
           supportGroupFixtures.fakeSupportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
@@ -457,7 +456,7 @@ describe('Модалка создания задачи заявки', () => {
         test('Если не выбрать значение и нажать кнопку отправки', async () => {
           mockGetSupportGroupListSuccess()
 
-          const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+          const { user } = render(<CreateSubTaskModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
           const error = await testUtils.supportGroup.findError(
@@ -473,7 +472,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Отображается корректно', () => {
         mockGetSupportGroupListSuccess()
 
-        render(<CreateSubTaskModal {...requiredProps} />)
+        render(<CreateSubTaskModal {...props} />)
 
         const field = testUtils.service.getField()
         const placeholder = testUtils.service.getPlaceholder()
@@ -488,7 +487,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Закрыто по умолчанию', () => {
         mockGetSupportGroupListSuccess()
 
-        render(<CreateSubTaskModal {...requiredProps} />)
+        render(<CreateSubTaskModal {...props} />)
 
         expect(testUtils.service.queryField(true)).not.toBeInTheDocument()
       })
@@ -496,7 +495,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Не активно если не выбрана группа поддержки', async () => {
         mockGetSupportGroupListSuccess()
 
-        render(<CreateSubTaskModal {...requiredProps} />)
+        render(<CreateSubTaskModal {...props} />)
 
         expect(testUtils.service.getField()).toBeDisabled()
       })
@@ -509,9 +508,9 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplate = subTaskFixtures.getSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
 
-        mockCreateSubTaskSuccess(requiredProps.task.id)
+        mockCreateSubTaskSuccess(props.task.id)
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />, {
+        const { user } = render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -537,7 +536,7 @@ describe('Модалка создания задачи заявки', () => {
           body: [subTaskFixtures.getSubTaskTemplate()],
         })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         expect(testUtils.service.getField()).toBeDisabled()
@@ -559,7 +558,7 @@ describe('Модалка создания задачи заявки', () => {
 
         mockGetSubTaskTemplateListSuccess()
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
@@ -578,7 +577,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplateList = [subTaskFixtures.getSubTaskTemplate()]
         mockGetSubTaskTemplateListSuccess({ body: fakeTemplateList })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
@@ -603,7 +602,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplateList = [subTaskFixtures.getSubTaskTemplate()]
         mockGetSubTaskTemplateListSuccess({ body: fakeTemplateList })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
@@ -628,7 +627,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplate = subTaskFixtures.getSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
@@ -652,7 +651,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplate = subTaskFixtures.getSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
@@ -671,7 +670,7 @@ describe('Модалка создания задачи заявки', () => {
         test('Если не выбрать значение и нажать кнопку отправки', async () => {
           mockGetSupportGroupListSuccess()
 
-          const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+          const { user } = render(<CreateSubTaskModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
           const error = await testUtils.service.findError(
@@ -687,13 +686,13 @@ describe('Модалка создания задачи заявки', () => {
       test('Отображается корректно', () => {
         mockGetSupportGroupListSuccess()
 
-        render(<CreateSubTaskModal {...requiredProps} />)
+        render(<CreateSubTaskModal {...props} />)
 
         const field = testUtils.title.getField()
 
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
-        expect(field).toHaveDisplayValue(requiredProps.task.title)
+        expect(field).toHaveDisplayValue(props.task.title)
         expect(testUtils.title.getLabel()).toBeInTheDocument()
       })
 
@@ -705,9 +704,9 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplate = subTaskFixtures.getSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
 
-        mockCreateSubTaskSuccess(requiredProps.task.id)
+        mockCreateSubTaskSuccess(props.task.id)
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />, {
+        const { user } = render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -729,9 +728,9 @@ describe('Модалка создания задачи заявки', () => {
 
         const { user } = render(
           <CreateSubTaskModal
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               title: '',
             }}
           />,
@@ -746,7 +745,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Можно очистить значение', async () => {
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         const value = fakeWord()
         await testUtils.title.setValue(user, value)
@@ -761,9 +760,9 @@ describe('Модалка создания задачи заявки', () => {
 
           const { user } = render(
             <CreateSubTaskModal
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task,
+                ...props.task,
                 title: '',
               }}
             />,
@@ -782,9 +781,9 @@ describe('Модалка создания задачи заявки', () => {
 
           const { user } = render(
             <CreateSubTaskModal
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task,
+                ...props.task,
                 title: '',
               }}
             />,
@@ -802,9 +801,9 @@ describe('Модалка создания задачи заявки', () => {
 
           const { user } = render(
             <CreateSubTaskModal
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task,
+                ...props.task,
                 title: '',
               }}
             />,
@@ -828,13 +827,13 @@ describe('Модалка создания задачи заявки', () => {
       test('Отображается корректно', () => {
         mockGetSupportGroupListSuccess()
 
-        render(<CreateSubTaskModal {...requiredProps} />)
+        render(<CreateSubTaskModal {...props} />)
 
         const field = testUtils.description.getField()
 
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
-        expect(field).toHaveDisplayValue(requiredProps.task.description!)
+        expect(field).toHaveDisplayValue(props.task.description!)
         expect(testUtils.description.getLabel()).toBeInTheDocument()
       })
 
@@ -846,9 +845,9 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplate = subTaskFixtures.getSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
 
-        mockCreateSubTaskSuccess(requiredProps.task.id)
+        mockCreateSubTaskSuccess(props.task.id)
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />, {
+        const { user } = render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -870,9 +869,9 @@ describe('Модалка создания задачи заявки', () => {
 
         const { user } = render(
           <CreateSubTaskModal
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               description: '',
             }}
           />,
@@ -887,7 +886,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Можно очистить значение', async () => {
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+        const { user } = render(<CreateSubTaskModal {...props} />)
 
         const value = fakeWord()
         await testUtils.description.setValue(user, value)
@@ -902,9 +901,9 @@ describe('Модалка создания задачи заявки', () => {
 
           const { user } = render(
             <CreateSubTaskModal
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task,
+                ...props.task,
                 description: '',
               }}
             />,
@@ -922,9 +921,9 @@ describe('Модалка создания задачи заявки', () => {
 
           const { user } = render(
             <CreateSubTaskModal
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task,
+                ...props.task,
                 description: '',
               }}
             />,
@@ -944,9 +943,9 @@ describe('Модалка создания задачи заявки', () => {
 
           const { user } = render(
             <CreateSubTaskModal
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task,
+                ...props.task,
                 description: '',
               }}
             />,
@@ -969,7 +968,7 @@ describe('Модалка создания задачи заявки', () => {
 
   describe('Кнопка отправки', () => {
     test('Отображается корректно', () => {
-      render(<CreateSubTaskModal {...requiredProps} />)
+      render(<CreateSubTaskModal {...props} />)
 
       const button = testUtils.getSubmitButton()
 
@@ -985,9 +984,9 @@ describe('Модалка создания задачи заявки', () => {
       const fakeTemplate = subTaskFixtures.getSubTaskTemplate()
       mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
 
-      mockCreateSubTaskSuccess(requiredProps.task.id)
+      mockCreateSubTaskSuccess(props.task.id)
 
-      const { user } = render(<CreateSubTaskModal {...requiredProps} />, {
+      const { user } = render(<CreateSubTaskModal {...props} />, {
         store: getStoreWithAuth(),
       })
 
@@ -1007,7 +1006,7 @@ describe('Модалка создания задачи заявки', () => {
     test('Отображается корректно', () => {
       mockGetSupportGroupListSuccess()
 
-      render(<CreateSubTaskModal {...requiredProps} />)
+      render(<CreateSubTaskModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -1018,10 +1017,10 @@ describe('Модалка создания задачи заявки', () => {
     test('Обработчик вызывается корректно', async () => {
       mockGetSupportGroupListSuccess()
 
-      const { user } = render(<CreateSubTaskModal {...requiredProps} />)
+      const { user } = render(<CreateSubTaskModal {...props} />)
 
       await testUtils.clickCancelButton(user)
-      expect(requiredProps.onCancel).toBeCalledTimes(1)
+      expect(props.onCancel).toBeCalled()
     })
   })
 
@@ -1035,9 +1034,9 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplate = subTaskFixtures.getSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
 
-        mockCreateSubTaskSuccess(requiredProps.task.id)
+        mockCreateSubTaskSuccess(props.task.id)
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />, {
+        const { user } = render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -1052,7 +1051,7 @@ describe('Модалка создания задачи заявки', () => {
         await testUtils.expectLoadingFinished()
 
         await waitFor(() => {
-          expect(requiredProps.onCancel).toBeCalledTimes(1)
+          expect(props.onCancel).toBeCalled()
         })
       })
     })
@@ -1071,11 +1070,11 @@ describe('Модалка создания задачи заявки', () => {
           description: [fakeWord()],
           templateX5: [fakeWord()],
         }
-        mockCreateSubTaskBadRequestError(requiredProps.task.id, {
+        mockCreateSubTaskBadRequestError(props.task.id, {
           body: badRequestResponse,
         })
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />, {
+        const { user } = render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -1115,9 +1114,9 @@ describe('Модалка создания задачи заявки', () => {
         const fakeTemplate = subTaskFixtures.getSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
 
-        mockCreateSubTaskServerError(requiredProps.task.id)
+        mockCreateSubTaskServerError(props.task.id)
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />, {
+        const { user } = render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -1146,7 +1145,7 @@ describe('Модалка создания задачи заявки', () => {
 
         mockGetSubTaskTemplateListServerError()
 
-        const { user } = render(<CreateSubTaskModal {...requiredProps} />, {
+        const { user } = render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -1171,7 +1170,7 @@ describe('Модалка создания задачи заявки', () => {
       test('Отображается соответствующее уведомление', async () => {
         mockGetSupportGroupListServerError()
 
-        render(<CreateSubTaskModal {...requiredProps} />, {
+        render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
         })
 
