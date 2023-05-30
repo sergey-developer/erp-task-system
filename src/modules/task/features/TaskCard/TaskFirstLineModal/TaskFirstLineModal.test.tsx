@@ -17,7 +17,7 @@ import {
 import TaskFirstLineModal from './index'
 import { TaskFirstLineModalProps } from './interfaces'
 
-const requiredProps: TaskFirstLineModalProps = {
+const requiredProps: Readonly<TaskFirstLineModalProps> = {
   recordId: fakeIdStr(),
   isLoading: false,
   onSubmit: jest.fn(),

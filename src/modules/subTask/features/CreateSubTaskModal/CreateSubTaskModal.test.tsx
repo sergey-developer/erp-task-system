@@ -48,7 +48,7 @@ import {
   CreateSubTaskModalProps,
 } from './interfaces'
 
-const requiredProps: CreateSubTaskModalProps = {
+const requiredProps: Readonly<CreateSubTaskModalProps> = {
   task: taskFixtures.getTask(),
   onCancel: jest.fn(),
 }

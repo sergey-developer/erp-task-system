@@ -12,7 +12,7 @@ import { testUtils as assigneeTestUtils } from '../AssigneeBlock/AssigneeBlock.t
 import { testUtils as workGroupTestUtils } from '../WorkGroupBlock/WorkGroupBlock.test'
 import SecondaryDetails, { SecondaryDetailsProps } from './index'
 
-const requiredProps: SecondaryDetailsProps = {
+const requiredProps: Readonly<SecondaryDetailsProps> = {
   id: fakeId(),
   recordId: fakeIdStr(),
   status: TaskStatusEnum.New,

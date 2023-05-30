@@ -4,7 +4,7 @@ import { fakeWord, render } from '_tests_/utils'
 
 import DescriptionTab, { DescriptionTabProps } from './index'
 
-const requiredProps: DescriptionTabProps = {
+const requiredProps: Readonly<DescriptionTabProps> = {
   title: fakeWord(),
   description: null,
 }
