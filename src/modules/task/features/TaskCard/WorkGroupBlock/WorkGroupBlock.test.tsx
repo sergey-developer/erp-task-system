@@ -27,9 +27,11 @@ import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/
 import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
 
-const requiredProps: Omit<WorkGroupBlockProps, 'workGroup'> & {
-  taskSuspendRequestStatus: SuspendRequestStatusEnum
-} = {
+const requiredProps: Readonly<
+  Omit<WorkGroupBlockProps, 'workGroup'> & {
+    taskSuspendRequestStatus: SuspendRequestStatusEnum
+  }
+> = {
   id: fakeId(),
   recordId: fakeIdStr(),
   status: TaskStatusEnum.New,
