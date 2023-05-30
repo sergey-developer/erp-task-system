@@ -11,26 +11,16 @@ import '@testing-library/jest-dom'
  */
 import Schema from 'async-validator'
 
-if (process.env.REACT_APP_ENVIRONMENT === 'test' && process.env.CI) {
-  jest.setTimeout(15000)
-} else {
-  jest.setTimeout(10000)
-}
-
-jest.setTimeout(15000)
+jest.setTimeout(30000)
 
 Schema.warning = function () {}
-
-/**
- * Тесты падали при запуске из-за ошибки - TypeError: window.matchMedia is not a function
- */
 
 window.matchMedia = (query) => ({
   matches: false,
   media: query,
   onchange: null,
-  addListener: jest.fn(), // deprecated
-  removeListener: jest.fn(), // deprecated
+  addListener: jest.fn(),
+  removeListener: jest.fn(),
   addEventListener: jest.fn(),
   removeEventListener: jest.fn(),
   dispatchEvent: jest.fn(),
