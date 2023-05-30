@@ -6,7 +6,7 @@ import { BaseUserModel } from 'modules/user/models'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import { TaskAttachmentModel } from './taskAttachment.model'
+import { TaskAttachmentListModel } from './taskAttachment.model'
 
 export type TaskJournalEntryModel = {
   id: number
@@ -15,7 +15,7 @@ export type TaskJournalEntryModel = {
   type: TaskJournalTypeEnum
   description: string
   sourceSystem: TaskJournalSourceEnum
-  attachments: Array<TaskAttachmentModel>
+  attachments: TaskAttachmentListModel
 }
 
 export type TaskJournalModel = Array<TaskJournalEntryModel>
