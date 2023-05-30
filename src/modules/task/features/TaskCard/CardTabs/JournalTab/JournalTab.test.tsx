@@ -26,10 +26,11 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
+import { testUtils as journalEntryTestUtils } from '../JournalTab/JournalEntry.test'
 import { NO_DATA_MSG } from './constants'
 import JournalTab, { JournalTabProps } from './index'
 
-const requiredProps: JournalTabProps = {
+const props: JournalTabProps = {
   taskId: fakeId(),
 }
 
@@ -83,7 +84,7 @@ setupApiTests()
 describe('Вкладка журнала задачи', () => {
   describe('Кнопка обновления журнала', () => {
     test('Отображается корректно', () => {
-      render(<JournalTab {...requiredProps} />)
+      render(<JournalTab {...props} />)
 
       const button = testUtils.getReloadButton()
 
@@ -92,12 +93,12 @@ describe('Вкладка журнала задачи', () => {
     })
 
     test('При клике отправляется запрос', async () => {
-      mockGetJournalSuccess(requiredProps.taskId, {
+      mockGetJournalSuccess(props.taskId, {
         body: taskFixtures.getJournal(),
         once: false,
       })
 
-      const { user } = render(<JournalTab {...requiredProps} />, {
+      const { user } = render(<JournalTab {...props} />, {
         store: getStoreWithAuth(),
       })
 
@@ -112,28 +113,30 @@ describe('Вкладка журнала задачи', () => {
       describe('Отображает', () => {
         test('Записи', async () => {
           const taskJournal = taskFixtures.getJournal()
-          mockGetJournalSuccess(requiredProps.taskId, {
+          mockGetJournalSuccess(props.taskId, {
             body: taskJournal,
           })
 
-          render(<JournalTab {...requiredProps} />, {
+          render(<JournalTab {...props} />, {
             store: getStoreWithAuth(),
           })
 
           await testUtils.expectJournalLoadingStarted()
           await testUtils.expectJournalLoadingFinished()
 
-          expect(screen.getAllByTestId('journalEntry')).toHaveLength(
-            taskJournal.length,
+          const journalEntries = taskJournal.map((entry) =>
+            journalEntryTestUtils.getContainer(entry.id),
           )
+
+          expect(journalEntries).toHaveLength(taskJournal.length)
         })
 
         test('Кнопку экспорта в csv', async () => {
-          mockGetJournalSuccess(requiredProps.taskId, {
+          mockGetJournalSuccess(props.taskId, {
             body: taskFixtures.getJournal(),
           })
 
-          render(<JournalTab {...requiredProps} />, {
+          render(<JournalTab {...props} />, {
             store: getStoreWithAuth(),
           })
 
@@ -152,11 +155,11 @@ describe('Вкладка журнала задачи', () => {
 
       describe('Не отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
-          mockGetJournalSuccess(requiredProps.taskId, {
+          mockGetJournalSuccess(props.taskId, {
             body: taskFixtures.getJournal(),
           })
 
-          render(<JournalTab {...requiredProps} />, {
+          render(<JournalTab {...props} />, {
             store: getStoreWithAuth(),
           })
 
@@ -168,11 +171,11 @@ describe('Вкладка журнала задачи', () => {
       })
 
       test('Кнопка экспорта в csv активна', async () => {
-        mockGetJournalSuccess(requiredProps.taskId, {
+        mockGetJournalSuccess(props.taskId, {
           body: taskFixtures.getJournal(),
         })
 
-        render(<JournalTab {...requiredProps} />, {
+        render(<JournalTab {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -191,14 +194,14 @@ describe('Вкладка журнала задачи', () => {
         )
 
         test('Не показывает сообщение об ошибке', async () => {
-          mockGetJournalSuccess(requiredProps.taskId, {
+          mockGetJournalSuccess(props.taskId, {
             body: taskFixtures.getJournal(),
           })
-          mockGetJournalCsvSuccess(requiredProps.taskId, {
+          mockGetJournalCsvSuccess(props.taskId, {
             body: fakeWord(),
           })
 
-          const { user } = render(<JournalTab {...requiredProps} />, {
+          const { user } = render(<JournalTab {...props} />, {
             store: getStoreWithAuth(),
           })
 
@@ -228,12 +231,12 @@ describe('Вкладка журнала задачи', () => {
         )
 
         test('Показывает сообщение об ошибке', async () => {
-          mockGetJournalSuccess(requiredProps.taskId, {
+          mockGetJournalSuccess(props.taskId, {
             body: taskFixtures.getJournal(),
           })
-          mockGetJournalCsvServerError(requiredProps.taskId)
+          mockGetJournalCsvServerError(props.taskId)
 
-          const { user } = render(<JournalTab {...requiredProps} />, {
+          const { user } = render(<JournalTab {...props} />, {
             store: getStoreWithAuth(),
           })
 
@@ -259,11 +262,11 @@ describe('Вкладка журнала задачи', () => {
     describe('Если нет записей', () => {
       describe('Отображает', () => {
         test(`Текст "${NO_DATA_MSG}"`, async () => {
-          mockGetJournalSuccess(requiredProps.taskId, {
+          mockGetJournalSuccess(props.taskId, {
             body: taskFixtures.getJournal(0),
           })
 
-          render(<JournalTab {...requiredProps} />, {
+          render(<JournalTab {...props} />, {
             store: getStoreWithAuth(),
           })
 
@@ -277,28 +280,30 @@ describe('Вкладка журнала задачи', () => {
       describe('Не отображает', () => {
         test('Записи', async () => {
           const taskJournal = taskFixtures.getJournal(0)
-          mockGetJournalSuccess(requiredProps.taskId, {
+          mockGetJournalSuccess(props.taskId, {
             body: taskJournal,
           })
 
-          render(<JournalTab {...requiredProps} />, {
+          render(<JournalTab {...props} />, {
             store: getStoreWithAuth(),
           })
 
           await testUtils.expectJournalLoadingStarted()
           await testUtils.expectJournalLoadingFinished()
 
-          expect(screen.queryAllByTestId('journalEntry')).toHaveLength(
-            taskJournal.length,
-          )
+          const journalEntries = taskJournal
+            .map((entry) => journalEntryTestUtils.queryContainer(entry.id))
+            .filter(Boolean)
+
+          expect(journalEntries).toHaveLength(taskJournal.length)
         })
 
         test('Кнопку экспорта в csv', async () => {
-          mockGetJournalSuccess(requiredProps.taskId, {
+          mockGetJournalSuccess(props.taskId, {
             body: taskFixtures.getJournal(0),
           })
 
-          render(<JournalTab {...requiredProps} />, {
+          render(<JournalTab {...props} />, {
             store: getStoreWithAuth(),
           })
 
@@ -320,9 +325,9 @@ describe('Вкладка журнала задачи', () => {
   describe('При не успешном запросе журнала', () => {
     describe('Отображает', () => {
       test('Соответствующую ошибку', async () => {
-        mockGetJournalServerError(requiredProps.taskId)
+        mockGetJournalServerError(props.taskId)
 
-        render(<JournalTab {...requiredProps} />, {
+        render(<JournalTab {...props} />, {
           store: getStoreWithAuth(),
         })
 
@@ -336,9 +341,9 @@ describe('Вкладка журнала задачи', () => {
       })
 
       test('Соответствующий текст', async () => {
-        mockGetJournalServerError(requiredProps.taskId)
+        mockGetJournalServerError(props.taskId)
 
-        render(<JournalTab {...requiredProps} />, {
+        render(<JournalTab {...props} />, {
           store: getStoreWithAuth(),
         })
 

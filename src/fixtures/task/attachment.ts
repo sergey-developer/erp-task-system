@@ -9,6 +9,5 @@ export const fakeAttachment = (
 
   url: fakeUrl(),
   name: fakeWord(),
-  filename: fakeWord(),
   size: fakeInteger(),
 })
