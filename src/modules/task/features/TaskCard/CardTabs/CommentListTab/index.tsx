@@ -96,7 +96,7 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
       >
         <CommentList
           isLoading={commentListIsFetching}
-          data={displayableComments}
+          comments={displayableComments}
         />
       </LoadingArea>
     </Space>

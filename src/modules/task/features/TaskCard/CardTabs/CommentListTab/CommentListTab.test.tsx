@@ -96,7 +96,6 @@ setupNotifications()
 describe('Вкладка списка комментариев заявки', () => {
   test('Заголовок отображается корректно', () => {
     render(<CommentListTab {...props} />)
-
     expect(testUtils.getChildByText(props.title)).toBeInTheDocument()
   })
 
@@ -238,7 +237,6 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       describe('При успешном запросе', () => {
-        // todo: добавить тесты на вложение после задачи отображения вложений в списке
         test('Корректно добавляет комментарий в список', async () => {
           const newComment = taskFixtures.getComment()
           mockCreateTaskCommentSuccess(props.taskId, {
