@@ -20,7 +20,7 @@ export type DescriptionTabProps = Pick<
 const DescriptionTab: FC<DescriptionTabProps> = ({
   title,
   description,
-  attachments,
+  attachments = [],
 }) => {
   return (
     <Space data-testid='task-description-tab' $block direction='vertical'>
@@ -30,7 +30,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
         <Paragraph>{renderStringWithLineBreak(description)}</Paragraph>
       )}
 
-      {!!attachments.length && <AttachmentList attachments={attachments} />}
+      {!!attachments?.length && <AttachmentList attachments={attachments} />}
     </Space>
   )
 }
