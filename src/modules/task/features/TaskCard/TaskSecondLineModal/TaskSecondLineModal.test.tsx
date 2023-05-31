@@ -33,7 +33,7 @@ import {
 import TaskSecondLineModal from './index'
 import { TaskSecondLineModalProps } from './interfaces'
 
-const requiredProps: TaskSecondLineModalProps = {
+const requiredProps: Readonly<TaskSecondLineModalProps> = {
   id: fakeId(),
   recordId: fakeIdStr(),
   isLoading: false,

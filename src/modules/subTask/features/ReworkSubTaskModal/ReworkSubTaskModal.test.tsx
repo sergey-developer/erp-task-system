@@ -18,7 +18,7 @@ import {
 import ReworkSubTaskModal from './index'
 import { ReworkSubTaskModalProps } from './interfaces'
 
-const requiredProps: ReworkSubTaskModalProps = {
+const requiredProps: Readonly<ReworkSubTaskModalProps> = {
   isLoading: false,
   recordId: null,
   onSubmit: jest.fn(),

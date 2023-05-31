@@ -24,7 +24,7 @@ import {
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import RequestTaskSuspendModal, { RequestTaskSuspendModalProps } from './index'
 
-const requiredProps: RequestTaskSuspendModalProps = {
+const requiredProps: Readonly<RequestTaskSuspendModalProps> = {
   recordId: fakeIdStr(),
   isLoading: false,
   onCancel: jest.fn(),

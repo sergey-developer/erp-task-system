@@ -19,7 +19,7 @@ import {
 
 import CardTitle, { CardTitleProps } from './index'
 
-const requiredProps: CardTitleProps = {
+const requiredProps: Readonly<CardTitleProps> = {
   id: fakeId(),
   type: TaskTypeEnum.Request,
   status: TaskStatusEnum.New,

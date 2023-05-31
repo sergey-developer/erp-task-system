@@ -22,7 +22,7 @@ import {
 import MainDetails, { MainDetailsProps } from './index'
 import { parseResponseTime } from './utils'
 
-const requiredProps: MainDetailsProps = {
+const requiredProps: Readonly<MainDetailsProps> = {
   name: fakeWord(),
   title: fakeWord(),
   recordId: fakeIdStr(),

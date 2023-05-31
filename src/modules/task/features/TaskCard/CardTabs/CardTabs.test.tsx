@@ -14,7 +14,7 @@ import { fakeId, fakeIdStr, fakeWord, render } from '_tests_/utils'
 import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
 import CardTabs, { CardTabsProps } from './index'
 
-const requiredProps: CardTabsProps = {
+const props: Readonly<CardTabsProps> = {
   task: {
     id: fakeId(),
     type: TaskTypeEnum.Request,
@@ -22,6 +22,7 @@ const requiredProps: CardTabsProps = {
     description: fakeWord(),
     userResolution: fakeWord(),
     techResolution: fakeWord(),
+    attachments: [taskFixtures.fakeAttachment()],
     resolution: {
       attachments: [],
     },
@@ -64,7 +65,7 @@ export const testUtils = {
 
 describe('Вкладки карточки заявки', () => {
   test('Все вкладки навигации отображаются', () => {
-    render(<CardTabs {...requiredProps} />)
+    render(<CardTabs {...props} />)
 
     Object.values(TaskCardTabsEnum).forEach((tab) => {
       expect(testUtils.getNavItem(tab)).toBeInTheDocument()
@@ -72,7 +73,7 @@ describe('Вкладки карточки заявки', () => {
   })
 
   test('Установлена корректная вкладка по умолчанию', () => {
-    render(<CardTabs {...requiredProps} />)
+    render(<CardTabs {...props} />)
 
     expect(
       testUtils.getOpenedTab(TaskCardTabsEnum.Description),
@@ -80,7 +81,7 @@ describe('Вкладки карточки заявки', () => {
   })
 
   test('Можно открыть любую вкладку', async () => {
-    const { user } = render(<CardTabs {...requiredProps} />)
+    const { user } = render(<CardTabs {...props} />)
 
     for await (const tab of Object.values(TaskCardTabsEnum)) {
       await testUtils.clickTab(user, tab)

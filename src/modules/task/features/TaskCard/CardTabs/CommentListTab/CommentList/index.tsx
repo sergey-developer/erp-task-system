@@ -1,7 +1,7 @@
 import { Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { GetTaskCommentListSuccessResponse } from 'modules/task/models'
+import { TaskCommentModel } from 'modules/task/models'
 import { getShortUserName } from 'modules/user/utils'
 
 import Space from 'components/Space'
@@ -14,11 +14,11 @@ import Comment from './Comment'
 const { Text } = Typography
 
 export type CommentListProps = {
-  data: GetTaskCommentListSuccessResponse
+  comments: Array<TaskCommentModel>
   isLoading: boolean
 }
 
-const CommentList: FC<CommentListProps> = ({ isLoading, data }) => {
+const CommentList: FC<CommentListProps> = ({ isLoading, comments }) => {
   return (
     <Space
       data-testid='task-comment-list'
@@ -26,15 +26,16 @@ const CommentList: FC<CommentListProps> = ({ isLoading, data }) => {
       direction='vertical'
       $block
     >
-      {!isLoading && !data.length ? (
+      {!isLoading && !comments.length ? (
         <Text>Комментариев пока нет</Text>
       ) : (
-        data.map((comment) => (
+        comments.map((comment) => (
           <Comment
             key={comment.id}
             text={comment.text}
             author={getShortUserName(comment.author)}
             createdAt={formatDate(comment.createdAt, DATE_TIME_FORMAT)}
+            attachments={comment.attachments}
           />
         ))
       )}

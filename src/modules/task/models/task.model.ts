@@ -1,12 +1,13 @@
 import {
   BaseTaskModel,
-  TaskAttachmentModel,
   SuspendRequestModel,
+  TaskAttachmentListModel,
 } from 'modules/task/models'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskModel = BaseTaskModel & {
+  attachments: MaybeNull<Array<TaskAttachmentModel>>
   olaEstimatedTime: number
   suspendRequest: MaybeNull<SuspendRequestModel>
   weight: MaybeNull<number>
@@ -15,6 +16,6 @@ export type TaskModel = BaseTaskModel & {
   sapId: MaybeNull<string>
   contactType: MaybeNull<string>
   resolution: {
-    attachments: Array<TaskAttachmentModel>
+    attachments: TaskAttachmentListModel
   }
 }

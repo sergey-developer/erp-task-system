@@ -18,7 +18,7 @@ import {
 import CancelSubTaskModal from './index'
 import { CancelSubTaskModalProps } from './interfaces'
 
-const requiredProps: CancelSubTaskModalProps = {
+const requiredProps: Readonly<CancelSubTaskModalProps> = {
   isLoading: false,
   recordId: null,
   onSubmit: jest.fn(),
