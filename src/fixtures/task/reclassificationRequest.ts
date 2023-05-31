@@ -4,15 +4,15 @@ import commonFixtures from 'fixtures/common'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const getReclassificationRequest =
+export const fakeReclassificationRequest =
   (): TaskReclassificationRequestModel => ({
     id: fakeId(),
     createdAt: fakeDateString(),
     comment: {
       id: fakeId(),
       text: fakeWord(),
-      author: commonFixtures.getCommentAuthor(),
+      author: commonFixtures.fakeCommentAuthor(),
       createdAt: fakeDateString(),
     },
-    user: commonFixtures.getUser(),
+    user: commonFixtures.fakeUser(),
   })

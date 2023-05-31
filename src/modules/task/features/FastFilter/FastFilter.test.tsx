@@ -15,7 +15,7 @@ const filterCheckedClass = 'ant-tag-checkable-checked'
 const filterDisabledClass = 'ant-tag-checkable--disabled'
 
 const requiredProps: Readonly<FastFilterProps> = {
-  data: taskFixtures.getTaskCountersResponse(),
+  data: taskFixtures.fakeTaskCountersResponse(),
   isError: false,
   disabled: false,
   isLoading: false,

@@ -89,7 +89,7 @@ describe('Блок детальной информации заявки', () => 
 
   describe('Срок реакции', () => {
     test('Отображается если условия соблюдены', () => {
-      const fakeResponseTime = taskFixtures.getTaskResponseTime()
+      const fakeResponseTime = taskFixtures.fakeTaskResponseTime()
 
       render(
         <MainDetails
@@ -128,8 +128,8 @@ describe('Блок детальной информации заявки', () => 
         render(
           <MainDetails
             {...requiredProps}
-            responseTime={taskFixtures.getTaskResponseTime()}
-            workGroup={taskFixtures.getWorkGroup()}
+            responseTime={taskFixtures.fakeTaskResponseTime()}
+            workGroup={taskFixtures.fakeWorkGroup()}
           />,
         )
 
@@ -142,9 +142,9 @@ describe('Блок детальной информации заявки', () => 
         render(
           <MainDetails
             {...requiredProps}
-            responseTime={taskFixtures.getTaskResponseTime()}
-            workGroup={taskFixtures.getWorkGroup()}
-            assignee={taskFixtures.getAssignee()}
+            responseTime={taskFixtures.fakeTaskResponseTime()}
+            workGroup={taskFixtures.fakeWorkGroup()}
+            assignee={taskFixtures.fakeAssignee()}
           />,
           {
             store: getStoreWithAuth({
