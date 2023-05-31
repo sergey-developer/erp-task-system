@@ -931,7 +931,7 @@ describe('Расширенный фильтр', () => {
     describe('Для роли с которой отображается', () => {
       test('Имеет корректные значения по умолчанию', async () => {
         mockGetWorkGroupListSuccess({
-          body: workGroupFixtures.getWorkGroupList(),
+          body: workGroupFixtures.fakeWorkGroupList(),
         })
 
         render(<ExtendedFilter {...requiredProps} />, {
@@ -947,7 +947,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Переданное значение перезаписывает значение по умолчанию', async () => {
-        const workGroupList = workGroupFixtures.getWorkGroupList()
+        const workGroupList = workGroupFixtures.fakeWorkGroupList()
         const workGroupId = String(workGroupList[0].id)
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
@@ -989,7 +989,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Можно выбрать рабочую группу из списка', async () => {
-        const workGroupListItem = workGroupFixtures.getWorkGroup()
+        const workGroupListItem = workGroupFixtures.fakeWorkGroup()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
         const { user } = render(<ExtendedFilter {...requiredProps} />, {
@@ -1008,7 +1008,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Поиск по списку работает', async () => {
-        const mockedWorkGroupList = workGroupFixtures.getWorkGroupList(2)
+        const mockedWorkGroupList = workGroupFixtures.fakeWorkGroupList(2)
         const mockedWorkGroupListItem1 = mockedWorkGroupList[0]
         const mockedWorkGroupListItem2 = mockedWorkGroupList[1]
         mockGetWorkGroupListSuccess({ body: mockedWorkGroupList })
@@ -1036,7 +1036,7 @@ describe('Расширенный фильтр', () => {
 
       describe('Сбрасывает значения', () => {
         test('Кнопка "Сбросить"', async () => {
-          const workGroupListItem = workGroupFixtures.getWorkGroup()
+          const workGroupListItem = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
           const { user } = render(<ExtendedFilter {...requiredProps} />, {
@@ -1059,7 +1059,7 @@ describe('Расширенный фильтр', () => {
         })
 
         test('Кнопка "Сбросить всё"', async () => {
-          const workGroupListItem = workGroupFixtures.getWorkGroup()
+          const workGroupListItem = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
           const { user } = render(<ExtendedFilter {...requiredProps} />, {

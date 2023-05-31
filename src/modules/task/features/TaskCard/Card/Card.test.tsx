@@ -43,7 +43,7 @@ import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.te
 import {
   availableReasons,
   testUtils as taskReclassificationModalTestUtils,
-} from '../RequestTaskReclassificationModal/TaskReclassificationModal.test'
+} from '../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
 import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
 import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
@@ -61,7 +61,7 @@ import {
 import TaskCard, { TaskCardProps } from './index'
 
 const requiredProps: Readonly<TaskCardProps> = {
-  task: taskFixtures.getTask(),
+  task: taskFixtures.fakeTask(),
   refetchTask: jest.fn(),
   closeTaskCard: jest.fn(),
 
@@ -262,7 +262,7 @@ describe('Карточка заявки', () => {
         render(
           <TaskCard
             {...requiredProps}
-            reclassificationRequest={taskFixtures.getReclassificationRequest()}
+            reclassificationRequest={taskFixtures.fakeReclassificationRequest()}
           />,
         )
 
@@ -665,7 +665,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...requiredProps}
             workGroupList={[
-              workGroupFixtures.getWorkGroup({
+              workGroupFixtures.fakeWorkGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -703,7 +703,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...requiredProps}
             workGroupList={[
-              workGroupFixtures.getWorkGroup({
+              workGroupFixtures.fakeWorkGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -741,7 +741,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...requiredProps}
             workGroupList={[
-              workGroupFixtures.getWorkGroup({
+              workGroupFixtures.fakeWorkGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -777,7 +777,7 @@ describe('Карточка заявки', () => {
   describe('Перевод заявки на 2-ю линию', () => {
     describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
-        const workGroupList = workGroupFixtures.getWorkGroupList()
+        const workGroupList = workGroupFixtures.fakeWorkGroupList()
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
         const { user } = render(
@@ -825,7 +825,7 @@ describe('Карточка заявки', () => {
             {...requiredProps}
             task={{
               ...requiredProps.task!,
-              suspendRequest: taskFixtures.getSuspendRequest(),
+              suspendRequest: taskFixtures.fakeSuspendRequest(),
             }}
           />,
         )
@@ -858,7 +858,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                suspendRequest: taskFixtures.getSuspendRequest({
+                suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -876,7 +876,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                suspendRequest: taskFixtures.getSuspendRequest({
+                suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.Approved,
                 }),
               }}
@@ -898,7 +898,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                suspendRequest: taskFixtures.getSuspendRequest({
+                suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -918,7 +918,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                suspendRequest: taskFixtures.getSuspendRequest({
+                suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.InProgress,
                 }),
               }}
@@ -939,7 +939,7 @@ describe('Карточка заявки', () => {
                 {...requiredProps}
                 task={{
                   ...requiredProps.task!,
-                  suspendRequest: taskFixtures.getSuspendRequest({
+                  suspendRequest: taskFixtures.fakeSuspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -962,7 +962,7 @@ describe('Карточка заявки', () => {
                 {...requiredProps}
                 task={{
                   ...requiredProps.task!,
-                  suspendRequest: taskFixtures.getSuspendRequest({
+                  suspendRequest: taskFixtures.fakeSuspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -985,7 +985,7 @@ describe('Карточка заявки', () => {
                 {...requiredProps}
                 task={{
                   ...requiredProps.task!,
-                  suspendRequest: taskFixtures.getSuspendRequest({
+                  suspendRequest: taskFixtures.fakeSuspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1010,7 +1010,7 @@ describe('Карточка заявки', () => {
                 {...requiredProps}
                 task={{
                   ...requiredProps.task!,
-                  suspendRequest: taskFixtures.getSuspendRequest({
+                  suspendRequest: taskFixtures.fakeSuspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1030,7 +1030,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                suspendRequest: taskFixtures.getSuspendRequest({
+                suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -1048,7 +1048,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                suspendRequest: taskFixtures.getSuspendRequest({
+                suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -1075,7 +1075,7 @@ describe('Карточка заявки', () => {
               {...requiredProps}
               task={{
                 ...requiredProps.task!,
-                suspendRequest: taskFixtures.getSuspendRequest({
+                suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.Approved,
                 }),
               }}

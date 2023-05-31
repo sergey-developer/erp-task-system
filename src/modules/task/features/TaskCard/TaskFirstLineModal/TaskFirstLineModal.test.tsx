@@ -193,6 +193,10 @@ describe('Модальное окно перевода запроса на пе�
         await user.click(submitButton)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
+        expect(requiredProps.onSubmit).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+        )
       })
     })
 

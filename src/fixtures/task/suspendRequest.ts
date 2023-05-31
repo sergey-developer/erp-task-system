@@ -5,12 +5,12 @@ import commonFixtures from 'fixtures/common'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const getSuspendRequest = (
+export const fakeSuspendRequest = (
   props?: Pick<SuspendRequestModel, 'status'>,
 ): SuspendRequestModel => ({
   id: fakeId(),
   status: props?.status || SuspendRequestStatusEnum.New,
   comment: fakeWord(),
   suspendEndAt: fakeDateString(),
-  author: commonFixtures.getUser(),
+  author: commonFixtures.fakeUser(),
 })

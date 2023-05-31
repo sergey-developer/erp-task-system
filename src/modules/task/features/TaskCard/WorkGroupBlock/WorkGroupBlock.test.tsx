@@ -46,7 +46,7 @@ const requiredProps: Readonly<
 
 const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof requiredProps> =
   {
-    workGroup: workGroupFixtures.getWorkGroup(),
+    workGroup: workGroupFixtures.fakeWorkGroup(),
   }
 
 // first line button
@@ -54,7 +54,7 @@ export const showFirstLineButtonProps: Pick<
   WorkGroupBlockProps,
   'workGroup' | 'status'
 > = {
-  workGroup: workGroupFixtures.getWorkGroup(),
+  workGroup: workGroupFixtures.fakeWorkGroup(),
   status: TaskStatusEnum.New,
 }
 
@@ -184,7 +184,7 @@ describe('Блок рабочей группы', () => {
             <WorkGroupBlock
               {...requiredProps}
               {...showSecondLineButtonProps}
-              workGroup={workGroupFixtures.getWorkGroup()}
+              workGroup={workGroupFixtures.fakeWorkGroup()}
             />,
             {
               store: getStoreWithAuth({
@@ -335,7 +335,7 @@ describe('Блок рабочей группы', () => {
   describe('Модалка перевода на 2-ю линию', () => {
     describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       test('При отправке обработчик вызывается корректно', async () => {
-        const workGroupList = workGroupFixtures.getWorkGroupList()
+        const workGroupList = workGroupFixtures.fakeWorkGroupList()
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
         const { user } = render(

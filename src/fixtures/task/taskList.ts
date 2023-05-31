@@ -27,7 +27,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const getTaskListItem = (
+export const fakeTaskListItem = (
   props?: Partial<TaskListItemModel>,
 ): TaskListItemModel => ({
   status: props?.status || TaskStatusEnum.New,
@@ -37,7 +37,7 @@ export const getTaskListItem = (
 
   responseTime: null,
   id: fakeId(),
-  assignee: taskFixtures.getAssignee(),
+  assignee: taskFixtures.fakeAssignee(),
   lastComment: fakeWord(),
   priorityCode: fakeInteger({
     min: 1,
@@ -53,8 +53,8 @@ export const getTaskListItem = (
   }) as TaskListItemModel['initialImpact'],
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),
-  workGroup: workGroupFixtures.getWorkGroup(),
-  supportGroup: commonFixtures.getSupportGroup(),
+  workGroup: workGroupFixtures.fakeWorkGroup(),
+  supportGroup: commonFixtures.fakeSupportGroup(),
   title: fakeWord(),
   name: fakeWord(),
   productClassifier1: fakeWord(),
@@ -73,9 +73,9 @@ export const getTaskListItem = (
   contactPhone: fakePhone(),
 })
 
-export const getTaskList = (length: number = 1): Array<TaskListItemModel> =>
-  times(length, () => getTaskListItem())
+export const fakeTaskList = (length: number = 1): Array<TaskListItemModel> =>
+  times(length, () => fakeTaskListItem())
 
-export const getTaskListResponse = (
+export const fakeTaskListResponse = (
   list: GetTaskListSuccessResponse['results'],
-): GetTaskListSuccessResponse => commonFixtures.getPaginatedListResponse(list)
+): GetTaskListSuccessResponse => commonFixtures.fakePaginatedListResponse(list)

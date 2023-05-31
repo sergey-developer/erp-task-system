@@ -45,8 +45,8 @@ Tests:
         - node_modules/
       policy: pull
   only:
-    - rc
-    - master
+    # - rc
+    # - master
     - develop
   tags:
     - docker

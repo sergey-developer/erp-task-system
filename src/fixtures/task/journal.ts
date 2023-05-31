@@ -11,7 +11,7 @@ import taskFixtures from 'fixtures/task'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const getJournalEntry = (
+export const fakeJournalEntry = (
   props?: Partial<
     Pick<TaskJournalEntryModel, 'type' | 'sourceSystem' | 'attachments'>
   >,
@@ -23,8 +23,8 @@ export const getJournalEntry = (
   id: fakeId(),
   description: fakeWord(),
   createdAt: fakeDateString(),
-  author: commonFixtures.getUser(),
+  author: commonFixtures.fakeUser(),
 })
 
-export const getJournal = (length: number = 1): TaskJournalModel =>
-  times(length, () => getJournalEntry())
+export const fakeJournal = (length: number = 1): TaskJournalModel =>
+  times(length, () => fakeJournalEntry())

@@ -104,7 +104,7 @@ import {
 import {
   availableReasons,
   testUtils as taskReclassificationModalTestUtils,
-} from '../RequestTaskReclassificationModal/TaskReclassificationModal.test'
+} from '../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
 import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
 import { TaskFirstLineFormErrors } from '../TaskFirstLineModal/interfaces'
@@ -132,7 +132,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetWorkGroupListSuccess({ body: [] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+            body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           })
 
           mockGetWorkGroupListServerError()
@@ -161,7 +161,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetWorkGroupListSuccess({ body: [] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+            body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           })
 
           mockGetWorkGroupListServerError()
@@ -190,7 +190,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetWorkGroupListSuccess({ body: [] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+            body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           })
 
           mockGetWorkGroupListServerError()
@@ -223,14 +223,14 @@ describe('Контейнер детальной карточки заявки', 
               mockGetWorkGroupListSuccess({ body: [] })
 
               mockGetTaskSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTask({
+                body: taskFixtures.fakeTask({
                   id: requiredProps.taskId,
                   extendedStatus: TaskExtendedStatusEnum.InReclassification,
                 }),
               })
 
               mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-                body: taskFixtures.getReclassificationRequest(),
+                body: taskFixtures.fakeReclassificationRequest(),
               })
 
               render(<TaskCardContainer {...requiredProps} />, {
@@ -254,7 +254,7 @@ describe('Контейнер детальной карточки заявки', 
               mockGetWorkGroupListSuccess({ body: [] })
 
               mockGetTaskSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTask({
+                body: taskFixtures.fakeTask({
                   id: requiredProps.taskId,
                   extendedStatus: TaskExtendedStatusEnum.InReclassification,
                 }),
@@ -286,7 +286,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 extendedStatus: TaskExtendedStatusEnum.New,
               }),
@@ -319,7 +319,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 status: activeRequestReclassificationItemProps.status,
                 olaStatus: activeRequestReclassificationItemProps.olaStatus,
@@ -328,7 +328,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-              body: taskFixtures.getReclassificationRequest(),
+              body: taskFixtures.fakeReclassificationRequest(),
             })
             mockCreateTaskReclassificationRequestSuccess(requiredProps.taskId)
 
@@ -369,7 +369,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 status: activeRequestReclassificationItemProps.status,
                 olaStatus: activeRequestReclassificationItemProps.olaStatus,
@@ -422,14 +422,14 @@ describe('Контейнер детальной карточки заявки', 
               mockGetWorkGroupListSuccess({ body: [] })
 
               mockGetTaskSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTask({
+                body: taskFixtures.fakeTask({
                   id: requiredProps.taskId,
                   extendedStatus: TaskExtendedStatusEnum.InReclassification,
                 }),
               })
 
               mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-                body: taskFixtures.getReclassificationRequest(),
+                body: taskFixtures.fakeReclassificationRequest(),
               })
 
               render(<TaskCardContainer {...requiredProps} />, {
@@ -453,7 +453,7 @@ describe('Контейнер детальной карточки заявки', 
               mockGetWorkGroupListSuccess({ body: [] })
 
               mockGetTaskSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTask({
+                body: taskFixtures.fakeTask({
                   id: requiredProps.taskId,
                   extendedStatus: TaskExtendedStatusEnum.InReclassification,
                 }),
@@ -485,7 +485,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 extendedStatus: TaskExtendedStatusEnum.New,
               }),
@@ -521,14 +521,14 @@ describe('Контейнер детальной карточки заявки', 
               mockGetWorkGroupListSuccess({ body: [] })
 
               mockGetTaskSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTask({
+                body: taskFixtures.fakeTask({
                   id: requiredProps.taskId,
                   extendedStatus: TaskExtendedStatusEnum.InReclassification,
                 }),
               })
 
               mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-                body: taskFixtures.getReclassificationRequest(),
+                body: taskFixtures.fakeReclassificationRequest(),
               })
 
               render(<TaskCardContainer {...requiredProps} />, {
@@ -552,7 +552,7 @@ describe('Контейнер детальной карточки заявки', 
               mockGetWorkGroupListSuccess({ body: [] })
 
               mockGetTaskSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTask({
+                body: taskFixtures.fakeTask({
                   id: requiredProps.taskId,
                   extendedStatus: TaskExtendedStatusEnum.InReclassification,
                 }),
@@ -584,7 +584,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 extendedStatus: TaskExtendedStatusEnum.New,
               }),
@@ -617,7 +617,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 status: activeRequestReclassificationItemProps.status,
                 olaStatus: activeRequestReclassificationItemProps.olaStatus,
@@ -626,7 +626,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-              body: taskFixtures.getReclassificationRequest(),
+              body: taskFixtures.fakeReclassificationRequest(),
             })
             mockCreateTaskReclassificationRequestSuccess(requiredProps.taskId)
 
@@ -667,7 +667,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 status: activeRequestReclassificationItemProps.status,
                 olaStatus: activeRequestReclassificationItemProps.olaStatus,
@@ -720,14 +720,14 @@ describe('Контейнер детальной карточки заявки', 
               mockGetWorkGroupListSuccess({ body: [] })
 
               mockGetTaskSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTask({
+                body: taskFixtures.fakeTask({
                   id: requiredProps.taskId,
                   extendedStatus: TaskExtendedStatusEnum.InReclassification,
                 }),
               })
 
               mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-                body: taskFixtures.getReclassificationRequest(),
+                body: taskFixtures.fakeReclassificationRequest(),
               })
 
               render(<TaskCardContainer {...requiredProps} />, {
@@ -751,7 +751,7 @@ describe('Контейнер детальной карточки заявки', 
               mockGetWorkGroupListSuccess({ body: [] })
 
               mockGetTaskSuccess(requiredProps.taskId, {
-                body: taskFixtures.getTask({
+                body: taskFixtures.fakeTask({
                   id: requiredProps.taskId,
                   extendedStatus: TaskExtendedStatusEnum.InReclassification,
                 }),
@@ -783,7 +783,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 extendedStatus: TaskExtendedStatusEnum.New,
               }),
@@ -816,7 +816,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 status: activeRequestReclassificationItemProps.status,
                 olaStatus: activeRequestReclassificationItemProps.olaStatus,
@@ -825,7 +825,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             mockGetTaskReclassificationRequestSuccess(requiredProps.taskId, {
-              body: taskFixtures.getReclassificationRequest(),
+              body: taskFixtures.fakeReclassificationRequest(),
             })
             mockCreateTaskReclassificationRequestSuccess(requiredProps.taskId)
 
@@ -866,7 +866,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 status: activeRequestReclassificationItemProps.status,
                 olaStatus: activeRequestReclassificationItemProps.olaStatus,
@@ -918,7 +918,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обработчик вызывается корректно', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -956,7 +956,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1021,7 +1021,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обрабатывается неизвестная ошибка', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1061,7 +1061,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обработчик вызывается корректно', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1099,7 +1099,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1164,7 +1164,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обрабатывается неизвестная ошибка', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1204,7 +1204,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обработчик вызывается корректно', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1242,7 +1242,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1307,7 +1307,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обрабатывается неизвестная ошибка', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1347,7 +1347,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обработчик вызывается корректно', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1385,7 +1385,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1450,7 +1450,7 @@ describe('Контейнер детальной карточки заявки', 
         test('Обрабатывается неизвестная ошибка', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
 
-          const task = taskFixtures.getTask({
+          const task = taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeExecuteTaskItemProps.status,
             extendedStatus: activeExecuteTaskItemProps.extendedStatus,
@@ -1493,7 +1493,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetWorkGroupListSuccess({ body: [] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+            body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           })
 
           render(<TaskCardContainer {...requiredProps} />, {
@@ -1605,7 +1605,7 @@ describe('Контейнер детальной карточки заявки', 
         mockGetWorkGroupListSuccess({ body: [] })
 
         mockGetTaskSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           once: false,
         })
 
@@ -1633,7 +1633,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetWorkGroupListSuccess({ body: [] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+            body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           })
 
           render(<TaskCardContainer {...requiredProps} />, {
@@ -1745,7 +1745,7 @@ describe('Контейнер детальной карточки заявки', 
         mockGetWorkGroupListSuccess({ body: [] })
 
         mockGetTaskSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           once: false,
         })
 
@@ -1773,7 +1773,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetWorkGroupListSuccess({ body: [] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+            body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           })
 
           render(<TaskCardContainer {...requiredProps} />, {
@@ -1885,7 +1885,7 @@ describe('Контейнер детальной карточки заявки', 
         mockGetWorkGroupListSuccess({ body: [] })
 
         mockGetTaskSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           once: false,
         })
 
@@ -1913,7 +1913,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetWorkGroupListSuccess({ body: [] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId }),
+            body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           })
 
           render(<TaskCardContainer {...requiredProps} />, {
@@ -2025,7 +2025,7 @@ describe('Контейнер детальной карточки заявки', 
         mockGetWorkGroupListSuccess({ body: [] })
 
         mockGetTaskSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTask({ id: requiredProps.taskId }),
+          body: taskFixtures.fakeTask({ id: requiredProps.taskId }),
           once: false,
         })
 
@@ -2051,7 +2051,7 @@ describe('Контейнер детальной карточки заявки', 
   describe('Взятие заявки в работу', () => {
     describe('При успешном запросе', () => {
       test('Уведомление об ошибке не отображается и заявка запрашивается заново', async () => {
-        const task = taskFixtures.getTask({
+        const task = taskFixtures.fakeTask({
           id: requiredProps.taskId,
           status: activeTakeTaskButtonProps.status,
           extendedStatus: activeTakeTaskButtonProps.extendedStatus,
@@ -2083,7 +2083,7 @@ describe('Контейнер детальной карточки заявки', 
 
     describe('При не успешном запросе', () => {
       test('Уведомление об ошибке отображается и заявка не запрашивается заново', async () => {
-        const task = taskFixtures.getTask({
+        const task = taskFixtures.fakeTask({
           id: requiredProps.taskId,
           status: activeTakeTaskButtonProps.status,
           extendedStatus: activeTakeTaskButtonProps.extendedStatus,
@@ -2116,12 +2116,12 @@ describe('Контейнер детальной карточки заявки', 
     describe('При успешном запросе', () => {
       test('Уведомление об ошибке не отображается и заявка запрашивается заново', async () => {
         mockGetTaskSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTask({
+          body: taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: canSelectAssigneeProps.status,
             extendedStatus: activeAssignButtonProps.extendedStatus,
             assignee: activeAssignButtonProps.assignee,
-            workGroup: taskFixtures.getWorkGroup({
+            workGroup: taskFixtures.fakeWorkGroup({
               id: canSelectAssigneeProps.workGroup.id,
             }),
           }),
@@ -2162,12 +2162,12 @@ describe('Контейнер детальной карточки заявки', 
     describe('При не успешном запросе', () => {
       test('Уведомление об ошибке отображается и заявка не запрашивается заново', async () => {
         mockGetTaskSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTask({
+          body: taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: canSelectAssigneeProps.status,
             extendedStatus: activeAssignButtonProps.extendedStatus,
             assignee: activeAssignButtonProps.assignee,
-            workGroup: taskFixtures.getWorkGroup({
+            workGroup: taskFixtures.fakeWorkGroup({
               id: canSelectAssigneeProps.workGroup.id,
             }),
           }),
@@ -2211,7 +2211,7 @@ describe('Контейнер детальной карточки заявки', 
     describe('При успешном запросе', () => {
       test('Уведомление об ошибке не отображается и заявка запрашивается заново', async () => {
         mockGetTaskSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTask({
+          body: taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeAssignOnMeButtonProps.status,
             extendedStatus: activeAssignOnMeButtonProps.extendedStatus,
@@ -2243,7 +2243,7 @@ describe('Контейнер детальной карточки заявки', 
     describe('При не успешном запросе', () => {
       test('Уведомление об ошибке отображается и заявка не запрашивается заново', async () => {
         mockGetTaskSuccess(requiredProps.taskId, {
-          body: taskFixtures.getTask({
+          body: taskFixtures.fakeTask({
             id: requiredProps.taskId,
             status: activeAssignOnMeButtonProps.status,
             extendedStatus: activeAssignOnMeButtonProps.extendedStatus,
@@ -2277,11 +2277,14 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
       describe('При успешном запросе', () => {
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
@@ -2318,11 +2321,14 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           const badRequestErrorResponse = { description: [fakeWord()] }
@@ -2363,11 +2369,14 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 404', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           const notFoundErrorResponse = { detail: [fakeWord()] }
@@ -2404,11 +2413,14 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 500', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           const serverErrorResponse = { detail: [fakeWord()] }
@@ -2446,11 +2458,14 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
@@ -2489,11 +2504,14 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       describe('При успешном запросе', () => {
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
@@ -2530,11 +2548,14 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           const badRequestErrorResponse = { description: [fakeWord()] }
@@ -2575,11 +2596,14 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 404', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           const notFoundErrorResponse = { detail: [fakeWord()] }
@@ -2616,11 +2640,14 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 500', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           const serverErrorResponse = { detail: [fakeWord()] }
@@ -2658,11 +2685,14 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
@@ -2701,10 +2731,13 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       describe('При успешном запросе', () => {
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
           mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
 
@@ -2740,11 +2773,14 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           const badRequestErrorResponse = { description: [fakeWord()] }
@@ -2786,11 +2822,14 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 404', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           const notFoundErrorResponse = { detail: [fakeWord()] }
@@ -2828,11 +2867,14 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 500', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           const serverErrorResponse = { detail: [fakeWord()] }
@@ -2870,11 +2912,14 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({ id: requiredProps.taskId, workGroup }),
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
           })
 
           mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
@@ -2916,7 +2961,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При успешном запросе', () => {
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
+            body: taskFixtures.fakeTask({
               id: requiredProps.taskId,
               workGroup: showSecondLineButtonProps.workGroup,
               status: activeSecondLineButtonProps.status,
@@ -2924,7 +2969,7 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
           mockUpdateTaskWorkGroupSuccess(requiredProps.taskId)
@@ -2957,7 +3002,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При не успешный запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
+            body: taskFixtures.fakeTask({
               id: requiredProps.taskId,
               workGroup: showSecondLineButtonProps.workGroup,
               status: activeSecondLineButtonProps.status,
@@ -2965,7 +3010,7 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
           const badRequestResponse: UpdateTaskWorkGroupBadRequestErrorResponse['data'] =
@@ -3009,7 +3054,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается ошибка 500', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
+            body: taskFixtures.fakeTask({
               id: requiredProps.taskId,
               workGroup: showSecondLineButtonProps.workGroup,
               status: activeSecondLineButtonProps.status,
@@ -3017,7 +3062,7 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
           mockUpdateTaskWorkGroupServerError(requiredProps.taskId)
@@ -3048,7 +3093,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается неизвестная ошибка', async () => {
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
+            body: taskFixtures.fakeTask({
               id: requiredProps.taskId,
               workGroup: showSecondLineButtonProps.workGroup,
               status: activeSecondLineButtonProps.status,
@@ -3056,7 +3101,7 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const workGroup = workGroupFixtures.getWorkGroup()
+          const workGroup = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
           mockUpdateTaskWorkGroupForbiddenError(requiredProps.taskId)
@@ -3094,7 +3139,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3103,7 +3148,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             mockCreateTaskSuspendRequestSuccess(requiredProps.taskId, {
-              body: taskFixtures.getSuspendRequest(),
+              body: taskFixtures.fakeSuspendRequest(),
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -3136,7 +3181,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3176,7 +3221,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3253,7 +3298,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3295,7 +3340,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3304,7 +3349,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             mockCreateTaskSuspendRequestSuccess(requiredProps.taskId, {
-              body: taskFixtures.getSuspendRequest(),
+              body: taskFixtures.fakeSuspendRequest(),
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -3337,7 +3382,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3377,7 +3422,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3454,7 +3499,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3496,7 +3541,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3505,7 +3550,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             mockCreateTaskSuspendRequestSuccess(requiredProps.taskId, {
-              body: taskFixtures.getSuspendRequest(),
+              body: taskFixtures.fakeSuspendRequest(),
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -3538,7 +3583,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3578,7 +3623,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3655,7 +3700,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3697,7 +3742,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3706,7 +3751,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             mockCreateTaskSuspendRequestSuccess(requiredProps.taskId, {
-              body: taskFixtures.getSuspendRequest(),
+              body: taskFixtures.fakeSuspendRequest(),
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -3739,7 +3784,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3779,7 +3824,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3856,7 +3901,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
                 type: activeRequestSuspendItemProps.type,
                 status: activeRequestSuspendItemProps.status,
@@ -3900,9 +3945,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
               once: false,
             })
@@ -3928,9 +3973,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
               once: false,
             })
@@ -3960,9 +4005,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
             })
 
@@ -3992,9 +4037,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
             })
 
@@ -4023,9 +4068,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
               once: false,
             })
@@ -4051,9 +4096,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
               once: false,
             })
@@ -4083,9 +4128,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
             })
 
@@ -4115,9 +4160,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
             })
 
@@ -4146,9 +4191,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
               once: false,
             })
@@ -4174,9 +4219,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
               once: false,
             })
@@ -4206,9 +4251,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
             })
 
@@ -4238,9 +4283,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(requiredProps.taskId, {
-              body: taskFixtures.getTask({
+              body: taskFixtures.fakeTask({
                 id: requiredProps.taskId,
-                suspendRequest: taskFixtures.getSuspendRequest(),
+                suspendRequest: taskFixtures.fakeSuspendRequest(),
               }),
             })
 
@@ -4270,9 +4315,9 @@ describe('Контейнер детальной карточки заявки', 
           mockGetWorkGroupListSuccess({ body: [] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
+            body: taskFixtures.fakeTask({
               id: requiredProps.taskId,
-              suspendRequest: taskFixtures.getSuspendRequest({
+              suspendRequest: taskFixtures.fakeSuspendRequest({
                 status: SuspendRequestStatusEnum.Approved,
               }),
             }),
@@ -4299,9 +4344,9 @@ describe('Контейнер детальной карточки заявки', 
           mockGetWorkGroupListSuccess({ body: [] })
 
           mockGetTaskSuccess(requiredProps.taskId, {
-            body: taskFixtures.getTask({
+            body: taskFixtures.fakeTask({
               id: requiredProps.taskId,
-              suspendRequest: taskFixtures.getSuspendRequest({
+              suspendRequest: taskFixtures.fakeSuspendRequest({
                 status: SuspendRequestStatusEnum.Approved,
               }),
             }),
