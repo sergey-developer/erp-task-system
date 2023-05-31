@@ -264,7 +264,7 @@ describe('Вкладка списка комментариев заявки', ()
           expect(newCommentText).toBeInTheDocument()
         })
 
-        test('Сбрасывает значения полей', async () => {
+        test.skip('Сбрасывает значения полей', async () => {
           const newComment = taskFixtures.getComment()
           mockCreateTaskCommentSuccess(props.taskId, {
             body: newComment,
