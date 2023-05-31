@@ -7,7 +7,7 @@ import { expectLoadingFinishedBySpinner, render } from '_tests_/utils'
 import CommentList, { CommentListProps } from './index'
 
 const props: CommentListProps = {
-  comments: taskFixtures.getCommentList(),
+  comments: taskFixtures.fakeCommentList(),
   isLoading: false,
 }
 

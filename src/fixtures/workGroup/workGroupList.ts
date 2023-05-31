@@ -2,7 +2,7 @@ import times from 'lodash/times'
 
 import { WorkGroupListModel } from 'modules/workGroup/models'
 
-import { getWorkGroup } from './workGroup'
+import { fakeWorkGroup } from './workGroup'
 
-export const getWorkGroupList = (length: number = 1): WorkGroupListModel =>
-  times(length, () => getWorkGroup())
+export const fakeWorkGroupList = (length: number = 1): WorkGroupListModel =>
+  times(length, () => fakeWorkGroup())

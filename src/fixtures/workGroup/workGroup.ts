@@ -9,11 +9,11 @@ import { ArrayItem } from 'shared/interfaces/utils'
 
 import { fakeId, fakeInteger, fakeName, fakeWord } from '_tests_/utils'
 
-export const getWorkGroupMember = (): ArrayItem<
+export const fakeWorkGroupMember = (): ArrayItem<
   WorkGroupListItemModel['members']
 > => ({ id: fakeId(), fullName: fakeName() })
 
-export const getWorkGroupPriority = (
+export const fakeWorkGroupPriority = (
   props?: Partial<
     Omit<NonNullable<WorkGroupListItemModel['priority']>, 'description'>
   >,
@@ -28,12 +28,12 @@ export const getWorkGroupPriority = (
   description: fakeWord(),
 })
 
-export const getWorkGroupMemberList = (
+export const fakeWorkGroupMemberList = (
   length: number = 1,
 ): WorkGroupListItemModel['members'] =>
-  times(length, () => getWorkGroupMember())
+  times(length, () => fakeWorkGroupMember())
 
-export const getWorkGroup = (
+export const fakeWorkGroup = (
   props?: Partial<{
     seniorEngineerId: number
     groupLeadId: number
@@ -43,7 +43,7 @@ export const getWorkGroup = (
 ): NonNullable<WorkGroupListItemModel> => ({
   id: props?.id || fakeId(),
   name: fakeName(),
-  members: getWorkGroupMemberList(props?.memberAmount),
+  members: fakeWorkGroupMemberList(props?.memberAmount),
   seniorEngineer: {
     id: props?.seniorEngineerId || fakeId(),
     fullName: fakeName(),
@@ -52,5 +52,5 @@ export const getWorkGroup = (
     id: props?.groupLeadId || fakeId(),
     fullName: fakeName(),
   },
-  priority: props?.priority || getWorkGroupPriority(),
+  priority: props?.priority || fakeWorkGroupPriority(),
 })
