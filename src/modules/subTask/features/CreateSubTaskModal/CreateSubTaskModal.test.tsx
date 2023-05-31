@@ -421,6 +421,8 @@ describe('Модалка создания задачи заявки', () => {
           supportGroupFixtures.fakeSupportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
+        mockGetSubTaskTemplateListSuccess()
+
         const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
         await testUtils.supportGroup.expectLoadingFinished()
@@ -440,6 +442,8 @@ describe('Модалка создания задачи заявки', () => {
         const fakeSupportGroupListItem =
           supportGroupFixtures.fakeSupportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+
+        mockGetSubTaskTemplateListSuccess()
 
         const { user } = render(<CreateSubTaskModal {...requiredProps} />)
 
@@ -969,6 +973,7 @@ describe('Модалка создания задачи заявки', () => {
 
   describe('Кнопка отправки', () => {
     test('Отображается корректно', () => {
+      mockGetSupportGroupListSuccess()
       render(<CreateSubTaskModal {...requiredProps} />)
 
       const button = testUtils.getSubmitButton()
