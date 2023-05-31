@@ -8,8 +8,8 @@ import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/errors'
 import {
-  ErrorResponse,
   isBadRequestError,
+  isErrorResponse,
   isServerRangeError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -30,14 +30,14 @@ export const useUpdateTaskWorkGroup = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as ErrorResponse
-
-    if (isBadRequestError(error) || isServerRangeError(error)) {
-      showErrorNotification(
-        taskWorkGroupApiMessages.updateWorkGroup.commonError,
-      )
-    } else {
-      showErrorNotification(commonApiMessages.unknownError)
+    if (isErrorResponse(state.error)) {
+      if (isBadRequestError(state.error) || isServerRangeError(state.error)) {
+        showErrorNotification(
+          taskWorkGroupApiMessages.updateWorkGroup.commonError,
+        )
+      } else {
+        showErrorNotification(commonApiMessages.unknownError)
+      }
     }
   }, [state.error, state.isError])
 

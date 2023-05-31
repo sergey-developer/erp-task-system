@@ -13,8 +13,12 @@ import { HttpMethodEnum } from 'shared/constants/http'
 
 import baseQuery from './baseQuery'
 import { apiPath, currentApiVersion } from './constants'
-import { CustomBaseQueryFn, ErrorResponse } from './intefraces'
-import { isClientRangeError, isUnauthorizedError } from './utils'
+import { CustomBaseQueryFn } from './intefraces'
+import {
+  isClientRangeError,
+  isErrorResponse,
+  isUnauthorizedError,
+} from './utils'
 
 const mutex = new Mutex()
 
@@ -42,7 +46,11 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
   await mutex.waitForUnlock()
   let response = await query(args, api, extraOptions)
 
-  if (response.error && isUnauthorizedError(response.error as ErrorResponse)) {
+  if (
+    response.error &&
+    isErrorResponse(response.error) &&
+    isUnauthorizedError(response.error)
+  ) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       let refreshResult
@@ -88,10 +96,11 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           } else {
             logoutAndClearTokens(api.dispatch)
           }
-        } catch (exception) {
-          const error = exception as ErrorResponse
-          if (isClientRangeError(error)) {
-            logoutAndClearTokens(api.dispatch)
+        } catch (error) {
+          if (isErrorResponse(error)) {
+            if (isClientRangeError(error)) {
+              logoutAndClearTokens(api.dispatch)
+            }
           }
         }
       } finally {
