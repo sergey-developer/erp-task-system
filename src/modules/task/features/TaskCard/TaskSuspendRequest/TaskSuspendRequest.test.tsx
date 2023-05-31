@@ -20,7 +20,7 @@ import {
 
 import TaskSuspendRequest, { TaskSuspendRequestProps } from './index'
 
-const requiredProps: Readonly<Omit<TaskSuspendRequestProps, 'action'>> = {
+const props: Readonly<Omit<TaskSuspendRequestProps, 'action'>> = {
   user: commonFixtures.fakeUser(),
   title: fakeWord(),
   comment: fakeWord(),
@@ -102,36 +102,34 @@ export const testUtils = {
 describe('Запрос заявки на ожидание', () => {
   describe('Отображается корректно', () => {
     test('Иконка', () => {
-      render(<TaskSuspendRequest {...requiredProps} />)
+      render(<TaskSuspendRequest {...props} />)
       expect(testUtils.getIcon()).toBeInTheDocument()
     })
 
     test('Заголовок', () => {
-      render(<TaskSuspendRequest {...requiredProps} />)
-      expect(testUtils.getChildByText(requiredProps.title)).toBeInTheDocument()
+      render(<TaskSuspendRequest {...props} />)
+      expect(testUtils.getChildByText(props.title)).toBeInTheDocument()
     })
 
     test('Комментарий', () => {
-      render(<TaskSuspendRequest {...requiredProps} />)
-      expect(
-        testUtils.getChildByText(requiredProps.comment),
-      ).toBeInTheDocument()
+      render(<TaskSuspendRequest {...props} />)
+      expect(testUtils.getChildByText(props.comment)).toBeInTheDocument()
     })
 
     test('Данные пользователя', () => {
-      render(<TaskSuspendRequest {...requiredProps} />)
+      render(<TaskSuspendRequest {...props} />)
 
       expect(
-        testUtils.getChildByText(getShortUserName(requiredProps.user)),
+        testUtils.getChildByText(getShortUserName(props.user)),
       ).toBeInTheDocument()
     })
 
     test('Дата создания', () => {
-      render(<TaskSuspendRequest {...requiredProps} />)
+      render(<TaskSuspendRequest {...props} />)
 
       expect(
         testUtils.getChildByText(
-          formatDate(requiredProps.date, DATE_TIME_FORMAT),
+          `до ${formatDate(props.date, DATE_TIME_FORMAT)}`,
         ),
       ).toBeInTheDocument()
     })
@@ -139,9 +137,7 @@ describe('Запрос заявки на ожидание', () => {
 
   describe('Кнопка отмены запроса', () => {
     test('Отображается если присутствует', () => {
-      render(
-        <TaskSuspendRequest {...requiredProps} action={cancelRequestAction} />,
-      )
+      render(<TaskSuspendRequest {...props} action={cancelRequestAction} />)
 
       const button = testUtils.getCancelButton()
 
@@ -150,14 +146,14 @@ describe('Запрос заявки на ожидание', () => {
     })
 
     test('Не отображается если отсутствует', () => {
-      render(<TaskSuspendRequest {...requiredProps} />)
+      render(<TaskSuspendRequest {...props} />)
       expect(testUtils.queryCancelButton()).not.toBeInTheDocument()
     })
 
     test('Можно сделать не активной', () => {
       render(
         <TaskSuspendRequest
-          {...requiredProps}
+          {...props}
           action={{ ...cancelRequestAction, disabled: true }}
         />,
       )
@@ -168,7 +164,7 @@ describe('Запрос заявки на ожидание', () => {
     test('Отображает состояние загрузки', async () => {
       render(
         <TaskSuspendRequest
-          {...requiredProps}
+          {...props}
           action={{ ...cancelRequestAction, loading: true }}
         />,
       )
@@ -178,7 +174,7 @@ describe('Запрос заявки на ожидание', () => {
 
     test('При клике обработчик вызывается корректно', async () => {
       const { user } = render(
-        <TaskSuspendRequest {...requiredProps} action={cancelRequestAction} />,
+        <TaskSuspendRequest {...props} action={cancelRequestAction} />,
       )
 
       await testUtils.clickCancelButton(user)
@@ -188,9 +184,7 @@ describe('Запрос заявки на ожидание', () => {
 
   describe('Кнопка возврата в работу', () => {
     test('Отображается если присутствует', () => {
-      render(
-        <TaskSuspendRequest {...requiredProps} action={returnInWorkAction} />,
-      )
+      render(<TaskSuspendRequest {...props} action={returnInWorkAction} />)
 
       const button = testUtils.getReturnToWorkButton()
 
@@ -199,14 +193,14 @@ describe('Запрос заявки на ожидание', () => {
     })
 
     test('Не отображается если отсутствует', () => {
-      render(<TaskSuspendRequest {...requiredProps} />)
+      render(<TaskSuspendRequest {...props} />)
       expect(testUtils.queryReturnToWorkButton()).not.toBeInTheDocument()
     })
 
     test('Можно сделать не активной', () => {
       render(
         <TaskSuspendRequest
-          {...requiredProps}
+          {...props}
           action={{ ...returnInWorkAction, disabled: true }}
         />,
       )
@@ -217,7 +211,7 @@ describe('Запрос заявки на ожидание', () => {
     test('Отображает состояние загрузки', async () => {
       render(
         <TaskSuspendRequest
-          {...requiredProps}
+          {...props}
           action={{ ...returnInWorkAction, loading: true }}
         />,
       )
@@ -227,7 +221,7 @@ describe('Запрос заявки на ожидание', () => {
 
     test('При клике обработчик вызывается корректно', async () => {
       const { user } = render(
-        <TaskSuspendRequest {...requiredProps} action={returnInWorkAction} />,
+        <TaskSuspendRequest {...props} action={returnInWorkAction} />,
       )
 
       await testUtils.clickReturnToWorkButton(user)

@@ -1,4 +1,9 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import {
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+  within,
+} from '@testing-library/react'
 
 import {
   SuspendReasonEnum,
@@ -434,10 +439,7 @@ describe('Карточка заявки', () => {
             availableReasons[0],
           )
           await taskReclassificationModalTestUtils.clickSubmitButton(user)
-
-          await waitFor(() => {
-            expect(modal).not.toBeInTheDocument()
-          })
+          await waitForElementToBeRemoved(modal)
         })
       })
     })
@@ -690,7 +692,6 @@ describe('Карточка заявки', () => {
         expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
         expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
         expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
-
         await waitFor(() => {
           expect(modal).not.toBeInTheDocument()
         })
@@ -728,7 +729,6 @@ describe('Карточка заявки', () => {
         expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
         expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
         expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
-
         await waitFor(() => {
           expect(modal).not.toBeInTheDocument()
         })
@@ -766,10 +766,7 @@ describe('Карточка заявки', () => {
         expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
         expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
         expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
-
-        await waitFor(() => {
-          expect(modal).not.toBeInTheDocument()
-        })
+        await waitForElementToBeRemoved(modal)
       })
     })
   })
@@ -809,7 +806,6 @@ describe('Карточка заявки', () => {
         expect(requiredProps.updateWorkGroup).toBeCalledTimes(1)
         expect(requiredProps.updateWorkGroup).toBeCalledWith(expect.anything())
         expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
-
         await waitFor(() => {
           expect(modal).not.toBeInTheDocument()
         })
@@ -884,9 +880,7 @@ describe('Карточка заявки', () => {
           )
 
           expect(
-            taskSuspendRequestTestUtils.getChildByText(
-              /заявка находится в ожидании/i,
-            ),
+            taskSuspendRequestTestUtils.getChildByText(/заявка в ожидании/i),
           ).toBeInTheDocument()
         })
       })

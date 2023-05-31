@@ -18,10 +18,11 @@ import {
 export const fakeSubTask = (
   props?: Partial<Pick<SubTaskModel, 'status'>>,
 ): NonNullableObject<SubTaskModel> => ({
+  status: props?.status || TaskStatusEnum.New,
+
   id: fakeId(),
   recordId: fakeIdStr(),
   title: fakeWord(),
-  status: props?.status || TaskStatusEnum.New,
   supportGroup: commonFixtures.fakeSupportGroup(),
   createdAt: fakeDateString(),
   description: fakeWord(),

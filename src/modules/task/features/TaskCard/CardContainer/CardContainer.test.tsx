@@ -1,4 +1,8 @@
-import { waitFor, within } from '@testing-library/react'
+import {
+  waitFor,
+  waitForElementToBeRemoved,
+  within,
+} from '@testing-library/react'
 import head from 'lodash/head'
 
 import {
@@ -2310,11 +2314,7 @@ describe('Контейнер детальной карточки заявки', 
           await user.click(submitButton)
 
           await expectLoadingFinishedByButton(firstLineButton)
-
-          await waitFor(() => {
-            expect(modal).not.toBeInTheDocument()
-          })
-
+          await waitForElementToBeRemoved(modal)
           expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
@@ -2537,11 +2537,7 @@ describe('Контейнер детальной карточки заявки', 
           await user.click(submitButton)
 
           await expectLoadingFinishedByButton(firstLineButton)
-
-          await waitFor(() => {
-            expect(modal).not.toBeInTheDocument()
-          })
-
+          await waitForElementToBeRemoved(modal)
           expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
@@ -2762,11 +2758,7 @@ describe('Контейнер детальной карточки заявки', 
           await user.click(submitButton)
 
           await expectLoadingFinishedByButton(firstLineButton)
-
-          await waitFor(() => {
-            expect(modal).not.toBeInTheDocument()
-          })
-
+          await waitForElementToBeRemoved(modal)
           expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
@@ -2991,10 +2983,7 @@ describe('Контейнер детальной карточки заявки', 
           )
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
-          await waitFor(() => {
-            expect(modal).not.toBeInTheDocument()
-          })
-
+          await waitForElementToBeRemoved(modal)
           expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })

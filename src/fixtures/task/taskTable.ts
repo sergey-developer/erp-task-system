@@ -25,6 +25,10 @@ export const fakeTaskTableItem = (
     Pick<TaskTableListItem, 'status' | 'extendedStatus' | 'olaStatus'>
   >,
 ): TaskTableListItem => ({
+  status: props?.status || TaskStatusEnum.New,
+  extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
+  olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
+
   id: fakeId(),
   name: fakeName(),
   title: fakeWord(),
@@ -37,10 +41,6 @@ export const fakeTaskTableItem = (
   olaNextBreachTime: fakeDateString(),
   subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
   responseTime: taskFixtures.fakeTaskResponseTime(),
-
-  status: props?.status || TaskStatusEnum.New,
-  extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
-  olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
 })
 
 export const fakeTaskTableItems = (
