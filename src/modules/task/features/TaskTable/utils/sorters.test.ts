@@ -7,11 +7,11 @@ import { statusSorter } from './sorters'
 describe('sorters', () => {
   test('status sorter', () => {
     const array = [
-      taskFixtures.getTaskTableItem({ status: TaskStatusEnum.New }),
-      taskFixtures.getTaskTableItem({ status: TaskStatusEnum.Completed }),
-      taskFixtures.getTaskTableItem({ status: TaskStatusEnum.InProgress }),
-      taskFixtures.getTaskTableItem({ status: TaskStatusEnum.Awaiting }),
-      taskFixtures.getTaskTableItem({ status: TaskStatusEnum.Closed }),
+      taskFixtures.fakeTaskTableItem({ status: TaskStatusEnum.New }),
+      taskFixtures.fakeTaskTableItem({ status: TaskStatusEnum.Completed }),
+      taskFixtures.fakeTaskTableItem({ status: TaskStatusEnum.InProgress }),
+      taskFixtures.fakeTaskTableItem({ status: TaskStatusEnum.Awaiting }),
+      taskFixtures.fakeTaskTableItem({ status: TaskStatusEnum.Closed }),
     ]
 
     const sortedArray = [...array].sort(statusSorter)

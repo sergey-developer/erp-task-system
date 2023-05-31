@@ -232,6 +232,10 @@ describe('Модалка запроса о переклассификации з
         await testUtils.clickSubmitButton(user)
 
         expect(requiredProps.onSubmit).toBeCalledTimes(1)
+        expect(requiredProps.onSubmit).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+        )
       })
 
       test('Если поля не заполнены', async () => {

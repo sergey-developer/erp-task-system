@@ -102,7 +102,7 @@ describe('Вкладка списка комментариев заявки', ()
   describe('Кнопка раскрытия/скрытия комментариев', () => {
     describe('Отображается корректно если условия соблюдены', () => {
       test('Кнопка раскрытия', async () => {
-        const taskCommentList = taskFixtures.getCommentList(
+        const taskCommentList = taskFixtures.fakeCommentList(
           DEFAULT_DISPLAYABLE_COUNT + 1,
         )
         mockGetTaskCommentListSuccess(props.taskId, {
@@ -124,7 +124,7 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       test('Кнопка скрытия', async () => {
-        const taskCommentList = taskFixtures.getCommentList(
+        const taskCommentList = taskFixtures.fakeCommentList(
           DEFAULT_DISPLAYABLE_COUNT + 1,
         )
         mockGetTaskCommentListSuccess(props.taskId, {
@@ -147,7 +147,7 @@ describe('Вкладка списка комментариев заявки', ()
     describe('Не отображается', () => {
       test('Если все условия соблюдены, но комментариев не более отображаемого кол-ва по умолчанию', async () => {
         mockGetTaskCommentListSuccess(props.taskId, {
-          body: taskFixtures.getCommentList(DEFAULT_DISPLAYABLE_COUNT),
+          body: taskFixtures.fakeCommentList(DEFAULT_DISPLAYABLE_COUNT),
         })
 
         render(<CommentListTab {...props} />, {
@@ -162,7 +162,7 @@ describe('Вкладка списка комментариев заявки', ()
 
       test('Если нет комментариев', async () => {
         mockGetTaskCommentListSuccess(props.taskId, {
-          body: taskFixtures.getCommentList(0),
+          body: taskFixtures.fakeCommentList(0),
         })
 
         render(<CommentListTab {...props} />, {
@@ -179,7 +179,7 @@ describe('Вкладка списка комментариев заявки', ()
     test('Раскрывает все комментарии', async () => {
       const allCommentCount = DEFAULT_DISPLAYABLE_COUNT + 1
       mockGetTaskCommentListSuccess(props.taskId, {
-        body: taskFixtures.getCommentList(allCommentCount),
+        body: taskFixtures.fakeCommentList(allCommentCount),
       })
 
       const { user } = render(<CommentListTab {...props} />, {
@@ -202,7 +202,7 @@ describe('Вкладка списка комментариев заявки', ()
     test('Скрывает все комментарии', async () => {
       const allCommentCount = DEFAULT_DISPLAYABLE_COUNT + 1
       mockGetTaskCommentListSuccess(props.taskId, {
-        body: taskFixtures.getCommentList(allCommentCount),
+        body: taskFixtures.fakeCommentList(allCommentCount),
       })
 
       const { user } = render(<CommentListTab {...props} />, {
@@ -238,12 +238,12 @@ describe('Вкладка списка комментариев заявки', ()
 
       describe('При успешном запросе', () => {
         test.skip('Корректно добавляет комментарий в список', async () => {
-          const newComment = taskFixtures.getComment()
+          const newComment = taskFixtures.fakeComment()
           mockCreateTaskCommentSuccess(props.taskId, {
             body: newComment,
           })
           mockGetTaskCommentListSuccess(props.taskId, {
-            body: taskFixtures.getCommentList(),
+            body: taskFixtures.fakeCommentList(),
           })
 
           const { user } = render(<CommentListTab {...props} />, {
@@ -265,7 +265,7 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         test.skip('Сбрасывает значения полей', async () => {
-          const newComment = taskFixtures.getComment()
+          const newComment = taskFixtures.fakeComment()
           mockCreateTaskCommentSuccess(props.taskId, {
             body: newComment,
           })
@@ -400,7 +400,7 @@ describe('Вкладка списка комментариев заявки', ()
     })
 
     test('Комментарии отображаются если они есть', async () => {
-      const taskCommentList = taskFixtures.getCommentList(1)
+      const taskCommentList = taskFixtures.fakeCommentList(1)
       mockGetTaskCommentListSuccess(props.taskId, {
         body: taskCommentList,
       })
@@ -416,7 +416,7 @@ describe('Вкладка списка комментариев заявки', ()
     })
 
     test('Комментарии не отображаются если их нет', async () => {
-      const taskCommentList = taskFixtures.getCommentList(0)
+      const taskCommentList = taskFixtures.fakeCommentList(0)
       mockGetTaskCommentListSuccess(props.taskId, {
         body: taskCommentList,
       })

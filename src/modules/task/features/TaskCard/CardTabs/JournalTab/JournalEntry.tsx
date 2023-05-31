@@ -47,7 +47,8 @@ const JournalEntry: FC<JournalEntryProps> = ({
         </Description>
       </Space>
 
-      {!!attachments.length && (
+      {/*todo: убрать optional chaining*/}
+      {!!attachments?.length && (
         <Space direction='vertical'>
           <Description>Добавлен комментарий</Description>
           <AttachmentList attachments={attachments} />
