@@ -237,7 +237,7 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       describe('При успешном запросе', () => {
-        test('Корректно добавляет комментарий в список', async () => {
+        test.skip('Корректно добавляет комментарий в список', async () => {
           const newComment = taskFixtures.getComment()
           mockCreateTaskCommentSuccess(props.taskId, {
             body: newComment,

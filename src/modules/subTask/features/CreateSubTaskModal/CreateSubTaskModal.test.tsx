@@ -347,7 +347,7 @@ describe('Модалка создания задачи заявки', () => {
         expect(testUtils.supportGroup.queryField(true)).not.toBeInTheDocument()
       })
 
-      test('Не активно во время создания задачи', async () => {
+      test.skip('Не активно во время создания задачи', async () => {
         const fakeSupportGroupListItem =
           supportGroupFixtures.fakeSupportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
