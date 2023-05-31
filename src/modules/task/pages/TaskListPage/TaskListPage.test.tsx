@@ -83,13 +83,6 @@ const setSearchValue = async (
   return input
 }
 
-const clearSearchFieldByBackspace = async (
-  user: UserEvent,
-  input: HTMLElement,
-) => {
-  await user.type(input, '{backspace}')
-}
-
 const testUtils = {
   getContainer,
 
@@ -100,8 +93,6 @@ const testUtils = {
 
   getSearchClearButton,
   clickSearchClearButton,
-
-  clearSearchFieldByBackspace,
 
   getReloadListButton,
   clickReloadListButton,
@@ -879,7 +870,7 @@ describe('Страница реестра заявок', () => {
           fastFilterTestUtils.expectFilterNotChecked(fastFilter)
         })
 
-        await testUtils.clearSearchFieldByBackspace(user, input)
+        await user.clear(input)
 
         await waitFor(() => {
           fastFilterTestUtils.expectFilterChecked(fastFilter)
@@ -901,7 +892,8 @@ describe('Страница реестра заявок', () => {
           expect(extendedFilterButton).toBeDisabled()
         })
 
-        await testUtils.clearSearchFieldByBackspace(user, input)
+        await user.clear(input)
+
         await waitFor(() => {
           expect(extendedFilterButton).toBeEnabled()
         })
@@ -968,7 +960,7 @@ describe('Страница реестра заявок', () => {
         )
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.clearSearchFieldByBackspace(user, searchInput)
+        await user.clear(searchInput)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
 
