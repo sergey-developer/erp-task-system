@@ -1,9 +1,12 @@
-import { Button, Form, Input } from 'antd'
-import { FC } from 'react'
+import { PaperClipOutlined } from '@ant-design/icons'
+import { Button, Col, Form, Input, Row, Upload } from 'antd'
+import stubFalse from 'lodash/stubFalse'
+import React, { FC } from 'react'
 
 import Space from 'components/Space'
 
 import { validationRules } from 'shared/constants/validation'
+import { getFilesFromEvent } from 'shared/utils/form'
 
 import { CreateCommentFormFields, CreateCommentFormProps } from './interfaces'
 
@@ -32,7 +35,7 @@ const CreateCommentForm: FC<CreateCommentFormProps> = ({
         onFinish={handleFinish}
       >
         <Form.Item
-          data-testid='field-comment'
+          data-testid='comment-form-item'
           name='comment'
           rules={[validationRules.string.long]}
         >
@@ -42,9 +45,32 @@ const CreateCommentForm: FC<CreateCommentFormProps> = ({
           />
         </Form.Item>
 
-        <Button type='primary' htmlType='submit' loading={isLoading}>
-          Опубликовать комментарий
-        </Button>
+        <Row align='middle' justify='space-between'>
+          <Col>
+            <Form.Item
+              data-testid='attachments-form-item'
+              name='attachments'
+              valuePropName='fileList'
+              getValueFromEvent={getFilesFromEvent}
+            >
+              <Upload beforeUpload={stubFalse} multiple disabled={isLoading}>
+                <Button
+                  type='link'
+                  icon={<PaperClipOutlined />}
+                  disabled={isLoading}
+                >
+                  Добавить вложение
+                </Button>
+              </Upload>
+            </Form.Item>
+          </Col>
+
+          <Col>
+            <Button type='primary' htmlType='submit' loading={isLoading}>
+              Опубликовать комментарий
+            </Button>
+          </Col>
+        </Row>
       </Form>
     </Space>
   )

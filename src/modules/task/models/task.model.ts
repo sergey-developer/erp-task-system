@@ -1,10 +1,13 @@
-import { BaseTaskModel } from 'modules/task/models'
+import {
+  BaseTaskModel,
+  SuspendRequestModel,
+  TaskAttachmentListModel,
+} from 'modules/task/models'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 
-import { SuspendRequestModel } from './suspendRequest.model'
-
 export type TaskModel = BaseTaskModel & {
+  attachments: MaybeNull<TaskAttachmentListModel>
   olaEstimatedTime: number
   suspendRequest: MaybeNull<SuspendRequestModel>
   weight: MaybeNull<number>
@@ -12,4 +15,7 @@ export type TaskModel = BaseTaskModel & {
   email: MaybeNull<string>
   sapId: MaybeNull<string>
   contactType: MaybeNull<string>
+  resolution: {
+    attachments: TaskAttachmentListModel
+  }
 }

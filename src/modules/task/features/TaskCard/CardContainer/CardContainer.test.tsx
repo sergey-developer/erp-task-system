@@ -114,7 +114,7 @@ import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModa
 import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
 
-const requiredProps: TaskCardContainerProps = {
+const requiredProps: Readonly<TaskCardContainerProps> = {
   taskId: fakeId(),
   closeTaskCard: jest.fn(),
   additionalInfoExpanded: false,
@@ -943,6 +943,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -968,6 +969,7 @@ describe('Контейнер детальной карточки заявки', 
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
+            attachments: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -990,6 +992,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1005,6 +1008,12 @@ describe('Контейнер детальной карточки заявки', 
           expect(
             await taskResolutionModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
+            ),
+          ).toBeInTheDocument()
+
+          expect(
+            await taskResolutionModalTestUtils.findAttachmentsError(
+              badRequestResponse.attachments[0],
             ),
           ).toBeInTheDocument()
         })
@@ -1037,6 +1046,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1076,6 +1086,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -1101,6 +1112,7 @@ describe('Контейнер детальной карточки заявки', 
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
+            attachments: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -1123,6 +1135,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1138,6 +1151,12 @@ describe('Контейнер детальной карточки заявки', 
           expect(
             await taskResolutionModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
+            ),
+          ).toBeInTheDocument()
+
+          expect(
+            await taskResolutionModalTestUtils.findAttachmentsError(
+              badRequestResponse.attachments[0],
             ),
           ).toBeInTheDocument()
         })
@@ -1170,6 +1189,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1209,6 +1229,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -1234,6 +1255,7 @@ describe('Контейнер детальной карточки заявки', 
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
+            attachments: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -1256,6 +1278,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1271,6 +1294,12 @@ describe('Контейнер детальной карточки заявки', 
           expect(
             await taskResolutionModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
+            ),
+          ).toBeInTheDocument()
+
+          expect(
+            await taskResolutionModalTestUtils.findAttachmentsError(
+              badRequestResponse.attachments[0],
             ),
           ).toBeInTheDocument()
         })
@@ -1303,6 +1332,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1342,6 +1372,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -1367,6 +1398,7 @@ describe('Контейнер детальной карточки заявки', 
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
+            attachments: [fakeWord()],
           }
 
           mockResolveTaskBadRequestError(requiredProps.taskId, {
@@ -1389,6 +1421,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -1404,6 +1437,12 @@ describe('Контейнер детальной карточки заявки', 
           expect(
             await taskResolutionModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
+            ),
+          ).toBeInTheDocument()
+
+          expect(
+            await taskResolutionModalTestUtils.findAttachmentsError(
+              badRequestResponse.attachments[0],
             ),
           ).toBeInTheDocument()
         })
@@ -1436,6 +1475,7 @@ describe('Контейнер детальной карточки заявки', 
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(

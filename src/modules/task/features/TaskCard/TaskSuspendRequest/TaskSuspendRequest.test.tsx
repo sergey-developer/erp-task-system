@@ -20,7 +20,7 @@ import {
 
 import TaskSuspendRequest, { TaskSuspendRequestProps } from './index'
 
-const requiredProps: Omit<TaskSuspendRequestProps, 'action'> = {
+const requiredProps: Readonly<Omit<TaskSuspendRequestProps, 'action'>> = {
   user: commonFixtures.getUser(),
   title: fakeWord(),
   comment: fakeWord(),

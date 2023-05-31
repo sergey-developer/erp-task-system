@@ -1,6 +1,7 @@
 import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import AttachmentList from 'modules/task/features/AttachmentList'
 import { useTaskType } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 
@@ -16,6 +17,7 @@ export type ResolutionTabProps = Pick<
   'techResolution' | 'userResolution' | 'type'
 > & {
   title: string
+  attachments: TaskModel['resolution']['attachments']
 }
 
 const ResolutionTab: FC<ResolutionTabProps> = ({
@@ -23,12 +25,17 @@ const ResolutionTab: FC<ResolutionTabProps> = ({
   title,
   userResolution,
   techResolution,
+  attachments,
 }) => {
   const taskType = useTaskType(type)
 
   return (
     <Space data-testid='task-resolution-tab' direction='vertical' size='large'>
-      <Title level={5}>{title}</Title>
+      <Space direction='vertical'>
+        <Title level={5}>{title}</Title>
+
+        {!!attachments.length && <AttachmentList attachments={attachments} />}
+      </Space>
 
       {!!techResolution && (
         <LabeledData label='Техническое решение'>

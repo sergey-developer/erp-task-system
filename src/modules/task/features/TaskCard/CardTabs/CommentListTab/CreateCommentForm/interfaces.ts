@@ -1,9 +1,11 @@
 import { FormInstance } from 'antd'
 
+import { UploadFile } from 'shared/interfaces/file'
 import { FieldsErrors } from 'shared/services/api'
 
 export type CreateCommentFormFields = {
   comment: string
+  attachments?: Array<UploadFile>
 }
 
 export type CreateCommentFormErrors = FieldsErrors<CreateCommentFormFields>

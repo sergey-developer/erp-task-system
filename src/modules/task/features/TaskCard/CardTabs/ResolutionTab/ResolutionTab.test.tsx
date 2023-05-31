@@ -1,26 +1,33 @@
 import { screen, within } from '@testing-library/react'
 
 import { TaskTypeEnum } from 'modules/task/constants/common'
+import { testUtils as attachmentListTestUtils } from 'modules/task/features/AttachmentList/AttachmentList.test'
+
+import taskFixtures from 'fixtures/task'
 
 import { fakeWord, render } from '_tests_/utils'
 
 import ResolutionTab, { ResolutionTabProps } from './index'
 
-const requiredProps: Pick<
-  ResolutionTabProps,
-  'title' | 'type' | 'techResolution' | 'userResolution'
+const requiredProps: Readonly<
+  Pick<
+    ResolutionTabProps,
+    'title' | 'type' | 'techResolution' | 'userResolution' | 'attachments'
+  >
 > = {
   type: TaskTypeEnum.Request,
   title: fakeWord(),
   techResolution: null,
   userResolution: null,
+  attachments: [taskFixtures.fakeAttachment()],
 }
 
 const getContainer = () => screen.getByTestId('task-resolution-tab')
 
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) =>
+  within(getContainer()).getByText(text)
 
-const queryChildByText = (text: string) =>
+const queryChildByText = (text: string | RegExp) =>
   within(getContainer()).queryByText(text)
 
 export const testUtils = {
@@ -38,6 +45,20 @@ describe('Вкладка решение заявки', () => {
   test('Если все решения отсутствуют, отображается прочерк', () => {
     render(<ResolutionTab {...requiredProps} />)
     expect(testUtils.getChildByText('-')).toBeInTheDocument()
+  })
+
+  describe('Вложения', () => {
+    test('Отображаются если есть', () => {
+      render(<ResolutionTab {...requiredProps} />)
+      const attachments = attachmentListTestUtils.getContainer()
+      expect(attachments).toBeInTheDocument()
+    })
+
+    test('Не отображаются если их нет', () => {
+      render(<ResolutionTab {...requiredProps} attachments={[]} />)
+      const attachments = attachmentListTestUtils.queryContainer()
+      expect(attachments).not.toBeInTheDocument()
+    })
   })
 
   test('Техническое решение отображается если присутствует', () => {

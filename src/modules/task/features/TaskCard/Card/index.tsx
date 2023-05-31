@@ -37,8 +37,13 @@ import Spinner from 'components/Spinner'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
-import { ErrorResponse, isBadRequestError } from 'shared/services/api'
+import {
+  ErrorResponse,
+  isBadRequestError,
+  isErrorResponse,
+} from 'shared/services/api'
 import { formatDate } from 'shared/utils/date'
+import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import AdditionalInfo from '../AdditionalInfo'
@@ -110,7 +115,9 @@ export type TaskCardProps = {
       | 'suspendRequest'
       | 'techResolution'
       | 'userResolution'
+      | 'resolution'
       | 'responseTime'
+      | 'attachments'
     >
   >
 
@@ -250,12 +257,21 @@ const TaskCard: FC<TaskCardProps> = ({
       if (!task) return
 
       try {
-        await resolveTask({ taskId: task.id, ...values })
+        await resolveTask({
+          taskId: task.id,
+          techResolution: values.techResolution.trim(),
+          userResolution: values.userResolution?.trim(),
+          attachments: values.attachments
+            ? mapUploadedFiles(values.attachments)
+            : undefined,
+        })
+
         closeTaskCard()
-      } catch (exception) {
-        const error = exception as ErrorResponse
-        if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, setFields)
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            handleSetFieldsErrors(error, setFields)
+          }
         }
       }
     },

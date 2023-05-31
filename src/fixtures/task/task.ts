@@ -55,6 +55,10 @@ export const getTask = (
   assignee: props?.assignee || taskFixtures.getAssignee(),
   suspendRequest: props?.suspendRequest || null,
 
+  attachments: [taskFixtures.fakeAttachment()],
+  resolution: {
+    attachments: [taskFixtures.fakeAttachment()],
+  },
   responseTime: getTaskResponseTime(),
   recordId: fakeIdStr(),
   name: fakeWord(),

@@ -8,7 +8,8 @@ import { TaskModel } from 'modules/task/models'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
-import { ErrorResponse, isBadRequestError } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import CommentList from './CommentList'
@@ -37,12 +38,20 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
   const handleCreateComment = useCallback<CreateCommentFormProps['onSubmit']>(
     async (values, form) => {
       try {
-        await createComment({ taskId, ...values })
+        await createComment({
+          taskId,
+          comment: values.comment.trim(),
+          attachments: values.attachments
+            ? mapUploadedFiles(values.attachments)
+            : undefined,
+        })
+
         form.resetFields()
-      } catch (exception) {
-        const error = exception as ErrorResponse
-        if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, form.setFields)
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            handleSetFieldsErrors(error, form.setFields)
+          }
         }
       }
     },
@@ -87,7 +96,7 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
       >
         <CommentList
           isLoading={commentListIsFetching}
-          data={displayableComments}
+          comments={displayableComments}
         />
       </LoadingArea>
     </Space>

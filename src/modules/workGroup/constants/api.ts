@@ -1,3 +1,3 @@
 export enum WorkGroupEndpointsEnum {
-  GetWorkGroupList = '/work-groups',
+  GetWorkGroupList = '/work-groups/',
 }

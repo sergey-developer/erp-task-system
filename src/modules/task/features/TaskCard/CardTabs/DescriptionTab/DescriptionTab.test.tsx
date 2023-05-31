@@ -1,12 +1,17 @@
 import { screen, within } from '@testing-library/react'
 
+import { testUtils as attachmentListTestUtils } from 'modules/task/features/AttachmentList/AttachmentList.test'
+
+import taskFixtures from 'fixtures/task'
+
 import { fakeWord, render } from '_tests_/utils'
 
 import DescriptionTab, { DescriptionTabProps } from './index'
 
-const requiredProps: DescriptionTabProps = {
+const props: Readonly<DescriptionTabProps> = {
   title: fakeWord(),
-  description: null,
+  description: fakeWord(),
+  attachments: [taskFixtures.fakeAttachment()],
 }
 
 const getContainer = () => screen.getByTestId('task-description-tab')
@@ -24,15 +29,36 @@ export const testUtils = {
 
 describe('Вкладка описания заявки', () => {
   test('Заголовок отображается', () => {
-    render(<DescriptionTab {...requiredProps} />)
-
-    const title = testUtils.getChildByText(requiredProps.title)
+    render(<DescriptionTab {...props} />)
+    const title = testUtils.getChildByText(props.title)
     expect(title).toBeInTheDocument()
   })
 
-  test('Описание отображается если присутствует', () => {
-    const description = fakeWord()
-    render(<DescriptionTab {...requiredProps} description={description} />)
-    expect(testUtils.getChildByText(description)).toBeInTheDocument()
+  describe('Описание', () => {
+    test('Отображается если есть', () => {
+      render(<DescriptionTab {...props} />)
+      const description = testUtils.getChildByText(props.description!)
+      expect(description).toBeInTheDocument()
+    })
+
+    test('Не отображается если его нет', () => {
+      render(<DescriptionTab {...props} description={null} />)
+      const description = testUtils.queryChildByText(props.description!)
+      expect(description).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Вложения', () => {
+    test('Отображаются если есть', () => {
+      render(<DescriptionTab {...props} />)
+      const attachmentList = attachmentListTestUtils.getContainer()
+      expect(attachmentList).toBeInTheDocument()
+    })
+
+    test('Не отображаются если их нет', () => {
+      render(<DescriptionTab {...props} attachments={[]} />)
+      const attachmentList = attachmentListTestUtils.queryContainer()
+      expect(attachmentList).not.toBeInTheDocument()
+    })
   })
 })

@@ -59,7 +59,7 @@ import {
 } from '../WorkGroupBlock/WorkGroupBlock.test'
 import TaskCard, { TaskCardProps } from './index'
 
-const requiredProps: TaskCardProps = {
+const requiredProps: Readonly<TaskCardProps> = {
   task: taskFixtures.getTask(),
   refetchTask: jest.fn(),
   closeTaskCard: jest.fn(),
@@ -564,6 +564,7 @@ describe('Карточка заявки', () => {
 
           await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
           await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+          await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(requiredProps.resolveTask).toBeCalledTimes(1)

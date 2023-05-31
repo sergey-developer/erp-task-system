@@ -19,7 +19,7 @@ import SubTask, { SubTaskProps } from './SubTask'
 const task = taskFixtures.getTask()
 const subTask = subTaskFixtures.getSubTask()
 
-const requiredProps: SubTaskProps = {
+const requiredProps: Readonly<SubTaskProps> = {
   title: subTask.title,
   status: subTask.status,
   taskExtendedStatus: task.extendedStatus,

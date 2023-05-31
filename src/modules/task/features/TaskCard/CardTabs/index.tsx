@@ -32,6 +32,8 @@ export type CardTabsProps = {
     | 'assignee'
     | 'recordId'
     | 'suspendRequest'
+    | 'resolution'
+    | 'attachments'
   >
 }
 
@@ -54,6 +56,7 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
           <DescriptionTab
             title={taskCardTabNamesDict[TaskCardTabsEnum.Description]}
             description={task.description}
+            attachments={task.attachments}
           />
         </TaskCardWrapper>
       </TabPane>
@@ -78,10 +81,11 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
       >
         <TaskCardWrapper>
           <ResolutionTab
-            type={task.type}
             title={taskCardTabNamesDict[TaskCardTabsEnum.Resolution]}
+            type={task.type}
             techResolution={task.techResolution}
             userResolution={task.userResolution}
+            attachments={task.resolution.attachments}
           />
         </TaskCardWrapper>
       </TabPane>

@@ -1,13 +1,18 @@
 import { screen, within } from '@testing-library/react'
 
+import { testUtils as attachmentListTestUtils } from 'modules/task/features/AttachmentList/AttachmentList.test'
+
+import taskFixtures from 'fixtures/task'
+
 import { fakeWord, render } from '_tests_/utils'
 
 import Comment, { CommentProps } from './index'
 
-const requiredProps: Readonly<CommentProps> = {
+const props: Readonly<CommentProps> = {
   text: fakeWord(),
   author: fakeWord(),
   createdAt: fakeWord(),
+  attachments: [taskFixtures.fakeAttachment()],
 }
 
 const getContainer = () => screen.getByTestId('task-comment')
@@ -21,20 +26,23 @@ export const testUtils = {
 
 describe('Комментарий заявки', () => {
   test('Отображает автора', () => {
-    render(<Comment {...requiredProps} />)
-    expect(testUtils.getChildByText(requiredProps.author)).toBeInTheDocument()
+    render(<Comment {...props} />)
+    expect(testUtils.getChildByText(props.author)).toBeInTheDocument()
   })
 
   test('Отображает дату создания', () => {
-    render(<Comment {...requiredProps} />)
+    render(<Comment {...props} />)
 
-    expect(
-      testUtils.getChildByText(requiredProps.createdAt),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.createdAt)).toBeInTheDocument()
   })
 
   test('Отображает текст комментария', () => {
-    render(<Comment {...requiredProps} />)
-    expect(testUtils.getChildByText(requiredProps.text)).toBeInTheDocument()
+    render(<Comment {...props} />)
+    expect(testUtils.getChildByText(props.text)).toBeInTheDocument()
+  })
+
+  test('Отображает вложения', () => {
+    render(<Comment {...props} />)
+    expect(attachmentListTestUtils.getContainer()).toBeInTheDocument()
   })
 })

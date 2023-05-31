@@ -30,7 +30,7 @@ const action: ArrayItem<TaskRequestProps['actions']> = {
   loading: false,
 }
 
-const requiredProps: TaskRequestProps & { 'data-testid': string } = {
+const requiredProps: Readonly<TaskRequestProps & { 'data-testid': string }> = {
   user: commonFixtures.getUser(),
   title: fakeWord(),
   comment: fakeWord(),
