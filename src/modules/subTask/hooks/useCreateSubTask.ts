@@ -7,8 +7,8 @@ import { useCreateSubTaskMutation } from 'modules/subTask/services/subTaskApi.se
 import { useUserPermissions } from 'modules/user/hooks'
 
 import {
-  ErrorResponse,
   isClientRangeError,
+  isErrorResponse,
   isServerRangeError,
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -29,10 +29,10 @@ export const useCreateSubTask = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as ErrorResponse
-
-    if (isClientRangeError(error) || isServerRangeError(error)) {
-      showErrorNotification(subTaskApiMessages.createSubTask.commonError)
+    if (isErrorResponse(state.error)) {
+      if (isClientRangeError(state.error) || isServerRangeError(state.error)) {
+        showErrorNotification(subTaskApiMessages.createSubTask.commonError)
+      }
     }
   }, [state.error, state.isError])
 

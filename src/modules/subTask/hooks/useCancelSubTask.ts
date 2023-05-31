@@ -5,7 +5,7 @@ import { subTaskApiPermissions } from 'modules/subTask/permissions'
 import { useCancelSubTaskMutation } from 'modules/subTask/services/subTaskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { ErrorResponse, isBadRequestError } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useCancelSubTask = () => {
@@ -24,9 +24,7 @@ export const useCancelSubTask = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as ErrorResponse
-
-    if (!isBadRequestError(error)) {
+    if (isErrorResponse(state.error) && !isBadRequestError(state.error)) {
       showErrorNotification('Не удалось отменить задание')
     }
   }, [state.error, state.isError])

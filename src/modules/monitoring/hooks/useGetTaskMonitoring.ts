@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { GetTaskMonitoringQueryArgs } from 'modules/monitoring/models'
 import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApi.service'
 
-import { ErrorResponse, getErrorDetail } from 'shared/services/api'
+import { getErrorDetail, isErrorResponse } from 'shared/services/api'
 import { showMultipleErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskMonitoring = (
@@ -15,10 +15,8 @@ export const useGetTaskMonitoring = (
   useEffect(() => {
     if (!state.isError) return
 
-    const error = state.error as ErrorResponse
-
-    if (error) {
-      showMultipleErrorNotification(getErrorDetail(error))
+    if (isErrorResponse(state.error)) {
+      showMultipleErrorNotification(getErrorDetail(state.error))
     }
   }, [state.error, state.isError])
 

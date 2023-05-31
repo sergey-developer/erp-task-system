@@ -55,7 +55,9 @@ const TaskRequest: FC<TaskRequestProps> = ({
             <SeparatedText>
               <Text type='secondary'>{getShortUserName(user)}</Text>
 
-              <Text type='secondary'>{formatDate(date, DATE_TIME_FORMAT)}</Text>
+              <Text type='secondary'>
+                до {formatDate(date, DATE_TIME_FORMAT)}
+              </Text>
             </SeparatedText>
           </Space>
 
