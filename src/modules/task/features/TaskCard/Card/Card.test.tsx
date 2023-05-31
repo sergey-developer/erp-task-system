@@ -883,9 +883,7 @@ describe('Карточка заявки', () => {
           )
 
           expect(
-            taskSuspendRequestTestUtils.getChildByText(
-              /заявка находится в ожидании/i,
-            ),
+            taskSuspendRequestTestUtils.getChildByText(/заявка в ожидании/i),
           ).toBeInTheDocument()
         })
       })

@@ -30,7 +30,7 @@ const action: ArrayItem<TaskRequestProps['actions']> = {
   loading: false,
 }
 
-const requiredProps: Readonly<TaskRequestProps & { 'data-testid': string }> = {
+const props: Readonly<TaskRequestProps & { 'data-testid': string }> = {
   user: commonFixtures.fakeUser(),
   title: fakeWord(),
   comment: fakeWord(),
@@ -40,11 +40,11 @@ const requiredProps: Readonly<TaskRequestProps & { 'data-testid': string }> = {
   'data-testid': 'task-request',
 }
 
-const getContainer = () => screen.getByTestId(requiredProps['data-testid'])
+const getContainer = () => screen.getByTestId(props['data-testid'])
 
-const findContainer = () => screen.findByTestId(requiredProps['data-testid'])
+const findContainer = () => screen.findByTestId(props['data-testid'])
 
-const queryContainer = () => screen.queryByTestId(requiredProps['data-testid'])
+const queryContainer = () => screen.queryByTestId(props['data-testid'])
 
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
@@ -83,46 +83,44 @@ export const testUtils = {
 describe('Запрос заявки', () => {
   describe('Отображается корректно', () => {
     test('Иконка', () => {
-      render(<TaskRequest {...requiredProps} />)
+      render(<TaskRequest {...props} />)
       expect(testUtils.getIcon()).toBeInTheDocument()
     })
 
     test('Заголовок', () => {
-      render(<TaskRequest {...requiredProps} />)
-      expect(testUtils.getChildByText(requiredProps.title)).toBeInTheDocument()
+      render(<TaskRequest {...props} />)
+      expect(testUtils.getChildByText(props.title)).toBeInTheDocument()
     })
 
     test('Комментарий', () => {
-      render(<TaskRequest {...requiredProps} />)
+      render(<TaskRequest {...props} />)
 
-      expect(
-        testUtils.getChildByText(requiredProps.comment),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(props.comment)).toBeInTheDocument()
     })
 
     test('Данные пользователя', () => {
-      render(<TaskRequest {...requiredProps} />)
+      render(<TaskRequest {...props} />)
 
       expect(
-        testUtils.getChildByText(getShortUserName(requiredProps.user)),
+        testUtils.getChildByText(getShortUserName(props.user)),
       ).toBeInTheDocument()
     })
 
     test('Дата создания', () => {
-      render(<TaskRequest {...requiredProps} />)
+      render(<TaskRequest {...props} />)
 
       expect(
         testUtils.getChildByText(
-          formatDate(requiredProps.date, DATE_TIME_FORMAT),
+          `до ${formatDate(props.date, DATE_TIME_FORMAT)}`,
         ),
       ).toBeInTheDocument()
     })
   })
 
   test('Можно отобразить несколько кнопок', () => {
-    const actions = [...requiredProps.actions, { text: fakeWord() }]
+    const actions = [...props.actions, { text: fakeWord() }]
 
-    render(<TaskRequest {...requiredProps} actions={actions} />)
+    render(<TaskRequest {...props} actions={actions} />)
 
     actions.forEach((action) => {
       const button = testUtils.getActionButton(action.text)
@@ -133,7 +131,7 @@ describe('Запрос заявки', () => {
 
   describe('Кнопка', () => {
     test('Отображается если присутствует', () => {
-      render(<TaskRequest {...requiredProps} />)
+      render(<TaskRequest {...props} />)
 
       const button = testUtils.getActionButton(action.text)
 
@@ -142,16 +140,13 @@ describe('Запрос заявки', () => {
     })
 
     test('Не отображается если отсутствует', () => {
-      render(<TaskRequest {...requiredProps} actions={[]} />)
+      render(<TaskRequest {...props} actions={[]} />)
       expect(testUtils.queryActionButton(action.text)).not.toBeInTheDocument()
     })
 
     test('Можно сделать не активной', () => {
       render(
-        <TaskRequest
-          {...requiredProps}
-          actions={[{ ...action, disabled: true }]}
-        />,
+        <TaskRequest {...props} actions={[{ ...action, disabled: true }]} />,
       )
 
       expect(testUtils.getActionButton(action.text)).toBeDisabled()
@@ -159,17 +154,14 @@ describe('Запрос заявки', () => {
 
     test('Отображает состояние загрузки', async () => {
       render(
-        <TaskRequest
-          {...requiredProps}
-          actions={[{ ...action, loading: true }]}
-        />,
+        <TaskRequest {...props} actions={[{ ...action, loading: true }]} />,
       )
 
       await expectActionLoadingStarted(action.text)
     })
 
     test('При клике обработчик вызывается корректно', async () => {
-      const { user } = render(<TaskRequest {...requiredProps} />)
+      const { user } = render(<TaskRequest {...props} />)
 
       await testUtils.clickActionButton(user, action.text)
       expect(action.onClick).toBeCalledTimes(1)

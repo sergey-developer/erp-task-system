@@ -466,7 +466,7 @@ const TaskCard: FC<TaskCardProps> = ({
                   taskSuspendRequestStatus.isInProgress
                     ? 'Запрошено ожидание'
                     : taskSuspendRequestStatus.isApproved
-                    ? 'Заявка находится в ожидании'
+                    ? 'Заявка в ожидании'
                     : ''
                 }
                 date={task.suspendRequest.suspendEndAt}
