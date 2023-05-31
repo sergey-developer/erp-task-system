@@ -169,6 +169,10 @@ describe('Форма добавления комментария', () => {
       await testUtils.clickSubmitButton(user)
 
       expect(requiredProps.onSubmit).toBeCalledTimes(1)
+      expect(requiredProps.onSubmit).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+      )
     })
   })
 })

@@ -5,7 +5,6 @@ import {
   FormInstance,
   Input,
   ModalProps,
-  Space,
   Typography,
   Upload,
 } from 'antd'
@@ -16,6 +15,7 @@ import { useTaskType } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 
 import BaseModal from 'components/Modals/BaseModal'
+import Space from 'components/Space'
 
 import { validationRules } from 'shared/constants/validation'
 import { getFilesFromEvent } from 'shared/utils/form'
@@ -66,7 +66,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
       okText={OK_BUTTON_TEXT}
       onCancel={onCancel}
     >
-      <Space direction='vertical' size='large'>
+      <Space $block direction='vertical' size='large'>
         <Space direction='vertical'>
           <Text>
             Заполните информацию о работах на объекте и предложенном решении.

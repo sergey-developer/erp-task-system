@@ -1,7 +1,7 @@
 import { ArrayItem } from 'shared/interfaces/utils'
 import { PaginatedListSuccessResponse } from 'shared/models'
 
-export const getPaginatedListResponse = <T extends any[]>(
+export const fakePaginatedListResponse = <T extends any[]>(
   list: T,
 ): PaginatedListSuccessResponse<ArrayItem<T>> => ({
   results: list,

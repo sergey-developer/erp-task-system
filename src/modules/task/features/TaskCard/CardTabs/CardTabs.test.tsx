@@ -28,7 +28,7 @@ const requiredProps: CardTabsProps = {
     status: TaskStatusEnum.New,
     extendedStatus: TaskExtendedStatusEnum.New,
     recordId: fakeIdStr(),
-    suspendRequest: taskFixtures.getSuspendRequest(),
+    suspendRequest: taskFixtures.fakeSuspendRequest(),
     assignee: null,
   },
 }

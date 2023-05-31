@@ -31,7 +31,7 @@ const action: ArrayItem<TaskRequestProps['actions']> = {
 }
 
 const requiredProps: TaskRequestProps & { 'data-testid': string } = {
-  user: commonFixtures.getUser(),
+  user: commonFixtures.fakeUser(),
   title: fakeWord(),
   comment: fakeWord(),
   date: fakeDateString(),
