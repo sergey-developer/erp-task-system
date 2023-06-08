@@ -1,15 +1,9 @@
-import {
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-  within,
-} from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 
 import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/common'
-
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import taskFixtures from 'fixtures/task'
@@ -439,7 +433,9 @@ describe('Карточка заявки', () => {
             availableReasons[0],
           )
           await taskReclassificationModalTestUtils.clickSubmitButton(user)
-          await waitForElementToBeRemoved(modal)
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
         })
       })
     })
@@ -766,7 +762,9 @@ describe('Карточка заявки', () => {
         expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
         expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
         expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
-        await waitForElementToBeRemoved(modal)
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
       })
     })
   })
