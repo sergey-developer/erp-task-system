@@ -96,7 +96,7 @@ describe('Запрос заявки на переклассификацию', ()
 
       expect(
         testUtils.getChildByText(
-          formatDate(requiredProps.date, DATE_TIME_FORMAT),
+          `до ${formatDate(requiredProps.date, DATE_TIME_FORMAT)}`,
         ),
       ).toBeInTheDocument()
     })
