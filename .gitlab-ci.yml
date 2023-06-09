@@ -44,7 +44,7 @@ Tests:
       paths:
         - node_modules/
       policy: pull
-  only:
+  # only:
     # - rc
     # - master
     # - develop
