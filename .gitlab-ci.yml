@@ -47,7 +47,7 @@ Tests:
   only:
     # - rc
     # - master
-    - develop
+    # - develop
   tags:
     - docker
 
