@@ -1,6 +1,5 @@
 import { PaperClipOutlined } from '@ant-design/icons'
 import { Space, Typography } from 'antd'
-import isString from 'lodash/isString'
 import React, { FC } from 'react'
 
 import { TaskAttachmentListModel } from 'modules/task/models'
@@ -27,7 +26,7 @@ const AttachmentList: FC<AttachmentListProps> = ({ attachments }) => {
 
           <Text>({prettyBytes(att.size)})</Text>
 
-          {isString(att.externalId) && (
+          {att.externalId === '' && (
             <Text type='secondary'>Не передано в Х5</Text>
           )}
         </Space>
