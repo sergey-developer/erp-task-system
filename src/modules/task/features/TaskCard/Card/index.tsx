@@ -41,6 +41,7 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
+import { showMultipleErrorNotification } from 'shared/utils/notifications'
 
 import AdditionalInfo from '../AdditionalInfo'
 import CardTabs from '../CardTabs'
@@ -267,6 +268,10 @@ const TaskCard: FC<TaskCardProps> = ({
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
             handleSetFieldsErrors(error, setFields)
+
+            if (error.data.detail) {
+              showMultipleErrorNotification(error.data.detail)
+            }
           }
         }
       }

@@ -11,6 +11,7 @@ import Space from 'components/Space'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
+import { showMultipleErrorNotification } from 'shared/utils/notifications'
 
 import CommentList from './CommentList'
 import CreateCommentForm from './CreateCommentForm'
@@ -51,6 +52,10 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
             handleSetFieldsErrors(error, form.setFields)
+
+            if (error.data.detail) {
+              showMultipleErrorNotification(error.data.detail)
+            }
           }
         }
       }
