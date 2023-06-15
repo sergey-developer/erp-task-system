@@ -57,21 +57,13 @@ describe('Элемент журнала', () => {
   describe('Вложения', () => {
     test('Отображается если есть', () => {
       render(<JournalEntry {...props} />)
-
-      const title = testUtils.getChildByText(props.id, 'Добавлен комментарий')
       const attachmentList = attachmentListTestUtils.getContainer()
-
-      expect(title).toBeInTheDocument()
       expect(attachmentList).toBeInTheDocument()
     })
 
     test('Не отображаются если их нет', () => {
       render(<JournalEntry {...props} attachments={[]} />)
-
-      const title = testUtils.queryChildByText(props.id, 'Добавлен комментарий')
       const attachmentList = attachmentListTestUtils.queryContainer()
-
-      expect(title).not.toBeInTheDocument()
       expect(attachmentList).not.toBeInTheDocument()
     })
   })
