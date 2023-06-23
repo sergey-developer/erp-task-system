@@ -7,6 +7,8 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import baseQueryWithReauth from './baseQueryWithReauth'
 import { BaseApiEnum, CACHE_TIME_LIFE } from './constants'
 import {
+  GetSystemInfoQueryArgs,
+  GetSystemInfoSuccessResponse,
   GetTimeZoneListQueryArgs,
   GetTimeZoneListSuccessResponse,
 } from './models'
@@ -25,8 +27,20 @@ export const baseApiService = createApi({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getSystemInfo: build.query<
+      GetSystemInfoSuccessResponse,
+      GetSystemInfoQueryArgs
+    >({
+      query: () => ({
+        url: BaseApiEnum.GetSystemInfo,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
 })
 
-export const { useGetTimeZoneListQuery, endpoints: baseApiEndpoints } =
-  baseApiService
+export const {
+  useGetTimeZoneListQuery,
+  useGetSystemInfoQuery,
+  endpoints: baseApiEndpoints,
+} = baseApiService
