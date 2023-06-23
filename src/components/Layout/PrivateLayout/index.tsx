@@ -10,7 +10,6 @@ import LoadingArea from 'components/LoadingArea'
 import Spinner from 'components/Spinner'
 
 import { useSystemInfoState } from 'shared/services/api/hooks'
-import { formatDate } from 'shared/utils/date'
 
 import { ContentStyled, FooterStyled } from './styles'
 
@@ -40,8 +39,7 @@ const PrivateLayout: FC = () => {
         {systemInfo && (
           <FooterStyled>
             <Text type='secondary'>
-              R{systemInfo.releaseVersion}.{' '}
-              {formatDate(systemInfo.releasedAt, 'DD.MM.YYYY')}
+              R{systemInfo.releaseVersion}. {systemInfo.releasedAt}
             </Text>
           </FooterStyled>
         )}
