@@ -79,13 +79,13 @@ const PrivateHeader: FC = () => {
   return (
     <HeaderStyled data-testid='private-header' $breakpoints={breakpoints}>
       <Row justify='space-between' align='middle'>
-        <Col span={12}>
+        <Col xxl={12} xl={11}>
           <Row align='middle'>
-            <Col span={7}>
+            <Col xxl={7} xl={8}>
               <Logo />
             </Col>
 
-            <Col span={17}>
+            <Col xxl={17} xl={16}>
               <NavMenu
                 selectedKeys={navMenuSelectedKeys}
                 items={navMenu.items}
