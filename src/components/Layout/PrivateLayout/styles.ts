@@ -25,3 +25,7 @@ export const ContentStyled = styled(Layout.Content)<StyledBreakpointsProps>`
   flex-direction: column;
   flex-flow: column;
 `
+
+export const FooterStyled = styled(Layout.Footer)`
+  padding: 0 10px 10px 10px;
+`
