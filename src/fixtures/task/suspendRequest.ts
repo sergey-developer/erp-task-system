@@ -8,8 +8,9 @@ import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 export const fakeSuspendRequest = (
   props?: Pick<SuspendRequestModel, 'status'>,
 ): SuspendRequestModel => ({
-  id: fakeId(),
   status: props?.status || SuspendRequestStatusEnum.New,
+
+  id: fakeId(),
   comment: fakeWord(),
   suspendEndAt: fakeDateString(),
   author: commonFixtures.fakeUser(),

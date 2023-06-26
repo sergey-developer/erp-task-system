@@ -20,7 +20,7 @@ import TaskReclassificationRequest, {
   TaskReclassificationRequestProps,
 } from './index'
 
-const requiredProps: Readonly<TaskReclassificationRequestProps> = {
+const props: Readonly<TaskReclassificationRequestProps> = {
   user: commonFixtures.fakeUser(),
   comment: fakeWord(),
   date: fakeDateString(),
@@ -65,46 +65,42 @@ export const testUtils = {
 describe('Запрос заявки на переклассификацию', () => {
   describe('Отображается корректно', () => {
     test('Иконка', () => {
-      render(<TaskReclassificationRequest {...requiredProps} />)
+      render(<TaskReclassificationRequest {...props} />)
       expect(testUtils.getIcon()).toBeInTheDocument()
     })
 
     test('Заголовок', () => {
-      render(<TaskReclassificationRequest {...requiredProps} />)
+      render(<TaskReclassificationRequest {...props} />)
       expect(
         testUtils.getChildByText(/запрошена переклассификация/i),
       ).toBeInTheDocument()
     })
 
     test('Комментарий', () => {
-      render(<TaskReclassificationRequest {...requiredProps} />)
-      expect(
-        testUtils.getChildByText(requiredProps.comment),
-      ).toBeInTheDocument()
+      render(<TaskReclassificationRequest {...props} />)
+      expect(testUtils.getChildByText(props.comment)).toBeInTheDocument()
     })
 
     test('Данные пользователя', () => {
-      render(<TaskReclassificationRequest {...requiredProps} />)
+      render(<TaskReclassificationRequest {...props} />)
 
       expect(
-        testUtils.getChildByText(getShortUserName(requiredProps.user)),
+        testUtils.getChildByText(getShortUserName(props.user)),
       ).toBeInTheDocument()
     })
 
     test('Дата создания', () => {
-      render(<TaskReclassificationRequest {...requiredProps} />)
+      render(<TaskReclassificationRequest {...props} />)
 
       expect(
-        testUtils.getChildByText(
-          formatDate(requiredProps.date, DATE_TIME_FORMAT),
-        ),
+        testUtils.getChildByText(formatDate(props.date, DATE_TIME_FORMAT)),
       ).toBeInTheDocument()
     })
   })
 
   describe('Кнопка', () => {
     test('Отображается корректно', () => {
-      render(<TaskReclassificationRequest {...requiredProps} />)
+      render(<TaskReclassificationRequest {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -113,19 +109,15 @@ describe('Запрос заявки на переклассификацию', ()
     })
 
     test('Можно сделать не активной', () => {
-      render(
-        <TaskReclassificationRequest {...requiredProps} cancelBtnDisabled />,
-      )
+      render(<TaskReclassificationRequest {...props} cancelBtnDisabled />)
       expect(testUtils.getCancelButton()).toBeDisabled()
     })
 
     test('При клике обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <TaskReclassificationRequest {...requiredProps} />,
-      )
+      const { user } = render(<TaskReclassificationRequest {...props} />)
 
       await testUtils.clickCancelButton(user)
-      expect(requiredProps.onCancel).toBeCalledTimes(1)
+      expect(props.onCancel).toBeCalledTimes(1)
     })
   })
 })
