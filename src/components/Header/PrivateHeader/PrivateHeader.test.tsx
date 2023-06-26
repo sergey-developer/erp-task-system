@@ -1,6 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { MaybeNull } from 'shared/interfaces/utils'
+
 import {
   clickSelectOption,
   expectLoadingFinishedBySelect,
@@ -42,6 +44,35 @@ const expectTimeZoneLoadingStarted = () =>
 const expectTimeZoneLoadingFinished = () =>
   expectLoadingFinishedBySelect(getTimeZoneSelectContainer())
 
+// user status
+const getUserStatusSelectContainer = (): HTMLElement =>
+  within(getContainer()).getByTestId('user-status-select')
+
+const queryUserStatusSelectContainer = (): MaybeNull<HTMLElement> =>
+  within(getContainer()).queryByTestId('user-status-select')
+
+const getUserStatusSelect = (opened?: boolean) =>
+  getSelect(getUserStatusSelectContainer(), {
+    name: 'Статус пользователя',
+    expanded: opened,
+  })
+
+const getSelectedUserStatus = () =>
+  getSelectedOption(getUserStatusSelectContainer())
+
+const openUserStatusSelect = (user: UserEvent) =>
+  openSelect(user, getUserStatusSelectContainer())
+
+const setUserStatus = clickSelectOption
+
+const getAllUserStatusOption = getAllSelectOption
+
+const expectUserStatusLoadingStarted = () =>
+  expectLoadingStartedBySelect(getUserStatusSelectContainer())
+
+const expectUserStatusLoadingFinished = () =>
+  expectLoadingFinishedBySelect(getUserStatusSelectContainer())
+
 export const testUtils = {
   getContainer,
 
@@ -53,6 +84,16 @@ export const testUtils = {
   getAllTimeZoneOption,
   expectTimeZoneLoadingStarted,
   expectTimeZoneLoadingFinished,
+
+  getUserStatusSelectContainer,
+  queryUserStatusSelectContainer,
+  getUserStatusSelect,
+  getSelectedUserStatus,
+  openUserStatusSelect,
+  setUserStatus,
+  getAllUserStatusOption,
+  expectUserStatusLoadingStarted,
+  expectUserStatusLoadingFinished,
 }
 
 describe('PrivateHeader', () => {
