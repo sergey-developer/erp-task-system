@@ -1,4 +1,4 @@
-import { Col, Row, Select, Space, Typography } from 'antd'
+import { Badge, Col, Row, Select, Space, Typography } from 'antd'
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import moment from 'moment-timezone'
 import React, { FC, useMemo } from 'react'
@@ -12,6 +12,7 @@ import { userApiMessages } from 'modules/user/constants/errorMessages'
 import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 import { useUpdateUserTimeZoneMutation } from 'modules/user/services/userApi.service'
+import { getUserRoleMap } from 'modules/user/utils'
 
 import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -34,6 +35,7 @@ const PrivateHeader: FC = () => {
 
   const { data: userMeCode } = useUserMeCodeState()
   const { data: userMe } = useUserMeState()
+  const { isFirstLineSupportRole } = getUserRoleMap(userMe?.role)
 
   const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
     useTimeZoneListState()
@@ -79,13 +81,13 @@ const PrivateHeader: FC = () => {
   return (
     <HeaderStyled data-testid='private-header' $breakpoints={breakpoints}>
       <Row justify='space-between' align='middle'>
-        <Col xxl={12} xl={11}>
+        <Col xxl={12} xl={8}>
           <Row align='middle'>
-            <Col xxl={7} xl={8}>
+            <Col xxl={7} xl={10}>
               <Logo />
             </Col>
 
-            <Col xxl={17} xl={16}>
+            <Col xxl={17} xl={14}>
               <NavMenu
                 selectedKeys={navMenuSelectedKeys}
                 items={navMenu.items}
@@ -107,6 +109,40 @@ const PrivateHeader: FC = () => {
               onChange={(value) => handleUpdateTimeZone(value as string)}
               dropdownStyle={timeZoneDropdownStyles}
             />
+
+            {isFirstLineSupportRole && (
+              <Select
+                data-testid='user-status-select'
+                aria-label='Статус пользователя'
+                options={[
+                  {
+                    label: (
+                      <Space>
+                        <Badge status='success' /> Работаю
+                      </Space>
+                    ),
+                    value: 1,
+                  },
+                  {
+                    label: (
+                      <Space>
+                        <Badge status='error' /> Не в сети
+                      </Space>
+                    ),
+                    value: 2,
+                  },
+                  {
+                    label: (
+                      <Space>
+                        <Badge status='warning' /> Перерыв
+                      </Space>
+                    ),
+                    value: 3,
+                  },
+                ]}
+                defaultValue={1}
+              />
+            )}
 
             {userMeCode && <Text title='user code'>{userMeCode.code}</Text>}
 
