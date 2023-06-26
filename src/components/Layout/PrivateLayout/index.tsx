@@ -1,4 +1,4 @@
-import { Layout } from 'antd'
+import { Layout, Typography } from 'antd'
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
@@ -9,11 +9,16 @@ import PrivateHeader from 'components/Header/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
 import Spinner from 'components/Spinner'
 
-import { ContentStyled } from './styles'
+import { useSystemInfoState } from 'shared/services/api/hooks'
+
+import { ContentStyled, FooterStyled } from './styles'
+
+const { Text } = Typography
 
 const PrivateLayout: FC = () => {
   const breakpoints = useBreakpoint()
   const { isFetching: userMeIsFetching } = useUserMeState()
+  const { data: systemInfo } = useSystemInfoState()
 
   return (
     <Layout>
@@ -30,6 +35,14 @@ const PrivateLayout: FC = () => {
             <Outlet />
           </React.Suspense>
         </ContentStyled>
+
+        {systemInfo && (
+          <FooterStyled>
+            <Text type='secondary'>
+              R{systemInfo.releaseVersion}. {systemInfo.releasedAt}
+            </Text>
+          </FooterStyled>
+        )}
       </LoadingArea>
     </Layout>
   )
