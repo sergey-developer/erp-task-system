@@ -25,6 +25,7 @@ export const fakeWorkGroupPriority = (
       min: 1,
       max: 4,
     }) as NonNullable<WorkGroupListItemModel['priority']>['value']),
+
   description: fakeWord(),
 })
 
@@ -42,7 +43,6 @@ export const fakeWorkGroup = (
     Partial<Pick<WorkGroupListItemModel, 'id' | 'priority'>>,
 ): NonNullable<WorkGroupListItemModel> => ({
   id: props?.id || fakeId(),
-  name: fakeName(),
   members: fakeWorkGroupMemberList(props?.memberAmount),
   seniorEngineer: {
     id: props?.seniorEngineerId || fakeId(),
@@ -53,4 +53,6 @@ export const fakeWorkGroup = (
     fullName: fakeName(),
   },
   priority: props?.priority || fakeWorkGroupPriority(),
+
+  name: fakeName(),
 })

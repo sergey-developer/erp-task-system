@@ -8,12 +8,14 @@ import { getPrivateRoutesConfig } from 'configs/routes'
 import { useGetUserMe } from 'modules/user/hooks'
 import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
 
+import { useGetSystemInfoQuery } from 'shared/services/api'
 import { useGetTimeZoneList } from 'shared/services/api/hooks'
 
 const PrivateApp: FC = () => {
   const { data: userMe, isSuccess: userMeLoadedSuccess } = useGetUserMe()
   useGetTimeZoneList()
   useGetUserMeCodeQuery()
+  useGetSystemInfoQuery()
 
   /* Предполагается что в компоненте PrivateLayout отображается спиннер
    во время загрузки данных пользователя, прежде чем отобразить страницу

@@ -1,8 +1,4 @@
-import {
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { screen, waitForElementToBeRemoved } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as cancelSubTaskModalTestUtils } from 'modules/subTask/features/CancelSubTaskModal/CancelSubTaskModal.test'
@@ -300,9 +296,7 @@ describe('Вкладка списка заданий', () => {
         })
         await createSubTaskModalTestUtils.clickSubmitButton(user)
 
-        await waitFor(() => {
-          expect(modal).not.toBeInTheDocument()
-        })
+        await waitForElementToBeRemoved(modal)
       })
 
       test('В список добавляется новое задание', async () => {
@@ -495,9 +489,7 @@ describe('Вкладка списка заданий', () => {
       const modal = await reworkSubTaskModalTestUtils.findContainer()
       await reworkSubTaskModalTestUtils.clickCancelButton(user)
 
-      await waitFor(() => {
-        expect(modal).not.toBeInTheDocument()
-      })
+      await waitForElementToBeRemoved(modal)
     })
 
     test('Отображает состояние загрузки', async () => {
@@ -557,9 +549,7 @@ describe('Вкладка списка заданий', () => {
         await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
-        await waitFor(() => {
-          expect(modal).not.toBeInTheDocument()
-        })
+        await waitForElementToBeRemoved(modal)
       })
 
       test('Статус задачи меняется на "В процессе"', async () => {
@@ -598,9 +588,7 @@ describe('Вкладка списка заданий', () => {
         await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
-        await waitFor(() => {
-          expect(modal).not.toBeInTheDocument()
-        })
+        await waitForElementToBeRemoved(modal)
 
         expect(
           taskStatusTestUtils.getContainerIn(
@@ -638,10 +626,7 @@ describe('Вкладка списка заданий', () => {
         await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
-        await waitFor(() => {
-          expect(modal).not.toBeInTheDocument()
-        })
-
+        await waitForElementToBeRemoved(modal)
         expect(reworkButton).not.toBeInTheDocument()
       })
     })
@@ -772,9 +757,7 @@ describe('Вкладка списка заданий', () => {
       const modal = await cancelSubTaskModalTestUtils.findContainer()
       await cancelSubTaskModalTestUtils.clickCancelButton(user)
 
-      await waitFor(() => {
-        expect(modal).not.toBeInTheDocument()
-      })
+      await waitForElementToBeRemoved(modal)
     })
 
     test('Отображает состояние загрузки', async () => {
@@ -834,9 +817,7 @@ describe('Вкладка списка заданий', () => {
         await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
-        await waitFor(() => {
-          expect(modal).not.toBeInTheDocument()
-        })
+        await waitForElementToBeRemoved(modal)
       })
 
       test('Статус задачи меняется на "Закрыта"', async () => {
@@ -875,9 +856,7 @@ describe('Вкладка списка заданий', () => {
         await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
-        await waitFor(() => {
-          expect(modal).not.toBeInTheDocument()
-        })
+        await waitForElementToBeRemoved(modal)
 
         expect(
           taskStatusTestUtils.getContainerIn(
@@ -915,10 +894,7 @@ describe('Вкладка списка заданий', () => {
         await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
-        await waitFor(() => {
-          expect(modal).not.toBeInTheDocument()
-        })
-
+        await waitForElementToBeRemoved(modal)
         expect(cancelButton).not.toBeInTheDocument()
       })
     })

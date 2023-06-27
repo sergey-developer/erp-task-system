@@ -24,7 +24,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks'
-import { ErrorResponse, isBadRequestError } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 const CreateSubTaskModal = React.lazy(
@@ -119,10 +119,11 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
         })
 
         toggleCancelSubTaskModalOpened()
-      } catch (exception) {
-        const error = exception as ErrorResponse
-        if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, setFields)
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            handleSetFieldsErrors(error, setFields)
+          }
         }
       }
     },
@@ -151,10 +152,11 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
         })
 
         toggleReworkSubTaskModalOpened()
-      } catch (exception) {
-        const error = exception as ErrorResponse
-        if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, setFields)
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            handleSetFieldsErrors(error, setFields)
+          }
         }
       }
     },

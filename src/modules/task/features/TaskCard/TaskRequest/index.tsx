@@ -8,9 +8,7 @@ import { getShortUserName } from 'modules/user/utils'
 import Space from 'components/Space'
 import SeparatedText from 'components/Texts/SeparatedText'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { commonEllipsisConfig } from 'shared/constants/text'
-import { formatDate } from 'shared/utils/date'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 import { WrapperStyled } from './styles'
@@ -54,8 +52,7 @@ const TaskRequest: FC<TaskRequestProps> = ({
 
             <SeparatedText>
               <Text type='secondary'>{getShortUserName(user)}</Text>
-
-              <Text type='secondary'>{formatDate(date, DATE_TIME_FORMAT)}</Text>
+              <Text type='secondary'>{date}</Text>
             </SeparatedText>
           </Space>
 

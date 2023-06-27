@@ -6,5 +6,6 @@ export const fakeWorkGroup = (
   props?: Partial<Pick<TaskWorkGroupModel, 'id'>>,
 ): TaskWorkGroupModel => ({
   id: props?.id || fakeId(),
+
   name: fakeWord(),
 })

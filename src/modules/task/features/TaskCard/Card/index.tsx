@@ -37,11 +37,7 @@ import Spinner from 'components/Spinner'
 import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
-import {
-  ErrorResponse,
-  isBadRequestError,
-  isErrorResponse,
-} from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
@@ -295,10 +291,11 @@ const TaskCard: FC<TaskCardProps> = ({
           ...values,
         })
         closeTaskReclassificationModal()
-      } catch (exception) {
-        const error = exception as ErrorResponse
-        if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, setFields)
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            handleSetFieldsErrors(error, setFields)
+          }
         }
       }
     },
@@ -317,10 +314,11 @@ const TaskCard: FC<TaskCardProps> = ({
         await updateWorkGroup({ taskId: task.id, ...values })
         closeTaskSecondLineModal()
         closeTaskCard()
-      } catch (exception) {
-        const error = exception as ErrorResponse
-        if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, setFields)
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            handleSetFieldsErrors(error, setFields)
+          }
         }
       }
     },
@@ -339,10 +337,11 @@ const TaskCard: FC<TaskCardProps> = ({
         await deleteWorkGroup({ taskId: task.id, ...values })
         closeTaskFirstLineModal()
         closeTaskCard()
-      } catch (exception) {
-        const error = exception as ErrorResponse
-        if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, setFields)
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            handleSetFieldsErrors(error, setFields)
+          }
         }
       }
     },
@@ -385,20 +384,20 @@ const TaskCard: FC<TaskCardProps> = ({
           })
 
           closeRequestTaskSuspendModal()
-        } catch (exception) {
-          const error = exception as ErrorResponse
+        } catch (error) {
+          if (isErrorResponse(error)) {
+            if (isBadRequestError(error)) {
+              const badRequestError =
+                error as CreateTaskSuspendRequestBadRequestErrorResponse
 
-          if (isBadRequestError(error)) {
-            const badRequestError =
-              error as CreateTaskSuspendRequestBadRequestErrorResponse
-
-            handleSetFieldsErrors(
-              {
-                ...badRequestError,
-                data: getFormErrorsFromBadRequestError(badRequestError),
-              },
-              setFields,
-            )
+              handleSetFieldsErrors(
+                {
+                  ...badRequestError,
+                  data: getFormErrorsFromBadRequestError(badRequestError),
+                },
+                setFields,
+              )
+            }
           }
         }
       },
@@ -471,7 +470,7 @@ const TaskCard: FC<TaskCardProps> = ({
                   taskSuspendRequestStatus.isInProgress
                     ? 'Запрошено ожидание'
                     : taskSuspendRequestStatus.isApproved
-                    ? 'Заявка находится в ожидании'
+                    ? 'Заявка в ожидании'
                     : ''
                 }
                 date={task.suspendRequest.suspendEndAt}
