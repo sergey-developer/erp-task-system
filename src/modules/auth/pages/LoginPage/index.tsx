@@ -6,6 +6,7 @@ import { RouteEnum } from 'configs/routes'
 
 import { useLogin } from 'modules/auth/hooks'
 
+import { BaseCard } from 'components/Card/BaseCard'
 import Space from 'components/Space'
 
 import { APP_NAME } from 'shared/constants/common'
@@ -13,7 +14,7 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { handleSetFieldsErrors } from 'shared/utils/form'
 
 import { LoginFormFields } from './interfaces'
-import { CardStyled, FormStyled, PageTitleStyled } from './styles'
+import { PageTitleStyled } from './styles'
 import { getLoginError } from './utils'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'
 
@@ -40,7 +41,7 @@ const LoginPage: FC = () => {
   }
 
   return (
-    <CardStyled data-testid='login-card'>
+    <BaseCard data-testid='login-card'>
       <Space direction='vertical' size='large'>
         <Space direction='vertical' size={48} $block>
           <PageTitleStyled level={4}>{APP_NAME}</PageTitleStyled>
@@ -51,7 +52,7 @@ const LoginPage: FC = () => {
         <Space direction='vertical'>
           {loginError && <Text type='danger'>{loginError}</Text>}
 
-          <FormStyled<LoginFormFields>
+          <Form<LoginFormFields>
             form={form}
             onFinish={handleSubmit}
             layout='vertical'
@@ -103,10 +104,10 @@ const LoginPage: FC = () => {
                 </Button>
               </Link>
             </Space>
-          </FormStyled>
+          </Form>
         </Space>
       </Space>
-    </CardStyled>
+    </BaseCard>
   )
 }
 
