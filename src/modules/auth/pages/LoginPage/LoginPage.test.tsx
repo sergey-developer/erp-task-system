@@ -7,7 +7,7 @@ import { RouteEnum } from 'configs/routes'
 import {
   LOGIN_BAD_REQUEST_ERROR_MSG,
   LOGIN_WRONG_DATA_ERROR_MSG,
-} from 'modules/auth/constants/errors'
+} from 'modules/auth/constants'
 import LoginPage from 'modules/auth/pages/LoginPage'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 

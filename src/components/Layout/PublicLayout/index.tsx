@@ -4,16 +4,16 @@ import { Outlet } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
 
-import { ContentStyled } from './styles'
+import { BaseLayoutContent } from '../BaseLayoutContent'
 
 const PublicLayout: FC = () => {
   return (
     <Layout>
-      <ContentStyled>
+      <BaseLayoutContent $centered>
         <React.Suspense fallback={<Spinner area='parent' size='large' />}>
           <Outlet />
         </React.Suspense>
-      </ContentStyled>
+      </BaseLayoutContent>
     </Layout>
   )
 }

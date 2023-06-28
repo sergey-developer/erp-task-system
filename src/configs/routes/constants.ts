@@ -5,7 +5,8 @@ export enum RouteEnum {
 
   // auth routes
   Login = '/login',
-  ForgotPassword = '/forgotPassword',
+  ForgotPassword = '/password/forgot',
+  ChangePassword = '/password/change',
 
   // task routes
   TaskList = '/tasks',

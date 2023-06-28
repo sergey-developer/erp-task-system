@@ -1,4 +1,4 @@
-import { AuthEndpointsEnum } from 'modules/auth/constants/api'
+import { AuthEndpointsEnum } from 'modules/auth/constants'
 import {
   LoginMutationArgs,
   LoginSuccessResponse,
