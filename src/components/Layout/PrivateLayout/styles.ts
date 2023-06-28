@@ -7,6 +7,8 @@ import {
 } from 'shared/interfaces/breakpoints'
 import { applyBreakpointStyles } from 'shared/utils/breakpoints'
 
+import { BaseLayoutContent, BaseLayoutContentProps } from '../BaseLayoutContent'
+
 const contentBreakpointStyles: StyledBreakpointStyles = {
   xxl: css`
     padding: 32px 40px;
@@ -16,14 +18,13 @@ const contentBreakpointStyles: StyledBreakpointStyles = {
   `,
 }
 
-export const ContentStyled = styled(Layout.Content)<StyledBreakpointsProps>`
+export const ContentStyled = styled(BaseLayoutContent)<
+  StyledBreakpointsProps & BaseLayoutContentProps
+>`
   ${({ $breakpoints }) =>
     applyBreakpointStyles($breakpoints, contentBreakpointStyles)}
 
   min-height: calc(100vh - 60px);
-  display: flex;
-  flex-direction: column;
-  flex-flow: column;
 `
 
 export const FooterStyled = styled(Layout.Footer)`

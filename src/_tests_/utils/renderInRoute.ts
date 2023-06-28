@@ -21,6 +21,7 @@ const renderInRoute = (
 
   return {
     checkRouteChanged: (): boolean => !isEqual(window.location.pathname, route),
+    getCurrentRoute: () => window.location.pathname,
     ...renderInAppProvider(ui, options),
   }
 }
