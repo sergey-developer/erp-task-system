@@ -1,2 +1,2 @@
 export * from './showErrorNotification'
-export * from './showMultipleErrorNotification'
+export * from './showSuccessNotification'

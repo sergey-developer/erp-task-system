@@ -6,3 +6,9 @@ export const LOGIN_WRONG_DATA_ERROR_MSG = 'Неверный логин и/или
 
 export const INCORRECT_PASSWORD_ERROR_MSG =
   'Пароль не соответствует требованиям: не менее 8 символов, минимум одна цифра, минимум одна буква в верхнем и нижнем регистре, минимум один из спецсимволов ~!@#$%^&*_-+=`|\\(){}[]:;"\'<>,.?/'
+
+export const UPDATE_PASSWORD_SUCCESS_MSG = 'Пароль успешно изменен'
+
+export const updatePasswordErrorMessages = {
+  commonError: 'Ошибка обновления пароля',
+} as const
