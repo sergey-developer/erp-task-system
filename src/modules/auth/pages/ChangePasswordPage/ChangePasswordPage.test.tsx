@@ -1,12 +1,36 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { INCORRECT_PASSWORD_ERROR_MSG } from 'modules/auth/constants'
+import { RouteEnum } from 'configs/routes'
+
+import {
+  INCORRECT_PASSWORD_ERROR_MSG,
+  UPDATE_PASSWORD_SUCCESS_MSG,
+  updatePasswordErrorMessages,
+} from 'modules/auth/constants'
 
 import { validationMessages } from 'shared/constants/validation'
 
 import { CORRECT_PASSWORD } from '_tests_/constants/auth'
-import { fakeWord, getButtonIn, render } from '_tests_/utils'
+import {
+  mockUpdatePasswordBadRequestError,
+  mockUpdatePasswordNotFoundError,
+  mockUpdatePasswordServerError,
+  mockUpdatePasswordSuccess,
+  mockUpdatePasswordUnauthorizedError,
+} from '_tests_/mocks/api'
+import {
+  expectLoadingFinishedByButton,
+  expectLoadingStartedByButton,
+  fakeWord,
+  findNotification,
+  getButtonIn,
+  queryNotification,
+  render,
+  renderInRoute,
+  setupApiTests,
+  setupNotifications,
+} from '_tests_/utils'
 
 import ChangePasswordPage from './index'
 
@@ -50,12 +74,18 @@ const setConfirmPassword = async (user: UserEvent, value: string) => {
 }
 
 // submit button
-const getSaveButton = () => getButtonIn(getContainer(), 'Сохранить')
+const getSaveButton = () => getButtonIn(getContainer(), /Сохранить/)
 
 const clickSaveButton = async (user: UserEvent) => {
   const submitBtn = getSaveButton()
   await user.click(submitBtn)
 }
+
+// other utils
+const expectLoadingStarted = () => expectLoadingStartedByButton(getSaveButton())
+
+const expectLoadingFinished = () =>
+  expectLoadingFinishedByButton(getSaveButton())
 
 const testUtils = {
   getContainer,
@@ -74,7 +104,13 @@ const testUtils = {
 
   getSaveButton,
   clickSaveButton,
+
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
+
+setupApiTests()
+setupNotifications()
 
 describe('Страница смены пароля', () => {
   test('Заголовок отображается', () => {
@@ -187,6 +223,135 @@ describe('Страница смены пароля', () => {
 
         expect(error).toBeInTheDocument()
       })
+    })
+  })
+
+  describe('При успешном изменении пароля', () => {
+    test('Показывается уведомление и происходит редирект на страницу заявок', async () => {
+      mockUpdatePasswordSuccess()
+
+      const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
+        <ChangePasswordPage />,
+        RouteEnum.ChangePassword,
+      )
+
+      await testUtils.setNewPassword(user, CORRECT_PASSWORD)
+      await testUtils.setConfirmPassword(user, CORRECT_PASSWORD)
+      await testUtils.clickSaveButton(user)
+      await testUtils.expectLoadingFinished()
+
+      const successNotification = await findNotification(
+        UPDATE_PASSWORD_SUCCESS_MSG,
+      )
+
+      expect(successNotification).toBeInTheDocument()
+      expect(checkRouteChanged()).toBe(true)
+      expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+    })
+  })
+
+  describe('При не успешном изменении пароля', () => {
+    test('Обрабатывается ошибка 400', async () => {
+      const badRequestErrorMessage = fakeWord()
+      mockUpdatePasswordBadRequestError({
+        body: { detail: [badRequestErrorMessage] },
+      })
+
+      const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
+        <ChangePasswordPage />,
+        RouteEnum.ChangePassword,
+      )
+
+      await testUtils.setNewPassword(user, CORRECT_PASSWORD)
+      await testUtils.setConfirmPassword(user, CORRECT_PASSWORD)
+      await testUtils.clickSaveButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
+
+      const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      const errorMessage = testUtils.getChildByText(badRequestErrorMessage)
+
+      expect(successNotification).not.toBeInTheDocument()
+      expect(errorMessage).toBeInTheDocument()
+      expect(checkRouteChanged()).toBe(false)
+      expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
+    })
+
+    test('Обрабатывается ошибка 404', async () => {
+      const notFoundErrorMessage = fakeWord()
+      mockUpdatePasswordNotFoundError({
+        body: { detail: [notFoundErrorMessage] },
+      })
+
+      const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
+        <ChangePasswordPage />,
+        RouteEnum.ChangePassword,
+      )
+
+      await testUtils.setNewPassword(user, CORRECT_PASSWORD)
+      await testUtils.setConfirmPassword(user, CORRECT_PASSWORD)
+      await testUtils.clickSaveButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
+
+      const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      const errorMessage = testUtils.getChildByText(notFoundErrorMessage)
+
+      expect(successNotification).not.toBeInTheDocument()
+      expect(errorMessage).toBeInTheDocument()
+      expect(checkRouteChanged()).toBe(false)
+      expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
+    })
+
+    test('Обрабатывается ошибка 401', async () => {
+      const unauthorizedErrorMessage = fakeWord()
+      mockUpdatePasswordUnauthorizedError({
+        body: { detail: [unauthorizedErrorMessage] },
+      })
+
+      const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
+        <ChangePasswordPage />,
+        RouteEnum.ChangePassword,
+      )
+
+      await testUtils.setNewPassword(user, CORRECT_PASSWORD)
+      await testUtils.setConfirmPassword(user, CORRECT_PASSWORD)
+      await testUtils.clickSaveButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
+
+      const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      const errorMessage = testUtils.getChildByText(unauthorizedErrorMessage)
+
+      expect(successNotification).not.toBeInTheDocument()
+      expect(errorMessage).toBeInTheDocument()
+      expect(checkRouteChanged()).toBe(false)
+      expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
+    })
+
+    test('Обрабатывается ошибка 500', async () => {
+      mockUpdatePasswordServerError()
+
+      const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
+        <ChangePasswordPage />,
+        RouteEnum.ChangePassword,
+      )
+
+      await testUtils.setNewPassword(user, CORRECT_PASSWORD)
+      await testUtils.setConfirmPassword(user, CORRECT_PASSWORD)
+      await testUtils.clickSaveButton(user)
+      await testUtils.expectLoadingStarted()
+      await testUtils.expectLoadingFinished()
+
+      const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      const errorMessage = testUtils.getChildByText(
+        updatePasswordErrorMessages.commonError,
+      )
+
+      expect(successNotification).not.toBeInTheDocument()
+      expect(errorMessage).toBeInTheDocument()
+      expect(checkRouteChanged()).toBe(false)
+      expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
     })
   })
 })
