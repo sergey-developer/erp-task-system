@@ -80,6 +80,23 @@ const userApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Post,
         data: payload,
       }),
+      onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
+        try {
+          await queryFulfilled
+
+          dispatch(
+            baseApiService.util.updateQueryData(
+              'getUserMe' as never,
+              undefined as never,
+              (user: UserModel) => {
+                Object.assign(user, {
+                  status: { ...user.status, id: payload.status },
+                })
+              },
+            ),
+          )
+        } catch {}
+      },
     }),
   }),
   overrideExisting: false,

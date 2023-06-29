@@ -179,7 +179,7 @@ const PrivateHeader: FC = () => {
                 options={userStatusOptions}
                 loading={userStatusListIsFetching}
                 disabled={updateUserStatusIsLoading}
-                defaultValue={userMe?.status.id}
+                value={userMe?.status.id}
                 onSelect={handleSelectUserStatus}
               />
             )}
