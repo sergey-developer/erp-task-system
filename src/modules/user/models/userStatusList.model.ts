@@ -1,7 +1,5 @@
-export type UserStatusListItemModel = {
-  id: number
-  title: string
-  color: string
-}
+import { UserStatusModel } from './userStatus.model'
+
+export type UserStatusListItemModel = UserStatusModel
 
 export type UserStatusListModel = Array<UserStatusListItemModel>

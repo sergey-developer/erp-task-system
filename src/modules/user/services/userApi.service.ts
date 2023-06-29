@@ -7,11 +7,13 @@ import {
   GetUserMeSuccessResponse,
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
+  UpdateUserStatusMutationArgs,
+  UpdateUserStatusSuccessResponse,
   UpdateUserTimeZoneMutationArgs,
   UpdateUserTimeZoneSuccessResponse,
   UserModel,
 } from 'modules/user/models'
-import { updateUserUrl } from 'modules/user/utils'
+import { updateUserStatusUrl, updateUserUrl } from 'modules/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
@@ -69,6 +71,16 @@ const userApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    updateUserStatus: build.mutation<
+      UpdateUserStatusSuccessResponse,
+      UpdateUserStatusMutationArgs
+    >({
+      query: ({ userId, ...payload }) => ({
+        url: updateUserStatusUrl(userId),
+        method: HttpMethodEnum.Post,
+        data: payload,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
@@ -78,5 +90,6 @@ export const {
   useGetUserMeCodeQuery,
   useGetUserStatusListQuery,
   useUpdateUserTimeZoneMutation,
+  useUpdateUserStatusMutation,
   endpoints: userApiEndpoints,
 } = userApiService
