@@ -2,6 +2,8 @@ import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 
+import { UserStatusModel } from './userStatus.model'
+
 export type BaseUserModel = {
   id: number
   firstName: string
@@ -16,4 +18,5 @@ export type UserModel = BaseUserModel & {
   timezone: string
   isStaff: boolean
   phone: MaybeNull<string>
+  status: UserStatusModel
 }

@@ -9,3 +9,12 @@ export const userApiMessages = {
     commonError: 'Ошибка обновления временной зоны пользователя',
   },
 } as const
+
+// todo: переделать по этому примеру
+export const getUserStatusListErrorMessages = {
+  commonError: 'Ошибка получения статусов пользователя',
+} as const
+
+export const updateUserStatusErrorMessages = {
+  commonError: 'Ошибка обновления статуса пользователя',
+} as const
