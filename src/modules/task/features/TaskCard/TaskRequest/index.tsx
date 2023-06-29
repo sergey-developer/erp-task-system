@@ -5,8 +5,8 @@ import React, { FC, ReactElement } from 'react'
 import { BaseUserModel } from 'modules/user/models'
 import { getShortUserName } from 'modules/user/utils'
 
+import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
-import SeparatedText from 'components/Texts/SeparatedText'
 
 import { commonEllipsisConfig } from 'shared/constants/text'
 import { renderStringWithLineBreak } from 'shared/utils/string'

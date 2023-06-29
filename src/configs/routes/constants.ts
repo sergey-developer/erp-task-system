@@ -1,17 +1,20 @@
 export enum RouteEnum {
-  // common routes
+  // other routes
   Root = '/',
   NotFound = '*',
 
+  // fiscal drives routes
+  FiscalDrives = '/fiscal-drives',
+
   // auth routes
   Login = '/login',
-  ForgotPassword = '/forgotPassword',
+  ForgotPassword = '/forgot-password',
 
   // task routes
   TaskList = '/tasks',
 
   // work group routes
-  WorkingGroups = '/workingGroups',
+  WorkingGroups = '/working-groups',
 
   // monitoring routes
   Monitoring = '/monitoring',

@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 
 import { useUserMeState } from 'modules/user/hooks'
 
-import PrivateHeader from 'components/Header/PrivateHeader'
+import PrivateHeader from 'components/Headers/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
 import Spinner from 'components/Spinner'
 
