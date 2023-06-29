@@ -46,7 +46,7 @@ const baseQuery =
           status,
           data: isPlainObject(errorData)
             ? errorData
-            : { detail: commonApiMessages.unknownError },
+            : { detail: [commonApiMessages.unknownError] },
         },
       }
     }

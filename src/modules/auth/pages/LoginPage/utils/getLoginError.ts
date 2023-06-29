@@ -9,7 +9,7 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import { isErrorResponse } from 'shared/services/api'
 
 export const getLoginError = (error: unknown): MaybeNull<string> => {
-  if (!error || !isErrorResponse(error)) return null
+  if (!isErrorResponse(error)) return null
 
   switch (error.status) {
     case HttpCodeEnum.BadRequest:
