@@ -25,7 +25,7 @@ import {
   modalTestUtils,
   querySelect,
   render,
-  selectDisabled,
+  selectDisabledIn,
   setupApiTests,
   openSelect,
 } from '_tests_/utils'
@@ -73,7 +73,8 @@ const expectWorkGroupLoadingStarted = () =>
 const expectWorkGroupLoadingFinished = () =>
   expectLoadingFinishedBySelect(getWorkGroupBlock())
 
-const expectWorkGroupSelectDisabled = () => selectDisabled(getWorkGroupBlock())
+const expectWorkGroupSelectDisabled = () =>
+  selectDisabledIn(getWorkGroupBlock())
 
 const openWorkGroup = async (user: UserEvent) => {
   await openSelect(user, getWorkGroupBlock())

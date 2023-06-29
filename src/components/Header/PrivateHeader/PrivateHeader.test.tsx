@@ -7,6 +7,8 @@ import {
   clickSelectOption,
   expectLoadingFinishedBySelect,
   expectLoadingStartedBySelect,
+  expectSelectDisabled,
+  expectSelectNotDisabled,
   getAllSelectOption,
   getSelect,
   getSelectedOption,
@@ -73,6 +75,12 @@ const expectUserStatusLoadingStarted = () =>
 const expectUserStatusLoadingFinished = () =>
   expectLoadingFinishedBySelect(getUserStatusSelectContainer())
 
+const expectUserStatusSelectDisabled = () =>
+  expectSelectDisabled(getUserStatusSelectContainer())
+
+const expectUserStatusSelectNotDisabled = () =>
+  expectSelectNotDisabled(getUserStatusSelectContainer())
+
 export const testUtils = {
   getContainer,
 
@@ -94,6 +102,8 @@ export const testUtils = {
   getAllUserStatusOption,
   expectUserStatusLoadingStarted,
   expectUserStatusLoadingFinished,
+  expectUserStatusSelectDisabled,
+  expectUserStatusSelectNotDisabled,
 }
 
 describe('PrivateHeader', () => {

@@ -9,14 +9,20 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
-import { userApiMessages } from 'modules/user/constants/errorMessages'
+import {
+  updateUserStatusErrorMessages,
+  userApiMessages,
+} from 'modules/user/constants/errorMessages'
 import {
   useUserMeCodeState,
   useUserMeState,
   useUserStatusListState,
 } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
-import { useUpdateUserTimeZoneMutation } from 'modules/user/services/userApi.service'
+import {
+  useUpdateUserStatusMutation,
+  useUpdateUserTimeZoneMutation,
+} from 'modules/user/services/userApi.service'
 import { getUserRoleMap } from 'modules/user/utils'
 
 import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
@@ -27,9 +33,17 @@ import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
 import { useMatchedRoute } from 'shared/hooks'
-import { isErrorResponse } from 'shared/services/api'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isNotFoundError,
+  isUnauthorizedError,
+} from 'shared/services/api'
 import { useTimeZoneListState } from 'shared/services/api/hooks'
-import { showErrorNotification } from 'shared/utils/notifications'
+import {
+  showErrorNotification,
+  showMultipleErrorNotification,
+} from 'shared/utils/notifications'
 
 import { HeaderStyled, timeZoneDropdownStyles } from './styles'
 
@@ -48,26 +62,13 @@ const PrivateHeader: FC = () => {
   const { data: userStatusList, isFetching: userStatusListIsFetching } =
     useUserStatusListState()
 
-  const userStatusOptions = useMemo<Array<DefaultOptionType>>(
-    () =>
-      userStatusList?.length
-        ? userStatusList.map((status) => ({
-            value: status.id,
-            label: (
-              <Space size={4}>
-                <Badge color={status.color} />
-                <Text>{status.title}</Text>
-              </Space>
-            ),
-          }))
-        : [],
-    [userStatusList],
-  )
-
   const [
     updateUserTimeZoneMutation,
     { isLoading: updateUserTimeZoneIsLoading },
   ] = useUpdateUserTimeZoneMutation()
+
+  const [updateUserStatusMutation, { isLoading: updateUserStatusIsLoading }] =
+    useUpdateUserStatusMutation()
 
   const navMenu = useMemo(() => {
     const userRole = userMe?.role
@@ -85,6 +86,22 @@ const PrivateHeader: FC = () => {
     return { items, itemsKeys }
   }, [userMe?.role])
 
+  const userStatusOptions = useMemo<Array<DefaultOptionType>>(
+    () =>
+      userStatusList?.length
+        ? userStatusList.map((status) => ({
+            value: status.id,
+            label: (
+              <Space size={4}>
+                <Badge color={status.color} />
+                <Text>{status.title}</Text>
+              </Space>
+            ),
+          }))
+        : [],
+    [userStatusList],
+  )
+
   const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
   const activeNavKey = matchedRoute?.pathnameBase
   const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
@@ -98,6 +115,27 @@ const PrivateHeader: FC = () => {
     } catch (error) {
       if (isErrorResponse(error)) {
         showErrorNotification(userApiMessages.updateUserTimeZone.commonError)
+      }
+    }
+  }
+
+  const handleSelectUserStatus = async (status: number) => {
+    if (!userMe) return
+
+    try {
+      await updateUserStatusMutation({ userId: userMe.id, status }).unwrap()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (
+          (isNotFoundError(error) ||
+            isUnauthorizedError(error) ||
+            isBadRequestError(error)) &&
+          error.data.detail
+        ) {
+          showMultipleErrorNotification(error.data.detail)
+        } else {
+          showErrorNotification(updateUserStatusErrorMessages.commonError)
+        }
       }
     }
   }
@@ -140,7 +178,9 @@ const PrivateHeader: FC = () => {
                 aria-label='Статус пользователя'
                 options={userStatusOptions}
                 loading={userStatusListIsFetching}
+                disabled={updateUserStatusIsLoading}
                 defaultValue={userMe?.status.id}
+                onSelect={handleSelectUserStatus}
               />
             )}
 

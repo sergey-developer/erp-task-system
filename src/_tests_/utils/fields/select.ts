@@ -64,9 +64,29 @@ export const expectOptionNotSelected = async (element: HTMLElement) => {
   })
 }
 
-export const selectDisabled = async (element: HTMLElement) => {
+export const selectDisabledIn = async (container: HTMLElement) => {
   await waitFor(() => {
-    expect(element.querySelector('.ant-select-disabled')).toBeInTheDocument()
+    expect(container.querySelector('.ant-select-disabled')).toBeInTheDocument()
+  })
+}
+
+export const selectNotDisabledIn = async (container: HTMLElement) => {
+  await waitFor(() => {
+    expect(
+      container.querySelector('.ant-select-disabled'),
+    ).not.toBeInTheDocument()
+  })
+}
+
+export const expectSelectDisabled = async (select: HTMLElement) => {
+  await waitFor(() => {
+    expect(select).toHaveClass('ant-select-disabled')
+  })
+}
+
+export const expectSelectNotDisabled = async (select: HTMLElement) => {
+  await waitFor(() => {
+    expect(select).not.toHaveClass('ant-select-disabled')
   })
 }
 
@@ -79,13 +99,5 @@ export const expectOptionDisabled = async (element: HTMLElement) => {
 export const expectOptionNotDisabled = async (element: HTMLElement) => {
   await waitFor(() => {
     expect(element).toHaveClass('ant-select-item-option-disabled')
-  })
-}
-
-export const selectNotDisabled = async (element: HTMLElement) => {
-  await waitFor(() => {
-    expect(
-      element.querySelector('.ant-select-disabled'),
-    ).not.toBeInTheDocument()
   })
 }

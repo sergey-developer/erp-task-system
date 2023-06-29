@@ -15,7 +15,9 @@ import {
   mockGetTimeZoneListSuccess,
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
+  mockGetUserStatusListSuccess,
   mockUpdateUserServerError,
+  mockUpdateUserStatusSuccess,
   mockUpdateUserSuccess,
 } from '_tests_/mocks/api'
 import {
@@ -222,6 +224,7 @@ describe('Private app', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetTimeZoneListSuccess()
+          mockGetUserStatusListSuccess()
 
           mockGetUserMeSuccess({
             body: userFixtures.fakeUser({
@@ -237,6 +240,72 @@ describe('Private app', () => {
 
           expect(selectContainer).toBeInTheDocument()
         })
+
+        test('Отображает установленный статус', async () => {
+          mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
+          mockGetTimeZoneListSuccess()
+
+          const fakeUserStatus = userFixtures.fakeUserStatusListItem()
+          mockGetUserStatusListSuccess({ body: [fakeUserStatus] })
+
+          mockGetUserMeSuccess({
+            body: userFixtures.fakeUser({
+              role: UserRoleEnum.FirstLineSupport,
+              status: fakeUserStatus,
+            }),
+          })
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+          await privateHeaderTestUtils.expectUserStatusLoadingFinished()
+          const selectedUserStatus =
+            privateHeaderTestUtils.getSelectedUserStatus()
+
+          expect(selectedUserStatus).toHaveTextContent(
+            new RegExp(fakeUserStatus.title),
+          )
+        })
+
+        test('Можно выбрать статус', async () => {
+          mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
+          mockGetTimeZoneListSuccess()
+
+          const fakeUserStatus1 = userFixtures.fakeUserStatusListItem()
+          const fakeUserStatus2 = userFixtures.fakeUserStatusListItem()
+          mockGetUserStatusListSuccess({
+            body: [fakeUserStatus1, fakeUserStatus2],
+          })
+
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.FirstLineSupport,
+            status: fakeUserStatus2,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockUpdateUserStatusSuccess(fakeUser.id)
+
+          const { user } = render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+          await privateHeaderTestUtils.expectUserStatusLoadingFinished()
+          await privateHeaderTestUtils.openUserStatusSelect(user)
+          await privateHeaderTestUtils.setUserStatus(
+            user,
+            fakeUserStatus1.title,
+          )
+          await privateHeaderTestUtils.expectUserStatusSelectDisabled()
+          await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
+
+          const selectedUserStatus =
+            privateHeaderTestUtils.getSelectedUserStatus()
+
+          expect(selectedUserStatus).toHaveTextContent(
+            new RegExp(fakeUserStatus1.title),
+          )
+        })
       })
 
       describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
@@ -244,6 +313,7 @@ describe('Private app', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetTimeZoneListSuccess()
+          mockGetUserStatusListSuccess()
 
           mockGetUserMeSuccess({
             body: userFixtures.fakeUser({
@@ -266,6 +336,7 @@ describe('Private app', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetTimeZoneListSuccess()
+          mockGetUserStatusListSuccess()
 
           mockGetUserMeSuccess({
             body: userFixtures.fakeUser({
@@ -288,6 +359,7 @@ describe('Private app', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetTimeZoneListSuccess()
+          mockGetUserStatusListSuccess()
 
           mockGetUserMeSuccess({
             body: userFixtures.fakeUser({
