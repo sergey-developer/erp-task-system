@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { useGetTimeZoneListQuery } from '../baseApi.service'
-import { baseApiMessages } from '../constants'
+import { getTimeZoneListErrorMessages } from '../constants'
 import { CustomBaseQueryFn } from '../intefraces'
 import {
   GetTimeZoneListQueryArgs,
@@ -23,7 +23,7 @@ export const useGetTimeZoneList = (): TypedUseQueryHookResult<
     if (!state.isError) return
 
     if (isErrorResponse(state.error)) {
-      showErrorNotification(baseApiMessages.getTimeZoneList.commonError)
+      showErrorNotification(getTimeZoneListErrorMessages.commonError)
     }
   }, [state.error, state.isError])
 

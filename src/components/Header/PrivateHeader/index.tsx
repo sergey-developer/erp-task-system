@@ -1,6 +1,7 @@
 import { Badge, Col, Row, Select, Space, Typography } from 'antd'
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import moment from 'moment-timezone'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -8,10 +9,20 @@ import { getNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
-import { userApiMessages } from 'modules/user/constants/errorMessages'
-import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
+import {
+  updateUserStatusErrorMessages,
+  userApiMessages,
+} from 'modules/user/constants/errorMessages'
+import {
+  useUserMeCodeState,
+  useUserMeState,
+  useUserStatusListState,
+} from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
-import { useUpdateUserTimeZoneMutation } from 'modules/user/services/userApi.service'
+import {
+  useUpdateUserStatusMutation,
+  useUpdateUserTimeZoneMutation,
+} from 'modules/user/services/userApi.service'
 import { getUserRoleMap } from 'modules/user/utils'
 
 import DetailedUserAvatar from 'components/Avatars/DetailedUserAvatar'
@@ -22,9 +33,17 @@ import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
 import { useMatchedRoute } from 'shared/hooks'
-import { isErrorResponse } from 'shared/services/api'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isNotFoundError,
+  isUnauthorizedError,
+} from 'shared/services/api'
 import { useTimeZoneListState } from 'shared/services/api/hooks'
-import { showErrorNotification } from 'shared/utils/notifications'
+import {
+  showErrorNotification,
+  showMultipleErrorNotification,
+} from 'shared/utils/notifications'
 
 import { HeaderStyled, timeZoneDropdownStyles } from './styles'
 
@@ -40,10 +59,16 @@ const PrivateHeader: FC = () => {
   const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
     useTimeZoneListState()
 
+  const { data: userStatusList, isFetching: userStatusListIsFetching } =
+    useUserStatusListState()
+
   const [
     updateUserTimeZoneMutation,
     { isLoading: updateUserTimeZoneIsLoading },
   ] = useUpdateUserTimeZoneMutation()
+
+  const [updateUserStatusMutation, { isLoading: updateUserStatusIsLoading }] =
+    useUpdateUserStatusMutation()
 
   const navMenu = useMemo(() => {
     const userRole = userMe?.role
@@ -61,6 +86,22 @@ const PrivateHeader: FC = () => {
     return { items, itemsKeys }
   }, [userMe?.role])
 
+  const userStatusOptions = useMemo<Array<DefaultOptionType>>(
+    () =>
+      userStatusList?.length
+        ? userStatusList.map((status) => ({
+            value: status.id,
+            label: (
+              <Space size={4}>
+                <Badge color={status.color} />
+                <Text>{status.title}</Text>
+              </Space>
+            ),
+          }))
+        : [],
+    [userStatusList],
+  )
+
   const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
   const activeNavKey = matchedRoute?.pathnameBase
   const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
@@ -74,6 +115,27 @@ const PrivateHeader: FC = () => {
     } catch (error) {
       if (isErrorResponse(error)) {
         showErrorNotification(userApiMessages.updateUserTimeZone.commonError)
+      }
+    }
+  }
+
+  const handleSelectUserStatus = async (status: number) => {
+    if (!userMe) return
+
+    try {
+      await updateUserStatusMutation({ userId: userMe.id, status }).unwrap()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (
+          (isNotFoundError(error) ||
+            isUnauthorizedError(error) ||
+            isBadRequestError(error)) &&
+          error.data.detail
+        ) {
+          showMultipleErrorNotification(error.data.detail)
+        } else {
+          showErrorNotification(updateUserStatusErrorMessages.commonError)
+        }
       }
     }
   }
@@ -114,33 +176,11 @@ const PrivateHeader: FC = () => {
               <Select
                 data-testid='user-status-select'
                 aria-label='Статус пользователя'
-                options={[
-                  {
-                    label: (
-                      <Space>
-                        <Badge status='success' /> Работаю
-                      </Space>
-                    ),
-                    value: 1,
-                  },
-                  {
-                    label: (
-                      <Space>
-                        <Badge status='error' /> Не в сети
-                      </Space>
-                    ),
-                    value: 2,
-                  },
-                  {
-                    label: (
-                      <Space>
-                        <Badge status='warning' /> Перерыв
-                      </Space>
-                    ),
-                    value: 3,
-                  },
-                ]}
-                defaultValue={1}
+                options={userStatusOptions}
+                loading={userStatusListIsFetching}
+                disabled={updateUserStatusIsLoading}
+                value={userMe?.status.id}
+                onSelect={handleSelectUserStatus}
               />
             )}
 
