@@ -5,6 +5,8 @@ import {
   GetUserMeCodeSuccessResponse,
   GetUserMeQueryArgs,
   GetUserMeSuccessResponse,
+  GetUserStatusListQueryArgs,
+  GetUserStatusListSuccessResponse,
   UpdateUserTimeZoneMutationArgs,
   UpdateUserTimeZoneSuccessResponse,
   UserModel,
@@ -58,6 +60,15 @@ const userApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getUserStatusList: build.query<
+      GetUserStatusListSuccessResponse,
+      GetUserStatusListQueryArgs
+    >({
+      query: () => ({
+        url: UserEndpointEnum.GetUserStatusList,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
@@ -65,6 +76,7 @@ const userApiService = baseApiService.injectEndpoints({
 export const {
   useGetUserMeQuery,
   useGetUserMeCodeQuery,
+  useGetUserStatusListQuery,
   useUpdateUserTimeZoneMutation,
   endpoints: userApiEndpoints,
 } = userApiService
