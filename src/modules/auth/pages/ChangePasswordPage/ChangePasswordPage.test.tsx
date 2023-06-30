@@ -168,6 +168,7 @@ describe('Страница смены пароля', () => {
         const { user } = render(<ChangePasswordPage />)
 
         await testUtils.setNewPassword(user, fakeWord())
+        await testUtils.clickSaveButton(user)
         const error = await testUtils.findNewPasswordError(
           INCORRECT_PASSWORD_ERROR_MSG,
         )
@@ -216,6 +217,7 @@ describe('Страница смены пароля', () => {
 
         await testUtils.setNewPassword(user, fakeWord())
         await testUtils.setConfirmPassword(user, fakeWord())
+        await testUtils.clickSaveButton(user)
 
         const error = await testUtils.findConfirmPasswordError(
           'Пароли не совпадают',
