@@ -54,6 +54,7 @@ const ChangePasswordPage: FC = () => {
             form={form}
             onFinish={handleSubmit}
             layout='vertical'
+            validateTrigger={['onSubmit', 'onBlur']}
           >
             <Form.Item
               data-testid='new-password'
