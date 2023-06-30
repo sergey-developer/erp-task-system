@@ -24,8 +24,8 @@ import { makeUserNameObject } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
+import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
-import SeparatedText from 'components/Texts/SeparatedText'
 
 import { renderStringWithLineBreak } from 'shared/utils/string'
 

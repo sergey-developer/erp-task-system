@@ -7,8 +7,8 @@ import {
 } from 'modules/user/constants/errorMessages'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
-import { testUtils as privateHeaderTestUtils } from 'components/Header/PrivateHeader/PrivateHeader.test'
-import { testUtils as privateLayoutTestUtils } from 'components/Layout/PrivateLayout/PrivateLayout.test'
+import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
+import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
 
 import timeZoneFixtures from 'fixtures/timeZone'
 import userFixtures from 'fixtures/user'

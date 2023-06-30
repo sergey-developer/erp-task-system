@@ -15,7 +15,6 @@ import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { getShortUserName, getUserRoleMap } from 'modules/user/utils'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { formatDate } from 'shared/utils/date'
 
@@ -131,9 +130,7 @@ export const getTableColumns = (
         value: TaskTableListItem['olaNextBreachTime'],
         { olaStatus },
       ) => (
-        <Text type={getOlaStatusTextType(olaStatus)}>
-          {formatDate(value, DATE_TIME_FORMAT)}
-        </Text>
+        <Text type={getOlaStatusTextType(olaStatus)}>{formatDate(value)}</Text>
       ),
       sorter: true,
     },
@@ -165,8 +162,7 @@ export const getTableColumns = (
       key: 'createdAt',
       dataIndex: 'createdAt',
       title: 'Дата создания',
-      render: (value: TaskTableListItem['createdAt']) =>
-        formatDate(value, DATE_TIME_FORMAT),
+      render: (value: TaskTableListItem['createdAt']) => formatDate(value),
       sorter: true,
     },
   ]

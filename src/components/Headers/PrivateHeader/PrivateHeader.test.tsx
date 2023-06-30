@@ -20,6 +20,12 @@ import PrivateHeader from './index'
 
 const getContainer = () => screen.getByTestId('private-header')
 
+// nav menu
+const getNavMenuContainer = () => within(getContainer()).getByRole('menu')
+
+const getNavMenuItem = (name: string) =>
+  within(getNavMenuContainer()).getByText(name)
+
 // timezone
 const getTimeZoneSelectContainer = () =>
   within(getContainer()).getByTestId('timezone-select')
@@ -84,6 +90,9 @@ const expectUserStatusSelectNotDisabled = () =>
 export const testUtils = {
   getContainer,
 
+  getNavMenuContainer,
+  getNavMenuItem,
+
   getTimeZoneSelectContainer,
   getTimeZoneSelect,
   getSelectedTimeZone,
@@ -107,6 +116,15 @@ export const testUtils = {
 }
 
 describe('PrivateHeader', () => {
+  describe('Меню навигации', () => {
+    // todo: рендерить privateapp и протестировать
+    test.skip('Отображается корректно', () => {
+      render(<PrivateHeader />)
+      expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
+      expect(testUtils.getNavMenuContainer()).toBeInTheDocument()
+    })
+  })
+
   describe('Селект выбора временной зоны', () => {
     test('Отображается', () => {
       render(<PrivateHeader />)
