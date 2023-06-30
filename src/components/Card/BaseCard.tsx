@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 export const BaseCard = styled(Card)`
   && {
+    width: 600px;
     border-radius: 4px;
     padding: 80px 153px 100px 153px;
     ${({ theme }) => theme.shadows.shadow1}
