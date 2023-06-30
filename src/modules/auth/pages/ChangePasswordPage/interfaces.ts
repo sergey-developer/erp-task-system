@@ -1,4 +1,4 @@
 export type ChangePasswordFormFields = {
-  newPassword: string
+  password: string
   confirmPassword: string
 }
