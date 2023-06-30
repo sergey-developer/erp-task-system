@@ -1,1 +1,1 @@
-export * from './getUpdatePasswordError'
+export * from './getUpdatePasswordErrors'

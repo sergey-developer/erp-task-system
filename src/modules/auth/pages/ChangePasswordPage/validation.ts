@@ -5,7 +5,7 @@ import { checkPasswordValid } from 'modules/auth/utils'
 
 import { validationMessages } from 'shared/constants/validation'
 
-export const newPasswordRules: Rule[] = [
+export const passwordRules: Rule[] = [
   {
     validator: (_, value) => {
       if (value) {
@@ -25,7 +25,7 @@ export const confirmPasswordRules: Rule[] = [
   { required: true },
   ({ getFieldValue }) => ({
     validator(_, value) {
-      if (!value || getFieldValue('newPassword') === value) {
+      if (!value || getFieldValue('password') === value) {
         return Promise.resolve()
       }
 

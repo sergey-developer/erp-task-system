@@ -40,7 +40,7 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // new password
 const getNewPasswordFormItem = () =>
-  within(getContainer()).getByTestId('new-password')
+  within(getContainer()).getByTestId('password')
 
 const getNewPasswordInput = (): HTMLInputElement =>
   within(getNewPasswordFormItem()).getByPlaceholderText('••••••••')
@@ -255,8 +255,12 @@ describe('Страница смены пароля', () => {
   describe('При не успешном изменении пароля', () => {
     test('Обрабатывается ошибка 400', async () => {
       const badRequestErrorMessage = fakeWord()
+      const passwordFieldErrorMessage = fakeWord()
       mockUpdatePasswordBadRequestError({
-        body: { detail: [badRequestErrorMessage] },
+        body: {
+          detail: [badRequestErrorMessage],
+          password: [passwordFieldErrorMessage],
+        },
       })
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
@@ -271,10 +275,16 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingFinished()
 
       const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
-      const errorMessage = testUtils.getChildByText(badRequestErrorMessage)
+      const commonErrorMessage = testUtils.getChildByText(
+        badRequestErrorMessage,
+      )
+      const passwordErrorMessage = await testUtils.findNewPasswordError(
+        passwordFieldErrorMessage,
+      )
 
       expect(successNotification).not.toBeInTheDocument()
-      expect(errorMessage).toBeInTheDocument()
+      expect(commonErrorMessage).toBeInTheDocument()
+      expect(passwordErrorMessage).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
       expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
     })

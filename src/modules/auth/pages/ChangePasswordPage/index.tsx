@@ -9,11 +9,13 @@ import { useUpdatePasswordMutation } from 'modules/auth/services/authApi.service
 
 import { BaseCard } from 'components/Card/BaseCard'
 
+import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { handleSetFieldsErrors } from 'shared/utils/form'
 import { showSuccessNotification } from 'shared/utils/notifications'
 
 import { ChangePasswordFormFields } from './interfaces'
-import { getUpdatePasswordError } from './utils'
-import { confirmPasswordRules, newPasswordRules } from './validation'
+import { getUpdatePasswordErrors } from './utils'
+import { confirmPasswordRules, passwordRules } from './validation'
 
 const { Title, Text } = Typography
 
@@ -24,20 +26,26 @@ const ChangePasswordPage: FC = () => {
 
   const [
     updatePasswordMutation,
-    { isLoading: updatePasswordIsLoading, error: rawUpdatePasswordError },
+    { isLoading: updatePasswordIsLoading, error: updatePasswordError },
   ] = useUpdatePasswordMutation()
 
-  const updatePasswordError = getUpdatePasswordError(rawUpdatePasswordError)
+  const updatePasswordErrors = getUpdatePasswordErrors(updatePasswordError)
 
   const handleSubmit = async (values: ChangePasswordFormFields) => {
     try {
       await updatePasswordMutation({
-        password: values.newPassword.trim(),
+        password: values.password.trim(),
       }).unwrap()
 
       navigate(RouteEnum.TaskList)
       showSuccessNotification(UPDATE_PASSWORD_SUCCESS_MSG)
-    } catch {}
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          handleSetFieldsErrors(error, form.setFields)
+        }
+      }
+    }
   }
 
   return (
@@ -46,8 +54,12 @@ const ChangePasswordPage: FC = () => {
         <Title level={5}>Создание нового пароля</Title>
 
         <Space direction='vertical'>
-          {updatePasswordError && (
-            <Text type='danger'>{updatePasswordError}</Text>
+          {!!updatePasswordErrors?.length && (
+            <Space direction='vertical'>
+              {updatePasswordErrors.map((error) => (
+                <Text type='danger'>{error}</Text>
+              ))}
+            </Space>
           )}
 
           <Form<ChangePasswordFormFields>
@@ -57,10 +69,10 @@ const ChangePasswordPage: FC = () => {
             validateTrigger={['onSubmit', 'onBlur']}
           >
             <Form.Item
-              data-testid='new-password'
+              data-testid='password'
               label='Новый пароль'
-              name='newPassword'
-              rules={newPasswordRules}
+              name='password'
+              rules={passwordRules}
             >
               <Input.Password
                 placeholder='••••••••'
@@ -73,7 +85,7 @@ const ChangePasswordPage: FC = () => {
               label='Подтверждение пароля'
               name='confirmPassword'
               rules={confirmPasswordRules}
-              dependencies={['newPassword']}
+              dependencies={['password']}
             >
               <Input.Password
                 placeholder='••••••••'
