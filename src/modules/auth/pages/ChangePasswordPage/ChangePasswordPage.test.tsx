@@ -45,7 +45,7 @@ const getNewPasswordFormItem = () =>
 const getNewPasswordInput = (): HTMLInputElement =>
   within(getNewPasswordFormItem()).getByPlaceholderText('••••••••')
 
-const findNewPasswordError = (error: string) =>
+const findPasswordError = (error: string) =>
   within(getNewPasswordFormItem()).findByText(error)
 
 const queryNewPasswordError = (error: string) =>
@@ -93,7 +93,7 @@ const testUtils = {
 
   getNewPasswordFormItem,
   getNewPasswordInput,
-  findNewPasswordError,
+  findPasswordError,
   queryNewPasswordError,
   setNewPassword,
 
@@ -157,7 +157,7 @@ describe('Страница смены пароля', () => {
 
         await testUtils.clickSaveButton(user)
 
-        const error = await testUtils.findNewPasswordError(
+        const error = await testUtils.findPasswordError(
           validationMessages.required,
         )
 
@@ -169,7 +169,7 @@ describe('Страница смены пароля', () => {
 
         await testUtils.setNewPassword(user, fakeWord())
         await testUtils.clickSaveButton(user)
-        const error = await testUtils.findNewPasswordError(
+        const error = await testUtils.findPasswordError(
           INCORRECT_PASSWORD_ERROR_MSG,
         )
 
@@ -278,7 +278,7 @@ describe('Страница смены пароля', () => {
       const commonErrorMessage = testUtils.getChildByText(
         badRequestErrorMessage,
       )
-      const passwordErrorMessage = await testUtils.findNewPasswordError(
+      const passwordErrorMessage = await testUtils.findPasswordError(
         passwordFieldErrorMessage,
       )
 
