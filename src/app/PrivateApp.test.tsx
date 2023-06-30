@@ -3,8 +3,8 @@ import { waitFor } from '@testing-library/react'
 import { testUtils as taskTableTestUtils } from 'modules/task/features/TaskTable/TaskTable.test'
 import { userApiMessages } from 'modules/user/constants/errorMessages'
 
-import { testUtils as privateHeaderTestUtils } from 'components/Header/PrivateHeader/PrivateHeader.test'
-import { testUtils as privateLayoutTestUtils } from 'components/Layout/PrivateLayout/PrivateLayout.test'
+import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
+import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
 
 // import { testUtils as taskCardTestUtils } from 'modules/task/features/TaskCard/Card/Card.test'
 import timeZoneFixtures from 'fixtures/timeZone'

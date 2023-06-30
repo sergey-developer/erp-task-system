@@ -6,7 +6,6 @@ import { getShortUserName } from 'modules/user/utils'
 
 import Space from 'components/Space'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
 import Comment from './Comment'
@@ -34,7 +33,7 @@ const CommentList: FC<CommentListProps> = ({ isLoading, comments }) => {
             key={comment.id}
             text={comment.text}
             author={getShortUserName(comment.author)}
-            createdAt={formatDate(comment.createdAt, DATE_TIME_FORMAT)}
+            createdAt={formatDate(comment.createdAt)}
             attachments={comment.attachments}
           />
         ))

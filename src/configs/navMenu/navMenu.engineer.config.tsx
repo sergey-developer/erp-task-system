@@ -4,7 +4,7 @@ import { QrcodeIcon, TeamIcon } from 'components/Icons'
 
 import { NavMenuItem } from './interfaces'
 
-const navMenuSeniorEngineerConfig: Array<NavMenuItem> = [
+const navMenuEngineerConfig: Array<NavMenuItem> = [
   {
     key: RouteEnum.WorkingGroups,
     icon: TeamIcon,
@@ -19,4 +19,4 @@ const navMenuSeniorEngineerConfig: Array<NavMenuItem> = [
   },
 ]
 
-export default navMenuSeniorEngineerConfig
+export default navMenuEngineerConfig

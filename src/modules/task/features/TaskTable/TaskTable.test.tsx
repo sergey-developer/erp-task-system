@@ -14,7 +14,6 @@ import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { getShortUserName } from 'modules/user/utils'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { NumberOrString } from 'shared/interfaces/utils'
 import { formatDate } from 'shared/utils/date'
 
@@ -29,7 +28,7 @@ import {
 
 import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
-import { TaskTableProps } from './interfaces'
+import { TaskTableListItem, TaskTableProps } from './interfaces'
 
 const fakeTaskTableItem = taskFixtures.fakeTaskTableItem()
 
@@ -170,7 +169,10 @@ const onChangeTableArgs = {
     ...paginationConfig,
     ...config,
   }),
-  extra: (action: TableAction, dataSource: Readonly<Array<any>>) => ({
+  extra: (
+    action: TableAction,
+    dataSource: Readonly<Array<TaskTableListItem>>,
+  ) => ({
     action,
     currentDataSource: dataSource,
   }),
@@ -1208,10 +1210,7 @@ describe('Таблица заявок', () => {
 
         expect(
           testUtils.getChildByText(
-            formatDate(
-              testConstants.firstTaskTableItem.olaNextBreachTime,
-              DATE_TIME_FORMAT,
-            ),
+            formatDate(testConstants.firstTaskTableItem.olaNextBreachTime),
           ),
         ).toBeInTheDocument()
       })
@@ -1406,10 +1405,7 @@ describe('Таблица заявок', () => {
 
         expect(
           testUtils.getChildByText(
-            formatDate(
-              testConstants.firstTaskTableItem.createdAt,
-              DATE_TIME_FORMAT,
-            ),
+            formatDate(testConstants.firstTaskTableItem.createdAt),
           ),
         ).toBeInTheDocument()
       })

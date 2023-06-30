@@ -10,7 +10,6 @@ import {
 
 import Space from 'components/Space'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
 import SubTask from './SubTask'
@@ -50,12 +49,9 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 title={item.title}
                 description={item.description}
                 recordId={item.recordId}
-                olaNextBreachTime={formatDate(
-                  item.olaNextBreachTime,
-                  DATE_TIME_FORMAT,
-                )}
+                olaNextBreachTime={formatDate(item.olaNextBreachTime)}
                 status={item.status}
-                createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
+                createdAt={formatDate(item.createdAt)}
                 supportGroup={item.supportGroup}
                 externalAssigneeName={item.externalAssigneeName}
                 externalAssigneePhone={item.externalAssigneePhone}

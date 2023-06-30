@@ -12,8 +12,8 @@ import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
 import { useUserRole } from 'modules/user/hooks'
 
 import LabeledData from 'components/LabeledData'
+import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
-import SeparatedText from 'components/Texts/SeparatedText'
 
 import { RecordIdStyled } from './styles'
 import { getCompleteAt, parseResponseTime } from './utils'

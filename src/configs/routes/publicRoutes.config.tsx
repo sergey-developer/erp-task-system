@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
-import PublicLayout from 'components/Layout/PublicLayout'
+import PublicLayout from 'components/Layouts/PublicLayout'
 
 import { RouteEnum } from './constants'
 

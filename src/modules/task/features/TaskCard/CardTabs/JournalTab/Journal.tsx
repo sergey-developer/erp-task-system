@@ -7,7 +7,6 @@ import { getFullUserName } from 'modules/user/utils'
 
 import Space from 'components/Space'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
 import JournalEntry from './JournalEntry'
@@ -33,7 +32,7 @@ const Journal: FC<JournalProps> = ({ data, isLoading }) => {
             <Space key={item.id} direction='vertical' size='large' $block>
               <JournalEntry
                 id={item.id}
-                createdAt={formatDate(item.createdAt, DATE_TIME_FORMAT)}
+                createdAt={formatDate(item.createdAt)}
                 type={journalEntryTypeDict[item.type]}
                 author={item.author ? getFullUserName(item.author) : null}
                 description={item.description}

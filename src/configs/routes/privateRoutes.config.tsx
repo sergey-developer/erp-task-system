@@ -3,13 +3,17 @@ import { Navigate, RouteObject } from 'react-router-dom'
 
 import { UserModel } from 'modules/user/models'
 
-import PrivateLayout from 'components/Layout/PrivateLayout'
+import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
 
 import { RouteEnum } from './constants'
 import { staffRoutesConfig } from './staffRoutes.config'
 
 const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
+
+const FiscalAccumulatorTaskListPage = React.lazy(
+  () => import('modules/task/pages/FiscalAccumulatorTaskListPage'),
+)
 
 export const getPrivateRoutesConfig = ({
   isStaff,
@@ -25,6 +29,10 @@ export const getPrivateRoutesConfig = ({
       {
         path: RouteEnum.TaskList,
         element: <TaskListPage />,
+      },
+      {
+        path: RouteEnum.FiscalAccumulatorTaskList,
+        element: <FiscalAccumulatorTaskListPage />,
       },
       ...(isStaff ? staffRoutesConfig : []),
       {

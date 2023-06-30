@@ -6,7 +6,6 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants/common'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
 import subTaskFixtures from 'fixtures/subTask'
@@ -54,7 +53,6 @@ describe('Список подзадач', () => {
 
     const formattedOlaNextBreachTime = formatDate(
       requiredProps.list[0].olaNextBreachTime,
-      DATE_TIME_FORMAT,
     )
 
     expect(
@@ -65,10 +63,7 @@ describe('Список подзадач', () => {
   test('Верно отображает дату создания', () => {
     render(<SubTaskList {...requiredProps} />)
 
-    const formattedCreatedAt = formatDate(
-      requiredProps.list[0].createdAt,
-      DATE_TIME_FORMAT,
-    )
+    const formattedCreatedAt = formatDate(requiredProps.list[0].createdAt)
 
     expect(
       subTaskTestUtils.getChildByText(new RegExp(formattedCreatedAt)),
