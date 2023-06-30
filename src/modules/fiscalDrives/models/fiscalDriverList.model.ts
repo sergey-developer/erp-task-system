@@ -1,16 +1,22 @@
 export type FiscalDriverListItemModel = {
   id: number
-  blockThrough: string
-  deadline: string
+  blockingIn: number
+  olaNextBreachTime: string
   recordId: string
   sapId: string
-  client: string
+  name: string
   address: string
-  fiscalDriverId: string
-  totalFd: string
-  mr: string
-  supportGroup: string
-  category: string
+  fiscalAccumulator: {
+    faNumber: number
+  }
+  deadlineOrTotalFiscalDocs: number
+  supportGroup: {
+    name: string
+    macroregion: {
+      title: string
+    }
+  }
+  title: string
   createdAt: string
 }
 

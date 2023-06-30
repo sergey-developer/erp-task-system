@@ -1,15 +1,11 @@
 import { FC, useState } from 'react'
 
 import FiscalDriverTable from 'modules/fiscalDrives/features/FiscalDriverTable'
-import { getSort } from 'modules/fiscalDrives/features/FiscalDriverTable/utils'
 import { GetFiscalDriverListQueryArgs } from 'modules/fiscalDrives/models'
 
-import { SortOrderEnum } from 'shared/constants/sort'
-
 const FiscalDriverListPage: FC = () => {
-  const [queryArgs, setQueryArgs] = useState<GetFiscalDriverListQueryArgs>({
-    sort: getSort('fiscalDriverId', SortOrderEnum.Ascend),
-  })
+  const [queryArgs, setQueryArgs] =
+    useState<Partial<GetFiscalDriverListQueryArgs>>()
 
   return (
     <FiscalDriverTable
@@ -18,21 +14,23 @@ const FiscalDriverListPage: FC = () => {
       dataSource={[
         {
           id: 1,
-          fiscalDriverId: 'fiscalDriverId',
-          createdAt: 'createdAt',
-          supportGroup: 'supportGroup',
+          fiscalAccumulator: { faNumber: 1 },
+          createdAt: new Date().toISOString(),
+          supportGroup: {
+            name: 'name',
+            macroregion: { title: 'title' },
+          },
           recordId: 'recordId',
           sapId: 'sapId',
           address: 'address',
-          blockThrough: 'blockThrough',
-          category: 'category',
-          client: 'client',
-          deadline: 'deadline',
-          totalFd: 'totalFd',
-          mr: 'mr',
+          blockingIn: 5,
+          title: 'title',
+          name: 'name',
+          olaNextBreachTime: new Date().toISOString(),
+          deadlineOrTotalFiscalDocs: 3,
         },
       ]}
-      sort={queryArgs.sort}
+      sort={queryArgs?.sort}
     />
   )
 }

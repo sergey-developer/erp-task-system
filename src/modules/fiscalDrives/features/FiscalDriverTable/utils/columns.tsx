@@ -1,15 +1,24 @@
-export const columns = [
+import { ColumnsType } from 'antd/es/table'
+
+import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
+import { formatDate } from 'shared/utils/date'
+
+import { FiscalDriverTableItem } from '../interfaces'
+
+export const columns: ColumnsType<FiscalDriverTableItem> = [
   {
-    key: 'blockThrough',
-    dataIndex: 'blockThrough',
+    key: 'blockingIn',
+    dataIndex: 'blockingIn',
     title: 'Блокировка через',
     sorter: true,
   },
   {
-    key: 'deadline',
-    dataIndex: 'deadline',
+    key: 'olaNextBreachTime',
+    dataIndex: 'olaNextBreachTime',
     title: 'Крайний срок',
     sorter: true,
+    render: (value: FiscalDriverTableItem['olaNextBreachTime']) =>
+      formatDate(value, DATE_TIME_FORMAT),
   },
   {
     key: 'recordId',
@@ -24,8 +33,8 @@ export const columns = [
     sorter: true,
   },
   {
-    key: 'client',
-    dataIndex: 'client',
+    key: 'name',
+    dataIndex: 'name',
     title: 'Клиент',
     sorter: true,
   },
@@ -36,32 +45,37 @@ export const columns = [
     sorter: true,
   },
   {
-    key: 'fiscalDriverId',
-    dataIndex: 'fiscalDriverId',
+    key: 'fiscalAccumulator',
+    dataIndex: 'fiscalAccumulator',
     title: 'ФН',
     sorter: true,
+    render: (value: FiscalDriverTableItem['fiscalAccumulator']) =>
+      value.faNumber,
   },
   {
-    key: 'totalFd',
-    dataIndex: 'totalFd',
+    key: 'deadlineOrTotalFiscalDocs',
+    dataIndex: 'deadlineOrTotalFiscalDocs',
     title: 'Срок / Всего ФД',
     sorter: true,
   },
   {
     key: 'mr',
-    dataIndex: 'mr',
+    dataIndex: 'supportGroup',
     title: 'МР',
     sorter: true,
+    render: (value: FiscalDriverTableItem['supportGroup']) =>
+      value.macroregion.title,
   },
   {
     key: 'supportGroup',
     dataIndex: 'supportGroup',
     title: 'Группа поддержки',
     sorter: true,
+    render: (value: FiscalDriverTableItem['supportGroup']) => value.name,
   },
   {
-    key: 'category',
-    dataIndex: 'category',
+    key: 'title',
+    dataIndex: 'title',
     title: 'Категория',
     sorter: true,
   },
@@ -70,5 +84,7 @@ export const columns = [
     dataIndex: 'createdAt',
     title: 'Дата создания заявки',
     sorter: true,
+    render: (value: FiscalDriverTableItem['createdAt']) =>
+      formatDate(value, DATE_TIME_FORMAT),
   },
 ]

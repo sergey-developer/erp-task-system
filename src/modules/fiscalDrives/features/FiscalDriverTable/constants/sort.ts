@@ -7,13 +7,12 @@ export type AscendSortKey =
   | 'createdAt'
   | 'recordId'
   | 'supportGroup'
-  | 'mr'
-  | 'blockThrough'
-  | 'category'
-  | 'client'
-  | 'deadline'
-  | 'fiscalDriverId'
-  | 'totalFd'
+  | 'blockingIn'
+  | 'title'
+  | 'name'
+  | 'olaNextBreachTime'
+  | 'fiscalAccumulator'
+  | 'deadlineOrTotalFiscalDocs'
   | 'sapId'
 
 export type SortKey = ExtendedSortKey<AscendSortKey>
@@ -21,16 +20,15 @@ export type SortKey = ExtendedSortKey<AscendSortKey>
 export type SortableField = keyof Pick<
   FiscalDriverTableItem,
   | 'address'
-  | 'category'
   | 'createdAt'
   | 'recordId'
   | 'supportGroup'
-  | 'mr'
-  | 'blockThrough'
-  | 'client'
-  | 'deadline'
-  | 'fiscalDriverId'
-  | 'totalFd'
+  | 'blockingIn'
+  | 'name'
+  | 'title'
+  | 'olaNextBreachTime'
+  | 'fiscalAccumulator'
+  | 'deadlineOrTotalFiscalDocs'
   | 'sapId'
 >
 
@@ -42,13 +40,15 @@ export const sortableFieldToSortValues: Record<
   createdAt: ['createdAt', '-createdAt'],
   recordId: ['recordId', '-recordId'],
   supportGroup: ['supportGroup', '-supportGroup'],
-  mr: ['mr', '-mr'],
-  blockThrough: ['blockThrough', '-blockThrough'],
-  category: ['category', '-category'],
-  client: ['client', '-client'],
-  deadline: ['deadline', '-deadline'],
-  fiscalDriverId: ['fiscalDriverId', '-fiscalDriverId'],
-  totalFd: ['totalFd', '-totalFd'],
+  blockingIn: ['blockingIn', '-blockingIn'],
+  title: ['title', '-title'],
+  name: ['name', '-name'],
+  olaNextBreachTime: ['olaNextBreachTime', '-olaNextBreachTime'],
+  fiscalAccumulator: ['fiscalAccumulator', '-fiscalAccumulator'],
+  deadlineOrTotalFiscalDocs: [
+    'deadlineOrTotalFiscalDocs',
+    '-deadlineOrTotalFiscalDocs',
+  ],
   sapId: ['sapId', '-sapId'],
 }
 

@@ -4,7 +4,7 @@ import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
 export const TableStyled: typeof ParentSizedTable = styled(ParentSizedTable)`
   .ant-table-cell {
-    padding: 3px;
+    //padding: 3px;
   }
 `
 
