@@ -1,4 +1,4 @@
-export type FiscalDriverListItemModel = {
+export type FiscalAccumulatorTaskListItemModel = {
   id: number
   blockingIn: number
   olaNextBreachTime: string
@@ -20,4 +20,5 @@ export type FiscalDriverListItemModel = {
   createdAt: string
 }
 
-export type FiscalDriverListModel = Array<FiscalDriverListItemModel>
+export type FiscalAccumulatorTaskListModel =
+  Array<FiscalAccumulatorTaskListItemModel>

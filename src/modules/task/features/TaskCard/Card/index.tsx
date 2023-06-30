@@ -34,7 +34,6 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
@@ -508,7 +507,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 recordId={task.recordId}
                 status={task.status}
                 title={task.title}
-                createdAt={formatDate(task.createdAt, DATE_TIME_FORMAT)}
+                createdAt={formatDate(task.createdAt)}
                 name={task.name}
                 address={task.address}
                 contactService={task.contactService}

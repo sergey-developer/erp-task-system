@@ -1,10 +1,15 @@
 import React, { FC, useMemo } from 'react'
 
-import { FiscalDriverTableProps } from './interfaces'
-import { TableStyled, TableWrapperStyled } from './styles'
+import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
+
+import {
+  FiscalAccumulatorTaskTableItem,
+  FiscalAccumulatorTaskTableProps,
+} from './interfaces'
+import { TableWrapperStyled } from './styles'
 import { applySortToColumn, columns } from './utils'
 
-const FiscalDriverTable: FC<FiscalDriverTableProps> = ({
+const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
   dataSource,
   loading,
   sort,
@@ -16,8 +21,8 @@ const FiscalDriverTable: FC<FiscalDriverTableProps> = ({
   )
 
   return (
-    <TableWrapperStyled data-testid='fiscal-drivers-table'>
-      <TableStyled<any>
+    <TableWrapperStyled data-testid='fiscal-accumulator-task-table'>
+      <ParentSizedTable<FiscalAccumulatorTaskTableItem>
         rowKey='id'
         dataSource={dataSource}
         columns={sortedColumns}
@@ -29,4 +34,4 @@ const FiscalDriverTable: FC<FiscalDriverTableProps> = ({
   )
 }
 
-export default FiscalDriverTable
+export default FiscalAccumulatorTaskTable

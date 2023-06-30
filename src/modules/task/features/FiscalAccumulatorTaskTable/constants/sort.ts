@@ -1,6 +1,6 @@
 import { ExtendedSortKey } from 'shared/interfaces/sort'
 
-import { FiscalDriverTableItem } from '../interfaces'
+import { FiscalAccumulatorTaskTableItem } from '../interfaces'
 
 export type AscendSortKey =
   | 'address'
@@ -18,7 +18,7 @@ export type AscendSortKey =
 export type SortKey = ExtendedSortKey<AscendSortKey>
 
 export type SortableField = keyof Pick<
-  FiscalDriverTableItem,
+  FiscalAccumulatorTaskTableItem,
   | 'address'
   | 'createdAt'
   | 'recordId'

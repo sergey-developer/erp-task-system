@@ -4,7 +4,7 @@ export enum RouteEnum {
   NotFound = '*',
 
   // fiscal drives routes
-  FiscalDrives = '/fiscal-drives',
+  FiscalAccumulatorTaskList = '/fiscal-drives',
 
   // auth routes
   Login = '/login',

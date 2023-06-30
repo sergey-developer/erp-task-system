@@ -1,14 +1,14 @@
 import { FC, useState } from 'react'
 
-import FiscalDriverTable from 'modules/fiscalDrives/features/FiscalDriverTable'
-import { GetFiscalDriverListQueryArgs } from 'modules/fiscalDrives/models'
+import FiscalAccumulatorTaskTable from 'modules/task/features/FiscalAccumulatorTaskTable'
+import { GetFiscalAccumulatorTaskListQueryArgs } from 'modules/task/models'
 
-const FiscalDriverListPage: FC = () => {
+const FiscalAccumulatorTaskListPage: FC = () => {
   const [queryArgs, setQueryArgs] =
-    useState<Partial<GetFiscalDriverListQueryArgs>>()
+    useState<Partial<GetFiscalAccumulatorTaskListQueryArgs>>()
 
   return (
-    <FiscalDriverTable
+    <FiscalAccumulatorTaskTable
       loading={false}
       onChange={() => {}}
       dataSource={[
@@ -35,4 +35,4 @@ const FiscalDriverListPage: FC = () => {
   )
 }
 
-export default FiscalDriverListPage
+export default FiscalAccumulatorTaskListPage

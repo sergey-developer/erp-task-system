@@ -1,11 +1,10 @@
 import { ColumnsType } from 'antd/es/table'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
-import { FiscalDriverTableItem } from '../interfaces'
+import { FiscalAccumulatorTaskTableItem } from '../interfaces'
 
-export const columns: ColumnsType<FiscalDriverTableItem> = [
+export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
   {
     key: 'blockingIn',
     dataIndex: 'blockingIn',
@@ -17,8 +16,8 @@ export const columns: ColumnsType<FiscalDriverTableItem> = [
     dataIndex: 'olaNextBreachTime',
     title: 'Крайний срок',
     sorter: true,
-    render: (value: FiscalDriverTableItem['olaNextBreachTime']) =>
-      formatDate(value, DATE_TIME_FORMAT),
+    render: (value: FiscalAccumulatorTaskTableItem['olaNextBreachTime']) =>
+      formatDate(value),
   },
   {
     key: 'recordId',
@@ -49,7 +48,7 @@ export const columns: ColumnsType<FiscalDriverTableItem> = [
     dataIndex: 'fiscalAccumulator',
     title: 'ФН',
     sorter: true,
-    render: (value: FiscalDriverTableItem['fiscalAccumulator']) =>
+    render: (value: FiscalAccumulatorTaskTableItem['fiscalAccumulator']) =>
       value.faNumber,
   },
   {
@@ -63,7 +62,7 @@ export const columns: ColumnsType<FiscalDriverTableItem> = [
     dataIndex: 'supportGroup',
     title: 'МР',
     sorter: true,
-    render: (value: FiscalDriverTableItem['supportGroup']) =>
+    render: (value: FiscalAccumulatorTaskTableItem['supportGroup']) =>
       value.macroregion.title,
   },
   {
@@ -71,7 +70,8 @@ export const columns: ColumnsType<FiscalDriverTableItem> = [
     dataIndex: 'supportGroup',
     title: 'Группа поддержки',
     sorter: true,
-    render: (value: FiscalDriverTableItem['supportGroup']) => value.name,
+    render: (value: FiscalAccumulatorTaskTableItem['supportGroup']) =>
+      value.name,
   },
   {
     key: 'title',
@@ -84,7 +84,7 @@ export const columns: ColumnsType<FiscalDriverTableItem> = [
     dataIndex: 'createdAt',
     title: 'Дата создания заявки',
     sorter: true,
-    render: (value: FiscalDriverTableItem['createdAt']) =>
-      formatDate(value, DATE_TIME_FORMAT),
+    render: (value: FiscalAccumulatorTaskTableItem['createdAt']) =>
+      formatDate(value),
   },
 ]

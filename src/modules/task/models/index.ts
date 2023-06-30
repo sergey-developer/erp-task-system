@@ -33,3 +33,6 @@ export * from './createTaskReclassificationRequest.model'
 export * from './suspendRequest.model'
 export * from './createTaskSuspendRequest.model'
 export * from './deleteTaskSuspendRequest.model'
+
+export * from './fiscalAccumulatorTaskList.model'
+export * from './getFiscalAccumulatorTaskList.model'

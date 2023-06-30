@@ -11,8 +11,8 @@ import { staffRoutesConfig } from './staffRoutes.config'
 
 const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
 
-const FiscalDriversPage = React.lazy(
-  () => import('modules/fiscalDrives/pages/FiscalDriverListPage'),
+const FiscalAccumulatorTaskListPage = React.lazy(
+  () => import('modules/task/pages/FiscalAccumulatorTaskListPage'),
 )
 
 export const getPrivateRoutesConfig = ({
@@ -31,8 +31,8 @@ export const getPrivateRoutesConfig = ({
         element: <TaskListPage />,
       },
       {
-        path: RouteEnum.FiscalDrives,
-        element: <FiscalDriversPage />,
+        path: RouteEnum.FiscalAccumulatorTaskList,
+        element: <FiscalAccumulatorTaskListPage />,
       },
       ...(isStaff ? staffRoutesConfig : []),
       {
