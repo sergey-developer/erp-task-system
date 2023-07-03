@@ -25,7 +25,7 @@ import {
 } from 'modules/user/services/userApi.service'
 import { getUserRoleMap } from 'modules/user/utils'
 
-import ContentfulUserAvatar from 'components/Avatars/ContentfulUserAvatar'
+import DetailedUserAvatar from 'components/Avatars/DetailedUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
 import { MonitoringIcon } from 'components/Icons'
 import Logo from 'components/Logo'
@@ -199,7 +199,7 @@ const PrivateHeader: FC = () => {
             )}
 
             {userMe ? (
-              <ContentfulUserAvatar profile={userMe} />
+              <DetailedUserAvatar profile={userMe} />
             ) : (
               <UserAvatar size='large' />
             )}
