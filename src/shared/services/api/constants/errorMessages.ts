@@ -1,5 +1,3 @@
-export const baseApiMessages = {
-  getTimeZoneList: {
-    commonError: 'Ошибка получения временных зон',
-  },
+export const getTimeZoneListErrorMessages = {
+  commonError: 'Ошибка получения временных зон',
 } as const
