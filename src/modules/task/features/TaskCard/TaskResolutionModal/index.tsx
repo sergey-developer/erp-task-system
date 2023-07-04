@@ -1,10 +1,12 @@
 import { PaperClipOutlined } from '@ant-design/icons'
 import {
   Button,
+  Col,
   Form,
   FormInstance,
   Input,
   ModalProps,
+  Row,
   Typography,
   Upload,
 } from 'antd'
@@ -31,14 +33,20 @@ export type TaskResolutionModalProps = Pick<TaskModel, 'type' | 'recordId'> & {
   onSubmit: (
     values: TaskResolutionFormFields,
     setFields: FormInstance['setFields'],
-  ) => void
+  ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
+  onMakeAct: () => Promise<void>
+  makeActIsLoading: boolean
 }
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
+  onMakeAct,
+  makeActIsLoading,
+
   isLoading,
-  onCancel,
   onSubmit,
+
+  onCancel,
   recordId,
   type,
 }) => {
@@ -61,10 +69,26 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
       data-testid='task-resolution-modal'
       visible
       title={modalTitle}
-      confirmLoading={isLoading}
-      onOk={form.submit}
-      okText={OK_BUTTON_TEXT}
       onCancel={onCancel}
+      footer={
+        <Row justify='space-between'>
+          <Col>
+            <Button onClick={onMakeAct} loading={makeActIsLoading}>
+              Сформировать акт
+            </Button>
+          </Col>
+
+          <Col>
+            <Space>
+              <Button onClick={onCancel}>Отменить</Button>
+
+              <Button type='primary' onClick={form.submit} loading={isLoading}>
+                {OK_BUTTON_TEXT}
+              </Button>
+            </Space>
+          </Col>
+        </Row>
+      }
     >
       <Space $block direction='vertical' size='large'>
         <Space direction='vertical'>

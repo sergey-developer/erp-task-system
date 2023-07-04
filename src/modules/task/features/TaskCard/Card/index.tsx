@@ -11,7 +11,11 @@ import {
   taskPriorityMap,
   taskSeverityMap,
 } from 'modules/task/constants/dictionary'
-import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
+import {
+  UseLazyGetTaskWorkPerformedActTrigger,
+  useTaskStatus,
+  useTaskSuspendRequestStatus,
+} from 'modules/task/hooks'
 import {
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
@@ -142,6 +146,9 @@ export type TaskCardProps = {
   resolveTask: (data: ResolveTaskMutationArgs) => Promise<void>
   isTaskResolving: boolean
 
+  getTaskWorkPerformedAct: UseLazyGetTaskWorkPerformedActTrigger
+  taskWorkPerformedActIsLoading: boolean
+
   updateAssignee: (data: UpdateTaskAssigneeMutationArgs) => Promise<void>
   updateAssigneeIsLoading: boolean
 
@@ -168,6 +175,9 @@ const TaskCard: FC<TaskCardProps> = ({
   takeTaskIsLoading,
   resolveTask,
   isTaskResolving,
+
+  getTaskWorkPerformedAct,
+  taskWorkPerformedActIsLoading,
 
   reclassificationRequest,
   reclassificationRequestIsLoading,
@@ -278,6 +288,8 @@ const TaskCard: FC<TaskCardProps> = ({
     },
     [task, closeTaskCard, resolveTask],
   )
+
+  const handleMakeAct = async () => {}
 
   const handleReclassificationRequestSubmit = useCallback<
     RequestTaskReclassificationModalProps['onSubmit']
@@ -581,6 +593,8 @@ const TaskCard: FC<TaskCardProps> = ({
                     isLoading={isTaskResolving}
                     onCancel={closeTaskResolutionModal}
                     onSubmit={handleResolutionSubmit}
+                    onMakeAct={handleMakeAct}
+                    makeActIsLoading={taskWorkPerformedActIsLoading}
                   />
                 </React.Suspense>
               )}
