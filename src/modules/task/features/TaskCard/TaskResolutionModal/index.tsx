@@ -35,13 +35,13 @@ export type TaskResolutionModalProps = Pick<TaskModel, 'type' | 'recordId'> & {
     setFields: FormInstance['setFields'],
   ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
-  onMakeAct: () => Promise<void>
-  makeActIsLoading: boolean
+  onGetAct: () => Promise<void>
+  getActIsLoading: boolean
 }
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
-  onMakeAct,
-  makeActIsLoading,
+  onGetAct,
+  getActIsLoading,
 
   isLoading,
   onSubmit,
@@ -73,7 +73,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
       footer={
         <Row justify='space-between'>
           <Col>
-            <Button onClick={onMakeAct} loading={makeActIsLoading}>
+            <Button onClick={onGetAct} loading={getActIsLoading}>
               Сформировать акт
             </Button>
           </Col>

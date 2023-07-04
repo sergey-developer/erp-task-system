@@ -27,8 +27,8 @@ const props: TaskResolutionModalProps = {
   isLoading: false,
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
-  onMakeAct: jest.fn(),
-  makeActIsLoading: false,
+  onGetAct: jest.fn(),
+  getActIsLoading: false,
 }
 
 const getContainer = () => screen.getByTestId('task-resolution-modal')
@@ -55,19 +55,19 @@ const clickCancelButton = async (user: UserEvent) => {
   return button
 }
 
-// make act button
-const getMakeActButton = () => getButtonIn(getContainer(), /Сформировать акт/)
+// get act button
+const getGetActButton = () => getButtonIn(getContainer(), /Сформировать акт/)
 
-const clickMakeActButton = async (user: UserEvent) => {
-  const button = getMakeActButton()
+const clickGetActButton = async (user: UserEvent) => {
+  const button = getGetActButton()
   await user.click(button)
 }
 
-const expectMakeActLoadingStarted = () =>
-  expectLoadingStartedByButton(getMakeActButton())
+const expectGetActLoadingStarted = () =>
+  expectLoadingStartedByButton(getGetActButton())
 
-const expectMakeActLoadingFinished = () =>
-  expectLoadingFinishedByButton(getMakeActButton())
+const expectGetActLoadingFinished = () =>
+  expectLoadingFinishedByButton(getGetActButton())
 
 // submit button
 const getSubmitButton = () => getButtonIn(getContainer(), /Выполнить заявку/)
@@ -176,10 +176,10 @@ export const testUtils = {
   getSubmitButton,
   clickSubmitButton,
 
-  getMakeActButton,
-  clickMakeActButton,
-  expectMakeActLoadingStarted,
-  expectMakeActLoadingFinished,
+  getGetActButton,
+  clickGetActButton,
+  expectGetActLoadingStarted,
+  expectGetActLoadingFinished,
 
   getTechResolutionBlock,
   getTechResolutionTitle,
@@ -268,7 +268,7 @@ describe('Модалка решения по заявке', () => {
     test('Отображается корректно', () => {
       render(<TaskResolutionModal {...props} />)
 
-      const button = testUtils.getMakeActButton()
+      const button = testUtils.getGetActButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -277,13 +277,13 @@ describe('Модалка решения по заявке', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<TaskResolutionModal {...props} />)
 
-      await testUtils.clickMakeActButton(user)
-      expect(props.onMakeAct).toBeCalledTimes(1)
+      await testUtils.clickGetActButton(user)
+      expect(props.onGetAct).toBeCalledTimes(1)
     })
 
     test('Отображает состояние загрузки', async () => {
-      render(<TaskResolutionModal {...props} makeActIsLoading />)
-      await testUtils.expectMakeActLoadingStarted()
+      render(<TaskResolutionModal {...props} getActIsLoading />)
+      await testUtils.expectGetActLoadingStarted()
     })
   })
 

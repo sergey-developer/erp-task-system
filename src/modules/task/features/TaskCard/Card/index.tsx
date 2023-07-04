@@ -289,7 +289,7 @@ const TaskCard: FC<TaskCardProps> = ({
     [task, closeTaskCard, resolveTask],
   )
 
-  const handleMakeAct = async () => {}
+  const handleGetAct = async () => {}
 
   const handleReclassificationRequestSubmit = useCallback<
     RequestTaskReclassificationModalProps['onSubmit']
@@ -593,8 +593,8 @@ const TaskCard: FC<TaskCardProps> = ({
                     isLoading={isTaskResolving}
                     onCancel={closeTaskResolutionModal}
                     onSubmit={handleResolutionSubmit}
-                    onMakeAct={handleMakeAct}
-                    makeActIsLoading={taskWorkPerformedActIsLoading}
+                    onGetAct={handleGetAct}
+                    getActIsLoading={taskWorkPerformedActIsLoading}
                   />
                 </React.Suspense>
               )}
