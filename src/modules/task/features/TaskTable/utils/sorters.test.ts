@@ -1,4 +1,4 @@
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import { TaskStatusEnum } from 'modules/task/constants'
 
 import taskFixtures from 'fixtures/task'
 

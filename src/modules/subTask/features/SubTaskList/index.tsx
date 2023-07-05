@@ -6,7 +6,7 @@ import {
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 
 import Space from 'components/Space'
 

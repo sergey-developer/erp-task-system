@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import { TaskTypeEnum } from 'modules/task/constants/common'
+import { TaskTypeEnum } from 'modules/task/constants'
 import { testUtils as attachmentListTestUtils } from 'modules/task/features/AttachmentList/AttachmentList.test'
 
 import taskFixtures from 'fixtures/task'

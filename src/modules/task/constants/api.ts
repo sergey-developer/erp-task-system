@@ -5,6 +5,8 @@ export enum TaskEndpointEnum {
 
   GetTaskList = '/tasks/',
 
+  GetFiscalAccumulatorTaskList = '/fiscal-accumulator/',
+
   GetTaskCounters = '/tasks/counters/',
 
   UpdateTaskWorkGroup = '/tasks/:id/work-group/',
@@ -33,6 +35,7 @@ export enum TaskEndpointTagEnum {
 export enum TaskEndpointNameEnum {
   GetTaskList = 'getTaskList',
   GetTaskCounters = 'getTaskCounters',
+  GetFiscalAccumulatorTaskList = 'getFiscalAccumulatorTaskList',
   GetTask = 'getTask',
   ResolveTask = 'resolveTask',
   TakeTask = 'takeTask',

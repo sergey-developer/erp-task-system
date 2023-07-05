@@ -4,7 +4,7 @@ import {
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 
 import { formatDate } from 'shared/utils/date'
 

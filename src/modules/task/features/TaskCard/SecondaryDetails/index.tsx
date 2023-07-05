@@ -1,7 +1,7 @@
 import { Col, FormInstance, Row } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
+import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 

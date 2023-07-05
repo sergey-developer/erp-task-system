@@ -1,20 +1,19 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { TableAction } from 'antd/es/table/interface'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 import { formatDate } from 'shared/utils/date'
 
 import taskFixtures from 'fixtures/task'
 
-import { columnWithSortingClass } from '_tests_/constants/components'
-import { render } from '_tests_/utils'
+import {
+  expectLoadingFinishedByIconIn,
+  expectLoadingStartedByIconIn,
+  render,
+} from '_tests_/utils'
 
 import FiscalAccumulatorTaskTable from './index'
-import {
-  FiscalAccumulatorTaskTableItem,
-  FiscalAccumulatorTaskTableProps,
-} from './interfaces'
+import { FiscalAccumulatorTaskTableProps } from './interfaces'
 
 const fakeFiscalAccumulatorTaskListItem =
   taskFixtures.fakeFiscalAccumulatorTaskListItem()
@@ -22,7 +21,6 @@ const fakeFiscalAccumulatorTaskListItem =
 const props: Readonly<FiscalAccumulatorTaskTableProps> = {
   dataSource: [fakeFiscalAccumulatorTaskListItem],
   loading: false,
-  onChange: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('fiscal-accumulator-task-table')
@@ -32,9 +30,9 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) =>
   within(getContainer()).queryByText(text)
 
-const getRow = (id: number): MaybeNull<HTMLElement> =>
+const getRow = (faNumber: number): MaybeNull<HTMLElement> =>
   // eslint-disable-next-line testing-library/no-node-access
-  getContainer().querySelector(`[data-row-key='${id}']`)
+  getContainer().querySelector(`[data-row-key='${faNumber}']`)
 
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access
@@ -49,21 +47,18 @@ const clickColTitle = async (user: UserEvent, title: string) => {
   await user.click(col)
 }
 
-// todo: использовать в тестах
-const getColValue = (id: number, value: string) => {
-  const row = getRow(id)
-  return within(row!).getByText(value)
+const getColValue = (
+  faNumber: number,
+  value: string,
+): MaybeNull<HTMLElement> => {
+  const row = getRow(faNumber)
+  return row ? within(row).getByText(value) : null
 }
 
-const onChangeTableArgs = {
-  extra: (
-    action: TableAction,
-    dataSource: Readonly<Array<FiscalAccumulatorTaskTableItem>>,
-  ) => ({
-    action,
-    currentDataSource: dataSource,
-  }),
-}
+const expectLoadingStarted = () => expectLoadingStartedByIconIn(getContainer())
+
+const expectLoadingFinished = () =>
+  expectLoadingFinishedByIconIn(getContainer())
 
 export const testUtils = {
   getContainer,
@@ -72,10 +67,12 @@ export const testUtils = {
   queryChildByText,
   getHeadCell,
   getColTitle,
+  getColValue,
   queryColTitle,
   clickColTitle,
 
-  onChangeTableArgs,
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
 describe('Таблица заявок фискальных накопителей', () => {
@@ -87,7 +84,7 @@ describe('Таблица заявок фискальных накопителе�
     expect(table).toBeInTheDocument()
 
     props.dataSource.forEach((item) => {
-      const row = testUtils.getRow(item.id)
+      const row = testUtils.getRow(item.fiscalAccumulator.faNumber)
       expect(row).toBeInTheDocument()
     })
   })
@@ -98,19 +95,14 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Блокировка через')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           String(fakeFiscalAccumulatorTaskListItem.blockingIn),
         )
-        const headCell = testUtils.getHeadCell('Блокировка через')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
-
-      test.todo('При клике на заголовок обработчик вызывается корректно')
-      test.todo('Сортировка работает корректно')
     })
 
     describe('Крайний срок', () => {
@@ -118,15 +110,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Крайний срок')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           formatDate(fakeFiscalAccumulatorTaskListItem.olaNextBreachTime),
         )
-        const headCell = testUtils.getHeadCell('Крайний срок')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -135,15 +125,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('ИНЦ')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           fakeFiscalAccumulatorTaskListItem.recordId,
         )
-        const headCell = testUtils.getHeadCell('ИНЦ')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -152,15 +140,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('SAP ID')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           fakeFiscalAccumulatorTaskListItem.sapId,
         )
-        const headCell = testUtils.getHeadCell('SAP ID')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -169,15 +155,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Клиент')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           fakeFiscalAccumulatorTaskListItem.name,
         )
-        const headCell = testUtils.getHeadCell('Клиент')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -186,15 +170,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Адрес')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           fakeFiscalAccumulatorTaskListItem.address,
         )
-        const headCell = testUtils.getHeadCell('Адрес')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -203,15 +185,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('ФН')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           String(fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber),
         )
-        const headCell = testUtils.getHeadCell('ФН')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -220,15 +200,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Срок / Всего ФД')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           String(fakeFiscalAccumulatorTaskListItem.deadlineOrTotalFiscalDocs),
         )
-        const headCell = testUtils.getHeadCell('Срок / Всего ФД')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -237,17 +215,15 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('МР')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           String(
             fakeFiscalAccumulatorTaskListItem.supportGroup.macroregion.title,
           ),
         )
-        const headCell = testUtils.getHeadCell('МР')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -256,15 +232,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Группа поддержки')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           String(fakeFiscalAccumulatorTaskListItem.supportGroup.name),
         )
-        const headCell = testUtils.getHeadCell('Группа поддержки')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -273,15 +247,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Категория')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           String(fakeFiscalAccumulatorTaskListItem.title),
         )
-        const headCell = testUtils.getHeadCell('Категория')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
 
@@ -290,15 +262,13 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Дата создания заявки')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           formatDate(fakeFiscalAccumulatorTaskListItem.createdAt),
         )
-        const headCell = testUtils.getHeadCell('Дата создания заявки')
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
-        expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
       })
     })
   })

@@ -39,3 +39,7 @@ export const taskAssigneeApiMessages = {
     commonError: 'Невозможно изменить исполнителя',
   },
 } as const
+
+export const getFiscalAccumulatorTaskListMessages = {
+  commonError: 'Ошибка получения списка задач по фискальным накопителям',
+} as const

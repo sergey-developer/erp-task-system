@@ -6,7 +6,7 @@ import {
   TaskModel,
   TaskResponseTimeModel,
 } from 'modules/task/models'
-import getOlaStatusMap from 'modules/task/utils/getOlaStatusMap'
+import { getOlaStatusMap } from 'modules/task/utils'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 import { formatDate, humanizeDuration } from 'shared/utils/date'

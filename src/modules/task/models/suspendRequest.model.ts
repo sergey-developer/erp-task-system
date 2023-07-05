@@ -1,4 +1,4 @@
-import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
+import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import { BaseUserModel } from 'modules/user/models'
 
 export type SuspendRequestModel = {

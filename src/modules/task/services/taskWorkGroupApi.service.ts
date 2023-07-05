@@ -1,4 +1,4 @@
-import { TaskEndpointTagEnum } from 'modules/task/constants/api'
+import { TaskEndpointTagEnum } from 'modules/task/constants'
 import {
   DeleteTaskWorkGroupMutationArgs,
   DeleteTaskWorkGroupSuccessResponse,
@@ -8,7 +8,7 @@ import {
 import {
   deleteTaskWorkGroupUrl,
   updateTaskWorkGroupUrl,
-} from 'modules/task/utils/apiUrls'
+} from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
