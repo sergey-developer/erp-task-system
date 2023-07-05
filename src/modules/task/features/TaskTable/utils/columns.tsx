@@ -3,7 +3,7 @@ import { ColumnsType } from 'antd/es/table'
 import get from 'lodash/get'
 import React from 'react'
 
-import { taskStatusDict } from 'modules/task/constants/dictionary'
+import { taskStatusDict } from 'modules/task/constants'
 import { parseResponseTime } from 'modules/task/features/TaskCard/MainDetails/utils'
 import {
   badgeByTaskStatus,
@@ -11,7 +11,7 @@ import {
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
 import TaskStatus from 'modules/task/features/TaskStatus/index'
-import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
+import { getOlaStatusTextType } from 'modules/task/utils'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { getShortUserName, getUserRoleMap } from 'modules/user/utils'
 

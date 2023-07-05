@@ -5,7 +5,7 @@ import {
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'

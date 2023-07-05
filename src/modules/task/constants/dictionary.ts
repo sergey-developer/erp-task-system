@@ -1,8 +1,9 @@
 import {
+  FiscalAccumulatorFormatEnum,
   SuspendReasonEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { BaseTaskModel } from 'modules/task/models'
 
 import { StringMap } from 'shared/interfaces/utils'
@@ -63,4 +64,13 @@ export const suspendReasonDict: Readonly<StringMap<SuspendReasonEnum>> = {
   [SuspendReasonEnum.AwaitingRelease]: 'Ожидание релиза',
   [SuspendReasonEnum.AwaitingNonItWork]:
     'Ожидание работ вне зоны ответственности ИТ',
+}
+
+export const fiscalAccumulatorFormatColorDict: Readonly<
+  StringMap<FiscalAccumulatorFormatEnum>
+> = {
+  [FiscalAccumulatorFormatEnum.Dubbed]: '#6600ff4d',
+  [FiscalAccumulatorFormatEnum.OutOfMemoryLess7]: '#F2994A4d',
+  [FiscalAccumulatorFormatEnum.OutOfMemoryLess15]: '#EB57574d',
+  [FiscalAccumulatorFormatEnum.OutOfMemoryLess21]: '#F2994A4d',
 }

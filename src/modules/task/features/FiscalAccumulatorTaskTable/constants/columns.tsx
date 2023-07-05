@@ -1,8 +1,12 @@
 import { ColumnsType } from 'antd/es/table'
+import { GetComponentProps } from 'rc-table/es/interface'
+
+import { fiscalAccumulatorFormatColorDict } from 'modules/task/constants'
 
 import { formatDate } from 'shared/utils/date'
 
 import { FiscalAccumulatorTaskTableItem } from '../interfaces'
+import { OlaNextBreachTimeStyled } from '../styles'
 
 export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
   {
@@ -10,14 +14,29 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
     dataIndex: 'blockingIn',
     title: 'Блокировка через',
     sorter: true,
+    onCell: (
+      data,
+    ): ReturnType<GetComponentProps<FiscalAccumulatorTaskTableItem>> & {
+      bgColor?: string
+    } => ({
+      bgColor: data.faFormat
+        ? fiscalAccumulatorFormatColorDict[data.faFormat]
+        : undefined,
+    }),
   },
   {
     key: 'olaNextBreachTime',
     dataIndex: 'olaNextBreachTime',
     title: 'Крайний срок',
     sorter: true,
-    render: (value: FiscalAccumulatorTaskTableItem['olaNextBreachTime']) =>
-      formatDate(value),
+    render: (
+      value: FiscalAccumulatorTaskTableItem['olaNextBreachTime'],
+      record,
+    ) => (
+      <OlaNextBreachTimeStyled $faFormat={record.faFormat}>
+        {formatDate(value)}
+      </OlaNextBreachTimeStyled>
+    ),
   },
   {
     key: 'recordId',

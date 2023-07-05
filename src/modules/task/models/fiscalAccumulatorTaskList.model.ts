@@ -1,3 +1,7 @@
+import { FiscalAccumulatorFormatEnum } from 'modules/task/constants'
+
+import { MaybeNull } from 'shared/interfaces/utils'
+
 export type FiscalAccumulatorTaskListItemModel = {
   id: number
   blockingIn: number
@@ -11,13 +15,16 @@ export type FiscalAccumulatorTaskListItemModel = {
   }
   deadlineOrTotalFiscalDocs: number
   supportGroup: {
+    id: number
     name: string
     macroregion: {
+      id: number
       title: string
     }
   }
   title: string
   createdAt: string
+  faFormat: MaybeNull<FiscalAccumulatorFormatEnum>
 }
 
 export type FiscalAccumulatorTaskListModel =

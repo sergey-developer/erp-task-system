@@ -7,7 +7,12 @@ import { formatDate } from 'shared/utils/date'
 
 import taskFixtures from 'fixtures/task'
 
-import { columnWithSortingClass } from '_tests_/constants/components'
+import {
+  ariaSortAttrAscValue,
+  ariaSortAttrDescValue,
+  ariaSortAttrName,
+  columnWithSortingClass,
+} from '_tests_/constants/components'
 import { render } from '_tests_/utils'
 
 import FiscalAccumulatorTaskTable from './index'
@@ -49,10 +54,9 @@ const clickColTitle = async (user: UserEvent, title: string) => {
   await user.click(col)
 }
 
-// todo: использовать в тестах
-const getColValue = (id: number, value: string) => {
+const getColValue = (id: number, value: string): MaybeNull<HTMLElement> => {
   const row = getRow(id)
-  return within(row!).getByText(value)
+  return row ? within(row).getByText(value) : null
 }
 
 const onChangeTableArgs = {
@@ -72,6 +76,7 @@ export const testUtils = {
   queryChildByText,
   getHeadCell,
   getColTitle,
+  getColValue,
   queryColTitle,
   clickColTitle,
 
@@ -98,7 +103,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Блокировка через')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           String(fakeFiscalAccumulatorTaskListItem.blockingIn),
         )
         const headCell = testUtils.getHeadCell('Блокировка через')
@@ -106,11 +112,36 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
       })
 
-      test.todo('При клике на заголовок обработчик вызывается корректно')
-      test.todo('Сортировка работает корректно')
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Блокировка через')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Блокировка через')
+        const headCell = testUtils.getHeadCell('Блокировка через')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'Блокировка через')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
+      })
     })
 
     describe('Крайний срок', () => {
@@ -118,7 +149,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Крайний срок')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           formatDate(fakeFiscalAccumulatorTaskListItem.olaNextBreachTime),
         )
         const headCell = testUtils.getHeadCell('Крайний срок')
@@ -126,7 +158,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Крайний срок')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Крайний срок')
+        const headCell = testUtils.getHeadCell('Крайний срок')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'Крайний срок')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -135,7 +195,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('ИНЦ')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           fakeFiscalAccumulatorTaskListItem.recordId,
         )
         const headCell = testUtils.getHeadCell('ИНЦ')
@@ -143,7 +204,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'ИНЦ')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'ИНЦ')
+        const headCell = testUtils.getHeadCell('ИНЦ')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'ИНЦ')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -152,7 +241,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('SAP ID')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           fakeFiscalAccumulatorTaskListItem.sapId,
         )
         const headCell = testUtils.getHeadCell('SAP ID')
@@ -160,7 +250,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'SAP ID')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'SAP ID')
+        const headCell = testUtils.getHeadCell('SAP ID')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'SAP ID')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -169,7 +287,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Клиент')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           fakeFiscalAccumulatorTaskListItem.name,
         )
         const headCell = testUtils.getHeadCell('Клиент')
@@ -177,7 +296,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Клиент')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Клиент')
+        const headCell = testUtils.getHeadCell('Клиент')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'Клиент')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -186,7 +333,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Адрес')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           fakeFiscalAccumulatorTaskListItem.address,
         )
         const headCell = testUtils.getHeadCell('Адрес')
@@ -194,7 +342,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Адрес')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Адрес')
+        const headCell = testUtils.getHeadCell('Адрес')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'Адрес')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -203,7 +379,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('ФН')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           String(fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber),
         )
         const headCell = testUtils.getHeadCell('ФН')
@@ -211,7 +388,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'ФН')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'ФН')
+        const headCell = testUtils.getHeadCell('ФН')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'ФН')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -220,7 +425,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Срок / Всего ФД')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           String(fakeFiscalAccumulatorTaskListItem.deadlineOrTotalFiscalDocs),
         )
         const headCell = testUtils.getHeadCell('Срок / Всего ФД')
@@ -228,7 +434,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Срок / Всего ФД')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Срок / Всего ФД')
+        const headCell = testUtils.getHeadCell('Срок / Всего ФД')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'Срок / Всего ФД')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -237,7 +471,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('МР')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           String(
             fakeFiscalAccumulatorTaskListItem.supportGroup.macroregion.title,
           ),
@@ -247,7 +482,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'МР')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'МР')
+        const headCell = testUtils.getHeadCell('МР')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'МР')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -256,7 +519,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Группа поддержки')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           String(fakeFiscalAccumulatorTaskListItem.supportGroup.name),
         )
         const headCell = testUtils.getHeadCell('Группа поддержки')
@@ -264,7 +528,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Группа поддержки')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Группа поддержки')
+        const headCell = testUtils.getHeadCell('Группа поддержки')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'Группа поддержки')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -273,7 +565,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Категория')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           String(fakeFiscalAccumulatorTaskListItem.title),
         )
         const headCell = testUtils.getHeadCell('Категория')
@@ -281,7 +574,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Категория')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Категория')
+        const headCell = testUtils.getHeadCell('Категория')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'Категория')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
 
@@ -290,7 +611,8 @@ describe('Таблица заявок фискальных накопителе�
         render(<FiscalAccumulatorTaskTable {...props} />)
 
         const title = testUtils.getColTitle('Дата создания заявки')
-        const value = testUtils.getChildByText(
+        const value = testUtils.getColValue(
+          fakeFiscalAccumulatorTaskListItem.id,
           formatDate(fakeFiscalAccumulatorTaskListItem.createdAt),
         )
         const headCell = testUtils.getHeadCell('Дата создания заявки')
@@ -298,7 +620,35 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
         expect(headCell).toHaveClass(columnWithSortingClass)
-        expect(headCell).not.toHaveAttribute('aria-sort')
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике на заголовок обработчик вызывается корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Дата создания заявки')
+
+        expect(props.onChange).toBeCalledTimes(1)
+        expect(props.onChange).toBeCalledWith(
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+          expect.anything(),
+        )
+      })
+
+      test('Сортировка работает корректно', async () => {
+        const { user } = render(<FiscalAccumulatorTaskTable {...props} />)
+
+        await testUtils.clickColTitle(user, 'Дата создания заявки')
+        const headCell = testUtils.getHeadCell('Дата создания заявки')
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+        await testUtils.clickColTitle(user, 'Дата создания заявки')
+        expect(headCell).toHaveAttribute(
+          ariaSortAttrName,
+          ariaSortAttrDescValue,
+        )
       })
     })
   })
