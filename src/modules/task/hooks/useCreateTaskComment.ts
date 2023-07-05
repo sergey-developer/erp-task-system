@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { taskCommentApiMessages } from 'modules/task/constants/errorMessages'
+import { taskCommentApiMessages } from 'modules/task/constants'
 import { CreateTaskCommentMutationArgs } from 'modules/task/models'
 import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useCreateTaskCommentMutation } from 'modules/task/services/taskCommentApi.service'

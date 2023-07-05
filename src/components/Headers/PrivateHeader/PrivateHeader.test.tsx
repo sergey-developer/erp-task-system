@@ -1,6 +1,21 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { RouteEnum } from 'configs/routes'
+
+import { UserRoleEnum } from 'modules/user/constants/roles'
+
+import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
+
+import PrivateApp from 'app/PrivateApp'
+
+import userFixtures from 'fixtures/user'
+
+import {
+  mockGetTimeZoneListSuccess,
+  mockGetUserMeCodeSuccess,
+  mockGetUserMeSuccess,
+} from '_tests_/mocks/api'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 import {
@@ -14,6 +29,8 @@ import {
   getSelectedOption,
   openSelect,
   render,
+  renderInRoute,
+  setupApiTests,
 } from '_tests_/utils'
 
 import PrivateHeader from './index'
@@ -25,6 +42,14 @@ const getNavMenuContainer = () => within(getContainer()).getByRole('menu')
 
 const getNavMenuItem = (name: string) =>
   within(getNavMenuContainer()).getByText(name)
+
+const queryNavMenuItem = (name: string) =>
+  within(getNavMenuContainer()).queryByText(name)
+
+const clickNavMenuItem = async (user: UserEvent, name: string) => {
+  const item = getNavMenuItem(name)
+  await user.click(item)
+}
 
 // timezone
 const getTimeZoneSelectContainer = () =>
@@ -92,6 +117,8 @@ export const testUtils = {
 
   getNavMenuContainer,
   getNavMenuItem,
+  queryNavMenuItem,
+  clickNavMenuItem,
 
   getTimeZoneSelectContainer,
   getTimeZoneSelect,
@@ -115,13 +142,302 @@ export const testUtils = {
   expectUserStatusSelectNotDisabled,
 }
 
+setupApiTests()
+
 describe('PrivateHeader', () => {
   describe('Меню навигации', () => {
-    // todo: рендерить privateapp и протестировать
-    test.skip('Отображается корректно', () => {
-      render(<PrivateHeader />)
-      expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
-      expect(testUtils.getNavMenuContainer()).toBeInTheDocument()
+    describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
+      describe('Элемент "Заявки"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.FirstLineSupport,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(testUtils.getNavMenuItem('Заявки')).toBeInTheDocument()
+        })
+
+        test('При клике роут меняется', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.FirstLineSupport,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          const { user, getCurrentRoute } = renderInRoute(
+            <PrivateApp />,
+            RouteEnum.Root,
+          )
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+          await testUtils.clickNavMenuItem(user, 'Заявки')
+
+          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+        })
+      })
+
+      describe('Элемент "Отчёт по ФН"', () => {
+        test('Не отображается', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.FirstLineSupport,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(
+            testUtils.queryNavMenuItem('Отчёт по ФН'),
+          ).not.toBeInTheDocument()
+        })
+      })
+    })
+
+    describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
+      describe('Элемент "Заявки"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.Engineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(testUtils.getNavMenuItem('Заявки')).toBeInTheDocument()
+        })
+
+        test('При клике роут меняется', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.Engineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          const { user, getCurrentRoute } = renderInRoute(
+            <PrivateApp />,
+            RouteEnum.Root,
+          )
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+          await testUtils.clickNavMenuItem(user, 'Заявки')
+
+          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+        })
+      })
+
+      describe('Элемент "Отчёт по ФН"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.Engineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
+        })
+
+        test('При клике роут меняется', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.Engineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          const { user, getCurrentRoute } = renderInRoute(
+            <PrivateApp />,
+            RouteEnum.Root,
+          )
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+          await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
+
+          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorTaskList)
+        })
+      })
+    })
+
+    describe(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
+      describe('Элемент "Заявки"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.SeniorEngineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(testUtils.getNavMenuItem('Заявки')).toBeInTheDocument()
+        })
+
+        test('При клике роут меняется', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.SeniorEngineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          const { user, getCurrentRoute } = renderInRoute(
+            <PrivateApp />,
+            RouteEnum.Root,
+          )
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+          await testUtils.clickNavMenuItem(user, 'Заявки')
+
+          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+        })
+      })
+
+      describe('Элемент "Отчёт по ФН"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.SeniorEngineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
+        })
+
+        test('При клике роут меняется', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.SeniorEngineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          const { user, getCurrentRoute } = renderInRoute(
+            <PrivateApp />,
+            RouteEnum.Root,
+          )
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+          await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
+
+          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorTaskList)
+        })
+      })
+    })
+
+    describe(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
+      describe('Элемент "Заявки"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.HeadOfDepartment,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(testUtils.getNavMenuItem('Заявки')).toBeInTheDocument()
+        })
+
+        test('При клике роут меняется', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.HeadOfDepartment,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          const { user, getCurrentRoute } = renderInRoute(
+            <PrivateApp />,
+            RouteEnum.Root,
+          )
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+          await testUtils.clickNavMenuItem(user, 'Заявки')
+
+          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+        })
+      })
+
+      describe('Элемент "Отчёт по ФН"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.HeadOfDepartment,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
+        })
+
+        test('При клике роут меняется', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.HeadOfDepartment,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          const { user, getCurrentRoute } = renderInRoute(
+            <PrivateApp />,
+            RouteEnum.Root,
+          )
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+          await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
+
+          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorTaskList)
+        })
+      })
     })
   })
 

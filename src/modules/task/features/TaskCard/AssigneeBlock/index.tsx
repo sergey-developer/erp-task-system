@@ -5,7 +5,7 @@ import {
   useAuthenticatedUser,
   useCheckUserAuthenticated,
 } from 'modules/auth/hooks'
-import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
+import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import TaskAssignee from 'modules/task/features/TaskAssignee'
 import {
   useTaskExtendedStatus,

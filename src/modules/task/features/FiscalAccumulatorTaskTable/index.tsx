@@ -1,36 +1,35 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
+import { columns } from './columns'
+import { components } from './components'
 import {
   FiscalAccumulatorTaskTableItem,
   FiscalAccumulatorTaskTableProps,
 } from './interfaces'
-import { TableWrapperStyled } from './styles'
-import { applySortToColumn, columns } from './utils'
+
+const getRowKey = (
+  record: FiscalAccumulatorTaskTableItem,
+): FiscalAccumulatorTaskTableItem['fiscalAccumulator']['faNumber'] =>
+  record.fiscalAccumulator.faNumber
 
 const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
   dataSource,
   loading,
-  sort,
-  onChange,
 }) => {
-  const sortedColumns = useMemo(
-    () => columns.map((col) => (sort ? applySortToColumn(col, sort) : col)),
-    [sort],
-  )
-
   return (
-    <TableWrapperStyled data-testid='fiscal-accumulator-task-table'>
+    <div data-testid='fiscal-accumulator-task-table'>
       <ParentSizedTable<FiscalAccumulatorTaskTableItem>
-        rowKey='id'
+        rowKey={getRowKey}
         dataSource={dataSource}
-        columns={sortedColumns}
+        components={components}
+        columns={columns}
         loading={loading}
-        onChange={onChange}
         showSorterTooltip={false}
+        pagination={false}
       />
-    </TableWrapperStyled>
+    </div>
   )
 }
 

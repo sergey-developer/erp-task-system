@@ -3,7 +3,7 @@ import { Button, Col, FormInstance, Row, Typography } from 'antd'
 import get from 'lodash/get'
 import React, { FC } from 'react'
 
-import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
+import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,

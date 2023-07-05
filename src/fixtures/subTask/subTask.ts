@@ -1,7 +1,7 @@
 import times from 'lodash/times'
 
 import { SubTaskModel } from 'modules/subTask/models'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import { TaskStatusEnum } from 'modules/task/constants'
 
 import { NonNullableObject } from 'shared/interfaces/utils'
 

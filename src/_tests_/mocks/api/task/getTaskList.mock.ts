@@ -1,4 +1,4 @@
-import { TaskEndpointEnum } from 'modules/task/constants/api'
+import { TaskEndpointEnum } from 'modules/task/constants'
 import { GetTaskListSuccessResponse } from 'modules/task/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'

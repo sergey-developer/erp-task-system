@@ -3,7 +3,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import taskFixtures from 'fixtures/task'

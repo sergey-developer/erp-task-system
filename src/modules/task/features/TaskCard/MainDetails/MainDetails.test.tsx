@@ -1,9 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import {
-  TaskOlaStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
+import { TaskOlaStatusEnum, TaskStatusEnum } from 'modules/task/constants'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 

@@ -9,14 +9,12 @@ import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
-} from 'modules/task/constants/common'
-import {
   reclassificationRequestApiMessages,
   suspendRequestApiMessages,
   taskApiMessages,
   taskAssigneeApiMessages,
   taskWorkGroupApiMessages,
-} from 'modules/task/constants/errorMessages'
+} from 'modules/task/constants'
 import {
   activeSecondLineButtonProps,
   showSecondLineButtonProps,
@@ -30,11 +28,11 @@ import {
 import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
-} from 'modules/task/utils/messages'
+} from 'modules/task/utils'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 import { workGroupApiMessages } from 'modules/workGroup/constants/errorMessages'
 
 import { commonApiMessages } from 'shared/constants/errors'
-import { UserRoleEnum } from 'modules/user/constants/roles'
 import { ErrorResponse } from 'shared/services/api'
 
 import taskFixtures from 'fixtures/task'

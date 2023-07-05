@@ -5,7 +5,7 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import {
   GetTaskListSuccessResponse,
   TaskListItemModel,

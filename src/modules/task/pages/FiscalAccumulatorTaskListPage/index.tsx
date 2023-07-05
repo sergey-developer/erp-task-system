@@ -1,36 +1,18 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 import FiscalAccumulatorTaskTable from 'modules/task/features/FiscalAccumulatorTaskTable'
-import { GetFiscalAccumulatorTaskListQueryArgs } from 'modules/task/models'
+import { useGetFiscalAccumulatorTaskList } from 'modules/task/hooks'
 
 const FiscalAccumulatorTaskListPage: FC = () => {
-  const [queryArgs, setQueryArgs] =
-    useState<Partial<GetFiscalAccumulatorTaskListQueryArgs>>()
+  const {
+    currentData: fiscalAccumulatorTaskList = [],
+    isFetching: fiscalAccumulatorTaskListIsFetching,
+  } = useGetFiscalAccumulatorTaskList()
 
   return (
     <FiscalAccumulatorTaskTable
-      loading={false}
-      onChange={() => {}}
-      dataSource={[
-        {
-          id: 1,
-          fiscalAccumulator: { faNumber: 1 },
-          createdAt: new Date().toISOString(),
-          supportGroup: {
-            name: 'name',
-            macroregion: { title: 'title' },
-          },
-          recordId: 'recordId',
-          sapId: 'sapId',
-          address: 'address',
-          blockingIn: 5,
-          title: 'title',
-          name: 'name',
-          olaNextBreachTime: new Date().toISOString(),
-          deadlineOrTotalFiscalDocs: 3,
-        },
-      ]}
-      sort={queryArgs?.sort}
+      loading={fiscalAccumulatorTaskListIsFetching}
+      dataSource={fiscalAccumulatorTaskList}
     />
   )
 }

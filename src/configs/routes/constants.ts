@@ -3,9 +3,6 @@ export enum RouteEnum {
   Root = '/',
   NotFound = '*',
 
-  // fiscal accumulator routes
-  FiscalAccumulatorTaskList = '/fiscal-drives',
-
   // auth routes
   Login = '/login',
   ForgotPassword = '/password/forgot',
@@ -13,6 +10,7 @@ export enum RouteEnum {
 
   // task routes
   TaskList = '/tasks',
+  FiscalAccumulatorTaskList = '/tasks/fiscal-accumulators',
 
   // work group routes
   WorkingGroups = '/working-groups',

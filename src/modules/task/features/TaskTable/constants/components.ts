@@ -1,4 +1,4 @@
-import { TableComponents } from 'rc-table/lib/interface'
+import { TableComponents } from 'rc-table/es/interface'
 
 import ResizeableTitle from '../ResizeableTitle'
 import { TaskTableListItem } from '../interfaces'

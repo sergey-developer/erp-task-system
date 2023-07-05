@@ -6,7 +6,7 @@ import navMenuEngineerConfig from '../navMenu.engineer.config'
 import navMenuHeadOfDepartmentConfig from '../navMenu.headOfDepartment.config'
 import navMenuSeniorEngineerConfig from '../navMenu.seniorEngineer.config'
 
-const getNavMenuConfig = (role: UserRoleEnum): Array<NavMenuItem> => {
+export const getNavMenuConfig = (role: UserRoleEnum): Array<NavMenuItem> => {
   switch (role) {
     case UserRoleEnum.FirstLineSupport:
       return navMenuCommonConfig
@@ -20,5 +20,3 @@ const getNavMenuConfig = (role: UserRoleEnum): Array<NavMenuItem> => {
       return navMenuCommonConfig
   }
 }
-
-export default getNavMenuConfig

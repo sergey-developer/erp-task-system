@@ -1,8 +1,10 @@
 import { CheckboxOptionType } from 'antd'
 import React from 'react'
 
-import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
-import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
+import {
+  TaskExtendedStatusEnum,
+  taskExtendedStatusDict,
+} from 'modules/task/constants'
 import {
   badgeByTaskExtendedStatus,
   iconByTaskExtendedStatus,

@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
-import { TaskEndpointTagEnum } from 'modules/task/constants/api'
+import { TaskEndpointTagEnum } from 'modules/task/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
