@@ -7,8 +7,8 @@ import {
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
-import { taskStatusDict } from 'modules/task/constants/dictionary'
+  taskStatusDict,
+} from 'modules/task/constants'
 import TaskAssignee from 'modules/task/features/TaskAssignee'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import {

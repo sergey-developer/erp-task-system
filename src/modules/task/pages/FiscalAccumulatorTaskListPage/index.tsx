@@ -1,15 +1,24 @@
 import { FC, useState } from 'react'
 
+import { FiscalAccumulatorFormatEnum } from 'modules/task/constants'
 import FiscalAccumulatorTaskTable from 'modules/task/features/FiscalAccumulatorTaskTable'
+import { useGetFiscalAccumulatorTaskList } from 'modules/task/hooks'
 import { GetFiscalAccumulatorTaskListQueryArgs } from 'modules/task/models'
 
 const FiscalAccumulatorTaskListPage: FC = () => {
-  const [queryArgs, setQueryArgs] =
-    useState<Partial<GetFiscalAccumulatorTaskListQueryArgs>>()
+  const [
+    fiscalAccumulatorTaskListQueryArgs,
+    setFiscalAccumulatorTaskListQueryArgs,
+  ] = useState<GetFiscalAccumulatorTaskListQueryArgs>({})
+
+  const {
+    currentData: fiscalAccumulatorTaskList = [],
+    isFetching: fiscalAccumulatorTaskListIsFetching,
+  } = useGetFiscalAccumulatorTaskList(fiscalAccumulatorTaskListQueryArgs)
 
   return (
     <FiscalAccumulatorTaskTable
-      loading={false}
+      loading={fiscalAccumulatorTaskListIsFetching}
       onChange={() => {}}
       dataSource={[
         {
@@ -17,8 +26,9 @@ const FiscalAccumulatorTaskListPage: FC = () => {
           fiscalAccumulator: { faNumber: 1 },
           createdAt: new Date().toISOString(),
           supportGroup: {
+            id: 1,
             name: 'name',
-            macroregion: { title: 'title' },
+            macroregion: { title: 'title', id: 1 },
           },
           recordId: 'recordId',
           sapId: 'sapId',
@@ -28,9 +38,10 @@ const FiscalAccumulatorTaskListPage: FC = () => {
           name: 'name',
           olaNextBreachTime: new Date().toISOString(),
           deadlineOrTotalFiscalDocs: 3,
+          faFormat: FiscalAccumulatorFormatEnum.OutOfMemoryLess7,
         },
       ]}
-      sort={queryArgs?.sort}
+      sort={fiscalAccumulatorTaskListQueryArgs.sort}
     />
   )
 }

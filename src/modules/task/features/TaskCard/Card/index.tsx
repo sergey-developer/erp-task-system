@@ -10,7 +10,7 @@ import {
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
-} from 'modules/task/constants/dictionary'
+} from 'modules/task/constants'
 import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
 import {
   CreateTaskReclassificationRequestMutationArgs,

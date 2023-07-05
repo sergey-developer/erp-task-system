@@ -1,4 +1,4 @@
-import { TaskEndpointTagEnum } from 'modules/task/constants/api'
+import { TaskEndpointTagEnum } from 'modules/task/constants'
 import { UserEndpointEnum } from 'modules/user/constants/api'
 import {
   GetUserMeCodeQueryArgs,

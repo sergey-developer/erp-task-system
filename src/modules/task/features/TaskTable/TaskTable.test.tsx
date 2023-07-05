@@ -6,8 +6,8 @@ import { TableAction } from 'antd/es/table/interface'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
-import { taskStatusDict } from 'modules/task/constants/dictionary'
+  taskStatusDict,
+} from 'modules/task/constants'
 import { parseResponseTime } from 'modules/task/features/TaskCard/MainDetails/utils'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'

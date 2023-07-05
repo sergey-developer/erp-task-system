@@ -1,7 +1,7 @@
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { BaseUserModel } from 'modules/user/models'
 
 import { MaybeNull } from 'shared/interfaces/utils'

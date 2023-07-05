@@ -2,12 +2,13 @@ import React, { FC, useMemo } from 'react'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
+import { components } from './components'
+import { columns } from './constants'
 import {
   FiscalAccumulatorTaskTableItem,
   FiscalAccumulatorTaskTableProps,
 } from './interfaces'
-import { TableWrapperStyled } from './styles'
-import { applySortToColumn, columns } from './utils'
+import { applySortToColumn } from './utils'
 
 const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
   dataSource,
@@ -21,16 +22,17 @@ const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
   )
 
   return (
-    <TableWrapperStyled data-testid='fiscal-accumulator-task-table'>
-      <ParentSizedTable<FiscalAccumulatorTaskTableItem>
-        rowKey='id'
-        dataSource={dataSource}
-        columns={sortedColumns}
-        loading={loading}
-        onChange={onChange}
-        showSorterTooltip={false}
-      />
-    </TableWrapperStyled>
+    <ParentSizedTable<FiscalAccumulatorTaskTableItem>
+      data-testid='fiscal-accumulator-task-table'
+      rowKey='id'
+      dataSource={dataSource}
+      components={components}
+      columns={sortedColumns}
+      loading={loading}
+      onChange={onChange}
+      showSorterTooltip={false}
+      pagination={false}
+    />
   )
 }
 

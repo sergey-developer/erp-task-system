@@ -5,7 +5,7 @@ import {
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
