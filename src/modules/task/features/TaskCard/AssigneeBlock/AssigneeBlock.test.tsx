@@ -32,8 +32,8 @@ import {
   queryButtonIn,
   querySelect,
   render,
-  selectDisabled,
-  selectNotDisabled,
+  selectDisabledIn,
+  selectNotDisabledIn,
   openSelect,
 } from '_tests_/utils'
 
@@ -190,9 +190,10 @@ const getAllAssigneeOption = getAllSelectOption
 const expectAssigneeSelectLoadingStarted = () =>
   expectLoadingStartedBySelect(getContainer())
 
-const expectAssigneeSelectDisabled = () => selectDisabled(getContainer())
+const expectAssigneeSelectDisabled = () => selectDisabledIn(getContainer())
 
-const expectAssigneeSelectNotDisabled = () => selectNotDisabled(getContainer())
+const expectAssigneeSelectNotDisabled = () =>
+  selectNotDisabledIn(getContainer())
 
 export const testUtils = {
   getContainer,

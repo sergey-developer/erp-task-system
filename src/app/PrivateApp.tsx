@@ -5,15 +5,16 @@ import { useRoutes } from 'react-router-dom'
 
 import { getPrivateRoutesConfig } from 'configs/routes'
 
-import { useGetUserMe } from 'modules/user/hooks'
+import { useGetUserMe, useGetUserStatusList } from 'modules/user/hooks'
 import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
 
 import { useGetSystemInfoQuery } from 'shared/services/api'
 import { useGetTimeZoneList } from 'shared/services/api/hooks'
 
 const PrivateApp: FC = () => {
-  const { data: userMe, isSuccess: userMeLoadedSuccess } = useGetUserMe()
+  const { data: userMe } = useGetUserMe()
   useGetTimeZoneList()
+  useGetUserStatusList()
   useGetUserMeCodeQuery()
   useGetSystemInfoQuery()
 
@@ -21,10 +22,10 @@ const PrivateApp: FC = () => {
    во время загрузки данных пользователя, прежде чем отобразить страницу
   */
   useEffect(() => {
-    if (userMeLoadedSuccess && userMe) {
+    if (userMe?.timezone) {
       moment.tz.setDefault(userMe.timezone)
     }
-  }, [userMeLoadedSuccess, userMe])
+  }, [userMe?.timezone])
 
   const routesConfig = getPrivateRoutesConfig({
     isStaff: get(userMe, 'isStaff', false),

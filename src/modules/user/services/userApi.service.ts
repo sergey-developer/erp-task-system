@@ -5,11 +5,15 @@ import {
   GetUserMeCodeSuccessResponse,
   GetUserMeQueryArgs,
   GetUserMeSuccessResponse,
+  GetUserStatusListQueryArgs,
+  GetUserStatusListSuccessResponse,
+  UpdateUserStatusMutationArgs,
+  UpdateUserStatusSuccessResponse,
   UpdateUserTimeZoneMutationArgs,
   UpdateUserTimeZoneSuccessResponse,
   UserModel,
 } from 'modules/user/models'
-import { updateUserUrl } from 'modules/user/utils'
+import { updateUserStatusUrl, updateUserUrl } from 'modules/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
@@ -58,6 +62,42 @@ const userApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getUserStatusList: build.query<
+      GetUserStatusListSuccessResponse,
+      GetUserStatusListQueryArgs
+    >({
+      query: () => ({
+        url: UserEndpointEnum.GetUserStatusList,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
+    updateUserStatus: build.mutation<
+      UpdateUserStatusSuccessResponse,
+      UpdateUserStatusMutationArgs
+    >({
+      query: ({ userId, ...payload }) => ({
+        url: updateUserStatusUrl(userId),
+        method: HttpMethodEnum.Post,
+        data: payload,
+      }),
+      onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
+        try {
+          await queryFulfilled
+
+          dispatch(
+            baseApiService.util.updateQueryData(
+              'getUserMe' as never,
+              undefined as never,
+              (user: UserModel) => {
+                Object.assign(user, {
+                  status: { ...user.status, id: payload.status },
+                })
+              },
+            ),
+          )
+        } catch {}
+      },
+    }),
   }),
   overrideExisting: false,
 })
@@ -65,6 +105,8 @@ const userApiService = baseApiService.injectEndpoints({
 export const {
   useGetUserMeQuery,
   useGetUserMeCodeQuery,
+  useGetUserStatusListQuery,
   useUpdateUserTimeZoneMutation,
+  useUpdateUserStatusMutation,
   endpoints: userApiEndpoints,
 } = userApiService

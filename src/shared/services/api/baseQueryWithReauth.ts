@@ -1,7 +1,7 @@
 import { Mutex } from 'async-mutex'
 
 import { refreshToken as refreshTokenAction } from 'modules/auth/auth.slice'
-import { AuthEndpointsEnum } from 'modules/auth/constants/api'
+import { AuthEndpointsEnum } from 'modules/auth/constants'
 import { RefreshTokenActionPayload } from 'modules/auth/interfaces'
 import { RefreshTokenSuccessResponse } from 'modules/auth/models'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'

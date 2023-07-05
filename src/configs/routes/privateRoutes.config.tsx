@@ -11,6 +11,10 @@ import { staffRoutesConfig } from './staffRoutes.config'
 
 const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
 
+const ChangePasswordPage = React.lazy(
+  () => import('modules/auth/pages/ChangePasswordPage'),
+)
+
 export const getPrivateRoutesConfig = ({
   isStaff,
 }: Pick<UserModel, 'isStaff'>): Array<RouteObject> => [
@@ -25,6 +29,10 @@ export const getPrivateRoutesConfig = ({
       {
         path: RouteEnum.TaskList,
         element: <TaskListPage />,
+      },
+      {
+        path: RouteEnum.ChangePassword,
+        element: <ChangePasswordPage />,
       },
       ...(isStaff ? staffRoutesConfig : []),
       {
