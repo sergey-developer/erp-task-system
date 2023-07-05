@@ -66,7 +66,7 @@ const TaskTable: FC<TaskTableProps> = ({
   )
 
   return (
-    <TableWrapperStyled data-testid='table-task-list'>
+    <TableWrapperStyled data-testid='task-table'>
       <TableStyled<TaskTableListItem>
         components={tableComponents}
         rowClassName={rowClassName}

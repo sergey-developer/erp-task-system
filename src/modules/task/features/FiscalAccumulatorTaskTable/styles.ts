@@ -18,5 +18,5 @@ export const OlaNextBreachTimeStyled = styled(Text)<{
 `
 
 export const BodyCellStyled = styled('td')<{ $bgColor?: string }>`
-  ${({ $bgColor }) => ($bgColor ? `background-color: ${$bgColor};` : '')}
+  ${({ $bgColor }) => ($bgColor ? `background-color: ${$bgColor}4d;` : '')}
 `

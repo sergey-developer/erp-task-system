@@ -3,7 +3,6 @@ import { FiscalAccumulatorFormatEnum } from 'modules/task/constants'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 export type FiscalAccumulatorTaskListItemModel = {
-  id: number
   blockingIn: number
   olaNextBreachTime: string
   recordId: string

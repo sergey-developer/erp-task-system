@@ -63,7 +63,7 @@ export const testConstants = {
   firstTaskTableItem,
 }
 
-const getContainer = () => screen.getByTestId('table-task-list')
+const getContainer = () => screen.getByTestId('task-table')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 

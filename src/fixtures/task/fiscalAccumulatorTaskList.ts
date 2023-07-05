@@ -12,7 +12,6 @@ import {
 export const fakeFiscalAccumulatorTaskListItem = (
   props?: Partial<Pick<FiscalAccumulatorTaskListItemModel, 'faFormat'>>,
 ): FiscalAccumulatorTaskListItemModel => ({
-  id: fakeId(),
   address: fakeAddress(),
   name: fakeWord(),
   title: fakeWord(),

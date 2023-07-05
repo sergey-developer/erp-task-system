@@ -20,22 +20,23 @@ export type UseGetFiscalAccumulatorTaskListResult = CustomUseQueryHookResult<
   GetFiscalAccumulatorTaskListSuccessResponse
 >
 
-export const useGetFiscalAccumulatorTaskList = (
-  args: GetFiscalAccumulatorTaskListQueryArgs,
-): UseGetFiscalAccumulatorTaskListResult => {
-  const state = useGetFiscalAccumulatorTaskListQuery(args)
+export const useGetFiscalAccumulatorTaskList =
+  (): UseGetFiscalAccumulatorTaskListResult => {
+    const state = useGetFiscalAccumulatorTaskListQuery()
 
-  useEffect(() => {
-    if (!state.isError) return
+    useEffect(() => {
+      if (!state.isError) return
 
-    if (isErrorResponse(state.error)) {
-      if (isForbiddenError(state.error) && state.error.data.detail) {
-        showMultipleErrorNotification(state.error.data.detail)
-      } else {
-        showErrorNotification(getFiscalAccumulatorTaskListMessages.commonError)
+      if (isErrorResponse(state.error)) {
+        if (isForbiddenError(state.error) && state.error.data.detail) {
+          showMultipleErrorNotification(state.error.data.detail)
+        } else {
+          showErrorNotification(
+            getFiscalAccumulatorTaskListMessages.commonError,
+          )
+        }
       }
-    }
-  }, [state.error, state.isError])
+    }, [state.error, state.isError])
 
-  return state
-}
+    return state
+  }
