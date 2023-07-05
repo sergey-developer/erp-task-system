@@ -90,6 +90,9 @@ const requiredProps: Readonly<TaskCardProps> = {
   takeTask: jest.fn(),
   takeTaskIsLoading: false,
 
+  getTaskWorkPerformedAct: jest.fn(),
+  taskWorkPerformedActIsLoading: false,
+
   reclassificationRequest: null,
   reclassificationRequestIsLoading: false,
   createReclassificationRequest: jest.fn(),

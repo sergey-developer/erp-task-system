@@ -6,4 +6,6 @@ export type GetTaskWorkPerformedActQueryArgs = {
   techResolution: string
 }
 
-export type GetTaskWorkPerformedActSuccessResponse = string
+export type GetTaskWorkPerformedActSuccessResponse = {
+  file: string
+}

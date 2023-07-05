@@ -42,6 +42,7 @@ import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { clickDownloadLink } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
@@ -289,7 +290,21 @@ const TaskCard: FC<TaskCardProps> = ({
     [task, closeTaskCard, resolveTask],
   )
 
-  const handleGetAct = async () => {}
+  const handleGetAct = async () => {
+    if (!task) return
+
+    try {
+      const { file } = await getTaskWorkPerformedAct({
+        task: task.id,
+        techResolution: '',
+        completedAt: '',
+      }).unwrap()
+
+      if (file) {
+        clickDownloadLink(file, 'application/pdf')
+      }
+    } catch {}
+  }
 
   const handleReclassificationRequestSubmit = useCallback<
     RequestTaskReclassificationModalProps['onSubmit']
