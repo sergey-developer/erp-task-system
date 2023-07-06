@@ -104,7 +104,11 @@ setupApiTests()
 
 describe('Страница реестра заявок', () => {
   test('Отображается корректно', () => {
+    mockGetTaskCountersSuccess()
+    mockGetTaskListSuccess()
+
     render(<TaskListPage />)
+
     expect(testUtils.getContainer()).toBeInTheDocument()
   })
 
