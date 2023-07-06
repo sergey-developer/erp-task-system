@@ -2,6 +2,7 @@ import { ColumnsType } from 'antd/es/table'
 
 import { fiscalAccumulatorFormatColorDict } from 'modules/task/constants'
 
+import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { BodyCellProps } from './components'
@@ -18,6 +19,8 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
         ? fiscalAccumulatorFormatColorDict[data.faFormat]
         : undefined,
     }),
+    render: (value: FiscalAccumulatorTaskTableItem['blockingIn']) =>
+      valueOrHyphen(value),
   },
   {
     key: 'olaNextBreachTime',
@@ -69,7 +72,7 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
     dataIndex: 'supportGroup',
     title: 'МР',
     render: (value: FiscalAccumulatorTaskTableItem['supportGroup']) =>
-      value.macroregion.title,
+      valueOrHyphen(value.macroregion?.title),
   },
   {
     key: 'supportGroup',
