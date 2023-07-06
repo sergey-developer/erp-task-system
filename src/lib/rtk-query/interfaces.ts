@@ -1,6 +1,6 @@
 import { QueryDefinition } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
 import { TypedUseQueryStateResult } from '@reduxjs/toolkit/dist/query/react'
-import { LazyQueryTrigger } from '@reduxjs/toolkit/src/query/react/buildHooks'
+import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 
 import { CustomBaseQueryFn } from 'shared/services/api'
 

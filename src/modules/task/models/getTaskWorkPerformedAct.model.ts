@@ -1,11 +1,8 @@
-import { TaskModel } from './task.model'
+import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
-export type GetTaskWorkPerformedActQueryArgs = {
-  task: TaskModel['id']
+export type GetTaskWorkPerformedActQueryArgs = BaseTaskRequestArgs & {
   completedAt: string
   techResolution: string
 }
 
-export type GetTaskWorkPerformedActSuccessResponse = {
-  file: string
-}
+export type GetTaskWorkPerformedActSuccessResponse = string

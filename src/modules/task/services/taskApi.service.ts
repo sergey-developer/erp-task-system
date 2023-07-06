@@ -75,14 +75,15 @@ const taskApiService = baseApiService.injectEndpoints({
       providesTags: (result, error) =>
         error ? [] : [TaskEndpointTagEnum.Task],
     }),
+    // todo: поменять на mutation
     [TaskEndpointNameEnum.GetWorkPerformedAct]: build.query<
       GetTaskWorkPerformedActSuccessResponse,
       GetTaskWorkPerformedActQueryArgs
     >({
-      query: (params) => ({
-        url: getTaskWorkPerformedActUrl(params.task),
-        method: HttpMethodEnum.Get,
-        params,
+      query: ({ taskId, ...payload }) => ({
+        url: getTaskWorkPerformedActUrl(taskId),
+        method: HttpMethodEnum.Post,
+        data: payload,
       }),
     }),
     [TaskEndpointNameEnum.ResolveTask]: build.mutation<

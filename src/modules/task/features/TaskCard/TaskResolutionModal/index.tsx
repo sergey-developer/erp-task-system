@@ -35,7 +35,9 @@ export type TaskResolutionModalProps = Pick<TaskModel, 'type' | 'recordId'> & {
     setFields: FormInstance['setFields'],
   ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
-  onGetAct: () => Promise<void>
+  onGetAct: (
+    values: Pick<TaskResolutionFormFields, 'techResolution'>,
+  ) => Promise<void>
   getActIsLoading: boolean
 }
 
@@ -51,6 +53,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   type,
 }) => {
   const [form] = Form.useForm<TaskResolutionFormFields>()
+  const techResolutionFormValue = Form.useWatch('techResolution', form)
 
   const taskType = useTaskType(type)
 
@@ -64,6 +67,12 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     await onSubmit(values, form.setFields)
   }
 
+  const onClickGetAct = async () => {
+    if (techResolutionFormValue) {
+      await onGetAct({ techResolution: techResolutionFormValue })
+    }
+  }
+
   return (
     <BaseModal
       data-testid='task-resolution-modal'
@@ -73,7 +82,11 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
       footer={
         <Row justify='space-between'>
           <Col>
-            <Button onClick={onGetAct} loading={getActIsLoading}>
+            <Button
+              onClick={onClickGetAct}
+              loading={getActIsLoading}
+              disabled={!techResolutionFormValue}
+            >
               Сформировать акт
             </Button>
           </Col>

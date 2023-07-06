@@ -290,21 +290,26 @@ const TaskCard: FC<TaskCardProps> = ({
     [task, closeTaskCard, resolveTask],
   )
 
-  const handleGetAct = async () => {
-    if (!task) return
+  const handleGetAct = useCallback<TaskResolutionModalProps['onGetAct']>(
+    async (values) => {
+      if (!task) return
 
-    try {
-      const { file } = await getTaskWorkPerformedAct({
-        task: task.id,
-        techResolution: '',
-        completedAt: '',
-      }).unwrap()
+      try {
+        const file = await getTaskWorkPerformedAct({
+          taskId: task.id,
+          techResolution: values.techResolution,
+          completedAt: new Date().toISOString(),
+        }).unwrap()
 
-      if (file) {
-        clickDownloadLink(file, 'application/pdf')
-      }
-    } catch {}
-  }
+        clickDownloadLink(
+          file,
+          'application/pdf',
+          `Акт о выполненных работах ${task.id}`,
+        )
+      } catch {}
+    },
+    [getTaskWorkPerformedAct, task],
+  )
 
   const handleReclassificationRequestSubmit = useCallback<
     RequestTaskReclassificationModalProps['onSubmit']
