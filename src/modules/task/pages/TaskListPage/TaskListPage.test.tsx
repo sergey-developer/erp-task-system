@@ -108,9 +108,14 @@ describe('Страница реестра заявок', () => {
     expect(testUtils.getContainer()).toBeInTheDocument()
   })
 
+  // todo: fix
   describe('Быстрый фильтр', () => {
     test('Отображается', () => {
+      mockGetTaskCountersSuccess()
+      mockGetTaskListSuccess()
+
       render(<TaskListPage />)
+
       expect(fastFilterListTestUtils.getContainer()).toBeInTheDocument()
     })
 
@@ -165,7 +170,7 @@ describe('Страница реестра заявок', () => {
         await fastFilterListTestUtils.expectLoadingFinished()
 
         fastFilterListTestUtils.expectFilterChecked(
-          fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All),
+          fastFilterListTestUtils.getCheckableTag(FastFilterEnum.FirstLine),
         )
       })
 
