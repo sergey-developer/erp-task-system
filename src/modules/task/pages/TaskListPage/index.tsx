@@ -50,7 +50,7 @@ import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
 const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
-  const { isFirstLineSupportRole, role } = useUserRole()
+  const { isFirstLineSupportRole, isEngineerRole, role } = useUserRole()
 
   const {
     data: taskCounters,
@@ -61,6 +61,8 @@ const TaskListPage: FC = () => {
 
   const initialFastFilter: FastFilterEnum = isFirstLineSupportRole
     ? FastFilterEnum.FirstLine
+    : isEngineerRole
+    ? FastFilterEnum.Mine
     : FastFilterEnum.All
 
   const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>({
@@ -275,9 +277,9 @@ const TaskListPage: FC = () => {
     <>
       <RowWrapStyled data-testid='page-task-list' gutter={[0, 40]}>
         <Row justify='space-between' align='bottom'>
-          <Col span={13}>
+          <Col xxl={16} xl={14}>
             <Row align='middle' gutter={[30, 30]}>
-              <Col>
+              <Col span={17}>
                 <FastFilterList
                   data={taskCounters}
                   selectedFilter={queryArgs.filter}
@@ -289,7 +291,7 @@ const TaskListPage: FC = () => {
                 />
               </Col>
 
-              <Col>
+              <Col xl={5} xxl={3}>
                 <Button
                   icon={<FilterIcon $size='large' />}
                   onClick={debouncedToggleOpenExtendedFilter}
@@ -301,7 +303,7 @@ const TaskListPage: FC = () => {
             </Row>
           </Col>
 
-          <Col span={10}>
+          <Col span={8}>
             <Row justify='end' gutter={[16, 8]}>
               <Col>
                 <SearchStyled

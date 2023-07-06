@@ -7,10 +7,10 @@ export enum FastFilterEnum {
   Free = 'FREE',
   Mine = 'MINE',
   Overdue = 'OVERDUE',
-  FirstLine = 'FirstLine',
-  SecondLine = 'SecondLine',
-  LessOneHour = 'LessOneHour',
-  LessThreeHour = 'LessThreeHour',
+  FirstLine = 'FIRST_LINE',
+  SecondLine = 'SECOND_LINE',
+  LessOneHour = 'LESS_1_HOUR',
+  LessThreeHour = 'LESS_3_HOURS',
 }
 
 export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
