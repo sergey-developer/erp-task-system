@@ -1,11 +1,11 @@
 import { fakeWord, render } from '_tests_/utils'
 
-import { testUtils } from '../FastFilter.test'
-import FilterTag, { FilterTagProps } from '../FilterTag'
+import { testUtils } from '../FastFilterList.test'
 import { FastFilterEnum } from '../constants'
+import FastFilterListItem, { FastFilterListItemProps } from './'
 
-export const requiredProps: Readonly<
-  Pick<FilterTagProps, 'text' | 'checked' | 'amount' | 'value'>
+export const props: Readonly<
+  Pick<FastFilterListItemProps, 'text' | 'checked' | 'amount' | 'value'>
 > = {
   text: fakeWord(),
   value: FastFilterEnum.All,
@@ -15,73 +15,59 @@ export const requiredProps: Readonly<
 
 describe('Элемент быстрого фильтра', () => {
   test('Отображает состояние загрузки', async () => {
-    render(<FilterTag {...requiredProps} loading />)
+    render(<FastFilterListItem {...props} loading />)
     await testUtils.expectLoadingStarted()
   })
 
   test('Отображает текст', () => {
-    render(<FilterTag {...requiredProps} />)
+    render(<FastFilterListItem {...props} />)
 
     expect(
-      testUtils.getByTextInCheckableTag(
-        requiredProps.value,
-        requiredProps.text,
-      ),
+      testUtils.getByTextInCheckableTag(props.value, props.text),
     ).toBeInTheDocument()
   })
 
   describe('Количество', () => {
     test('Отображается корректно', () => {
       const amount = 0
-      render(<FilterTag {...requiredProps} amount={amount} />)
+      render(<FastFilterListItem {...props} amount={amount} />)
 
       expect(
-        testUtils.getByTextInCheckableTag(requiredProps.value, amount),
+        testUtils.getByTextInCheckableTag(props.value, amount),
       ).toBeInTheDocument()
     })
 
     test('Не отображается если оно отсутствует', () => {
-      render(<FilterTag {...requiredProps} amount={null} />)
+      render(<FastFilterListItem {...props} amount={null} />)
 
       expect(
-        testUtils.queryByTextInCheckableTag(
-          requiredProps.value,
-          requiredProps.amount!,
-        ),
+        testUtils.queryByTextInCheckableTag(props.value, props.amount!),
       ).not.toBeInTheDocument()
     })
   })
 
   test('Можно сделать выбранным', () => {
-    render(<FilterTag {...requiredProps} checked />)
+    render(<FastFilterListItem {...props} checked />)
 
-    testUtils.expectFilterChecked(
-      testUtils.getCheckableTag(requiredProps.value),
-    )
+    testUtils.expectFilterChecked(testUtils.getCheckableTag(props.value))
   })
 
   test('Можно сделать не выбранным', () => {
-    render(<FilterTag {...requiredProps} checked={false} />)
+    render(<FastFilterListItem {...props} checked={false} />)
 
-    testUtils.expectFilterNotChecked(
-      testUtils.getCheckableTag(requiredProps.value),
-    )
+    testUtils.expectFilterNotChecked(testUtils.getCheckableTag(props.value))
   })
 
   test('Можно сделать не активным', () => {
-    render(<FilterTag {...requiredProps} disabled />)
+    render(<FastFilterListItem {...props} disabled />)
 
-    testUtils.expectFilterNotChecked(
-      testUtils.getCheckableTag(requiredProps.value),
-    )
+    testUtils.expectFilterNotChecked(testUtils.getCheckableTag(props.value))
   })
 
   test('Если элемент не активный, он перестаёт быть выбранным', () => {
-    render(<FilterTag {...requiredProps} checked disabled />)
+    render(<FastFilterListItem {...props} checked disabled />)
 
-    testUtils.expectFilterNotChecked(
-      testUtils.getCheckableTag(requiredProps.value),
-    )
+    testUtils.expectFilterNotChecked(testUtils.getCheckableTag(props.value))
   })
 
   describe('Обработчик onChange', () => {
@@ -93,19 +79,19 @@ describe('Элемент быстрого фильтра', () => {
 
     test('Вызывается если элемент активный', async () => {
       const { user } = render(
-        <FilterTag {...requiredProps} disabled={false} onChange={onChange} />,
+        <FastFilterListItem {...props} disabled={false} onChange={onChange} />,
       )
 
-      await testUtils.changeFilter(user, requiredProps.value)
+      await testUtils.setFilter(user, props.value)
       expect(onChange).toBeCalledTimes(1)
     })
 
     test('Не вызывается если элемент не активный', async () => {
       const { user } = render(
-        <FilterTag {...requiredProps} disabled onChange={onChange} />,
+        <FastFilterListItem {...props} disabled onChange={onChange} />,
       )
 
-      await testUtils.changeFilter(user, requiredProps.value)
+      await testUtils.setFilter(user, props.value)
       expect(onChange).not.toBeCalled()
     })
   })

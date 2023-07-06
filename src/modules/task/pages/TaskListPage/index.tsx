@@ -22,8 +22,8 @@ import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
 } from 'modules/task/features/ExtendedFilter/interfaces'
-import FastFilter from 'modules/task/features/FastFilter'
-import { FastFilterEnum } from 'modules/task/features/FastFilter/constants'
+import FastFilterList from 'modules/task/features/FastFilterList'
+import { FastFilterEnum } from 'modules/task/features/FastFilterList/constants'
 import TaskCard from 'modules/task/features/TaskCard/CardContainer'
 import TaskTable from 'modules/task/features/TaskTable'
 import {
@@ -265,8 +265,11 @@ const TaskListPage: FC = () => {
     FilterTypeEnum.Search,
   )
 
-  const getTableRowClassName = (record: TaskTableListItem): string =>
-    isEqual(record.id, selectedTask) ? 'table-row--selected' : ''
+  const getTableRowClassName = useCallback(
+    (record: TaskTableListItem): string =>
+      isEqual(record.id, selectedTask) ? 'table-row--selected' : '',
+    [selectedTask],
+  )
 
   return (
     <>
@@ -275,13 +278,14 @@ const TaskListPage: FC = () => {
           <Col span={13}>
             <Row align='middle' gutter={[30, 30]}>
               <Col>
-                <FastFilter
+                <FastFilterList
                   data={taskCounters}
                   selectedFilter={queryArgs.filter}
                   onChange={handleFastFilterChange}
-                  isError={isGetTaskCountersError}
+                  isShowCounters={!isGetTaskCountersError}
                   disabled={taskListIsFetching}
                   isLoading={taskCountersIsFetching}
+                  userRole={role}
                 />
               </Col>
 
