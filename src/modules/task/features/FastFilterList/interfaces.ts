@@ -1,19 +1,24 @@
 import { GetTaskCountersSuccessResponse } from 'modules/task/models'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { MaybeUndefined, Nullable } from 'shared/interfaces/utils'
 
-import { FilterTagProps } from './FilterTag'
+import { FastFilterListItemProps } from './FastFilterListItem'
 import { FastFilterEnum } from './constants'
 
-export type FilterItem = Pick<FilterTagProps, 'text' | 'amount'> & {
+export type FastFilterItem = Pick<
+  FastFilterListItemProps,
+  'text' | 'amount'
+> & {
   value: FastFilterEnum
 }
 
-export type FastFilterProps = {
+export type FastFilterListProps = {
   data: MaybeUndefined<GetTaskCountersSuccessResponse>
   selectedFilter: Nullable<FastFilterEnum>
-  isError: boolean
+  isShowCounters: boolean
   isLoading: boolean
   disabled: boolean
   onChange: (value: FastFilterEnum) => void
+  userRole?: UserRoleEnum
 }

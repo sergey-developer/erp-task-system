@@ -10,7 +10,7 @@ import { CheckableTagStyled } from './styles'
 
 const { Text } = Typography
 
-export type FilterTagProps = CheckableTagProps & {
+export type FastFilterListItemProps = CheckableTagProps & {
   value: FastFilterEnum
   text: string
   amount: MaybeNull<number>
@@ -18,7 +18,7 @@ export type FilterTagProps = CheckableTagProps & {
   disabled?: boolean
 }
 
-const FilterTag: FC<FilterTagProps> = ({
+const FastFilterListItem: FC<FastFilterListItemProps> = ({
   checked,
   onChange,
   text,
@@ -28,7 +28,7 @@ const FilterTag: FC<FilterTagProps> = ({
   disabled,
 }) => {
   return (
-    <div data-testid='filter-tag'>
+    <div data-testid='fast-filter-list-item'>
       {loading ? (
         <Skeleton.Button active={loading} size='small' shape='round' />
       ) : (
@@ -49,4 +49,4 @@ const FilterTag: FC<FilterTagProps> = ({
   )
 }
 
-export default FilterTag
+export default FastFilterListItem
