@@ -39,12 +39,7 @@ export const fastFilters: Array<FastFilterType> = [
   },
   {
     filter: FastFilterEnum.SecondLine,
-    roles: [
-      UserRoleEnum.FirstLineSupport,
-      UserRoleEnum.Engineer,
-      UserRoleEnum.SeniorEngineer,
-      UserRoleEnum.HeadOfDepartment,
-    ],
+    roles: [UserRoleEnum.FirstLineSupport],
     text: fastFilterNamesDict[FastFilterEnum.SecondLine],
   },
   {

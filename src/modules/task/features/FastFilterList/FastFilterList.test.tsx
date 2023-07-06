@@ -171,7 +171,6 @@ describe('Быстрый фильтр', () => {
 
   describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
     const availableFilters = [
-      FastFilterEnum.SecondLine,
       FastFilterEnum.All,
       FastFilterEnum.Mine,
       FastFilterEnum.Free,
@@ -180,7 +179,10 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Overdue,
     ]
 
-    const notAvailableFilters = [FastFilterEnum.FirstLine]
+    const notAvailableFilters = [
+      FastFilterEnum.FirstLine,
+      FastFilterEnum.SecondLine,
+    ]
 
     test('Отображается корректно', () => {
       render(<FastFilterList {...props} userRole={UserRoleEnum.Engineer} />)
@@ -208,7 +210,6 @@ describe('Быстрый фильтр', () => {
 
   describe(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
     const availableFilters = [
-      FastFilterEnum.SecondLine,
       FastFilterEnum.All,
       FastFilterEnum.Mine,
       FastFilterEnum.Free,
@@ -217,7 +218,10 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Overdue,
     ]
 
-    const notAvailableFilters = [FastFilterEnum.FirstLine]
+    const notAvailableFilters = [
+      FastFilterEnum.FirstLine,
+      FastFilterEnum.SecondLine,
+    ]
 
     test('Отображается корректно', () => {
       render(
@@ -247,7 +251,6 @@ describe('Быстрый фильтр', () => {
 
   describe(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
     const availableFilters = [
-      FastFilterEnum.SecondLine,
       FastFilterEnum.All,
       FastFilterEnum.Mine,
       FastFilterEnum.Free,
@@ -256,7 +259,10 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Overdue,
     ]
 
-    const notAvailableFilters = [FastFilterEnum.FirstLine]
+    const notAvailableFilters = [
+      FastFilterEnum.FirstLine,
+      FastFilterEnum.SecondLine,
+    ]
 
     test('Отображается корректно', () => {
       render(

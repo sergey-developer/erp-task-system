@@ -50,7 +50,7 @@ import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
 const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
-  const { isEngineerRole, role } = useUserRole()
+  const { isFirstLineSupportRole, role } = useUserRole()
 
   const {
     data: taskCounters,
@@ -59,8 +59,8 @@ const TaskListPage: FC = () => {
     refetch: refetchTaskCounters,
   } = useGetTaskCounters()
 
-  const initialFastFilter: FastFilterEnum = isEngineerRole
-    ? FastFilterEnum.Mine
+  const initialFastFilter: FastFilterEnum = isFirstLineSupportRole
+    ? FastFilterEnum.FirstLine
     : FastFilterEnum.All
 
   const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>({
