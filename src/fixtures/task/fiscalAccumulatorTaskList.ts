@@ -21,7 +21,7 @@ export const fakeFiscalAccumulatorTaskListItem = (
   olaNextBreachTime: fakeDateString(),
   sapId: fakeIdStr(),
   deadlineOrTotalFiscalDocs: fakeInteger(),
-  fiscalAccumulator: { faNumber: fakeInteger() },
+  fiscalAccumulator: { id: fakeId(), faNumber: fakeInteger() },
   supportGroup: {
     id: fakeId(),
     name: fakeWord(),

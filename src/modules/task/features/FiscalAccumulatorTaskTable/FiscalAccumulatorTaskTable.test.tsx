@@ -218,7 +218,7 @@ describe('Таблица заявок фискальных накопителе�
         const value = testUtils.getColValue(
           fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
           String(
-            fakeFiscalAccumulatorTaskListItem.supportGroup.macroregion.title,
+            fakeFiscalAccumulatorTaskListItem.supportGroup.macroregion!.title,
           ),
         )
 
