@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomLazyQueryHookResult } from 'lib/rtk-query/interfaces'
 
-import { getTaskWorkPerformedActMessages } from 'modules/task/constants/errorMessages'
+import { getTaskWorkPerformedActMessages } from 'modules/task/constants'
 import {
   GetTaskWorkPerformedActQueryArgs,
   GetTaskWorkPerformedActSuccessResponse,
