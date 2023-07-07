@@ -13,6 +13,8 @@ import {
   GetTaskListSuccessResponse,
   GetTaskQueryArgs,
   GetTaskSuccessResponse,
+  GetTaskWorkPerformedActQueryArgs,
+  GetTaskWorkPerformedActSuccessResponse,
   ResolveTaskMutationArgs,
   ResolveTaskSuccessResponse,
   TakeTaskMutationArgs,
@@ -20,6 +22,7 @@ import {
 } from 'modules/task/models'
 import {
   getTaskUrl,
+  getTaskWorkPerformedActUrl,
   resolveTaskUrl,
   takeTaskUrl,
 } from 'modules/task/utils/apiUrls'
@@ -72,6 +75,17 @@ const taskApiService = baseApiService.injectEndpoints({
       providesTags: (result, error) =>
         error ? [] : [TaskEndpointTagEnum.Task],
     }),
+    // todo: поменять на mutation
+    [TaskEndpointNameEnum.GetWorkPerformedAct]: build.query<
+      GetTaskWorkPerformedActSuccessResponse,
+      GetTaskWorkPerformedActQueryArgs
+    >({
+      query: ({ taskId, ...payload }) => ({
+        url: getTaskWorkPerformedActUrl(taskId),
+        method: HttpMethodEnum.Post,
+        data: payload,
+      }),
+    }),
     [TaskEndpointNameEnum.ResolveTask]: build.mutation<
       ResolveTaskSuccessResponse,
       ResolveTaskMutationArgs
@@ -118,6 +132,7 @@ const taskApiService = baseApiService.injectEndpoints({
 export const {
   useGetTaskQuery,
   useLazyGetTaskListQuery,
+  useLazyGetTaskWorkPerformedActQuery,
   useResolveTaskMutation,
   useGetTaskCountersQuery,
   useTakeTaskMutation,

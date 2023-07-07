@@ -7,6 +7,7 @@ import {
   useDeleteTaskWorkGroup,
   useGetTask,
   useGetTaskReclassificationRequest,
+  useLazyGetTaskWorkPerformedAct,
   useResolveTask,
   useTakeTask,
   useTaskExtendedStatus,
@@ -105,6 +106,11 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
     state: { isLoading: updateAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 
+  const [
+    getTaskWorkPerformedAct,
+    { isFetching: taskWorkPerformedActIsFetching },
+  ] = useLazyGetTaskWorkPerformedAct()
+
   useEffect(() => {
     if (
       createReclassificationRequestResult &&
@@ -127,6 +133,8 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
       takeTaskIsLoading={takeTaskIsLoading}
       resolveTask={resolveTask}
       isTaskResolving={isTaskResolving}
+      getTaskWorkPerformedAct={getTaskWorkPerformedAct}
+      taskWorkPerformedActIsLoading={taskWorkPerformedActIsFetching}
       updateAssignee={updateAssignee}
       updateAssigneeIsLoading={updateAssigneeIsLoading}
       reclassificationRequest={

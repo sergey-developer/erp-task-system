@@ -11,7 +11,11 @@ import {
   taskPriorityMap,
   taskSeverityMap,
 } from 'modules/task/constants/dictionary'
-import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
+import {
+  UseLazyGetTaskWorkPerformedActTrigger,
+  useTaskStatus,
+  useTaskSuspendRequestStatus,
+} from 'modules/task/hooks'
 import {
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
@@ -38,6 +42,7 @@ import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { clickDownloadLink } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
@@ -142,6 +147,9 @@ export type TaskCardProps = {
   resolveTask: (data: ResolveTaskMutationArgs) => Promise<void>
   isTaskResolving: boolean
 
+  getTaskWorkPerformedAct: UseLazyGetTaskWorkPerformedActTrigger
+  taskWorkPerformedActIsLoading: boolean
+
   updateAssignee: (data: UpdateTaskAssigneeMutationArgs) => Promise<void>
   updateAssigneeIsLoading: boolean
 
@@ -168,6 +176,9 @@ const TaskCard: FC<TaskCardProps> = ({
   takeTaskIsLoading,
   resolveTask,
   isTaskResolving,
+
+  getTaskWorkPerformedAct,
+  taskWorkPerformedActIsLoading,
 
   reclassificationRequest,
   reclassificationRequestIsLoading,
@@ -277,6 +288,26 @@ const TaskCard: FC<TaskCardProps> = ({
       }
     },
     [task, closeTaskCard, resolveTask],
+  )
+
+  const handleGetAct = useCallback<TaskResolutionModalProps['onGetAct']>(
+    async (values) => {
+      if (!task) return
+
+      try {
+        const file = await getTaskWorkPerformedAct({
+          taskId: task.id,
+          techResolution: values.techResolution,
+        }).unwrap()
+
+        clickDownloadLink(
+          file,
+          'application/pdf',
+          `Акт о выполненных работах ${task.id}`,
+        )
+      } catch {}
+    },
+    [getTaskWorkPerformedAct, task],
   )
 
   const handleReclassificationRequestSubmit = useCallback<
@@ -581,6 +612,8 @@ const TaskCard: FC<TaskCardProps> = ({
                     isLoading={isTaskResolving}
                     onCancel={closeTaskResolutionModal}
                     onSubmit={handleResolutionSubmit}
+                    onGetAct={handleGetAct}
+                    getActIsLoading={taskWorkPerformedActIsLoading}
                   />
                 </React.Suspense>
               )}

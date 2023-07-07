@@ -11,6 +11,8 @@ import {
 } from 'modules/task/constants/common'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
+import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
+
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 
@@ -64,7 +66,7 @@ import {
 } from '../WorkGroupBlock/WorkGroupBlock.test'
 import TaskCard, { TaskCardProps } from './index'
 
-const requiredProps: Readonly<TaskCardProps> = {
+const props: Readonly<TaskCardProps> = {
   task: taskFixtures.fakeTask(),
   refetchTask: jest.fn(),
   closeTaskCard: jest.fn(),
@@ -89,6 +91,9 @@ const requiredProps: Readonly<TaskCardProps> = {
 
   takeTask: jest.fn(),
   takeTaskIsLoading: false,
+
+  getTaskWorkPerformedAct: jest.fn(),
+  taskWorkPerformedActIsLoading: false,
 
   reclassificationRequest: null,
   reclassificationRequestIsLoading: false,
@@ -148,65 +153,69 @@ export const testUtils = {
   expectReclassificationRequestLoadingFinished,
 }
 
+afterEach(() => {
+  jest.restoreAllMocks()
+})
+
 describe('Карточка заявки', () => {
   test('Отображает состояние загрузки', async () => {
-    render(<TaskCard {...requiredProps} taskIsLoading />)
+    render(<TaskCard {...props} taskIsLoading />)
     await testUtils.expectLoadingStarted()
   })
 
   describe('Заголовок', () => {
     test('Отображается', () => {
-      render(<TaskCard {...requiredProps} />)
+      render(<TaskCard {...props} />)
       expect(cardTitleTestUtils.getContainer()).toBeInTheDocument()
     })
 
     describe('Не отображается', () => {
       test('Во время загрузки заявки', () => {
-        render(<TaskCard {...requiredProps} taskIsLoading />)
+        render(<TaskCard {...props} taskIsLoading />)
         expect(cardTitleTestUtils.queryContainer()).not.toBeInTheDocument()
       })
 
       test('Если нет данных заявки', () => {
-        render(<TaskCard {...requiredProps} task={null} />)
+        render(<TaskCard {...props} task={null} />)
         expect(cardTitleTestUtils.queryContainer()).not.toBeInTheDocument()
       })
     })
 
     test('При клике на кнопку закрытия обработчик вызывается корректно', async () => {
-      const { user } = render(<TaskCard {...requiredProps} />)
+      const { user } = render(<TaskCard {...props} />)
 
       await cardTitleTestUtils.clickCloseButton(user)
 
       await waitFor(() => {
-        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        expect(props.closeTaskCard).toBeCalledTimes(1)
       })
     })
 
     test('При клике на кнопку перезапроса заявки обработчик вызывается корректно', async () => {
-      const { user } = render(<TaskCard {...requiredProps} />)
+      const { user } = render(<TaskCard {...props} />)
 
       await cardTitleTestUtils.clickReloadButton(user)
 
       await waitFor(() => {
-        expect(requiredProps.refetchTask).toBeCalledTimes(1)
+        expect(props.refetchTask).toBeCalledTimes(1)
       })
     })
   })
 
   describe('Основной блок заявки', () => {
     test('Отображается если есть данные', () => {
-      render(<TaskCard {...requiredProps} />)
+      render(<TaskCard {...props} />)
       expect(testUtils.getCardDetails()).toBeInTheDocument()
     })
 
     describe('Не отображается', () => {
       test('Если нет данных', () => {
-        render(<TaskCard {...requiredProps} task={null} />)
+        render(<TaskCard {...props} task={null} />)
         expect(testUtils.queryCardDetails()).not.toBeInTheDocument()
       })
 
       test('Во время загрузки заявки', () => {
-        render(<TaskCard {...requiredProps} taskIsLoading />)
+        render(<TaskCard {...props} taskIsLoading />)
         expect(testUtils.queryCardDetails()).not.toBeInTheDocument()
       })
     })
@@ -214,48 +223,48 @@ describe('Карточка заявки', () => {
 
   describe('Блок первичной информации заявки', () => {
     test('Отображается', () => {
-      render(<TaskCard {...requiredProps} />)
+      render(<TaskCard {...props} />)
       expect(mainDetailsTestUtils.getContainer()).toBeInTheDocument()
     })
 
     test('Не отображается если нет данных заявки', () => {
-      render(<TaskCard {...requiredProps} task={null} />)
+      render(<TaskCard {...props} task={null} />)
       expect(mainDetailsTestUtils.queryContainer()).not.toBeInTheDocument()
     })
   })
 
   describe('Блок вторичной информации заявки', () => {
     test('Отображается', () => {
-      render(<TaskCard {...requiredProps} />)
+      render(<TaskCard {...props} />)
       expect(secondaryDetailsTestUtils.getContainer()).toBeInTheDocument()
     })
 
     test('Не отображается если нет данных заявки', () => {
-      render(<TaskCard {...requiredProps} task={null} />)
+      render(<TaskCard {...props} task={null} />)
       expect(secondaryDetailsTestUtils.queryContainer()).not.toBeInTheDocument()
     })
   })
 
   describe('Блок дополнительной информации заявки', () => {
     test('Отображается', () => {
-      render(<TaskCard {...requiredProps} />)
+      render(<TaskCard {...props} />)
       expect(additionalInfoTestUtils.getContainer()).toBeInTheDocument()
     })
 
     test('Не отображается если нет данных заявки', () => {
-      render(<TaskCard {...requiredProps} task={null} />)
+      render(<TaskCard {...props} task={null} />)
       expect(additionalInfoTestUtils.queryContainer()).not.toBeInTheDocument()
     })
   })
 
   describe('Вкладки', () => {
     test('Отображаются', () => {
-      render(<TaskCard {...requiredProps} />)
+      render(<TaskCard {...props} />)
       expect(cardTabsTestUtils.getContainer()).toBeInTheDocument()
     })
 
     test('Не отображается если нет данных заявки', () => {
-      render(<TaskCard {...requiredProps} task={null} />)
+      render(<TaskCard {...props} task={null} />)
       expect(cardTabsTestUtils.queryContainer()).not.toBeInTheDocument()
     })
   })
@@ -265,7 +274,7 @@ describe('Карточка заявки', () => {
       test('Отображается если он есть', async () => {
         render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             reclassificationRequest={taskFixtures.fakeReclassificationRequest()}
           />,
         )
@@ -276,7 +285,7 @@ describe('Карточка заявки', () => {
       })
 
       test('Не отображается если его нет', () => {
-        render(<TaskCard {...requiredProps} />)
+        render(<TaskCard {...props} />)
 
         expect(
           taskReclassificationRequestTestUtils.queryContainer(),
@@ -285,19 +294,12 @@ describe('Карточка заявки', () => {
 
       describe('Отображается состояние загрузки', () => {
         test('При получении запроса на переклассификацию', async () => {
-          render(
-            <TaskCard {...requiredProps} reclassificationRequestIsLoading />,
-          )
+          render(<TaskCard {...props} reclassificationRequestIsLoading />)
           await testUtils.expectReclassificationRequestLoadingStarted()
         })
 
         test('При создании запроса на переклассификацию', async () => {
-          render(
-            <TaskCard
-              {...requiredProps}
-              createReclassificationRequestIsLoading
-            />,
-          )
+          render(<TaskCard {...props} createReclassificationRequestIsLoading />)
 
           await testUtils.expectReclassificationRequestLoadingStarted()
         })
@@ -308,9 +310,9 @@ describe('Карточка заявки', () => {
       test('Открывается', async () => {
         const { user } = render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               ...activeRequestReclassificationItemProps,
             }}
           />,
@@ -328,9 +330,9 @@ describe('Карточка заявки', () => {
         test('При клике на кнопку "Отмена"', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 ...activeRequestReclassificationItemProps,
               }}
             />,
@@ -348,9 +350,9 @@ describe('Карточка заявки', () => {
         test('При клике на кнопку закрытия', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 ...activeRequestReclassificationItemProps,
               }}
             />,
@@ -368,9 +370,9 @@ describe('Карточка заявки', () => {
         test('При клике вне модалки', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 ...activeRequestReclassificationItemProps,
               }}
             />,
@@ -390,9 +392,9 @@ describe('Карточка заявки', () => {
         test('Переданный обработчик вызывается корректно', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 ...activeRequestReclassificationItemProps,
               }}
             />,
@@ -410,8 +412,8 @@ describe('Карточка заявки', () => {
           )
           await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-          expect(requiredProps.createReclassificationRequest).toBeCalledTimes(1)
-          expect(requiredProps.createReclassificationRequest).toBeCalledWith(
+          expect(props.createReclassificationRequest).toBeCalledTimes(1)
+          expect(props.createReclassificationRequest).toBeCalledWith(
             expect.anything(),
           )
         })
@@ -419,9 +421,9 @@ describe('Карточка заявки', () => {
         test('Модалка закрывается', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 ...activeRequestReclassificationItemProps,
               }}
             />,
@@ -449,15 +451,15 @@ describe('Карточка заявки', () => {
       test('Открывается', async () => {
         const { user } = render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               ...activeExecuteTaskItemProps,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task!.assignee!.id,
+              userId: props.task!.assignee!.id,
             }),
           },
         )
@@ -473,15 +475,15 @@ describe('Карточка заявки', () => {
         test('При клике на кнопку "Отмена"', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 ...activeExecuteTaskItemProps,
               }}
             />,
             {
               store: getStoreWithAuth({
-                userId: requiredProps.task!.assignee!.id,
+                userId: props.task!.assignee!.id,
               }),
             },
           )
@@ -497,15 +499,15 @@ describe('Карточка заявки', () => {
         test('При клике на кнопку закрытия', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 ...activeExecuteTaskItemProps,
               }}
             />,
             {
               store: getStoreWithAuth({
-                userId: requiredProps.task!.assignee!.id,
+                userId: props.task!.assignee!.id,
               }),
             },
           )
@@ -521,15 +523,15 @@ describe('Карточка заявки', () => {
         test('При клике вне модалки', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 ...activeExecuteTaskItemProps,
               }}
             />,
             {
               store: getStoreWithAuth({
-                userId: requiredProps.task!.assignee!.id,
+                userId: props.task!.assignee!.id,
               }),
             },
           )
@@ -542,37 +544,83 @@ describe('Карточка заявки', () => {
           expect(modal).not.toBeInTheDocument()
         })
       })
+    })
 
-      describe('При успешном запросе', () => {
-        test('Переданные обработчики вызываются корректно', async () => {
-          const { user } = render(
-            <TaskCard
-              {...requiredProps}
-              task={{
-                ...requiredProps.task!,
-                ...activeExecuteTaskItemProps,
-              }}
-            />,
-            {
-              store: getStoreWithAuth({
-                userId: requiredProps.task!.assignee!.id,
-              }),
-            },
-          )
+    describe('При успешном запросе', () => {
+      test('Переданные обработчики вызываются корректно', async () => {
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              ...activeExecuteTaskItemProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: props.task!.assignee!.id,
+            }),
+          },
+        )
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await taskResolutionModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+        await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+        await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
+        await taskResolutionModalTestUtils.setAttachment(user)
+        await taskResolutionModalTestUtils.clickSubmitButton(user)
 
-          expect(requiredProps.resolveTask).toBeCalledTimes(1)
-          expect(requiredProps.resolveTask).toBeCalledWith(expect.anything())
-          expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
-        })
+        expect(props.resolveTask).toBeCalledTimes(1)
+        expect(props.resolveTask).toBeCalledWith(expect.anything())
+        expect(props.closeTaskCard).toBeCalledTimes(1)
+      })
+    })
+
+    describe('Формирование акта', () => {
+      test('Корректно отрабатывает успешный вызов', async () => {
+        const clickDownloadLinkSpy = jest.spyOn(
+          downloadLinkUtils,
+          'clickDownloadLink',
+        )
+
+        const fakeFile = fakeWord()
+        const getTaskWorkPerformedActMock = jest.fn(() => ({
+          unwrap: jest.fn(() => fakeFile),
+        }))
+
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              ...activeExecuteTaskItemProps,
+            }}
+            getTaskWorkPerformedAct={getTaskWorkPerformedActMock as any}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: props.task!.assignee!.id,
+            }),
+          },
+        )
+
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await taskResolutionModalTestUtils.findContainer()
+
+        await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+        await taskResolutionModalTestUtils.clickGetActButton(user)
+
+        expect(getTaskWorkPerformedActMock).toBeCalledTimes(1)
+        expect(getTaskWorkPerformedActMock).toBeCalledWith(expect.anything())
+        expect(clickDownloadLinkSpy).toBeCalledTimes(1)
+        expect(clickDownloadLinkSpy).toBeCalledWith(
+          fakeFile,
+          'application/pdf',
+          `Акт о выполненных работах ${props.task!.id}`,
+        )
       })
     })
   })
@@ -580,8 +628,8 @@ describe('Карточка заявки', () => {
   describe('Получение заявки', () => {
     describe('При ошибке получения', () => {
       test('Вызывается обработчик закрытия карточки', () => {
-        render(<TaskCard {...requiredProps} isGetTaskError />)
-        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        render(<TaskCard {...props} isGetTaskError />)
+        expect(props.closeTaskCard).toBeCalledTimes(1)
       })
     })
   })
@@ -589,10 +637,10 @@ describe('Карточка заявки', () => {
   describe('Взятие заявки в работу', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
-        <TaskCard {...requiredProps} {...activeTakeTaskButtonProps} />,
+        <TaskCard {...props} {...activeTakeTaskButtonProps} />,
         {
           store: getStoreWithAuth({
-            userId: requiredProps.task!.assignee!.id,
+            userId: props.task!.assignee!.id,
             userRole: UserRoleEnum.FirstLineSupport,
           }),
         },
@@ -600,8 +648,8 @@ describe('Карточка заявки', () => {
 
       await assigneeBlockTestUtils.clickTakeTaskButton(user)
 
-      expect(requiredProps.takeTask).toBeCalledTimes(1)
-      expect(requiredProps.takeTask).toBeCalledWith(expect.anything())
+      expect(props.takeTask).toBeCalledTimes(1)
+      expect(props.takeTask).toBeCalledWith(expect.anything())
     })
   })
 
@@ -609,10 +657,10 @@ describe('Карточка заявки', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
         <TaskCard
-          {...requiredProps}
+          {...props}
           workGroupList={[canSelectAssigneeProps.workGroup]}
           task={{
-            ...requiredProps.task!,
+            ...props.task!,
             ...canSelectAssigneeProps,
             ...activeAssignButtonProps,
           }}
@@ -632,8 +680,8 @@ describe('Карточка заявки', () => {
       )
       await assigneeBlockTestUtils.clickAssignButton(user)
 
-      expect(requiredProps.updateAssignee).toBeCalledTimes(1)
-      expect(requiredProps.updateAssignee).toBeCalledWith(expect.anything())
+      expect(props.updateAssignee).toBeCalledTimes(1)
+      expect(props.updateAssignee).toBeCalledWith(expect.anything())
     })
   })
 
@@ -641,9 +689,9 @@ describe('Карточка заявки', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
         <TaskCard
-          {...requiredProps}
+          {...props}
           task={{
-            ...requiredProps.task!,
+            ...props.task!,
             ...activeAssignOnMeButtonProps,
           }}
         />,
@@ -654,8 +702,8 @@ describe('Карточка заявки', () => {
 
       await assigneeBlockTestUtils.clickAssignOnMeButton(user)
 
-      expect(requiredProps.updateAssignee).toBeCalledTimes(1)
-      expect(requiredProps.updateAssignee).toBeCalledWith(expect.anything())
+      expect(props.updateAssignee).toBeCalledTimes(1)
+      expect(props.updateAssignee).toBeCalledWith(expect.anything())
     })
   })
 
@@ -664,14 +712,14 @@ describe('Карточка заявки', () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
         const { user } = render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             workGroupList={[
               workGroupFixtures.fakeWorkGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               ...showFirstLineButtonProps,
               ...activeFirstLineButtonProps,
             }}
@@ -688,9 +736,9 @@ describe('Карточка заявки', () => {
         await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
-        expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
-        expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
-        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        expect(props.deleteWorkGroup).toBeCalledTimes(1)
+        expect(props.deleteWorkGroup).toBeCalledWith(expect.anything())
+        expect(props.closeTaskCard).toBeCalledTimes(1)
         await waitFor(() => {
           expect(modal).not.toBeInTheDocument()
         })
@@ -701,14 +749,14 @@ describe('Карточка заявки', () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
         const { user } = render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             workGroupList={[
               workGroupFixtures.fakeWorkGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               ...showFirstLineButtonProps,
               ...activeFirstLineButtonProps,
             }}
@@ -725,9 +773,9 @@ describe('Карточка заявки', () => {
         await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
-        expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
-        expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
-        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        expect(props.deleteWorkGroup).toBeCalledTimes(1)
+        expect(props.deleteWorkGroup).toBeCalledWith(expect.anything())
+        expect(props.closeTaskCard).toBeCalledTimes(1)
         await waitFor(() => {
           expect(modal).not.toBeInTheDocument()
         })
@@ -738,14 +786,14 @@ describe('Карточка заявки', () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
         const { user } = render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             workGroupList={[
               workGroupFixtures.fakeWorkGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               ...showFirstLineButtonProps,
               ...activeFirstLineButtonProps,
             }}
@@ -762,9 +810,9 @@ describe('Карточка заявки', () => {
         await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
-        expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
-        expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
-        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        expect(props.deleteWorkGroup).toBeCalledTimes(1)
+        expect(props.deleteWorkGroup).toBeCalledWith(expect.anything())
+        expect(props.closeTaskCard).toBeCalledTimes(1)
         await waitForElementToBeRemoved(modal)
       })
     })
@@ -778,9 +826,9 @@ describe('Карточка заявки', () => {
 
         const { user } = render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               ...showSecondLineButtonProps,
               ...activeSecondLineButtonProps,
             }}
@@ -802,9 +850,9 @@ describe('Карточка заявки', () => {
         )
         await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
-        expect(requiredProps.updateWorkGroup).toBeCalledTimes(1)
-        expect(requiredProps.updateWorkGroup).toBeCalledWith(expect.anything())
-        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        expect(props.updateWorkGroup).toBeCalledTimes(1)
+        expect(props.updateWorkGroup).toBeCalledWith(expect.anything())
+        expect(props.closeTaskCard).toBeCalledTimes(1)
         await waitFor(() => {
           expect(modal).not.toBeInTheDocument()
         })
@@ -817,9 +865,9 @@ describe('Карточка заявки', () => {
       test('Отображается если он есть', async () => {
         render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               suspendRequest: taskFixtures.fakeSuspendRequest(),
             }}
           />,
@@ -833,9 +881,9 @@ describe('Карточка заявки', () => {
       test('Не отображается если его нет', () => {
         render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               suspendRequest: null,
             }}
           />,
@@ -850,9 +898,9 @@ describe('Карточка заявки', () => {
         test(`Если статус запроса "${SuspendRequestStatusEnum.New}"`, () => {
           render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
@@ -868,9 +916,9 @@ describe('Карточка заявки', () => {
         test(`Если статус запроса "${SuspendRequestStatusEnum.Approved}"`, () => {
           render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.Approved,
                 }),
@@ -888,9 +936,9 @@ describe('Карточка заявки', () => {
         test(`Отображается если статус запроса "${SuspendRequestStatusEnum.New}"`, async () => {
           render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
@@ -908,9 +956,9 @@ describe('Карточка заявки', () => {
         test(`Отображается если статус запроса "${SuspendRequestStatusEnum.InProgress}"`, async () => {
           render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.InProgress,
                 }),
@@ -929,9 +977,9 @@ describe('Карточка заявки', () => {
           test(`Для роли - ${UserRoleEnum.FirstLineSupport}`, async () => {
             render(
               <TaskCard
-                {...requiredProps}
+                {...props}
                 task={{
-                  ...requiredProps.task!,
+                  ...props.task!,
                   suspendRequest: taskFixtures.fakeSuspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
@@ -952,9 +1000,9 @@ describe('Карточка заявки', () => {
           test(`Для роли - ${UserRoleEnum.SeniorEngineer}`, async () => {
             render(
               <TaskCard
-                {...requiredProps}
+                {...props}
                 task={{
-                  ...requiredProps.task!,
+                  ...props.task!,
                   suspendRequest: taskFixtures.fakeSuspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
@@ -975,9 +1023,9 @@ describe('Карточка заявки', () => {
           test(`Для роли - ${UserRoleEnum.HeadOfDepartment}`, async () => {
             render(
               <TaskCard
-                {...requiredProps}
+                {...props}
                 task={{
-                  ...requiredProps.task!,
+                  ...props.task!,
                   suspendRequest: taskFixtures.fakeSuspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
@@ -1000,9 +1048,9 @@ describe('Карточка заявки', () => {
           test(`Для роли - ${UserRoleEnum.Engineer}`, async () => {
             render(
               <TaskCard
-                {...requiredProps}
+                {...props}
                 task={{
-                  ...requiredProps.task!,
+                  ...props.task!,
                   suspendRequest: taskFixtures.fakeSuspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
@@ -1020,9 +1068,9 @@ describe('Карточка заявки', () => {
         test('Отображает состояние загрузки', async () => {
           render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
@@ -1038,9 +1086,9 @@ describe('Карточка заявки', () => {
         test('Обработчик вызывается корректно', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
@@ -1052,12 +1100,10 @@ describe('Карточка заявки', () => {
           await taskSuspendRequestTestUtils.clickCancelButton(user)
 
           await waitFor(() => {
-            expect(requiredProps.cancelSuspendRequest).toBeCalledTimes(1)
+            expect(props.cancelSuspendRequest).toBeCalledTimes(1)
           })
 
-          expect(requiredProps.cancelSuspendRequest).toBeCalledWith(
-            expect.anything(),
-          )
+          expect(props.cancelSuspendRequest).toBeCalledWith(expect.anything())
         })
       })
 
@@ -1065,9 +1111,9 @@ describe('Карточка заявки', () => {
         test(`Отображается если статус запроса "${SuspendRequestStatusEnum.Approved}"`, async () => {
           render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 suspendRequest: taskFixtures.fakeSuspendRequest({
                   status: SuspendRequestStatusEnum.Approved,
                 }),
@@ -1088,9 +1134,9 @@ describe('Карточка заявки', () => {
       test('Открывается', async () => {
         const { user } = render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               status: activeRequestSuspendItemProps.status,
               type: activeRequestSuspendItemProps.type,
               suspendRequest: null,
@@ -1110,9 +1156,9 @@ describe('Карточка заявки', () => {
         test('При клике на кнопку "Отмена"', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 status: activeRequestSuspendItemProps.status,
                 type: activeRequestSuspendItemProps.type,
                 suspendRequest: null,
@@ -1132,9 +1178,9 @@ describe('Карточка заявки', () => {
         test('При клике на кнопку закрытия', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 status: activeRequestSuspendItemProps.status,
                 type: activeRequestSuspendItemProps.type,
                 suspendRequest: null,
@@ -1154,9 +1200,9 @@ describe('Карточка заявки', () => {
         test('При клике вне модалки', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 status: activeRequestSuspendItemProps.status,
                 type: activeRequestSuspendItemProps.type,
                 suspendRequest: null,
@@ -1178,9 +1224,9 @@ describe('Карточка заявки', () => {
         test('Переданный обработчик вызывается корректно', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 status: activeRequestSuspendItemProps.status,
                 type: activeRequestSuspendItemProps.type,
                 suspendRequest: null,
@@ -1200,18 +1246,16 @@ describe('Карточка заявки', () => {
           await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
           await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-          expect(requiredProps.createSuspendRequest).toBeCalledTimes(1)
-          expect(requiredProps.createSuspendRequest).toBeCalledWith(
-            expect.anything(),
-          )
+          expect(props.createSuspendRequest).toBeCalledTimes(1)
+          expect(props.createSuspendRequest).toBeCalledWith(expect.anything())
         })
 
         test('Модалка закрывается', async () => {
           const { user } = render(
             <TaskCard
-              {...requiredProps}
+              {...props}
               task={{
-                ...requiredProps.task!,
+                ...props.task!,
                 status: activeRequestSuspendItemProps.status,
                 type: activeRequestSuspendItemProps.type,
                 suspendRequest: null,

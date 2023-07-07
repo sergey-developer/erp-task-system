@@ -4,6 +4,10 @@ export const taskApiMessages = {
   },
 } as const
 
+export const getTaskWorkPerformedActMessages = {
+  commonError: 'Ошибка формирования акта выполненных работ',
+} as const
+
 export const taskCommentApiMessages = {
   createComment: {
     commonError: 'Возникла ошибка при добавлении комментария',
