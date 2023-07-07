@@ -9,11 +9,11 @@ export type FiscalAccumulatorTaskListItemModel = {
   sapId: string
   name: string
   address: string
-  fiscalAccumulator: {
+  fiscalAccumulator: MaybeNull<{
     id: number
     faNumber: number
-  }
-  deadlineOrTotalFiscalDocs: number
+  }>
+  deadlineOrTotalFiscalDocs: MaybeNull<number>
   supportGroup: {
     id: number
     name: string

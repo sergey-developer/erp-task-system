@@ -36,7 +36,7 @@ describe('Страница заявок фискальных накопител�
 
       fakeFiscalAccumulatorTaskLists.forEach((item) => {
         const row = fiscalAccumulatorTaskTableTestUtils.getRow(
-          item.fiscalAccumulator.faNumber,
+          item.olaNextBreachTime,
         )
         expect(row).toBeInTheDocument()
       })
