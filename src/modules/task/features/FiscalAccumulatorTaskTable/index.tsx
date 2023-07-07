@@ -11,8 +11,8 @@ import {
 
 const getRowKey = (
   record: FiscalAccumulatorTaskTableItem,
-): FiscalAccumulatorTaskTableItem['fiscalAccumulator']['faNumber'] =>
-  record.fiscalAccumulator.faNumber
+): FiscalAccumulatorTaskTableItem['olaNextBreachTime'] =>
+  record.olaNextBreachTime
 
 const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
   dataSource,
