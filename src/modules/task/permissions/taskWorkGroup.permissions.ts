@@ -13,6 +13,7 @@ export const taskWorkGroupPermissions: ObjectPermissionConfig<
   'transferToSecondLineBtn' | 'transferToFirstLineBtn'
 > = {
   transferToFirstLineBtn: {
+    [UserRoleEnum.FirstLineSupport]: [UIPermissionsEnum.CanView],
     [UserRoleEnum.Engineer]: [UIPermissionsEnum.CanView],
     [UserRoleEnum.SeniorEngineer]: [UIPermissionsEnum.CanView],
     [UserRoleEnum.HeadOfDepartment]: [UIPermissionsEnum.CanView],

@@ -417,6 +417,7 @@ const TaskCard: FC<TaskCardProps> = ({
       id={task.id}
       type={task.type}
       status={task.status}
+      workGroup={task.workGroup}
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
