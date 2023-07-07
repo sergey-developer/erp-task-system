@@ -298,7 +298,6 @@ const TaskCard: FC<TaskCardProps> = ({
         const file = await getTaskWorkPerformedAct({
           taskId: task.id,
           techResolution: values.techResolution,
-          completedAt: new Date().toISOString(),
         }).unwrap()
 
         clickDownloadLink(
