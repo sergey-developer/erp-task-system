@@ -709,14 +709,14 @@ describe('Карточка заявки', () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
         const { user } = render(
           <TaskCard
-            {...requiredProps}
+            {...props}
             workGroupList={[
               workGroupFixtures.fakeWorkGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
             task={{
-              ...requiredProps.task!,
+              ...props.task!,
               ...showFirstLineButtonProps,
               ...activeFirstLineButtonProps,
             }}
@@ -733,9 +733,9 @@ describe('Карточка заявки', () => {
         await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
         await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
-        expect(requiredProps.deleteWorkGroup).toBeCalledTimes(1)
-        expect(requiredProps.deleteWorkGroup).toBeCalledWith(expect.anything())
-        expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        expect(props.deleteWorkGroup).toBeCalledTimes(1)
+        expect(props.deleteWorkGroup).toBeCalledWith(expect.anything())
+        expect(props.closeTaskCard).toBeCalledTimes(1)
         await waitFor(() => {
           expect(modal).not.toBeInTheDocument()
         })
