@@ -13,7 +13,10 @@ import {
 } from '_tests_/utils'
 
 import FiscalAccumulatorTaskTable from './index'
-import { FiscalAccumulatorTaskTableProps } from './interfaces'
+import {
+  FiscalAccumulatorTaskTableItem,
+  FiscalAccumulatorTaskTableProps,
+} from './interfaces'
 
 const fakeFiscalAccumulatorTaskListItem =
   taskFixtures.fakeFiscalAccumulatorTaskListItem()
@@ -30,9 +33,11 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) =>
   within(getContainer()).queryByText(text)
 
-const getRow = (faNumber: number): MaybeNull<HTMLElement> =>
+const getRow = (
+  id: FiscalAccumulatorTaskTableItem['olaNextBreachTime'],
+): MaybeNull<HTMLElement> =>
   // eslint-disable-next-line testing-library/no-node-access
-  getContainer().querySelector(`[data-row-key='${faNumber}']`)
+  getContainer().querySelector(`[data-row-key='${id}']`)
 
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access
@@ -48,10 +53,10 @@ const clickColTitle = async (user: UserEvent, title: string) => {
 }
 
 const getColValue = (
-  faNumber: number,
+  id: FiscalAccumulatorTaskTableItem['olaNextBreachTime'],
   value: string,
 ): MaybeNull<HTMLElement> => {
-  const row = getRow(faNumber)
+  const row = getRow(id)
   return row ? within(row).getByText(value) : null
 }
 
@@ -84,7 +89,7 @@ describe('Таблица заявок фискальных накопителе�
     expect(table).toBeInTheDocument()
 
     props.dataSource.forEach((item) => {
-      const row = testUtils.getRow(item.fiscalAccumulator.faNumber)
+      const row = testUtils.getRow(item.olaNextBreachTime)
       expect(row).toBeInTheDocument()
     })
   })
@@ -96,7 +101,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('Блокировка через')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           String(fakeFiscalAccumulatorTaskListItem.blockingIn),
         )
 
@@ -111,7 +116,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('Крайний срок')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           formatDate(fakeFiscalAccumulatorTaskListItem.olaNextBreachTime),
         )
 
@@ -126,7 +131,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('ИНЦ')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           fakeFiscalAccumulatorTaskListItem.recordId,
         )
 
@@ -141,7 +146,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('SAP ID')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           fakeFiscalAccumulatorTaskListItem.sapId,
         )
 
@@ -156,7 +161,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('Клиент')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           fakeFiscalAccumulatorTaskListItem.name,
         )
 
@@ -171,7 +176,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('Адрес')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           fakeFiscalAccumulatorTaskListItem.address,
         )
 
@@ -186,8 +191,8 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('ФН')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
-          String(fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber),
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
+          String(fakeFiscalAccumulatorTaskListItem.fiscalAccumulator!.faNumber),
         )
 
         expect(title).toBeInTheDocument()
@@ -201,7 +206,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('Срок / Всего ФД')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           String(fakeFiscalAccumulatorTaskListItem.deadlineOrTotalFiscalDocs),
         )
 
@@ -216,7 +221,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('МР')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           String(
             fakeFiscalAccumulatorTaskListItem.supportGroup.macroregion!.title,
           ),
@@ -233,7 +238,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('Группа поддержки')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           String(fakeFiscalAccumulatorTaskListItem.supportGroup.name),
         )
 
@@ -248,7 +253,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('Категория')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           String(fakeFiscalAccumulatorTaskListItem.title),
         )
 
@@ -263,7 +268,7 @@ describe('Таблица заявок фискальных накопителе�
 
         const title = testUtils.getColTitle('Дата создания заявки')
         const value = testUtils.getColValue(
-          fakeFiscalAccumulatorTaskListItem.fiscalAccumulator.faNumber,
+          fakeFiscalAccumulatorTaskListItem.olaNextBreachTime,
           formatDate(fakeFiscalAccumulatorTaskListItem.createdAt),
         )
 

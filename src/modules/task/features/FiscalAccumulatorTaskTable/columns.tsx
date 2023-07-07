@@ -60,12 +60,15 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
     dataIndex: 'fiscalAccumulator',
     title: 'ФН',
     render: (value: FiscalAccumulatorTaskTableItem['fiscalAccumulator']) =>
-      value.faNumber,
+      valueOrHyphen(value?.faNumber),
   },
   {
     key: 'deadlineOrTotalFiscalDocs',
     dataIndex: 'deadlineOrTotalFiscalDocs',
     title: 'Срок / Всего ФД',
+    render: (
+      value: FiscalAccumulatorTaskTableItem['deadlineOrTotalFiscalDocs'],
+    ) => valueOrHyphen(value),
   },
   {
     key: 'mr',
