@@ -29,6 +29,7 @@ import {
 import { testUtils as journalEntryTestUtils } from '../JournalTab/JournalEntry.test'
 import { NO_DATA_MSG } from './constants'
 import JournalTab, { JournalTabProps } from './index'
+import { getJournalCsvFilename } from './utils'
 
 const props: JournalTabProps = {
   taskId: fakeId(),
@@ -187,7 +188,6 @@ describe('Вкладка журнала задачи', () => {
       })
 
       describe('При успешной загрузке csv', () => {
-        const makeDownloadLinkSpy = jest.spyOn(downloadLink, 'makeDownloadLink')
         const clickDownloadLinkSpy = jest.spyOn(
           downloadLink,
           'clickDownloadLink',
@@ -197,9 +197,9 @@ describe('Вкладка журнала задачи', () => {
           mockGetJournalSuccess(props.taskId, {
             body: taskFixtures.fakeJournal(),
           })
-          mockGetJournalCsvSuccess(props.taskId, {
-            body: fakeWord(),
-          })
+
+          const fakeCsv = fakeWord()
+          mockGetJournalCsvSuccess(props.taskId, { body: fakeCsv })
 
           const { user } = render(<JournalTab {...props} />, {
             store: getStoreWithAuth(),
@@ -213,8 +213,12 @@ describe('Вкладка журнала задачи', () => {
           await testUtils.expectJournalCsvLoadingStarted(downloadButton)
           await testUtils.expectJournalCsvLoadingFinished(downloadButton)
 
-          expect(makeDownloadLinkSpy).toBeCalledTimes(1)
           expect(clickDownloadLinkSpy).toBeCalledTimes(1)
+          expect(clickDownloadLinkSpy).toBeCalledWith(
+            fakeCsv,
+            'text/csv',
+            getJournalCsvFilename(props.taskId),
+          )
 
           const notification = screen.queryByText(
             commonApiMessages.unknownError,
@@ -224,7 +228,6 @@ describe('Вкладка журнала задачи', () => {
       })
 
       describe('При не успешной загрузке csv', () => {
-        const makeDownloadLinkSpy = jest.spyOn(downloadLink, 'makeDownloadLink')
         const clickDownloadLinkSpy = jest.spyOn(
           downloadLink,
           'clickDownloadLink',
@@ -248,7 +251,6 @@ describe('Вкладка журнала задачи', () => {
           await testUtils.expectJournalCsvLoadingStarted(downloadButton)
           await testUtils.expectJournalCsvLoadingFinished(downloadButton)
 
-          expect(makeDownloadLinkSpy).not.toBeCalled()
           expect(clickDownloadLinkSpy).not.toBeCalled()
 
           const notification = await findNotification(

@@ -1,10 +1,12 @@
 import { PaperClipOutlined } from '@ant-design/icons'
 import {
   Button,
+  Col,
   Form,
   FormInstance,
   Input,
   ModalProps,
+  Row,
   Typography,
   Upload,
 } from 'antd'
@@ -31,18 +33,27 @@ export type TaskResolutionModalProps = Pick<TaskModel, 'type' | 'recordId'> & {
   onSubmit: (
     values: TaskResolutionFormFields,
     setFields: FormInstance['setFields'],
-  ) => void
+  ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
+  onGetAct: (
+    values: Pick<TaskResolutionFormFields, 'techResolution'>,
+  ) => Promise<void>
+  getActIsLoading: boolean
 }
 
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
+  onGetAct,
+  getActIsLoading,
+
   isLoading,
-  onCancel,
   onSubmit,
+
+  onCancel,
   recordId,
   type,
 }) => {
   const [form] = Form.useForm<TaskResolutionFormFields>()
+  const techResolutionFormValue = Form.useWatch('techResolution', form)
 
   const taskType = useTaskType(type)
 
@@ -56,15 +67,41 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     await onSubmit(values, form.setFields)
   }
 
+  const onClickGetAct = async () => {
+    if (techResolutionFormValue) {
+      await onGetAct({ techResolution: techResolutionFormValue })
+    }
+  }
+
   return (
     <BaseModal
       data-testid='task-resolution-modal'
       visible
       title={modalTitle}
-      confirmLoading={isLoading}
-      onOk={form.submit}
-      okText={OK_BUTTON_TEXT}
       onCancel={onCancel}
+      footer={
+        <Row justify='space-between'>
+          <Col>
+            <Button
+              onClick={onClickGetAct}
+              loading={getActIsLoading}
+              disabled={!techResolutionFormValue}
+            >
+              Сформировать акт
+            </Button>
+          </Col>
+
+          <Col>
+            <Space>
+              <Button onClick={onCancel}>Отменить</Button>
+
+              <Button type='primary' onClick={form.submit} loading={isLoading}>
+                {OK_BUTTON_TEXT}
+              </Button>
+            </Space>
+          </Col>
+        </Row>
+      }
     >
       <Space $block direction='vertical' size='large'>
         <Space direction='vertical'>
