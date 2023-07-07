@@ -271,14 +271,26 @@ describe('Модалка решения по заявке', () => {
       const button = testUtils.getGetActButton()
 
       expect(button).toBeInTheDocument()
+      expect(button).not.toBeEnabled()
+    })
+
+    test('Активна если заполнено техническое решение', async () => {
+      const { user } = render(<TaskResolutionModal {...props} />)
+
+      await testUtils.setTechResolution(user, fakeWord())
+      const button = testUtils.getGetActButton()
+
       expect(button).toBeEnabled()
     })
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<TaskResolutionModal {...props} />)
 
+      await testUtils.setTechResolution(user, fakeWord())
       await testUtils.clickGetActButton(user)
+
       expect(props.onGetAct).toBeCalledTimes(1)
+      expect(props.onGetAct).toBeCalledWith(expect.anything())
     })
 
     test('Отображает состояние загрузки', async () => {
