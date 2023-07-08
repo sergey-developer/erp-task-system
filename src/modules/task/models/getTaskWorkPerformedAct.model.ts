@@ -1,6 +1,6 @@
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
-export type GetTaskWorkPerformedActQueryArgs = BaseTaskRequestArgs & {
+export type GetTaskWorkPerformedActMutationArgs = BaseTaskRequestArgs & {
   techResolution: string
 }
 

@@ -5,23 +5,24 @@ import noop from 'lodash/noop'
 import moment from 'moment-timezone'
 import React, { FC, useCallback, useEffect } from 'react'
 
+import { CustomMutationTrigger } from 'lib/rtk-query/interfaces'
+
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import {
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
+  getTaskWorkPerformedActMessages,
 } from 'modules/task/constants'
-import {
-  UseLazyGetTaskWorkPerformedActTrigger,
-  useTaskStatus,
-  useTaskSuspendRequestStatus,
-} from 'modules/task/hooks'
+import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
 import {
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
   CreateTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestMutationArgs,
   DeleteTaskWorkGroupMutationArgs,
+  GetTaskWorkPerformedActMutationArgs,
+  GetTaskWorkPerformedActSuccessResponse,
   ResolveTaskMutationArgs,
   TakeTaskMutationArgs,
   TaskAssigneeModel,
@@ -40,12 +41,19 @@ import Spinner from 'components/Spinner'
 
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
-import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isNotFoundError,
+} from 'shared/services/api'
 import { clickDownloadLink } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
-import { showMultipleErrorNotification } from 'shared/utils/notifications'
+import {
+  showErrorNotification,
+  showMultipleErrorNotification,
+} from 'shared/utils/notifications'
 
 import AdditionalInfo from '../AdditionalInfo'
 import CardTabs from '../CardTabs'
@@ -146,7 +154,10 @@ export type TaskCardProps = {
   resolveTask: (data: ResolveTaskMutationArgs) => Promise<void>
   isTaskResolving: boolean
 
-  getTaskWorkPerformedAct: UseLazyGetTaskWorkPerformedActTrigger
+  getTaskWorkPerformedAct: CustomMutationTrigger<
+    GetTaskWorkPerformedActMutationArgs,
+    GetTaskWorkPerformedActSuccessResponse
+  >
   taskWorkPerformedActIsLoading: boolean
 
   updateAssignee: (data: UpdateTaskAssigneeMutationArgs) => Promise<void>
@@ -299,12 +310,22 @@ const TaskCard: FC<TaskCardProps> = ({
           techResolution: values.techResolution,
         }).unwrap()
 
-        clickDownloadLink(
-          file,
-          'application/pdf',
-          `Акт о выполненных работах ${task.id}`,
-        )
-      } catch {}
+        if (file) {
+          clickDownloadLink(
+            file,
+            'application/pdf',
+            `Акт о выполненных работах ${task.id}`,
+          )
+        }
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isNotFoundError(error) && error.data.detail) {
+            showMultipleErrorNotification(error.data.detail)
+          } else {
+            showErrorNotification(getTaskWorkPerformedActMessages.commonError)
+          }
+        }
+      }
     },
     [getTaskWorkPerformedAct, task],
   )

@@ -15,7 +15,7 @@ import {
   GetTaskListSuccessResponse,
   GetTaskQueryArgs,
   GetTaskSuccessResponse,
-  GetTaskWorkPerformedActQueryArgs,
+  GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
   ResolveTaskMutationArgs,
   ResolveTaskSuccessResponse,
@@ -87,10 +87,9 @@ const taskApiService = baseApiService.injectEndpoints({
       providesTags: (result, error) =>
         error ? [] : [TaskEndpointTagEnum.Task],
     }),
-    // todo: поменять на mutation
-    [TaskEndpointNameEnum.GetWorkPerformedAct]: build.query<
+    [TaskEndpointNameEnum.GetWorkPerformedAct]: build.mutation<
       GetTaskWorkPerformedActSuccessResponse,
-      GetTaskWorkPerformedActQueryArgs
+      GetTaskWorkPerformedActMutationArgs
     >({
       query: ({ taskId, ...payload }) => ({
         url: getTaskWorkPerformedActUrl(taskId),
@@ -146,7 +145,7 @@ export const {
   useGetTaskCountersQuery,
   useGetFiscalAccumulatorTaskListQuery,
   useLazyGetTaskListQuery,
-  useLazyGetTaskWorkPerformedActQuery,
+  useGetTaskWorkPerformedActMutation,
   useResolveTaskMutation,
   useTakeTaskMutation,
 } = taskApiService
