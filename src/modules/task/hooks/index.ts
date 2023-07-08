@@ -8,8 +8,6 @@ export * from './useGetTask'
 export * from './useResolveTask'
 export * from './useTakeTask'
 
-export * from './useLazyGetTaskWorkPerformedAct'
-
 export * from './useLazyGetTaskList'
 
 export * from './useCreateTaskComment'
