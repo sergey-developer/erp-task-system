@@ -1,5 +1,5 @@
 export const clickDownloadLink = (
-  data: string,
+  data: BlobPart,
   type: string,
   filename?: string,
 ): void => {

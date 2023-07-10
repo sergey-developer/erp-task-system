@@ -47,7 +47,7 @@ import {
   isErrorResponse,
   isNotFoundError,
 } from 'shared/services/api'
-import { clickDownloadLink } from 'shared/utils/common'
+import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
@@ -312,11 +312,15 @@ const TaskCard: FC<TaskCardProps> = ({
         }).unwrap()
 
         if (file) {
-          clickDownloadLink(
-            file,
-            'application/pdf',
-            `Акт о выполненных работах ${task.id}`,
-          )
+          const blob = base64ToArrayBuffer(file)
+
+          if (blob) {
+            clickDownloadLink(
+              blob,
+              'application/pdf',
+              `Акт о выполненных работах ${task.id}`,
+            )
+          }
         }
       } catch (error) {
         if (isErrorResponse(error)) {
