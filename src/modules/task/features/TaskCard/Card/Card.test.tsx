@@ -11,7 +11,7 @@ import {
 } from 'modules/task/constants/common'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
-import * as base64ToArrayBufferUtils from 'shared/utils/common/base64ToArrayBuffer'
+import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 
 import taskFixtures from 'fixtures/task'
@@ -587,7 +587,7 @@ describe('Карточка заявки', () => {
         )
 
         const base64ToArrayBufferSpy = jest.spyOn(
-          base64ToArrayBufferUtils,
+          base64Utils,
           'base64ToArrayBuffer',
         )
         const fakeArrayBuffer = new Uint8Array()
