@@ -1,5 +1,5 @@
+import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/react'
-import { BaseQueryApi } from '@reduxjs/toolkit/src/query/baseQueryTypes'
 import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 
 import { HttpCodeEnum } from 'shared/constants/http'

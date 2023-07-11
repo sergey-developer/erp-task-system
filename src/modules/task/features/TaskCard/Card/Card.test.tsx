@@ -6,6 +6,7 @@ import {
 } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
+import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 
 import taskFixtures from 'fixtures/task'
@@ -582,6 +583,13 @@ describe('Карточка заявки', () => {
           'clickDownloadLink',
         )
 
+        const base64ToArrayBufferSpy = jest.spyOn(
+          base64Utils,
+          'base64ToArrayBuffer',
+        )
+        const fakeArrayBuffer = new Uint8Array()
+        base64ToArrayBufferSpy.mockReturnValueOnce(fakeArrayBuffer)
+
         const fakeFile = fakeWord()
         const getTaskWorkPerformedActMock = jest.fn(() => ({
           unwrap: jest.fn(() => fakeFile),
@@ -612,9 +620,13 @@ describe('Карточка заявки', () => {
 
         expect(getTaskWorkPerformedActMock).toBeCalledTimes(1)
         expect(getTaskWorkPerformedActMock).toBeCalledWith(expect.anything())
+
+        expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
+        expect(base64ToArrayBufferSpy).toBeCalledWith(fakeFile)
+
         expect(clickDownloadLinkSpy).toBeCalledTimes(1)
         expect(clickDownloadLinkSpy).toBeCalledWith(
-          fakeFile,
+          fakeArrayBuffer,
           'application/pdf',
           `Акт о выполненных работах ${props.task!.id}`,
         )
