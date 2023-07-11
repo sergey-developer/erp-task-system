@@ -20,7 +20,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const fakeTaskTableItem = (
+export const taskTableItem = (
   props?: Partial<
     Pick<TaskTableListItem, 'status' | 'extendedStatus' | 'olaStatus'>
   >,
@@ -32,17 +32,17 @@ export const fakeTaskTableItem = (
   id: fakeId(),
   name: fakeName(),
   title: fakeWord(),
-  workGroup: workGroupFixtures.fakeWorkGroup(),
-  supportGroup: commonFixtures.fakeSupportGroup(),
+  workGroup: workGroupFixtures.workGroup(),
+  supportGroup: commonFixtures.supportGroup(),
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),
   lastComment: fakeWord(),
-  assignee: taskFixtures.fakeAssignee(),
+  assignee: taskFixtures.assignee(),
   olaNextBreachTime: fakeDateString(),
   subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
-  responseTime: taskFixtures.fakeTaskResponseTime(),
+  responseTime: taskFixtures.taskResponseTime(),
 })
 
-export const fakeTaskTableItems = (
+export const taskTableItems = (
   length: number = 1,
-): Array<TaskTableListItem> => times(length, () => fakeTaskTableItem())
+): Array<TaskTableListItem> => times(length, () => taskTableItem())

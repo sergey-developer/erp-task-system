@@ -15,7 +15,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const fakeSubTask = (
+export const subTask = (
   props?: Partial<Pick<SubTaskModel, 'status'>>,
 ): NonNullableObject<SubTaskModel> => ({
   status: props?.status || TaskStatusEnum.New,
@@ -23,7 +23,7 @@ export const fakeSubTask = (
   id: fakeId(),
   recordId: fakeIdStr(),
   title: fakeWord(),
-  supportGroup: commonFixtures.fakeSupportGroup(),
+  supportGroup: commonFixtures.supportGroup(),
   createdAt: fakeDateString(),
   description: fakeWord(),
   externalAssigneeName: fakeWord(),
@@ -34,6 +34,6 @@ export const fakeSubTask = (
   cancelReason: fakeWord(),
 })
 
-export const getSubTaskList = (
+export const subTaskList = (
   length: number = 1,
-): Array<NonNullableObject<SubTaskModel>> => times(length, () => fakeSubTask())
+): Array<NonNullableObject<SubTaskModel>> => times(length, () => subTask())

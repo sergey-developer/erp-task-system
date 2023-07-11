@@ -231,7 +231,7 @@ describe('Страница авторизации', () => {
 
   describe('При успешном запросе', () => {
     test('Пользователь покидает страницу авторизации', async () => {
-      mockLoginSuccess({ body: authFixtures.fakeLoginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
 
       const { user, checkRouteChanged } = renderInRoute(
         <LoginPage />,
@@ -248,7 +248,7 @@ describe('Страница авторизации', () => {
     })
 
     test('В localStorage сохраняются access/refresh token', async () => {
-      mockLoginSuccess({ body: authFixtures.fakeLoginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
 
       const { user } = render(<LoginPage />)
 
@@ -259,16 +259,16 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingFinished()
 
       expect(authLocalStorageService.getAccessToken()).toBe(
-        authFixtures.fakeLoginResponseSuccess.access,
+        authFixtures.loginSuccessResponse.access,
       )
 
       expect(authLocalStorageService.getRefreshToken()).toBe(
-        authFixtures.fakeLoginResponseSuccess.refresh,
+        authFixtures.loginSuccessResponse.refresh,
       )
     })
 
     test('Данные сохраняются в store', async () => {
-      mockLoginSuccess({ body: authFixtures.fakeLoginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
       const store = setupStore()
 
       const { user } = render(<LoginPage />, { store })
@@ -283,10 +283,10 @@ describe('Страница авторизации', () => {
 
       expect(authState.user).not.toBeNull()
       expect(authState.accessToken).toBe(
-        authFixtures.fakeLoginResponseSuccess.access,
+        authFixtures.loginSuccessResponse.access,
       )
       expect(authState.refreshToken).toBe(
-        authFixtures.fakeLoginResponseSuccess.refresh,
+        authFixtures.loginSuccessResponse.refresh,
       )
       expect(authState.isAuthenticated).toBe(true)
     })

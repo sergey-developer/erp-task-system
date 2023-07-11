@@ -35,7 +35,7 @@ import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
 import { TaskTableListItem, TaskTableProps } from './interfaces'
 
-const fakeTaskTableItem = taskFixtures.fakeTaskTableItem()
+const fakeTaskTableItem = taskFixtures.taskTableItem()
 
 const requiredProps: Readonly<Omit<TaskTableProps, 'sort'>> = {
   dataSource: [fakeTaskTableItem],
@@ -219,7 +219,7 @@ afterEach(() => {
 
 describe('Таблица заявок', () => {
   test('Отображается корректно', () => {
-    const tableItems = taskFixtures.fakeTaskTableItems(2)
+    const tableItems = taskFixtures.taskTableItems(2)
     render(<TaskTable {...requiredProps} dataSource={tableItems} />)
 
     const table = testUtils.getContainer()
@@ -1197,7 +1197,7 @@ describe('Таблица заявок', () => {
           const taskTableItem: typeof firstTaskTableItem = {
             ...firstTaskTableItem,
             workGroup: null,
-            assignee: taskFixtures.fakeAssignee(),
+            assignee: taskFixtures.assignee(),
           }
 
           render(

@@ -9,7 +9,7 @@ import { render } from '_tests_/utils'
 import AttachmentList, { AttachmentListProps } from './index'
 
 const props: AttachmentListProps = {
-  attachments: [taskFixtures.fakeAttachment()],
+  attachments: [taskFixtures.attachment()],
 }
 
 const getContainer = () => screen.getByTestId('attachment-list')
@@ -66,7 +66,7 @@ describe('Список вложений', () => {
     render(
       <AttachmentList
         {...props}
-        attachments={[taskFixtures.fakeAttachment({ externalId: '' })]}
+        attachments={[taskFixtures.attachment({ externalId: '' })]}
       />,
     )
 

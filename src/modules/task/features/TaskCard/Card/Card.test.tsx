@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 
 import {
+  getTaskWorkPerformedActMessages,
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'modules/task/constants'
@@ -9,19 +10,21 @@ import { UserRoleEnum } from 'modules/user/constants/roles'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 
+import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
-  expectLoadingNotStartedByCard,
-  fakeWord,
-  getStoreWithAuth,
   expectLoadingFinishedByCard,
   expectLoadingFinishedBySpinner,
+  expectLoadingNotStartedByCard,
   expectLoadingNotStartedBySpinner,
   expectLoadingStartedByCard,
   expectLoadingStartedBySpinner,
+  fakeWord,
+  findNotification,
+  getStoreWithAuth,
   render,
 } from '_tests_/utils'
 import modalTestUtils from '_tests_/utils/modal'
@@ -31,8 +34,8 @@ import {
   activeAssignButtonProps,
   activeAssignOnMeButtonProps,
   activeTakeTaskButtonProps,
-  testUtils as assigneeBlockTestUtils,
   canSelectAssigneeProps,
+  testUtils as assigneeBlockTestUtils,
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as cardTabsTestUtils } from '../CardTabs/CardTabs.test'
 import {
@@ -63,7 +66,7 @@ import {
 import TaskCard, { TaskCardProps } from './index'
 
 const props: Readonly<TaskCardProps> = {
-  task: taskFixtures.fakeTask(),
+  task: taskFixtures.task(),
   refetchTask: jest.fn(),
   closeTaskCard: jest.fn(),
 
@@ -271,7 +274,7 @@ describe('Карточка заявки', () => {
         render(
           <TaskCard
             {...props}
-            reclassificationRequest={taskFixtures.fakeReclassificationRequest()}
+            reclassificationRequest={taskFixtures.reclassificationRequest()}
           />,
         )
 
@@ -631,6 +634,105 @@ describe('Карточка заявки', () => {
           `Акт о выполненных работах ${props.task!.id}`,
         )
       })
+
+      test('Корректно отрабатывает вызов с ошибкой 404', async () => {
+        const clickDownloadLinkSpy = jest.spyOn(
+          downloadLinkUtils,
+          'clickDownloadLink',
+        )
+
+        const base64ToArrayBufferSpy = jest.spyOn(
+          base64Utils,
+          'base64ToArrayBuffer',
+        )
+
+        const errorMessage = fakeWord()
+        const getTaskWorkPerformedActMock = jest.fn(() => ({
+          unwrap: jest.fn(() =>
+            Promise.reject(
+              commonFixtures.notFoundErrorResponse({ detail: [errorMessage] }),
+            ),
+          ),
+        }))
+
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              ...activeExecuteTaskItemProps,
+            }}
+            getTaskWorkPerformedAct={getTaskWorkPerformedActMock as any}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: props.task!.assignee!.id,
+            }),
+          },
+        )
+
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await taskResolutionModalTestUtils.findContainer()
+
+        await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+        await taskResolutionModalTestUtils.clickGetActButton(user)
+
+        const errorNotification = await findNotification(errorMessage)
+
+        expect(errorNotification).toBeInTheDocument()
+        expect(base64ToArrayBufferSpy).not.toBeCalled()
+        expect(clickDownloadLinkSpy).not.toBeCalled()
+      })
+
+      test('Корректно отрабатывает вызов с ошибкой 500', async () => {
+        const clickDownloadLinkSpy = jest.spyOn(
+          downloadLinkUtils,
+          'clickDownloadLink',
+        )
+
+        const base64ToArrayBufferSpy = jest.spyOn(
+          base64Utils,
+          'base64ToArrayBuffer',
+        )
+
+        const getTaskWorkPerformedActMock = jest.fn(() => ({
+          unwrap: jest.fn(() =>
+            Promise.reject(commonFixtures.serverErrorResponse()),
+          ),
+        }))
+
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              ...activeExecuteTaskItemProps,
+            }}
+            getTaskWorkPerformedAct={getTaskWorkPerformedActMock as any}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: props.task!.assignee!.id,
+            }),
+          },
+        )
+
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await taskResolutionModalTestUtils.findContainer()
+
+        await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
+        await taskResolutionModalTestUtils.clickGetActButton(user)
+
+        const errorNotification = await findNotification(
+          getTaskWorkPerformedActMessages.commonError,
+        )
+
+        expect(errorNotification).toBeInTheDocument()
+        expect(base64ToArrayBufferSpy).not.toBeCalled()
+        expect(clickDownloadLinkSpy).not.toBeCalled()
+      })
     })
   })
 
@@ -723,7 +825,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.fakeWorkGroup({
+              workGroupFixtures.workGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -760,7 +862,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.fakeWorkGroup({
+              workGroupFixtures.workGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -797,7 +899,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.fakeWorkGroup({
+              workGroupFixtures.workGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -834,7 +936,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.fakeWorkGroup({
+              workGroupFixtures.workGroup({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -869,7 +971,7 @@ describe('Карточка заявки', () => {
   describe('Перевод заявки на 2-ю линию', () => {
     describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
-        const workGroupList = workGroupFixtures.fakeWorkGroupList()
+        const workGroupList = workGroupFixtures.workGroupList()
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
         const { user } = render(
@@ -916,7 +1018,7 @@ describe('Карточка заявки', () => {
             {...props}
             task={{
               ...props.task!,
-              suspendRequest: taskFixtures.fakeSuspendRequest(),
+              suspendRequest: taskFixtures.suspendRequest(),
             }}
           />,
         )
@@ -949,7 +1051,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -967,7 +1069,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.Approved,
                 }),
               }}
@@ -987,7 +1089,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -1007,7 +1109,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.InProgress,
                 }),
               }}
@@ -1028,7 +1130,7 @@ describe('Карточка заявки', () => {
                 {...props}
                 task={{
                   ...props.task!,
-                  suspendRequest: taskFixtures.fakeSuspendRequest({
+                  suspendRequest: taskFixtures.suspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1051,7 +1153,7 @@ describe('Карточка заявки', () => {
                 {...props}
                 task={{
                   ...props.task!,
-                  suspendRequest: taskFixtures.fakeSuspendRequest({
+                  suspendRequest: taskFixtures.suspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1074,7 +1176,7 @@ describe('Карточка заявки', () => {
                 {...props}
                 task={{
                   ...props.task!,
-                  suspendRequest: taskFixtures.fakeSuspendRequest({
+                  suspendRequest: taskFixtures.suspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1099,7 +1201,7 @@ describe('Карточка заявки', () => {
                 {...props}
                 task={{
                   ...props.task!,
-                  suspendRequest: taskFixtures.fakeSuspendRequest({
+                  suspendRequest: taskFixtures.suspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1119,7 +1221,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -1137,7 +1239,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -1162,7 +1264,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.Approved,
                 }),
               }}
@@ -1185,9 +1287,7 @@ describe('Карточка заявки', () => {
             {...props}
             task={{
               ...props.task!,
-              status: activeRequestSuspendItemProps.status,
-              type: activeRequestSuspendItemProps.type,
-              suspendRequest: null,
+              ...activeRequestSuspendItemProps,
             }}
           />,
           { store: getStoreWithAuth() },
@@ -1207,9 +1307,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }}
             />,
             { store: getStoreWithAuth() },
@@ -1229,9 +1327,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }}
             />,
             { store: getStoreWithAuth() },
@@ -1251,9 +1347,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }}
             />,
             { store: getStoreWithAuth() },
@@ -1275,9 +1369,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }}
             />,
             { store: getStoreWithAuth() },
@@ -1304,9 +1396,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }}
             />,
             { store: getStoreWithAuth() },

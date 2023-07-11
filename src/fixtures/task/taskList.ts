@@ -37,7 +37,7 @@ export const fakeTaskListItem = (
 
   responseTime: null,
   id: fakeId(),
-  assignee: taskFixtures.fakeAssignee(),
+  assignee: taskFixtures.assignee(),
   lastComment: fakeWord(),
   priorityCode: fakeInteger({
     min: 1,
@@ -53,8 +53,8 @@ export const fakeTaskListItem = (
   }) as TaskListItemModel['initialImpact'],
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),
-  workGroup: workGroupFixtures.fakeWorkGroup(),
-  supportGroup: commonFixtures.fakeSupportGroup(),
+  workGroup: workGroupFixtures.workGroup(),
+  supportGroup: commonFixtures.supportGroup(),
   title: fakeWord(),
   name: fakeWord(),
   productClassifier1: fakeWord(),
@@ -78,4 +78,4 @@ export const fakeTaskList = (length: number = 1): Array<TaskListItemModel> =>
 
 export const fakeTaskListResponse = (
   list: GetTaskListSuccessResponse['results'],
-): GetTaskListSuccessResponse => commonFixtures.fakePaginatedListResponse(list)
+): GetTaskListSuccessResponse => commonFixtures.paginatedListResponse(list)

@@ -19,7 +19,7 @@ import {
 } from './interfaces'
 
 const fakeFiscalAccumulatorTaskListItem =
-  taskFixtures.fakeFiscalAccumulatorTaskListItem()
+  taskFixtures.fiscalAccumulatorTaskListItem()
 
 const props: Readonly<FiscalAccumulatorTaskTableProps> = {
   dataSource: [fakeFiscalAccumulatorTaskListItem],

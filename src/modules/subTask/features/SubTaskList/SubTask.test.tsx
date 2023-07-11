@@ -16,8 +16,8 @@ import { getButtonIn, queryButtonIn, render } from '_tests_/utils'
 
 import SubTask, { SubTaskProps } from './SubTask'
 
-const task = taskFixtures.fakeTask()
-const subTask = subTaskFixtures.fakeSubTask()
+const task = taskFixtures.task()
+const subTask = subTaskFixtures.subTask()
 
 const requiredProps: Readonly<SubTaskProps> = {
   title: subTask.title,

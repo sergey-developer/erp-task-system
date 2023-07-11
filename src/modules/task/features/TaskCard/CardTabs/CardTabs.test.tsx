@@ -22,14 +22,14 @@ const props: Readonly<CardTabsProps> = {
     description: fakeWord(),
     userResolution: fakeWord(),
     techResolution: fakeWord(),
-    attachments: [taskFixtures.fakeAttachment()],
+    attachments: [taskFixtures.attachment()],
     resolution: {
       attachments: [],
     },
     status: TaskStatusEnum.New,
     extendedStatus: TaskExtendedStatusEnum.New,
     recordId: fakeIdStr(),
-    suspendRequest: taskFixtures.fakeSuspendRequest(),
+    suspendRequest: taskFixtures.suspendRequest(),
     assignee: null,
   },
 }

@@ -11,7 +11,7 @@ import DescriptionTab, { DescriptionTabProps } from './index'
 const props: Readonly<DescriptionTabProps> = {
   title: fakeWord(),
   description: fakeWord(),
-  attachments: [taskFixtures.fakeAttachment()],
+  attachments: [taskFixtures.attachment()],
 }
 
 const getContainer = () => screen.getByTestId('task-description-tab')

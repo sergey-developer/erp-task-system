@@ -2,7 +2,7 @@ import { LoginSuccessResponse } from 'modules/auth/models'
 
 import { fakeAccessToken, fakeRefreshToken } from './token'
 
-export const fakeLoginResponseSuccess: LoginSuccessResponse = {
+export const loginSuccessResponse: LoginSuccessResponse = {
   access: fakeAccessToken,
   refresh: fakeRefreshToken,
 }

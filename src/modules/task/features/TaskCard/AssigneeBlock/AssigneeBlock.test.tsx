@@ -62,7 +62,7 @@ const requiredProps: Readonly<
   workGroupListIsLoading: false,
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
-  assignee: taskFixtures.fakeAssignee(),
+  assignee: taskFixtures.assignee(),
   taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
@@ -87,13 +87,13 @@ export const activeAssignButtonProps: Readonly<
 > = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
-  assignee: taskFixtures.fakeAssignee(),
+  assignee: taskFixtures.assignee(),
 }
 
 const showRefuseTaskButtonProps: Readonly<
   NonNullableObject<Pick<AssigneeBlockProps, 'assignee'>>
 > = {
-  assignee: taskFixtures.fakeAssignee(),
+  assignee: taskFixtures.assignee(),
 }
 
 const activeRefuseTaskButtonProps: Readonly<
@@ -107,7 +107,7 @@ export const canSelectAssigneeProps: Readonly<
   NonNullableObject<Pick<AssigneeBlockProps, 'status' | 'workGroup'>>
 > = {
   status: TaskStatusEnum.New,
-  workGroup: workGroupFixtures.fakeWorkGroup(),
+  workGroup: workGroupFixtures.workGroup(),
 }
 
 const getContainer = () => screen.getByTestId('task-assignee-block')

@@ -139,7 +139,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Количество заявок отображается корректно', async () => {
-      const taskCountersResponse = taskFixtures.fakeTaskCountersResponse()
+      const taskCountersResponse = taskFixtures.taskCountersResponse()
       mockGetTaskCountersSuccess({ body: taskCountersResponse })
       mockGetTaskListSuccess()
 
@@ -244,7 +244,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Сбрасывает расширенный фильтр', async () => {
-      const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+      const workGroupListItem = workGroupFixtures.workGroup()
       mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess({ once: false })
@@ -517,7 +517,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Значения сохраняются если другой фильтр не применялся', async () => {
-        const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+        const workGroupListItem = workGroupFixtures.workGroup()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
@@ -614,7 +614,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Значения не сохраняются если фильтр не был применён', async () => {
-      const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+      const workGroupListItem = workGroupFixtures.workGroup()
       mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
@@ -724,7 +724,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess()
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess({
-          body: workGroupFixtures.fakeWorkGroupList(),
+          body: workGroupFixtures.workGroupList(),
         })
 
         const { user } = render(<TaskListPage />, {
@@ -910,7 +910,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
-        const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+        const workGroupListItem = workGroupFixtures.workGroup()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
@@ -1064,7 +1064,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
-        const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+        const workGroupListItem = workGroupFixtures.workGroup()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })

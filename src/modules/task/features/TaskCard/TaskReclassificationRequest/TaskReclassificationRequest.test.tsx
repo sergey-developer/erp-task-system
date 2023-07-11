@@ -20,7 +20,7 @@ import TaskReclassificationRequest, {
 } from './index'
 
 const props: Readonly<TaskReclassificationRequestProps> = {
-  user: commonFixtures.fakeUser(),
+  user: commonFixtures.baseUser(),
   comment: fakeWord(),
   date: fakeDateString(),
   onCancel: jest.fn(),
