@@ -1,6 +1,6 @@
 import { Moment } from 'moment-timezone'
 
-import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
+import { TaskExtendedStatusEnum } from 'modules/task/constants'
 
 import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
 

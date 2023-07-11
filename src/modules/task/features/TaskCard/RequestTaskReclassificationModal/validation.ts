@@ -1,6 +1,6 @@
 import { Rule } from 'rc-field-form/es/interface'
 
-import { ReclassificationReasonEnum } from 'modules/task/constants/common'
+import { ReclassificationReasonEnum } from 'modules/task/constants'
 
 export const RECLASSIFICATION_REASON_RULES: Rule[] = [
   {

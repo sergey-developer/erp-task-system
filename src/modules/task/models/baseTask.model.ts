@@ -4,7 +4,7 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import { MaybeNull } from 'shared/interfaces/utils'

@@ -6,7 +6,7 @@ import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
-} from 'modules/task/utils/messages'
+} from 'modules/task/utils'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/errors'

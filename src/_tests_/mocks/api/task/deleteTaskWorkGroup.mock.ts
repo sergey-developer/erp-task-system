@@ -1,5 +1,5 @@
 import { DeleteTaskWorkGroupSuccessResponse } from 'modules/task/models'
-import { deleteTaskWorkGroupUrl } from 'modules/task/utils/apiUrls'
+import { deleteTaskWorkGroupUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'

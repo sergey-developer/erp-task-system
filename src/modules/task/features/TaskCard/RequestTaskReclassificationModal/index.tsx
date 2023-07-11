@@ -9,7 +9,7 @@ import {
 } from 'antd'
 import React, { FC } from 'react'
 
-import { ReclassificationReasonEnum } from 'modules/task/constants/common'
+import { ReclassificationReasonEnum } from 'modules/task/constants'
 import { TaskModel } from 'modules/task/models'
 
 import BaseModal from 'components/Modals/BaseModal'

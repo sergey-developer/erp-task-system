@@ -1,3 +1,4 @@
+import { SubTaskEndpointNameEnum } from 'modules/subTask/constants/api'
 import {
   CancelSubTaskMutationArgs,
   CancelSubTaskSuccessResponse,
@@ -18,12 +19,10 @@ import {
   getSubTaskTemplateListUrl,
   reworkSubTaskUrl,
 } from 'modules/subTask/utils/apiUrls'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import { TaskStatusEnum } from 'modules/task/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
-
-import { SubTaskEndpointNameEnum } from '../constants/api'
 
 const subTaskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

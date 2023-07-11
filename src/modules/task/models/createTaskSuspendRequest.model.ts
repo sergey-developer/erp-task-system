@@ -1,4 +1,4 @@
-import { SuspendReasonEnum } from 'modules/task/constants/common'
+import { SuspendReasonEnum } from 'modules/task/constants'
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
 import { ErrorResponse } from 'shared/services/api'

@@ -1,4 +1,4 @@
-import { TaskJournalTypeEnum } from 'modules/task/constants/common'
+import { TaskJournalTypeEnum } from 'modules/task/constants'
 
 import { StringMap } from 'shared/interfaces/utils'
 

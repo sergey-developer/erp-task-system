@@ -2,8 +2,10 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import moment from 'moment-timezone'
 
-import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
-import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
+import {
+  TaskExtendedStatusEnum,
+  taskExtendedStatusDict,
+} from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import workGroupFixtures from 'fixtures/workGroup'

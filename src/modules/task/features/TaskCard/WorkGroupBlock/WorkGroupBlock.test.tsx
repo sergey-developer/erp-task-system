@@ -5,7 +5,7 @@ import {
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import workGroupFixtures from 'fixtures/workGroup'

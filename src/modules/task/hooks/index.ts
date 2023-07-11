@@ -28,3 +28,5 @@ export * from './useUpdateTaskWorkGroup'
 export * from './useDeleteTaskWorkGroup'
 
 export * from './useGetTaskCounters'
+
+export * from './useGetFiscalAccumulatorTaskList'

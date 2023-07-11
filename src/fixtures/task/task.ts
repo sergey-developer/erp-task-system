@@ -3,7 +3,7 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
 
 import commonFixtures from 'fixtures/common'

@@ -7,8 +7,8 @@ import {
   SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
-import { taskStatusDict } from 'modules/task/constants/dictionary'
+  taskStatusDict,
+} from 'modules/task/constants'
 import TaskAssignee from 'modules/task/features/TaskAssignee'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import {
@@ -24,8 +24,8 @@ import { makeUserNameObject } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
+import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
-import SeparatedText from 'components/Texts/SeparatedText'
 
 import { renderStringWithLineBreak } from 'shared/utils/string'
 

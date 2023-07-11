@@ -1,5 +1,5 @@
 import { UpdateTaskAssigneeSuccessResponse } from 'modules/task/models'
-import { updateTaskAssigneeUrl } from 'modules/task/utils/apiUrls'
+import { updateTaskAssigneeUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'

@@ -1,5 +1,5 @@
 import { CreateTaskReclassificationRequestSuccessResponse } from 'modules/task/models'
-import { createTaskReclassificationRequestUrl } from 'modules/task/utils/apiUrls'
+import { createTaskReclassificationRequestUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
