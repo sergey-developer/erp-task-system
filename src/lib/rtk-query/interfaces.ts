@@ -1,11 +1,11 @@
 import { QueryDefinition } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { MutationDefinition } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
 import {
   TypedUseMutationResult,
   TypedUseQueryStateResult,
 } from '@reduxjs/toolkit/dist/query/react'
 import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
-import { MutationDefinition } from '@reduxjs/toolkit/src/query/endpointDefinitions'
-import { MutationTrigger } from '@reduxjs/toolkit/src/query/react/buildHooks'
+import { MutationTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 
 import { CustomBaseQueryFn } from 'shared/services/api'
 
