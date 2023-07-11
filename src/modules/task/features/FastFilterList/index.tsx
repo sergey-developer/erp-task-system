@@ -1,4 +1,5 @@
 import { Space } from 'antd'
+import { camelize } from 'humps'
 import React, { FC, useMemo } from 'react'
 
 import { isEqual } from 'shared/utils/common/isEqual'
@@ -21,7 +22,9 @@ const FastFilterList: FC<FastFilterListProps> = ({
 
     return fastFilters.reduce<Array<FastFilterItem>>(
       (acc, { filter, roles, text }) => {
-        const taskCounterKey = filter.toLowerCase() as Lowercase<typeof filter>
+        const taskCounterKey = camelize(filter.toLowerCase()) as Lowercase<
+          typeof filter
+        >
         const taskCounterValue = isShowCounters
           ? counters[taskCounterKey]
           : null

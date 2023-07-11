@@ -112,13 +112,14 @@ describe('Страница реестра заявок', () => {
     expect(testUtils.getContainer()).toBeInTheDocument()
   })
 
-  // todo: fix
   describe('Быстрый фильтр', () => {
-    test('Отображается', () => {
+    test('Отображается', async () => {
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
 
-      render(<TaskListPage />)
+      render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await fastFilterListTestUtils.expectLoadingFinished()
 
       expect(fastFilterListTestUtils.getContainer()).toBeInTheDocument()
     })
