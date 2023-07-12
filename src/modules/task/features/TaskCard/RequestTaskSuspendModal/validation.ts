@@ -1,7 +1,7 @@
 import { Moment } from 'moment-timezone'
 import { Rule } from 'rc-field-form/es/interface'
 
-import { SuspendReasonEnum } from 'modules/task/constants/common'
+import { SuspendReasonEnum } from 'modules/task/constants'
 
 import { validationMessages } from 'shared/constants/validation'
 

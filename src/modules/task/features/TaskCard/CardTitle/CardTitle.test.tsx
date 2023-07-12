@@ -6,7 +6,7 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import {

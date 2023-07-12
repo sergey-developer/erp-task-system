@@ -3,7 +3,6 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { getShortUserName } from 'modules/user/utils'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
 import commonFixtures from 'fixtures/common'
@@ -128,9 +127,7 @@ describe('Запрос заявки на ожидание', () => {
       render(<TaskSuspendRequest {...props} />)
 
       expect(
-        testUtils.getChildByText(
-          `до ${formatDate(props.date, DATE_TIME_FORMAT)}`,
-        ),
+        testUtils.getChildByText(`до ${formatDate(props.date)}`),
       ).toBeInTheDocument()
     })
   })

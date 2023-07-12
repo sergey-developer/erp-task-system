@@ -1,10 +1,12 @@
 import {
+  FiscalAccumulatorFormatEnum,
   SuspendReasonEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 
 import {
+  fiscalAccumulatorFormatColorDict,
   suspendReasonDict,
   taskExtendedStatusDict,
   taskImpactMap,
@@ -84,5 +86,29 @@ describe('task dictionary', () => {
     expect(
       suspendReasonDict[SuspendReasonEnum.AwaitingInformationFromFirstLine],
     ).toBe('Ожидание информации от пользователя, уточнение через 1-ю линию')
+  })
+
+  test('fiscal accumulator format color', () => {
+    expect(
+      fiscalAccumulatorFormatColorDict[FiscalAccumulatorFormatEnum.Dubbed],
+    ).toBe('#6600ff')
+
+    expect(
+      fiscalAccumulatorFormatColorDict[
+        FiscalAccumulatorFormatEnum.OutOfMemoryLess7
+      ],
+    ).toBe('#F2994A')
+
+    expect(
+      fiscalAccumulatorFormatColorDict[
+        FiscalAccumulatorFormatEnum.OutOfMemoryLess15
+      ],
+    ).toBe('#EB5757')
+
+    expect(
+      fiscalAccumulatorFormatColorDict[
+        FiscalAccumulatorFormatEnum.OutOfMemoryLess21
+      ],
+    ).toBe('#F2994A')
   })
 })

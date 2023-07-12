@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { taskAssigneeApiMessages } from 'modules/task/constants/errorMessages'
+import { taskAssigneeApiMessages } from 'modules/task/constants'
 import { UpdateTaskAssigneeMutationArgs } from 'modules/task/models'
 import { taskAssigneeApiPermissions } from 'modules/task/permissions'
 import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskAssigneeApi.service'

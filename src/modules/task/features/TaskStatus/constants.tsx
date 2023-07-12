@@ -1,9 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import {
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/common'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants'
 
 import {
   CheckCircleIcon,

@@ -6,7 +6,7 @@ import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi
 import {
   getTaskCommentListServerErrorMsg,
   getTaskNotFoundErrorMsg,
-} from 'modules/task/utils/messages'
+} from 'modules/task/utils'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/errors'

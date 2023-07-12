@@ -1,4 +1,4 @@
-import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
+import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import { SuspendRequestModel } from 'modules/task/models'
 
 import commonFixtures from 'fixtures/common'

@@ -5,7 +5,7 @@ import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 
 import taskFixtures from 'fixtures/task'
 

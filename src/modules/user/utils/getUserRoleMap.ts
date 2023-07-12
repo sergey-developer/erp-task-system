@@ -1,9 +1,11 @@
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
-import { BooleanMap } from 'shared/interfaces/utils'
+import { BooleanKey, BooleanMap } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-export type UserRoleMap = BooleanMap<`is${keyof typeof UserRoleEnum}Role`>
+export type UserRoleMap = BooleanMap<
+  BooleanKey<`${keyof typeof UserRoleEnum}Role`>
+>
 
 export const getUserRoleMap = (role?: UserRoleEnum): UserRoleMap => ({
   isFirstLineSupportRole: isEqual(role, UserRoleEnum.FirstLineSupport),

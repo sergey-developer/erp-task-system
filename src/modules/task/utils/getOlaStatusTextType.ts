@@ -1,12 +1,12 @@
 import { TextProps } from 'antd/es/typography/Text'
 
-import { TaskOlaStatusEnum } from 'modules/task/constants/common'
+import { TaskOlaStatusEnum } from 'modules/task/constants'
 
 import { MaybeUndefined } from 'shared/interfaces/utils'
 
-import getOlaStatusMap from './getOlaStatusMap'
+import { getOlaStatusMap } from './getOlaStatusMap'
 
-const getOlaStatusTextType = (
+export const getOlaStatusTextType = (
   olaStatus: TaskOlaStatusEnum,
 ): Extract<TextProps['type'], MaybeUndefined<'danger' | 'warning'>> => {
   const status = getOlaStatusMap(olaStatus)
@@ -17,5 +17,3 @@ const getOlaStatusTextType = (
     ? 'warning'
     : undefined
 }
-
-export default getOlaStatusTextType

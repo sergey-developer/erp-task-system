@@ -1,5 +1,6 @@
 import { NumberOrString } from 'shared/interfaces/utils'
 
+// todo: вынести в errorMessage и переименовать их в messageTemplates
 export const getTaskNotFoundErrorMsg = (id: NumberOrString): string =>
   `Заявка с идентификатором ${id} не найдена`
 

@@ -1,4 +1,4 @@
-import { ReclassificationReasonEnum } from 'modules/task/constants/common'
+import { ReclassificationReasonEnum } from 'modules/task/constants'
 
 export const reclassificationReasonLabels: Record<
   ReclassificationReasonEnum,

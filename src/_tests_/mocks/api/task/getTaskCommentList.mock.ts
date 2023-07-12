@@ -1,5 +1,5 @@
 import { GetTaskCommentListSuccessResponse } from 'modules/task/models'
-import { getTaskCommentListUrl } from 'modules/task/utils/apiUrls'
+import { getTaskCommentListUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

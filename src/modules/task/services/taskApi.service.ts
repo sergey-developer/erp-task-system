@@ -4,9 +4,11 @@ import {
   TaskEndpointEnum,
   TaskEndpointNameEnum,
   TaskEndpointTagEnum,
-} from 'modules/task/constants/api'
+} from 'modules/task/constants'
 import { GetTaskListTransformedResponse } from 'modules/task/interfaces'
 import {
+  GetFiscalAccumulatorTaskListQueryArgs,
+  GetFiscalAccumulatorTaskListSuccessResponse,
   GetTaskCountersQueryArgs,
   GetTaskCountersSuccessResponse,
   GetTaskListQueryArgs,
@@ -18,11 +20,7 @@ import {
   TakeTaskMutationArgs,
   TakeTaskSuccessResponse,
 } from 'modules/task/models'
-import {
-  getTaskUrl,
-  resolveTaskUrl,
-  takeTaskUrl,
-} from 'modules/task/utils/apiUrls'
+import { getTaskUrl, resolveTaskUrl, takeTaskUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
@@ -59,6 +57,16 @@ const taskApiService = baseApiService.injectEndpoints({
       query: () => ({
         url: TaskEndpointEnum.GetTaskCounters,
         method: HttpMethodEnum.Get,
+      }),
+    }),
+    [TaskEndpointNameEnum.GetFiscalAccumulatorTaskList]: build.query<
+      GetFiscalAccumulatorTaskListSuccessResponse,
+      GetFiscalAccumulatorTaskListQueryArgs
+    >({
+      query: (params) => ({
+        url: TaskEndpointEnum.GetFiscalAccumulatorTaskList,
+        method: HttpMethodEnum.Get,
+        params,
       }),
     }),
     [TaskEndpointNameEnum.GetTask]: build.query<
@@ -117,9 +125,10 @@ const taskApiService = baseApiService.injectEndpoints({
 
 export const {
   useGetTaskQuery,
+  useGetTaskCountersQuery,
+  useGetFiscalAccumulatorTaskListQuery,
   useLazyGetTaskListQuery,
   useResolveTaskMutation,
-  useGetTaskCountersQuery,
   useTakeTaskMutation,
 } = taskApiService
 

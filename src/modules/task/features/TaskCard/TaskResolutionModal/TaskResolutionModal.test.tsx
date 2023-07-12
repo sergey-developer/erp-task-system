@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { TaskTypeEnum } from 'modules/task/constants/common'
+import { TaskTypeEnum } from 'modules/task/constants'
 
 import {
   validationMessages,

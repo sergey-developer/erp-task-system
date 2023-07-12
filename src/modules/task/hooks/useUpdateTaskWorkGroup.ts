@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { taskWorkGroupApiMessages } from 'modules/task/constants/errorMessages'
+import { taskWorkGroupApiMessages } from 'modules/task/constants'
 import { UpdateTaskWorkGroupMutationArgs } from 'modules/task/models'
 import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
 import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'

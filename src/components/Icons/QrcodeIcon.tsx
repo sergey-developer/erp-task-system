@@ -1,11 +1,11 @@
-import { ToolOutlined } from '@ant-design/icons'
+import { QrcodeOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 
 import { IconProps } from './interfaces'
 import { fontSizeStyles } from './styles'
 
-const ToolIcon = styled(ToolOutlined)<Pick<IconProps, '$size'>>`
+const QrcodeIcon = styled(QrcodeOutlined)<Pick<IconProps, '$size'>>`
   ${fontSizeStyles}
 `
 
-export default ToolIcon
+export default QrcodeIcon

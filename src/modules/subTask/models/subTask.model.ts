@@ -1,5 +1,5 @@
 import { SupportGroupModel } from 'modules/supportGroup/models'
-import { TaskStatusEnum } from 'modules/task/constants/common'
+import { TaskStatusEnum } from 'modules/task/constants'
 
 import { MaybeNull } from 'shared/interfaces/utils'
 
