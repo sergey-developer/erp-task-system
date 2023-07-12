@@ -5,6 +5,7 @@ import { JwtPayload } from '../interfaces'
 export const parseJwt = (token: string): JwtPayload => {
   const base64Url = token.split('.')[1]
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  // todo: handle parse base64 error
   const jsonPayload = decodeURIComponent(
     window
       .atob(base64)

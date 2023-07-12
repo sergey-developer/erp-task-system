@@ -5,11 +5,14 @@ import noop from 'lodash/noop'
 import moment from 'moment-timezone'
 import React, { FC, useCallback, useEffect } from 'react'
 
+import { CustomMutationTrigger } from 'lib/rtk-query/interfaces'
+
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import {
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
+  getTaskWorkPerformedActMessages
 } from 'modules/task/constants'
 import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
 import {
@@ -18,6 +21,8 @@ import {
   CreateTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestMutationArgs,
   DeleteTaskWorkGroupMutationArgs,
+  GetTaskWorkPerformedActMutationArgs,
+  GetTaskWorkPerformedActSuccessResponse,
   ResolveTaskMutationArgs,
   TakeTaskMutationArgs,
   TaskAssigneeModel,
@@ -36,11 +41,19 @@ import Spinner from 'components/Spinner'
 
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull } from 'shared/interfaces/utils'
-import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isNotFoundError,
+} from 'shared/services/api'
+import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { handleSetFieldsErrors } from 'shared/utils/form'
-import { showMultipleErrorNotification } from 'shared/utils/notifications'
+import {
+  showErrorNotification,
+  showMultipleErrorNotification,
+} from 'shared/utils/notifications'
 
 import AdditionalInfo from '../AdditionalInfo'
 import CardTabs from '../CardTabs'
@@ -141,6 +154,12 @@ export type TaskCardProps = {
   resolveTask: (data: ResolveTaskMutationArgs) => Promise<void>
   isTaskResolving: boolean
 
+  getTaskWorkPerformedAct: CustomMutationTrigger<
+    GetTaskWorkPerformedActMutationArgs,
+    GetTaskWorkPerformedActSuccessResponse
+  >
+  taskWorkPerformedActIsLoading: boolean
+
   updateAssignee: (data: UpdateTaskAssigneeMutationArgs) => Promise<void>
   updateAssigneeIsLoading: boolean
 
@@ -167,6 +186,9 @@ const TaskCard: FC<TaskCardProps> = ({
   takeTaskIsLoading,
   resolveTask,
   isTaskResolving,
+
+  getTaskWorkPerformedAct,
+  taskWorkPerformedActIsLoading,
 
   reclassificationRequest,
   reclassificationRequestIsLoading,
@@ -276,6 +298,40 @@ const TaskCard: FC<TaskCardProps> = ({
       }
     },
     [task, closeTaskCard, resolveTask],
+  )
+
+  const handleGetAct = useCallback<TaskResolutionModalProps['onGetAct']>(
+    async (values) => {
+      if (!task) return
+
+      try {
+        const file = await getTaskWorkPerformedAct({
+          taskId: task.id,
+          techResolution: values.techResolution,
+        }).unwrap()
+
+        if (file) {
+          const blob = base64ToArrayBuffer(file)
+
+          if (blob) {
+            clickDownloadLink(
+              blob,
+              'application/pdf',
+              `Акт о выполненных работах ${task.id}`,
+            )
+          }
+        }
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isNotFoundError(error) && error.data.detail) {
+            showMultipleErrorNotification(error.data.detail)
+          } else {
+            showErrorNotification(getTaskWorkPerformedActMessages.commonError)
+          }
+        }
+      }
+    },
+    [getTaskWorkPerformedAct, task],
   )
 
   const handleReclassificationRequestSubmit = useCallback<
@@ -580,6 +636,8 @@ const TaskCard: FC<TaskCardProps> = ({
                     isLoading={isTaskResolving}
                     onCancel={closeTaskResolutionModal}
                     onSubmit={handleResolutionSubmit}
+                    onGetAct={handleGetAct}
+                    getActIsLoading={taskWorkPerformedActIsLoading}
                   />
                 </React.Suspense>
               )}

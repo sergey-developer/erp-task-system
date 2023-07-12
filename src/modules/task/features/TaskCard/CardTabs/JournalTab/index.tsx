@@ -8,10 +8,7 @@ import { DownloadIcon, SyncIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
-import {
-  clickDownloadLink,
-  makeDownloadLink,
-} from 'shared/utils/common/downloadLink'
+import { clickDownloadLink } from 'shared/utils/common/downloadLink'
 
 import Journal from './Journal'
 import { getJournalCsvFilename } from './utils'
@@ -37,13 +34,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
       const journalCsv = await getJournalCsv(taskId)
 
       if (journalCsv) {
-        const downloadLink = makeDownloadLink(
-          journalCsv,
-          'text/csv',
-          getJournalCsvFilename(taskId),
-        )
-
-        clickDownloadLink(downloadLink)
+        clickDownloadLink(journalCsv, 'text/csv', getJournalCsvFilename(taskId))
       }
     } catch {}
   }

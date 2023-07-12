@@ -14,6 +14,7 @@ import {
   useUpdateTaskWorkGroup,
 } from 'modules/task/hooks'
 import { TaskListItemModel } from 'modules/task/models'
+import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import Card from '../Card'
@@ -105,6 +106,11 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
     state: { isLoading: updateAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 
+  const [
+    getTaskWorkPerformedAct,
+    { isLoading: taskWorkPerformedActIsLoading },
+  ] = useGetTaskWorkPerformedActMutation()
+
   useEffect(() => {
     if (
       createReclassificationRequestResult &&
@@ -127,6 +133,8 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
       takeTaskIsLoading={takeTaskIsLoading}
       resolveTask={resolveTask}
       isTaskResolving={isTaskResolving}
+      getTaskWorkPerformedAct={getTaskWorkPerformedAct}
+      taskWorkPerformedActIsLoading={taskWorkPerformedActIsLoading}
       updateAssignee={updateAssignee}
       updateAssigneeIsLoading={updateAssigneeIsLoading}
       reclassificationRequest={
