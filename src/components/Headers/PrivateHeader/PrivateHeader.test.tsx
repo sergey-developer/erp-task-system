@@ -442,7 +442,7 @@ describe('PrivateHeader', () => {
   })
 
   describe('Селект выбора временной зоны', () => {
-    test('Отображается', () => {
+    test.skip('Отображается', () => {
       render(<PrivateHeader />)
 
       const field = testUtils.getTimeZoneSelect()

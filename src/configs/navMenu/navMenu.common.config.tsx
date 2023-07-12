@@ -12,14 +12,14 @@ const navMenuCommonConfig: Array<NavMenuItem> = [
     text: 'Заявки',
   },
   {
-    key: RouteEnum.CatalogsIndex,
+    key: RouteEnum.Warehouses,
     icon: UnorderedListIcon,
     text: 'Управление складами',
     children: [
       {
-        key: RouteEnum.CatalogList,
+        key: RouteEnum.WarehouseCatalogList,
         text: 'Справочники',
-        link: RouteEnum.CatalogList,
+        link: RouteEnum.WarehouseCatalogList,
       },
     ],
   },

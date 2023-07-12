@@ -48,7 +48,7 @@ export const getPrivateRoutesConfig = ({
         element: <ChangePasswordPage />,
       },
       {
-        path: RouteEnum.CatalogsIndex,
+        path: RouteEnum.Warehouses,
         element: <Outlet />,
         children: [
           {
@@ -59,7 +59,7 @@ export const getPrivateRoutesConfig = ({
             },
           },
           {
-            path: RouteEnum.CatalogList,
+            path: RouteEnum.WarehouseCatalogList,
             element: <WarehouseCatalogListPage />,
             handle: {
               crumb: WarehouseCatalogListPageBreadcrumb,

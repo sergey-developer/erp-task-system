@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { RouteEnum } from 'configs/routes'
 
 const Breadcrumb: FC = () => {
-  return <Link to={RouteEnum.CatalogList}>Справочники</Link>
+  return <Link to={RouteEnum.WarehouseCatalogList}>Справочники</Link>
 }
 
 export default Breadcrumb
