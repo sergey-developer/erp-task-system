@@ -64,6 +64,7 @@ import {
   mockResolveTaskBadRequestError,
   mockResolveTaskServerError,
   mockResolveTaskSuccess,
+  mockTakeTaskForbiddenError,
   mockTakeTaskServerError,
   mockTakeTaskSuccess,
   mockUpdateTaskAssigneeServerError,
@@ -2082,7 +2083,7 @@ describe('Контейнер детальной карточки заявки', 
     })
 
     describe('При не успешном запросе', () => {
-      test('Уведомление об ошибке отображается и заявка не запрашивается заново', async () => {
+      test('Обрабатывается ошибка 500', async () => {
         const task = taskFixtures.fakeTask({
           id: requiredProps.taskId,
           status: activeTakeTaskButtonProps.status,
@@ -2103,11 +2104,43 @@ describe('Контейнер детальной карточки заявки', 
 
         await taskCardTestUtils.expectLoadingFinished()
         await assigneeBlockTestUtils.clickTakeTaskButton(user)
-
         taskCardTestUtils.expectLoadingNotStarted()
-        expect(
-          await findNotification(commonApiMessages.unknownError),
-        ).toBeInTheDocument()
+
+        const errorNotification = await findNotification(
+          commonApiMessages.unknownError,
+        )
+        expect(errorNotification).toBeInTheDocument()
+      })
+
+      test('Обрабатывается ошибка 403', async () => {
+        const task = taskFixtures.fakeTask({
+          id: requiredProps.taskId,
+          status: activeTakeTaskButtonProps.status,
+          extendedStatus: activeTakeTaskButtonProps.extendedStatus,
+        })
+
+        mockGetTaskSuccess(requiredProps.taskId, { body: task })
+
+        mockGetWorkGroupListSuccess({ body: [] })
+
+        const forbiddenErrorMessage = fakeWord()
+        mockTakeTaskForbiddenError(requiredProps.taskId, {
+          body: { detail: [forbiddenErrorMessage] },
+        })
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userId: task.assignee!.id,
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingFinished()
+        await assigneeBlockTestUtils.clickTakeTaskButton(user)
+        taskCardTestUtils.expectLoadingNotStarted()
+
+        const errorNotification = await findNotification(forbiddenErrorMessage)
+        expect(errorNotification).toBeInTheDocument()
       })
     })
   })
