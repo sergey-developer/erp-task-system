@@ -4,7 +4,7 @@ import { Navigate, Outlet, RouteObject } from 'react-router-dom'
 import { UserModel } from 'modules/user/models'
 import WarehouseCatalogListPageBreadcrumb from 'modules/warehouse/pages/WarehouseCatalogListPage/Breadcrumb'
 
-import PrivateLayout from 'components/Layout/PrivateLayout'
+import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
 
 import { RouteEnum } from './constants'
@@ -18,6 +18,10 @@ const WarehouseCatalogListPage = React.lazy(
 
 const ChangePasswordPage = React.lazy(
   () => import('modules/auth/pages/ChangePasswordPage'),
+)
+
+const FiscalAccumulatorTaskListPage = React.lazy(
+  () => import('modules/task/pages/FiscalAccumulatorTaskListPage'),
 )
 
 export const getPrivateRoutesConfig = ({
@@ -34,6 +38,10 @@ export const getPrivateRoutesConfig = ({
       {
         path: RouteEnum.TaskList,
         element: <TaskListPage />,
+      },
+      {
+        path: RouteEnum.FiscalAccumulatorTaskList,
+        element: <FiscalAccumulatorTaskListPage />,
       },
       {
         path: RouteEnum.ChangePassword,

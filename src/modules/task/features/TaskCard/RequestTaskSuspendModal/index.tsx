@@ -14,8 +14,7 @@ import {
 import moment from 'moment-timezone'
 import React, { FC, useEffect } from 'react'
 
-import { SuspendReasonEnum } from 'modules/task/constants/common'
-import { suspendReasonDict } from 'modules/task/constants/dictionary'
+import { SuspendReasonEnum, suspendReasonDict } from 'modules/task/constants'
 
 import BaseModal from 'components/Modals/BaseModal'
 

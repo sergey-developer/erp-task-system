@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 
 import { QuestionCircleIcon } from 'components/Icons'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
 
 import TaskRequest, { TaskRequestProps } from '../TaskRequest'
@@ -29,7 +28,7 @@ const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
       title='Запрошена переклассификация:'
       comment={comment}
       user={user}
-      date={formatDate(date, DATE_TIME_FORMAT)}
+      date={formatDate(date)}
       actions={[
         {
           text: 'Отменить запрос',

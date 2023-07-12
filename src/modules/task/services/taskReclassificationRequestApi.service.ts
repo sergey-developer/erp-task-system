@@ -1,4 +1,7 @@
-import { TaskExtendedStatusEnum } from 'modules/task/constants/common'
+import {
+  TaskExtendedStatusEnum,
+  TaskEndpointNameEnum,
+} from 'modules/task/constants'
 import {
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskReclassificationRequestSuccessResponse,
@@ -9,11 +12,10 @@ import {
 import {
   createTaskReclassificationRequestUrl,
   getTaskReclassificationRequestUrl,
-} from 'modules/task/utils/apiUrls'
+} from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { TaskEndpointNameEnum } from '../constants/api'
 import taskApiService from './taskApi.service'
 
 const taskReclassificationRequestApiService = taskApiService.injectEndpoints({

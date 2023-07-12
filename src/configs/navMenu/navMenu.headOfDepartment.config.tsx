@@ -1,6 +1,6 @@
 import { RouteEnum } from 'configs/routes'
 
-import { TeamIcon } from 'components/Icons'
+import { QrcodeIcon, TeamIcon } from 'components/Icons'
 
 import { NavMenuItem } from './interfaces'
 
@@ -10,6 +10,12 @@ const navMenuHeadOfDepartmentConfig: Array<NavMenuItem> = [
     icon: TeamIcon,
     link: RouteEnum.WorkingGroups,
     text: 'Рабочие группы',
+  },
+  {
+    key: RouteEnum.FiscalAccumulatorTaskList,
+    icon: QrcodeIcon,
+    link: RouteEnum.FiscalAccumulatorTaskList,
+    text: 'Отчёт по ФН',
   },
 ]
 

@@ -8,7 +8,7 @@ import {
 import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import taskFixtures from 'fixtures/task'

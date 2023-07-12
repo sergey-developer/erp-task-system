@@ -1,4 +1,8 @@
 import {
+  TaskEndpointNameEnum,
+  TaskEndpointTagEnum,
+} from 'modules/task/constants'
+import {
   CreateTaskSuspendRequestMutationArgs,
   CreateTaskSuspendRequestSuccessResponse,
   DeleteTaskSuspendRequestMutationArgs,
@@ -8,12 +12,11 @@ import {
 import {
   createTaskSuspendRequestUrl,
   deleteTaskSuspendRequestUrl,
-} from 'modules/task/utils/apiUrls'
+} from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorResponse, isNotFoundError } from 'shared/services/api'
 
-import { TaskEndpointNameEnum, TaskEndpointTagEnum } from '../constants/api'
 import taskApiService from './taskApi.service'
 
 const taskSuspendRequestApiService = taskApiService.injectEndpoints({

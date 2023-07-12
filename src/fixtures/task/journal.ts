@@ -3,7 +3,7 @@ import times from 'lodash/times'
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { TaskJournalEntryModel, TaskJournalModel } from 'modules/task/models'
 
 import commonFixtures from 'fixtures/common'

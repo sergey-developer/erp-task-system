@@ -1,9 +1,9 @@
-import { TaskEndpointTagEnum } from 'modules/task/constants/api'
+import { TaskEndpointTagEnum } from 'modules/task/constants'
 import {
   UpdateTaskAssigneeMutationArgs,
   UpdateTaskAssigneeSuccessResponse,
 } from 'modules/task/models'
-import { updateTaskAssigneeUrl } from 'modules/task/utils/apiUrls'
+import { updateTaskAssigneeUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

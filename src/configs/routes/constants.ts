@@ -1,5 +1,5 @@
 export enum RouteEnum {
-  // common routes
+  // other routes
   Root = '/',
   NotFound = '*',
 
@@ -10,6 +10,7 @@ export enum RouteEnum {
 
   // task routes
   TaskList = '/tasks',
+  FiscalAccumulatorTaskList = '/tasks/fiscal-accumulators',
 
   // warehouse routes
   CatalogsIndex = '/catalogs',
@@ -18,7 +19,7 @@ export enum RouteEnum {
   Warehouse = '/catalogs/warehouses/:id',
 
   // work group routes
-  WorkingGroups = '/workingGroups',
+  WorkingGroups = '/working-groups',
 
   // monitoring routes
   Monitoring = '/monitoring',

@@ -8,7 +8,7 @@ import { RouteEnum } from 'configs/routes'
 import { useUserMeState } from 'modules/user/hooks'
 
 import Breadcrumbs from 'components/Breadcrumbs'
-import PrivateHeader from 'components/Header/PrivateHeader'
+import PrivateHeader from 'components/Headers/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'

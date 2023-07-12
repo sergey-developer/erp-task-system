@@ -1,7 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { taskExtendedStatusDict } from 'modules/task/constants/dictionary'
+import { taskExtendedStatusDict } from 'modules/task/constants'
 import { testUtils as extendedFilterTestUtils } from 'modules/task/features/ExtendedFilter/ExtendedFilter.test'
 import {
   searchFieldDict,
