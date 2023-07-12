@@ -2111,7 +2111,7 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       test('Обрабатывается ошибка 403', async () => {
-        const task = taskFixtures.fakeTask({
+        const task = taskFixtures.task({
           id: requiredProps.taskId,
           status: activeTakeTaskButtonProps.status,
           extendedStatus: activeTakeTaskButtonProps.extendedStatus,

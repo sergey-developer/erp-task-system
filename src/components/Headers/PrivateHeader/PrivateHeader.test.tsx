@@ -7,6 +7,8 @@ import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
 
+import { MaybeNull } from 'shared/interfaces/utils'
+
 import PrivateApp from 'app/PrivateApp'
 
 import userFixtures from 'fixtures/user'
@@ -16,8 +18,6 @@ import {
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
 } from '_tests_/mocks/api'
-import { MaybeNull } from 'shared/interfaces/utils'
-
 import {
   clickSelectOption,
   expectLoadingFinishedBySelect,

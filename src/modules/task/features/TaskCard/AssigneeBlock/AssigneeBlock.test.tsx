@@ -7,9 +7,9 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAssignee/TaskAssignee.test'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
-import { UserRoleEnum } from 'modules/user/constants/roles'
 import { ArrayItem, NonNullableObject } from 'shared/interfaces/utils'
 
 import taskFixtures from 'fixtures/task'

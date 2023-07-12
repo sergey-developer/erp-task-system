@@ -43,6 +43,5 @@ export const taskTableItem = (
   responseTime: taskFixtures.taskResponseTime(),
 })
 
-export const taskTableItems = (
-  length: number = 1,
-): Array<TaskTableListItem> => times(length, () => taskTableItem())
+export const taskTableItems = (length: number = 1): Array<TaskTableListItem> =>
+  times(length, () => taskTableItem())

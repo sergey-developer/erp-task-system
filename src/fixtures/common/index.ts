@@ -1,8 +1,8 @@
 import * as commentAuthor from './commentAuthor'
+import * as errorResponse from './errorResponse'
 import * as pagination from './pagination'
 import * as supportGroup from './supportGroup'
 import * as user from './user'
-import * as errorResponse from './errorResponse'
 
 const commonFixtures = {
   ...user,
