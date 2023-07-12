@@ -24,7 +24,10 @@ export const taskWorkGroupPermissions: ObjectPermissionConfig<
 }
 
 export const taskWorkGroupApiPermissions: UserPermissionConfig = {
-  [UserRoleEnum.FirstLineSupport]: [CRUDPermissionsEnum.CanUpdate],
+  [UserRoleEnum.FirstLineSupport]: [
+    CRUDPermissionsEnum.CanDelete,
+    CRUDPermissionsEnum.CanUpdate,
+  ],
   [UserRoleEnum.Engineer]: [CRUDPermissionsEnum.CanDelete],
   [UserRoleEnum.SeniorEngineer]: [CRUDPermissionsEnum.CanDelete],
   [UserRoleEnum.HeadOfDepartment]: [CRUDPermissionsEnum.CanDelete],
