@@ -11,6 +11,12 @@ export enum RouteEnum {
   // task routes
   TaskList = '/tasks',
 
+  // warehouse routes
+  CatalogsIndex = '/catalogs',
+  CatalogList = '/catalogs/list',
+  WarehouseList = '/catalogs/warehouses',
+  Warehouse = '/catalogs/warehouses/:id',
+
   // work group routes
   WorkingGroups = '/workingGroups',
 

@@ -1,7 +1,7 @@
 import get from 'lodash/get'
 import moment from 'moment-timezone'
-import { FC, useEffect } from 'react'
-import { useRoutes } from 'react-router-dom'
+import React, { FC, useEffect } from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { getPrivateRoutesConfig } from 'configs/routes'
 
@@ -27,11 +27,13 @@ const PrivateApp: FC = () => {
     }
   }, [userMe?.timezone])
 
-  const routesConfig = getPrivateRoutesConfig({
-    isStaff: get(userMe, 'isStaff', false),
-  })
+  const routesConfig = createBrowserRouter(
+    getPrivateRoutesConfig({
+      isStaff: get(userMe, 'isStaff', false),
+    }),
+  )
 
-  return useRoutes(routesConfig)
+  return <RouterProvider router={routesConfig} />
 }
 
 export default PrivateApp

@@ -11,6 +11,18 @@ const navMenuCommonConfig: Array<NavMenuItem> = [
     link: RouteEnum.TaskList,
     text: 'Заявки',
   },
+  {
+    key: RouteEnum.CatalogsIndex,
+    icon: UnorderedListIcon,
+    text: 'Управление складами',
+    children: [
+      {
+        key: RouteEnum.CatalogList,
+        text: 'Справочники',
+        link: RouteEnum.CatalogList,
+      },
+    ],
+  },
 ]
 
 export default navMenuCommonConfig
