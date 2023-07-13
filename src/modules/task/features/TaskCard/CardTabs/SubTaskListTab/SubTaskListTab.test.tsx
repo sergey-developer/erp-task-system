@@ -2,7 +2,6 @@ import { screen, waitForElementToBeRemoved } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as cancelSubTaskModalTestUtils } from 'modules/subTask/features/CancelSubTaskModal/CancelSubTaskModal.test'
-import { CancelSubTaskFormErrors } from 'modules/subTask/features/CancelSubTaskModal/interfaces'
 import { testUtils as createSubTaskModalTestUtils } from 'modules/subTask/features/CreateSubTaskModal/CreateSubTaskModal.test'
 import { testUtils as reworkSubTaskModalTestUtils } from 'modules/subTask/features/ReworkSubTaskModal/ReworkSubTaskModal.test'
 import { ReworkSubTaskFormErrors } from 'modules/subTask/features/ReworkSubTaskModal/interfaces'
@@ -906,11 +905,9 @@ describe('Вкладка списка заданий', () => {
         })
         mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
 
-        const badRequestResponse: Required<CancelSubTaskFormErrors> = {
-          cancelReason: [fakeWord()],
-        }
+        const cancelReasonError = fakeWord()
         mockCancelSubTaskBadRequestError(subTask.id, {
-          body: badRequestResponse,
+          body: { cancelReason: [cancelReasonError] },
         })
 
         const { user } = render(
@@ -934,11 +931,12 @@ describe('Вкладка списка заданий', () => {
         await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
-        expect(
+        const notification =
           await cancelSubTaskModalTestUtils.findCancelReasonFieldError(
-            badRequestResponse.cancelReason[0],
-          ),
-        ).toBeInTheDocument()
+            cancelReasonError,
+          )
+
+        expect(notification).toBeInTheDocument()
       })
 
       test('Обрабатывается ошибка - 500', async () => {

@@ -11,10 +11,7 @@ import {
   isBadRequestError,
   isErrorResponse,
 } from 'shared/services/api'
-import {
-  showErrorNotification,
-  showMultipleErrorNotification,
-} from 'shared/utils/notifications'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useResolveTask = () => {
   const permissions = useUserPermissions(taskResolutionApiPermissions)
@@ -34,7 +31,7 @@ export const useResolveTask = () => {
 
     if (isErrorResponse(state.error)) {
       if (isBadRequestError(state.error)) {
-        showMultipleErrorNotification(getErrorDetail(state.error))
+        showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(taskApiMessages.resolveTask.commonError)
       }

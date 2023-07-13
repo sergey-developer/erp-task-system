@@ -40,8 +40,8 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
-import { handleSetFieldsErrors } from 'shared/utils/form'
-import { showMultipleErrorNotification } from 'shared/utils/notifications'
+import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import AdditionalInfo from '../AdditionalInfo'
 import CardTabs from '../CardTabs'
@@ -267,10 +267,10 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
 
             if (error.data.detail) {
-              showMultipleErrorNotification(error.data.detail)
+              showErrorNotification(error.data.detail)
             }
           }
         }
@@ -294,7 +294,7 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
           }
         }
       }
@@ -317,7 +317,7 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
           }
         }
       }
@@ -340,7 +340,7 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
           }
         }
       }

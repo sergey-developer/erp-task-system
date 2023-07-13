@@ -11,7 +11,7 @@ export type FieldsErrors<T> = {
 }
 
 export type ErrorData<T extends object = {}> = FieldsErrors<T> & {
-  detail?: ValidationErrors
+  detail?: string | ValidationErrors
 }
 
 export type ErrorResponse<T extends object = {}> = {
