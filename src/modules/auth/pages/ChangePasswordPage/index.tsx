@@ -10,7 +10,7 @@ import { useUpdatePasswordMutation } from 'modules/auth/services/authApi.service
 import { BaseCard } from 'components/Card/BaseCard'
 
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
-import { handleSetFieldsErrors } from 'shared/utils/form'
+import { getFieldsErrors } from 'shared/utils/form'
 import { showSuccessNotification } from 'shared/utils/notifications'
 
 import { ChangePasswordFormFields } from './interfaces'
@@ -42,7 +42,7 @@ const ChangePasswordPage: FC = () => {
     } catch (error) {
       if (isErrorResponse(error)) {
         if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, form.setFields)
+          form.setFields(getFieldsErrors(error.data))
         }
       }
     }

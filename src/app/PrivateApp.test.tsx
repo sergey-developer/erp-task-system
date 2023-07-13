@@ -383,7 +383,7 @@ describe('Private app', () => {
 
               const unauthorizedErrorMessage = fakeWord()
               mockUpdateUserStatusUnauthorizedError(fakeUser.id, {
-                body: { detail: [unauthorizedErrorMessage] },
+                body: { detail: unauthorizedErrorMessage },
               })
 
               const { user } = render(<PrivateApp />)
@@ -430,7 +430,7 @@ describe('Private app', () => {
 
               const notFoundErrorMessage = fakeWord()
               mockUpdateUserStatusNotFoundError(fakeUser.id, {
-                body: { detail: [notFoundErrorMessage] },
+                body: { detail: notFoundErrorMessage },
               })
 
               const { user } = render(<PrivateApp />)

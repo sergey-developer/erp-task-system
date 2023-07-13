@@ -23,17 +23,17 @@ export const mockDeleteTaskSuspendRequestSuccess = (
   >,
 ) => getSuccessMockFn(deleteTaskSuspendRequestMockFn(taskId), options)()
 
-export const mockDeleteTaskSuspendRequestNotFoundError = <T extends object>(
+export const mockDeleteTaskSuspendRequestNotFoundError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getNotFoundErrorMockFn(deleteTaskSuspendRequestMockFn(taskId), options)()
 
-export const mockDeleteTaskSuspendRequestBadRequestError = <T extends object>(
+export const mockDeleteTaskSuspendRequestBadRequestError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getBadRequestErrorMockFn(deleteTaskSuspendRequestMockFn(taskId), options)()
 
-export const mockDeleteTaskSuspendRequestServerError = <T extends object>(
+export const mockDeleteTaskSuspendRequestServerError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(deleteTaskSuspendRequestMockFn(taskId), options)()
