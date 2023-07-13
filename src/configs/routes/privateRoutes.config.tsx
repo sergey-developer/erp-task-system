@@ -1,8 +1,8 @@
 import React from 'react'
-import { Navigate, Outlet, RouteObject } from 'react-router-dom'
+import { Navigate, RouteObject } from 'react-router-dom'
 
 import { UserModel } from 'modules/user/models'
-import WarehouseCatalogListPageBreadcrumb from 'modules/warehouse/pages/WarehouseCatalogListPage/Breadcrumb'
+import { warehousesRootRoute } from 'modules/warehouse/routes'
 
 import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
@@ -11,10 +11,6 @@ import { RouteEnum } from './constants'
 import { staffRoutesConfig } from './staffRoutes.config'
 
 const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
-
-const WarehouseCatalogListPage = React.lazy(
-  () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
-)
 
 const ChangePasswordPage = React.lazy(
   () => import('modules/auth/pages/ChangePasswordPage'),
@@ -49,30 +45,7 @@ export const getPrivateRoutesConfig = ({
         path: RouteEnum.ChangePassword,
         element: <ChangePasswordPage />,
       },
-      {
-        path: RouteEnum.Warehouses,
-        element: <Outlet />,
-        children: [
-          {
-            index: true,
-            element: <WarehouseCatalogListPage />,
-            handle: {
-              crumb: WarehouseCatalogListPageBreadcrumb,
-            },
-          },
-          {
-            path: RouteEnum.WarehouseCatalogList,
-            element: <WarehouseCatalogListPage />,
-            handle: {
-              crumb: WarehouseCatalogListPageBreadcrumb,
-            },
-          },
-          {
-            path: RouteEnum.WarehouseList,
-            element: <div>WarehouseList</div>,
-          },
-        ],
-      },
+      warehousesRootRoute,
       ...(isStaff ? staffRoutesConfig : []),
       {
         path: RouteEnum.NotFound,
