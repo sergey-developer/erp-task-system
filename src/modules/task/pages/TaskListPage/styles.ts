@@ -25,7 +25,6 @@ export const RowStyled = styled.div`
 
 export const RowWrapStyled = styled(Row)`
   flex-direction: column;
-  flex-flow: column;
   flex: 1;
 `
 
