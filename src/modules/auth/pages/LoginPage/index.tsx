@@ -11,7 +11,7 @@ import Space from 'components/Space'
 
 import { APP_NAME } from 'shared/constants/common'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
-import { handleSetFieldsErrors } from 'shared/utils/form'
+import { getFieldsErrors } from 'shared/utils/form'
 
 import { LoginFormFields } from './interfaces'
 import { PageTitleStyled } from './styles'
@@ -35,7 +35,7 @@ const LoginPage: FC = () => {
       await login(values)
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
-        handleSetFieldsErrors(error, form.setFields)
+        form.setFields(getFieldsErrors(error.data))
       }
     }
   }

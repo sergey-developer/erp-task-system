@@ -29,7 +29,6 @@ import { UserRoleEnum } from 'modules/user/constants/roles'
 import { workGroupApiMessages } from 'modules/workGroup/constants/errorMessages'
 
 import { commonApiMessages } from 'shared/constants/errors'
-import { ErrorResponse } from 'shared/services/api'
 
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
@@ -2104,10 +2103,10 @@ describe('Контейнер детальной карточки заявки', 
         await assigneeBlockTestUtils.clickTakeTaskButton(user)
         taskCardTestUtils.expectLoadingNotStarted()
 
-        const errorNotification = await findNotification(
+        const notification = await findNotification(
           commonApiMessages.unknownError,
         )
-        expect(errorNotification).toBeInTheDocument()
+        expect(notification).toBeInTheDocument()
       })
 
       test('Обрабатывается ошибка 403', async () => {
@@ -2137,8 +2136,8 @@ describe('Контейнер детальной карточки заявки', 
         await assigneeBlockTestUtils.clickTakeTaskButton(user)
         taskCardTestUtils.expectLoadingNotStarted()
 
-        const errorNotification = await findNotification(forbiddenErrorMessage)
-        expect(errorNotification).toBeInTheDocument()
+        const notification = await findNotification(forbiddenErrorMessage)
+        expect(notification).toBeInTheDocument()
       })
     })
   })
@@ -4260,11 +4259,9 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            const badRequestResponse: Required<ErrorResponse['data']> = {
-              detail: [fakeWord()],
-            }
+            const badRequestErrorMessage = fakeWord()
             mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
-              body: badRequestResponse,
+              body: { detail: badRequestErrorMessage },
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -4277,9 +4274,8 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.findContainer()
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
-            expect(
-              await findNotification(badRequestResponse.detail[0]),
-            ).toBeInTheDocument()
+            const notification = await findNotification(badRequestErrorMessage)
+            expect(notification).toBeInTheDocument()
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
@@ -4383,11 +4379,9 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            const badRequestResponse: Required<ErrorResponse['data']> = {
-              detail: [fakeWord()],
-            }
+            const badRequestErrorMessage = fakeWord()
             mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
-              body: badRequestResponse,
+              body: { detail: badRequestErrorMessage },
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -4400,9 +4394,8 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.findContainer()
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
-            expect(
-              await findNotification(badRequestResponse.detail[0]),
-            ).toBeInTheDocument()
+            const notification = await findNotification(badRequestErrorMessage)
+            expect(notification).toBeInTheDocument()
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
@@ -4506,11 +4499,9 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            const badRequestResponse: Required<ErrorResponse['data']> = {
-              detail: [fakeWord()],
-            }
+            const badRequestErrorMessage = fakeWord()
             mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
-              body: badRequestResponse,
+              body: { detail: badRequestErrorMessage },
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -4523,9 +4514,8 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.findContainer()
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
-            expect(
-              await findNotification(badRequestResponse.detail[0]),
-            ).toBeInTheDocument()
+            const notification = await findNotification(badRequestErrorMessage)
+            expect(notification).toBeInTheDocument()
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {

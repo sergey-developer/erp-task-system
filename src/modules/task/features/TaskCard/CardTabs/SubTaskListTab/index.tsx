@@ -25,7 +25,7 @@ import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
-import { handleSetFieldsErrors } from 'shared/utils/form'
+import { getFieldsErrors } from 'shared/utils/form'
 
 const CreateSubTaskModal = React.lazy(
   () => import('modules/subTask/features/CreateSubTaskModal'),
@@ -122,7 +122,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
           }
         }
       }
@@ -155,7 +155,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
           }
         }
       }

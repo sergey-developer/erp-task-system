@@ -4,7 +4,7 @@ import { GetTaskMonitoringQueryArgs } from 'modules/monitoring/models'
 import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApi.service'
 
 import { getErrorDetail, isErrorResponse } from 'shared/services/api'
-import { showMultipleErrorNotification } from 'shared/utils/notifications'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskMonitoring = (
   args: GetTaskMonitoringQueryArgs,
@@ -16,7 +16,7 @@ export const useGetTaskMonitoring = (
     if (!state.isError) return
 
     if (isErrorResponse(state.error)) {
-      showMultipleErrorNotification(getErrorDetail(state.error))
+      showErrorNotification(getErrorDetail(state.error))
     }
   }, [state.error, state.isError])
 

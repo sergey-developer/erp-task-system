@@ -13,10 +13,7 @@ import {
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/api'
-import {
-  showErrorNotification,
-  showMultipleErrorNotification,
-} from 'shared/utils/notifications'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useDeleteTaskWorkGroup = () => {
   const permissions = useUserPermissions(taskWorkGroupApiPermissions)
@@ -36,7 +33,7 @@ export const useDeleteTaskWorkGroup = () => {
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error) || isServerRangeError(state.error)) {
-        showMultipleErrorNotification(getErrorDetail(state.error))
+        showErrorNotification(getErrorDetail(state.error))
       } else if (!isBadRequestError(state.error)) {
         showErrorNotification(commonApiMessages.unknownError)
       }
