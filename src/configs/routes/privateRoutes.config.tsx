@@ -4,8 +4,10 @@ import { Navigate, Outlet, RouteObject } from 'react-router-dom'
 import { UserModel } from 'modules/user/models'
 import WarehouseCatalogListPageBreadcrumb from 'modules/warehouse/pages/WarehouseCatalogListPage/Breadcrumb'
 
+import Breadcrumbs from 'components/Breadcrumbs'
 import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
+import Space from 'components/Space'
 
 import { RouteEnum } from './constants'
 import { staffRoutesConfig } from './staffRoutes.config'
@@ -51,7 +53,12 @@ export const getPrivateRoutesConfig = ({
       },
       {
         path: RouteEnum.Warehouses,
-        element: <Outlet />,
+        element: (
+          <Space $block direction='vertical' size='large'>
+            <Breadcrumbs />
+            <Outlet />
+          </Space>
+        ),
         children: [
           {
             index: true,
