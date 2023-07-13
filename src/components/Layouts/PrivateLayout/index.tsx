@@ -7,10 +7,8 @@ import { RouteEnum } from 'configs/routes'
 
 import { useUserMeState } from 'modules/user/hooks'
 
-import Breadcrumbs from 'components/Breadcrumbs'
 import PrivateHeader from 'components/Headers/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
-import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
 import { useSystemInfoState } from 'shared/services/api/hooks'
@@ -40,13 +38,9 @@ const PrivateLayout: FC = () => {
           $breakpoints={breakpoints}
           $centered={!!changePasswordRouteMatched}
         >
-          <Space $block direction='vertical' size='large'>
-            <Breadcrumbs />
-
-            <React.Suspense fallback={<Spinner area='parent' size='large' />}>
-              <Outlet />
-            </React.Suspense>
-          </Space>
+          <React.Suspense fallback={<Spinner area='parent' size='large' />}>
+            <Outlet />
+          </React.Suspense>
         </ContentStyled>
 
         {systemInfo && (
