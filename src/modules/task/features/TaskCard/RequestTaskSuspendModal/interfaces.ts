@@ -1,6 +1,6 @@
 import { Moment } from 'moment-timezone'
 
-import { SuspendReasonEnum } from 'modules/task/constants/common'
+import { SuspendReasonEnum } from 'modules/task/constants'
 
 import { FieldsErrors } from 'shared/services/api'
 

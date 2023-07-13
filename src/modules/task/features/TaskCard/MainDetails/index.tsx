@@ -1,19 +1,19 @@
 import { Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import { taskStatusDict } from 'modules/task/constants/dictionary'
+import { taskStatusDict } from 'modules/task/constants'
 import TaskStatus from 'modules/task/features/TaskStatus'
 import {
   badgeByTaskStatus,
   iconByTaskStatus,
 } from 'modules/task/features/TaskStatus/constants'
 import { TaskModel } from 'modules/task/models'
-import getOlaStatusTextType from 'modules/task/utils/getOlaStatusTextType'
+import { getOlaStatusTextType } from 'modules/task/utils'
 import { useUserRole } from 'modules/user/hooks'
 
 import LabeledData from 'components/LabeledData'
+import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
-import SeparatedText from 'components/Texts/SeparatedText'
 
 import { RecordIdStyled } from './styles'
 import { getCompleteAt, parseResponseTime } from './utils'

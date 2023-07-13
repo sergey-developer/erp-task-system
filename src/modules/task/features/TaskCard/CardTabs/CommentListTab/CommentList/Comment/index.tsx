@@ -4,8 +4,8 @@ import React, { FC } from 'react'
 import AttachmentList from 'modules/task/features/AttachmentList'
 import { TaskCommentModel } from 'modules/task/models'
 
+import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
-import SeparatedText from 'components/Texts/SeparatedText'
 
 import { renderStringWithLineBreak } from 'shared/utils/string'
 

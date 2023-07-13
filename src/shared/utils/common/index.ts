@@ -1,6 +1,6 @@
 export * from './isEqual'
-export * from './getBooleanMap'
 export * from './downloadLink'
 export * from './valueOrHyphen'
 export * from './hasProperty'
 export * from './truthy'
+export * from './base64'

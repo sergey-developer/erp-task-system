@@ -1,18 +1,15 @@
+import { TaskCommentEndpointNameEnum } from 'modules/task/constants'
 import {
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
   GetTaskCommentListQueryArgs,
   GetTaskCommentListSuccessResponse,
 } from 'modules/task/models'
-import {
-  createTaskCommentUrl,
-  getTaskCommentListUrl,
-} from 'modules/task/utils/apiUrls'
+import { createTaskCommentUrl, getTaskCommentListUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
 
-import { TaskCommentEndpointNameEnum } from '../constants/api'
 import taskApiService from './taskApi.service'
 
 const taskCommentApiService = taskApiService.injectEndpoints({

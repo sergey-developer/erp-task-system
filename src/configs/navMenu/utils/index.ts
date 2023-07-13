@@ -1,1 +1,1 @@
-export { default as getNavMenuConfig } from './getConfig'
+export * from './getConfig'

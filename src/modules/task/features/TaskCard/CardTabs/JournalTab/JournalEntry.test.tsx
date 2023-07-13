@@ -4,7 +4,7 @@ import React from 'react'
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { testUtils as attachmentListTestUtils } from 'modules/task/features/AttachmentList/AttachmentList.test'
 
 import taskFixtures from 'fixtures/task'

@@ -1,10 +1,8 @@
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import { ColumnsType } from 'antd/es/table'
+import { ColumnsType, ColumnType } from 'antd/es/table'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import { ResizableProps } from 'react-resizable'
-
-import { ArrayItem } from 'shared/interfaces/utils'
 
 import { localeConfig } from './constants/common'
 import tableComponents from './constants/components'
@@ -46,7 +44,7 @@ const TaskTable: FC<TaskTableProps> = ({
     setColumns((prevColumns) =>
       prevColumns.map((col, index) => ({
         ...col,
-        onHeaderCell: (col: ArrayItem<ColumnsType<TaskTableListItem>>) => ({
+        onHeaderCell: (col: ColumnType<TaskTableListItem>) => ({
           width: col.width,
           onResize: handleResize(index),
         }),
@@ -68,7 +66,7 @@ const TaskTable: FC<TaskTableProps> = ({
   )
 
   return (
-    <TableWrapperStyled data-testid='table-task-list'>
+    <TableWrapperStyled data-testid='task-table'>
       <TableStyled<TaskTableListItem>
         components={tableComponents}
         rowClassName={rowClassName}

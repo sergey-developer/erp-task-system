@@ -4,10 +4,7 @@ import {
   GetTaskJournalQueryArgs,
   GetTaskJournalSuccessResponse,
 } from 'modules/task/models'
-import {
-  getTaskJournalCsvUrl,
-  getTaskJournalUrl,
-} from 'modules/task/utils/apiUrls'
+import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

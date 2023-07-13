@@ -1,12 +1,15 @@
 import { generatePath } from 'react-router-dom'
 
-import { TaskEndpointEnum } from 'modules/task/constants/api'
+import { TaskEndpointEnum } from 'modules/task/constants'
 
 export const getTaskUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.GetTask, { id: String(taskId) })
 
 export const resolveTaskUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.ResolveTask, { id: String(taskId) })
+
+export const getTaskWorkPerformedActUrl = (taskId: number): string =>
+  generatePath(TaskEndpointEnum.GetWorkPerformedAct, { id: String(taskId) })
 
 export const takeTaskUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.TakeTask, { id: String(taskId) })

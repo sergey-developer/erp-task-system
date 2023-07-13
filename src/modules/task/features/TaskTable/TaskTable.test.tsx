@@ -6,21 +6,25 @@ import { TableAction } from 'antd/es/table/interface'
 import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
-} from 'modules/task/constants/common'
-import { taskStatusDict } from 'modules/task/constants/dictionary'
+  taskStatusDict,
+} from 'modules/task/constants'
 import { parseResponseTime } from 'modules/task/features/TaskCard/MainDetails/utils'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { getShortUserName } from 'modules/user/utils'
 
-import { DATE_TIME_FORMAT } from 'shared/constants/dateTime'
 import { NumberOrString } from 'shared/interfaces/utils'
 import { formatDate } from 'shared/utils/date'
 
 import taskFixtures from 'fixtures/task'
 
-import { columnWithSortingClass } from '_tests_/constants/components'
+import {
+  ariaSortAttrAscValue,
+  ariaSortAttrDescValue,
+  ariaSortAttrName,
+  columnWithSortingClass,
+} from '_tests_/constants/components'
 import {
   expectLoadingFinishedByIconIn,
   expectLoadingStartedByIconIn,
@@ -29,7 +33,7 @@ import {
 
 import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
-import { TaskTableProps } from './interfaces'
+import { TaskTableListItem, TaskTableProps } from './interfaces'
 
 const fakeTaskTableItem = taskFixtures.fakeTaskTableItem()
 
@@ -59,7 +63,7 @@ export const testConstants = {
   firstTaskTableItem,
 }
 
-const getContainer = () => screen.getByTestId('table-task-list')
+const getContainer = () => screen.getByTestId('task-table')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
@@ -170,7 +174,10 @@ const onChangeTableArgs = {
     ...paginationConfig,
     ...config,
   }),
-  extra: (action: TableAction, dataSource: Readonly<Array<any>>) => ({
+  extra: (
+    action: TableAction,
+    dataSource: Readonly<Array<TaskTableListItem>>,
+  ) => ({
     action,
     currentDataSource: dataSource,
   }),
@@ -413,7 +420,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Заявка')
-        expect(headCol).not.toHaveAttribute('aria-sort')
+        expect(headCol).not.toHaveAttribute(ariaSortAttrName)
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -428,10 +435,10 @@ describe('Таблица заявок', () => {
 
         await testUtils.clickColTitle(user, 'Заявка')
         const headCol = testUtils.getHeadCol('Заявка')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Заявка')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -466,7 +473,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Внеш.номер')
-        expect(headCol).not.toHaveAttribute('aria-sort')
+        expect(headCol).not.toHaveAttribute(ariaSortAttrName)
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -482,10 +489,10 @@ describe('Таблица заявок', () => {
         await testUtils.clickColTitle(user, 'Внеш.номер')
         const headCol = testUtils.getHeadCol('Внеш.номер')
 
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Внеш.номер')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -520,7 +527,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Объект')
-        expect(headCol).not.toHaveAttribute('aria-sort')
+        expect(headCol).not.toHaveAttribute(ariaSortAttrName)
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -535,10 +542,10 @@ describe('Таблица заявок', () => {
 
         await testUtils.clickColTitle(user, 'Объект')
         const headCol = testUtils.getHeadCol('Объект')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Объект')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -573,7 +580,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Тема')
-        expect(headCol).not.toHaveAttribute('aria-sort')
+        expect(headCol).not.toHaveAttribute(ariaSortAttrName)
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -588,10 +595,10 @@ describe('Таблица заявок', () => {
 
         await testUtils.clickColTitle(user, 'Тема')
         const headCol = testUtils.getHeadCol('Тема')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Тема')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -628,7 +635,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Исполнитель')
-        expect(headCol).not.toHaveAttribute('aria-sort')
+        expect(headCol).not.toHaveAttribute(ariaSortAttrName)
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -643,10 +650,10 @@ describe('Таблица заявок', () => {
 
         await testUtils.clickColTitle(user, 'Исполнитель')
         const headCol = testUtils.getHeadCol('Исполнитель')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Исполнитель')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -724,7 +731,7 @@ describe('Таблица заявок', () => {
           )
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).not.toHaveAttribute('aria-sort')
+          expect(headCol).not.toHaveAttribute(ariaSortAttrName)
         })
 
         test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -743,10 +750,16 @@ describe('Таблица заявок', () => {
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+          expect(headCol).toHaveAttribute(
+            ariaSortAttrName,
+            ariaSortAttrAscValue,
+          )
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
-          expect(headCol).toHaveAttribute('aria-sort', 'descending')
+          expect(headCol).toHaveAttribute(
+            ariaSortAttrName,
+            ariaSortAttrDescValue,
+          )
 
           requiredProps.dataSource.forEach((item) => {
             const row = testUtils.getRow(item.id)
@@ -820,7 +833,7 @@ describe('Таблица заявок', () => {
           )
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).not.toHaveAttribute('aria-sort')
+          expect(headCol).not.toHaveAttribute(ariaSortAttrName)
         })
 
         test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -845,10 +858,16 @@ describe('Таблица заявок', () => {
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+          expect(headCol).toHaveAttribute(
+            ariaSortAttrName,
+            ariaSortAttrAscValue,
+          )
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
-          expect(headCol).toHaveAttribute('aria-sort', 'descending')
+          expect(headCol).toHaveAttribute(
+            ariaSortAttrName,
+            ariaSortAttrDescValue,
+          )
 
           requiredProps.dataSource.forEach((item) => {
             const row = testUtils.getRow(item.id)
@@ -922,7 +941,7 @@ describe('Таблица заявок', () => {
           )
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).not.toHaveAttribute('aria-sort')
+          expect(headCol).not.toHaveAttribute(ariaSortAttrName)
         })
 
         test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -947,10 +966,16 @@ describe('Таблица заявок', () => {
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+          expect(headCol).toHaveAttribute(
+            ariaSortAttrName,
+            ariaSortAttrAscValue,
+          )
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
-          expect(headCol).toHaveAttribute('aria-sort', 'descending')
+          expect(headCol).toHaveAttribute(
+            ariaSortAttrName,
+            ariaSortAttrDescValue,
+          )
 
           requiredProps.dataSource.forEach((item) => {
             const row = testUtils.getRow(item.id)
@@ -1009,7 +1034,7 @@ describe('Таблица заявок', () => {
           )
 
           const headCol = testUtils.getHeadCol('Группа поддержки')
-          expect(headCol).not.toHaveAttribute('aria-sort')
+          expect(headCol).not.toHaveAttribute(ariaSortAttrName)
         })
 
         test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -1034,10 +1059,16 @@ describe('Таблица заявок', () => {
 
           await testUtils.clickColTitle(user, 'Группа поддержки')
           const headCol = testUtils.getHeadCol('Группа поддержки')
-          expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+          expect(headCol).toHaveAttribute(
+            ariaSortAttrName,
+            ariaSortAttrAscValue,
+          )
 
           await testUtils.clickColTitle(user, 'Группа поддержки')
-          expect(headCol).toHaveAttribute('aria-sort', 'descending')
+          expect(headCol).toHaveAttribute(
+            ariaSortAttrName,
+            ariaSortAttrDescValue,
+          )
 
           testConstants.requiredProps.dataSource.forEach((item) => {
             const row = testUtils.getRow(item.id)
@@ -1208,10 +1239,7 @@ describe('Таблица заявок', () => {
 
         expect(
           testUtils.getChildByText(
-            formatDate(
-              testConstants.firstTaskTableItem.olaNextBreachTime,
-              DATE_TIME_FORMAT,
-            ),
+            formatDate(testConstants.firstTaskTableItem.olaNextBreachTime),
           ),
         ).toBeInTheDocument()
       })
@@ -1232,7 +1260,7 @@ describe('Таблица заявок', () => {
         )
 
         const headCol = testUtils.getHeadCol('Выполнить до')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -1247,10 +1275,10 @@ describe('Таблица заявок', () => {
 
         await testUtils.clickColTitle(user, 'Выполнить до')
         const headCol = testUtils.getHeadCol('Выполнить до')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Выполнить до')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         testConstants.requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -1288,7 +1316,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Статус')
-        expect(headCol).not.toHaveAttribute('aria-sort')
+        expect(headCol).not.toHaveAttribute(ariaSortAttrName)
       })
 
       test.skip('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -1303,10 +1331,10 @@ describe('Таблица заявок', () => {
 
         await testUtils.clickColTitle(user, 'Статус')
         const headCol = testUtils.getHeadCol('Статус')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Статус')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         testConstants.requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -1367,7 +1395,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Комментарий')
-        expect(headCol).not.toHaveAttribute('aria-sort')
+        expect(headCol).not.toHaveAttribute(ariaSortAttrName)
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -1382,10 +1410,10 @@ describe('Таблица заявок', () => {
 
         await testUtils.clickColTitle(user, 'Комментарий')
         const headCol = testUtils.getHeadCol('Комментарий')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Комментарий')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         testConstants.requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -1406,10 +1434,7 @@ describe('Таблица заявок', () => {
 
         expect(
           testUtils.getChildByText(
-            formatDate(
-              testConstants.firstTaskTableItem.createdAt,
-              DATE_TIME_FORMAT,
-            ),
+            formatDate(testConstants.firstTaskTableItem.createdAt),
           ),
         ).toBeInTheDocument()
       })
@@ -1425,7 +1450,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.requiredProps} />)
 
         const headCol = testUtils.getHeadCol('Дата создания')
-        expect(headCol).not.toHaveAttribute('aria-sort')
+        expect(headCol).not.toHaveAttribute(ariaSortAttrName)
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -1440,10 +1465,10 @@ describe('Таблица заявок', () => {
 
         await testUtils.clickColTitle(user, 'Дата создания')
         const headCol = testUtils.getHeadCol('Дата создания')
-        expect(headCol).toHaveAttribute('aria-sort', 'ascending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Дата создания')
-        expect(headCol).toHaveAttribute('aria-sort', 'descending')
+        expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         testConstants.requiredProps.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)

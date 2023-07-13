@@ -16,7 +16,7 @@ import {
   TaskExtendedStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/common'
+} from 'modules/task/constants'
 import { testUtils as taskStatusTestUtils } from 'modules/task/features/TaskStatus/TaskStatus.test'
 
 import subTaskFixtures from 'fixtures/subTask'

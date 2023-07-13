@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { taskCommentApiMessages } from 'modules/task/constants/errorMessages'
+import { taskCommentApiMessages } from 'modules/task/constants'
 
 import { commonApiMessages } from 'shared/constants/errors'
 

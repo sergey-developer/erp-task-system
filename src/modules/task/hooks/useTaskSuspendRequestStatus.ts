@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 
-import { SuspendRequestStatusEnum } from 'modules/task/constants/common'
+import { SuspendRequestStatusEnum } from 'modules/task/constants'
 
-import { BooleanMap, MaybeUndefined } from 'shared/interfaces/utils'
+import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/interfaces/utils'
 import { isEqual } from 'shared/utils/common/isEqual'
 
-export type UseTaskSuspendRequestStatusResult =
-  BooleanMap<`is${keyof typeof SuspendRequestStatusEnum}`>
+export type UseTaskSuspendRequestStatusResult = BooleanMap<
+  BooleanKey<keyof typeof SuspendRequestStatusEnum>
+>
 
 export const useTaskSuspendRequestStatus = (
   status: MaybeUndefined<SuspendRequestStatusEnum>,
