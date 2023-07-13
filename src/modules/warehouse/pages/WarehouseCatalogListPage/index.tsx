@@ -7,9 +7,11 @@ import CatalogListItem from './CatalogListItem'
 
 const WarehouseCatalogListPage: FC = () => {
   return (
-    <CatalogListItem>
-      <Link to={RouteEnum.WarehouseList}>Склады</Link>
-    </CatalogListItem>
+    <div data-testid='warehouse-catalog-list-page'>
+      <CatalogListItem>
+        <Link to={RouteEnum.WarehouseList}>Склады</Link>
+      </CatalogListItem>
+    </div>
   )
 }
 

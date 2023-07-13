@@ -1,7 +1,6 @@
 import get from 'lodash/get'
 import moment from 'moment-timezone'
 import React, { FC, useEffect } from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { getPrivateRoutesConfig } from 'configs/routes'
 
@@ -10,6 +9,8 @@ import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
 
 import { useGetSystemInfoQuery } from 'shared/services/api'
 import { useGetTimeZoneList } from 'shared/services/api/hooks'
+
+import AppRoutes from './AppRoutes'
 
 const PrivateApp: FC = () => {
   const { data: userMe } = useGetUserMe()
@@ -27,13 +28,11 @@ const PrivateApp: FC = () => {
     }
   }, [userMe?.timezone])
 
-  const routesConfig = createBrowserRouter(
-    getPrivateRoutesConfig({
-      isStaff: get(userMe, 'isStaff', false),
-    }),
-  )
+  const routes = getPrivateRoutesConfig({
+    isStaff: get(userMe, 'isStaff', false),
+  })
 
-  return <RouterProvider router={routesConfig} />
+  return <AppRoutes routes={routes} />
 }
 
 export default PrivateApp

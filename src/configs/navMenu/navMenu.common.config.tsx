@@ -1,6 +1,6 @@
 import { RouteEnum } from 'configs/routes'
 
-import { UnorderedListIcon } from 'components/Icons'
+import { UnorderedListIcon, ReadIcon } from 'components/Icons'
 
 import { NavMenuItem } from './interfaces'
 
@@ -13,7 +13,7 @@ const navMenuCommonConfig: Array<NavMenuItem> = [
   },
   {
     key: RouteEnum.Warehouses,
-    icon: UnorderedListIcon,
+    icon: ReadIcon,
     text: 'Управление складами',
     children: [
       {

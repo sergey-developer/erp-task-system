@@ -204,6 +204,28 @@ describe('PrivateHeader', () => {
           ).not.toBeInTheDocument()
         })
       })
+
+      describe('Элемент "Управление складами"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.FirstLineSupport,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(
+            testUtils.getNavMenuItem('Управление складами'),
+          ).toBeInTheDocument()
+        })
+      })
+
+      test.todo('Элемент "Справочники"')
     })
 
     describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
@@ -282,6 +304,28 @@ describe('PrivateHeader', () => {
           expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorTaskList)
         })
       })
+
+      describe('Элемент "Управление складами"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.Engineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(
+            testUtils.getNavMenuItem('Управление складами'),
+          ).toBeInTheDocument()
+        })
+      })
+
+      test.todo('Элемент "Справочники"')
     })
 
     describe(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
@@ -360,6 +404,28 @@ describe('PrivateHeader', () => {
           expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorTaskList)
         })
       })
+
+      describe('Элемент "Управление складами"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.SeniorEngineer,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(
+            testUtils.getNavMenuItem('Управление складами'),
+          ).toBeInTheDocument()
+        })
+      })
+
+      test.todo('Элемент "Справочники"')
     })
 
     describe(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
@@ -438,10 +504,33 @@ describe('PrivateHeader', () => {
           expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorTaskList)
         })
       })
+
+      describe('Элемент "Управление складами"', () => {
+        test('Отображается корректно', async () => {
+          const fakeUser = userFixtures.fakeUser({
+            role: UserRoleEnum.HeadOfDepartment,
+          })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockGetTimeZoneListSuccess()
+          mockGetUserMeCodeSuccess()
+
+          render(<PrivateApp />)
+
+          await privateLayoutTestUtils.expectLoadingFinished()
+
+          expect(
+            testUtils.getNavMenuItem('Управление складами'),
+          ).toBeInTheDocument()
+        })
+      })
+
+      test.todo('Элемент "Справочники"')
     })
   })
 
   describe('Селект выбора временной зоны', () => {
+    // todo: поправить
     test.skip('Отображается', () => {
       render(<PrivateHeader />)
 

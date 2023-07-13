@@ -1,10 +1,11 @@
 import React, { FC } from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { publicRoutesConfig } from 'configs/routes'
 
+import AppRoutes from './AppRoutes'
+
 const PublicApp: FC = () => {
-  return <RouterProvider router={createBrowserRouter(publicRoutesConfig)} />
+  return <AppRoutes routes={publicRoutesConfig} />
 }
 
 export default PublicApp

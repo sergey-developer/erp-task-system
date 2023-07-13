@@ -24,6 +24,8 @@ const FiscalAccumulatorTaskListPage = React.lazy(
   () => import('modules/task/pages/FiscalAccumulatorTaskListPage'),
 )
 
+// todo: разделить роуты по модулям
+
 export const getPrivateRoutesConfig = ({
   isStaff,
 }: Pick<UserModel, 'isStaff'>): Array<RouteObject> => [
