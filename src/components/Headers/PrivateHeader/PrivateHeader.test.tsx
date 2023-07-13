@@ -207,7 +207,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Управление складами"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.FirstLineSupport,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -307,7 +307,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Управление складами"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -407,7 +407,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Управление складами"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -507,7 +507,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Управление складами"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
           })
           mockGetUserMeSuccess({ body: fakeUser })
