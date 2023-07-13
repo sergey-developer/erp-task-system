@@ -3,9 +3,9 @@ import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import moment from 'moment-timezone'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useMatches } from 'react-router-dom'
 
-import { getNavMenuConfig } from 'configs/navMenu/utils'
+import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
@@ -32,7 +32,6 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
-import { useMatchedRoute } from 'shared/hooks'
 import {
   isBadRequestError,
   isErrorResponse,
@@ -51,6 +50,7 @@ const { Text } = Typography
 
 const PrivateHeader: FC = () => {
   const breakpoints = useBreakpoint()
+  const matches = useMatches()
 
   const { data: userMeCode } = useUserMeCodeState()
   const { data: userMe } = useUserMeState()
@@ -70,21 +70,12 @@ const PrivateHeader: FC = () => {
   const [updateUserStatusMutation, { isLoading: updateUserStatusIsLoading }] =
     useUpdateUserStatusMutation()
 
-  const navMenu = useMemo(() => {
-    const userRole = userMe?.role
+  const navMenuItems = useMemo<NavMenuProps['items']>(
+    () => (userMe?.role ? mapNavMenuConfig(getNavMenuConfig(userMe.role)) : []),
+    [userMe?.role],
+  )
 
-    const items: NavMenuProps['items'] = userRole
-      ? getNavMenuConfig(userRole).map(({ key, icon: Icon, link, text }) => ({
-          key,
-          label: <Link to={link}>{text}</Link>,
-          icon: <Icon $size='large' />,
-        }))
-      : []
-
-    const itemsKeys = items.map(({ key }) => key)
-
-    return { items, itemsKeys }
-  }, [userMe?.role])
+  const navMenuSelectedKeys = matches.map(({ pathname }) => pathname)
 
   const userStatusOptions = useMemo<Array<DefaultOptionType>>(
     () =>
@@ -101,10 +92,6 @@ const PrivateHeader: FC = () => {
         : [],
     [userStatusList],
   )
-
-  const matchedRoute = useMatchedRoute(navMenu.itemsKeys)
-  const activeNavKey = matchedRoute?.pathnameBase
-  const navMenuSelectedKeys = activeNavKey ? [activeNavKey] : undefined
 
   const handleUpdateTimeZone = async (timezone: UserModel['timezone']) => {
     if (!userMe) return
@@ -152,7 +139,7 @@ const PrivateHeader: FC = () => {
             <Col xxl={17} xl={14}>
               <NavMenu
                 selectedKeys={navMenuSelectedKeys}
-                items={navMenu.items}
+                items={navMenuItems}
               />
             </Col>
           </Row>

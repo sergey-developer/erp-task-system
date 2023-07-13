@@ -10,7 +10,12 @@ export type NavMenuProps = Pick<MenuProps, 'selectedKeys'> & {
 
 const NavMenu: FC<NavMenuProps> = ({ selectedKeys, items }) => {
   return (
-    <MenuStyled mode='horizontal' selectedKeys={selectedKeys} items={items} />
+    <MenuStyled
+      mode='horizontal'
+      selectedKeys={selectedKeys}
+      items={items}
+      triggerSubMenuAction='click'
+    />
   )
 }
 
