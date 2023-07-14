@@ -1,6 +1,5 @@
 import React from 'react'
 import { Provider as StoreProvider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 
 import AntdConfigProvider from 'lib/antd/ConfigProvider'
@@ -28,9 +27,7 @@ const AppProvider: FCWithChildren<AppProviderProps> = ({
     <StoreProvider store={store}>
       <AntdConfigProvider>
         <StyledThemeProvider theme={theme}>
-          <ErrorBoundary>
-            <BrowserRouter>{children}</BrowserRouter>
-          </ErrorBoundary>
+          <ErrorBoundary>{children}</ErrorBoundary>
         </StyledThemeProvider>
       </AntdConfigProvider>
     </StoreProvider>
