@@ -12,7 +12,9 @@ export const columns: ColumnsType<WarehouseTableItem> = [
     title: 'Наименование объекта',
     sorter: true,
     render: (value, record) => (
-      <Link to={getWarehousePageLink(record.id)}>{value}</Link>
+      <Link to={`${getWarehousePageLink(record.id)}?name=${record.title}`}>
+        {value}
+      </Link>
     ),
   },
   {
