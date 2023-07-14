@@ -12,13 +12,16 @@ const Breadcrumbs: FC = () => {
     })
     .map((match) => {
       const handle = match.handle as any
-      return handle.crumb()
+      return handle.crumb({ qs: new URLSearchParams(window.location.search) })
     })
 
   return !!crumbs.length ? (
     <Space>
-      {crumbs.map((crumb, index) => (
-        <Fragment key={index}>{crumb} /</Fragment>
+      {crumbs.map((crumb, index, array) => (
+        <Fragment key={index}>
+          {crumb}
+          {index !== array.length - 1 ? ' /' : ''}
+        </Fragment>
       ))}
     </Space>
   ) : null

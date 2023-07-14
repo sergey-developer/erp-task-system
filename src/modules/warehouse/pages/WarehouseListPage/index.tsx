@@ -7,7 +7,12 @@ import Space from 'components/Space'
 
 const WarehouseListPage: FC = () => {
   return (
-    <Space $block direction='vertical' size='large'>
+    <Space
+      data-testid='warehouse-list-page'
+      $block
+      direction='vertical'
+      size='large'
+    >
       <FilterButton />
 
       <WarehouseTable
