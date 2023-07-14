@@ -9,7 +9,7 @@ const getContainer = () => screen.getByTestId('warehouse-page')
 const getChildByText = (value: string) =>
   within(getContainer()).getByText(value)
 
-const testUtils = {
+export const testUtils = {
   getContainer,
   getChildByText,
 }
