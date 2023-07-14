@@ -15,14 +15,6 @@ const WarehouseCatalogListPage = React.lazy(
   () => import('./pages/WarehouseCatalogListPage'),
 )
 
-export const warehousesCatalogListRoute: Readonly<RouteObject> = {
-  path: RouteEnum.WarehouseCatalogList,
-  element: <WarehouseCatalogListPage />,
-  handle: {
-    crumb: WarehouseCatalogListPageBreadcrumb,
-  },
-}
-
 export const warehousesListRoute: Readonly<RouteObject> = {
   path: RouteEnum.WarehouseList,
   element: <WarehouseListPage />,
@@ -31,10 +23,18 @@ export const warehousesListRoute: Readonly<RouteObject> = {
   },
 }
 
-export const warehousesIndexRoute: Readonly<RouteObject> = {
-  index: true,
-  element: warehousesCatalogListRoute.element,
-  handle: warehousesCatalogListRoute.handle,
+export const warehousesCatalogListRoute: Readonly<RouteObject> = {
+  path: RouteEnum.WarehouseCatalogList,
+  children: [
+    {
+      index: true,
+      element: <WarehouseCatalogListPage />,
+    },
+    warehousesListRoute,
+  ],
+  handle: {
+    crumb: WarehouseCatalogListPageBreadcrumb,
+  },
 }
 
 export const warehousesRootRoute: Readonly<RouteObject> = {
@@ -50,24 +50,6 @@ export const warehousesRootRoute: Readonly<RouteObject> = {
       index: true,
       element: <Navigate to={RouteEnum.WarehouseCatalogList} />,
     },
-    {
-      path: RouteEnum.WarehouseCatalogList,
-      children: [
-        {
-          index: true,
-          element: <WarehouseCatalogListPage />,
-        },
-        {
-          path: RouteEnum.WarehouseList,
-          element: <WarehouseListPage />,
-          handle: {
-            crumb: WarehouseListPageBreadcrumb,
-          },
-        },
-      ],
-      handle: {
-        crumb: WarehouseCatalogListPageBreadcrumb,
-      },
-    },
+    warehousesCatalogListRoute,
   ],
 }

@@ -10,6 +10,10 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import warehouseFixtures from 'fixtures/warehouse'
 
 import {
+  ariaSortAttrName,
+  columnWithSortingClass,
+} from '_tests_/constants/components'
+import {
   expectLoadingFinishedByIconIn,
   expectLoadingStartedByIconIn,
 } from '_tests_/utils'
@@ -137,6 +141,7 @@ describe('Таблица заявок фискальных накопителе�
           { initialEntries: [RouteEnum.WarehouseList] },
         )
 
+        const headCell = testUtils.getHeadCell('Наименование объекта')
         const title = testUtils.getColTitle('Наименование объекта')
         const link = testUtils.getTitleLink(
           fakeWarehouseListItem.id,
@@ -149,8 +154,12 @@ describe('Таблица заявок фискальных накопителе�
           'href',
           getWarehousePageLink(fakeWarehouseListItem.id),
         )
+        expect(headCell).toHaveClass(columnWithSortingClass)
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
       })
 
+      test.todo('При клике на заголовок обработчик вызывается корректно')
+      test.todo('Сортировка работает корректно')
       test.todo('При клике переходит на страницу склада')
     })
 
@@ -166,6 +175,7 @@ describe('Таблица заявок фискальных накопителе�
           { initialEntries: [RouteEnum.WarehouseList] },
         )
 
+        const headCell = testUtils.getHeadCell('Юридическое лицо')
         const title = testUtils.getColTitle('Юридическое лицо')
         const value = testUtils.getColValue(
           fakeWarehouseListItem.id,
@@ -174,6 +184,8 @@ describe('Таблица заявок фискальных накопителе�
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
+        expect(headCell).toHaveClass(columnWithSortingClass)
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
       })
     })
 
@@ -189,6 +201,7 @@ describe('Таблица заявок фискальных накопителе�
           { initialEntries: [RouteEnum.WarehouseList] },
         )
 
+        const headCell = testUtils.getHeadCell('Адрес')
         const title = testUtils.getColTitle('Адрес')
         const value = testUtils.getColValue(
           fakeWarehouseListItem.id,
@@ -197,6 +210,8 @@ describe('Таблица заявок фискальных накопителе�
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
+        expect(headCell).toHaveClass(columnWithSortingClass)
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
       })
     })
 
@@ -212,6 +227,7 @@ describe('Таблица заявок фискальных накопителе�
           { initialEntries: [RouteEnum.WarehouseList] },
         )
 
+        const headCell = testUtils.getHeadCell('Родительский склад')
         const title = testUtils.getColTitle('Родительский склад')
         const value = testUtils.getColValue(
           fakeWarehouseListItem.id,
@@ -220,6 +236,8 @@ describe('Таблица заявок фискальных накопителе�
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
+        expect(headCell).toHaveClass(columnWithSortingClass)
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName)
       })
     })
   })
