@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
 import { UserModel } from 'modules/user/models'
-import { warehousesRootRoute } from 'modules/warehouse/routes'
+import { manageWarehousesRoute } from 'modules/warehouse/routes'
 
 import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
@@ -45,7 +45,7 @@ export const getPrivateRoutesConfig = ({
         path: RouteEnum.ChangePassword,
         element: <ChangePasswordPage />,
       },
-      warehousesRootRoute,
+      manageWarehousesRoute,
       ...(isStaff ? staffRoutesConfig : []),
       {
         path: RouteEnum.NotFound,

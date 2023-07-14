@@ -12,7 +12,7 @@ const navMenuCommonConfig: Array<NavMenuItem> = [
     text: 'Заявки',
   },
   {
-    key: RouteEnum.Warehouses,
+    key: RouteEnum.ManageWarehouses,
     icon: ReadIcon,
     text: 'Управление складами',
     children: [
