@@ -13,10 +13,10 @@ export enum RouteEnum {
   FiscalAccumulatorTaskList = '/tasks/fiscal-accumulators',
 
   // warehouse routes
-  Warehouses = '/warehouses',
-  WarehouseCatalogList = '/warehouses/catalogs',
-  WarehouseList = '/warehouses/list',
-  Warehouse = '/warehouses/:id',
+  Warehouses = '/manage-warehouses',
+  WarehouseCatalogList = '/manage-warehouses/catalogs',
+  WarehouseList = '/manage-warehouses/catalogs/warehouses',
+  Warehouse = '/manage-warehouses/catalogs/warehouses/:id',
 
   // work group routes
   WorkingGroups = '/working-groups',

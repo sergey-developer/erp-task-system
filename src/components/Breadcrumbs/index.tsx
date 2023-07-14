@@ -4,7 +4,7 @@ import { useMatches } from 'react-router-dom'
 
 const Breadcrumbs: FC = () => {
   const matches = useMatches()
-
+  console.log(matches)
   const crumbs = matches
     .filter((match) => {
       const handle = match.handle as any

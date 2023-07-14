@@ -1,11 +1,16 @@
 import React from 'react'
-import { Outlet, RouteObject } from 'react-router-dom'
+import { Navigate, Outlet, RouteObject } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
+import Breadcrumbs from 'components/Breadcrumbs'
+import Space from 'components/Space'
+
 import WarehouseCatalogListPageBreadcrumb from './pages/WarehouseCatalogListPage/Breadcrumb'
+import WarehouseListPageBreadcrumb from './pages/WarehouseListPage/Breadcrumb'
 
 const WarehouseListPage = React.lazy(() => import('./pages/WarehouseListPage'))
+
 const WarehouseCatalogListPage = React.lazy(
   () => import('./pages/WarehouseCatalogListPage'),
 )
@@ -21,6 +26,9 @@ export const warehousesCatalogListRoute: Readonly<RouteObject> = {
 export const warehousesListRoute: Readonly<RouteObject> = {
   path: RouteEnum.WarehouseList,
   element: <WarehouseListPage />,
+  handle: {
+    crumb: WarehouseListPageBreadcrumb,
+  },
 }
 
 export const warehousesIndexRoute: Readonly<RouteObject> = {
@@ -31,10 +39,35 @@ export const warehousesIndexRoute: Readonly<RouteObject> = {
 
 export const warehousesRootRoute: Readonly<RouteObject> = {
   path: RouteEnum.Warehouses,
-  element: <Outlet />,
+  element: (
+    <Space $block direction='vertical' size='large'>
+      <Breadcrumbs />
+      <Outlet />
+    </Space>
+  ),
   children: [
-    warehousesIndexRoute,
-    warehousesCatalogListRoute,
-    warehousesListRoute,
+    {
+      index: true,
+      element: <Navigate to={RouteEnum.WarehouseCatalogList} />,
+    },
+    {
+      path: RouteEnum.WarehouseCatalogList,
+      children: [
+        {
+          index: true,
+          element: <WarehouseCatalogListPage />,
+        },
+        {
+          path: RouteEnum.WarehouseList,
+          element: <WarehouseListPage />,
+          handle: {
+            crumb: WarehouseListPageBreadcrumb,
+          },
+        },
+      ],
+      handle: {
+        crumb: WarehouseCatalogListPageBreadcrumb,
+      },
+    },
   ],
 }
