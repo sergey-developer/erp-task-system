@@ -142,8 +142,6 @@ export const testUtils = {
   expectUserStatusSelectNotDisabled,
 }
 
-setupApiTests()
-
 describe('PrivateHeader', () => {
   describe('Меню навигации', () => {
     describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
