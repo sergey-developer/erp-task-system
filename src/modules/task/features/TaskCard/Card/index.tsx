@@ -321,7 +321,7 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isNotFoundError(error) && error.data.detail) {
-            showMultipleErrorNotification(error.data.detail)
+            showErrorNotification(error.data.detail)
           } else {
             showErrorNotification(getTaskWorkPerformedActMessages.commonError)
           }
