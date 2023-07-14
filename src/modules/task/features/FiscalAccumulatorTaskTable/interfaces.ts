@@ -1,4 +1,4 @@
-import { TableProps } from 'antd/es/table/Table'
+import { TableProps } from 'antd'
 
 import { FiscalAccumulatorTaskListItemModel } from 'modules/task/models'
 

@@ -36,7 +36,8 @@ import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 
-import { FilterIcon, SyncIcon } from 'components/Icons'
+import FilterButton from 'components/Buttons/FilterButton'
+import { SyncIcon } from 'components/Icons'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks'
@@ -286,13 +287,10 @@ const TaskListPage: FC = () => {
               </Col>
 
               <Col>
-                <Button
-                  icon={<FilterIcon $size='large' />}
+                <FilterButton
                   onClick={debouncedToggleOpenExtendedFilter}
                   disabled={taskListIsFetching || searchFilterApplied}
-                >
-                  Фильтры
-                </Button>
+                />
               </Col>
             </Row>
           </Col>
