@@ -5,6 +5,7 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
 
 import {
+  getForbiddenErrorMockFn,
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
@@ -18,6 +19,11 @@ export const mockTakeTaskSuccess = (
   taskId: number,
   options?: Partial<ResponseResolverOptions<TakeTaskSuccessResponse>>,
 ) => getSuccessMockFn(takeTaskMockFn(taskId), options)()
+
+export const mockTakeTaskForbiddenError = <T extends object>(
+  taskId: number,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+) => getForbiddenErrorMockFn(takeTaskMockFn(taskId), options)()
 
 export const mockTakeTaskServerError = <T extends object>(
   taskId: number,

@@ -23,7 +23,7 @@ import {
 
 export type CardTitleProps = Pick<
   TaskModel,
-  'id' | 'status' | 'extendedStatus' | 'olaStatus' | 'type'
+  'id' | 'status' | 'extendedStatus' | 'olaStatus' | 'type' | 'workGroup'
 > & {
   suspendRequest: TaskModel['suspendRequest']
   isAssignedToCurrentUser: boolean
@@ -39,6 +39,7 @@ const CardTitle: FC<CardTitleProps> = ({
   id,
   type,
   status,
+  workGroup,
   extendedStatus,
   olaStatus,
   isAssignedToCurrentUser,
@@ -53,7 +54,7 @@ const CardTitle: FC<CardTitleProps> = ({
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskOlaStatus = useTaskOlaStatus(olaStatus)
-  const { isEngineerRole } = useUserRole()
+  const { isEngineerRole, isFirstLineSupportRole } = useUserRole()
   const suspendRequestStatus = useTaskSuspendRequestStatus(
     suspendRequest?.status,
   )
@@ -68,6 +69,7 @@ const CardTitle: FC<CardTitleProps> = ({
           disabled:
             (!taskStatus.isNew && !taskStatus.isInProgress) ||
             (!taskType.isIncident && !taskType.isRequest) ||
+            (isFirstLineSupportRole && !!workGroup) ||
             suspendRequestExist,
           icon: <PauseCircleIcon $size='middle' />,
           label: 'Запросить перевод в ожидание',
@@ -77,7 +79,8 @@ const CardTitle: FC<CardTitleProps> = ({
           key: 2,
           disabled: suspendRequestStatus.isApproved
             ? false
-            : !taskStatus.isInProgress ||
+            : (isFirstLineSupportRole && !!workGroup) ||
+              !taskStatus.isInProgress ||
               !isAssignedToCurrentUser ||
               taskExtendedStatus.isInReclassification ||
               suspendRequestStatus.isNew ||
@@ -109,6 +112,7 @@ const CardTitle: FC<CardTitleProps> = ({
                 key: 3,
                 disabled:
                   !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
+                  (isFirstLineSupportRole && !!workGroup) ||
                   taskOlaStatus.isHalfExpired ||
                   taskType.isRequestTask ||
                   taskType.isIncidentTask ||

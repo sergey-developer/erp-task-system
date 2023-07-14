@@ -49,11 +49,8 @@ import {
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
-import { handleSetFieldsErrors } from 'shared/utils/form'
-import {
-  showErrorNotification,
-  showMultipleErrorNotification,
-} from 'shared/utils/notifications'
+import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import AdditionalInfo from '../AdditionalInfo'
 import CardTabs from '../CardTabs'
@@ -288,10 +285,10 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
 
             if (error.data.detail) {
-              showMultipleErrorNotification(error.data.detail)
+              showErrorNotification(error.data.detail)
             }
           }
         }
@@ -349,7 +346,7 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
           }
         }
       }
@@ -372,7 +369,7 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
           }
         }
       }
@@ -395,7 +392,7 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            handleSetFieldsErrors(error, setFields)
+            setFields(getFieldsErrors(error.data))
           }
         }
       }
@@ -472,6 +469,7 @@ const TaskCard: FC<TaskCardProps> = ({
       id={task.id}
       type={task.type}
       status={task.status}
+      workGroup={task.workGroup}
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
       isAssignedToCurrentUser={isAssignedToCurrentUser}
