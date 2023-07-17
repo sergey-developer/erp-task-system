@@ -39,10 +39,7 @@ import {
   isUnauthorizedError,
 } from 'shared/services/api'
 import { useTimeZoneListState } from 'shared/services/api/hooks'
-import {
-  showErrorNotification,
-  showMultipleErrorNotification,
-} from 'shared/utils/notifications'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { HeaderStyled, timeZoneDropdownStyles } from './styles'
 
@@ -119,7 +116,7 @@ const PrivateHeader: FC = () => {
             isBadRequestError(error)) &&
           error.data.detail
         ) {
-          showMultipleErrorNotification(error.data.detail)
+          showErrorNotification(error.data.detail)
         } else {
           showErrorNotification(updateUserStatusErrorMessages.commonError)
         }

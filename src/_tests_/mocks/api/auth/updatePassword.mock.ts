@@ -25,9 +25,9 @@ export const mockUpdatePasswordSuccess = (
 ) => getSuccessMockFn(updatePasswordMockFn(), options)()
 
 export const mockUpdatePasswordBadRequestError = <
-  T extends UpdatePasswordBadRequestErrorResponse,
+  T extends ErrorData<UpdatePasswordBadRequestErrorResponse>,
 >(
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions<T>>,
 ) => getBadRequestErrorMockFn(updatePasswordMockFn(), options)()
 
 export const mockUpdatePasswordUnauthorizedError = (
@@ -39,5 +39,5 @@ export const mockUpdatePasswordNotFoundError = (
 ) => getNotFoundErrorMockFn(updatePasswordMockFn(), options)()
 
 export const mockUpdatePasswordServerError = (
-  options?: Partial<ResponseResolverOptions<ErrorData>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(updatePasswordMockFn(), options)()

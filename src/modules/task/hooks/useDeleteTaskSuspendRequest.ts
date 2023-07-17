@@ -13,10 +13,7 @@ import {
   isErrorResponse,
   isNotFoundError,
 } from 'shared/services/api'
-import {
-  showErrorNotification,
-  showMultipleErrorNotification,
-} from 'shared/utils/notifications'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useDeleteTaskSuspendRequest = () => {
   const permissions = useUserPermissions(taskSuspendRequestApiPermissions)
@@ -40,7 +37,7 @@ export const useDeleteTaskSuspendRequest = () => {
           suspendRequestApiMessages.deleteRequest.notFoundError,
         )
       } else if (isBadRequestError(state.error)) {
-        showMultipleErrorNotification(getErrorDetail(state.error))
+        showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(commonApiMessages.unknownError)
       }

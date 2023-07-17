@@ -27,6 +27,8 @@ const props: TaskResolutionModalProps = {
   isLoading: false,
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
+  onGetAct: jest.fn(),
+  getActIsLoading: false,
 }
 
 const getContainer = () => screen.getByTestId('task-resolution-modal')
@@ -45,7 +47,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
+const getCancelButton = () => getButtonIn(getContainer(), /Отменить/)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -53,8 +55,22 @@ const clickCancelButton = async (user: UserEvent) => {
   return button
 }
 
+// get act button
+const getGetActButton = () => getButtonIn(getContainer(), /Сформировать акт/)
+
+const clickGetActButton = async (user: UserEvent) => {
+  const button = getGetActButton()
+  await user.click(button)
+}
+
+const expectGetActLoadingStarted = () =>
+  expectLoadingStartedByButton(getGetActButton())
+
+const expectGetActLoadingFinished = () =>
+  expectLoadingFinishedByButton(getGetActButton())
+
 // submit button
-const getSubmitButton = () => getButtonIn(getContainer(), /выполнить заявку/i)
+const getSubmitButton = () => getButtonIn(getContainer(), /Выполнить заявку/)
 
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
@@ -160,6 +176,11 @@ export const testUtils = {
   getSubmitButton,
   clickSubmitButton,
 
+  getGetActButton,
+  clickGetActButton,
+  expectGetActLoadingStarted,
+  expectGetActLoadingFinished,
+
   getTechResolutionBlock,
   getTechResolutionTitle,
   getTechResolutionField,
@@ -240,6 +261,41 @@ describe('Модалка решения по заявке', () => {
 
       await testUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
+    })
+  })
+
+  describe('Кнопка сформировать отчёт', () => {
+    test('Отображается корректно', () => {
+      render(<TaskResolutionModal {...props} />)
+
+      const button = testUtils.getGetActButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).not.toBeEnabled()
+    })
+
+    test('Активна если заполнено техническое решение', async () => {
+      const { user } = render(<TaskResolutionModal {...props} />)
+
+      await testUtils.setTechResolution(user, fakeWord())
+      const button = testUtils.getGetActButton()
+
+      expect(button).toBeEnabled()
+    })
+
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(<TaskResolutionModal {...props} />)
+
+      await testUtils.setTechResolution(user, fakeWord())
+      await testUtils.clickGetActButton(user)
+
+      expect(props.onGetAct).toBeCalledTimes(1)
+      expect(props.onGetAct).toBeCalledWith(expect.anything())
+    })
+
+    test('Отображает состояние загрузки', async () => {
+      render(<TaskResolutionModal {...props} getActIsLoading />)
+      await testUtils.expectGetActLoadingStarted()
     })
   })
 

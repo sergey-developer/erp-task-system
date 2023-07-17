@@ -1,8 +1,10 @@
-import { within, screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { RouteEnum } from 'configs/routes'
 
+import WarehousePage from 'modules/warehouse/pages/WarehousePage'
+import { testUtils as warehousePageTestUtils } from 'modules/warehouse/pages/WarehousePage/WarehousePage.test'
 import { getWarehousePageLink } from 'modules/warehouse/utils'
 
 import { MaybeNull } from 'shared/interfaces/utils'
@@ -18,8 +20,8 @@ import {
 import {
   expectLoadingFinishedByIconIn,
   expectLoadingStartedByIconIn,
+  renderInRoute_latest,
 } from '_tests_/utils'
-import { renderInRoute_latest } from '_tests_/utils/renderInRoute'
 
 import WarehouseTable from './index'
 import { WarehouseTableItem, WarehouseTableProps } from './interfaces'
@@ -114,7 +116,7 @@ afterEach(() => {
   onChange.mockReset()
 })
 
-describe('Таблица заявок фискальных накопителей', () => {
+describe('Таблица складов', () => {
   test('Отображается корректно', () => {
     renderInRoute_latest(
       [
@@ -160,10 +162,37 @@ describe('Таблица заявок фискальных накопителе�
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute(
           'href',
-          getWarehousePageLink(fakeWarehouseListItem.id),
+          `${getWarehousePageLink(fakeWarehouseListItem.id)}?name=${
+            fakeWarehouseListItem.title
+          }`,
         )
         expect(headCell).toHaveClass(columnWithSortingClass)
         expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      })
+
+      test('При клике переходит на страницу склада', async () => {
+        const { user } = renderInRoute_latest(
+          [
+            {
+              path: RouteEnum.WarehouseList,
+              element: <WarehouseTable {...props} />,
+            },
+            {
+              path: RouteEnum.Warehouse,
+              element: <WarehousePage />,
+            },
+          ],
+          { initialEntries: [RouteEnum.WarehouseList] },
+        )
+
+        await testUtils.clickTitleLink(
+          user,
+          fakeWarehouseListItem.id,
+          fakeWarehouseListItem.title,
+        )
+
+        const warehousePage = warehousePageTestUtils.getContainer()
+        expect(warehousePage).toBeInTheDocument()
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
@@ -220,8 +249,6 @@ describe('Таблица заявок фискальных накопителе�
           expect(row).toBeInTheDocument()
         })
       })
-
-      test.todo('При клике переходит на страницу склада')
     })
 
     describe('Юридическое лицо', () => {

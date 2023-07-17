@@ -7,5 +7,8 @@ export const fakeTaskCountersResponse = (): GetTaskCountersSuccessResponse => ({
   free: fakeInteger({ min: 1, max: 10 }),
   overdue: fakeInteger({ min: 1, max: 10 }),
   mine: fakeInteger({ min: 1, max: 10 }),
-  closed: fakeInteger({ min: 1, max: 10 }),
+  first_line: fakeInteger({ min: 1, max: 10 }),
+  second_line: fakeInteger({ min: 1, max: 10 }),
+  less_1_hour: fakeInteger({ min: 1, max: 10 }),
+  less_3_hours: fakeInteger({ min: 1, max: 10 }),
 })

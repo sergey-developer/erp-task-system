@@ -29,9 +29,9 @@ export const mockCreateSubTaskBadRequestError = <T extends object>(
   getBadRequestErrorMockFn(createSubTaskMockFn(taskId), options)()
 }
 
-export const mockCreateSubTaskServerError = <T extends object>(
+export const mockCreateSubTaskServerError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => {
   getServerErrorMockFn(createSubTaskMockFn(taskId), options)()
 }

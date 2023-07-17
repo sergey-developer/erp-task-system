@@ -12,12 +12,12 @@ import { staffRoutesConfig } from './staffRoutes.config'
 
 const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
 
-const ChangePasswordPage = React.lazy(
-  () => import('modules/auth/pages/ChangePasswordPage'),
-)
-
 const FiscalAccumulatorTaskListPage = React.lazy(
   () => import('modules/task/pages/FiscalAccumulatorTaskListPage'),
+)
+
+const ChangePasswordPage = React.lazy(
+  () => import('modules/auth/pages/ChangePasswordPage'),
 )
 
 // todo: разделить роуты по модулям
