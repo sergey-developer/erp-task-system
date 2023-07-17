@@ -1,7 +1,8 @@
+import isEqual from 'lodash/isEqual'
+
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { BooleanKey, BooleanMap } from 'shared/interfaces/utils'
-import { isEqual } from 'shared/utils/common/isEqual'
 
 export type UserRoleMap = BooleanMap<
   BooleanKey<`${keyof typeof UserRoleEnum}Role`>

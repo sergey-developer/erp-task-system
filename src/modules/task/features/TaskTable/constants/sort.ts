@@ -1,3 +1,5 @@
+import { ExtendedSortKey } from 'shared/interfaces/sort'
+
 import { TaskTableListItem } from '../interfaces'
 
 export type AscendSortValue =
@@ -13,9 +15,7 @@ export type AscendSortValue =
   | 'created_at'
   | 'ola_next_breach_time'
 
-export type DescendSortValue = `-${AscendSortValue}`
-
-export type SortValue = AscendSortValue | DescendSortValue
+export type SortValue = ExtendedSortKey<AscendSortValue>
 
 export type SortableField = keyof Pick<
   TaskTableListItem,
@@ -34,7 +34,7 @@ export type SortableField = keyof Pick<
 
 export const sortableFieldToSortValues: Record<
   SortableField,
-  [AscendSortValue, DescendSortValue]
+  [AscendSortValue, Exclude<SortValue, AscendSortValue>]
 > = {
   id: ['id', '-id'],
   name: ['name', '-name'],

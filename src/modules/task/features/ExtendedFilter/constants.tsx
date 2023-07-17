@@ -1,4 +1,5 @@
 import { CheckboxOptionType } from 'antd'
+import isEqual from 'lodash/isEqual'
 import React from 'react'
 
 import {
@@ -12,7 +13,6 @@ import {
 import TaskStatus from 'modules/task/features/TaskStatus/index'
 
 import { StringMap } from 'shared/interfaces/utils'
-import { isEqual } from 'shared/utils/common/isEqual'
 
 import { ExtendedFilterFormFields, SearchFields } from './interfaces'
 

@@ -1,8 +1,7 @@
 import { Space } from 'antd'
 import { camelize } from 'humps'
+import isEqual from 'lodash/isEqual'
 import React, { FC, useMemo } from 'react'
-
-import { isEqual } from 'shared/utils/common/isEqual'
 
 import FilterTag from './FastFilterListItem'
 import { fastFilters } from './constants'

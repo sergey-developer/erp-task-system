@@ -1,9 +1,9 @@
+import isEqual from 'lodash/isEqual'
 import { useMemo } from 'react'
 
 import { TaskTypeEnum } from 'modules/task/constants'
 
 import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/interfaces/utils'
-import { isEqual } from 'shared/utils/common/isEqual'
 
 export const useTaskType = (
   type: MaybeUndefined<TaskTypeEnum>,

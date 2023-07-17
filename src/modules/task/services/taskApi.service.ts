@@ -24,9 +24,9 @@ import {
 } from 'modules/task/models'
 import {
   getTaskUrl,
-  getTaskWorkPerformedActUrl,
   resolveTaskUrl,
   takeTaskUrl,
+  getTaskWorkPerformedActUrl,
 } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
