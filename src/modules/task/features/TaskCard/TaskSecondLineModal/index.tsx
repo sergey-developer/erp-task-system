@@ -1,4 +1,5 @@
 import { Form, Select, Space, Typography } from 'antd'
+import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
@@ -7,7 +8,6 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { validationRules } from 'shared/constants/validation'
-import { isEqual } from 'shared/utils/common'
 
 import {
   TaskSecondLineFormFields,

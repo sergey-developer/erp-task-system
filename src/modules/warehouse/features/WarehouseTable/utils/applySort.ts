@@ -1,9 +1,9 @@
 import { ColumnsType } from 'antd/es/table'
+import isEqual from 'lodash/isEqual'
 
 import { GetWarehouseListSortValue } from 'modules/warehouse/models'
 
 import { ArrayItem } from 'shared/interfaces/utils'
-import { isEqual } from 'shared/utils/common/isEqual'
 
 import { WarehouseTableItem } from '../interfaces'
 import { parseSort } from './parseSort'

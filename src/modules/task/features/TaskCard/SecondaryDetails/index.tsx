@@ -1,11 +1,10 @@
 import { Col, FormInstance, Row } from 'antd'
+import isEqual from 'lodash/isEqual'
 import React, { FC, useMemo } from 'react'
 
 import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
-
-import { isEqual } from 'shared/utils/common/isEqual'
 
 import AssigneeBlock from '../AssigneeBlock'
 import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
