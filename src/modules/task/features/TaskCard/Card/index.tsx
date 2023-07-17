@@ -12,7 +12,7 @@ import {
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
-  getTaskWorkPerformedActMessages
+  getTaskWorkPerformedActMessages,
 } from 'modules/task/constants'
 import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
 import {

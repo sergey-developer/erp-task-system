@@ -1,19 +1,20 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { MaybeNull } from 'shared/interfaces/utils'
 import { RouteEnum } from 'configs/routes'
 
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
 
+import { MaybeNull } from 'shared/interfaces/utils'
 
 import PrivateApp from 'app/PrivateApp'
 
 import userFixtures from 'fixtures/user'
 
 import {
+  mockGetSystemInfoSuccess,
   mockGetTimeZoneListSuccess,
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
@@ -142,6 +143,8 @@ export const testUtils = {
   expectUserStatusSelectNotDisabled,
 }
 
+setupApiTests()
+
 describe('PrivateHeader', () => {
   describe('Меню навигации', () => {
     describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
@@ -154,6 +157,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -170,6 +174,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           const { user, getCurrentRoute } = renderInRoute(
             <PrivateApp />,
@@ -192,6 +197,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -212,6 +218,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -236,6 +243,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -252,6 +260,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           const { user, getCurrentRoute } = renderInRoute(
             <PrivateApp />,
@@ -274,6 +283,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -290,6 +300,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           const { user, getCurrentRoute } = renderInRoute(
             <PrivateApp />,
@@ -312,6 +323,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -336,6 +348,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -352,6 +365,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           const { user, getCurrentRoute } = renderInRoute(
             <PrivateApp />,
@@ -374,6 +388,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -390,6 +405,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           const { user, getCurrentRoute } = renderInRoute(
             <PrivateApp />,
@@ -412,6 +428,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -436,6 +453,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -452,6 +470,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           const { user, getCurrentRoute } = renderInRoute(
             <PrivateApp />,
@@ -474,6 +493,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 
@@ -490,6 +510,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           const { user, getCurrentRoute } = renderInRoute(
             <PrivateApp />,
@@ -512,6 +533,7 @@ describe('PrivateHeader', () => {
 
           mockGetTimeZoneListSuccess()
           mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
 
           render(<PrivateApp />)
 

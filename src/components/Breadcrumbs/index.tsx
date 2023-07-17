@@ -19,7 +19,8 @@ const Breadcrumbs: FC = () => {
     <Space>
       {crumbs.map((crumb, index, array) => (
         <Fragment key={index}>
-          {crumb}{index !== array.length - 1 ? ' /' : ''}
+          {crumb}
+          {index !== array.length - 1 ? ' /' : ''}
         </Fragment>
       ))}
     </Space>

@@ -22,7 +22,12 @@ import {
   TakeTaskMutationArgs,
   TakeTaskSuccessResponse,
 } from 'modules/task/models'
-import { getTaskUrl, resolveTaskUrl, takeTaskUrl, getTaskWorkPerformedActUrl } from 'modules/task/utils'
+import {
+  getTaskUrl,
+  resolveTaskUrl,
+  takeTaskUrl,
+  getTaskWorkPerformedActUrl,
+} from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
