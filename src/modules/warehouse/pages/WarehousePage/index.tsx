@@ -1,35 +1,67 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+
+import { getWarehouseMessages } from 'modules/warehouse/constants'
+import { useGetWarehouseQuery } from 'modules/warehouse/services/warehouseApi.service'
 
 import LabeledData from 'components/LabeledData'
+import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
+
+import { isErrorResponse, isNotFoundError } from 'shared/services/api'
+import { valueOrHyphen } from 'shared/utils/common'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { WrapperStyled } from './styles'
 
 const WarehousePage: FC = () => {
+  const params = useParams<'id'>()
+  const warehouseId = Number(params?.id)
+
+  const {
+    currentData: warehouse,
+    isFetching: warehouseIsFetching,
+    error: getWarehouseError,
+  } = useGetWarehouseQuery(warehouseId, { skip: isNaN(warehouseId) })
+
+  useEffect(() => {
+    if (isErrorResponse(getWarehouseError)) {
+      if (isNotFoundError(getWarehouseError) && getWarehouseError.data.detail) {
+        showErrorNotification(getWarehouseError.data.detail)
+      } else {
+        showErrorNotification(getWarehouseMessages.commonError)
+      }
+    }
+  }, [getWarehouseError])
+
   return (
     <WrapperStyled data-testid='warehouse-page'>
-      <Space $block direction='vertical'>
-        <LabeledData label='Наименование объекта'>ООО “СКЛАД”</LabeledData>
+      <LoadingArea
+        data-testid='warehouse-loading'
+        isLoading={warehouseIsFetching}
+      >
+        {warehouse && (
+          <Space $block direction='vertical'>
+            <LabeledData label='Наименование объекта'>
+              {warehouse.title}
+            </LabeledData>
 
-        <LabeledData label='Родительский склад'>
-          ООО “СКЛАД-ОСНОВНОЙ”
-        </LabeledData>
+            <LabeledData label='Родительский склад'>
+              {valueOrHyphen(warehouse.parent?.title)}
+            </LabeledData>
 
-        <LabeledData label='Юридическое лицо'>
-          ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "СКЛАД"
-        </LabeledData>
+            <LabeledData label='Юридическое лицо'>
+              {warehouse.legalEntity.title}
+            </LabeledData>
 
-        <LabeledData label='Адрес'>
-          123112, город Москва, Пресненская наб, д. 10 стр. 2, помещ. 5н офис
-          337
-        </LabeledData>
+            <LabeledData label='Адрес'>{warehouse.address}</LabeledData>
 
-        <LabeledData label='Договор'>
-          Договор складского хранения №55369
-        </LabeledData>
+            <LabeledData label='Договор'>{warehouse.contract}</LabeledData>
 
-        <LabeledData label='Прочие данные'>Прочие данные о складе</LabeledData>
-      </Space>
+            <LabeledData label='Прочие данные'>{warehouse.notes}</LabeledData>
+          </Space>
+        )}
+      </LoadingArea>
     </WrapperStyled>
   )
 }
