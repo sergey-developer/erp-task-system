@@ -631,7 +631,7 @@ describe('Вкладка списка заданий', () => {
     })
 
     describe('При не успешной отправке данных', () => {
-      test('Обрабатывается ошибка - 400', async () => {
+      test('Обрабатывается ошибка 400', async () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeReworkButtonProps.status,
         })
@@ -672,7 +672,7 @@ describe('Вкладка списка заданий', () => {
         ).toBeInTheDocument()
       })
 
-      test('Обрабатывается ошибка - 500', async () => {
+      test('Обрабатывается ошибка 500', async () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeReworkButtonProps.status,
         })
@@ -899,7 +899,7 @@ describe('Вкладка списка заданий', () => {
     })
 
     describe('При не успешной отправке данных', () => {
-      test('Обрабатывается ошибка - 400', async () => {
+      test('Обрабатывается ошибка 400', async () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeCancelButtonProps.status,
         })
@@ -939,7 +939,7 @@ describe('Вкладка списка заданий', () => {
         expect(notification).toBeInTheDocument()
       })
 
-      test('Обрабатывается ошибка - 500', async () => {
+      test('Обрабатывается ошибка 500', async () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeCancelButtonProps.status,
         })
