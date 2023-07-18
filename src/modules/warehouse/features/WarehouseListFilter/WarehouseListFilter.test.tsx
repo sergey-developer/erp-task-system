@@ -276,7 +276,9 @@ describe('Фильтр списка складов', () => {
     test('Сбрасывает значения полей', async () => {
       const warehouseListItem = warehouseFixtures.warehouseListItem()
       mockGetWarehouseListSuccess({ body: [warehouseListItem] })
-      mockGetLegalEntityListSuccess()
+
+      const legalEntityListItem = warehouseFixtures.legalEntityListItem()
+      mockGetLegalEntityListSuccess({ body: [legalEntityListItem] })
 
       const titleValue = fakeWord()
       const addressValue = fakeWord()
@@ -288,6 +290,7 @@ describe('Фильтр списка складов', () => {
             title: titleValue,
             address: addressValue,
             parent: warehouseListItem.id,
+            legalEntity: legalEntityListItem.id,
           }}
         />,
       )
@@ -297,7 +300,7 @@ describe('Фильтр списка складов', () => {
       expect(testUtils.getTitleInput()).not.toHaveDisplayValue(titleValue)
       expect(testUtils.getAddressInput()).not.toHaveDisplayValue(addressValue)
       expect(testUtils.getSelectedParent()).not.toBeInTheDocument()
-      // expect(testUtils.getSelectedLegalEntity()).not.toBeInTheDocument()
+      expect(testUtils.getSelectedLegalEntity()).not.toBeInTheDocument()
     })
   })
 
