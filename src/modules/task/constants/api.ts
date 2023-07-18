@@ -2,6 +2,7 @@ export enum TaskEndpointEnum {
   GetTask = '/tasks/:id/',
   ResolveTask = '/tasks/:id/resolution/',
   TakeTask = '/tasks/:id/execution/',
+  GetWorkPerformedAct = '/tasks/:id/completion_certificate/',
 
   GetTaskList = '/tasks/',
 
@@ -37,6 +38,7 @@ export enum TaskEndpointNameEnum {
   GetTaskCounters = 'getTaskCounters',
   GetFiscalAccumulatorTaskList = 'getFiscalAccumulatorTaskList',
   GetTask = 'getTask',
+  GetWorkPerformedAct = 'getTaskWorkPerformedAct',
   ResolveTask = 'resolveTask',
   TakeTask = 'takeTask',
 }

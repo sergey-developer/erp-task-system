@@ -19,7 +19,9 @@ export const getUpdatePasswordErrors = (
     isUnauthorizedError(error)
   ) {
     if (error.data.detail) {
-      return error.data.detail
+      return Array.isArray(error.data.detail)
+        ? error.data.detail
+        : [error.data.detail]
     }
   }
 

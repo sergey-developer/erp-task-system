@@ -15,12 +15,19 @@ import {
   GetTaskListSuccessResponse,
   GetTaskQueryArgs,
   GetTaskSuccessResponse,
+  GetTaskWorkPerformedActMutationArgs,
+  GetTaskWorkPerformedActSuccessResponse,
   ResolveTaskMutationArgs,
   ResolveTaskSuccessResponse,
   TakeTaskMutationArgs,
   TakeTaskSuccessResponse,
 } from 'modules/task/models'
-import { getTaskUrl, resolveTaskUrl, takeTaskUrl } from 'modules/task/utils'
+import {
+  getTaskUrl,
+  resolveTaskUrl,
+  takeTaskUrl,
+  getTaskWorkPerformedActUrl,
+} from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
@@ -80,6 +87,16 @@ const taskApiService = baseApiService.injectEndpoints({
       providesTags: (result, error) =>
         error ? [] : [TaskEndpointTagEnum.Task],
     }),
+    [TaskEndpointNameEnum.GetWorkPerformedAct]: build.mutation<
+      GetTaskWorkPerformedActSuccessResponse,
+      GetTaskWorkPerformedActMutationArgs
+    >({
+      query: ({ taskId, ...payload }) => ({
+        url: getTaskWorkPerformedActUrl(taskId),
+        method: HttpMethodEnum.Post,
+        data: payload,
+      }),
+    }),
     [TaskEndpointNameEnum.ResolveTask]: build.mutation<
       ResolveTaskSuccessResponse,
       ResolveTaskMutationArgs
@@ -128,6 +145,7 @@ export const {
   useGetTaskCountersQuery,
   useGetFiscalAccumulatorTaskListQuery,
   useLazyGetTaskListQuery,
+  useGetTaskWorkPerformedActMutation,
   useResolveTaskMutation,
   useTakeTaskMutation,
 } = taskApiService

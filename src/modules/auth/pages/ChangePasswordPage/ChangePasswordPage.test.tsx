@@ -292,7 +292,7 @@ describe('Страница смены пароля', () => {
     test('Обрабатывается ошибка 404', async () => {
       const notFoundErrorMessage = fakeWord()
       mockUpdatePasswordNotFoundError({
-        body: { detail: [notFoundErrorMessage] },
+        body: { detail: notFoundErrorMessage },
       })
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
@@ -318,7 +318,7 @@ describe('Страница смены пароля', () => {
     test('Обрабатывается ошибка 401', async () => {
       const unauthorizedErrorMessage = fakeWord()
       mockUpdatePasswordUnauthorizedError({
-        body: { detail: [unauthorizedErrorMessage] },
+        body: { detail: unauthorizedErrorMessage },
       })
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(

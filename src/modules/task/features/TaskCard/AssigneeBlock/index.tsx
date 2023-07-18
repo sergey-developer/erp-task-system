@@ -1,4 +1,5 @@
 import { Button, Col, Row, Typography } from 'antd'
+import isEqual from 'lodash/isEqual'
 import React, { FC, useState } from 'react'
 
 import {
@@ -19,8 +20,6 @@ import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
-
-import { isEqual } from 'shared/utils/common/isEqual'
 
 import { SelectStyled } from './styles'
 

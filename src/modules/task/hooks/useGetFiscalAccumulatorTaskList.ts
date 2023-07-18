@@ -10,10 +10,7 @@ import {
 import { useGetFiscalAccumulatorTaskListQuery } from 'modules/task/services/taskApi.service'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/api'
-import {
-  showErrorNotification,
-  showMultipleErrorNotification,
-} from 'shared/utils/notifications'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 export type UseGetFiscalAccumulatorTaskListResult = CustomUseQueryHookResult<
   GetFiscalAccumulatorTaskListQueryArgs,
@@ -29,7 +26,7 @@ export const useGetFiscalAccumulatorTaskList =
 
       if (isErrorResponse(state.error)) {
         if (isForbiddenError(state.error) && state.error.data.detail) {
-          showMultipleErrorNotification(state.error.data.detail)
+          showErrorNotification(state.error.data.detail)
         } else {
           showErrorNotification(
             getFiscalAccumulatorTaskListMessages.commonError,

@@ -9,33 +9,13 @@ import Space from 'components/Space'
 import WarehouseCatalogListPageBreadcrumb from './pages/WarehouseCatalogListPage/Breadcrumb'
 import WarehouseListPageBreadcrumb from './pages/WarehouseListPage/Breadcrumb'
 
-const WarehouseListPage = React.lazy(() => import('./pages/WarehouseListPage'))
-
 const WarehouseCatalogListPage = React.lazy(
   () => import('./pages/WarehouseCatalogListPage'),
 )
 
-export const warehouseListRoute: Readonly<RouteObject> = {
-  path: RouteEnum.WarehouseList,
-  element: <WarehouseListPage />,
-  handle: {
-    crumb: WarehouseListPageBreadcrumb,
-  },
-}
+const WarehouseListPage = React.lazy(() => import('./pages/WarehouseListPage'))
 
-export const warehouseCatalogListRoute: Readonly<RouteObject> = {
-  path: RouteEnum.WarehouseCatalogList,
-  children: [
-    {
-      index: true,
-      element: <WarehouseCatalogListPage />,
-    },
-    warehouseListRoute,
-  ],
-  handle: {
-    crumb: WarehouseCatalogListPageBreadcrumb,
-  },
-}
+const WarehousePage = React.lazy(() => import('./pages/WarehousePage'))
 
 export const manageWarehousesRoute: Readonly<RouteObject> = {
   path: RouteEnum.ManageWarehouses,
@@ -50,6 +30,36 @@ export const manageWarehousesRoute: Readonly<RouteObject> = {
       index: true,
       element: <Navigate to={RouteEnum.WarehouseCatalogList} />,
     },
-    warehouseCatalogListRoute,
+    {
+      path: RouteEnum.WarehouseCatalogList,
+      handle: {
+        crumb: WarehouseCatalogListPageBreadcrumb,
+      },
+      children: [
+        {
+          index: true,
+          element: <WarehouseCatalogListPage />,
+        },
+        {
+          path: RouteEnum.WarehouseList,
+          handle: {
+            crumb: WarehouseListPageBreadcrumb,
+          },
+          children: [
+            {
+              index: true,
+              element: <WarehouseListPage />,
+            },
+            {
+              path: RouteEnum.Warehouse,
+              element: <WarehousePage />,
+              handle: {
+                crumb: ({ qs }: { qs: URLSearchParams }) => qs.get('name'),
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
 }

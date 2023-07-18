@@ -1,4 +1,7 @@
-import { ReworkSubTaskSuccessResponse } from 'modules/subTask/models'
+import {
+  CancelSubTaskBadRequestErrorResponse,
+  CancelSubTaskSuccessResponse,
+} from 'modules/subTask/models'
 import { cancelSubTaskUrl } from 'modules/subTask/utils/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -17,15 +20,17 @@ const cancelSubTaskMockFn = (subTaskId: number) =>
 
 export const mockCancelSubTaskSuccess = (
   subTaskId: number,
-  options?: Partial<ResponseResolverOptions<ReworkSubTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CancelSubTaskSuccessResponse>>,
 ) => getSuccessMockFn(cancelSubTaskMockFn(subTaskId), options)()
 
-export const mockCancelSubTaskBadRequestError = <T extends object>(
+export const mockCancelSubTaskBadRequestError = <
+  T extends ErrorData<CancelSubTaskBadRequestErrorResponse>,
+>(
   subTaskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions<T>>,
 ) => getBadRequestErrorMockFn(cancelSubTaskMockFn(subTaskId), options)()
 
-export const mockCancelSubTaskServerError = <T extends object>(
+export const mockCancelSubTaskServerError = (
   subTaskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(cancelSubTaskMockFn(subTaskId), options)()

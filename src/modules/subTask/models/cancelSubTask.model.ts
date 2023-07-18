@@ -1,6 +1,8 @@
+import { CancelSubTaskFormFields } from 'modules/subTask/features/CancelSubTaskModal/interfaces'
+import { BaseSubTaskRequestArgs } from 'modules/subTask/interfaces'
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
-import { BaseSubTaskRequestArgs } from '../interfaces'
+import { FieldsErrors } from 'shared/services/api'
 
 export type CancelSubTaskMutationArgs = BaseTaskRequestArgs &
   BaseSubTaskRequestArgs & {
@@ -8,3 +10,6 @@ export type CancelSubTaskMutationArgs = BaseTaskRequestArgs &
   }
 
 export type CancelSubTaskSuccessResponse = void
+
+export type CancelSubTaskBadRequestErrorResponse =
+  FieldsErrors<CancelSubTaskFormFields>

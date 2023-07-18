@@ -15,7 +15,7 @@ import BaseModal from 'components/Modals/BaseModal'
 import { validationRules } from 'shared/constants/validation'
 import { MaybeUndefined } from 'shared/interfaces/utils'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
-import { handleSetFieldsErrors } from 'shared/utils/form'
+import { getFieldsErrors } from 'shared/utils/form'
 
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'
 
@@ -72,7 +72,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
     } catch (error) {
       if (isErrorResponse(error)) {
         if (isBadRequestError(error)) {
-          handleSetFieldsErrors(error, form.setFields)
+          form.setFields(getFieldsErrors(error.data))
         }
       }
     }

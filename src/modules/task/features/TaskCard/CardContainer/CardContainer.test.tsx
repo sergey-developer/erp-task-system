@@ -1,8 +1,4 @@
-import {
-  waitFor,
-  waitForElementToBeRemoved,
-  within,
-} from '@testing-library/react'
+import { waitFor, within } from '@testing-library/react'
 import head from 'lodash/head'
 
 import {
@@ -33,7 +29,6 @@ import { UserRoleEnum } from 'modules/user/constants/roles'
 import { workGroupApiMessages } from 'modules/workGroup/constants/errorMessages'
 
 import { commonApiMessages } from 'shared/constants/errors'
-import { ErrorResponse } from 'shared/services/api'
 
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
@@ -66,6 +61,7 @@ import {
   mockResolveTaskBadRequestError,
   mockResolveTaskServerError,
   mockResolveTaskSuccess,
+  mockTakeTaskForbiddenError,
   mockTakeTaskServerError,
   mockTakeTaskSuccess,
   mockUpdateTaskAssigneeServerError,
@@ -2084,7 +2080,7 @@ describe('Контейнер детальной карточки заявки', 
     })
 
     describe('При не успешном запросе', () => {
-      test('Уведомление об ошибке отображается и заявка не запрашивается заново', async () => {
+      test('Обрабатывается ошибка 500', async () => {
         const task = taskFixtures.fakeTask({
           id: requiredProps.taskId,
           status: activeTakeTaskButtonProps.status,
@@ -2105,11 +2101,43 @@ describe('Контейнер детальной карточки заявки', 
 
         await taskCardTestUtils.expectLoadingFinished()
         await assigneeBlockTestUtils.clickTakeTaskButton(user)
-
         taskCardTestUtils.expectLoadingNotStarted()
-        expect(
-          await findNotification(commonApiMessages.unknownError),
-        ).toBeInTheDocument()
+
+        const notification = await findNotification(
+          commonApiMessages.unknownError,
+        )
+        expect(notification).toBeInTheDocument()
+      })
+
+      test('Обрабатывается ошибка 403', async () => {
+        const task = taskFixtures.fakeTask({
+          id: requiredProps.taskId,
+          status: activeTakeTaskButtonProps.status,
+          extendedStatus: activeTakeTaskButtonProps.extendedStatus,
+        })
+
+        mockGetTaskSuccess(requiredProps.taskId, { body: task })
+
+        mockGetWorkGroupListSuccess({ body: [] })
+
+        const forbiddenErrorMessage = fakeWord()
+        mockTakeTaskForbiddenError(requiredProps.taskId, {
+          body: { detail: [forbiddenErrorMessage] },
+        })
+
+        const { user } = render(<TaskCardContainer {...requiredProps} />, {
+          store: getStoreWithAuth({
+            userId: task.assignee!.id,
+            userRole: UserRoleEnum.FirstLineSupport,
+          }),
+        })
+
+        await taskCardTestUtils.expectLoadingFinished()
+        await assigneeBlockTestUtils.clickTakeTaskButton(user)
+        taskCardTestUtils.expectLoadingNotStarted()
+
+        const notification = await findNotification(forbiddenErrorMessage)
+        expect(notification).toBeInTheDocument()
       })
     })
   })
@@ -2276,6 +2304,231 @@ describe('Контейнер детальной карточки заявки', 
   })
 
   describe('Перевод заявки на 1-ю линию', () => {
+    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
+      describe('При успешном запросе', () => {
+        test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
+          const workGroup = workGroupFixtures.fakeWorkGroup()
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
+          })
+
+          mockDeleteTaskWorkGroupSuccess(requiredProps.taskId)
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          const taskCard = taskCardTestUtils.getContainer()
+          await expectLoadingFinishedByCard(taskCard)
+
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
+          await user.click(firstLineButton)
+
+          const modal = await taskFirstLineModalTestUtils.findContainer()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, fakeWord())
+
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
+          await user.click(submitButton)
+
+          await expectLoadingFinishedByButton(firstLineButton)
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
+          expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
+        })
+      })
+
+      describe('При не успешном запросе', () => {
+        test('Обрабатывается ошибка 400', async () => {
+          const workGroup = workGroupFixtures.fakeWorkGroup()
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
+          })
+
+          const badRequestErrorResponse = { description: [fakeWord()] }
+          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
+            requiredProps.taskId,
+            { body: badRequestErrorResponse },
+          )
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          const taskCard = taskCardTestUtils.getContainer()
+          await expectLoadingFinishedByCard(taskCard)
+
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
+          await user.click(firstLineButton)
+
+          await taskFirstLineModalTestUtils.findContainer()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, fakeWord())
+
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
+          await user.click(submitButton)
+
+          await expectLoadingFinishedByButton(firstLineButton)
+
+          const descriptionContainer =
+            taskFirstLineModalTestUtils.getDescriptionFieldContainer()
+
+          const errorMsg = await within(descriptionContainer).findByText(
+            head(badRequestErrorResponse.description)!,
+          )
+          expect(errorMsg).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка 404', async () => {
+          const workGroup = workGroupFixtures.fakeWorkGroup()
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
+          })
+
+          const notFoundErrorResponse = { detail: [fakeWord()] }
+          mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
+            body: notFoundErrorResponse,
+          })
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          const taskCard = taskCardTestUtils.getContainer()
+          await expectLoadingFinishedByCard(taskCard)
+
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
+          await user.click(firstLineButton)
+
+          await taskFirstLineModalTestUtils.findContainer()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, fakeWord())
+
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
+          await user.click(submitButton)
+
+          await expectLoadingFinishedByButton(firstLineButton)
+
+          const errorMsg = await findNotification(
+            head(notFoundErrorResponse.detail)!,
+          )
+          expect(errorMsg).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка 500', async () => {
+          const workGroup = workGroupFixtures.fakeWorkGroup()
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
+          })
+
+          const serverErrorResponse = { detail: [fakeWord()] }
+          mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
+            body: serverErrorResponse,
+          })
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          const taskCard = taskCardTestUtils.getContainer()
+          await expectLoadingFinishedByCard(taskCard)
+
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
+          await user.click(firstLineButton)
+
+          await taskFirstLineModalTestUtils.findContainer()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, fakeWord())
+
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
+          await user.click(submitButton)
+
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
+
+          const errorMsg = await findNotification(
+            head(serverErrorResponse.detail)!,
+          )
+          expect(errorMsg).toBeInTheDocument()
+        })
+
+        test('Обрабатывается неизвестная ошибка', async () => {
+          const workGroup = workGroupFixtures.fakeWorkGroup()
+          mockGetWorkGroupListSuccess({ body: [workGroup] })
+
+          mockGetTaskSuccess(requiredProps.taskId, {
+            body: taskFixtures.fakeTask({
+              id: requiredProps.taskId,
+              workGroup,
+            }),
+          })
+
+          mockDeleteTaskWorkGroupForbiddenError(requiredProps.taskId)
+
+          const { user } = render(<TaskCardContainer {...requiredProps} />, {
+            store: getStoreWithAuth({
+              userRole: UserRoleEnum.FirstLineSupport,
+            }),
+          })
+
+          const taskCard = taskCardTestUtils.getContainer()
+          await expectLoadingFinishedByCard(taskCard)
+
+          const firstLineButton =
+            await workGroupBlockTestUtils.findFirstLineButton()
+          await user.click(firstLineButton)
+
+          await taskFirstLineModalTestUtils.findContainer()
+          const description = taskFirstLineModalTestUtils.getDescriptionField()
+          await user.type(description, fakeWord())
+
+          const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
+          await user.click(submitButton)
+
+          await expectLoadingStartedByButton(firstLineButton)
+          await expectLoadingFinishedByButton(firstLineButton)
+
+          const errorMsg = await findNotification(
+            commonApiMessages.unknownError,
+          )
+          expect(errorMsg).toBeInTheDocument()
+        })
+      })
+    })
+
     describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
       describe('При успешном запросе', () => {
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
@@ -2312,7 +2565,9 @@ describe('Контейнер детальной карточки заявки', 
           await user.click(submitButton)
 
           await expectLoadingFinishedByButton(firstLineButton)
-          await waitForElementToBeRemoved(modal)
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
           expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
@@ -2535,7 +2790,9 @@ describe('Контейнер детальной карточки заявки', 
           await user.click(submitButton)
 
           await expectLoadingFinishedByButton(firstLineButton)
-          await waitForElementToBeRemoved(modal)
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
           expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
@@ -2756,7 +3013,9 @@ describe('Контейнер детальной карточки заявки', 
           await user.click(submitButton)
 
           await expectLoadingFinishedByButton(firstLineButton)
-          await waitForElementToBeRemoved(modal)
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
           expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
@@ -2981,7 +3240,9 @@ describe('Контейнер детальной карточки заявки', 
           )
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
-          await waitForElementToBeRemoved(modal)
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
           expect(requiredProps.closeTaskCard).toBeCalledTimes(1)
         })
       })
@@ -3998,11 +4259,9 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            const badRequestResponse: Required<ErrorResponse['data']> = {
-              detail: [fakeWord()],
-            }
+            const badRequestErrorMessage = fakeWord()
             mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
-              body: badRequestResponse,
+              body: { detail: badRequestErrorMessage },
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -4015,9 +4274,8 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.findContainer()
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
-            expect(
-              await findNotification(badRequestResponse.detail[0]),
-            ).toBeInTheDocument()
+            const notification = await findNotification(badRequestErrorMessage)
+            expect(notification).toBeInTheDocument()
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
@@ -4121,11 +4379,9 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            const badRequestResponse: Required<ErrorResponse['data']> = {
-              detail: [fakeWord()],
-            }
+            const badRequestErrorMessage = fakeWord()
             mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
-              body: badRequestResponse,
+              body: { detail: badRequestErrorMessage },
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -4138,9 +4394,8 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.findContainer()
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
-            expect(
-              await findNotification(badRequestResponse.detail[0]),
-            ).toBeInTheDocument()
+            const notification = await findNotification(badRequestErrorMessage)
+            expect(notification).toBeInTheDocument()
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
@@ -4244,11 +4499,9 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            const badRequestResponse: Required<ErrorResponse['data']> = {
-              detail: [fakeWord()],
-            }
+            const badRequestErrorMessage = fakeWord()
             mockDeleteTaskSuspendRequestBadRequestError(requiredProps.taskId, {
-              body: badRequestResponse,
+              body: { detail: badRequestErrorMessage },
             })
 
             const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -4261,9 +4514,8 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.findContainer()
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
-            expect(
-              await findNotification(badRequestResponse.detail[0]),
-            ).toBeInTheDocument()
+            const notification = await findNotification(badRequestErrorMessage)
+            expect(notification).toBeInTheDocument()
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {

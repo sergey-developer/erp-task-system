@@ -9,7 +9,7 @@ import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'
 
-import { isEqualDeep } from 'shared/utils/common/isEqual'
+import isEqual from 'lodash/isEqual'
 
 import {
   searchFieldOptions,
@@ -43,7 +43,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
     }
 
   useEffect(() => {
-    if (!isEqualDeep(initialFormValues, formValues)) {
+    if (!isEqual(initialFormValues, formValues)) {
       form.setFieldsValue(formValues)
     }
   }, [form, formValues, initialFormValues])
