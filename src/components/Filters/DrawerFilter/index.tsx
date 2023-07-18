@@ -9,13 +9,14 @@ import { DrawerStyled } from './styles'
 export type DrawerFilterProps = Required<
   Pick<DrawerProps, 'onClose' | 'visible'>
 > &
-  Pick<DrawerProps, 'title'> & {
+  Pick<DrawerProps, 'title' | 'placement'> & {
     onApply: () => void
     onReset: () => void
   }
 
 const DrawerFilter: FCWithChildren<DrawerFilterProps> = ({
   title = 'Фильтры',
+  placement = 'left',
   visible,
   onClose,
   onApply,
@@ -43,7 +44,7 @@ const DrawerFilter: FCWithChildren<DrawerFilterProps> = ({
       $breakpoints={breakpoints}
       visible={visible}
       title={title}
-      placement='left'
+      placement={placement}
       width={breakpoints.xxl ? 500 : 380}
       onClose={onClose}
       footer={footer}

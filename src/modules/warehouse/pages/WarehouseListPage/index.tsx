@@ -1,11 +1,15 @@
-import { TableProps } from 'antd'
-import { SorterResult } from 'antd/es/table/interface'
+import { useBoolean, useSetState } from 'ahooks'
 import isArray from 'lodash/isArray'
 import { FC, useCallback, useEffect, useState } from 'react'
 
 import { getWarehouseListMessages } from 'modules/warehouse/constants'
+import WarehouseListFilter from 'modules/warehouse/features/WarehouseListFilter'
+import {
+  WarehouseListFilterFormFields,
+  WarehouseListFilterProps,
+} from 'modules/warehouse/features/WarehouseListFilter/interfaces'
 import WarehouseTable from 'modules/warehouse/features/WarehouseTable'
-import { WarehouseTableItem } from 'modules/warehouse/features/WarehouseTable/interfaces'
+import { WarehouseTableProps } from 'modules/warehouse/features/WarehouseTable/interfaces'
 import {
   SortableField,
   sortableFieldToSortValues,
@@ -17,10 +21,17 @@ import { useGetWarehouseListQuery } from 'modules/warehouse/services/warehouseAp
 import FilterButton from 'components/Buttons/FilterButton'
 import Space from 'components/Space'
 
+import { useDebounceFn } from 'shared/hooks'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 const WarehouseListPage: FC = () => {
-  const [queryArgs, setQueryArgs] = useState<GetWarehouseListQueryArgs>()
+  const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean()
+  const debouncedToggleFilterOpened = useDebounceFn(toggleFilterOpened)
+
+  const [queryArgs, setQueryArgs] = useSetState<GetWarehouseListQueryArgs>({})
+
+  const [filterFormValues, setFilterFormValues] =
+    useState<WarehouseListFilterFormFields>({})
 
   const {
     isFetching: warehouseListIsFetching,
@@ -34,30 +45,35 @@ const WarehouseListPage: FC = () => {
     }
   }, [isGetWarehouseListError])
 
-  const handleTableSort = (
-    sorter:
-      | SorterResult<WarehouseTableItem>
-      | SorterResult<WarehouseTableItem>[],
-  ) => {
-    if (sorter) {
-      const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
-
-      if (columnKey && columnKey in sortableFieldToSortValues) {
-        setQueryArgs((prevState) => ({
-          ...prevState,
-          ordering: order
-            ? getSort(columnKey as SortableField, order)
-            : undefined,
-        }))
-      }
-    }
+  const handleApplyFilter: WarehouseListFilterProps['onApply'] = (values) => {
+    toggleFilterOpened()
+    setFilterFormValues(values)
+    setQueryArgs(values)
   }
 
-  const handleChangeTable = useCallback<
-    NonNullable<TableProps<WarehouseTableItem>['onChange']>
-  >((_, __, sorter) => {
-    handleTableSort(sorter)
-  }, [])
+  const handleTableSort = useCallback(
+    (sorter: Parameters<WarehouseTableProps['onChange']>[2]) => {
+      if (sorter) {
+        const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
+
+        if (columnKey && columnKey in sortableFieldToSortValues) {
+          setQueryArgs({
+            ordering: order
+              ? getSort(columnKey as SortableField, order)
+              : undefined,
+          })
+        }
+      }
+    },
+    [setQueryArgs],
+  )
+
+  const handleChangeTable = useCallback<WarehouseTableProps['onChange']>(
+    (_, __, sorter) => {
+      handleTableSort(sorter)
+    },
+    [handleTableSort],
+  )
 
   return (
     <Space
@@ -66,7 +82,7 @@ const WarehouseListPage: FC = () => {
       direction='vertical'
       size='large'
     >
-      <FilterButton />
+      <FilterButton onClick={debouncedToggleFilterOpened} />
 
       <WarehouseTable
         dataSource={warehouseList}
@@ -74,6 +90,15 @@ const WarehouseListPage: FC = () => {
         onChange={handleChangeTable}
         sort={queryArgs?.ordering}
       />
+
+      {filterOpened && (
+        <WarehouseListFilter
+          visible={filterOpened}
+          formValues={filterFormValues}
+          onApply={handleApplyFilter}
+          onClose={debouncedToggleFilterOpened}
+        />
+      )}
     </Space>
   )
 }

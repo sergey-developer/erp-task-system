@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 
 import { getWarehousePageLink } from 'modules/warehouse/utils'
 
+import { valueOrHyphen } from 'shared/utils/common'
+
 import { WarehouseTableItem } from './interfaces'
 
 export const columns: ColumnsType<WarehouseTableItem> = [
@@ -11,7 +13,7 @@ export const columns: ColumnsType<WarehouseTableItem> = [
     dataIndex: 'title',
     title: 'Наименование объекта',
     sorter: true,
-    render: (value, record) => (
+    render: (value: WarehouseTableItem['title'], record) => (
       <Link to={`${getWarehousePageLink(record.id)}?name=${record.title}`}>
         {value}
       </Link>
@@ -22,7 +24,7 @@ export const columns: ColumnsType<WarehouseTableItem> = [
     dataIndex: 'legalEntity',
     title: 'Юридическое лицо',
     sorter: true,
-    render: (value) => value.title,
+    render: (value: WarehouseTableItem['legalEntity']) => value.title,
   },
   {
     key: 'address',
@@ -35,6 +37,7 @@ export const columns: ColumnsType<WarehouseTableItem> = [
     dataIndex: 'parent',
     title: 'Родительский склад',
     sorter: true,
-    render: (value) => value.title,
+    render: (value: WarehouseTableItem['parent']) =>
+      valueOrHyphen(value?.title),
   },
 ]

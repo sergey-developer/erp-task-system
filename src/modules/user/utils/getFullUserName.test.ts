@@ -1,12 +1,10 @@
-import { FunctionParams } from 'shared/interfaces/utils'
-
 import { fakeWord } from '_tests_/utils'
 
 import { getFullUserName } from './getFullUserName'
 
 describe('Возвращает корректное значение', () => {
   test('Если все данные переданы', () => {
-    const args: FunctionParams<typeof getFullUserName> = {
+    const args: Parameters<typeof getFullUserName>[0] = {
       firstName: fakeWord(),
       lastName: fakeWord(),
       middleName: fakeWord(),
@@ -17,7 +15,7 @@ describe('Возвращает корректное значение', () => {
   })
 
   test('Если middleName не передан', () => {
-    const args: FunctionParams<typeof getFullUserName> = {
+    const args: Parameters<typeof getFullUserName>[0] = {
       firstName: fakeWord(),
       lastName: fakeWord(),
       middleName: null,

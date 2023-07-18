@@ -37,7 +37,8 @@ import {
   taskAssignedDict,
   taskOverdueDict,
 } from './constants'
-import ExtendedFilter, { ExtendedFilterProps } from './index'
+import ExtendedFilter from './index'
+import { ExtendedFilterProps } from './interfaces'
 
 const taskExtendedStatusDictValues = Object.values(taskExtendedStatusDict)
 const taskOverdueDictValues = Object.values(taskOverdueDict)

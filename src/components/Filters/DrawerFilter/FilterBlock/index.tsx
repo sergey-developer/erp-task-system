@@ -1,6 +1,8 @@
-import { Button, Space, Typography } from 'antd'
+import { Button, Typography } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React from 'react'
+
+import Space from 'components/Space'
 
 import { FCWithChildren } from 'shared/interfaces/utils'
 
@@ -23,7 +25,7 @@ const FilterBlock: FCWithChildren<FilterBlockProps> = ({
 
   return (
     <WrapperStyled $breakpoints={breakpoints} {...props}>
-      <Space direction='vertical' size={30}>
+      <Space $block direction='vertical' size={30}>
         <Space data-testid='filter-block-label' align='baseline' size={12}>
           <Title level={4}>{label}</Title>
 

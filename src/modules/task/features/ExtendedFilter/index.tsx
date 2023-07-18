@@ -1,4 +1,5 @@
-import { DrawerProps, Form, Input, Radio, Select, Space } from 'antd'
+import { Form, Input, Radio, Select } from 'antd'
+import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
@@ -8,8 +9,7 @@ import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'
-
-import isEqual from 'lodash/isEqual'
+import Space from 'components/Space'
 
 import {
   searchFieldOptions,
@@ -17,14 +17,8 @@ import {
   taskExtendedStatusOptions,
   taskOverdueOptions,
 } from './constants'
-import { ExtendedFilterFormFields } from './interfaces'
+import { ExtendedFilterFormFields, ExtendedFilterProps } from './interfaces'
 import { CheckboxGroupStyled, RangePickerStyled } from './styles'
-
-export type ExtendedFilterProps = Required<Pick<DrawerProps, 'onClose'>> & {
-  formValues: ExtendedFilterFormFields
-  initialFormValues: ExtendedFilterFormFields
-  onSubmit: (result: ExtendedFilterFormFields) => void
-}
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
@@ -57,6 +51,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
       onApply={form.submit}
     >
       <Form<ExtendedFilterFormFields>
+        preserve={false}
         layout='vertical'
         form={form}
         initialValues={initialFormValues}
@@ -134,7 +129,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           label='Поиск по столбцу'
           onReset={resetFields(['searchField', 'searchValue'])}
         >
-          <Space direction='vertical' size='middle'>
+          <Space $block direction='vertical' size='middle'>
             <Form.Item name='searchField'>
               <Radio.Group options={searchFieldOptions} />
             </Form.Item>
