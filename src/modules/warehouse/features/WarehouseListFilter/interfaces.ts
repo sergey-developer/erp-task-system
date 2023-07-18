@@ -7,7 +7,7 @@ export type WarehouseListFilterFormFields = Partial<{
 
 export type WarehouseListFilterProps = {
   visible: boolean
-  formValues: WarehouseListFilterFormFields
   onApply: (values: WarehouseListFilterFormFields) => void
   onClose: () => void
+  formValues?: WarehouseListFilterFormFields
 }

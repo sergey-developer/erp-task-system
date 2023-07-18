@@ -4,6 +4,7 @@ import React, { FC, useEffect } from 'react'
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
+import { selectFieldNames } from './constants'
 import {
   WarehouseListFilterFormFields,
   WarehouseListFilterProps,
@@ -23,7 +24,9 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
     }
 
   useEffect(() => {
-    form.setFieldsValue(formValues)
+    if (formValues) {
+      form.setFieldsValue(formValues)
+    }
   }, [form, formValues])
 
   return (
@@ -59,10 +62,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
             <Select
               data-testid='legal-entity-select'
               disabled={false}
-              fieldNames={{
-                value: 'id',
-                label: 'title',
-              }}
+              fieldNames={selectFieldNames}
               loading={false}
               options={[]}
               placeholder='Наименование юридического лица'
@@ -89,10 +89,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
             <Select
               data-testid='parent-select'
               disabled={false}
-              fieldNames={{
-                value: 'id',
-                label: 'title',
-              }}
+              fieldNames={selectFieldNames}
               loading={false}
               options={[]}
               placeholder='Наименование родительского склада'

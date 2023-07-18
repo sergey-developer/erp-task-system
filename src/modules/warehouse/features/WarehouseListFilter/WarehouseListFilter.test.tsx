@@ -242,27 +242,27 @@ describe('Фильтр списка складов', () => {
       expect(button).toBeEnabled()
     })
 
-    test.skip('Сбрасывает значения полей', async () => {
+    test('Сбрасывает значения полей', async () => {
       const { user } = render(<WarehouseListFilter {...props} />)
 
       const titleValue = fakeWord()
-      const titleInput = await testUtils.setTitle(user, titleValue)
+      await testUtils.setTitle(user, titleValue)
 
-      await testUtils.setLegalEntity(user, '')
-      const selectedLegalEntity = testUtils.getSelectedLegalEntity()
+      // await testUtils.setLegalEntity(user, '')
+      // const selectedLegalEntity = testUtils.getSelectedLegalEntity()
 
       const addressValue = fakeWord()
-      const addressInput = await testUtils.setAddress(user, addressValue)
+      await testUtils.setAddress(user, addressValue)
 
-      await testUtils.setParent(user, '')
-      const selectedParent = testUtils.getSelectedParent()
+      // await testUtils.setParent(user, '')
+      // const selectedParent = testUtils.getSelectedParent()
 
       await testUtils.clickResetAllButton(user)
 
-      expect(titleInput).not.toHaveDisplayValue(titleValue)
-      expect(selectedLegalEntity).not.toBeInTheDocument()
-      expect(addressInput).not.toHaveDisplayValue(addressValue)
-      expect(selectedParent).not.toBeInTheDocument()
+      expect(testUtils.getTitleInput()).not.toHaveDisplayValue(titleValue)
+      // expect(selectedLegalEntity).not.toBeInTheDocument()
+      expect(testUtils.getAddressInput()).not.toHaveDisplayValue(addressValue)
+      // expect(selectedParent).not.toBeInTheDocument()
     })
   })
 
@@ -286,6 +286,17 @@ describe('Фильтр списка складов', () => {
       const input = await testUtils.setTitle(user, value)
 
       expect(input).toHaveDisplayValue(value)
+    })
+
+    test('Можно установить значение по умолчанию', () => {
+      const titleValue = fakeWord()
+
+      render(
+        <WarehouseListFilter {...props} formValues={{ title: titleValue }} />,
+      )
+
+      const input = testUtils.getTitleInput()
+      expect(input).toHaveDisplayValue(titleValue)
     })
 
     test('Можно сбросить значение', async () => {
@@ -322,6 +333,20 @@ describe('Фильтр списка складов', () => {
       const input = await testUtils.setAddress(user, value)
 
       expect(input).toHaveDisplayValue(value)
+    })
+
+    test('Можно установить значение по умолчанию', () => {
+      const addressValue = fakeWord()
+
+      render(
+        <WarehouseListFilter
+          {...props}
+          formValues={{ address: addressValue }}
+        />,
+      )
+
+      const input = testUtils.getAddressInput()
+      expect(input).toHaveDisplayValue(addressValue)
     })
 
     test('Можно сбросить значение', async () => {

@@ -31,7 +31,7 @@ const WarehouseListPage: FC = () => {
   const [queryArgs, setQueryArgs] = useSetState<GetWarehouseListQueryArgs>({})
 
   const [filterFormValues, setFilterFormValues] =
-    useState<WarehouseListFilterFormFields>({})
+    useState<WarehouseListFilterFormFields>()
 
   const {
     isFetching: warehouseListIsFetching,
