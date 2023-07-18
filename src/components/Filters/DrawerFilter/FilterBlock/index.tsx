@@ -26,7 +26,7 @@ const FilterBlock: FCWithChildren<FilterBlockProps> = ({
   return (
     <WrapperStyled $breakpoints={breakpoints} {...props}>
       <Space $block direction='vertical' size={30}>
-        <Space data-testid='filter-block-label' align='baseline' size={12}>
+        <Space align='baseline' size={12}>
           <Title level={4}>{label}</Title>
 
           <Button onClick={onReset} type='text'>
