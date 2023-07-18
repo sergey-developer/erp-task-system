@@ -11,8 +11,12 @@ export type GetWarehouseListSortKey =
 
 export type GetWarehouseListSortValue = ExtendedSortKey<GetWarehouseListSortKey>
 
-export type GetWarehouseListQueryArgs = {
-  ordering?: GetWarehouseListSortValue
-}
+export type GetWarehouseListQueryArgs = Partial<{
+  title: string
+  address: string
+  legalEntity: number
+  parent: number
+  ordering: GetWarehouseListSortValue
+}>
 
 export type GetWarehouseListSuccessResponse = WarehouseListModel

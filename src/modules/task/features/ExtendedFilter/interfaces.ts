@@ -30,3 +30,10 @@ export type ExtendedFilterFormFields = {
   isAssigned: Array<TaskAssignedEnum>
   workGroupId: MaybeUndefined<string>
 }
+
+export type ExtendedFilterProps = {
+  formValues: ExtendedFilterFormFields
+  initialFormValues: ExtendedFilterFormFields
+  onSubmit: (result: ExtendedFilterFormFields) => void
+  onClose: () => void
+}

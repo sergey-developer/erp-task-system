@@ -8,7 +8,7 @@ import { FlattenSimpleInterpolation } from 'styled-components'
  $breakpoints - это результат вызова хука "useBreakpoint" для передачи его как пропс
  в styled component.
 
- Символ "$" нужно добавлять к названию пропса в начале, чтобы не было warnings
+ Символ "$" нужно добавлять к названию пропса в начале, чтобы он не записывался как атрибут и не было warnings
  */
 
 export type ScreenMap = BaseScreenMap
