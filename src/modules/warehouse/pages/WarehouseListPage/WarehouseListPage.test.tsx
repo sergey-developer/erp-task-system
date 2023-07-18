@@ -8,7 +8,10 @@ import { testUtils as warehouseTableTestUtils } from 'modules/warehouse/features
 
 import warehouseFixtures from 'fixtures/warehouse'
 
-import { mockGetWarehouseListSuccess } from '_tests_/mocks/api'
+import {
+  mockGetLegalEntityListSuccess,
+  mockGetWarehouseListSuccess,
+} from '_tests_/mocks/api'
 import { getButtonIn, renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
 import WarehouseListPage from './index'
@@ -78,7 +81,8 @@ describe('Страница списка складов', () => {
     })
 
     test('Открывает фильтры', async () => {
-      mockGetWarehouseListSuccess()
+      mockGetWarehouseListSuccess({ once: false })
+      mockGetLegalEntityListSuccess()
 
       const { user } = renderInRoute_latest(
         [
