@@ -15,12 +15,11 @@ import isEqual from 'lodash/isEqual'
 import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
-import ExtendedFilter, {
-  ExtendedFilterProps,
-} from 'modules/task/features/ExtendedFilter'
+import ExtendedFilter from 'modules/task/features/ExtendedFilter'
 import { initialExtendedFilterFormValues } from 'modules/task/features/ExtendedFilter/constants'
 import {
   ExtendedFilterFormFields,
+  ExtendedFilterProps,
   ExtendedFilterQueries,
 } from 'modules/task/features/ExtendedFilter/interfaces'
 import FastFilterList from 'modules/task/features/FastFilterList'

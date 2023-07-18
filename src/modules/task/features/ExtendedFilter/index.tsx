@@ -1,14 +1,4 @@
-import {
-  Button,
-  DrawerProps,
-  Form,
-  Input,
-  Radio,
-  Row,
-  Select,
-  Space,
-} from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
+import { Form, Input, Radio, Select } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
@@ -16,24 +6,19 @@ import { extendedFilterPermissions } from 'modules/task/permissions'
 import { workGroupListSelectFieldNames } from 'modules/workGroup/constants/selectFieldNames'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
+import DrawerFilter from 'components/Filters/DrawerFilter'
+import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'
+import Space from 'components/Space'
 
-import FilterBlock from './FilterBlock'
-import FilterBlockLabel from './FilterBlockLabel'
 import {
   searchFieldOptions,
   taskAssignedOptions,
   taskExtendedStatusOptions,
   taskOverdueOptions,
 } from './constants'
-import { ExtendedFilterFormFields } from './interfaces'
-import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
-
-export type ExtendedFilterProps = Pick<DrawerProps, 'onClose'> & {
-  formValues: ExtendedFilterFormFields
-  initialFormValues: ExtendedFilterFormFields
-  onSubmit: (result: ExtendedFilterFormFields) => void
-}
+import { ExtendedFilterFormFields, ExtendedFilterProps } from './interfaces'
+import { CheckboxGroupStyled, RangePickerStyled } from './styles'
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
@@ -42,7 +27,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   onSubmit,
 }) => {
   const [form] = Form.useForm<ExtendedFilterFormFields>()
-  const breakpoints = useBreakpoint()
 
   const { data: workGroupList, isFetching: workGroupListIsFetching } =
     useGetWorkGroupList()
@@ -59,68 +43,55 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   }, [form, formValues, initialFormValues])
 
   return (
-    <DrawerStyled
-      data-testid='filter-extended'
-      $breakpoints={breakpoints}
-      footer={
-        <Row justify='end'>
-          <Space>
-            <Button onClick={resetFields()}>Сбросить все</Button>
-
-            <Button type='primary' onClick={form.submit}>
-              Применить
-            </Button>
-          </Space>
-        </Row>
-      }
-      title='Фильтры'
-      placement='left'
-      width={breakpoints.xxl ? 500 : 380}
-      onClose={onClose}
+    <DrawerFilter
+      data-testid='extended-filter'
       visible
+      onClose={onClose}
+      onReset={resetFields()}
+      onApply={form.submit}
     >
       <Form<ExtendedFilterFormFields>
+        preserve={false}
         layout='vertical'
         form={form}
         initialValues={initialFormValues}
         onFinish={onSubmit}
       >
-        <FilterBlock withDivider data-testid='filter-extended-status'>
-          <FilterBlockLabel label='Статус' onReset={resetFields(['status'])} />
-
+        <FilterBlock
+          data-testid='extended-filter-status'
+          label='Статус'
+          onReset={resetFields(['status'])}
+        >
           <Form.Item name='status'>
             <CheckboxGroupStyled options={taskExtendedStatusOptions} />
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock withDivider data-testid='filter-extended-is-assigned'>
-          <FilterBlockLabel
-            label='Назначенный'
-            onReset={resetFields(['isAssigned'])}
-          />
-
+        <FilterBlock
+          data-testid='extended-filter-is-assigned'
+          label='Назначенный'
+          onReset={resetFields(['isAssigned'])}
+        >
           <Form.Item name='isAssigned'>
             <Radio.Group options={taskAssignedOptions} />
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock withDivider data-testid='filter-extended-is-overdue'>
-          <FilterBlockLabel
-            label='Просрочено'
-            onReset={resetFields(['isOverdue'])}
-          />
-
+        <FilterBlock
+          data-testid='extended-filter-is-overdue'
+          label='Просрочено'
+          onReset={resetFields(['isOverdue'])}
+        >
           <Form.Item name='isOverdue'>
             <Radio.Group options={taskOverdueOptions} />
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock withDivider data-testid='filter-extended-complete-at'>
-          <FilterBlockLabel
-            label='Выполнить до'
-            onReset={resetFields(['completeAt'])}
-          />
-
+        <FilterBlock
+          data-testid='extended-filter-complete-at'
+          label='Выполнить до'
+          onReset={resetFields(['completeAt'])}
+        >
           <Form.Item name='completeAt'>
             <RangePickerStyled allowClear={false} />
           </Form.Item>
@@ -128,15 +99,14 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
         <Permissions config={extendedFilterPermissions.workGroup}>
           {() => (
-            <FilterBlock withDivider data-testid='filter-extended-work-group'>
-              <FilterBlockLabel
-                label='Рабочая группа'
-                onReset={resetFields(['workGroupId'])}
-              />
-
+            <FilterBlock
+              data-testid='extended-filter-work-group'
+              label='Рабочая группа'
+              onReset={resetFields(['workGroupId'])}
+            >
               <Form.Item name='workGroupId'>
                 <Select
-                  data-testid='filter-extended-work-group-select'
+                  data-testid='extended-filter-work-group-select'
                   disabled={workGroupListIsFetching}
                   fieldNames={workGroupListSelectFieldNames}
                   loading={workGroupListIsFetching}
@@ -155,15 +125,11 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         </Permissions>
 
         <FilterBlock
-          withDivider={false}
-          data-testid='filter-extended-search-by-column'
+          data-testid='extended-filter-search-by-column'
+          label='Поиск по столбцу'
+          onReset={resetFields(['searchField', 'searchValue'])}
         >
-          <FilterBlockLabel
-            label='Поиск по столбцу'
-            onReset={resetFields(['searchField', 'searchValue'])}
-          />
-
-          <Space direction='vertical' size='middle'>
+          <Space $block direction='vertical' size='middle'>
             <Form.Item name='searchField'>
               <Radio.Group options={searchFieldOptions} />
             </Form.Item>
@@ -174,7 +140,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           </Space>
         </FilterBlock>
       </Form>
-    </DrawerStyled>
+    </DrawerFilter>
   )
 }
 

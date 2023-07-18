@@ -16,6 +16,10 @@ const wrapperBreakpointStyles: StyledBreakpointStyles = {
 }
 
 export const WrapperStyled = styled.div<StyledBreakpointsProps>`
+  &:not(:last-child) {
+    border-bottom: ${({ theme }) => theme.colors.chineseWhite};
+  }
+
   ${({ $breakpoints }) =>
     applyBreakpointStyles($breakpoints, wrapperBreakpointStyles)}
 `
