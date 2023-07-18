@@ -14,31 +14,30 @@ import {
 
 import { CustomBaseQueryFn } from 'shared/services/api'
 
-export type CustomUseQueryHookResult<
-  QueryArg,
-  ResultType,
-  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
-> = TypedUseQueryHookResult<ResultType, QueryArg, BaseQuery>
-
 export type CustomQueryDefinition<
   QueryArg,
   ResultType,
   BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
 > = QueryDefinition<QueryArg, BaseQuery, string, ResultType>
 
-export type CustomMutationDefinition<
+export type CustomUseQueryHookResult<
   QueryArg,
   ResultType,
   BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
-> = MutationDefinition<QueryArg, BaseQuery, string, ResultType>
+> = TypedUseQueryHookResult<ResultType, QueryArg, BaseQuery>
 
-// todo: add "Use" before "Lazy"
-export type CustomLazyQueryHookResult<
+export type CustomUseLazyQueryHookResult<
   QueryArg,
   ResultType,
   BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
   Trigger = LazyQueryTrigger<CustomQueryDefinition<QueryArg, ResultType>>,
 > = [Trigger, TypedUseQueryStateResult<ResultType, QueryArg, BaseQuery>]
+
+export type CustomMutationDefinition<
+  QueryArg,
+  ResultType,
+  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
+> = MutationDefinition<QueryArg, BaseQuery, string, ResultType>
 
 export type CustomMutationTrigger<
   QueryArg,

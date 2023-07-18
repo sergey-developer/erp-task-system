@@ -1,6 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import warehouseFixtures from 'fixtures/warehouse'
+
+import {
+  mockGetLegalEntityListSuccess,
+  mockGetWarehouseListSuccess,
+} from '_tests_/mocks/api'
 import {
   clickSelectOption,
   expectLoadingFinishedBySelect,
@@ -9,6 +15,7 @@ import {
   getSelectedOption,
   openSelect,
   render,
+  setupApiTests,
 } from '_tests_/utils'
 
 import WarehouseListFilter from './index'
@@ -85,7 +92,8 @@ const getLegalEntityFilterLabel = () =>
 const getLegalEntitySelect = () =>
   within(getLegalEntityFilter()).getByTestId('legal-entity-select')
 
-const openLegalEntitySelect = openSelect
+const openLegalEntitySelect = (user: UserEvent) =>
+  openSelect(user, getLegalEntitySelect())
 
 const setLegalEntity = clickSelectOption
 
@@ -95,8 +103,8 @@ const resetLegalEntity = (user: UserEvent) =>
   clickResetButtonIn(user, getLegalEntityFilter())
 
 const expectLegalEntityLoadingFinished = async () => {
-  const workGroupField = getLegalEntitySelect()
-  await expectLoadingFinishedBySelect(workGroupField)
+  const select = getLegalEntitySelect()
+  await expectLoadingFinishedBySelect(select)
 }
 
 // address
@@ -128,7 +136,8 @@ const getParentFilterLabel = () =>
 const getParentSelect = () =>
   within(getParentFilter()).getByTestId('parent-select')
 
-const openParentSelect = openSelect
+const openParentSelect = (user: UserEvent) =>
+  openSelect(user, getParentSelect())
 
 const setParent = clickSelectOption
 
@@ -138,8 +147,8 @@ const resetParent = (user: UserEvent) =>
   clickResetButtonIn(user, getParentFilter())
 
 const expectParentLoadingFinished = async () => {
-  const workGroupField = getLegalEntitySelect()
-  await expectLoadingFinishedBySelect(workGroupField)
+  const select = getLegalEntitySelect()
+  await expectLoadingFinishedBySelect(select)
 }
 
 export const testUtils = {
@@ -188,15 +197,24 @@ export const testUtils = {
   expectParentLoadingFinished,
 }
 
+setupApiTests()
+
 describe('Фильтр списка складов', () => {
   test('Заголовок отображается корректно', () => {
+    mockGetWarehouseListSuccess()
+    mockGetLegalEntityListSuccess()
+
     render(<WarehouseListFilter {...props} />)
+
     const title = testUtils.getChildByText('Фильтры')
     expect(title).toBeInTheDocument()
   })
 
   describe('Кнопка закрытия', () => {
     test('Отображается корректно', () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       render(<WarehouseListFilter {...props} />)
 
       const button = testUtils.getCloseButton()
@@ -206,7 +224,11 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Обработчик вызывается корректно', async () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       const { user } = render(<WarehouseListFilter {...props} />)
+
       await testUtils.clickCloseFilter(user)
       expect(props.onClose).toBeCalledTimes(1)
     })
@@ -214,6 +236,9 @@ describe('Фильтр списка складов', () => {
 
   describe('Кнопка "Применить"', () => {
     test('Отображается корректно', () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       render(<WarehouseListFilter {...props} />)
 
       const button = testUtils.getApplyButton()
@@ -223,6 +248,9 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Обработчик вызывается корректно', async () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       const { user } = render(<WarehouseListFilter {...props} />)
 
       await testUtils.clickApplyButton(user)
@@ -234,6 +262,9 @@ describe('Фильтр списка складов', () => {
 
   describe('Кнопка "Сбросить всё"', () => {
     test('Отображается корректно', () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       render(<WarehouseListFilter {...props} />)
 
       const button = testUtils.getResetAllButton()
@@ -243,31 +274,38 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Сбрасывает значения полей', async () => {
-      const { user } = render(<WarehouseListFilter {...props} />)
+      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      mockGetWarehouseListSuccess({ body: [warehouseListItem] })
+      mockGetLegalEntityListSuccess()
 
       const titleValue = fakeWord()
-      await testUtils.setTitle(user, titleValue)
-
-      // await testUtils.setLegalEntity(user, '')
-      // const selectedLegalEntity = testUtils.getSelectedLegalEntity()
-
       const addressValue = fakeWord()
-      await testUtils.setAddress(user, addressValue)
 
-      // await testUtils.setParent(user, '')
-      // const selectedParent = testUtils.getSelectedParent()
+      const { user } = render(
+        <WarehouseListFilter
+          {...props}
+          formValues={{
+            title: titleValue,
+            address: addressValue,
+            parent: warehouseListItem.id,
+          }}
+        />,
+      )
 
       await testUtils.clickResetAllButton(user)
 
       expect(testUtils.getTitleInput()).not.toHaveDisplayValue(titleValue)
-      // expect(selectedLegalEntity).not.toBeInTheDocument()
       expect(testUtils.getAddressInput()).not.toHaveDisplayValue(addressValue)
-      // expect(selectedParent).not.toBeInTheDocument()
+      expect(testUtils.getSelectedParent()).not.toBeInTheDocument()
+      // expect(testUtils.getSelectedLegalEntity()).not.toBeInTheDocument()
     })
   })
 
   describe('Наименование объекта', () => {
     test('Отображается корректно', () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       render(<WarehouseListFilter {...props} />)
 
       const label = testUtils.getTitleFilterLabel()
@@ -280,6 +318,9 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно установить значение', async () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       const { user } = render(<WarehouseListFilter {...props} />)
 
       const value = fakeWord()
@@ -289,6 +330,8 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно установить значение по умолчанию', () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
       const titleValue = fakeWord()
 
       render(
@@ -300,6 +343,9 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно сбросить значение', async () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       const { user } = render(<WarehouseListFilter {...props} />)
 
       const value = fakeWord()
@@ -311,10 +357,81 @@ describe('Фильтр списка складов', () => {
     })
   })
 
-  test.todo('Юридическое лицо')
+  describe('Юридическое лицо', () => {
+    test('Отображается корректно', async () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
+      render(<WarehouseListFilter {...props} />)
+
+      await testUtils.expectLegalEntityLoadingFinished()
+      const label = testUtils.getLegalEntityFilterLabel()
+      const select = testUtils.getLegalEntitySelect()
+      const selectedLegalEntity = testUtils.getSelectedLegalEntity()
+
+      expect(label).toBeInTheDocument()
+      expect(select).toBeInTheDocument()
+      expect(select).toBeEnabled()
+      expect(selectedLegalEntity).not.toBeInTheDocument()
+    })
+
+    test('Можно установить значение', async () => {
+      const legalEntityListItem = warehouseFixtures.legalEntityListItem()
+      mockGetLegalEntityListSuccess({ body: [legalEntityListItem] })
+      mockGetWarehouseListSuccess()
+
+      const { user } = render(<WarehouseListFilter {...props} />)
+
+      await testUtils.expectLegalEntityLoadingFinished()
+      await testUtils.openLegalEntitySelect(user)
+      await testUtils.setLegalEntity(user, legalEntityListItem.title)
+      const selectedLegalEntity = testUtils.getSelectedLegalEntity()
+
+      expect(selectedLegalEntity).toBeInTheDocument()
+      expect(selectedLegalEntity).toHaveTextContent(legalEntityListItem.title)
+    })
+
+    test('Можно установить значение по умолчанию', async () => {
+      const legalEntityListItem = warehouseFixtures.legalEntityListItem()
+      mockGetLegalEntityListSuccess({ body: [legalEntityListItem] })
+      mockGetWarehouseListSuccess()
+
+      render(
+        <WarehouseListFilter
+          {...props}
+          formValues={{ legalEntity: legalEntityListItem.id }}
+        />,
+      )
+
+      await testUtils.expectLegalEntityLoadingFinished()
+      const selectedLegalEntity = testUtils.getSelectedLegalEntity()
+
+      expect(selectedLegalEntity).toBeInTheDocument()
+      expect(selectedLegalEntity).toHaveTextContent(legalEntityListItem.title)
+    })
+
+    test('Можно сбросить значение', async () => {
+      const legalEntityListItem = warehouseFixtures.legalEntityListItem()
+      mockGetLegalEntityListSuccess({ body: [legalEntityListItem] })
+      mockGetWarehouseListSuccess()
+
+      const { user } = render(<WarehouseListFilter {...props} />)
+
+      await testUtils.expectLegalEntityLoadingFinished()
+      await testUtils.openLegalEntitySelect(user)
+      await testUtils.setLegalEntity(user, legalEntityListItem.title)
+      await testUtils.resetLegalEntity(user)
+      const selectedLegalEntity = testUtils.getSelectedLegalEntity()
+
+      expect(selectedLegalEntity).not.toBeInTheDocument()
+    })
+  })
 
   describe('Адрес', () => {
     test('Отображается корректно', () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       render(<WarehouseListFilter {...props} />)
 
       const label = testUtils.getAddressFilterLabel()
@@ -327,6 +444,9 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно установить значение', async () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       const { user } = render(<WarehouseListFilter {...props} />)
 
       const value = fakeWord()
@@ -336,6 +456,8 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно установить значение по умолчанию', () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
       const addressValue = fakeWord()
 
       render(
@@ -350,6 +472,9 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно сбросить значение', async () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
       const { user } = render(<WarehouseListFilter {...props} />)
 
       const value = fakeWord()
@@ -361,5 +486,73 @@ describe('Фильтр списка складов', () => {
     })
   })
 
-  test.todo('Родительский склад')
+  describe('Родительский склад', () => {
+    test('Отображается корректно', async () => {
+      mockGetWarehouseListSuccess()
+      mockGetLegalEntityListSuccess()
+
+      render(<WarehouseListFilter {...props} />)
+
+      await testUtils.expectParentLoadingFinished()
+      const label = testUtils.getParentFilterLabel()
+      const select = testUtils.getParentSelect()
+      const selectedParent = testUtils.getSelectedParent()
+
+      expect(label).toBeInTheDocument()
+      expect(select).toBeInTheDocument()
+      expect(select).toBeEnabled()
+      expect(selectedParent).not.toBeInTheDocument()
+    })
+
+    test('Можно установить значение', async () => {
+      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      mockGetWarehouseListSuccess({ body: [warehouseListItem] })
+      mockGetLegalEntityListSuccess()
+
+      const { user } = render(<WarehouseListFilter {...props} />)
+
+      await testUtils.expectParentLoadingFinished()
+      await testUtils.openParentSelect(user)
+      await testUtils.setParent(user, warehouseListItem.title)
+      const selectedParent = testUtils.getSelectedParent()
+
+      expect(selectedParent).toBeInTheDocument()
+      expect(selectedParent).toHaveTextContent(warehouseListItem.title)
+    })
+
+    test('Можно установить значение по умолчанию', async () => {
+      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      mockGetWarehouseListSuccess({ body: [warehouseListItem] })
+      mockGetLegalEntityListSuccess()
+
+      render(
+        <WarehouseListFilter
+          {...props}
+          formValues={{ parent: warehouseListItem.id }}
+        />,
+      )
+
+      await testUtils.expectParentLoadingFinished()
+      const selectedParent = testUtils.getSelectedParent()
+
+      expect(selectedParent).toBeInTheDocument()
+      expect(selectedParent).toHaveTextContent(warehouseListItem.title)
+    })
+
+    test('Можно сбросить значение', async () => {
+      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      mockGetWarehouseListSuccess({ body: [warehouseListItem] })
+      mockGetLegalEntityListSuccess()
+
+      const { user } = render(<WarehouseListFilter {...props} />)
+
+      await testUtils.expectParentLoadingFinished()
+      await testUtils.openParentSelect(user)
+      await testUtils.setParent(user, warehouseListItem.title)
+      await testUtils.resetParent(user)
+      const selectedParent = testUtils.getSelectedParent()
+
+      expect(selectedParent).not.toBeInTheDocument()
+    })
+  })
 })
