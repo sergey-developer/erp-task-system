@@ -1,8 +1,6 @@
 import { useBoolean, useSetState } from 'ahooks'
-import isArray from 'lodash/isArray'
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 
-import { getWarehouseListMessages } from 'modules/warehouse/constants'
 import WarehouseListFilter from 'modules/warehouse/features/WarehouseListFilter'
 import {
   WarehouseListFilterFormFields,
@@ -15,20 +13,21 @@ import {
   sortableFieldToSortValues,
 } from 'modules/warehouse/features/WarehouseTable/sort'
 import { getSort } from 'modules/warehouse/features/WarehouseTable/utils'
+import { useGetWarehouseList } from 'modules/warehouse/hooks'
 import { GetWarehouseListQueryArgs } from 'modules/warehouse/models'
-import { useGetWarehouseListQuery } from 'modules/warehouse/services/warehouseApi.service'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks'
-import { showErrorNotification } from 'shared/utils/notifications'
 
 const WarehouseListPage: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean()
   const debouncedToggleFilterOpened = useDebounceFn(toggleFilterOpened)
 
-  const [queryArgs, setQueryArgs] = useSetState<GetWarehouseListQueryArgs>({})
+  const [queryArgs, setQueryArgs] = useSetState<
+    NonNullable<GetWarehouseListQueryArgs>
+  >({})
 
   const [filterFormValues, setFilterFormValues] =
     useState<WarehouseListFilterFormFields>()
@@ -36,25 +35,21 @@ const WarehouseListPage: FC = () => {
   const {
     isFetching: warehouseListIsFetching,
     currentData: warehouseList = [],
-    isError: isGetWarehouseListError,
-  } = useGetWarehouseListQuery(queryArgs)
+  } = useGetWarehouseList(queryArgs)
 
-  useEffect(() => {
-    if (isGetWarehouseListError) {
-      showErrorNotification(getWarehouseListMessages.commonError)
-    }
-  }, [isGetWarehouseListError])
-
-  const handleApplyFilter: WarehouseListFilterProps['onApply'] = (values) => {
-    toggleFilterOpened()
-    setFilterFormValues(values)
-    setQueryArgs(values)
-  }
+  const handleApplyFilter = useCallback<WarehouseListFilterProps['onApply']>(
+    (values) => {
+      toggleFilterOpened()
+      setFilterFormValues(values)
+      setQueryArgs(values)
+    },
+    [setQueryArgs, toggleFilterOpened],
+  )
 
   const handleTableSort = useCallback(
     (sorter: Parameters<WarehouseTableProps['onChange']>[2]) => {
       if (sorter) {
-        const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
+        const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
         if (columnKey && columnKey in sortableFieldToSortValues) {
           setQueryArgs({

@@ -1,8 +1,14 @@
 import { Form, Input, Select } from 'antd'
 import React, { FC, useEffect } from 'react'
 
+import { getLegalEntityListMessages } from 'modules/warehouse/constants'
+import { useGetWarehouseList } from 'modules/warehouse/hooks'
+import { useGetLegalEntityListQuery } from 'modules/warehouse/services/legalEntityApi.service'
+
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
+
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { selectFieldNames } from './constants'
 import {
@@ -18,16 +24,32 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
 }) => {
   const [form] = Form.useForm<WarehouseListFilterFormFields>()
 
-  const resetFields =
-    (fields?: Array<keyof WarehouseListFilterFormFields>) => () => {
-      form.resetFields(fields)
+  const {
+    isFetching: warehouseListIsFetching,
+    currentData: warehouseList = [],
+  } = useGetWarehouseList()
+
+  const {
+    currentData: legalEntityList = [],
+    isFetching: legalEntityListIsFetching,
+    isError: isGetLegalEntityListError,
+  } = useGetLegalEntityListQuery()
+
+  useEffect(() => {
+    if (isGetLegalEntityListError) {
+      showErrorNotification(getLegalEntityListMessages.commonError)
     }
+  }, [isGetLegalEntityListError])
 
   useEffect(() => {
     if (formValues) {
       form.setFieldsValue(formValues)
     }
   }, [form, formValues])
+
+  const resetFields = (field?: keyof WarehouseListFilterFormFields) => () => {
+    form.resetFields(field ? [field] : undefined)
+  }
 
   return (
     <DrawerFilter
@@ -46,7 +68,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
         <FilterBlock
           data-testid='title-filter'
           label='Наименование объекта'
-          onReset={resetFields(['title'])}
+          onReset={resetFields('title')}
         >
           <Form.Item name='title'>
             <Input placeholder='Ключевое слово' />
@@ -56,15 +78,14 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
         <FilterBlock
           data-testid='legal-entity-filter'
           label='Юридическое лицо'
-          onReset={resetFields(['legalEntity'])}
+          onReset={resetFields('legalEntity')}
         >
           <Form.Item name='legalEntity'>
             <Select
               data-testid='legal-entity-select'
-              disabled={false}
               fieldNames={selectFieldNames}
-              loading={false}
-              options={[]}
+              loading={legalEntityListIsFetching}
+              options={legalEntityList}
               placeholder='Наименование юридического лица'
             />
           </Form.Item>
@@ -73,7 +94,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
         <FilterBlock
           data-testid='address-filter'
           label='Адрес'
-          onReset={resetFields(['address'])}
+          onReset={resetFields('address')}
         >
           <Form.Item name='address'>
             <Input placeholder='Ключевое слово' />
@@ -83,15 +104,14 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
         <FilterBlock
           data-testid='parent-filter'
           label='Родительский склад'
-          onReset={resetFields(['parent'])}
+          onReset={resetFields('parent')}
         >
           <Form.Item name='parent'>
             <Select
               data-testid='parent-select'
-              disabled={false}
               fieldNames={selectFieldNames}
-              loading={false}
-              options={[]}
+              loading={warehouseListIsFetching}
+              options={warehouseList}
               placeholder='Наименование родительского склада'
             />
           </Form.Item>
