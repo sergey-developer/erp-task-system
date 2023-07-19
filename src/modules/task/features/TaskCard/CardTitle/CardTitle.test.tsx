@@ -2,12 +2,15 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {
+  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
+
+import taskFixtures from 'fixtures/task'
 
 import {
   fakeId,
@@ -19,13 +22,14 @@ import {
 
 import CardTitle, { CardTitleProps } from './index'
 
-const requiredProps: Readonly<CardTitleProps> = {
+const props: Readonly<CardTitleProps> = {
   id: fakeId(),
   type: TaskTypeEnum.Request,
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
   olaStatus: TaskOlaStatusEnum.NotExpired,
   isAssignedToCurrentUser: false,
+  workGroup: null,
   suspendRequest: null,
   onClose: jest.fn(),
   onExecuteTask: jest.fn(),
@@ -34,33 +38,43 @@ const requiredProps: Readonly<CardTitleProps> = {
   onRequestReclassification: jest.fn(),
 }
 
-export const activeExecuteTaskItemProps: Pick<
-  CardTitleProps,
-  'status' | 'extendedStatus' | 'isAssignedToCurrentUser' | 'suspendRequest'
+export const activeExecuteTaskItemProps: Readonly<
+  Pick<
+    CardTitleProps,
+    | 'status'
+    | 'extendedStatus'
+    | 'isAssignedToCurrentUser'
+    | 'suspendRequest'
+    | 'workGroup'
+  >
 > = {
   status: TaskStatusEnum.InProgress,
   extendedStatus: TaskExtendedStatusEnum.New,
   isAssignedToCurrentUser: true,
   suspendRequest: null,
+  workGroup: null,
 }
 
-export const activeRequestReclassificationItemProps: Pick<
-  CardTitleProps,
-  'status' | 'olaStatus' | 'type' | 'suspendRequest'
+export const activeRequestReclassificationItemProps: Readonly<
+  Pick<
+    CardTitleProps,
+    'status' | 'olaStatus' | 'type' | 'suspendRequest' | 'workGroup'
+  >
 > = {
   status: TaskStatusEnum.New,
   olaStatus: TaskOlaStatusEnum.NotExpired,
   type: TaskTypeEnum.Request,
   suspendRequest: null,
+  workGroup: null,
 }
 
-export const activeRequestSuspendItemProps: Pick<
-  CardTitleProps,
-  'status' | 'type' | 'suspendRequest'
+export const activeRequestSuspendItemProps: Readonly<
+  Pick<CardTitleProps, 'status' | 'type' | 'suspendRequest' | 'workGroup'>
 > = {
   status: TaskStatusEnum.New,
   type: TaskTypeEnum.Request,
   suspendRequest: null,
+  workGroup: null,
 }
 
 const getContainer = () => screen.getByTestId('task-card-title')
@@ -198,16 +212,13 @@ export const testUtils = {
 
 describe('Заголовок карточки заявки', () => {
   test('Идентификатор заявки отображается', () => {
-    render(<CardTitle {...requiredProps} />)
-
-    expect(
-      testUtils.getChildByText(String(requiredProps.id)),
-    ).toBeInTheDocument()
+    render(<CardTitle {...props} />)
+    expect(testUtils.getChildByText(String(props.id))).toBeInTheDocument()
   })
 
   describe('Кнопка закрытия', () => {
     test('Отображается корректно', () => {
-      render(<CardTitle {...requiredProps} />)
+      render(<CardTitle {...props} />)
 
       const button = testUtils.getCloseButton()
 
@@ -216,16 +227,16 @@ describe('Заголовок карточки заявки', () => {
     })
 
     test('При клике обработчик вызывается корректно', async () => {
-      const { user } = render(<CardTitle {...requiredProps} />)
+      const { user } = render(<CardTitle {...props} />)
 
       await testUtils.clickCloseButton(user)
-      expect(requiredProps.onClose).toBeCalledTimes(1)
+      expect(props.onClose).toBeCalledTimes(1)
     })
   })
 
   describe('Кнопка перезапроса заявки', () => {
     test('Отображается корректно', () => {
-      render(<CardTitle {...requiredProps} />)
+      render(<CardTitle {...props} />)
 
       const button = testUtils.getReloadButton()
 
@@ -234,16 +245,16 @@ describe('Заголовок карточки заявки', () => {
     })
 
     test('При клике обработчик вызывается корректно', async () => {
-      const { user } = render(<CardTitle {...requiredProps} />)
+      const { user } = render(<CardTitle {...props} />)
 
       await testUtils.clickReloadButton(user)
-      expect(requiredProps.onReloadTask).toBeCalledTimes(1)
+      expect(props.onReloadTask).toBeCalledTimes(1)
     })
   })
 
   describe('Кнопка меню', () => {
     test('Отображается корректно', () => {
-      render(<CardTitle {...requiredProps} />)
+      render(<CardTitle {...props} />)
 
       const button = testUtils.getMenuButton()
 
@@ -252,7 +263,7 @@ describe('Заголовок карточки заявки', () => {
     })
 
     test('Открывает меню', async () => {
-      const { user } = render(<CardTitle {...requiredProps} />)
+      const { user } = render(<CardTitle {...props} />)
 
       const { menu } = await testUtils.openMenu(user)
       expect(menu).toBeInTheDocument()
@@ -261,7 +272,7 @@ describe('Заголовок карточки заявки', () => {
 
   describe('Меню', () => {
     test('Отображает корректное количество элементов', async () => {
-      const { user } = render(<CardTitle {...requiredProps} />)
+      const { user } = render(<CardTitle {...props} />)
 
       await testUtils.openMenu(user)
       expect(testUtils.getMenuItems()).toHaveLength(3)
@@ -269,7 +280,7 @@ describe('Заголовок карточки заявки', () => {
 
     describe('Элемент "Выполнить заявку"', () => {
       test('Отображается корректно', async () => {
-        const { user } = render(<CardTitle {...requiredProps} />)
+        const { user } = render(<CardTitle {...props} />)
 
         await testUtils.openMenu(user)
         const item = testUtils.getExecuteTaskItem()
@@ -281,17 +292,17 @@ describe('Заголовок карточки заявки', () => {
 
       test('При клике обработчик вызывается корректно', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} {...activeExecuteTaskItemProps} />,
+          <CardTitle {...props} {...activeExecuteTaskItemProps} />,
         )
 
         await testUtils.openMenu(user)
         await testUtils.clickExecuteTaskItem(user)
-        expect(requiredProps.onExecuteTask).toBeCalledTimes(1)
+        expect(props.onExecuteTask).toBeCalledTimes(1)
       })
 
       test('Активен если условия соблюдены', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} {...activeExecuteTaskItemProps} />,
+          <CardTitle {...props} {...activeExecuteTaskItemProps} />,
         )
 
         await testUtils.openMenu(user)
@@ -299,10 +310,28 @@ describe('Заголовок карточки заявки', () => {
       })
 
       describe('Не активен если условия соблюдены', () => {
+        test(`Если роль пользователя ${UserRoleEnum.FirstLineSupport} и есть рабочая группа`, async () => {
+          const { user } = render(
+            <CardTitle
+              {...props}
+              {...activeExecuteTaskItemProps}
+              workGroup={taskFixtures.fakeWorkGroup()}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            },
+          )
+
+          await testUtils.openMenu(user)
+          testUtils.expectMenuItemDisabled(testUtils.getExecuteTaskItem())
+        })
+
         test('Но заявка не в статусе - "В процессе"', async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
               {...activeExecuteTaskItemProps}
               status={TaskStatusEnum.New}
             />,
@@ -315,7 +344,7 @@ describe('Заголовок карточки заявки', () => {
         test('Но исполнитель заявки не является авторизованным пользователем', async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
               {...activeExecuteTaskItemProps}
               isAssignedToCurrentUser={false}
             />,
@@ -328,9 +357,39 @@ describe('Заголовок карточки заявки', () => {
         test('Но есть запрос на переклассификацию', async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
               {...activeExecuteTaskItemProps}
               extendedStatus={TaskExtendedStatusEnum.InReclassification}
+            />,
+          )
+
+          await testUtils.openMenu(user)
+          testUtils.expectMenuItemDisabled(testUtils.getExecuteTaskItem())
+        })
+
+        test(`Но запрос на ожидание имеет статус ${SuspendRequestStatusEnum.New}`, async () => {
+          const { user } = render(
+            <CardTitle
+              {...props}
+              {...activeExecuteTaskItemProps}
+              suspendRequest={taskFixtures.fakeSuspendRequest({
+                status: SuspendRequestStatusEnum.New,
+              })}
+            />,
+          )
+
+          await testUtils.openMenu(user)
+          testUtils.expectMenuItemDisabled(testUtils.getExecuteTaskItem())
+        })
+
+        test(`Но запрос на ожидание имеет статус ${SuspendRequestStatusEnum.InProgress}`, async () => {
+          const { user } = render(
+            <CardTitle
+              {...props}
+              {...activeExecuteTaskItemProps}
+              suspendRequest={taskFixtures.fakeSuspendRequest({
+                status: SuspendRequestStatusEnum.InProgress,
+              })}
             />,
           )
 
@@ -343,10 +402,7 @@ describe('Заголовок карточки заявки', () => {
     describe('Элемент "Запросить переклассификацию"', () => {
       test('Отображается корректно если условия соблюдены', async () => {
         const { user } = render(
-          <CardTitle
-            {...requiredProps}
-            extendedStatus={TaskExtendedStatusEnum.New}
-          />,
+          <CardTitle {...props} extendedStatus={TaskExtendedStatusEnum.New} />,
         )
 
         await testUtils.openMenu(user)
@@ -360,7 +416,7 @@ describe('Заголовок карточки заявки', () => {
       test('Не отображается если есть запрос на переклассификацию', async () => {
         const { user } = render(
           <CardTitle
-            {...requiredProps}
+            {...props}
             extendedStatus={TaskExtendedStatusEnum.InReclassification}
           />,
         )
@@ -375,7 +431,7 @@ describe('Заголовок карточки заявки', () => {
       test('При клике обработчик вызывается корректно', async () => {
         const { user } = render(
           <CardTitle
-            {...requiredProps}
+            {...props}
             {...activeRequestReclassificationItemProps}
             extendedStatus={TaskExtendedStatusEnum.New}
           />,
@@ -384,15 +440,12 @@ describe('Заголовок карточки заявки', () => {
 
         await testUtils.openMenu(user)
         await testUtils.clickRequestReclassificationItem(user)
-        expect(requiredProps.onRequestReclassification).toBeCalledTimes(1)
+        expect(props.onRequestReclassification).toBeCalledTimes(1)
       })
 
       test('Активен если условия соблюдены', async () => {
         const { user } = render(
-          <CardTitle
-            {...requiredProps}
-            {...activeRequestReclassificationItemProps}
-          />,
+          <CardTitle {...props} {...activeRequestReclassificationItemProps} />,
           {
             store: getStoreWithAuth(),
           },
@@ -405,10 +458,31 @@ describe('Заголовок карточки заявки', () => {
       })
 
       describe('Не активен если условия соблюдены', () => {
-        test('Но заявка не в статусе - новая', async () => {
+        test(`Если роль пользователя ${UserRoleEnum.FirstLineSupport} и есть рабочая группа`, async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
+              {...activeRequestReclassificationItemProps}
+              workGroup={taskFixtures.fakeWorkGroup()}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            },
+          )
+
+          await testUtils.openMenu(user)
+
+          testUtils.expectMenuItemDisabled(
+            testUtils.getRequestReclassificationItem(),
+          )
+        })
+
+        test(`Но заявка не в статусе - ${TaskStatusEnum.New}`, async () => {
+          const { user } = render(
+            <CardTitle
+              {...props}
               {...activeRequestReclassificationItemProps}
               status={TaskStatusEnum.InProgress}
             />,
@@ -424,10 +498,10 @@ describe('Заголовок карточки заявки', () => {
           )
         })
 
-        test('Но заявка не имеет ola статуса - не истекла', async () => {
+        test(`Но заявка не имеет ola статуса - ${TaskOlaStatusEnum.NotExpired}`, async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
               {...activeRequestReclassificationItemProps}
               olaStatus={TaskOlaStatusEnum.Expired}
             />,
@@ -443,10 +517,10 @@ describe('Заголовок карточки заявки', () => {
           )
         })
 
-        test('Но заявка имеет ola статус - на половину истекла', async () => {
+        test(`Но заявка имеет ola статус - ${TaskOlaStatusEnum.HalfExpired}`, async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
               {...activeRequestReclassificationItemProps}
               olaStatus={TaskOlaStatusEnum.HalfExpired}
             />,
@@ -462,10 +536,10 @@ describe('Заголовок карточки заявки', () => {
           )
         })
 
-        test('Но тип заявки - request task', async () => {
+        test(`Но тип заявки - ${TaskTypeEnum.RequestTask}`, async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
               {...activeRequestReclassificationItemProps}
               type={TaskTypeEnum.RequestTask}
             />,
@@ -481,10 +555,10 @@ describe('Заголовок карточки заявки', () => {
           )
         })
 
-        test('Но тип заявки - incident task', async () => {
+        test(`Но тип заявки - ${TaskTypeEnum.IncidentTask}`, async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
               {...activeRequestReclassificationItemProps}
               type={TaskTypeEnum.IncidentTask}
             />,
@@ -501,7 +575,7 @@ describe('Заголовок карточки заявки', () => {
         test(`Но у пользователя роль - ${UserRoleEnum.Engineer}`, async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
               {...activeRequestReclassificationItemProps}
             />,
             {
@@ -515,23 +589,23 @@ describe('Заголовок карточки заявки', () => {
           )
         })
 
-        // todo
-        // test('Но у заявки есть запрос на ожидание', async () => {
-        //   const { user } = render(
-        //     <CardTitle
-        //       {...requiredProps}
-        //       {...activeRequestReclassificationItemProps}
-        //       hasSuspendRequest
-        //     />,
-        //     { store: getStoreWithAuth() },
-        //   )
-        //
-        //   await testUtils.openMenu(user)
-        //
-        //   testUtils.expectMenuItemDisabled(
-        //     testUtils.getRequestReclassificationItem(),
-        //   )
-        // })
+        test('Но у заявки есть запрос на ожидание', async () => {
+          const { user } = render(
+            <CardTitle
+              {...props}
+              {...activeRequestReclassificationItemProps}
+              suspendRequest={taskFixtures.fakeSuspendRequest()}
+            />,
+            {
+              store: getStoreWithAuth(),
+            },
+          )
+
+          await testUtils.openMenu(user)
+          testUtils.expectMenuItemDisabled(
+            testUtils.getRequestReclassificationItem(),
+          )
+        })
       })
     })
 
@@ -539,7 +613,7 @@ describe('Заголовок карточки заявки', () => {
       test('Отображается корректно если условия соблюдены', async () => {
         const { user } = render(
           <CardTitle
-            {...requiredProps}
+            {...props}
             extendedStatus={TaskExtendedStatusEnum.InReclassification}
           />,
         )
@@ -554,10 +628,7 @@ describe('Заголовок карточки заявки', () => {
 
       test('Не отображается если нет запроса на переклассификацию', async () => {
         const { user } = render(
-          <CardTitle
-            {...requiredProps}
-            extendedStatus={TaskExtendedStatusEnum.New}
-          />,
+          <CardTitle {...props} extendedStatus={TaskExtendedStatusEnum.New} />,
         )
 
         await testUtils.openMenu(user)
@@ -570,7 +641,7 @@ describe('Заголовок карточки заявки', () => {
 
     describe('Элемент "Запросить перевод в ожидание"', () => {
       test('Отображается корректно', async () => {
-        const { user } = render(<CardTitle {...requiredProps} />)
+        const { user } = render(<CardTitle {...props} />)
 
         await testUtils.openMenu(user)
         const item = testUtils.getRequestSuspendItem()
@@ -582,17 +653,17 @@ describe('Заголовок карточки заявки', () => {
 
       test('При клике обработчик вызывается корректно', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} {...activeRequestSuspendItemProps} />,
+          <CardTitle {...props} {...activeRequestSuspendItemProps} />,
         )
 
         await testUtils.openMenu(user)
         await testUtils.clickRequestSuspendItem(user)
-        expect(requiredProps.onRequestSuspend).toBeCalledTimes(1)
+        expect(props.onRequestSuspend).toBeCalledTimes(1)
       })
 
       test('Активен если условия соблюдены', async () => {
         const { user } = render(
-          <CardTitle {...requiredProps} {...activeRequestSuspendItemProps} />,
+          <CardTitle {...props} {...activeRequestSuspendItemProps} />,
         )
 
         await testUtils.openMenu(user)
@@ -600,10 +671,28 @@ describe('Заголовок карточки заявки', () => {
       })
 
       describe('Не активен если условия соблюдены', () => {
-        test('Но заявка не в статусе - "Новая" или "В процессе"', async () => {
+        test(`Если роль пользователя ${UserRoleEnum.FirstLineSupport} и есть рабочая группа`, async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
+              {...activeRequestSuspendItemProps}
+              workGroup={taskFixtures.fakeWorkGroup()}
+            />,
+            {
+              store: getStoreWithAuth({
+                userRole: UserRoleEnum.FirstLineSupport,
+              }),
+            },
+          )
+
+          await testUtils.openMenu(user)
+          testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
+        })
+
+        test(`Но заявка не в статусе - ${TaskStatusEnum.New} или ${TaskStatusEnum.InProgress}`, async () => {
+          const { user } = render(
+            <CardTitle
+              {...props}
               {...activeRequestSuspendItemProps}
               status={TaskStatusEnum.Completed}
             />,
@@ -613,10 +702,10 @@ describe('Заголовок карточки заявки', () => {
           testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
         })
 
-        test('Но тип заявки не - "Request" или "Incident"', async () => {
+        test(`Но тип заявки не - ${TaskTypeEnum.Request} или ${TaskTypeEnum.Incident}`, async () => {
           const { user } = render(
             <CardTitle
-              {...requiredProps}
+              {...props}
               {...activeRequestSuspendItemProps}
               type={TaskTypeEnum.RequestTask}
             />,
@@ -626,19 +715,18 @@ describe('Заголовок карточки заявки', () => {
           testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
         })
 
-        // todo
-        // test('Но заявка имеет запрос на ожидание', async () => {
-        //   const { user } = render(
-        //     <CardTitle
-        //       {...requiredProps}
-        //       {...activeRequestSuspendItemProps}
-        //       hasSuspendRequest
-        //     />,
-        //   )
-        //
-        //   await testUtils.openMenu(user)
-        //   testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
-        // })
+        test('Но заявка имеет запрос на ожидание', async () => {
+          const { user } = render(
+            <CardTitle
+              {...props}
+              {...activeRequestSuspendItemProps}
+              suspendRequest={taskFixtures.fakeSuspendRequest()}
+            />,
+          )
+
+          await testUtils.openMenu(user)
+          testUtils.expectMenuItemDisabled(testUtils.getRequestSuspendItem())
+        })
       })
     })
   })

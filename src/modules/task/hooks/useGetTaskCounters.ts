@@ -10,7 +10,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 export const useGetTaskCounters = () => {
   const permissions = useUserPermissions(taskCountersApiPermissions)
 
-  const state = useGetTaskCountersQuery(null, {
+  const state = useGetTaskCountersQuery(undefined, {
     skip: !permissions.canGet,
   })
 

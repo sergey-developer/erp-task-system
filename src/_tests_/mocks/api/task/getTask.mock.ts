@@ -2,7 +2,6 @@ import { GetTaskSuccessResponse } from 'modules/task/models'
 import { getTaskUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 import {
   getBadRequestErrorMockFn,
@@ -22,22 +21,22 @@ export const mockGetTaskSuccess = (
   options?: Partial<ResponseResolverOptions<GetTaskSuccessResponse>>,
 ) => getSuccessMockFn(getTaskMockFn(taskId), options)()
 
-export const mockGetTaskNotFoundError = <T extends object>(
+export const mockGetTaskNotFoundError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getNotFoundErrorMockFn(getTaskMockFn(taskId), options)()
 
-export const mockGetTaskBadRequestError = <T extends object>(
+export const mockGetTaskBadRequestError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getBadRequestErrorMockFn(getTaskMockFn(taskId), options)()
 
-export const mockGetTaskForbiddenError = <T extends object>(
+export const mockGetTaskForbiddenError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getForbiddenErrorMockFn(getTaskMockFn(taskId), options)()
 
-export const mockGetTaskServerError = <T extends object>(
+export const mockGetTaskServerError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(getTaskMockFn(taskId), options)()

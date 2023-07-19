@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
+import { TableWrapperStyled } from '../TaskTable/styles'
 import { columns } from './columns'
 import { components } from './components'
 import {
@@ -19,7 +20,7 @@ const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
   loading,
 }) => {
   return (
-    <div data-testid='fiscal-accumulator-task-table'>
+    <TableWrapperStyled data-testid='fiscal-accumulator-task-table'>
       <ParentSizedTable<FiscalAccumulatorTaskTableItem>
         rowKey={getRowKey}
         dataSource={dataSource}
@@ -29,7 +30,7 @@ const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
         showSorterTooltip={false}
         pagination={false}
       />
-    </div>
+    </TableWrapperStyled>
   )
 }
 

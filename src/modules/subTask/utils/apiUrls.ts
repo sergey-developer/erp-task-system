@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom'
 
-import { SubTaskEndpointEnum } from '../constants/api'
+import { SubTaskEndpointEnum } from 'modules/subTask/constants/api'
 
 export const getSubTaskListUrl = (taskId: number): string =>
   generatePath(SubTaskEndpointEnum.GetSubTaskList, { id: String(taskId) })
