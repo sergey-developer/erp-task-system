@@ -5,7 +5,7 @@ import { getShortUserName } from 'modules/user/utils'
 
 import { PauseCircleIcon } from 'components/Icons'
 
-import { ArrayItem } from 'shared/interfaces/utils'
+import { ArrayFirst } from 'shared/interfaces/utils'
 
 import commonFixtures from 'fixtures/common'
 
@@ -21,7 +21,7 @@ import {
 
 import TaskRequest, { TaskRequestProps } from './index'
 
-const action: ArrayItem<TaskRequestProps['actions']> = {
+const action: ArrayFirst<TaskRequestProps['actions']> = {
   text: fakeWord(),
   onClick: jest.fn(),
   disabled: false,

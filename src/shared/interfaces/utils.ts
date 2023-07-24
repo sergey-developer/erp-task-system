@@ -18,8 +18,8 @@ export type StringMap<Key extends string> = Record<Key, string>
 export type FCWithChildren<P = unknown> = FC<P & { children: ReactNode }>
 
 export type AnyFunction = (...args: any) => any
-export type FunctionParams<T extends AnyFunction> = ArrayItem<Parameters<T>>
+export type FunctionParams<T extends AnyFunction> = ArrayFirst<Parameters<T>>
 
 export type NumberOrString = number | string
 
-export type ArrayItem<T extends Array<any>> = T[number]
+export type ArrayFirst<T extends any[]> = T['length'] extends 0 ? never : T[0]

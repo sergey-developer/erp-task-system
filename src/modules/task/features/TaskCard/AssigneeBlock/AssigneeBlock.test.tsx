@@ -10,7 +10,7 @@ import { testUtils as taskAssigneeTestUtils } from 'modules/task/features/TaskAs
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
-import { ArrayItem, NonNullableObject } from 'shared/interfaces/utils'
+import { ArrayFirst, NonNullableObject } from 'shared/interfaces/utils'
 
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'
@@ -922,7 +922,7 @@ describe('Блок "Исполнитель заявки"', () => {
 
         describe('Вариант исполнителя не активен', () => {
           test('Если выбранный исполнитель является исполнителем заявки', async () => {
-            const assigneeOption: ArrayItem<WorkGroupListItemModel['members']> =
+            const assigneeOption: ArrayFirst<WorkGroupListItemModel['members']> =
               {
                 ...canSelectAssigneeProps.workGroup.members[0],
                 id: requiredProps.assignee.id,
@@ -952,7 +952,7 @@ describe('Блок "Исполнитель заявки"', () => {
           })
 
           test('Если выбранный исполнитель является авторизованным пользователем', async () => {
-            const assigneeOption: ArrayItem<WorkGroupListItemModel['members']> =
+            const assigneeOption: ArrayFirst<WorkGroupListItemModel['members']> =
               {
                 ...canSelectAssigneeProps.workGroup.members[0],
                 id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
@@ -1508,7 +1508,7 @@ describe('Блок "Исполнитель заявки"', () => {
 
         describe('Вариант исполнителя не активен', () => {
           test('Если выбранный исполнитель является исполнителем заявки', async () => {
-            const assigneeOption: ArrayItem<WorkGroupListItemModel['members']> =
+            const assigneeOption: ArrayFirst<WorkGroupListItemModel['members']> =
               {
                 ...canSelectAssigneeProps.workGroup.members[0],
                 id: requiredProps.assignee.id,
@@ -1538,7 +1538,7 @@ describe('Блок "Исполнитель заявки"', () => {
           })
 
           test('Если выбранный исполнитель является авторизованным пользователем', async () => {
-            const assigneeOption: ArrayItem<WorkGroupListItemModel['members']> =
+            const assigneeOption: ArrayFirst<WorkGroupListItemModel['members']> =
               {
                 ...canSelectAssigneeProps.workGroup.members[0],
                 id: canSelectAssigneeProps.workGroup.groupLead.id,
