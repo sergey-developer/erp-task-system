@@ -1,6 +1,6 @@
 import get from 'lodash/get'
 import moment from 'moment-timezone'
-import React, { FC, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 
 import { getPrivateRoutesConfig } from 'configs/routes'
 

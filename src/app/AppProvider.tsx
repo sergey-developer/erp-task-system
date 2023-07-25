@@ -5,8 +5,6 @@ import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import AntdConfigProvider from 'lib/antd/ConfigProvider'
 import setupMoment from 'lib/moment/setup'
 
-import ErrorBoundary from 'components/Error/ErrorBoundary'
-
 import { AppStore, store as appStore } from 'state/store'
 
 import { FCWithChildren } from 'shared/interfaces/utils'
@@ -26,9 +24,7 @@ const AppProvider: FCWithChildren<AppProviderProps> = ({
   return (
     <StoreProvider store={store}>
       <AntdConfigProvider>
-        <StyledThemeProvider theme={theme}>
-          <ErrorBoundary>{children}</ErrorBoundary>
-        </StyledThemeProvider>
+        <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>
       </AntdConfigProvider>
     </StoreProvider>
   )
