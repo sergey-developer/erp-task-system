@@ -1,16 +1,15 @@
 import React from 'react'
-import { Navigate, Outlet, RouteObject } from 'react-router-dom'
+import { Navigate, RouteObject } from 'react-router-dom'
 
-import { RouteEnum } from './constants'
+import { RouteEnum } from 'configs/routes'
 
 const TaskMonitoringPage = React.lazy(
   () => import('modules/monitoring/pages/TaskMonitoringPage'),
 )
 
-export const staffRoutesConfig: Array<RouteObject> = [
+export const routes: RouteObject[] = [
   {
     path: RouteEnum.Monitoring,
-    element: <Outlet />,
     children: [
       {
         index: true,

@@ -37,7 +37,7 @@ import {
 import { DEFAULT_PAGE_SIZE } from './constants'
 import TaskListPage from './index'
 
-const getContainer = () => screen.getByTestId('page-task-list')
+const getContainer = () => screen.getByTestId('task-list-page')
 
 const getSearchInput = () =>
   within(getContainer()).getByPlaceholderText('Искать заявку по номеру')
@@ -80,7 +80,7 @@ const setSearchValue = async (
   return input
 }
 
-const testUtils = {
+export const testUtils = {
   getContainer,
 
   getSearchInput,

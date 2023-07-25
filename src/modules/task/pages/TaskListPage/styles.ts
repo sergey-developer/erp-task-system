@@ -9,24 +9,27 @@ import { applyBreakpointStyles } from 'shared/utils/breakpoints'
 
 const { Search } = Input
 
+// todo: delete
 export const ColFlexStyled = styled(Col)`
-  display: flex;
-  flex-direction: column;
+  //display: flex;
+  //flex-direction: column;
 `
 
+// todo: delete
 export const RowStyled = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
+  //position: absolute;
+  //top: 0;
+  //left: 0;
+  //width: 100%;
+  //height: 100%;
+  //display: flex;
 `
 
+// todo: delete
 export const RowWrapStyled = styled(Row)`
-  flex-direction: column;
-  flex-flow: column;
-  flex: 1;
+  //flex-direction: column;
+  //flex-flow: column;
+  //flex: 1;
 `
 
 const searchBreakpointStyles: StyledBreakpointStyles = {
