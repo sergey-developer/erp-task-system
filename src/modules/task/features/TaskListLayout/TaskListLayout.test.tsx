@@ -3,7 +3,12 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { RouteEnum } from 'configs/routes'
 
-import { render } from '_tests_/utils'
+import TaskListMapPage from 'modules/task/pages/TaskListMapPage'
+import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskListMapPage/TaskListMapPage.test'
+import TaskListPage from 'modules/task/pages/TaskListPage'
+import { testUtils as taskListPageTestUtils } from 'modules/task/pages/TaskListPage/TaskListPage.test'
+
+import { renderInRoute_latest } from '_tests_/utils'
 
 import TaskListLayout from './index'
 
@@ -22,7 +27,7 @@ const clickTaskListLink = async (user: UserEvent) => {
 const getTaskListMapLink = () =>
   within(getContainer()).getByRole('link', { name: 'Карта' })
 
-const clickTaskMapListLink = async (user: UserEvent) => {
+const clickTaskListMapLink = async (user: UserEvent) => {
   const link = getTaskListMapLink()
   await user.click(link)
 }
@@ -34,19 +39,31 @@ export const testUtils = {
   clickTaskListLink,
 
   getTaskListMapLink,
-  clickTaskMapListLink,
+  clickTaskListMapLink,
 }
 
 describe('TaskListLayout', () => {
   test('Отображает children', () => {
     const children = 'children'
-    render(<TaskListLayout>{children}</TaskListLayout>)
+
+    renderInRoute_latest([
+      {
+        path: RouteEnum.Root,
+        element: <TaskListLayout>{children}</TaskListLayout>,
+      },
+    ])
+
     expect(within(getContainer()).getByText(children)).toBeInTheDocument()
   })
 
   describe('Ссылка на реестр', () => {
     test('Отображается корректно', () => {
-      render(<TaskListLayout>children</TaskListLayout>)
+      renderInRoute_latest([
+        {
+          path: RouteEnum.Root,
+          element: <TaskListLayout>children</TaskListLayout>,
+        },
+      ])
 
       const link = testUtils.getTaskListLink()
 
@@ -54,12 +71,36 @@ describe('TaskListLayout', () => {
       expect(link).toHaveAttribute('href', RouteEnum.TaskList)
     })
 
-    test.todo('При клике переходит на страницу реестра заявок')
+    test('При клике переходит на страницу реестра заявок', async () => {
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: RouteEnum.TaskList,
+            element: <TaskListPage />,
+          },
+          {
+            path: RouteEnum.TaskListMap,
+            element: <TaskListMapPage />,
+          },
+        ],
+        { initialEntries: [RouteEnum.TaskListMap], initialIndex: 1 },
+      )
+
+      await testUtils.clickTaskListLink(user)
+      const page = taskListPageTestUtils.getContainer()
+
+      expect(page).toBeInTheDocument()
+    })
   })
 
   describe('Ссылка на карту', () => {
     test('Отображается корректно', () => {
-      render(<TaskListLayout>children</TaskListLayout>)
+      renderInRoute_latest([
+        {
+          path: RouteEnum.Root,
+          element: <TaskListLayout>children</TaskListLayout>,
+        },
+      ])
 
       const link = testUtils.getTaskListMapLink()
 
@@ -67,6 +108,25 @@ describe('TaskListLayout', () => {
       expect(link).toHaveAttribute('href', RouteEnum.TaskListMap)
     })
 
-    test.todo('При клике переходит на страницу карты с заявками')
+    test('При клике переходит на страницу карты с заявками', async () => {
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: RouteEnum.TaskList,
+            element: <TaskListPage />,
+          },
+          {
+            path: RouteEnum.TaskListMap,
+            element: <TaskListMapPage />,
+          },
+        ],
+        { initialEntries: [RouteEnum.TaskList], initialIndex: 0 },
+      )
+
+      await testUtils.clickTaskListMapLink(user)
+      const page = taskListMapPageTestUtils.getContainer()
+
+      expect(page).toBeInTheDocument()
+    })
   })
 })

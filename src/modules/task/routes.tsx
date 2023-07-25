@@ -3,9 +3,11 @@ import { Navigate, RouteObject } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
-import TaskListLayout from './features/TaskListLayout'
-
 const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
+
+const TaskListMapPage = React.lazy(
+  () => import('modules/task/pages/TaskListMapPage'),
+)
 
 const FiscalAccumulatorTaskListPage = React.lazy(
   () => import('modules/task/pages/FiscalAccumulatorTaskListPage'),
@@ -25,7 +27,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: RouteEnum.TaskListMap,
-        element: <TaskListLayout>TaskListMap</TaskListLayout>,
+        element: <TaskListMapPage />,
       },
       {
         path: RouteEnum.FiscalAccumulatorTaskList,

@@ -80,7 +80,7 @@ const setSearchValue = async (
   return input
 }
 
-const testUtils = {
+export const testUtils = {
   getContainer,
 
   getSearchInput,
