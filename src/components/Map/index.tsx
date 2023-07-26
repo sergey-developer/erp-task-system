@@ -13,10 +13,33 @@ import VectorSource from 'ol/source/Vector'
 import { Fill, Stroke, Style, Text, Icon } from 'ol/style'
 import CircleStyle from 'ol/style/Circle'
 import { useState, useEffect, useRef, FC } from 'react'
+import DefaultMarkerIcon from './map-marker-sm.svg'
+import SelectedMarkerIcon from './map-marker-lg.svg'
 
 import { MapWrapperStyled } from './styles'
 
 const styleCache: Record<number, Style> = {}
+
+const defaultMarkerIcon = new Icon({
+  src: DefaultMarkerIcon,
+  size: [24, 24]
+})
+
+const selectedMarkerIcon = new Icon({
+  src: SelectedMarkerIcon,
+  size: [48, 48]
+})
+
+const circle = new CircleStyle({
+  radius: 10,
+  fill: new Fill({
+    color: '#EB5757',
+  }),
+})
+
+const circleTextFill = new Fill({
+  color: '#fff',
+})
 
 export type MapProps = {
   coords?: Array<number[]>
@@ -32,8 +55,8 @@ const Map: FC<MapProps> = ({ coords }) => {
   useEffect(() => {
     if (mapWrapperRef.current !== null) {
       const clusterSource = new Cluster({
-        distance: 100,
-        minDistance: 50,
+        distance: 60,
+        minDistance: 40,
         source: new VectorSource(),
       })
 
@@ -43,25 +66,22 @@ const Map: FC<MapProps> = ({ coords }) => {
           const features = feature.get('features') as Feature[]
           const size = features.length
           let style = styleCache[size]
+
           if (!style) {
-            style = new Style({
-              image: new CircleStyle({
-                radius: 10,
-                fill: new Fill({
-                  color: '#EB5757',
+            if (size === 1) {
+              style = new Style({
+                image: defaultMarkerIcon,
+              })
+            } else {
+              style = new Style({
+                image: circle,
+                text: new Text({
+                  text: size.toString(),
+                  fill: circleTextFill,
                 }),
-              }),
-              // image: new Icon({
-              //   src: 'src/map-marker-sm.svg',
-              //   size: [14, 14]
-              // }),
-              text: new Text({
-                text: size.toString(),
-                fill: new Fill({
-                  color: '#fff',
-                }),
-              }),
-            })
+              })
+            }
+
             styleCache[size] = style
           }
           return style
@@ -113,33 +133,34 @@ const Map: FC<MapProps> = ({ coords }) => {
   }, [coords, featuresLayer, map])
 
   const handleMapClick = (event: MapBrowserEvent<any>) => {
+    console.log({map, featuresLayer});
     if (map && featuresLayer) {
       featuresLayer.getFeatures(event.pixel).then((features) => {
         console.log(features)
-        if (features.length > 0) {
-          const clusterMembers: FeatureLike[] = features[0].get('features')
-          if (clusterMembers.length > 1) {
-            // Calculate the extent of the cluster members.
-            const extent = createEmpty()
-            clusterMembers.forEach((feature) =>
-              extend(extent, feature.getGeometry()!.getExtent()),
-            )
-            const view = map.getView()
-            const resolution = map.getView().getResolution()!
-            if (
-              view.getZoom() === view.getMaxZoom() ||
-              (getWidth(extent) < resolution && getHeight(extent) < resolution)
-            ) {
-              // Show an expanded view of the cluster members.
-              // clickFeature = features[0]
-              // clickResolution = resolution
-              // clusterCircles.setStyle(clusterCircleStyle)
-            } else {
-              // Zoom to the extent of the cluster members.
-              view.fit(extent, { duration: 500, padding: [50, 50, 50, 50] })
-            }
-          }
-        }
+        // if (features.length > 0) {
+        //   const clusterMembers: FeatureLike[] = features[0].get('features')
+        //   if (clusterMembers.length > 1) {
+        //     // Calculate the extent of the cluster members.
+        //     const extent = createEmpty()
+        //     clusterMembers.forEach((feature) =>
+        //       extend(extent, feature.getGeometry()!.getExtent()),
+        //     )
+        //     const view = map.getView()
+        //     const resolution = map.getView().getResolution()!
+        //     if (
+        //       view.getZoom() === view.getMaxZoom() ||
+        //       (getWidth(extent) < resolution && getHeight(extent) < resolution)
+        //     ) {
+        //       // Show an expanded view of the cluster members.
+        //       // clickFeature = features[0]
+        //       // clickResolution = resolution
+        //       // clusterCircles.setStyle(clusterCircleStyle)
+        //     } else {
+        //       // Zoom to the extent of the cluster members.
+        //       view.fit(extent, { duration: 500, padding: [50, 50, 50, 50] })
+        //     }
+        //   }
+        // }
       })
     }
   }
