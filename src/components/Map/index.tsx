@@ -3,7 +3,7 @@ import { FeatureLike } from 'ol/Feature'
 import OlMap from 'ol/Map'
 import View from 'ol/View'
 import { Coordinate } from 'ol/coordinate'
-import { createEmpty, extend, getHeight, getWidth } from "ol/extent";
+import { createEmpty, extend, getHeight, getWidth } from 'ol/extent'
 import { Point } from 'ol/geom'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
@@ -28,9 +28,6 @@ const Map: FC<MapProps> = ({ coords }) => {
   const [selectedCoord, setSelectedCoord] = useState<Coordinate>()
 
   const mapWrapperRef = useRef<HTMLDivElement>(null)
-
-  const mapRef = useRef<OlMap>()
-  mapRef.current = map
 
   useEffect(() => {
     if (mapWrapperRef.current !== null) {
@@ -115,38 +112,35 @@ const Map: FC<MapProps> = ({ coords }) => {
     }
   }, [coords, featuresLayer, map])
 
-  const handleMapClick = () => {
+  const handleMapClick = (event: MapBrowserEvent<any>) => {
     if (map && featuresLayer) {
-      // map.on('click', (event: MapBrowserEvent<any>) => {
-      //   featuresLayer.getFeatures(event.pixel).then((features) => {
-      //     console.log(features);
-      //     if (features.length > 0) {
-      //       const clusterMembers: FeatureLike[] = features[0].get('features')
-      //       if (clusterMembers.length > 1) {
-      //         // Calculate the extent of the cluster members.
-      //         const extent = createEmpty()
-      //         clusterMembers.forEach((feature) =>
-      //           extend(extent, feature.getGeometry()!.getExtent()),
-      //         )
-      //         const view = map.getView()
-      //         const resolution = map.getView().getResolution()!
-      //         if (
-      //           view.getZoom() === view.getMaxZoom() ||
-      //           (getWidth(extent) < resolution &&
-      //             getHeight(extent) < resolution)
-      //         ) {
-      //           // Show an expanded view of the cluster members.
-      //           // clickFeature = features[0]
-      //           // clickResolution = resolution
-      //           // clusterCircles.setStyle(clusterCircleStyle)
-      //         } else {
-      //           // Zoom to the extent of the cluster members.
-      //           view.fit(extent, { duration: 500, padding: [50, 50, 50, 50] })
-      //         }
-      //       }
-      //     }
-      //   })
-      // })
+      featuresLayer.getFeatures(event.pixel).then((features) => {
+        console.log(features)
+        if (features.length > 0) {
+          const clusterMembers: FeatureLike[] = features[0].get('features')
+          if (clusterMembers.length > 1) {
+            // Calculate the extent of the cluster members.
+            const extent = createEmpty()
+            clusterMembers.forEach((feature) =>
+              extend(extent, feature.getGeometry()!.getExtent()),
+            )
+            const view = map.getView()
+            const resolution = map.getView().getResolution()!
+            if (
+              view.getZoom() === view.getMaxZoom() ||
+              (getWidth(extent) < resolution && getHeight(extent) < resolution)
+            ) {
+              // Show an expanded view of the cluster members.
+              // clickFeature = features[0]
+              // clickResolution = resolution
+              // clusterCircles.setStyle(clusterCircleStyle)
+            } else {
+              // Zoom to the extent of the cluster members.
+              view.fit(extent, { duration: 500, padding: [50, 50, 50, 50] })
+            }
+          }
+        }
+      })
     }
   }
 
