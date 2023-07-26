@@ -1,36 +1,41 @@
 import { Feature, MapBrowserEvent } from 'ol'
-import { FeatureLike } from 'ol/Feature'
 import OlMap from 'ol/Map'
 import View from 'ol/View'
-import { Coordinate } from 'ol/coordinate'
-import { createEmpty, extend, getHeight, getWidth } from 'ol/extent'
+import { click } from 'ol/events/condition'
+import { boundingExtent } from 'ol/extent'
 import { Point } from 'ol/geom'
+import { Select } from 'ol/interaction'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
 import { fromLonLat } from 'ol/proj'
 import { Cluster, OSM } from 'ol/source'
 import VectorSource from 'ol/source/Vector'
-import { Fill, Stroke, Style, Text, Icon } from 'ol/style'
-import CircleStyle from 'ol/style/Circle'
+import { Fill, Style, Text, Icon, Circle } from 'ol/style'
 import { useState, useEffect, useRef, FC } from 'react'
-import DefaultMarkerIcon from './map-marker-sm.svg'
-import SelectedMarkerIcon from './map-marker-lg.svg'
 
+import { isTruthy } from 'shared/utils/common'
+
+import SelectedMarkerIcon from './map-marker-lg.svg'
+import DefaultMarkerIcon from './map-marker-sm.svg'
 import { MapWrapperStyled } from './styles'
 
 const styleCache: Record<number, Style> = {}
 
 const defaultMarkerIcon = new Icon({
   src: DefaultMarkerIcon,
-  size: [24, 24]
+  size: [24, 24],
 })
 
 const selectedMarkerIcon = new Icon({
   src: SelectedMarkerIcon,
-  size: [48, 48]
+  size: [48, 48],
 })
 
-const circle = new CircleStyle({
+const selectedMarkerStyle = new Style({
+  image: selectedMarkerIcon,
+})
+
+const circle = new Circle({
   radius: 10,
   fill: new Fill({
     color: '#EB5757',
@@ -41,6 +46,11 @@ const circleTextFill = new Fill({
   color: '#fff',
 })
 
+const selectClick = new Select({
+  condition: click,
+  style: selectedMarkerStyle,
+})
+
 export type MapProps = {
   coords?: Array<number[]>
 }
@@ -48,15 +58,17 @@ export type MapProps = {
 const Map: FC<MapProps> = ({ coords }) => {
   const [map, setMap] = useState<OlMap>()
   const [featuresLayer, setFeaturesLayer] = useState<VectorLayer<Cluster>>()
-  const [selectedCoord, setSelectedCoord] = useState<Coordinate>()
-
+  const [selectedFeature, setSelectedFeature] = useState<Feature>()
   const mapWrapperRef = useRef<HTMLDivElement>(null)
+
+  const mapRef = useRef<OlMap>()
+  mapRef.current = map
 
   useEffect(() => {
     if (mapWrapperRef.current !== null) {
       const clusterSource = new Cluster({
-        distance: 60,
-        minDistance: 40,
+        distance: 100,
+        minDistance: 50,
         source: new VectorSource(),
       })
 
@@ -84,6 +96,7 @@ const Map: FC<MapProps> = ({ coords }) => {
 
             styleCache[size] = style
           }
+
           return style
         },
       })
@@ -111,57 +124,42 @@ const Map: FC<MapProps> = ({ coords }) => {
     if (coords?.length && featuresLayer) {
       const features = coords.map((c) => new Feature(new Point(fromLonLat(c))))
 
+      // add features to map
       featuresLayer.setSource(
         new Cluster({ source: new VectorSource({ features }) }),
       )
 
-      // const source = featuresLayer.getSource()
+      // fit view to features
+      if (mapRef.current) {
+        const extent = boundingExtent(
+          features
+            .map((f) => f.getGeometry())
+            .filter(isTruthy)
+            .map((f) => f.getExtent()),
+        )
 
-      // if (map && source) {
-      // console.log(source.getExtent());
-      // const extent = source.getExtent()
-      // const extent = boundingExtent(
-      //   features.map((r) => r.getGeometry()!.getCoordinates()),
-      // )
-      // console.log({ extent })
-
-      // if (extent.length) {
-      //   map.getView().fit(extent)
-      // }
-      // }
+        if (extent.length) {
+          mapRef.current.getView().fit(extent, { padding: [50, 50, 50, 50] })
+        }
+      }
     }
-  }, [coords, featuresLayer, map])
+  }, [coords, featuresLayer])
 
   const handleMapClick = (event: MapBrowserEvent<any>) => {
-    console.log({map, featuresLayer});
-    if (map && featuresLayer) {
-      featuresLayer.getFeatures(event.pixel).then((features) => {
-        console.log(features)
-        // if (features.length > 0) {
-        //   const clusterMembers: FeatureLike[] = features[0].get('features')
-        //   if (clusterMembers.length > 1) {
-        //     // Calculate the extent of the cluster members.
-        //     const extent = createEmpty()
-        //     clusterMembers.forEach((feature) =>
-        //       extend(extent, feature.getGeometry()!.getExtent()),
-        //     )
-        //     const view = map.getView()
-        //     const resolution = map.getView().getResolution()!
-        //     if (
-        //       view.getZoom() === view.getMaxZoom() ||
-        //       (getWidth(extent) < resolution && getHeight(extent) < resolution)
-        //     ) {
-        //       // Show an expanded view of the cluster members.
-        //       // clickFeature = features[0]
-        //       // clickResolution = resolution
-        //       // clusterCircles.setStyle(clusterCircleStyle)
-        //     } else {
-        //       // Zoom to the extent of the cluster members.
-        //       view.fit(extent, { duration: 500, padding: [50, 50, 50, 50] })
-        //     }
-        //   }
-        // }
-      })
+    if (mapRef.current) {
+      // increase marker
+      const featuresAtPixel = mapRef.current.getFeaturesAtPixel(event.pixel)
+
+      if (featuresAtPixel.length) {
+        const features = featuresAtPixel[0].get('features') as Feature[]
+        if (features.length === 1) {
+          mapRef.current.addInteraction(selectClick)
+          setSelectedFeature(features[0])
+        } else {
+          mapRef.current.removeInteraction(selectClick)
+          setSelectedFeature(undefined)
+        }
+      }
     }
   }
 
