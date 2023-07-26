@@ -10,7 +10,7 @@ export const getSubTaskListUrl = (taskId: number): string =>
   )
 
 export const getSubTaskTemplateListUrl = (): string =>
-  SubTaskEndpointEnum.GetSubTaskTemplateList
+  appendSlashAtEnd(SubTaskEndpointEnum.GetSubTaskTemplateList)
 
 export const createSubTaskUrl = (taskId: number): string =>
   appendSlashAtEnd(
