@@ -87,10 +87,7 @@ const TaskListMap: FC<TaskListMapProps> = ({ coords }) => {
       const initialMap = new OlMap({
         target: mapWrapperRef.current,
         layers: [new TileLayer({ source: new OSM() }), initialFeaturesLayer],
-        view: new View({
-          center: fromLonLat([0, 0]),
-          zoom: 2,
-        }),
+        view: new View(),
         controls: [],
       })
 
