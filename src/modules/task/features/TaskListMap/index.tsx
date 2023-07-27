@@ -1,3 +1,5 @@
+import SelectedMarkerIcon from 'assets/icons/task-map-marker-lg.svg'
+import DefaultMarkerIcon from 'assets/icons/task-map-marker-sm.svg'
 import { Feature, MapBrowserEvent } from 'ol'
 import OlMap from 'ol/Map'
 import View from 'ol/View'
@@ -15,24 +17,22 @@ import { useState, useEffect, useRef, FC } from 'react'
 
 import { isTruthy } from 'shared/utils/common'
 
-import SelectedMarkerIcon from './map-marker-lg.svg'
-import DefaultMarkerIcon from './map-marker-sm.svg'
 import { MapWrapperStyled } from './styles'
 
 const styleCache: Record<number, Style> = {}
 
-const defaultMarkerIcon = new Icon({
-  src: DefaultMarkerIcon,
-  size: [24, 24],
-})
-
-const selectedMarkerIcon = new Icon({
-  src: SelectedMarkerIcon,
-  size: [48, 48],
+const defaultMarkerStyle = new Style({
+  image: new Icon({
+    src: DefaultMarkerIcon,
+    size: [24, 24],
+  }),
 })
 
 const selectedMarkerStyle = new Style({
-  image: selectedMarkerIcon,
+  image: new Icon({
+    src: SelectedMarkerIcon,
+    size: [48, 48],
+  }),
 })
 
 const circle = new Circle({
@@ -51,11 +51,11 @@ const selectClick = new Select({
   style: selectedMarkerStyle,
 })
 
-export type MapProps = {
+export type TaskListMapProps = {
   coords?: Array<number[]>
 }
 
-const Map: FC<MapProps> = ({ coords }) => {
+const TaskListMap: FC<TaskListMapProps> = ({ coords }) => {
   const [map, setMap] = useState<OlMap>()
   const [featuresLayer, setFeaturesLayer] = useState<VectorLayer<Cluster>>()
   const [selectedFeature, setSelectedFeature] = useState<Feature>()
@@ -63,6 +63,14 @@ const Map: FC<MapProps> = ({ coords }) => {
 
   const mapRef = useRef<OlMap>()
   mapRef.current = map
+
+  useEffect(() => {
+    selectClick.on('select', (event) => {
+      if (!event.selected.length && event.deselected.length) {
+        setSelectedFeature(undefined)
+      }
+    })
+  }, [])
 
   useEffect(() => {
     if (mapWrapperRef.current !== null) {
@@ -74,31 +82,6 @@ const Map: FC<MapProps> = ({ coords }) => {
 
       const initialFeaturesLayer = new VectorLayer({
         source: clusterSource,
-        style: (feature) => {
-          const features = feature.get('features') as Feature[]
-          const size = features.length
-          let style = styleCache[size]
-
-          if (!style) {
-            if (size === 1) {
-              style = new Style({
-                image: defaultMarkerIcon,
-              })
-            } else {
-              style = new Style({
-                image: circle,
-                text: new Text({
-                  text: size.toString(),
-                  fill: circleTextFill,
-                }),
-              })
-            }
-
-            styleCache[size] = style
-          }
-
-          return style
-        },
       })
 
       const initialMap = new OlMap({
@@ -119,6 +102,38 @@ const Map: FC<MapProps> = ({ coords }) => {
       return () => initialMap.setTarget(undefined)
     }
   }, [])
+
+  useEffect(() => {
+    featuresLayer?.setStyle((feature) => {
+      const features = feature.get('features') as Feature[]
+      const size = features.length
+      let style = styleCache[size]
+
+      if (size === 1) {
+        if (selectedFeature === features[0]) {
+          return selectedMarkerStyle
+        }
+      }
+
+      if (!style) {
+        if (size === 1) {
+          style = defaultMarkerStyle
+        } else {
+          style = new Style({
+            image: circle,
+            text: new Text({
+              text: size.toString(),
+              fill: circleTextFill,
+            }),
+          })
+        }
+
+        styleCache[size] = style
+      }
+
+      return style
+    })
+  }, [featuresLayer, selectedFeature])
 
   useEffect(() => {
     if (coords?.length && featuresLayer) {
@@ -157,7 +172,6 @@ const Map: FC<MapProps> = ({ coords }) => {
           setSelectedFeature(features[0])
         } else {
           mapRef.current.removeInteraction(selectClick)
-          setSelectedFeature(undefined)
         }
       }
     }
@@ -166,4 +180,4 @@ const Map: FC<MapProps> = ({ coords }) => {
   return <MapWrapperStyled ref={mapWrapperRef} />
 }
 
-export default Map
+export default TaskListMap
