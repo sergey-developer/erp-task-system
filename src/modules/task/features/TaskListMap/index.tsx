@@ -104,35 +104,37 @@ const TaskListMap: FC<TaskListMapProps> = ({ coords }) => {
   }, [])
 
   useEffect(() => {
-    featuresLayer?.setStyle((feature) => {
-      const features = feature.get('features') as Feature[]
-      const size = features.length
-      let style = styleCache[size]
+    if (featuresLayer) {
+      featuresLayer.setStyle((feature) => {
+        const features = feature.get('features') as Feature[]
+        const size = features.length
+        let style = styleCache[size]
 
-      if (size === 1) {
-        if (selectedFeature === features[0]) {
-          return selectedMarkerStyle
-        }
-      }
-
-      if (!style) {
         if (size === 1) {
-          style = defaultMarkerStyle
-        } else {
-          style = new Style({
-            image: circle,
-            text: new Text({
-              text: size.toString(),
-              fill: circleTextFill,
-            }),
-          })
+          if (selectedFeature === features[0]) {
+            return selectedMarkerStyle
+          }
         }
 
-        styleCache[size] = style
-      }
+        if (!style) {
+          if (size === 1) {
+            style = defaultMarkerStyle
+          } else {
+            style = new Style({
+              image: circle,
+              text: new Text({
+                text: size.toString(),
+                fill: circleTextFill,
+              }),
+            })
+          }
 
-      return style
-    })
+          styleCache[size] = style
+        }
+
+        return style
+      })
+    }
   }, [featuresLayer, selectedFeature])
 
   useEffect(() => {
