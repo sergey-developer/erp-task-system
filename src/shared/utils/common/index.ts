@@ -1,5 +1,5 @@
 export * from './downloadLink'
 export * from './valueOrHyphen'
 export * from './hasProperty'
-export * from './truthy'
+export * from './isTruthy'
 export * from './base64'
