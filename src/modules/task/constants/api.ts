@@ -45,7 +45,7 @@ export enum TaskApiTriggerEnum {
   TakeTask = 'takeTask',
 }
 
-export enum TaskCommentEndpointNameEnum {
+export enum TaskCommentApiTriggerEnum {
   CreateTaskComment = 'createTaskComment',
   GetTaskCommentList = 'getTaskCommentList',
 }

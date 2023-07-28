@@ -1,5 +1,5 @@
 import { TaskApiTagEnum } from 'modules/task/constants'
-import { UserEndpointEnum } from 'modules/user/constants/api'
+import { UserApiEnum } from 'modules/user/constants/api'
 import {
   GetUserMeCodeQueryArgs,
   GetUserMeCodeSuccessResponse,
@@ -49,7 +49,7 @@ const userApiService = baseApiService.injectEndpoints({
     }),
     getUserMe: build.query<GetUserMeSuccessResponse, GetUserMeQueryArgs>({
       query: () => ({
-        url: UserEndpointEnum.GetUserMe,
+        url: UserApiEnum.GetUserMe,
         method: HttpMethodEnum.Get,
       }),
     }),
@@ -58,7 +58,7 @@ const userApiService = baseApiService.injectEndpoints({
       GetUserMeCodeQueryArgs
     >({
       query: () => ({
-        url: UserEndpointEnum.GetUserMeCode,
+        url: UserApiEnum.GetUserMeCode,
         method: HttpMethodEnum.Get,
       }),
     }),
@@ -67,7 +67,7 @@ const userApiService = baseApiService.injectEndpoints({
       GetUserStatusListQueryArgs
     >({
       query: () => ({
-        url: UserEndpointEnum.GetUserStatusList,
+        url: UserApiEnum.GetUserStatusList,
         method: HttpMethodEnum.Get,
       }),
     }),
