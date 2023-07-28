@@ -8,7 +8,8 @@ import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskLi
 import TaskListPage from 'modules/task/pages/TaskListPage'
 import { testUtils as taskListPageTestUtils } from 'modules/task/pages/TaskListPage/TaskListPage.test'
 
-import { renderInRoute_latest } from '_tests_/utils'
+import { mockGetTaskListMapSuccess } from '_tests_/mocks/api'
+import { renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
 import TaskListLayout from './index'
 
@@ -42,6 +43,8 @@ export const testUtils = {
   clickTaskListMapLink,
 }
 
+setupApiTests()
+
 describe('TaskListLayout', () => {
   test('Отображает children', () => {
     const children = 'children'
@@ -72,6 +75,8 @@ describe('TaskListLayout', () => {
     })
 
     test('При клике переходит на страницу реестра заявок', async () => {
+      mockGetTaskListMapSuccess()
+
       const { user } = renderInRoute_latest(
         [
           {
@@ -109,6 +114,8 @@ describe('TaskListLayout', () => {
     })
 
     test('При клике переходит на страницу карты с заявками', async () => {
+      mockGetTaskListMapSuccess()
+
       const { user } = renderInRoute_latest(
         [
           {

@@ -1,10 +1,11 @@
-export enum TaskEndpointEnum {
+export enum TaskApiEnum {
   GetTask = '/tasks/:id/',
   ResolveTask = '/tasks/:id/resolution/',
   TakeTask = '/tasks/:id/execution/',
   GetWorkPerformedAct = '/tasks/:id/completion_certificate/',
 
   GetTaskList = '/tasks/',
+  GetTaskListMap = '/tasks/map/',
 
   GetFiscalAccumulatorTaskList = '/fiscal-accumulator/',
 
@@ -28,13 +29,14 @@ export enum TaskEndpointEnum {
   GetTaskJournalCsv = '/tasks/:id/journal/csv/',
 }
 
-export enum TaskEndpointTagEnum {
+export enum TaskApiTagEnum {
   Task = 'Task',
   TaskList = 'TaskList',
 }
 
-export enum TaskEndpointNameEnum {
+export enum TaskApiTriggerEnum {
   GetTaskList = 'getTaskList',
+  GetTaskListMap = 'getTaskListMap',
   GetTaskCounters = 'getTaskCounters',
   GetFiscalAccumulatorTaskList = 'getFiscalAccumulatorTaskList',
   GetTask = 'getTask',
@@ -43,7 +45,7 @@ export enum TaskEndpointNameEnum {
   TakeTask = 'takeTask',
 }
 
-export enum TaskCommentEndpointNameEnum {
+export enum TaskCommentApiTriggerEnum {
   CreateTaskComment = 'createTaskComment',
   GetTaskCommentList = 'getTaskCommentList',
 }
