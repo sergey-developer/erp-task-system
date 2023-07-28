@@ -1,8 +1,10 @@
 import { TaskListMapItemModel, TaskListMapModel } from 'modules/task/models'
 
+import { MaybeNull } from 'shared/interfaces/utils'
+
 export type TaskListMapProps = {
   tasks: TaskListMapModel
-  onClick: (coords: [lon: number, lat: number]) => void
+  onClick: (coords: MaybeNull<[lon: number, lat: number]>) => void
 }
 
 export type FeatureData = Pick<TaskListMapItemModel, 'id' | 'type'>

@@ -13,6 +13,7 @@ import { Cluster, OSM } from 'ol/source'
 import VectorSource from 'ol/source/Vector'
 import { useState, useEffect, useRef, FC } from 'react'
 
+import { MaybeNull } from 'shared/interfaces/utils'
 import { isTruthy } from 'shared/utils/common'
 
 import { FeatureData, TaskListMapProps } from './interfaces'
@@ -31,7 +32,10 @@ const interactionSelect = new Select({
 const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClick }) => {
   const [map, setMap] = useState<OlMap>()
   const [featuresLayer, setFeaturesLayer] = useState<VectorLayer<Cluster>>()
-  const [selectedFeature, setSelectedFeature] = useState<Feature>()
+
+  const [selectedFeature, setSelectedFeature] =
+    useState<MaybeNull<Feature>>(null)
+
   const mapWrapperRef = useRef<HTMLDivElement>(null)
 
   const mapRef = useRef<OlMap>()
@@ -51,12 +55,18 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClick }) => {
           }
         }
 
+        const geometry = event.selected[0].getGeometry()
+        if (geometry) {
+          // @ts-ignore
+          onClick(geometry.getCoordinates())
+        }
+
         setSelectedFeature(event.selected[0])
       } else if (event.deselected.length) {
-        setSelectedFeature(undefined)
+        setSelectedFeature(null)
       }
     })
-  }, [])
+  }, [onClick])
 
   useEffect(() => {
     if (mapWrapperRef.current) {
