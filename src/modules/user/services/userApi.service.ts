@@ -1,4 +1,4 @@
-import { TaskEndpointTagEnum } from 'modules/task/constants'
+import { TaskApiTagEnum } from 'modules/task/constants'
 import { UserEndpointEnum } from 'modules/user/constants/api'
 import {
   GetUserMeCodeQueryArgs,
@@ -30,7 +30,7 @@ const userApiService = baseApiService.injectEndpoints({
         data: payload,
       }),
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointTagEnum.TaskList, TaskEndpointTagEnum.Task],
+        error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.Task],
       onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
         try {
           const { data: updatedUser } = await queryFulfilled

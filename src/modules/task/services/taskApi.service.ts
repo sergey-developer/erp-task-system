@@ -1,9 +1,9 @@
 import { decamelize } from 'humps'
 
 import {
-  TaskEndpointEnum,
-  TaskEndpointNameEnum,
-  TaskEndpointTagEnum,
+  TaskApiEnum,
+  TaskApiTriggerEnum,
+  TaskApiTagEnum,
 } from 'modules/task/constants'
 import { GetTaskListTransformedResponse } from 'modules/task/interfaces'
 import {
@@ -11,6 +11,8 @@ import {
   GetFiscalAccumulatorTaskListSuccessResponse,
   GetTaskCountersQueryArgs,
   GetTaskCountersSuccessResponse,
+  GetTaskListMapQueryArgs,
+  GetTaskListMapSuccessResponse,
   GetTaskListQueryArgs,
   GetTaskListSuccessResponse,
   GetTaskQueryArgs,
@@ -34,12 +36,12 @@ import { baseApiService } from 'shared/services/api'
 
 const taskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
-    [TaskEndpointNameEnum.GetTaskList]: build.query<
+    [TaskApiTriggerEnum.GetTaskList]: build.query<
       GetTaskListTransformedResponse,
       GetTaskListQueryArgs
     >({
       query: (filter) => ({
-        url: TaskEndpointEnum.GetTaskList,
+        url: TaskApiEnum.GetTaskList,
         method: HttpMethodEnum.Get,
         params: filter,
       }),
@@ -54,29 +56,37 @@ const taskApiService = baseApiService.injectEndpoints({
           results: response.results,
         }
       },
-      providesTags: (result, error) =>
-        error ? [] : [TaskEndpointTagEnum.TaskList],
+      providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
     }),
-    [TaskEndpointNameEnum.GetTaskCounters]: build.query<
+    [TaskApiTriggerEnum.GetTaskListMap]: build.query<
+      GetTaskListMapSuccessResponse,
+      GetTaskListMapQueryArgs
+    >({
+      query: () => ({
+        url: TaskApiEnum.GetTaskListMap,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
+    [TaskApiTriggerEnum.GetTaskCounters]: build.query<
       GetTaskCountersSuccessResponse,
       GetTaskCountersQueryArgs
     >({
       query: () => ({
-        url: TaskEndpointEnum.GetTaskCounters,
+        url: TaskApiEnum.GetTaskCounters,
         method: HttpMethodEnum.Get,
       }),
     }),
-    [TaskEndpointNameEnum.GetFiscalAccumulatorTaskList]: build.query<
+    [TaskApiTriggerEnum.GetFiscalAccumulatorTaskList]: build.query<
       GetFiscalAccumulatorTaskListSuccessResponse,
       GetFiscalAccumulatorTaskListQueryArgs
     >({
       query: (params) => ({
-        url: TaskEndpointEnum.GetFiscalAccumulatorTaskList,
+        url: TaskApiEnum.GetFiscalAccumulatorTaskList,
         method: HttpMethodEnum.Get,
         params,
       }),
     }),
-    [TaskEndpointNameEnum.GetTask]: build.query<
+    [TaskApiTriggerEnum.GetTask]: build.query<
       GetTaskSuccessResponse,
       GetTaskQueryArgs
     >({
@@ -84,10 +94,9 @@ const taskApiService = baseApiService.injectEndpoints({
         url: getTaskUrl(taskId),
         method: HttpMethodEnum.Get,
       }),
-      providesTags: (result, error) =>
-        error ? [] : [TaskEndpointTagEnum.Task],
+      providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
     }),
-    [TaskEndpointNameEnum.GetWorkPerformedAct]: build.mutation<
+    [TaskApiTriggerEnum.GetWorkPerformedAct]: build.mutation<
       GetTaskWorkPerformedActSuccessResponse,
       GetTaskWorkPerformedActMutationArgs
     >({
@@ -97,7 +106,7 @@ const taskApiService = baseApiService.injectEndpoints({
         data: payload,
       }),
     }),
-    [TaskEndpointNameEnum.ResolveTask]: build.mutation<
+    [TaskApiTriggerEnum.ResolveTask]: build.mutation<
       ResolveTaskSuccessResponse,
       ResolveTaskMutationArgs
     >({
@@ -123,9 +132,9 @@ const taskApiService = baseApiService.injectEndpoints({
         }
       },
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointTagEnum.TaskList],
+        error ? [] : [TaskApiTagEnum.TaskList],
     }),
-    [TaskEndpointNameEnum.TakeTask]: build.mutation<
+    [TaskApiTriggerEnum.TakeTask]: build.mutation<
       TakeTaskSuccessResponse,
       TakeTaskMutationArgs
     >({
@@ -133,8 +142,7 @@ const taskApiService = baseApiService.injectEndpoints({
         url: takeTaskUrl(taskId),
         method: HttpMethodEnum.Post,
       }),
-      invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointTagEnum.Task],
+      invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
     }),
   }),
   overrideExisting: false,
@@ -144,6 +152,7 @@ export const {
   useGetTaskQuery,
   useGetTaskCountersQuery,
   useGetFiscalAccumulatorTaskListQuery,
+  useGetTaskListMapQuery,
   useLazyGetTaskListQuery,
   useGetTaskWorkPerformedActMutation,
   useResolveTaskMutation,

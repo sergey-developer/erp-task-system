@@ -79,11 +79,12 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime).+(js|jsx|ts|tsx)$"
+      "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime|ol|geotiff|quick-lru).+(js|jsx|ts|tsx)$"
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/build/",
       "<rootDir>/node_modules/",
+      "assets",
       "fixtures",
       "_tests_",
       "interfaces",
