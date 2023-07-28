@@ -1,4 +1,5 @@
 import { Feature } from 'ol'
+import { FeatureLike } from 'ol/Feature'
 import OlMap from 'ol/Map'
 import View from 'ol/View'
 import { click } from 'ol/events/condition'
@@ -15,24 +16,19 @@ import { useState, useEffect, useRef, FC } from 'react'
 import { isTruthy } from 'shared/utils/common'
 
 import { FeatureData, TaskListMapProps } from './interfaces'
-import { MapWrapperStyled } from './styles'
-import { getSelectedMarkerStyle, setFeaturesLayerStyleFn } from './utils'
+import { MapWrapperStyled, selectedClusterStyle } from './styles'
+import {
+  getClusterStyle,
+  getMarkerStyle,
+  getSelectedMarkerStyle,
+  styleCache,
+} from './utils'
 
 const interactionSelect = new Select({
-  condition: (event) => {
-    const length = event.map
-      .getFeaturesAtPixel(event.pixel)[0]
-      ?.get('features').length
-
-    if (!length || length === 1) {
-      return click(event)
-    } else {
-      return false
-    }
-  },
+  condition: click,
 })
 
-const TaskListMap: FC<TaskListMapProps> = ({ tasks }) => {
+const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClick }) => {
   const [map, setMap] = useState<OlMap>()
   const [featuresLayer, setFeaturesLayer] = useState<VectorLayer<Cluster>>()
   const [selectedFeature, setSelectedFeature] = useState<Feature>()
@@ -44,37 +40,23 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks }) => {
   useEffect(() => {
     interactionSelect.on('select', (event) => {
       if (event.selected.length) {
-        setSelectedFeature(event.selected[0].get('features')[0])
+        const features: Feature[] = event.selected[0].get('features')
+
+        if (features.length) {
+          if (features.length === 1) {
+            const data: FeatureData = features[0].get('data')
+            event.selected[0].setStyle(getSelectedMarkerStyle(data.type))
+          } else {
+            event.selected[0].setStyle(selectedClusterStyle)
+          }
+        }
+
+        setSelectedFeature(event.selected[0])
       } else if (event.deselected.length) {
         setSelectedFeature(undefined)
       }
     })
   }, [])
-
-  useEffect(() => {
-    if (selectedFeature) {
-      const selectedFeatureData: FeatureData = selectedFeature.get('data')
-
-      const interactionSelectFeatures = interactionSelect
-        .getFeatures()
-        .getArray()
-
-      if (interactionSelectFeatures.length) {
-        const childFeatures = interactionSelectFeatures[0].get('features')
-
-        if (childFeatures.length) {
-          const firstChildFeatureData: FeatureData =
-            childFeatures[0].get('data')
-
-          if (selectedFeatureData.id === firstChildFeatureData.id) {
-            selectedFeature.setStyle(
-              getSelectedMarkerStyle(selectedFeatureData.type),
-            )
-          }
-        }
-      }
-    }
-  }, [selectedFeature])
 
   useEffect(() => {
     if (mapWrapperRef.current) {
@@ -106,7 +88,67 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks }) => {
 
   useEffect(() => {
     if (featuresLayer) {
-      featuresLayer.setStyle(setFeaturesLayerStyleFn(selectedFeature))
+      featuresLayer.setStyle((feature: FeatureLike) => {
+        const features = feature.get('features') as Feature[]
+
+        if (features.length) {
+          const size = features.length
+          const isOneFeature = size === 1
+
+          const firstFeatureData: FeatureData = features[0].get('data')
+
+          let styleBySize = styleCache[size]
+          let styleByType = styleCache[firstFeatureData.type]
+
+          if (selectedFeature) {
+            const selectedFeatureFeatures: Feature[] =
+              selectedFeature.get('features')
+            const selectedFeatureFeaturesSize = selectedFeatureFeatures.length
+
+            if (selectedFeatureFeaturesSize) {
+              if (selectedFeatureFeaturesSize === 1) {
+                const selectedFeatureData: FeatureData =
+                  selectedFeatureFeatures[0].get('data')
+
+                if (firstFeatureData.id === selectedFeatureData.id) {
+                  return getSelectedMarkerStyle(selectedFeatureData.type)
+                }
+              } else {
+                const selectedFeaturesIds = selectedFeatureFeatures.map((f) => {
+                  const data: FeatureData = f.get('data')
+                  return data.id
+                })
+                const featuresIds = features.map((f) => {
+                  const data: FeatureData = f.get('data')
+                  return data.id
+                })
+
+                if (
+                  selectedFeaturesIds.every((id) => featuresIds.includes(id))
+                ) {
+                  return selectedClusterStyle
+                }
+              }
+            }
+          }
+
+          if (isOneFeature) {
+            if (!styleByType) {
+              styleByType = getMarkerStyle(firstFeatureData.type)
+              styleCache[firstFeatureData.type] = styleByType
+            }
+
+            return styleByType
+          } else {
+            if (!styleBySize) {
+              styleBySize = getClusterStyle(size)
+              styleCache[size] = styleBySize
+            }
+
+            return styleBySize
+          }
+        }
+      })
     }
   }, [featuresLayer, selectedFeature])
 

@@ -5,15 +5,17 @@ import styled from 'styled-components'
 import SelectedMarkerIcon from 'assets/icons/task-map-marker-lg.svg'
 import DefaultMarkerIcon from 'assets/icons/task-map-marker-sm.svg'
 
+import theme from 'styles/theme'
+
 export const MapWrapperStyled = styled.div`
   width: 100%;
   // todo: stretch to parent height
   height: 900px;
 `
 
-const incidentMarkerColor = '#EB5757'
-const requestMarkerColor = '#5792EB'
-const incidentTaskOrRequestTaskMarkerColor = '#FAAD14'
+export const incidentMarkerColor = theme.colors.fireOpal
+export const requestMarkerColor = '#5792EB'
+export const incidentTaskOrRequestTaskMarkerColor = '#FAAD14'
 
 const markerIconOptions: IconOptions = {
   src: DefaultMarkerIcon,
@@ -45,6 +47,13 @@ const selectedMarkerIconOptions: IconOptions = {
   src: SelectedMarkerIcon,
   size: [48, 48],
 }
+
+export const selectedClusterStyle = new Style({
+  image: new Icon({
+    ...selectedMarkerIconOptions,
+    color: incidentMarkerColor,
+  }),
+})
 
 export const selectedIncidentMarkerStyle = new Style({
   image: new Icon({

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 
 import TaskListLayout from 'modules/task/features/TaskListLayout'
 import TaskListMap from 'modules/task/features/TaskListMap'
@@ -10,11 +10,15 @@ const TaskListMapPage: FC = () => {
   const { currentData: taskListMap = [], isFetching: taskListMapIsFetching } =
     useGetTaskListMapQuery()
 
+  const [coords, setCoords] = useState<[number, number]>()
+
   return (
     <TaskListLayout>
       <div data-testid='task-list-map-page'>
+        {coords?.length && <div>task list</div>}
+
         <LoadingArea isLoading={taskListMapIsFetching}>
-          <TaskListMap tasks={taskListMap} />
+          <TaskListMap tasks={taskListMap} onClick={setCoords} />
         </LoadingArea>
       </div>
     </TaskListLayout>
