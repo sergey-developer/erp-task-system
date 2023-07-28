@@ -4,6 +4,8 @@ export * from './resolveTask.mock'
 
 export * from './getTaskList.mock'
 
+export * from './getTaskListMap.mock'
+
 export * from './getTaskCounters.mock'
 
 export * from './getFiscalAccumulatorTaskList.mock'

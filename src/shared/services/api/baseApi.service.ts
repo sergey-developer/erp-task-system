@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
-import { TaskEndpointTagEnum } from 'modules/task/constants'
+import { TaskApiTagEnum } from 'modules/task/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -16,7 +16,7 @@ import {
 export const baseApiService = createApi({
   baseQuery: baseQueryWithReauth,
   keepUnusedDataFor: CACHE_TIME_LIFE,
-  tagTypes: [TaskEndpointTagEnum.Task, TaskEndpointTagEnum.TaskList],
+  tagTypes: [TaskApiTagEnum.Task, TaskApiTagEnum.TaskList],
   endpoints: (build) => ({
     getTimeZoneList: build.query<
       GetTimeZoneListSuccessResponse,
