@@ -1,10 +1,9 @@
 import { Feature } from 'ol'
-import { FeatureLike } from 'ol/Feature'
 import OlMap from 'ol/Map'
 import View from 'ol/View'
 import { click } from 'ol/events/condition'
 import { boundingExtent } from 'ol/extent'
-import { Point } from 'ol/geom'
+import { Geometry, Point } from 'ol/geom'
 import { Select } from 'ol/interaction'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
@@ -29,7 +28,7 @@ const interactionSelect = new Select({
   condition: click,
 })
 
-const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClick }) => {
+const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
   const [map, setMap] = useState<OlMap>()
   const [featuresLayer, setFeaturesLayer] = useState<VectorLayer<Cluster>>()
 
@@ -44,29 +43,34 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClick }) => {
   useEffect(() => {
     interactionSelect.on('select', (event) => {
       if (event.selected.length) {
-        const features: Feature[] = event.selected[0].get('features')
+        const selectedFeature = event.selected[0]
+        const features: Feature[] = selectedFeature.get('features')
 
         if (features.length) {
           if (features.length === 1) {
             const data: FeatureData = features[0].get('data')
-            event.selected[0].setStyle(getSelectedMarkerStyle(data.type))
+            selectedFeature.setStyle(getSelectedMarkerStyle(data.type))
           } else {
-            event.selected[0].setStyle(selectedClusterStyle)
+            selectedFeature.setStyle(selectedClusterStyle)
           }
         }
 
-        const geometry = event.selected[0].getGeometry()
+        const geometry = selectedFeature.getGeometry()
+
         if (geometry) {
-          // @ts-ignore
-          onClick(geometry.getCoordinates())
+          onClickTask(
+            (
+              geometry as Geometry & { getCoordinates: () => [number, number] }
+            ).getCoordinates(),
+          )
         }
 
-        setSelectedFeature(event.selected[0])
+        setSelectedFeature(selectedFeature)
       } else if (event.deselected.length) {
         setSelectedFeature(null)
       }
     })
-  }, [onClick])
+  }, [onClickTask])
 
   useEffect(() => {
     if (mapWrapperRef.current) {
@@ -98,7 +102,7 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClick }) => {
 
   useEffect(() => {
     if (featuresLayer) {
-      featuresLayer.setStyle((feature: FeatureLike) => {
+      featuresLayer.setStyle((feature) => {
         const features = feature.get('features') as Feature[]
 
         if (features.length) {

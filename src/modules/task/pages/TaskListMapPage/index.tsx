@@ -27,7 +27,7 @@ const TaskListMapPage: FC = () => {
 
         <Col span={coords ? 18 : 24}>
           <LoadingArea isLoading={taskListMapIsFetching}>
-            <TaskListMap tasks={taskListMap} onClick={setCoords} />
+            <TaskListMap tasks={taskListMap} onClickTask={setCoords} />
           </LoadingArea>
         </Col>
       </Row>
