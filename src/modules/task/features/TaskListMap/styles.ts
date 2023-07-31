@@ -14,8 +14,8 @@ export const MapWrapperStyled = styled.div`
 `
 
 export const incidentMarkerColor = theme.colors.fireOpal
-export const requestMarkerColor = '#5792EB'
-export const incidentTaskOrRequestTaskMarkerColor = '#FAAD14'
+export const requestMarkerColor = theme.colors.unitedNationsBlue
+export const incidentTaskOrRequestTaskMarkerColor = theme.colors.darkTangerine
 
 const markerIconOptions: IconOptions = {
   src: DefaultMarkerIcon,

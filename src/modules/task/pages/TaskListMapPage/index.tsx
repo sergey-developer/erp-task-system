@@ -1,6 +1,7 @@
 import { Col, Row } from 'antd'
 import { FC, useState } from 'react'
 
+import TaskList from 'modules/task/features/TaskList'
 import TaskListLayout from 'modules/task/features/TaskListLayout'
 import TaskListMap from 'modules/task/features/TaskListMap'
 import { useGetTaskListMapQuery } from 'modules/task/services/taskApi.service'
@@ -10,17 +11,17 @@ import LoadingArea from 'components/LoadingArea'
 import { MaybeNull } from 'shared/interfaces/utils'
 
 const TaskListMapPage: FC = () => {
+  const [coords, setCoords] = useState<MaybeNull<[number, number]>>(null)
+
   const { currentData: taskListMap = [], isFetching: taskListMapIsFetching } =
     useGetTaskListMapQuery()
 
-  const [coords, setCoords] = useState<MaybeNull<[number, number]>>(null)
-
   return (
     <TaskListLayout>
-      <Row data-testid='task-list-map-page'>
+      <Row gutter={8} data-testid='task-list-map-page'>
         {coords && (
           <Col span={6}>
-            long: {coords[0]}, lat: {coords[1]}{' '}
+            <TaskList />
           </Col>
         )}
 
