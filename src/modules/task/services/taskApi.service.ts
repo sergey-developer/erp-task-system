@@ -5,7 +5,7 @@ import {
   TaskApiTriggerEnum,
   TaskApiTagEnum,
 } from 'modules/task/constants'
-import { GetTaskListTransformedResponse } from 'modules/task/interfaces'
+import { GetTaskListTransformedSuccessResponse } from 'modules/task/interfaces'
 import {
   GetFiscalAccumulatorTaskListQueryArgs,
   GetFiscalAccumulatorTaskListSuccessResponse,
@@ -37,7 +37,7 @@ import { baseApiService } from 'shared/services/api'
 const taskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     [TaskApiTriggerEnum.GetTaskList]: build.query<
-      GetTaskListTransformedResponse,
+      GetTaskListTransformedSuccessResponse,
       GetTaskListQueryArgs
     >({
       query: (filter) => ({
@@ -48,11 +48,14 @@ const taskApiService = baseApiService.injectEndpoints({
       // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
       transformResponse: (response: GetTaskListSuccessResponse, meta, arg) => {
         return {
-          pagination: {
-            current: arg.offset / arg.limit + 1,
-            pageSize: arg.limit,
-            total: response.count,
-          },
+          pagination:
+            arg?.offset && arg?.limit
+              ? {
+                  current: arg.offset / arg.limit + 1,
+                  pageSize: arg.limit,
+                  total: response.count,
+                }
+              : undefined,
           results: response.results,
         }
       },
