@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { TaskTypeEnum } from 'modules/task/constants'
 
 export const ListStyled: typeof List = styled(List)`
+  height: 900px;
+  overflow-y: auto;
   background-color: ${({ theme }) => theme.colors.white};
 
   & .ant-list-item.list-item-selected {

@@ -1,21 +1,24 @@
-import { PaginatedListSuccessResponse } from 'shared/models'
-
-import { ExtendedFilterQueries } from '../features/ExtendedFilter/interfaces'
-import { SortValue } from '../features/TaskTable/constants/sort'
+import { ExtendedFilterQueries } from 'modules/task/features/ExtendedFilter/interfaces'
+import { SortValue } from 'modules/task/features/TaskTable/constants/sort'
+import { TaskListItemModel } from 'modules/task/models'
 import {
   FastFilterQueries,
   TaskIdFilterQueries,
-} from '../pages/TaskListPage/interfaces'
-import { TaskListItemModel } from './taskList.model'
+} from 'modules/task/pages/TaskListPage/interfaces'
+
+import { PaginatedListSuccessResponse } from 'shared/models'
 
 export type GetTaskListSuccessResponse =
   PaginatedListSuccessResponse<TaskListItemModel>
 
-export type GetTaskListQueryArgs = {
+export type GetTaskListQueryArgs = Partial<{
   limit: number
   offset: number
   sort: SortValue
-  userId?: number
-} & ExtendedFilterQueries &
+  userId: number
+  lat: number
+  long: number
+}> &
+  ExtendedFilterQueries &
   FastFilterQueries &
   TaskIdFilterQueries

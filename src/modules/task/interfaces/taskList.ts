@@ -2,5 +2,5 @@ import { AntdPaginatedList } from 'lib/antd/interfaces'
 
 import { TaskListItemModel } from 'modules/task/models'
 
-export type GetTaskListTransformedResponse =
+export type GetTaskListTransformedSuccessResponse =
   AntdPaginatedList<TaskListItemModel>

@@ -79,16 +79,17 @@ const TaskListPage: FC = () => {
    * данные будут сбрасываться, это связано с багом https://github.com/reduxjs/redux-toolkit/issues/2871
    * Как баг починят, будет видно, оставлять как есть или можно использовать обычный Query.
    */
-  const {
-    fn: fetchTaskList,
-    state: { data: taskListResponse, isFetching: taskListIsFetching },
-  } = useLazyGetTaskList()
+  const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] =
+    useLazyGetTaskList()
 
   useEffect(() => {
-    if (!sortableFieldToSortValues.status.includes(queryArgs.sort)) {
-      fetchTaskList(queryArgs)
+    if (
+      queryArgs.sort &&
+      !sortableFieldToSortValues.status.includes(queryArgs.sort)
+    ) {
+      getTaskList(queryArgs)
     }
-  }, [fetchTaskList, queryArgs])
+  }, [getTaskList, queryArgs])
 
   const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskTableListItem['id']>>(null)
@@ -258,10 +259,10 @@ const TaskListPage: FC = () => {
   }
 
   const handleRefetchTaskList = useDebounceFn(() => {
-    fetchTaskList(queryArgs)
+    getTaskList(queryArgs)
     handleCloseTaskCard()
     refetchTaskCounters()
-  }, [fetchTaskList, queryArgs])
+  }, [getTaskList, queryArgs])
 
   const searchFilterApplied: boolean = isEqual(
     appliedFilterType,
@@ -344,10 +345,10 @@ const TaskListPage: FC = () => {
                 rowClassName={getTableRowClassName}
                 sort={queryArgs.sort}
                 onRow={handleTableRowClick}
-                dataSource={taskListResponse?.results || []}
+                dataSource={taskList?.results || []}
                 loading={taskListIsFetching}
                 onChange={handleChangeTable}
-                pagination={taskListResponse?.pagination || false}
+                pagination={taskList?.pagination || false}
                 userRole={role!}
               />
             </Col>
