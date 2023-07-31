@@ -12,14 +12,15 @@ export type SearchFields = Partial<{
   searchByTitle: string
 }>
 
-export type ExtendedFilterQueries = {
-  completeAtFrom?: string
-  completeAtTo?: string
-  status?: Array<TaskExtendedStatusEnum>
-  isOverdue?: Array<TaskOverdueEnum>
-  isAssigned?: Array<TaskAssignedEnum>
-  workGroupId?: number
-} & SearchFields
+export type ExtendedFilterQueries = Partial<{
+  completeAtFrom: string
+  completeAtTo: string
+  status: Array<TaskExtendedStatusEnum>
+  isOverdue: Array<TaskOverdueEnum>
+  isAssigned: Array<TaskAssignedEnum>
+  workGroupId: number
+}> &
+  SearchFields
 
 export type ExtendedFilterFormFields = {
   completeAt: MaybeNull<[Moment, Moment]>

@@ -1,13 +1,14 @@
 import { Feature } from 'ol'
 import OlMap from 'ol/Map'
 import View from 'ol/View'
+import { Coordinate } from 'ol/coordinate'
 import { click } from 'ol/events/condition'
 import { boundingExtent } from 'ol/extent'
 import { Geometry, Point } from 'ol/geom'
 import { Select } from 'ol/interaction'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
-import { fromLonLat } from 'ol/proj'
+import { fromLonLat, toLonLat } from 'ol/proj'
 import { Cluster, OSM } from 'ol/source'
 import VectorSource from 'ol/source/Vector'
 import { useState, useEffect, useRef, FC } from 'react'
@@ -58,11 +59,11 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
         const geometry = selectedFeature.getGeometry()
 
         if (geometry) {
-          onClickTask(
-            (
-              geometry as Geometry & { getCoordinates: () => [number, number] }
-            ).getCoordinates(),
-          )
+          const coords = (
+            geometry as Geometry & { getCoordinates: () => Coordinate }
+          ).getCoordinates()
+
+          onClickTask(toLonLat(coords))
         }
 
         setSelectedFeature(selectedFeature)
