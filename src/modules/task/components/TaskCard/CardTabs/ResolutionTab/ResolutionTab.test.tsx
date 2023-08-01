@@ -9,7 +9,7 @@ import { fakeWord, render } from '_tests_/utils'
 
 import ResolutionTab, { ResolutionTabProps } from './index'
 
-const requiredProps: Readonly<
+const props: Readonly<
   Pick<
     ResolutionTabProps,
     'title' | 'type' | 'techResolution' | 'userResolution' | 'attachments'
@@ -38,24 +38,24 @@ export const testUtils = {
 
 describe('Вкладка решение заявки', () => {
   test('Заголовок отображается', () => {
-    render(<ResolutionTab {...requiredProps} />)
-    expect(testUtils.getChildByText(requiredProps.title)).toBeInTheDocument()
+    render(<ResolutionTab {...props} />)
+    expect(testUtils.getChildByText(props.title)).toBeInTheDocument()
   })
 
   test('Если все решения отсутствуют, отображается прочерк', () => {
-    render(<ResolutionTab {...requiredProps} />)
+    render(<ResolutionTab {...props} />)
     expect(testUtils.getChildByText('-')).toBeInTheDocument()
   })
 
   describe('Вложения', () => {
     test('Отображаются если есть', () => {
-      render(<ResolutionTab {...requiredProps} />)
+      render(<ResolutionTab {...props} />)
       const attachments = attachmentListTestUtils.getContainer()
       expect(attachments).toBeInTheDocument()
     })
 
     test('Не отображаются если их нет', () => {
-      render(<ResolutionTab {...requiredProps} attachments={[]} />)
+      render(<ResolutionTab {...props} attachments={[]} />)
       const attachments = attachmentListTestUtils.queryContainer()
       expect(attachments).not.toBeInTheDocument()
     })
@@ -63,7 +63,7 @@ describe('Вкладка решение заявки', () => {
 
   test('Техническое решение отображается если присутствует', () => {
     const techResolution = fakeWord()
-    render(<ResolutionTab {...requiredProps} techResolution={techResolution} />)
+    render(<ResolutionTab {...props} techResolution={techResolution} />)
 
     expect(testUtils.getChildByText('Техническое решение')).toBeInTheDocument()
     expect(testUtils.getChildByText(techResolution)).toBeInTheDocument()
@@ -74,7 +74,7 @@ describe('Вкладка решение заявки', () => {
       const userResolution = fakeWord()
       render(
         <ResolutionTab
-          {...requiredProps}
+          {...props}
           type={TaskTypeEnum.Request}
           userResolution={userResolution}
         />,
@@ -91,7 +91,7 @@ describe('Вкладка решение заявки', () => {
       const userResolution = fakeWord()
       render(
         <ResolutionTab
-          {...requiredProps}
+          {...props}
           type={TaskTypeEnum.IncidentTask}
           userResolution={userResolution}
         />,
@@ -104,7 +104,7 @@ describe('Вкладка решение заявки', () => {
       const userResolution = fakeWord()
       render(
         <ResolutionTab
-          {...requiredProps}
+          {...props}
           type={TaskTypeEnum.RequestTask}
           userResolution={userResolution}
         />,

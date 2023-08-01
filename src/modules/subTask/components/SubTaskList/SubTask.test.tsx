@@ -19,7 +19,7 @@ import SubTask, { SubTaskProps } from './SubTask'
 const task = taskFixtures.task()
 const subTask = subTaskFixtures.subTask()
 
-const requiredProps: Readonly<SubTaskProps> = {
+const props: Readonly<SubTaskProps> = {
   title: subTask.title,
   status: subTask.status,
   taskExtendedStatus: task.extendedStatus,
@@ -175,50 +175,50 @@ export const testUtils = {
 
 describe('Задание', () => {
   test('Отображает recordId', () => {
-    render(<SubTask {...requiredProps} />)
+    render(<SubTask {...props} />)
     expect(
-      testUtils.getChildByText(requiredProps.recordId!),
+      testUtils.getChildByText(props.recordId!),
     ).toBeInTheDocument()
   })
 
   test('Отображает дату "olaNextBreachTime"', () => {
-    render(<SubTask {...requiredProps} />)
+    render(<SubTask {...props} />)
 
     expect(
-      testUtils.getChildByText(`до ${requiredProps.olaNextBreachTime!}`),
+      testUtils.getChildByText(`до ${props.olaNextBreachTime!}`),
     ).toBeInTheDocument()
   })
 
   test('Отображает заголовок', () => {
-    render(<SubTask {...requiredProps} />)
-    expect(testUtils.getChildByText(requiredProps.title)).toBeInTheDocument()
+    render(<SubTask {...props} />)
+    expect(testUtils.getChildByText(props.title)).toBeInTheDocument()
   })
 
   test('Отображает статус заявки', () => {
-    render(<SubTask {...requiredProps} />)
+    render(<SubTask {...props} />)
 
     expect(
       taskStatusTestUtils.getContainerIn(
         testUtils.getContainer(),
-        requiredProps.status,
+        props.status,
       ),
     ).toBeInTheDocument()
   })
 
   test('Отображает дату создания', () => {
-    render(<SubTask {...requiredProps} />)
+    render(<SubTask {...props} />)
 
     expect(testUtils.getChildByText(/дата создания/i)).toBeInTheDocument()
 
     expect(
-      testUtils.getChildByText(requiredProps.createdAt),
+      testUtils.getChildByText(props.createdAt),
     ).toBeInTheDocument()
   })
 
   describe('Техническое решение', () => {
     describe('Кнопка отображается корректно', () => {
       test('Если статус подзадачи "Завершена"', () => {
-        render(<SubTask {...requiredProps} status={TaskStatusEnum.Completed} />)
+        render(<SubTask {...props} status={TaskStatusEnum.Completed} />)
 
         const button = testUtils.getTechResolutionButton()
 
@@ -227,7 +227,7 @@ describe('Задание', () => {
       })
 
       test('Если статус подзадачи "Закрыта"', () => {
-        render(<SubTask {...requiredProps} status={TaskStatusEnum.Closed} />)
+        render(<SubTask {...props} status={TaskStatusEnum.Closed} />)
 
         const button = testUtils.getTechResolutionButton()
 
@@ -238,43 +238,43 @@ describe('Задание', () => {
 
     describe('Кнопка не отображается', () => {
       test('При не верном статусе подзадачи', () => {
-        render(<SubTask {...requiredProps} status={TaskStatusEnum.New} />)
+        render(<SubTask {...props} status={TaskStatusEnum.New} />)
         expect(testUtils.queryTechResolutionButton()).not.toBeInTheDocument()
       })
     })
 
     describe('Текст решения', () => {
       test('Скрыт по умолчанию', () => {
-        render(<SubTask {...requiredProps} status={TaskStatusEnum.Closed} />)
+        render(<SubTask {...props} status={TaskStatusEnum.Closed} />)
 
         expect(testUtils.getTechResolutionButton()).toBeInTheDocument()
         expect(
-          testUtils.queryChildByText(requiredProps.techResolution!),
+          testUtils.queryChildByText(props.techResolution!),
         ).not.toBeInTheDocument()
       })
 
       test('Можно раскрыть', async () => {
         const { user } = render(
-          <SubTask {...requiredProps} status={TaskStatusEnum.Closed} />,
+          <SubTask {...props} status={TaskStatusEnum.Closed} />,
         )
 
         await testUtils.clickTechResolutionButton(user)
 
         expect(
-          testUtils.getChildByText(requiredProps.techResolution!),
+          testUtils.getChildByText(props.techResolution!),
         ).toBeInTheDocument()
       })
 
       test('Можно скрыть', async () => {
         const { user } = render(
-          <SubTask {...requiredProps} status={TaskStatusEnum.Closed} />,
+          <SubTask {...props} status={TaskStatusEnum.Closed} />,
         )
 
         await testUtils.clickTechResolutionButton(user)
         await testUtils.clickTechResolutionButton(user)
 
         expect(
-          testUtils.queryChildByText(requiredProps.techResolution!),
+          testUtils.queryChildByText(props.techResolution!),
         ).not.toBeInTheDocument()
       })
     })
@@ -282,7 +282,7 @@ describe('Задание', () => {
 
   describe('Причина возврата', () => {
     test('Кнопка отображается если причина присутствует', () => {
-      render(<SubTask {...requiredProps} returnReason={subTask.returnReason} />)
+      render(<SubTask {...props} returnReason={subTask.returnReason} />)
 
       const button = testUtils.getReturnReasonButton()
 
@@ -291,14 +291,14 @@ describe('Задание', () => {
     })
 
     test('Кнопка не отображается если причина отсутствует', () => {
-      render(<SubTask {...requiredProps} returnReason={null} />)
+      render(<SubTask {...props} returnReason={null} />)
       expect(testUtils.queryReturnReasonButton()).not.toBeInTheDocument()
     })
 
     describe('Текст причины', () => {
       test('Скрыт по умолчанию', () => {
         render(
-          <SubTask {...requiredProps} returnReason={subTask.returnReason} />,
+          <SubTask {...props} returnReason={subTask.returnReason} />,
         )
 
         expect(testUtils.getReturnReasonButton()).toBeInTheDocument()
@@ -310,7 +310,7 @@ describe('Задание', () => {
 
       test('Можно раскрыть', async () => {
         const { user } = render(
-          <SubTask {...requiredProps} returnReason={subTask.returnReason} />,
+          <SubTask {...props} returnReason={subTask.returnReason} />,
         )
 
         await testUtils.clickReturnReasonButton(user)
@@ -322,7 +322,7 @@ describe('Задание', () => {
 
       test('Можно скрыть', async () => {
         const { user } = render(
-          <SubTask {...requiredProps} returnReason={subTask.returnReason} />,
+          <SubTask {...props} returnReason={subTask.returnReason} />,
         )
 
         await testUtils.clickReturnReasonButton(user)
@@ -337,7 +337,7 @@ describe('Задание', () => {
 
   describe('Причина отмены', () => {
     test('Кнопка отображается если причина присутствует', () => {
-      render(<SubTask {...requiredProps} cancelReason={subTask.cancelReason} />)
+      render(<SubTask {...props} cancelReason={subTask.cancelReason} />)
 
       const button = testUtils.getCancelReasonButton()
 
@@ -346,14 +346,14 @@ describe('Задание', () => {
     })
 
     test('Кнопка не отображается если причина отсутствует', () => {
-      render(<SubTask {...requiredProps} cancelReason={null} />)
+      render(<SubTask {...props} cancelReason={null} />)
       expect(testUtils.queryCancelReasonButton()).not.toBeInTheDocument()
     })
 
     describe('Текст причины', () => {
       test('Скрыт по умолчанию', () => {
         render(
-          <SubTask {...requiredProps} cancelReason={subTask.cancelReason} />,
+          <SubTask {...props} cancelReason={subTask.cancelReason} />,
         )
 
         expect(testUtils.getCancelReasonButton()).toBeInTheDocument()
@@ -365,7 +365,7 @@ describe('Задание', () => {
 
       test('Можно раскрыть', async () => {
         const { user } = render(
-          <SubTask {...requiredProps} cancelReason={subTask.cancelReason} />,
+          <SubTask {...props} cancelReason={subTask.cancelReason} />,
         )
 
         await testUtils.clickCancelReasonButton(user)
@@ -377,7 +377,7 @@ describe('Задание', () => {
 
       test('Можно скрыть', async () => {
         const { user } = render(
-          <SubTask {...requiredProps} cancelReason={subTask.cancelReason} />,
+          <SubTask {...props} cancelReason={subTask.cancelReason} />,
         )
 
         await testUtils.clickCancelReasonButton(user)
@@ -391,7 +391,7 @@ describe('Задание', () => {
   })
 
   test('Отображает группу поддержки если она есть', () => {
-    render(<SubTask {...requiredProps} supportGroup={subTask.supportGroup} />)
+    render(<SubTask {...props} supportGroup={subTask.supportGroup} />)
 
     expect(testUtils.getChildByText(/группа поддержки/i)).toBeInTheDocument()
 
@@ -401,7 +401,7 @@ describe('Задание', () => {
   })
 
   test('Не отображает группу поддержки если её нет', () => {
-    render(<SubTask {...requiredProps} supportGroup={null} />)
+    render(<SubTask {...props} supportGroup={null} />)
 
     expect(testUtils.getChildByText(/группа поддержки/i)).toBeInTheDocument()
 
@@ -411,7 +411,7 @@ describe('Задание', () => {
   })
 
   test('Отображает блок исполнителя', () => {
-    render(<SubTask {...requiredProps} />)
+    render(<SubTask {...props} />)
 
     expect(testUtils.getChildByText(/исполнитель/i)).toBeInTheDocument()
     expect(
@@ -421,7 +421,7 @@ describe('Задание', () => {
 
   describe('Описание', () => {
     test('Кнопка отображается корректно', () => {
-      render(<SubTask {...requiredProps} />)
+      render(<SubTask {...props} />)
 
       const button = getDescriptionButton()
 
@@ -431,33 +431,33 @@ describe('Задание', () => {
 
     describe('Текст описания', () => {
       test('Скрыт по умолчанию', () => {
-        render(<SubTask {...requiredProps} />)
+        render(<SubTask {...props} />)
 
         expect(getDescriptionButton()).toBeInTheDocument()
 
         expect(
-          testUtils.queryChildByText(requiredProps.description!),
+          testUtils.queryChildByText(props.description!),
         ).not.toBeInTheDocument()
       })
 
       test('Можно раскрыть', async () => {
-        const { user } = render(<SubTask {...requiredProps} />)
+        const { user } = render(<SubTask {...props} />)
 
         await clickDescriptionButton(user)
 
         expect(
-          testUtils.getChildByText(requiredProps.description!),
+          testUtils.getChildByText(props.description!),
         ).toBeInTheDocument()
       })
 
       test('Можно скрыть', async () => {
-        const { user } = render(<SubTask {...requiredProps} />)
+        const { user } = render(<SubTask {...props} />)
 
         await clickDescriptionButton(user)
         await clickDescriptionButton(user)
 
         expect(
-          testUtils.queryChildByText(requiredProps.description!),
+          testUtils.queryChildByText(props.description!),
         ).not.toBeInTheDocument()
       })
     })
@@ -465,7 +465,7 @@ describe('Задание', () => {
 
   describe('Кнопка отправки на доработку', () => {
     test('Отображается корректно если условия соблюдены', () => {
-      render(<SubTask {...requiredProps} {...activeReworkButtonProps} />)
+      render(<SubTask {...props} {...activeReworkButtonProps} />)
 
       const button = testUtils.getReworkButton()
 
@@ -477,7 +477,7 @@ describe('Задание', () => {
       test('Но текущий пользователь не исполнитель заявки', () => {
         render(
           <SubTask
-            {...requiredProps}
+            {...props}
             {...activeReworkButtonProps}
             currentUserIsTaskAssignee={false}
           />,
@@ -489,7 +489,7 @@ describe('Задание', () => {
       test('Но задание не в статусе "Завершена"', () => {
         render(
           <SubTask
-            {...requiredProps}
+            {...props}
             {...activeReworkButtonProps}
             status={TaskStatusEnum.New}
           />,
@@ -501,7 +501,7 @@ describe('Задание', () => {
       test('Но статус заявки "Завершена"', () => {
         render(
           <SubTask
-            {...requiredProps}
+            {...props}
             {...activeReworkButtonProps}
             taskStatus={TaskStatusEnum.Completed}
           />,
@@ -513,7 +513,7 @@ describe('Задание', () => {
       test('Но статус заявки "Закрыта"', () => {
         render(
           <SubTask
-            {...requiredProps}
+            {...props}
             {...activeReworkButtonProps}
             taskStatus={TaskStatusEnum.Closed}
           />,
@@ -525,17 +525,17 @@ describe('Задание', () => {
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
-        <SubTask {...requiredProps} {...activeReworkButtonProps} />,
+        <SubTask {...props} {...activeReworkButtonProps} />,
       )
 
       await testUtils.clickReworkButton(user)
-      expect(requiredProps.onClickRework).toBeCalledTimes(1)
+      expect(props.onClickRework).toBeCalledTimes(1)
     })
 
     test('Не активна - если заявка на переклассификации', () => {
       render(
         <SubTask
-          {...requiredProps}
+          {...props}
           {...activeReworkButtonProps}
           taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
         />,
@@ -547,7 +547,7 @@ describe('Задание', () => {
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно если условия соблюдены', () => {
-      render(<SubTask {...requiredProps} {...activeCancelButtonProps} />)
+      render(<SubTask {...props} {...activeCancelButtonProps} />)
 
       const button = testUtils.getCancelButton()
 
@@ -559,7 +559,7 @@ describe('Задание', () => {
       test('Но текущий пользователь не исполнитель заявки', () => {
         render(
           <SubTask
-            {...requiredProps}
+            {...props}
             {...activeCancelButtonProps}
             currentUserIsTaskAssignee={false}
           />,
@@ -571,7 +571,7 @@ describe('Задание', () => {
       test('Но задание не в статусе "Новая"', () => {
         render(
           <SubTask
-            {...requiredProps}
+            {...props}
             {...activeCancelButtonProps}
             status={TaskStatusEnum.InProgress}
           />,
@@ -583,7 +583,7 @@ describe('Задание', () => {
       test('Но статус заявки "Завершена"', () => {
         render(
           <SubTask
-            {...requiredProps}
+            {...props}
             {...activeCancelButtonProps}
             taskStatus={TaskStatusEnum.Completed}
           />,
@@ -595,7 +595,7 @@ describe('Задание', () => {
       test('Но статус заявки "Закрыта"', () => {
         render(
           <SubTask
-            {...requiredProps}
+            {...props}
             {...activeCancelButtonProps}
             taskStatus={TaskStatusEnum.Closed}
           />,
@@ -607,17 +607,17 @@ describe('Задание', () => {
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
-        <SubTask {...requiredProps} {...activeCancelButtonProps} />,
+        <SubTask {...props} {...activeCancelButtonProps} />,
       )
 
       await testUtils.clickCancelButton(user)
-      expect(requiredProps.onClickCancel).toBeCalledTimes(1)
+      expect(props.onClickCancel).toBeCalledTimes(1)
     })
 
     test('Не активна - если заявка на переклассификации', () => {
       render(
         <SubTask
-          {...requiredProps}
+          {...props}
           {...activeCancelButtonProps}
           taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
         />,

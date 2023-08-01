@@ -18,7 +18,7 @@ import {
 import CancelSubTaskModal from './index'
 import { CancelSubTaskModalProps } from './types'
 
-const requiredProps: Readonly<CancelSubTaskModalProps> = {
+const props: Readonly<CancelSubTaskModalProps> = {
   isLoading: false,
   recordId: null,
   onSubmit: jest.fn(),
@@ -97,13 +97,13 @@ export const testUtils = {
 
 describe('Модальное окно отправки запроса на доработку', () => {
   test('Отображается корректно', () => {
-    render(<CancelSubTaskModal {...requiredProps} />)
+    render(<CancelSubTaskModal {...props} />)
     expect(testUtils.getContainer()).toBeInTheDocument()
   })
 
   test('Заголовок отображается корректно', () => {
     const recordId = fakeIdStr()
-    render(<CancelSubTaskModal {...requiredProps} recordId={recordId} />)
+    render(<CancelSubTaskModal {...props} recordId={recordId} />)
 
     expect(testUtils.getChildByText(/отмена задания/i)).toBeInTheDocument()
     expect(testUtils.getChildByText(recordId)).toBeInTheDocument()
@@ -112,7 +112,7 @@ describe('Модальное окно отправки запроса на до�
   describe('Форма перевода заявки', () => {
     describe('Поле ввода причины отмены', () => {
       test('Отображается корректно', () => {
-        render(<CancelSubTaskModal {...requiredProps} />)
+        render(<CancelSubTaskModal {...props} />)
 
         const field = testUtils.getCancelReasonField()
 
@@ -122,12 +122,12 @@ describe('Модальное окно отправки запроса на до�
       })
 
       test('Не активно при загрузке', () => {
-        render(<CancelSubTaskModal {...requiredProps} isLoading />)
+        render(<CancelSubTaskModal {...props} isLoading />)
         expect(testUtils.getCancelReasonField()).toBeDisabled()
       })
 
       test('Можно ввести значение', async () => {
-        const { user } = render(<CancelSubTaskModal {...requiredProps} />)
+        const { user } = render(<CancelSubTaskModal {...props} />)
 
         const value = fakeWord()
         const field = await testUtils.setCancelReason(user, value)
@@ -137,7 +137,7 @@ describe('Модальное окно отправки запроса на до�
 
       describe('Отображается ошибка', () => {
         test('Если ввести только пробелы', async () => {
-          const { user } = render(<CancelSubTaskModal {...requiredProps} />)
+          const { user } = render(<CancelSubTaskModal {...props} />)
 
           await testUtils.setCancelReason(user, ' ')
 
@@ -149,7 +149,7 @@ describe('Модальное окно отправки запроса на до�
         })
 
         test('Если превысить лимит символов', async () => {
-          const { user } = render(<CancelSubTaskModal {...requiredProps} />)
+          const { user } = render(<CancelSubTaskModal {...props} />)
 
           await testUtils.setCancelReason(
             user,
@@ -164,7 +164,7 @@ describe('Модальное окно отправки запроса на до�
         })
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(<CancelSubTaskModal {...requiredProps} />)
+          const { user } = render(<CancelSubTaskModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
 
@@ -179,7 +179,7 @@ describe('Модальное окно отправки запроса на до�
 
     describe('Кнопка отправки', () => {
       test('Отображается корректно', () => {
-        render(<CancelSubTaskModal {...requiredProps} />)
+        render(<CancelSubTaskModal {...props} />)
 
         const submitButton = testUtils.getSubmitButton()
 
@@ -188,20 +188,20 @@ describe('Модальное окно отправки запроса на до�
       })
 
       test('Отображает процесс загрузки', async () => {
-        render(<CancelSubTaskModal {...requiredProps} isLoading />)
+        render(<CancelSubTaskModal {...props} isLoading />)
 
         const submitButton = testUtils.getSubmitButton()
         await expectLoadingStartedByButton(submitButton)
       })
 
       test('Обработчик вызывается корректно', async () => {
-        const { user } = render(<CancelSubTaskModal {...requiredProps} />)
+        const { user } = render(<CancelSubTaskModal {...props} />)
 
         await testUtils.setCancelReason(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
-        expect(requiredProps.onSubmit).toBeCalledTimes(1)
-        expect(requiredProps.onSubmit).toBeCalledWith(
+        expect(props.onSubmit).toBeCalledTimes(1)
+        expect(props.onSubmit).toBeCalledWith(
           expect.anything(),
           expect.anything(),
         )
@@ -210,7 +210,7 @@ describe('Модальное окно отправки запроса на до�
 
     describe('Кнопка отмены', () => {
       test('Отображается корректно', () => {
-        render(<CancelSubTaskModal {...requiredProps} />)
+        render(<CancelSubTaskModal {...props} />)
 
         const cancelButton = testUtils.getCancelButton()
 
@@ -219,10 +219,10 @@ describe('Модальное окно отправки запроса на до�
       })
 
       test('Обработчик вызывается корректно', async () => {
-        const { user } = render(<CancelSubTaskModal {...requiredProps} />)
+        const { user } = render(<CancelSubTaskModal {...props} />)
 
         await testUtils.clickCancelButton(user)
-        expect(requiredProps.onCancel).toBeCalledTimes(1)
+        expect(props.onCancel).toBeCalledTimes(1)
       })
     })
   })

@@ -19,7 +19,7 @@ import {
 } from './SubTask.test'
 import SubTaskList, { SubTaskListProps } from './index'
 
-const requiredProps: Readonly<SubTaskListProps> = {
+const props: Readonly<SubTaskListProps> = {
   list: subTaskFixtures.subTaskList(),
   isError: false,
   taskStatus: TaskStatusEnum.New,
@@ -41,18 +41,18 @@ export const testUtils = {
 
 describe('Список подзадач', () => {
   test('Отображает верное количество задач', () => {
-    render(<SubTaskList {...requiredProps} />)
+    render(<SubTaskList {...props} />)
 
     expect(
       subTaskTestUtils.getAllContainerIn(testUtils.getContainer()),
-    ).toHaveLength(requiredProps.list.length)
+    ).toHaveLength(props.list.length)
   })
 
   test('Верно отображает дату "olaNextBreachTime"', () => {
-    render(<SubTaskList {...requiredProps} />)
+    render(<SubTaskList {...props} />)
 
     const formattedOlaNextBreachTime = formatDate(
-      requiredProps.list[0].olaNextBreachTime,
+      props.list[0].olaNextBreachTime,
     )
 
     expect(
@@ -61,9 +61,9 @@ describe('Список подзадач', () => {
   })
 
   test('Верно отображает дату создания', () => {
-    render(<SubTaskList {...requiredProps} />)
+    render(<SubTaskList {...props} />)
 
-    const formattedCreatedAt = formatDate(requiredProps.list[0].createdAt)
+    const formattedCreatedAt = formatDate(props.list[0].createdAt)
 
     expect(
       subTaskTestUtils.getChildByText(new RegExp(formattedCreatedAt)),
@@ -71,12 +71,12 @@ describe('Список подзадач', () => {
   })
 
   test('Отображается соответствующее сообщение если список пуст', () => {
-    render(<SubTaskList {...requiredProps} list={[]} />)
+    render(<SubTaskList {...props} list={[]} />)
     expect(testUtils.getChildByText('Заданий нет')).toBeInTheDocument()
   })
 
   test('При ошибке получения списка отображается соответствующее сообщение', () => {
-    render(<SubTaskList {...requiredProps} list={[]} isError />)
+    render(<SubTaskList {...props} list={[]} isError />)
 
     expect(
       testUtils.getChildByText('Не удалось получить задания'),
@@ -92,7 +92,7 @@ describe('Список подзадач', () => {
 
       const { user } = render(
         <SubTaskList
-          {...requiredProps}
+          {...props}
           list={[subTask]}
           taskStatus={activeReworkButtonProps.taskStatus}
           currentUserIsTaskAssignee={
@@ -103,8 +103,8 @@ describe('Список подзадач', () => {
 
       await subTaskTestUtils.clickReworkButton(user)
 
-      expect(requiredProps.onClickRework).toBeCalledTimes(1)
-      expect(requiredProps.onClickRework).toBeCalledWith(subTask)
+      expect(props.onClickRework).toBeCalledTimes(1)
+      expect(props.onClickRework).toBeCalledWith(subTask)
     })
   })
 
@@ -117,7 +117,7 @@ describe('Список подзадач', () => {
 
       const { user } = render(
         <SubTaskList
-          {...requiredProps}
+          {...props}
           list={[subTask]}
           taskStatus={activeCancelButtonProps.taskStatus}
           currentUserIsTaskAssignee={
@@ -128,8 +128,8 @@ describe('Список подзадач', () => {
 
       await subTaskTestUtils.clickCancelButton(user)
 
-      expect(requiredProps.onClickCancel).toBeCalledTimes(1)
-      expect(requiredProps.onClickCancel).toBeCalledWith(subTask)
+      expect(props.onClickCancel).toBeCalledTimes(1)
+      expect(props.onClickCancel).toBeCalledWith(subTask)
     })
   })
 })
