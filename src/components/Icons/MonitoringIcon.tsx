@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { IconProps } from './types'
 import { colorStyles, cursorStyles, fontSizeStyles } from './styles'
 
-const MonitoringIcon = styled(MonitorOutlined)<
+const MonitoringIconStyled = styled(MonitorOutlined)<
   Pick<IconProps, '$size' | '$cursor' | '$color'>
 >`
   ${colorStyles}
@@ -12,4 +12,4 @@ const MonitoringIcon = styled(MonitorOutlined)<
   ${cursorStyles}
 `
 
-export default MonitoringIcon
+export default MonitoringIconStyled

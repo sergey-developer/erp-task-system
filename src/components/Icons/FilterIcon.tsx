@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import { IconProps } from './types'
 import { fontSizeStyles } from './styles'
 
-const FilterIcon = styled(FilterTwoTone)<Pick<IconProps, '$size'>>`
+const FilterIconStyled = styled(FilterTwoTone)<Pick<IconProps, '$size'>>`
   ${fontSizeStyles}
 `
 
-export default FilterIcon
+export default FilterIconStyled
