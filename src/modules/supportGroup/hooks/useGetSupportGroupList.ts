@@ -1,7 +1,7 @@
 import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
 
-import { getSupportGroupListMessages } from 'modules/supportGroup/constants/messages'
+import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
 import {
   GetSupportGroupListQueryArgs,
   GetSupportGroupListSuccessResponse,

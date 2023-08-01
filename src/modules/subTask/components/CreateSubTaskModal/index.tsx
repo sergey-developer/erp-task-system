@@ -2,12 +2,12 @@ import { Form, Input, Select, Typography } from 'antd'
 import { Rule } from 'rc-field-form/es/interface'
 import React, { FC, useState } from 'react'
 
-import { templateSelectFieldNames } from 'modules/subTask/constants/selectFieldNames'
+import { templateSelectFieldNames } from 'modules/subTask/constants'
 import {
   useCreateSubTask,
   useGetSubTaskTemplateList,
 } from 'modules/subTask/hooks'
-import { supportGroupListSelectFieldNames } from 'modules/supportGroup/constants/selectFieldNames'
+import { supportGroupListSelectFieldNames } from 'modules/supportGroup/constants'
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import { SupportGroupListItemModel } from 'modules/supportGroup/models'
 

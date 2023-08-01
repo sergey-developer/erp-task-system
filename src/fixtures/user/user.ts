@@ -1,4 +1,4 @@
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 import { UserModel } from 'modules/user/models'
 
 import userFixtures from 'fixtures/user'

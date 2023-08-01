@@ -1,4 +1,4 @@
-import { UserApiEnum } from 'modules/user/constants/api'
+import { UserApiEnum } from 'modules/user/constants'
 import { GetUserMeSuccessResponse } from 'modules/user/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'

@@ -8,7 +8,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants'
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import taskFixtures from 'fixtures/task'
 

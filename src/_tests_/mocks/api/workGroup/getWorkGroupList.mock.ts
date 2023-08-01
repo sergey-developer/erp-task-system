@@ -1,4 +1,4 @@
-import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
+import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants'
 import { GetWorkGroupListSuccessResponse } from 'modules/workGroup/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'

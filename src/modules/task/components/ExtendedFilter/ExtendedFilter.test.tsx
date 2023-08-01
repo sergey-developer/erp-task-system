@@ -6,7 +6,7 @@ import {
   TaskExtendedStatusEnum,
   taskExtendedStatusDict,
 } from 'modules/task/constants'
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import workGroupFixtures from 'fixtures/workGroup'
 

@@ -1,6 +1,6 @@
 import isEqual from 'lodash/isEqual'
 
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import { BooleanKey, BooleanMap } from 'shared/types/utils'
 

@@ -5,7 +5,7 @@ import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'modules/task/constants'
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'

@@ -1,5 +1,5 @@
 import { CreateSubTaskSuccessResponse } from 'modules/subTask/models'
-import { createSubTaskUrl } from 'modules/subTask/utils/apiUrls'
+import { createSubTaskUrl } from 'modules/subTask/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'

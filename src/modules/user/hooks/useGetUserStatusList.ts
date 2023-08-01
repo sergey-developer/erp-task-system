@@ -1,7 +1,7 @@
 import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
 
-import { getUserStatusListMessages } from 'modules/user/constants/messages'
+import { getUserStatusListMessages } from 'modules/user/constants'
 import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,

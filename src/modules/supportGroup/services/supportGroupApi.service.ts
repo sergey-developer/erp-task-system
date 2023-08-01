@@ -1,8 +1,9 @@
-import { HttpMethodEnum } from 'shared/constants/http'
-import { MaybeUndefined } from 'shared/types/utils'
-import { baseApiService } from 'shared/services/api'
+import { SupportGroupEndpointsEnum } from 'modules/supportGroup/constants'
 
-import { SupportGroupEndpointsEnum } from '../constants/api'
+import { HttpMethodEnum } from 'shared/constants/http'
+import { baseApiService } from 'shared/services/api'
+import { MaybeUndefined } from 'shared/types/utils'
+
 import {
   GetSupportGroupListQueryArgs,
   GetSupportGroupListSuccessResponse,

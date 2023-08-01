@@ -1,7 +1,7 @@
 import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
 
-import { getUserMeMessages } from "modules/user/constants/messages";
+import { getUserMeMessages } from "modules/user/constants";
 import { useGetUserMeQuery } from 'modules/user/services/userApi.service'
 
 import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/api'

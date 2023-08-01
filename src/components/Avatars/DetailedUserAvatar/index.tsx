@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
-import { userRoleDict } from 'modules/user/constants/roles'
+import { userRoleDict } from 'modules/user/constants'
 import { UserModel } from 'modules/user/models'
 import { getFullUserName, getUserAbbr } from 'modules/user/utils'
 

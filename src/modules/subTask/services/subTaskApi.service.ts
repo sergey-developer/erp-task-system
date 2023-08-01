@@ -1,4 +1,4 @@
-import { SubTaskApiTriggerEnum } from 'modules/subTask/constants/api'
+import { SubTaskApiTriggerEnum } from 'modules/subTask/constants'
 import {
   CancelSubTaskMutationArgs,
   CancelSubTaskSuccessResponse,
@@ -18,7 +18,7 @@ import {
   getSubTaskListUrl,
   getSubTaskTemplateListUrl,
   reworkSubTaskUrl,
-} from 'modules/subTask/utils/apiUrls'
+} from 'modules/subTask/utils'
 import { TaskStatusEnum } from 'modules/task/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
