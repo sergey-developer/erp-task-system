@@ -1,15 +1,18 @@
 import { useEffect } from 'react'
 
-import { GetTaskQueryArgs } from 'modules/task/models'
-import { taskApiPermissions } from 'modules/task/permissions'
+import {
+  CustomUseQueryHookResult,
+  CustomUseQueryOptions,
+} from 'lib/rtk-query/types'
+
+import { getTaskMessages } from 'modules/task/constants'
+import { GetTaskQueryArgs, GetTaskSuccessResponse } from 'modules/task/models'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
 } from 'modules/task/utils'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/errors'
 import {
   isBadRequestError,
   isErrorResponse,
@@ -18,12 +21,11 @@ import {
 } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useGetTask = (id: GetTaskQueryArgs) => {
-  const permissions = useUserPermissions(taskApiPermissions)
-
-  const state = useGetTaskQuery(id, {
-    skip: !permissions.canGet,
-  })
+export const useGetTask = (
+  id: GetTaskQueryArgs,
+  options?: CustomUseQueryOptions<GetTaskQueryArgs, GetTaskSuccessResponse>,
+): CustomUseQueryHookResult<GetTaskQueryArgs, GetTaskSuccessResponse> => {
+  const state = useGetTaskQuery(id, options)
 
   useEffect(() => {
     if (!state.isError) return
@@ -37,7 +39,7 @@ export const useGetTask = (id: GetTaskQueryArgs) => {
       ) {
         showErrorNotification(getTaskServerErrorMsg(id))
       } else {
-        showErrorNotification(commonApiMessages.unknownError)
+        showErrorNotification(getTaskMessages.commonError)
       }
     }
   }, [id, state.error, state.isError])

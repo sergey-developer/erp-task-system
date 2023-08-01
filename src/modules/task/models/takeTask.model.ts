@@ -1,4 +1,4 @@
-import { BaseTaskRequestArgs } from 'modules/task/interfaces'
+import { BaseTaskRequestArgs } from 'modules/task/types'
 
 export type TakeTaskMutationArgs = BaseTaskRequestArgs
 export type TakeTaskSuccessResponse = void

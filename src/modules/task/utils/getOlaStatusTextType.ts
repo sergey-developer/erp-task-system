@@ -2,7 +2,7 @@ import { TextProps } from 'antd/es/typography/Text'
 
 import { TaskOlaStatusEnum } from 'modules/task/constants'
 
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { MaybeUndefined } from 'shared/types/utils'
 
 import { getOlaStatusMap } from './getOlaStatusMap'
 

@@ -5,7 +5,7 @@ import { useAuthenticatedUser } from 'modules/auth/hooks'
 import {
   PermissionsMap,
   UserPermissionConfig,
-} from 'shared/interfaces/permissions'
+} from 'shared/types/permissions'
 import { getPermissionsMap } from 'shared/utils/permissions'
 
 export const useUserPermissions = (

@@ -1,4 +1,4 @@
-import { ConfigType } from './interfaces'
+import { ConfigType } from './types'
 
 export type CommonConfigKeys = 'env' | 'apiUrl'
 

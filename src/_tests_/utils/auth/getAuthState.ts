@@ -1,4 +1,4 @@
-import { AuthSliceState, AuthenticatedUser } from 'modules/auth/interfaces'
+import { AuthSliceState, AuthenticatedUser } from 'modules/auth/types'
 
 import authFixtures from 'fixtures/auth'
 

@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
 import { useSelector } from 'shared/hooks'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
-import { AuthenticatedUser } from '../interfaces'
+import { AuthenticatedUser } from '../types'
 import { authenticatedUserSelector } from '../selectors'
 
 type UseAuthenticatedUserReturnType = MaybeNull<{

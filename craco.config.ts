@@ -29,6 +29,7 @@ module.exports = {
   })),
   webpack: {
     alias: {
+      assets: resolvePath('src/assets'),
       lib: resolvePath('src/lib'),
       configs: resolvePath('src/configs'),
       modules: resolvePath('src/modules'),

@@ -1,4 +1,4 @@
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { MaybeUndefined } from 'shared/types/utils'
 
 export const parseBase64 = (base64: string): MaybeUndefined<string> => {
   try {

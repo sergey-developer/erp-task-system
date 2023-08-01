@@ -2,7 +2,6 @@ import { GetTaskReclassificationRequestSuccessResponse } from 'modules/task/mode
 import { getTaskReclassificationRequestUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 import {
   getRequestMockFn,
@@ -24,8 +23,8 @@ export const mockGetTaskReclassificationRequestSuccess = (
   >,
 ) => getSuccessMockFn(getTaskReclassificationRequestMockFn(taskId), options)()
 
-export const mockGetTaskReclassificationRequestServerError = <T extends object>(
+export const mockGetTaskReclassificationRequestServerError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) =>
   getServerErrorMockFn(getTaskReclassificationRequestMockFn(taskId), options)()

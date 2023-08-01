@@ -1,4 +1,4 @@
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import {
   CRUDPermissionsEnum,
@@ -7,7 +7,7 @@ import {
 import {
   ObjectPermissionConfig,
   UserPermissionConfig,
-} from 'shared/interfaces/permissions'
+} from 'shared/types/permissions'
 
 export const taskAssigneePermissions: ObjectPermissionConfig<'select'> = {
   select: {

@@ -1,3 +1,5 @@
+import { ApiRequestMessages } from 'shared/types/messages'
+
 export const LOGOUT_ERROR_MSG = 'Ошибка выхода из системы'
 
 export const LOGIN_BAD_REQUEST_ERROR_MSG = 'Неверный запрос'
@@ -9,6 +11,6 @@ export const INCORRECT_PASSWORD_ERROR_MSG =
 
 export const UPDATE_PASSWORD_SUCCESS_MSG = 'Пароль успешно изменен'
 
-export const updatePasswordErrorMessages = {
+export const updatePasswordMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка обновления пароля',
-} as const
+}

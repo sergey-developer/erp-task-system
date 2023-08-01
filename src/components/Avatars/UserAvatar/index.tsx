@@ -1,7 +1,7 @@
 import { AvatarProps, BadgeProps } from 'antd'
 import React, { FC } from 'react'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
 import { AvatarStyled, BadgeStyled } from './styles'
 

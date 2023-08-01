@@ -5,16 +5,16 @@ import taskFixtures from 'fixtures/task'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const fakeReclassificationRequest =
+export const reclassificationRequest =
   (): TaskReclassificationRequestModel => ({
     id: fakeId(),
     createdAt: fakeDateString(),
     comment: {
       id: fakeId(),
       text: fakeWord(),
-      author: commonFixtures.fakeCommentAuthor(),
+      author: commonFixtures.commentAuthor(),
       createdAt: fakeDateString(),
-      attachments: [taskFixtures.fakeAttachment()],
+      attachments: [taskFixtures.attachment()],
     },
-    user: commonFixtures.fakeUser(),
+    user: commonFixtures.user(),
   })
