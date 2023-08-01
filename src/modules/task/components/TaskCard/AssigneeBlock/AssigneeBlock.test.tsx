@@ -107,7 +107,7 @@ export const canSelectAssigneeProps: Readonly<
   NonNullableObject<Pick<AssigneeBlockProps, 'status' | 'workGroup'>>
 > = {
   status: TaskStatusEnum.New,
-  workGroup: workGroupFixtures.workGroup(),
+  workGroup: workGroupFixtures.workGroupListItem(),
 }
 
 const getContainer = () => screen.getByTestId('task-assignee-block')

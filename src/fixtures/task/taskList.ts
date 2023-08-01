@@ -13,7 +13,6 @@ import {
 
 import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
 
 import {
   fakeAddress,
@@ -27,7 +26,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const fakeTaskListItem = (
+export const taskListItem = (
   props?: Partial<TaskListItemModel>,
 ): TaskListItemModel => ({
   status: props?.status || TaskStatusEnum.New,
@@ -53,7 +52,7 @@ export const fakeTaskListItem = (
   }) as TaskListItemModel['initialImpact'],
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),
-  workGroup: workGroupFixtures.workGroup(),
+  workGroup: taskFixtures.workGroup(),
   supportGroup: commonFixtures.supportGroup(),
   title: fakeWord(),
   name: fakeWord(),
@@ -73,9 +72,9 @@ export const fakeTaskListItem = (
   contactPhone: fakePhone(),
 })
 
-export const fakeTaskList = (length: number = 1): Array<TaskListItemModel> =>
-  times(length, () => fakeTaskListItem())
+export const taskList = (length: number = 1): Array<TaskListItemModel> =>
+  times(length, () => taskListItem())
 
-export const fakeTaskListResponse = (
+export const taskListResponse = (
   list: GetTaskListSuccessResponse['results'],
 ): GetTaskListSuccessResponse => commonFixtures.paginatedListResponse(list)

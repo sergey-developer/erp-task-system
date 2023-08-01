@@ -44,7 +44,7 @@ const props: Readonly<
 }
 
 const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof props> = {
-  workGroup: workGroupFixtures.workGroup(),
+  workGroup: workGroupFixtures.workGroupListItem(),
 }
 
 // first line button
@@ -52,7 +52,7 @@ export const showFirstLineButtonProps: Pick<
   WorkGroupBlockProps,
   'workGroup' | 'status'
 > = {
-  workGroup: workGroupFixtures.workGroup(),
+  workGroup: workGroupFixtures.workGroupListItem(),
   status: TaskStatusEnum.New,
 }
 
@@ -176,7 +176,7 @@ describe('Блок рабочей группы', () => {
             <WorkGroupBlock
               {...props}
               {...showSecondLineButtonProps}
-              workGroup={workGroupFixtures.workGroup()}
+              workGroup={workGroupFixtures.workGroupListItem()}
             />,
             {
               store: getStoreWithAuth({

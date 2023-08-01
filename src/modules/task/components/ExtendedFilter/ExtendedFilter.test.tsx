@@ -991,7 +991,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Можно выбрать рабочую группу из списка', async () => {
-        const workGroupListItem = workGroupFixtures.workGroup()
+        const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
         const { user } = render(<ExtendedFilter {...props} />, {
@@ -1038,7 +1038,7 @@ describe('Расширенный фильтр', () => {
 
       describe('Сбрасывает значения', () => {
         test('Кнопка "Сбросить"', async () => {
-          const workGroupListItem = workGroupFixtures.workGroup()
+          const workGroupListItem = workGroupFixtures.workGroupListItem()
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
           const { user } = render(<ExtendedFilter {...props} />, {
@@ -1061,7 +1061,7 @@ describe('Расширенный фильтр', () => {
         })
 
         test('Кнопка "Сбросить всё"', async () => {
-          const workGroupListItem = workGroupFixtures.workGroup()
+          const workGroupListItem = workGroupFixtures.workGroupListItem()
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
           const { user } = render(<ExtendedFilter {...props} />, {

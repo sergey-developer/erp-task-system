@@ -241,12 +241,12 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     describe('Имеет верное значение по умолчанию', () => {
       test(`Если есть группа с типом ${WorkGroupTypeEnum.AssociatedWithSapId}`, async () => {
         const workGroupList = [
-          workGroupFixtures.workGroup({
+          workGroupFixtures.workGroupListItem({
             priority: workGroupFixtures.workGroupPriority({
               type: WorkGroupTypeEnum.AssociatedWithSapId,
             }),
           }),
-          workGroupFixtures.workGroup({
+          workGroupFixtures.workGroupListItem({
             priority: workGroupFixtures.workGroupPriority({
               type: WorkGroupTypeEnum.NoType,
             }),
@@ -275,12 +275,12 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
       test(`Если есть группа с типом ${WorkGroupTypeEnum.DefaultForSupportGroup}`, async () => {
         const workGroupList = [
-          workGroupFixtures.workGroup({
+          workGroupFixtures.workGroupListItem({
             priority: workGroupFixtures.workGroupPriority({
               type: WorkGroupTypeEnum.DefaultForSupportGroup,
             }),
           }),
-          workGroupFixtures.workGroup({
+          workGroupFixtures.workGroupListItem({
             priority: workGroupFixtures.workGroupPriority({
               type: WorkGroupTypeEnum.NoType,
             }),
@@ -385,7 +385,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     test('Корректно отображает варианты с приоритетом >= 4', async () => {
       const workGroupList = [
-        workGroupFixtures.workGroup({
+        workGroupFixtures.workGroupListItem({
           priority: workGroupFixtures.workGroupPriority({ value: 4 }),
         }),
       ]
@@ -411,7 +411,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     test('Корректно отображает варианты с приоритетом < 4', async () => {
       const workGroupList = [
-        workGroupFixtures.workGroup({
+        workGroupFixtures.workGroupListItem({
           priority: workGroupFixtures.workGroupPriority({ value: 3 }),
         }),
       ]

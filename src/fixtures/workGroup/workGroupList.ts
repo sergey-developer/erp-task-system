@@ -34,7 +34,7 @@ export const workGroupMemberList = (
   length: number = 1,
 ): WorkGroupListItemModel['members'] => times(length, () => workGroupMember())
 
-export const workGroup = (
+export const workGroupListItem = (
   props?: Partial<{
     seniorEngineerId: number
     groupLeadId: number
@@ -58,4 +58,4 @@ export const workGroup = (
 })
 
 export const workGroupList = (length: number = 1): WorkGroupListModel =>
-  times(length, () => workGroup())
+  times(length, () => workGroupListItem())

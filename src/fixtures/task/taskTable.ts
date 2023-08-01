@@ -9,7 +9,6 @@ import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
 
 import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
 
 import {
   fakeDateString,
@@ -32,7 +31,7 @@ export const taskTableItem = (
   id: fakeId(),
   name: fakeName(),
   title: fakeWord(),
-  workGroup: workGroupFixtures.workGroup(),
+  workGroup: taskFixtures.workGroup(),
   supportGroup: commonFixtures.supportGroup(),
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),

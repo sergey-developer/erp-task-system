@@ -825,7 +825,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.workGroup({
+              workGroupFixtures.workGroupListItem({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -862,7 +862,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.workGroup({
+              workGroupFixtures.workGroupListItem({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -899,7 +899,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.workGroup({
+              workGroupFixtures.workGroupListItem({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -936,7 +936,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.workGroup({
+              workGroupFixtures.workGroupListItem({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
