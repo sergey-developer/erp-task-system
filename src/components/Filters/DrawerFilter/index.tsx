@@ -2,7 +2,7 @@ import { Button, DrawerProps, Row, Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React from 'react'
 
-import { FCWithChildren } from 'shared/interfaces/utils'
+import { FCWithChildren } from 'shared/types/utils'
 
 import { DrawerStyled } from './styles'
 

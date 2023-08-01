@@ -1,4 +1,4 @@
-import { FCWithChildren } from 'shared/interfaces/utils'
+import { FCWithChildren } from 'shared/types/utils'
 
 import { CatalogItemWrapperStyled } from './styles'
 

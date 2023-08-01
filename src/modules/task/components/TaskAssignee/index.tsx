@@ -8,7 +8,7 @@ import { getUserAbbr } from 'modules/user/utils'
 import UserAvatar from 'components/Avatars/UserAvatar'
 import Space from 'components/Space'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
 const { Text } = Typography
 

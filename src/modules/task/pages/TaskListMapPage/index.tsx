@@ -13,7 +13,7 @@ import { useGetTaskListMapQuery } from 'modules/task/services/taskApi.service'
 
 import LoadingArea from 'components/LoadingArea'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 const TaskListMapPage: FC = () => {

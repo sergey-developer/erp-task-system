@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { NavMenuProps } from 'components/NavMenu'
 
-import { NavMenuItem } from '../interfaces'
+import { NavMenuItem } from '../types'
 
 export const mapNavMenuConfig = (
   items: Array<NavMenuItem>,

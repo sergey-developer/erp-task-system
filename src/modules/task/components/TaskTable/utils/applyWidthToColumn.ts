@@ -1,7 +1,7 @@
-import { ColumnsType } from 'antd/es/table'
+import { ColumnType } from 'antd/es/table'
 
-import { ScreenMap } from 'shared/interfaces/breakpoints'
-import { ArrayFirst, MaybeUndefined } from 'shared/interfaces/utils'
+import { ScreenMap } from 'shared/types/breakpoints'
+import { MaybeUndefined } from 'shared/types/utils'
 
 import {
   AllColumnWidthMap,
@@ -9,12 +9,12 @@ import {
   defaultColumnWidthMap,
   xxlColumnWidthMap,
 } from '../constants/columnWidth'
-import { TaskTableListItem } from '../interfaces'
+import { TaskTableListItem } from '../types'
 
 export const applyWidthToColumn = (
-  column: ArrayFirst<ColumnsType<TaskTableListItem>>,
+  column: ColumnType<TaskTableListItem>,
   breakpoints: ScreenMap,
-): ArrayFirst<ColumnsType<TaskTableListItem>> => {
+): ColumnType<TaskTableListItem> => {
   const defaultWidth = defaultColumnWidthMap[column.key as AllColumnWidthMap]
 
   const colWidth: MaybeUndefined<number> = breakpoints.xxl

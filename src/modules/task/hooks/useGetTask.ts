@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import {
   CustomUseQueryHookResult,
   CustomUseQueryOptions,
-} from 'lib/rtk-query/interfaces'
+} from 'lib/rtk-query/types'
 
 import { getTaskMessages } from 'modules/task/constants'
 import { GetTaskQueryArgs, GetTaskSuccessResponse } from 'modules/task/models'

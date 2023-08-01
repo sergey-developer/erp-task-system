@@ -1,6 +1,6 @@
 import { RcFile } from 'antd/es/upload'
 
-import { BaseTaskRequestArgs } from 'modules/task/interfaces'
+import { BaseTaskRequestArgs } from 'modules/task/types'
 
 import { ErrorResponse } from 'shared/services/api'
 

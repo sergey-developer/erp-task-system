@@ -1,6 +1,6 @@
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
-import { StringMap } from 'shared/interfaces/utils'
+import { StringMap } from 'shared/types/utils'
 
 export enum FastFilterEnum {
   All = 'ALL',

@@ -2,7 +2,7 @@ import { ColumnsType } from 'antd/lib/table'
 import React from 'react'
 import { Resizable, ResizableProps } from 'react-resizable'
 
-import { TaskTableListItem } from './interfaces'
+import { TaskTableListItem } from './types'
 
 const ResizeableTitle = (
   props: ColumnsType<TaskTableListItem> & ResizableProps,

@@ -1,4 +1,4 @@
-import { AntdPaginatedList } from 'lib/antd/interfaces'
+import { AntdPaginatedList } from 'lib/antd/types'
 
 import { TaskListItemModel } from 'modules/task/models'
 

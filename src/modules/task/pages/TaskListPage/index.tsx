@@ -21,7 +21,7 @@ import {
   ExtendedFilterFormFields,
   ExtendedFilterProps,
   ExtendedFilterQueries,
-} from 'modules/task/components/ExtendedFilter/interfaces'
+} from 'modules/task/components/ExtendedFilter/types'
 import FastFilterList from 'modules/task/components/FastFilterList'
 import { FastFilterEnum } from 'modules/task/components/FastFilterList/constants'
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
@@ -31,7 +31,7 @@ import {
   SortableField,
   sortableFieldToSortValues,
 } from 'modules/task/components/TaskTable/constants/sort'
-import { TaskTableListItem } from 'modules/task/components/TaskTable/interfaces'
+import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
@@ -42,10 +42,10 @@ import { SyncIcon } from 'components/Icons'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks'
-import { MaybeNull, MaybeUndefined } from 'shared/interfaces/utils'
+import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
-import { FastFilterQueries, TaskIdFilterQueries } from './interfaces'
+import { FastFilterQueries, TaskIdFilterQueries } from './types'
 import { SearchStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'
 

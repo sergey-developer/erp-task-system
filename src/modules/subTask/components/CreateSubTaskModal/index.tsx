@@ -14,11 +14,11 @@ import { SupportGroupListItemModel } from 'modules/supportGroup/models'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { validationSizes } from 'shared/constants/validation'
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { MaybeUndefined } from 'shared/types/utils'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { getFieldsErrors } from 'shared/utils/form'
 
-import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'
+import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './types'
 
 const { Text, Link } = Typography
 const { TextArea } = Input

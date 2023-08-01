@@ -8,7 +8,7 @@ import {
 } from 'modules/task/models'
 import { getOlaStatusMap } from 'modules/task/utils'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 import { formatDate, humanizeDuration } from 'shared/utils/date'
 import { makeString } from 'shared/utils/string'
 

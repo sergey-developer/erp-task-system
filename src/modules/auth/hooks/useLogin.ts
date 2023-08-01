@@ -10,7 +10,7 @@ import { parseJwt } from 'modules/auth/utils'
 
 import { useDispatch } from 'shared/hooks'
 
-import { LoginFormFields } from '../pages/LoginPage/interfaces'
+import { LoginFormFields } from '../pages/LoginPage/types'
 
 export const useLogin = () => {
   const dispatch = useDispatch()

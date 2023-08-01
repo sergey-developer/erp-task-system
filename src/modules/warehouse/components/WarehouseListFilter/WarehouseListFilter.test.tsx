@@ -19,7 +19,7 @@ import {
 } from '_tests_/utils'
 
 import WarehouseListFilter from './index'
-import { WarehouseListFilterProps } from './interfaces'
+import { WarehouseListFilterProps } from './types'
 
 const props: WarehouseListFilterProps = {
   visible: true,

@@ -1,4 +1,4 @@
-import { Nullable } from 'shared/interfaces/utils'
+import { Nullable } from 'shared/types/utils'
 
 export const makeString = (
   separator: string,

@@ -32,7 +32,7 @@ import { testUtils as createCommentFormTestUtils } from './CreateCommentForm/Cre
 import {
   CreateCommentFormErrors,
   CreateCommentFormFields,
-} from './CreateCommentForm/interfaces'
+} from './CreateCommentForm/types'
 import CommentListTab, {
   CommentListTabProps,
   DEFAULT_DISPLAYABLE_COUNT,

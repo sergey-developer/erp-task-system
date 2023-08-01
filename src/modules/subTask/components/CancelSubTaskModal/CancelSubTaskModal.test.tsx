@@ -16,7 +16,7 @@ import {
 } from '_tests_/utils'
 
 import CancelSubTaskModal from './index'
-import { CancelSubTaskModalProps } from './interfaces'
+import { CancelSubTaskModalProps } from './types'
 
 const requiredProps: Readonly<CancelSubTaskModalProps> = {
   isLoading: false,

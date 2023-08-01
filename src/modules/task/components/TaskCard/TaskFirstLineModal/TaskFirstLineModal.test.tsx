@@ -15,7 +15,7 @@ import {
 } from '_tests_/utils'
 
 import TaskFirstLineModal from './index'
-import { TaskFirstLineModalProps } from './interfaces'
+import { TaskFirstLineModalProps } from './types'
 
 const requiredProps: Readonly<TaskFirstLineModalProps> = {
   recordId: fakeIdStr(),

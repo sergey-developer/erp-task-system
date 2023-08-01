@@ -5,7 +5,7 @@ import { getWarehousePageLink } from 'modules/warehouse/utils'
 
 import { valueOrHyphen } from 'shared/utils/common'
 
-import { WarehouseTableItem } from './interfaces'
+import { WarehouseTableItem } from './types'
 
 export const columns: ColumnsType<WarehouseTableItem> = [
   {

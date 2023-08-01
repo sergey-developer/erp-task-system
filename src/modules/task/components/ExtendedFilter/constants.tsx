@@ -12,9 +12,9 @@ import {
 } from 'modules/task/components/TaskStatus/constants'
 import TaskStatus from 'modules/task/components/TaskStatus/index'
 
-import { StringMap } from 'shared/interfaces/utils'
+import { StringMap } from 'shared/types/utils'
 
-import { ExtendedFilterFormFields, SearchFields } from './interfaces'
+import { ExtendedFilterFormFields, SearchFields } from './types'
 
 export enum TaskAssignedEnum {
   Assigned = 'True',

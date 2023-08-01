@@ -1,4 +1,4 @@
-import { StringMap } from 'shared/interfaces/utils'
+import { StringMap } from 'shared/types/utils'
 
 export enum TaskCardTabsEnum {
   SubTaskList = 'SubTaskList',

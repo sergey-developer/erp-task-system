@@ -7,7 +7,7 @@ import WarehousePage from 'modules/warehouse/pages/WarehousePage'
 import { testUtils as warehousePageTestUtils } from 'modules/warehouse/pages/WarehousePage/WarehousePage.test'
 import { getWarehousePageLink } from 'modules/warehouse/utils'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
 import warehouseFixtures from 'fixtures/warehouse'
 
@@ -24,7 +24,7 @@ import {
 } from '_tests_/utils'
 
 import WarehouseTable from './index'
-import { WarehouseTableItem, WarehouseTableProps } from './interfaces'
+import { WarehouseTableItem, WarehouseTableProps } from './types'
 
 const warehouseListItem = warehouseFixtures.warehouseListItem()
 

@@ -1,5 +1,5 @@
 import { commonConfig, CommonConfigKeys } from './common.config'
-import { ConfigType } from './interfaces'
+import { ConfigType } from './types'
 
 export type TestEnvConfigKeys = CommonConfigKeys
 

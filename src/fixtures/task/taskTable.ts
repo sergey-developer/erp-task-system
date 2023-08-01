@@ -5,7 +5,7 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants'
-import { TaskTableListItem } from 'modules/task/components/TaskTable/interfaces'
+import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
 
 import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'

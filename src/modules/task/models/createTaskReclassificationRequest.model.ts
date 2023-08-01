@@ -1,5 +1,5 @@
 import { ReclassificationReasonEnum } from 'modules/task/constants'
-import { BaseTaskRequestArgs } from 'modules/task/interfaces'
+import { BaseTaskRequestArgs } from 'modules/task/types'
 
 import { TaskReclassificationRequestModel } from './taskReclassificationRequest.model'
 

@@ -1,10 +1,10 @@
-import { ExtendedFilterQueries } from 'modules/task/components/ExtendedFilter/interfaces'
+import { ExtendedFilterQueries } from 'modules/task/components/ExtendedFilter/types'
 import { SortValue } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskListItemModel } from 'modules/task/models'
 import {
   FastFilterQueries,
   TaskIdFilterQueries,
-} from 'modules/task/pages/TaskListPage/interfaces'
+} from 'modules/task/pages/TaskListPage/types'
 
 import { PaginatedListSuccessResponse } from 'shared/models'
 

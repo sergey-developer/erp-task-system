@@ -1,6 +1,6 @@
 import { TaskJournalTypeEnum } from 'modules/task/constants'
 
-import { StringMap } from 'shared/interfaces/utils'
+import { StringMap } from 'shared/types/utils'
 
 export const NO_DATA_MSG: string = 'Записей пока нет'
 

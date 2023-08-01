@@ -1,6 +1,6 @@
-import { ExtendedSortKey } from 'shared/interfaces/sort'
+import { ExtendedSortKey } from 'shared/types/sort'
 
-import { TaskTableListItem } from '../interfaces'
+import { TaskTableListItem } from '../types'
 
 export type AscendSortValue =
   | 'id'

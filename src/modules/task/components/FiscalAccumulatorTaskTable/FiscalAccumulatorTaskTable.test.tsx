@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
 import taskFixtures from 'fixtures/task'
@@ -16,7 +16,7 @@ import FiscalAccumulatorTaskTable from './index'
 import {
   FiscalAccumulatorTaskTableItem,
   FiscalAccumulatorTaskTableProps,
-} from './interfaces'
+} from './types'
 
 const fakeFiscalAccumulatorTaskListItem =
   taskFixtures.fiscalAccumulatorTaskListItem()

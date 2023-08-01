@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { BaseUserModel } from 'modules/user/models'
 
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { MaybeUndefined } from 'shared/types/utils'
 
 import { useAuthenticatedUser } from './useAuthenticatedUser'
 

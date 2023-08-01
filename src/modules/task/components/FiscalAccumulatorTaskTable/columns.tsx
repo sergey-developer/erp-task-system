@@ -6,7 +6,7 @@ import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { BodyCellProps } from './components'
-import { FiscalAccumulatorTaskTableItem } from './interfaces'
+import { FiscalAccumulatorTaskTableItem } from './types'
 import { OlaNextBreachTimeStyled } from './styles'
 
 export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [

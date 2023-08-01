@@ -1,4 +1,4 @@
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
 export type WarehouseListItemModel = {
   id: number

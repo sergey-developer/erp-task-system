@@ -17,7 +17,7 @@ import {
   taskExtendedStatusOptions,
   taskOverdueOptions,
 } from './constants'
-import { ExtendedFilterFormFields, ExtendedFilterProps } from './interfaces'
+import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
 import { CheckboxGroupStyled, RangePickerStyled } from './styles'
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({

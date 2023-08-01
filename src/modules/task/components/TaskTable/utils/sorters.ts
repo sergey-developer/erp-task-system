@@ -1,6 +1,6 @@
 import { taskStatusDict } from 'modules/task/constants'
 
-import { TaskTableListItem } from '../interfaces'
+import { TaskTableListItem } from '../types'
 
 export const statusSorter = (
   { status: statusA }: TaskTableListItem,

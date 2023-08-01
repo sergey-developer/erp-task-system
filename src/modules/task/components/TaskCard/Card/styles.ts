@@ -1,7 +1,7 @@
 import { Card, Divider } from 'antd'
 import styled, { css } from 'styled-components'
 
-import { StyledBreakpointsProps } from 'shared/interfaces/breakpoints'
+import { StyledBreakpointsProps } from 'shared/types/breakpoints'
 
 export const taskCardContainerBaseCss = css<StyledBreakpointsProps>`
   padding-top: 20px;

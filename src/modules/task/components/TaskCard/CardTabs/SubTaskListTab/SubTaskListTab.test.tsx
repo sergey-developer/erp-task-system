@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as cancelSubTaskModalTestUtils } from 'modules/subTask/components/CancelSubTaskModal/CancelSubTaskModal.test'
 import { testUtils as createSubTaskModalTestUtils } from 'modules/subTask/components/CreateSubTaskModal/CreateSubTaskModal.test'
 import { testUtils as reworkSubTaskModalTestUtils } from 'modules/subTask/components/ReworkSubTaskModal/ReworkSubTaskModal.test'
-import { ReworkSubTaskFormErrors } from 'modules/subTask/components/ReworkSubTaskModal/interfaces'
+import { ReworkSubTaskFormErrors } from 'modules/subTask/components/ReworkSubTaskModal/types'
 import {
   activeCancelButtonProps,
   activeReworkButtonProps,

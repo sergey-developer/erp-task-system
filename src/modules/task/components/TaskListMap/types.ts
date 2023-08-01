@@ -2,7 +2,7 @@ import { Coordinate } from 'ol/coordinate'
 
 import { TaskListMapItemModel, TaskListMapModel } from 'modules/task/models'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
 export type TaskListMapProps = {
   tasks: TaskListMapModel

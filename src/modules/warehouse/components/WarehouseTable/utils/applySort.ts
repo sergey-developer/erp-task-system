@@ -3,9 +3,9 @@ import isEqual from 'lodash/isEqual'
 
 import { GetWarehouseListSortValue } from 'modules/warehouse/models'
 
-import { ArrayFirst } from 'shared/interfaces/utils'
+import { ArrayFirst } from 'shared/types/utils'
 
-import { WarehouseTableItem } from '../interfaces'
+import { WarehouseTableItem } from '../types'
 import { parseSort } from './parseSort'
 
 export const applySort = (

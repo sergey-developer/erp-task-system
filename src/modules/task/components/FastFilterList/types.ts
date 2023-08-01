@@ -1,7 +1,7 @@
 import { GetTaskCountersSuccessResponse } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
-import { MaybeUndefined, Nullable } from 'shared/interfaces/utils'
+import { MaybeUndefined, Nullable } from 'shared/types/utils'
 
 import { FastFilterListItemProps } from './FastFilterListItem'
 import { FastFilterEnum } from './constants'

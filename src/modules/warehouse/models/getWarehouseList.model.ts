@@ -1,5 +1,5 @@
-import { ExtendedSortKey } from 'shared/interfaces/sort'
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { ExtendedSortKey } from 'shared/types/sort'
+import { MaybeUndefined } from 'shared/types/utils'
 
 import { WarehouseListModel } from './warehouseList.model'
 

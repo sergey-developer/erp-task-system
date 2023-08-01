@@ -5,7 +5,7 @@ import noop from 'lodash/noop'
 import moment from 'moment-timezone'
 import React, { FC, useCallback, useEffect } from 'react'
 
-import { CustomMutationTrigger } from 'lib/rtk-query/interfaces'
+import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import {
@@ -40,7 +40,7 @@ import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
 import { useDebounceFn } from 'shared/hooks'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 import {
   isBadRequestError,
   isErrorResponse,
@@ -58,12 +58,12 @@ import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
 import { RequestTaskReclassificationModalProps } from '../RequestTaskReclassificationModal'
 import { RequestTaskSuspendModalProps } from '../RequestTaskSuspendModal'
-import { RequestTaskSuspendFormFields } from '../RequestTaskSuspendModal/interfaces'
+import { RequestTaskSuspendFormFields } from '../RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from '../RequestTaskSuspendModal/utils'
 import SecondaryDetails from '../SecondaryDetails'
-import { TaskFirstLineFormFields } from '../TaskFirstLineModal/interfaces'
+import { TaskFirstLineFormFields } from '../TaskFirstLineModal/types'
 import { TaskResolutionModalProps } from '../TaskResolutionModal'
-import { TaskSecondLineFormFields } from '../TaskSecondLineModal/interfaces'
+import { TaskSecondLineFormFields } from '../TaskSecondLineModal/types'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))

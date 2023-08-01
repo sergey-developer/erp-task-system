@@ -5,7 +5,7 @@ import {
   CRUDPermissionsEnum,
   UIPermissionsEnum,
 } from 'shared/constants/permissions'
-import { BooleanMap } from 'shared/interfaces/utils'
+import { BooleanMap } from 'shared/types/utils'
 
 export type Permissions =
   | UIPermissionsEnum

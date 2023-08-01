@@ -10,7 +10,7 @@ import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/Task
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
-import { ArrayFirst, NonNullableObject } from 'shared/interfaces/utils'
+import { ArrayFirst, NonNullableObject } from 'shared/types/utils'
 
 import taskFixtures from 'fixtures/task'
 import workGroupFixtures from 'fixtures/workGroup'

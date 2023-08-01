@@ -23,7 +23,7 @@ import Space from 'components/Space'
 import { validationSizes } from 'shared/constants/validation'
 import { getFilesFromEvent } from 'shared/utils/form'
 
-import { TaskResolutionFormFields } from './interfaces'
+import { TaskResolutionFormFields } from './types'
 
 const { Text, Link } = Typography
 const { TextArea } = Input

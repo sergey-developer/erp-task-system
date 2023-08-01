@@ -1,4 +1,4 @@
-import { TaskTableColumnKey } from '../interfaces'
+import { TaskTableColumnKey } from '../types'
 
 export type AllColumnWidthMap = TaskTableColumnKey
 

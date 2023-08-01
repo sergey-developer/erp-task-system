@@ -14,7 +14,7 @@ import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { getShortUserName } from 'modules/user/utils'
 
-import { NumberOrString } from 'shared/interfaces/utils'
+import { NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
 import taskFixtures from 'fixtures/task'
@@ -33,7 +33,7 @@ import {
 
 import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
-import { TaskTableListItem, TaskTableProps } from './interfaces'
+import { TaskTableListItem, TaskTableProps } from './types'
 
 const fakeTaskTableItem = taskFixtures.taskTableItem()
 

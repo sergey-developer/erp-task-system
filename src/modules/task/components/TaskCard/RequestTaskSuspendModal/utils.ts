@@ -1,6 +1,6 @@
 import { CreateTaskSuspendRequestBadRequestErrorResponse } from 'modules/task/models'
 
-import { RequestTaskSuspendFormErrors } from './interfaces'
+import { RequestTaskSuspendFormErrors } from './types'
 
 export const getFormErrorsFromBadRequestError = (
   errors: CreateTaskSuspendRequestBadRequestErrorResponse,

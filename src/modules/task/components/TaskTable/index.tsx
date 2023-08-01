@@ -7,7 +7,7 @@ import { ResizableProps } from 'react-resizable'
 import { localeConfig } from './constants/common'
 import tableComponents from './constants/components'
 import { paginationConfig } from './constants/pagination'
-import { TaskTableListItem, TaskTableProps } from './interfaces'
+import { TaskTableListItem, TaskTableProps } from './types'
 import { TableStyled, TableWrapperStyled } from './styles'
 import { applySortToColumn, applyWidthToColumn, getTableColumns } from './utils'
 

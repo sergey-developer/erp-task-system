@@ -5,7 +5,7 @@ import {
   TaskApiTriggerEnum,
   TaskApiTagEnum,
 } from 'modules/task/constants'
-import { GetTaskListTransformedSuccessResponse } from 'modules/task/interfaces'
+import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
   GetFiscalAccumulatorTaskListQueryArgs,
   GetFiscalAccumulatorTaskListSuccessResponse,

@@ -6,7 +6,7 @@ import BaseModal from 'components/Modals/BaseModal'
 
 import { validationSizes } from 'shared/constants/validation'
 
-import { ReworkSubTaskFormFields, ReworkSubTaskModalProps } from './interfaces'
+import { ReworkSubTaskFormFields, ReworkSubTaskModalProps } from './types'
 
 const { Text, Link } = Typography
 const { TextArea } = Input

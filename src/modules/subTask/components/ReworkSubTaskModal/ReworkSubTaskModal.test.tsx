@@ -16,7 +16,7 @@ import {
 } from '_tests_/utils'
 
 import ReworkSubTaskModal from './index'
-import { ReworkSubTaskModalProps } from './interfaces'
+import { ReworkSubTaskModalProps } from './types'
 
 const requiredProps: Readonly<ReworkSubTaskModalProps> = {
   isLoading: false,
