@@ -1,19 +1,21 @@
-export const getUserMeMessages = {
+import { ApiRequestMessages } from 'shared/types/messages'
+
+export const getUserMeMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Не удалось получить профиль пользователя',
-} as const
+}
 
-export const updateUserMessages = {
+export const updateUserMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка обновления пользователя',
-} as const
+}
 
-export const updateUserTimeZoneMessages = {
+export const updateUserTimeZoneMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка обновления временной зоны пользователя',
-} as const
+}
 
-export const getUserStatusListMessages = {
+export const getUserStatusListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения статусов пользователя',
-} as const
+}
 
-export const updateUserStatusMessages = {
+export const updateUserStatusMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка обновления статуса пользователя',
-} as const
+}

@@ -1,7 +1,10 @@
-export const createSubTaskMessages = {
-  commonError: 'Не удалось создать задание'
-} as const
+import { ApiRequestMessages } from 'shared/types/messages'
 
-export const getSubTaskTemplateListMessages = {
-  commonError: 'Не удалось получить шаблоны заданий'
-} as const
+export const createSubTaskMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Не удалось создать задание',
+}
+
+export const getSubTaskTemplateListMessages: ApiRequestMessages<'commonError'> =
+  {
+    commonError: 'Не удалось получить шаблоны заданий',
+  }
