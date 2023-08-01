@@ -2,7 +2,6 @@ import { SupportGroupEndpointsEnum } from 'modules/supportGroup/constants/api'
 import { GetSupportGroupListSuccessResponse } from 'modules/supportGroup/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 import {
   getRequestMockFn,
@@ -23,6 +22,6 @@ export const mockGetSupportGroupListSuccess = (
   >,
 ) => getSuccessMockFn(getSupportGroupListMockFn(), options)()
 
-export const mockGetSupportGroupListServerError = <T extends object>(
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+export const mockGetSupportGroupListServerError = (
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(getSupportGroupListMockFn(), options)()
