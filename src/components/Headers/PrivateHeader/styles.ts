@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 import {
   StyledBreakpointStyles,
   StyledBreakpointsProps,
-} from 'shared/types/breakpoints'
+} from 'shared/interfaces/breakpoints'
 import { applyBreakpointStyles } from 'shared/utils/breakpoints'
 
 const { Header } = Layout

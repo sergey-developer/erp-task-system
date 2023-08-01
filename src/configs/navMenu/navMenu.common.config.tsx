@@ -2,11 +2,11 @@ import { RouteEnum } from 'configs/routes'
 
 import { UnorderedListIcon } from 'components/Icons'
 
-import { NavMenuItem } from './types'
+import { NavMenuItem } from './interfaces'
 
 const navMenuCommonConfig: Array<NavMenuItem> = [
   {
-    key: RouteEnum.Tasks,
+    key: RouteEnum.TaskList,
     icon: UnorderedListIcon,
     link: RouteEnum.TaskList,
     text: 'Заявки',

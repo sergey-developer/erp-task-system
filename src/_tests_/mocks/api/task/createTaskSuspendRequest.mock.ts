@@ -23,9 +23,9 @@ export const mockCreateTaskSuspendRequestSuccess = (
   >,
 ) => getSuccessMockFn(createTaskSuspendRequestMockFn(taskId), options)()
 
-export const mockCreateTaskSuspendRequestNotFoundError = (
+export const mockCreateTaskSuspendRequestNotFoundError = <T extends object>(
   taskId: number,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getNotFoundErrorMockFn(createTaskSuspendRequestMockFn(taskId), options)()
 
 export const mockCreateTaskSuspendRequestBadRequestError = <T extends object>(
@@ -33,7 +33,7 @@ export const mockCreateTaskSuspendRequestBadRequestError = <T extends object>(
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(createTaskSuspendRequestMockFn(taskId), options)()
 
-export const mockCreateTaskSuspendRequestServerError = (
+export const mockCreateTaskSuspendRequestServerError = <T extends object>(
   taskId: number,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getServerErrorMockFn(createTaskSuspendRequestMockFn(taskId), options)()

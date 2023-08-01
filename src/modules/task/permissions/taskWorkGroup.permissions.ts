@@ -1,4 +1,4 @@
-import { UserRoleEnum } from 'modules/user/constants'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import {
   CRUDPermissionsEnum,
@@ -7,7 +7,7 @@ import {
 import {
   ObjectPermissionConfig,
   UserPermissionConfig,
-} from 'shared/types/permissions'
+} from 'shared/interfaces/permissions'
 
 export const taskWorkGroupPermissions: ObjectPermissionConfig<
   'transferToSecondLineBtn' | 'transferToFirstLineBtn'

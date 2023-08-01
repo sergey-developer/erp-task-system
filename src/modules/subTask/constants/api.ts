@@ -1,4 +1,4 @@
-export enum SubTaskApiEnum {
+export enum SubTaskEndpointEnum {
   GetSubTaskTemplateList = '/catalogs/templates/',
   GetSubTaskList = '/tasks/:id/subtasks/',
   CreateSubTask = '/tasks/:id/subtasks/',
@@ -6,7 +6,7 @@ export enum SubTaskApiEnum {
   ReworkSubTask = '/subtasks/:id/rework/',
 }
 
-export enum SubTaskApiTriggerEnum {
+export enum SubTaskEndpointNameEnum {
   GetSubTaskList = 'getSubTaskList',
   GetSubTaskTemplateList = 'getSubTaskTemplateList',
   CreateSubTask = 'createSubTask',

@@ -2,7 +2,7 @@ import {
   CancelSubTaskBadRequestErrorResponse,
   CancelSubTaskSuccessResponse,
 } from 'modules/subTask/models'
-import { cancelSubTaskUrl } from 'modules/subTask/utils'
+import { cancelSubTaskUrl } from 'modules/subTask/utils/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'

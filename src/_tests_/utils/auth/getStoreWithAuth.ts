@@ -1,5 +1,5 @@
-import { AuthenticatedUser } from 'modules/auth/types'
-import { UserRoleEnum } from 'modules/user/constants'
+import { AuthenticatedUser } from 'modules/auth/interfaces'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { setupStore } from 'state/store'
 

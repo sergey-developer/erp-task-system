@@ -1,12 +1,12 @@
 import { CheckCircleOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 
-import { IconProps } from './types'
+import { IconProps } from './interfaces'
 import { colorStyles, fontSizeStyles } from './styles'
 
-const CheckCircleIconStyled = styled(CheckCircleOutlined)<IconProps>`
+const CheckCircleIcon = styled(CheckCircleOutlined)<IconProps>`
   ${colorStyles}
   ${fontSizeStyles}
 `
 
-export default CheckCircleIconStyled
+export default CheckCircleIcon

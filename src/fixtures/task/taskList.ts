@@ -13,6 +13,7 @@ import {
 
 import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
 
 import {
   fakeAddress,
@@ -26,7 +27,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const taskListItem = (
+export const fakeTaskListItem = (
   props?: Partial<TaskListItemModel>,
 ): TaskListItemModel => ({
   status: props?.status || TaskStatusEnum.New,
@@ -36,7 +37,7 @@ export const taskListItem = (
 
   responseTime: null,
   id: fakeId(),
-  assignee: taskFixtures.assignee(),
+  assignee: taskFixtures.fakeAssignee(),
   lastComment: fakeWord(),
   priorityCode: fakeInteger({
     min: 1,
@@ -52,8 +53,8 @@ export const taskListItem = (
   }) as TaskListItemModel['initialImpact'],
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),
-  workGroup: taskFixtures.workGroup(),
-  supportGroup: commonFixtures.supportGroup(),
+  workGroup: workGroupFixtures.fakeWorkGroup(),
+  supportGroup: commonFixtures.fakeSupportGroup(),
   title: fakeWord(),
   name: fakeWord(),
   productClassifier1: fakeWord(),
@@ -72,9 +73,9 @@ export const taskListItem = (
   contactPhone: fakePhone(),
 })
 
-export const taskList = (length: number = 1): Array<TaskListItemModel> =>
-  times(length, () => taskListItem())
+export const fakeTaskList = (length: number = 1): Array<TaskListItemModel> =>
+  times(length, () => fakeTaskListItem())
 
-export const taskListResponse = (
+export const fakeTaskListResponse = (
   list: GetTaskListSuccessResponse['results'],
-): GetTaskListSuccessResponse => commonFixtures.paginatedListResponse(list)
+): GetTaskListSuccessResponse => commonFixtures.fakePaginatedListResponse(list)

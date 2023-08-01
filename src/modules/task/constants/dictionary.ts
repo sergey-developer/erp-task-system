@@ -6,7 +6,7 @@ import {
 } from 'modules/task/constants'
 import { BaseTaskModel } from 'modules/task/models'
 
-import { StringMap } from 'shared/types/utils'
+import { StringMap } from 'shared/interfaces/utils'
 
 export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.New]: 'Новая',

@@ -5,7 +5,6 @@
   "trailingComma": "all",
   "importOrder": [
     "<THIRD_PARTY_MODULES>",
-    "^assets/(.*)$",
     "^lib/(.*)$",
     "^configs/(.*)$",
     "^modules/(.*)$",

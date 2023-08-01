@@ -1,6 +1,6 @@
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 
-import { BaseSubTaskRequestArgs } from '../types'
+import { BaseSubTaskRequestArgs } from '../interfaces'
 
 export type ReworkSubTaskMutationArgs = BaseTaskRequestArgs &
   BaseSubTaskRequestArgs & {

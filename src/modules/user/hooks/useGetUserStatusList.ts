@@ -1,7 +1,7 @@
 import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
 
-import { getUserStatusListMessages } from 'modules/user/constants'
+import { getUserStatusListErrorMessages } from 'modules/user/constants/errorMessages'
 import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
@@ -22,7 +22,7 @@ export const useGetUserStatusList = (): TypedUseQueryHookResult<
     if (!state.isError) return
 
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getUserStatusListMessages.commonError)
+      showErrorNotification(getUserStatusListErrorMessages.commonError)
     }
   }, [state.error, state.isError])
 

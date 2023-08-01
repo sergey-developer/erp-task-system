@@ -1,28 +1,18 @@
 import { generatePath } from 'react-router-dom'
 
-import { SubTaskApiEnum } from 'modules/subTask/constants'
-
-import { appendSlashAtEnd } from 'shared/utils/string'
+import { SubTaskEndpointEnum } from 'modules/subTask/constants/api'
 
 export const getSubTaskListUrl = (taskId: number): string =>
-  appendSlashAtEnd(
-    generatePath(SubTaskApiEnum.GetSubTaskList, { id: String(taskId) }),
-  )
+  generatePath(SubTaskEndpointEnum.GetSubTaskList, { id: String(taskId) })
 
 export const getSubTaskTemplateListUrl = (): string =>
-  appendSlashAtEnd(SubTaskApiEnum.GetSubTaskTemplateList)
+  SubTaskEndpointEnum.GetSubTaskTemplateList
 
 export const createSubTaskUrl = (taskId: number): string =>
-  appendSlashAtEnd(
-    generatePath(SubTaskApiEnum.CreateSubTask, { id: String(taskId) }),
-  )
+  generatePath(SubTaskEndpointEnum.CreateSubTask, { id: String(taskId) })
 
 export const cancelSubTaskUrl = (subTaskId: number): string =>
-  appendSlashAtEnd(
-    generatePath(SubTaskApiEnum.CancelSubTask, { id: String(subTaskId) }),
-  )
+  generatePath(SubTaskEndpointEnum.CancelSubTask, { id: String(subTaskId) })
 
 export const reworkSubTaskUrl = (subTaskId: number): string =>
-  appendSlashAtEnd(
-    generatePath(SubTaskApiEnum.ReworkSubTask, { id: String(subTaskId) }),
-  )
+  generatePath(SubTaskEndpointEnum.ReworkSubTask, { id: String(subTaskId) })

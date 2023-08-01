@@ -1,5 +1,3 @@
-import { ApiRequestMessages } from "shared/types/messages";
-
-export const commonApiMessages: ApiRequestMessages<'unknownError'> = {
+export const commonApiMessages = {
   unknownError: 'Неизвестная ошибка',
-}
+} as const

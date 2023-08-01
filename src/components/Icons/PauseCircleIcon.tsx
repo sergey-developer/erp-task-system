@@ -1,11 +1,11 @@
 import { PauseCircleTwoTone } from '@ant-design/icons'
 import styled from 'styled-components'
 
-import { IconProps } from './types'
+import { IconProps } from './interfaces'
 import { fontSizeStyles } from './styles'
 
-const PauseCircleIconStyled = styled(PauseCircleTwoTone)<Pick<IconProps, '$size'>>`
+const PauseCircleIcon = styled(PauseCircleTwoTone)<Pick<IconProps, '$size'>>`
   ${fontSizeStyles}
 `
 
-export default PauseCircleIconStyled
+export default PauseCircleIcon

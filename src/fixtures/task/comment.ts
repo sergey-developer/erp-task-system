@@ -7,13 +7,13 @@ import taskFixtures from 'fixtures/task'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const comment = (): TaskCommentModel => ({
+export const fakeComment = (): TaskCommentModel => ({
   id: fakeId(),
   text: fakeWord(),
   createdAt: fakeDateString(),
-  author: commonFixtures.commentAuthor(),
-  attachments: [taskFixtures.attachment()],
+  author: commonFixtures.fakeCommentAuthor(),
+  attachments: [taskFixtures.fakeAttachment()],
 })
 
-export const commentList = (length: number = 1): Array<TaskCommentModel> =>
-  times(length, () => comment())
+export const fakeCommentList = (length: number = 1): Array<TaskCommentModel> =>
+  times(length, () => fakeComment())

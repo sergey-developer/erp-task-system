@@ -13,7 +13,7 @@ import { APP_NAME } from 'shared/constants/common'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { getFieldsErrors } from 'shared/utils/form'
 
-import { LoginFormFields } from './types'
+import { LoginFormFields } from './interfaces'
 import { PageTitleStyled } from './styles'
 import { getLoginError } from './utils'
 import { EMAIL_RULES, PASSWORD_RULES } from './validation'

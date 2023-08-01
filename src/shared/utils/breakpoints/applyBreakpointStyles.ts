@@ -4,7 +4,7 @@ import {
   BreakpointUnion,
   StyledBreakpointStyles,
   StyledBreakpointsProps,
-} from 'shared/types/breakpoints'
+} from 'shared/interfaces/breakpoints'
 
 /**
  @param breakpoints - результат вызова хука `useBreakpoint` из `antd`

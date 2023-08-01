@@ -2,7 +2,7 @@ import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { UseQueryStateOptions } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import { useEffect } from 'react'
 
-import { getSubTaskTemplateListMessages } from 'modules/subTask/constants'
+import { subTaskApiMessages } from 'modules/subTask/constants/errorMessages'
 import {
   GetSubTaskTemplateListQueryArgs,
   GetSubTaskTemplateListSuccessResponse,
@@ -25,7 +25,7 @@ export const useGetSubTaskTemplateList = (
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(getSubTaskTemplateListMessages.commonError)
+    showErrorNotification(subTaskApiMessages.getSubTaskTemplateList.commonError)
   }, [state.isError])
 
   return state

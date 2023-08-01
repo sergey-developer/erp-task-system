@@ -1,4 +1,4 @@
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 export enum WorkGroupTypeEnum {
   AssociatedWithSapId = 'associated_with_SAPID',

@@ -1,6 +1,6 @@
-import { UserRoleEnum } from 'modules/user/constants'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 import { UserStatusModel } from './userStatus.model'
 

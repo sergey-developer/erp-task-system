@@ -1,6 +1,6 @@
 import { RcFile } from 'antd/es/upload'
 
-import { BaseTaskRequestArgs } from '../types'
+import { BaseTaskRequestArgs } from '../interfaces'
 import { TaskCommentModel } from './taskComment.model'
 
 export type CreateTaskCommentMutationArgs = BaseTaskRequestArgs & {

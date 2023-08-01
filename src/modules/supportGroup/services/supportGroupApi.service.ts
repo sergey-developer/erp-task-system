@@ -1,9 +1,8 @@
-import { SupportGroupApiEnum } from 'modules/supportGroup/constants'
-
 import { HttpMethodEnum } from 'shared/constants/http'
+import { MaybeUndefined } from 'shared/interfaces/utils'
 import { baseApiService } from 'shared/services/api'
-import { MaybeUndefined } from 'shared/types/utils'
 
+import { SupportGroupEndpointsEnum } from '../constants/api'
 import {
   GetSupportGroupListQueryArgs,
   GetSupportGroupListSuccessResponse,
@@ -16,7 +15,7 @@ const supportGroupApiService = baseApiService.injectEndpoints({
       MaybeUndefined<GetSupportGroupListQueryArgs>
     >({
       query: () => ({
-        url: SupportGroupApiEnum.GetSupportGroupList,
+        url: SupportGroupEndpointsEnum.GetSupportGroupList,
         method: HttpMethodEnum.Get,
       }),
     }),

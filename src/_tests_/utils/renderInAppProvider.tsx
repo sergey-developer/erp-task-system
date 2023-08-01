@@ -9,7 +9,7 @@ import React from 'react'
 
 import { AppStore, RootState, setupStore } from 'state/store'
 
-import { FCWithChildren } from 'shared/types/utils'
+import { FCWithChildren } from 'shared/interfaces/utils'
 
 import AppProvider from 'app/AppProvider'
 

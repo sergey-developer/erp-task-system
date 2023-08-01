@@ -1,4 +1,4 @@
-import { NumberOrString } from 'shared/types/utils'
+import { NumberOrString } from 'shared/interfaces/utils'
 
 // todo: вынести в errorMessage и переименовать их в messageTemplates
 export const getTaskNotFoundErrorMsg = (id: NumberOrString): string =>

@@ -1,7 +1,7 @@
-import { UserRoleEnum } from 'modules/user/constants'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { UIPermissionsEnum } from 'shared/constants/permissions'
-import { ObjectPermissionConfig } from 'shared/types/permissions'
+import { ObjectPermissionConfig } from 'shared/interfaces/permissions'
 
 export const extendedFilterPermissions: ObjectPermissionConfig<'workGroup'> = {
   workGroup: {

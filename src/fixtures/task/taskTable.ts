@@ -5,10 +5,11 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
 } from 'modules/task/constants'
-import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
+import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
 
 import commonFixtures from 'fixtures/common'
 import taskFixtures from 'fixtures/task'
+import workGroupFixtures from 'fixtures/workGroup'
 
 import {
   fakeDateString,
@@ -19,7 +20,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const taskTableItem = (
+export const fakeTaskTableItem = (
   props?: Partial<
     Pick<TaskTableListItem, 'status' | 'extendedStatus' | 'olaStatus'>
   >,
@@ -31,17 +32,17 @@ export const taskTableItem = (
   id: fakeId(),
   name: fakeName(),
   title: fakeWord(),
-  workGroup: taskFixtures.workGroup(),
-  supportGroup: commonFixtures.supportGroup(),
+  workGroup: workGroupFixtures.fakeWorkGroup(),
+  supportGroup: commonFixtures.fakeSupportGroup(),
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),
   lastComment: fakeWord(),
-  assignee: taskFixtures.assignee(),
+  assignee: taskFixtures.fakeAssignee(),
   olaNextBreachTime: fakeDateString(),
   subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
-  responseTime: taskFixtures.taskResponseTime(),
+  responseTime: taskFixtures.fakeTaskResponseTime(),
 })
 
-export const taskTableItems = (
+export const fakeTaskTableItems = (
   length: number = 1,
-): Array<TaskTableListItem> => times(length, () => taskTableItem())
+): Array<TaskTableListItem> => times(length, () => fakeTaskTableItem())

@@ -11,20 +11,20 @@ import taskFixtures from 'fixtures/task'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const journalEntry = (
+export const fakeJournalEntry = (
   props?: Partial<
     Pick<TaskJournalEntryModel, 'type' | 'sourceSystem' | 'attachments'>
   >,
 ): TaskJournalEntryModel => ({
   type: props?.type || TaskJournalTypeEnum.AssigneeChange,
   sourceSystem: props?.sourceSystem || TaskJournalSourceEnum.ITSM,
-  attachments: props?.attachments || [taskFixtures.attachment()],
+  attachments: props?.attachments || [taskFixtures.fakeAttachment()],
 
   id: fakeId(),
   description: fakeWord(),
   createdAt: fakeDateString(),
-  author: commonFixtures.user(),
+  author: commonFixtures.fakeUser(),
 })
 
-export const journal = (length: number = 1): TaskJournalModel =>
-  times(length, () => journalEntry())
+export const fakeJournal = (length: number = 1): TaskJournalModel =>
+  times(length, () => fakeJournalEntry())

@@ -21,7 +21,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const taskResponseTime = (): TaskResponseTimeModel => {
+export const fakeTaskResponseTime = (): TaskResponseTimeModel => {
   return {
     value: fakeDateString(),
     timedelta: 7200000, // 2h in milliseconds
@@ -29,7 +29,7 @@ export const taskResponseTime = (): TaskResponseTimeModel => {
   }
 }
 
-export const task = (
+export const fakeTask = (
   props?: Partial<
     Pick<
       TaskModel,
@@ -51,15 +51,15 @@ export const task = (
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
-  workGroup: props?.workGroup || taskFixtures.workGroup(),
-  assignee: props?.assignee || taskFixtures.assignee(),
+  workGroup: props?.workGroup || taskFixtures.fakeWorkGroup(),
+  assignee: props?.assignee || taskFixtures.fakeAssignee(),
   suspendRequest: props?.suspendRequest || null,
 
-  attachments: [taskFixtures.attachment()],
+  attachments: [taskFixtures.fakeAttachment()],
   resolution: {
-    attachments: [taskFixtures.attachment()],
+    attachments: [taskFixtures.fakeAttachment()],
   },
-  responseTime: taskResponseTime(),
+  responseTime: fakeTaskResponseTime(),
   recordId: fakeIdStr(),
   name: fakeWord(),
   title: fakeWord(),
@@ -80,7 +80,7 @@ export const task = (
   productClassifier1: fakeWord(),
   productClassifier2: fakeWord(),
   productClassifier3: fakeWord(),
-  supportGroup: commonFixtures.supportGroup(),
+  supportGroup: commonFixtures.fakeSupportGroup(),
   olaEstimatedTime: Date.now(),
   description: fakeWord(),
   contactPhone: fakePhone(),

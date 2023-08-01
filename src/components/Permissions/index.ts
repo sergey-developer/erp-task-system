@@ -5,8 +5,8 @@ import { useUserPermissions } from 'modules/user/hooks'
 import {
   PermissionsMap,
   UserPermissionConfig,
-} from 'shared/types/permissions'
-import { MaybeNull } from 'shared/types/utils'
+} from 'shared/interfaces/permissions'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 type PermissionsProps = {
   config: UserPermissionConfig

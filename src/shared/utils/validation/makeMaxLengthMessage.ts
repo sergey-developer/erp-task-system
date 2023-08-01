@@ -1,4 +1,4 @@
-import { NumberOrString } from 'shared/types/utils'
+import { NumberOrString } from 'shared/interfaces/utils'
 
 export const makeMaxLengthMessage = (
   value: string,

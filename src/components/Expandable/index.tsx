@@ -6,7 +6,7 @@ import { DefaultTheme } from 'styled-components'
 import { DownIcon, UpIcon } from 'components/Icons'
 import Space, { SpaceProps } from 'components/Space'
 
-import { FCWithChildren } from 'shared/types/utils'
+import { FCWithChildren } from 'shared/interfaces/utils'
 
 const { Text } = Typography
 

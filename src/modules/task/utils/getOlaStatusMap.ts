@@ -1,8 +1,7 @@
-import isEqual from 'lodash/isEqual'
-
 import { TaskOlaStatusEnum } from 'modules/task/constants'
 
-import { BooleanKey, BooleanMap } from 'shared/types/utils'
+import { BooleanKey, BooleanMap } from 'shared/interfaces/utils'
+import { isEqual } from 'shared/utils/common/isEqual'
 
 export const getOlaStatusMap = (
   olaStatus: TaskOlaStatusEnum,

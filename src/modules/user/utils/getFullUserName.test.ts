@@ -1,4 +1,4 @@
-import { FunctionParams } from 'shared/types/utils'
+import { FunctionParams } from 'shared/interfaces/utils'
 
 import { fakeWord } from '_tests_/utils'
 

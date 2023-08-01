@@ -1,6 +1,5 @@
 import inRange from 'lodash/inRange'
 import isArray from 'lodash/isArray'
-import isEqual from 'lodash/isEqual'
 import isNumber from 'lodash/isNumber'
 import isObject from 'lodash/isObject'
 import isString from 'lodash/isString'
@@ -9,6 +8,7 @@ import { env } from 'configs/env'
 
 import { HttpCodeEnum } from 'shared/constants/http'
 import { hasProperty } from 'shared/utils/common'
+import { isEqual } from 'shared/utils/common/isEqual'
 import { makeString } from 'shared/utils/string'
 
 import { apiPath, currentApiVersion } from './constants'

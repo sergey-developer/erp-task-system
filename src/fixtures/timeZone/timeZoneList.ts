@@ -7,11 +7,11 @@ import {
 
 import { fakeWord } from '_tests_/utils'
 
-export const timeZoneListItem = (): TimeZoneListItemModel => ({
+export const fakeTimeZoneListItem = (): TimeZoneListItemModel => ({
   name: fakeWord(),
   label: fakeWord(),
   value: fakeWord(),
 })
 
-export const timeZoneList = (length: number = 1): TimeZoneListModel =>
-  times(length, () => timeZoneListItem())
+export const fakeTimeZoneList = (length: number = 1): TimeZoneListModel =>
+  times(length, () => fakeTimeZoneListItem())

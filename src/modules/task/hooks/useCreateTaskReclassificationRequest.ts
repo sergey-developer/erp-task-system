@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { createReclassificationRequestMessages } from 'modules/task/constants'
+import { reclassificationRequestApiMessages } from 'modules/task/constants'
 import { CreateTaskReclassificationRequestMutationArgs } from 'modules/task/models'
 import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskReclassificationRequestApi.service'
@@ -35,7 +35,7 @@ export const useCreateTaskReclassificationRequest = () => {
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
         showErrorNotification(
-          createReclassificationRequestMessages.notFoundError,
+          reclassificationRequestApiMessages.createRequest.notFoundError,
         )
       } else if (!isBadRequestError(state.error)) {
         showErrorNotification(commonApiMessages.unknownError)

@@ -7,7 +7,7 @@ import { useGetWorkGroupListQuery } from 'modules/workGroup/services/workGroupAp
 
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getWorkGroupListMessages } from '../constants/messages'
+import { workGroupApiMessages } from '../constants/errorMessages'
 
 export const useGetWorkGroupList = (args?: GetWorkGroupListQueryArgs) => {
   const permissions = useUserPermissions(workGroupApiPermissions)
@@ -19,7 +19,7 @@ export const useGetWorkGroupList = (args?: GetWorkGroupListQueryArgs) => {
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(getWorkGroupListMessages.commonError)
+    showErrorNotification(workGroupApiMessages.getWorkGroupList.commonError)
   }, [state.isError])
 
   return state

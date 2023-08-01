@@ -1,4 +1,4 @@
-import { TaskApiEnum } from 'modules/task/constants'
+import { TaskEndpointEnum } from 'modules/task/constants'
 import { GetFiscalAccumulatorTaskListSuccessResponse } from 'modules/task/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -11,7 +11,10 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getFiscalAccumulatorTaskListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, TaskApiEnum.GetFiscalAccumulatorTaskList)
+  getRequestMockFn(
+    HttpMethodEnum.Get,
+    TaskEndpointEnum.GetFiscalAccumulatorTaskList,
+  )
 
 export const mockGetFiscalAccumulatorTaskListSuccess = (
   options?: Partial<

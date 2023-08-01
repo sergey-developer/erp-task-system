@@ -5,6 +5,7 @@ import {
 import { resolveTaskUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
 
 import {
   getBadRequestErrorMockFn,
@@ -29,7 +30,7 @@ export const mockResolveTaskBadRequestError = (
   >,
 ) => getBadRequestErrorMockFn(resolveTaskMockFn(taskId), options)()
 
-export const mockResolveTaskServerError = (
+export const mockResolveTaskServerError = <T extends object>(
   taskId: number,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getServerErrorMockFn(resolveTaskMockFn(taskId), options)()

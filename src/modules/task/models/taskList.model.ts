@@ -7,5 +7,3 @@ export type TaskListItemModel = BaseTaskModel & {
     all: number
   }
 }
-
-export type TaskListModel = TaskListItemModel[]

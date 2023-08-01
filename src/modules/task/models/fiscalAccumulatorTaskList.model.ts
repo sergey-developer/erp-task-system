@@ -1,6 +1,6 @@
 import { FiscalAccumulatorFormatEnum } from 'modules/task/constants'
 
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 export type FiscalAccumulatorTaskListItemModel = {
   blockingIn: MaybeNull<number>

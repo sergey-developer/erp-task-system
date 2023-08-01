@@ -1,6 +1,6 @@
 import { camelizeKeys } from 'humps'
 
-import { JwtPayload } from '../types'
+import { JwtPayload } from '../interfaces'
 
 export const parseJwt = (token: string): JwtPayload => {
   const base64Url = token.split('.')[1]

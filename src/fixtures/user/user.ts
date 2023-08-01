@@ -1,17 +1,17 @@
-import { UserRoleEnum } from 'modules/user/constants'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 import { UserModel } from 'modules/user/models'
 
 import userFixtures from 'fixtures/user'
 
 import { fakeEmail, fakeId, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'
 
-export const user = (
+export const fakeUser = (
   props?: Partial<Pick<UserModel, 'role' | 'isStaff' | 'timezone' | 'status'>>,
 ): UserModel => ({
   timezone: props?.timezone || fakeWord(),
   isStaff: props?.isStaff || false,
   role: props?.role || UserRoleEnum.FirstLineSupport,
-  status: props?.status || userFixtures.userStatus(),
+  status: props?.status || userFixtures.fakeUserStatus(),
 
   id: fakeId(),
   avatar: fakeUrl(),
