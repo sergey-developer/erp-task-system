@@ -18,6 +18,8 @@ const taskListItem = taskFixtures.fakeTaskListItem()
 
 const props: TaskListProps = {
   tasks: [taskListItem],
+  selectedTaskId: null,
+  onClickTask: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('task-list')
@@ -204,12 +206,21 @@ describe('Список заявок', () => {
     expect(theme).toBeInTheDocument()
   })
 
-  test('Элемент списка выделяется при клике', async () => {
-    const { user } = render(<TaskList {...props} />)
+  test('Элемент списка можно сделать выбранным', () => {
+    render(<TaskList {...props} selectedTaskId={taskListItem.id} />)
 
-    const listItem = await testUtils.clickListItem(user, taskListItem.id)
+    const listItem = testUtils.getListItem(taskListItem.id)
 
     expect(listItem).toHaveClass('list-item-selected')
     expect(listItem).toHaveStyle({ backgroundColor: theme.colors.chineseWhite })
+  })
+
+  test('По клику на элемент вызывается обработчик', async () => {
+    const { user } = render(<TaskList {...props} />)
+
+    await testUtils.clickListItem(user, taskListItem.id)
+
+    expect(props.onClickTask).toBeCalledTimes(1)
+    expect(props.onClickTask).toBeCalledWith(taskListItem.id)
   })
 })

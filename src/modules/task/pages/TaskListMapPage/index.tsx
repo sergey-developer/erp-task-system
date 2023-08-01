@@ -1,8 +1,10 @@
+import { useBoolean } from 'ahooks'
 import { Col, Row } from 'antd'
 import { Coordinate } from 'ol/coordinate'
 import { FC, useEffect, useState } from 'react'
 
 import { getTaskListMapMessages } from 'modules/task/constants'
+import TaskCard from 'modules/task/features/TaskCard/CardContainer'
 import TaskList from 'modules/task/features/TaskList'
 import TaskListLayout from 'modules/task/features/TaskListLayout'
 import TaskListMap from 'modules/task/features/TaskListMap'
@@ -15,7 +17,12 @@ import { MaybeNull } from 'shared/interfaces/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 const TaskListMapPage: FC = () => {
+  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
+
   const [coords, setCoords] = useState<MaybeNull<Coordinate>>(null)
+
+  const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] =
+    useBoolean(false)
 
   const {
     currentData: taskListMap = [],
@@ -38,6 +45,9 @@ const TaskListMapPage: FC = () => {
     }
   }, [coords, getTaskList])
 
+  const isShowTaskCard = !!selectedTaskId
+  const isShowTaskList = !!coords
+
   return (
     <TaskListLayout>
       <Row gutter={8} data-testid='task-list-map-page'>
@@ -47,12 +57,24 @@ const TaskListMapPage: FC = () => {
               data-testid='task-list-loading'
               isLoading={taskListIsFetching}
             >
-              <TaskList tasks={taskList?.results || []} />
+              <TaskList
+                tasks={taskList?.results || []}
+                selectedTaskId={selectedTaskId}
+                onClickTask={setSelectedTaskId}
+              />
             </LoadingArea>
           </Col>
         )}
 
-        <Col span={coords ? 18 : 24}>
+        <Col
+          span={
+            isShowTaskList && !isShowTaskCard
+              ? 18
+              : isShowTaskList && isShowTaskCard
+              ? 10
+              : 24
+          }
+        >
           <LoadingArea
             data-testid='task-list-map-loading'
             isLoading={taskListMapIsFetching}
@@ -60,6 +82,17 @@ const TaskListMapPage: FC = () => {
             <TaskListMap tasks={taskListMap} onClickTask={setCoords} />
           </LoadingArea>
         </Col>
+
+        {isShowTaskCard && (
+          <Col span={8}>
+            <TaskCard
+              taskId={selectedTaskId}
+              closeTaskCard={() => setSelectedTaskId(null)}
+              additionalInfoExpanded={additionalInfoExpanded}
+              onExpandAdditionalInfo={toggleAdditionalInfoExpanded}
+            />
+          </Col>
+        )}
       </Row>
     </TaskListLayout>
   )
