@@ -218,11 +218,11 @@ describe('Private app', () => {
         )
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
 
-        const error = await findNotification(
+        const notification = await findNotification(
           updateUserTimeZoneMessages.commonError,
         )
 
-        expect(error).toBeInTheDocument()
+        expect(notification).toBeInTheDocument()
       })
     })
 

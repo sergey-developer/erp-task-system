@@ -242,11 +242,11 @@ describe('Страница смены пароля', () => {
       await testUtils.clickSaveButton(user)
       await testUtils.expectLoadingFinished()
 
-      const successNotification = await findNotification(
+      const notification = await findNotification(
         UPDATE_PASSWORD_SUCCESS_MSG,
       )
 
-      expect(successNotification).toBeInTheDocument()
+      expect(notification).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(true)
       expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
     })

@@ -1109,9 +1109,10 @@ describe('Модалка создания задачи заявки', () => {
           ),
         ).toBeInTheDocument()
 
-        expect(
-          await findNotification(createSubTaskMessages.commonError),
-        ).toBeInTheDocument()
+        const notification = await findNotification(
+          createSubTaskMessages.commonError,
+        )
+        expect(notification).toBeInTheDocument()
       })
 
       test('Обрабатывается ошибка 500', async () => {
@@ -1137,9 +1138,10 @@ describe('Модалка создания задачи заявки', () => {
         })
         await testUtils.clickSubmitButton(user)
 
-        expect(
-          await findNotification(createSubTaskMessages.commonError),
-        ).toBeInTheDocument()
+        const notification = await findNotification(
+          createSubTaskMessages.commonError,
+        )
+        expect(notification).toBeInTheDocument()
       })
     })
   })
@@ -1164,9 +1166,10 @@ describe('Модалка создания задачи заявки', () => {
           fakeSupportGroupListItem.name,
         )
 
-        expect(
-          await findNotification(getSubTaskTemplateListMessages.commonError),
-        ).toBeInTheDocument()
+        const notification = await findNotification(
+          getSubTaskTemplateListMessages.commonError,
+        )
+        expect(notification).toBeInTheDocument()
       })
     })
   })
@@ -1180,9 +1183,10 @@ describe('Модалка создания задачи заявки', () => {
           store: getStoreWithAuth(),
         })
 
-        expect(
-          await findNotification(getSupportGroupListMessages.commonError),
-        ).toBeInTheDocument()
+        const notification = await findNotification(
+          getSupportGroupListMessages.commonError,
+        )
+        expect(notification).toBeInTheDocument()
       })
     })
   })
