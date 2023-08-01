@@ -23,7 +23,7 @@ import {
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import RequestTaskSuspendModal, { RequestTaskSuspendModalProps } from './index'
 
-const requiredProps: Readonly<RequestTaskSuspendModalProps> = {
+const props: Readonly<RequestTaskSuspendModalProps> = {
   recordId: fakeIdStr(),
   isLoading: false,
   onCancel: jest.fn(),
@@ -192,25 +192,25 @@ export const testUtils = {
 
 describe('Модалка создания запроса о переводе в ожидание', () => {
   test('Заголовок отображается', () => {
-    render(<RequestTaskSuspendModal {...requiredProps} />)
+    render(<RequestTaskSuspendModal {...props} />)
 
     expect(
       testUtils.getChildByText(/^запрос перевода заявки/i),
     ).toBeInTheDocument()
 
-    expect(testUtils.getChildByText(requiredProps.recordId)).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
   })
 
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
-    const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
+    const { user } = render(<RequestTaskSuspendModal {...props} />)
 
     await modalTestUtils.clickOutsideModal(user)
-    expect(requiredProps.onCancel).toBeCalledTimes(1)
+    expect(props.onCancel).toBeCalledTimes(1)
   })
 
   describe('Кнопка закрытия', () => {
     test('Отображается корректно', () => {
-      render(<RequestTaskSuspendModal {...requiredProps} />)
+      render(<RequestTaskSuspendModal {...props} />)
       const button = testUtils.getCloseButton()
 
       expect(button).toBeInTheDocument()
@@ -218,16 +218,16 @@ describe('Модалка создания запроса о переводе в 
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
 
       await testUtils.clickCloseButton(user)
-      expect(requiredProps.onCancel).toBeCalledTimes(1)
+      expect(props.onCancel).toBeCalledTimes(1)
     })
   })
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
-      render(<RequestTaskSuspendModal {...requiredProps} />)
+      render(<RequestTaskSuspendModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -236,16 +236,16 @@ describe('Модалка создания запроса о переводе в 
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
 
       await testUtils.clickCancelButton(user)
-      expect(requiredProps.onCancel).toBeCalledTimes(1)
+      expect(props.onCancel).toBeCalledTimes(1)
     })
   })
 
   describe('Кнопка отправки', () => {
     test('Отображается корректно', () => {
-      render(<RequestTaskSuspendModal {...requiredProps} />)
+      render(<RequestTaskSuspendModal {...props} />)
 
       const button = testUtils.getSubmitButton()
 
@@ -254,30 +254,30 @@ describe('Модалка создания запроса о переводе в 
     })
 
     test('Отображает состояние загрузки', async () => {
-      render(<RequestTaskSuspendModal {...requiredProps} isLoading />)
+      render(<RequestTaskSuspendModal {...props} isLoading />)
       await testUtils.expectLoadingStarted()
     })
 
     describe('При клике обработчик вызывается корректно', () => {
       test('Если поля заполнены', async () => {
-        const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
+        const { user } = render(<RequestTaskSuspendModal {...props} />)
 
         await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
         await testUtils.setComment(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
-        expect(requiredProps.onSubmit).toBeCalledTimes(1)
-        expect(requiredProps.onSubmit).toBeCalledWith(
+        expect(props.onSubmit).toBeCalledTimes(1)
+        expect(props.onSubmit).toBeCalledWith(
           expect.anything(),
           expect.anything(),
         )
       })
 
       test('Если поля не заполнены', async () => {
-        const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
+        const { user } = render(<RequestTaskSuspendModal {...props} />)
 
         await testUtils.clickSubmitButton(user)
-        expect(requiredProps.onSubmit).not.toBeCalled()
+        expect(props.onSubmit).not.toBeCalled()
       })
     })
   })
@@ -285,12 +285,12 @@ describe('Модалка создания запроса о переводе в 
   describe('Форма', () => {
     describe('Поле причины ожидания', () => {
       test('Заголовок отображается', () => {
-        render(<RequestTaskSuspendModal {...requiredProps} />)
+        render(<RequestTaskSuspendModal {...props} />)
         expect(testUtils.getReasonTitle()).toBeInTheDocument()
       })
 
       test('Отображается корректно', () => {
-        render(<RequestTaskSuspendModal {...requiredProps} />)
+        render(<RequestTaskSuspendModal {...props} />)
 
         Object.values(SuspendReasonEnum).forEach((reason) => {
           const field = testUtils.getReasonField(reason)
@@ -302,7 +302,7 @@ describe('Модалка создания запроса о переводе в 
       })
 
       test('Можно выбрать любую причину', async () => {
-        const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
+        const { user } = render(<RequestTaskSuspendModal {...props} />)
 
         for await (const reason of Object.values(SuspendReasonEnum)) {
           const field = await testUtils.setReason(user, reason)
@@ -311,7 +311,7 @@ describe('Модалка создания запроса о переводе в 
       })
 
       test('Не активно во время загрузки', () => {
-        render(<RequestTaskSuspendModal {...requiredProps} isLoading />)
+        render(<RequestTaskSuspendModal {...props} isLoading />)
 
         Object.values(SuspendReasonEnum).forEach((reason) => {
           const field = testUtils.getReasonField(reason)
@@ -322,7 +322,7 @@ describe('Модалка создания запроса о переводе в 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.clickSubmitButton(user)
@@ -336,13 +336,13 @@ describe('Модалка создания запроса о переводе в 
 
     describe('Поля времени возврата', () => {
       test('Заголовок отображается', () => {
-        render(<RequestTaskSuspendModal {...requiredProps} />)
+        render(<RequestTaskSuspendModal {...props} />)
         expect(testUtils.getReturnTimeTitle()).toBeInTheDocument()
       })
 
       describe('Поле даты', () => {
         test('Отображается корректно', () => {
-          render(<RequestTaskSuspendModal {...requiredProps} />)
+          render(<RequestTaskSuspendModal {...props} />)
 
           const field = testUtils.getEndDateField()
 
@@ -353,7 +353,7 @@ describe('Модалка создания запроса о переводе в 
 
         test('Активно если выбрать определённую причину', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           for await (const reason of Object.values(SuspendReasonEnum)) {
@@ -366,13 +366,13 @@ describe('Модалка создания запроса о переводе в 
 
         describe('Не активно', () => {
           test('Если не выбрана причина', () => {
-            render(<RequestTaskSuspendModal {...requiredProps} />)
+            render(<RequestTaskSuspendModal {...props} />)
             expect(testUtils.getEndDateField()).toBeDisabled()
           })
 
           test('Если выбрать определённую причину', async () => {
             const { user } = render(
-              <RequestTaskSuspendModal {...requiredProps} />,
+              <RequestTaskSuspendModal {...props} />,
             )
 
             for await (const reason of Object.values(SuspendReasonEnum)) {
@@ -384,14 +384,14 @@ describe('Модалка создания запроса о переводе в 
           })
 
           test('Во время загрузки', () => {
-            render(<RequestTaskSuspendModal {...requiredProps} isLoading />)
+            render(<RequestTaskSuspendModal {...props} isLoading />)
             expect(testUtils.getEndDateField()).toBeDisabled()
           })
         })
 
         test('Можно установить значение если выбрать определённую причину', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
@@ -404,7 +404,7 @@ describe('Модалка создания запроса о переводе в 
 
         test('При выборе определённой причины, автоматически устанавливается текущая дата на пять дней больше', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
@@ -420,7 +420,7 @@ describe('Модалка создания запроса о переводе в 
         describe('Отображается ошибка', () => {
           test('Если не заполнить поле и нажать кнопку отправки', async () => {
             const { user } = render(
-              <RequestTaskSuspendModal {...requiredProps} />,
+              <RequestTaskSuspendModal {...props} />,
             )
 
             await testUtils.clickSubmitButton(user)
@@ -432,7 +432,7 @@ describe('Модалка создания запроса о переводе в 
 
           test('Если дата в прошлом времени', async () => {
             const { user } = render(
-              <RequestTaskSuspendModal {...requiredProps} />,
+              <RequestTaskSuspendModal {...props} />,
             )
 
             await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
@@ -450,7 +450,7 @@ describe('Модалка создания запроса о переводе в 
 
         test('Значение сбрасывается при выборе определённой причины', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
@@ -468,7 +468,7 @@ describe('Модалка создания запроса о переводе в 
 
       describe('Поле времени', () => {
         test('Отображается корректно', () => {
-          render(<RequestTaskSuspendModal {...requiredProps} />)
+          render(<RequestTaskSuspendModal {...props} />)
 
           const field = testUtils.getEndTimeField()
 
@@ -479,7 +479,7 @@ describe('Модалка создания запроса о переводе в 
 
         test('Активно если выбрать определённую причину', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           for await (const reason of Object.values(SuspendReasonEnum)) {
@@ -492,13 +492,13 @@ describe('Модалка создания запроса о переводе в 
 
         describe('Не активно', () => {
           test('Если не выбрана причина', () => {
-            render(<RequestTaskSuspendModal {...requiredProps} />)
+            render(<RequestTaskSuspendModal {...props} />)
             expect(testUtils.getEndTimeField()).toBeDisabled()
           })
 
           test('Если выбрать определённую причину', async () => {
             const { user } = render(
-              <RequestTaskSuspendModal {...requiredProps} />,
+              <RequestTaskSuspendModal {...props} />,
             )
 
             for await (const reason of Object.values(SuspendReasonEnum)) {
@@ -510,14 +510,14 @@ describe('Модалка создания запроса о переводе в 
           })
 
           test('Во время загрузки', () => {
-            render(<RequestTaskSuspendModal {...requiredProps} isLoading />)
+            render(<RequestTaskSuspendModal {...props} isLoading />)
             expect(testUtils.getEndTimeField()).toBeDisabled()
           })
         })
 
         test('Можно установить значение если выбрать определённую причину', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
@@ -530,7 +530,7 @@ describe('Модалка создания запроса о переводе в 
 
         test('При выборе определённой причины, автоматически устанавливается текущее время', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
@@ -544,7 +544,7 @@ describe('Модалка создания запроса о переводе в 
         describe('Отображается ошибка', () => {
           test('Если не заполнить поле и нажать кнопку отправки', async () => {
             const { user } = render(
-              <RequestTaskSuspendModal {...requiredProps} />,
+              <RequestTaskSuspendModal {...props} />,
             )
 
             await testUtils.clickSubmitButton(user)
@@ -557,7 +557,7 @@ describe('Модалка создания запроса о переводе в 
           // todo: выяснить почему тест падает но всё написано корректно
           test.skip('Если выбран сегодняшний день и если время в прошлом времени', async () => {
             const { user } = render(
-              <RequestTaskSuspendModal {...requiredProps} />,
+              <RequestTaskSuspendModal {...props} />,
             )
 
             await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
@@ -578,7 +578,7 @@ describe('Модалка создания запроса о переводе в 
 
         test('Значение сбрасывается при выборе определённой причины', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
@@ -597,12 +597,12 @@ describe('Модалка создания запроса о переводе в 
 
     describe('Поле комментария', () => {
       test('Заголовок отображается', () => {
-        render(<RequestTaskSuspendModal {...requiredProps} />)
+        render(<RequestTaskSuspendModal {...props} />)
         expect(testUtils.getCommentTitle()).toBeInTheDocument()
       })
 
       test('Отображается корректно', () => {
-        render(<RequestTaskSuspendModal {...requiredProps} />)
+        render(<RequestTaskSuspendModal {...props} />)
 
         const field = testUtils.getCommentField()
 
@@ -612,7 +612,7 @@ describe('Модалка создания запроса о переводе в 
       })
 
       test('Можно установить значение', async () => {
-        const { user } = render(<RequestTaskSuspendModal {...requiredProps} />)
+        const { user } = render(<RequestTaskSuspendModal {...props} />)
 
         const value = fakeWord()
         const field = await testUtils.setComment(user, value)
@@ -621,14 +621,14 @@ describe('Модалка создания запроса о переводе в 
       })
 
       test('Не активно во время загрузки', () => {
-        render(<RequestTaskSuspendModal {...requiredProps} isLoading />)
+        render(<RequestTaskSuspendModal {...props} isLoading />)
         expect(testUtils.getCommentField()).toBeDisabled()
       })
 
       describe('Отображается ошибка', () => {
         test('Если ввести только пробелы', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.setComment(user, ' ')
@@ -640,7 +640,7 @@ describe('Модалка создания запроса о переводе в 
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.clickSubmitButton(user)
@@ -652,7 +652,7 @@ describe('Модалка создания запроса о переводе в 
 
         test('Если превысить лимит символов', async () => {
           const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
+            <RequestTaskSuspendModal {...props} />,
           )
 
           await testUtils.setComment(

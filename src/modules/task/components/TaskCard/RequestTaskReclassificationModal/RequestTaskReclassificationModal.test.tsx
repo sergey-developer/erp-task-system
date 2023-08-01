@@ -23,7 +23,7 @@ import RequestTaskReclassificationModal, {
   RequestTaskReclassificationModalProps,
 } from './index'
 
-const requiredProps: Readonly<RequestTaskReclassificationModalProps> = {
+const props: Readonly<RequestTaskReclassificationModalProps> = {
   recordId: fakeIdStr(),
   isLoading: false,
   onCancel: jest.fn(),
@@ -157,17 +157,17 @@ export const testUtils = {
 
 describe('Модалка запроса о переклассификации заявки', () => {
   test('Заголовок отображается', () => {
-    render(<RequestTaskReclassificationModal {...requiredProps} />)
+    render(<RequestTaskReclassificationModal {...props} />)
 
     expect(
       testUtils.getChildByText('Запрос о переклассификации заявки'),
     ).toBeInTheDocument()
-    expect(testUtils.getChildByText(requiredProps.recordId)).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
   })
 
   describe('Кнопка закрытия', () => {
     test('Отображается корректно', () => {
-      render(<RequestTaskReclassificationModal {...requiredProps} />)
+      render(<RequestTaskReclassificationModal {...props} />)
       const button = testUtils.getCloseButton()
 
       expect(button).toBeInTheDocument()
@@ -176,17 +176,17 @@ describe('Модалка запроса о переклассификации з
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
-        <RequestTaskReclassificationModal {...requiredProps} />,
+        <RequestTaskReclassificationModal {...props} />,
       )
 
       await testUtils.clickCloseButton(user)
-      expect(requiredProps.onCancel).toBeCalledTimes(1)
+      expect(props.onCancel).toBeCalledTimes(1)
     })
   })
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
-      render(<RequestTaskReclassificationModal {...requiredProps} />)
+      render(<RequestTaskReclassificationModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -196,17 +196,17 @@ describe('Модалка запроса о переклассификации з
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
-        <RequestTaskReclassificationModal {...requiredProps} />,
+        <RequestTaskReclassificationModal {...props} />,
       )
 
       await testUtils.clickCancelButton(user)
-      expect(requiredProps.onCancel).toBeCalledTimes(1)
+      expect(props.onCancel).toBeCalledTimes(1)
     })
   })
 
   describe('Кнопка отправки', () => {
     test('Отображается корректно', () => {
-      render(<RequestTaskReclassificationModal {...requiredProps} />)
+      render(<RequestTaskReclassificationModal {...props} />)
 
       const button = testUtils.getSubmitButton()
 
@@ -215,14 +215,14 @@ describe('Модалка запроса о переклассификации з
     })
 
     test('Отображает состояние загрузки', async () => {
-      render(<RequestTaskReclassificationModal {...requiredProps} isLoading />)
+      render(<RequestTaskReclassificationModal {...props} isLoading />)
       await testUtils.expectLoadingStarted()
     })
 
     describe('При клике обработчик вызывается корректно', () => {
       test('Если поля заполнены', async () => {
         const { user } = render(
-          <RequestTaskReclassificationModal {...requiredProps} />,
+          <RequestTaskReclassificationModal {...props} />,
         )
 
         for await (const reason of Object.values(ReclassificationReasonEnum)) {
@@ -231,8 +231,8 @@ describe('Модалка запроса о переклассификации з
         await testUtils.setComment(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
-        expect(requiredProps.onSubmit).toBeCalledTimes(1)
-        expect(requiredProps.onSubmit).toBeCalledWith(
+        expect(props.onSubmit).toBeCalledTimes(1)
+        expect(props.onSubmit).toBeCalledWith(
           expect.anything(),
           expect.anything(),
         )
@@ -240,11 +240,11 @@ describe('Модалка запроса о переклассификации з
 
       test('Если поля не заполнены', async () => {
         const { user } = render(
-          <RequestTaskReclassificationModal {...requiredProps} />,
+          <RequestTaskReclassificationModal {...props} />,
         )
 
         await testUtils.clickSubmitButton(user)
-        expect(requiredProps.onSubmit).not.toBeCalled()
+        expect(props.onSubmit).not.toBeCalled()
       })
     })
   })
@@ -252,12 +252,12 @@ describe('Модалка запроса о переклассификации з
   describe('Форма', () => {
     describe('Поле причины переклассификации', () => {
       test('Заголовок отображается', () => {
-        render(<RequestTaskReclassificationModal {...requiredProps} />)
+        render(<RequestTaskReclassificationModal {...props} />)
         expect(testUtils.getReclassificationReasonTitle()).toBeInTheDocument()
       })
 
       test('Отображается корректно', () => {
-        render(<RequestTaskReclassificationModal {...requiredProps} />)
+        render(<RequestTaskReclassificationModal {...props} />)
 
         Object.values(ReclassificationReasonEnum).forEach((reason) => {
           const field = testUtils.getReclassificationReasonField(reason)
@@ -279,7 +279,7 @@ describe('Модалка запроса о переклассификации з
 
       test('Можно выбрать любую доступную причину', async () => {
         const { user } = render(
-          <RequestTaskReclassificationModal {...requiredProps} />,
+          <RequestTaskReclassificationModal {...props} />,
         )
 
         for await (const reason of availableReasons) {
@@ -290,7 +290,7 @@ describe('Модалка запроса о переклассификации з
 
       test('Не активно во время загрузки', () => {
         render(
-          <RequestTaskReclassificationModal {...requiredProps} isLoading />,
+          <RequestTaskReclassificationModal {...props} isLoading />,
         )
 
         Object.values(ReclassificationReasonEnum).forEach((reason) => {
@@ -302,7 +302,7 @@ describe('Модалка запроса о переклассификации з
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           const { user } = render(
-            <RequestTaskReclassificationModal {...requiredProps} />,
+            <RequestTaskReclassificationModal {...props} />,
           )
 
           await testUtils.clickSubmitButton(user)
@@ -318,12 +318,12 @@ describe('Модалка запроса о переклассификации з
 
     describe('Поле комментария', () => {
       test('Заголовок отображается', () => {
-        render(<RequestTaskReclassificationModal {...requiredProps} />)
+        render(<RequestTaskReclassificationModal {...props} />)
         expect(testUtils.getCommentTitle()).toBeInTheDocument()
       })
 
       test('Отображается корректно', () => {
-        render(<RequestTaskReclassificationModal {...requiredProps} />)
+        render(<RequestTaskReclassificationModal {...props} />)
 
         const field = testUtils.getCommentField()
 
@@ -334,7 +334,7 @@ describe('Модалка запроса о переклассификации з
 
       test('Можно заполнить', async () => {
         const { user } = render(
-          <RequestTaskReclassificationModal {...requiredProps} />,
+          <RequestTaskReclassificationModal {...props} />,
         )
 
         const value = fakeWord()
@@ -345,7 +345,7 @@ describe('Модалка запроса о переклассификации з
 
       test('Не активно во время загрузки', () => {
         render(
-          <RequestTaskReclassificationModal {...requiredProps} isLoading />,
+          <RequestTaskReclassificationModal {...props} isLoading />,
         )
         expect(testUtils.getCommentField()).toBeDisabled()
       })
@@ -353,7 +353,7 @@ describe('Модалка запроса о переклассификации з
       describe('Отображается ошибка', () => {
         test('Если ввести только пробелы', async () => {
           const { user } = render(
-            <RequestTaskReclassificationModal {...requiredProps} />,
+            <RequestTaskReclassificationModal {...props} />,
           )
 
           await testUtils.setComment(user, ' ')
@@ -365,7 +365,7 @@ describe('Модалка запроса о переклассификации з
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           const { user } = render(
-            <RequestTaskReclassificationModal {...requiredProps} />,
+            <RequestTaskReclassificationModal {...props} />,
           )
 
           await testUtils.clickSubmitButton(user)
@@ -377,7 +377,7 @@ describe('Модалка запроса о переклассификации з
 
         test('Если превысить лимит символов', async () => {
           const { user } = render(
-            <RequestTaskReclassificationModal {...requiredProps} />,
+            <RequestTaskReclassificationModal {...props} />,
           )
 
           await testUtils.setComment(
@@ -397,10 +397,10 @@ describe('Модалка запроса о переклассификации з
 
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
     const { user } = render(
-      <RequestTaskReclassificationModal {...requiredProps} />,
+      <RequestTaskReclassificationModal {...props} />,
     )
 
     await modalTestUtils.clickOutsideModal(user)
-    expect(requiredProps.onCancel).toBeCalledTimes(1)
+    expect(props.onCancel).toBeCalledTimes(1)
   })
 })

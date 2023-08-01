@@ -18,7 +18,7 @@ import {
 import ReworkSubTaskModal from './index'
 import { ReworkSubTaskModalProps } from './types'
 
-const requiredProps: Readonly<ReworkSubTaskModalProps> = {
+const props: Readonly<ReworkSubTaskModalProps> = {
   isLoading: false,
   recordId: null,
   onSubmit: jest.fn(),
@@ -96,13 +96,13 @@ export const testUtils = {
 
 describe('Модалка отправки запроса на доработку', () => {
   test('Отображается корректно', () => {
-    render(<ReworkSubTaskModal {...requiredProps} />)
+    render(<ReworkSubTaskModal {...props} />)
     expect(testUtils.getContainer()).toBeInTheDocument()
   })
 
   test('Заголовок отображается корректно', () => {
     const recordId = fakeIdStr()
-    render(<ReworkSubTaskModal {...requiredProps} recordId={recordId} />)
+    render(<ReworkSubTaskModal {...props} recordId={recordId} />)
 
     expect(
       testUtils.getChildByText(/возврат на доработку задания/i),
@@ -114,7 +114,7 @@ describe('Модалка отправки запроса на доработку
   describe('Форма', () => {
     describe('Поле ввода причины возврата', () => {
       test('Отображается корректно', () => {
-        render(<ReworkSubTaskModal {...requiredProps} />)
+        render(<ReworkSubTaskModal {...props} />)
 
         const field = testUtils.getReturnReasonField()
 
@@ -124,12 +124,12 @@ describe('Модалка отправки запроса на доработку
       })
 
       test('Не активно при загрузке', () => {
-        render(<ReworkSubTaskModal {...requiredProps} isLoading />)
+        render(<ReworkSubTaskModal {...props} isLoading />)
         expect(testUtils.getReturnReasonField()).toBeDisabled()
       })
 
       test('Можно ввести значение', async () => {
-        const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
+        const { user } = render(<ReworkSubTaskModal {...props} />)
 
         const value = fakeWord()
         const field = await testUtils.setReturnReason(user, value)
@@ -139,7 +139,7 @@ describe('Модалка отправки запроса на доработку
 
       describe('Отображается ошибка', () => {
         test('Если ввести только пробелы', async () => {
-          const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
+          const { user } = render(<ReworkSubTaskModal {...props} />)
 
           await testUtils.setReturnReason(user, ' ')
 
@@ -151,7 +151,7 @@ describe('Модалка отправки запроса на доработку
         })
 
         test('Если превысить лимит символов', async () => {
-          const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
+          const { user } = render(<ReworkSubTaskModal {...props} />)
 
           await testUtils.setReturnReason(
             user,
@@ -166,7 +166,7 @@ describe('Модалка отправки запроса на доработку
         })
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
+          const { user } = render(<ReworkSubTaskModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
 
@@ -181,7 +181,7 @@ describe('Модалка отправки запроса на доработку
 
     describe('Кнопка отправки', () => {
       test('Отображается корректно', () => {
-        render(<ReworkSubTaskModal {...requiredProps} />)
+        render(<ReworkSubTaskModal {...props} />)
 
         const submitButton = testUtils.getSubmitButton()
 
@@ -190,20 +190,20 @@ describe('Модалка отправки запроса на доработку
       })
 
       test('Отображает процесс загрузки', async () => {
-        render(<ReworkSubTaskModal {...requiredProps} isLoading />)
+        render(<ReworkSubTaskModal {...props} isLoading />)
 
         const submitButton = testUtils.getSubmitButton()
         await expectLoadingStartedByButton(submitButton)
       })
 
       test('Обработчик вызывается корректно', async () => {
-        const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
+        const { user } = render(<ReworkSubTaskModal {...props} />)
 
         await testUtils.setReturnReason(user, fakeWord())
         await testUtils.clickSubmitButton(user)
 
-        expect(requiredProps.onSubmit).toBeCalledTimes(1)
-        expect(requiredProps.onSubmit).toBeCalledWith(
+        expect(props.onSubmit).toBeCalledTimes(1)
+        expect(props.onSubmit).toBeCalledWith(
           expect.anything(),
           expect.anything(),
         )
@@ -212,7 +212,7 @@ describe('Модалка отправки запроса на доработку
 
     describe('Кнопка отмены', () => {
       test('Отображается корректно', () => {
-        render(<ReworkSubTaskModal {...requiredProps} />)
+        render(<ReworkSubTaskModal {...props} />)
 
         const cancelButton = testUtils.getCancelButton()
 
@@ -221,10 +221,10 @@ describe('Модалка отправки запроса на доработку
       })
 
       test('Обработчик вызывается корректно', async () => {
-        const { user } = render(<ReworkSubTaskModal {...requiredProps} />)
+        const { user } = render(<ReworkSubTaskModal {...props} />)
 
         await testUtils.clickCancelButton(user)
-        expect(requiredProps.onCancel).toBeCalledTimes(1)
+        expect(props.onCancel).toBeCalledTimes(1)
       })
     })
   })

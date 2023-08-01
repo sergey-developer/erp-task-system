@@ -44,7 +44,7 @@ const taskOverdueDictValues = Object.values(taskOverdueDict)
 const taskAssignedDictValues = Object.values(taskAssignedDict)
 const searchFieldDictValues = Object.values(searchFieldDict)
 
-const requiredProps: Readonly<ExtendedFilterProps> = {
+const props: Readonly<ExtendedFilterProps> = {
   formValues: initialExtendedFilterFormValues,
   initialFormValues: initialExtendedFilterFormValues,
   onClose: jest.fn(),
@@ -336,13 +336,13 @@ setupApiTests()
 
 describe('Расширенный фильтр', () => {
   test('Отображается', () => {
-    render(<ExtendedFilter {...requiredProps} />)
+    render(<ExtendedFilter {...props} />)
     expect(testUtils.getContainer()).toBeInTheDocument()
   })
 
   describe('Header', () => {
     test('Корректно отображается', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const title = screen.getByText('Фильтры')
       const closeButton = testUtils.getCloseButton()
@@ -352,19 +352,19 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Кнопка закрытия кликабельна', async () => {
-      const { user } = render(<ExtendedFilter {...requiredProps} />)
+      const { user } = render(<ExtendedFilter {...props} />)
 
       const closeButton = testUtils.getCloseButton()
       expect(closeButton).toBeEnabled()
 
       await user.click(closeButton)
-      expect(requiredProps.onClose).toBeCalledTimes(1)
+      expect(props.onClose).toBeCalledTimes(1)
     })
   })
 
   describe('Footer', () => {
     test('Корректно отображается', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const applyButton = testUtils.getApplyButton()
       const resetAllButton = testUtils.getResetAllButton()
@@ -374,7 +374,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Кнопки активны', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const applyButton = testUtils.getApplyButton()
       const resetAllButton = testUtils.getResetAllButton()
@@ -386,7 +386,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Статус', () => {
     test('Отображается', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const container = testUtils.status.getContainer()
 
@@ -397,16 +397,16 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
       testUtils.status.expectHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
       render(
         <ExtendedFilter
-          {...requiredProps}
+          {...props}
           formValues={{
-            ...requiredProps.formValues,
+            ...props.formValues,
             status: [TaskExtendedStatusEnum.InProgress],
           }}
         />,
@@ -421,7 +421,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const container = testUtils.status.getContainer()
 
@@ -432,7 +432,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любое значение', async () => {
-      const { user } = render(<ExtendedFilter {...requiredProps} />)
+      const { user } = render(<ExtendedFilter {...props} />)
 
       for await (const value of taskExtendedStatusDictValues) {
         const checkbox = await testUtils.status.setValue(user, value)
@@ -442,7 +442,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.status.getContainer()
 
@@ -460,7 +460,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.status.getContainer()
 
@@ -481,7 +481,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Назначенный', () => {
     test('Отображается', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const container = testUtils.assigned.getContainer()
 
@@ -492,7 +492,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
       testUtils.assigned.expectHasCorrectInitialValues()
     })
 
@@ -504,7 +504,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const container = testUtils.assigned.getContainer()
 
@@ -515,7 +515,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любое значение', async () => {
-      const { user } = render(<ExtendedFilter {...requiredProps} />)
+      const { user } = render(<ExtendedFilter {...props} />)
 
       for await (const value of taskAssignedDictValues) {
         const radioButton = await testUtils.assigned.setValue(user, value)
@@ -525,7 +525,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значение', () => {
       test('Кнопка "Сбросить"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.assigned.getContainer()
 
@@ -547,7 +547,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.assigned.getContainer()
 
@@ -572,7 +572,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Просрочено', () => {
     test('Отображается', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const container = testUtils.overdue.getContainer()
 
@@ -583,7 +583,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
       testUtils.overdue.expectHasCorrectInitialValues()
     })
 
@@ -595,7 +595,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const container = testUtils.overdue.getContainer()
 
@@ -606,7 +606,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любое значение', async () => {
-      const { user } = render(<ExtendedFilter {...requiredProps} />)
+      const { user } = render(<ExtendedFilter {...props} />)
 
       for await (const value of taskOverdueDictValues) {
         const radioButton = await testUtils.overdue.setValue(user, value)
@@ -616,7 +616,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значение', () => {
       test('Кнопка "Сбросить"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.overdue.getContainer()
 
@@ -630,7 +630,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.overdue.getContainer()
 
@@ -647,7 +647,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Выполнить до', () => {
     test('Отображается', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const startDateField = testUtils.completeAt.getStartDateField()
       const endDateField = testUtils.completeAt.getEndDateField()
@@ -660,16 +660,16 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
       testUtils.completeAt.expectHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
       render(
         <ExtendedFilter
-          {...requiredProps}
+          {...props}
           formValues={{
-            ...requiredProps.formValues,
+            ...props.formValues,
             completeAt: [moment(), moment()],
           }}
         />,
@@ -683,7 +683,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const startDateField = testUtils.completeAt.getStartDateField()
       const endDateField = testUtils.completeAt.getEndDateField()
@@ -693,7 +693,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать даты', async () => {
-      const { user } = render(<ExtendedFilter {...requiredProps} />)
+      const { user } = render(<ExtendedFilter {...props} />)
 
       const { startDateField, startDateValue, endDateField, endDateValue } =
         await testUtils.completeAt.setValue(user)
@@ -704,7 +704,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const { startDateValue, endDateValue } =
           await testUtils.completeAt.setValue(user)
@@ -721,7 +721,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const { startDateValue, endDateValue } =
           await testUtils.completeAt.setValue(user)
@@ -740,7 +740,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Поиск по столбцу', () => {
     test('Отображается', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const container = testUtils.searchByColumn.getContainer()
 
@@ -754,7 +754,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
       testUtils.searchByColumn.expectHasCorrectInitialValues()
     })
 
@@ -763,9 +763,9 @@ describe('Расширенный фильтр', () => {
 
       render(
         <ExtendedFilter
-          {...requiredProps}
+          {...props}
           formValues={{
-            ...requiredProps.formValues,
+            ...props.formValues,
             searchField: 'searchByName',
             searchValue,
           }}
@@ -785,7 +785,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
-      render(<ExtendedFilter {...requiredProps} />)
+      render(<ExtendedFilter {...props} />)
 
       const container = testUtils.searchByColumn.getContainer()
 
@@ -800,7 +800,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно ввести ключевое слово', async () => {
-      const { user } = render(<ExtendedFilter {...requiredProps} />)
+      const { user } = render(<ExtendedFilter {...props} />)
 
       const { keywordField, keyword } =
         await testUtils.searchByColumn.setKeywordValue(user)
@@ -809,7 +809,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любой столбец', async () => {
-      const { user } = render(<ExtendedFilter {...requiredProps} />)
+      const { user } = render(<ExtendedFilter {...props} />)
 
       for await (const value of searchFieldDictValues) {
         const radioButton = await testUtils.searchByColumn.setColumnValue(
@@ -823,7 +823,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.searchByColumn.getContainer()
 
@@ -845,7 +845,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
-        const { user } = render(<ExtendedFilter {...requiredProps} />)
+        const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.searchByColumn.getContainer()
 
@@ -873,7 +873,7 @@ describe('Расширенный фильтр', () => {
       test('Не отображается', () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
-        render(<ExtendedFilter {...requiredProps} />, {
+        render(<ExtendedFilter {...props} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.FirstLineSupport,
           }),
@@ -886,7 +886,7 @@ describe('Расширенный фильтр', () => {
 
     describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
       test('Не отображается', () => {
-        render(<ExtendedFilter {...requiredProps} />, {
+        render(<ExtendedFilter {...props} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.Engineer,
           }),
@@ -901,7 +901,7 @@ describe('Расширенный фильтр', () => {
       test('Отображается', async () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
-        render(<ExtendedFilter {...requiredProps} />, {
+        render(<ExtendedFilter {...props} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.SeniorEngineer,
           }),
@@ -917,7 +917,7 @@ describe('Расширенный фильтр', () => {
       test('Отображается', async () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
-        render(<ExtendedFilter {...requiredProps} />, {
+        render(<ExtendedFilter {...props} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.HeadOfDepartment,
           }),
@@ -935,7 +935,7 @@ describe('Расширенный фильтр', () => {
           body: workGroupFixtures.fakeWorkGroupList(),
         })
 
-        render(<ExtendedFilter {...requiredProps} />, {
+        render(<ExtendedFilter {...props} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.SeniorEngineer,
           }),
@@ -954,9 +954,9 @@ describe('Расширенный фильтр', () => {
 
         render(
           <ExtendedFilter
-            {...requiredProps}
+            {...props}
             formValues={{
-              ...requiredProps.formValues,
+              ...props.formValues,
               workGroupId,
             }}
           />,
@@ -977,7 +977,7 @@ describe('Расширенный фильтр', () => {
       test('Доступен для редактирования после загрузки списка', async () => {
         mockGetWorkGroupListSuccess({ body: [] })
 
-        render(<ExtendedFilter {...requiredProps} />, {
+        render(<ExtendedFilter {...props} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.SeniorEngineer,
           }),
@@ -993,7 +993,7 @@ describe('Расширенный фильтр', () => {
         const workGroupListItem = workGroupFixtures.fakeWorkGroup()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
-        const { user } = render(<ExtendedFilter {...requiredProps} />, {
+        const { user } = render(<ExtendedFilter {...props} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.SeniorEngineer,
           }),
@@ -1014,7 +1014,7 @@ describe('Расширенный фильтр', () => {
         const mockedWorkGroupListItem2 = mockedWorkGroupList[1]
         mockGetWorkGroupListSuccess({ body: mockedWorkGroupList })
 
-        const { user } = render(<ExtendedFilter {...requiredProps} />, {
+        const { user } = render(<ExtendedFilter {...props} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.SeniorEngineer,
           }),
@@ -1040,7 +1040,7 @@ describe('Расширенный фильтр', () => {
           const workGroupListItem = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
-          const { user } = render(<ExtendedFilter {...requiredProps} />, {
+          const { user } = render(<ExtendedFilter {...props} />, {
             store: getStoreWithAuth({
               userRole: UserRoleEnum.SeniorEngineer,
             }),
@@ -1063,7 +1063,7 @@ describe('Расширенный фильтр', () => {
           const workGroupListItem = workGroupFixtures.fakeWorkGroup()
           mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
 
-          const { user } = render(<ExtendedFilter {...requiredProps} />, {
+          const { user } = render(<ExtendedFilter {...props} />, {
             store: getStoreWithAuth({
               userRole: UserRoleEnum.SeniorEngineer,
             }),

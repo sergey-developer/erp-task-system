@@ -17,7 +17,7 @@ import {
 import TaskFirstLineModal from './index'
 import { TaskFirstLineModalProps } from './types'
 
-const requiredProps: Readonly<TaskFirstLineModalProps> = {
+const props: Readonly<TaskFirstLineModalProps> = {
   recordId: fakeIdStr(),
   isLoading: false,
   onSubmit: jest.fn(),
@@ -65,23 +65,23 @@ export const testUtils = {
 
 describe('Модальное окно перевода запроса на первую линию', () => {
   test('Отображается корректно', () => {
-    render(<TaskFirstLineModal {...requiredProps} />)
+    render(<TaskFirstLineModal {...props} />)
 
     const modal = testUtils.getContainer()
     expect(modal).toBeInTheDocument()
   })
 
   test('Заголовок отображается корректно', () => {
-    render(<TaskFirstLineModal {...requiredProps} />)
+    render(<TaskFirstLineModal {...props} />)
 
     const modal = testUtils.getContainer()
-    const recordId = within(modal).getByText(requiredProps.recordId)
+    const recordId = within(modal).getByText(props.recordId)
 
     expect(recordId).toBeInTheDocument()
   })
 
   test('Текст отображается корректно', () => {
-    render(<TaskFirstLineModal {...requiredProps} />)
+    render(<TaskFirstLineModal {...props} />)
 
     const modal = testUtils.getContainer()
     const text1 = within(modal).getByText(
@@ -98,7 +98,7 @@ describe('Модальное окно перевода запроса на пе�
   describe('Форма перевода заявки', () => {
     describe('Поле ввода причины возврата', () => {
       test('Отображается корректно', () => {
-        render(<TaskFirstLineModal {...requiredProps} />)
+        render(<TaskFirstLineModal {...props} />)
 
         const description = testUtils.getDescriptionField()
 
@@ -108,14 +108,14 @@ describe('Модальное окно перевода запроса на пе�
       })
 
       test('Не активно при загрузке', () => {
-        render(<TaskFirstLineModal {...requiredProps} isLoading />)
+        render(<TaskFirstLineModal {...props} isLoading />)
 
         const description = testUtils.getDescriptionField()
         expect(description).toBeDisabled()
       })
 
       test('Можно ввести значение', async () => {
-        const { user } = render(<TaskFirstLineModal {...requiredProps} />)
+        const { user } = render(<TaskFirstLineModal {...props} />)
 
         const description = testUtils.getDescriptionField()
         const descriptionText = fakeWord()
@@ -126,7 +126,7 @@ describe('Модальное окно перевода запроса на пе�
 
       describe('Отображается ошибка', () => {
         test('Если ввести только пробелы', async () => {
-          const { user } = render(<TaskFirstLineModal {...requiredProps} />)
+          const { user } = render(<TaskFirstLineModal {...props} />)
 
           const description = testUtils.getDescriptionField()
 
@@ -139,7 +139,7 @@ describe('Модальное окно перевода запроса на пе�
         })
 
         test('Если превысить лимит символов', async () => {
-          const { user } = render(<TaskFirstLineModal {...requiredProps} />)
+          const { user } = render(<TaskFirstLineModal {...props} />)
 
           const field = testUtils.getDescriptionField()
           await user.type(
@@ -153,7 +153,7 @@ describe('Модальное окно перевода запроса на пе�
         })
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(<TaskFirstLineModal {...requiredProps} />)
+          const { user } = render(<TaskFirstLineModal {...props} />)
 
           const submitButton = testUtils.getSubmitButton()
           await user.click(submitButton)
@@ -168,7 +168,7 @@ describe('Модальное окно перевода запроса на пе�
 
     describe('Кнопка отправки', () => {
       test('Отображается корректно', () => {
-        render(<TaskFirstLineModal {...requiredProps} />)
+        render(<TaskFirstLineModal {...props} />)
 
         const submitButton = testUtils.getSubmitButton()
 
@@ -177,14 +177,14 @@ describe('Модальное окно перевода запроса на пе�
       })
 
       test('Отображает процесс загрузки', async () => {
-        render(<TaskFirstLineModal {...requiredProps} isLoading />)
+        render(<TaskFirstLineModal {...props} isLoading />)
 
         const submitButton = testUtils.getSubmitButton()
         await expectLoadingStartedByButton(submitButton)
       })
 
       test('Обработчик вызывается корректно', async () => {
-        const { user } = render(<TaskFirstLineModal {...requiredProps} />)
+        const { user } = render(<TaskFirstLineModal {...props} />)
 
         const description = testUtils.getDescriptionField()
         const submitButton = testUtils.getSubmitButton()
@@ -192,8 +192,8 @@ describe('Модальное окно перевода запроса на пе�
         await user.type(description, fakeWord())
         await user.click(submitButton)
 
-        expect(requiredProps.onSubmit).toBeCalledTimes(1)
-        expect(requiredProps.onSubmit).toBeCalledWith(
+        expect(props.onSubmit).toBeCalledTimes(1)
+        expect(props.onSubmit).toBeCalledWith(
           expect.anything(),
           expect.anything(),
         )
@@ -202,7 +202,7 @@ describe('Модальное окно перевода запроса на пе�
 
     describe('Кнопка отмены', () => {
       test('Отображается корректно', () => {
-        render(<TaskFirstLineModal {...requiredProps} />)
+        render(<TaskFirstLineModal {...props} />)
 
         const cancelButton = testUtils.getCancelButton()
 
@@ -211,12 +211,12 @@ describe('Модальное окно перевода запроса на пе�
       })
 
       test('Обработчик вызывается корректно', async () => {
-        const { user } = render(<TaskFirstLineModal {...requiredProps} />)
+        const { user } = render(<TaskFirstLineModal {...props} />)
 
         const cancelButton = testUtils.getCancelButton()
         await user.click(cancelButton)
 
-        expect(requiredProps.onCancel).toBeCalledTimes(1)
+        expect(props.onCancel).toBeCalledTimes(1)
       })
     })
   })

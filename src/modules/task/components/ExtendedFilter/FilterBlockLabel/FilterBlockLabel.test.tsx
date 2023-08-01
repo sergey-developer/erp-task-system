@@ -5,7 +5,7 @@ import { fakeWord, getButtonIn, render } from '_tests_/utils'
 
 import FilterBlockLabel, { FilterBlockLabelProps } from './index'
 
-const requiredProps: Readonly<FilterBlockLabelProps> = {
+const props: Readonly<FilterBlockLabelProps> = {
   label: fakeWord(),
   onReset: jest.fn(),
 }
@@ -27,15 +27,15 @@ const testUtils = {
 
 describe('FilterBlockLabel', () => {
   test('Заголовок отображается корректно', () => {
-    render(<FilterBlockLabel {...requiredProps} />)
+    render(<FilterBlockLabel {...props} />)
 
-    const label = screen.getByRole('heading', { name: requiredProps.label })
+    const label = screen.getByRole('heading', { name: props.label })
     expect(label).toBeInTheDocument()
   })
 
   describe('Кнопка "Сбросить"', () => {
     test('Отображается корректно', () => {
-      render(<FilterBlockLabel {...requiredProps} />)
+      render(<FilterBlockLabel {...props} />)
 
       const button = testUtils.getResetButton()
 
@@ -44,10 +44,10 @@ describe('FilterBlockLabel', () => {
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<FilterBlockLabel {...requiredProps} />)
+      const { user } = render(<FilterBlockLabel {...props} />)
 
       await testUtils.clickResetButton(user)
-      expect(requiredProps.onReset).toBeCalledTimes(1)
+      expect(props.onReset).toBeCalledTimes(1)
     })
   })
 })

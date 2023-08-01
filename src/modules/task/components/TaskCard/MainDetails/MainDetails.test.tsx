@@ -19,7 +19,7 @@ import {
 import MainDetails, { MainDetailsProps } from './index'
 import { parseResponseTime } from './utils'
 
-const requiredProps: Readonly<MainDetailsProps> = {
+const props: Readonly<MainDetailsProps> = {
   name: fakeWord(),
   title: fakeWord(),
   recordId: fakeIdStr(),
@@ -57,29 +57,29 @@ export const testUtils = {
 
 describe('Блок детальной информации заявки', () => {
   test('Отображается', () => {
-    render(<MainDetails {...requiredProps} />)
+    render(<MainDetails {...props} />)
     expect(testUtils.getContainer()).toBeInTheDocument()
   })
 
   test('Идентификатор записи отображается', () => {
-    render(<MainDetails {...requiredProps} />)
-    expect(testUtils.getChildByText(requiredProps.recordId)).toBeInTheDocument()
+    render(<MainDetails {...props} />)
+    expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
   })
 
   test('Срок выполнения отображается если присутствует', () => {
     render(
-      <MainDetails {...requiredProps} olaNextBreachTime={fakeDateString()} />,
+      <MainDetails {...props} olaNextBreachTime={fakeDateString()} />,
     )
     expect(testUtils.getChildByText(/до/)).toBeInTheDocument()
   })
 
   test('Статус заявки отображается', () => {
-    render(<MainDetails {...requiredProps} />)
+    render(<MainDetails {...props} />)
 
     expect(
       taskStatusTestUtils.getContainerIn(
         testUtils.getContainer(),
-        requiredProps.status,
+        props.status,
       ),
     ).toBeInTheDocument()
   })
@@ -90,7 +90,7 @@ describe('Блок детальной информации заявки', () => 
 
       render(
         <MainDetails
-          {...requiredProps}
+          {...props}
           responseTime={fakeResponseTime}
           workGroup={null}
           assignee={null}
@@ -110,7 +110,7 @@ describe('Блок детальной информации заявки', () => 
       test('Но срок реакции отсутствует', () => {
         render(
           <MainDetails
-            {...requiredProps}
+            {...props}
             workGroup={null}
             responseTime={null}
           />,
@@ -124,7 +124,7 @@ describe('Блок детальной информации заявки', () => 
       test('Но есть рабочая группа', () => {
         render(
           <MainDetails
-            {...requiredProps}
+            {...props}
             responseTime={taskFixtures.fakeTaskResponseTime()}
             workGroup={taskFixtures.fakeWorkGroup()}
           />,
@@ -138,7 +138,7 @@ describe('Блок детальной информации заявки', () => 
       test(`Но пользователь с ролью ${UserRoleEnum.FirstLineSupport} и у заявки есть исполнитель`, () => {
         render(
           <MainDetails
-            {...requiredProps}
+            {...props}
             responseTime={taskFixtures.fakeTaskResponseTime()}
             workGroup={taskFixtures.fakeWorkGroup()}
             assignee={taskFixtures.fakeAssignee()}
@@ -158,64 +158,64 @@ describe('Блок детальной информации заявки', () => 
   })
 
   test('Заголовок отображается', () => {
-    render(<MainDetails {...requiredProps} />)
-    expect(testUtils.getChildByText(requiredProps.title)).toBeInTheDocument()
+    render(<MainDetails {...props} />)
+    expect(testUtils.getChildByText(props.title)).toBeInTheDocument()
   })
 
   test('Дата создания отображается', () => {
-    render(<MainDetails {...requiredProps} />)
+    render(<MainDetails {...props} />)
 
     expect(
-      testUtils.getChildByText(requiredProps.createdAt),
+      testUtils.getChildByText(props.createdAt),
     ).toBeInTheDocument()
   })
 
   describe('Блок адреса', () => {
     test('Заголовок отображается', () => {
-      render(<MainDetails {...requiredProps} />)
+      render(<MainDetails {...props} />)
       expect(testUtils.getChildByText('Адрес')).toBeInTheDocument()
     })
 
     test('Название отображается', () => {
-      render(<MainDetails {...requiredProps} />)
-      expect(testUtils.getChildByText(requiredProps.name)).toBeInTheDocument()
+      render(<MainDetails {...props} />)
+      expect(testUtils.getChildByText(props.name)).toBeInTheDocument()
     })
 
     test('Адрес отображается если присутствует', () => {
       const address = fakeAddress()
-      render(<MainDetails {...requiredProps} address={address} />)
+      render(<MainDetails {...props} address={address} />)
       expect(testUtils.getChildByText(address)).toBeInTheDocument()
     })
 
     test('Если отсутствует отображается соответствующий текст', () => {
-      render(<MainDetails {...requiredProps} />)
+      render(<MainDetails {...props} />)
       expect(testUtils.getChildByText('Не определено')).toBeInTheDocument()
     })
   })
 
   describe('Блок заявителя', () => {
     test('Заголовок отображается', () => {
-      render(<MainDetails {...requiredProps} />)
+      render(<MainDetails {...props} />)
       expect(testUtils.getChildByText('Заявитель')).toBeInTheDocument()
     })
 
     test('Заявитель отображается', () => {
-      render(<MainDetails {...requiredProps} />)
+      render(<MainDetails {...props} />)
 
       expect(
-        testUtils.getChildByText(requiredProps.contactService),
+        testUtils.getChildByText(props.contactService),
       ).toBeInTheDocument()
     })
 
     test('Контактный телефон 1 отображается если присутствует', () => {
       const contactPhone = fakePhone()
-      render(<MainDetails {...requiredProps} contactPhone={contactPhone} />)
+      render(<MainDetails {...props} contactPhone={contactPhone} />)
       expect(testUtils.getChildByText(contactPhone)).toBeInTheDocument()
     })
 
     test('Контактный телефон 2 отображается если присутствует', () => {
       const portablePhone = fakePhone()
-      render(<MainDetails {...requiredProps} portablePhone={portablePhone} />)
+      render(<MainDetails {...props} portablePhone={portablePhone} />)
       expect(testUtils.getChildByText(portablePhone)).toBeInTheDocument()
     })
   })

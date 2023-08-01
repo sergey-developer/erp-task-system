@@ -12,7 +12,7 @@ import {
 
 import AdditionalInfo, { AdditionalInfoProps } from './index'
 
-const requiredProps: Readonly<
+const props: Readonly<
   Pick<
     AdditionalInfoProps,
     | 'expanded'
@@ -96,52 +96,52 @@ export const testUtils = {
 describe('Блок дополнительной информации', () => {
   describe('Может быть по умолчанию', () => {
     test('Открыт', () => {
-      render(<AdditionalInfo {...requiredProps} />)
+      render(<AdditionalInfo {...props} />)
       expect(testUtils.getAdditionalInfoContent()).toBeInTheDocument()
     })
 
     test('Скрыт', () => {
-      render(<AdditionalInfo {...requiredProps} expanded={false} />)
+      render(<AdditionalInfo {...props} expanded={false} />)
       expect(testUtils.queryAdditionalInfoContent()).not.toBeInTheDocument()
     })
   })
 
   describe('Если нажать кнопку "Дополнительная информация"', () => {
     afterEach(() => {
-      requiredProps.onExpand.mockReset()
+      props.onExpand.mockReset()
     })
 
     test('callback "onExpand" вызывается', async () => {
-      const { user } = render(<AdditionalInfo {...requiredProps} />)
+      const { user } = render(<AdditionalInfo {...props} />)
 
       await testUtils.clickExpandButton(user)
 
       await waitFor(() => {
-        expect(requiredProps.onExpand).toBeCalledTimes(1)
+        expect(props.onExpand).toBeCalledTimes(1)
       })
     })
   })
 
   test('Обязательные поля отображаются', () => {
-    render(<AdditionalInfo {...requiredProps} />)
+    render(<AdditionalInfo {...props} />)
 
-    expect(testUtils.getChildByText(requiredProps.priority)).toBeInTheDocument()
-    expect(testUtils.getChildByText(requiredProps.severity)).toBeInTheDocument()
-    expect(testUtils.getChildByText(requiredProps.impact)).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.priority)).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.severity)).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.impact)).toBeInTheDocument()
     expect(
-      testUtils.getChildByText(requiredProps.productClassifier1),
+      testUtils.getChildByText(props.productClassifier1),
     ).toBeInTheDocument()
     expect(
-      testUtils.getChildByText(requiredProps.productClassifier2),
+      testUtils.getChildByText(props.productClassifier2),
     ).toBeInTheDocument()
     expect(
-      testUtils.getChildByText(requiredProps.productClassifier3),
+      testUtils.getChildByText(props.productClassifier3),
     ).toBeInTheDocument()
   })
 
   test('Группа поддержки отображается если присутствует', () => {
     const supportGroup = fakeWord()
-    render(<AdditionalInfo {...requiredProps} supportGroup={supportGroup} />)
+    render(<AdditionalInfo {...props} supportGroup={supportGroup} />)
 
     expect(
       testUtils.getChildByText('Наименование группы поддержки Х5'),
@@ -152,13 +152,13 @@ describe('Блок дополнительной информации', () => {
 
   describe('Блок "Приоритет заявки"', () => {
     test('Заголовок отображается', () => {
-      render(<AdditionalInfo {...requiredProps} />)
+      render(<AdditionalInfo {...props} />)
       expect(testUtils.getChildByText('Приоритет заявки')).toBeInTheDocument()
     })
 
     test('Вес отображается если присутствует', () => {
       const weight = 1
-      render(<AdditionalInfo {...requiredProps} weight={weight} />)
+      render(<AdditionalInfo {...props} weight={weight} />)
 
       expect(testUtils.getChildByText('Вес:')).toBeInTheDocument()
       expect(testUtils.getChildByText(String(weight))).toBeInTheDocument()
@@ -167,7 +167,7 @@ describe('Блок дополнительной информации', () => {
 
   test('Email отображается если присутствует', () => {
     const email = fakeEmail()
-    render(<AdditionalInfo {...requiredProps} email={email} />)
+    render(<AdditionalInfo {...props} email={email} />)
 
     expect(testUtils.getChildByText('Email')).toBeInTheDocument()
     expect(testUtils.getChildByText(email)).toBeInTheDocument()
@@ -175,7 +175,7 @@ describe('Блок дополнительной информации', () => {
 
   test('SAP ID отображается если присутствует', () => {
     const sapId = fakeWord()
-    render(<AdditionalInfo {...requiredProps} sapId={sapId} />)
+    render(<AdditionalInfo {...props} sapId={sapId} />)
 
     expect(testUtils.getChildByText('SAP ID')).toBeInTheDocument()
     expect(testUtils.getChildByText(sapId)).toBeInTheDocument()
@@ -183,7 +183,7 @@ describe('Блок дополнительной информации', () => {
 
   test('Компания отображается если присутствует', () => {
     const company = fakeWord()
-    render(<AdditionalInfo {...requiredProps} company={company} />)
+    render(<AdditionalInfo {...props} company={company} />)
 
     expect(testUtils.getChildByText('Компания')).toBeInTheDocument()
     expect(testUtils.getChildByText(company)).toBeInTheDocument()
@@ -191,7 +191,7 @@ describe('Блок дополнительной информации', () => {
 
   test('Формат магазина отображается если присутствует', () => {
     const contactType = fakeWord()
-    render(<AdditionalInfo {...requiredProps} contactType={contactType} />)
+    render(<AdditionalInfo {...props} contactType={contactType} />)
 
     expect(testUtils.getChildByText('Формат магазина')).toBeInTheDocument()
     expect(testUtils.getChildByText(contactType)).toBeInTheDocument()
@@ -201,7 +201,7 @@ describe('Блок дополнительной информации', () => {
     describe('Если присутствует', () => {
       test('Является корректной ссылкой', () => {
         const addressValue = fakeAddress()
-        render(<AdditionalInfo {...requiredProps} address={addressValue} />)
+        render(<AdditionalInfo {...props} address={addressValue} />)
 
         const address = testUtils.getAddress()
 
@@ -215,7 +215,7 @@ describe('Блок дополнительной информации', () => {
       })
 
       test('Иконка отображается', () => {
-        render(<AdditionalInfo {...requiredProps} address={fakeAddress()} />)
+        render(<AdditionalInfo {...props} address={fakeAddress()} />)
 
         const icon = testUtils.getAddressIcon()
         expect(icon).toBeInTheDocument()
@@ -224,14 +224,14 @@ describe('Блок дополнительной информации', () => {
 
     describe('Если отсутствует', () => {
       test('Вместо него отображается соответствующий текст', () => {
-        render(<AdditionalInfo {...requiredProps} />)
+        render(<AdditionalInfo {...props} />)
 
         const address = testUtils.getAddress()
         expect(within(address).getByText('Не определено')).toBeInTheDocument()
       })
 
       test('Не является ссылкой', () => {
-        render(<AdditionalInfo {...requiredProps} />)
+        render(<AdditionalInfo {...props} />)
 
         const address = testUtils.getAddress()
 
@@ -243,7 +243,7 @@ describe('Блок дополнительной информации', () => {
       })
 
       test('Иконка отображается', () => {
-        render(<AdditionalInfo {...requiredProps} />)
+        render(<AdditionalInfo {...props} />)
         expect(testUtils.getAddressIcon()).toBeInTheDocument()
       })
     })

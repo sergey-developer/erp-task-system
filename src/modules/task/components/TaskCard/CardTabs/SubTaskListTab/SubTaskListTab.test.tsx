@@ -49,7 +49,7 @@ import {
 import SubTaskListTab, { SubTaskListTabProps } from './index'
 
 // constants
-const requiredProps: Readonly<Pick<SubTaskListTabProps, 'task'>> = {
+const props: Readonly<Pick<SubTaskListTabProps, 'task'>> = {
   task: taskFixtures.fakeTask(),
 }
 
@@ -93,18 +93,18 @@ setupNotifications()
 describe('Вкладка списка заданий', () => {
   describe('Кнопка создания задания', () => {
     test('Отображается', () => {
-      render(<SubTaskListTab {...requiredProps} />)
+      render(<SubTaskListTab {...props} />)
       expect(testUtils.getCreateSubTaskButton()).toBeInTheDocument()
     })
 
     test('Активна если условия соблюдены', () => {
-      mockGetSubTaskListSuccess(requiredProps.task.id)
+      mockGetSubTaskListSuccess(props.task.id)
 
       render(
         <SubTaskListTab
-          {...requiredProps}
+          {...props}
           task={{
-            ...requiredProps.task,
+            ...props.task,
             ...activeCreateSubTaskButtonTaskProps,
           }}
         />,
@@ -120,13 +120,13 @@ describe('Вкладка списка заданий', () => {
 
     describe('Не активна если условия соблюдены', () => {
       test('Но текущий пользователь не является исполнителем заявки', () => {
-        mockGetSubTaskListSuccess(requiredProps.task.id)
+        mockGetSubTaskListSuccess(props.task.id)
 
         render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
             }}
           />,
@@ -139,13 +139,13 @@ describe('Вкладка списка заданий', () => {
       })
 
       test('Но статус заявки не - "В процессе"', () => {
-        mockGetSubTaskListSuccess(requiredProps.task.id)
+        mockGetSubTaskListSuccess(props.task.id)
 
         render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
               status: TaskStatusEnum.New,
             }}
@@ -161,13 +161,13 @@ describe('Вкладка списка заданий', () => {
       })
 
       test('Но тип заявки не "Incident" и не "Request"', () => {
-        mockGetSubTaskListSuccess(requiredProps.task.id)
+        mockGetSubTaskListSuccess(props.task.id)
 
         render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
               type: TaskTypeEnum.RequestTask,
             }}
@@ -183,13 +183,13 @@ describe('Вкладка списка заданий', () => {
       })
 
       test('Но заявка на переклассификации', () => {
-        mockGetSubTaskListSuccess(requiredProps.task.id)
+        mockGetSubTaskListSuccess(props.task.id)
 
         render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
               extendedStatus: TaskExtendedStatusEnum.InReclassification,
             }}
@@ -205,13 +205,13 @@ describe('Вкладка списка заданий', () => {
       })
 
       test('Но у заявки есть запрос на ожидание', () => {
-        mockGetSubTaskListSuccess(requiredProps.task.id)
+        mockGetSubTaskListSuccess(props.task.id)
 
         render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
               suspendRequest: taskFixtures.fakeSuspendRequest(),
             }}
@@ -228,14 +228,14 @@ describe('Вкладка списка заданий', () => {
     })
 
     test('При нажатии открывает модалку создания задания', async () => {
-      mockGetSubTaskListSuccess(requiredProps.task.id)
+      mockGetSubTaskListSuccess(props.task.id)
       mockGetSubTaskTemplateListSuccess()
 
       const { user } = render(
         <SubTaskListTab
-          {...requiredProps}
+          {...props}
           task={{
-            ...requiredProps.task,
+            ...props.task,
             ...activeCreateSubTaskButtonTaskProps,
           }}
         />,
@@ -257,7 +257,7 @@ describe('Вкладка списка заданий', () => {
   describe('Модалка создания задания', () => {
     describe('При успешном запросе', () => {
       test('Модалка создания закрывается', async () => {
-        mockGetSubTaskListSuccess(requiredProps.task.id)
+        mockGetSubTaskListSuccess(props.task.id)
 
         const fakeSupportGroupListItem =
           supportGroupFixtures.fakeSupportGroupListItem()
@@ -266,13 +266,13 @@ describe('Вкладка списка заданий', () => {
         const templateListItem = subTaskFixtures.fakeSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [templateListItem] })
 
-        mockCreateSubTaskSuccess(requiredProps.task.id)
+        mockCreateSubTaskSuccess(props.task.id)
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
             }}
           />,
@@ -300,7 +300,7 @@ describe('Вкладка списка заданий', () => {
 
       test('В список добавляется новое задание', async () => {
         const subTaskList = subTaskFixtures.getSubTaskList()
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: subTaskList })
+        mockGetSubTaskListSuccess(props.task.id, { body: subTaskList })
 
         const fakeSupportGroupListItem =
           supportGroupFixtures.fakeSupportGroupListItem()
@@ -309,15 +309,15 @@ describe('Вкладка списка заданий', () => {
         const templateListItem = subTaskFixtures.fakeSubTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [templateListItem] })
 
-        mockCreateSubTaskSuccess(requiredProps.task.id, {
+        mockCreateSubTaskSuccess(props.task.id, {
           body: subTaskFixtures.fakeSubTask(),
         })
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
             }}
           />,
@@ -352,11 +352,11 @@ describe('Вкладка списка заданий', () => {
 
   describe('Список заданий', () => {
     test('Отображается', async () => {
-      mockGetSubTaskListSuccess(requiredProps.task.id, {
+      mockGetSubTaskListSuccess(props.task.id, {
         body: subTaskFixtures.getSubTaskList(),
       })
 
-      render(<SubTaskListTab {...requiredProps} />, {
+      render(<SubTaskListTab {...props} />, {
         store: getStoreWithAuth(),
       })
 
@@ -367,13 +367,13 @@ describe('Вкладка списка заданий', () => {
     describe('При успешном получении', () => {
       test('Отображает верное количество заданий', async () => {
         const subTaskList = subTaskFixtures.getSubTaskList()
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: subTaskList })
+        mockGetSubTaskListSuccess(props.task.id, { body: subTaskList })
 
         render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
             }}
           />,
@@ -392,13 +392,13 @@ describe('Вкладка списка заданий', () => {
 
     describe('При не успешном получении', () => {
       test('Отображается соответствующая ошибка вместо списка', async () => {
-        mockGetSubTaskListServerError(requiredProps.task.id)
+        mockGetSubTaskListServerError(props.task.id)
 
         render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
             }}
           />,
@@ -415,13 +415,13 @@ describe('Вкладка списка заданий', () => {
       })
 
       test('Отображается соответствующее уведомление', async () => {
-        mockGetSubTaskListServerError(requiredProps.task.id)
+        mockGetSubTaskListServerError(props.task.id)
 
         render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               ...activeCreateSubTaskButtonTaskProps,
             }}
           />,
@@ -444,18 +444,18 @@ describe('Вкладка списка заданий', () => {
       const subTask = subTaskFixtures.fakeSubTask({
         status: activeReworkButtonProps.status,
       })
-      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+      mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
 
       const { user } = render(
         <SubTaskListTab
-          {...requiredProps}
+          {...props}
           task={{
-            ...requiredProps.task,
+            ...props.task,
             status: activeReworkButtonProps.taskStatus,
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
         },
       )
 
@@ -468,18 +468,18 @@ describe('Вкладка списка заданий', () => {
       const subTask = subTaskFixtures.fakeSubTask({
         status: activeReworkButtonProps.status,
       })
-      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+      mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
 
       const { user } = render(
         <SubTaskListTab
-          {...requiredProps}
+          {...props}
           task={{
-            ...requiredProps.task,
+            ...props.task,
             status: activeReworkButtonProps.taskStatus,
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
         },
       )
 
@@ -495,19 +495,19 @@ describe('Вкладка списка заданий', () => {
       const subTask = subTaskFixtures.fakeSubTask({
         status: activeReworkButtonProps.status,
       })
-      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+      mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
       mockReworkSubTaskSuccess(subTask.id)
 
       const { user } = render(
         <SubTaskListTab
-          {...requiredProps}
+          {...props}
           task={{
-            ...requiredProps.task,
+            ...props.task,
             status: activeReworkButtonProps.taskStatus,
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
         },
       )
 
@@ -524,20 +524,20 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeReworkButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
         mockReworkSubTaskSuccess(subTask.id)
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeReworkButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
@@ -555,20 +555,20 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeReworkButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
         mockReworkSubTaskSuccess(subTask.id)
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeReworkButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
@@ -601,20 +601,20 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeReworkButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
         mockReworkSubTaskSuccess(subTask.id)
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeReworkButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
@@ -635,7 +635,7 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeReworkButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
 
         const badRequestResponse: Required<ReworkSubTaskFormErrors> = {
           returnReason: [fakeWord()],
@@ -646,15 +646,15 @@ describe('Вкладка списка заданий', () => {
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeReworkButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
@@ -676,20 +676,20 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeReworkButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
         mockReworkSubTaskServerError(subTask.id)
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeReworkButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
@@ -712,18 +712,18 @@ describe('Вкладка списка заданий', () => {
       const subTask = subTaskFixtures.fakeSubTask({
         status: activeCancelButtonProps.status,
       })
-      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+      mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
 
       const { user } = render(
         <SubTaskListTab
-          {...requiredProps}
+          {...props}
           task={{
-            ...requiredProps.task,
+            ...props.task,
             status: activeCancelButtonProps.taskStatus,
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
         },
       )
 
@@ -736,18 +736,18 @@ describe('Вкладка списка заданий', () => {
       const subTask = subTaskFixtures.fakeSubTask({
         status: activeCancelButtonProps.status,
       })
-      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+      mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
 
       const { user } = render(
         <SubTaskListTab
-          {...requiredProps}
+          {...props}
           task={{
-            ...requiredProps.task,
+            ...props.task,
             status: activeCancelButtonProps.taskStatus,
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
         },
       )
 
@@ -763,19 +763,19 @@ describe('Вкладка списка заданий', () => {
       const subTask = subTaskFixtures.fakeSubTask({
         status: activeCancelButtonProps.status,
       })
-      mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+      mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
       mockCancelSubTaskSuccess(subTask.id)
 
       const { user } = render(
         <SubTaskListTab
-          {...requiredProps}
+          {...props}
           task={{
-            ...requiredProps.task,
+            ...props.task,
             status: activeCancelButtonProps.taskStatus,
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: requiredProps.task.assignee!.id }),
+          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
         },
       )
 
@@ -792,20 +792,20 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeCancelButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
         mockCancelSubTaskSuccess(subTask.id)
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeCancelButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
@@ -823,20 +823,20 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeCancelButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
         mockCancelSubTaskSuccess(subTask.id)
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeCancelButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
@@ -869,20 +869,20 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeCancelButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
         mockCancelSubTaskSuccess(subTask.id)
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeCancelButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
@@ -903,7 +903,7 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeCancelButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
 
         const cancelReasonError = fakeWord()
         mockCancelSubTaskBadRequestError(subTask.id, {
@@ -912,15 +912,15 @@ describe('Вкладка списка заданий', () => {
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeCancelButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
@@ -943,20 +943,20 @@ describe('Вкладка списка заданий', () => {
         const subTask = subTaskFixtures.fakeSubTask({
           status: activeCancelButtonProps.status,
         })
-        mockGetSubTaskListSuccess(requiredProps.task.id, { body: [subTask] })
+        mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
         mockCancelSubTaskServerError(subTask.id)
 
         const { user } = render(
           <SubTaskListTab
-            {...requiredProps}
+            {...props}
             task={{
-              ...requiredProps.task,
+              ...props.task,
               status: activeCancelButtonProps.taskStatus,
             }}
           />,
           {
             store: getStoreWithAuth({
-              userId: requiredProps.task.assignee!.id,
+              userId: props.task.assignee!.id,
             }),
           },
         )
