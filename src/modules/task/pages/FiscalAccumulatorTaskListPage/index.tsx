@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import FiscalAccumulatorTaskTable from 'modules/task/components/FiscalAccumulatorTaskTable'
+import FiscalAccumulatorTaskTable from 'modules/task/features/FiscalAccumulatorTaskTable'
 import { useGetFiscalAccumulatorTaskList } from 'modules/task/hooks'
 
 const FiscalAccumulatorTaskListPage: FC = () => {

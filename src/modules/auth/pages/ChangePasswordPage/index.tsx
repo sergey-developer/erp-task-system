@@ -13,7 +13,7 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showSuccessNotification } from 'shared/utils/notifications'
 
-import { ChangePasswordFormFields } from './types'
+import { ChangePasswordFormFields } from './interfaces'
 import { getUpdatePasswordErrors } from './utils'
 import { confirmPasswordRules, passwordRules } from './validation'
 

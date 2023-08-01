@@ -1,7 +1,7 @@
 import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
 
-import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
+import { supportGroupApiMessages } from 'modules/supportGroup/constants/errorMessages'
 import {
   GetSupportGroupListQueryArgs,
   GetSupportGroupListSuccessResponse,
@@ -23,7 +23,9 @@ export const useGetSupportGroupList = (
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(getSupportGroupListMessages.commonError)
+    showErrorNotification(
+      supportGroupApiMessages.getSupportGroupList.commonError,
+    )
   }, [state.isError])
 
   return state

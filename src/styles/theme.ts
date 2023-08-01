@@ -18,8 +18,6 @@ const colors: Readonly<DefaultTheme['colors']> = {
   aliceBlue: '#EEF5FE',
   cosmicLatte: '#FFFBE6',
   crayola: '#27AE60',
-  darkTangerine: '#FAAD14',
-  unitedNationsBlue: '#5792EB',
 }
 
 const shadows: Readonly<DefaultTheme['shadows']> = {

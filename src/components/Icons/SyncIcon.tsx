@@ -1,11 +1,11 @@
 import { SyncOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 
-import { IconProps } from './types'
+import { IconProps } from './interfaces'
 import { colorStyles } from './styles'
 
-const SyncIconStyled = styled(SyncOutlined)<Pick<IconProps, '$color'>>`
+const SyncIcon = styled(SyncOutlined)<Pick<IconProps, '$color'>>`
   ${colorStyles}
 `
 
-export default SyncIconStyled
+export default SyncIcon

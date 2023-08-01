@@ -6,7 +6,7 @@ import { RouteEnum } from 'configs/routes'
 import {
   INCORRECT_PASSWORD_ERROR_MSG,
   UPDATE_PASSWORD_SUCCESS_MSG,
-  updatePasswordMessages,
+  updatePasswordErrorMessages,
 } from 'modules/auth/constants'
 
 import { validationMessages } from 'shared/constants/validation'
@@ -242,11 +242,11 @@ describe('Страница смены пароля', () => {
       await testUtils.clickSaveButton(user)
       await testUtils.expectLoadingFinished()
 
-      const notification = await findNotification(
+      const successNotification = await findNotification(
         UPDATE_PASSWORD_SUCCESS_MSG,
       )
 
-      expect(notification).toBeInTheDocument()
+      expect(successNotification).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(true)
       expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
     })
@@ -357,7 +357,7 @@ describe('Страница смены пароля', () => {
 
       const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
       const errorMessage = testUtils.getChildByText(
-        updatePasswordMessages.commonError,
+        updatePasswordErrorMessages.commonError,
       )
 
       expect(successNotification).not.toBeInTheDocument()

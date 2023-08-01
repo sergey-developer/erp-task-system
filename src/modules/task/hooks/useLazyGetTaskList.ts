@@ -1,25 +1,31 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
-import { CustomLazyQueryHookResult } from 'lib/rtk-query/types'
-
-import { getTaskListMessages } from 'modules/task/constants'
-import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import { GetTaskListQueryArgs } from 'modules/task/models'
+import { taskApiPermissions } from 'modules/task/permissions'
 import { useLazyGetTaskListQuery } from 'modules/task/services/taskApi.service'
+import { useUserPermissions } from 'modules/user/hooks'
 
+import { commonApiMessages } from 'shared/constants/errors'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useLazyGetTaskList = (): CustomLazyQueryHookResult<
-  GetTaskListQueryArgs,
-  GetTaskListTransformedSuccessResponse
-> => {
+export const useLazyGetTaskList = () => {
+  const permissions = useUserPermissions(taskApiPermissions)
   const [trigger, state] = useLazyGetTaskListQuery()
+
+  const fn = useCallback(
+    (filter: GetTaskListQueryArgs) => {
+      if (permissions.canGetList) {
+        trigger(filter)
+      }
+    },
+    [permissions.canGetList, trigger],
+  )
 
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(getTaskListMessages.commonError)
+    showErrorNotification(commonApiMessages.unknownError)
   }, [state.isError])
 
-  return [trigger, state]
+  return { fn, state }
 }

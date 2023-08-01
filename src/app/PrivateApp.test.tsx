@@ -1,11 +1,11 @@
 import { waitFor } from '@testing-library/react'
 
-import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
+import { testUtils as taskTableTestUtils } from 'modules/task/features/TaskTable/TaskTable.test'
 import {
-  updateUserStatusMessages,
-  updateUserTimeZoneMessages,
-  UserRoleEnum,
-} from 'modules/user/constants'
+  updateUserStatusErrorMessages,
+  userApiMessages,
+} from 'modules/user/constants/errorMessages'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
@@ -48,10 +48,10 @@ describe('Private app', () => {
         mockGetSystemInfoSuccess()
 
         mockGetTimeZoneListSuccess({
-          body: [timeZoneFixtures.timeZoneListItem()],
+          body: [timeZoneFixtures.fakeTimeZoneListItem()],
         })
 
-        mockGetUserMeSuccess({ body: userFixtures.user() })
+        mockGetUserMeSuccess({ body: userFixtures.fakeUser() })
 
         render(<PrivateApp />)
 
@@ -63,10 +63,10 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem = timeZoneFixtures.fakeTimeZoneListItem()
         mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
 
-        const fakeUser = userFixtures.user()
+        const fakeUser = userFixtures.fakeUser()
         mockGetUserMeSuccess({ body: fakeUser })
 
         mockUpdateUserSuccess(fakeUser.id)
@@ -88,10 +88,10 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem = timeZoneFixtures.fakeTimeZoneListItem()
         mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
 
-        const fakeUser = userFixtures.user()
+        const fakeUser = userFixtures.fakeUser()
         mockGetUserMeSuccess({ body: fakeUser })
 
         mockUpdateUserSuccess(fakeUser.id)
@@ -116,10 +116,10 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem = timeZoneFixtures.fakeTimeZoneListItem()
         mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
 
-        const fakeUser = userFixtures.user()
+        const fakeUser = userFixtures.fakeUser()
         mockGetUserMeSuccess({ body: fakeUser })
 
         render(<PrivateApp />)
@@ -135,10 +135,10 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneList = timeZoneFixtures.timeZoneList()
+        const fakeTimeZoneList = timeZoneFixtures.fakeTimeZoneList()
         mockGetTimeZoneListSuccess({ body: fakeTimeZoneList })
 
-        const fakeUser = userFixtures.user()
+        const fakeUser = userFixtures.fakeUser()
         mockGetUserMeSuccess({ body: fakeUser })
 
         const { user } = render(<PrivateApp />)
@@ -156,13 +156,13 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem1 = timeZoneFixtures.timeZoneListItem()
-        const fakeTimeZoneListItem2 = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem1 = timeZoneFixtures.fakeTimeZoneListItem()
+        const fakeTimeZoneListItem2 = timeZoneFixtures.fakeTimeZoneListItem()
         mockGetTimeZoneListSuccess({
           body: [fakeTimeZoneListItem1, fakeTimeZoneListItem2],
         })
 
-        const fakeUser = userFixtures.user({
+        const fakeUser = userFixtures.fakeUser({
           timezone: fakeTimeZoneListItem1.value,
         })
         mockGetUserMeSuccess({ body: fakeUser })
@@ -199,10 +199,10 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem = timeZoneFixtures.fakeTimeZoneListItem()
         mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
 
-        const fakeUser = userFixtures.user()
+        const fakeUser = userFixtures.fakeUser()
         mockGetUserMeSuccess({ body: fakeUser })
 
         mockUpdateUserServerError(fakeUser.id)
@@ -218,11 +218,11 @@ describe('Private app', () => {
         )
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
 
-        const notification = await findNotification(
-          updateUserTimeZoneMessages.commonError,
+        const error = await findNotification(
+          userApiMessages.updateUserTimeZone.commonError,
         )
 
-        expect(notification).toBeInTheDocument()
+        expect(error).toBeInTheDocument()
       })
     })
 
@@ -235,7 +235,7 @@ describe('Private app', () => {
           mockGetUserStatusListSuccess()
 
           mockGetUserMeSuccess({
-            body: userFixtures.user({
+            body: userFixtures.fakeUser({
               role: UserRoleEnum.FirstLineSupport,
             }),
           })
@@ -254,11 +254,11 @@ describe('Private app', () => {
           mockGetSystemInfoSuccess()
           mockGetTimeZoneListSuccess()
 
-          const fakeUserStatus = userFixtures.userStatusListItem()
+          const fakeUserStatus = userFixtures.fakeUserStatusListItem()
           mockGetUserStatusListSuccess({ body: [fakeUserStatus] })
 
           mockGetUserMeSuccess({
-            body: userFixtures.user({
+            body: userFixtures.fakeUser({
               role: UserRoleEnum.FirstLineSupport,
               status: fakeUserStatus,
             }),
@@ -282,13 +282,13 @@ describe('Private app', () => {
             mockGetSystemInfoSuccess()
             mockGetTimeZoneListSuccess()
 
-            const fakeUserStatus1 = userFixtures.userStatusListItem()
-            const fakeUserStatus2 = userFixtures.userStatusListItem()
+            const fakeUserStatus1 = userFixtures.fakeUserStatusListItem()
+            const fakeUserStatus2 = userFixtures.fakeUserStatusListItem()
             mockGetUserStatusListSuccess({
               body: [fakeUserStatus1, fakeUserStatus2],
             })
 
-            const fakeUser = userFixtures.user({
+            const fakeUser = userFixtures.fakeUser({
               role: UserRoleEnum.FirstLineSupport,
               status: fakeUserStatus2,
             })
@@ -322,13 +322,13 @@ describe('Private app', () => {
               mockGetSystemInfoSuccess()
               mockGetTimeZoneListSuccess()
 
-              const fakeUserStatus1 = userFixtures.userStatusListItem()
-              const fakeUserStatus2 = userFixtures.userStatusListItem()
+              const fakeUserStatus1 = userFixtures.fakeUserStatusListItem()
+              const fakeUserStatus2 = userFixtures.fakeUserStatusListItem()
               mockGetUserStatusListSuccess({
                 body: [fakeUserStatus1, fakeUserStatus2],
               })
 
-              const fakeUser = userFixtures.user({
+              const fakeUser = userFixtures.fakeUser({
                 role: UserRoleEnum.FirstLineSupport,
                 status: fakeUserStatus2,
               })
@@ -369,13 +369,13 @@ describe('Private app', () => {
               mockGetSystemInfoSuccess()
               mockGetTimeZoneListSuccess()
 
-              const fakeUserStatus1 = userFixtures.userStatusListItem()
-              const fakeUserStatus2 = userFixtures.userStatusListItem()
+              const fakeUserStatus1 = userFixtures.fakeUserStatusListItem()
+              const fakeUserStatus2 = userFixtures.fakeUserStatusListItem()
               mockGetUserStatusListSuccess({
                 body: [fakeUserStatus1, fakeUserStatus2],
               })
 
-              const fakeUser = userFixtures.user({
+              const fakeUser = userFixtures.fakeUser({
                 role: UserRoleEnum.FirstLineSupport,
                 status: fakeUserStatus2,
               })
@@ -416,13 +416,13 @@ describe('Private app', () => {
               mockGetSystemInfoSuccess()
               mockGetTimeZoneListSuccess()
 
-              const fakeUserStatus1 = userFixtures.userStatusListItem()
-              const fakeUserStatus2 = userFixtures.userStatusListItem()
+              const fakeUserStatus1 = userFixtures.fakeUserStatusListItem()
+              const fakeUserStatus2 = userFixtures.fakeUserStatusListItem()
               mockGetUserStatusListSuccess({
                 body: [fakeUserStatus1, fakeUserStatus2],
               })
 
-              const fakeUser = userFixtures.user({
+              const fakeUser = userFixtures.fakeUser({
                 role: UserRoleEnum.FirstLineSupport,
                 status: fakeUserStatus2,
               })
@@ -461,13 +461,13 @@ describe('Private app', () => {
               mockGetSystemInfoSuccess()
               mockGetTimeZoneListSuccess()
 
-              const fakeUserStatus1 = userFixtures.userStatusListItem()
-              const fakeUserStatus2 = userFixtures.userStatusListItem()
+              const fakeUserStatus1 = userFixtures.fakeUserStatusListItem()
+              const fakeUserStatus2 = userFixtures.fakeUserStatusListItem()
               mockGetUserStatusListSuccess({
                 body: [fakeUserStatus1, fakeUserStatus2],
               })
 
-              const fakeUser = userFixtures.user({
+              const fakeUser = userFixtures.fakeUser({
                 role: UserRoleEnum.FirstLineSupport,
                 status: fakeUserStatus2,
               })
@@ -495,7 +495,7 @@ describe('Private app', () => {
               )
 
               const notification = await findNotification(
-                updateUserStatusMessages.commonError,
+                updateUserStatusErrorMessages.commonError,
               )
               expect(notification).toBeInTheDocument()
             })
@@ -511,7 +511,7 @@ describe('Private app', () => {
           mockGetUserStatusListSuccess()
 
           mockGetUserMeSuccess({
-            body: userFixtures.user({
+            body: userFixtures.fakeUser({
               role: UserRoleEnum.Engineer,
             }),
           })
@@ -534,7 +534,7 @@ describe('Private app', () => {
           mockGetUserStatusListSuccess()
 
           mockGetUserMeSuccess({
-            body: userFixtures.user({
+            body: userFixtures.fakeUser({
               role: UserRoleEnum.SeniorEngineer,
             }),
           })
@@ -557,7 +557,7 @@ describe('Private app', () => {
           mockGetUserStatusListSuccess()
 
           mockGetUserMeSuccess({
-            body: userFixtures.user({
+            body: userFixtures.fakeUser({
               role: UserRoleEnum.HeadOfDepartment,
             }),
           })

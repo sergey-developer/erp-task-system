@@ -3,7 +3,7 @@ import times from 'lodash/times'
 import { SubTaskModel } from 'modules/subTask/models'
 import { TaskStatusEnum } from 'modules/task/constants'
 
-import { NonNullableObject } from 'shared/types/utils'
+import { NonNullableObject } from 'shared/interfaces/utils'
 
 import commonFixtures from 'fixtures/common'
 
@@ -15,7 +15,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const subTask = (
+export const fakeSubTask = (
   props?: Partial<Pick<SubTaskModel, 'status'>>,
 ): NonNullableObject<SubTaskModel> => ({
   status: props?.status || TaskStatusEnum.New,
@@ -23,7 +23,7 @@ export const subTask = (
   id: fakeId(),
   recordId: fakeIdStr(),
   title: fakeWord(),
-  supportGroup: commonFixtures.supportGroup(),
+  supportGroup: commonFixtures.fakeSupportGroup(),
   createdAt: fakeDateString(),
   description: fakeWord(),
   externalAssigneeName: fakeWord(),
@@ -36,4 +36,4 @@ export const subTask = (
 
 export const getSubTaskList = (
   length: number = 1,
-): Array<NonNullableObject<SubTaskModel>> => times(length, () => subTask())
+): Array<NonNullableObject<SubTaskModel>> => times(length, () => fakeSubTask())

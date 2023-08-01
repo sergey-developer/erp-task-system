@@ -2,7 +2,7 @@ import { RouteEnum } from 'configs/routes'
 
 import { QrcodeIcon, TeamIcon } from 'components/Icons'
 
-import { NavMenuItem } from './types'
+import { NavMenuItem } from './interfaces'
 
 const navMenuHeadOfDepartmentConfig: Array<NavMenuItem> = [
   {

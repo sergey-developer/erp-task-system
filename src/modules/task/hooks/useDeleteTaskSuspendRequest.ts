@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { deleteSuspendRequestMessages } from "modules/task/constants";
+import { suspendRequestApiMessages } from 'modules/task/constants'
 import { DeleteTaskSuspendRequestMutationArgs } from 'modules/task/models'
 import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
 import { useDeleteSuspendRequestMutation } from 'modules/task/services/taskSuspendRequestApi.service'
@@ -34,7 +34,7 @@ export const useDeleteTaskSuspendRequest = () => {
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
         showErrorNotification(
-          deleteSuspendRequestMessages.notFoundError,
+          suspendRequestApiMessages.deleteRequest.notFoundError,
         )
       } else if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))

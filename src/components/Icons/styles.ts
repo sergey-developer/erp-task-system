@@ -1,6 +1,6 @@
 import { css } from 'styled-components'
 
-import { IconProps } from './types'
+import { IconProps } from './interfaces'
 
 export const fontSizeStyles = css<Pick<IconProps, '$size'>>`
   font-size: ${({ $size = 'middle' }) =>

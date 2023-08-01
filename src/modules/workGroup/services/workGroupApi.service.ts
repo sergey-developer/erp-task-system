@@ -1,11 +1,11 @@
-import { WorkGroupApiEnum } from 'modules/workGroup/constants'
+import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
 import {
   GetWorkGroupListQueryArgs,
   GetWorkGroupListSuccessResponse,
 } from 'modules/workGroup/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { MaybeUndefined } from 'shared/types/utils'
+import { MaybeUndefined } from 'shared/interfaces/utils'
 import { baseApiService } from 'shared/services/api'
 
 const workGroupApiService = baseApiService.injectEndpoints({
@@ -15,7 +15,7 @@ const workGroupApiService = baseApiService.injectEndpoints({
       MaybeUndefined<GetWorkGroupListQueryArgs>
     >({
       query: (filter) => ({
-        url: WorkGroupApiEnum.GetWorkGroupList,
+        url: WorkGroupEndpointsEnum.GetWorkGroupList,
         method: HttpMethodEnum.Get,
         params: filter,
       }),

@@ -15,4 +15,4 @@ export * from './setupApiTests'
 export * from './notifications'
 
 export { default as render } from './renderInAppProvider'
-export { default as renderInRoute, renderInRoute_latest } from './renderInRoute'
+export { default as renderInRoute } from './renderInRoute'

@@ -5,7 +5,7 @@ import commonFixtures from 'fixtures/common'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const suspendRequest = (
+export const fakeSuspendRequest = (
   props?: Pick<SuspendRequestModel, 'status'>,
 ): SuspendRequestModel => ({
   status: props?.status || SuspendRequestStatusEnum.New,
@@ -13,5 +13,5 @@ export const suspendRequest = (
   id: fakeId(),
   comment: fakeWord(),
   suspendEndAt: fakeDateString(),
-  author: commonFixtures.user(),
+  author: commonFixtures.fakeUser(),
 })

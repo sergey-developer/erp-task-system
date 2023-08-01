@@ -1,2 +1,2 @@
 export * from './env.config'
-export * from './types'
+export * from './interfaces'

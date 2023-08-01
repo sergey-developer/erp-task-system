@@ -1,11 +1,11 @@
 import { EnvironmentOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 
-import { IconProps } from './types'
+import { IconProps } from './interfaces'
 import { fontSizeStyles } from './styles'
 
-const MapPointIconStyled = styled(EnvironmentOutlined)<Pick<IconProps, '$size'>>`
+const MapPointIcon = styled(EnvironmentOutlined)<Pick<IconProps, '$size'>>`
   ${fontSizeStyles}
 `
 
-export default MapPointIconStyled
+export default MapPointIcon

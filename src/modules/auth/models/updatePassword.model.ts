@@ -1,4 +1,4 @@
-import { ChangePasswordFormFields } from 'modules/auth/pages/ChangePasswordPage/types'
+import { ChangePasswordFormFields } from 'modules/auth/pages/ChangePasswordPage/interfaces'
 
 import { FieldsErrors } from 'shared/services/api'
 

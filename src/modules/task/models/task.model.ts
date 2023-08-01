@@ -4,7 +4,7 @@ import {
   TaskAttachmentListModel,
 } from 'modules/task/models'
 
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 export type TaskModel = BaseTaskModel & {
   attachments: MaybeNull<TaskAttachmentListModel>

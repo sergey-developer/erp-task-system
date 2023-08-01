@@ -1,6 +1,6 @@
-import { UserRoleEnum } from 'modules/user/constants'
+import { UserRoleEnum } from 'modules/user/constants/roles'
 
-import { NavMenuItem } from '../types'
+import { NavMenuItem } from '../interfaces'
 import navMenuCommonConfig from '../navMenu.common.config'
 import navMenuEngineerConfig from '../navMenu.engineer.config'
 import navMenuHeadOfDepartmentConfig from '../navMenu.headOfDepartment.config'

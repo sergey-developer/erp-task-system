@@ -1,18 +1,16 @@
 import { decamelize } from 'humps'
 
 import {
-  TaskApiEnum,
-  TaskApiTriggerEnum,
-  TaskApiTagEnum,
+  TaskEndpointEnum,
+  TaskEndpointNameEnum,
+  TaskEndpointTagEnum,
 } from 'modules/task/constants'
-import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
+import { GetTaskListTransformedResponse } from 'modules/task/interfaces'
 import {
   GetFiscalAccumulatorTaskListQueryArgs,
   GetFiscalAccumulatorTaskListSuccessResponse,
   GetTaskCountersQueryArgs,
   GetTaskCountersSuccessResponse,
-  GetTaskListMapQueryArgs,
-  GetTaskListMapSuccessResponse,
   GetTaskListQueryArgs,
   GetTaskListSuccessResponse,
   GetTaskQueryArgs,
@@ -24,72 +22,56 @@ import {
   TakeTaskMutationArgs,
   TakeTaskSuccessResponse,
 } from 'modules/task/models'
-import {
-  getTaskUrl,
-  resolveTaskUrl,
-  takeTaskUrl,
-  getTaskWorkPerformedActUrl,
-} from 'modules/task/utils'
+import { getTaskUrl, resolveTaskUrl, takeTaskUrl, getTaskWorkPerformedActUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
 
 const taskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
-    [TaskApiTriggerEnum.GetTaskList]: build.query<
-      GetTaskListTransformedSuccessResponse,
+    [TaskEndpointNameEnum.GetTaskList]: build.query<
+      GetTaskListTransformedResponse,
       GetTaskListQueryArgs
     >({
       query: (filter) => ({
-        url: TaskApiEnum.GetTaskList,
+        url: TaskEndpointEnum.GetTaskList,
         method: HttpMethodEnum.Get,
         params: filter,
       }),
       // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
       transformResponse: (response: GetTaskListSuccessResponse, meta, arg) => {
         return {
-          pagination:
-            arg?.offset && arg?.limit
-              ? {
-                  current: arg.offset / arg.limit + 1,
-                  pageSize: arg.limit,
-                  total: response.count,
-                }
-              : undefined,
+          pagination: {
+            current: arg.offset / arg.limit + 1,
+            pageSize: arg.limit,
+            total: response.count,
+          },
           results: response.results,
         }
       },
-      providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
+      providesTags: (result, error) =>
+        error ? [] : [TaskEndpointTagEnum.TaskList],
     }),
-    [TaskApiTriggerEnum.GetTaskListMap]: build.query<
-      GetTaskListMapSuccessResponse,
-      GetTaskListMapQueryArgs
-    >({
-      query: () => ({
-        url: TaskApiEnum.GetTaskListMap,
-        method: HttpMethodEnum.Get,
-      }),
-    }),
-    [TaskApiTriggerEnum.GetTaskCounters]: build.query<
+    [TaskEndpointNameEnum.GetTaskCounters]: build.query<
       GetTaskCountersSuccessResponse,
       GetTaskCountersQueryArgs
     >({
       query: () => ({
-        url: TaskApiEnum.GetTaskCounters,
+        url: TaskEndpointEnum.GetTaskCounters,
         method: HttpMethodEnum.Get,
       }),
     }),
-    [TaskApiTriggerEnum.GetFiscalAccumulatorTaskList]: build.query<
+    [TaskEndpointNameEnum.GetFiscalAccumulatorTaskList]: build.query<
       GetFiscalAccumulatorTaskListSuccessResponse,
       GetFiscalAccumulatorTaskListQueryArgs
     >({
       query: (params) => ({
-        url: TaskApiEnum.GetFiscalAccumulatorTaskList,
+        url: TaskEndpointEnum.GetFiscalAccumulatorTaskList,
         method: HttpMethodEnum.Get,
         params,
       }),
     }),
-    [TaskApiTriggerEnum.GetTask]: build.query<
+    [TaskEndpointNameEnum.GetTask]: build.query<
       GetTaskSuccessResponse,
       GetTaskQueryArgs
     >({
@@ -97,9 +79,10 @@ const taskApiService = baseApiService.injectEndpoints({
         url: getTaskUrl(taskId),
         method: HttpMethodEnum.Get,
       }),
-      providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
+      providesTags: (result, error) =>
+        error ? [] : [TaskEndpointTagEnum.Task],
     }),
-    [TaskApiTriggerEnum.GetWorkPerformedAct]: build.mutation<
+    [TaskEndpointNameEnum.GetWorkPerformedAct]: build.mutation<
       GetTaskWorkPerformedActSuccessResponse,
       GetTaskWorkPerformedActMutationArgs
     >({
@@ -109,7 +92,7 @@ const taskApiService = baseApiService.injectEndpoints({
         data: payload,
       }),
     }),
-    [TaskApiTriggerEnum.ResolveTask]: build.mutation<
+    [TaskEndpointNameEnum.ResolveTask]: build.mutation<
       ResolveTaskSuccessResponse,
       ResolveTaskMutationArgs
     >({
@@ -135,9 +118,9 @@ const taskApiService = baseApiService.injectEndpoints({
         }
       },
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskApiTagEnum.TaskList],
+        error ? [] : [TaskEndpointTagEnum.TaskList],
     }),
-    [TaskApiTriggerEnum.TakeTask]: build.mutation<
+    [TaskEndpointNameEnum.TakeTask]: build.mutation<
       TakeTaskSuccessResponse,
       TakeTaskMutationArgs
     >({
@@ -145,7 +128,8 @@ const taskApiService = baseApiService.injectEndpoints({
         url: takeTaskUrl(taskId),
         method: HttpMethodEnum.Post,
       }),
-      invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
+      invalidatesTags: (result, error) =>
+        error ? [] : [TaskEndpointTagEnum.Task],
     }),
   }),
   overrideExisting: false,
@@ -155,7 +139,6 @@ export const {
   useGetTaskQuery,
   useGetTaskCountersQuery,
   useGetFiscalAccumulatorTaskListQuery,
-  useGetTaskListMapQuery,
   useLazyGetTaskListQuery,
   useGetTaskWorkPerformedActMutation,
   useResolveTaskMutation,

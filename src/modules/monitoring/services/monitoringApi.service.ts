@@ -2,7 +2,7 @@ import {
   GetTaskMonitoringQueryArgs,
   GetTaskMonitoringSuccessResponse,
 } from 'modules/monitoring/models'
-import { getTaskMonitoringUrl } from 'modules/monitoring/utils'
+import { getTaskMonitoringUrl } from 'modules/monitoring/utils/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'

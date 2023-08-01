@@ -1,13 +1,9 @@
 import { generatePath } from 'react-router-dom'
 
-import { UserApiEnum } from 'modules/user/constants'
-
-import { appendSlashAtEnd } from 'shared/utils/string'
+import { UserEndpointEnum } from 'modules/user/constants/api'
 
 export const updateUserUrl = (userId: number): string =>
-  appendSlashAtEnd(generatePath(UserApiEnum.UpdateUser, { id: String(userId) }))
+  generatePath(UserEndpointEnum.UpdateUser, { id: String(userId) })
 
 export const updateUserStatusUrl = (userId: number): string =>
-  appendSlashAtEnd(
-    generatePath(UserApiEnum.UpdateUserStatus, { id: String(userId) }),
-  )
+  generatePath(UserEndpointEnum.UpdateUserStatus, { id: String(userId) })

@@ -1,6 +1,6 @@
-import { updatePasswordMessages } from 'modules/auth/constants'
+import { updatePasswordErrorMessages } from 'modules/auth/constants'
 
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNull } from 'shared/interfaces/utils'
 import {
   isBadRequestError,
   isErrorResponse,
@@ -25,5 +25,5 @@ export const getUpdatePasswordErrors = (
     }
   }
 
-  return [updatePasswordMessages.commonError]
+  return [updatePasswordErrorMessages.commonError]
 }

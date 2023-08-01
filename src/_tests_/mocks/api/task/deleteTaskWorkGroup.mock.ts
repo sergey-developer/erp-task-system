@@ -29,17 +29,17 @@ export const mockDeleteTaskWorkGroupBadRequestError = <T extends object>(
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
 
-export const mockDeleteTaskWorkGroupNotFoundError = (
+export const mockDeleteTaskWorkGroupNotFoundError = <T extends object>(
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData>>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getNotFoundErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
 
-export const mockDeleteTaskWorkGroupServerError = (
+export const mockDeleteTaskWorkGroupServerError = <T extends object>(
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData>>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getServerErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
 
-export const mockDeleteTaskWorkGroupForbiddenError = (
+export const mockDeleteTaskWorkGroupForbiddenError = <T extends object>(
   taskId: number,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getForbiddenErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult } from 'lib/rtk-query/interfaces'
 
 import { getFiscalAccumulatorTaskListMessages } from 'modules/task/constants'
 import {

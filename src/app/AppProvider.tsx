@@ -1,13 +1,16 @@
 import React from 'react'
 import { Provider as StoreProvider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 
 import AntdConfigProvider from 'lib/antd/ConfigProvider'
 import setupMoment from 'lib/moment/setup'
 
+import ErrorBoundary from 'components/Error/ErrorBoundary'
+
 import { AppStore, store as appStore } from 'state/store'
 
-import { FCWithChildren } from 'shared/types/utils'
+import { FCWithChildren } from 'shared/interfaces/utils'
 
 import theme from 'styles/theme'
 
@@ -24,7 +27,11 @@ const AppProvider: FCWithChildren<AppProviderProps> = ({
   return (
     <StoreProvider store={store}>
       <AntdConfigProvider>
-        <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>
+        <StyledThemeProvider theme={theme}>
+          <ErrorBoundary>
+            <BrowserRouter>{children}</BrowserRouter>
+          </ErrorBoundary>
+        </StyledThemeProvider>
       </AntdConfigProvider>
     </StoreProvider>
   )

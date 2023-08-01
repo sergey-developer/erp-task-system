@@ -1,4 +1,7 @@
-import { TaskApiTriggerEnum, TaskApiTagEnum } from 'modules/task/constants'
+import {
+  TaskEndpointNameEnum,
+  TaskEndpointTagEnum,
+} from 'modules/task/constants'
 import {
   CreateTaskSuspendRequestMutationArgs,
   CreateTaskSuspendRequestSuccessResponse,
@@ -33,7 +36,7 @@ const taskSuspendRequestApiService = taskApiService.injectEndpoints({
 
           dispatch(
             taskApiService.util.updateQueryData(
-              TaskApiTriggerEnum.GetTask as never,
+              TaskEndpointNameEnum.GetTask as never,
               taskId as never,
               (task: GetTaskSuccessResponse) => {
                 task.suspendRequest = suspendRequest
@@ -54,9 +57,9 @@ const taskSuspendRequestApiService = taskApiService.injectEndpoints({
       invalidatesTags: (result, error) =>
         error
           ? isNotFoundError(error as ErrorResponse)
-            ? [TaskApiTagEnum.Task]
+            ? [TaskEndpointTagEnum.Task]
             : []
-          : [TaskApiTagEnum.Task],
+          : [TaskEndpointTagEnum.Task],
     }),
   }),
   overrideExisting: false,

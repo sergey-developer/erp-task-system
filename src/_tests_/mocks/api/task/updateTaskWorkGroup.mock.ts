@@ -28,12 +28,12 @@ export const mockUpdateTaskWorkGroupBadRequestError = <T extends object>(
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(updateTaskWorkGroupMockFn(taskId), options)()
 
-export const mockUpdateTaskWorkGroupServerError = (
+export const mockUpdateTaskWorkGroupServerError = <T extends object>(
   taskId: number,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getServerErrorMockFn(updateTaskWorkGroupMockFn(taskId), options)()
 
-export const mockUpdateTaskWorkGroupForbiddenError = (
+export const mockUpdateTaskWorkGroupForbiddenError = <T extends object>(
   taskId: number,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getForbiddenErrorMockFn(updateTaskWorkGroupMockFn(taskId), options)()

@@ -1,11 +1,11 @@
 import { LogoutOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 
-import { IconProps } from './types'
+import { IconProps } from './interfaces'
 import { fontSizeStyles } from './styles'
 
-const LogoutIconStyled = styled(LogoutOutlined)<Pick<IconProps, '$size'>>`
+const LogoutIcon = styled(LogoutOutlined)<Pick<IconProps, '$size'>>`
   ${fontSizeStyles}
 `
 
-export default LogoutIconStyled
+export default LogoutIcon

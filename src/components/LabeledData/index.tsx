@@ -3,7 +3,7 @@ import React from 'react'
 
 import Space from 'components/Space'
 
-import { FCWithChildren } from 'shared/types/utils'
+import { FCWithChildren } from 'shared/interfaces/utils'
 
 const { Text } = Typography
 

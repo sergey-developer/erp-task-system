@@ -1,10 +1,10 @@
 import { MonitorOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 
-import { IconProps } from './types'
+import { IconProps } from './interfaces'
 import { colorStyles, cursorStyles, fontSizeStyles } from './styles'
 
-const MonitoringIconStyled = styled(MonitorOutlined)<
+const MonitoringIcon = styled(MonitorOutlined)<
   Pick<IconProps, '$size' | '$cursor' | '$color'>
 >`
   ${colorStyles}
@@ -12,4 +12,4 @@ const MonitoringIconStyled = styled(MonitorOutlined)<
   ${cursorStyles}
 `
 
-export default MonitoringIconStyled
+export default MonitoringIcon

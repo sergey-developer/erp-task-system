@@ -7,7 +7,7 @@ import {
 } from 'modules/task/constants'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNull } from 'shared/interfaces/utils'
 
 import { TaskAssigneeModel } from './taskAssignee.model'
 

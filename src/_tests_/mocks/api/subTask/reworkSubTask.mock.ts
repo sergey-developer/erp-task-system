@@ -1,5 +1,5 @@
 import { ReworkSubTaskSuccessResponse } from 'modules/subTask/models'
-import { reworkSubTaskUrl } from 'modules/subTask/utils'
+import { reworkSubTaskUrl } from 'modules/subTask/utils/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
@@ -25,7 +25,7 @@ export const mockReworkSubTaskBadRequestError = <T extends object>(
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(reworkSubTaskMockFn(subTaskId), options)()
 
-export const mockReworkSubTaskServerError = (
+export const mockReworkSubTaskServerError = <T extends object>(
   subTaskId: number,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getServerErrorMockFn(reworkSubTaskMockFn(subTaskId), options)()

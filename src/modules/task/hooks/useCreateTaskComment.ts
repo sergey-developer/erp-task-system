@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { createTaskCommentMessages } from 'modules/task/constants'
+import { taskCommentApiMessages } from 'modules/task/constants'
 import { CreateTaskCommentMutationArgs } from 'modules/task/models'
 import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useCreateTaskCommentMutation } from 'modules/task/services/taskCommentApi.service'
@@ -33,7 +33,7 @@ export const useCreateTaskComment = () => {
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error) || isServerRangeError(state.error)) {
-        showErrorNotification(createTaskCommentMessages.commonError)
+        showErrorNotification(taskCommentApiMessages.createComment.commonError)
       } else if (!isBadRequestError(state.error)) {
         showErrorNotification(commonApiMessages.unknownError)
       }
