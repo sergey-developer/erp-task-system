@@ -922,11 +922,12 @@ describe('Блок "Исполнитель заявки"', () => {
 
         describe('Вариант исполнителя не активен', () => {
           test('Если выбранный исполнитель является исполнителем заявки', async () => {
-            const assigneeOption: ArrayFirst<WorkGroupListItemModel['members']> =
-              {
-                ...canSelectAssigneeProps.workGroup.members[0],
-                id: requiredProps.assignee.id,
-              }
+            const assigneeOption: ArrayFirst<
+              WorkGroupListItemModel['members']
+            > = {
+              ...canSelectAssigneeProps.workGroup.members[0],
+              id: requiredProps.assignee.id,
+            }
 
             const { user } = render(
               <AssigneeBlock
@@ -952,11 +953,12 @@ describe('Блок "Исполнитель заявки"', () => {
           })
 
           test('Если выбранный исполнитель является авторизованным пользователем', async () => {
-            const assigneeOption: ArrayFirst<WorkGroupListItemModel['members']> =
-              {
-                ...canSelectAssigneeProps.workGroup.members[0],
-                id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-              }
+            const assigneeOption: ArrayFirst<
+              WorkGroupListItemModel['members']
+            > = {
+              ...canSelectAssigneeProps.workGroup.members[0],
+              id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+            }
 
             const { user } = render(
               <AssigneeBlock
@@ -1508,11 +1510,12 @@ describe('Блок "Исполнитель заявки"', () => {
 
         describe('Вариант исполнителя не активен', () => {
           test('Если выбранный исполнитель является исполнителем заявки', async () => {
-            const assigneeOption: ArrayFirst<WorkGroupListItemModel['members']> =
-              {
-                ...canSelectAssigneeProps.workGroup.members[0],
-                id: requiredProps.assignee.id,
-              }
+            const assigneeOption: ArrayFirst<
+              WorkGroupListItemModel['members']
+            > = {
+              ...canSelectAssigneeProps.workGroup.members[0],
+              id: requiredProps.assignee.id,
+            }
 
             const { user } = render(
               <AssigneeBlock
@@ -1538,11 +1541,12 @@ describe('Блок "Исполнитель заявки"', () => {
           })
 
           test('Если выбранный исполнитель является авторизованным пользователем', async () => {
-            const assigneeOption: ArrayFirst<WorkGroupListItemModel['members']> =
-              {
-                ...canSelectAssigneeProps.workGroup.members[0],
-                id: canSelectAssigneeProps.workGroup.groupLead.id,
-              }
+            const assigneeOption: ArrayFirst<
+              WorkGroupListItemModel['members']
+            > = {
+              ...canSelectAssigneeProps.workGroup.members[0],
+              id: canSelectAssigneeProps.workGroup.groupLead.id,
+            }
 
             const { user } = render(
               <AssigneeBlock
