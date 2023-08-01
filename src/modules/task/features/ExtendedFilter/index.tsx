@@ -9,6 +9,7 @@ import {
   Space,
 } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
+import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
@@ -16,8 +17,6 @@ import { workGroupListSelectFieldNames } from 'modules/workGroup/constants/selec
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import Permissions from 'components/Permissions'
-
-import { isEqualDeep } from 'shared/utils/common/isEqual'
 
 import FilterBlock from './FilterBlock'
 import FilterBlockLabel from './FilterBlockLabel'
@@ -54,7 +53,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
     }
 
   useEffect(() => {
-    if (!isEqualDeep(initialFormValues, formValues)) {
+    if (!isEqual(initialFormValues, formValues)) {
       form.setFieldsValue(formValues)
     }
   }, [form, formValues, initialFormValues])

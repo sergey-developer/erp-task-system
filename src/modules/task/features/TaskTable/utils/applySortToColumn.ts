@@ -1,6 +1,5 @@
 import { ColumnType } from 'antd/es/table'
-
-import { isEqual } from 'shared/utils/common/isEqual'
+import isEqual from 'lodash/isEqual'
 
 import { SortValue } from '../constants/sort'
 import { TaskTableListItem } from '../interfaces'

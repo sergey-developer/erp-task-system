@@ -2,12 +2,11 @@
  * Описание настройки:
  * https://testing-library.com/docs/example-react-router/#reducing-boilerplate
  */
+import isEqual from 'lodash/isEqual'
 import { ReactElement } from 'react'
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
-
-import { isEqual } from 'shared/utils/common/isEqual'
 
 import renderInAppProvider, {
   RenderInAppProviderOptions,

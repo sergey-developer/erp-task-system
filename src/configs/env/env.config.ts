@@ -1,4 +1,4 @@
-import { isEqual } from 'shared/utils/common/isEqual'
+import isEqual from 'lodash/isEqual'
 
 import { commonConfig } from './common.config'
 import {
