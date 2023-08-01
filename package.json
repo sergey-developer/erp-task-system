@@ -71,12 +71,6 @@
       "react-app/jest"
     ]
   },
-  "lint-staged": {
-    "src/**/*.{ts,tsx,json,css}": [
-      "prettier --write ./src",
-      "eslint ./src"
-    ]
-  },
   "jest": {
     "transformIgnorePatterns": [
       "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime|ol|geotiff|quick-lru).+(js|jsx|ts|tsx)$"
