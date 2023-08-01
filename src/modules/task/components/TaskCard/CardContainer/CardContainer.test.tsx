@@ -144,9 +144,11 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          expect(
-            await findNotification(getWorkGroupListMessages.commonError),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            getWorkGroupListMessages.commonError,
+          )
+
+          expect(notification).toBeInTheDocument()
         })
       })
     })
@@ -171,9 +173,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          expect(
-            await findNotification(getWorkGroupListMessages.commonError),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            getWorkGroupListMessages.commonError,
+          )
+          expect(notification).toBeInTheDocument()
         })
       })
     })
@@ -198,9 +201,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          expect(
-            await findNotification(getWorkGroupListMessages.commonError),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            getWorkGroupListMessages.commonError,
+          )
+          expect(notification).toBeInTheDocument()
         })
       })
     })
@@ -266,9 +270,10 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              expect(
-                await findNotification(commonApiMessages.unknownError),
-              ).toBeInTheDocument()
+              const notification = await findNotification(
+                commonApiMessages.unknownError,
+              )
+              expect(notification).toBeInTheDocument()
             })
           })
         })
@@ -396,11 +401,10 @@ describe('Контейнер детальной карточки заявки', 
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await findNotification(
-                createReclassificationRequestMessages.notFoundError,
-              ),
-            ).toBeInTheDocument()
+            const notification = await findNotification(
+              createReclassificationRequestMessages.notFoundError,
+            )
+            expect(notification).toBeInTheDocument()
           })
         })
       })
@@ -465,9 +469,10 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              expect(
-                await findNotification(commonApiMessages.unknownError),
-              ).toBeInTheDocument()
+              const notification = await findNotification(
+                commonApiMessages.unknownError,
+              )
+              expect(notification).toBeInTheDocument()
             })
           })
         })
@@ -564,9 +569,10 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              expect(
-                await findNotification(commonApiMessages.unknownError),
-              ).toBeInTheDocument()
+              const notification = await findNotification(
+                commonApiMessages.unknownError,
+              )
+              expect(notification).toBeInTheDocument()
             })
           })
         })
@@ -694,11 +700,10 @@ describe('Контейнер детальной карточки заявки', 
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await findNotification(
-                createReclassificationRequestMessages.notFoundError,
-              ),
-            ).toBeInTheDocument()
+            const notification = await findNotification(
+              createReclassificationRequestMessages.notFoundError,
+            )
+            expect(notification).toBeInTheDocument()
           })
         })
       })
@@ -763,9 +768,10 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              expect(
-                await findNotification(commonApiMessages.unknownError),
-              ).toBeInTheDocument()
+              const notification = await findNotification(
+                commonApiMessages.unknownError,
+              )
+              expect(notification).toBeInTheDocument()
             })
           })
         })
@@ -893,11 +899,10 @@ describe('Контейнер детальной карточки заявки', 
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await findNotification(
-                createReclassificationRequestMessages.notFoundError,
-              ),
-            ).toBeInTheDocument()
+            const notification = await findNotification(
+              createReclassificationRequestMessages.notFoundError,
+            )
+            expect(notification).toBeInTheDocument()
           })
         })
       })
@@ -1041,9 +1046,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
-          expect(
-            await findNotification(resolveTaskMessages.commonError),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            resolveTaskMessages.commonError,
+          )
+          expect(notification).toBeInTheDocument()
         })
       })
     })
@@ -1184,9 +1190,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
-          expect(
-            await findNotification(resolveTaskMessages.commonError),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            resolveTaskMessages.commonError,
+          )
+          expect(notification).toBeInTheDocument()
         })
       })
     })
@@ -1327,9 +1334,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
-          expect(
-            await findNotification(resolveTaskMessages.commonError),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            resolveTaskMessages.commonError,
+          )
+          expect(notification).toBeInTheDocument()
         })
       })
     })
@@ -1470,9 +1478,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
-          expect(
-            await findNotification(resolveTaskMessages.commonError),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            resolveTaskMessages.commonError,
+          )
+          expect(notification).toBeInTheDocument()
         })
       })
     })
@@ -1531,11 +1540,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          expect(
-            await findNotification(
-              getTaskNotFoundErrorMsg(requiredProps.taskId),
-            ),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            getTaskNotFoundErrorMsg(requiredProps.taskId),
+          )
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается ошибка - 400', async () => {
@@ -1551,9 +1559,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          expect(
-            await findNotification(getTaskServerErrorMsg(requiredProps.taskId)),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            getTaskServerErrorMsg(requiredProps.taskId),
+          )
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается ошибка - 500', async () => {
@@ -1671,11 +1680,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          expect(
-            await findNotification(
-              getTaskNotFoundErrorMsg(requiredProps.taskId),
-            ),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            getTaskNotFoundErrorMsg(requiredProps.taskId),
+          )
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается ошибка - 400', async () => {
@@ -1811,11 +1819,10 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          expect(
-            await findNotification(
-              getTaskNotFoundErrorMsg(requiredProps.taskId),
-            ),
-          ).toBeInTheDocument()
+          const notification = await findNotification(
+            getTaskNotFoundErrorMsg(requiredProps.taskId),
+          )
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается ошибка - 400', async () => {

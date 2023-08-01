@@ -52,11 +52,11 @@ describe('Страница заявок фискальных накопител�
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
-      const error = await findNotification(
+      const notification = await findNotification(
         getFiscalAccumulatorTaskListMessages.commonError,
       )
 
-      expect(error).toBeInTheDocument()
+      expect(notification).toBeInTheDocument()
     })
   })
 })
