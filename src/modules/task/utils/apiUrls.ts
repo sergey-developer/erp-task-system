@@ -2,6 +2,8 @@ import { generatePath } from 'react-router-dom'
 
 import { TaskEndpointEnum } from 'modules/task/constants'
 
+import { appendSlashAtEnd } from 'shared/utils/string'
+
 export const getTaskUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.GetTask, { id: String(taskId) })
 
@@ -15,7 +17,9 @@ export const takeTaskUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.TakeTask, { id: String(taskId) })
 
 export const updateTaskWorkGroupUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.UpdateTaskWorkGroup, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskEndpointEnum.UpdateTaskWorkGroup, { id: String(taskId) }),
+  )
 
 export const deleteTaskWorkGroupUrl = (taskId: number): string =>
   generatePath(TaskEndpointEnum.DeleteTaskWorkGroup, { id: String(taskId) })

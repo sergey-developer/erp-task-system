@@ -1,4 +1,4 @@
-import { Form, Select, Space, Typography } from 'antd'
+import { Form, Select, Space, Typography, Input } from 'antd'
 import React, { FC, useEffect } from 'react'
 
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
@@ -16,6 +16,7 @@ import {
 import { OptionTextStyled, SelectStyled } from './styles'
 
 const { Text, Link } = Typography
+const { TextArea } = Input
 
 const OK_BUTTON_TEXT: string = 'Перевести заявку'
 
@@ -116,6 +117,14 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
                 </Select.Option>
               ))}
             </SelectStyled>
+          </Form.Item>
+
+          <Form.Item
+            data-testid='comment-form-item'
+            label='Комментарий'
+            name='comment'
+          >
+            <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
           </Form.Item>
         </Form>
       </Space>

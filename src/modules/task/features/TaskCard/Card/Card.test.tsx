@@ -897,6 +897,7 @@ describe('Карточка заявки', () => {
           user,
           workGroupList[0].name,
         )
+        await taskSecondLineModalTestUtils.setComment(user, fakeWord())
         await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
         expect(props.updateWorkGroup).toBeCalledTimes(1)
