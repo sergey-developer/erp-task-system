@@ -17,23 +17,23 @@ import React, { FC, useCallback, useEffect, useState } from 'react'
 
 import ExtendedFilter, {
   ExtendedFilterProps,
-} from 'modules/task/features/ExtendedFilter'
-import { initialExtendedFilterFormValues } from 'modules/task/features/ExtendedFilter/constants'
+} from 'modules/task/components/ExtendedFilter'
+import { initialExtendedFilterFormValues } from 'modules/task/components/ExtendedFilter/constants'
 import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
-} from 'modules/task/features/ExtendedFilter/interfaces'
-import FastFilterList from 'modules/task/features/FastFilterList'
-import { FastFilterEnum } from 'modules/task/features/FastFilterList/constants'
-import TaskCard from 'modules/task/features/TaskCard/CardContainer'
-import TaskListLayout from 'modules/task/features/TaskListLayout'
-import TaskTable from 'modules/task/features/TaskTable'
+} from 'modules/task/components/ExtendedFilter/interfaces'
+import FastFilterList from 'modules/task/components/FastFilterList'
+import { FastFilterEnum } from 'modules/task/components/FastFilterList/constants'
+import TaskCard from 'modules/task/components/TaskCard/CardContainer'
+import TaskListLayout from 'modules/task/components/TaskListLayout'
+import TaskTable from 'modules/task/components/TaskTable'
 import {
   SortableField,
   sortableFieldToSortValues,
-} from 'modules/task/features/TaskTable/constants/sort'
-import { TaskTableListItem } from 'modules/task/features/TaskTable/interfaces'
-import { getSort } from 'modules/task/features/TaskTable/utils'
+} from 'modules/task/components/TaskTable/constants/sort'
+import { TaskTableListItem } from 'modules/task/components/TaskTable/interfaces'
+import { getSort } from 'modules/task/components/TaskTable/utils'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'

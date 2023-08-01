@@ -1,5 +1,5 @@
-import { ExtendedFilterQueries } from 'modules/task/features/ExtendedFilter/interfaces'
-import { SortValue } from 'modules/task/features/TaskTable/constants/sort'
+import { ExtendedFilterQueries } from 'modules/task/components/ExtendedFilter/interfaces'
+import { SortValue } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskListItemModel } from 'modules/task/models'
 import {
   FastFilterQueries,

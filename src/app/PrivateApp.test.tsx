@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react'
 
-import { testUtils as taskTableTestUtils } from 'modules/task/features/TaskTable/TaskTable.test'
+import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import {
   updateUserStatusErrorMessages,
   userApiMessages,

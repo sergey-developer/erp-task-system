@@ -1,5 +1,5 @@
 import { getFiscalAccumulatorTaskListMessages } from 'modules/task/constants'
-import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/task/features/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
+import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/task/components/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
 
 import taskFixtures from 'fixtures/task'
 
