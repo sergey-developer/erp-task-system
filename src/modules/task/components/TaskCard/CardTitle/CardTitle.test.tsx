@@ -315,7 +315,7 @@ describe('Заголовок карточки заявки', () => {
             <CardTitle
               {...props}
               {...activeExecuteTaskItemProps}
-              workGroup={taskFixtures.fakeWorkGroup()}
+              workGroup={taskFixtures.workGroup()}
             />,
             {
               store: getStoreWithAuth({
@@ -372,7 +372,7 @@ describe('Заголовок карточки заявки', () => {
             <CardTitle
               {...props}
               {...activeExecuteTaskItemProps}
-              suspendRequest={taskFixtures.fakeSuspendRequest({
+              suspendRequest={taskFixtures.suspendRequest({
                 status: SuspendRequestStatusEnum.New,
               })}
             />,
@@ -387,7 +387,7 @@ describe('Заголовок карточки заявки', () => {
             <CardTitle
               {...props}
               {...activeExecuteTaskItemProps}
-              suspendRequest={taskFixtures.fakeSuspendRequest({
+              suspendRequest={taskFixtures.suspendRequest({
                 status: SuspendRequestStatusEnum.InProgress,
               })}
             />,
@@ -463,7 +463,7 @@ describe('Заголовок карточки заявки', () => {
             <CardTitle
               {...props}
               {...activeRequestReclassificationItemProps}
-              workGroup={taskFixtures.fakeWorkGroup()}
+              workGroup={taskFixtures.workGroup()}
             />,
             {
               store: getStoreWithAuth({
@@ -594,7 +594,7 @@ describe('Заголовок карточки заявки', () => {
             <CardTitle
               {...props}
               {...activeRequestReclassificationItemProps}
-              suspendRequest={taskFixtures.fakeSuspendRequest()}
+              suspendRequest={taskFixtures.suspendRequest()}
             />,
             {
               store: getStoreWithAuth(),
@@ -676,7 +676,7 @@ describe('Заголовок карточки заявки', () => {
             <CardTitle
               {...props}
               {...activeRequestSuspendItemProps}
-              workGroup={taskFixtures.fakeWorkGroup()}
+              workGroup={taskFixtures.workGroup()}
             />,
             {
               store: getStoreWithAuth({
@@ -720,7 +720,7 @@ describe('Заголовок карточки заявки', () => {
             <CardTitle
               {...props}
               {...activeRequestSuspendItemProps}
-              suspendRequest={taskFixtures.fakeSuspendRequest()}
+              suspendRequest={taskFixtures.suspendRequest()}
             />,
           )
 

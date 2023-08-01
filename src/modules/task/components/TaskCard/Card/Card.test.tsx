@@ -68,7 +68,7 @@ import {
 import TaskCard, { TaskCardProps } from './index'
 
 const props: Readonly<TaskCardProps> = {
-  task: taskFixtures.fakeTask(),
+  task: taskFixtures.task(),
   refetchTask: jest.fn(),
   closeTaskCard: jest.fn(),
 
@@ -276,7 +276,7 @@ describe('Карточка заявки', () => {
         render(
           <TaskCard
             {...props}
-            reclassificationRequest={taskFixtures.fakeReclassificationRequest()}
+            reclassificationRequest={taskFixtures.reclassificationRequest()}
           />,
         )
 
@@ -726,7 +726,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.fakeWorkGroup({
+              workGroupFixtures.workGroupListItem({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -763,7 +763,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.fakeWorkGroup({
+              workGroupFixtures.workGroupListItem({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -800,7 +800,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.fakeWorkGroup({
+              workGroupFixtures.workGroupListItem({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -837,7 +837,7 @@ describe('Карточка заявки', () => {
           <TaskCard
             {...props}
             workGroupList={[
-              workGroupFixtures.fakeWorkGroup({
+              workGroupFixtures.workGroupListItem({
                 id: showFirstLineButtonProps.workGroup!.id,
               }),
             ]}
@@ -870,7 +870,7 @@ describe('Карточка заявки', () => {
   describe('Перевод заявки на 2-ю линию', () => {
     describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
-        const workGroupList = workGroupFixtures.fakeWorkGroupList()
+        const workGroupList = workGroupFixtures.workGroupList()
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
         const { user } = render(
@@ -917,7 +917,7 @@ describe('Карточка заявки', () => {
             {...props}
             task={{
               ...props.task!,
-              suspendRequest: taskFixtures.fakeSuspendRequest(),
+              suspendRequest: taskFixtures.suspendRequest(),
             }}
           />,
         )
@@ -950,7 +950,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -968,7 +968,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.Approved,
                 }),
               }}
@@ -988,7 +988,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -1008,7 +1008,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.InProgress,
                 }),
               }}
@@ -1029,7 +1029,7 @@ describe('Карточка заявки', () => {
                 {...props}
                 task={{
                   ...props.task!,
-                  suspendRequest: taskFixtures.fakeSuspendRequest({
+                  suspendRequest: taskFixtures.suspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1052,7 +1052,7 @@ describe('Карточка заявки', () => {
                 {...props}
                 task={{
                   ...props.task!,
-                  suspendRequest: taskFixtures.fakeSuspendRequest({
+                  suspendRequest: taskFixtures.suspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1075,7 +1075,7 @@ describe('Карточка заявки', () => {
                 {...props}
                 task={{
                   ...props.task!,
-                  suspendRequest: taskFixtures.fakeSuspendRequest({
+                  suspendRequest: taskFixtures.suspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1100,7 +1100,7 @@ describe('Карточка заявки', () => {
                 {...props}
                 task={{
                   ...props.task!,
-                  suspendRequest: taskFixtures.fakeSuspendRequest({
+                  suspendRequest: taskFixtures.suspendRequest({
                     status: SuspendRequestStatusEnum.New,
                   }),
                 }}
@@ -1120,7 +1120,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -1138,7 +1138,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.New,
                 }),
               }}
@@ -1163,7 +1163,7 @@ describe('Карточка заявки', () => {
               {...props}
               task={{
                 ...props.task!,
-                suspendRequest: taskFixtures.fakeSuspendRequest({
+                suspendRequest: taskFixtures.suspendRequest({
                   status: SuspendRequestStatusEnum.Approved,
                 }),
               }}

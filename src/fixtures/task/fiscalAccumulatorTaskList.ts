@@ -9,7 +9,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const fakeFiscalAccumulatorTaskListItem = (
+export const fiscalAccumulatorTaskListItem = (
   props?: Partial<Pick<FiscalAccumulatorTaskListItemModel, 'faFormat'>>,
 ): FiscalAccumulatorTaskListItemModel => ({
   address: fakeAddress(),

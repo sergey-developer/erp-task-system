@@ -20,7 +20,7 @@ const props: JournalEntryProps = {
   description: fakeWord(),
   sourceSystem: TaskJournalSourceEnum.X5,
   author: fakeWord(),
-  attachments: [taskFixtures.fakeAttachment()],
+  attachments: [taskFixtures.attachment()],
 }
 
 const getContainer = (id: number) => screen.getByTestId(`journal-entry-${id}`)

@@ -12,7 +12,7 @@ const props: Readonly<CommentProps> = {
   text: fakeWord(),
   author: fakeWord(),
   createdAt: fakeWord(),
-  attachments: [taskFixtures.fakeAttachment()],
+  attachments: [taskFixtures.attachment()],
 }
 
 const getContainer = () => screen.getByTestId('task-comment')

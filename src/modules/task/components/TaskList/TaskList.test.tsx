@@ -14,7 +14,7 @@ import { render } from '_tests_/utils'
 import TaskList, { taskTypeText } from './index'
 import { TaskListProps } from './types'
 
-const taskListItem = taskFixtures.fakeTaskListItem()
+const taskListItem = taskFixtures.taskListItem()
 
 const props: TaskListProps = {
   tasks: [taskListItem],
@@ -79,7 +79,7 @@ describe('Список заявок', () => {
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.Incident} отображается корректно`, () => {
-      const taskListItem = taskFixtures.fakeTaskListItem({
+      const taskListItem = taskFixtures.taskListItem({
         type: TaskTypeEnum.Incident,
       })
 
@@ -97,7 +97,7 @@ describe('Список заявок', () => {
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.IncidentTask} отображается корректно`, () => {
-      const taskListItem = taskFixtures.fakeTaskListItem({
+      const taskListItem = taskFixtures.taskListItem({
         type: TaskTypeEnum.IncidentTask,
       })
 
@@ -117,7 +117,7 @@ describe('Список заявок', () => {
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.Request} отображается корректно`, () => {
-      const taskListItem = taskFixtures.fakeTaskListItem({
+      const taskListItem = taskFixtures.taskListItem({
         type: TaskTypeEnum.Request,
       })
 
@@ -137,7 +137,7 @@ describe('Список заявок', () => {
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.RequestTask} отображается корректно`, () => {
-      const taskListItem = taskFixtures.fakeTaskListItem({
+      const taskListItem = taskFixtures.taskListItem({
         type: TaskTypeEnum.RequestTask,
       })
 

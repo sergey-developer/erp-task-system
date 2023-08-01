@@ -138,7 +138,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Количество заявок отображается корректно', async () => {
-      const taskCountersResponse = taskFixtures.fakeTaskCountersResponse()
+      const taskCountersResponse = taskFixtures.taskCountersResponse()
       mockGetTaskCountersSuccess({ body: taskCountersResponse })
       mockGetTaskListSuccess()
 
@@ -243,7 +243,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Сбрасывает расширенный фильтр', async () => {
-      const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+      const workGroupListItem = workGroupFixtures.workGroupListItem()
       mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess({ once: false })
@@ -348,10 +348,10 @@ describe('Страница реестра заявок', () => {
       mockGetWorkGroupListSuccess()
       mockGetTaskCountersSuccess()
 
-      const taskListItem = taskFixtures.fakeTaskListItem()
+      const taskListItem = taskFixtures.taskListItem()
       mockGetTaskListSuccess({
         once: false,
-        body: taskFixtures.fakeTaskListResponse([taskListItem]),
+        body: taskFixtures.taskListResponse([taskListItem]),
       })
       mockGetTaskSuccess(taskListItem.id)
 
@@ -452,9 +452,9 @@ describe('Страница реестра заявок', () => {
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
 
-        const taskListItem = taskFixtures.fakeTaskListItem()
+        const taskListItem = taskFixtures.taskListItem()
         mockGetTaskListSuccess({
-          body: taskFixtures.fakeTaskListResponse([taskListItem]),
+          body: taskFixtures.taskListResponse([taskListItem]),
           once: false,
         })
         mockGetTaskSuccess(taskListItem.id)
@@ -516,7 +516,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Значения сохраняются если другой фильтр не применялся', async () => {
-        const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+        const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
@@ -613,7 +613,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Значения не сохраняются если фильтр не был применён', async () => {
-      const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+      const workGroupListItem = workGroupFixtures.workGroupListItem()
       mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
@@ -723,7 +723,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess()
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess({
-          body: workGroupFixtures.fakeWorkGroupList(),
+          body: workGroupFixtures.workGroupList(),
         })
 
         const { user } = render(<TaskListPage />, {
@@ -784,9 +784,9 @@ describe('Страница реестра заявок', () => {
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
 
-        const taskListItem = taskFixtures.fakeTaskListItem()
+        const taskListItem = taskFixtures.taskListItem()
         mockGetTaskListSuccess({
-          body: taskFixtures.fakeTaskListResponse([taskListItem]),
+          body: taskFixtures.taskListResponse([taskListItem]),
           once: false,
         })
         mockGetTaskSuccess(taskListItem.id)
@@ -909,7 +909,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
-        const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+        const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
@@ -1063,7 +1063,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
-        const workGroupListItem = workGroupFixtures.fakeWorkGroup()
+        const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
@@ -1211,9 +1211,9 @@ describe('Страница реестра заявок', () => {
       mockGetWorkGroupListSuccess()
       mockGetTaskCountersSuccess({ once: false })
 
-      const taskListItem = taskFixtures.fakeTaskListItem()
+      const taskListItem = taskFixtures.taskListItem()
       mockGetTaskListSuccess({
-        body: taskFixtures.fakeTaskListResponse([taskListItem]),
+        body: taskFixtures.taskListResponse([taskListItem]),
         once: false,
       })
       mockGetTaskSuccess(taskListItem.id)
@@ -1257,11 +1257,11 @@ describe('Страница реестра заявок', () => {
 
   describe('Таблица заявок', () => {
     test('Отображается корректно', async () => {
-      const taskList = taskFixtures.fakeTaskList(2)
+      const taskList = taskFixtures.taskList(2)
 
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess({
-        body: taskFixtures.fakeTaskListResponse(taskList),
+        body: taskFixtures.taskListResponse(taskList),
       })
 
       render(<TaskListPage />, { store: getStoreWithAuth() })
@@ -1280,9 +1280,9 @@ describe('Страница реестра заявок', () => {
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess()
 
-        const taskListItem = taskFixtures.fakeTaskListItem()
+        const taskListItem = taskFixtures.taskListItem()
         mockGetTaskListSuccess({
-          body: taskFixtures.fakeTaskListResponse([taskListItem]),
+          body: taskFixtures.taskListResponse([taskListItem]),
         })
         mockGetTaskSuccess(taskListItem.id)
 
@@ -1300,9 +1300,9 @@ describe('Страница реестра заявок', () => {
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess()
 
-        const taskListItem = taskFixtures.fakeTaskListItem()
+        const taskListItem = taskFixtures.taskListItem()
         mockGetTaskListSuccess({
-          body: taskFixtures.fakeTaskListResponse([taskListItem]),
+          body: taskFixtures.taskListResponse([taskListItem]),
         })
         mockGetTaskSuccess(taskListItem.id)
 
@@ -1321,10 +1321,10 @@ describe('Страница реестра заявок', () => {
         test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.fakeTaskList()
+          const taskList = taskFixtures.taskList()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(taskList),
+            body: taskFixtures.taskListResponse(taskList),
           })
 
           const { user } = render(<TaskListPage />, {
@@ -1348,10 +1348,10 @@ describe('Страница реестра заявок', () => {
         test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.fakeTaskList()
+          const taskList = taskFixtures.taskList()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(taskList),
+            body: taskFixtures.taskListResponse(taskList),
           })
 
           const { user } = render(<TaskListPage />, {
@@ -1375,10 +1375,10 @@ describe('Страница реестра заявок', () => {
         test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.fakeTaskList()
+          const taskList = taskFixtures.taskList()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(taskList),
+            body: taskFixtures.taskListResponse(taskList),
           })
 
           const { user } = render(<TaskListPage />, {
@@ -1402,10 +1402,10 @@ describe('Страница реестра заявок', () => {
         test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.fakeTaskList()
+          const taskList = taskFixtures.taskList()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(taskList),
+            body: taskFixtures.taskListResponse(taskList),
           })
 
           const { user } = render(<TaskListPage />, {
@@ -1429,10 +1429,10 @@ describe('Страница реестра заявок', () => {
         test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.fakeTaskList()
+          const taskList = taskFixtures.taskList()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(taskList),
+            body: taskFixtures.taskListResponse(taskList),
           })
 
           const { user } = render(<TaskListPage />, {
@@ -1457,10 +1457,10 @@ describe('Страница реестра заявок', () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
-            const taskList = taskFixtures.fakeTaskList()
+            const taskList = taskFixtures.taskList()
             mockGetTaskListSuccess({
               once: false,
-              body: taskFixtures.fakeTaskListResponse(taskList),
+              body: taskFixtures.taskListResponse(taskList),
             })
 
             render(<TaskListPage />, {
@@ -1482,10 +1482,10 @@ describe('Страница реестра заявок', () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
-            const taskList = taskFixtures.fakeTaskList()
+            const taskList = taskFixtures.taskList()
             mockGetTaskListSuccess({
               once: false,
-              body: taskFixtures.fakeTaskListResponse(taskList),
+              body: taskFixtures.taskListResponse(taskList),
             })
 
             const { user } = render(<TaskListPage />, {
@@ -1509,10 +1509,10 @@ describe('Страница реестра заявок', () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
-            const taskList = taskFixtures.fakeTaskList()
+            const taskList = taskFixtures.taskList()
             mockGetTaskListSuccess({
               once: false,
-              body: taskFixtures.fakeTaskListResponse(taskList),
+              body: taskFixtures.taskListResponse(taskList),
             })
 
             const { user } = render(<TaskListPage />, {
@@ -1538,10 +1538,10 @@ describe('Страница реестра заявок', () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
-            const taskList = taskFixtures.fakeTaskList()
+            const taskList = taskFixtures.taskList()
             mockGetTaskListSuccess({
               once: false,
-              body: taskFixtures.fakeTaskListResponse(taskList),
+              body: taskFixtures.taskListResponse(taskList),
             })
 
             const { user } = render(<TaskListPage />, {
@@ -1569,10 +1569,10 @@ describe('Страница реестра заявок', () => {
           test('После сортировки список отображается корректно', async () => {
             mockGetTaskCountersSuccess()
 
-            const taskList = taskFixtures.fakeTaskList()
+            const taskList = taskFixtures.taskList()
             mockGetTaskListSuccess({
               once: false,
-              body: taskFixtures.fakeTaskListResponse(taskList),
+              body: taskFixtures.taskListResponse(taskList),
             })
 
             const { user } = render(<TaskListPage />, {
@@ -1598,10 +1598,10 @@ describe('Страница реестра заявок', () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
-            const taskList = taskFixtures.fakeTaskList()
+            const taskList = taskFixtures.taskList()
             mockGetTaskListSuccess({
               once: false,
-              body: taskFixtures.fakeTaskListResponse(taskList),
+              body: taskFixtures.taskListResponse(taskList),
             })
 
             render(<TaskListPage />, {
@@ -1623,10 +1623,10 @@ describe('Страница реестра заявок', () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
-            const taskList = taskFixtures.fakeTaskList()
+            const taskList = taskFixtures.taskList()
             mockGetTaskListSuccess({
               once: false,
-              body: taskFixtures.fakeTaskListResponse(taskList),
+              body: taskFixtures.taskListResponse(taskList),
             })
 
             render(<TaskListPage />, {
@@ -1648,10 +1648,10 @@ describe('Страница реестра заявок', () => {
           test('Не отображается', async () => {
             mockGetTaskCountersSuccess()
 
-            const taskList = taskFixtures.fakeTaskList()
+            const taskList = taskFixtures.taskList()
             mockGetTaskListSuccess({
               once: false,
-              body: taskFixtures.fakeTaskListResponse(taskList),
+              body: taskFixtures.taskListResponse(taskList),
             })
 
             render(<TaskListPage />, {
@@ -1674,10 +1674,10 @@ describe('Страница реестра заявок', () => {
         test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.fakeTaskList()
+          const taskList = taskFixtures.taskList()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(taskList),
+            body: taskFixtures.taskListResponse(taskList),
           })
 
           const { user } = render(<TaskListPage />, {
@@ -1701,10 +1701,10 @@ describe('Страница реестра заявок', () => {
         test.skip('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.fakeTaskList()
+          const taskList = taskFixtures.taskList()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(taskList),
+            body: taskFixtures.taskListResponse(taskList),
           })
 
           const { user } = render(<TaskListPage />, {
@@ -1726,10 +1726,10 @@ describe('Страница реестра заявок', () => {
         test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.fakeTaskList()
+          const taskList = taskFixtures.taskList()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(taskList),
+            body: taskFixtures.taskListResponse(taskList),
           })
 
           const { user } = render(<TaskListPage />, {
@@ -1753,10 +1753,10 @@ describe('Страница реестра заявок', () => {
         test('После сортировки список отображается корректно', async () => {
           mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.fakeTaskList()
+          const taskList = taskFixtures.taskList()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(taskList),
+            body: taskFixtures.taskListResponse(taskList),
           })
 
           const { user } = render(<TaskListPage />, {
@@ -1783,8 +1783,8 @@ describe('Страница реестра заявок', () => {
           mockGetTaskCountersSuccess()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(
-              taskFixtures.fakeTaskList(DEFAULT_PAGE_SIZE + 1),
+            body: taskFixtures.taskListResponse(
+              taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1),
             ),
           })
 
@@ -1801,8 +1801,8 @@ describe('Страница реестра заявок', () => {
           mockGetTaskCountersSuccess()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(
-              taskFixtures.fakeTaskList(DEFAULT_PAGE_SIZE + 1),
+            body: taskFixtures.taskListResponse(
+              taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1),
             ),
           })
 
@@ -1821,8 +1821,8 @@ describe('Страница реестра заявок', () => {
           mockGetTaskCountersSuccess()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(
-              taskFixtures.fakeTaskList(DEFAULT_PAGE_SIZE + 1),
+            body: taskFixtures.taskListResponse(
+              taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1),
             ),
           })
 
@@ -1839,8 +1839,8 @@ describe('Страница реестра заявок', () => {
           mockGetTaskCountersSuccess()
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.fakeTaskListResponse(
-              taskFixtures.fakeTaskList(DEFAULT_PAGE_SIZE + 1),
+            body: taskFixtures.taskListResponse(
+              taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1),
             ),
           })
 

@@ -20,7 +20,7 @@ import {
 import TaskSuspendRequest, { TaskSuspendRequestProps } from './index'
 
 const props: Readonly<Omit<TaskSuspendRequestProps, 'action'>> = {
-  user: commonFixtures.fakeUser(),
+  user: commonFixtures.user(),
   title: fakeWord(),
   comment: fakeWord(),
   date: fakeDateString(),

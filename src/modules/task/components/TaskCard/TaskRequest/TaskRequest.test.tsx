@@ -29,7 +29,7 @@ const action: ArrayFirst<TaskRequestProps['actions']> = {
 }
 
 const props: Readonly<TaskRequestProps & { 'data-testid': string }> = {
-  user: commonFixtures.fakeUser(),
+  user: commonFixtures.user(),
   title: fakeWord(),
   comment: fakeWord(),
   date: fakeDateString(),

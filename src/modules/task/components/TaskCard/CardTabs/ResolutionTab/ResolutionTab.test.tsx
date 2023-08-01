@@ -19,7 +19,7 @@ const props: Readonly<
   title: fakeWord(),
   techResolution: null,
   userResolution: null,
-  attachments: [taskFixtures.fakeAttachment()],
+  attachments: [taskFixtures.attachment()],
 }
 
 const getContainer = () => screen.getByTestId('task-resolution-tab')

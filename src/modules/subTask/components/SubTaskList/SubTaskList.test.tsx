@@ -86,7 +86,7 @@ describe('Список подзадач', () => {
   describe('Отправка задания на доработку', () => {
     test('Обработчик кнопки вызывается корректно', async () => {
       const subTask = {
-        ...subTaskFixtures.fakeSubTask(),
+        ...subTaskFixtures.subTask(),
         status: activeReworkButtonProps.status,
       }
 
@@ -111,7 +111,7 @@ describe('Список подзадач', () => {
   describe('Отмена задания', () => {
     test('Обработчик кнопки вызывается корректно', async () => {
       const subTask = {
-        ...subTaskFixtures.fakeSubTask(),
+        ...subTaskFixtures.subTask(),
         status: activeCancelButtonProps.status,
       }
 

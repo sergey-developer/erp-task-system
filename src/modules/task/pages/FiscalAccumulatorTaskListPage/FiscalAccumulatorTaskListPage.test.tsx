@@ -23,7 +23,7 @@ describe('Страница заявок фискальных накопител�
   describe('При успешном запросе', () => {
     test('Таблица отображается корректно', async () => {
       const fakeFiscalAccumulatorTaskLists = [
-        taskFixtures.fakeFiscalAccumulatorTaskListItem(),
+        taskFixtures.fiscalAccumulatorTaskListItem(),
       ]
       mockGetFiscalAccumulatorTaskListSuccess({
         body: fakeFiscalAccumulatorTaskLists,
