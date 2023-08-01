@@ -1,13 +1,12 @@
 import { Col, List, Row, Typography } from 'antd'
 import isEqual from 'lodash/isEqual'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 import { TaskTypeEnum } from 'modules/task/constants'
 
-import { MaybeNull } from 'shared/interfaces/utils'
 import { formatDate } from 'shared/utils/date'
 
-import { TaskListItem, TaskListProps } from './interfaces'
+import { TaskListProps } from './interfaces'
 import { AvatarStyled, ListStyled } from './styles'
 
 export const taskTypeText: Record<TaskTypeEnum, string> = {
@@ -17,10 +16,11 @@ export const taskTypeText: Record<TaskTypeEnum, string> = {
   [TaskTypeEnum.RequestTask]: 'ЗДН',
 }
 
-const TaskList: FC<TaskListProps> = ({ tasks }) => {
-  const [selectedTask, setSelectedTask] =
-    useState<MaybeNull<TaskListItem>>(null)
-
+const TaskList: FC<TaskListProps> = ({
+  tasks,
+  selectedTaskId,
+  onClickTask,
+}) => {
   return (
     <ListStyled
       data-testid='task-list'
@@ -31,9 +31,9 @@ const TaskList: FC<TaskListProps> = ({ tasks }) => {
         <List.Item
           data-testid={`task-list-item-${item.id}`}
           className={
-            isEqual(item.id, selectedTask?.id) ? 'list-item-selected' : ''
+            isEqual(item.id, selectedTaskId) ? 'list-item-selected' : ''
           }
-          onClick={() => setSelectedTask(item)}
+          onClick={() => onClickTask(item.id)}
         >
           <List.Item.Meta
             avatar={

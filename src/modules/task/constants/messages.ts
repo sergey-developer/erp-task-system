@@ -6,6 +6,10 @@ export const taskApiMessages = {
   },
 } as const
 
+export const getTaskMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения заявки',
+}
+
 export const getTaskListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка заявок',
 }

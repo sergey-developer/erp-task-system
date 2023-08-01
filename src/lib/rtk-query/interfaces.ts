@@ -10,9 +10,16 @@ import {
 import {
   LazyQueryTrigger,
   MutationTrigger,
+  UseQueryStateOptions,
 } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 
 import { CustomBaseQueryFn } from 'shared/services/api'
+
+export type CustomUseQueryHookResult<
+  QueryArg,
+  ResultType,
+  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
+> = TypedUseQueryHookResult<ResultType, QueryArg, BaseQuery>
 
 export type CustomQueryDefinition<
   QueryArg,
@@ -20,11 +27,10 @@ export type CustomQueryDefinition<
   BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
 > = QueryDefinition<QueryArg, BaseQuery, string, ResultType>
 
-export type CustomUseQueryHookResult<
-  QueryArg,
-  ResultType,
-  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
-> = TypedUseQueryHookResult<ResultType, QueryArg, BaseQuery>
+export type CustomUseQueryOptions<QueryArg, ResultType> = Pick<
+  UseQueryStateOptions<CustomQueryDefinition<QueryArg, ResultType>, any>,
+  'skip'
+>
 
 export type CustomUseLazyQueryHookResult<
   QueryArg,
@@ -42,9 +48,8 @@ export type CustomMutationDefinition<
 export type CustomMutationTrigger<
   QueryArg,
   ResultType,
-  // todo: fix error while passing BaseQuery to CustomMutationDefinition
   BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
-> = MutationTrigger<CustomMutationDefinition<QueryArg, ResultType>>
+> = MutationTrigger<CustomMutationDefinition<QueryArg, ResultType, BaseQuery>>
 
 export type CustomUseMutationResult<
   QueryArg,

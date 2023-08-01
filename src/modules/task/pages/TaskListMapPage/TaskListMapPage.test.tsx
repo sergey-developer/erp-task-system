@@ -6,4 +6,5 @@ export const testUtils = {
   getContainer,
 }
 
-test.todo('TaskListMapPage')
+// Чтобы написать тесты нужно найти решение как тестирование карту
+test.skip('Страница карты заявок')
