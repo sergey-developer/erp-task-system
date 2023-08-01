@@ -28,10 +28,8 @@ export const taskCommentApiMessages = {
   },
 } as const
 
-export const taskWorkGroupApiMessages = {
-  updateWorkGroup: {
-    commonError: 'Возникла ошибка при назначении рабочей группы',
-  },
+export const updateTaskWorkGroupMessages = {
+  commonError: 'Возникла ошибка при назначении рабочей группы',
 } as const
 
 export const reclassificationRequestApiMessages = {

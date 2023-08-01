@@ -9,7 +9,7 @@ import {
   suspendRequestApiMessages,
   taskApiMessages,
   taskAssigneeApiMessages,
-  taskWorkGroupApiMessages,
+  updateTaskWorkGroupMessages,
 } from 'modules/task/constants'
 import {
   activeSecondLineButtonProps,
@@ -3238,6 +3238,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
+          await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -3285,6 +3286,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
+          await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -3294,9 +3296,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
 
           expect(
-            await findNotification(
-              taskWorkGroupApiMessages.updateWorkGroup.commonError,
-            ),
+            await findNotification(updateTaskWorkGroupMessages.commonError),
           ).toBeInTheDocument()
         })
 
@@ -3330,12 +3330,11 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
+          await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(
-              taskWorkGroupApiMessages.updateWorkGroup.commonError,
-            ),
+            await findNotification(updateTaskWorkGroupMessages.commonError),
           ).toBeInTheDocument()
         })
 
@@ -3369,6 +3368,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
+          await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(

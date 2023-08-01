@@ -2,7 +2,10 @@ import { FormInstance, ModalProps } from 'antd'
 
 import { TaskModel } from 'modules/task/models'
 
-export type TaskSecondLineFormFields = { workGroup: number }
+export type TaskSecondLineFormFields = {
+  workGroup: number
+  comment?: string
+}
 
 export type TaskSecondLineModalProps = Pick<TaskModel, 'id' | 'recordId'> & {
   isLoading: boolean
