@@ -23,17 +23,19 @@
     "async-mutex": "^0.3.2",
     "axios": "^0.26.1",
     "craco-antd": "^2.0.0",
+    "history": "^5.3.0",
     "humps": "^2.0.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.3",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.43",
+    "ol": "^7.4.0",
     "qs": "^6.10.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-redux": "^8.0.1",
     "react-resizable": "^3.0.4",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^6.14.2",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.0"
@@ -77,11 +79,12 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime).+(js|jsx|ts|tsx)$"
+      "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime|ol|geotiff|quick-lru).+(js|jsx|ts|tsx)$"
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/build/",
       "<rootDir>/node_modules/",
+      "assets",
       "fixtures",
       "_tests_",
       "interfaces",

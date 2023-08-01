@@ -1,4 +1,4 @@
-import { TaskEndpointTagEnum } from 'modules/task/constants'
+import { TaskApiTagEnum } from 'modules/task/constants'
 import {
   DeleteTaskWorkGroupMutationArgs,
   DeleteTaskWorkGroupSuccessResponse,
@@ -26,7 +26,7 @@ const taskWorkGroupApiService = taskApiService.injectEndpoints({
         data: payload,
       }),
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointTagEnum.TaskList],
+        error ? [] : [TaskApiTagEnum.TaskList],
     }),
     deleteTaskWorkGroup: build.mutation<
       DeleteTaskWorkGroupSuccessResponse,
@@ -38,7 +38,7 @@ const taskWorkGroupApiService = taskApiService.injectEndpoints({
         data: payload,
       }),
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskEndpointTagEnum.TaskList],
+        error ? [] : [TaskApiTagEnum.TaskList],
     }),
   }),
   overrideExisting: false,

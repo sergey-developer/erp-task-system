@@ -6,7 +6,7 @@ import { NavMenuItem } from './interfaces'
 
 const navMenuCommonConfig: Array<NavMenuItem> = [
   {
-    key: RouteEnum.TaskList,
+    key: RouteEnum.Tasks,
     icon: UnorderedListIcon,
     link: RouteEnum.TaskList,
     text: 'Заявки',

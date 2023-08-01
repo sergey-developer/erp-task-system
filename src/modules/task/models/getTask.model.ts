@@ -1,6 +1,5 @@
-import { TaskListItemModel } from 'modules/task/models'
+import { TaskListItemModel, TaskModel } from 'modules/task/models'
 
-import { TaskModel } from './task.model'
+export type GetTaskQueryArgs = TaskListItemModel['id']
 
 export type GetTaskSuccessResponse = TaskModel
-export type GetTaskQueryArgs = TaskListItemModel['id']

@@ -1,8 +1,22 @@
+import { ApiRequestMessages } from 'shared/interfaces/messages'
+
 export const taskApiMessages = {
   resolveTask: {
     commonError: 'Невозможно выполнить заявку',
   },
 } as const
+
+export const getTaskMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения заявки',
+}
+
+export const getTaskListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка заявок',
+}
+
+export const getTaskListMapMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка заявок для карты',
+}
 
 export const getTaskWorkPerformedActMessages = {
   commonError: 'Ошибка формирования акта выполненных работ',

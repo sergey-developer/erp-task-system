@@ -1,10 +1,11 @@
 import { FC } from 'react'
-import { useRoutes } from 'react-router-dom'
 
 import { publicRoutesConfig } from 'configs/routes'
 
+import AppRoutes from './AppRoutes'
+
 const PublicApp: FC = () => {
-  return useRoutes(publicRoutesConfig)
+  return <AppRoutes routes={publicRoutesConfig} />
 }
 
 export default PublicApp

@@ -25,6 +25,7 @@ import {
 import FastFilterList from 'modules/task/features/FastFilterList'
 import { FastFilterEnum } from 'modules/task/features/FastFilterList/constants'
 import TaskCard from 'modules/task/features/TaskCard/CardContainer'
+import TaskListLayout from 'modules/task/features/TaskListLayout'
 import TaskTable from 'modules/task/features/TaskTable'
 import {
   SortableField,
@@ -45,7 +46,7 @@ import { isEqual } from 'shared/utils/common/isEqual'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { FastFilterQueries, TaskIdFilterQueries } from './interfaces'
-import { ColFlexStyled, RowStyled, RowWrapStyled, SearchStyled } from './styles'
+import { SearchStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
 const TaskListPage: FC = () => {
@@ -78,16 +79,17 @@ const TaskListPage: FC = () => {
    * данные будут сбрасываться, это связано с багом https://github.com/reduxjs/redux-toolkit/issues/2871
    * Как баг починят, будет видно, оставлять как есть или можно использовать обычный Query.
    */
-  const {
-    fn: fetchTaskList,
-    state: { data: taskListResponse, isFetching: taskListIsFetching },
-  } = useLazyGetTaskList()
+  const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] =
+    useLazyGetTaskList()
 
   useEffect(() => {
-    if (!sortableFieldToSortValues.status.includes(queryArgs.sort)) {
-      fetchTaskList(queryArgs)
+    if (
+      queryArgs.sort &&
+      !sortableFieldToSortValues.status.includes(queryArgs.sort)
+    ) {
+      getTaskList(queryArgs)
     }
-  }, [fetchTaskList, queryArgs])
+  }, [getTaskList, queryArgs])
 
   const [selectedTask, setSelectedTask] =
     useState<MaybeNull<TaskTableListItem['id']>>(null)
@@ -257,10 +259,10 @@ const TaskListPage: FC = () => {
   }
 
   const handleRefetchTaskList = useDebounceFn(() => {
-    fetchTaskList(queryArgs)
+    getTaskList(queryArgs)
     handleCloseTaskCard()
     refetchTaskCounters()
-  }, [fetchTaskList, queryArgs])
+  }, [getTaskList, queryArgs])
 
   const searchFilterApplied: boolean = isEqual(
     appliedFilterType,
@@ -274,77 +276,79 @@ const TaskListPage: FC = () => {
   )
 
   return (
-    <>
-      <RowWrapStyled data-testid='page-task-list' gutter={[0, 40]}>
-        <Row justify='space-between' align='bottom'>
-          <Col xxl={16} xl={14}>
-            <Row align='middle' gutter={[30, 30]}>
-              <Col span={17}>
-                <FastFilterList
-                  data={taskCounters}
-                  selectedFilter={queryArgs.filter}
-                  onChange={handleFastFilterChange}
-                  isShowCounters={!isGetTaskCountersError}
-                  disabled={taskListIsFetching}
-                  isLoading={taskCountersIsFetching}
-                  userRole={role}
-                />
-              </Col>
-
-              <Col xl={5} xxl={3}>
-                <Button
-                  icon={<FilterIcon $size='large' />}
-                  onClick={debouncedToggleOpenExtendedFilter}
-                  disabled={taskListIsFetching || searchFilterApplied}
-                >
-                  Фильтры
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-
-          <Col span={8}>
-            <Row justify='end' gutter={[16, 8]}>
-              <Col>
-                <SearchStyled
-                  $breakpoints={breakpoints}
-                  allowClear
-                  onSearch={handleSearchByTaskId}
-                  onChange={onChangeSearch}
-                  value={searchValue}
-                  placeholder='Искать заявку по номеру'
-                  disabled={taskListIsFetching}
-                />
-              </Col>
-
-              <Col>
-                <Space align='end' size='middle'>
-                  <Button
-                    icon={<SyncIcon />}
-                    onClick={handleRefetchTaskList}
+    <TaskListLayout>
+      <Row data-testid='task-list-page' gutter={[0, 40]}>
+        <Col span={24}>
+          <Row justify='space-between' align='bottom'>
+            <Col xxl={16} xl={14}>
+              <Row align='middle' gutter={[30, 30]}>
+                <Col span={17}>
+                  <FastFilterList
+                    data={taskCounters}
+                    selectedFilter={queryArgs.filter}
+                    onChange={handleFastFilterChange}
+                    isShowCounters={!isGetTaskCountersError}
                     disabled={taskListIsFetching}
+                    isLoading={taskCountersIsFetching}
+                    userRole={role}
+                  />
+                </Col>
+
+                <Col xl={5} xxl={3}>
+                  <Button
+                    icon={<FilterIcon $size='large' />}
+                    onClick={debouncedToggleOpenExtendedFilter}
+                    disabled={taskListIsFetching || searchFilterApplied}
                   >
-                    Обновить заявки
+                    Фильтры
                   </Button>
+                </Col>
+              </Row>
+            </Col>
 
-                  <Button>+ Создать заявку</Button>
-                </Space>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+            <Col span={8}>
+              <Row justify='end' gutter={[16, 8]}>
+                <Col>
+                  <SearchStyled
+                    $breakpoints={breakpoints}
+                    allowClear
+                    onSearch={handleSearchByTaskId}
+                    onChange={onChangeSearch}
+                    value={searchValue}
+                    placeholder='Искать заявку по номеру'
+                    disabled={taskListIsFetching}
+                  />
+                </Col>
 
-        <ColFlexStyled span={24} flex='1'>
-          <RowStyled>
+                <Col>
+                  <Space align='end' size='middle'>
+                    <Button
+                      icon={<SyncIcon />}
+                      onClick={handleRefetchTaskList}
+                      disabled={taskListIsFetching}
+                    >
+                      Обновить заявки
+                    </Button>
+
+                    <Button>+ Создать заявку</Button>
+                  </Space>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Col>
+
+        <Col span={24}>
+          <Row>
             <Col span={selectedTask ? (breakpoints.xxl ? 15 : 12) : 24}>
               <TaskTable
                 rowClassName={getTableRowClassName}
                 sort={queryArgs.sort}
                 onRow={handleTableRowClick}
-                dataSource={taskListResponse?.results || []}
+                dataSource={taskList?.results || []}
                 loading={taskListIsFetching}
                 onChange={handleChangeTable}
-                pagination={taskListResponse?.pagination || false}
+                pagination={taskList?.pagination || false}
                 userRole={role!}
               />
             </Col>
@@ -359,9 +363,9 @@ const TaskListPage: FC = () => {
                 />
               </Col>
             )}
-          </RowStyled>
-        </ColFlexStyled>
-      </RowWrapStyled>
+          </Row>
+        </Col>
+      </Row>
 
       {isExtendedFilterOpened && (
         <ExtendedFilter
@@ -371,7 +375,7 @@ const TaskListPage: FC = () => {
           onSubmit={handleExtendedFilterSubmit}
         />
       )}
-    </>
+    </TaskListLayout>
   )
 }
 
