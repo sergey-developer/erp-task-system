@@ -12,7 +12,7 @@ import taskFixtures from 'fixtures/task'
 import { render } from '_tests_/utils'
 
 import TaskList, { taskTypeText } from './index'
-import { TaskListProps } from './interfaces'
+import { TaskListProps } from './types'
 
 const taskListItem = taskFixtures.fakeTaskListItem()
 

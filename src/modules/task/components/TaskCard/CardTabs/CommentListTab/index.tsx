@@ -15,7 +15,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import CommentList from './CommentList'
 import CreateCommentForm from './CreateCommentForm'
-import { CreateCommentFormProps } from './CreateCommentForm/interfaces'
+import { CreateCommentFormProps } from './CreateCommentForm/types'
 
 const { Title } = Typography
 export const DEFAULT_DISPLAYABLE_COUNT: number = 3

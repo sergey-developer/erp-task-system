@@ -5,7 +5,7 @@ import { getShortUserName } from 'modules/user/utils'
 
 import { PauseCircleIcon } from 'components/Icons'
 
-import { ArrayFirst } from 'shared/interfaces/utils'
+import { ArrayFirst } from 'shared/types/utils'
 
 import commonFixtures from 'fixtures/common'
 

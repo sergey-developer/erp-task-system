@@ -1,7 +1,7 @@
 import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
-} from 'modules/task/components/ExtendedFilter/interfaces'
+} from 'modules/task/components/ExtendedFilter/types'
 
 import { formatDate } from 'shared/utils/date'
 

@@ -11,7 +11,7 @@ import BaseModal from 'components/Modals/BaseModal'
 import {
   TaskSecondLineFormFields,
   TaskSecondLineModalProps,
-} from './interfaces'
+} from './types'
 import { OptionTextStyled, SelectStyled } from './styles'
 
 const { Text, Link } = Typography

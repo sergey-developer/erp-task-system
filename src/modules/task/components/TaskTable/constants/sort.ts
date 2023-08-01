@@ -1,4 +1,4 @@
-import { TaskTableListItem } from '../interfaces'
+import { TaskTableListItem } from '../types'
 
 export type AscendSortValue =
   | 'id'

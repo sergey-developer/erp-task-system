@@ -1,4 +1,4 @@
-import { ArrayFirst } from 'shared/interfaces/utils'
+import { ArrayFirst } from 'shared/types/utils'
 import { PaginatedListSuccessResponse } from 'shared/models'
 
 export const fakePaginatedListResponse = <T extends any[]>(

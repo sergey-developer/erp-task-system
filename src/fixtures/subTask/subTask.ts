@@ -3,7 +3,7 @@ import times from 'lodash/times'
 import { SubTaskModel } from 'modules/subTask/models'
 import { TaskStatusEnum } from 'modules/task/constants'
 
-import { NonNullableObject } from 'shared/interfaces/utils'
+import { NonNullableObject } from 'shared/types/utils'
 
 import commonFixtures from 'fixtures/common'
 

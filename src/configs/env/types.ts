@@ -1,4 +1,4 @@
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { MaybeUndefined } from 'shared/types/utils'
 
 export type Environment = 'development' | 'production' | 'test'
 

@@ -3,8 +3,8 @@ import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback, useState } from 'react'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
-import { CancelSubTaskModalProps } from 'modules/subTask/components/CancelSubTaskModal/interfaces'
-import { ReworkSubTaskModalProps } from 'modules/subTask/components/ReworkSubTaskModal/interfaces'
+import { CancelSubTaskModalProps } from 'modules/subTask/components/CancelSubTaskModal/types'
+import { ReworkSubTaskModalProps } from 'modules/subTask/components/ReworkSubTaskModal/types'
 import SubTaskList from 'modules/subTask/components/SubTaskList'
 import {
   useCancelSubTask,

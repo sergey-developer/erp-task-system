@@ -7,7 +7,7 @@ import setupMoment from 'lib/moment/setup'
 
 import { AppStore, store as appStore } from 'state/store'
 
-import { FCWithChildren } from 'shared/interfaces/utils'
+import { FCWithChildren } from 'shared/types/utils'
 
 import theme from 'styles/theme'
 

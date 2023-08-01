@@ -5,7 +5,7 @@ import {
 
 import { commonApiMessages } from 'shared/constants/errors'
 import { HttpCodeEnum } from 'shared/constants/http'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 import { isErrorResponse } from 'shared/services/api'
 
 export const getLoginError = (error: unknown): MaybeNull<string> => {

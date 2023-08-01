@@ -5,7 +5,7 @@ import React, { FC, useMemo } from 'react'
 
 import FilterTag from './FastFilterListItem'
 import { fastFilters } from './constants'
-import { FastFilterListProps, FastFilterItem } from './interfaces'
+import { FastFilterListProps, FastFilterItem } from './types'
 
 const FastFilterList: FC<FastFilterListProps> = ({
   data,

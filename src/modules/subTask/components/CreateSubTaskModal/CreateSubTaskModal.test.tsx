@@ -46,7 +46,7 @@ import {
   CreateSubTaskFormErrors,
   CreateSubTaskFormFields,
   CreateSubTaskModalProps,
-} from './interfaces'
+} from './types'
 
 const requiredProps: Readonly<CreateSubTaskModalProps> = {
   task: taskFixtures.fakeTask(),

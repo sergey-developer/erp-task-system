@@ -13,10 +13,10 @@ import { Cluster, OSM } from 'ol/source'
 import VectorSource from 'ol/source/Vector'
 import { useState, useEffect, useRef, FC } from 'react'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 import { isTruthy } from 'shared/utils/common'
 
-import { FeatureData, TaskListMapProps } from './interfaces'
+import { FeatureData, TaskListMapProps } from './types'
 import { MapWrapperStyled, selectedClusterStyle } from './styles'
 import {
   getClusterStyle,

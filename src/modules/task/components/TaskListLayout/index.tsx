@@ -6,7 +6,7 @@ import { RouteEnum } from 'configs/routes'
 
 import Space from 'components/Space'
 
-import { FCWithChildren } from 'shared/interfaces/utils'
+import { FCWithChildren } from 'shared/types/utils'
 
 const { Text } = Typography
 

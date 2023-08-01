@@ -8,7 +8,7 @@ import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 
 import { commonEllipsisConfig } from 'shared/constants/text'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 import { Description } from './styles'

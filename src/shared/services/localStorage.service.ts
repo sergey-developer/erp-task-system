@@ -1,5 +1,5 @@
 import { StorageKeysEnum } from 'shared/constants/storage'
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
 const setItem = (key: StorageKeysEnum, value: string): void => {
   localStorage.setItem(key, value)

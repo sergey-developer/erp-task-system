@@ -6,7 +6,7 @@ import BaseModal from 'components/Modals/BaseModal'
 
 import { validationSizes } from 'shared/constants/validation'
 
-import { CancelSubTaskFormFields, CancelSubTaskModalProps } from './interfaces'
+import { CancelSubTaskFormFields, CancelSubTaskModalProps } from './types'
 
 const { Text, Link } = Typography
 const { TextArea } = Input

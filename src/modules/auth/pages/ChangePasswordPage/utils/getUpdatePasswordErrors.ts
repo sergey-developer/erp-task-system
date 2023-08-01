@@ -1,6 +1,6 @@
 import { updatePasswordErrorMessages } from 'modules/auth/constants'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 import {
   isBadRequestError,
   isErrorResponse,

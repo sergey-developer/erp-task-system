@@ -1,6 +1,6 @@
-import { BaseTaskRequestArgs } from 'modules/task/interfaces'
+import { BaseTaskRequestArgs } from 'modules/task/types'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
 export type UpdateTaskAssigneeMutationArgs = BaseTaskRequestArgs & {
   assignee: MaybeNull<number>

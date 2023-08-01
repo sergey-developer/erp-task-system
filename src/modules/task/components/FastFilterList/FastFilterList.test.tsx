@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
-import { MaybeNull, NumberOrString } from 'shared/interfaces/utils'
+import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import taskFixtures from 'fixtures/task'
 
@@ -11,7 +11,7 @@ import { render } from '_tests_/utils'
 
 import { FastFilterEnum, fastFilterNamesDict, fastFilters } from './constants'
 import FastFilterList from './index'
-import { FastFilterListProps } from './interfaces'
+import { FastFilterListProps } from './types'
 
 const filterCheckedClass = 'ant-tag-checkable-checked'
 const filterDisabledClass = 'ant-tag-checkable--disabled'

@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 
 import { PauseCircleIcon } from 'components/Icons'
 
-import { ArrayFirst } from 'shared/interfaces/utils'
+import { ArrayFirst } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
 import TaskRequest, { TaskRequestProps } from '../TaskRequest'

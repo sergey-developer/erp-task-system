@@ -7,7 +7,7 @@ import {
 import {
   ObjectPermissionConfig,
   UserPermissionConfig,
-} from 'shared/interfaces/permissions'
+} from 'shared/types/permissions'
 
 export const taskAssigneePermissions: ObjectPermissionConfig<'select'> = {
   select: {

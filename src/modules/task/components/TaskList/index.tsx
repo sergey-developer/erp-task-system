@@ -6,7 +6,7 @@ import { TaskTypeEnum } from 'modules/task/constants'
 
 import { formatDate } from 'shared/utils/date'
 
-import { TaskListProps } from './interfaces'
+import { TaskListProps } from './types'
 import { AvatarStyled, ListStyled } from './styles'
 
 export const taskTypeText: Record<TaskTypeEnum, string> = {

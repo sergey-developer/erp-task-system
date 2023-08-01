@@ -1,4 +1,4 @@
-import { ApiRequestMessages } from 'shared/interfaces/messages'
+import { ApiRequestMessages } from 'shared/types/messages'
 
 export const taskApiMessages = {
   resolveTask: {

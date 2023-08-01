@@ -6,7 +6,7 @@ import BaseModal from 'components/Modals/BaseModal'
 
 import { validationSizes } from 'shared/constants/validation'
 
-import { TaskFirstLineFormFields, TaskFirstLineModalProps } from './interfaces'
+import { TaskFirstLineFormFields, TaskFirstLineModalProps } from './types'
 
 const { Text, Link } = Typography
 const { TextArea } = Input

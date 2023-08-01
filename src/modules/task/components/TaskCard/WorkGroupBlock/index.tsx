@@ -7,7 +7,7 @@ import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
-} from 'modules/task/components/TaskCard/TaskFirstLineModal/interfaces'
+} from 'modules/task/components/TaskCard/TaskFirstLineModal/types'
 import {
   useTaskExtendedStatus,
   useTaskStatus,
@@ -26,7 +26,7 @@ import { useDebounceFn } from 'shared/hooks'
 import {
   TaskSecondLineFormFields,
   TaskSecondLineModalProps,
-} from '../TaskSecondLineModal/interfaces'
+} from '../TaskSecondLineModal/types'
 
 const TaskFirstLineModal = React.lazy(
   () => import('modules/task/components/TaskCard/TaskFirstLineModal'),

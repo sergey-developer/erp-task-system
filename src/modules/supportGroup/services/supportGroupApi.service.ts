@@ -1,5 +1,5 @@
 import { HttpMethodEnum } from 'shared/constants/http'
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { MaybeUndefined } from 'shared/types/utils'
 import { baseApiService } from 'shared/services/api'
 
 import { SupportGroupEndpointsEnum } from '../constants/api'

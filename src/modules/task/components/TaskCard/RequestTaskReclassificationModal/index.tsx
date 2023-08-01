@@ -18,7 +18,7 @@ import BaseModal from 'components/Modals/BaseModal'
 import { validationSizes } from 'shared/constants/validation'
 
 import { reclassificationReasonLabels } from './constants'
-import { RequestTaskReclassificationFormFields } from './interfaces'
+import { RequestTaskReclassificationFormFields } from './types'
 import { RECLASSIFICATION_REASON_RULES } from './validation'
 
 const { Text, Link } = Typography

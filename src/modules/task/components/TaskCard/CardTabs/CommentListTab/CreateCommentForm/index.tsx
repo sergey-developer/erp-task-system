@@ -9,7 +9,7 @@ import Space from 'components/Space'
 import { validationSizes } from 'shared/constants/validation'
 import { getFilesFromEvent } from 'shared/utils/form'
 
-import { CreateCommentFormFields, CreateCommentFormProps } from './interfaces'
+import { CreateCommentFormFields, CreateCommentFormProps } from './types'
 
 const { TextArea } = Input
 

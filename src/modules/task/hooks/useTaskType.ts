@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { TaskTypeEnum } from 'modules/task/constants'
 
-import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/interfaces/utils'
+import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/types/utils'
 
 export const useTaskType = (
   type: MaybeUndefined<TaskTypeEnum>,

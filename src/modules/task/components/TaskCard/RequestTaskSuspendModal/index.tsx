@@ -22,7 +22,7 @@ import BaseModal from 'components/Modals/BaseModal'
 import { validationSizes } from 'shared/constants/validation'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
-import { RequestTaskSuspendFormFields } from './interfaces'
+import { RequestTaskSuspendFormFields } from './types'
 import { DatePickerStyled, TimePickerStyled } from './styles'
 import { END_DATE_RULES, END_TIME_RULES, REASON_RULES } from './validation'
 

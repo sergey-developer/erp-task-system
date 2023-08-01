@@ -16,7 +16,7 @@ import {
 } from '_tests_/utils'
 
 import CreateCommentForm from './index'
-import { CreateCommentFormProps } from './interfaces'
+import { CreateCommentFormProps } from './types'
 
 const props: Readonly<CreateCommentFormProps> = {
   isLoading: false,

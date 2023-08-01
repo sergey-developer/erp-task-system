@@ -26,7 +26,7 @@ import {
   taskExtendedStatusOptions,
   taskOverdueOptions,
 } from './constants'
-import { ExtendedFilterFormFields } from './interfaces'
+import { ExtendedFilterFormFields } from './types'
 import { CheckboxGroupStyled, DrawerStyled, RangePickerStyled } from './styles'
 
 export type ExtendedFilterProps = Pick<DrawerProps, 'onClose'> & {

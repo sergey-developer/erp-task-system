@@ -2,7 +2,7 @@ import { GetComponentProps } from 'rc-table/es/interface'
 import { TableComponents } from 'rc-table/es/interface'
 import { FC } from 'react'
 
-import { FiscalAccumulatorTaskTableItem } from './interfaces'
+import { FiscalAccumulatorTaskTableItem } from './types'
 import { BodyCellStyled } from './styles'
 
 export type BodyCellProps = ReturnType<

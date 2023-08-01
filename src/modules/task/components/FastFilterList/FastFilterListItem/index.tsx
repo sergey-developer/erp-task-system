@@ -3,7 +3,7 @@ import { CheckableTagProps } from 'antd/es/tag/CheckableTag'
 import isNumber from 'lodash/isNumber'
 import React, { FC } from 'react'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
 import { FastFilterEnum } from '../constants'
 import { CheckableTagStyled } from './styles'

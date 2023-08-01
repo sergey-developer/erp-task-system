@@ -2,7 +2,7 @@ import { RouteEnum } from 'configs/routes'
 
 import { UnorderedListIcon } from 'components/Icons'
 
-import { NavMenuItem } from './interfaces'
+import { NavMenuItem } from './types'
 
 const navMenuCommonConfig: Array<NavMenuItem> = [
   {

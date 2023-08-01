@@ -31,7 +31,7 @@ import {
 } from '_tests_/utils'
 
 import TaskSecondLineModal from './index'
-import { TaskSecondLineModalProps } from './interfaces'
+import { TaskSecondLineModalProps } from './types'
 
 const requiredProps: Readonly<TaskSecondLineModalProps> = {
   id: fakeId(),

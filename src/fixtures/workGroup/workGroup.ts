@@ -5,7 +5,7 @@ import {
   WorkGroupTypeEnum,
 } from 'modules/workGroup/models'
 
-import { ArrayFirst } from 'shared/interfaces/utils'
+import { ArrayFirst } from 'shared/types/utils'
 
 import { fakeId, fakeInteger, fakeName, fakeWord } from '_tests_/utils'
 

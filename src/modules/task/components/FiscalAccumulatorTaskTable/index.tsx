@@ -8,7 +8,7 @@ import { components } from './components'
 import {
   FiscalAccumulatorTaskTableItem,
   FiscalAccumulatorTaskTableProps,
-} from './interfaces'
+} from './types'
 
 const getRowKey = (
   record: FiscalAccumulatorTaskTableItem,

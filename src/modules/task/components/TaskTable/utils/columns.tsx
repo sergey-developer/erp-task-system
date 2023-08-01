@@ -15,10 +15,10 @@ import { getOlaStatusTextType } from 'modules/task/utils'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 import { getShortUserName, getUserRoleMap } from 'modules/user/utils'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import { TaskTableListItem } from '../interfaces'
+import { TaskTableListItem } from '../types'
 
 const { Text } = Typography
 
