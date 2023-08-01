@@ -1,5 +1,4 @@
 import { waitFor, within } from '@testing-library/react'
-import head from 'lodash/head'
 
 import {
   SuspendReasonEnum,
@@ -2359,10 +2358,14 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const badRequestErrorResponse = { description: [fakeWord()] }
+          const descriptionError = fakeWord()
           mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
             requiredProps.taskId,
-            { body: badRequestErrorResponse },
+            {
+              body: {
+                description: [descriptionError],
+              },
+            },
           )
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -2391,7 +2394,7 @@ describe('Контейнер детальной карточки заявки', 
             taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
           const errorMsg = await within(descriptionContainer).findByText(
-            head(badRequestErrorResponse.description)!,
+            descriptionError,
           )
           expect(errorMsg).toBeInTheDocument()
         })
@@ -2407,9 +2410,9 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const notFoundErrorResponse = { detail: [fakeWord()] }
+          const notFoundError = fakeWord()
           mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
-            body: notFoundErrorResponse,
+            body: { detail: [notFoundError] },
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -2434,10 +2437,8 @@ describe('Контейнер детальной карточки заявки', 
 
           await expectLoadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await findNotification(
-            head(notFoundErrorResponse.detail)!,
-          )
-          expect(errorMsg).toBeInTheDocument()
+          const notification = await findNotification(notFoundError)
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается ошибка 500', async () => {
@@ -2451,9 +2452,9 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const serverErrorResponse = { detail: [fakeWord()] }
+          const serverError = fakeWord()
           mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
-            body: serverErrorResponse,
+            body: { detail: [serverError] },
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -2479,10 +2480,8 @@ describe('Контейнер детальной карточки заявки', 
           await expectLoadingStartedByButton(firstLineButton)
           await expectLoadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await findNotification(
-            head(serverErrorResponse.detail)!,
-          )
-          expect(errorMsg).toBeInTheDocument()
+          const notification = await findNotification(serverError)
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
@@ -2584,10 +2583,10 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const badRequestErrorResponse = { description: [fakeWord()] }
+          const descriptionError = fakeWord()
           mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
             requiredProps.taskId,
-            { body: badRequestErrorResponse },
+            { body: { description: [descriptionError] } },
           )
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -2616,7 +2615,7 @@ describe('Контейнер детальной карточки заявки', 
             taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
           const errorMsg = await within(descriptionContainer).findByText(
-            head(badRequestErrorResponse.description)!,
+            descriptionError,
           )
           expect(errorMsg).toBeInTheDocument()
         })
@@ -2632,9 +2631,9 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const notFoundErrorResponse = { detail: [fakeWord()] }
+          const notFoundError = fakeWord()
           mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
-            body: notFoundErrorResponse,
+            body: { detail: [notFoundError] },
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -2659,10 +2658,8 @@ describe('Контейнер детальной карточки заявки', 
 
           await expectLoadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await findNotification(
-            head(notFoundErrorResponse.detail)!,
-          )
-          expect(errorMsg).toBeInTheDocument()
+          const notification = await findNotification(notFoundError)
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается ошибка 500', async () => {
@@ -2676,9 +2673,9 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const serverErrorResponse = { detail: [fakeWord()] }
+          const serverError = fakeWord()
           mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
-            body: serverErrorResponse,
+            body: { detail: [serverError] },
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -2704,10 +2701,8 @@ describe('Контейнер детальной карточки заявки', 
           await expectLoadingStartedByButton(firstLineButton)
           await expectLoadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await findNotification(
-            head(serverErrorResponse.detail)!,
-          )
-          expect(errorMsg).toBeInTheDocument()
+          const notification = await findNotification(serverError)
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
@@ -2809,10 +2804,10 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const badRequestErrorResponse = { description: [fakeWord()] }
+          const descriptionError = fakeWord()
           mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
             requiredProps.taskId,
-            { body: badRequestErrorResponse },
+            { body: { description: [descriptionError] } },
           )
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -2841,7 +2836,7 @@ describe('Контейнер детальной карточки заявки', 
             taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
           const errorMsg = await within(descriptionContainer).findByText(
-            head(badRequestErrorResponse.description)!,
+            descriptionError,
           )
           expect(errorMsg).toBeInTheDocument()
         })
@@ -2857,9 +2852,9 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const notFoundErrorResponse = { detail: [fakeWord()] }
+          const notFoundError = fakeWord()
           mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
-            body: notFoundErrorResponse,
+            body: { detail: [notFoundError] },
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -2884,10 +2879,8 @@ describe('Контейнер детальной карточки заявки', 
 
           await expectLoadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await findNotification(
-            head(notFoundErrorResponse.detail)!,
-          )
-          expect(errorMsg).toBeInTheDocument()
+          const notification = await findNotification(notFoundError)
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается ошибка 500', async () => {
@@ -2901,9 +2894,9 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const serverErrorResponse = { detail: [fakeWord()] }
+          const serverError = fakeWord()
           mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
-            body: serverErrorResponse,
+            body: { detail: [serverError] },
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -2929,10 +2922,8 @@ describe('Контейнер детальной карточки заявки', 
           await expectLoadingStartedByButton(firstLineButton)
           await expectLoadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await findNotification(
-            head(serverErrorResponse.detail)!,
-          )
-          expect(errorMsg).toBeInTheDocument()
+          const notification = await findNotification(serverError)
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
@@ -3032,10 +3023,10 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const badRequestErrorResponse = { description: [fakeWord()] }
+          const descriptionError = fakeWord()
           mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
             requiredProps.taskId,
-            { body: badRequestErrorResponse },
+            { body: { description: [descriptionError] } },
           )
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -3065,7 +3056,7 @@ describe('Контейнер детальной карточки заявки', 
             taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
           const errorMsg = await within(descriptionContainer).findByText(
-            head(badRequestErrorResponse.description)!,
+            descriptionError,
           )
           expect(errorMsg).toBeInTheDocument()
         })
@@ -3081,9 +3072,9 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const notFoundErrorResponse = { detail: [fakeWord()] }
+          const notFoundError = fakeWord()
           mockDeleteTaskWorkGroupNotFoundError(requiredProps.taskId, {
-            body: notFoundErrorResponse,
+            body: { detail: [notFoundError] },
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -3109,10 +3100,8 @@ describe('Контейнер детальной карточки заявки', 
           await expectLoadingStartedByButton(firstLineButton)
           await expectLoadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await findNotification(
-            head(notFoundErrorResponse.detail)!,
-          )
-          expect(errorMsg).toBeInTheDocument()
+          const notification = await findNotification(notFoundError)
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается ошибка 500', async () => {
@@ -3126,9 +3115,9 @@ describe('Контейнер детальной карточки заявки', 
             }),
           })
 
-          const serverErrorResponse = { detail: [fakeWord()] }
+          const serverError = fakeWord()
           mockDeleteTaskWorkGroupServerError(requiredProps.taskId, {
-            body: serverErrorResponse,
+            body: { detail: [serverError] },
           })
 
           const { user } = render(<TaskCardContainer {...requiredProps} />, {
@@ -3154,10 +3143,8 @@ describe('Контейнер детальной карточки заявки', 
           await expectLoadingStartedByButton(firstLineButton)
           await expectLoadingFinishedByButton(firstLineButton)
 
-          const errorMsg = await findNotification(
-            head(serverErrorResponse.detail)!,
-          )
-          expect(errorMsg).toBeInTheDocument()
+          const notification = await findNotification(serverError)
+          expect(notification).toBeInTheDocument()
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {

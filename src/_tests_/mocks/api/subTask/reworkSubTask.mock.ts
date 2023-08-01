@@ -25,7 +25,7 @@ export const mockReworkSubTaskBadRequestError = <T extends object>(
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(reworkSubTaskMockFn(subTaskId), options)()
 
-export const mockReworkSubTaskServerError = <T extends object>(
+export const mockReworkSubTaskServerError = (
   subTaskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(reworkSubTaskMockFn(subTaskId), options)()

@@ -2,7 +2,6 @@ import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
 import { GetWorkGroupListSuccessResponse } from 'modules/workGroup/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 import {
   getRequestMockFn,
@@ -18,6 +17,6 @@ export const mockGetWorkGroupListSuccess = (
   options?: Partial<ResponseResolverOptions<GetWorkGroupListSuccessResponse>>,
 ) => getSuccessMockFn(getWorkGroupListMockFn(), options)()
 
-export const mockGetWorkGroupListServerError = <T extends object>(
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+export const mockGetWorkGroupListServerError = (
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(getWorkGroupListMockFn(), options)()

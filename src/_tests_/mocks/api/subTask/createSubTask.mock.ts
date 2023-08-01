@@ -18,20 +18,14 @@ const createSubTaskMockFn = (taskId: number) =>
 export const mockCreateSubTaskSuccess = (
   taskId: number,
   options?: Partial<ResponseResolverOptions<CreateSubTaskSuccessResponse>>,
-) => {
-  getSuccessMockFn(createSubTaskMockFn(taskId), options)()
-}
+) => getSuccessMockFn(createSubTaskMockFn(taskId), options)()
 
 export const mockCreateSubTaskBadRequestError = <T extends object>(
   taskId: number,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => {
-  getBadRequestErrorMockFn(createSubTaskMockFn(taskId), options)()
-}
+) => getBadRequestErrorMockFn(createSubTaskMockFn(taskId), options)()
 
 export const mockCreateSubTaskServerError = (
   taskId: number,
   options?: Partial<ResponseResolverOptions>,
-) => {
-  getServerErrorMockFn(createSubTaskMockFn(taskId), options)()
-}
+) => getServerErrorMockFn(createSubTaskMockFn(taskId), options)()
