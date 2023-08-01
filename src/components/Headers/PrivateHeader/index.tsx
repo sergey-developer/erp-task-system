@@ -10,9 +10,9 @@ import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
 import {
-  updateUserStatusErrorMessages,
-  userApiMessages,
-} from 'modules/user/constants/errorMessages'
+  updateUserStatusMessages,
+  updateUserTimeZoneMessages,
+} from 'modules/user/constants/messages'
 import {
   useUserMeCodeState,
   useUserMeState,
@@ -98,7 +98,7 @@ const PrivateHeader: FC = () => {
       moment.tz.setDefault(timezone)
     } catch (error) {
       if (isErrorResponse(error)) {
-        showErrorNotification(userApiMessages.updateUserTimeZone.commonError)
+        showErrorNotification(updateUserTimeZoneMessages.commonError)
       }
     }
   }
@@ -118,7 +118,7 @@ const PrivateHeader: FC = () => {
         ) {
           showErrorNotification(error.data.detail)
         } else {
-          showErrorNotification(updateUserStatusErrorMessages.commonError)
+          showErrorNotification(updateUserStatusMessages.commonError)
         }
       }
     }

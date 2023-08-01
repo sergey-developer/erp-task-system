@@ -2,9 +2,9 @@ import { waitFor } from '@testing-library/react'
 
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import {
-  updateUserStatusErrorMessages,
-  userApiMessages,
-} from 'modules/user/constants/errorMessages'
+  updateUserStatusMessages,
+  updateUserTimeZoneMessages,
+} from 'modules/user/constants/messages'
 import { UserRoleEnum } from 'modules/user/constants/roles'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
@@ -219,7 +219,7 @@ describe('Private app', () => {
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
 
         const error = await findNotification(
-          userApiMessages.updateUserTimeZone.commonError,
+          updateUserTimeZoneMessages.commonError,
         )
 
         expect(error).toBeInTheDocument()
@@ -495,7 +495,7 @@ describe('Private app', () => {
               )
 
               const notification = await findNotification(
-                updateUserStatusErrorMessages.commonError,
+                updateUserStatusMessages.commonError,
               )
               expect(notification).toBeInTheDocument()
             })
