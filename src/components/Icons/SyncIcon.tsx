@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import { IconProps } from './types'
 import { colorStyles } from './styles'
 
-const SyncIcon = styled(SyncOutlined)<Pick<IconProps, '$color'>>`
+const SyncIconStyled = styled(SyncOutlined)<Pick<IconProps, '$color'>>`
   ${colorStyles}
 `
 
-export default SyncIcon
+export default SyncIconStyled

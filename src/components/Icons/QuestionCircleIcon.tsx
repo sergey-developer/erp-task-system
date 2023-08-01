@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import { IconProps } from './types'
 import { fontSizeStyles } from './styles'
 
-const QuestionCircleIcon = styled(QuestionCircleTwoTone)<
+const QuestionCircleIconStyled = styled(QuestionCircleTwoTone)<
   Pick<IconProps, '$size'>
 >`
   ${fontSizeStyles}
 `
 
-export default QuestionCircleIcon
+export default QuestionCircleIconStyled

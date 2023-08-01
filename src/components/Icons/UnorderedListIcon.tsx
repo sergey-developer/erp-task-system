@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import { IconProps } from './types'
 import { fontSizeStyles } from './styles'
 
-const UnorderedListIcon = styled(UnorderedListOutlined)<
+const UnorderedListIconStyled = styled(UnorderedListOutlined)<
   Pick<IconProps, '$size'>
 >`
   ${fontSizeStyles}
 `
 
-export default UnorderedListIcon
+export default UnorderedListIconStyled
