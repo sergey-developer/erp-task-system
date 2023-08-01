@@ -18,6 +18,8 @@ const taskListItem = taskFixtures.fakeTaskListItem()
 
 const props: TaskListProps = {
   tasks: [taskListItem],
+  selectedTaskId: null,
+  onClickTask: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('task-list')
