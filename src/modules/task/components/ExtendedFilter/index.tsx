@@ -13,7 +13,7 @@ import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
-import { workGroupListSelectFieldNames } from 'modules/workGroup/constants/selectFieldNames'
+import { workGroupListSelectFieldNames } from 'modules/workGroup/constants'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import Permissions from 'components/Permissions'

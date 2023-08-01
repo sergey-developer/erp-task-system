@@ -25,8 +25,8 @@ import {
   getTaskNotFoundErrorMsg,
   getTaskServerErrorMsg,
 } from 'modules/task/utils'
-import { UserRoleEnum } from 'modules/user/constants/roles'
-import { getWorkGroupListMessages } from 'modules/workGroup/constants/messages'
+import { UserRoleEnum } from 'modules/user/constants'
+import { getWorkGroupListMessages } from 'modules/workGroup/constants'
 
 import { commonApiMessages } from 'shared/constants/errors'
 

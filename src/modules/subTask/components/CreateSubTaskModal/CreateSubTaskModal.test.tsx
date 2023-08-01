@@ -4,8 +4,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
   createSubTaskMessages,
   getSubTaskTemplateListMessages,
-} from 'modules/subTask/constants/messages'
-import { getSupportGroupListMessages } from 'modules/supportGroup/constants/messages'
+} from 'modules/subTask/constants'
+import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
 
 import {
   validationMessages,

@@ -12,7 +12,7 @@ import {
 } from 'modules/task/components/TaskStatus/constants'
 import TaskStatus from 'modules/task/components/TaskStatus/index'
 import { getOlaStatusTextType } from 'modules/task/utils'
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 import { getShortUserName, getUserRoleMap } from 'modules/user/utils'
 
 import { MaybeNull } from 'shared/types/utils'

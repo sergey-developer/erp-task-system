@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom'
 
-import { UserApiEnum } from 'modules/user/constants/api'
+import { UserApiEnum } from 'modules/user/constants'
 
 import { appendSlashAtEnd } from 'shared/utils/string'
 

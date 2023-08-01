@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom'
 
-import { SubTaskApiEnum } from 'modules/subTask/constants/api'
+import { SubTaskApiEnum } from 'modules/subTask/constants'
 
 import { appendSlashAtEnd } from 'shared/utils/string'
 

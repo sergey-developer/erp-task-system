@@ -2,7 +2,7 @@ import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { UseQueryStateOptions } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import { useEffect } from 'react'
 
-import { getSubTaskTemplateListMessages } from 'modules/subTask/constants/messages'
+import { getSubTaskTemplateListMessages } from 'modules/subTask/constants'
 import {
   GetSubTaskTemplateListQueryArgs,
   GetSubTaskTemplateListSuccessResponse,

@@ -7,7 +7,7 @@ import {
   TaskStatusEnum,
 } from 'modules/task/constants'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import { ArrayFirst, NonNullableObject } from 'shared/types/utils'

@@ -1,4 +1,4 @@
-import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants/api'
+import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants'
 import {
   GetWorkGroupListQueryArgs,
   GetWorkGroupListSuccessResponse,

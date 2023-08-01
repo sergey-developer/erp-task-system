@@ -1,5 +1,5 @@
 import { GetSubTaskTemplateListSuccessResponse } from 'modules/subTask/models'
-import { getSubTaskTemplateListUrl } from 'modules/subTask/utils/apiUrls'
+import { getSubTaskTemplateListUrl } from 'modules/subTask/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

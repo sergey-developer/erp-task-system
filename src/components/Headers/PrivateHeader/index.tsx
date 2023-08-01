@@ -12,7 +12,7 @@ import LogoutButton from 'modules/auth/components/LogoutButton'
 import {
   updateUserStatusMessages,
   updateUserTimeZoneMessages,
-} from 'modules/user/constants/messages'
+} from 'modules/user/constants'
 import {
   useUserMeCodeState,
   useUserMeState,

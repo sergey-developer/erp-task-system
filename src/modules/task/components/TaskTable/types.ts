@@ -1,7 +1,7 @@
 import { TableProps } from 'antd'
 
 import { TaskListItemModel } from 'modules/task/models'
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import { SortValue } from './constants/sort'
 

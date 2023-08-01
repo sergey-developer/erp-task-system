@@ -1,4 +1,4 @@
-import { SupportGroupEndpointsEnum } from 'modules/supportGroup/constants/api'
+import { SupportGroupEndpointsEnum } from 'modules/supportGroup/constants'
 import { GetSupportGroupListSuccessResponse } from 'modules/supportGroup/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'

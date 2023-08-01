@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { createSubTaskMessages } from 'modules/subTask/constants/messages'
+import { createSubTaskMessages } from 'modules/subTask/constants'
 import { CreateSubTaskMutationArgs } from 'modules/subTask/models'
 import { subTaskApiPermissions } from 'modules/subTask/permissions'
 import { useCreateSubTaskMutation } from 'modules/subTask/services/subTaskApi.service'

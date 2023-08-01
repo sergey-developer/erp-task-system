@@ -1,5 +1,5 @@
 import { GetTaskCountersSuccessResponse } from 'modules/task/models'
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import { MaybeUndefined, Nullable } from 'shared/types/utils'
 

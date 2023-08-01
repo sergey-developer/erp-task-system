@@ -1,5 +1,5 @@
 import { TaskApiTagEnum } from 'modules/task/constants'
-import { UserApiEnum } from 'modules/user/constants/api'
+import { UserApiEnum } from 'modules/user/constants'
 import {
   GetUserMeCodeQueryArgs,
   GetUserMeCodeSuccessResponse,

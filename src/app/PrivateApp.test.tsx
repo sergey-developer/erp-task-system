@@ -4,8 +4,8 @@ import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTab
 import {
   updateUserStatusMessages,
   updateUserTimeZoneMessages,
-} from 'modules/user/constants/messages'
-import { UserRoleEnum } from 'modules/user/constants/roles'
+  UserRoleEnum,
+} from 'modules/user/constants'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'

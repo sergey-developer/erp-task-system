@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 
 import { TaskOlaStatusEnum, TaskStatusEnum } from 'modules/task/constants'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import taskFixtures from 'fixtures/task'
 
