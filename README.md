@@ -15,8 +15,6 @@
 Приложение создано с помощью [create-react-app](https://github.com/facebook/create-react-app)
 
 ## Команды
-- `yarn install:dev` Установка зависимостей для dev режима
-  - `husky install` Нужен для настройки [husky](https://typicode.github.io/husky/#/?id=usage)
 - [yarn start](https://create-react-app.dev/docs/getting-started/#npm-start-or-yarn-start) Запускает приложение локально в dev режиме, по умолчанию на http://localhost:3000
 - `yarn test` Запускает тесты в обычном режиме
 - [yarn test:watch](https://create-react-app.dev/docs/getting-started/#npm-test-or-yarn-test) Запускает тесты в watch режиме
@@ -53,7 +51,7 @@
 2. Создать файл `.env.development`
    - `REACT_APP_API_URL={url}`
    - `REACT_APP_ENVIRONMENT=development`
-3. Установить зависимости `yarn install:dev`
+3. Установить зависимости `yarn install`
 4. Запустить приложение `yarn start`
 5. Приложение запускается по умолчанию на `http://localhost:3000`
 
@@ -75,8 +73,6 @@
 4. Запустить тесты `yarn test` или `yarn test:watch`
 
 ## Архитектура
-- `.husky` Создаётся при запуске команды `husky install` вместе с папкой `_`
-  - `pre-commit` Содержит команды которые запускаются перед командой `git commit`
 - `public` Создана при инициализации проекта с помощью `create-react-app`.
 В ней лежит файл `index.html`
 - `src` Код приложения
@@ -213,7 +209,6 @@ RTK query не умеет правильно доставать ReturnType из 
   - Конфиг `.prettierrc.json` 
   - Пакет для автоматической сортировки импортов [prettier-plugin-sorted](https://github.com/ifiokjr/prettier-plugin-sorted). Настройки прописаны в `package.json/importSort` 
 - Используется встроенный в CRA `eslint`
-- Для автоматического запуска линтеров используется [lint-staged](https://github.com/okonet/lint-staged), который запускается с помощью [husky](https://typicode.github.io/husky/#/?id=usage) на этапе `pre-commit` только для изменённых файлов. Запуск прописан в файле `.husky/pre-commit`
 ---
 ### Наименования типов
 - Имена моделей оканчиваются на `Model`
