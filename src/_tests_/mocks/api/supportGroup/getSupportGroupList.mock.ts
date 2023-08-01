@@ -1,4 +1,4 @@
-import { SupportGroupEndpointsEnum } from 'modules/supportGroup/constants'
+import { SupportGroupApiEnum } from 'modules/supportGroup/constants'
 import { GetSupportGroupListSuccessResponse } from 'modules/supportGroup/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -13,7 +13,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const getSupportGroupListMockFn = () =>
   getRequestMockFn(
     HttpMethodEnum.Get,
-    SupportGroupEndpointsEnum.GetSupportGroupList,
+    SupportGroupApiEnum.GetSupportGroupList,
   )
 
 export const mockGetSupportGroupListSuccess = (

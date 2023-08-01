@@ -1,4 +1,4 @@
-import { AuthEndpointsEnum } from 'modules/auth/constants'
+import { AuthApiEnum } from 'modules/auth/constants'
 import {
   LoginMutationArgs,
   LoginSuccessResponse,
@@ -15,14 +15,14 @@ const authApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation<LoginSuccessResponse, LoginMutationArgs>({
       query: (payload) => ({
-        url: AuthEndpointsEnum.Login,
+        url: AuthApiEnum.Login,
         method: HttpMethodEnum.Post,
         data: payload,
       }),
     }),
     logout: build.mutation<LogoutSuccessResponse, LogoutMutationArgs>({
       query: (payload) => ({
-        url: AuthEndpointsEnum.Logout,
+        url: AuthApiEnum.Logout,
         method: HttpMethodEnum.Post,
         data: payload,
       }),
@@ -32,7 +32,7 @@ const authApiService = baseApiService.injectEndpoints({
       UpdatePasswordMutationArgs
     >({
       query: (payload) => ({
-        url: AuthEndpointsEnum.UpdatePassword,
+        url: AuthApiEnum.UpdatePassword,
         method: HttpMethodEnum.Post,
         data: payload,
       }),
