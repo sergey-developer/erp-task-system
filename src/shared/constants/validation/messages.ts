@@ -1,6 +1,6 @@
 import { makeMaxLengthMessage } from 'shared/utils/validation'
 
-import { validationSizes } from './rules'
+import { validationSizes } from './sizes'
 
 export const validationTemplateMessages = {
   string: {

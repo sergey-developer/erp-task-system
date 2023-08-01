@@ -6,11 +6,11 @@ import {
   WorkGroupTypeEnum,
 } from 'modules/workGroup/models'
 
-import { ArrayItem } from 'shared/interfaces/utils'
+import { ArrayFirst } from 'shared/interfaces/utils'
 
 import { fakeId, fakeInteger, fakeName, fakeWord } from '_tests_/utils'
 
-export const workGroupMember = (): ArrayItem<
+export const workGroupMember = (): ArrayFirst<
   WorkGroupListItemModel['members']
 > => ({ id: fakeId(), fullName: fakeName() })
 

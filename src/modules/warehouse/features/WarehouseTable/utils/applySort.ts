@@ -3,15 +3,15 @@ import isEqual from 'lodash/isEqual'
 
 import { GetWarehouseListSortValue } from 'modules/warehouse/models'
 
-import { ArrayItem } from 'shared/interfaces/utils'
+import { ArrayFirst } from 'shared/interfaces/utils'
 
 import { WarehouseTableItem } from '../interfaces'
 import { parseSort } from './parseSort'
 
 export const applySort = (
-  column: ArrayItem<ColumnsType<WarehouseTableItem>>,
+  column: ArrayFirst<ColumnsType<WarehouseTableItem>>,
   sort: GetWarehouseListSortValue,
-): ArrayItem<ColumnsType<WarehouseTableItem>> => {
+): ArrayFirst<ColumnsType<WarehouseTableItem>> => {
   const sorterResult = parseSort(sort)
 
   if (!isEqual(column.key, sorterResult.columnKey)) return column
