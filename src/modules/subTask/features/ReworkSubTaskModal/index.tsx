@@ -1,14 +1,23 @@
 import { Form, Input, Typography } from 'antd'
+import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { validationRules } from 'shared/constants/validation'
+import { validationSizes } from 'shared/constants/validation'
 
 import { ReworkSubTaskFormFields, ReworkSubTaskModalProps } from './interfaces'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+
+const returnReasonValidationRules: Rule[] = [
+  {
+    required: true,
+    whitespace: true,
+    max: validationSizes.string.middle,
+  },
+]
 
 const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
   recordId,
@@ -48,7 +57,7 @@ const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
           data-testid='return-reason'
           label='Причина возврата'
           name='returnReason'
-          rules={[validationRules.string.middle]}
+          rules={returnReasonValidationRules}
         >
           <TextArea
             placeholder='Опишите причину возврата'
