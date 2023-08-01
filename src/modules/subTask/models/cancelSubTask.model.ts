@@ -1,4 +1,4 @@
-import { CancelSubTaskFormFields } from 'modules/subTask/features/CancelSubTaskModal/interfaces'
+import { CancelSubTaskFormFields } from 'modules/subTask/components/CancelSubTaskModal/interfaces'
 import { BaseSubTaskRequestArgs } from 'modules/subTask/interfaces'
 import { BaseTaskRequestArgs } from 'modules/task/interfaces'
 

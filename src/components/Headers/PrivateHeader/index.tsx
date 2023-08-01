@@ -8,7 +8,7 @@ import { Link, useMatches } from 'react-router-dom'
 import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
-import LogoutButton from 'modules/auth/features/Logout/LogoutButton'
+import LogoutButton from 'modules/auth/components/LogoutButton'
 import {
   updateUserStatusErrorMessages,
   userApiMessages,
