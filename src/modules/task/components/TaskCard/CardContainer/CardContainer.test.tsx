@@ -1,20 +1,21 @@
 import { waitFor, within } from '@testing-library/react'
 
 import {
-  SuspendReasonEnum,
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  reclassificationRequestApiMessages,
-  suspendRequestApiMessages,
-  taskApiMessages,
-  taskAssigneeApiMessages,
-  taskWorkGroupApiMessages,
-} from 'modules/task/constants'
-import {
   activeSecondLineButtonProps,
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
 } from 'modules/task/components/TaskCard/WorkGroupBlock/WorkGroupBlock.test'
+import {
+  SuspendReasonEnum,
+  SuspendRequestStatusEnum,
+  TaskExtendedStatusEnum,
+  createReclassificationRequestMessages,
+  updateTaskAssigneeMessages,
+  updateTaskWorkGroupMessages,
+  resolveTaskMessages,
+  createSuspendRequestMessages,
+  deleteSuspendRequestMessages,
+} from 'modules/task/constants'
 import {
   CreateTaskSuspendRequestBadRequestErrorResponse,
   ResolveTaskBadRequestErrorResponse,
@@ -25,7 +26,7 @@ import {
   getTaskServerErrorMsg,
 } from 'modules/task/utils'
 import { UserRoleEnum } from 'modules/user/constants/roles'
-import { workGroupApiMessages } from 'modules/workGroup/constants/errorMessages'
+import { getWorkGroupListMessages } from 'modules/workGroup/constants/messages'
 
 import { commonApiMessages } from 'shared/constants/errors'
 
@@ -144,9 +145,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(
-              workGroupApiMessages.getWorkGroupList.commonError,
-            ),
+            await findNotification(getWorkGroupListMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -173,9 +172,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(
-              workGroupApiMessages.getWorkGroupList.commonError,
-            ),
+            await findNotification(getWorkGroupListMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -202,9 +199,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(
-              workGroupApiMessages.getWorkGroupList.commonError,
-            ),
+            await findNotification(getWorkGroupListMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -403,7 +398,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                reclassificationRequestApiMessages.createRequest.notFoundError,
+                createReclassificationRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -701,7 +696,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                reclassificationRequestApiMessages.createRequest.notFoundError,
+                createReclassificationRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -900,7 +895,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                reclassificationRequestApiMessages.createRequest.notFoundError,
+                createReclassificationRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -1047,7 +1042,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(taskApiMessages.resolveTask.commonError),
+            await findNotification(resolveTaskMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1190,7 +1185,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(taskApiMessages.resolveTask.commonError),
+            await findNotification(resolveTaskMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1333,7 +1328,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(taskApiMessages.resolveTask.commonError),
+            await findNotification(resolveTaskMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1476,7 +1471,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(taskApiMessages.resolveTask.commonError),
+            await findNotification(resolveTaskMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -2183,7 +2178,7 @@ describe('Контейнер детальной карточки заявки', 
         await taskCardTestUtils.expectLoadingFinished()
 
         expect(
-          queryNotification(taskAssigneeApiMessages.updateAssignee.commonError),
+          queryNotification(updateTaskAssigneeMessages.commonError),
         ).not.toBeInTheDocument()
       })
     })
@@ -2228,9 +2223,7 @@ describe('Контейнер детальной карточки заявки', 
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
-          await findNotification(
-            taskAssigneeApiMessages.updateAssignee.commonError,
-          ),
+          await findNotification(updateTaskAssigneeMessages.commonError),
         ).toBeInTheDocument()
       })
     })
@@ -2264,7 +2257,7 @@ describe('Контейнер детальной карточки заявки', 
         await taskCardTestUtils.expectLoadingFinished()
 
         expect(
-          queryNotification(taskAssigneeApiMessages.updateAssignee.commonError),
+          queryNotification(updateTaskAssigneeMessages.commonError),
         ).not.toBeInTheDocument()
       })
     })
@@ -2294,9 +2287,7 @@ describe('Контейнер детальной карточки заявки', 
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
-          await findNotification(
-            taskAssigneeApiMessages.updateAssignee.commonError,
-          ),
+          await findNotification(updateTaskAssigneeMessages.commonError),
         ).toBeInTheDocument()
       })
     })
@@ -3281,9 +3272,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
 
           expect(
-            await findNotification(
-              taskWorkGroupApiMessages.updateWorkGroup.commonError,
-            ),
+            await findNotification(updateTaskWorkGroupMessages.commonError),
           ).toBeInTheDocument()
         })
 
@@ -3320,9 +3309,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(
-              taskWorkGroupApiMessages.updateWorkGroup.commonError,
-            ),
+            await findNotification(updateTaskWorkGroupMessages.commonError),
           ).toBeInTheDocument()
         })
 
@@ -3447,7 +3434,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.createRequest.notFoundError,
+                createSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -3500,7 +3487,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.createRequest.badRequestError,
+                createSuspendRequestMessages.badRequestError,
               ),
             ).toBeInTheDocument()
 
@@ -3648,7 +3635,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.createRequest.notFoundError,
+                createSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -3701,7 +3688,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.createRequest.badRequestError,
+                createSuspendRequestMessages.badRequestError,
               ),
             ).toBeInTheDocument()
 
@@ -3849,7 +3836,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.createRequest.notFoundError,
+                createSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -3902,7 +3889,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.createRequest.badRequestError,
+                createSuspendRequestMessages.badRequestError,
               ),
             ).toBeInTheDocument()
 
@@ -4050,7 +4037,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.createRequest.notFoundError,
+                createSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -4103,7 +4090,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.createRequest.badRequestError,
+                createSuspendRequestMessages.badRequestError,
               ),
             ).toBeInTheDocument()
 
@@ -4231,7 +4218,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.deleteRequest.notFoundError,
+                deleteSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -4351,7 +4338,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.deleteRequest.notFoundError,
+                deleteSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })
@@ -4471,7 +4458,7 @@ describe('Контейнер детальной карточки заявки', 
 
             expect(
               await findNotification(
-                suspendRequestApiMessages.deleteRequest.notFoundError,
+                deleteSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
           })

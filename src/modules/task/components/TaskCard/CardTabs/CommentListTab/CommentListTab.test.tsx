@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { taskCommentApiMessages } from 'modules/task/constants'
+import { createTaskCommentMessages } from 'modules/task/constants'
 
 import { commonApiMessages } from 'shared/constants/errors'
 
@@ -345,7 +345,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingFinished()
 
           const error = await findNotification(
-            taskCommentApiMessages.createComment.commonError,
+            createTaskCommentMessages.commonError,
           )
           expect(error).toBeInTheDocument()
         })
@@ -366,7 +366,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingFinished()
 
           const error = await findNotification(
-            taskCommentApiMessages.createComment.commonError,
+            createTaskCommentMessages.commonError,
           )
           expect(error).toBeInTheDocument()
         })

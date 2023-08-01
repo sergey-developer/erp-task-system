@@ -1,8 +1,11 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { subTaskApiMessages } from 'modules/subTask/constants/errorMessages'
-import { supportGroupApiMessages } from 'modules/supportGroup/constants/errorMessages'
+import {
+  createSubTaskMessages,
+  getSubTaskTemplateListMessages,
+} from 'modules/subTask/constants/messages'
+import { getSupportGroupListMessages } from 'modules/supportGroup/constants/messages'
 
 import {
   validationMessages,
@@ -1108,7 +1111,7 @@ describe('Модалка создания задачи заявки', () => {
         ).toBeInTheDocument()
 
         expect(
-          await findNotification(subTaskApiMessages.createSubTask.commonError),
+          await findNotification(createSubTaskMessages.commonError),
         ).toBeInTheDocument()
       })
 
@@ -1136,7 +1139,7 @@ describe('Модалка создания задачи заявки', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await findNotification(subTaskApiMessages.createSubTask.commonError),
+          await findNotification(createSubTaskMessages.commonError),
         ).toBeInTheDocument()
       })
     })
@@ -1163,9 +1166,7 @@ describe('Модалка создания задачи заявки', () => {
         )
 
         expect(
-          await findNotification(
-            subTaskApiMessages.getSubTaskTemplateList.commonError,
-          ),
+          await findNotification(getSubTaskTemplateListMessages.commonError),
         ).toBeInTheDocument()
       })
     })
@@ -1181,9 +1182,7 @@ describe('Модалка создания задачи заявки', () => {
         })
 
         expect(
-          await findNotification(
-            supportGroupApiMessages.getSupportGroupList.commonError,
-          ),
+          await findNotification(getSupportGroupListMessages.commonError),
         ).toBeInTheDocument()
       })
     })

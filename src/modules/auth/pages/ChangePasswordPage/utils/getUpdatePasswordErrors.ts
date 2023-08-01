@@ -1,4 +1,4 @@
-import { updatePasswordErrorMessages } from 'modules/auth/constants'
+import { updatePasswordMessages } from 'modules/auth/constants'
 
 import { MaybeNull } from 'shared/types/utils'
 import {
@@ -25,5 +25,5 @@ export const getUpdatePasswordErrors = (
     }
   }
 
-  return [updatePasswordErrorMessages.commonError]
+  return [updatePasswordMessages.commonError]
 }

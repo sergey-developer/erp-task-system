@@ -6,7 +6,7 @@ import { RouteEnum } from 'configs/routes'
 import {
   INCORRECT_PASSWORD_ERROR_MSG,
   UPDATE_PASSWORD_SUCCESS_MSG,
-  updatePasswordErrorMessages,
+  updatePasswordMessages,
 } from 'modules/auth/constants'
 
 import { validationMessages } from 'shared/constants/validation'
@@ -357,7 +357,7 @@ describe('Страница смены пароля', () => {
 
       const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
       const errorMessage = testUtils.getChildByText(
-        updatePasswordErrorMessages.commonError,
+        updatePasswordMessages.commonError,
       )
 
       expect(successNotification).not.toBeInTheDocument()
