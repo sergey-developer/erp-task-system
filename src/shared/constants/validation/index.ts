@@ -1,2 +1,2 @@
-export * from './rules'
+export * from './sizes'
 export * from './messages'

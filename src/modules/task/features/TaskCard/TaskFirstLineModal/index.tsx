@@ -1,16 +1,25 @@
 import { Form, Input, Space, Typography } from 'antd'
+import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { validationRules } from 'shared/constants/validation'
+import { validationSizes } from 'shared/constants/validation'
 
 import { TaskFirstLineFormFields, TaskFirstLineModalProps } from './interfaces'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-const OK_BUTTON_TEXT: string = 'Вернуть заявку'
+const okBtnText: string = 'Вернуть заявку'
+
+const descriptionValidationRules: Rule[] = [
+  {
+    required: true,
+    whitespace: true,
+    max: validationSizes.string.long,
+  },
+]
 
 const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
   recordId,
@@ -37,14 +46,12 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}
-      okText={OK_BUTTON_TEXT}
+      okText={okBtnText}
       onCancel={onCancel}
     >
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>
-          <Text>
-            Укажите причину возврата. Нажмите кнопку «{OK_BUTTON_TEXT}».
-          </Text>
+          <Text>Укажите причину возврата. Нажмите кнопку «{okBtnText}».</Text>
 
           <Text type='danger'>
             Заявка исчезнет из вашей очереди заявок. Просмотр заявки и работа с
@@ -62,7 +69,7 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
             data-testid='field-description'
             name='description'
             label='Причина возврата'
-            rules={[validationRules.string.long]}
+            rules={descriptionValidationRules}
           >
             <TextArea
               placeholder='Расскажите подробнее о задаче'

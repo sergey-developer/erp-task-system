@@ -11,6 +11,7 @@ import {
   Upload,
 } from 'antd'
 import stubFalse from 'lodash/stubFalse'
+import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
 import { useTaskType } from 'modules/task/hooks'
@@ -19,14 +20,31 @@ import { TaskModel } from 'modules/task/models'
 import BaseModal from 'components/Modals/BaseModal'
 import Space from 'components/Space'
 
-import { validationRules } from 'shared/constants/validation'
+import { validationSizes } from 'shared/constants/validation'
 import { getFilesFromEvent } from 'shared/utils/form'
 
 import { TaskResolutionFormFields } from './interfaces'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
-const OK_BUTTON_TEXT = 'Выполнить заявку'
+
+const okBtnText = 'Выполнить заявку'
+
+const techResolutionValidationRules: Rule[] = [
+  {
+    required: true,
+    whitespace: true,
+    max: validationSizes.string.long,
+  },
+]
+
+const userResolutionValidationRules: Rule[] = [
+  {
+    required: true,
+    whitespace: true,
+    max: validationSizes.string.long,
+  },
+]
 
 export type TaskResolutionModalProps = Pick<TaskModel, 'type' | 'recordId'> & {
   isLoading: boolean
@@ -96,7 +114,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
               <Button onClick={onCancel}>Отменить</Button>
 
               <Button type='primary' onClick={form.submit} loading={isLoading}>
-                {OK_BUTTON_TEXT}
+                {okBtnText}
               </Button>
             </Space>
           </Col>
@@ -107,7 +125,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
         <Space direction='vertical'>
           <Text>
             Заполните информацию о работах на объекте и предложенном решении.
-            Затем нажмите кнопку «{OK_BUTTON_TEXT}».
+            Затем нажмите кнопку «{okBtnText}».
           </Text>
 
           <Text type='danger'>
@@ -125,7 +143,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
             data-testid='tech-resolution'
             label='Техническое решение'
             name='techResolution'
-            rules={[validationRules.string.long]}
+            rules={techResolutionValidationRules}
           >
             <TextArea
               placeholder='Расскажите о работах на объекте'
@@ -138,7 +156,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
               data-testid='user-resolution'
               label='Решение для пользователя'
               name='userResolution'
-              rules={[validationRules.string.long]}
+              rules={userResolutionValidationRules}
             >
               <TextArea
                 placeholder='Расскажите заявителю о решении'

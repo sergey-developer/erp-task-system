@@ -1,4 +1,5 @@
 import { Form, Input, Select, Typography } from 'antd'
+import { Rule } from 'rc-field-form/es/interface'
 import React, { FC, useState } from 'react'
 
 import { templateSelectFieldNames } from 'modules/subTask/constants/selectFieldNames'
@@ -12,7 +13,7 @@ import { SupportGroupListItemModel } from 'modules/supportGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { validationRules } from 'shared/constants/validation'
+import { validationSizes } from 'shared/constants/validation'
 import { MaybeUndefined } from 'shared/interfaces/utils'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -21,6 +22,24 @@ import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './interfaces'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+
+const supportGroupValidationRules: Rule[] = [{ required: true }]
+const templateX5ValidationRules: Rule[] = [{ required: true }]
+const titleValidationRules: Rule[] = [
+  {
+    required: true,
+    whitespace: true,
+    max: validationSizes.string.short,
+  },
+]
+
+const descriptionValidationRules: Rule[] = [
+  {
+    required: true,
+    whitespace: true,
+    max: validationSizes.string.long,
+  },
+]
 
 const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
   task,
@@ -99,7 +118,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           data-testid='supportGroup'
           label='Группа поддержки'
           name='supportGroup'
-          rules={[validationRules.required]}
+          rules={supportGroupValidationRules}
         >
           <Select<SupportGroupListItemModel['id'], SupportGroupListItemModel>
             placeholder='Доступные группы'
@@ -115,7 +134,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           data-testid='service'
           label='Сервис'
           name='templateX5'
-          rules={[validationRules.required]}
+          rules={templateX5ValidationRules}
         >
           <Select
             placeholder='Наименование сервиса'
@@ -130,7 +149,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           data-testid='title'
           label='Краткое описание'
           name='title'
-          rules={[validationRules.string.short]}
+          rules={titleValidationRules}
         >
           <Input
             placeholder='Опишите коротко задачу'
@@ -143,7 +162,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
           data-testid='description'
           label='Подробное описание'
           name='description'
-          rules={[validationRules.string.long]}
+          rules={descriptionValidationRules}
         >
           <TextArea
             placeholder='Расскажите подробнее о задаче'

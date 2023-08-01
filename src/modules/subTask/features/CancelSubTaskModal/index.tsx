@@ -1,14 +1,23 @@
 import { Form, Input, Typography } from 'antd'
+import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { validationRules } from 'shared/constants/validation'
+import { validationSizes } from 'shared/constants/validation'
 
 import { CancelSubTaskFormFields, CancelSubTaskModalProps } from './interfaces'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+
+const cancelReasonValidationRules: Rule[] = [
+  {
+    required: true,
+    whitespace: true,
+    max: validationSizes.string.middle,
+  },
+]
 
 const CancelSubTaskModal: FC<CancelSubTaskModalProps> = ({
   recordId,
@@ -48,7 +57,7 @@ const CancelSubTaskModal: FC<CancelSubTaskModalProps> = ({
           data-testid='cancel-reason'
           label='Причина отмены'
           name='cancelReason'
-          rules={[validationRules.string.middle]}
+          rules={cancelReasonValidationRules}
         >
           <TextArea placeholder='Опишите причину отмены' disabled={isLoading} />
         </Form.Item>

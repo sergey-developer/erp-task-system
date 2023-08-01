@@ -7,6 +7,7 @@ import {
   Space,
   Typography,
 } from 'antd'
+import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
 import { ReclassificationReasonEnum } from 'modules/task/constants'
@@ -14,7 +15,7 @@ import { TaskModel } from 'modules/task/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { validationRules } from 'shared/constants/validation'
+import { validationSizes } from 'shared/constants/validation'
 
 import { reclassificationReasonLabels } from './constants'
 import { RequestTaskReclassificationFormFields } from './interfaces'
@@ -22,6 +23,14 @@ import { RECLASSIFICATION_REASON_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+
+const commentValidationRules: Rule[] = [
+  {
+    required: true,
+    whitespace: true,
+    max: validationSizes.string.long,
+  },
+]
 
 export type RequestTaskReclassificationModalProps = Pick<
   TaskModel,
@@ -105,7 +114,7 @@ const RequestTaskReclassificationModal: FC<
           data-testid='comment'
           label='Комментарий'
           name='comment'
-          rules={[validationRules.string.long]}
+          rules={commentValidationRules}
         >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>

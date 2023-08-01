@@ -1,4 +1,5 @@
 import { Form, Select, Space, Typography } from 'antd'
+import { Rule } from 'rc-field-form/es/interface'
 import React, { FC, useEffect } from 'react'
 
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
@@ -6,7 +7,6 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { validationRules } from 'shared/constants/validation'
 import { isEqual } from 'shared/utils/common'
 
 import {
@@ -17,7 +17,8 @@ import { OptionTextStyled, SelectStyled } from './styles'
 
 const { Text, Link } = Typography
 
-const OK_BUTTON_TEXT: string = 'Перевести заявку'
+const okBtnText: string = 'Перевести заявку'
+const workGroupValidationRules: Rule[] = [{ required: true }]
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
@@ -67,7 +68,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
       visible
       title={modalTitle}
       confirmLoading={isLoading}
-      okText={OK_BUTTON_TEXT}
+      okText={okBtnText}
       onOk={form.submit}
       onCancel={onCancel}
     >
@@ -75,7 +76,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
         <Space direction='vertical'>
           <Text>
             Выберите рабочую группу II линии, в которую хотите направить заявку
-            для дальнейшей работы. Нажмите кнопку «{OK_BUTTON_TEXT}».
+            для дальнейшей работы. Нажмите кнопку «{okBtnText}».
           </Text>
 
           <Text type='danger'>
@@ -94,7 +95,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
             data-testid='work-group'
             name='workGroup'
             label='Рабочая группа'
-            rules={[validationRules.required]}
+            rules={workGroupValidationRules}
           >
             <SelectStyled
               placeholder='Выберите рабочую группу'
