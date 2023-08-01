@@ -1,7 +1,7 @@
 import { Mutex } from 'async-mutex'
 
 import { refreshToken as refreshTokenAction } from 'modules/auth/auth.slice'
-import { AuthEndpointsEnum } from 'modules/auth/constants'
+import { AuthApiEnum } from 'modules/auth/constants'
 import { RefreshTokenActionPayload } from 'modules/auth/types'
 import { RefreshTokenSuccessResponse } from 'modules/auth/models'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
@@ -64,7 +64,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           refreshResult = await query(
             {
               method: HttpMethodEnum.Post,
-              url: AuthEndpointsEnum.RefreshToken,
+              url: AuthApiEnum.RefreshToken,
               data: {
                 refresh: refreshToken,
               },

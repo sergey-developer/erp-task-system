@@ -1,4 +1,4 @@
-import { WorkGroupEndpointsEnum } from 'modules/workGroup/constants'
+import { WorkGroupApiEnum } from 'modules/workGroup/constants'
 import { GetWorkGroupListSuccessResponse } from 'modules/workGroup/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -11,7 +11,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getWorkGroupListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, WorkGroupEndpointsEnum.GetWorkGroupList)
+  getRequestMockFn(HttpMethodEnum.Get, WorkGroupApiEnum.GetWorkGroupList)
 
 export const mockGetWorkGroupListSuccess = (
   options?: Partial<ResponseResolverOptions<GetWorkGroupListSuccessResponse>>,
