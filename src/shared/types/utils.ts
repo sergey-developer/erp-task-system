@@ -22,4 +22,4 @@ export type AnyFunction = (...args: any) => any
 
 export type NumberOrString = number | string
 
-export type ArrayFirst<T extends Array<any>> = T[number]
+export type ArrayFirst<T extends any[]> = T['length'] extends 0 ? never : T[0]
