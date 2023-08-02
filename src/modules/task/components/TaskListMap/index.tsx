@@ -28,7 +28,7 @@ import {
 const interactionSelect = new Select({
   condition: click,
 })
-
+//
 const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
   const [map, setMap] = useState<OlMap>()
   const [featuresLayer, setFeaturesLayer] = useState<VectorLayer<Cluster>>()
