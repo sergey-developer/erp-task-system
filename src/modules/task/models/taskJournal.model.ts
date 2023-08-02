@@ -4,7 +4,7 @@ import {
 } from 'modules/task/constants'
 import { BaseUserModel } from 'modules/user/models'
 
-import { MaybeNull } from 'shared/interfaces/utils'
+import { MaybeNull } from 'shared/types/utils'
 
 import { TaskAttachmentListModel } from './taskAttachment.model'
 

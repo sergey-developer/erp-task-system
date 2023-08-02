@@ -1,56 +1,84 @@
 import { generatePath } from 'react-router-dom'
 
-import { TaskEndpointEnum } from 'modules/task/constants'
+import { TaskApiEnum } from 'modules/task/constants'
+
+import { appendSlashAtEnd } from 'shared/utils/string'
 
 export const getTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.GetTask, { id: String(taskId) })
+  appendSlashAtEnd(generatePath(TaskApiEnum.GetTask, { id: String(taskId) }))
 
 export const resolveTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.ResolveTask, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.ResolveTask, { id: String(taskId) }),
+  )
 
 export const getTaskWorkPerformedActUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.GetWorkPerformedAct, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.GetWorkPerformedAct, { id: String(taskId) }),
+  )
 
 export const takeTaskUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.TakeTask, { id: String(taskId) })
+  appendSlashAtEnd(generatePath(TaskApiEnum.TakeTask, { id: String(taskId) }))
 
 export const updateTaskWorkGroupUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.UpdateTaskWorkGroup, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.UpdateTaskWorkGroup, { id: String(taskId) }),
+  )
 
 export const deleteTaskWorkGroupUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.DeleteTaskWorkGroup, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.DeleteTaskWorkGroup, { id: String(taskId) }),
+  )
 
 export const updateTaskAssigneeUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.UpdateTaskAssignee, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.UpdateTaskAssignee, { id: String(taskId) }),
+  )
 
 export const createTaskCommentUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.CreateTaskComment, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.CreateTaskComment, { id: String(taskId) }),
+  )
 
 export const getTaskCommentListUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.GetTaskCommentList, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.GetTaskCommentList, { id: String(taskId) }),
+  )
 
 export const createTaskReclassificationRequestUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.CreateReclassificationRequest, {
-    id: String(taskId),
-  })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.CreateReclassificationRequest, {
+      id: String(taskId),
+    }),
+  )
 
 export const getTaskReclassificationRequestUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.GetReclassificationRequest, {
-    id: String(taskId),
-  })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.GetReclassificationRequest, {
+      id: String(taskId),
+    }),
+  )
 
 export const createTaskSuspendRequestUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.CreateTaskSuspendRequest, {
-    id: String(taskId),
-  })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.CreateTaskSuspendRequest, {
+      id: String(taskId),
+    }),
+  )
 
 export const deleteTaskSuspendRequestUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.DeleteTaskSuspendRequest, {
-    id: String(taskId),
-  })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.DeleteTaskSuspendRequest, {
+      id: String(taskId),
+    }),
+  )
 
 export const getTaskJournalUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.GetTaskJournal, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.GetTaskJournal, { id: String(taskId) }),
+  )
 
 export const getTaskJournalCsvUrl = (taskId: number): string =>
-  generatePath(TaskEndpointEnum.GetTaskJournalCsv, { id: String(taskId) })
+  appendSlashAtEnd(
+    generatePath(TaskApiEnum.GetTaskJournalCsv, { id: String(taskId) }),
+  )

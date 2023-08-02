@@ -4,7 +4,7 @@ import {
   AuthSliceState,
   LoginActionPayload,
   RefreshTokenActionPayload,
-} from './interfaces'
+} from './types'
 import authLocalStorageService from './services/authLocalStorage.service'
 import { parseJwt } from './utils'
 

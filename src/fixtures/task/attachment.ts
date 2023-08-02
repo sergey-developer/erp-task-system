@@ -2,7 +2,7 @@ import { TaskAttachmentModel } from 'modules/task/models'
 
 import { fakeIdStr, fakeInteger, fakeUrl, fakeWord } from '_tests_/utils'
 
-export const fakeAttachment = (
+export const attachment = (
   props?: Pick<TaskAttachmentModel, 'externalId'>,
 ): TaskAttachmentModel => ({
   externalId: props?.externalId === '' ? props.externalId : fakeIdStr(),

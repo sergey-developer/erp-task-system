@@ -2,7 +2,7 @@ import React from 'react'
 
 import Spinner, { SpinnerProps } from 'components/Spinner'
 
-import { FCWithChildren } from 'shared/interfaces/utils'
+import { FCWithChildren } from 'shared/types/utils'
 
 type LoadingAreaProps = SpinnerProps & {
   isLoading: boolean

@@ -2,7 +2,6 @@ import { GetTaskJournalSuccessResponse } from 'modules/task/models'
 import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 import {
   getRequestMockFn,
@@ -22,9 +21,9 @@ export const mockGetJournalSuccess = (
   options?: Partial<ResponseResolverOptions<GetTaskJournalSuccessResponse>>,
 ) => getSuccessMockFn(getJournalMockFn(taskId), options)()
 
-export const mockGetJournalServerError = <T extends object>(
+export const mockGetJournalServerError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(getJournalMockFn(taskId), options)()
 
 export const mockGetJournalCsvSuccess = (
@@ -32,7 +31,7 @@ export const mockGetJournalCsvSuccess = (
   options?: Partial<ResponseResolverOptions>,
 ) => getSuccessMockFn(getJournalCsvMockFn(taskId), options)()
 
-export const mockGetJournalCsvServerError = <T extends object>(
+export const mockGetJournalCsvServerError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(getJournalCsvMockFn(taskId), options)()

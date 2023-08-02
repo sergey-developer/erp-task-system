@@ -20,12 +20,12 @@ export const mockTakeTaskSuccess = (
   options?: Partial<ResponseResolverOptions<TakeTaskSuccessResponse>>,
 ) => getSuccessMockFn(takeTaskMockFn(taskId), options)()
 
-export const mockTakeTaskForbiddenError = <T extends object>(
+export const mockTakeTaskForbiddenError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getForbiddenErrorMockFn(takeTaskMockFn(taskId), options)()
 
-export const mockTakeTaskServerError = <T extends object>(
+export const mockTakeTaskServerError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(takeTaskMockFn(taskId), options)()

@@ -2,7 +2,7 @@ import debounce from 'lodash/debounce'
 import { DependencyList, useCallback } from 'react'
 
 import { DOUBLE_CLICK_DEBOUNCE_TIME } from 'shared/constants/common'
-import { AnyFunction } from 'shared/interfaces/utils'
+import { AnyFunction } from 'shared/types/utils'
 
 export const useDebounceFn = <T extends AnyFunction>(
   fn: T,

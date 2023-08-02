@@ -1,11 +1,11 @@
 import { DownloadOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 
-import { IconProps } from './interfaces'
+import { IconProps } from './types'
 import { colorStyles } from './styles'
 
-const DownloadIcon = styled(DownloadOutlined)<Pick<IconProps, '$color'>>`
+const DownloadIconStyled = styled(DownloadOutlined)<Pick<IconProps, '$color'>>`
   ${colorStyles}
 `
 
-export default DownloadIcon
+export default DownloadIconStyled
