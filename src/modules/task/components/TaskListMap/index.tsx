@@ -16,10 +16,9 @@ import { useState, useEffect, useRef, FC } from 'react'
 import { MaybeNull } from 'shared/types/utils'
 import { isTruthy } from 'shared/utils/common'
 
-import { MapWrapperStyled, selectedClusterStyle } from './styles'
 import { FeatureData, TaskListMapProps } from './types'
+import { MapWrapperStyled, selectedClusterStyle } from './styles'
 import {
-  formatCoords,
   getClusterStyle,
   getMarkerStyle,
   getSelectedMarkerStyle,
@@ -64,7 +63,7 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
             geometry as Geometry & { getCoordinates: () => Coordinate }
           ).getCoordinates()
 
-          onClickTask(formatCoords(toLonLat(coords)))
+          onClickTask(toLonLat(coords))
         }
 
         setSelectedFeature(selectedFeature)

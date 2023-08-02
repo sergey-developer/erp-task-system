@@ -6,8 +6,8 @@ import { TaskTypeEnum } from 'modules/task/constants'
 
 import { formatDate } from 'shared/utils/date'
 
-import { AvatarStyled, ListStyled } from './styles'
 import { TaskListProps } from './types'
+import { AvatarStyled, ListStyled } from './styles'
 
 export const taskTypeText: Record<TaskTypeEnum, string> = {
   [TaskTypeEnum.Incident]: 'ИНЦ',
@@ -15,8 +15,6 @@ export const taskTypeText: Record<TaskTypeEnum, string> = {
   [TaskTypeEnum.Request]: 'ЗНО',
   [TaskTypeEnum.RequestTask]: 'ЗДН',
 }
-
-const { Text } = Typography
 
 const TaskList: FC<TaskListProps> = ({
   tasks,
@@ -44,12 +42,14 @@ const TaskList: FC<TaskListProps> = ({
               </AvatarStyled>
             }
             title={
-              <Row gutter={16} justify='space-between'>
-                <Col>{item.name}</Col>
+              <Row gutter={16}>
+                <Col span={14}>{item.name}</Col>
 
                 {item.olaNextBreachTime && (
-                  <Col>
-                    <Text>{formatDate(item.olaNextBreachTime)}</Text>
+                  <Col span={10}>
+                    <Typography.Text>
+                      {formatDate(item.olaNextBreachTime)}
+                    </Typography.Text>
                   </Col>
                 )}
               </Row>
