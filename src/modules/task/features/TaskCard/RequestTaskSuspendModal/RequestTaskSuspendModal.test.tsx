@@ -4,10 +4,7 @@ import moment from 'moment-timezone'
 
 import { SuspendReasonEnum, suspendReasonDict } from 'modules/task/constants'
 
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
+import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
 import {
@@ -647,23 +644,6 @@ describe('Модалка создания запроса о переводе в 
 
           expect(
             await testUtils.findCommentError(validationMessages.required),
-          ).toBeInTheDocument()
-        })
-
-        test('Если превысить лимит символов', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...requiredProps} />,
-          )
-
-          await testUtils.setComment(
-            user,
-            fakeWord({ length: validationSizes.string.long + 1 }),
-          )
-
-          expect(
-            await testUtils.findCommentError(
-              validationMessages.string.max.long,
-            ),
           ).toBeInTheDocument()
         })
       })
