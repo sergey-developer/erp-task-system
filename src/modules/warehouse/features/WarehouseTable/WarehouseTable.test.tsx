@@ -26,10 +26,10 @@ import {
 import WarehouseTable from './index'
 import { WarehouseTableItem, WarehouseTableProps } from './interfaces'
 
-const fakeWarehouseListItem = warehouseFixtures.warehouseListItem()
+const warehouseListItem = warehouseFixtures.warehouseListItem()
 
 const props: Readonly<WarehouseTableProps> = {
-  dataSource: [fakeWarehouseListItem],
+  dataSource: [warehouseListItem],
   loading: false,
   onChange: jest.fn(),
 }
@@ -154,16 +154,16 @@ describe('Таблица складов', () => {
         const headCell = testUtils.getHeadCell('Наименование объекта')
         const title = testUtils.getColTitle('Наименование объекта')
         const link = testUtils.getTitleLink(
-          fakeWarehouseListItem.id,
-          fakeWarehouseListItem.title,
+          warehouseListItem.id,
+          warehouseListItem.title,
         )
 
         expect(title).toBeInTheDocument()
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute(
           'href',
-          `${getWarehousePageLink(fakeWarehouseListItem.id)}?name=${
-            fakeWarehouseListItem.title
+          `${getWarehousePageLink(warehouseListItem.id)}?name=${
+            warehouseListItem.title
           }`,
         )
         expect(headCell).toHaveClass(columnWithSortingClass)
@@ -187,8 +187,8 @@ describe('Таблица складов', () => {
 
         await testUtils.clickTitleLink(
           user,
-          fakeWarehouseListItem.id,
-          fakeWarehouseListItem.title,
+          warehouseListItem.id,
+          warehouseListItem.title,
         )
 
         const warehousePage = warehousePageTestUtils.getContainer()
@@ -266,8 +266,8 @@ describe('Таблица складов', () => {
         const headCell = testUtils.getHeadCell('Юридическое лицо')
         const title = testUtils.getColTitle('Юридическое лицо')
         const value = testUtils.getColValue(
-          fakeWarehouseListItem.id,
-          fakeWarehouseListItem.legalEntity.title,
+          warehouseListItem.id,
+          warehouseListItem.legalEntity.title,
         )
 
         expect(title).toBeInTheDocument()
@@ -347,8 +347,8 @@ describe('Таблица складов', () => {
         const headCell = testUtils.getHeadCell('Адрес')
         const title = testUtils.getColTitle('Адрес')
         const value = testUtils.getColValue(
-          fakeWarehouseListItem.id,
-          fakeWarehouseListItem.address,
+          warehouseListItem.id,
+          warehouseListItem.address,
         )
 
         expect(title).toBeInTheDocument()
@@ -428,8 +428,8 @@ describe('Таблица складов', () => {
         const headCell = testUtils.getHeadCell('Родительский склад')
         const title = testUtils.getColTitle('Родительский склад')
         const value = testUtils.getColValue(
-          fakeWarehouseListItem.id,
-          fakeWarehouseListItem.parent!.title,
+          warehouseListItem.id,
+          warehouseListItem.parent!.title,
         )
 
         expect(title).toBeInTheDocument()

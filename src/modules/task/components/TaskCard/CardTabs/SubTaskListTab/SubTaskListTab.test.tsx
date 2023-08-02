@@ -631,8 +631,8 @@ describe('Вкладка списка заданий', () => {
     })
 
     describe('При не успешной отправке данных', () => {
-      test('Обрабатывается ошибка - 400', async () => {
-        const subTask = subTaskFixtures.subTask({
+      test('Обрабатывается ошибка 400', async () => {
+        const subTask = subTaskFixtures.fakeSubTask({
           status: activeReworkButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -672,8 +672,8 @@ describe('Вкладка списка заданий', () => {
         ).toBeInTheDocument()
       })
 
-      test('Обрабатывается ошибка - 500', async () => {
-        const subTask = subTaskFixtures.subTask({
+      test('Обрабатывается ошибка 500', async () => {
+        const subTask = subTaskFixtures.fakeSubTask({
           status: activeReworkButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -899,8 +899,8 @@ describe('Вкладка списка заданий', () => {
     })
 
     describe('При не успешной отправке данных', () => {
-      test('Обрабатывается ошибка - 400', async () => {
-        const subTask = subTaskFixtures.subTask({
+      test('Обрабатывается ошибка 400', async () => {
+        const subTask = subTaskFixtures.fakeSubTask({
           status: activeCancelButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -939,8 +939,8 @@ describe('Вкладка списка заданий', () => {
         expect(notification).toBeInTheDocument()
       })
 
-      test('Обрабатывается ошибка - 500', async () => {
-        const subTask = subTaskFixtures.subTask({
+      test('Обрабатывается ошибка 500', async () => {
+        const subTask = subTaskFixtures.fakeSubTask({
           status: activeCancelButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
