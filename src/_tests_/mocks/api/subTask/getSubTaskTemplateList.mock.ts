@@ -1,8 +1,7 @@
 import { GetSubTaskTemplateListSuccessResponse } from 'modules/subTask/models'
-import { getSubTaskTemplateListUrl } from 'modules/subTask/utils/apiUrls'
+import { getSubTaskTemplateListUrl } from 'modules/subTask/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
 
 import {
   getRequestMockFn,
@@ -20,6 +19,6 @@ export const mockGetSubTaskTemplateListSuccess = (
   >,
 ) => getSuccessMockFn(getSubTaskTemplateListMockFn(), options)()
 
-export const mockGetSubTaskTemplateListServerError = <T extends object>(
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+export const mockGetSubTaskTemplateListServerError = (
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(getSubTaskTemplateListMockFn(), options)()

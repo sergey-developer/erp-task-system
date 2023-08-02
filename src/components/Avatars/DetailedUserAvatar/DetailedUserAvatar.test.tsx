@@ -19,7 +19,7 @@ import { render, renderInRoute, setupApiTests } from '_tests_/utils'
 import DetailedUserAvatar, { DetailedUserAvatarProps } from './index'
 
 const props: Pick<DetailedUserAvatarProps, 'profile'> = {
-  profile: userFixtures.fakeUser(),
+  profile: userFixtures.user(),
 }
 
 const getContainer = () => screen.getByTestId('detailed-user-avatar')
@@ -74,7 +74,7 @@ describe('Детальный аватар пользователя', () => {
     test('При нажатии переходит на страницу смены пароля', async () => {
       mockGetUserMeCodeSuccess()
       mockGetTimeZoneListSuccess()
-      mockGetUserMeSuccess({ body: userFixtures.fakeUser() })
+      mockGetUserMeSuccess({ body: userFixtures.user() })
 
       const { user, checkRouteChanged, getCurrentRoute } = renderInRoute(
         <PrivateApp />,

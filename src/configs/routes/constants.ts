@@ -9,7 +9,9 @@ export enum RouteEnum {
   ChangePassword = '/password/change',
 
   // task routes
-  TaskList = '/tasks',
+  Tasks = '/tasks',
+  TaskList = '/tasks/list',
+  TaskListMap = '/tasks/map',
   FiscalAccumulatorTaskList = '/tasks/fiscal-accumulators',
 
   // work group routes

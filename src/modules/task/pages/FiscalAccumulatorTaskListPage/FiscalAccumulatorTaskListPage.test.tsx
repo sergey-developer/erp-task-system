@@ -1,5 +1,5 @@
 import { getFiscalAccumulatorTaskListMessages } from 'modules/task/constants'
-import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/task/features/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
+import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/task/components/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
 
 import taskFixtures from 'fixtures/task'
 
@@ -23,7 +23,7 @@ describe('Страница заявок фискальных накопител�
   describe('При успешном запросе', () => {
     test('Таблица отображается корректно', async () => {
       const fakeFiscalAccumulatorTaskLists = [
-        taskFixtures.fakeFiscalAccumulatorTaskListItem(),
+        taskFixtures.fiscalAccumulatorTaskListItem(),
       ]
       mockGetFiscalAccumulatorTaskListSuccess({
         body: fakeFiscalAccumulatorTaskLists,
@@ -52,11 +52,11 @@ describe('Страница заявок фискальных накопител�
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
-      const error = await findNotification(
+      const notification = await findNotification(
         getFiscalAccumulatorTaskListMessages.commonError,
       )
 
-      expect(error).toBeInTheDocument()
+      expect(notification).toBeInTheDocument()
     })
   })
 })

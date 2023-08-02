@@ -1,7 +1,7 @@
 import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
 
-import { userApiMessages } from 'modules/user/constants/errorMessages'
+import { getUserMeMessages } from "modules/user/constants";
 import { useGetUserMeQuery } from 'modules/user/services/userApi.service'
 
 import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/api'
@@ -20,7 +20,7 @@ export const useGetUserMe = (): TypedUseQueryHookResult<
     if (!state.isError) return
 
     if (isErrorResponse(state.error)) {
-      showErrorNotification(userApiMessages.getMe.commonError)
+      showErrorNotification(getUserMeMessages.commonError)
     }
   }, [state.error, state.isError])
 

@@ -2,7 +2,7 @@ import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { MaybeNull, NumberOrString } from 'shared/interfaces/utils'
+import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 export const getSelect = (container: HTMLElement, opts?: ByRoleOptions) =>
   within(container).getByRole('combobox', opts)

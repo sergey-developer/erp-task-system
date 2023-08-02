@@ -1,9 +1,9 @@
+import isEqual from 'lodash/isEqual'
 import { useMemo } from 'react'
 
 import { TaskStatusEnum } from 'modules/task/constants'
 
-import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/interfaces/utils'
-import { isEqual } from 'shared/utils/common/isEqual'
+import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/types/utils'
 
 export const useTaskStatus = (
   status: MaybeUndefined<TaskStatusEnum>,

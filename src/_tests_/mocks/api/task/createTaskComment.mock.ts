@@ -27,17 +27,17 @@ export const mockCreateTaskCommentBadRequestError = <T extends object>(
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(createTaskCommentMockFn(taskId), options)()
 
-export const mockCreateTaskCommentNotFoundError = <T extends object>(
+export const mockCreateTaskCommentNotFoundError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getNotFoundErrorMockFn(createTaskCommentMockFn(taskId), options)()
 
-export const mockCreateTaskCommentForbiddenError = <T extends object>(
+export const mockCreateTaskCommentForbiddenError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getForbiddenErrorMockFn(createTaskCommentMockFn(taskId), options)()
 
-export const mockCreateTaskCommentServerError = <T extends object>(
+export const mockCreateTaskCommentServerError = (
   taskId: number,
-  options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
+  options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(createTaskCommentMockFn(taskId), options)()

@@ -1,6 +1,6 @@
 import {
   TaskExtendedStatusEnum,
-  TaskEndpointNameEnum,
+  TaskApiTriggerEnum,
 } from 'modules/task/constants'
 import {
   CreateTaskReclassificationRequestMutationArgs,
@@ -35,7 +35,7 @@ const taskReclassificationRequestApiService = taskApiService.injectEndpoints({
 
           dispatch(
             taskApiService.util.updateQueryData(
-              TaskEndpointNameEnum.GetTask as never,
+              TaskApiTriggerEnum.GetTask as never,
               taskId as never,
               (task: GetTaskSuccessResponse) => {
                 task.extendedStatus = TaskExtendedStatusEnum.InReclassification

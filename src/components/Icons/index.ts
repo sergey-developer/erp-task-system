@@ -1,4 +1,4 @@
-export * from './interfaces'
+export * from './types'
 
 export { default as UpIcon } from './UpIcon'
 export { default as DownIcon } from './DownIcon'

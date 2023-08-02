@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom'
 
-import { MonitoringEndpointEnum } from 'modules/monitoring/constants/api'
+import { MonitoringApiEnum } from 'modules/monitoring/constants'
 
 export const getTaskMonitoringUrl = (recordId: string): string =>
-  generatePath(MonitoringEndpointEnum.GetTaskMonitoring, { recordId })
+  generatePath(MonitoringApiEnum.GetTaskMonitoring, { recordId })

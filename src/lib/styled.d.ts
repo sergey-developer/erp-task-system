@@ -16,6 +16,8 @@ declare module 'styled-components' {
       aliceBlue: string
       cosmicLatte: string
       crayola: string
+      darkTangerine: string
+      unitedNationsBlue: string
     }
     shadows: {
       shadow1: string

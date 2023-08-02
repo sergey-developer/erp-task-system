@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { taskApiMessages } from 'modules/task/constants'
+import { resolveTaskMessages } from 'modules/task/constants'
 import { ResolveTaskMutationArgs } from 'modules/task/models'
 import { taskResolutionApiPermissions } from 'modules/task/permissions'
 import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
@@ -33,7 +33,7 @@ export const useResolveTask = () => {
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(taskApiMessages.resolveTask.commonError)
+        showErrorNotification(resolveTaskMessages.commonError)
       }
     }
   }, [state.error, state.isError])

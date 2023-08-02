@@ -1,49 +1,58 @@
-export const taskApiMessages = {
-  resolveTask: {
-    commonError: 'Невозможно выполнить заявку',
-  },
-} as const
+import { ApiRequestMessages } from 'shared/types/messages'
 
-export const getTaskWorkPerformedActMessages = {
-  commonError: 'Ошибка формирования акта выполненных работ',
-} as const
+export const resolveTaskMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Невозможно выполнить заявку',
+}
 
-export const taskCommentApiMessages = {
-  createComment: {
-    commonError: 'Возникла ошибка при добавлении комментария',
-  },
-} as const
+export const getTaskMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения заявки',
+}
 
-export const taskWorkGroupApiMessages = {
-  updateWorkGroup: {
-    commonError: 'Возникла ошибка при назначении рабочей группы',
-  },
-} as const
+export const getTaskListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка заявок',
+}
 
-export const reclassificationRequestApiMessages = {
-  createRequest: {
+export const getTaskListMapMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка заявок для карты',
+}
+
+export const getTaskWorkPerformedActMessages: ApiRequestMessages<'commonError'> =
+  {
+    commonError: 'Ошибка формирования акта выполненных работ',
+  }
+
+export const createTaskCommentMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Возникла ошибка при добавлении комментария',
+}
+
+export const updateTaskWorkGroupMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Возникла ошибка при назначении рабочей группы',
+}
+
+export const createReclassificationRequestMessages: ApiRequestMessages<'notFoundError'> =
+  {
     notFoundError:
       'Невозможно создать запрос на переклассификацию - заявка не найдена',
-  },
-} as const
+  }
 
-export const suspendRequestApiMessages = {
-  createRequest: {
-    notFoundError: 'Невозможно перевести заявку в ожидание - заявка не найдена',
-    badRequestError:
-      'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
-  },
-  deleteRequest: {
+export const createSuspendRequestMessages: ApiRequestMessages<
+  'notFoundError' | 'badRequestError'
+> = {
+  notFoundError: 'Невозможно перевести заявку в ожидание - заявка не найдена',
+  badRequestError:
+    'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
+}
+
+export const deleteSuspendRequestMessages: ApiRequestMessages<'notFoundError'> =
+  {
     notFoundError: 'Заявка не найдена или не находится в ожидании',
-  },
-} as const
+  }
 
-export const taskAssigneeApiMessages = {
-  updateAssignee: {
-    commonError: 'Невозможно изменить исполнителя',
-  },
-} as const
+export const updateTaskAssigneeMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Невозможно изменить исполнителя',
+}
 
-export const getFiscalAccumulatorTaskListMessages = {
-  commonError: 'Ошибка получения списка задач по фискальным накопителям',
-} as const
+export const getFiscalAccumulatorTaskListMessages: ApiRequestMessages<'commonError'> =
+  {
+    commonError: 'Ошибка получения списка задач по фискальным накопителям',
+  }

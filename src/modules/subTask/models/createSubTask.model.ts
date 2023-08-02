@@ -1,5 +1,5 @@
 import { SubTaskModel } from 'modules/subTask/models'
-import { BaseTaskRequestArgs } from 'modules/task/interfaces'
+import { BaseTaskRequestArgs } from 'modules/task/types'
 
 export type CreateSubTaskMutationArgs = BaseTaskRequestArgs & {
   title: string
