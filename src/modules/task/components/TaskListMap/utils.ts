@@ -1,3 +1,4 @@
+import { Coordinate } from 'ol/coordinate'
 import { Circle, Fill, Style, Text } from 'ol/style'
 
 import { TaskTypeEnum } from 'modules/task/constants'
@@ -11,6 +12,19 @@ import {
   selectedIncidentTaskOrRequestTaskMarkerStyle,
   selectedRequestMarkerStyle,
 } from './styles'
+
+export const formatCoords = (coords: Coordinate, maxFractionDigits = 8) => [
+  Number(
+    coords[0].toLocaleString(undefined, {
+      maximumFractionDigits: maxFractionDigits,
+    }),
+  ),
+  Number(
+    coords[1].toLocaleString(undefined, {
+      maximumFractionDigits: maxFractionDigits,
+    }),
+  ),
+]
 
 export const getClusterStyle = (size: number): Style =>
   new Style({
