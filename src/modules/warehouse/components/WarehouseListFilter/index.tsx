@@ -14,7 +14,7 @@ import { selectFieldNames } from './constants'
 import {
   WarehouseListFilterFormFields,
   WarehouseListFilterProps,
-} from './interfaces'
+} from './types'
 
 const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
   visible,

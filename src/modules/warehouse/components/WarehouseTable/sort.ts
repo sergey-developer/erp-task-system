@@ -3,7 +3,7 @@ import {
   GetWarehouseListSortValue,
 } from 'modules/warehouse/models'
 
-import { WarehouseTableItem } from './interfaces'
+import { WarehouseTableItem } from './types'
 
 export type SortableField = keyof Pick<
   WarehouseTableItem,

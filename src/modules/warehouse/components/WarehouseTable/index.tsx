@@ -3,7 +3,7 @@ import { FC, useMemo } from 'react'
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
 import { columns } from './columns'
-import { WarehouseTableItem, WarehouseTableProps } from './interfaces'
+import { WarehouseTableItem, WarehouseTableProps } from './types'
 import { applySort } from './utils'
 
 const WarehouseTable: FC<WarehouseTableProps> = ({ sort, ...props }) => {

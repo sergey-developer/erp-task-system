@@ -24,7 +24,7 @@ import {
 } from '_tests_/utils'
 
 import WarehouseTable from './index'
-import { WarehouseTableItem, WarehouseTableProps } from './interfaces'
+import { WarehouseTableItem, WarehouseTableProps } from './types'
 
 const warehouseListItem = warehouseFixtures.warehouseListItem()
 
