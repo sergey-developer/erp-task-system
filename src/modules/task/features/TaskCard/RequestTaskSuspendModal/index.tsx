@@ -18,12 +18,15 @@ import { SuspendReasonEnum, suspendReasonDict } from 'modules/task/constants'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { validationRules } from 'shared/constants/validation'
-
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import { RequestTaskSuspendFormFields } from './interfaces'
 import { DatePickerStyled, TimePickerStyled } from './styles'
-import { END_DATE_RULES, END_TIME_RULES, REASON_RULES } from './validation'
+import {
+  commentRules,
+  END_DATE_RULES,
+  END_TIME_RULES,
+  REASON_RULES,
+} from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -150,7 +153,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           data-testid='comment'
           label='Комментарий'
           name='comment'
-          rules={[validationRules.string.long]}
+          rules={commentRules}
         >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>

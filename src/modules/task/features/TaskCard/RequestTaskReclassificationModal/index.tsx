@@ -14,11 +14,9 @@ import { TaskModel } from 'modules/task/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { validationRules } from 'shared/constants/validation'
-
 import { reclassificationReasonLabels } from './constants'
 import { RequestTaskReclassificationFormFields } from './interfaces'
-import { RECLASSIFICATION_REASON_RULES } from './validation'
+import { commentRules, RECLASSIFICATION_REASON_RULES } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -105,7 +103,7 @@ const RequestTaskReclassificationModal: FC<
           data-testid='comment'
           label='Комментарий'
           name='comment'
-          rules={[validationRules.string.long]}
+          rules={commentRules}
         >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>

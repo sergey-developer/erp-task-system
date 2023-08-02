@@ -1,16 +1,18 @@
 import { PaperClipOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Upload } from 'antd'
 import stubFalse from 'lodash/stubFalse'
+import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
 import Space from 'components/Space'
 
-import { validationRules } from 'shared/constants/validation'
 import { getFilesFromEvent } from 'shared/utils/form'
 
 import { CreateCommentFormFields, CreateCommentFormProps } from './interfaces'
 
 const { TextArea } = Input
+
+const commentValidationRules: Rule[] = [{ required: true, whitespace: true }]
 
 const CreateCommentForm: FC<CreateCommentFormProps> = ({
   onSubmit,
@@ -37,7 +39,7 @@ const CreateCommentForm: FC<CreateCommentFormProps> = ({
         <Form.Item
           data-testid='comment-form-item'
           name='comment'
-          rules={[validationRules.string.long]}
+          rules={commentValidationRules}
         >
           <TextArea
             placeholder='Дополните информацию о заявке'
