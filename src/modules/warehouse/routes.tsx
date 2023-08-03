@@ -1,21 +1,20 @@
 import React from 'react'
-import { Navigate, Outlet, RouteObject } from 'react-router-dom'
+import { Link, Navigate, Outlet, RouteObject } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
 import Breadcrumbs from 'components/Breadcrumbs'
 import Space from 'components/Space'
 
-import WarehouseCatalogListPageBreadcrumb from './pages/WarehouseCatalogListPage/Breadcrumb'
-import WarehouseListPageBreadcrumb from './pages/WarehouseListPage/Breadcrumb'
-
 const WarehouseCatalogListPage = React.lazy(
   () => import('./pages/WarehouseCatalogListPage'),
 )
-
 const WarehouseListPage = React.lazy(() => import('./pages/WarehouseListPage'))
-
 const WarehousePage = React.lazy(() => import('./pages/WarehousePage'))
+
+const NomenclatureListPage = React.lazy(
+  () => import('./pages/NomenclatureListPage'),
+)
 
 export const manageWarehousesRoute: Readonly<RouteObject> = {
   path: RouteEnum.ManageWarehouses,
@@ -33,7 +32,7 @@ export const manageWarehousesRoute: Readonly<RouteObject> = {
     {
       path: RouteEnum.WarehouseCatalogList,
       handle: {
-        crumb: WarehouseCatalogListPageBreadcrumb,
+        crumb: () => <Link to={RouteEnum.WarehouseCatalogList}>Справочники</Link>,
       },
       children: [
         {
@@ -43,7 +42,7 @@ export const manageWarehousesRoute: Readonly<RouteObject> = {
         {
           path: RouteEnum.WarehouseList,
           handle: {
-            crumb: WarehouseListPageBreadcrumb,
+            crumb: () => <Link to={RouteEnum.WarehouseList}>Склады</Link>,
           },
           children: [
             {
@@ -56,6 +55,18 @@ export const manageWarehousesRoute: Readonly<RouteObject> = {
               handle: {
                 crumb: ({ qs }: { qs: URLSearchParams }) => qs.get('name'),
               },
+            },
+          ],
+        },
+        {
+          path: RouteEnum.NomenclatureList,
+          handle: {
+            crumb: () => <Link to={RouteEnum.NomenclatureList}>Номенклатура</Link>,
+          },
+          children: [
+            {
+              index: true,
+              element: <NomenclatureListPage />,
             },
           ],
         },
