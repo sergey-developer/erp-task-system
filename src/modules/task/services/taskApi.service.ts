@@ -1,11 +1,11 @@
 import { decamelize } from 'humps'
+import isNumber from 'lodash/isNumber'
 
 import {
   TaskApiEnum,
   TaskApiTriggerEnum,
   TaskApiTagEnum,
 } from 'modules/task/constants'
-import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
   GetFiscalAccumulatorTaskListQueryArgs,
   GetFiscalAccumulatorTaskListSuccessResponse,
@@ -24,6 +24,7 @@ import {
   TakeTaskMutationArgs,
   TakeTaskSuccessResponse,
 } from 'modules/task/models'
+import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
   getTaskUrl,
   resolveTaskUrl,
@@ -49,7 +50,7 @@ const taskApiService = baseApiService.injectEndpoints({
       transformResponse: (response: GetTaskListSuccessResponse, meta, arg) => {
         return {
           pagination:
-            arg?.offset && arg?.limit
+            isNumber(arg?.offset) && arg?.limit
               ? {
                   current: arg.offset / arg.limit + 1,
                   pageSize: arg.limit,
