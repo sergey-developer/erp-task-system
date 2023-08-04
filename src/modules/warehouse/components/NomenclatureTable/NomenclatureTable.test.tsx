@@ -1,36 +1,23 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { RouteEnum } from 'configs/routes'
-
-import WarehousePage from 'modules/warehouse/pages/WarehousePage'
-import { testUtils as warehousePageTestUtils } from 'modules/warehouse/pages/WarehousePage/WarehousePage.test'
-import { getWarehousePageLink } from 'modules/warehouse/utils'
-
 import { MaybeNull } from 'shared/types/utils'
 
-import warehouseFixtures from 'fixtures/warehouse'
-
-import {
-  ariaSortAttrAscValue,
-  ariaSortAttrDescValue,
-  ariaSortAttrName,
-  columnWithSortingClass,
-} from '_tests_/constants/components'
 import {
   expectLoadingFinishedByIconIn,
-  expectLoadingStartedByIconIn, fakeInteger, fakeWord,
-  renderInRoute_latest
-} from "_tests_/utils";
+  expectLoadingStartedByIconIn,
+  fakeInteger,
+  fakeWord,
+  render,
+} from '_tests_/utils'
 
-import WarehouseTable from './index'
+import NomenclatureTable from './index'
 import { NomenclatureTableItem, NomenclatureTableProps } from './types'
-import NomenclatureTable from "./index";
 
 const nomenclatureListItem = {
   id: 1,
   title: fakeWord(),
-  vendorCode: fakeInteger()
+  vendorCode: fakeInteger(),
 }
 
 const props: Readonly<NomenclatureTableProps> = {
@@ -70,27 +57,6 @@ const getColValue = (
   return row ? within(row).getByText(value) : null
 }
 
-// title
-const getTitleLink = (
-  id: NomenclatureTableItem['id'],
-  title: string,
-): MaybeNull<HTMLElement> => {
-  const row = getRow(id)
-  return row ? within(row).getByRole('link', { name: title }) : null
-}
-
-const clickTitleLink = async (
-  user: UserEvent,
-  id: NomenclatureTableItem['id'],
-  title: string,
-) => {
-  const link = getTitleLink(id, title)
-
-  if (link) {
-    await user.click(link)
-  }
-}
-
 // loading
 const expectLoadingStarted = () => expectLoadingStartedByIconIn(getContainer())
 
@@ -108,24 +74,13 @@ export const testUtils = {
   queryColTitle,
   clickColTitle,
 
-  getTitleLink,
-  clickTitleLink,
-
   expectLoadingStarted,
   expectLoadingFinished,
 }
 
 describe('Таблица номенклатуры', () => {
   test('Отображается корректно', () => {
-    renderInRoute_latest(
-      [
-        {
-          path: RouteEnum.NomenclatureList,
-          element: <NomenclatureTable {...props} />,
-        },
-      ],
-      { initialEntries: [RouteEnum.NomenclatureList] },
-    )
+    render(<NomenclatureTable {...props} />)
 
     const table = testUtils.getContainer()
 
@@ -138,33 +93,18 @@ describe('Таблица номенклатуры', () => {
   })
 
   describe('Колонка', () => {
-    describe('Наименование объекта', () => {
+    describe('Наименование', () => {
       test('Отображается корректно', () => {
-        renderInRoute_latest(
-          [
-            {
-              path: RouteEnum.WarehouseList,
-              element: <WarehouseTable {...props} />,
-            },
-          ],
-          { initialEntries: [RouteEnum.WarehouseList] },
-        )
+        render(<NomenclatureTable {...props} />)
 
-        // const headCell = testUtils.getHeadCell('Наименование объекта')
-        const title = testUtils.getColTitle('Наименование объекта')
-        const link = testUtils.getTitleLink(
+        const title = testUtils.getColTitle('Наименование')
+        const value = testUtils.getColValue(
           nomenclatureListItem.id,
           nomenclatureListItem.title,
         )
 
         expect(title).toBeInTheDocument()
-        expect(link).toBeInTheDocument()
-        // expect(link).toHaveAttribute(
-        //   'href',
-        //   `${getWarehousePageLink(warehouseListItem.id)}?name=${
-        //     warehouseListItem.title
-        //   }`,
-        // )
+        expect(value).toBeInTheDocument()
       })
 
       test.todo('При клике открывается модалка')
@@ -172,18 +112,9 @@ describe('Таблица номенклатуры', () => {
 
     describe('Юридическое лицо', () => {
       test('Отображается корректно', () => {
-        renderInRoute_latest(
-          [
-            {
-              path: RouteEnum.NomenclatureList,
-              element: <NomenclatureTable {...props} />,
-            },
-          ],
-          { initialEntries: [RouteEnum.NomenclatureList] },
-        )
+        render(<NomenclatureTable {...props} />)
 
-        // const headCell = testUtils.getHeadCell('Юридическое лицо')
-        const title = testUtils.getColTitle('Юридическое лицо')
+        const title = testUtils.getColTitle('Артикул')
         const value = testUtils.getColValue(
           nomenclatureListItem.id,
           String(nomenclatureListItem.vendorCode),
