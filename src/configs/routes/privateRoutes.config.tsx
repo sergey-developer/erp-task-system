@@ -4,6 +4,7 @@ import { Navigate, RouteObject } from 'react-router-dom'
 import { routes as staffRoutes } from 'modules/monitoring/routes'
 import { routes as taskRoutes } from 'modules/task/routes'
 import { UserModel } from 'modules/user/models'
+import { manageWarehousesRoute } from 'modules/warehouse/routes'
 
 import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
@@ -13,6 +14,8 @@ import { RouteEnum } from './constants'
 const ChangePasswordPage = React.lazy(
   () => import('modules/auth/pages/ChangePasswordPage'),
 )
+
+// todo: разделить роуты по модулям
 
 export const getPrivateRoutesConfig = ({
   isStaff,
@@ -30,6 +33,7 @@ export const getPrivateRoutesConfig = ({
         path: RouteEnum.ChangePassword,
         element: <ChangePasswordPage />,
       },
+      manageWarehousesRoute,
       ...(isStaff ? staffRoutes : []),
       {
         path: RouteEnum.NotFound,

@@ -1066,7 +1066,7 @@ describe('Модалка создания задачи заявки', () => {
     })
 
     describe('При не успешном создании', () => {
-      test('Обрабатывается ошибка клиента', async () => {
+      test('Обрабатывается ошибка 400', async () => {
         const fakeSupportGroupListItem =
           supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
@@ -1116,7 +1116,7 @@ describe('Модалка создания задачи заявки', () => {
         expect(notification).toBeInTheDocument()
       })
 
-      test('Обрабатывается ошибка сервера', async () => {
+      test('Обрабатывается ошибка 500', async () => {
         const fakeSupportGroupListItem =
           supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })

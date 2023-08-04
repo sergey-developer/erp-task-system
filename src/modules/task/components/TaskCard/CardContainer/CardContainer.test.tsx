@@ -362,7 +362,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         describe('При не успешном запросе', () => {
-          test('Корректно обрабатывается ошибка - 404', async () => {
+          test('Обрабатывается ошибка 404', async () => {
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
@@ -661,7 +661,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         describe('При не успешном запросе', () => {
-          test('Корректно обрабатывается ошибка - 404', async () => {
+          test('Обрабатывается ошибка 404', async () => {
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
@@ -860,7 +860,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         describe('При не успешном запросе', () => {
-          test('Корректно обрабатывается ошибка - 404', async () => {
+          test('Обрабатывается ошибка 404', async () => {
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
@@ -1527,7 +1527,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1546,7 +1546,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1565,7 +1565,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1667,7 +1667,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1686,7 +1686,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1704,7 +1704,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1806,7 +1806,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1825,7 +1825,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1843,7 +1843,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1945,7 +1945,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1965,7 +1965,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1983,7 +1983,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 

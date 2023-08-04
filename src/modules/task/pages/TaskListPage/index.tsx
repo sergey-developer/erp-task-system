@@ -15,12 +15,11 @@ import isEqual from 'lodash/isEqual'
 import { GetComponentProps } from 'rc-table/es/interface'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
-import ExtendedFilter, {
-  ExtendedFilterProps,
-} from 'modules/task/components/ExtendedFilter'
+import ExtendedFilter from 'modules/task/components/ExtendedFilter'
 import { initialExtendedFilterFormValues } from 'modules/task/components/ExtendedFilter/constants'
 import {
   ExtendedFilterFormFields,
+  ExtendedFilterProps,
   ExtendedFilterQueries,
 } from 'modules/task/components/ExtendedFilter/types'
 import FastFilterList from 'modules/task/components/FastFilterList'
@@ -38,7 +37,8 @@ import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 
-import { FilterIcon, SyncIcon } from 'components/Icons'
+import FilterButton from 'components/Buttons/FilterButton'
+import { SyncIcon } from 'components/Icons'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks'
@@ -294,17 +294,14 @@ const TaskListPage: FC = () => {
                   />
                 </Col>
 
-                <Col xl={5} xxl={3}>
-                  <Button
-                    icon={<FilterIcon $size='large' />}
-                    onClick={debouncedToggleOpenExtendedFilter}
-                    disabled={taskListIsFetching || searchFilterApplied}
-                  >
-                    Фильтры
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
+              <Col xl={5} xxl={3}>
+                <FilterButton
+                  onClick={debouncedToggleOpenExtendedFilter}
+                  disabled={taskListIsFetching || searchFilterApplied}
+                />
+              </Col>
+            </Row>
+          </Col>
 
             <Col span={8}>
               <Row justify='end' gutter={[16, 8]}>

@@ -14,7 +14,6 @@ import authLocalStorageService from 'modules/auth/services/authLocalStorage.serv
 import { setupStore } from 'state/store'
 
 import { commonApiMessages } from 'shared/constants/errors'
-import { HttpCodeEnum } from 'shared/constants/http'
 import { validationMessages } from 'shared/constants/validation'
 
 import authFixtures from 'fixtures/auth'
@@ -310,7 +309,7 @@ describe('Страница авторизации', () => {
       expect(checkRouteChanged()).toBe(false)
     })
 
-    test(`Корректно обрабатывается ошибка ${HttpCodeEnum.BadRequest}`, async () => {
+    test('Обрабатывается ошибка 400', async () => {
       mockLoginBadRequestError()
 
       const { user } = render(<LoginPage />)
@@ -326,7 +325,7 @@ describe('Страница авторизации', () => {
       ).toBeInTheDocument()
     })
 
-    test(`Корректно обрабатывается ошибка ${HttpCodeEnum.Unauthorized}`, async () => {
+    test('Обрабатывается ошибка 401', async () => {
       mockLoginUnauthorizedError()
       mockRefreshTokenSuccess()
 
@@ -343,7 +342,7 @@ describe('Страница авторизации', () => {
       ).toBeInTheDocument()
     })
 
-    test(`Корректно обрабатывается ошибка ${HttpCodeEnum.ServerError}`, async () => {
+    test('Обрабатывается ошибка 500', async () => {
       mockLoginServerError()
 
       const { user } = render(<LoginPage />)

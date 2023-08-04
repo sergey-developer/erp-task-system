@@ -3,24 +3,34 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { RouteEnum } from 'configs/routes'
 
+import WarehousePage from 'modules/warehouse/pages/WarehousePage'
+import { testUtils as warehousePageTestUtils } from 'modules/warehouse/pages/WarehousePage/WarehousePage.test'
+import { getWarehousePageLink } from 'modules/warehouse/utils'
+
 import { MaybeNull } from 'shared/types/utils'
 
+import warehouseFixtures from 'fixtures/warehouse'
+
+import {
+  ariaSortAttrAscValue,
+  ariaSortAttrDescValue,
+  ariaSortAttrName,
+  columnWithSortingClass,
+} from '_tests_/constants/components'
 import {
   expectLoadingFinishedByIconIn,
-  expectLoadingStartedByIconIn,
-  fakeInteger,
-  fakeWord,
-  renderInRoute_latest,
-} from '_tests_/utils'
+  expectLoadingStartedByIconIn, fakeInteger, fakeWord,
+  renderInRoute_latest
+} from "_tests_/utils";
 
 import WarehouseTable from './index'
-import NomenclatureTable from './index'
 import { NomenclatureTableItem, NomenclatureTableProps } from './types'
+import NomenclatureTable from "./index";
 
 const nomenclatureListItem = {
   id: 1,
   title: fakeWord(),
-  vendorCode: fakeInteger(),
+  vendorCode: fakeInteger()
 }
 
 const props: Readonly<NomenclatureTableProps> = {
