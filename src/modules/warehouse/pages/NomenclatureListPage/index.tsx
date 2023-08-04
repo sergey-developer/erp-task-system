@@ -1,4 +1,4 @@
-import { Menu, MenuProps, Input, Button } from 'antd'
+import { Menu, Input, Button, Row, Col } from 'antd'
 import { FC, useState } from 'react'
 
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
@@ -30,46 +30,47 @@ const { Search } = Input
 const NomenclatureListPage: FC = () => {
   const [activeGroupKey, setActiveGroupKey] = useState<number>()
 
-  const handleClickGroup: MenuProps['onClick'] = ({ key }) => {
-    setActiveGroupKey(Number(key))
-  }
-
   return (
-    <Space $block direction='vertical'>
+    <Space data-testid='nomenclature-list-page' $block direction='vertical' size='large'>
       <Space size='middle'>
         <Search placeholder='Поиск номенклатуры' />
         <Button>+ Добавить группу</Button>
         <Button>+ Добавить номенклатуру</Button>
       </Space>
 
-      <Space $block size='middle'>
-        <Menu
-          style={{ width: 256 }}
-          mode='inline'
-          onClick={handleClickGroup}
-          items={items.map((itm) => ({
-            key: itm.id,
-            label: itm.title,
-            itemIcon: itm.id === activeGroupKey && <EditIcon />,
-          }))}
-        />
+      <Row gutter={16}>
+        <Col span={5}>
+          <Menu
+            data-testid='group-list'
+            mode='inline'
+            items={items.map((itm) => ({
+              key: itm.id,
+              label: itm.title,
+              itemIcon: itm.id === activeGroupKey && <EditIcon />,
+              onMouseEnter: () => setActiveGroupKey(itm.id),
+              onMouseLeave: () => setActiveGroupKey(undefined),
+            }))}
+          />
+        </Col>
 
-        <NomenclatureTable
-          dataSource={[
-            {
-              id: 1,
-              title: 'МФУ лазерный Huawei PixLab V81-WDM2',
-              vendorCode: 2010001401,
-            },
-            {
-              id: 2,
-              title: 'МФУ лазерный Pantum M6550NW',
-              vendorCode: 2010001402,
-            },
-          ]}
-          loading={false}
-        />
-      </Space>
+        <Col span={19}>
+          <NomenclatureTable
+            dataSource={[
+              {
+                id: 1,
+                title: 'МФУ лазерный Huawei PixLab V81-WDM2',
+                vendorCode: 2010001401,
+              },
+              {
+                id: 2,
+                title: 'МФУ лазерный Pantum M6550NW',
+                vendorCode: 2010001402,
+              },
+            ]}
+            loading={false}
+          />
+        </Col>
+      </Row>
     </Space>
   )
 }
