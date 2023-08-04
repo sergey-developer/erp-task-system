@@ -1,35 +1,46 @@
 import { Feature } from 'ol'
 import OlMap from 'ol/Map'
 import View from 'ol/View'
-import { Coordinate } from 'ol/coordinate'
 import { click } from 'ol/events/condition'
 import { boundingExtent } from 'ol/extent'
-import { Geometry, Point } from 'ol/geom'
+import { Point } from 'ol/geom'
 import { Select } from 'ol/interaction'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
 import { fromLonLat, toLonLat } from 'ol/proj'
 import { Cluster, OSM } from 'ol/source'
 import VectorSource from 'ol/source/Vector'
-import { useState, useEffect, useRef, FC } from 'react'
+import { Style } from 'ol/style'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
+
+import { TaskTypeEnum } from 'modules/task/constants'
 
 import { MaybeNull } from 'shared/types/utils'
-import { isTruthy } from 'shared/utils/common'
 
-import { MapWrapperStyled, selectedClusterStyle } from './styles'
-import { FeatureData, TaskListMapProps } from './types'
+import { MapWrapperStyled } from './styles'
+import { FeatureData, Geometry, TaskListMapProps } from './types'
 import {
+  checkFeaturesHaveSameCoords,
+  fitMapToExtent,
   formatCoords,
   getClusterStyle,
+  getFeatureData,
+  getFeaturesCoordinate,
+  getFeaturesData,
+  getFeaturesGeometry,
+  getFeaturesWithin,
+  getGeometriesExtent,
   getMarkerStyle,
+  getPriorityTaskType,
   getSelectedMarkerStyle,
-  styleCache,
 } from './utils'
 
 const interactionSelect = new Select({
   condition: click,
 })
-//
+
+const styleCache: Partial<Record<number | TaskTypeEnum, Style>> = {}
+
 const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
   const [map, setMap] = useState<OlMap>()
   const [featuresLayer, setFeaturesLayer] = useState<VectorLayer<Cluster>>()
@@ -42,37 +53,54 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
   const mapRef = useRef<OlMap>()
   mapRef.current = map
 
+  const handleClickFeature = useCallback(
+    (feature: Feature) => {
+      const geometry = feature.getGeometry()
+
+      if (geometry) {
+        const coords = (geometry as Geometry).getCoordinates()
+        onClickTask(formatCoords(toLonLat(coords)))
+      }
+
+      setSelectedFeature(feature)
+    },
+    [onClickTask],
+  )
+
   useEffect(() => {
     interactionSelect.on('select', (event) => {
       if (event.selected.length) {
         const selectedFeature = event.selected[0]
-        const features: Feature[] = selectedFeature.get('features')
+        const features = getFeaturesWithin(selectedFeature)
 
-        if (features.length) {
-          if (features.length === 1) {
-            const data: FeatureData = features[0].get('data')
-            selectedFeature.setStyle(getSelectedMarkerStyle(data.type))
-          } else {
-            selectedFeature.setStyle(selectedClusterStyle)
+        if (!features.length) return
+
+        if (features.length === 1) {
+          const data: FeatureData = getFeatureData(features[0])
+          const markerStyle = getSelectedMarkerStyle(data.type)
+          selectedFeature.setStyle(markerStyle)
+          handleClickFeature(selectedFeature)
+        } else {
+          const featuresCoords = getFeaturesCoordinate(
+            getFeaturesGeometry(features),
+          )
+
+          const isFeaturesHaveSameCoords =
+            checkFeaturesHaveSameCoords(featuresCoords)
+
+          if (isFeaturesHaveSameCoords) {
+            const featuresData = getFeaturesData(features)
+            const priorityTaskType = getPriorityTaskType(featuresData)
+            const markerStyle = getSelectedMarkerStyle(priorityTaskType)
+            selectedFeature.setStyle(markerStyle)
+            handleClickFeature(selectedFeature)
           }
         }
-
-        const geometry = selectedFeature.getGeometry()
-
-        if (geometry) {
-          const coords = (
-            geometry as Geometry & { getCoordinates: () => Coordinate }
-          ).getCoordinates()
-
-          onClickTask(formatCoords(toLonLat(coords)))
-        }
-
-        setSelectedFeature(selectedFeature)
       } else if (event.deselected.length) {
         setSelectedFeature(null)
       }
     })
-  }, [onClickTask])
+  }, [handleClickFeature])
 
   useEffect(() => {
     if (mapWrapperRef.current) {
@@ -94,6 +122,26 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
       })
 
       initialMap.addInteraction(interactionSelect)
+      initialMap.on('click', (e) => {
+        initialFeaturesLayer.getFeatures(e.pixel).then((clickedFeatures) => {
+          if (clickedFeatures.length) {
+            const features: Feature[] = getFeaturesWithin(clickedFeatures[0])
+            const featuresGeometry = getFeaturesGeometry(features)
+            const featuresCoords = getFeaturesCoordinate(featuresGeometry)
+
+            const isFeaturesHaveSameCoords =
+              checkFeaturesHaveSameCoords(featuresCoords)
+
+            if (features.length > 1 && !isFeaturesHaveSameCoords) {
+              const extent = boundingExtent(
+                getGeometriesExtent(featuresGeometry),
+              )
+
+              fitMapToExtent(initialMap, extent)
+            }
+          }
+        })
+      })
 
       setMap(initialMap)
       setFeaturesLayer(initialFeaturesLayer)
@@ -105,44 +153,52 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
   useEffect(() => {
     if (featuresLayer) {
       featuresLayer.setStyle((feature) => {
-        const features = feature.get('features') as Feature[]
+        const features = getFeaturesWithin(feature)
 
         if (features.length) {
           const size = features.length
           const isOneFeature = size === 1
 
-          const firstFeatureData: FeatureData = features[0].get('data')
+          const firstFeatureData: FeatureData = getFeatureData(features[0])
 
           let styleBySize = styleCache[size]
           let styleByType = styleCache[firstFeatureData.type]
 
           if (selectedFeature) {
-            const selectedFeatureFeatures: Feature[] =
-              selectedFeature.get('features')
-            const selectedFeatureFeaturesSize = selectedFeatureFeatures.length
+            const selectedFeatures: Feature[] =
+              getFeaturesWithin(selectedFeature)
+            const selectedFeaturesSize = selectedFeatures.length
 
-            if (selectedFeatureFeaturesSize) {
-              if (selectedFeatureFeaturesSize === 1) {
-                const selectedFeatureData: FeatureData =
-                  selectedFeatureFeatures[0].get('data')
+            if (selectedFeaturesSize) {
+              if (selectedFeaturesSize === 1) {
+                const selectedFeatureData: FeatureData = getFeatureData(
+                  selectedFeatures[0],
+                )
 
                 if (firstFeatureData.id === selectedFeatureData.id) {
                   return getSelectedMarkerStyle(selectedFeatureData.type)
                 }
               } else {
-                const selectedFeaturesIds = selectedFeatureFeatures.map((f) => {
-                  const data: FeatureData = f.get('data')
-                  return data.id
-                })
-                const featuresIds = features.map((f) => {
-                  const data: FeatureData = f.get('data')
-                  return data.id
-                })
+                const selectedFeaturesIds = selectedFeatures.map(
+                  (f) => getFeatureData(f).id,
+                )
+                const featuresIds = features.map((f) => getFeatureData(f).id)
 
                 if (
                   selectedFeaturesIds.every((id) => featuresIds.includes(id))
                 ) {
-                  return selectedClusterStyle
+                  const featuresCoords = getFeaturesCoordinate(
+                    getFeaturesGeometry(selectedFeatures),
+                  )
+
+                  const isFeaturesHaveSameCoords =
+                    checkFeaturesHaveSameCoords(featuresCoords)
+
+                  if (isFeaturesHaveSameCoords) {
+                    const featuresData = getFeaturesData(selectedFeatures)
+                    const priorityTaskType = getPriorityTaskType(featuresData)
+                    return getSelectedMarkerStyle(priorityTaskType)
+                  }
                 }
               }
             }
@@ -156,6 +212,19 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
 
             return styleByType
           } else {
+            const featuresCoords = getFeaturesCoordinate(
+              getFeaturesGeometry(features),
+            )
+
+            const isFeaturesHaveSameCoords =
+              checkFeaturesHaveSameCoords(featuresCoords)
+
+            if (isFeaturesHaveSameCoords) {
+              const featuresData = getFeaturesData(features)
+              const priorityTaskType = getPriorityTaskType(featuresData)
+              return getMarkerStyle(priorityTaskType)
+            }
+
             if (!styleBySize) {
               styleBySize = getClusterStyle(size)
               styleCache[size] = styleBySize
@@ -189,17 +258,10 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
       // fit view to features
       if (mapRef.current) {
         const extent = boundingExtent(
-          features
-            .map((f) => f.getGeometry())
-            .filter(isTruthy)
-            .map((f) => f.getExtent()),
+          getGeometriesExtent(getFeaturesGeometry(features)),
         )
 
-        if (extent.length) {
-          mapRef.current
-            .getView()
-            .fit(extent, { padding: [100, 100, 100, 100] })
-        }
+        fitMapToExtent(mapRef.current, extent)
       }
     }
   }, [tasks, featuresLayer])

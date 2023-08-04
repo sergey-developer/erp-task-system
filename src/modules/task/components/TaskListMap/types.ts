@@ -1,4 +1,5 @@
 import { Coordinate } from 'ol/coordinate'
+import { Geometry as OlGeometry } from 'ol/geom'
 
 import { TaskListMapItemModel, TaskListMapModel } from 'modules/task/models'
 
@@ -10,3 +11,5 @@ export type TaskListMapProps = {
 }
 
 export type FeatureData = Pick<TaskListMapItemModel, 'id' | 'type'>
+
+export type Geometry = OlGeometry & { getCoordinates: () => Coordinate }
