@@ -33,8 +33,8 @@ export const getPrivateRoutesConfig = ({
         path: RouteEnum.ChangePassword,
         element: <ChangePasswordPage />,
       },
-      ...(isStaff ? staffRoutes : []),
       manageWarehousesRoute,
+      ...(isStaff ? staffRoutes : []),
       {
         path: RouteEnum.NotFound,
         element: <NotFoundPage />,
