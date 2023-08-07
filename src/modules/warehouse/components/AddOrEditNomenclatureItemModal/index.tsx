@@ -10,10 +10,12 @@ import {
 } from './types'
 import {
   countryValidationRules,
-  groupValidationRules, measurementUnitValidationRules,
+  groupValidationRules,
+  measurementUnitValidationRules,
   nameValidationRules,
-  shortNameValidationRules, vendorCodeValidationRules
-} from "./validation";
+  shortNameValidationRules,
+  vendorCodeValidationRules,
+} from './validation'
 
 const selectFieldNames: Readonly<FieldNames> = {
   label: 'title',

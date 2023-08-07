@@ -3,7 +3,12 @@ import { FormInstance } from 'antd'
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 export type AddOrEditNomenclatureItemModalFormFields = {
-  name: string
+  title: string
+  shortTitle: string
+  group: number
+  vendorCode: string
+  measurementUnit: number
+  country?: number
 }
 
 export type AddOrEditNomenclatureItemModalProps = Required<

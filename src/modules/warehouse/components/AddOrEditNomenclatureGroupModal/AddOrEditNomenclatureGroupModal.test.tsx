@@ -115,7 +115,7 @@ describe('Модалка создания и редактирования ном
     })
   })
 
-  describe('Поле комментария', () => {
+  describe('Поле названия', () => {
     test('Отображается корректно', () => {
       render(<AddOrEditNomenclatureGroupModal {...props} />)
 

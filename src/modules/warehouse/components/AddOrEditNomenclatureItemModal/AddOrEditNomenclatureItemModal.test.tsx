@@ -1,6 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { validationMessages } from 'shared/constants/validation'
+
 import { fakeWord, getButtonIn, render } from '_tests_/utils'
 
 import AddOrEditNomenclatureItemModal from './index'
@@ -17,11 +19,12 @@ const props: AddOrEditNomenclatureItemModalProps = {
 const getContainer = () =>
   screen.getByTestId('add-or-edit-nomenclature-item-modal')
 
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
 // name field
 const getNameFormItem = () =>
   within(getContainer()).getByTestId('name-form-item')
+
+const getNameLabel = () =>
+  within(getNameFormItem()).getByLabelText('Наименование')
 
 const getNameField = () =>
   within(getNameFormItem()).getByPlaceholderText('Введите наименование')
@@ -31,6 +34,30 @@ const setName = async (user: UserEvent, value: string) => {
   await user.type(field, value)
   return field
 }
+
+const findNameError = (error: string): Promise<HTMLElement> =>
+  within(getNameFormItem()).findByText(error)
+
+// short name field
+const getShortNameFormItem = () =>
+  within(getContainer()).getByTestId('short-name-form-item')
+
+const getShortNameLabel = () =>
+  within(getShortNameFormItem()).getByLabelText('Краткое наименование')
+
+const getShortNameField = () =>
+  within(getShortNameFormItem()).getByPlaceholderText(
+    'Введите краткое наименование',
+  )
+
+const setShortName = async (user: UserEvent, value: string) => {
+  const field = getShortNameField()
+  await user.type(field, value)
+  return field
+}
+
+const findShortNameError = (error: string): Promise<HTMLElement> =>
+  within(getShortNameFormItem()).findByText(error)
 
 // add button
 const getAddButton = () => getButtonIn(getContainer(), /Добавить/)
@@ -50,7 +77,6 @@ const clickCancelButton = async (user: UserEvent) => {
 
 export const testUtils = {
   getContainer,
-  getChildByText,
 
   getAddButton,
   clickAddButton,
@@ -59,14 +85,22 @@ export const testUtils = {
   clickCancelButton,
 
   getNameFormItem,
+  getNameLabel,
   getNameField,
   setName,
+  findNameError,
+
+  getShortNameFormItem,
+  getShortNameLabel,
+  getShortNameField,
+  setShortName,
+  findShortNameError,
 }
 
 describe('Модалка создания и редактирования номенклатурной позиции', () => {
   test('Заголовок отображается', () => {
     render(<AddOrEditNomenclatureItemModal {...props} />)
-    const title = testUtils.getChildByText(props.title)
+    const title = within(getContainer()).getByText(props.title)
     expect(title).toBeInTheDocument()
   })
 
@@ -86,6 +120,7 @@ describe('Модалка создания и редактирования ном
       )
 
       await testUtils.setName(user, fakeWord())
+      await testUtils.setShortName(user, fakeWord())
       await testUtils.clickAddButton(user)
 
       expect(props.onSubmit).toBeCalledTimes(1)
@@ -113,12 +148,14 @@ describe('Модалка создания и редактирования ном
     })
   })
 
-  describe('Поле комментария', () => {
+  describe('Поле названия', () => {
     test('Отображается корректно', () => {
       render(<AddOrEditNomenclatureItemModal {...props} />)
 
+      const label = testUtils.getNameLabel()
       const field = testUtils.getNameField()
 
+      expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
       expect(field).not.toHaveValue()
@@ -131,6 +168,53 @@ describe('Модалка создания и редактирования ном
       const field = await testUtils.setName(user, value)
 
       expect(field).toHaveDisplayValue(value)
+    })
+
+    test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
+      const { user } = render(
+        <AddOrEditNomenclatureItemModal {...props} okText='Добавить' />,
+      )
+
+      await testUtils.clickAddButton(user)
+
+      const error = await testUtils.findNameError(validationMessages.required)
+      expect(error).toBeInTheDocument()
+    })
+  })
+
+  describe('Поле краткого названия', () => {
+    test('Отображается корректно', () => {
+      render(<AddOrEditNomenclatureItemModal {...props} />)
+
+      const label = testUtils.getShortNameLabel()
+      const field = testUtils.getShortNameField()
+
+      expect(label).toBeInTheDocument()
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).not.toHaveValue()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+
+      const value = fakeWord()
+      const field = await testUtils.setShortName(user, value)
+
+      expect(field).toHaveDisplayValue(value)
+    })
+
+    test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
+      const { user } = render(
+        <AddOrEditNomenclatureItemModal {...props} okText='Добавить' />,
+      )
+
+      await testUtils.clickAddButton(user)
+
+      const error = await testUtils.findShortNameError(
+        validationMessages.required,
+      )
+      expect(error).toBeInTheDocument()
     })
   })
 })
