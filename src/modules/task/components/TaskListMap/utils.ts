@@ -10,9 +10,8 @@ import { TaskTypeEnum } from 'modules/task/constants'
 
 import { isTruthy } from 'shared/utils/common'
 
-import theme from 'styles/theme'
-
 import {
+  incidentMarkerColor,
   incidentMarkerStyle,
   incidentTaskOrRequestTaskMarkerStyle,
   requestMarkerStyle,
@@ -90,7 +89,7 @@ export const getClusterStyle = (size: number): Style =>
     image: new Circle({
       radius: 10,
       fill: new Fill({
-        color: theme.colors.fireOpal,
+        color: incidentMarkerColor,
       }),
     }),
     text: new Text({
