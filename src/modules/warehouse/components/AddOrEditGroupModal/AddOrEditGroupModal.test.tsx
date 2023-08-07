@@ -39,12 +39,23 @@ const clickAddButton = async (user: UserEvent) => {
   await user.click(button)
 }
 
+// close button
+const getCancelButton = () => getButtonIn(getContainer(), /Отменить/)
+
+const clickCancelButton = async (user: UserEvent) => {
+  const button = getCancelButton()
+  await user.click(button)
+}
+
 export const testUtils = {
   getContainer,
   getChildByText,
 
   getAddButton,
   clickAddButton,
+
+  getCancelButton,
+  clickCancelButton,
 
   getNameFormItem,
   getNameField,
@@ -81,6 +92,25 @@ describe('Модалка создания и редактирования ном
         expect.anything(),
         expect.anything(),
       )
+    })
+  })
+
+  describe('Кнопка отмены', () => {
+    test('Отображается корректно', () => {
+      render(<AddOrEditGroupModal {...props} />)
+
+      const button = testUtils.getCancelButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(<AddOrEditGroupModal {...props} />)
+
+      await testUtils.clickCancelButton(user)
+
+      expect(props.onCancel).toBeCalledTimes(1)
     })
   })
 
