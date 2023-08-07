@@ -3,10 +3,10 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { fakeWord, getButtonIn, render } from '_tests_/utils'
 
-import AddOrEditGroupModal from './index'
-import { AddOrEditGroupModalProps } from './types'
+import AddOrEditNomenclatureGroupModal from './index'
+import { AddOrEditNomenclatureGroupModalProps } from './types'
 
-const props: AddOrEditGroupModalProps = {
+const props: AddOrEditNomenclatureGroupModalProps = {
   visible: true,
   title: fakeWord(),
   okText: fakeWord(),
@@ -14,7 +14,8 @@ const props: AddOrEditGroupModalProps = {
   onSubmit: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('add-or-edit-group-modal')
+const getContainer = () =>
+  screen.getByTestId('add-or-edit-nomenclature-group-modal')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
@@ -64,14 +65,14 @@ export const testUtils = {
 
 describe('Модалка создания и редактирования номенклатурной группы', () => {
   test('Заголовок отображается', () => {
-    render(<AddOrEditGroupModal {...props} />)
+    render(<AddOrEditNomenclatureGroupModal {...props} />)
     const title = testUtils.getChildByText(props.title)
     expect(title).toBeInTheDocument()
   })
 
   describe('Кнопка создания', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditGroupModal {...props} okText='Добавить' />)
+      render(<AddOrEditNomenclatureGroupModal {...props} okText='Добавить' />)
 
       const button = testUtils.getAddButton()
 
@@ -81,7 +82,7 @@ describe('Модалка создания и редактирования ном
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
-        <AddOrEditGroupModal {...props} okText='Добавить' />,
+        <AddOrEditNomenclatureGroupModal {...props} okText='Добавить' />,
       )
 
       await testUtils.setName(user, fakeWord())
@@ -97,7 +98,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditGroupModal {...props} />)
+      render(<AddOrEditNomenclatureGroupModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -106,7 +107,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<AddOrEditGroupModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} />)
 
       await testUtils.clickCancelButton(user)
 
@@ -116,7 +117,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Поле комментария', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditGroupModal {...props} />)
+      render(<AddOrEditNomenclatureGroupModal {...props} />)
 
       const field = testUtils.getNameField()
 
@@ -126,7 +127,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<AddOrEditGroupModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} />)
 
       const value = fakeWord()
       const field = await testUtils.setName(user, value)
