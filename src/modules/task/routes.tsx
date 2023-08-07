@@ -13,26 +13,24 @@ const FiscalAccumulatorTaskListPage = React.lazy(
   () => import('modules/task/pages/FiscalAccumulatorTaskListPage'),
 )
 
-export const routes: RouteObject[] = [
-  {
-    path: RouteEnum.Tasks,
-    children: [
-      {
-        index: true,
-        element: <Navigate to={RouteEnum.TaskList} />,
-      },
-      {
-        path: RouteEnum.TaskList,
-        element: <TaskListPage />,
-      },
-      {
-        path: RouteEnum.TaskListMap,
-        element: <TaskListMapPage />,
-      },
-      {
-        path: RouteEnum.FiscalAccumulatorTaskList,
-        element: <FiscalAccumulatorTaskListPage />,
-      },
-    ],
-  },
-]
+export const route: Readonly<RouteObject> = {
+  path: RouteEnum.Tasks,
+  children: [
+    {
+      index: true,
+      element: <Navigate to={RouteEnum.TaskList} />,
+    },
+    {
+      path: RouteEnum.TaskList,
+      element: <TaskListPage />,
+    },
+    {
+      path: RouteEnum.TaskListMap,
+      element: <TaskListMapPage />,
+    },
+    {
+      path: RouteEnum.FiscalAccumulatorTaskList,
+      element: <FiscalAccumulatorTaskListPage />,
+    },
+  ],
+}

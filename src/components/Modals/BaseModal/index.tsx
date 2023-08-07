@@ -13,7 +13,7 @@ const baseOkButtonProps: ButtonProps = {
   htmlType: 'submit',
 }
 
-type BaseModalProps = ModalProps
+export type BaseModalProps = ModalProps
 
 const BaseModal: FC<BaseModalProps> = ({
   children,
