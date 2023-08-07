@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as addOrEditGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditGroupModal/AddOrEditGroupModal.test'
+import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/AddOrEditNomenclatureGroupModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 
 import { fakeWord, getButtonIn, render } from '_tests_/utils'
@@ -85,7 +85,7 @@ describe('Страница списка номенклатур', () => {
       const { user } = render(<NomenclatureListPage />)
 
       await testUtils.clickAddGroupButton(user)
-      const modal = addOrEditGroupModalTestUtils.getContainer()
+      const modal = addOrEditNomenclatureGroupModalTestUtils.getContainer()
 
       expect(modal).toBeInTheDocument()
     })

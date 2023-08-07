@@ -4,28 +4,29 @@ import React, { FC } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 
 import {
-  AddOrEditGroupModalProps,
-  AddOrEditGroupModalFormFields,
+  AddOrEditNomenclatureGroupModalProps,
+  AddOrEditNomenclatureGroupModalFormFields,
 } from './types'
 import { nameValidationRules } from './validation'
 
-const AddOrEditGroupModal: FC<AddOrEditGroupModalProps> = ({
-  onSubmit,
-  ...props
-}) => {
-  const [form] = Form.useForm<AddOrEditGroupModalFormFields>()
+const AddOrEditNomenclatureGroupModal: FC<
+  AddOrEditNomenclatureGroupModalProps
+> = ({ onSubmit, ...props }) => {
+  const [form] = Form.useForm<AddOrEditNomenclatureGroupModalFormFields>()
 
-  const handleFinish = async (values: AddOrEditGroupModalFormFields) => {
+  const handleFinish = async (
+    values: AddOrEditNomenclatureGroupModalFormFields,
+  ) => {
     await onSubmit(values, form.setFields)
   }
 
   return (
     <BaseModal
       {...props}
-      data-testid='add-or-edit-group-modal'
+      data-testid='add-or-edit-nomenclature-group-modal'
       onOk={form.submit}
     >
-      <Form<AddOrEditGroupModalFormFields>
+      <Form<AddOrEditNomenclatureGroupModalFormFields>
         form={form}
         layout='vertical'
         onFinish={handleFinish}
@@ -33,7 +34,7 @@ const AddOrEditGroupModal: FC<AddOrEditGroupModalProps> = ({
       >
         <Form.Item
           data-testid='name-form-item'
-          name='name'
+          name='title'
           label='Наименование'
           rules={nameValidationRules}
         >
@@ -44,4 +45,4 @@ const AddOrEditGroupModal: FC<AddOrEditGroupModalProps> = ({
   )
 }
 
-export default AddOrEditGroupModal
+export default AddOrEditNomenclatureGroupModal

@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Menu, Input, Button, Row, Col } from 'antd'
 import { FC, useState } from 'react'
 
-import AddOrEditGroupModal from 'modules/warehouse/components/AddOrEditGroupModal'
+import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
 import AddOrEditNomenclatureItemModal from 'modules/warehouse/components/AddOrEditNomenclatureItemModal'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
 
@@ -34,8 +34,11 @@ const NomenclatureListPage: FC = () => {
   const [activeGroupKey, setActiveGroupKey] = useState<number>()
 
   const [
-    addGroupModalOpened,
-    { setTrue: openAddGroupModal, setFalse: closeAddGroupModal },
+    addNomenclatureGroupModalOpened,
+    {
+      setTrue: openAddNomenclatureGroupModal,
+      setFalse: closeAddNomenclatureGroupModal,
+    },
   ] = useBoolean(false)
 
   const [
@@ -57,7 +60,9 @@ const NomenclatureListPage: FC = () => {
         <Space size='middle'>
           <Search placeholder='Поиск номенклатуры' />
 
-          <Button onClick={openAddGroupModal}>+ Добавить группу</Button>
+          <Button onClick={openAddNomenclatureGroupModal}>
+            + Добавить группу
+          </Button>
 
           <Button onClick={openAddNomenclatureItemModal}>
             + Добавить номенклатуру
@@ -99,12 +104,12 @@ const NomenclatureListPage: FC = () => {
         </Row>
       </Space>
 
-      {addGroupModalOpened && (
-        <AddOrEditGroupModal
-          visible={addGroupModalOpened}
+      {addNomenclatureGroupModalOpened && (
+        <AddOrEditNomenclatureGroupModal
+          visible={addNomenclatureGroupModalOpened}
           title='Добавление номенклатурной группы'
           okText='Добавить'
-          onCancel={closeAddGroupModal}
+          onCancel={closeAddNomenclatureGroupModal}
           onSubmit={async () => {}}
         />
       )}
