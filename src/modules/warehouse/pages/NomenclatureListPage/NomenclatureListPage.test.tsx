@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as addOrEditGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditGroupModal/AddOrEditGroupModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 
 import { fakeWord, getButtonIn, render } from '_tests_/utils'
@@ -20,10 +21,15 @@ const setSearchValue = async (user: UserEvent, value: string) => {
 }
 
 // add group button
-const getAddGroupBtn = () => getButtonIn(getContainer(), /Добавить группу/)
+const getAddGroupButton = () => getButtonIn(getContainer(), /Добавить группу/)
+
+const clickAddGroupButton = async (user: UserEvent) => {
+  const button = await getAddGroupButton()
+  await user.click(button)
+}
 
 // add nomenclature button
-const getAddNomenclatureBtn = () =>
+const getAddNomenclatureButton = () =>
   getButtonIn(getContainer(), /Добавить номенклатуру/)
 
 // group list
@@ -35,9 +41,10 @@ export const testUtils = {
   getSearchField,
   setSearchValue,
 
-  getAddGroupBtn,
+  getAddGroupButton,
+  clickAddGroupButton,
 
-  getAddNomenclatureBtn,
+  getAddNomenclatureButton,
 
   getGroupList,
 }
@@ -68,10 +75,19 @@ describe('Страница списка номенклатур', () => {
     test('Отображается', () => {
       render(<NomenclatureListPage />)
 
-      const button = testUtils.getAddGroupBtn()
+      const button = testUtils.getAddGroupButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
+    })
+
+    test('После клика отображается модалка', async () => {
+      const { user } = render(<NomenclatureListPage />)
+
+      await testUtils.clickAddGroupButton(user)
+      const modal = addOrEditGroupModalTestUtils.getContainer()
+
+      expect(modal).toBeInTheDocument()
     })
   })
 
@@ -79,7 +95,7 @@ describe('Страница списка номенклатур', () => {
     test('Отображается', () => {
       render(<NomenclatureListPage />)
 
-      const button = testUtils.getAddNomenclatureBtn()
+      const button = testUtils.getAddNomenclatureButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
