@@ -3,16 +3,19 @@ import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { AddOrEditGroupModalProps, GroupModalFormFields } from './types'
+import {
+  AddOrEditGroupModalProps,
+  AddOrEditGroupModalFormFields,
+} from './types'
 import { nameValidationRules } from './validation'
 
 const AddOrEditGroupModal: FC<AddOrEditGroupModalProps> = ({
   onSubmit,
   ...props
 }) => {
-  const [form] = Form.useForm<GroupModalFormFields>()
+  const [form] = Form.useForm<AddOrEditGroupModalFormFields>()
 
-  const handleFinish = async (values: GroupModalFormFields) => {
+  const handleFinish = async (values: AddOrEditGroupModalFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -22,7 +25,7 @@ const AddOrEditGroupModal: FC<AddOrEditGroupModalProps> = ({
       data-testid='add-or-edit-group-modal'
       onOk={form.submit}
     >
-      <Form<GroupModalFormFields>
+      <Form<AddOrEditGroupModalFormFields>
         form={form}
         layout='vertical'
         onFinish={handleFinish}
