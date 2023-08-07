@@ -3223,6 +3223,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
+          await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
@@ -3270,6 +3271,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
+          await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -3313,6 +3315,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
+          await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
@@ -3350,6 +3353,7 @@ describe('Контейнер детальной карточки заявки', 
             user,
             workGroup.name,
           )
+          await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(

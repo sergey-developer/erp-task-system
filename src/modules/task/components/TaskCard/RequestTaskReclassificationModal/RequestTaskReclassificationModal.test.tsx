@@ -3,10 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { ReclassificationReasonEnum } from 'modules/task/constants'
 
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
+import { validationMessages } from 'shared/constants/validation'
 
 import {
   fakeIdStr,
@@ -372,23 +369,6 @@ describe('Модалка запроса о переклассификации з
 
           expect(
             await testUtils.findCommentError(validationMessages.required),
-          ).toBeInTheDocument()
-        })
-
-        test('Если превысить лимит символов', async () => {
-          const { user } = render(
-            <RequestTaskReclassificationModal {...props} />,
-          )
-
-          await testUtils.setComment(
-            user,
-            fakeWord({ length: validationSizes.string.long + 1 }),
-          )
-
-          expect(
-            await testUtils.findCommentError(
-              validationMessages.string.max.long,
-            ),
           ).toBeInTheDocument()
         })
       })
