@@ -13,12 +13,14 @@ const { Text } = Typography
 const TaskListLayout: FCWithChildren = ({ children }) => {
   return (
     <Space
+      className='task-list-layout'
       data-testid='task-list-layout'
       direction='vertical'
       size='middle'
       $block
+      $height='100%'
     >
-      <Row justify='end'>
+      <Row className='task-list-layout-header' justify='end'>
         <Col>
           <NavLink to={RouteEnum.TaskList}>
             {({ isActive }) => {

@@ -13,7 +13,14 @@ import { SorterResult } from 'antd/es/table/interface'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
 import { GetComponentProps } from 'rc-table/es/interface'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import ExtendedFilter, {
   ExtendedFilterProps,
@@ -45,13 +52,36 @@ import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
+import { ColStyled, RowStyled, SearchStyled } from './styles'
 import { FastFilterQueries, TaskIdFilterQueries } from './types'
-import { SearchStyled } from './styles'
 import { mapExtendedFilterFormFieldsToQueries } from './utils'
 
 const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
   const { isFirstLineSupportRole, isEngineerRole, role } = useUserRole()
+  const colRef = useRef<number>()
+
+  useLayoutEffect(() => {
+    const taskListLayoutEl: MaybeNull<HTMLElement> =
+      document.querySelector('.task-list-layout')
+
+    const taskListLayoutHeaderEl: MaybeNull<HTMLElement> =
+      document.querySelector('.task-list-layout-header')
+
+    const taskListPageHeaderEl: MaybeNull<HTMLElement> = document.querySelector(
+      '.task-list-page-header',
+    )
+
+    if (taskListLayoutEl && taskListPageHeaderEl && taskListLayoutHeaderEl) {
+      const spaceBetweenElements = 56
+
+      colRef.current =
+        taskListLayoutEl.offsetHeight -
+        taskListPageHeaderEl.offsetHeight -
+        taskListLayoutHeaderEl.offsetHeight -
+        spaceBetweenElements
+    }
+  }, [])
 
   const {
     data: taskCounters,
@@ -279,7 +309,11 @@ const TaskListPage: FC = () => {
     <TaskListLayout>
       <Row data-testid='task-list-page' gutter={[0, 40]}>
         <Col span={24}>
-          <Row justify='space-between' align='bottom'>
+          <Row
+            className='task-list-page-header'
+            justify='space-between'
+            align='bottom'
+          >
             <Col xxl={16} xl={14}>
               <Row align='middle' gutter={[30, 30]}>
                 <Col span={17}>
@@ -338,9 +372,9 @@ const TaskListPage: FC = () => {
           </Row>
         </Col>
 
-        <Col span={24}>
-          <Row>
-            <Col span={selectedTask ? (breakpoints.xxl ? 15 : 12) : 24}>
+        <Col span={24} style={{ height: colRef.current }}>
+          <RowStyled>
+            <ColStyled span={selectedTask ? (breakpoints.xxl ? 15 : 12) : 24}>
               <TaskTable
                 rowClassName={getTableRowClassName}
                 sort={queryArgs.sort}
@@ -351,19 +385,19 @@ const TaskListPage: FC = () => {
                 pagination={taskList?.pagination || false}
                 userRole={role!}
               />
-            </Col>
+            </ColStyled>
 
             {!!selectedTask && (
-              <Col span={breakpoints.xxl ? 9 : 12}>
+              <ColStyled span={breakpoints.xxl ? 9 : 12}>
                 <TaskCard
                   taskId={selectedTask}
                   additionalInfoExpanded={taskAdditionalInfoExpanded}
                   onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
                   closeTaskCard={handleCloseTaskCard}
                 />
-              </Col>
+              </ColStyled>
             )}
-          </Row>
+          </RowStyled>
         </Col>
       </Row>
 
