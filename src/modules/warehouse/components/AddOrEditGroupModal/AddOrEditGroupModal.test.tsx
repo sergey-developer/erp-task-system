@@ -1,5 +1,10 @@
-import { AddOrEditGroupModalProps } from "./index";
-import { fakeWord, render } from "_tests_/utils";
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+
+import { fakeWord, getButtonIn, render } from '_tests_/utils'
+
+import AddOrEditGroupModal from './index'
+import { AddOrEditGroupModalProps } from './types'
 
 const props: AddOrEditGroupModalProps = {
   visible: true,
@@ -9,8 +14,94 @@ const props: AddOrEditGroupModalProps = {
   onSubmit: jest.fn(),
 }
 
-export const testUtils = {}
+const getContainer = () => screen.getByTestId('add-or-edit-group-modal')
+
+const getChildByText = (text: string) => within(getContainer()).getByText(text)
+
+// name field
+const getNameFormItem = () =>
+  within(getContainer()).getByTestId('name-form-item')
+
+const getNameField = () =>
+  within(getNameFormItem()).getByPlaceholderText('Введите наименование')
+
+const setName = async (user: UserEvent, value: string) => {
+  const field = getNameField()
+  await user.type(field, value)
+  return field
+}
+
+// add button
+const getAddButton = () => getButtonIn(getContainer(), /Добавить/)
+
+const clickAddButton = async (user: UserEvent) => {
+  const button = getAddButton()
+  await user.click(button)
+}
+
+export const testUtils = {
+  getContainer,
+  getChildByText,
+
+  getAddButton,
+  clickAddButton,
+
+  getNameFormItem,
+  getNameField,
+  setName,
+}
 
 describe('Модалка создания и редактирования номенклатурной группы', () => {
+  test('Заголовок отображается', () => {
+    render(<AddOrEditGroupModal {...props} />)
+    const title = testUtils.getChildByText(props.title)
+    expect(title).toBeInTheDocument()
+  })
 
+  describe('Кнопка создания', () => {
+    test('Отображается корректно', () => {
+      render(<AddOrEditGroupModal {...props} okText='Добавить' />)
+
+      const button = testUtils.getAddButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(
+        <AddOrEditGroupModal {...props} okText='Добавить' />,
+      )
+
+      await testUtils.setName(user, fakeWord())
+      await testUtils.clickAddButton(user)
+
+      expect(props.onSubmit).toBeCalledTimes(1)
+      expect(props.onSubmit).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+  })
+
+  describe('Поле комментария', () => {
+    test('Отображается корректно', () => {
+      render(<AddOrEditGroupModal {...props} />)
+
+      const field = testUtils.getNameField()
+
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).not.toHaveValue()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<AddOrEditGroupModal {...props} />)
+
+      const value = fakeWord()
+      const field = await testUtils.setName(user, value)
+
+      expect(field).toHaveDisplayValue(value)
+    })
+  })
 })

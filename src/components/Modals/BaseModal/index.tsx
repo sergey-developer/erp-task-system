@@ -1,8 +1,7 @@
 import { ButtonProps, Modal, ModalProps } from 'antd'
 import { FC, useMemo } from 'react'
 
-import { DEFAULT_MODAL_WIDTH } from 'shared/constants/components'
-import { cancelBtnText } from 'shared/constants/text'
+import { modalWidth, cancelBtnText } from './constants'
 
 const commonButtonProps: ButtonProps = {
   size: 'large',
@@ -46,7 +45,7 @@ const BaseModal: FC<BaseModalProps> = ({
 }
 
 BaseModal.defaultProps = {
-  width: DEFAULT_MODAL_WIDTH,
+  width: modalWidth,
   cancelText: cancelBtnText,
   destroyOnClose: true,
 }

@@ -1,25 +1,10 @@
-import { Form, FormInstance, Input } from 'antd'
-import { Rule } from 'rc-field-form/es/interface'
+import { Form, Input } from 'antd'
 import React, { FC } from 'react'
 
-import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
+import BaseModal from 'components/Modals/BaseModal'
 
-const nameValidationRules: Rule[] = [{ required: true, whitespace: true }]
-
-type GroupModalFormFields = {
-  name: string
-}
-
-export type AddOrEditGroupModalProps = Required<
-  Pick<BaseModalProps, 'visible' | 'onCancel'>
-> & {
-  title: string
-  okText: string
-  onSubmit: (
-    values: GroupModalFormFields,
-    setFields: FormInstance['setFields'],
-  ) => Promise<void>
-}
+import { AddOrEditGroupModalProps, GroupModalFormFields } from './types'
+import { nameValidationRules } from './validation'
 
 const AddOrEditGroupModal: FC<AddOrEditGroupModalProps> = ({
   onSubmit,
@@ -32,7 +17,11 @@ const AddOrEditGroupModal: FC<AddOrEditGroupModalProps> = ({
   }
 
   return (
-    <BaseModal {...props} data-testid='add-edit-group-modal' onOk={form.submit}>
+    <BaseModal
+      {...props}
+      data-testid='add-or-edit-group-modal'
+      onOk={form.submit}
+    >
       <Form<GroupModalFormFields>
         form={form}
         layout='vertical'
