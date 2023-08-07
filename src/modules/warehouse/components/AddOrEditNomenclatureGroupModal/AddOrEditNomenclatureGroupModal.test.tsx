@@ -1,6 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { validationMessages } from 'shared/constants/validation'
+
 import { fakeWord, getButtonIn, render } from '_tests_/utils'
 
 import AddOrEditNomenclatureGroupModal from './index'
@@ -23,6 +25,9 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const getNameFormItem = () =>
   within(getContainer()).getByTestId('name-form-item')
 
+const getNameLabel = () =>
+  within(getNameFormItem()).getByLabelText('Наименование')
+
 const getNameField = () =>
   within(getNameFormItem()).getByPlaceholderText('Введите наименование')
 
@@ -31,6 +36,9 @@ const setName = async (user: UserEvent, value: string) => {
   await user.type(field, value)
   return field
 }
+
+const findNameError = (error: string): Promise<HTMLElement> =>
+  within(getNameFormItem()).findByText(error)
 
 // add button
 const getAddButton = () => getButtonIn(getContainer(), /Добавить/)
@@ -59,8 +67,10 @@ export const testUtils = {
   clickCancelButton,
 
   getNameFormItem,
+  getNameLabel,
   getNameField,
   setName,
+  findNameError,
 }
 
 describe('Модалка создания и редактирования номенклатурной группы', () => {
@@ -119,8 +129,10 @@ describe('Модалка создания и редактирования ном
     test('Отображается корректно', () => {
       render(<AddOrEditNomenclatureGroupModal {...props} />)
 
+      const label = testUtils.getNameLabel()
       const field = testUtils.getNameField()
 
+      expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
       expect(field).not.toHaveValue()
@@ -133,6 +145,17 @@ describe('Модалка создания и редактирования ном
       const field = await testUtils.setName(user, value)
 
       expect(field).toHaveDisplayValue(value)
+    })
+
+    test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
+      const { user } = render(
+        <AddOrEditNomenclatureGroupModal {...props} okText='Добавить' />,
+      )
+
+      await testUtils.clickAddButton(user)
+      const error = await testUtils.findNameError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
     })
   })
 })
