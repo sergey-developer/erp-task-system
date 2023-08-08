@@ -3,11 +3,11 @@ import { Col, Row } from 'antd'
 import { Coordinate } from 'ol/coordinate'
 import { FC, useEffect, useState } from 'react'
 
-import { getTaskListMapMessages } from 'modules/task/constants'
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskList from 'modules/task/components/TaskList'
 import TaskListLayout from 'modules/task/components/TaskListLayout'
 import TaskListMap from 'modules/task/components/TaskListMap'
+import { getTaskListMapMessages } from 'modules/task/constants'
 import { useLazyGetTaskList } from 'modules/task/hooks'
 import { useGetTaskListMapQuery } from 'modules/task/services/taskApi.service'
 
@@ -41,7 +41,7 @@ const TaskListMapPage: FC = () => {
 
   useEffect(() => {
     if (coords) {
-      getTaskList({ long: coords[0], lat: coords[1] })
+      getTaskList({ long: coords[0], lat: coords[1], limit: 1000 })
     }
   }, [coords, getTaskList])
 
