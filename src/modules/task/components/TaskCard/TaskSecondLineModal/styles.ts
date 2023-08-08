@@ -1,9 +1,9 @@
-import { Select } from 'antd'
+import { Form } from 'antd'
 import styled from 'styled-components'
 
-export const SelectStyled = styled(Select)`
-  &&& {
-    width: 55%;
+export const WorkGroupFormItem = styled(Form.Item)`
+  && {
+    margin-bottom: 5px;
   }
 `
 
