@@ -2,17 +2,22 @@ import { FormInstance } from 'antd'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-export type AddOrEditNomenclatureGroupModalFormFields = {
+export type AddOrEditNomenclatureItemModalFormFields = {
   title: string
+  shortTitle: string
+  group: number
+  vendorCode: string
+  measurementUnit: number
+  country?: number
 }
 
-export type AddOrEditNomenclatureGroupModalProps = Required<
+export type AddOrEditNomenclatureItemModalProps = Required<
   Pick<BaseModalProps, 'visible' | 'onCancel'>
 > & {
   title: string
   okText: string
   onSubmit: (
-    values: AddOrEditNomenclatureGroupModalFormFields,
+    values: AddOrEditNomenclatureItemModalFormFields,
     setFields: FormInstance['setFields'],
   ) => Promise<void>
 }

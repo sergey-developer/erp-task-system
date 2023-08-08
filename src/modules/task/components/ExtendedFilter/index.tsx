@@ -3,7 +3,6 @@ import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
-import { workGroupListSelectFieldNames } from 'modules/workGroup/constants'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
@@ -11,14 +10,16 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
+import { idAndNameSelectFieldNames } from 'shared/constants/common'
+
 import {
   searchFieldOptions,
   taskAssignedOptions,
   taskExtendedStatusOptions,
   taskOverdueOptions,
 } from './constants'
-import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
 import { CheckboxGroupStyled, RangePickerStyled } from './styles'
+import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
@@ -108,7 +109,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
                 <Select
                   data-testid='extended-filter-work-group-select'
                   disabled={workGroupListIsFetching}
-                  fieldNames={workGroupListSelectFieldNames}
+                  fieldNames={idAndNameSelectFieldNames}
                   loading={workGroupListIsFetching}
                   options={workGroupList}
                   placeholder='Рабочая группа'

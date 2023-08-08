@@ -8,9 +8,9 @@ import { useGetLegalEntityListQuery } from 'modules/warehouse/services/legalEnti
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
+import { idAndTitleSelectFieldNames } from 'shared/constants/common'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { selectFieldNames } from './constants'
 import {
   WarehouseListFilterFormFields,
   WarehouseListFilterProps,
@@ -83,7 +83,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
           <Form.Item name='legalEntity'>
             <Select
               data-testid='legal-entity-select'
-              fieldNames={selectFieldNames}
+              fieldNames={idAndTitleSelectFieldNames}
               loading={legalEntityListIsFetching}
               options={legalEntityList}
               placeholder='Наименование юридического лица'
@@ -109,7 +109,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
           <Form.Item name='parent'>
             <Select
               data-testid='parent-select'
-              fieldNames={selectFieldNames}
+              fieldNames={idAndTitleSelectFieldNames}
               loading={warehouseListIsFetching}
               options={warehouseList}
               placeholder='Наименование родительского склада'

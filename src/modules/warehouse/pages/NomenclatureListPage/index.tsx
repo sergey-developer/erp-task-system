@@ -3,6 +3,7 @@ import { Menu, Input, Button, Row, Col } from 'antd'
 import { FC, useState } from 'react'
 
 import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
+import AddOrEditNomenclatureItemModal from 'modules/warehouse/components/AddOrEditNomenclatureItemModal'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
 
 import { EditIcon } from 'components/Icons'
@@ -40,6 +41,14 @@ const NomenclatureListPage: FC = () => {
     },
   ] = useBoolean(false)
 
+  const [
+    addNomenclatureItemModalOpened,
+    {
+      setTrue: openAddNomenclatureItemModal,
+      setFalse: closeAddNomenclatureItemModal,
+    },
+  ] = useBoolean(false)
+
   return (
     <>
       <Space
@@ -50,10 +59,14 @@ const NomenclatureListPage: FC = () => {
       >
         <Space size='middle'>
           <Search placeholder='Поиск номенклатуры' />
+
           <Button onClick={openAddNomenclatureGroupModal}>
             + Добавить группу
           </Button>
-          <Button>+ Добавить номенклатуру</Button>
+
+          <Button onClick={openAddNomenclatureItemModal}>
+            + Добавить номенклатуру
+          </Button>
         </Space>
 
         <Row gutter={16}>
@@ -97,6 +110,16 @@ const NomenclatureListPage: FC = () => {
           title='Добавление номенклатурной группы'
           okText='Добавить'
           onCancel={closeAddNomenclatureGroupModal}
+          onSubmit={async () => {}}
+        />
+      )}
+
+      {addNomenclatureItemModalOpened && (
+        <AddOrEditNomenclatureItemModal
+          visible={addNomenclatureItemModalOpened}
+          title='Добавление номенклатурной позиции'
+          okText='Добавить'
+          onCancel={closeAddNomenclatureItemModal}
           onSubmit={async () => {}}
         />
       )}
