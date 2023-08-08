@@ -6,7 +6,6 @@ import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
 import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/errors'
 import {
   isBadRequestError,
   isErrorResponse,
@@ -31,10 +30,10 @@ export const useUpdateTaskWorkGroup = () => {
     if (!state.isError) return
 
     if (isErrorResponse(state.error)) {
-      if (isBadRequestError(state.error) || isServerRangeError(state.error)) {
+      if (isBadRequestError(state.error) && state.error.data.detail) {
+        showErrorNotification(state.error.data.detail)
+      } else if (isServerRangeError(state.error)) {
         showErrorNotification(updateTaskWorkGroupMessages.commonError)
-      } else {
-        showErrorNotification(commonApiMessages.unknownError)
       }
     }
   }, [state.error, state.isError])

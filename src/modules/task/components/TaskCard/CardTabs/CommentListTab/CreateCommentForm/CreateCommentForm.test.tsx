@@ -29,7 +29,7 @@ const findChildByText = (text: string) =>
 const getCommentFormItem = () =>
   within(getContainer()).getByTestId('comment-form-item')
 
-const findCommentFieldError = (error: string) =>
+const findCommentError = (error: string) =>
   within(getCommentFormItem()).findByText(error)
 
 const getCommentField = () =>
@@ -104,7 +104,7 @@ export const testUtils = {
   findChildByText,
 
   getCommentFormItem,
-  findCommentFieldError,
+  findCommentError,
   getCommentField,
   setComment,
 
@@ -155,7 +155,7 @@ describe('Форма добавления комментария', () => {
         const { user } = render(<CreateCommentForm {...props} />)
 
         await testUtils.setComment(user, ' ')
-        const error = await testUtils.findCommentFieldError(
+        const error = await testUtils.findCommentError(
           validationMessages.canNotBeEmpty,
         )
 
@@ -166,7 +166,7 @@ describe('Форма добавления комментария', () => {
         const { user } = render(<CreateCommentForm {...props} />)
 
         await testUtils.clickSubmitButton(user)
-        const error = await testUtils.findCommentFieldError(
+        const error = await testUtils.findCommentError(
           validationMessages.required,
         )
 

@@ -29,6 +29,7 @@ import {
   setupApiTests,
   openSelect,
   fakeWord,
+  getCheckboxIn,
 } from '_tests_/utils'
 
 import TaskSecondLineModal from './index'
@@ -48,19 +49,20 @@ const findContainer = () => screen.findByTestId('task-second-line-modal')
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
 
-// work group
-const getWorkGroupBlock = () => within(getContainer()).getByTestId('work-group')
+// work group field
+const getWorkGroupFormItem = () =>
+  within(getContainer()).getByTestId('work-group-form-item')
 
 const getWorkGroupField = (opts?: ByRoleOptions) =>
-  getSelect(getWorkGroupBlock(), opts)
+  getSelect(getWorkGroupFormItem(), opts)
 
 const queryWorkGroupField = (opts?: ByRoleOptions) =>
-  querySelect(getWorkGroupBlock(), opts)
+  querySelect(getWorkGroupFormItem(), opts)
 
-const findWorkGroupFieldError = (error: string) =>
-  within(getWorkGroupBlock()).findByText(error)
+const findWorkGroupError = (error: string) =>
+  within(getWorkGroupFormItem()).findByText(error)
 
-const getSelectedWorkGroup = () => getSelectedOption(getWorkGroupBlock())
+const getSelectedWorkGroup = () => getSelectedOption(getWorkGroupFormItem())
 
 const getSelectedWorkGroupText = getSelectedOptionText
 
@@ -69,28 +71,41 @@ const getWorkGroupOptionText = (option: HTMLElement, text: string) =>
   within(option).getByText(text)
 
 const expectWorkGroupLoadingStarted = () =>
-  expectLoadingStartedBySelect(getWorkGroupBlock())
+  expectLoadingStartedBySelect(getWorkGroupFormItem())
 
 const expectWorkGroupLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getWorkGroupBlock())
+  expectLoadingFinishedBySelect(getWorkGroupFormItem())
 
 const expectWorkGroupSelectDisabled = () =>
-  selectDisabledIn(getWorkGroupBlock())
+  selectDisabledIn(getWorkGroupFormItem())
 
-const openWorkGroup = async (user: UserEvent) => {
-  await openSelect(user, getWorkGroupBlock())
+const openWorkGroupField = async (user: UserEvent) => {
+  await openSelect(user, getWorkGroupFormItem())
 }
 
 const selectWorkGroup = clickSelectOption
 
-// comment
+// mark default group field
+const getMarkDefaultGroupFormItem = () =>
+  within(getContainer()).getByTestId('mark-default-group-form-item')
+
+const getMarkDefaultGroupField = () =>
+  getCheckboxIn(getMarkDefaultGroupFormItem())
+
+const setMarkDefaultGroup = async (user: UserEvent) => {
+  const field = getMarkDefaultGroupField()
+  await user.click(field)
+  return field
+}
+
+// comment field
 const getCommentFormItem = () =>
   within(getContainer()).getByTestId('comment-form-item')
 
 const getCommentFieldLabel = () =>
   within(getCommentFormItem()).getByText('Комментарий')
 
-const findCommentFieldError = (error: string) =>
+const findCommentError = (error: string) =>
   within(getCommentFormItem()).findByText(error)
 
 const getCommentField = () =>
@@ -140,19 +155,23 @@ export const testUtils = {
 
   getWorkGroupField,
   queryWorkGroupField,
-  findWorkGroupFieldError,
+  findWorkGroupError,
   getSelectedWorkGroup,
   getSelectedWorkGroupText,
   getWorkGroupOption,
   getWorkGroupOptionText,
-  openWorkGroup,
+  openWorkGroupField,
   selectWorkGroup,
   expectWorkGroupSelectDisabled,
   expectWorkGroupLoadingStarted,
   expectWorkGroupLoadingFinished,
 
+  getMarkDefaultGroupFormItem,
+  getMarkDefaultGroupField,
+  setMarkDefaultGroup,
+
   getCommentFormItem,
-  findCommentFieldError,
+  findCommentError,
   getCommentFieldLabel,
   getCommentField,
   setComment,
@@ -351,7 +370,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       })
 
       await testUtils.expectWorkGroupLoadingFinished()
-      await testUtils.openWorkGroup(user)
+      await testUtils.openWorkGroupField(user)
 
       expect(
         workGroupList.map((workGroup) =>
@@ -369,7 +388,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       })
 
       await testUtils.expectWorkGroupLoadingFinished()
-      await testUtils.openWorkGroup(user)
+      await testUtils.openWorkGroupField(user)
 
       workGroupList.forEach((workGroup) => {
         const option = testUtils.getWorkGroupOption(workGroup.id)
@@ -396,7 +415,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       })
 
       await testUtils.expectWorkGroupLoadingFinished()
-      await testUtils.openWorkGroup(user)
+      await testUtils.openWorkGroupField(user)
 
       workGroupList.forEach((workGroup) => {
         const option = testUtils.getWorkGroupOption(workGroup.id)
@@ -422,7 +441,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       })
 
       await testUtils.expectWorkGroupLoadingFinished()
-      await testUtils.openWorkGroup(user)
+      await testUtils.openWorkGroupField(user)
 
       workGroupList.forEach((workGroup) => {
         const option = testUtils.getWorkGroupOption(workGroup.id)
@@ -444,7 +463,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       })
 
       await testUtils.expectWorkGroupLoadingFinished()
-      await testUtils.openWorkGroup(user)
+      await testUtils.openWorkGroupField(user)
       await testUtils.selectWorkGroup(user, workGroupList[0].name)
 
       expect(testUtils.getSelectedWorkGroup()).toBeInTheDocument()
@@ -459,7 +478,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       })
 
       await testUtils.expectWorkGroupLoadingFinished()
-      await testUtils.openWorkGroup(user)
+      await testUtils.openWorkGroupField(user)
       await testUtils.selectWorkGroup(user, workGroupList[0].name)
 
       expect(
@@ -479,7 +498,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       await testUtils.clickSubmitButton(user)
 
       expect(
-        await testUtils.findWorkGroupFieldError(validationMessages.required),
+        await testUtils.findWorkGroupError(validationMessages.required),
       ).toBeInTheDocument()
     })
   })
@@ -511,6 +530,32 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       const field = await testUtils.setComment(user, value)
 
       expect(field).toHaveDisplayValue(value)
+    })
+  })
+
+  describe('Поле для пометки рабочей группы по умолчанию', () => {
+    test('Отображается корректно', async () => {
+      mockGetWorkGroupListSuccess({ body: [] })
+
+      render(<TaskSecondLineModal {...props} />)
+
+      await testUtils.expectWorkGroupLoadingFinished()
+      const field = testUtils.getMarkDefaultGroupField()
+
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).not.toBeChecked()
+    })
+
+    test('Можно установить значение', async () => {
+      mockGetWorkGroupListSuccess({ body: [] })
+
+      const { user } = render(<TaskSecondLineModal {...props} />)
+
+      await testUtils.expectWorkGroupLoadingFinished()
+      const field = await testUtils.setMarkDefaultGroup(user)
+
+      expect(field).toBeChecked()
     })
   })
 
@@ -548,7 +593,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
         })
 
         await testUtils.expectWorkGroupLoadingFinished()
-        await testUtils.openWorkGroup(user)
+        await testUtils.openWorkGroupField(user)
         await testUtils.selectWorkGroup(user, workGroupList[0].name)
         await testUtils.clickSubmitButton(user)
 

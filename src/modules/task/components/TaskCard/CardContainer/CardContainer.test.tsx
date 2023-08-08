@@ -256,9 +256,7 @@ describe('Контейнер детальной карточки заявки', 
                 }),
               })
 
-              mockGetTaskReclassificationRequestServerError(
-                props.taskId,
-              )
+              mockGetTaskReclassificationRequestServerError(props.taskId)
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
@@ -374,9 +372,7 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            mockCreateTaskReclassificationRequestNotFoundError(
-              props.taskId,
-            )
+            mockCreateTaskReclassificationRequestNotFoundError(props.taskId)
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
@@ -455,9 +451,7 @@ describe('Контейнер детальной карточки заявки', 
                 }),
               })
 
-              mockGetTaskReclassificationRequestServerError(
-                props.taskId,
-              )
+              mockGetTaskReclassificationRequestServerError(props.taskId)
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
@@ -555,9 +549,7 @@ describe('Контейнер детальной карточки заявки', 
                 }),
               })
 
-              mockGetTaskReclassificationRequestServerError(
-                props.taskId,
-              )
+              mockGetTaskReclassificationRequestServerError(props.taskId)
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
@@ -673,9 +665,7 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            mockCreateTaskReclassificationRequestNotFoundError(
-              props.taskId,
-            )
+            mockCreateTaskReclassificationRequestNotFoundError(props.taskId)
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
@@ -754,9 +744,7 @@ describe('Контейнер детальной карточки заявки', 
                 }),
               })
 
-              mockGetTaskReclassificationRequestServerError(
-                props.taskId,
-              )
+              mockGetTaskReclassificationRequestServerError(props.taskId)
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
@@ -872,9 +860,7 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            mockCreateTaskReclassificationRequestNotFoundError(
-              props.taskId,
-            )
+            mockCreateTaskReclassificationRequestNotFoundError(props.taskId)
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
@@ -1959,9 +1945,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(
-              getTaskNotFoundErrorMsg(props.taskId),
-            ),
+            await findNotification(getTaskNotFoundErrorMsg(props.taskId)),
           ).toBeInTheDocument()
         })
 
@@ -3218,7 +3202,7 @@ describe('Контейнер детальной карточки заявки', 
           await workGroupBlockTestUtils.clickSecondLineButton(user)
           const modal = await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
-          await taskSecondLineModalTestUtils.openWorkGroup(user)
+          await taskSecondLineModalTestUtils.openWorkGroupField(user)
           await taskSecondLineModalTestUtils.selectWorkGroup(
             user,
             workGroup.name,
@@ -3266,7 +3250,7 @@ describe('Контейнер детальной карточки заявки', 
           await workGroupBlockTestUtils.clickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
-          await taskSecondLineModalTestUtils.openWorkGroup(user)
+          await taskSecondLineModalTestUtils.openWorkGroupField(user)
           await taskSecondLineModalTestUtils.selectWorkGroup(
             user,
             workGroup.name,
@@ -3275,7 +3259,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await taskSecondLineModalTestUtils.findWorkGroupFieldError(
+            await taskSecondLineModalTestUtils.findWorkGroupError(
               badRequestResponse.workGroup![0],
             ),
           ).toBeInTheDocument()
@@ -3310,7 +3294,7 @@ describe('Контейнер детальной карточки заявки', 
           await workGroupBlockTestUtils.clickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
-          await taskSecondLineModalTestUtils.openWorkGroup(user)
+          await taskSecondLineModalTestUtils.openWorkGroupField(user)
           await taskSecondLineModalTestUtils.selectWorkGroup(
             user,
             workGroup.name,
@@ -3348,7 +3332,7 @@ describe('Контейнер детальной карточки заявки', 
           await workGroupBlockTestUtils.clickSecondLineButton(user)
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
-          await taskSecondLineModalTestUtils.openWorkGroup(user)
+          await taskSecondLineModalTestUtils.openWorkGroupField(user)
           await taskSecondLineModalTestUtils.selectWorkGroup(
             user,
             workGroup.name,
