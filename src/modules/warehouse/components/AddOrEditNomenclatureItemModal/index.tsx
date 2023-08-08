@@ -1,15 +1,15 @@
 import { Form, Input, Select } from 'antd'
-import { FieldNames } from 'rc-select/lib/Select'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
+
+import { idAndTitleSelectFieldNames } from 'shared/constants/common'
 
 import {
   AddOrEditNomenclatureItemModalProps,
   AddOrEditNomenclatureItemModalFormFields,
 } from './types'
 import {
-  countryValidationRules,
   groupValidationRules,
   measurementUnitValidationRules,
   nameValidationRules,
@@ -17,29 +17,24 @@ import {
   vendorCodeValidationRules,
 } from './validation'
 
-const selectFieldNames: Readonly<FieldNames> = {
-  label: 'title',
-  value: 'id',
-}
-
-const fakeGroups = [
+export const fakeGroups = [
   {
     id: 1,
-    title: 'title',
+    title: 'group',
   },
 ]
 
-const fakeMeasurementUnits = [
+export const fakeMeasurementUnits = [
   {
     id: 1,
-    title: 'title',
+    title: 'Measurement',
   },
 ]
 
-const fakeCountries = [
+export const fakeCountries = [
   {
     id: 1,
-    title: 'title',
+    title: 'Country',
   },
 ]
 
@@ -93,7 +88,7 @@ const AddOrEditNomenclatureItemModal: FC<
           <Select
             placeholder='Выберите группу'
             options={fakeGroups}
-            fieldNames={selectFieldNames}
+            fieldNames={idAndTitleSelectFieldNames}
           />
         </Form.Item>
 
@@ -115,7 +110,7 @@ const AddOrEditNomenclatureItemModal: FC<
           <Select
             placeholder='Выберите единицу измерения'
             options={fakeMeasurementUnits}
-            fieldNames={selectFieldNames}
+            fieldNames={idAndTitleSelectFieldNames}
           />
         </Form.Item>
 
@@ -123,12 +118,11 @@ const AddOrEditNomenclatureItemModal: FC<
           data-testid='country-form-item'
           name='country'
           label='Страна производитель'
-          rules={countryValidationRules}
         >
           <Select
             placeholder='Выберите страну производителя'
             options={fakeCountries}
-            fieldNames={selectFieldNames}
+            fieldNames={idAndTitleSelectFieldNames}
           />
         </Form.Item>
       </Form>

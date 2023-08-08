@@ -15,5 +15,3 @@ export const vendorCodeValidationRules: Rule[] = [
 ]
 
 export const measurementUnitValidationRules: Rule[] = [{ required: true }]
-
-export const countryValidationRules: Rule[] = [{ required: true }]
