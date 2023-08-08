@@ -316,7 +316,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingFinished()
 
           const commentError =
-            await createCommentFormTestUtils.findCommentFieldError(
+            await createCommentFormTestUtils.findCommentError(
               badRequestErrorResponse.comment![0],
             )
 

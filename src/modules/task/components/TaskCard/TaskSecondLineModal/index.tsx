@@ -1,6 +1,6 @@
-import { Form, Select, Space, Typography, Input } from 'antd'
+import { Form, Select, Space, Typography, Input, Checkbox } from 'antd'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import isEqual from 'lodash/isEqual'
-import { Rule } from 'rc-field-form/es/interface'
 import React, { FC, useEffect } from 'react'
 
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
@@ -8,17 +8,14 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import {
-  TaskSecondLineFormFields,
-  TaskSecondLineModalProps,
-} from './types'
-import { OptionTextStyled, SelectStyled } from './styles'
+import { OptionTextStyled, WorkGroupFormItem } from "./styles";
+import { TaskSecondLineFormFields, TaskSecondLineModalProps } from './types'
+import { workGroupValidationRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
 const okBtnText: string = 'Перевести заявку'
-const workGroupValidationRules: Rule[] = [{ required: true }]
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
@@ -31,6 +28,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
     useGetWorkGroupList({ taskId: id })
 
   const [form] = Form.useForm<TaskSecondLineFormFields>()
+  const markDefaultGroupValue = Form.useWatch('markAsDefault', form)
 
   useEffect(() => {
     if (!workGroupList.length) return
@@ -62,6 +60,10 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
     await onSubmit(values, form.setFields)
   }
 
+  const handleChangeMarkDefaultGroup = (event: CheckboxChangeEvent) => {
+    form.setFieldsValue({ markAsDefault: event.target.checked })
+  }
+
   return (
     <BaseModal
       data-testid='task-second-line-modal'
@@ -91,13 +93,13 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           onFinish={handleFinish}
           preserve={false}
         >
-          <Form.Item
-            data-testid='work-group'
+          <WorkGroupFormItem
+            data-testid='work-group-form-item'
             name='workGroup'
             label='Рабочая группа'
             rules={workGroupValidationRules}
           >
-            <SelectStyled
+            <Select
               placeholder='Выберите рабочую группу'
               loading={workGroupListIsFetching}
               disabled={isLoading}
@@ -116,7 +118,20 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
                   </OptionTextStyled>
                 </Select.Option>
               ))}
-            </SelectStyled>
+            </Select>
+          </WorkGroupFormItem>
+
+          <Form.Item
+            data-testid='mark-default-group-form-item'
+            name='markAsDefault'
+          >
+            <Checkbox
+              onChange={handleChangeMarkDefaultGroup}
+              checked={markDefaultGroupValue}
+            >
+              Установить выбранную Рабочую группу по умолчанию для данного SAP
+              ID
+            </Checkbox>
           </Form.Item>
 
           <Form.Item
