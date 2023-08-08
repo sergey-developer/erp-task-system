@@ -1,12 +1,14 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { validationMessages } from 'shared/constants/validation'
+
 import { fakeWord, getButtonIn, render } from '_tests_/utils'
 
-import AddOrEditGroupModal from './index'
-import { AddOrEditGroupModalProps } from './types'
+import AddOrEditNomenclatureGroupModal from './index'
+import { AddOrEditNomenclatureGroupModalProps } from './types'
 
-const props: AddOrEditGroupModalProps = {
+const props: AddOrEditNomenclatureGroupModalProps = {
   visible: true,
   title: fakeWord(),
   okText: fakeWord(),
@@ -14,13 +16,17 @@ const props: AddOrEditGroupModalProps = {
   onSubmit: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('add-or-edit-group-modal')
+const getContainer = () =>
+  screen.getByTestId('add-or-edit-nomenclature-group-modal')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // name field
 const getNameFormItem = () =>
   within(getContainer()).getByTestId('name-form-item')
+
+const getNameLabel = () =>
+  within(getNameFormItem()).getByLabelText('Наименование')
 
 const getNameField = () =>
   within(getNameFormItem()).getByPlaceholderText('Введите наименование')
@@ -30,6 +36,9 @@ const setName = async (user: UserEvent, value: string) => {
   await user.type(field, value)
   return field
 }
+
+const findNameError = (error: string): Promise<HTMLElement> =>
+  within(getNameFormItem()).findByText(error)
 
 // add button
 const getAddButton = () => getButtonIn(getContainer(), /Добавить/)
@@ -58,20 +67,22 @@ export const testUtils = {
   clickCancelButton,
 
   getNameFormItem,
+  getNameLabel,
   getNameField,
   setName,
+  findNameError,
 }
 
 describe('Модалка создания и редактирования номенклатурной группы', () => {
   test('Заголовок отображается', () => {
-    render(<AddOrEditGroupModal {...props} />)
+    render(<AddOrEditNomenclatureGroupModal {...props} />)
     const title = testUtils.getChildByText(props.title)
     expect(title).toBeInTheDocument()
   })
 
   describe('Кнопка создания', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditGroupModal {...props} okText='Добавить' />)
+      render(<AddOrEditNomenclatureGroupModal {...props} okText='Добавить' />)
 
       const button = testUtils.getAddButton()
 
@@ -81,7 +92,7 @@ describe('Модалка создания и редактирования ном
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
-        <AddOrEditGroupModal {...props} okText='Добавить' />,
+        <AddOrEditNomenclatureGroupModal {...props} okText='Добавить' />,
       )
 
       await testUtils.setName(user, fakeWord())
@@ -97,7 +108,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditGroupModal {...props} />)
+      render(<AddOrEditNomenclatureGroupModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -106,7 +117,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<AddOrEditGroupModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} />)
 
       await testUtils.clickCancelButton(user)
 
@@ -114,24 +125,37 @@ describe('Модалка создания и редактирования ном
     })
   })
 
-  describe('Поле комментария', () => {
+  describe('Поле названия', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditGroupModal {...props} />)
+      render(<AddOrEditNomenclatureGroupModal {...props} />)
 
+      const label = testUtils.getNameLabel()
       const field = testUtils.getNameField()
 
+      expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
       expect(field).not.toHaveValue()
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<AddOrEditGroupModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} />)
 
       const value = fakeWord()
       const field = await testUtils.setName(user, value)
 
       expect(field).toHaveDisplayValue(value)
+    })
+
+    test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
+      const { user } = render(
+        <AddOrEditNomenclatureGroupModal {...props} okText='Добавить' />,
+      )
+
+      await testUtils.clickAddButton(user)
+      const error = await testUtils.findNameError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
     })
   })
 })

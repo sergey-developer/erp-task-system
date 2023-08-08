@@ -2,7 +2,8 @@ import { useBoolean } from 'ahooks'
 import { Menu, Input, Button, Row, Col } from 'antd'
 import { FC, useState } from 'react'
 
-import AddOrEditGroupModal from 'modules/warehouse/components/AddOrEditGroupModal'
+import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
+import AddOrEditNomenclatureItemModal from 'modules/warehouse/components/AddOrEditNomenclatureItemModal'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
 
 import { EditIcon } from 'components/Icons'
@@ -33,8 +34,19 @@ const NomenclatureListPage: FC = () => {
   const [activeGroupKey, setActiveGroupKey] = useState<number>()
 
   const [
-    addGroupModalOpened,
-    { setTrue: openAddGroupModal, setFalse: closeAddGroupModal },
+    addNomenclatureGroupModalOpened,
+    {
+      setTrue: openAddNomenclatureGroupModal,
+      setFalse: closeAddNomenclatureGroupModal,
+    },
+  ] = useBoolean(false)
+
+  const [
+    addNomenclatureItemModalOpened,
+    {
+      setTrue: openAddNomenclatureItemModal,
+      setFalse: closeAddNomenclatureItemModal,
+    },
   ] = useBoolean(false)
 
   return (
@@ -47,8 +59,14 @@ const NomenclatureListPage: FC = () => {
       >
         <Space size='middle'>
           <Search placeholder='Поиск номенклатуры' />
-          <Button onClick={openAddGroupModal}>+ Добавить группу</Button>
-          <Button>+ Добавить номенклатуру</Button>
+
+          <Button onClick={openAddNomenclatureGroupModal}>
+            + Добавить группу
+          </Button>
+
+          <Button onClick={openAddNomenclatureItemModal}>
+            + Добавить номенклатуру
+          </Button>
         </Space>
 
         <Row gutter={16}>
@@ -86,12 +104,22 @@ const NomenclatureListPage: FC = () => {
         </Row>
       </Space>
 
-      {addGroupModalOpened && (
-        <AddOrEditGroupModal
+      {addNomenclatureGroupModalOpened && (
+        <AddOrEditNomenclatureGroupModal
+          visible={addNomenclatureGroupModalOpened}
           title='Добавление номенклатурной группы'
-          visible={addGroupModalOpened}
           okText='Добавить'
-          onCancel={closeAddGroupModal}
+          onCancel={closeAddNomenclatureGroupModal}
+          onSubmit={async () => {}}
+        />
+      )}
+
+      {addNomenclatureItemModalOpened && (
+        <AddOrEditNomenclatureItemModal
+          visible={addNomenclatureItemModalOpened}
+          title='Добавление номенклатурной позиции'
+          okText='Добавить'
+          onCancel={closeAddNomenclatureItemModal}
           onSubmit={async () => {}}
         />
       )}

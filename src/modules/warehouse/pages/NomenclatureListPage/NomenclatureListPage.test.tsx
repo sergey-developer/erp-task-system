@@ -1,7 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as addOrEditGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditGroupModal/AddOrEditGroupModal.test'
+import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/AddOrEditNomenclatureGroupModal.test'
+import { testUtils as addOrEditNomenclatureItemModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureItemModal/AddOrEditNomenclatureItemModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 
 import { fakeWord, getButtonIn, render } from '_tests_/utils'
@@ -20,17 +21,23 @@ const setSearchValue = async (user: UserEvent, value: string) => {
   return field
 }
 
-// add group button
-const getAddGroupButton = () => getButtonIn(getContainer(), /Добавить группу/)
+// add nomenclature group button
+const getAddNomenclatureGroupButton = () =>
+  getButtonIn(getContainer(), /Добавить группу/)
 
-const clickAddGroupButton = async (user: UserEvent) => {
-  const button = await getAddGroupButton()
+const clickAddNomenclatureGroupButton = async (user: UserEvent) => {
+  const button = await getAddNomenclatureGroupButton()
   await user.click(button)
 }
 
-// add nomenclature button
-const getAddNomenclatureButton = () =>
+// add nomenclature item button
+const getAddNomenclatureItemButton = () =>
   getButtonIn(getContainer(), /Добавить номенклатуру/)
+
+const clickAddNomenclatureItemButton = async (user: UserEvent) => {
+  const button = await getAddNomenclatureItemButton()
+  await user.click(button)
+}
 
 // group list
 const getGroupList = () => within(getContainer()).getByTestId('group-list')
@@ -41,10 +48,11 @@ export const testUtils = {
   getSearchField,
   setSearchValue,
 
-  getAddGroupButton,
-  clickAddGroupButton,
+  getAddNomenclatureGroupButton,
+  clickAddNomenclatureGroupButton,
 
-  getAddNomenclatureButton,
+  getAddNomenclatureItemButton,
+  clickAddNomenclatureItemButton,
 
   getGroupList,
 }
@@ -75,7 +83,7 @@ describe('Страница списка номенклатур', () => {
     test('Отображается', () => {
       render(<NomenclatureListPage />)
 
-      const button = testUtils.getAddGroupButton()
+      const button = testUtils.getAddNomenclatureGroupButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -84,8 +92,8 @@ describe('Страница списка номенклатур', () => {
     test('После клика отображается модалка', async () => {
       const { user } = render(<NomenclatureListPage />)
 
-      await testUtils.clickAddGroupButton(user)
-      const modal = addOrEditGroupModalTestUtils.getContainer()
+      await testUtils.clickAddNomenclatureGroupButton(user)
+      const modal = addOrEditNomenclatureGroupModalTestUtils.getContainer()
 
       expect(modal).toBeInTheDocument()
     })
@@ -95,10 +103,19 @@ describe('Страница списка номенклатур', () => {
     test('Отображается', () => {
       render(<NomenclatureListPage />)
 
-      const button = testUtils.getAddNomenclatureButton()
+      const button = testUtils.getAddNomenclatureItemButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
+    })
+
+    test('После клика отображается модалка', async () => {
+      const { user } = render(<NomenclatureListPage />)
+
+      await testUtils.clickAddNomenclatureItemButton(user)
+      const modal = addOrEditNomenclatureItemModalTestUtils.getContainer()
+
+      expect(modal).toBeInTheDocument()
     })
   })
 
