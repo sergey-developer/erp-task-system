@@ -8,7 +8,7 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { OptionTextStyled, WorkGroupFormItem } from "./styles";
+import { OptionTextStyled, WorkGroupFormItem } from './styles'
 import { TaskSecondLineFormFields, TaskSecondLineModalProps } from './types'
 import { workGroupValidationRules } from './validation'
 
@@ -103,6 +103,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
               placeholder='Выберите рабочую группу'
               loading={workGroupListIsFetching}
               disabled={isLoading}
+              showSearch
             >
               {workGroupList.map(({ id, name, priority }) => (
                 <Select.Option
