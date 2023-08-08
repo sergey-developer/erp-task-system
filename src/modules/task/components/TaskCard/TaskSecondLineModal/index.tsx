@@ -104,6 +104,9 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
               loading={workGroupListIsFetching}
               disabled={isLoading}
               showSearch
+              filterOption={(input, option) =>
+                option?.title.toLowerCase().includes(input.toLowerCase())
+              }
             >
               {workGroupList.map(({ id, name, priority }) => (
                 <Select.Option
