@@ -6,3 +6,5 @@ export * from './getWarehouseList.model'
 
 export * from './legalEntityList.model'
 export * from './getLegalEntityList.model'
+
+export * from './createNomenclatureGroup.model'
