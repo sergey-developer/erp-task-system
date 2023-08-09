@@ -36,6 +36,9 @@ const getContainer = () =>
 const queryContainer = (): MaybeNull<HTMLElement> =>
   screen.queryByTestId('add-or-edit-nomenclature-group-modal')
 
+const findContainer = (): Promise<HTMLElement> =>
+  screen.findByTestId('add-or-edit-nomenclature-group-modal')
+
 // name field
 const getNameFormItem = () =>
   within(getContainer()).getByTestId('name-form-item')
@@ -80,6 +83,7 @@ const expectLoadingFinished = () =>
 export const testUtils = {
   getContainer,
   queryContainer,
+  findContainer,
 
   getAddButton,
   clickAddButton,
