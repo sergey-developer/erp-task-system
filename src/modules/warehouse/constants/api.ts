@@ -8,6 +8,7 @@ export enum LegalEntityApiEnum {
 }
 
 export enum NomenclatureApiEnum {
+  GetNomenclatureGroupList = '/nomenclature-groups/',
   CreateNomenclatureGroup = '/nomenclature-groups/',
 }
 

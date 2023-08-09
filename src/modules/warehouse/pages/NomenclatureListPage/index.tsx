@@ -1,17 +1,22 @@
-import { useBoolean } from 'ahooks'
-import { Menu, Input, Button, Row, Col } from 'antd'
-import { FC, useState } from 'react'
+import { useBoolean, useSetState } from 'ahooks'
+import { Input, Button, Row, Col, MenuProps } from 'antd'
+import { SearchProps } from 'antd/lib/input/Search'
+import { FC, useMemo, useState } from 'react'
 
 import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
 import { AddOrEditNomenclatureGroupModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/types'
 import AddOrEditNomenclatureItemModal from 'modules/warehouse/components/AddOrEditNomenclatureItemModal'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants'
+import { useGetNomenclatureGroupList } from 'modules/warehouse/hooks'
+import { GetNomenclatureGroupListQueryArgs } from 'modules/warehouse/models'
 import { useCreateNomenclatureGroupMutation } from 'modules/warehouse/services/nomenclatureApi.service'
 
 import { EditIcon } from 'components/Icons'
+import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
+import { useDebounceFn } from 'shared/hooks'
 import {
   isBadRequestError,
   isErrorResponse,
@@ -20,56 +25,63 @@ import {
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-const items = [
-  {
-    id: 1,
-    title: 'Принтеры',
-  },
-  {
-    id: 2,
-    title: 'Мониторы',
-  },
-  {
-    id: 3,
-    title: 'Мыши',
-  },
-  {
-    id: 4,
-    title: 'Клавиатуры',
-  },
-]
+import { GroupListMenuStyled } from './styles'
 
 const { Search } = Input
 
 const NomenclatureListPage: FC = () => {
+  const [getNomenclatureGroupListParams, setGetNomenclatureGroupListParams] =
+    useSetState<GetNomenclatureGroupListQueryArgs>({})
+
   const [activeGroupKey, setActiveGroupKey] = useState<number>()
 
   const [
     addNomenclatureGroupModalOpened,
-    {
-      setTrue: openAddNomenclatureGroupModal,
-      setFalse: closeAddNomenclatureGroupModal,
-    },
+    { toggle: toggleAddNomenclatureGroupModal },
   ] = useBoolean(false)
+
+  const debouncedToggleAddNomenclatureGroupModal = useDebounceFn(
+    toggleAddNomenclatureGroupModal,
+  )
 
   const [
     addNomenclatureItemModalOpened,
-    {
-      setTrue: openAddNomenclatureItemModal,
-      setFalse: closeAddNomenclatureItemModal,
-    },
+    { toggle: toggleAddNomenclatureItemModal },
   ] = useBoolean(false)
+
+  const debouncedToggleAddNomenclatureItemModal = useDebounceFn(
+    toggleAddNomenclatureItemModal,
+  )
 
   const [
     createNomenclatureGroupMutation,
     { isLoading: createNomenclatureGroupIsLoading },
   ] = useCreateNomenclatureGroupMutation()
 
+  const {
+    currentData: nomenclatureGroupList = [],
+    isFetching: nomenclatureGroupListIsFetching,
+  } = useGetNomenclatureGroupList(getNomenclatureGroupListParams)
+
+  const groupListMenuItems: MenuProps['items'] = useMemo(
+    () =>
+      nomenclatureGroupList.map(({ id, title }) => ({
+        key: id,
+        label: title,
+        itemIcon: id === activeGroupKey && (
+          <EditIcon title='Редактировать группу' />
+        ),
+        onMouseEnter: () => setActiveGroupKey(id),
+        onMouseLeave: () => setActiveGroupKey(undefined),
+      })),
+    [activeGroupKey, nomenclatureGroupList],
+  )
+
   const handleCreateNomenclatureGroup: AddOrEditNomenclatureGroupModalProps['onSubmit'] =
     async (values, setFields) => {
       try {
         await createNomenclatureGroupMutation(values).unwrap()
-        closeAddNomenclatureGroupModal()
+        toggleAddNomenclatureGroupModal()
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
@@ -87,39 +99,49 @@ const NomenclatureListPage: FC = () => {
       }
     }
 
+  const handleChangeSearch: SearchProps['onSearch'] = (value) => {
+    setGetNomenclatureGroupListParams({ search: value || undefined })
+  }
+
   return (
     <>
       <Space
         data-testid='nomenclature-list-page'
         $block
         direction='vertical'
-        size='large'
+        size='middle'
       >
         <Space size='middle'>
-          <Search placeholder='Поиск номенклатуры' />
+          <Search
+            placeholder='Поиск номенклатуры'
+            disabled={nomenclatureGroupListIsFetching}
+            allowClear
+            onSearch={handleChangeSearch}
+          />
 
-          <Button onClick={openAddNomenclatureGroupModal}>
+          <Button onClick={debouncedToggleAddNomenclatureGroupModal}>
             + Добавить группу
           </Button>
 
-          <Button onClick={openAddNomenclatureItemModal}>
+          <Button onClick={debouncedToggleAddNomenclatureItemModal}>
             + Добавить номенклатуру
           </Button>
         </Space>
 
         <Row gutter={16}>
           <Col span={5}>
-            <Menu
-              data-testid='group-list'
-              mode='inline'
-              items={items.map((itm) => ({
-                key: itm.id,
-                label: itm.title,
-                itemIcon: itm.id === activeGroupKey && <EditIcon />,
-                onMouseEnter: () => setActiveGroupKey(itm.id),
-                onMouseLeave: () => setActiveGroupKey(undefined),
-              }))}
-            />
+            <LoadingArea
+              data-testid='group-list-loading'
+              isLoading={nomenclatureGroupListIsFetching}
+              area='parent'
+              tip='Загрузка групп...'
+            >
+              <GroupListMenuStyled
+                data-testid='group-list'
+                mode='inline'
+                items={groupListMenuItems}
+              />
+            </LoadingArea>
           </Col>
 
           <Col span={19}>
@@ -148,7 +170,7 @@ const NomenclatureListPage: FC = () => {
           title='Добавление номенклатурной группы'
           okText='Добавить'
           isLoading={createNomenclatureGroupIsLoading}
-          onCancel={closeAddNomenclatureGroupModal}
+          onCancel={debouncedToggleAddNomenclatureGroupModal}
           onSubmit={handleCreateNomenclatureGroup}
         />
       )}
@@ -158,7 +180,7 @@ const NomenclatureListPage: FC = () => {
           visible={addNomenclatureItemModalOpened}
           title='Добавление номенклатурной позиции'
           okText='Добавить'
-          onCancel={closeAddNomenclatureItemModal}
+          onCancel={debouncedToggleAddNomenclatureItemModal}
           onSubmit={async () => {}}
         />
       )}

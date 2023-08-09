@@ -12,6 +12,12 @@ export const getLegalEntityListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка юридических лиц',
 }
 
-export const createNomenclatureGroupMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка создания номенклатурной группы',
-}
+export const createNomenclatureGroupMessages: ApiRequestMessages<'commonError'> =
+  {
+    commonError: 'Ошибка создания номенклатурной группы',
+  }
+
+export const getNomenclatureGroupListMessages: ApiRequestMessages<'commonError'> =
+  {
+    commonError: 'Ошибка получения списка номенклатурных групп',
+  }

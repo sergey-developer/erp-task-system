@@ -5,13 +5,26 @@ import {
 import {
   CreateNomenclatureGroupMutationArgs,
   CreateNomenclatureGroupSuccessResponse,
+  GetNomenclatureGroupListQueryArgs,
+  GetNomenclatureGroupListSuccessResponse,
 } from 'modules/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
+import { MaybeUndefined } from 'shared/types/utils'
 
 const nomenclatureApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
+    [NomenclatureApiTriggerEnum.GetNomenclatureGroupList]: build.query<
+      GetNomenclatureGroupListSuccessResponse,
+      MaybeUndefined<GetNomenclatureGroupListQueryArgs>
+    >({
+      query: (params) => ({
+        url: NomenclatureApiEnum.GetNomenclatureGroupList,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+    }),
     [NomenclatureApiTriggerEnum.CreateNomenclatureGroup]: build.mutation<
       CreateNomenclatureGroupSuccessResponse,
       CreateNomenclatureGroupMutationArgs
@@ -41,4 +54,7 @@ const nomenclatureApiService = baseApiService.injectEndpoints({
   }),
 })
 
-export const { useCreateNomenclatureGroupMutation } = nomenclatureApiService
+export const {
+  useCreateNomenclatureGroupMutation,
+  useGetNomenclatureGroupListQuery,
+} = nomenclatureApiService
