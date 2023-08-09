@@ -11,6 +11,7 @@ export type AddOrEditNomenclatureGroupModalProps = Required<
 > & {
   title: string
   okText: string
+  isLoading: boolean
   onSubmit: (
     values: AddOrEditNomenclatureGroupModalFormFields,
     setFields: FormInstance['setFields'],

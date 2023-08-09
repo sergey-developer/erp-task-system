@@ -11,7 +11,7 @@ import { nameValidationRules } from './validation'
 
 const AddOrEditNomenclatureGroupModal: FC<
   AddOrEditNomenclatureGroupModalProps
-> = ({ onSubmit, ...props }) => {
+> = ({ onSubmit, isLoading, ...props }) => {
   const [form] = Form.useForm<AddOrEditNomenclatureGroupModalFormFields>()
 
   const handleFinish = async (
@@ -25,6 +25,7 @@ const AddOrEditNomenclatureGroupModal: FC<
       {...props}
       data-testid='add-or-edit-nomenclature-group-modal'
       onOk={form.submit}
+      confirmLoading={isLoading}
     >
       <Form<AddOrEditNomenclatureGroupModalFormFields>
         form={form}
@@ -38,7 +39,7 @@ const AddOrEditNomenclatureGroupModal: FC<
           label='Наименование'
           rules={nameValidationRules}
         >
-          <Input placeholder='Введите наименование' />
+          <Input placeholder='Введите наименование' disabled={isLoading} />
         </Form.Item>
       </Form>
     </BaseModal>

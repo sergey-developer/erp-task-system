@@ -1,11 +1,25 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/AddOrEditNomenclatureGroupModal.test'
 import { testUtils as addOrEditNomenclatureItemModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureItemModal/AddOrEditNomenclatureItemModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
+import { createNomenclatureGroupMessages } from 'modules/warehouse/constants'
 
-import { fakeWord, getButtonIn, render } from '_tests_/utils'
+import {
+  mockCreateNomenclatureGroupBadRequestError,
+  mockCreateNomenclatureGroupForbiddenError,
+  mockCreateNomenclatureGroupServerError,
+  mockCreateNomenclatureGroupSuccess,
+} from '_tests_/mocks/api'
+import {
+  fakeWord,
+  findNotification,
+  getButtonIn,
+  render,
+  setupApiTests,
+  setupNotifications,
+} from '_tests_/utils'
 
 import NomenclatureListPage from './index'
 
@@ -57,6 +71,9 @@ export const testUtils = {
   getGroupList,
 }
 
+setupApiTests()
+setupNotifications()
+
 describe('Страница списка номенклатур', () => {
   describe('Поле поиска', () => {
     test('Отображается', () => {
@@ -96,6 +113,87 @@ describe('Страница списка номенклатур', () => {
       const modal = addOrEditNomenclatureGroupModalTestUtils.getContainer()
 
       expect(modal).toBeInTheDocument()
+    })
+  })
+
+  describe('Добавление группы', () => {
+    test('При успешном запросе закрывается модалка и в список добавляется новая группа', async () => {
+      // todo: добавить тесты для "в список добавляется новая группа" как будет готова интеграция со списком групп
+      mockCreateNomenclatureGroupSuccess()
+
+      const { user } = render(<NomenclatureListPage />)
+
+      await testUtils.clickAddNomenclatureGroupButton(user)
+      await addOrEditNomenclatureGroupModalTestUtils.setName(user, fakeWord())
+      await addOrEditNomenclatureGroupModalTestUtils.clickAddButton(user)
+      await addOrEditNomenclatureGroupModalTestUtils.expectLoadingFinished()
+
+      const modal = addOrEditNomenclatureGroupModalTestUtils.queryContainer()
+
+      await waitFor(() => {
+        expect(modal).not.toBeInTheDocument()
+      })
+    })
+
+    describe('При не успешном запросе', () => {
+      test('Обрабатывается ошибка 400', async () => {
+        const detailErrorMessage = fakeWord()
+        const titleErrorMessage = fakeWord()
+
+        mockCreateNomenclatureGroupBadRequestError({
+          body: { detail: detailErrorMessage, title: [titleErrorMessage] },
+        })
+
+        const { user } = render(<NomenclatureListPage />)
+
+        await testUtils.clickAddNomenclatureGroupButton(user)
+        await addOrEditNomenclatureGroupModalTestUtils.setName(user, fakeWord())
+        await addOrEditNomenclatureGroupModalTestUtils.clickAddButton(user)
+        await addOrEditNomenclatureGroupModalTestUtils.expectLoadingFinished()
+
+        const titleError =
+          await addOrEditNomenclatureGroupModalTestUtils.findNameError(
+            titleErrorMessage,
+          )
+        const notification = await findNotification(detailErrorMessage)
+
+        expect(titleError).toBeInTheDocument()
+        expect(notification).toBeInTheDocument()
+      })
+
+      test('Обрабатывается ошибка 403', async () => {
+        const detailErrorMessage = fakeWord()
+
+        mockCreateNomenclatureGroupForbiddenError({
+          body: { detail: detailErrorMessage },
+        })
+
+        const { user } = render(<NomenclatureListPage />)
+
+        await testUtils.clickAddNomenclatureGroupButton(user)
+        await addOrEditNomenclatureGroupModalTestUtils.setName(user, fakeWord())
+        await addOrEditNomenclatureGroupModalTestUtils.clickAddButton(user)
+        await addOrEditNomenclatureGroupModalTestUtils.expectLoadingFinished()
+
+        const notification = await findNotification(detailErrorMessage)
+        expect(notification).toBeInTheDocument()
+      })
+
+      test('Обрабатывается ошибка 500', async () => {
+        mockCreateNomenclatureGroupServerError()
+
+        const { user } = render(<NomenclatureListPage />)
+
+        await testUtils.clickAddNomenclatureGroupButton(user)
+        await addOrEditNomenclatureGroupModalTestUtils.setName(user, fakeWord())
+        await addOrEditNomenclatureGroupModalTestUtils.clickAddButton(user)
+        await addOrEditNomenclatureGroupModalTestUtils.expectLoadingFinished()
+
+        const notification = await findNotification(
+          createNomenclatureGroupMessages.commonError,
+        )
+        expect(notification).toBeInTheDocument()
+      })
     })
   })
 
