@@ -28,6 +28,7 @@ import {
   selectDisabledIn,
   setupApiTests,
   openSelect,
+  fakeWord,
 } from '_tests_/utils'
 
 import TaskSecondLineModal from './index'
@@ -82,6 +83,25 @@ const openWorkGroup = async (user: UserEvent) => {
 
 const selectWorkGroup = clickSelectOption
 
+// comment
+const getCommentFormItem = () =>
+  within(getContainer()).getByTestId('comment-form-item')
+
+const getCommentFieldLabel = () =>
+  within(getCommentFormItem()).getByText('Комментарий')
+
+const findCommentFieldError = (error: string) =>
+  within(getCommentFormItem()).findByText(error)
+
+const getCommentField = () =>
+  within(getCommentFormItem()).getByPlaceholderText('Добавьте комментарий')
+
+const setComment = async (user: UserEvent, comment: string) => {
+  const input = getCommentField()
+  await user.type(input, comment)
+  return input
+}
+
 // submit button
 const getSubmitButton = () => getButtonIn(getContainer(), /перевести заявку/i)
 
@@ -121,20 +141,21 @@ export const testUtils = {
   getWorkGroupField,
   queryWorkGroupField,
   findWorkGroupFieldError,
-
   getSelectedWorkGroup,
   getSelectedWorkGroupText,
-
   getWorkGroupOption,
   getWorkGroupOptionText,
-
+  openWorkGroup,
+  selectWorkGroup,
   expectWorkGroupSelectDisabled,
-
   expectWorkGroupLoadingStarted,
   expectWorkGroupLoadingFinished,
 
-  openWorkGroup,
-  selectWorkGroup,
+  getCommentFormItem,
+  findCommentFieldError,
+  getCommentFieldLabel,
+  getCommentField,
+  setComment,
 
   getSubmitButton,
   clickSubmitButton,
@@ -158,9 +179,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       store: getStoreWithAuth(),
     })
 
-    expect(
-      testUtils.getChildByText(String(props.recordId)),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText(String(props.recordId))).toBeInTheDocument()
     expect(testUtils.getChildByText(/перевод заявки/i)).toBeInTheDocument()
     expect(testUtils.getChildByText(/на II линию/i)).toBeInTheDocument()
   })
@@ -462,6 +481,36 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       expect(
         await testUtils.findWorkGroupFieldError(validationMessages.required),
       ).toBeInTheDocument()
+    })
+  })
+
+  describe('Поле комментария', () => {
+    test('Отображается корректно', async () => {
+      mockGetWorkGroupListSuccess({ body: [] })
+
+      render(<TaskSecondLineModal {...props} />)
+
+      await testUtils.expectWorkGroupLoadingFinished()
+      const label = testUtils.getCommentFieldLabel()
+      const field = testUtils.getCommentField()
+
+      expect(label).toBeInTheDocument()
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).not.toHaveValue()
+    })
+
+    test('Можно установить значение', async () => {
+      mockGetWorkGroupListSuccess({ body: [] })
+
+      const { user } = render(<TaskSecondLineModal {...props} />)
+
+      await testUtils.expectWorkGroupLoadingFinished()
+
+      const value = fakeWord()
+      const field = await testUtils.setComment(user, value)
+
+      expect(field).toHaveDisplayValue(value)
     })
   })
 

@@ -1,10 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
+import { validationMessages } from 'shared/constants/validation'
 
 import {
   fakeWord,
@@ -154,21 +151,6 @@ describe('Форма добавления комментария', () => {
     })
 
     describe('Отображает ошибку', () => {
-      test('Если превысить лимит символов', async () => {
-        const { user } = render(<CreateCommentForm {...props} />)
-
-        await testUtils.setComment(
-          user,
-          fakeWord({ length: validationSizes.string.long + 1 }),
-        )
-
-        expect(
-          await testUtils.findCommentFieldError(
-            validationMessages.string.max.long,
-          ),
-        ).toBeInTheDocument()
-      })
-
       test('Если ввести только пробелы', async () => {
         const { user } = render(<CreateCommentForm {...props} />)
 

@@ -6,20 +6,13 @@ import React, { FC } from 'react'
 
 import Space from 'components/Space'
 
-import { validationSizes } from 'shared/constants/validation'
 import { getFilesFromEvent } from 'shared/utils/form'
 
 import { CreateCommentFormFields, CreateCommentFormProps } from './types'
 
 const { TextArea } = Input
 
-const commentValidationRules: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: validationSizes.string.long,
-  },
-]
+const commentValidationRules: Rule[] = [{ required: true, whitespace: true }]
 
 const CreateCommentForm: FC<CreateCommentFormProps> = ({
   onSubmit,
