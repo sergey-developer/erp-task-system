@@ -1,11 +1,11 @@
-import { isEqual } from 'shared/utils/common/isEqual'
+import isEqual from 'lodash/isEqual'
 
 import { commonConfig } from './common.config'
 import {
   developmentConfig,
   DevelopmentEnvConfigKeys,
 } from './development.config'
-import { ConfigType, Environment, ParsedEnvConfigValue } from './interfaces'
+import { ConfigType, Environment, ParsedEnvConfigValue } from './types'
 import { productionConfig, ProductionEnvConfigKeys } from './production.config'
 import { testConfig, TestEnvConfigKeys } from './test.config'
 

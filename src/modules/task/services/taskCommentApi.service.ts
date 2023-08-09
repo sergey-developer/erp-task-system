@@ -1,4 +1,4 @@
-import { TaskCommentEndpointNameEnum } from 'modules/task/constants'
+import { TaskCommentApiTriggerEnum } from 'modules/task/constants'
 import {
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
@@ -14,7 +14,7 @@ import taskApiService from './taskApi.service'
 
 const taskCommentApiService = taskApiService.injectEndpoints({
   endpoints: (build) => ({
-    [TaskCommentEndpointNameEnum.CreateTaskComment]: build.mutation<
+    [TaskCommentApiTriggerEnum.CreateTaskComment]: build.mutation<
       CreateTaskCommentSuccessResponse,
       CreateTaskCommentMutationArgs
     >({
@@ -40,7 +40,7 @@ const taskCommentApiService = taskApiService.injectEndpoints({
 
           dispatch(
             baseApiService.util.updateQueryData(
-              TaskCommentEndpointNameEnum.GetTaskCommentList as never,
+              TaskCommentApiTriggerEnum.GetTaskCommentList as never,
               taskId as never,
               (commentList: GetTaskCommentListSuccessResponse) => {
                 commentList.unshift(newComment)
@@ -50,7 +50,7 @@ const taskCommentApiService = taskApiService.injectEndpoints({
         } catch {}
       },
     }),
-    [TaskCommentEndpointNameEnum.GetTaskCommentList]: build.query<
+    [TaskCommentApiTriggerEnum.GetTaskCommentList]: build.query<
       GetTaskCommentListSuccessResponse,
       GetTaskCommentListQueryArgs
     >({

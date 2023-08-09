@@ -1,4 +1,4 @@
-import { SubTaskEndpointNameEnum } from 'modules/subTask/constants/api'
+import { SubTaskApiTriggerEnum } from 'modules/subTask/constants'
 import {
   CancelSubTaskMutationArgs,
   CancelSubTaskSuccessResponse,
@@ -18,7 +18,7 @@ import {
   getSubTaskListUrl,
   getSubTaskTemplateListUrl,
   reworkSubTaskUrl,
-} from 'modules/subTask/utils/apiUrls'
+} from 'modules/subTask/utils'
 import { TaskStatusEnum } from 'modules/task/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -26,7 +26,7 @@ import { baseApiService } from 'shared/services/api'
 
 const subTaskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
-    [SubTaskEndpointNameEnum.GetSubTaskList]: build.query<
+    [SubTaskApiTriggerEnum.GetSubTaskList]: build.query<
       GetSubTaskListSuccessResponse,
       GetSubTaskListQueryArgs
     >({
@@ -35,7 +35,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
-    [SubTaskEndpointNameEnum.GetSubTaskTemplateList]: build.query<
+    [SubTaskApiTriggerEnum.GetSubTaskTemplateList]: build.query<
       GetSubTaskTemplateListSuccessResponse,
       GetSubTaskTemplateListQueryArgs
     >({
@@ -45,7 +45,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
         params,
       }),
     }),
-    [SubTaskEndpointNameEnum.CreateSubTask]: build.mutation<
+    [SubTaskApiTriggerEnum.CreateSubTask]: build.mutation<
       CreateSubTaskSuccessResponse,
       CreateSubTaskMutationArgs
     >({
@@ -60,7 +60,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
 
           dispatch(
             baseApiService.util.updateQueryData(
-              SubTaskEndpointNameEnum.GetSubTaskList as never,
+              SubTaskApiTriggerEnum.GetSubTaskList as never,
               taskId as never,
               (subTaskList: SubTaskModel[]) => {
                 subTaskList.unshift(newSubTask)
@@ -70,7 +70,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
         } catch {}
       },
     }),
-    [SubTaskEndpointNameEnum.CancelSubTask]: build.mutation<
+    [SubTaskApiTriggerEnum.CancelSubTask]: build.mutation<
       CancelSubTaskSuccessResponse,
       CancelSubTaskMutationArgs
     >({
@@ -88,7 +88,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
 
           dispatch(
             baseApiService.util.updateQueryData(
-              SubTaskEndpointNameEnum.GetSubTaskList as never,
+              SubTaskApiTriggerEnum.GetSubTaskList as never,
               taskId as never,
               (subTaskList: SubTaskModel[]) => {
                 const subTask = subTaskList.find(({ id }) => id === subTaskId)
@@ -102,7 +102,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
         } catch {}
       },
     }),
-    [SubTaskEndpointNameEnum.ReworkSubTask]: build.mutation<
+    [SubTaskApiTriggerEnum.ReworkSubTask]: build.mutation<
       ReworkSubTaskSuccessResponse,
       ReworkSubTaskMutationArgs
     >({
@@ -120,7 +120,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
 
           dispatch(
             baseApiService.util.updateQueryData(
-              SubTaskEndpointNameEnum.GetSubTaskList as never,
+              SubTaskApiTriggerEnum.GetSubTaskList as never,
               taskId as never,
               (subTaskList: SubTaskModel[]) => {
                 const subTask = subTaskList.find(({ id }) => id === subTaskId)

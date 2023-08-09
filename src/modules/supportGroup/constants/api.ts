@@ -1,3 +1,3 @@
-export enum SupportGroupEndpointsEnum {
+export enum SupportGroupApiEnum {
   GetSupportGroupList = '/support_groups/',
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { taskAssigneeApiMessages } from 'modules/task/constants'
+import { updateTaskAssigneeMessages } from 'modules/task/constants'
 import { UpdateTaskAssigneeMutationArgs } from 'modules/task/models'
 import { taskAssigneeApiPermissions } from 'modules/task/permissions'
 import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskAssigneeApi.service'
@@ -24,7 +24,7 @@ export const useUpdateTaskAssignee = () => {
   useEffect(() => {
     if (!state.isError) return
 
-    showErrorNotification(taskAssigneeApiMessages.updateAssignee.commonError)
+    showErrorNotification(updateTaskAssigneeMessages.commonError)
   }, [state.isError])
 
   return { fn, state }

@@ -1,7 +1,7 @@
 import { camelize } from 'humps'
 
-import { Permissions, PermissionsMap } from 'shared/interfaces/permissions'
-import { MaybeUndefined } from 'shared/interfaces/utils'
+import { Permissions, PermissionsMap } from 'shared/types/permissions'
+import { MaybeUndefined } from 'shared/types/utils'
 
 /**
  Proxy добавлен, чтобы при обращении к несуществующему пермишену, например "permissions.canUpdate",

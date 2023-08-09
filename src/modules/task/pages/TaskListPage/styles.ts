@@ -4,29 +4,21 @@ import styled, { css } from 'styled-components'
 import {
   StyledBreakpointStyles,
   StyledBreakpointsProps,
-} from 'shared/interfaces/breakpoints'
+} from 'shared/types/breakpoints'
 import { applyBreakpointStyles } from 'shared/utils/breakpoints'
 
 const { Search } = Input
 
-export const ColFlexStyled = styled(Col)`
-  display: flex;
-  flex-direction: column;
-`
-
-export const RowStyled = styled.div`
+export const RowStyled = styled(Row)`
+  height: 100%;
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
 `
 
-export const RowWrapStyled = styled(Row)`
-  flex-direction: column;
-  flex-flow: column;
-  flex: 1;
+export const ColStyled = styled(Col)`
+  height: 100%;
 `
 
 const searchBreakpointStyles: StyledBreakpointStyles = {

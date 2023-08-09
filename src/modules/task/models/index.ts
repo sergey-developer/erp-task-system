@@ -12,6 +12,9 @@ export * from './getTaskWorkPerformedAct.model'
 export * from './taskList.model'
 export * from './getTaskList.model'
 
+export * from './taskListMap.model'
+export * from './getTaskListMap.model'
+
 export * from './getTaskCounters.model'
 
 export * from './taskJournal.model'
