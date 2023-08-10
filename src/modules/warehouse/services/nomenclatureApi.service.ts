@@ -1,3 +1,5 @@
+import { getPaginatedList } from 'lib/antd/utils'
+
 import {
   NomenclatureApiEnum,
   NomenclatureApiTagEnum,
@@ -40,14 +42,7 @@ const nomenclatureApiService = baseApiService
           response: GetNomenclatureListSuccessResponse,
           meta,
           arg,
-        ) => ({
-          pagination: {
-            current: arg.offset / arg.limit + 1,
-            pageSize: arg.limit,
-            total: response.count,
-          },
-          results: response.results,
-        }),
+        ) => getPaginatedList(response, arg),
       }),
       [NomenclatureApiTriggerEnum.CreateNomenclature]: build.mutation<
         CreateNomenclatureSuccessResponse,

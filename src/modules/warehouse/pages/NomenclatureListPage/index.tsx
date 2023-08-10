@@ -231,6 +231,7 @@ const NomenclatureListPage: FC = () => {
         <Space size='middle'>
           <Search
             placeholder='Поиск номенклатуры'
+            allowClear
             disabled={
               nomenclatureListIsFetching || nomenclatureGroupListIsFetching
             }
