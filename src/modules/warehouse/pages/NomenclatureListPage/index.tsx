@@ -154,7 +154,7 @@ const NomenclatureListPage: FC = () => {
   )
 
   const handleClickGroup: MenuProps['onClick'] = (data) => {
-    setGetNomenclatureListParams({ group: Number(data.key) })
+    setGetNomenclatureListParams({ group: Number(data.key), offset: 0 })
   }
 
   return (
