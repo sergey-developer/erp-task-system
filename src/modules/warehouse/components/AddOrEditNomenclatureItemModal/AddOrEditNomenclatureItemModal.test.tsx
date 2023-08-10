@@ -39,6 +39,9 @@ export const addModeProps: Pick<AddOrEditNomenclatureItemModalProps, 'okText'> =
 const getContainer = () =>
   screen.getByTestId('add-or-edit-nomenclature-item-modal')
 
+const findContainer = (): Promise<HTMLElement> =>
+  screen.findByTestId('add-or-edit-nomenclature-item-modal')
+
 // name field
 const getNameFormItem = () =>
   within(getContainer()).getByTestId('name-form-item')
@@ -221,6 +224,7 @@ const clickCancelButton = async (user: UserEvent) => {
 
 export const testUtils = {
   getContainer,
+  findContainer,
 
   getAddButton,
   clickAddButton,

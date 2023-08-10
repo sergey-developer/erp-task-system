@@ -1,7 +1,15 @@
 import { TableProps } from 'antd'
 
-export type NomenclatureTableItem = any
+import { NomenclatureListItemModel } from 'modules/warehouse/models'
+
+export type NomenclatureTableItem = Pick<
+  NomenclatureListItemModel,
+  'id' | 'title' | 'vendorCode'
+>
 
 export type NomenclatureTableProps = Required<
-  Pick<TableProps<NomenclatureTableItem>, 'dataSource' | 'loading'>
+  Pick<
+    TableProps<NomenclatureTableItem>,
+    'dataSource' | 'loading' | 'pagination' | 'onChange'
+  >
 >

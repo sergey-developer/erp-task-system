@@ -12,7 +12,6 @@ const NomenclatureTable: FC<NomenclatureTableProps> = (props) => {
         {...props}
         rowKey='id'
         columns={columns}
-        pagination={false}
         showSorterTooltip={false}
       />
     </div>

@@ -1,12 +1,15 @@
+import { GetNomenclatureGroupListQueryArgs } from './getNomenclatureGroupList.model'
+import { NomenclatureGroupListItemModel } from './nomenclatureGroupList.model'
+
 export type CreateNomenclatureGroupMutationArgs = {
   title: string
+  getListParams: GetNomenclatureGroupListQueryArgs
 }
 
-// todo: use list item model when it will be ready
-export type CreateNomenclatureGroupSuccessResponse = {
-  id: number
-  title: string
-}
+export type CreateNomenclatureGroupSuccessResponse = Pick<
+  NomenclatureGroupListItemModel,
+  'id' | 'title'
+>
 
 export type CreateNomenclatureGroupBadRequestErrorResponse =
   Partial<CreateNomenclatureGroupMutationArgs>
