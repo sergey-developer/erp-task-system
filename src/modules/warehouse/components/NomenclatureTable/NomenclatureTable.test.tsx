@@ -3,26 +3,24 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { MaybeNull } from 'shared/types/utils'
 
+import warehouseFixtures from 'fixtures/warehouse'
+
 import {
   expectLoadingFinishedByIconIn,
   expectLoadingStartedByIconIn,
-  fakeInteger,
-  fakeWord,
   render,
 } from '_tests_/utils'
 
 import NomenclatureTable from './index'
 import { NomenclatureTableItem, NomenclatureTableProps } from './types'
 
-const nomenclatureListItem = {
-  id: 1,
-  title: fakeWord(),
-  vendorCode: fakeInteger(),
-}
+const nomenclatureListItem = warehouseFixtures.nomenclatureListItem()
 
 const props: Readonly<NomenclatureTableProps> = {
   dataSource: [nomenclatureListItem],
+  pagination: false,
   loading: false,
+  onChange: jest.fn()
 }
 
 const getContainer = () => screen.getByTestId('nomenclature-table')
@@ -77,6 +75,8 @@ export const testUtils = {
   expectLoadingStarted,
   expectLoadingFinished,
 }
+
+// todo: написать тесты на пагинацию
 
 describe('Таблица номенклатуры', () => {
   test('Отображается корректно', () => {

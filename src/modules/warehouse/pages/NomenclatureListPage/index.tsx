@@ -1,5 +1,5 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Input, Button, Row, Col, MenuProps } from 'antd'
+import { Input, Button, Row, Col, MenuProps, TablePaginationConfig } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
 import { FC, useCallback, useMemo, useState } from 'react'
 
@@ -7,9 +7,16 @@ import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrE
 import { AddOrEditNomenclatureGroupModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/types'
 import AddOrEditNomenclatureItemModal from 'modules/warehouse/components/AddOrEditNomenclatureItemModal'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
+import { NomenclatureTableProps } from 'modules/warehouse/components/NomenclatureTable/types'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants'
-import { useGetNomenclatureGroupList } from 'modules/warehouse/hooks'
-import { GetNomenclatureGroupListQueryArgs } from 'modules/warehouse/models'
+import {
+  useGetNomenclatureGroupList,
+  useGetNomenclatureList,
+} from 'modules/warehouse/hooks'
+import {
+  GetNomenclatureGroupListQueryArgs,
+  GetNomenclatureListQueryArgs,
+} from 'modules/warehouse/models'
 import { useCreateNomenclatureGroupMutation } from 'modules/warehouse/services/nomenclatureApi.service'
 
 import { EditIcon } from 'components/Icons'
@@ -33,7 +40,13 @@ const NomenclatureListPage: FC = () => {
   const [getNomenclatureGroupListParams, setGetNomenclatureGroupListParams] =
     useSetState<GetNomenclatureGroupListQueryArgs>({})
 
-  const [activeGroupKey, setActiveGroupKey] = useState<number>()
+  const [getNomenclatureListParams, setGetNomenclatureListParams] =
+    useSetState<GetNomenclatureListQueryArgs>({
+      limit: 10,
+      offset: 0,
+    })
+
+  const [hoveredGroup, setHoveredGroup] = useState<number>()
 
   const [
     addNomenclatureGroupModalOpened,
@@ -63,19 +76,24 @@ const NomenclatureListPage: FC = () => {
     isFetching: nomenclatureGroupListIsFetching,
   } = useGetNomenclatureGroupList(getNomenclatureGroupListParams)
 
+  const {
+    currentData: nomenclatureList,
+    isFetching: nomenclatureListIsFetching,
+  } = useGetNomenclatureList(getNomenclatureListParams)
+
   const groupListMenuItems: MenuProps['items'] = useMemo(
     () =>
       nomenclatureGroupList.map(({ id, title }) => ({
         key: id,
         label: title,
         title,
-        itemIcon: id === activeGroupKey && (
+        itemIcon: id === hoveredGroup && (
           <EditIcon title='Редактировать группу' />
         ),
-        onMouseEnter: () => setActiveGroupKey(id),
-        onMouseLeave: () => setActiveGroupKey(undefined),
+        onMouseEnter: () => setHoveredGroup(id),
+        onMouseLeave: () => setHoveredGroup(undefined),
       })),
-    [activeGroupKey, nomenclatureGroupList],
+    [hoveredGroup, nomenclatureGroupList],
   )
 
   const handleCreateNomenclatureGroup = useCallback<
@@ -113,7 +131,30 @@ const NomenclatureListPage: FC = () => {
   )
 
   const handleChangeSearch: SearchProps['onSearch'] = (value) => {
-    setGetNomenclatureGroupListParams({ search: value || undefined })
+    const searchValue = value || undefined
+    setGetNomenclatureGroupListParams({ search: searchValue })
+    setGetNomenclatureListParams({ search: searchValue, group: undefined })
+  }
+
+  const handleTablePagination = useCallback(
+    (pagination: TablePaginationConfig) => {
+      setGetNomenclatureListParams({
+        offset: (pagination.current! - 1) * pagination.pageSize!,
+        limit: pagination.pageSize!,
+      })
+    },
+    [setGetNomenclatureListParams],
+  )
+
+  const handleChangeTable = useCallback<NomenclatureTableProps['onChange']>(
+    (pagination) => {
+      handleTablePagination(pagination)
+    },
+    [handleTablePagination],
+  )
+
+  const handleClickGroup: MenuProps['onClick'] = (data) => {
+    setGetNomenclatureListParams({ group: Number(data.key) })
   }
 
   return (
@@ -152,25 +193,17 @@ const NomenclatureListPage: FC = () => {
                 data-testid='group-list'
                 mode='inline'
                 items={groupListMenuItems}
+                onClick={handleClickGroup}
               />
             </LoadingArea>
           </Col>
 
           <Col span={19}>
             <NomenclatureTable
-              dataSource={[
-                {
-                  id: 1,
-                  title: 'МФУ лазерный Huawei PixLab V81-WDM2',
-                  vendorCode: 2010001401,
-                },
-                {
-                  id: 2,
-                  title: 'МФУ лазерный Pantum M6550NW',
-                  vendorCode: 2010001402,
-                },
-              ]}
-              loading={false}
+              dataSource={nomenclatureList?.results || []}
+              pagination={nomenclatureList?.pagination || false}
+              loading={nomenclatureListIsFetching}
+              onChange={handleChangeTable}
             />
           </Col>
         </Row>
