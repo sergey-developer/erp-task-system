@@ -6,8 +6,8 @@ import BaseModal from 'components/Modals/BaseModal'
 import { idAndTitleSelectFieldNames } from 'shared/constants/common'
 
 import {
-  AddOrEditNomenclatureItemModalProps,
-  AddOrEditNomenclatureItemModalFormFields,
+  AddOrEditNomenclatureModalProps,
+  AddOrEditNomenclatureModalFormFields,
 } from './types'
 import {
   groupValidationRules,
@@ -38,24 +38,48 @@ export const fakeCountries = [
   },
 ]
 
-const AddOrEditNomenclatureItemModal: FC<
-  AddOrEditNomenclatureItemModalProps
-> = ({ onSubmit, ...props }) => {
-  const [form] = Form.useForm<AddOrEditNomenclatureItemModalFormFields>()
+const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
+  onSubmit,
+  isLoading,
+  groups,
+  groupsIsLoading,
+  countries,
+  countriesIsLoading,
+  measurementUnits,
+  measurementUnitsIsLoading,
+  ...props
+}) => {
+  const [form] = Form.useForm<AddOrEditNomenclatureModalFormFields>()
 
-  const handleFinish = async (
-    values: AddOrEditNomenclatureItemModalFormFields,
-  ) => {
-    await onSubmit(values, form.setFields)
+  const handleFinish = async ({
+    title,
+    shortTitle,
+    vendorCode,
+    group,
+    country,
+    measurementUnit,
+  }: AddOrEditNomenclatureModalFormFields) => {
+    await onSubmit(
+      {
+        title: title.trim(),
+        shortTitle: shortTitle.trim(),
+        vendorCode: vendorCode.trim(),
+        group,
+        country,
+        measurementUnit,
+      },
+      form.setFields,
+    )
   }
 
   return (
     <BaseModal
       {...props}
-      data-testid='add-or-edit-nomenclature-item-modal'
+      data-testid='add-or-edit-nomenclature-modal'
       onOk={form.submit}
+      confirmLoading={isLoading}
     >
-      <Form<AddOrEditNomenclatureItemModalFormFields>
+      <Form<AddOrEditNomenclatureModalFormFields>
         form={form}
         layout='vertical'
         onFinish={handleFinish}
@@ -87,8 +111,9 @@ const AddOrEditNomenclatureItemModal: FC<
         >
           <Select
             placeholder='Выберите группу'
-            options={fakeGroups}
+            options={groups}
             fieldNames={idAndTitleSelectFieldNames}
+            loading={groupsIsLoading}
           />
         </Form.Item>
 
@@ -109,8 +134,9 @@ const AddOrEditNomenclatureItemModal: FC<
         >
           <Select
             placeholder='Выберите единицу измерения'
-            options={fakeMeasurementUnits}
+            options={measurementUnits}
             fieldNames={idAndTitleSelectFieldNames}
+            loading={measurementUnitsIsLoading}
           />
         </Form.Item>
 
@@ -121,8 +147,9 @@ const AddOrEditNomenclatureItemModal: FC<
         >
           <Select
             placeholder='Выберите страну производителя'
-            options={fakeCountries}
+            options={countries}
             fieldNames={idAndTitleSelectFieldNames}
+            loading={countriesIsLoading}
           />
         </Form.Item>
       </Form>
@@ -130,4 +157,4 @@ const AddOrEditNomenclatureItemModal: FC<
   )
 }
 
-export default AddOrEditNomenclatureItemModal
+export default AddOrEditNomenclatureModal

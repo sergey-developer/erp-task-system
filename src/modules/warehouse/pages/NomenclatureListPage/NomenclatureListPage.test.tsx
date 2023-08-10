@@ -2,7 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/AddOrEditNomenclatureGroupModal.test'
-import { testUtils as addOrEditNomenclatureItemModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureItemModal/AddOrEditNomenclatureItemModal.test'
+import { testUtils as addOrEditNomenclatureModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureModal/AddOrEditNomenclatureModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants'
 
@@ -49,12 +49,12 @@ const clickAddNomenclatureGroupButton = async (user: UserEvent) => {
   await user.click(button)
 }
 
-// add nomenclature item button
-const getAddNomenclatureItemButton = () =>
+// add nomenclature button
+const getAddNomenclatureButton = () =>
   getButtonIn(getContainer(), /Добавить номенклатуру/)
 
-const clickAddNomenclatureItemButton = async (user: UserEvent) => {
-  const button = await getAddNomenclatureItemButton()
+const clickAddNomenclatureButton = async (user: UserEvent) => {
+  const button = await getAddNomenclatureButton()
   await user.click(button)
 }
 
@@ -82,8 +82,8 @@ export const testUtils = {
   getAddNomenclatureGroupButton,
   clickAddNomenclatureGroupButton,
 
-  getAddNomenclatureItemButton,
-  clickAddNomenclatureItemButton,
+  getAddNomenclatureButton,
+  clickAddNomenclatureButton,
 
   getGroupList,
   getGroupListItem,
@@ -277,7 +277,7 @@ describe('Страница списка номенклатур', () => {
 
       render(<NomenclatureListPage />)
 
-      const button = testUtils.getAddNomenclatureItemButton()
+      const button = testUtils.getAddNomenclatureButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -288,9 +288,9 @@ describe('Страница списка номенклатур', () => {
 
       const { user } = render(<NomenclatureListPage />)
 
-      await testUtils.clickAddNomenclatureItemButton(user)
+      await testUtils.clickAddNomenclatureButton(user)
       const modal =
-        await addOrEditNomenclatureItemModalTestUtils.findContainer()
+        await addOrEditNomenclatureModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
     })

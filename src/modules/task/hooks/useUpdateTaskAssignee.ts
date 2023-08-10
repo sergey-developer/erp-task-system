@@ -6,6 +6,7 @@ import { taskAssigneeApiPermissions } from 'modules/task/permissions'
 import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskAssigneeApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
+import { isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useUpdateTaskAssignee = () => {
@@ -22,10 +23,10 @@ export const useUpdateTaskAssignee = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
-
-    showErrorNotification(updateTaskAssigneeMessages.commonError)
-  }, [state.isError])
+    if (isErrorResponse(state.error)) {
+      showErrorNotification(updateTaskAssigneeMessages.commonError)
+    }
+  }, [state.error])
 
   return { fn, state }
 }

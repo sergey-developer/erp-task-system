@@ -5,6 +5,7 @@ import { subTaskApiPermissions } from 'modules/subTask/permissions'
 import { useGetSubTaskListQuery } from 'modules/subTask/services/subTaskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
+import { isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetSubTaskList = (id: GetSubTaskListQueryArgs) => {
@@ -12,10 +13,10 @@ export const useGetSubTaskList = (id: GetSubTaskListQueryArgs) => {
   const state = useGetSubTaskListQuery(id, { skip: !permissions.canGetList })
 
   useEffect(() => {
-    if (!state.isError) return
-
-    showErrorNotification('Не удалось получить задания')
-  }, [state.isError])
+    if (isErrorResponse(state.error)) {
+      showErrorNotification('Не удалось получить задания')
+    }
+  }, [state.error])
 
   return state
 }

@@ -9,7 +9,7 @@ import {
 } from 'modules/subTask/models'
 import { useGetSubTaskTemplateListQuery } from 'modules/subTask/services/subTaskApi.service'
 
-import { CustomBaseQueryFn } from 'shared/services/api'
+import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetSubTaskTemplateList = (
@@ -23,10 +23,10 @@ export const useGetSubTaskTemplateList = (
   const state = useGetSubTaskTemplateListQuery(params, opts)
 
   useEffect(() => {
-    if (!state.isError) return
-
-    showErrorNotification(getSubTaskTemplateListMessages.commonError)
-  }, [state.isError])
+    if (isErrorResponse(state.error)) {
+      showErrorNotification(getSubTaskTemplateListMessages.commonError)
+    }
+  }, [state.error])
 
   return state
 }
