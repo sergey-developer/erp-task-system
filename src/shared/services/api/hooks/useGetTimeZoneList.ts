@@ -20,12 +20,10 @@ export const useGetTimeZoneList = (): TypedUseQueryHookResult<
   const state = useGetTimeZoneListQuery()
 
   useEffect(() => {
-    if (!state.isError) return
-
     if (isErrorResponse(state.error)) {
       showErrorNotification(getTimeZoneListMessages.commonError)
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return state
 }

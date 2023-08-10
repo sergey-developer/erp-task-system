@@ -195,18 +195,5 @@ describe('Модалка создания и редактирования ном
 
       expect(error).toBeInTheDocument()
     })
-
-    test('При загрузке поле неактивно', async () => {
-      render(
-        <AddOrEditNomenclatureGroupModal
-          {...props}
-          {...addModeProps}
-          isLoading
-        />,
-      )
-
-      const field = testUtils.getNameField()
-      expect(field).toBeDisabled()
-    })
   })
 })

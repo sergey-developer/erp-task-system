@@ -1,5 +1,6 @@
 import { decamelize } from 'humps'
-import isNumber from 'lodash/isNumber'
+
+import { getPaginatedList } from 'lib/antd/utils'
 
 import {
   TaskApiEnum,
@@ -46,20 +47,8 @@ const taskApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
         params,
       }),
-      // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
-      transformResponse: (response: GetTaskListSuccessResponse, meta, arg) => {
-        return {
-          pagination:
-            isNumber(arg?.offset) && arg?.limit
-              ? {
-                  current: arg.offset / arg.limit + 1,
-                  pageSize: arg.limit,
-                  total: response.count,
-                }
-              : undefined,
-          results: response.results,
-        }
-      },
+      transformResponse: (response: GetTaskListSuccessResponse, meta, arg) =>
+        getPaginatedList(response, arg),
       providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
     }),
     [TaskApiTriggerEnum.GetTaskListMap]: build.query<

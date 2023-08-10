@@ -9,6 +9,7 @@ import {
 } from 'modules/warehouse/models'
 import { useGetWarehouseListQuery } from 'modules/warehouse/services/warehouseApi.service'
 
+import { isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export type UseGetWarehouseListResult = CustomUseQueryHookResult<
@@ -22,10 +23,10 @@ export const useGetWarehouseList = (
   const state = useGetWarehouseListQuery(args)
 
   useEffect(() => {
-    if (state.isError) {
+    if (isErrorResponse(state.error)) {
       showErrorNotification(getWarehouseListMessages.commonError)
     }
-  }, [state.isError])
+  }, [state.error])
 
   return state
 }
