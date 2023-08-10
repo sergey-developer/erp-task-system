@@ -21,13 +21,11 @@ export const useGetNomenclatureList = (
   const state = useGetNomenclatureListQuery(args)
 
   useEffect(() => {
-    if (state.error) {
-      if (isErrorResponse(state.error)) {
-        if (isForbiddenError(state.error) && state.error.data.detail) {
-          showErrorNotification(state.error.data.detail)
-        } else {
-          showErrorNotification(getNomenclatureListMessages.commonError)
-        }
+    if (isErrorResponse(state.error)) {
+      if (isForbiddenError(state.error) && state.error.data.detail) {
+        showErrorNotification(state.error.data.detail)
+      } else {
+        showErrorNotification(getNomenclatureListMessages.commonError)
       }
     }
   }, [state.error])

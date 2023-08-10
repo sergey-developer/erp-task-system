@@ -6,6 +6,7 @@ import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskJournal
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/errors'
+import { isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useLazyGetTaskJournalCsv = () => {
@@ -22,10 +23,10 @@ export const useLazyGetTaskJournalCsv = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
-
-    showErrorNotification(commonApiMessages.unknownError)
-  }, [state.isError])
+    if (isErrorResponse(state.error)) {
+      showErrorNotification(commonApiMessages.unknownError)
+    }
+  }, [state.error])
 
   return { fn, state }
 }

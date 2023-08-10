@@ -14,6 +14,8 @@ import {
   createNomenclatureMessages,
 } from 'modules/warehouse/constants'
 import {
+  useGetCountryList,
+  useGetMeasurementUnitList,
   useGetNomenclatureGroupList,
   useGetNomenclatureList,
 } from 'modules/warehouse/hooks'
@@ -81,6 +83,13 @@ const NomenclatureListPage: FC = () => {
     isFetching: nomenclatureGroupListIsFetching,
   } = useGetNomenclatureGroupList(getNomenclatureGroupListParams)
 
+  const {
+    currentData: allNomenclatureGroupList = [],
+    isFetching: allNomenclatureGroupListIsFetching,
+  } = useGetNomenclatureGroupList(undefined, {
+    skip: !addNomenclatureModalOpened,
+  })
+
   const [
     createNomenclatureMutation,
     { isLoading: createNomenclatureIsLoading },
@@ -90,6 +99,18 @@ const NomenclatureListPage: FC = () => {
     currentData: nomenclatureList,
     isFetching: nomenclatureListIsFetching,
   } = useGetNomenclatureList(getNomenclatureListParams)
+
+  const {
+    currentData: measurementUnitList = [],
+    isFetching: measurementUnitListIsFetching,
+  } = useGetMeasurementUnitList(undefined, {
+    skip: !addNomenclatureModalOpened,
+  })
+
+  const { currentData: countryList = [], isFetching: countryListIsFetching } =
+    useGetCountryList(undefined, {
+      skip: !addNomenclatureModalOpened,
+    })
 
   const groupListMenuItems: MenuProps['items'] = useMemo(
     () =>
@@ -172,8 +193,14 @@ const NomenclatureListPage: FC = () => {
 
   const handleChangeSearch: SearchProps['onSearch'] = (value) => {
     const searchValue = value || undefined
+
     setGetNomenclatureGroupListParams({ search: searchValue })
-    setGetNomenclatureListParams({ search: searchValue, group: undefined })
+
+    setGetNomenclatureListParams({
+      search: searchValue,
+      group: undefined,
+      offset: 0,
+    })
   }
 
   const handleTablePagination = useCallback(
@@ -204,7 +231,9 @@ const NomenclatureListPage: FC = () => {
         <Space size='middle'>
           <Search
             placeholder='Поиск номенклатуры'
-            disabled={nomenclatureGroupListIsFetching}
+            disabled={
+              nomenclatureListIsFetching || nomenclatureGroupListIsFetching
+            }
             onSearch={handleChangeSearch}
           />
 
@@ -262,6 +291,12 @@ const NomenclatureListPage: FC = () => {
           title='Добавление номенклатурной позиции'
           okText='Добавить'
           isLoading={createNomenclatureIsLoading}
+          groups={allNomenclatureGroupList}
+          groupsIsLoading={allNomenclatureGroupListIsFetching}
+          countries={countryList}
+          countriesIsLoading={countryListIsFetching}
+          measurementUnits={measurementUnitList}
+          measurementUnitsIsLoading={measurementUnitListIsFetching}
           onCancel={debouncedToggleAddNomenclatureModal}
           onSubmit={handleCreateNomenclature}
         />

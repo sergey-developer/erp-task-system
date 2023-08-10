@@ -1,5 +1,11 @@
 import { FormInstance } from 'antd'
 
+import {
+  CountryListModel,
+  MeasurementUnitListModel,
+  NomenclatureGroupListModel,
+} from 'modules/warehouse/models'
+
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 export type AddOrEditNomenclatureModalFormFields = {
@@ -17,6 +23,16 @@ export type AddOrEditNomenclatureModalProps = Required<
   title: string
   okText: string
   isLoading: boolean
+
+  groups: NomenclatureGroupListModel
+  groupsIsLoading: boolean
+
+  countries: CountryListModel
+  countriesIsLoading: boolean
+
+  measurementUnits: MeasurementUnitListModel
+  measurementUnitsIsLoading: boolean
+
   onSubmit: (
     values: AddOrEditNomenclatureModalFormFields,
     setFields: FormInstance['setFields'],

@@ -41,6 +41,12 @@ export const fakeCountries = [
 const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
   onSubmit,
   isLoading,
+  groups,
+  groupsIsLoading,
+  countries,
+  countriesIsLoading,
+  measurementUnits,
+  measurementUnitsIsLoading,
   ...props
 }) => {
   const [form] = Form.useForm<AddOrEditNomenclatureModalFormFields>()
@@ -105,8 +111,9 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         >
           <Select
             placeholder='Выберите группу'
-            options={fakeGroups}
+            options={groups}
             fieldNames={idAndTitleSelectFieldNames}
+            loading={groupsIsLoading}
           />
         </Form.Item>
 
@@ -127,8 +134,9 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         >
           <Select
             placeholder='Выберите единицу измерения'
-            options={fakeMeasurementUnits}
+            options={measurementUnits}
             fieldNames={idAndTitleSelectFieldNames}
+            loading={measurementUnitsIsLoading}
           />
         </Form.Item>
 
@@ -139,8 +147,9 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         >
           <Select
             placeholder='Выберите страну производителя'
-            options={fakeCountries}
+            options={countries}
             fieldNames={idAndTitleSelectFieldNames}
+            loading={countriesIsLoading}
           />
         </Form.Item>
       </Form>

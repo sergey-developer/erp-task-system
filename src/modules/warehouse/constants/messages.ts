@@ -29,3 +29,11 @@ export const createNomenclatureMessages: ApiRequestMessages<'commonError'> = {
 export const getNomenclatureListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка номенклатур',
 }
+
+export const getMeasurementUnitListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка единиц измерения',
+}
+
+export const getCountryListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка стран производителей',
+}

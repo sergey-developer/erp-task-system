@@ -24,3 +24,11 @@ export enum NomenclatureApiTriggerEnum {
 export enum NomenclatureApiTagEnum {
   NomenclatureList = 'NomenclatureList',
 }
+
+export enum MeasurementUnitApiEnum {
+  GetMeasurementUnitList = '/measurement-units/',
+}
+
+export enum CountryApiEnum {
+  GetCountryList = '/countries/',
+}

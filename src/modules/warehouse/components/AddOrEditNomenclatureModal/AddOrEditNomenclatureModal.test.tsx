@@ -26,16 +26,21 @@ import { AddOrEditNomenclatureModalProps } from './types'
 const props: AddOrEditNomenclatureModalProps = {
   visible: true,
   isLoading: false,
+  groups: [],
+  groupsIsLoading: false,
+  countries: [],
+  countriesIsLoading: false,
+  measurementUnits: [],
+  measurementUnitsIsLoading: false,
   title: fakeWord(),
   okText: fakeWord(),
   onCancel: jest.fn(),
   onSubmit: jest.fn(),
 }
 
-export const addModeProps: Pick<AddOrEditNomenclatureModalProps, 'okText'> =
-  {
-    okText: 'Добавить',
-  }
+export const addModeProps: Pick<AddOrEditNomenclatureModalProps, 'okText'> = {
+  okText: 'Добавить',
+}
 
 const getContainer = () => screen.getByTestId('add-or-edit-nomenclature-modal')
 
