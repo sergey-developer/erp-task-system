@@ -1,7 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Input, Button, Row, Col, MenuProps } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
-import { FC, useMemo, useState } from 'react'
+import { FC, useCallback, useMemo, useState } from 'react'
 
 import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
 import { AddOrEditNomenclatureGroupModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/types'
@@ -68,6 +68,7 @@ const NomenclatureListPage: FC = () => {
       nomenclatureGroupList.map(({ id, title }) => ({
         key: id,
         label: title,
+        title,
         itemIcon: id === activeGroupKey && (
           <EditIcon title='Редактировать группу' />
         ),
@@ -77,10 +78,16 @@ const NomenclatureListPage: FC = () => {
     [activeGroupKey, nomenclatureGroupList],
   )
 
-  const handleCreateNomenclatureGroup: AddOrEditNomenclatureGroupModalProps['onSubmit'] =
+  const handleCreateNomenclatureGroup = useCallback<
+    AddOrEditNomenclatureGroupModalProps['onSubmit']
+  >(
     async (values, setFields) => {
       try {
-        await createNomenclatureGroupMutation(values).unwrap()
+        await createNomenclatureGroupMutation({
+          ...values,
+          getListParams: getNomenclatureGroupListParams,
+        }).unwrap()
+
         toggleAddNomenclatureGroupModal()
       } catch (error) {
         if (isErrorResponse(error)) {
@@ -97,7 +104,13 @@ const NomenclatureListPage: FC = () => {
           }
         }
       }
-    }
+    },
+    [
+      createNomenclatureGroupMutation,
+      getNomenclatureGroupListParams,
+      toggleAddNomenclatureGroupModal,
+    ],
+  )
 
   const handleChangeSearch: SearchProps['onSearch'] = (value) => {
     setGetNomenclatureGroupListParams({ search: value || undefined })

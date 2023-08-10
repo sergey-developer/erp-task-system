@@ -7,6 +7,7 @@ import {
   CreateNomenclatureGroupSuccessResponse,
   GetNomenclatureGroupListQueryArgs,
   GetNomenclatureGroupListSuccessResponse,
+  NomenclatureGroupListModel,
 } from 'modules/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -29,21 +30,23 @@ const nomenclatureApiService = baseApiService.injectEndpoints({
       CreateNomenclatureGroupSuccessResponse,
       CreateNomenclatureGroupMutationArgs
     >({
-      query: (payload) => ({
+      query: ({ getListParams, ...payload }) => ({
         url: NomenclatureApiEnum.CreateNomenclatureGroup,
         method: HttpMethodEnum.Post,
         data: payload,
       }),
-      onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async (
+        { getListParams },
+        { dispatch, queryFulfilled },
+      ) => {
         try {
           const { data: newGroup } = await queryFulfilled
 
           dispatch(
             baseApiService.util.updateQueryData(
               NomenclatureApiTriggerEnum.GetNomenclatureGroupList as never,
-              undefined as never,
-              // todo: fix any when backend will be ready
-              (groupList: any[]) => {
+              getListParams as never,
+              (groupList: NomenclatureGroupListModel) => {
                 groupList.push(newGroup)
               },
             ),
