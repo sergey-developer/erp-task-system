@@ -25,6 +25,7 @@ import { AddOrEditNomenclatureModalProps } from './types'
 
 const props: AddOrEditNomenclatureModalProps = {
   visible: true,
+  isLoading: false,
   title: fakeWord(),
   okText: fakeWord(),
   onCancel: jest.fn(),
