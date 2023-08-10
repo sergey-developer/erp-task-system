@@ -9,7 +9,10 @@ import AddOrEditNomenclatureModal from 'modules/warehouse/components/AddOrEditNo
 import { AddOrEditNomenclatureModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureModal/types'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
 import { NomenclatureTableProps } from 'modules/warehouse/components/NomenclatureTable/types'
-import { createNomenclatureGroupMessages, createNomenclatureMessages } from "modules/warehouse/constants";
+import {
+  createNomenclatureGroupMessages,
+  createNomenclatureMessages,
+} from 'modules/warehouse/constants'
 import {
   useGetNomenclatureGroupList,
   useGetNomenclatureList,
@@ -104,7 +107,7 @@ const NomenclatureListPage: FC = () => {
   )
 
   const handleClickGroup: MenuProps['onClick'] = (data) => {
-    setGetNomenclatureListParams({ group: Number(data.key) })
+    setGetNomenclatureListParams({ group: Number(data.key), offset: 0 })
   }
 
   const handleCreateNomenclatureGroup = useCallback<
