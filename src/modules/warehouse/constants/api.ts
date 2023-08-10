@@ -6,3 +6,15 @@ export enum WarehouseApiEnum {
 export enum LegalEntityApiEnum {
   GetLegalEntityList = '/legal-entities/',
 }
+
+export enum NomenclatureApiEnum {
+  GetNomenclatureList = '/nomenclatures/',
+  GetNomenclatureGroupList = '/nomenclature-groups/',
+  CreateNomenclatureGroup = '/nomenclature-groups/',
+}
+
+export enum NomenclatureApiTriggerEnum {
+  CreateNomenclatureGroup = 'createNomenclatureGroup',
+  GetNomenclatureList = 'getNomenclatureList',
+  GetNomenclatureGroupList = 'getNomenclatureGroupList',
+}
