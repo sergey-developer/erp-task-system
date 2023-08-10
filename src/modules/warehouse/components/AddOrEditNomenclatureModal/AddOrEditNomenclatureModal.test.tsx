@@ -16,14 +16,14 @@ import {
   render,
 } from '_tests_/utils'
 
-import AddOrEditNomenclatureItemModal, {
+import AddOrEditNomenclatureModal, {
   fakeCountries,
   fakeGroups,
   fakeMeasurementUnits,
 } from './index'
-import { AddOrEditNomenclatureItemModalProps } from './types'
+import { AddOrEditNomenclatureModalProps } from './types'
 
-const props: AddOrEditNomenclatureItemModalProps = {
+const props: AddOrEditNomenclatureModalProps = {
   visible: true,
   title: fakeWord(),
   okText: fakeWord(),
@@ -31,16 +31,15 @@ const props: AddOrEditNomenclatureItemModalProps = {
   onSubmit: jest.fn(),
 }
 
-export const addModeProps: Pick<AddOrEditNomenclatureItemModalProps, 'okText'> =
+export const addModeProps: Pick<AddOrEditNomenclatureModalProps, 'okText'> =
   {
     okText: 'Добавить',
   }
 
-const getContainer = () =>
-  screen.getByTestId('add-or-edit-nomenclature-item-modal')
+const getContainer = () => screen.getByTestId('add-or-edit-nomenclature-modal')
 
 const findContainer = (): Promise<HTMLElement> =>
-  screen.findByTestId('add-or-edit-nomenclature-item-modal')
+  screen.findByTestId('add-or-edit-nomenclature-modal')
 
 // name field
 const getNameFormItem = () =>
@@ -289,14 +288,14 @@ export const testUtils = {
 
 describe('Модалка создания и редактирования номенклатурной позиции', () => {
   test('Заголовок отображается', () => {
-    render(<AddOrEditNomenclatureItemModal {...props} />)
+    render(<AddOrEditNomenclatureModal {...props} />)
     const title = within(getContainer()).getByText(props.title)
     expect(title).toBeInTheDocument()
   })
 
   describe('Кнопка создания', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditNomenclatureItemModal {...props} {...addModeProps} />)
+      render(<AddOrEditNomenclatureModal {...props} {...addModeProps} />)
 
       const button = testUtils.getAddButton()
 
@@ -306,7 +305,7 @@ describe('Модалка создания и редактирования ном
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(
-        <AddOrEditNomenclatureItemModal {...props} {...addModeProps} />,
+        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
       )
 
       await testUtils.setName(user, fakeWord())
@@ -332,7 +331,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditNomenclatureItemModal {...props} />)
+      render(<AddOrEditNomenclatureModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -341,7 +340,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
       await testUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
@@ -349,7 +348,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Поле названия', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditNomenclatureItemModal {...props} />)
+      render(<AddOrEditNomenclatureModal {...props} />)
 
       const label = testUtils.getNameLabel()
       const field = testUtils.getNameField()
@@ -361,7 +360,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       const value = fakeWord()
       const field = await testUtils.setName(user, value)
@@ -371,7 +370,7 @@ describe('Модалка создания и редактирования ном
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
       const { user } = render(
-        <AddOrEditNomenclatureItemModal {...props} {...addModeProps} />,
+        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
       )
 
       await testUtils.clickAddButton(user)
@@ -383,7 +382,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Поле краткого названия', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditNomenclatureItemModal {...props} />)
+      render(<AddOrEditNomenclatureModal {...props} />)
 
       const label = testUtils.getShortNameLabel()
       const field = testUtils.getShortNameField()
@@ -395,7 +394,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       const value = fakeWord()
       const field = await testUtils.setShortName(user, value)
@@ -405,7 +404,7 @@ describe('Модалка создания и редактирования ном
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
       const { user } = render(
-        <AddOrEditNomenclatureItemModal {...props} {...addModeProps} />,
+        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
       )
 
       await testUtils.clickAddButton(user)
@@ -419,7 +418,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Поле группы', () => {
     test('Отображается корректно', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       const label = testUtils.getGroupLabel()
       const field = testUtils.getGroupField()
@@ -437,7 +436,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       await testUtils.openGroupSelect(user)
       await testUtils.setGroup(user, fakeGroups[0].title)
@@ -448,7 +447,7 @@ describe('Модалка создания и редактирования ном
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
       const { user } = render(
-        <AddOrEditNomenclatureItemModal {...props} {...addModeProps} />,
+        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
       )
 
       await testUtils.clickAddButton(user)
@@ -460,7 +459,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Поле артикула', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditNomenclatureItemModal {...props} />)
+      render(<AddOrEditNomenclatureModal {...props} />)
 
       const label = testUtils.getVendorCodeLabel()
       const field = testUtils.getVendorCodeField()
@@ -472,7 +471,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       const value = fakeWord()
       const field = await testUtils.setVendorCode(user, value)
@@ -482,7 +481,7 @@ describe('Модалка создания и редактирования ном
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
       const { user } = render(
-        <AddOrEditNomenclatureItemModal {...props} {...addModeProps} />,
+        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
       )
 
       await testUtils.clickAddButton(user)
@@ -496,7 +495,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Поле единицы измерения', () => {
     test('Отображается корректно', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       const label = testUtils.getMeasurementUnitLabel()
       const field = testUtils.getMeasurementUnitField()
@@ -516,7 +515,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       await testUtils.openMeasurementUnitSelect(user)
       await testUtils.setMeasurementUnit(user, fakeMeasurementUnits[0].title)
@@ -529,7 +528,7 @@ describe('Модалка создания и редактирования ном
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
       const { user } = render(
-        <AddOrEditNomenclatureItemModal {...props} {...addModeProps} />,
+        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
       )
 
       await testUtils.clickAddButton(user)
@@ -543,7 +542,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Поле страны производителя', () => {
     test('Отображается корректно', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       const label = testUtils.getCountryLabel()
       const field = testUtils.getCountryField()
@@ -563,7 +562,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<AddOrEditNomenclatureItemModal {...props} />)
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       await testUtils.openCountrySelect(user)
       await testUtils.setCountry(user, fakeCountries[0].title)

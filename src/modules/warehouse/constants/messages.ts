@@ -22,6 +22,10 @@ export const getNomenclatureGroupListMessages: ApiRequestMessages<'commonError'>
     commonError: 'Ошибка получения списка номенклатурных групп',
   }
 
+export const createNomenclatureMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка создания номенклатурны',
+}
+
 export const getNomenclatureListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка номенклатур',
 }

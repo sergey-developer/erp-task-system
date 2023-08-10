@@ -39,7 +39,7 @@ const AddOrEditNomenclatureGroupModal: FC<
           label='Наименование'
           rules={nameValidationRules}
         >
-          <Input placeholder='Введите наименование' disabled={isLoading} />
+          <Input placeholder='Введите наименование' />
         </Form.Item>
       </Form>
     </BaseModal>

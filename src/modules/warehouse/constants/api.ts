@@ -9,12 +9,18 @@ export enum LegalEntityApiEnum {
 
 export enum NomenclatureApiEnum {
   GetNomenclatureList = '/nomenclatures/',
+  CreateNomenclature = '/nomenclatures/',
   GetNomenclatureGroupList = '/nomenclature-groups/',
   CreateNomenclatureGroup = '/nomenclature-groups/',
 }
 
 export enum NomenclatureApiTriggerEnum {
-  CreateNomenclatureGroup = 'createNomenclatureGroup',
+  CreateNomenclature = 'createNomenclature',
   GetNomenclatureList = 'getNomenclatureList',
+  CreateNomenclatureGroup = 'createNomenclatureGroup',
   GetNomenclatureGroupList = 'getNomenclatureGroupList',
+}
+
+export enum NomenclatureApiTagEnum {
+  NomenclatureList = 'NomenclatureList',
 }

@@ -9,6 +9,7 @@ export * from './getLegalEntityList.model'
 
 export * from './getNomenclatureList.model'
 export * from './nomenclatureList.model'
+export * from './createNomenclature.model'
 
 export * from './getNomenclatureGroupList.model'
 export * from './nomenclatureGroupList.model'
