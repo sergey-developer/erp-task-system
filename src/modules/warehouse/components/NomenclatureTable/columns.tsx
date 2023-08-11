@@ -5,11 +5,11 @@ import { NomenclatureTableItem } from './types'
 
 const { Link } = Typography
 
-type GetColumnsProps = { onClickName: (id: number) => void }
+type GetColumnsArgs = { onClickName: (id: number) => void }
 
 export const getColumns = ({
   onClickName,
-}: GetColumnsProps): ColumnsType<NomenclatureTableItem> => [
+}: GetColumnsArgs): ColumnsType<NomenclatureTableItem> => [
   {
     key: 'title',
     dataIndex: 'title',
