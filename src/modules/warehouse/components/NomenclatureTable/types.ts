@@ -11,5 +11,7 @@ export type NomenclatureTableProps = Required<
   Pick<
     TableProps<NomenclatureTableItem>,
     'dataSource' | 'loading' | 'pagination' | 'onChange'
-  >
+  > & {
+    onClickName: (id: number) => void
+  }
 >

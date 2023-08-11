@@ -8,6 +8,7 @@ export * from './updateNomenclatureGroup.mock'
 export * from './getNomenclatureGroupList.mock'
 
 export * from './createNomenclature.mock'
+export * from './updateNomenclature.mock'
 export * from './getNomenclatureList.mock'
 
 export * from './getMeasurementUnitList.mock'

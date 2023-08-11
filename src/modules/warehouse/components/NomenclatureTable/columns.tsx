@@ -5,12 +5,18 @@ import { NomenclatureTableItem } from './types'
 
 const { Link } = Typography
 
-export const columns: ColumnsType<NomenclatureTableItem> = [
+type GetColumnsArgs = { onClickName: (id: number) => void }
+
+export const getColumns = ({
+  onClickName,
+}: GetColumnsArgs): ColumnsType<NomenclatureTableItem> => [
   {
     key: 'title',
     dataIndex: 'title',
     title: 'Наименование',
-    render: (value: NomenclatureTableItem['title']) => <Link>{value}</Link>,
+    render: (value: NomenclatureTableItem['title'], record) => (
+      <Link onClick={() => onClickName(record.id)}>{value}</Link>
+    ),
   },
   {
     key: 'vendorCode',

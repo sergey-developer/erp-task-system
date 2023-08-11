@@ -1,5 +1,5 @@
 import { Form, Input, Select } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
@@ -17,6 +17,7 @@ import {
   vendorCodeValidationRules,
 } from './validation'
 
+// delete
 export const fakeGroups = [
   {
     id: 1,
@@ -24,6 +25,7 @@ export const fakeGroups = [
   },
 ]
 
+// delete
 export const fakeMeasurementUnits = [
   {
     id: 1,
@@ -31,6 +33,7 @@ export const fakeMeasurementUnits = [
   },
 ]
 
+// delete
 export const fakeCountries = [
   {
     id: 1,
@@ -41,15 +44,35 @@ export const fakeCountries = [
 const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
   onSubmit,
   isLoading,
+
+  nomenclature,
+  nomenclatureIsLoading,
+
   groups,
   groupsIsLoading,
+
   countries,
   countriesIsLoading,
+
   measurementUnits,
   measurementUnitsIsLoading,
+
   ...props
 }) => {
   const [form] = Form.useForm<AddOrEditNomenclatureModalFormFields>()
+
+  useEffect(() => {
+    if (nomenclature) {
+      form.setFieldsValue({
+        title: nomenclature.title,
+        shortTitle: nomenclature.shortTitle,
+        vendorCode: nomenclature.vendorCode,
+        group: nomenclature.group.id,
+        measurementUnit: nomenclature.measurementUnit.id,
+        country: nomenclature.country?.id,
+      })
+    }
+  }, [form, nomenclature])
 
   const handleFinish = async ({
     title,
@@ -78,6 +101,8 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
       data-testid='add-or-edit-nomenclature-modal'
       onOk={form.submit}
       confirmLoading={isLoading}
+      isLoading={nomenclatureIsLoading}
+      footer={nomenclatureIsLoading ? null : undefined}
     >
       <Form<AddOrEditNomenclatureModalFormFields>
         form={form}
