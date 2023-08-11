@@ -172,6 +172,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         >
           <Select
             placeholder='Выберите страну производителя'
+            allowClear
             options={countries}
             fieldNames={idAndTitleSelectFieldNames}
             loading={countriesIsLoading}
