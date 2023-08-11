@@ -4,6 +4,7 @@ import {
   CountryListModel,
   MeasurementUnitListModel,
   NomenclatureGroupListModel,
+  NomenclatureModel,
 } from 'modules/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
@@ -23,6 +24,9 @@ export type AddOrEditNomenclatureModalProps = Required<
   title: string
   okText: string
   isLoading: boolean
+
+  nomenclature?: NomenclatureModel
+  nomenclatureIsLoading?: boolean
 
   groups: NomenclatureGroupListModel
   groupsIsLoading: boolean

@@ -14,12 +14,20 @@ import {
   GetNomenclatureGroupListSuccessResponse,
   GetNomenclatureListQueryArgs,
   GetNomenclatureListSuccessResponse,
+  GetNomenclatureQueryArgs,
+  GetNomenclatureSuccessResponse,
   NomenclatureGroupListModel,
   UpdateNomenclatureGroupMutationArgs,
   UpdateNomenclatureGroupSuccessResponse,
+  UpdateNomenclatureMutationArgs,
+  UpdateNomenclatureSuccessResponse,
 } from 'modules/warehouse/models'
 import { GetNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
-import { updateNomenclatureGroupUrl } from 'modules/warehouse/utils'
+import {
+  getNomenclatureUrl,
+  updateNomenclatureGroupUrl,
+  updateNomenclatureUrl,
+} from 'modules/warehouse/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
@@ -47,6 +55,15 @@ const nomenclatureApiService = baseApiService
           arg,
         ) => getPaginatedList(response, arg),
       }),
+      [NomenclatureApiTriggerEnum.GetNomenclature]: build.query<
+        GetNomenclatureSuccessResponse,
+        GetNomenclatureQueryArgs
+      >({
+        query: (id) => ({
+          url: getNomenclatureUrl(id),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
       [NomenclatureApiTriggerEnum.CreateNomenclature]: build.mutation<
         CreateNomenclatureSuccessResponse,
         CreateNomenclatureMutationArgs
@@ -56,6 +73,18 @@ const nomenclatureApiService = baseApiService
         query: (payload) => ({
           url: NomenclatureApiEnum.CreateNomenclature,
           method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+      }),
+      [NomenclatureApiTriggerEnum.UpdateNomenclature]: build.mutation<
+        UpdateNomenclatureSuccessResponse,
+        UpdateNomenclatureMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [NomenclatureApiTagEnum.NomenclatureList],
+        query: ({ getListParams, id, ...payload }) => ({
+          url: updateNomenclatureUrl(id),
+          method: HttpMethodEnum.Patch,
           data: payload,
         }),
       }),
@@ -138,6 +167,9 @@ export const {
   useCreateNomenclatureGroupMutation,
   useUpdateNomenclatureGroupMutation,
   useGetNomenclatureGroupListQuery,
+
   useCreateNomenclatureMutation,
+  useUpdateNomenclatureMutation,
+  useGetNomenclatureQuery,
   useGetNomenclatureListQuery,
 } = nomenclatureApiService
