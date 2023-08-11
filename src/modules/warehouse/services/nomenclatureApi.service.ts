@@ -15,8 +15,11 @@ import {
   GetNomenclatureListQueryArgs,
   GetNomenclatureListSuccessResponse,
   NomenclatureGroupListModel,
+  UpdateNomenclatureGroupMutationArgs,
+  UpdateNomenclatureGroupSuccessResponse,
 } from 'modules/warehouse/models'
 import { GetNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
+import { updateNomenclatureGroupUrl } from 'modules/warehouse/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
@@ -94,11 +97,46 @@ const nomenclatureApiService = baseApiService
           } catch {}
         },
       }),
+      [NomenclatureApiTriggerEnum.UpdateNomenclatureGroup]: build.mutation<
+        UpdateNomenclatureGroupSuccessResponse,
+        UpdateNomenclatureGroupMutationArgs
+      >({
+        query: ({ getListParams, id, ...payload }) => ({
+          url: updateNomenclatureGroupUrl(id),
+          method: HttpMethodEnum.Patch,
+          data: payload,
+        }),
+        onQueryStarted: async (
+          { getListParams, id },
+          { dispatch, queryFulfilled },
+        ) => {
+          try {
+            const { data: updatedGroup } = await queryFulfilled
+
+            dispatch(
+              baseApiService.util.updateQueryData(
+                NomenclatureApiTriggerEnum.GetNomenclatureGroupList as never,
+                getListParams as never,
+                (groupList: NomenclatureGroupListModel) => {
+                  const updatableGroup = groupList.find(
+                    (group) => group.id === id,
+                  )
+
+                  if (updatableGroup) {
+                    Object.assign(updatableGroup, updatedGroup)
+                  }
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
     }),
   })
 
 export const {
   useCreateNomenclatureGroupMutation,
+  useUpdateNomenclatureGroupMutation,
   useGetNomenclatureGroupListQuery,
   useCreateNomenclatureMutation,
   useGetNomenclatureListQuery,

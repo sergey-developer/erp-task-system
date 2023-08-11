@@ -11,7 +11,7 @@ import { nameValidationRules } from './validation'
 
 const AddOrEditNomenclatureGroupModal: FC<
   AddOrEditNomenclatureGroupModalProps
-> = ({ onSubmit, isLoading, ...props }) => {
+> = ({ onSubmit, isLoading, initialValues, ...props }) => {
   const [form] = Form.useForm<AddOrEditNomenclatureGroupModalFormFields>()
 
   const handleFinish = async (
@@ -29,6 +29,7 @@ const AddOrEditNomenclatureGroupModal: FC<
     >
       <Form<AddOrEditNomenclatureGroupModalFormFields>
         form={form}
+        initialValues={initialValues}
         layout='vertical'
         onFinish={handleFinish}
         preserve={false}
