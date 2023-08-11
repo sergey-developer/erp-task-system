@@ -1,7 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Input, Button, Row, Col, MenuProps, TablePaginationConfig } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useCallback, useMemo, useState, MouseEvent } from 'react'
 
 import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
 import { AddOrEditNomenclatureGroupModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/types'
@@ -12,6 +12,7 @@ import { NomenclatureTableProps } from 'modules/warehouse/components/Nomenclatur
 import {
   createNomenclatureGroupMessages,
   createNomenclatureMessages,
+  updateNomenclatureGroupMessages,
 } from 'modules/warehouse/constants'
 import {
   useGetCountryList,
@@ -22,10 +23,12 @@ import {
 import {
   GetNomenclatureGroupListQueryArgs,
   GetNomenclatureListQueryArgs,
+  NomenclatureGroupListItemModel,
 } from 'modules/warehouse/models'
 import {
   useCreateNomenclatureGroupMutation,
   useCreateNomenclatureMutation,
+  useUpdateNomenclatureGroupMutation,
 } from 'modules/warehouse/services/nomenclatureApi.service'
 
 import { EditIcon } from 'components/Icons'
@@ -37,6 +40,7 @@ import {
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
+  isNotFoundError,
 } from 'shared/services/api'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -56,6 +60,8 @@ const NomenclatureListPage: FC = () => {
     })
 
   const [hoveredGroup, setHoveredGroup] = useState<number>()
+  const [editableGroup, setEditableGroup] =
+    useState<NomenclatureGroupListItemModel>()
 
   const [
     addNomenclatureGroupModalOpened,
@@ -64,6 +70,15 @@ const NomenclatureListPage: FC = () => {
 
   const debouncedToggleAddNomenclatureGroupModal = useDebounceFn(
     toggleAddNomenclatureGroupModal,
+  )
+
+  const [
+    editNomenclatureGroupModalOpened,
+    { toggle: toggleEditNomenclatureGroupModal },
+  ] = useBoolean(false)
+
+  const debouncedToggleEditNomenclatureGroupModal = useDebounceFn(
+    toggleEditNomenclatureGroupModal,
   )
 
   const [addNomenclatureModalOpened, { toggle: toggleAddNomenclatureModal }] =
@@ -77,6 +92,11 @@ const NomenclatureListPage: FC = () => {
     createNomenclatureGroupMutation,
     { isLoading: createNomenclatureGroupIsLoading },
   ] = useCreateNomenclatureGroupMutation()
+
+  const [
+    updateNomenclatureGroupMutation,
+    { isLoading: updateNomenclatureGroupIsLoading },
+  ] = useUpdateNomenclatureGroupMutation()
 
   const {
     currentData: nomenclatureGroupList = [],
@@ -112,20 +132,36 @@ const NomenclatureListPage: FC = () => {
       skip: !addNomenclatureModalOpened,
     })
 
-  const groupListMenuItems: MenuProps['items'] = useMemo(
-    () =>
-      nomenclatureGroupList.map(({ id, title }) => ({
+  const groupListMenuItems: MenuProps['items'] = useMemo(() => {
+    const handleClickEdit =
+      (group: NomenclatureGroupListItemModel) => (event: MouseEvent) => {
+        event.stopPropagation()
+        setEditableGroup(group)
+        debouncedToggleEditNomenclatureGroupModal()
+      }
+
+    return nomenclatureGroupList.map((group) => {
+      const { id, title } = group
+
+      return {
         key: id,
         label: title,
         title,
         itemIcon: id === hoveredGroup && (
-          <EditIcon title='Редактировать группу' />
+          <EditIcon
+            title='Редактировать группу'
+            onClick={handleClickEdit(group)}
+          />
         ),
         onMouseEnter: () => setHoveredGroup(id),
         onMouseLeave: () => setHoveredGroup(undefined),
-      })),
-    [hoveredGroup, nomenclatureGroupList],
-  )
+      }
+    })
+  }, [
+    debouncedToggleEditNomenclatureGroupModal,
+    hoveredGroup,
+    nomenclatureGroupList,
+  ])
 
   const handleClickGroup: MenuProps['onClick'] = (data) => {
     setGetNomenclatureListParams({ group: Number(data.key), offset: 0 })
@@ -164,6 +200,37 @@ const NomenclatureListPage: FC = () => {
       toggleAddNomenclatureGroupModal,
     ],
   )
+
+  const handleUpdateNomenclatureGroup: AddOrEditNomenclatureGroupModalProps['onSubmit'] =
+    async (values, setFields) => {
+      if (!editableGroup) return
+
+      try {
+        await updateNomenclatureGroupMutation({
+          ...values,
+          id: editableGroup.id,
+          getListParams: getNomenclatureGroupListParams,
+        }).unwrap()
+
+        toggleEditNomenclatureGroupModal()
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            if (error.data.detail) {
+              showErrorNotification(error.data.detail)
+            }
+
+            setFields(getFieldsErrors(error.data))
+          } else if (isForbiddenError(error) && error.data.detail) {
+            showErrorNotification(error.data.detail)
+          } else if (isNotFoundError(error) && error.data.detail) {
+            showErrorNotification(error.data.detail)
+          } else {
+            showErrorNotification(updateNomenclatureGroupMessages.commonError)
+          }
+        }
+      }
+    }
 
   const handleCreateNomenclature = useCallback<
     AddOrEditNomenclatureModalProps['onSubmit']
@@ -283,6 +350,18 @@ const NomenclatureListPage: FC = () => {
           isLoading={createNomenclatureGroupIsLoading}
           onCancel={debouncedToggleAddNomenclatureGroupModal}
           onSubmit={handleCreateNomenclatureGroup}
+        />
+      )}
+
+      {editNomenclatureGroupModalOpened && !!editableGroup && (
+        <AddOrEditNomenclatureGroupModal
+          visible={editNomenclatureGroupModalOpened}
+          title='Редактирование номенклатурной группы'
+          okText='Сохранить'
+          initialValues={{ title: editableGroup.title }}
+          isLoading={updateNomenclatureGroupIsLoading}
+          onCancel={debouncedToggleEditNomenclatureGroupModal}
+          onSubmit={handleUpdateNomenclatureGroup}
         />
       )}
 
