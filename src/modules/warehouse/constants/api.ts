@@ -12,12 +12,14 @@ export enum NomenclatureApiEnum {
   CreateNomenclature = '/nomenclatures/',
   GetNomenclatureGroupList = '/nomenclature-groups/',
   CreateNomenclatureGroup = '/nomenclature-groups/',
+  UpdateNomenclatureGroup = '/nomenclature-groups/:id/',
 }
 
 export enum NomenclatureApiTriggerEnum {
   CreateNomenclature = 'createNomenclature',
   GetNomenclatureList = 'getNomenclatureList',
   CreateNomenclatureGroup = 'createNomenclatureGroup',
+  UpdateNomenclatureGroup = 'updateNomenclatureGroup',
   GetNomenclatureGroupList = 'getNomenclatureGroupList',
 }
 
