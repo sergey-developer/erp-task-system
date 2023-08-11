@@ -12,6 +12,20 @@ export const getWarehouseUrl = (id: number): string =>
     generatePath(WarehouseApiEnum.GetWarehouse, { id: String(id) }),
   )
 
+export const getNomenclatureUrl = (id: number): string =>
+  appendSlashAtEnd(
+    generatePath(NomenclatureApiEnum.GetNomenclature, {
+      id: String(id),
+    }),
+  )
+
+export const updateNomenclatureUrl = (id: number): string =>
+  appendSlashAtEnd(
+    generatePath(NomenclatureApiEnum.UpdateNomenclature, {
+      id: String(id),
+    }),
+  )
+
 export const updateNomenclatureGroupUrl = (id: number): string =>
   appendSlashAtEnd(
     generatePath(NomenclatureApiEnum.UpdateNomenclatureGroup, {

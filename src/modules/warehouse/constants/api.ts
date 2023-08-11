@@ -9,14 +9,18 @@ export enum LegalEntityApiEnum {
 
 export enum NomenclatureApiEnum {
   GetNomenclatureList = '/nomenclatures/',
+  GetNomenclature = '/nomenclatures/:id/',
   CreateNomenclature = '/nomenclatures/',
+  UpdateNomenclature = '/nomenclatures/:id/',
   GetNomenclatureGroupList = '/nomenclature-groups/',
   CreateNomenclatureGroup = '/nomenclature-groups/',
   UpdateNomenclatureGroup = '/nomenclature-groups/:id/',
 }
 
 export enum NomenclatureApiTriggerEnum {
+  GetNomenclature = 'getNomenclature',
   CreateNomenclature = 'createNomenclature',
+  UpdateNomenclature = 'updateNomenclature',
   GetNomenclatureList = 'getNomenclatureList',
   CreateNomenclatureGroup = 'createNomenclatureGroup',
   UpdateNomenclatureGroup = 'updateNomenclatureGroup',
