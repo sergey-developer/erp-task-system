@@ -30,6 +30,11 @@ type EquipmentUserPermissions =
   | 'EQUIPMENTS_DELETE'
   | 'EQUIPMENTS_UPDATE'
 
+type UserPermissions =
+  | NomenclatureUserPermissions
+  | NomenclatureGroupUserPermissions
+  | EquipmentUserPermissions
+
 export type UserModel = BaseUserModel & {
   role: UserRoleEnum
   email: string
@@ -37,9 +42,5 @@ export type UserModel = BaseUserModel & {
   isStaff: boolean
   phone: MaybeNull<string>
   status: UserStatusModel
-  permissions: [
-    NomenclatureUserPermissions,
-    NomenclatureGroupUserPermissions,
-    EquipmentUserPermissions,
-  ]
+  permissions: UserPermissions[]
 }
