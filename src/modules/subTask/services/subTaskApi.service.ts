@@ -1,4 +1,7 @@
-import { SubTaskApiTriggerEnum } from 'modules/subTask/constants'
+import {
+  SubTaskApiEnum,
+  SubTaskApiTriggerEnum,
+} from 'modules/subTask/constants'
 import {
   CancelSubTaskMutationArgs,
   CancelSubTaskSuccessResponse,
@@ -16,7 +19,6 @@ import {
   cancelSubTaskUrl,
   createSubTaskUrl,
   getSubTaskListUrl,
-  getSubTaskTemplateListUrl,
   reworkSubTaskUrl,
 } from 'modules/subTask/utils'
 import { TaskStatusEnum } from 'modules/task/constants'
@@ -40,7 +42,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
       GetSubTaskTemplateListQueryArgs
     >({
       query: (params) => ({
-        url: getSubTaskTemplateListUrl(),
+        url: SubTaskApiEnum.GetSubTaskTemplateList,
         method: HttpMethodEnum.Get,
         params,
       }),
