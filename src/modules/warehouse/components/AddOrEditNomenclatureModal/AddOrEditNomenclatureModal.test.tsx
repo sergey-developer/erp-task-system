@@ -15,6 +15,7 @@ import {
   getSelect,
   getSelectOption,
   openSelect,
+  queryButtonIn,
   render,
 } from '_tests_/utils'
 
@@ -24,10 +25,16 @@ import { AddOrEditNomenclatureModalProps } from './types'
 const props: AddOrEditNomenclatureModalProps = {
   visible: true,
   isLoading: false,
+
+  nomenclature: undefined,
+  nomenclatureIsLoading: false,
+
   groups: [warehouseFixtures.nomenclatureGroupListItem()],
   groupsIsLoading: false,
+
   countries: [warehouseFixtures.countryListItem()],
   countriesIsLoading: false,
+
   measurementUnits: [warehouseFixtures.measurementUnitListItem()],
   measurementUnitsIsLoading: false,
   title: fakeWord(),
@@ -36,8 +43,12 @@ const props: AddOrEditNomenclatureModalProps = {
   onSubmit: jest.fn(),
 }
 
-export const addModeProps: Pick<AddOrEditNomenclatureModalProps, 'okText'> = {
+const addModeProps: Pick<AddOrEditNomenclatureModalProps, 'okText'> = {
   okText: 'Добавить',
+}
+
+const editModeProps: Pick<AddOrEditNomenclatureModalProps, 'okText'> = {
+  okText: 'Сохранить',
 }
 
 const getContainer = () => screen.getByTestId('add-or-edit-nomenclature-modal')
@@ -212,6 +223,9 @@ const expectCountryLoadingFinished = () =>
 const getAddButton = () =>
   getButtonIn(getContainer(), new RegExp(addModeProps.okText))
 
+const queryAddButton = () =>
+  queryButtonIn(getContainer(), new RegExp(addModeProps.okText))
+
 const clickAddButton = async (user: UserEvent) => {
   const button = getAddButton()
   await user.click(button)
@@ -219,6 +233,8 @@ const clickAddButton = async (user: UserEvent) => {
 
 // close button
 const getCancelButton = () => getButtonIn(getContainer(), /Отменить/)
+
+const queryCancelButton = () => queryButtonIn(getContainer(), /Отменить/)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -230,9 +246,11 @@ export const testUtils = {
   findContainer,
 
   getAddButton,
+  queryAddButton,
   clickAddButton,
 
   getCancelButton,
+  queryCancelButton,
   clickCancelButton,
 
   getNameFormItem,
@@ -331,6 +349,19 @@ describe('Модалка создания и редактирования ном
         expect.anything(),
       )
     })
+
+    test('Не отображается во время загрузки номенклатуры', () => {
+      render(
+        <AddOrEditNomenclatureModal
+          {...props}
+          {...addModeProps}
+          nomenclatureIsLoading
+        />,
+      )
+
+      const button = testUtils.queryAddButton()
+      expect(button).not.toBeInTheDocument()
+    })
   })
 
   describe('Кнопка отмены', () => {
@@ -347,6 +378,12 @@ describe('Модалка создания и редактирования ном
       const { user } = render(<AddOrEditNomenclatureModal {...props} />)
       await testUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
+    })
+
+    test('Не отображается во время загрузки номенклатуры', () => {
+      render(<AddOrEditNomenclatureModal {...props} nomenclatureIsLoading />)
+      const button = testUtils.queryCancelButton()
+      expect(button).not.toBeInTheDocument()
     })
   })
 
@@ -370,6 +407,17 @@ describe('Модалка создания и редактирования ном
       const field = await testUtils.setName(user, value)
 
       expect(field).toHaveDisplayValue(value)
+    })
+
+    test('Можно установить значение по умолчанию', () => {
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(
+        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
+      )
+
+      const field = testUtils.getNameField()
+      expect(field).toHaveDisplayValue(nomenclature.title)
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
@@ -404,6 +452,17 @@ describe('Модалка создания и редактирования ном
       const field = await testUtils.setShortName(user, value)
 
       expect(field).toHaveDisplayValue(value)
+    })
+
+    test('Можно установить значение по умолчанию', () => {
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(
+        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
+      )
+
+      const field = testUtils.getShortNameField()
+      expect(field).toHaveDisplayValue(nomenclature.shortTitle)
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
@@ -449,6 +508,20 @@ describe('Модалка создания и редактирования ном
       expect(selectedGroup).toBeInTheDocument()
     })
 
+    test('Можно установить значение по умолчанию', async () => {
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(
+        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
+      )
+
+      const selectedGroup = testUtils.getSelectedGroup(
+        String(nomenclature.group.id),
+      )
+
+      expect(selectedGroup).toBeInTheDocument()
+    })
+
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
       const { user } = render(
         <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
@@ -481,6 +554,17 @@ describe('Модалка создания и редактирования ном
       const field = await testUtils.setVendorCode(user, value)
 
       expect(field).toHaveDisplayValue(value)
+    })
+
+    test('Можно установить значение по умолчанию', () => {
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(
+        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
+      )
+
+      const field = testUtils.getVendorCodeField()
+      expect(field).toHaveDisplayValue(nomenclature.vendorCode)
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
@@ -530,6 +614,19 @@ describe('Модалка создания и редактирования ном
       expect(selectedMeasurementUnit).toBeInTheDocument()
     })
 
+    test('Можно установить значение по умолчанию', () => {
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(
+        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
+      )
+
+      const selectedMeasurementUnit = testUtils.getSelectedMeasurementUnit(
+        String(nomenclature.measurementUnit.id),
+      )
+      expect(selectedMeasurementUnit).toBeInTheDocument()
+    })
+
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
       const { user } = render(
         <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
@@ -574,6 +671,19 @@ describe('Модалка создания и редактирования ном
         props.countries[0].title,
       )
 
+      expect(selectedCountry).toBeInTheDocument()
+    })
+
+    test('Можно установить значение по умолчанию', () => {
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(
+        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
+      )
+
+      const selectedCountry = testUtils.getSelectedCountry(
+        String(nomenclature.country!.id),
+      )
       expect(selectedCountry).toBeInTheDocument()
     })
   })

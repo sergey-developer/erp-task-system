@@ -30,6 +30,12 @@ const addModeProps: Readonly<
   okText: 'Добавить',
 }
 
+const editModeProps: Readonly<
+  Pick<AddOrEditNomenclatureGroupModalProps, 'okText'>
+> = {
+  okText: 'Сохранить',
+}
+
 const getContainer = () =>
   screen.getByTestId('add-or-edit-nomenclature-group-modal')
 
