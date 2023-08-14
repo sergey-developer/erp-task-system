@@ -4,6 +4,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { validationMessages } from 'shared/constants/validation'
 import { MaybeNull } from 'shared/types/utils'
 
+import warehouseFixtures from 'fixtures/warehouse'
+
 import {
   clickSelectOption,
   expectLoadingFinishedBySelect,
@@ -16,21 +18,17 @@ import {
   render,
 } from '_tests_/utils'
 
-import AddOrEditNomenclatureModal, {
-  fakeCountries,
-  fakeGroups,
-  fakeMeasurementUnits,
-} from './index'
+import AddOrEditNomenclatureModal from './index'
 import { AddOrEditNomenclatureModalProps } from './types'
 
 const props: AddOrEditNomenclatureModalProps = {
   visible: true,
   isLoading: false,
-  groups: [],
+  groups: [warehouseFixtures.nomenclatureGroupListItem()],
   groupsIsLoading: false,
-  countries: [],
+  countries: [warehouseFixtures.countryListItem()],
   countriesIsLoading: false,
-  measurementUnits: [],
+  measurementUnits: [warehouseFixtures.measurementUnitListItem()],
   measurementUnitsIsLoading: false,
   title: fakeWord(),
   okText: fakeWord(),
@@ -318,12 +316,12 @@ describe('Модалка создания и редактирования ном
       await testUtils.setShortName(user, fakeWord())
 
       await testUtils.openGroupSelect(user)
-      await testUtils.setGroup(user, fakeGroups[0].title)
+      await testUtils.setGroup(user, props.groups[0].title)
 
       await testUtils.setVendorCode(user, fakeWord())
 
       await testUtils.openMeasurementUnitSelect(user)
-      await testUtils.setMeasurementUnit(user, fakeMeasurementUnits[0].title)
+      await testUtils.setMeasurementUnit(user, props.measurementUnits[0].title)
 
       await testUtils.clickAddButton(user)
 
@@ -428,13 +426,13 @@ describe('Модалка создания и редактирования ном
 
       const label = testUtils.getGroupLabel()
       const field = testUtils.getGroupField()
-      const selectedGroup = testUtils.querySelectedGroup(fakeGroups[0].title)
+      const selectedGroup = testUtils.querySelectedGroup(props.groups[0].title)
       await testUtils.openGroupSelect(user)
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
-      fakeGroups.forEach((g) => {
+      props.groups.forEach((g) => {
         const opt = testUtils.getGroupOption(g.title)
         expect(opt).toBeInTheDocument()
       })
@@ -445,8 +443,8 @@ describe('Модалка создания и редактирования ном
       const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       await testUtils.openGroupSelect(user)
-      await testUtils.setGroup(user, fakeGroups[0].title)
-      const selectedGroup = testUtils.getSelectedGroup(fakeGroups[0].title)
+      await testUtils.setGroup(user, props.groups[0].title)
+      const selectedGroup = testUtils.getSelectedGroup(props.groups[0].title)
 
       expect(selectedGroup).toBeInTheDocument()
     })
@@ -506,14 +504,14 @@ describe('Модалка создания и редактирования ном
       const label = testUtils.getMeasurementUnitLabel()
       const field = testUtils.getMeasurementUnitField()
       const selectedMeasurementUnit = testUtils.querySelectedMeasurementUnit(
-        fakeMeasurementUnits[0].title,
+        props.measurementUnits[0].title,
       )
       await testUtils.openMeasurementUnitSelect(user)
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
-      fakeMeasurementUnits.forEach((m) => {
+      props.measurementUnits.forEach((m) => {
         const opt = testUtils.getMeasurementUnitOption(m.title)
         expect(opt).toBeInTheDocument()
       })
@@ -524,9 +522,9 @@ describe('Модалка создания и редактирования ном
       const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       await testUtils.openMeasurementUnitSelect(user)
-      await testUtils.setMeasurementUnit(user, fakeMeasurementUnits[0].title)
+      await testUtils.setMeasurementUnit(user, props.measurementUnits[0].title)
       const selectedMeasurementUnit = testUtils.getSelectedMeasurementUnit(
-        fakeMeasurementUnits[0].title,
+        props.measurementUnits[0].title,
       )
 
       expect(selectedMeasurementUnit).toBeInTheDocument()
@@ -553,14 +551,14 @@ describe('Модалка создания и редактирования ном
       const label = testUtils.getCountryLabel()
       const field = testUtils.getCountryField()
       const selectedCountry = testUtils.querySelectedCountry(
-        fakeCountries[0].title,
+        props.countries[0].title,
       )
       await testUtils.openCountrySelect(user)
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
-      fakeCountries.forEach((c) => {
+      props.countries.forEach((c) => {
         const opt = testUtils.getCountryOption(c.title)
         expect(opt).toBeInTheDocument()
       })
@@ -571,9 +569,9 @@ describe('Модалка создания и редактирования ном
       const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       await testUtils.openCountrySelect(user)
-      await testUtils.setCountry(user, fakeCountries[0].title)
+      await testUtils.setCountry(user, props.countries[0].title)
       const selectedCountry = testUtils.getSelectedCountry(
-        fakeCountries[0].title,
+        props.countries[0].title,
       )
 
       expect(selectedCountry).toBeInTheDocument()
