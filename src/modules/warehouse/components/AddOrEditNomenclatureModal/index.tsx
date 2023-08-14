@@ -88,7 +88,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
         group,
-        country,
+        country: country || null,
         measurementUnit,
       },
       form.setFields,
