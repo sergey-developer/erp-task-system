@@ -1,3 +1,5 @@
+import { MaybeNull } from 'shared/types/utils'
+
 import { NomenclatureListItemModel } from './nomenclatureList.model'
 
 export type CreateNomenclatureMutationArgs = {
@@ -6,7 +8,7 @@ export type CreateNomenclatureMutationArgs = {
   group: number
   vendorCode: string
   measurementUnit: number
-  country?: number
+  country?: MaybeNull<number>
 }
 
 export type CreateNomenclatureSuccessResponse = Pick<

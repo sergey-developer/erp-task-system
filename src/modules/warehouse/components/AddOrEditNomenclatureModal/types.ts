@@ -9,13 +9,15 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { MaybeNull } from 'shared/types/utils'
+
 export type AddOrEditNomenclatureModalFormFields = {
   title: string
   shortTitle: string
   group: number
   vendorCode: string
   measurementUnit: number
-  country?: number
+  country?: MaybeNull<number>
 }
 
 export type AddOrEditNomenclatureModalProps = Required<

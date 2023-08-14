@@ -3,6 +3,8 @@ import {
   NomenclatureListItemModel,
 } from 'modules/warehouse/models'
 
+import { MaybeNull } from 'shared/types/utils'
+
 export type UpdateNomenclatureMutationArgs = {
   id: number
   title: string
@@ -10,7 +12,7 @@ export type UpdateNomenclatureMutationArgs = {
   group: number
   vendorCode: string
   measurementUnit: number
-  country?: number
+  country?: MaybeNull<number>
   getListParams: GetNomenclatureListQueryArgs
 }
 
