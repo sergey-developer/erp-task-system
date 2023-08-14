@@ -19,7 +19,7 @@ const PrivateApp: FC = () => {
   useGetUserMeCodeQuery()
   useGetSystemInfoQuery()
 
-  /* Предполагается что в компоненте PrivateLayout отображается спиннер
+  /* В компоненте PrivateLayout отображается спиннер
    во время загрузки данных пользователя, прежде чем отобразить страницу
   */
   useEffect(() => {

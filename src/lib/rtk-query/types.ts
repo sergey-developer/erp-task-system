@@ -15,6 +15,12 @@ import {
 
 import { CustomBaseQueryFn } from 'shared/services/api'
 
+export type CustomUseQueryStateResult<
+  QueryArg,
+  ResultType,
+  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
+> = TypedUseQueryStateResult<ResultType, QueryArg, BaseQuery>
+
 export type CustomUseQueryHookResult<
   QueryArg,
   ResultType,
