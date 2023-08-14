@@ -9,9 +9,6 @@ export const getSubTaskListUrl = (taskId: number): string =>
     generatePath(SubTaskApiEnum.GetSubTaskList, { id: String(taskId) }),
   )
 
-export const getSubTaskTemplateListUrl = (): string =>
-  SubTaskApiEnum.GetSubTaskTemplateList
-
 export const createSubTaskUrl = (taskId: number): string =>
   appendSlashAtEnd(
     generatePath(SubTaskApiEnum.CreateSubTask, { id: String(taskId) }),
