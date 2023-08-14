@@ -17,30 +17,6 @@ import {
   vendorCodeValidationRules,
 } from './validation'
 
-// delete
-export const fakeGroups = [
-  {
-    id: 1,
-    title: 'group',
-  },
-]
-
-// delete
-export const fakeMeasurementUnits = [
-  {
-    id: 1,
-    title: 'Measurement',
-  },
-]
-
-// delete
-export const fakeCountries = [
-  {
-    id: 1,
-    title: 'Country',
-  },
-]
-
 const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
   onSubmit,
   isLoading,
