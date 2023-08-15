@@ -1,5 +1,6 @@
 import { FormInstance } from 'antd'
 
+import { MatchedUserPermissions } from 'modules/user/utils'
 import {
   CountryListModel,
   MeasurementUnitListModel,
@@ -26,6 +27,7 @@ export type AddOrEditNomenclatureModalProps = Required<
   title: string
   okText: string
   isLoading: boolean
+  permissions?: MaybeNull<MatchedUserPermissions>
 
   nomenclature?: NomenclatureModel
   nomenclatureIsLoading?: boolean

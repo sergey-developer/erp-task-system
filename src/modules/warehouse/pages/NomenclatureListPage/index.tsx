@@ -11,6 +11,7 @@ import {
 } from 'react'
 
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
 import { AddOrEditNomenclatureGroupModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/types'
 import AddOrEditNomenclatureModal from 'modules/warehouse/components/AddOrEditNomenclatureModal'
@@ -61,6 +62,13 @@ import { GroupListMenuStyled } from './styles'
 const { Search } = Input
 
 const NomenclatureListPage: FC = () => {
+  const updateNomenclaturePerms = useMatchUserPermissions([
+    'NOMENCLATURES_UPDATE',
+  ])
+  const updateNomenclatureGroupPerms = useMatchUserPermissions([
+    'NOMENCLATURE_GROUPS_UPDATE',
+  ])
+
   const [getNomenclatureGroupListParams, setGetNomenclatureGroupListParams] =
     useSetState<GetNomenclatureGroupListQueryArgs>({})
 
@@ -198,12 +206,13 @@ const NomenclatureListPage: FC = () => {
         key: id,
         label: title,
         title,
-        itemIcon: id === hoveredGroupId && (
-          <EditIcon
-            title='Редактировать группу'
-            onClick={handleClickEdit(group)}
-          />
-        ),
+        itemIcon: id === hoveredGroupId &&
+          updateNomenclatureGroupPerms?.nomenclatureGroupsUpdate && (
+            <EditIcon
+              title='Редактировать группу'
+              onClick={handleClickEdit(group)}
+            />
+          ),
         onMouseEnter: () => setHoveredGroupId(id),
         onMouseLeave: () => setHoveredGroupId(undefined),
       }
@@ -212,6 +221,7 @@ const NomenclatureListPage: FC = () => {
     debouncedToggleEditNomenclatureGroupModal,
     hoveredGroupId,
     nomenclatureGroupList,
+    updateNomenclatureGroupPerms?.nomenclatureGroupsUpdate,
   ])
 
   const handleClickGroup: MenuProps['onClick'] = (data) => {
@@ -483,6 +493,7 @@ const NomenclatureListPage: FC = () => {
           title='Редактирование номенклатурной позиции'
           okText='Сохранить'
           isLoading={updateNomenclatureIsLoading}
+          permissions={updateNomenclaturePerms}
           nomenclature={nomenclature}
           nomenclatureIsLoading={nomenclatureIsFetching}
           groups={allNomenclatureGroupList}

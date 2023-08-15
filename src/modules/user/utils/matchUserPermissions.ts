@@ -2,10 +2,10 @@ import { camelizeKeys } from 'humps'
 
 import { UserModel, UserPermissions } from 'modules/user/models'
 
-import { Camelize } from 'shared/types/utils'
+import { Camelize, Writeable } from 'shared/types/utils'
 
-export type MatchedUserPermissions = Camelize<
-  Partial<Record<Lowercase<UserPermissions>, boolean>>
+export type MatchedUserPermissions = Readonly<
+  Camelize<Partial<Record<Lowercase<UserPermissions>, boolean>>>
 >
 
 export const matchUserPermissions = (
@@ -13,9 +13,12 @@ export const matchUserPermissions = (
   expectedPermissions: UserModel['permissions'],
 ): MatchedUserPermissions =>
   camelizeKeys(
-    expectedPermissions.reduce<MatchedUserPermissions>((acc, perm) => {
-      const key = perm.toLowerCase() as keyof MatchedUserPermissions
-      acc[key] = permissions.includes(perm)
-      return acc
-    }, {}),
+    expectedPermissions.reduce<Writeable<MatchedUserPermissions>>(
+      (acc, perm) => {
+        const key = perm.toLowerCase() as keyof MatchedUserPermissions
+        acc[key] = permissions.includes(perm)
+        return acc
+      },
+      {},
+    ),
   )
