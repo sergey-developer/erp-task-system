@@ -3,6 +3,7 @@ import { Input, Button, Row, Col, MenuProps, TablePaginationConfig } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
 import { FC, useCallback, useMemo, useState } from 'react'
 
+import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
 import { AddOrEditNomenclatureGroupModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/types'
 import AddOrEditNomenclatureItemModal from 'modules/warehouse/components/AddOrEditNomenclatureItemModal'
@@ -172,13 +173,25 @@ const NomenclatureListPage: FC = () => {
             onSearch={handleChangeSearch}
           />
 
-          <Button onClick={debouncedToggleAddNomenclatureGroupModal}>
-            + Добавить группу
-          </Button>
+          <MatchUserPermissions expected={['NOMENCLATURE_GROUPS_CREATE']}>
+            {({ permissions }) =>
+              permissions.nomenclatureGroupsCreate ? (
+                <Button onClick={debouncedToggleAddNomenclatureGroupModal}>
+                  + Добавить группу
+                </Button>
+              ) : null
+            }
+          </MatchUserPermissions>
 
-          <Button onClick={debouncedToggleAddNomenclatureItemModal}>
-            + Добавить номенклатуру
-          </Button>
+          <MatchUserPermissions expected={['NOMENCLATURES_CREATE']}>
+            {({ permissions }) =>
+              permissions.nomenclaturesCreate ? (
+                <Button onClick={debouncedToggleAddNomenclatureItemModal}>
+                  + Добавить номенклатуру
+                </Button>
+              ) : null
+            }
+          </MatchUserPermissions>
         </Space>
 
         <Row gutter={16}>
