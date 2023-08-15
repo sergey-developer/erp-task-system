@@ -26,6 +26,7 @@ const renderInRoute = (
   }
 }
 
+// todo: исп-ть вместо renderInRoute
 export const renderInRoute_latest = (
   routes: Parameters<typeof createMemoryRouter>[0],
   routerOptions?: Parameters<typeof createMemoryRouter>[1],

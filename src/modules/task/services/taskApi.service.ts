@@ -41,10 +41,10 @@ const taskApiService = baseApiService.injectEndpoints({
       GetTaskListTransformedSuccessResponse,
       GetTaskListQueryArgs
     >({
-      query: (filter) => ({
+      query: (params) => ({
         url: TaskApiEnum.GetTaskList,
         method: HttpMethodEnum.Get,
-        params: filter,
+        params,
       }),
       // todo: вынести трансформацию ответа под ант пагинацию в общий модуль
       transformResponse: (response: GetTaskListSuccessResponse, meta, arg) => {
