@@ -402,7 +402,7 @@ describe('Страница списка номенклатур', () => {
 
       render(<NomenclatureListPage />)
 
-      const button = testUtils.queryAddNomenclatureItemButton()
+      const button = testUtils.queryAddNomenclatureButton()
       expect(button).not.toBeInTheDocument()
     })
 
