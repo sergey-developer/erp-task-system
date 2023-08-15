@@ -30,7 +30,7 @@ type EquipmentUserPermissions =
   | 'EQUIPMENTS_DELETE'
   | 'EQUIPMENTS_UPDATE'
 
-type UserPermissions =
+export type UserPermissions =
   | NomenclatureUserPermissions
   | NomenclatureGroupUserPermissions
   | EquipmentUserPermissions
