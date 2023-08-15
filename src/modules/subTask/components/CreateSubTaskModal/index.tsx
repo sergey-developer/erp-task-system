@@ -2,20 +2,22 @@ import { Form, Input, Select, Typography } from 'antd'
 import { Rule } from 'rc-field-form/es/interface'
 import React, { FC, useState } from 'react'
 
-import { templateSelectFieldNames } from 'modules/subTask/constants'
 import {
   useCreateSubTask,
   useGetSubTaskTemplateList,
 } from 'modules/subTask/hooks'
-import { supportGroupListSelectFieldNames } from 'modules/supportGroup/constants'
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import { SupportGroupListItemModel } from 'modules/supportGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
+import {
+  idAndNameSelectFieldNames,
+  idAndTitleSelectFieldNames,
+} from 'shared/constants/common'
 import { validationSizes } from 'shared/constants/validation'
-import { MaybeUndefined } from 'shared/types/utils'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { MaybeUndefined } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
 
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './types'
@@ -125,7 +127,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
             loading={supportGroupListIsFetching}
             options={supportGroupList}
             disabled={createSubTaskIsLoading}
-            fieldNames={supportGroupListSelectFieldNames}
+            fieldNames={idAndNameSelectFieldNames}
             onChange={setSelectedSupportGroup}
           />
         </Form.Item>
@@ -141,7 +143,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
             loading={templateListIsFetching}
             options={templateList}
             disabled={createSubTaskIsLoading || !selectedSupportGroup}
-            fieldNames={templateSelectFieldNames}
+            fieldNames={idAndTitleSelectFieldNames}
           />
         </Form.Item>
 

@@ -21,20 +21,6 @@ export type CustomUseQueryStateResult<
   BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
 > = TypedUseQueryStateResult<ResultType, QueryArg, BaseQuery>
 
-export type CustomUseQueryHookResult<
-  QueryArg,
-  ResultType,
-  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
-> = TypedUseQueryHookResult<ResultType, QueryArg, BaseQuery>
-
-// todo: add "Use" before "Lazy"
-export type CustomLazyQueryHookResult<
-  QueryArg,
-  ResultType,
-  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
-  Trigger = LazyQueryTrigger<CustomQueryDefinition<QueryArg, ResultType>>,
-> = [Trigger, TypedUseQueryStateResult<ResultType, QueryArg, BaseQuery>]
-
 export type CustomQueryDefinition<
   QueryArg,
   ResultType,
@@ -45,6 +31,19 @@ export type CustomUseQueryOptions<QueryArg, ResultType> = Pick<
   UseQueryStateOptions<CustomQueryDefinition<QueryArg, ResultType>, any>,
   'skip'
 >
+
+export type CustomUseQueryHookResult<
+  QueryArg,
+  ResultType,
+  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
+> = TypedUseQueryHookResult<ResultType, QueryArg, BaseQuery>
+
+export type CustomUseLazyQueryHookResult<
+  QueryArg,
+  ResultType,
+  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
+  Trigger = LazyQueryTrigger<CustomQueryDefinition<QueryArg, ResultType>>,
+> = [Trigger, TypedUseQueryStateResult<ResultType, QueryArg, BaseQuery>]
 
 export type CustomMutationDefinition<
   QueryArg,
