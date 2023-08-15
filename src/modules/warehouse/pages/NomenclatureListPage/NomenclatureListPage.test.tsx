@@ -59,13 +59,13 @@ const clickAddNomenclatureGroupButton = async (user: UserEvent) => {
 const getAddNomenclatureButton = () =>
   getButtonIn(getContainer(), /Добавить номенклатуру/)
 
+const queryAddNomenclatureButton = () =>
+  queryButtonIn(getContainer(), /Добавить номенклатуру/)
+
 const clickAddNomenclatureButton = async (user: UserEvent) => {
   const button = await getAddNomenclatureButton()
   await user.click(button)
 }
-
-const queryAddNomenclatureButton = () =>
-  queryButtonIn(getContainer(), /Добавить номенклатуру/)
 
 // group list
 const getGroupList = () => within(getContainer()).getByRole('menu')
@@ -93,8 +93,8 @@ export const testUtils = {
   clickAddNomenclatureGroupButton,
 
   getAddNomenclatureButton,
-  clickAddNomenclatureButton,
   queryAddNomenclatureButton,
+  clickAddNomenclatureButton,
 
   getGroupList,
   getGroupListItem,

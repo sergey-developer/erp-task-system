@@ -25,6 +25,7 @@ import { AddOrEditNomenclatureModalProps } from './types'
 const props: AddOrEditNomenclatureModalProps = {
   visible: true,
   isLoading: false,
+  permissions: undefined,
 
   nomenclature: undefined,
   nomenclatureIsLoading: false,
@@ -219,12 +220,20 @@ const expectCountryLoadingStarted = () =>
 const expectCountryLoadingFinished = () =>
   expectLoadingFinishedBySelect(getCountryFormItem())
 
-// add button
-const getAddButton = () =>
-  getButtonIn(getContainer(), new RegExp(addModeProps.okText))
+// submit button
+const getSubmitButton = (name: RegExp) => getButtonIn(getContainer(), name)
 
-const queryAddButton = () =>
-  queryButtonIn(getContainer(), new RegExp(addModeProps.okText))
+const querySubmitButton = (name: RegExp) => queryButtonIn(getContainer(), name)
+
+const clickSubmitButton = async (user: UserEvent, name: RegExp) => {
+  const button = getSubmitButton(name)
+  await user.click(button)
+}
+
+// add button
+const getAddButton = () => getSubmitButton(new RegExp(addModeProps.okText))
+
+const queryAddButton = () => querySubmitButton(new RegExp(addModeProps.okText))
 
 const clickAddButton = async (user: UserEvent) => {
   const button = getAddButton()
@@ -244,6 +253,10 @@ const clickCancelButton = async (user: UserEvent) => {
 export const testUtils = {
   getContainer,
   findContainer,
+
+  getSubmitButton,
+  querySubmitButton,
+  clickSubmitButton,
 
   getAddButton,
   queryAddButton,
@@ -315,20 +328,46 @@ describe('Модалка создания и редактирования ном
     expect(title).toBeInTheDocument()
   })
 
-  describe('Кнопка создания', () => {
-    test('Отображается корректно', () => {
-      render(<AddOrEditNomenclatureModal {...props} {...addModeProps} />)
+  describe('Кнопка отправки', () => {
+    test('Отображается корректно если права не переданы', () => {
+      render(<AddOrEditNomenclatureModal {...props} />)
 
-      const button = testUtils.getAddButton()
+      const button = testUtils.getSubmitButton(new RegExp(props.okText))
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
     })
 
-    test('Обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
+    test('Отображается корректно если есть права на редактирование', () => {
+      render(
+        <AddOrEditNomenclatureModal
+          {...props}
+          permissions={{ nomenclaturesUpdate: true }}
+        />,
       )
+
+      const button = testUtils.getSubmitButton(new RegExp(props.okText))
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Отображается корректно если нет прав на редактирование', () => {
+      render(
+        <AddOrEditNomenclatureModal
+          {...props}
+          permissions={{ nomenclaturesUpdate: false }}
+        />,
+      )
+
+      const button = testUtils.getSubmitButton(new RegExp(props.okText))
+
+      expect(button).toBeInTheDocument()
+      expect(button).not.toBeEnabled()
+    })
+
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
 
       await testUtils.setName(user, fakeWord())
       await testUtils.setShortName(user, fakeWord())
@@ -341,7 +380,7 @@ describe('Модалка создания и редактирования ном
       await testUtils.openMeasurementUnitSelect(user)
       await testUtils.setMeasurementUnit(user, props.measurementUnits[0].title)
 
-      await testUtils.clickAddButton(user)
+      await testUtils.clickSubmitButton(user, new RegExp(props.okText))
 
       expect(props.onSubmit).toBeCalledTimes(1)
       expect(props.onSubmit).toBeCalledWith(
@@ -351,15 +390,8 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Не отображается во время загрузки номенклатуры', () => {
-      render(
-        <AddOrEditNomenclatureModal
-          {...props}
-          {...addModeProps}
-          nomenclatureIsLoading
-        />,
-      )
-
-      const button = testUtils.queryAddButton()
+      render(<AddOrEditNomenclatureModal {...props} nomenclatureIsLoading />)
+      const button = testUtils.querySubmitButton(new RegExp(props.okText))
       expect(button).not.toBeInTheDocument()
     })
   })

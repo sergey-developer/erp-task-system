@@ -20,6 +20,7 @@ import {
 const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
   onSubmit,
   isLoading,
+  permissions,
 
   nomenclature,
   nomenclatureIsLoading,
@@ -76,6 +77,9 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
       {...props}
       data-testid='add-or-edit-nomenclature-modal'
       onOk={form.submit}
+      okButtonProps={{
+        disabled: !!permissions && !permissions.nomenclaturesUpdate,
+      }}
       confirmLoading={isLoading}
       isLoading={nomenclatureIsLoading}
       footer={nomenclatureIsLoading ? null : undefined}

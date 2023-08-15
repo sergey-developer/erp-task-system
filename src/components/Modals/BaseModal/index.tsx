@@ -25,21 +25,21 @@ const BaseModal: FC<BaseModalProps> = ({
   destroyOnClose = true,
   isLoading = false,
   children,
-  okButtonProps: initialOkButtonProps,
-  cancelButtonProps: initialCancelButtonProps,
+  okButtonProps,
+  cancelButtonProps,
   ...props
 }) => {
-  const okButtonProps = useMemo(
+  const mergedOkButtonProps = useMemo(
     () => ({
       ...baseOkButtonProps,
-      ...(initialOkButtonProps || {}),
+      ...(okButtonProps || {}),
     }),
-    [initialOkButtonProps],
+    [okButtonProps],
   )
 
-  const cancelButtonProps = useMemo(
-    () => ({ ...commonButtonProps, ...(initialCancelButtonProps || {}) }),
-    [initialCancelButtonProps],
+  const mergedCancelButtonProps = useMemo(
+    () => ({ ...commonButtonProps, ...(cancelButtonProps || {}) }),
+    [cancelButtonProps],
   )
 
   return (
@@ -47,8 +47,8 @@ const BaseModal: FC<BaseModalProps> = ({
       width={width}
       cancelText={cancelText}
       destroyOnClose={destroyOnClose}
-      okButtonProps={okButtonProps}
-      cancelButtonProps={cancelButtonProps}
+      okButtonProps={mergedOkButtonProps}
+      cancelButtonProps={mergedCancelButtonProps}
       {...props}
     >
       <LoadingArea isLoading={isLoading}>{children}</LoadingArea>
