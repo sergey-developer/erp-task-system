@@ -10,6 +10,7 @@ import {
   useEffect,
 } from 'react'
 
+import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
 import { AddOrEditNomenclatureGroupModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/types'
 import AddOrEditNomenclatureModal from 'modules/warehouse/components/AddOrEditNomenclatureModal'
@@ -386,13 +387,25 @@ const NomenclatureListPage: FC = () => {
             onSearch={handleChangeSearch}
           />
 
-          <Button onClick={debouncedToggleAddNomenclatureGroupModal}>
-            + Добавить группу
-          </Button>
+          <MatchUserPermissions expected={['NOMENCLATURE_GROUPS_CREATE']}>
+            {({ permissions }) =>
+              permissions.nomenclatureGroupsCreate ? (
+                <Button onClick={debouncedToggleAddNomenclatureGroupModal}>
+                  + Добавить группу
+                </Button>
+              ) : null
+            }
+          </MatchUserPermissions>
 
-          <Button onClick={debouncedToggleAddNomenclatureModal}>
-            + Добавить номенклатуру
-          </Button>
+          <MatchUserPermissions expected={['NOMENCLATURES_CREATE']}>
+            {({ permissions }) =>
+              permissions.nomenclaturesCreate ? (
+                <Button onClick={debouncedToggleAddNomenclatureModal}>
+                  + Добавить номенклатуру
+                </Button>
+              ) : null
+            }
+          </MatchUserPermissions>
         </Space>
 
         <Row gutter={16}>
