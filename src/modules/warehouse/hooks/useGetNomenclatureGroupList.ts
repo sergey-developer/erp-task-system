@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import {
+  CustomUseQueryHookResult,
+  CustomUseQueryOptions,
+} from 'lib/rtk-query/types'
 
 import { getNomenclatureGroupListMessages } from 'modules/warehouse/constants'
 import {
@@ -20,20 +23,22 @@ export type UseGetNomenclatureGroupListResult = CustomUseQueryHookResult<
 
 export const useGetNomenclatureGroupList = (
   args?: GetNomenclatureGroupListQueryArgs,
+  options?: CustomUseQueryOptions<
+    GetNomenclatureGroupListQueryArgs,
+    GetNomenclatureGroupListSuccessResponse
+  >,
 ): UseGetNomenclatureGroupListResult => {
-  const state = useGetNomenclatureGroupListQuery(args)
+  const state = useGetNomenclatureGroupListQuery(args, options)
 
   useEffect(() => {
-    if (state.isError) {
-      if (isErrorResponse(state.error)) {
-        if (isForbiddenError(state.error) && state.error.data.detail) {
-          showErrorNotification(state.error.data.detail)
-        } else {
-          showErrorNotification(getNomenclatureGroupListMessages.commonError)
-        }
+    if (isErrorResponse(state.error)) {
+      if (isForbiddenError(state.error) && state.error.data.detail) {
+        showErrorNotification(state.error.data.detail)
+      } else {
+        showErrorNotification(getNomenclatureGroupListMessages.commonError)
       }
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return state
 }

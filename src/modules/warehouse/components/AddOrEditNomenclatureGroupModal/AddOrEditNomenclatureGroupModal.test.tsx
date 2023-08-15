@@ -30,6 +30,12 @@ const addModeProps: Readonly<
   okText: 'Добавить',
 }
 
+const editModeProps: Readonly<
+  Pick<AddOrEditNomenclatureGroupModalProps, 'okText'>
+> = {
+  okText: 'Сохранить',
+}
+
 const getContainer = () =>
   screen.getByTestId('add-or-edit-nomenclature-group-modal')
 
@@ -194,19 +200,6 @@ describe('Модалка создания и редактирования ном
       const error = await testUtils.findNameError(validationMessages.required)
 
       expect(error).toBeInTheDocument()
-    })
-
-    test('При загрузке поле неактивно', async () => {
-      render(
-        <AddOrEditNomenclatureGroupModal
-          {...props}
-          {...addModeProps}
-          isLoading
-        />,
-      )
-
-      const field = testUtils.getNameField()
-      expect(field).toBeDisabled()
     })
   })
 })

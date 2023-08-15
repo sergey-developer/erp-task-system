@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { createSuspendRequestMessages } from "modules/task/constants";
+import { createSuspendRequestMessages } from 'modules/task/constants'
 import { CreateTaskSuspendRequestMutationArgs } from 'modules/task/models'
 import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
 import { useCreateSuspendRequestMutation } from 'modules/task/services/taskSuspendRequestApi.service'
@@ -28,22 +28,18 @@ export const useCreateTaskSuspendRequest = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
-        showErrorNotification(
-          createSuspendRequestMessages.notFoundError,
-        )
+        showErrorNotification(createSuspendRequestMessages.notFoundError)
       } else if (isBadRequestError(state.error)) {
-        showErrorNotification(
-          createSuspendRequestMessages.badRequestError,
-        )
+        showErrorNotification(createSuspendRequestMessages.badRequestError)
       } else {
         showErrorNotification(commonApiMessages.unknownError)
       }
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return { fn, state }
 }
