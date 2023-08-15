@@ -127,16 +127,7 @@ describe('Страница списка справочников складов'
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
 
-      render(<RouterProvider router={router} />, {
-        preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: {
-              ...getUserMeQueryMock({ permissions: [] }),
-            },
-          },
-        },
-      })
+      render(<RouterProvider router={router} />)
 
       const link = testUtils.queryCatalogLink('Номенклатура')
       expect(link).not.toBeInTheDocument()
