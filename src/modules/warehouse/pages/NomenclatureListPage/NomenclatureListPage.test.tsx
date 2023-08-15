@@ -16,6 +16,7 @@ import {
   mockGetNomenclatureGroupListSuccess,
   mockGetNomenclatureListSuccess,
 } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/user'
 import {
   expectLoadingFinishedBySpinner,
   expectLoadingStartedBySpinner,
@@ -28,7 +29,6 @@ import {
   setupNotifications,
 } from '_tests_/utils'
 
-import { getUserMeQueryMock } from '../../../../_tests_/mocks/user'
 import NomenclatureListPage from './index'
 
 const getContainer = () => screen.getByTestId('nomenclature-list-page')
