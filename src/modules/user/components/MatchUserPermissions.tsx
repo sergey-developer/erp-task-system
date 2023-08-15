@@ -7,9 +7,13 @@ import {
   MatchedUserPermissions,
 } from 'modules/user/utils'
 
+import { MaybeNull } from 'shared/types/utils'
+
 type MatchUserPermissionsProps = {
   expected: UserPermissions[]
-  children: (props: { permissions: MatchedUserPermissions }) => ReactElement
+  children: (props: {
+    permissions: MatchedUserPermissions
+  }) => MaybeNull<ReactElement>
 }
 
 const MatchUserPermissions: FC<MatchUserPermissionsProps> = ({
