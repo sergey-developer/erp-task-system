@@ -1,5 +1,5 @@
+import { SubTaskApiEnum } from 'modules/subTask/constants'
 import { GetSubTaskTemplateListSuccessResponse } from 'modules/subTask/models'
-import { getSubTaskTemplateListUrl } from 'modules/subTask/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -11,7 +11,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getSubTaskTemplateListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, getSubTaskTemplateListUrl())
+  getRequestMockFn(HttpMethodEnum.Get, SubTaskApiEnum.GetSubTaskTemplateList)
 
 export const mockGetSubTaskTemplateListSuccess = (
   options?: Partial<
