@@ -28,7 +28,7 @@ export const useUpdateTaskWorkGroup = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isBadRequestError(state.error) || isServerRangeError(state.error)) {
@@ -37,7 +37,7 @@ export const useUpdateTaskWorkGroup = () => {
         showErrorNotification(commonApiMessages.unknownError)
       }
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return { fn, state }
 }

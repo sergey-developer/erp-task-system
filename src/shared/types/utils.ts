@@ -24,6 +24,10 @@ export type NumberOrString = number | string
 
 export type ArrayFirst<T extends any[]> = T['length'] extends 0 ? never : T[0]
 
+export type Writeable<T> = { -readonly [P in keyof T]: T[P] }
+
+export type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> }
+
 /* Типы взяты из https://www.npmjs.com/package/camelize-ts */
 type CamelCase<S extends string> =
   S extends `${infer P1}_${infer P2}${infer P3}`
@@ -34,16 +38,16 @@ type CamelizeObject<T, S = false> = {
   [K in keyof T as Uncapitalize<CamelCase<string & K>>]: T[K] extends Date
     ? T[K]
     : T[K] extends RegExp
+    ? T[K]
+    : T[K] extends Array<infer U>
+    ? U extends {} | undefined
+      ? Array<CamelizeObject<U>>
+      : T[K]
+    : T[K] extends {} | undefined
+    ? S extends true
       ? T[K]
-      : T[K] extends Array<infer U>
-        ? U extends {} | undefined
-          ? Array<CamelizeObject<U>>
-          : T[K]
-        : T[K] extends {} | undefined
-          ? S extends true
-            ? T[K]
-            : CamelizeObject<T[K]>
-          : T[K]
+      : CamelizeObject<T[K]>
+    : T[K]
 }
 
 export type Camelize<T, S = false> = T extends Array<infer U>

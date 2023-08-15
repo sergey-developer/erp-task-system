@@ -9,12 +9,32 @@ export enum LegalEntityApiEnum {
 
 export enum NomenclatureApiEnum {
   GetNomenclatureList = '/nomenclatures/',
+  GetNomenclature = '/nomenclatures/:id/',
+  CreateNomenclature = '/nomenclatures/',
+  UpdateNomenclature = '/nomenclatures/:id/',
   GetNomenclatureGroupList = '/nomenclature-groups/',
   CreateNomenclatureGroup = '/nomenclature-groups/',
+  UpdateNomenclatureGroup = '/nomenclature-groups/:id/',
 }
 
 export enum NomenclatureApiTriggerEnum {
-  CreateNomenclatureGroup = 'createNomenclatureGroup',
+  GetNomenclature = 'getNomenclature',
+  CreateNomenclature = 'createNomenclature',
+  UpdateNomenclature = 'updateNomenclature',
   GetNomenclatureList = 'getNomenclatureList',
+  CreateNomenclatureGroup = 'createNomenclatureGroup',
+  UpdateNomenclatureGroup = 'updateNomenclatureGroup',
   GetNomenclatureGroupList = 'getNomenclatureGroupList',
+}
+
+export enum NomenclatureApiTagEnum {
+  NomenclatureList = 'NomenclatureList',
+}
+
+export enum MeasurementUnitApiEnum {
+  GetMeasurementUnitList = '/measurement-units/',
+}
+
+export enum CountryApiEnum {
+  GetCountryList = '/countries/',
 }

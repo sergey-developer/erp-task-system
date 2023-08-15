@@ -20,7 +20,8 @@ const props: Readonly<NomenclatureTableProps> = {
   dataSource: [nomenclatureListItem],
   pagination: false,
   loading: false,
-  onChange: jest.fn()
+  onChange: jest.fn(),
+  onClickName: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('nomenclature-table')
