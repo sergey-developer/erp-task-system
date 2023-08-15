@@ -61,6 +61,8 @@ const getAddNomenclatureButton = () =>
 
 const clickAddNomenclatureButton = async (user: UserEvent) => {
   const button = await getAddNomenclatureButton()
+  await user.click(button)
+}
 
 const queryAddNomenclatureButton = () =>
   queryButtonIn(getContainer(), /Добавить номенклатуру/)
@@ -422,8 +424,7 @@ describe('Страница списка номенклатур', () => {
       })
 
       await testUtils.clickAddNomenclatureButton(user)
-      const modal =
-        await addOrEditNomenclatureModalTestUtils.findContainer()
+      const modal = await addOrEditNomenclatureModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
     })
