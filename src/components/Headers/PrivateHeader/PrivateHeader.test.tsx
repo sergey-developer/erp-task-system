@@ -149,7 +149,7 @@ describe('PrivateHeader', () => {
     describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
       describe('Элемент "Заявки"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.FirstLineSupport,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -166,7 +166,7 @@ describe('PrivateHeader', () => {
         })
 
         test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.FirstLineSupport,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -189,7 +189,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Отчёт по ФН"', () => {
         test('Не отображается', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.FirstLineSupport,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -210,7 +210,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Управление складами"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.FirstLineSupport,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -235,7 +235,7 @@ describe('PrivateHeader', () => {
     describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
       describe('Элемент "Заявки"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -252,7 +252,7 @@ describe('PrivateHeader', () => {
         })
 
         test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -275,7 +275,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Отчёт по ФН"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -292,7 +292,7 @@ describe('PrivateHeader', () => {
         })
 
         test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -315,7 +315,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Управление складами"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -340,7 +340,7 @@ describe('PrivateHeader', () => {
     describe(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
       describe('Элемент "Заявки"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -357,7 +357,7 @@ describe('PrivateHeader', () => {
         })
 
         test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -380,7 +380,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Отчёт по ФН"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -397,7 +397,7 @@ describe('PrivateHeader', () => {
         })
 
         test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -420,7 +420,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Управление складами"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -445,7 +445,7 @@ describe('PrivateHeader', () => {
     describe(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
       describe('Элемент "Заявки"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -462,7 +462,7 @@ describe('PrivateHeader', () => {
         })
 
         test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -485,7 +485,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Отчёт по ФН"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -502,7 +502,7 @@ describe('PrivateHeader', () => {
         })
 
         test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
           })
           mockGetUserMeSuccess({ body: fakeUser })
@@ -525,7 +525,7 @@ describe('PrivateHeader', () => {
 
       describe('Элемент "Управление складами"', () => {
         test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.fakeUser({
+          const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
           })
           mockGetUserMeSuccess({ body: fakeUser })
