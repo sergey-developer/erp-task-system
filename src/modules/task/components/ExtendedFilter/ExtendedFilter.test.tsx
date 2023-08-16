@@ -48,6 +48,10 @@ const searchFieldDictValues = Object.values(searchFieldDict)
 const props: Readonly<ExtendedFilterProps> = {
   formValues: initialExtendedFilterFormValues,
   initialFormValues: initialExtendedFilterFormValues,
+
+  userList: [],
+  userListIsLoading: false,
+
   onClose: jest.fn(),
   onSubmit: jest.fn(),
 }

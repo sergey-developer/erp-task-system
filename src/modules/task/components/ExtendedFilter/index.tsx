@@ -16,13 +16,18 @@ import {
   taskAssignedOptions,
   taskExtendedStatusOptions,
   taskOverdueOptions,
+  managerSelectFieldNames,
 } from './constants'
-import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
 import { CheckboxGroupStyled, RangePickerStyled } from './styles'
+import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
   initialFormValues,
+
+  userList,
+  userListIsLoading,
+
   onClose,
   onSubmit,
 }) => {
@@ -138,6 +143,28 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               <Input placeholder='Ключевое слово' />
             </Form.Item>
           </Space>
+        </FilterBlock>
+
+        <FilterBlock
+          data-testid='extended-filter-manager'
+          label='Руководитель'
+          onReset={resetFields(['manager'])}
+        >
+          <Form.Item name='manager'>
+            <Select
+              data-testid='extended-filter-manager-select'
+              fieldNames={managerSelectFieldNames}
+              loading={userListIsLoading}
+              options={userList}
+              placeholder='Руководитель'
+              showSearch
+              filterOption={(input, option) => {
+                return option
+                  ? option.fullName.toLowerCase().includes(input.toLowerCase())
+                  : false
+              }}
+            />
+          </Form.Item>
         </FilterBlock>
       </Form>
     </DrawerFilter>
