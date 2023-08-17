@@ -1,5 +1,5 @@
 import * as user from './user'
-import * as userList from './userStatusList'
+import * as userList from './userList'
 import * as userStatus from './userStatus'
 import * as userStatusList from './userStatusList'
 
