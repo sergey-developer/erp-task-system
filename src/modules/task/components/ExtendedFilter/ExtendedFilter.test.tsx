@@ -262,11 +262,8 @@ const openManagerSelect = async (user: UserEvent): Promise<HTMLElement> => {
 
 const getSelectedManager = () => getSelectedOption(getManagerFieldContainer())
 
-const expectManagerLoadingFinished = async () => {
-  const field = getManagerFieldContainer()
-  await expectLoadingFinishedBySelect(field)
-  return field
-}
+const expectManagerLoadingFinished = () =>
+  expectLoadingFinishedBySelect(getManagerFieldContainer())
 
 const manager = {
   getContainer: getManagerFilterBlock,
