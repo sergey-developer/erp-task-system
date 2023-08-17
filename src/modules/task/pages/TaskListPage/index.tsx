@@ -38,7 +38,7 @@ import {
 import { getSort } from 'modules/task/components/TaskTable/utils'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
-import { useUserRole } from 'modules/user/hooks'
+import { useGetUserList, useUserRole } from 'modules/user/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import { SyncIcon } from 'components/Icons'
@@ -56,6 +56,45 @@ const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
   const { isFirstLineSupportRole, isEngineerRole, role } = useUserRole()
   const colRef = useRef<number>()
+
+  const [selectedTask, setSelectedTask] =
+    useState<MaybeNull<TaskTableListItem['id']>>(null)
+
+  const [
+    taskAdditionalInfoExpanded,
+    { toggle: toggleTaskAdditionalInfoExpanded },
+  ] = useBoolean(false)
+
+  const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] =
+    useBoolean(false)
+
+  const [extendedFilterFormValues, setExtendedFilterFormValues] =
+    useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
+
+  const initialFastFilter: FastFilterEnum = isFirstLineSupportRole
+    ? FastFilterEnum.FirstLine
+    : isEngineerRole
+    ? FastFilterEnum.Mine
+    : FastFilterEnum.All
+
+  const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>({
+    filter: initialFastFilter,
+    limit: DEFAULT_PAGE_SIZE,
+    offset: 0,
+    sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
+  })
+
+  const [fastFilter, setFastFilter] =
+    useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+
+  const [searchValue, setSearchValue] = useState<string>()
+
+  const [appliedFilterType, setAppliedFilterType] = useState<
+    MaybeNull<FilterTypeEnum>
+  >(FilterTypeEnum.Fast)
+
+  const previousAppliedFilterType =
+    usePrevious<typeof appliedFilterType>(appliedFilterType)
 
   useLayoutEffect(() => {
     const taskListLayoutEl: MaybeNull<HTMLElement> =
@@ -86,18 +125,8 @@ const TaskListPage: FC = () => {
     refetch: refetchTaskCounters,
   } = useGetTaskCounters()
 
-  const initialFastFilter: FastFilterEnum = isFirstLineSupportRole
-    ? FastFilterEnum.FirstLine
-    : isEngineerRole
-    ? FastFilterEnum.Mine
-    : FastFilterEnum.All
-
-  const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>({
-    filter: initialFastFilter,
-    limit: DEFAULT_PAGE_SIZE,
-    offset: 0,
-    sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
-  })
+  const { currentData: userList = [], isFetching: userListIsFetching } =
+    useGetUserList({ isManager: true }, { skip: !isExtendedFilterOpened })
 
   /**
    * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
@@ -116,32 +145,6 @@ const TaskListPage: FC = () => {
       getTaskList(queryArgs)
     }
   }, [getTaskList, queryArgs])
-
-  const [selectedTask, setSelectedTask] =
-    useState<MaybeNull<TaskTableListItem['id']>>(null)
-
-  const [
-    taskAdditionalInfoExpanded,
-    { toggle: toggleTaskAdditionalInfoExpanded },
-  ] = useBoolean(false)
-
-  const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] =
-    useBoolean(false)
-
-  const [extendedFilterFormValues, setExtendedFilterFormValues] =
-    useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
-
-  const [fastFilter, setFastFilter] =
-    useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
-
-  const [searchValue, setSearchValue] = useState<string>()
-
-  const [appliedFilterType, setAppliedFilterType] = useState<
-    MaybeNull<FilterTypeEnum>
-  >(FilterTypeEnum.Fast)
-
-  const previousAppliedFilterType =
-    usePrevious<typeof appliedFilterType>(appliedFilterType)
 
   const debouncedToggleOpenExtendedFilter = useDebounceFn(
     toggleOpenExtendedFilter,
@@ -284,6 +287,7 @@ const TaskListPage: FC = () => {
       searchByTitle: undefined,
       taskId: undefined,
       workGroupId: undefined,
+      manager: undefined,
       ...filterQueryParams,
     }))
   }
@@ -402,6 +406,8 @@ const TaskListPage: FC = () => {
         <ExtendedFilter
           formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
+          userList={userList}
+          userListIsLoading={userListIsFetching}
           onClose={debouncedToggleOpenExtendedFilter}
           onSubmit={handleExtendedFilterSubmit}
         />

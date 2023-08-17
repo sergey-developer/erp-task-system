@@ -1,6 +1,11 @@
 import { useEffect } from 'react'
 
-import { GetTaskReclassificationRequestQueryArgs } from 'modules/task/models'
+import { CustomUseQueryOptions } from 'lib/rtk-query/types'
+
+import {
+  GetTaskReclassificationRequestQueryArgs,
+  GetTaskReclassificationRequestSuccessResponse,
+} from 'modules/task/models'
 import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
 import { useGetReclassificationRequestQuery } from 'modules/task/services/taskReclassificationRequestApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -11,7 +16,10 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskReclassificationRequest = (
   taskId: GetTaskReclassificationRequestQueryArgs,
-  options?: Partial<{ skip: boolean }>,
+  options?: CustomUseQueryOptions<
+    GetTaskReclassificationRequestQueryArgs,
+    GetTaskReclassificationRequestSuccessResponse
+  >,
 ) => {
   const permissions = useUserPermissions(
     taskReclassificationRequestApiPermissions,
