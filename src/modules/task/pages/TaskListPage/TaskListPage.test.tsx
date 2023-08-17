@@ -251,7 +251,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskListSuccess({ once: false })
 
       const userListItem = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [userListItem] })
+      mockGetUserListSuccess({ body: [userListItem], once: false })
 
       const { user } = render(<TaskListPage />, {
         store: getStoreWithAuth({
@@ -576,7 +576,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess({ once: false })
 
         const userListItem = userFixtures.userListItem()
-        mockGetUserListSuccess({ body: [userListItem] })
+        mockGetUserListSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -683,12 +683,12 @@ describe('Страница реестра заявок', () => {
 
     test('Значения не сохраняются если фильтр не был применён', async () => {
       const workGroupListItem = workGroupFixtures.workGroupListItem()
-      mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
+      mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
 
       const userListItem = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [userListItem] })
+      mockGetUserListSuccess({ body: [userListItem], once: false })
 
       const { user } = render(<TaskListPage />, {
         store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -1027,7 +1027,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess({ once: false })
 
         const userListItem = userFixtures.userListItem()
-        mockGetUserListSuccess({ body: [userListItem] })
+        mockGetUserListSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -1207,7 +1207,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess({ once: false })
 
         const userListItem = userFixtures.userListItem()
-        mockGetUserListSuccess({ body: [userListItem] })
+        mockGetUserListSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -1317,7 +1317,7 @@ describe('Страница реестра заявок', () => {
         ).toHaveTextContent(workGroupListItem.name)
 
         expect(extendedFilterTestUtils.manager.getSelected()).toHaveTextContent(
-          workGroupListItem.name,
+          userListItem.fullName,
         )
       })
     })
