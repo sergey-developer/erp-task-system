@@ -54,11 +54,14 @@ import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled, SearchStyled } from './styles'
 import { FastFilterQueries, TaskIdFilterQueries } from './types'
-import { mapExtendedFilterFormFieldsToQueries } from './utils'
+import {
+  getInitialFastFilter,
+  mapExtendedFilterFormFieldsToQueries,
+} from './utils'
 
 const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
-  const { isFirstLineSupportRole, isEngineerRole, role } = useUserRole()
+  const { role } = useUserRole()
   const colRef = useRef<number>()
 
   useLayoutEffect(() => {
@@ -90,11 +93,7 @@ const TaskListPage: FC = () => {
     refetch: refetchTaskCounters,
   } = useGetTaskCounters()
 
-  const initialFastFilter: FastFilterEnum = isFirstLineSupportRole
-    ? FastFilterEnum.FirstLine
-    : isEngineerRole
-    ? FastFilterEnum.Mine
-    : FastFilterEnum.All
+  const initialFastFilter = getInitialFastFilter(role)
 
   const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>({
     filter: initialFastFilter,
