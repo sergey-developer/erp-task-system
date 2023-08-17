@@ -1,16 +1,17 @@
 import { CheckboxOptionType } from 'antd'
 import isEqual from 'lodash/isEqual'
+import { FieldNames } from 'rc-select/lib/Select'
 import React from 'react'
 
-import {
-  TaskExtendedStatusEnum,
-  taskExtendedStatusDict,
-} from 'modules/task/constants'
 import {
   badgeByTaskExtendedStatus,
   iconByTaskExtendedStatus,
 } from 'modules/task/components/TaskStatus/constants'
 import TaskStatus from 'modules/task/components/TaskStatus/index'
+import {
+  TaskExtendedStatusEnum,
+  taskExtendedStatusDict,
+} from 'modules/task/constants'
 
 import { StringMap } from 'shared/types/utils'
 
@@ -37,6 +38,7 @@ export const initialExtendedFilterFormValues: Readonly<ExtendedFilterFormFields>
     isOverdue: [],
     isAssigned: [],
     workGroupId: undefined,
+    manager: undefined,
   }
 
 export const searchFieldDict: Readonly<StringMap<keyof SearchFields>> = {
@@ -92,3 +94,8 @@ export const taskExtendedStatusOptions: Array<CheckboxOptionType> =
       ),
       value: status,
     }))
+
+export const managerSelectFieldNames: Readonly<FieldNames> = {
+  label: 'fullName',
+  value: 'id',
+}

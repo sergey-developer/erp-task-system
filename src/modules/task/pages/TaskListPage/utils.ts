@@ -29,6 +29,7 @@ export const mapExtendedFilterFormFieldsToQueries = (
     isOverdue,
     isAssigned,
     workGroupId,
+    manager,
   } = fields
 
   return {
@@ -44,6 +45,7 @@ export const mapExtendedFilterFormFieldsToQueries = (
     isAssigned,
     [searchField]: searchValue || undefined,
     workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
+    manager,
   }
 }
 
