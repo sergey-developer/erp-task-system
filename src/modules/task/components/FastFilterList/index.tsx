@@ -3,6 +3,8 @@ import { camelize } from 'humps'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useMemo } from 'react'
 
+import { TaskCountersKeys } from 'modules/task/models'
+
 import FilterTag from './FastFilterListItem'
 import { fastFilters } from './constants'
 import { FastFilterListProps, FastFilterItem } from './types'
@@ -21,9 +23,10 @@ const FastFilterList: FC<FastFilterListProps> = ({
 
     return fastFilters.reduce<Array<FastFilterItem>>(
       (acc, { filter, roles, text }) => {
-        const taskCounterKey = camelize(filter.toLowerCase()) as Lowercase<
-          typeof filter
-        >
+        const taskCounterKey = camelize(
+          filter.toLowerCase(),
+        ) as TaskCountersKeys
+
         const taskCounterValue = isShowCounters
           ? counters[taskCounterKey]
           : null

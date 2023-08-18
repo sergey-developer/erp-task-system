@@ -13,7 +13,7 @@ import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
 import { taskExtendedStatusDict } from 'modules/task/constants'
-import { GetTaskCountersSuccessResponse } from 'modules/task/models'
+import { TaskCountersKeys } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import taskFixtures from 'fixtures/task'
@@ -140,8 +140,8 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Количество заявок отображается корректно', async () => {
-      const taskCountersResponse = taskFixtures.taskCountersResponse()
-      mockGetTaskCountersSuccess({ body: taskCountersResponse })
+      const taskCounters = taskFixtures.taskCounters()
+      mockGetTaskCountersSuccess({ body: taskCounters })
       mockGetTaskListSuccess()
 
       render(<TaskListPage />, { store: getStoreWithAuth() })
@@ -150,10 +150,7 @@ describe('Страница реестра заявок', () => {
 
       Object.values(FastFilterEnum).forEach((filter) => {
         const counterName = filter.toLowerCase()
-        const taskCount =
-          taskCountersResponse[
-            counterName as keyof GetTaskCountersSuccessResponse
-          ]
+        const taskCount = taskCounters[counterName as TaskCountersKeys]
 
         const counter = fastFilterListTestUtils.getByTextInCheckableTag(
           filter,
@@ -1157,9 +1154,7 @@ describe('Страница реестра заявок', () => {
 
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
         mockGetTaskListSuccess()
-        mockGetTaskCountersSuccess({
-          body: taskFixtures.taskCountersResponse(),
-        })
+        mockGetTaskCountersSuccess({ body: taskFixtures.taskCounters() })
 
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
