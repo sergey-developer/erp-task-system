@@ -1,12 +1,14 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
-import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
-import { render } from '_tests_/utils'
+import { mockGetWarehouseListSuccess } from '_tests_/mocks/api'
+import { renderInRoute_latest } from '_tests_/utils'
 
+import WarehouseListPage from '../WarehouseListPage'
+import { testUtils as warehouseListPageTestUtils } from '../WarehouseListPage/WarehouseListPage.test'
 import WarehouseCatalogListPage from './index'
 
 const getContainer = () => screen.getByTestId('warehouse-catalog-list-page')
@@ -30,8 +32,7 @@ const testUtils = {
 describe('Страница списка справочников складов', () => {
   describe('Элемент "Склады"', () => {
     test('Отображается корректно', async () => {
-      // todo: создать компонент для переиспользования в тестах
-      const router = createMemoryRouter(
+      renderInRoute_latest(
         [
           {
             path: RouteEnum.WarehouseCatalogList,
@@ -40,7 +41,6 @@ describe('Страница списка справочников складов'
         ],
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
-      render(<RouterProvider router={router} />)
 
       const link = testUtils.getCatalogLink('Склады')
 
@@ -48,21 +48,27 @@ describe('Страница списка справочников складов'
       expect(link).toHaveAttribute('href', RouteEnum.WarehouseList)
     })
 
-    // todo: доработать как будет готова страница складов
     test('При клике переходит на страницу складов', async () => {
-      const router = createMemoryRouter(
+      mockGetWarehouseListSuccess()
+
+      const { user } = renderInRoute_latest(
         [
           {
             path: RouteEnum.WarehouseCatalogList,
             element: <WarehouseCatalogListPage />,
           },
+          {
+            path: RouteEnum.WarehouseList,
+            element: <WarehouseListPage />,
+          },
         ],
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
-      const { user } = render(<RouterProvider router={router} />)
 
-      const link = await testUtils.clickCatalogLink(user, 'Склады')
-      expect(link).not.toBeInTheDocument()
+      await testUtils.clickCatalogLink(user, 'Склады')
+      const page = warehouseListPageTestUtils.getContainer()
+
+      expect(page).toBeInTheDocument()
     })
   })
 })
