@@ -1,19 +1,32 @@
 import { useEffect } from 'react'
 
-import { taskCountersApiPermissions } from 'modules/task/permissions'
+import {
+  CustomUseQueryHookResult,
+  CustomUseQueryOptions,
+} from 'lib/rtk-query/types'
+
+import {
+  GetTaskCountersQueryArgs,
+  GetTaskCountersSuccessResponse,
+} from 'modules/task/models'
 import { useGetTaskCountersQuery } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/errors'
 import { isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useGetTaskCounters = () => {
-  const permissions = useUserPermissions(taskCountersApiPermissions)
+type UseGetTaskCountersResult = CustomUseQueryHookResult<
+  GetTaskCountersQueryArgs,
+  GetTaskCountersSuccessResponse
+>
 
-  const state = useGetTaskCountersQuery(undefined, {
-    skip: !permissions.canGet,
-  })
+export const useGetTaskCounters = (
+  options?: CustomUseQueryOptions<
+    GetTaskCountersQueryArgs,
+    GetTaskCountersSuccessResponse
+  >,
+): UseGetTaskCountersResult => {
+  const state = useGetTaskCountersQuery(undefined, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {

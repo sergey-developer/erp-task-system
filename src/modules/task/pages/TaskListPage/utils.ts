@@ -2,6 +2,9 @@ import {
   ExtendedFilterFormFields,
   ExtendedFilterQueries,
 } from 'modules/task/components/ExtendedFilter/types'
+import { FastFilterEnum } from 'modules/task/components/FastFilterList/constants'
+import { UserRoleEnum } from 'modules/user/constants'
+import { getUserRoleMap } from 'modules/user/utils'
 
 import { formatDate } from 'shared/utils/date'
 
@@ -26,6 +29,7 @@ export const mapExtendedFilterFormFieldsToQueries = (
     isOverdue,
     isAssigned,
     workGroupId,
+    manager,
   } = fields
 
   return {
@@ -41,5 +45,18 @@ export const mapExtendedFilterFormFieldsToQueries = (
     isAssigned,
     [searchField]: searchValue || undefined,
     workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
+    manager,
   }
+}
+
+export const getInitialFastFilter = (role?: UserRoleEnum): FastFilterEnum => {
+  if (!role) return FastFilterEnum.All
+
+  const { isFirstLineSupportRole, isEngineerRole } = getUserRoleMap(role)
+
+  return isFirstLineSupportRole
+    ? FastFilterEnum.FirstLine
+    : isEngineerRole
+    ? FastFilterEnum.Mine
+    : FastFilterEnum.All
 }

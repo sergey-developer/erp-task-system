@@ -10,7 +10,7 @@ export enum FastFilterEnum {
   FirstLine = 'FIRST_LINE',
   SecondLine = 'SECOND_LINE',
   LessOneHour = 'LESS_1_HOUR',
-  LessThreeHour = 'LESS_3_HOURS',
+  LessThreeHours = 'LESS_3_HOURS',
 }
 
 export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
@@ -21,7 +21,7 @@ export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
   [FastFilterEnum.FirstLine]: 'Первая линия',
   [FastFilterEnum.SecondLine]: 'Вторая линия',
   [FastFilterEnum.LessOneHour]: 'Менее 1 часа',
-  [FastFilterEnum.LessThreeHour]: 'Менее 3-х часов',
+  [FastFilterEnum.LessThreeHours]: 'Менее 3-х часов',
 }
 
 export type FastFilterType = {
@@ -73,14 +73,14 @@ export const fastFilters: Array<FastFilterType> = [
     text: fastFilterNamesDict[FastFilterEnum.Free],
   },
   {
-    filter: FastFilterEnum.LessThreeHour,
+    filter: FastFilterEnum.LessThreeHours,
     roles: [
       UserRoleEnum.FirstLineSupport,
       UserRoleEnum.Engineer,
       UserRoleEnum.SeniorEngineer,
       UserRoleEnum.HeadOfDepartment,
     ],
-    text: fastFilterNamesDict[FastFilterEnum.LessThreeHour],
+    text: fastFilterNamesDict[FastFilterEnum.LessThreeHours],
   },
   {
     filter: FastFilterEnum.LessOneHour,
