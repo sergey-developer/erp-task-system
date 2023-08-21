@@ -19,7 +19,11 @@ const items: CatalogListProps['items'] = [
 ]
 
 const WarehouseCatalogListPage: FC = () => {
-  return <CatalogList data-testid='warehouse-catalog-list' items={items} />
+  return (
+    <div data-testid='warehouse-catalog-list-page'>
+      <CatalogList data-testid='warehouse-catalog-list' items={items} />
+    </div>
+  )
 }
 
 export default WarehouseCatalogListPage

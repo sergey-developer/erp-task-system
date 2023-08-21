@@ -15,7 +15,11 @@ const items: CatalogListProps['items'] = [
 ]
 
 const ReserveCatalogListPage: FC = () => {
-  return <CatalogList data-testid='reserve-catalog-list' items={items} />
+  return (
+    <div data-testid='reserve-catalog-list-page'>
+      <CatalogList data-testid='reserve-catalog-list' items={items} />
+    </div>
+  )
 }
 
 export default ReserveCatalogListPage

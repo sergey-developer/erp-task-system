@@ -4,13 +4,13 @@ import React from 'react'
 
 import { RouteEnum } from 'configs/routes'
 
-import { renderInRoute_latest } from '_tests_/utils'
 import {
   mockGetNomenclatureGroupListSuccess,
   mockGetNomenclatureListSuccess,
   mockGetWarehouseListSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/user'
+import { linkTestUtils, renderInRoute_latest } from '_tests_/utils'
 
 import NomenclatureListPage from '../NomenclatureListPage'
 import { testUtils as nomenclatureListPageTestUtils } from '../NomenclatureListPage/NomenclatureListPage.test'
@@ -18,26 +18,43 @@ import WarehouseListPage from '../WarehouseListPage'
 import { testUtils as warehouseListPageTestUtils } from '../WarehouseListPage/WarehouseListPage.test'
 import WarehouseCatalogListPage from './index'
 
-const getContainer = () => screen.getByTestId('warehouse-catalog-list')
+const getContainer = () => screen.getByTestId('warehouse-catalog-list-page')
 
-const getCatalogLink = (name: string) =>
-  within(getContainer()).getByRole('link', { name })
+const getCatalogContainer = () =>
+  within(getContainer()).getByTestId('warehouse-catalog-list')
 
-const queryCatalogLink = (name: string) =>
-  within(getContainer()).queryByRole('link', { name })
+// warehouse link
+const getWarehouseLink = () =>
+  linkTestUtils.getLinkIn(getCatalogContainer(), 'Склады')
 
-const clickCatalogLink = async (user: UserEvent, name: string) => {
-  const link = getCatalogLink(name)
-  await user.click(link)
-  return link
-}
+const queryWarehouseLink = () =>
+  linkTestUtils.queryLinkIn(getCatalogContainer(), 'Склады')
 
-const testUtils = {
+const clickWarehouseLink = async (user: UserEvent) =>
+  linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'Склады')
+
+// nomenclature link
+const getNomenclatureLink = () =>
+  linkTestUtils.getLinkIn(getCatalogContainer(), 'Номенклатура')
+
+const queryNomenclatureLink = () =>
+  linkTestUtils.queryLinkIn(getCatalogContainer(), 'Номенклатура')
+
+const clickNomenclatureLink = async (user: UserEvent) =>
+  linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'Номенклатура')
+
+export const testUtils = {
   getContainer,
 
-  getCatalogLink,
-  queryCatalogLink,
-  clickCatalogLink,
+  getCatalogContainer,
+
+  getWarehouseLink,
+  queryWarehouseLink,
+  clickWarehouseLink,
+
+  getNomenclatureLink,
+  queryNomenclatureLink,
+  clickNomenclatureLink,
 }
 
 describe('Страница списка справочников складов', () => {
@@ -53,7 +70,7 @@ describe('Страница списка справочников складов'
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
 
-      const link = testUtils.getCatalogLink('Склады')
+      const link = testUtils.getWarehouseLink()
 
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', RouteEnum.WarehouseList)
@@ -76,7 +93,7 @@ describe('Страница списка справочников складов'
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
 
-      await testUtils.clickCatalogLink(user, 'Склады')
+      await testUtils.clickWarehouseLink(user)
       const page = warehouseListPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
@@ -102,10 +119,10 @@ describe('Страница списка справочников складов'
               },
             },
           },
-        }
+        },
       )
 
-      const link = testUtils.getCatalogLink('Номенклатура')
+      const link = testUtils.getNomenclatureLink()
 
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', RouteEnum.NomenclatureList)
@@ -122,7 +139,7 @@ describe('Страница списка справочников складов'
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
 
-      const link = testUtils.queryCatalogLink('Номенклатура')
+      const link = testUtils.queryNomenclatureLink()
       expect(link).not.toBeInTheDocument()
     })
 
@@ -151,10 +168,10 @@ describe('Страница списка справочников складов'
               },
             },
           },
-        }
+        },
       )
 
-      await testUtils.clickCatalogLink(user, 'Номенклатура')
+      await testUtils.clickNomenclatureLink(user)
       const page = nomenclatureListPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
