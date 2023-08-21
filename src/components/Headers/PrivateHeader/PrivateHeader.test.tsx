@@ -1,12 +1,13 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { MaybeNull } from 'shared/types/utils'
 import { RouteEnum } from 'configs/routes'
 
 import { UserRoleEnum } from 'modules/user/constants'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
+
+import { MaybeNull } from 'shared/types/utils'
 
 import PrivateApp from 'app/PrivateApp'
 
