@@ -337,7 +337,7 @@ describe('Блок рабочей группы', () => {
         await testUtils.clickSecondLineButton(user)
         await taskSecondLineModalTestUtils.findContainer()
         await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
-        await taskSecondLineModalTestUtils.openWorkGroup(user)
+        await taskSecondLineModalTestUtils.openWorkGroupField(user)
         await taskSecondLineModalTestUtils.selectWorkGroup(
           user,
           workGroupList[0].name,
