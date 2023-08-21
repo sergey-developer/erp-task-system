@@ -1,7 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { taskExtendedStatusDict } from 'modules/task/constants'
 import { testUtils as extendedFilterTestUtils } from 'modules/task/components/ExtendedFilter/ExtendedFilter.test'
 import {
   searchFieldDict,
@@ -13,16 +12,19 @@ import { FastFilterEnum } from 'modules/task/components/FastFilterList/constants
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
-import { GetTaskCountersSuccessResponse } from 'modules/task/models'
+import { taskExtendedStatusDict } from 'modules/task/constants'
+import { TaskCountersKeys } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import taskFixtures from 'fixtures/task'
+import userFixtures from 'fixtures/user'
 import workGroupFixtures from 'fixtures/workGroup'
 
 import {
   mockGetTaskCountersSuccess,
   mockGetTaskListSuccess,
   mockGetTaskSuccess,
+  mockGetUserListSuccess,
   mockGetWorkGroupListSuccess,
 } from '_tests_/mocks/api'
 import {
@@ -138,8 +140,8 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Количество заявок отображается корректно', async () => {
-      const taskCountersResponse = taskFixtures.taskCountersResponse()
-      mockGetTaskCountersSuccess({ body: taskCountersResponse })
+      const taskCounters = taskFixtures.taskCounters()
+      mockGetTaskCountersSuccess({ body: taskCounters })
       mockGetTaskListSuccess()
 
       render(<TaskListPage />, { store: getStoreWithAuth() })
@@ -148,10 +150,7 @@ describe('Страница реестра заявок', () => {
 
       Object.values(FastFilterEnum).forEach((filter) => {
         const counterName = filter.toLowerCase()
-        const taskCount =
-          taskCountersResponse[
-            counterName as keyof GetTaskCountersSuccessResponse
-          ]
+        const taskCount = taskCounters[counterName as TaskCountersKeys]
 
         const counter = fastFilterListTestUtils.getByTextInCheckableTag(
           filter,
@@ -248,6 +247,9 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess({ once: false })
 
+      const userListItem = userFixtures.userListItem()
+      mockGetUserListSuccess({ body: [userListItem], once: false })
+
       const { user } = render(<TaskListPage />, {
         store: getStoreWithAuth({
           userRole: UserRoleEnum.SeniorEngineer,
@@ -260,6 +262,7 @@ describe('Страница реестра заявок', () => {
       await testUtils.openExtendedFilter(user)
       await extendedFilterTestUtils.findContainer()
       await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+      await extendedFilterTestUtils.manager.expectLoadingFinished()
 
       await extendedFilterTestUtils.status.setValue(
         user,
@@ -295,6 +298,12 @@ describe('Страница реестра заявок', () => {
         workGroupListItem.name,
       )
 
+      await extendedFilterTestUtils.manager.openField(user)
+      await extendedFilterTestUtils.manager.setValue(
+        user,
+        userListItem.fullName,
+      )
+
       await extendedFilterTestUtils.applyFilter(user)
       await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
@@ -306,6 +315,7 @@ describe('Страница реестра заявок', () => {
       await testUtils.openExtendedFilter(user)
       await extendedFilterTestUtils.findContainer()
       await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+      await extendedFilterTestUtils.manager.expectLoadingFinished()
 
       await waitFor(() => {
         expect(
@@ -341,6 +351,10 @@ describe('Страница реестра заявок', () => {
 
       expect(
         getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+      ).not.toBeInTheDocument()
+
+      expect(
+        extendedFilterTestUtils.manager.getSelected(),
       ).not.toBeInTheDocument()
     })
 
@@ -389,9 +403,13 @@ describe('Страница реестра заявок', () => {
   })
 
   describe('Кнопка расширенных фильтров', () => {
-    test('Отображается корректно', () => {
+    test('Отображается корректно', async () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
+
       render(<TaskListPage />)
 
+      await taskTableTestUtils.expectLoadingFinished()
       const button = testUtils.getExtendedFilterButton()
 
       expect(button).toBeInTheDocument()
@@ -399,10 +417,17 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Открывает расширенный фильтр', async () => {
+      mockGetUserListSuccess()
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
+      mockGetWorkGroupListSuccess()
+
       const { user } = render(<TaskListPage />)
 
+      await taskTableTestUtils.expectLoadingFinished()
       await testUtils.openExtendedFilter(user)
       const filter = await extendedFilterTestUtils.findContainer()
+
       expect(filter).toBeInTheDocument()
     })
 
@@ -426,6 +451,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess({ once: false })
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess()
+        mockGetUserListSuccess()
 
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
@@ -437,8 +463,14 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Фильтр закрывается', async () => {
+        mockGetUserListSuccess()
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess()
+        mockGetWorkGroupListSuccess()
+
         const { user } = render(<TaskListPage />)
 
+        await taskTableTestUtils.expectLoadingFinished()
         await testUtils.openExtendedFilter(user)
         const filter = await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.applyFilter(user)
@@ -451,6 +483,7 @@ describe('Страница реестра заявок', () => {
       test('Карточка заявки закрывается', async () => {
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
+        mockGetUserListSuccess()
 
         const taskListItem = taskFixtures.taskListItem()
         mockGetTaskListSuccess({
@@ -475,13 +508,19 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Быстрый фильтр сбрасывается', async () => {
-        const { user } = render(<TaskListPage />)
+        mockGetUserListSuccess()
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess()
+        mockGetWorkGroupListSuccess()
 
+        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterListTestUtils.expectLoadingFinished()
         const fastFilter = fastFilterListTestUtils.getCheckableTag(
-          FastFilterEnum.All,
+          FastFilterEnum.FirstLine,
         )
         fastFilterListTestUtils.expectFilterChecked(fastFilter)
-
         await testUtils.openExtendedFilter(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.applyFilter(user)
@@ -492,8 +531,14 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Закрывается нажав кнопку закрытия', async () => {
+        mockGetUserListSuccess()
+        mockGetWorkGroupListSuccess()
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess()
+
         const { user } = render(<TaskListPage />)
 
+        await taskTableTestUtils.expectLoadingFinished()
         await testUtils.openExtendedFilter(user)
         const filter = await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.closeFilter(user)
@@ -504,8 +549,14 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Закрывается нажав вне фильтра', async () => {
+        mockGetUserListSuccess()
+        mockGetWorkGroupListSuccess()
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess()
+
         const { user } = render(<TaskListPage />)
 
+        await taskTableTestUtils.expectLoadingFinished()
         await testUtils.openExtendedFilter(user)
         const filter = await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.clickOutOfFilter(user)
@@ -521,6 +572,9 @@ describe('Страница реестра заявок', () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
+        const userListItem = userFixtures.userListItem()
+        mockGetUserListSuccess({ body: [userListItem], once: false })
+
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
         })
@@ -529,6 +583,7 @@ describe('Страница реестра заявок', () => {
         await testUtils.openExtendedFilter(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+        await extendedFilterTestUtils.manager.expectLoadingFinished()
 
         await extendedFilterTestUtils.status.setValue(
           user,
@@ -564,12 +619,19 @@ describe('Страница реестра заявок', () => {
           workGroupListItem.name,
         )
 
+        await extendedFilterTestUtils.manager.openField(user)
+        await extendedFilterTestUtils.manager.setValue(
+          user,
+          userListItem.fullName,
+        )
+
         await extendedFilterTestUtils.applyFilter(user)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.openExtendedFilter(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+        await extendedFilterTestUtils.manager.expectLoadingFinished()
 
         const statusField = extendedFilterTestUtils.status.getField(
           taskExtendedStatusDict.NEW!,
@@ -609,14 +671,21 @@ describe('Страница реестра заявок', () => {
         expect(
           getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
         ).toHaveTextContent(workGroupListItem.name)
+
+        expect(extendedFilterTestUtils.manager.getSelected()).toHaveTextContent(
+          userListItem.fullName,
+        )
       })
     })
 
     test('Значения не сохраняются если фильтр не был применён', async () => {
       const workGroupListItem = workGroupFixtures.workGroupListItem()
-      mockGetWorkGroupListSuccess({ body: [workGroupListItem] })
+      mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
+
+      const userListItem = userFixtures.userListItem()
+      mockGetUserListSuccess({ body: [userListItem], once: false })
 
       const { user } = render(<TaskListPage />, {
         store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -626,6 +695,7 @@ describe('Страница реестра заявок', () => {
       await testUtils.openExtendedFilter(user)
       const filter = await extendedFilterTestUtils.findContainer()
       await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+      await extendedFilterTestUtils.manager.expectLoadingFinished()
 
       await extendedFilterTestUtils.status.setValue(
         user,
@@ -661,6 +731,12 @@ describe('Страница реестра заявок', () => {
         workGroupListItem.name,
       )
 
+      await extendedFilterTestUtils.manager.openField(user)
+      await extendedFilterTestUtils.manager.setValue(
+        user,
+        userListItem.fullName,
+      )
+
       await extendedFilterTestUtils.closeFilter(user)
       await waitFor(() => {
         expect(filter).not.toBeInTheDocument()
@@ -669,6 +745,7 @@ describe('Страница реестра заявок', () => {
       await testUtils.openExtendedFilter(user)
       await extendedFilterTestUtils.findContainer()
       await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+      await extendedFilterTestUtils.manager.expectLoadingFinished()
 
       expect(
         extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
@@ -703,12 +780,22 @@ describe('Страница реестра заявок', () => {
       expect(
         getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
       ).not.toBeInTheDocument()
+
+      expect(
+        extendedFilterTestUtils.manager.getSelected(),
+      ).not.toBeInTheDocument()
     })
 
     describe('Имеет корректные значения по умолчанию', () => {
       test('Фильтры которые отображаются для любой роли', async () => {
+        mockGetUserListSuccess()
+        mockGetWorkGroupListSuccess()
+        mockGetTaskCountersSuccess()
+        mockGetTaskListSuccess()
+
         const { user } = render(<TaskListPage />)
 
+        await taskTableTestUtils.expectLoadingFinished()
         await testUtils.openExtendedFilter(user)
         await extendedFilterTestUtils.findContainer()
 
@@ -717,9 +804,13 @@ describe('Страница реестра заявок', () => {
         extendedFilterTestUtils.overdue.expectHasCorrectInitialValues()
         extendedFilterTestUtils.completeAt.expectHasCorrectInitialValues()
         extendedFilterTestUtils.searchByColumn.expectHasCorrectInitialValues()
+        expect(
+          extendedFilterTestUtils.manager.getSelected(),
+        ).not.toBeInTheDocument()
       })
 
       test('Фильтр по рабочей группе', async () => {
+        mockGetUserListSuccess()
         mockGetTaskListSuccess()
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess({
@@ -747,9 +838,13 @@ describe('Страница реестра заявок', () => {
   })
 
   describe('Поиск заявки по номеру', () => {
-    test('Поле поиска отображается корректно', () => {
+    test('Поле поиска отображается корректно', async () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
+
       render(<TaskListPage />)
 
+      await taskTableTestUtils.expectLoadingFinished()
       const searchInput = testUtils.getSearchInput()
 
       expect(searchInput).toBeInTheDocument()
@@ -758,8 +853,12 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Можно ввести значение', async () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
+
       const { user } = render(<TaskListPage />)
 
+      await taskTableTestUtils.expectLoadingFinished()
       const value = fakeWord()
       const input = await testUtils.setSearchValue(user, value)
 
@@ -846,13 +945,17 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Быстрый фильтр перестаёт быть выбранным', async () => {
-        const { user } = render(<TaskListPage />)
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess()
 
+        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterListTestUtils.expectLoadingFinished()
         const fastFilter = fastFilterListTestUtils.getCheckableTag(
-          FastFilterEnum.All,
+          FastFilterEnum.FirstLine,
         )
         fastFilterListTestUtils.expectFilterChecked(fastFilter)
-
         await testUtils.setSearchValue(user, fakeWord(), true)
 
         await waitFor(() => {
@@ -863,7 +966,13 @@ describe('Страница реестра заявок', () => {
 
     describe('Очищение поля через клавиатуру', () => {
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
-        const { user } = render(<TaskListPage />)
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess()
+
+        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterListTestUtils.expectLoadingFinished()
 
         const input = await testUtils.setSearchValue(
           user,
@@ -872,7 +981,7 @@ describe('Страница реестра заявок', () => {
         )
 
         const fastFilter = fastFilterListTestUtils.getCheckableTag(
-          FastFilterEnum.All,
+          FastFilterEnum.FirstLine,
         )
 
         await waitFor(() => {
@@ -887,24 +996,24 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Делает кнопку открытия расширенного фильтра активной', async () => {
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess()
+
         const { user } = render(<TaskListPage />)
 
-        const extendedFilterButton = testUtils.getExtendedFilterButton()
-        expect(extendedFilterButton).toBeEnabled()
+        await taskTableTestUtils.expectLoadingFinished()
+        const button = testUtils.getExtendedFilterButton()
+        expect(button).toBeEnabled()
 
-        const input = await testUtils.setSearchValue(
-          user,
-          fakeWord({ length: 1 }),
-          true,
-        )
+        const input = await testUtils.setSearchValue(user, fakeWord(), true)
         await waitFor(() => {
-          expect(extendedFilterButton).toBeDisabled()
+          expect(button).toBeDisabled()
         })
 
         await user.clear(input)
 
         await waitFor(() => {
-          expect(extendedFilterButton).toBeEnabled()
+          expect(button).toBeEnabled()
         })
       })
 
@@ -913,6 +1022,9 @@ describe('Страница реестра заявок', () => {
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
+
+        const userListItem = userFixtures.userListItem()
+        mockGetUserListSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -923,6 +1035,7 @@ describe('Страница реестра заявок', () => {
         await testUtils.openExtendedFilter(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+        await extendedFilterTestUtils.manager.expectLoadingFinished()
 
         await extendedFilterTestUtils.status.setValue(
           user,
@@ -956,6 +1069,12 @@ describe('Страница реестра заявок', () => {
         await extendedFilterTestUtils.workGroup.setValue(
           user,
           workGroupListItem.name,
+        )
+
+        await extendedFilterTestUtils.manager.openField(user)
+        await extendedFilterTestUtils.manager.setValue(
+          user,
+          userListItem.fullName,
         )
 
         await extendedFilterTestUtils.applyFilter(user)
@@ -976,6 +1095,7 @@ describe('Страница реестра заявок', () => {
         await testUtils.openExtendedFilter(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+        await extendedFilterTestUtils.manager.expectLoadingFinished()
 
         const statusField = extendedFilterTestUtils.status.getField(
           taskExtendedStatusDict.NEW!,
@@ -1015,6 +1135,10 @@ describe('Страница реестра заявок', () => {
         expect(
           getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
         ).toHaveTextContent(workGroupListItem.name)
+
+        expect(extendedFilterTestUtils.manager.getSelected()).toHaveTextContent(
+          userListItem.fullName,
+        )
       })
     })
 
@@ -1029,11 +1153,16 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
-        const { user } = render(<TaskListPage />)
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess({ body: taskFixtures.taskCounters() })
 
+        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterListTestUtils.expectLoadingFinished()
         await testUtils.setSearchValue(user, fakeWord(), true)
         const fastFilter = fastFilterListTestUtils.getCheckableTag(
-          FastFilterEnum.All,
+          FastFilterEnum.FirstLine,
         )
         await waitFor(() => {
           fastFilterListTestUtils.expectFilterNotChecked(fastFilter)
@@ -1046,8 +1175,12 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Делает кнопку открытия расширенного фильтра активной', async () => {
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess()
+
         const { user } = render(<TaskListPage />)
 
+        await taskTableTestUtils.expectLoadingFinished()
         const extendedFilterButton = testUtils.getExtendedFilterButton()
         expect(extendedFilterButton).toBeEnabled()
 
@@ -1068,6 +1201,9 @@ describe('Страница реестра заявок', () => {
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
 
+        const userListItem = userFixtures.userListItem()
+        mockGetUserListSuccess({ body: [userListItem], once: false })
+
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
         })
@@ -1077,6 +1213,7 @@ describe('Страница реестра заявок', () => {
         await testUtils.openExtendedFilter(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+        await extendedFilterTestUtils.manager.expectLoadingFinished()
 
         await extendedFilterTestUtils.status.setValue(
           user,
@@ -1113,6 +1250,12 @@ describe('Страница реестра заявок', () => {
           workGroupListItem.name,
         )
 
+        await extendedFilterTestUtils.manager.openField(user)
+        await extendedFilterTestUtils.manager.setValue(
+          user,
+          userListItem.fullName,
+        )
+
         await extendedFilterTestUtils.applyFilter(user)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
@@ -1127,6 +1270,7 @@ describe('Страница реестра заявок', () => {
         await testUtils.openExtendedFilter(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+        await extendedFilterTestUtils.manager.expectLoadingFinished()
 
         const statusField = extendedFilterTestUtils.status.getField(
           taskExtendedStatusDict.NEW!,
@@ -1166,14 +1310,22 @@ describe('Страница реестра заявок', () => {
         expect(
           getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
         ).toHaveTextContent(workGroupListItem.name)
+
+        expect(extendedFilterTestUtils.manager.getSelected()).toHaveTextContent(
+          userListItem.fullName,
+        )
       })
     })
   })
 
   describe('Кнопка обновления заявок', () => {
-    test('Отображается корректно', () => {
+    test('Отображается корректно', async () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
+
       render(<TaskListPage />)
 
+      await taskTableTestUtils.expectLoadingFinished()
       const button = testUtils.getReloadListButton()
 
       expect(button).toBeInTheDocument()

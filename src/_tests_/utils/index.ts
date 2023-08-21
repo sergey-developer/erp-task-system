@@ -10,9 +10,9 @@ export * from './loading'
 export * from './icon'
 export * from './button'
 export { default as modalTestUtils } from './modal'
+export { default as linkTestUtils } from './link'
 
 export * from './setupApiTests'
 export * from './notifications'
 
-export { default as render } from './renderInAppProvider'
-export { default as renderInRoute, renderInRoute_latest } from './renderInRoute'
+export * from './render'

@@ -1,6 +1,8 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { camelize } from 'humps'
 
+import { TaskCountersKeys } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
@@ -17,7 +19,7 @@ const filterCheckedClass = 'ant-tag-checkable-checked'
 const filterDisabledClass = 'ant-tag-checkable--disabled'
 
 const props: Readonly<FastFilterListProps> = {
-  data: taskFixtures.taskCountersResponse(),
+  data: taskFixtures.taskCounters(),
   isShowCounters: true,
   disabled: false,
   isLoading: false,
@@ -144,7 +146,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Mine,
       FastFilterEnum.Free,
       FastFilterEnum.LessOneHour,
-      FastFilterEnum.LessThreeHour,
+      FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
     ]
 
@@ -160,7 +162,7 @@ describe('Быстрый фильтр', () => {
         )
         const taskCount = testUtils.getByTextInCheckableTag(
           filter,
-          props.data![filter.toLowerCase() as Lowercase<FastFilterEnum>],
+          props.data![camelize(filter.toLowerCase()) as TaskCountersKeys],
         )
 
         expect(filterEl).toBeInTheDocument()
@@ -175,7 +177,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Mine,
       FastFilterEnum.Free,
       FastFilterEnum.LessOneHour,
-      FastFilterEnum.LessThreeHour,
+      FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
     ]
 
@@ -194,7 +196,7 @@ describe('Быстрый фильтр', () => {
         )
         const taskCount = testUtils.getByTextInCheckableTag(
           filter,
-          props.data![filter.toLowerCase() as Lowercase<FastFilterEnum>],
+          props.data![camelize(filter.toLowerCase()) as TaskCountersKeys],
         )
 
         expect(filterEl).toBeInTheDocument()
@@ -214,7 +216,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Mine,
       FastFilterEnum.Free,
       FastFilterEnum.LessOneHour,
-      FastFilterEnum.LessThreeHour,
+      FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
     ]
 
@@ -235,7 +237,7 @@ describe('Быстрый фильтр', () => {
         )
         const taskCount = testUtils.getByTextInCheckableTag(
           filter,
-          props.data![filter.toLowerCase() as Lowercase<FastFilterEnum>],
+          props.data![camelize(filter.toLowerCase()) as TaskCountersKeys],
         )
 
         expect(filterEl).toBeInTheDocument()
@@ -255,7 +257,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Mine,
       FastFilterEnum.Free,
       FastFilterEnum.LessOneHour,
-      FastFilterEnum.LessThreeHour,
+      FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
     ]
 
@@ -274,9 +276,10 @@ describe('Быстрый фильтр', () => {
           filter,
           fastFilterNamesDict[filter],
         )
+
         const taskCount = testUtils.getByTextInCheckableTag(
           filter,
-          props.data![filter.toLowerCase() as Lowercase<FastFilterEnum>],
+          props.data![camelize(filter.toLowerCase()) as TaskCountersKeys],
         )
 
         expect(filterEl).toBeInTheDocument()
@@ -302,7 +305,7 @@ describe('Быстрый фильтр', () => {
     fastFilters.forEach(({ filter }) => {
       const taskCount = testUtils.queryByTextInCheckableTag(
         filter,
-        props.data![filter.toLowerCase() as Lowercase<FastFilterEnum>],
+        props.data![camelize(filter.toLowerCase()) as TaskCountersKeys],
       )
       expect(taskCount).not.toBeInTheDocument()
     })
