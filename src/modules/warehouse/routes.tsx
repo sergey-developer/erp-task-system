@@ -15,6 +15,10 @@ const NomenclatureListPage = React.lazy(
   () => import('./pages/NomenclatureListPage'),
 )
 
+const ReserveCatalogListPage = React.lazy(
+  () => import('./pages/ReserveCatalogListPage'),
+)
+
 export const route: Readonly<RouteObject> = {
   path: RouteEnum.ManageWarehouses,
   element: <ManageWarehousesLayout />,
@@ -67,6 +71,20 @@ export const route: Readonly<RouteObject> = {
               element: <NomenclatureListPage />,
             },
           ],
+        },
+      ],
+    },
+    {
+      path: RouteEnum.ReserveCatalogList,
+      handle: {
+        crumb: () => (
+          <Link to={RouteEnum.ReserveCatalogList}>Управление запасами</Link>
+        ),
+      },
+      children: [
+        {
+          index: true,
+          element: <ReserveCatalogListPage />,
         },
       ],
     },

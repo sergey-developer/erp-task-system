@@ -19,7 +19,7 @@ import WarehouseListPage from '../WarehouseListPage'
 import { testUtils as warehouseListPageTestUtils } from '../WarehouseListPage/WarehouseListPage.test'
 import WarehouseCatalogListPage from './index'
 
-const getContainer = () => screen.getByTestId('warehouse-catalog-list')
+const getContainer = () => screen.getByTestId('reserve-catalog-list')
 
 const getCatalogLink = (name: string) =>
   within(getContainer()).getByRole('link', { name })
