@@ -22,12 +22,12 @@ export const useCancelSubTask = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error) && !isBadRequestError(state.error)) {
       showErrorNotification('Не удалось отменить задание')
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return { fn, state }
 }

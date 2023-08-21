@@ -18,7 +18,7 @@ export const useTakeTask = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isForbiddenError(state.error) && state.error.data.detail) {
@@ -27,7 +27,7 @@ export const useTakeTask = () => {
         showErrorNotification(commonApiMessages.unknownError)
       }
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return { fn, state }
 }

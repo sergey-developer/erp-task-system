@@ -28,7 +28,7 @@ export const useGetTask = (
   const state = useGetTaskQuery(id, options)
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
@@ -42,7 +42,7 @@ export const useGetTask = (
         showErrorNotification(getTaskMessages.commonError)
       }
     }
-  }, [id, state.error, state.isError])
+  }, [id, state.error])
 
   return state
 }

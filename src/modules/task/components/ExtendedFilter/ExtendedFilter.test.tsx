@@ -37,7 +37,8 @@ import {
   taskAssignedDict,
   taskOverdueDict,
 } from './constants'
-import ExtendedFilter, { ExtendedFilterProps } from './index'
+import ExtendedFilter from './index'
+import { ExtendedFilterProps } from './types'
 
 const taskExtendedStatusDictValues = Object.values(taskExtendedStatusDict)
 const taskOverdueDictValues = Object.values(taskOverdueDict)
@@ -51,8 +52,8 @@ const props: Readonly<ExtendedFilterProps> = {
   onSubmit: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('filter-extended')
-const findContainer = () => screen.findByTestId('filter-extended')
+const getContainer = () => screen.getByTestId('extended-filter')
+const findContainer = () => screen.findByTestId('extended-filter')
 
 // reset button
 const getResetAllButton = () => getButtonIn(getContainer(), /сбросить все/i)
@@ -89,7 +90,7 @@ const applyFilter = async (user: UserEvent) => {
 
 // status
 const getStatusFieldContainer = () =>
-  screen.getByTestId('filter-extended-status')
+  screen.getByTestId('extended-filter-status')
 
 const getStatusField = (label: string) =>
   getCheckboxIn(getStatusFieldContainer(), new RegExp(label))
@@ -119,7 +120,7 @@ const status = {
 
 // assigned
 const getAssignedFieldContainer = () =>
-  screen.getByTestId('filter-extended-is-assigned')
+  screen.getByTestId('extended-filter-is-assigned')
 
 const getAssignedField = (label: string) =>
   getRadioButtonIn(getAssignedFieldContainer(), label)
@@ -149,7 +150,7 @@ const assigned = {
 
 // overdue
 const getOverdueFieldContainer = () =>
-  screen.getByTestId('filter-extended-is-overdue')
+  screen.getByTestId('extended-filter-is-overdue')
 
 const getOverdueField = (label: string) =>
   getRadioButtonIn(getOverdueFieldContainer(), label)
@@ -179,7 +180,7 @@ const overdue = {
 
 // complete at
 const getCompleteAtFieldContainer = () =>
-  screen.getByTestId('filter-extended-complete-at')
+  screen.getByTestId('extended-filter-complete-at')
 
 const getStartDateField = (): HTMLInputElement =>
   within(getCompleteAtFieldContainer()).getByPlaceholderText('Начальная дата')
@@ -216,13 +217,13 @@ const completeAt = {
 
 // work group
 const getWorkGroupFieldContainer = () =>
-  screen.getByTestId('filter-extended-work-group')
+  screen.getByTestId('extended-filter-work-group')
 
 const getWorkGroupField = () =>
-  screen.getByTestId('filter-extended-work-group-select')
+  screen.getByTestId('extended-filter-work-group-select')
 
 const queryWorkGroupField = () =>
-  screen.queryByTestId('filter-extended-work-group-select')
+  screen.queryByTestId('extended-filter-work-group-select')
 
 const workGroupExpectLoadingFinished = async () => {
   const workGroupField = getWorkGroupField()
@@ -241,7 +242,7 @@ const workGroup = {
 
 // search by column
 const getSearchByColumnFieldContainer = () =>
-  screen.getByTestId('filter-extended-search-by-column')
+  screen.getByTestId('extended-filter-search-by-column')
 
 const getSearchByColumnKeywordField = (): HTMLInputElement =>
   within(getSearchByColumnFieldContainer()).getByPlaceholderText(

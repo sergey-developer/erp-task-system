@@ -1,12 +1,5 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import {
-  Button,
-  Col,
-  Row,
-  Space,
-  TablePaginationConfig,
-  TableProps,
-} from 'antd'
+import { Button, Col, Row, Space, TablePaginationConfig } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import { SorterResult } from 'antd/es/table/interface'
@@ -22,12 +15,11 @@ import React, {
   useState,
 } from 'react'
 
-import ExtendedFilter, {
-  ExtendedFilterProps,
-} from 'modules/task/components/ExtendedFilter'
+import ExtendedFilter from 'modules/task/components/ExtendedFilter'
 import { initialExtendedFilterFormValues } from 'modules/task/components/ExtendedFilter/constants'
 import {
   ExtendedFilterFormFields,
+  ExtendedFilterProps,
   ExtendedFilterQueries,
 } from 'modules/task/components/ExtendedFilter/types'
 import FastFilterList from 'modules/task/components/FastFilterList'
@@ -39,13 +31,17 @@ import {
   SortableField,
   sortableFieldToSortValues,
 } from 'modules/task/components/TaskTable/constants/sort'
-import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
+import {
+  TaskTableListItem,
+  TaskTableProps,
+} from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 
-import { FilterIcon, SyncIcon } from 'components/Icons'
+import FilterButton from 'components/Buttons/FilterButton'
+import { SyncIcon } from 'components/Icons'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks'
@@ -249,20 +245,24 @@ const TaskListPage: FC = () => {
     }
   }
 
-  const handleTablePagination = (pagination: TablePaginationConfig) => {
-    setQueryArgs((prevState) => ({
-      ...prevState,
-      offset: (pagination.current! - 1) * pagination.pageSize!,
-      limit: pagination.pageSize!,
-    }))
-  }
+  const handleTablePagination = useCallback(
+    (pagination: TablePaginationConfig) => {
+      setQueryArgs((prevState) => ({
+        ...prevState,
+        offset: (pagination.current! - 1) * pagination.pageSize!,
+        limit: pagination.pageSize!,
+      }))
+    },
+    [],
+  )
 
-  const handleChangeTable = useCallback<
-    NonNullable<TableProps<TaskTableListItem>['onChange']>
-  >((pagination, _, sorter) => {
-    handleTableSort(sorter)
-    handleTablePagination(pagination)
-  }, [])
+  const handleChangeTable = useCallback<TaskTableProps['onChange']>(
+    (pagination, _, sorter) => {
+      handleTableSort(sorter)
+      handleTablePagination(pagination)
+    },
+    [handleTablePagination],
+  )
 
   const triggerFilterChange = (
     filterQueryParams:
@@ -329,13 +329,10 @@ const TaskListPage: FC = () => {
                 </Col>
 
                 <Col xl={5} xxl={3}>
-                  <Button
-                    icon={<FilterIcon $size='large' />}
+                  <FilterButton
                     onClick={debouncedToggleOpenExtendedFilter}
                     disabled={taskListIsFetching || searchFilterApplied}
-                  >
-                    Фильтры
-                  </Button>
+                  />
                 </Col>
               </Row>
             </Col>

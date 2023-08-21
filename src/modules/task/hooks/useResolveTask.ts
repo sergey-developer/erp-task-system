@@ -27,7 +27,7 @@ export const useResolveTask = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isBadRequestError(state.error)) {
@@ -36,7 +36,7 @@ export const useResolveTask = () => {
         showErrorNotification(resolveTaskMessages.commonError)
       }
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return { fn, state }
 }
