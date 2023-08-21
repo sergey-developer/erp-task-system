@@ -1,7 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
-import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
@@ -11,7 +10,7 @@ import {
   mockGetWarehouseListSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/user'
-import { render } from '_tests_/utils'
+import { renderInRoute_latest } from '_tests_/utils'
 
 import NomenclatureListPage from '../NomenclatureListPage'
 import { testUtils as nomenclatureListPageTestUtils } from '../NomenclatureListPage/NomenclatureListPage.test'
@@ -44,8 +43,7 @@ const testUtils = {
 describe('Страница списка справочников складов', () => {
   describe('Элемент "Склады"', () => {
     test('Отображается корректно', async () => {
-      // todo: создать компонент для переиспользования в тестах
-      const router = createMemoryRouter(
+      renderInRoute_latest(
         [
           {
             path: RouteEnum.WarehouseCatalogList,
@@ -54,7 +52,6 @@ describe('Страница списка справочников складов'
         ],
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
-      render(<RouterProvider router={router} />)
 
       const link = testUtils.getCatalogLink('Склады')
 
@@ -65,7 +62,7 @@ describe('Страница списка справочников складов'
     test('При клике переходит на страницу складов', async () => {
       mockGetWarehouseListSuccess()
 
-      const router = createMemoryRouter(
+      const { user } = renderInRoute_latest(
         [
           {
             path: RouteEnum.WarehouseCatalogList,
@@ -78,7 +75,6 @@ describe('Страница списка справочников складов'
         ],
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
-      const { user } = render(<RouterProvider router={router} />)
 
       await testUtils.clickCatalogLink(user, 'Склады')
       const page = warehouseListPageTestUtils.getContainer()
@@ -89,7 +85,7 @@ describe('Страница списка справочников складов'
 
   describe('Элемент "Номенклатура"', () => {
     test('Отображается если есть права', async () => {
-      const router = createMemoryRouter(
+      renderInRoute_latest(
         [
           {
             path: RouteEnum.WarehouseCatalogList,
@@ -97,18 +93,17 @@ describe('Страница списка справочников складов'
           },
         ],
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
-      )
-
-      render(<RouterProvider router={router} />, {
-        preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: {
-              ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
+              },
             },
           },
-        },
-      })
+        }
+      )
 
       const link = testUtils.getCatalogLink('Номенклатура')
 
@@ -117,7 +112,7 @@ describe('Страница списка справочников складов'
     })
 
     test('Не отображается если нет прав', async () => {
-      const router = createMemoryRouter(
+      renderInRoute_latest(
         [
           {
             path: RouteEnum.WarehouseCatalogList,
@@ -126,8 +121,6 @@ describe('Страница списка справочников складов'
         ],
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
-
-      render(<RouterProvider router={router} />)
 
       const link = testUtils.queryCatalogLink('Номенклатура')
       expect(link).not.toBeInTheDocument()
@@ -137,7 +130,7 @@ describe('Страница списка справочников складов'
       mockGetNomenclatureListSuccess()
       mockGetNomenclatureGroupListSuccess()
 
-      const router = createMemoryRouter(
+      const {user} = renderInRoute_latest(
         [
           {
             path: RouteEnum.WarehouseCatalogList,
@@ -149,18 +142,17 @@ describe('Страница списка справочников складов'
           },
         ],
         { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
-      )
-
-      const { user } = render(<RouterProvider router={router} />, {
-        preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: {
-              ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
+              },
             },
           },
-        },
-      })
+        }
+      )
 
       await testUtils.clickCatalogLink(user, 'Номенклатура')
       const page = nomenclatureListPageTestUtils.getContainer()

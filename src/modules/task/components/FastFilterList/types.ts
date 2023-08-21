@@ -1,7 +1,7 @@
-import { GetTaskCountersSuccessResponse } from 'modules/task/models'
+import { TaskCountersModel } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import { MaybeUndefined, Nullable } from 'shared/types/utils'
+import { Nullable } from 'shared/types/utils'
 
 import { FastFilterListItemProps } from './FastFilterListItem'
 import { FastFilterEnum } from './constants'
@@ -14,7 +14,7 @@ export type FastFilterItem = Pick<
 }
 
 export type FastFilterListProps = {
-  data: MaybeUndefined<GetTaskCountersSuccessResponse>
+  data?: TaskCountersModel
   selectedFilter: Nullable<FastFilterEnum>
   isShowCounters: boolean
   isLoading: boolean

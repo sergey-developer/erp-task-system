@@ -373,12 +373,14 @@ setupApiTests()
 
 describe('Расширенный фильтр', () => {
   test('Отображается', () => {
+    mockGetWorkGroupListSuccess()
     render(<ExtendedFilter {...props} />)
     expect(testUtils.getContainer()).toBeInTheDocument()
   })
 
   describe('Header', () => {
     test('Корректно отображается', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const title = screen.getByText('Фильтры')
@@ -389,6 +391,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Кнопка закрытия кликабельна', async () => {
+      mockGetWorkGroupListSuccess()
       const { user } = render(<ExtendedFilter {...props} />)
 
       const closeButton = testUtils.getCloseButton()
@@ -401,6 +404,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Footer', () => {
     test('Корректно отображается', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const applyButton = testUtils.getApplyButton()
@@ -411,6 +415,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Кнопки активны', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const applyButton = testUtils.getApplyButton()
@@ -423,6 +428,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Статус', () => {
     test('Отображается', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const container = testUtils.status.getContainer()
@@ -434,11 +440,14 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
       testUtils.status.expectHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
+      mockGetWorkGroupListSuccess()
+
       render(
         <ExtendedFilter
           {...props}
@@ -458,6 +467,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const container = testUtils.status.getContainer()
@@ -469,6 +479,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любое значение', async () => {
+      mockGetWorkGroupListSuccess()
       const { user } = render(<ExtendedFilter {...props} />)
 
       for await (const value of taskExtendedStatusDictValues) {
@@ -479,6 +490,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.status.getContainer()
@@ -497,6 +509,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.status.getContainer()
@@ -518,6 +531,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Назначенный', () => {
     test('Отображается', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const container = testUtils.assigned.getContainer()
@@ -529,6 +543,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
       testUtils.assigned.expectHasCorrectInitialValues()
     })
@@ -541,6 +556,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const container = testUtils.assigned.getContainer()
@@ -552,6 +568,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любое значение', async () => {
+      mockGetWorkGroupListSuccess()
       const { user } = render(<ExtendedFilter {...props} />)
 
       for await (const value of taskAssignedDictValues) {
@@ -562,6 +579,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значение', () => {
       test('Кнопка "Сбросить"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.assigned.getContainer()
@@ -584,6 +602,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.assigned.getContainer()
@@ -609,6 +628,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Просрочено', () => {
     test('Отображается', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const container = testUtils.overdue.getContainer()
@@ -620,6 +640,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
       testUtils.overdue.expectHasCorrectInitialValues()
     })
@@ -632,6 +653,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const container = testUtils.overdue.getContainer()
@@ -643,6 +665,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любое значение', async () => {
+      mockGetWorkGroupListSuccess()
       const { user } = render(<ExtendedFilter {...props} />)
 
       for await (const value of taskOverdueDictValues) {
@@ -653,6 +676,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значение', () => {
       test('Кнопка "Сбросить"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.overdue.getContainer()
@@ -667,6 +691,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.overdue.getContainer()
@@ -684,6 +709,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Выполнить до', () => {
     test('Отображается', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const startDateField = testUtils.completeAt.getStartDateField()
@@ -697,11 +723,14 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
       testUtils.completeAt.expectHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
+      mockGetWorkGroupListSuccess()
+
       render(
         <ExtendedFilter
           {...props}
@@ -720,6 +749,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const startDateField = testUtils.completeAt.getStartDateField()
@@ -730,6 +760,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать даты', async () => {
+      mockGetWorkGroupListSuccess()
       const { user } = render(<ExtendedFilter {...props} />)
 
       const { startDateField, startDateValue, endDateField, endDateValue } =
@@ -741,6 +772,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const { startDateValue, endDateValue } =
@@ -758,6 +790,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const { startDateValue, endDateValue } =
@@ -777,6 +810,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Поиск по столбцу', () => {
     test('Отображается', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const container = testUtils.searchByColumn.getContainer()
@@ -791,11 +825,14 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Имеет корректные значения по умолчанию', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
       testUtils.searchByColumn.expectHasCorrectInitialValues()
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
+      mockGetWorkGroupListSuccess()
+
       const searchValue = 'value'
 
       render(
@@ -822,6 +859,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Доступен для редактирования', () => {
+      mockGetWorkGroupListSuccess()
       render(<ExtendedFilter {...props} />)
 
       const container = testUtils.searchByColumn.getContainer()
@@ -837,6 +875,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно ввести ключевое слово', async () => {
+      mockGetWorkGroupListSuccess()
       const { user } = render(<ExtendedFilter {...props} />)
 
       const { keywordField, keyword } =
@@ -846,6 +885,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать любой столбец', async () => {
+      mockGetWorkGroupListSuccess()
       const { user } = render(<ExtendedFilter {...props} />)
 
       for await (const value of searchFieldDictValues) {
@@ -860,6 +900,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.searchByColumn.getContainer()
@@ -882,6 +923,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
+        mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
         const container = testUtils.searchByColumn.getContainer()
@@ -923,6 +965,8 @@ describe('Расширенный фильтр', () => {
 
     describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
       test('Не отображается', () => {
+        mockGetWorkGroupListSuccess()
+
         render(<ExtendedFilter {...props} />, {
           store: getStoreWithAuth({
             userRole: UserRoleEnum.Engineer,
