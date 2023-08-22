@@ -35,7 +35,7 @@ export const testUtils = {
 }
 
 describe('Страница списка справочников запасов', () => {
-  describe('Элемент "Оборудование"', () => {
+  describe('Оборудование', () => {
     test('Отображается если есть права', async () => {
       renderInRoute_latest(
         [
@@ -60,7 +60,7 @@ describe('Страница списка справочников запасов'
       const link = testUtils.getEquipmentLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.EquipmentList)
+      expect(link).toHaveAttribute('href', RouteEnum.ReserveEquipmentNomenclatureList)
     })
 
     test('Не отображается если нет прав', async () => {

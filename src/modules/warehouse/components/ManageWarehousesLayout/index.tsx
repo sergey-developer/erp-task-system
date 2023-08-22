@@ -1,15 +1,20 @@
+import { Col, Row } from 'antd'
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from 'components/Breadcrumbs'
-import Space from 'components/Space'
 
 const ManageWarehousesLayout: FC = () => {
   return (
-    <Space $block direction='vertical' size='large'>
-      <Breadcrumbs />
-      <Outlet />
-    </Space>
+    <Row gutter={[16, 16]}>
+      <Col span={24}>
+        <Breadcrumbs />
+      </Col>
+
+      <Col span={24}>
+        <Outlet />
+      </Col>
+    </Row>
   )
 }
 
