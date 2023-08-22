@@ -22,7 +22,7 @@ export enum RouteEnum {
   Warehouse = '/manage-warehouses/catalogs/warehouses/:id',
   NomenclatureList = '/manage-warehouses/catalogs/nomenclature',
   ReserveCatalogList = '/manage-warehouses/reserves-catalogs',
-  EquipmentList = '/manage-warehouses/reserves-catalogs/equipments',
+  ReserveEquipmentNomenclatureList = '/manage-warehouses/reserves-catalogs/equipment-nomenclature',
 
   // work group routes
   WorkingGroups = '/working-groups',

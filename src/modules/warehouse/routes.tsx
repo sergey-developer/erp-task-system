@@ -4,6 +4,7 @@ import { Link, Navigate, RouteObject } from 'react-router-dom'
 import { RouteEnum } from 'configs/routes'
 
 import ManageWarehousesLayout from './components/ManageWarehousesLayout'
+import ReservesListLayout from './components/ReservesListLayout'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('./pages/WarehouseCatalogListPage'),
@@ -85,6 +86,18 @@ export const route: Readonly<RouteObject> = {
         {
           index: true,
           element: <ReserveCatalogListPage />,
+        },
+        {
+          path: RouteEnum.ReserveEquipmentNomenclatureList,
+          element: <ReservesListLayout />,
+          handle: {
+            crumb: () => (
+              <Link to={RouteEnum.ReserveEquipmentNomenclatureList}>
+                Оборудование
+              </Link>
+            ),
+          },
+          children: [],
         },
       ],
     },
