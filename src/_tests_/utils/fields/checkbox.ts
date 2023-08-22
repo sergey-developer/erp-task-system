@@ -3,5 +3,5 @@ import { within } from '@testing-library/react'
 
 export const getCheckboxIn = (
   container: HTMLElement,
-  name: ByRoleOptions['name'],
+  name?: ByRoleOptions['name'],
 ): HTMLInputElement => within(container).getByRole('checkbox', { name })

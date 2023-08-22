@@ -1,3 +1,5 @@
+export * from './useGetUserList'
+
 export * from './useUserRole'
 export * from './useUserPermissions'
 

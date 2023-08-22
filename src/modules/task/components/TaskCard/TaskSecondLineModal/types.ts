@@ -4,6 +4,7 @@ import { TaskModel } from 'modules/task/models'
 
 export type TaskSecondLineFormFields = {
   workGroup: number
+  markAsDefault?: boolean
   comment?: string
 }
 
