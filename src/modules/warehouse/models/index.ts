@@ -25,3 +25,5 @@ export * from './getNomenclatureGroupList.model'
 export * from './nomenclatureGroupList.model'
 export * from './createNomenclatureGroup.model'
 export * from './updateNomenclatureGroup.model'
+
+export * from './equipmentNomenclatureList.model'

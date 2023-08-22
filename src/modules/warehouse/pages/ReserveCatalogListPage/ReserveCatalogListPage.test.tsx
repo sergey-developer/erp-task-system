@@ -60,7 +60,7 @@ describe('Страница списка справочников запасов'
       const link = testUtils.getEquipmentLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.ReserveEquipmentNomenclatureList)
+      expect(link).toHaveAttribute('href', RouteEnum.EquipmentNomenclatureList)
     })
 
     test('Не отображается если нет прав', async () => {

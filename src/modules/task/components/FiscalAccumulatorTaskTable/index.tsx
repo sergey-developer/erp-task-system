@@ -27,7 +27,6 @@ const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
         components={components}
         columns={columns}
         loading={loading}
-        showSorterTooltip={false}
         pagination={false}
       />
     </TableWrapperStyled>

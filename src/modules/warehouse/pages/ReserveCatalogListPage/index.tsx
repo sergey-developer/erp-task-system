@@ -8,7 +8,7 @@ import CatalogList, {
 
 const items: CatalogListProps['items'] = [
   {
-    link: RouteEnum.ReserveEquipmentNomenclatureList,
+    link: RouteEnum.EquipmentNomenclatureList,
     text: 'Оборудование',
     permissions: ['EQUIPMENTS_READ'],
   },
