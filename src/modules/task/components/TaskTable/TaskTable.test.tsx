@@ -1597,7 +1597,7 @@ describe('Таблица заявок', () => {
         />,
       )
 
-      const pageSize = paginationConfig.pageSizeOptions[0]
+      const pageSize = paginationConfig.pageSizeOptions[0] as number
 
       await testUtils.changePageSize(user, pageSize)
       expect(testConstants.props.onChange).toBeCalledTimes(1)

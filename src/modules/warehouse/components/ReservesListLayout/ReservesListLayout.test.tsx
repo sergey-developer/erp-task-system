@@ -4,6 +4,9 @@ import React from 'react'
 
 import { RouteEnum } from 'configs/routes'
 
+import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
+import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
+
 import {
   fakeWord,
   getButtonIn,
@@ -44,28 +47,25 @@ const testUtils = {
 }
 
 describe('Layout списка резервов', () => {
-  // todo: поправить когда будет готова страница списка
   test('Отображает дочерний роут', () => {
-    const content = fakeWord()
-
     renderInRoute_latest(
       [
         {
-          path: RouteEnum.ReserveEquipmentNomenclatureList,
+          path: RouteEnum.EquipmentNomenclatureList,
           element: <ReservesListLayout />,
           children: [
             {
               index: true,
-              element: <div>{content}</div>,
+              element: <EquipmentNomenclatureListPage />,
             },
           ],
         },
       ],
-      { initialEntries: [RouteEnum.ReserveEquipmentNomenclatureList] },
+      { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
     )
 
-    const nestedRoute = within(getContainer()).getByText(content)
-    expect(nestedRoute).toBeInTheDocument()
+    const page = equipmentNomenclatureListPageTestUtils.getContainer()
+    expect(page).toBeInTheDocument()
   })
 
   describe('Кнопка фильтров', () => {
