@@ -1,4 +1,5 @@
 import * as countryList from './countryList'
+import * as equipmentNomenclatureList from './equipmentNomenclatureList'
 import * as legalEntityList from './legalEntityList'
 import * as measurementUnitList from './measurementUnitList'
 import * as nomenclature from './nomenclature'
@@ -10,12 +11,18 @@ import * as warehouseList from './warehouseList'
 const warehouseFixtures = {
   ...warehouse,
   ...warehouseList,
+
   ...legalEntityList,
+
   ...nomenclature,
   ...nomenclatureList,
   ...nomenclatureGroupList,
+
   ...measurementUnitList,
+
   ...countryList,
+
+  ...equipmentNomenclatureList,
 } as const
 
 export default warehouseFixtures

@@ -20,6 +20,10 @@ const ReserveCatalogListPage = React.lazy(
   () => import('./pages/ReserveCatalogListPage'),
 )
 
+const EquipmentNomenclatureListPage = React.lazy(
+  () => import('./pages/EquipmentNomenclatureListPage'),
+)
+
 export const route: Readonly<RouteObject> = {
   path: RouteEnum.ManageWarehouses,
   element: <ManageWarehousesLayout />,
@@ -88,16 +92,19 @@ export const route: Readonly<RouteObject> = {
           element: <ReserveCatalogListPage />,
         },
         {
-          path: RouteEnum.ReserveEquipmentNomenclatureList,
+          path: RouteEnum.EquipmentNomenclatureList,
           element: <ReservesListLayout />,
           handle: {
             crumb: () => (
-              <Link to={RouteEnum.ReserveEquipmentNomenclatureList}>
-                Оборудование
-              </Link>
+              <Link to={RouteEnum.EquipmentNomenclatureList}>Оборудование</Link>
             ),
           },
-          children: [],
+          children: [
+            {
+              index: true,
+              element: <EquipmentNomenclatureListPage />,
+            },
+          ],
         },
       ],
     },

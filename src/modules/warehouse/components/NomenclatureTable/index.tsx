@@ -17,7 +17,6 @@ const NomenclatureTable: FC<NomenclatureTableProps> = ({
         {...props}
         rowKey='id'
         columns={columns}
-        showSorterTooltip={false}
       />
     </div>
   )

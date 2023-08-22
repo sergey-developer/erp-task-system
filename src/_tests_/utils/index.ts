@@ -11,6 +11,7 @@ export * from './icon'
 export * from './button'
 export { default as modalTestUtils } from './modal'
 export { default as linkTestUtils } from './link'
+export { default as tableTestUtils } from './table'
 
 export * from './setupApiTests'
 export * from './notifications'
