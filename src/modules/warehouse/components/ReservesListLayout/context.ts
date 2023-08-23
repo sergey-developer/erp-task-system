@@ -1,6 +1,10 @@
 import { useOutletContext } from 'react-router-dom'
 
-export type ReservesListContextType = {}
+import { EquipmentNomenclatureListFilterFormFields } from '../EquipmentNomenclatureListFilter/types'
+
+export type ReservesListContextType = {
+  filter: EquipmentNomenclatureListFilterFormFields
+}
 
 export const useReservesListContext = () => {
   return useOutletContext<ReservesListContextType>()

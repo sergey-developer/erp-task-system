@@ -14,7 +14,7 @@ import BaseModal from 'components/Modals/BaseModal'
 import {
   idAndNameSelectFieldNames,
   idAndTitleSelectFieldNames,
-} from 'shared/constants/common'
+} from 'shared/constants/selectField'
 import { validationSizes } from 'shared/constants/validation'
 import { isBadRequestError, isErrorResponse } from 'shared/services/api'
 import { MaybeUndefined } from 'shared/types/utils'

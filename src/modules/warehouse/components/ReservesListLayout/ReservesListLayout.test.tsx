@@ -4,6 +4,7 @@ import React from 'react'
 
 import { RouteEnum } from 'configs/routes'
 
+import { testUtils as equipmentNomenclatureListFilterTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureListFilter/EquipmentNomenclatureListFilter.test'
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
 import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 
@@ -20,6 +21,11 @@ const getContainer = () => screen.getByTestId('reserves-list-layout')
 
 // filter button
 const getFilterButton = () => getButtonIn(getContainer(), /filter/)
+
+const clickFilterButton = async (user: UserEvent) => {
+  const button = getFilterButton()
+  await user.click(button)
+}
 
 // add equipment button
 const getAddEquipmentButton = () =>
@@ -39,6 +45,7 @@ const testUtils = {
   getContainer,
 
   getFilterButton,
+  clickFilterButton,
 
   getAddEquipmentButton,
 
@@ -77,6 +84,24 @@ describe('Layout списка резервов', () => {
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
     })
+
+    test('Открывает фильтр', async () => {
+      const { user } = render(<ReservesListLayout />)
+
+      await testUtils.clickFilterButton(user)
+
+      const filter = equipmentNomenclatureListFilterTestUtils.getContainer()
+      expect(filter).toBeInTheDocument()
+    })
+  })
+
+  describe('Фильтры', () => {
+    test.todo('Устанавливается значение по умолчанию для состояния')
+    test.todo('Устанавливается значение по умолчанию для склада')
+    test.todo('Устанавливается значение по умолчанию для категории')
+    test.todo('После применения фильтр закрывается')
+    test.todo('После применения значения сохраняются')
+    test.todo('Можно закрыть фильтр')
   })
 
   describe('Кнопка добавления оборудования', () => {

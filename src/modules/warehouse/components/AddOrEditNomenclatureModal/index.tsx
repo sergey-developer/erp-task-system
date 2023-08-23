@@ -3,7 +3,7 @@ import React, { FC, useEffect } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { idAndTitleSelectFieldNames } from 'shared/constants/common'
+import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
 import {
   AddOrEditNomenclatureModalProps,
