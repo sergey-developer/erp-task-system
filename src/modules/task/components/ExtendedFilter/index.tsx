@@ -1,4 +1,4 @@
-import { Form, Input, Radio, Select } from 'antd'
+import { DatePicker, Form, Input, Radio, Select } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
@@ -10,7 +10,7 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
-import { idAndNameSelectFieldNames } from 'shared/constants/common'
+import { idAndNameSelectFieldNames } from 'shared/constants/selectField'
 
 import {
   searchFieldOptions,
@@ -19,8 +19,10 @@ import {
   taskOverdueOptions,
   managerSelectFieldNames,
 } from './constants'
-import { CheckboxGroupStyled, RangePickerStyled } from './styles'
+import { CheckboxGroupStyled } from './styles'
 import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
+
+const { RangePicker } = DatePicker
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
@@ -99,7 +101,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           onReset={resetFields(['completeAt'])}
         >
           <Form.Item name='completeAt'>
-            <RangePickerStyled allowClear={false} />
+            <RangePicker allowClear={false} />
           </Form.Item>
         </FilterBlock>
 
