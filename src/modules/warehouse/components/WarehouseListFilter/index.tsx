@@ -8,7 +8,7 @@ import { useGetLegalEntityListQuery } from 'modules/warehouse/services/legalEnti
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
-import { idAndTitleSelectFieldNames } from 'shared/constants/common'
+import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import {

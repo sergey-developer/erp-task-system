@@ -23,6 +23,16 @@ export const getSelectedOption = (
 ): MaybeNull<HTMLElement> =>
   container.querySelector('.ant-select-selection-item')
 
+export const getSelectedOptionByTitle = (
+  container: HTMLElement,
+  title: string,
+): HTMLElement => within(container).getByTitle(title)
+
+export const querySelectedOptionByTitle = (
+  container: HTMLElement,
+  title: string,
+): MaybeNull<HTMLElement> => within(container).queryByTitle(title)
+
 export const getSelectedOptionText = (option: HTMLElement, text: string) =>
   within(option).getByText(text)
 
