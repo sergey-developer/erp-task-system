@@ -19,6 +19,7 @@ const equipmentNomenclatureListItem =
 
 const props: Readonly<EquipmentNomenclatureTableProps> = {
   dataSource: [equipmentNomenclatureListItem],
+  pagination: false,
   loading: false,
   onChange: jest.fn(),
 }
@@ -69,7 +70,7 @@ describe('Таблица номенклатуры оборудования', () 
       [
         {
           path: RouteEnum.EquipmentNomenclatureList,
-          element: <EquipmentNomenclatureTable {...props} />,
+          element: <EquipmentNomenclatureTable {...props} pagination={{}} />,
         },
       ],
       { initialEntries: [RouteEnum.EquipmentNomenclatureList] },

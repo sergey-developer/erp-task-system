@@ -43,6 +43,10 @@ export const getNomenclatureListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка номенклатур',
 }
 
+export const getEquipmentNomenclatureListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка номенклатур оборудования',
+}
+
 export const getMeasurementUnitListMessages: ApiRequestMessages<'commonError'> =
   {
     commonError: 'Ошибка получения списка единиц измерения',
