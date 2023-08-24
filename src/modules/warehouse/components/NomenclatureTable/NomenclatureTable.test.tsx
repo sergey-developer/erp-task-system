@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import warehouseFixtures from 'fixtures/warehouse'
 
@@ -50,7 +50,7 @@ const clickColTitle = async (user: UserEvent, title: string) => {
 
 const getColValue = (
   id: NomenclatureTableItem['id'],
-  value: string,
+  value: NumberOrString,
 ): MaybeNull<HTMLElement> => {
   const row = getRow(id)
   return row ? within(row).getByText(value) : null
@@ -118,7 +118,7 @@ describe('Таблица номенклатуры', () => {
         const title = testUtils.getColTitle('Артикул')
         const value = testUtils.getColValue(
           nomenclatureListItem.id,
-          String(nomenclatureListItem.vendorCode),
+          nomenclatureListItem.vendorCode,
         )
 
         expect(title).toBeInTheDocument()

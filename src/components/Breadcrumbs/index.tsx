@@ -2,6 +2,10 @@ import { Space } from 'antd'
 import { FC, Fragment } from 'react'
 import { useMatches } from 'react-router-dom'
 
+export type BreadCrumbArgs = {
+  qs: URLSearchParams
+}
+
 const Breadcrumbs: FC = () => {
   const matches = useMatches()
 
