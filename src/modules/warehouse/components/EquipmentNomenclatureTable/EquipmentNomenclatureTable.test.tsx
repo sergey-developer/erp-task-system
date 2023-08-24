@@ -19,6 +19,7 @@ const equipmentNomenclatureListItem =
 
 const props: Readonly<EquipmentNomenclatureTableProps> = {
   dataSource: [equipmentNomenclatureListItem],
+  pagination: false,
   loading: false,
   onChange: jest.fn(),
 }
@@ -44,8 +45,11 @@ const getColValue = (
 const expectLoadingStarted = () =>
   tableTestUtils.expectLoadingStarted(getContainer())
 
-const expectLoadingFinished = () =>
-  tableTestUtils.expectLoadingFinished(getContainer())
+const expectLoadingFinished = async (): Promise<HTMLElement> => {
+  const container = getContainer()
+  await tableTestUtils.expectLoadingFinished(container)
+  return container
+}
 
 export const testUtils = {
   getContainer,
@@ -69,7 +73,7 @@ describe('Таблица номенклатуры оборудования', () 
       [
         {
           path: RouteEnum.EquipmentNomenclatureList,
-          element: <EquipmentNomenclatureTable {...props} />,
+          element: <EquipmentNomenclatureTable {...props} pagination={{}} />,
         },
       ],
       { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
@@ -78,7 +82,7 @@ describe('Таблица номенклатуры оборудования', () 
     const table = testUtils.getContainer()
 
     expect(table).toBeInTheDocument()
-    tableTestUtils.expectPaginationEnabled(table)
+    tableTestUtils.expectPaginationEnabledIn(table)
 
     props.dataSource.forEach((item) => {
       const row = testUtils.getRow(item.id)

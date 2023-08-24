@@ -56,6 +56,7 @@ import {
 } from 'shared/services/api'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
+import { calculatePaginationParams } from 'shared/utils/pagination'
 
 import { GroupListMenuStyled } from './styles'
 
@@ -364,10 +365,7 @@ const NomenclatureListPage: FC = () => {
 
   const handleTablePagination = useCallback(
     (pagination: TablePaginationConfig) => {
-      setGetNomenclatureListParams({
-        offset: (pagination.current! - 1) * pagination.pageSize!,
-        limit: pagination.pageSize!,
-      })
+      setGetNomenclatureListParams(calculatePaginationParams(pagination))
     },
     [setGetNomenclatureListParams],
   )
