@@ -8,4 +8,5 @@ export * from './useGetNomenclature'
 export * from './useGetNomenclatureList'
 export * from './useGetNomenclatureGroupList'
 
+export * from './useGetEquipmentList'
 export * from './useGetEquipmentNomenclatureList'

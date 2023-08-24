@@ -1,14 +1,12 @@
 import { screen, within } from '@testing-library/react'
 
-import { RouteEnum } from 'configs/routes'
-
 import { equipmentConditionDict } from 'modules/warehouse/constants'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import warehouseFixtures from 'fixtures/warehouse'
 
-import { renderInRoute_latest, tableTestUtils } from '_tests_/utils'
+import { render, tableTestUtils } from '_tests_/utils'
 
 import EquipmentTable from './index'
 import { EquipmentTableProps } from './types'
@@ -63,15 +61,7 @@ afterEach(() => {
 
 describe('Таблица оборудования', () => {
   test('Отображается корректно', () => {
-    renderInRoute_latest(
-      [
-        {
-          path: RouteEnum.EquipmentList,
-          element: <EquipmentTable {...props} />,
-        },
-      ],
-      { initialEntries: [RouteEnum.EquipmentList] },
-    )
+    render(<EquipmentTable {...props} />)
 
     const table = testUtils.getContainer()
 
@@ -84,17 +74,11 @@ describe('Таблица оборудования', () => {
     })
   })
 
-  test('Можно перейти на следующую страницу', async () => {
+  test('Пагинация работает', async () => {
     const equipmentList = warehouseFixtures.equipmentList(11)
 
-    const { user } = renderInRoute_latest(
-      [
-        {
-          path: RouteEnum.EquipmentList,
-          element: <EquipmentTable {...props} dataSource={equipmentList} />,
-        },
-      ],
-      { initialEntries: [RouteEnum.EquipmentList] },
+    const { user } = render(
+      <EquipmentTable {...props} dataSource={equipmentList} />,
     )
 
     const table = testUtils.getContainer()
@@ -115,15 +99,7 @@ describe('Таблица оборудования', () => {
 
   describe('Наименование', () => {
     test('Отображается', () => {
-      renderInRoute_latest(
-        [
-          {
-            path: RouteEnum.EquipmentList,
-            element: <EquipmentTable {...props} />,
-          },
-        ],
-        { initialEntries: [RouteEnum.EquipmentList] },
-      )
+      render(<EquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Наименование')
       const value = testUtils.getColValue(
@@ -141,15 +117,7 @@ describe('Таблица оборудования', () => {
 
   describe('Серийный номер', () => {
     test('Отображается', () => {
-      renderInRoute_latest(
-        [
-          {
-            path: RouteEnum.EquipmentList,
-            element: <EquipmentTable {...props} />,
-          },
-        ],
-        { initialEntries: [RouteEnum.EquipmentList] },
-      )
+      render(<EquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Серийный номер')
       const value = testUtils.getColValue(
@@ -164,15 +132,7 @@ describe('Таблица оборудования', () => {
 
   describe('Инвентарный номер', () => {
     test('Отображается', () => {
-      renderInRoute_latest(
-        [
-          {
-            path: RouteEnum.EquipmentList,
-            element: <EquipmentTable {...props} />,
-          },
-        ],
-        { initialEntries: [RouteEnum.EquipmentList] },
-      )
+      render(<EquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Инвентарный номер')
       const value = testUtils.getColValue(
@@ -187,15 +147,7 @@ describe('Таблица оборудования', () => {
 
   describe('Склад', () => {
     test('Отображается', () => {
-      renderInRoute_latest(
-        [
-          {
-            path: RouteEnum.EquipmentList,
-            element: <EquipmentTable {...props} />,
-          },
-        ],
-        { initialEntries: [RouteEnum.EquipmentList] },
-      )
+      render(<EquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Склад')
       const value = testUtils.getColValue(
@@ -210,15 +162,7 @@ describe('Таблица оборудования', () => {
 
   describe('Состояние', () => {
     test('Отображается', () => {
-      renderInRoute_latest(
-        [
-          {
-            path: RouteEnum.EquipmentList,
-            element: <EquipmentTable {...props} />,
-          },
-        ],
-        { initialEntries: [RouteEnum.EquipmentList] },
-      )
+      render(<EquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Состояние')
       const value = testUtils.getColValue(
@@ -233,15 +177,7 @@ describe('Таблица оборудования', () => {
 
   describe('Количество', () => {
     test('Отображается', () => {
-      renderInRoute_latest(
-        [
-          {
-            path: RouteEnum.EquipmentList,
-            element: <EquipmentTable {...props} />,
-          },
-        ],
-        { initialEntries: [RouteEnum.EquipmentList] },
-      )
+      render(<EquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Количество')
       const value = testUtils.getColValue(
@@ -256,15 +192,7 @@ describe('Таблица оборудования', () => {
 
   describe('Категория', () => {
     test('Отображается', () => {
-      renderInRoute_latest(
-        [
-          {
-            path: RouteEnum.EquipmentList,
-            element: <EquipmentTable {...props} />,
-          },
-        ],
-        { initialEntries: [RouteEnum.EquipmentList] },
-      )
+      render(<EquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Категория')
       const value = testUtils.getColValue(
@@ -279,15 +207,7 @@ describe('Таблица оборудования', () => {
 
   describe('Назначение', () => {
     test('Отображается', () => {
-      renderInRoute_latest(
-        [
-          {
-            path: RouteEnum.EquipmentList,
-            element: <EquipmentTable {...props} />,
-          },
-        ],
-        { initialEntries: [RouteEnum.EquipmentList] },
-      )
+      render(<EquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Назначение')
       const value = testUtils.getColValue(
