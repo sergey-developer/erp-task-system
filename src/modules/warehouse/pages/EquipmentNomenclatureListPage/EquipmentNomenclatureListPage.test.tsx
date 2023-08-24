@@ -108,7 +108,7 @@ describe('Страница списка номенклатуры оборудо�
       })
     })
 
-    test('Можно перейти на следующую страницу', async () => {
+    test('Пагинация работает', async () => {
       const equipmentNomenclatureList =
         warehouseFixtures.equipmentNomenclatureList(11)
 

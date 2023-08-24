@@ -38,8 +38,8 @@ export enum NomenclatureApiTagEnum {
   NomenclatureList = 'NomenclatureList',
 }
 
-// equipment nomenclature
-export enum EquipmentNomenclatureApiEnum {
+// equipment
+export enum EquipmentApiEnum {
   GetEquipmentNomenclatureList = '/equipments/nomenclatures/reserves/',
   GetEquipmentList = '/equipments/',
 }

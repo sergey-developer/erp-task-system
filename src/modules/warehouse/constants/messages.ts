@@ -44,7 +44,11 @@ export const getNomenclatureListMessages: ApiRequestMessages<'commonError'> = {
 }
 
 export const getEquipmentNomenclatureListMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения списка номенклатур оборудования',
+  commonError: 'Ошибка получения списка номенклатуры оборудования',
+}
+
+export const getEquipmentListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка оборудования',
 }
 
 export const getMeasurementUnitListMessages: ApiRequestMessages<'commonError'> =

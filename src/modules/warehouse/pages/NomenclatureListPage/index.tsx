@@ -74,10 +74,7 @@ const NomenclatureListPage: FC = () => {
     useSetState<GetNomenclatureGroupListQueryArgs>({})
 
   const [getNomenclatureListParams, setGetNomenclatureListParams] =
-    useSetState<GetNomenclatureListQueryArgs>({
-      limit: 10,
-      offset: 0,
-    })
+    useSetState<GetNomenclatureListQueryArgs>({ limit: 10, offset: 0 })
 
   const [hoveredGroupId, setHoveredGroupId] = useState<number>()
   const [editableGroup, setEditableGroup] =
