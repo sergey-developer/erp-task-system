@@ -12,6 +12,29 @@ export type BaseUserModel = {
   avatar: MaybeNull<string>
 }
 
+type NomenclatureUserPermissions =
+  | 'NOMENCLATURES_READ'
+  | 'NOMENCLATURES_CREATE'
+  | 'NOMENCLATURES_DELETE'
+  | 'NOMENCLATURES_UPDATE'
+
+type NomenclatureGroupUserPermissions =
+  | 'NOMENCLATURE_GROUPS_READ'
+  | 'NOMENCLATURE_GROUPS_CREATE'
+  | 'NOMENCLATURE_GROUPS_DELETE'
+  | 'NOMENCLATURE_GROUPS_UPDATE'
+
+type EquipmentUserPermissions =
+  | 'EQUIPMENTS_READ'
+  | 'EQUIPMENTS_CREATE'
+  | 'EQUIPMENTS_DELETE'
+  | 'EQUIPMENTS_UPDATE'
+
+export type UserPermissions =
+  | NomenclatureUserPermissions
+  | NomenclatureGroupUserPermissions
+  | EquipmentUserPermissions
+
 export type UserModel = BaseUserModel & {
   role: UserRoleEnum
   email: string
@@ -19,4 +42,5 @@ export type UserModel = BaseUserModel & {
   isStaff: boolean
   phone: MaybeNull<string>
   status: UserStatusModel
+  permissions: UserPermissions[]
 }

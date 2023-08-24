@@ -25,7 +25,7 @@ export const useGetTaskCommentList = (id: GetTaskCommentListQueryArgs) => {
   })
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
@@ -36,7 +36,7 @@ export const useGetTaskCommentList = (id: GetTaskCommentListQueryArgs) => {
         showErrorNotification(commonApiMessages.unknownError)
       }
     }
-  }, [id, state.error, state.isError])
+  }, [id, state.error])
 
   return state
 }

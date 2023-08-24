@@ -8,7 +8,7 @@ import { getShortUserName } from 'modules/user/utils'
 import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 
-import { commonEllipsisConfig } from 'shared/constants/text'
+import { commonEllipsisConfig } from 'shared/constants/common'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 import { WrapperStyled } from './styles'

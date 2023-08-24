@@ -1,12 +1,5 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import {
-  Button,
-  Col,
-  Row,
-  Space,
-  TablePaginationConfig,
-  TableProps,
-} from 'antd'
+import { Button, Col, Row, Space, TablePaginationConfig } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import { SorterResult } from 'antd/es/table/interface'
@@ -38,7 +31,10 @@ import {
   SortableField,
   sortableFieldToSortValues,
 } from 'modules/task/components/TaskTable/constants/sort'
-import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
+import {
+  TaskTableListItem,
+  TaskTableProps,
+} from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
@@ -50,6 +46,7 @@ import { SyncIcon } from 'components/Icons'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
+import { calculatePaginationParams } from 'shared/utils/pagination'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled, SearchStyled } from './styles'
@@ -251,20 +248,23 @@ const TaskListPage: FC = () => {
     }
   }
 
-  const handleTablePagination = (pagination: TablePaginationConfig) => {
-    setQueryArgs((prevState) => ({
-      ...prevState,
-      offset: (pagination.current! - 1) * pagination.pageSize!,
-      limit: pagination.pageSize!,
-    }))
-  }
+  const handleTablePagination = useCallback(
+    (pagination: TablePaginationConfig) => {
+      setQueryArgs((prevState) => ({
+        ...prevState,
+        ...calculatePaginationParams(pagination),
+      }))
+    },
+    [],
+  )
 
-  const handleChangeTable = useCallback<
-    NonNullable<TableProps<TaskTableListItem>['onChange']>
-  >((pagination, _, sorter) => {
-    handleTableSort(sorter)
-    handleTablePagination(pagination)
-  }, [])
+  const handleChangeTable = useCallback<TaskTableProps['onChange']>(
+    (pagination, _, sorter) => {
+      handleTableSort(sorter)
+      handleTablePagination(pagination)
+    },
+    [handleTablePagination],
+  )
 
   const triggerFilterChange = (
     filterQueryParams:

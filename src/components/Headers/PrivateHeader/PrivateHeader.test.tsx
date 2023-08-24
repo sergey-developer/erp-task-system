@@ -1,12 +1,13 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { MaybeNull } from 'shared/types/utils'
 import { RouteEnum } from 'configs/routes'
 
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
+
+import { MaybeNull } from 'shared/types/utils'
 
 import PrivateApp from 'app/PrivateApp'
 
@@ -147,7 +148,7 @@ setupApiTests()
 describe('PrivateHeader', () => {
   describe('Меню навигации', () => {
     describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
-      describe('Элемент "Заявки"', () => {
+      describe('Заявки', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.FirstLineSupport,
@@ -187,7 +188,7 @@ describe('PrivateHeader', () => {
         })
       })
 
-      describe('Элемент "Отчёт по ФН"', () => {
+      describe('Отчёт по ФН', () => {
         test('Не отображается', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.FirstLineSupport,
@@ -208,7 +209,7 @@ describe('PrivateHeader', () => {
         })
       })
 
-      describe('Элемент "Управление складами"', () => {
+      describe('Управление складами', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.FirstLineSupport,
@@ -227,13 +228,14 @@ describe('PrivateHeader', () => {
             testUtils.getNavMenuItem('Управление складами'),
           ).toBeInTheDocument()
         })
-      })
 
-      test.todo('Элемент "Справочники"')
+        test.todo('Справочники')
+        test.todo('Управление запасами')
+      })
     })
 
     describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
-      describe('Элемент "Заявки"', () => {
+      describe('Заявки', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
@@ -273,7 +275,7 @@ describe('PrivateHeader', () => {
         })
       })
 
-      describe('Элемент "Отчёт по ФН"', () => {
+      describe('Отчёт по ФН', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
@@ -313,7 +315,7 @@ describe('PrivateHeader', () => {
         })
       })
 
-      describe('Элемент "Управление складами"', () => {
+      describe('Управление складами', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
@@ -332,13 +334,14 @@ describe('PrivateHeader', () => {
             testUtils.getNavMenuItem('Управление складами'),
           ).toBeInTheDocument()
         })
-      })
 
-      test.todo('Элемент "Справочники"')
+        test.todo('Справочники')
+        test.todo('Управление запасами')
+      })
     })
 
     describe(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
-      describe('Элемент "Заявки"', () => {
+      describe('Заявки', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
@@ -378,7 +381,7 @@ describe('PrivateHeader', () => {
         })
       })
 
-      describe('Элемент "Отчёт по ФН"', () => {
+      describe('Отчёт по ФН', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
@@ -418,7 +421,7 @@ describe('PrivateHeader', () => {
         })
       })
 
-      describe('Элемент "Управление складами"', () => {
+      describe('Управление складами', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
@@ -437,13 +440,14 @@ describe('PrivateHeader', () => {
             testUtils.getNavMenuItem('Управление складами'),
           ).toBeInTheDocument()
         })
-      })
 
-      test.todo('Элемент "Справочники"')
+        test.todo('Справочники')
+        test.todo('Управление запасами')
+      })
     })
 
     describe(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
-      describe('Элемент "Заявки"', () => {
+      describe('Заявки', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
@@ -483,7 +487,7 @@ describe('PrivateHeader', () => {
         })
       })
 
-      describe('Элемент "Отчёт по ФН"', () => {
+      describe('Отчёт по ФН', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
@@ -523,7 +527,7 @@ describe('PrivateHeader', () => {
         })
       })
 
-      describe('Элемент "Управление складами"', () => {
+      describe('Управление складами', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
@@ -542,9 +546,10 @@ describe('PrivateHeader', () => {
             testUtils.getNavMenuItem('Управление складами'),
           ).toBeInTheDocument()
         })
-      })
 
-      test.todo('Элемент "Справочники"')
+        test.todo('Справочники')
+        test.todo('Управление запасами')
+      })
     })
   })
 

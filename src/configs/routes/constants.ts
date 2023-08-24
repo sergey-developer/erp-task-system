@@ -1,3 +1,4 @@
+// todo: разделить по модулям
 export enum RouteEnum {
   // other routes
   Root = '/',
@@ -19,6 +20,12 @@ export enum RouteEnum {
   WarehouseCatalogList = '/manage-warehouses/catalogs',
   WarehouseList = '/manage-warehouses/catalogs/warehouses',
   Warehouse = '/manage-warehouses/catalogs/warehouses/:id',
+
+  NomenclatureList = '/manage-warehouses/catalogs/nomenclature',
+
+  ReserveCatalogList = '/manage-warehouses/reserves-catalogs',
+  EquipmentNomenclatureList = '/manage-warehouses/reserves-catalogs/equipment-nomenclature',
+  EquipmentList = '/manage-warehouses/reserves-catalogs/equipment-nomenclature/:id',
 
   // work group routes
   WorkingGroups = '/working-groups',

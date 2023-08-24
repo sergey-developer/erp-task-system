@@ -15,6 +15,7 @@ import {
   expectLoadingStartedByButton,
   modalTestUtils,
   render,
+  getRadioButtonIn,
 } from '_tests_/utils'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
@@ -69,9 +70,7 @@ const getReasonTitle = () =>
   within(getReasonBlock()).getByTitle('Причина ожидания')
 
 const getReasonField = (reason: SuspendReasonEnum): HTMLInputElement =>
-  within(getReasonBlock()).getByRole('radio', {
-    name: suspendReasonDict[reason],
-  })
+  getRadioButtonIn(getReasonBlock(), suspendReasonDict[reason])
 
 const findReasonError = (text: string) =>
   within(getReasonBlock()).findByText(text)
@@ -318,9 +317,7 @@ describe('Модалка создания запроса о переводе в 
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
 
@@ -349,9 +346,7 @@ describe('Модалка создания запроса о переводе в 
         })
 
         test('Активно если выбрать определённую причину', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           for await (const reason of Object.values(SuspendReasonEnum)) {
             if (reasonsMakeDateTimeFieldDisabled.includes(reason)) return
@@ -368,9 +363,7 @@ describe('Модалка создания запроса о переводе в 
           })
 
           test('Если выбрать определённую причину', async () => {
-            const { user } = render(
-              <RequestTaskSuspendModal {...props} />,
-            )
+            const { user } = render(<RequestTaskSuspendModal {...props} />)
 
             for await (const reason of Object.values(SuspendReasonEnum)) {
               if (!reasonsMakeDateTimeFieldDisabled.includes(reason)) return
@@ -387,9 +380,7 @@ describe('Модалка создания запроса о переводе в 
         })
 
         test('Можно установить значение если выбрать определённую причину', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
@@ -400,9 +391,7 @@ describe('Модалка создания запроса о переводе в 
         })
 
         test('При выборе определённой причины, автоматически устанавливается текущая дата на пять дней больше', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
@@ -416,9 +405,7 @@ describe('Модалка создания запроса о переводе в 
 
         describe('Отображается ошибка', () => {
           test('Если не заполнить поле и нажать кнопку отправки', async () => {
-            const { user } = render(
-              <RequestTaskSuspendModal {...props} />,
-            )
+            const { user } = render(<RequestTaskSuspendModal {...props} />)
 
             await testUtils.clickSubmitButton(user)
 
@@ -428,9 +415,7 @@ describe('Модалка создания запроса о переводе в 
           })
 
           test('Если дата в прошлом времени', async () => {
-            const { user } = render(
-              <RequestTaskSuspendModal {...props} />,
-            )
+            const { user } = render(<RequestTaskSuspendModal {...props} />)
 
             await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
@@ -446,9 +431,7 @@ describe('Модалка создания запроса о переводе в 
         })
 
         test('Значение сбрасывается при выборе определённой причины', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
@@ -475,9 +458,7 @@ describe('Модалка создания запроса о переводе в 
         })
 
         test('Активно если выбрать определённую причину', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           for await (const reason of Object.values(SuspendReasonEnum)) {
             if (reasonsMakeDateTimeFieldDisabled.includes(reason)) return
@@ -494,9 +475,7 @@ describe('Модалка создания запроса о переводе в 
           })
 
           test('Если выбрать определённую причину', async () => {
-            const { user } = render(
-              <RequestTaskSuspendModal {...props} />,
-            )
+            const { user } = render(<RequestTaskSuspendModal {...props} />)
 
             for await (const reason of Object.values(SuspendReasonEnum)) {
               if (!reasonsMakeDateTimeFieldDisabled.includes(reason)) return
@@ -513,9 +492,7 @@ describe('Модалка создания запроса о переводе в 
         })
 
         test('Можно установить значение если выбрать определённую причину', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
@@ -526,9 +503,7 @@ describe('Модалка создания запроса о переводе в 
         })
 
         test('При выборе определённой причины, автоматически устанавливается текущее время', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
@@ -540,9 +515,7 @@ describe('Модалка создания запроса о переводе в 
 
         describe('Отображается ошибка', () => {
           test('Если не заполнить поле и нажать кнопку отправки', async () => {
-            const { user } = render(
-              <RequestTaskSuspendModal {...props} />,
-            )
+            const { user } = render(<RequestTaskSuspendModal {...props} />)
 
             await testUtils.clickSubmitButton(user)
 
@@ -553,9 +526,7 @@ describe('Модалка создания запроса о переводе в 
 
           // todo: выяснить почему тест падает но всё написано корректно
           test.skip('Если выбран сегодняшний день и если время в прошлом времени', async () => {
-            const { user } = render(
-              <RequestTaskSuspendModal {...props} />,
-            )
+            const { user } = render(<RequestTaskSuspendModal {...props} />)
 
             await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
@@ -574,9 +545,7 @@ describe('Модалка создания запроса о переводе в 
         })
 
         test('Значение сбрасывается при выборе определённой причины', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
@@ -624,9 +593,7 @@ describe('Модалка создания запроса о переводе в 
 
       describe('Отображается ошибка', () => {
         test('Если ввести только пробелы', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.setComment(user, ' ')
 
@@ -636,9 +603,7 @@ describe('Модалка создания запроса о переводе в 
         })
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(
-            <RequestTaskSuspendModal {...props} />,
-          )
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
 
