@@ -1,4 +1,5 @@
 import { within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { MaybeNull } from 'shared/types/utils'
 
@@ -16,12 +17,23 @@ const getHeadCell = (container: HTMLElement, text: string) =>
   within(container).getByText(text).parentElement?.parentElement
 
 // pagination
-const getPaginationIn = (container: HTMLElement): MaybeNull<HTMLElement> =>
-  container.querySelector('.ant-table-pagination')
+const getPaginationIn = (table: HTMLElement): MaybeNull<HTMLElement> =>
+  table.querySelector('.ant-table-pagination')
 
-const expectPaginationEnabled = (container: HTMLElement) => {
-  const pagination = getPaginationIn(container)
+const expectPaginationEnabledIn = (table: HTMLElement) => {
+  const pagination = getPaginationIn(table)
   expect(pagination).toBeInTheDocument()
+}
+
+const getPaginationNextButtonIn = (table: HTMLElement) =>
+  within(getPaginationIn(table)!).getByRole('listitem', { name: 'Вперед' })
+
+const clickPaginationNextButtonIn = async (
+  user: UserEvent,
+  table: HTMLElement,
+) => {
+  const button = getPaginationNextButtonIn(table)
+  await user.click(button)
 }
 
 // loading
@@ -34,8 +46,12 @@ const expectLoadingFinished = (container: HTMLElement) =>
 const utils = {
   getRowIn,
   getHeadCell,
+
   getPaginationIn,
-  expectPaginationEnabled,
+  getPaginationNextButtonIn,
+  clickPaginationNextButtonIn,
+  expectPaginationEnabledIn,
+
   expectLoadingStarted,
   expectLoadingFinished,
 }

@@ -88,6 +88,8 @@ const nomenclatureApiService = baseApiService
           data: payload,
         }),
       }),
+
+      // todo: выделить в отдельный сервис
       [NomenclatureApiTriggerEnum.GetNomenclatureGroupList]: build.query<
         GetNomenclatureGroupListSuccessResponse,
         MaybeUndefined<GetNomenclatureGroupListQueryArgs>
@@ -164,6 +166,7 @@ const nomenclatureApiService = baseApiService
   })
 
 export const {
+  // todo: выделить в отдельный сервис
   useCreateNomenclatureGroupMutation,
   useUpdateNomenclatureGroupMutation,
   useGetNomenclatureGroupListQuery,

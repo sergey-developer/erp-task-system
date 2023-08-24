@@ -46,6 +46,7 @@ import { SyncIcon } from 'components/Icons'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
+import { calculatePaginationParams } from 'shared/utils/pagination'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled, SearchStyled } from './styles'
@@ -251,8 +252,7 @@ const TaskListPage: FC = () => {
     (pagination: TablePaginationConfig) => {
       setQueryArgs((prevState) => ({
         ...prevState,
-        offset: (pagination.current! - 1) * pagination.pageSize!,
-        limit: pagination.pageSize!,
+        ...calculatePaginationParams(pagination),
       }))
     },
     [],

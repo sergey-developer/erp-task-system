@@ -10,6 +10,6 @@ export type EquipmentNomenclatureTableItem = Pick<
 export type EquipmentNomenclatureTableProps = Required<
   Pick<
     TableProps<EquipmentNomenclatureTableItem>,
-    'dataSource' | 'loading' | 'onChange'
+    'dataSource' | 'loading' | 'onChange' | 'pagination'
   >
 >

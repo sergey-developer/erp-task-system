@@ -7,3 +7,5 @@ export * from './useGetMeasurementUnitList'
 export * from './useGetNomenclature'
 export * from './useGetNomenclatureList'
 export * from './useGetNomenclatureGroupList'
+
+export * from './useGetEquipmentNomenclatureList'
