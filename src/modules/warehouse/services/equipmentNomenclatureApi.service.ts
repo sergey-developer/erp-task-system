@@ -1,11 +1,16 @@
 import { getPaginatedList } from 'lib/antd/utils'
 
-import { EquipmentNomenclatureApiEnum } from 'modules/warehouse/constants'
+import { EquipmentApiEnum } from 'modules/warehouse/constants'
 import {
+  GetEquipmentListQueryArgs,
+  GetEquipmentListSuccessResponse,
   GetEquipmentNomenclatureListQueryArgs,
   GetEquipmentNomenclatureListSuccessResponse,
 } from 'modules/warehouse/models'
-import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
+import {
+  GetEquipmentListTransformedSuccessResponse,
+  GetEquipmentNomenclatureListTransformedSuccessResponse,
+} from 'modules/warehouse/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
@@ -17,7 +22,7 @@ const equipmentNomenclatureApiService = baseApiService.injectEndpoints({
       GetEquipmentNomenclatureListQueryArgs
     >({
       query: (params) => ({
-        url: EquipmentNomenclatureApiEnum.GetEquipmentNomenclatureList,
+        url: EquipmentApiEnum.GetEquipmentNomenclatureList,
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -27,8 +32,25 @@ const equipmentNomenclatureApiService = baseApiService.injectEndpoints({
         arg,
       ) => getPaginatedList(response, arg),
     }),
+    getEquipmentList: build.query<
+      GetEquipmentListTransformedSuccessResponse,
+      GetEquipmentListQueryArgs
+    >({
+      query: (params) => ({
+        url: EquipmentApiEnum.GetEquipmentList,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+      transformResponse: (
+        response: GetEquipmentListSuccessResponse,
+        meta,
+        arg,
+      ) => getPaginatedList(response, arg),
+    }),
   }),
 })
 
-export const { useGetEquipmentNomenclatureListQuery } =
-  equipmentNomenclatureApiService
+export const {
+  useGetEquipmentNomenclatureListQuery,
+  useGetEquipmentListQuery,
+} = equipmentNomenclatureApiService

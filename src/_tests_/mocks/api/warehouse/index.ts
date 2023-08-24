@@ -11,6 +11,7 @@ export * from './createNomenclature.mock'
 export * from './updateNomenclature.mock'
 export * from './getNomenclatureList.mock'
 
+export * from './getEquipmentList.mock'
 export * from './getEquipmentNomenclatureList.mock'
 
 export * from './getMeasurementUnitList.mock'

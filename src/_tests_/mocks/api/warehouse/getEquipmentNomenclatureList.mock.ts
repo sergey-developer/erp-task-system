@@ -1,4 +1,4 @@
-import { EquipmentNomenclatureApiEnum } from 'modules/warehouse/constants'
+import { EquipmentApiEnum } from 'modules/warehouse/constants'
 import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -15,7 +15,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const getEquipmentNomenclatureListMockFn = () =>
   getRequestMockFn(
     HttpMethodEnum.Get,
-    EquipmentNomenclatureApiEnum.GetEquipmentNomenclatureList,
+    EquipmentApiEnum.GetEquipmentNomenclatureList,
   )
 
 export const mockGetEquipmentNomenclatureListSuccess = (
