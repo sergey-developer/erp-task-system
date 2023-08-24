@@ -17,6 +17,7 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
+import { mockGetWarehouseSuccess } from '_tests_/mocks/api'
 import {
   expectLoadingFinishedByIconIn,
   expectLoadingStartedByIconIn,
@@ -162,7 +163,7 @@ describe('Таблица складов', () => {
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute(
           'href',
-          `${getWarehousePageLink(warehouseListItem.id)}?name=${
+          `${getWarehousePageLink(warehouseListItem.id)}?title=${
             warehouseListItem.title
           }`,
         )
@@ -171,6 +172,8 @@ describe('Таблица складов', () => {
       })
 
       test('При клике переходит на страницу склада', async () => {
+        mockGetWarehouseSuccess(warehouseListItem.id)
+
         const { user } = renderInRoute_latest(
           [
             {

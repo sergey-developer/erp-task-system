@@ -1,44 +1,61 @@
 import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { RouteEnum } from 'configs/routes'
 
-import { MaybeNull } from 'shared/types/utils'
+import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
+import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
+import { getEquipmentListPageLink } from 'modules/warehouse/utils'
+
+import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import warehouseFixtures from 'fixtures/warehouse'
 
-import { renderInRoute_latest, tableTestUtils } from '_tests_/utils'
+import {
+  linkTestUtils,
+  renderInRoute_latest,
+  tableTestUtils,
+} from '_tests_/utils'
 
 import EquipmentNomenclatureTable from './index'
-import {
-  EquipmentNomenclatureTableProps,
-  EquipmentNomenclatureTableItem,
-} from './types'
+import { EquipmentNomenclatureTableProps } from './types'
 
 const equipmentNomenclatureListItem =
   warehouseFixtures.equipmentNomenclatureListItem()
 
 const props: Readonly<EquipmentNomenclatureTableProps> = {
   dataSource: [equipmentNomenclatureListItem],
-  pagination: false,
+  pagination: {},
   loading: false,
   onChange: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('equipment-nomenclature-table')
 
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
+const getRow = (id: number) => tableTestUtils.getRowIn(getContainer(), id)
 
-const getRow = (id: EquipmentNomenclatureTableItem['id']) =>
-  tableTestUtils.getRowIn(getContainer(), id)
-
-const getColTitle = getChildByText
+const getColTitle = (text: string) => within(getContainer()).getByText(text)
 
 const getColValue = (
-  id: EquipmentNomenclatureTableItem['id'],
-  value: string,
+  id: number,
+  value: NumberOrString,
 ): MaybeNull<HTMLElement> => {
   const row = getRow(id)
   return row ? within(row).getByText(value) : null
+}
+
+// title
+const getTitleLink = (id: number, title: string): MaybeNull<HTMLElement> => {
+  const row = getRow(id)
+  return row ? linkTestUtils.getLinkIn(row, title) : null
+}
+
+const clickTitleLink = async (user: UserEvent, id: number, title: string) => {
+  const link = getTitleLink(id, title)
+
+  if (link) {
+    await user.click(link)
+  }
 }
 
 // loading
@@ -54,9 +71,11 @@ const expectLoadingFinished = async (): Promise<HTMLElement> => {
 export const testUtils = {
   getContainer,
   getRow,
-  getChildByText,
   getColTitle,
   getColValue,
+
+  getTitleLink,
+  clickTitleLink,
 
   expectLoadingStarted,
   expectLoadingFinished,
@@ -68,12 +87,12 @@ afterEach(() => {
 })
 
 describe('Таблица номенклатуры оборудования', () => {
-  test('Отображается', () => {
+  test('Отображается корректно', () => {
     renderInRoute_latest(
       [
         {
           path: RouteEnum.EquipmentNomenclatureList,
-          element: <EquipmentNomenclatureTable {...props} pagination={{}} />,
+          element: <EquipmentNomenclatureTable {...props} />,
         },
       ],
       { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
@@ -85,6 +104,41 @@ describe('Таблица номенклатуры оборудования', () 
     tableTestUtils.expectPaginationEnabledIn(table)
 
     props.dataSource.forEach((item) => {
+      const row = testUtils.getRow(item.id)
+      expect(row).toBeInTheDocument()
+    })
+  })
+
+  test('Можно перейти на следующую страницу', async () => {
+    const equipmentNomenclatureList =
+      warehouseFixtures.equipmentNomenclatureList(11)
+
+    const { user } = renderInRoute_latest(
+      [
+        {
+          path: RouteEnum.EquipmentNomenclatureList,
+          element: (
+            <EquipmentNomenclatureTable
+              {...props}
+              dataSource={equipmentNomenclatureList}
+            />
+          ),
+        },
+      ],
+      { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+    )
+
+    const table = testUtils.getContainer()
+    await tableTestUtils.clickPaginationNextButtonIn(user, table)
+
+    expect(props.onChange).toBeCalledTimes(1)
+    expect(props.onChange).toBeCalledWith(
+      expect.anything(),
+      expect.anything(),
+      expect.anything(),
+      expect.anything(),
+    )
+    equipmentNomenclatureList.slice(-1).forEach((item) => {
       const row = testUtils.getRow(item.id)
       expect(row).toBeInTheDocument()
     })
@@ -103,13 +157,47 @@ describe('Таблица номенклатуры оборудования', () 
       )
 
       const title = testUtils.getColTitle('Наименование')
-      const value = testUtils.getColValue(
+      const link = testUtils.getTitleLink(
         equipmentNomenclatureListItem.id,
         equipmentNomenclatureListItem.title,
       )
 
       expect(title).toBeInTheDocument()
-      expect(value).toBeInTheDocument()
+      expect(link).toBeInTheDocument()
+      expect(link).toHaveAttribute(
+        'href',
+        `${getEquipmentListPageLink(equipmentNomenclatureListItem.id)}?title=${
+          equipmentNomenclatureListItem.title
+        }`,
+      )
+    })
+
+    test('При клике переходит на страницу списка оборудования', async () => {
+      // todo: раскоментить как будет готова интеграция
+      // mockGetEquipmentListSuccess()
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: RouteEnum.EquipmentNomenclatureList,
+            element: <EquipmentNomenclatureTable {...props} />,
+          },
+          {
+            path: RouteEnum.EquipmentList,
+            element: <EquipmentListPage />,
+          },
+        ],
+        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+      )
+
+      await testUtils.clickTitleLink(
+        user,
+        equipmentNomenclatureListItem.id,
+        equipmentNomenclatureListItem.title,
+      )
+
+      const page = equipmentListPageTestUtils.getContainer()
+      expect(page).toBeInTheDocument()
     })
   })
 
@@ -128,7 +216,7 @@ describe('Таблица номенклатуры оборудования', () 
       const title = testUtils.getColTitle('Количество оборудования')
       const value = testUtils.getColValue(
         equipmentNomenclatureListItem.id,
-        String(equipmentNomenclatureListItem.quantity),
+        equipmentNomenclatureListItem.quantity,
       )
 
       expect(title).toBeInTheDocument()

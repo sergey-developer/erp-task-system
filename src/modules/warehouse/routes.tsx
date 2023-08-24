@@ -3,6 +3,8 @@ import { Link, Navigate, RouteObject } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
+import { BreadCrumbArgs } from 'components/Breadcrumbs'
+
 import ManageWarehousesLayout from './components/ManageWarehousesLayout'
 import ReservesListLayout from './components/ReservesListLayout'
 
@@ -23,6 +25,8 @@ const ReserveCatalogListPage = React.lazy(
 const EquipmentNomenclatureListPage = React.lazy(
   () => import('./pages/EquipmentNomenclatureListPage'),
 )
+
+const EquipmentListPage = React.lazy(() => import('./pages/EquipmentListPage'))
 
 export const route: Readonly<RouteObject> = {
   path: RouteEnum.ManageWarehouses,
@@ -58,7 +62,7 @@ export const route: Readonly<RouteObject> = {
               path: RouteEnum.Warehouse,
               element: <WarehousePage />,
               handle: {
-                crumb: ({ qs }: { qs: URLSearchParams }) => qs.get('name'),
+                crumb: ({ qs }: BreadCrumbArgs) => qs.get('title'),
               },
             },
           ],
@@ -103,6 +107,13 @@ export const route: Readonly<RouteObject> = {
             {
               index: true,
               element: <EquipmentNomenclatureListPage />,
+            },
+            {
+              path: RouteEnum.EquipmentList,
+              element: <EquipmentListPage />,
+              handle: {
+                crumb: ({ qs }: BreadCrumbArgs) => qs.get('title'),
+              },
             },
           ],
         },
