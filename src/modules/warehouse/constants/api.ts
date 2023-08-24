@@ -41,6 +41,7 @@ export enum NomenclatureApiTagEnum {
 // equipment nomenclature
 export enum EquipmentNomenclatureApiEnum {
   GetEquipmentNomenclatureList = '/equipments/nomenclatures/reserves/',
+  GetEquipmentList = '/equipments/',
 }
 
 // measurement
