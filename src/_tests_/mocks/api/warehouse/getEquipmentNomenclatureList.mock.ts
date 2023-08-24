@@ -2,6 +2,7 @@ import { EquipmentNomenclatureApiEnum } from 'modules/warehouse/constants'
 import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/api'
 
 import {
   getForbiddenErrorMockFn,
@@ -24,7 +25,7 @@ export const mockGetEquipmentNomenclatureListSuccess = (
 ) => getSuccessMockFn(getEquipmentNomenclatureListMockFn(), options)()
 
 export const mockGetEquipmentNomenclatureListForbiddenError = (
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getForbiddenErrorMockFn(getEquipmentNomenclatureListMockFn(), options)()
 
 export const mockGetEquipmentNomenclatureListServerError = (

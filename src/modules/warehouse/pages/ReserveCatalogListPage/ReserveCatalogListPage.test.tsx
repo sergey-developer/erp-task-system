@@ -4,9 +4,12 @@ import React from 'react'
 
 import { RouteEnum } from 'configs/routes'
 
+import { mockGetEquipmentNomenclatureListSuccess } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/user'
 import { linkTestUtils, renderInRoute_latest } from '_tests_/utils'
 
+import EquipmentNomenclatureListPage from '../EquipmentNomenclatureListPage'
+import { testUtils as equipmentNomenclatureListPageTestUtils } from '../EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 import ReserveCatalogListPage from './index'
 
 const getContainer = () => screen.getByTestId('reserve-catalog-list-page')
@@ -78,6 +81,37 @@ describe('Страница списка справочников запасов'
       expect(link).not.toBeInTheDocument()
     })
 
-    test.todo('При клике переходит на страницу списка оборудования')
+    test('При клике переходит на страницу списка номенклатуры оборудования', async () => {
+      mockGetEquipmentNomenclatureListSuccess()
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: RouteEnum.ReserveCatalogList,
+            element: <ReserveCatalogListPage />,
+          },
+          {
+            path: RouteEnum.EquipmentNomenclatureList,
+            element: <EquipmentNomenclatureListPage />,
+          },
+        ],
+        { initialEntries: [RouteEnum.ReserveCatalogList], initialIndex: 0 },
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
+              },
+            },
+          },
+        },
+      )
+
+      await testUtils.clickEquipmentLink(user)
+      const page = equipmentNomenclatureListPageTestUtils.getContainer()
+
+      expect(page).toBeInTheDocument()
+    })
   })
 })
