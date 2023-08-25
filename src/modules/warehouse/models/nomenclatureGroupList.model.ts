@@ -1,6 +1,8 @@
-export type NomenclatureGroupListItemModel = {
-  id: number
-  title: string
-}
+import { NomenclatureGroupModel } from './nomenclatureGroup.model'
 
-export type NomenclatureGroupListModel = Array<NomenclatureGroupListItemModel>
+export type NomenclatureGroupListItemModel = Pick<
+  NomenclatureGroupModel,
+  'id' | 'title'
+>
+
+export type NomenclatureGroupListModel = NomenclatureGroupListItemModel[]

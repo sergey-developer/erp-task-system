@@ -33,6 +33,7 @@ export const nomenclature = (
   title: fakeWord(),
   shortTitle: fakeWord(),
   vendorCode: fakeWord(),
+  equipmentHasSerialNumber: false,
 
   country: props?.country || nomenclatureCountry(),
   group: props?.group || nomenclatureGroup(),

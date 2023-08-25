@@ -1,3 +1,9 @@
+import {
+  CountryModel,
+  MeasurementUnitModel,
+  NomenclatureGroupModel,
+} from 'modules/warehouse/models'
+
 import { MaybeNull } from 'shared/types/utils'
 
 export type NomenclatureModel = {
@@ -5,16 +11,8 @@ export type NomenclatureModel = {
   title: string
   shortTitle: string
   vendorCode: string
-  group: {
-    id: number
-    title: string
-  }
-  measurementUnit: {
-    id: number
-    title: string
-  }
-  country: MaybeNull<{
-    id: number
-    title: string
-  }>
+  group: NomenclatureGroupModel
+  measurementUnit: MeasurementUnitModel
+  equipmentHasSerialNumber: boolean
+  country: MaybeNull<CountryModel>
 }
