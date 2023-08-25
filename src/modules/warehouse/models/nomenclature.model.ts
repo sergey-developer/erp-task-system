@@ -11,8 +11,8 @@ export type NomenclatureModel = {
   title: string
   shortTitle: string
   vendorCode: string
+  equipmentHasSerialNumber: boolean
   group: NomenclatureGroupModel
   measurementUnit: MeasurementUnitModel
-  equipmentHasSerialNumber: boolean
   country: MaybeNull<CountryModel>
 }

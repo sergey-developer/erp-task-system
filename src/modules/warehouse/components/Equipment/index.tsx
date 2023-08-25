@@ -1,6 +1,8 @@
 import { Col, Drawer, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import { equipmentConditionDict } from 'modules/warehouse/constants'
+
 import Space from 'components/Space'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
@@ -17,9 +19,9 @@ const Equipment: FC<EquipmentProps> = ({
   ...props
 }) => {
   return (
-    <Drawer {...props} width={500}>
+    <Drawer data-testid='equipment' {...props} width={500}>
       <Space $block direction='vertical' size='middle'>
-        <Row>
+        <Row data-testid='title'>
           <Col span={12}>
             <Text type='secondary'>Наименование:</Text>
           </Col>
@@ -27,7 +29,7 @@ const Equipment: FC<EquipmentProps> = ({
           <Col span={12}>{equipment.title}</Col>
         </Row>
 
-        <Row>
+        <Row data-testid='category'>
           <Col span={12}>
             <Text type='secondary'>Категория:</Text>
           </Col>
@@ -35,7 +37,7 @@ const Equipment: FC<EquipmentProps> = ({
           <Col span={12}>{equipment.category.title}</Col>
         </Row>
 
-        <Row>
+        <Row data-testid='nomenclature'>
           <Col span={12}>
             <Text type='secondary'>Номенклатура:</Text>
           </Col>
@@ -44,7 +46,7 @@ const Equipment: FC<EquipmentProps> = ({
         </Row>
 
         {displayableFields.includes('customerInventoryNumber') && (
-          <Row>
+          <Row data-testid='customer-inventory-number'>
             <Col span={12}>
               <Text type='secondary'>Инвентарный номер заказчика:</Text>
             </Col>
@@ -56,7 +58,7 @@ const Equipment: FC<EquipmentProps> = ({
         )}
 
         {displayableFields.includes('inventoryNumber') && (
-          <Row>
+          <Row data-testid='inventory-number'>
             <Col span={12}>
               <Text type='secondary'>Инвентарный номер:</Text>
             </Col>
@@ -65,8 +67,8 @@ const Equipment: FC<EquipmentProps> = ({
           </Row>
         )}
 
-        {!equipment.nomenclature.equipmentHasSerialNumber && (
-          <Row>
+        {equipment.nomenclature.equipmentHasSerialNumber && (
+          <Row data-testid='serial-number'>
             <Col span={12}>
               <Text type='secondary'>Серийный номер:</Text>
             </Col>
@@ -75,7 +77,7 @@ const Equipment: FC<EquipmentProps> = ({
           </Row>
         )}
 
-        <Row>
+        <Row data-testid='warehouse'>
           <Col span={12}>
             <Text type='secondary'>Склад:</Text>
           </Col>
@@ -83,15 +85,15 @@ const Equipment: FC<EquipmentProps> = ({
           <Col span={12}>{equipment.warehouse.title}</Col>
         </Row>
 
-        <Row>
+        <Row data-testid='condition'>
           <Col span={12}>
             <Text type='secondary'>Состояние:</Text>
           </Col>
 
-          <Col span={12}>{equipment.condition}</Col>
+          <Col span={12}>{equipmentConditionDict[equipment.condition]}</Col>
         </Row>
 
-        <Row>
+        <Row data-testid='created-at'>
           <Col span={12}>
             <Text type='secondary'>Дата оприходования:</Text>
           </Col>
@@ -99,7 +101,7 @@ const Equipment: FC<EquipmentProps> = ({
           <Col span={12}>{formatDate(equipment.createdAt, DATE_FORMAT)}</Col>
         </Row>
 
-        <Row>
+        <Row data-testid='created-by'>
           <Col span={12}>
             <Text type='secondary'>Кем оприходовано:</Text>
           </Col>
@@ -107,7 +109,7 @@ const Equipment: FC<EquipmentProps> = ({
           <Col span={12}>{equipment.createdBy.fullName}</Col>
         </Row>
 
-        <Row>
+        <Row data-testid='quantity'>
           <Col span={12}>
             <Text type='secondary'>Количество:</Text>
           </Col>
@@ -126,7 +128,7 @@ const Equipment: FC<EquipmentProps> = ({
           </Col>
         </Row>
 
-        <Row>
+        <Row data-testid='price'>
           <Col span={12}>
             <Text type='secondary'>Стоимость:</Text>
           </Col>
@@ -146,7 +148,7 @@ const Equipment: FC<EquipmentProps> = ({
         </Row>
 
         {displayableFields.includes('isNew') && (
-          <Row>
+          <Row data-testid='is-new'>
             <Col span={12}>
               <Text type='secondary'>Новое:</Text>
             </Col>
@@ -156,7 +158,7 @@ const Equipment: FC<EquipmentProps> = ({
         )}
 
         {displayableFields.includes('isWarranty') && (
-          <Row>
+          <Row data-testid='is-warranty'>
             <Col span={12}>
               <Text type='secondary'>На гарантии:</Text>
             </Col>
@@ -166,7 +168,7 @@ const Equipment: FC<EquipmentProps> = ({
         )}
 
         {displayableFields.includes('isRepaired') && (
-          <Row>
+          <Row data-testid='is-repaired'>
             <Col span={12}>
               <Text type='secondary'>Отремонтированное:</Text>
             </Col>
@@ -176,7 +178,7 @@ const Equipment: FC<EquipmentProps> = ({
         )}
 
         {displayableFields.includes('usageCounter') && (
-          <Row>
+          <Row data-testid='usage-counter'>
             <Col span={12}>
               <Text type='secondary'>Счётчик пробега текущий:</Text>
             </Col>
@@ -186,7 +188,7 @@ const Equipment: FC<EquipmentProps> = ({
         )}
 
         {displayableFields.includes('owner') && (
-          <Row>
+          <Row data-testid='owner'>
             <Col span={12}>
               <Text type='secondary'>Владелец оборудования:</Text>
             </Col>
@@ -195,7 +197,7 @@ const Equipment: FC<EquipmentProps> = ({
           </Row>
         )}
 
-        <Row>
+        <Row data-testid='purpose'>
           <Col span={12}>
             <Text type='secondary'>Назначение оборудования:</Text>
           </Col>
@@ -203,7 +205,7 @@ const Equipment: FC<EquipmentProps> = ({
           <Col span={12}>{equipment.purpose.title}</Col>
         </Row>
 
-        <Row>
+        <Row data-testid='comment'>
           <Col span={12}>
             <Text type='secondary'>Комментарий:</Text>
           </Col>
