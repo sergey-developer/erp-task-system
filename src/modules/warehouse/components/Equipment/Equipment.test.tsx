@@ -1,4 +1,5 @@
 import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants'
 
@@ -9,14 +10,14 @@ import { formatDate } from 'shared/utils/date'
 
 import warehouseFixtures from 'fixtures/warehouse'
 
-import { render } from '_tests_/utils'
+import { fakeWord, getButtonIn, render } from '_tests_/utils'
 
 import Equipment from './index'
 import { EquipmentProps } from './types'
 
 const props: EquipmentProps = {
   visible: true,
-  title: '',
+  title: fakeWord(),
   equipment: warehouseFixtures.equipment(),
   displayableFields: [],
   onClose: jest.fn(),
@@ -24,7 +25,9 @@ const props: EquipmentProps = {
 
 const getContainer = () => screen.getByTestId('equipment')
 
-// title
+const findContainer = (): Promise<HTMLElement> =>
+  screen.findByTestId('equipment')
+
 const getBlock = (testId: string) => within(getContainer()).getByTestId(testId)
 
 const queryBlock = (testId: string) =>
@@ -36,18 +39,46 @@ const getInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
 const queryInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
   within(block).queryByText(value)
 
+// close button
+const getCloseButton = () => getButtonIn(getContainer(), /close/i)
+
+const clickCloseButton = async (user: UserEvent) => {
+  const button = getCloseButton()
+  await user.click(button)
+}
+
 export const testUtils = {
   getContainer,
+  findContainer,
 
   getBlock,
   queryBlock,
 
   getInfoInBlock,
   queryInfoInBlock,
+
+  getCloseButton,
+  clickCloseButton,
 }
 
 describe('Информация об оборудовании', () => {
-  test('Наименование', () => {
+  test('Заголовок отображается', () => {
+    render(<Equipment {...props} />)
+
+    const title = within(testUtils.getContainer()).getByText(
+      props.title as string,
+    )
+
+    expect(title).toBeInTheDocument()
+  })
+
+  test('При клике на кнопку закрытия вызывается обработчик', async () => {
+    const { user } = render(<Equipment {...props} />)
+    await testUtils.clickCloseButton(user)
+    expect(props.onClose).toBeCalledTimes(1)
+  })
+
+  test('Наименование отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('title')
@@ -58,7 +89,7 @@ describe('Информация об оборудовании', () => {
     expect(value).toBeInTheDocument()
   })
 
-  test('Категория', () => {
+  test('Категория отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('category')
@@ -72,7 +103,7 @@ describe('Информация об оборудовании', () => {
     expect(value).toBeInTheDocument()
   })
 
-  test('Номенклатура', () => {
+  test('Номенклатура отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('nomenclature')
@@ -173,7 +204,7 @@ describe('Информация об оборудовании', () => {
     })
   })
 
-  test('Склад', () => {
+  test('Склад отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('warehouse')
@@ -187,7 +218,7 @@ describe('Информация об оборудовании', () => {
     expect(value).toBeInTheDocument()
   })
 
-  test('Состояние', () => {
+  test('Состояние отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('condition')
@@ -201,7 +232,7 @@ describe('Информация об оборудовании', () => {
     expect(value).toBeInTheDocument()
   })
 
-  test('Дата оприходования', () => {
+  test('Дата оприходования отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('created-at')
@@ -215,7 +246,7 @@ describe('Информация об оборудовании', () => {
     expect(value).toBeInTheDocument()
   })
 
-  test('Кем оприходовано', () => {
+  test('Кем оприходовано отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('created-by')
@@ -229,7 +260,7 @@ describe('Информация об оборудовании', () => {
     expect(value).toBeInTheDocument()
   })
 
-  test('Количество', () => {
+  test('Количество отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('quantity')
@@ -253,7 +284,7 @@ describe('Информация об оборудовании', () => {
     expect(measurementUnitValue).toBeInTheDocument()
   })
 
-  test('Стоимость', () => {
+  test('Стоимость отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('price')
@@ -381,7 +412,7 @@ describe('Информация об оборудовании', () => {
     })
   })
 
-  test('Назначение оборудования', () => {
+  test('Назначение оборудования отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('purpose')
@@ -392,7 +423,7 @@ describe('Информация об оборудовании', () => {
     expect(value).toBeInTheDocument()
   })
 
-  test('Комментарий', () => {
+  test('Комментарий отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('comment')

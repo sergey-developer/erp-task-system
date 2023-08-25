@@ -1,5 +1,6 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
+import { testUtils as equipmentTestUtils } from 'modules/warehouse/components/Equipment/Equipment.test'
 import { testUtils as equipmentTableTestUtils } from 'modules/warehouse/components/EquipmentTable/EquipmentTable.test'
 import { getEquipmentListMessages } from 'modules/warehouse/constants'
 
@@ -35,7 +36,6 @@ describe('Страница списка оборудования', () => {
   describe('Список оборудования', () => {
     test('При успешном запросе отображается верное количество', async () => {
       const equipmentList = [warehouseFixtures.equipmentListItem()]
-
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse(equipmentList),
       })
@@ -93,6 +93,40 @@ describe('Страница списка оборудования', () => {
       equipmentList.slice(-1).forEach((item) => {
         const row = equipmentTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
+      })
+    })
+
+    test('При клике на строку открывается карточка просмотра оборудования', async () => {
+      // todo: вызвать mockGetEquipmentSuccess когда будет готова интеграция
+      const equipmentListItem = warehouseFixtures.equipmentListItem()
+      mockGetEquipmentListSuccess({
+        body: commonFixtures.paginatedListResponse([equipmentListItem]),
+      })
+
+      const { user } = render(<EquipmentListPage />)
+
+      await equipmentTableTestUtils.expectLoadingFinished()
+      await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
+      const equipment = await equipmentTestUtils.findContainer()
+
+      expect(equipment).toBeInTheDocument()
+    })
+
+    test('Можно закрыть карточку просмотра оборудования', async () => {
+      const equipmentListItem = warehouseFixtures.equipmentListItem()
+      mockGetEquipmentListSuccess({
+        body: commonFixtures.paginatedListResponse([equipmentListItem]),
+      })
+
+      const { user } = render(<EquipmentListPage />)
+
+      await equipmentTableTestUtils.expectLoadingFinished()
+      await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
+      const equipment = await equipmentTestUtils.findContainer()
+      await equipmentTestUtils.clickCloseButton(user)
+
+      await waitFor(() => {
+        expect(equipment).not.toBeInTheDocument()
       })
     })
   })

@@ -11,9 +11,11 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import warehouseFixtures from 'fixtures/warehouse'
 
+import { mockGetEquipmentListSuccess } from '_tests_/mocks/api'
 import {
   linkTestUtils,
   renderInRoute_latest,
+  setupApiTests,
   tableTestUtils,
 } from '_tests_/utils'
 
@@ -85,6 +87,8 @@ afterEach(() => {
   const onChange = props.onChange as jest.Mock
   onChange.mockReset()
 })
+
+setupApiTests()
 
 describe('Таблица номенклатуры оборудования', () => {
   test('Отображается корректно', () => {
@@ -173,8 +177,7 @@ describe('Таблица номенклатуры оборудования', () 
     })
 
     test('При клике переходит на страницу списка оборудования', async () => {
-      // todo: раскоментить как будет готова интеграция
-      // mockGetEquipmentListSuccess()
+      mockGetEquipmentListSuccess()
 
       const { user } = renderInRoute_latest(
         [
