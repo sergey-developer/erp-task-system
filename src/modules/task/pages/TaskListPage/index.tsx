@@ -1,11 +1,9 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Row, Space, TablePaginationConfig } from 'antd'
+import { Button, Col, Row, Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
-import { SorterResult } from 'antd/es/table/interface'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
-import { GetComponentProps } from 'rc-table/es/interface'
 import React, {
   FC,
   useCallback,
@@ -61,8 +59,7 @@ const TaskListPage: FC = () => {
   const { role } = useUserRole()
   const colRef = useRef<number>()
 
-  const [selectedTask, setSelectedTask] =
-    useState<MaybeNull<TaskTableListItem['id']>>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
 
   const [
     taskAdditionalInfoExpanded,
@@ -212,21 +209,21 @@ const TaskListPage: FC = () => {
     if (!value) handleSearchByTaskId(value)
   }
 
-  const debouncedSetSelectedTask = useDebounceFn(setSelectedTask)
+  const debouncedSetSelectedTaskId = useDebounceFn(setSelectedTaskId)
 
-  const handleTableRowClick: GetComponentProps<TaskTableListItem> = useCallback(
-    (record: TaskTableListItem) => ({
-      onClick: () => debouncedSetSelectedTask(record.id),
+  const handleTableRowClick = useCallback<TaskTableProps['onRow']>(
+    (record) => ({
+      onClick: () => debouncedSetSelectedTaskId(record.id),
     }),
-    [debouncedSetSelectedTask],
+    [debouncedSetSelectedTaskId],
   )
 
   const handleCloseTaskCard = useCallback(() => {
-    setSelectedTask(null)
-  }, [setSelectedTask])
+    setSelectedTaskId(null)
+  }, [setSelectedTaskId])
 
   const handleTableSort = (
-    sorter: SorterResult<TaskTableListItem> | SorterResult<TaskTableListItem>[],
+    sorter: Parameters<TaskTableProps['onChange']>[2],
   ) => {
     /**
      * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
@@ -249,7 +246,7 @@ const TaskListPage: FC = () => {
   }
 
   const handleTablePagination = useCallback(
-    (pagination: TablePaginationConfig) => {
+    (pagination: Parameters<TaskTableProps['onChange']>[0]) => {
       setQueryArgs((prevState) => ({
         ...prevState,
         ...calculatePaginationParams(pagination),
@@ -304,8 +301,8 @@ const TaskListPage: FC = () => {
 
   const getTableRowClassName = useCallback(
     (record: TaskTableListItem): string =>
-      isEqual(record.id, selectedTask) ? 'table-row--selected' : '',
-    [selectedTask],
+      isEqual(record.id, selectedTaskId) ? 'table-row--selected' : '',
+    [selectedTaskId],
   )
 
   return (
@@ -374,7 +371,7 @@ const TaskListPage: FC = () => {
 
         <Col span={24} style={{ height: colRef.current }}>
           <RowStyled>
-            <ColStyled span={selectedTask ? (breakpoints.xxl ? 15 : 12) : 24}>
+            <ColStyled span={selectedTaskId ? (breakpoints.xxl ? 15 : 12) : 24}>
               <TaskTable
                 rowClassName={getTableRowClassName}
                 sort={queryArgs.sort}
@@ -387,10 +384,10 @@ const TaskListPage: FC = () => {
               />
             </ColStyled>
 
-            {!!selectedTask && (
+            {!!selectedTaskId && (
               <ColStyled span={breakpoints.xxl ? 9 : 12}>
                 <TaskCard
-                  taskId={selectedTask}
+                  taskId={selectedTaskId}
                   additionalInfoExpanded={taskAdditionalInfoExpanded}
                   onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
                   closeTaskCard={handleCloseTaskCard}

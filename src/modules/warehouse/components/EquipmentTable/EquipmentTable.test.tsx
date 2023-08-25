@@ -1,4 +1,5 @@
 import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants'
 
@@ -25,6 +26,9 @@ const getContainer = () => screen.getByTestId('equipment-table')
 
 const getRow = (id: number) => tableTestUtils.getRowIn(getContainer(), id)
 
+const clickRow = async (user: UserEvent, id: number) =>
+  tableTestUtils.clickRowIn(getContainer(), user, id)
+
 const getColTitle = (text: string) => within(getContainer()).getByText(text)
 
 const getColValue = (
@@ -48,6 +52,7 @@ const expectLoadingFinished = async (): Promise<HTMLElement> => {
 export const testUtils = {
   getContainer,
   getRow,
+  clickRow,
   getColTitle,
   getColValue,
 
@@ -56,7 +61,10 @@ export const testUtils = {
 }
 
 afterEach(() => {
+  const onRow = props.onRow as jest.Mock
   const onChange = props.onChange as jest.Mock
+
+  onRow.mockReset()
   onChange.mockReset()
 })
 
@@ -98,6 +106,13 @@ describe('Таблица оборудования', () => {
     })
   })
 
+  test('При клике на строку обработчик вызывается корректно', async () => {
+    const { user } = render(<EquipmentTable {...props} />)
+
+    await testUtils.clickRow(user, props.dataSource[0].id)
+    expect(props.onRow).toBeCalledTimes(1)
+  })
+
   describe('Наименование', () => {
     test('Отображается', () => {
       render(<EquipmentTable {...props} />)
@@ -111,9 +126,6 @@ describe('Таблица оборудования', () => {
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
     })
-
-    // todo: сделать как будет готов соответствующий функционал
-    test.todo('При клике открывается карточка просмотра оборудования')
   })
 
   describe('Серийный номер', () => {

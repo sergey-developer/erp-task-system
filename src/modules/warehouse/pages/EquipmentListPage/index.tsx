@@ -1,15 +1,10 @@
 import { useSetState } from 'ahooks'
-import { TablePaginationConfig } from 'antd'
-import { GetComponentProps } from 'rc-table/es/interface'
 import { FC, useCallback, useState } from 'react'
 
 import Equipment from 'modules/warehouse/components/Equipment'
 import { FieldsDependOnCategory } from 'modules/warehouse/components/Equipment/types'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
-import {
-  EquipmentTableItem,
-  EquipmentTableProps,
-} from 'modules/warehouse/components/EquipmentTable/types'
+import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
 import { useGetEquipmentList } from 'modules/warehouse/hooks'
 import {
   EquipmentModel,
@@ -74,7 +69,7 @@ const fakeEquipment: EquipmentModel = {
   isWarranty: true,
   owner: {
     id: 1,
-    title: 'owner'
+    title: 'owner',
   },
   usageCounter: null,
   customerInventoryNumber: null,
@@ -96,7 +91,7 @@ const EquipmentListPage: FC = () => {
     useGetEquipmentList(getEquipmentListParams)
 
   const handleTablePagination = useCallback(
-    (pagination: TablePaginationConfig) => {
+    (pagination: Parameters<EquipmentTableProps['onChange']>[0]) => {
       setGetEquipmentListParams(calculatePaginationParams(pagination))
     },
     [setGetEquipmentListParams],
@@ -109,36 +104,17 @@ const EquipmentListPage: FC = () => {
     [handleTablePagination],
   )
 
-  const handleTableRowClick: GetComponentProps<EquipmentTableItem> =
-    useCallback(
-      (record: EquipmentTableItem) => ({
-        onClick: () => debouncedSetSelectedEquipmentId(record.id),
-      }),
-      [debouncedSetSelectedEquipmentId],
-    )
+  const handleTableRowClick = useCallback<EquipmentTableProps['onRow']>(
+    (record) => ({
+      onClick: () => debouncedSetSelectedEquipmentId(record.id),
+    }),
+    [debouncedSetSelectedEquipmentId],
+  )
 
   return (
     <div data-testid='equipment-list-page'>
       <EquipmentTable
-        dataSource={[
-          {
-            id: 1,
-            title: 'title 1',
-            quantity: 1234,
-            condition: EquipmentConditionEnum.Working,
-            category: {
-              id: 1,
-              title: 'category',
-            },
-            purpose: {
-              id: 1,
-              title: 'purpose',
-            },
-            warehouse: null,
-            serialNumber: null,
-            inventoryNumber: null,
-          },
-        ]}
+        dataSource={equipmentList?.results || []}
         pagination={equipmentList?.pagination || false}
         loading={equipmentListIsFetching}
         onChange={handleChangeTable}

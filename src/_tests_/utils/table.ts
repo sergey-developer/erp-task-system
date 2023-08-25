@@ -1,7 +1,7 @@
 import { within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import {
   expectLoadingFinishedByIconIn,
@@ -10,8 +10,17 @@ import {
 
 const getRowIn = (
   container: HTMLElement,
-  id: string | number,
+  id: NumberOrString,
 ): MaybeNull<HTMLElement> => container.querySelector(`[data-row-key='${id}']`)
+
+const clickRowIn = async (
+  container: HTMLElement,
+  user: UserEvent,
+  id: NumberOrString,
+) => {
+  const row = getRowIn(container, id)
+  await user.click(row!)
+}
 
 const getHeadCell = (container: HTMLElement, text: string) =>
   within(container).getByText(text).parentElement?.parentElement
@@ -45,6 +54,8 @@ const expectLoadingFinished = (container: HTMLElement) =>
 
 const utils = {
   getRowIn,
+  clickRowIn,
+
   getHeadCell,
 
   getPaginationIn,
