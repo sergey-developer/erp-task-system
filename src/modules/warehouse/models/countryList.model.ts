@@ -1,6 +1,5 @@
-export type CountryListItemModel = {
-  id: number
-  title: string
-}
+import { CountryModel } from './country.model'
 
-export type CountryListModel = Array<CountryListItemModel>
+export type CountryListItemModel = Pick<CountryModel, 'id' | 'title'>
+
+export type CountryListModel = CountryListItemModel[]

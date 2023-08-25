@@ -21,6 +21,7 @@ export const user = (
   firstName: fakeWord(),
   lastName: fakeWord(),
   middleName: fakeWord(),
+  fullName: fakeWord(),
   email: fakeEmail(),
   phone: fakePhone(),
 })
