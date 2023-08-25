@@ -12,6 +12,7 @@ export type BaseUserModel = {
   avatar: MaybeNull<string>
 }
 
+// todo: разместить по модулям
 type NomenclatureUserPermissions =
   | 'NOMENCLATURES_READ'
   | 'NOMENCLATURES_CREATE'
@@ -36,6 +37,7 @@ export type UserPermissions =
   | EquipmentUserPermissions
 
 export type UserModel = BaseUserModel & {
+  fullName: string
   role: UserRoleEnum
   email: string
   timezone: string
