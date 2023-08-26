@@ -1,8 +1,11 @@
 import { useSetState } from 'ahooks'
+import defaultTo from 'lodash/defaultTo'
 import { FC, useCallback, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 import Equipment from 'modules/warehouse/components/Equipment'
 import { FieldsDependOnCategory } from 'modules/warehouse/components/Equipment/types'
+import { useEquipmentNomenclatureContext } from 'modules/warehouse/components/EquipmentNomenclatureLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
 import { useGetEquipmentList } from 'modules/warehouse/hooks'
@@ -12,7 +15,10 @@ import {
 } from 'modules/warehouse/models'
 
 import { useDebounceFn } from 'shared/hooks'
-import { calculatePaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 import { EquipmentConditionEnum } from '../../constants'
 
@@ -80,12 +86,21 @@ const fakeEquipment: EquipmentModel = {
 }
 
 const EquipmentListPage: FC = () => {
+  const params = useParams<'id'>()
+  const nomenclatureId = defaultTo(Number(params?.id), undefined)
+
+  const { search } = useEquipmentNomenclatureContext()
+
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<number>()
   const debouncedSetSelectedEquipmentId = useDebounceFn(setSelectedEquipmentId)
-  const isShowEquipment = Boolean(selectedEquipmentId)
 
   const [getEquipmentListParams, setGetEquipmentListParams] =
-    useSetState<GetEquipmentListQueryArgs>({ limit: 10, offset: 0 })
+    useSetState<GetEquipmentListQueryArgs>({
+      ...getInitialPaginationParams(),
+      search,
+      nomenclature: nomenclatureId,
+      ordering: 'title',
+    })
 
   const { currentData: equipmentList, isFetching: equipmentListIsFetching } =
     useGetEquipmentList(getEquipmentListParams)
@@ -110,6 +125,8 @@ const EquipmentListPage: FC = () => {
     }),
     [debouncedSetSelectedEquipmentId],
   )
+
+  const isShowEquipment = Boolean(selectedEquipmentId)
 
   return (
     <div data-testid='equipment-list-page'>

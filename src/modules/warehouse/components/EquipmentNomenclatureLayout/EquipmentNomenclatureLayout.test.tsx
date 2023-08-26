@@ -15,7 +15,7 @@ import {
   renderInRoute_latest,
 } from '_tests_/utils'
 
-import ReservesListLayout from './index'
+import EquipmentNomenclatureLayout from './index'
 
 const getContainer = () => screen.getByTestId('reserves-list-layout')
 
@@ -59,7 +59,7 @@ describe('Layout списка резервов', () => {
       [
         {
           path: RouteEnum.EquipmentNomenclatureList,
-          element: <ReservesListLayout />,
+          element: <EquipmentNomenclatureLayout />,
           children: [
             {
               index: true,
@@ -77,7 +77,7 @@ describe('Layout списка резервов', () => {
 
   describe('Кнопка фильтров', () => {
     test('Отображается', () => {
-      render(<ReservesListLayout />)
+      render(<EquipmentNomenclatureLayout />)
 
       const button = testUtils.getFilterButton()
 
@@ -86,7 +86,7 @@ describe('Layout списка резервов', () => {
     })
 
     test('Открывает фильтр', async () => {
-      const { user } = render(<ReservesListLayout />)
+      const { user } = render(<EquipmentNomenclatureLayout />)
 
       await testUtils.clickFilterButton(user)
 
@@ -106,7 +106,7 @@ describe('Layout списка резервов', () => {
 
   describe('Кнопка добавления оборудования', () => {
     test('Отображается', () => {
-      render(<ReservesListLayout />)
+      render(<EquipmentNomenclatureLayout />)
 
       const button = testUtils.getAddEquipmentButton()
 
@@ -117,7 +117,7 @@ describe('Layout списка резервов', () => {
 
   describe('Поле поиска', () => {
     test('Отображается', () => {
-      render(<ReservesListLayout />)
+      render(<EquipmentNomenclatureLayout />)
 
       const field = testUtils.getSearchField()
 
@@ -127,7 +127,7 @@ describe('Layout списка резервов', () => {
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<ReservesListLayout />)
+      const { user } = render(<EquipmentNomenclatureLayout />)
 
       const value = fakeWord()
       const field = await testUtils.setSearch(user, value)

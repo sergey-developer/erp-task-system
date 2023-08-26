@@ -1,3 +1,4 @@
+import defaultTo from 'lodash/defaultTo'
 import { FC, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -16,13 +17,13 @@ import { WrapperStyled } from './styles'
 
 const WarehousePage: FC = () => {
   const params = useParams<'id'>()
-  const warehouseId = Number(params?.id)
+  const warehouseId = defaultTo(Number(params?.id), undefined)
 
   const {
     currentData: warehouse,
     isFetching: warehouseIsFetching,
     error: getWarehouseError,
-  } = useGetWarehouseQuery(warehouseId, { skip: isNaN(warehouseId) })
+  } = useGetWarehouseQuery(warehouseId!, { skip: !warehouseId })
 
   useEffect(() => {
     if (isErrorResponse(getWarehouseError)) {
