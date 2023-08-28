@@ -132,6 +132,12 @@ describe('Таблица оборудования', () => {
     expect(props.onRow).toBeCalledTimes(1)
   })
 
+  test('Можно установить сортировку по умолчанию', () => {
+    render(<EquipmentTable {...props} sort='-title' />)
+    const headCell = testUtils.getHeadCell('Наименование')
+    expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+  })
+
   describe('Наименование', () => {
     test('Отображается', () => {
       render(<EquipmentTable {...props} />)
