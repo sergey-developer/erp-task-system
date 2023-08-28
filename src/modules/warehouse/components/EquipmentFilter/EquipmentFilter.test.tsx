@@ -8,6 +8,8 @@ import {
 
 import { yesNoOptions } from 'shared/constants/selectField'
 
+import warehouseFixtures from 'fixtures/warehouse'
+
 import {
   clickSelectOption,
   getButtonIn,
@@ -19,21 +21,25 @@ import {
   render,
 } from '_tests_/utils'
 
-import {
-  fakeCategories,
-  fakeOwners,
-  fakeWarehouses,
-} from '../EquipmentPageLayout'
+import { fakeCategories } from '../EquipmentPageLayout'
 import EquipmentFilter from './index'
 import { EquipmentFilterProps } from './types'
 
 const props: EquipmentFilterProps = {
   visible: true,
+
   values: {},
   initialValues: {},
-  warehouseList: fakeWarehouses,
+
+  warehouseList: warehouseFixtures.warehouseList(2),
+  warehouseListIsLoading: false,
+
   categoryList: fakeCategories,
-  ownerList: fakeOwners,
+  categoryListIsLoading: false,
+
+  ownerList: warehouseFixtures.customerList(2),
+  ownerListIsLoading: false,
+
   onClose: jest.fn(),
   onApply: jest.fn(),
 }

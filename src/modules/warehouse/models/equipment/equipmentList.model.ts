@@ -1,4 +1,5 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { WarehouseModel } from 'modules/warehouse/models'
 
 import { MaybeNull } from 'shared/types/utils'
 
@@ -7,10 +8,7 @@ export type EquipmentListItemModel = {
   title: string
   serialNumber: MaybeNull<string>
   inventoryNumber: MaybeNull<string>
-  warehouse: MaybeNull<{
-    id: number
-    title: string
-  }>
+  warehouse: MaybeNull<Pick<WarehouseModel, 'id' | 'title'>>
   condition: EquipmentConditionEnum
   quantity: number
 

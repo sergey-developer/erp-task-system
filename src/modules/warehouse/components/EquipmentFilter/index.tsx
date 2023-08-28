@@ -18,9 +18,13 @@ const { RangePicker } = DatePicker
 
 const EquipmentFilter: FC<EquipmentFilterProps> = ({
   visible,
+
   values,
   initialValues,
+
   warehouseList,
+  warehouseListIsLoading,
+
   categoryList,
   ownerList,
   onClose,
@@ -81,6 +85,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
               fieldNames={idAndTitleSelectFieldNames}
               placeholder='Выберите склад'
               options={warehouseList}
+              loading={warehouseListIsLoading}
             />
           </Form.Item>
         </FilterBlock>

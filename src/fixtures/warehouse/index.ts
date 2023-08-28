@@ -2,6 +2,7 @@ import * as country from './country'
 import * as countryList from './countryList'
 import * as currency from './currency'
 import * as customer from './customer'
+import * as customerList from './customerList'
 import * as equipment from './equipment'
 import * as equipmentCategory from './equipmentCategory'
 import * as equipmentList from './equipmentList'
@@ -33,6 +34,7 @@ const warehouseFixtures = {
   ...measurementUnitList,
 
   ...customer,
+  ...customerList,
 
   ...country,
 

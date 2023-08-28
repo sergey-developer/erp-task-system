@@ -7,8 +7,8 @@ export const warehouse = (
 ): WarehouseModel => ({
   id: props?.id || fakeId(),
 
-  address: fakeWord(),
   title: fakeWord(),
+  address: fakeWord(),
   contract: fakeWord(),
   notes: fakeWord(),
   parent: {

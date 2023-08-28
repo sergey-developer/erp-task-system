@@ -7,7 +7,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { RouteEnum } from 'configs/routes'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
-import { WarehouseListModel } from 'modules/warehouse/models'
+import { useGetWarehouseList } from 'modules/warehouse/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 
@@ -16,35 +16,6 @@ import { EquipmentFilterFormFields } from '../EquipmentFilter/types'
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
-
-export const fakeWarehouses: WarehouseListModel = [
-  {
-    id: 1,
-    title: 'warehouse 1',
-    address: 'address 1',
-    legalEntity: {
-      id: 1,
-      title: 'legalEntity 1',
-    },
-    parent: {
-      id: 1,
-      title: 'parent 1',
-    },
-  },
-  {
-    id: 2,
-    title: 'warehouse 2',
-    address: 'address 2',
-    legalEntity: {
-      id: 2,
-      title: 'legalEntity 2',
-    },
-    parent: {
-      id: 2,
-      title: 'parent 2',
-    },
-  },
-]
 
 export const fakeCategories = [
   {
@@ -57,17 +28,6 @@ export const fakeCategories = [
   },
 ]
 
-export const fakeOwners = [
-  {
-    id: 1,
-    title: 'owner 1',
-  },
-  {
-    id: 2,
-    title: 'owner 2',
-  },
-]
-
 const EquipmentPageLayout: FC = () => {
   const navigate = useNavigate()
 
@@ -77,6 +37,11 @@ const EquipmentPageLayout: FC = () => {
 
   const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
 
+  const {
+    currentData: warehouseList = [],
+    isFetching: warehouseListIsFetching,
+  } = useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
+
   const initialFilterValues: EquipmentFilterFormFields = useMemo(
     () => ({
       conditions: [
@@ -85,9 +50,9 @@ const EquipmentPageLayout: FC = () => {
         EquipmentConditionEnum.NonRepairable,
       ],
       categories: fakeCategories.map((c) => c.id),
-      warehouses: fakeWarehouses.map((w) => w.id),
+      warehouses: warehouseList.map((w) => w.id),
     }),
-    [],
+    [warehouseList],
   )
 
   const handleApplyFilter = (values: EquipmentFilterFormFields) => {
@@ -139,9 +104,12 @@ const EquipmentPageLayout: FC = () => {
           visible={filterOpened}
           values={filterValues}
           initialValues={initialFilterValues}
-          warehouseList={fakeWarehouses}
-          categoryList={fakeCategories}
-          ownerList={fakeOwners}
+          warehouseList={warehouseList}
+          warehouseListIsLoading={warehouseListIsFetching}
+          categoryList={[]}
+          categoryListIsLoading={false}
+          ownerList={[]}
+          ownerListIsLoading={false}
           onClose={toggleFilterOpened}
           onApply={handleApplyFilter}
         />

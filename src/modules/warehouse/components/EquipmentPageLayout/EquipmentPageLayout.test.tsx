@@ -17,6 +17,7 @@ import warehouseFixtures from 'fixtures/warehouse'
 import {
   mockGetEquipmentListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
+  mockGetWarehouseListSuccess,
 } from '_tests_/mocks/api'
 import {
   fakeWord,
@@ -103,6 +104,8 @@ describe('Layout номенклатуры оборудования', () => {
       })
 
       test('Открывает фильтр', async () => {
+        mockGetWarehouseListSuccess()
+
         const { user } = render(<EquipmentPageLayout />)
 
         await testUtils.clickFilterButton(user)
