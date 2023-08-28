@@ -1,5 +1,5 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Input, Button, Row, Col, MenuProps, TablePaginationConfig } from 'antd'
+import { Input, Button, Row, Col, MenuProps } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
 import {
   FC,
@@ -361,7 +361,7 @@ const NomenclatureListPage: FC = () => {
   }
 
   const handleTablePagination = useCallback(
-    (pagination: TablePaginationConfig) => {
+    (pagination: Parameters<NomenclatureTableProps['onChange']>[0]) => {
       setGetNomenclatureListParams(calculatePaginationParams(pagination))
     },
     [setGetNomenclatureListParams],

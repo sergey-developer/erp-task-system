@@ -1,6 +1,5 @@
-export type UserListItemModel = {
-  id: number
-  fullName: string
-}
+import { UserModel } from './user.model'
+
+export type UserListItemModel = Pick<UserModel, 'id' | 'fullName'>
 
 export type UserListModel = Array<UserListItemModel>

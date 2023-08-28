@@ -1,17 +1,8 @@
-import { MaybeNull } from 'shared/types/utils'
+import { WarehouseModel } from './warehouse.model'
 
-export type WarehouseListItemModel = {
-  id: number
-  title: string
-  parent: MaybeNull<{
-    id: number
-    title: string
-  }>
-  legalEntity: {
-    id: number
-    title: string
-  }
-  address: string
-}
+export type WarehouseListItemModel = Pick<
+  WarehouseModel,
+  'id' | 'title' | 'parent' | 'legalEntity' | 'address'
+>
 
 export type WarehouseListModel = Array<WarehouseListItemModel>

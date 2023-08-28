@@ -2,10 +2,11 @@ import { useOutletContext } from 'react-router-dom'
 
 import { EquipmentNomenclatureListFilterFormFields } from '../EquipmentNomenclatureListFilter/types'
 
-export type ReservesListContextType = {
+export type EquipmentNomenclatureContextType = Partial<{
   filter: EquipmentNomenclatureListFilterFormFields
-}
+  search: string
+}>
 
-export const useReservesListContext = () => {
-  return useOutletContext<ReservesListContextType>()
+export const useEquipmentNomenclatureContext = () => {
+  return useOutletContext<EquipmentNomenclatureContextType>()
 }

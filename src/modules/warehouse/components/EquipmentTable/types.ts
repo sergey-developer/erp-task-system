@@ -18,6 +18,6 @@ export type EquipmentTableItem = Pick<
 export type EquipmentTableProps = Required<
   Pick<
     TableProps<EquipmentTableItem>,
-    'dataSource' | 'loading' | 'onChange' | 'pagination'
+    'dataSource' | 'loading' | 'onChange' | 'onRow' | 'pagination'
   >
 >
