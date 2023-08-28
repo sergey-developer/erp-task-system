@@ -1,6 +1,9 @@
 import { TableProps } from 'antd'
 
-import { EquipmentListItemModel } from 'modules/warehouse/models'
+import {
+  EquipmentListItemModel,
+  GetEquipmentListSortValue,
+} from 'modules/warehouse/models'
 
 export type EquipmentTableItem = Pick<
   EquipmentListItemModel,
@@ -20,4 +23,6 @@ export type EquipmentTableProps = Required<
     TableProps<EquipmentTableItem>,
     'dataSource' | 'loading' | 'onChange' | 'onRow' | 'pagination'
   >
->
+> & {
+  sort?: GetEquipmentListSortValue
+}

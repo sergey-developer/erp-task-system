@@ -4,7 +4,15 @@ import { ExtendSortKey } from 'shared/types/sort'
 
 import { EquipmentListItemModel } from './equipmentList.model'
 
-export type GetEquipmentListSortKey = 'title'
+export type GetEquipmentListSortKey =
+  | 'title'
+  | 'serialNumber'
+  | 'inventoryNumber'
+  | 'warehouse'
+  | 'condition'
+  | 'quantity'
+  | 'category'
+  | 'purpose'
 
 export type GetEquipmentListSortValue = ExtendSortKey<GetEquipmentListSortKey>
 

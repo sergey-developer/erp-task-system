@@ -7,6 +7,11 @@ import Equipment from 'modules/warehouse/components/Equipment'
 import { FieldsDependOnCategory } from 'modules/warehouse/components/Equipment/types'
 import { useEquipmentNomenclatureContext } from 'modules/warehouse/components/EquipmentNomenclatureLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
+import {
+  getSort,
+  SortableField,
+  sortableFieldToSortValues,
+} from 'modules/warehouse/components/EquipmentTable/sort'
 import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
 import { useGetEquipmentList } from 'modules/warehouse/hooks'
 import {
@@ -89,7 +94,7 @@ const EquipmentListPage: FC = () => {
   const params = useParams<'id'>()
   const nomenclatureId = defaultTo(Number(params?.id), undefined)
 
-  const { search } = useEquipmentNomenclatureContext()
+  const context = useEquipmentNomenclatureContext()
 
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<number>()
   const debouncedSetSelectedEquipmentId = useDebounceFn(setSelectedEquipmentId)
@@ -97,7 +102,7 @@ const EquipmentListPage: FC = () => {
   const [getEquipmentListParams, setGetEquipmentListParams] =
     useSetState<GetEquipmentListQueryArgs>({
       ...getInitialPaginationParams(),
-      search,
+      search: context.search,
       nomenclature: nomenclatureId,
       ordering: 'title',
     })
@@ -112,11 +117,29 @@ const EquipmentListPage: FC = () => {
     [setGetEquipmentListParams],
   )
 
-  const handleChangeTable = useCallback<EquipmentTableProps['onChange']>(
-    (pagination) => {
-      handleTablePagination(pagination)
+  const handleTableSort = useCallback(
+    (sorter: Parameters<EquipmentTableProps['onChange']>[2]) => {
+      if (sorter) {
+        const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
+
+        if (columnKey && columnKey in sortableFieldToSortValues) {
+          setGetEquipmentListParams({
+            ordering: order
+              ? getSort(columnKey as SortableField, order)
+              : undefined,
+          })
+        }
+      }
     },
-    [handleTablePagination],
+    [setGetEquipmentListParams],
+  )
+
+  const handleChangeTable = useCallback<EquipmentTableProps['onChange']>(
+    (pagination, _, sorter) => {
+      handleTablePagination(pagination)
+      handleTableSort(sorter)
+    },
+    [handleTablePagination, handleTableSort],
   )
 
   const handleTableRowClick = useCallback<EquipmentTableProps['onRow']>(
@@ -134,6 +157,7 @@ const EquipmentListPage: FC = () => {
         dataSource={equipmentList?.results || []}
         pagination={equipmentList?.pagination || false}
         loading={equipmentListIsFetching}
+        sort={getEquipmentListParams.ordering}
         onChange={handleChangeTable}
         onRow={handleTableRowClick}
       />

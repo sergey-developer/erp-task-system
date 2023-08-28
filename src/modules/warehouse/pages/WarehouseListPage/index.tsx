@@ -7,12 +7,12 @@ import {
   WarehouseListFilterProps,
 } from 'modules/warehouse/components/WarehouseListFilter/types'
 import WarehouseTable from 'modules/warehouse/components/WarehouseTable'
-import { WarehouseTableProps } from 'modules/warehouse/components/WarehouseTable/types'
 import {
   SortableField,
   sortableFieldToSortValues,
+  getSort,
 } from 'modules/warehouse/components/WarehouseTable/sort'
-import { getSort } from 'modules/warehouse/components/WarehouseTable/utils'
+import { WarehouseTableProps } from 'modules/warehouse/components/WarehouseTable/types'
 import { useGetWarehouseList } from 'modules/warehouse/hooks'
 import { GetWarehouseListQueryArgs } from 'modules/warehouse/models'
 
