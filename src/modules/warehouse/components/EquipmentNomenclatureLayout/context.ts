@@ -8,5 +8,5 @@ export type EquipmentNomenclatureContextType = Partial<{
 }>
 
 export const useEquipmentNomenclatureContext = () => {
-  return useOutletContext<EquipmentNomenclatureContextType>()
+  return useOutletContext<EquipmentNomenclatureContextType>() || {}
 }

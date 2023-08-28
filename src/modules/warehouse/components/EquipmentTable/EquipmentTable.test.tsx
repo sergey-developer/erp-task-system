@@ -127,7 +127,6 @@ describe('Таблица оборудования', () => {
 
   test('При клике на строку обработчик вызывается корректно', async () => {
     const { user } = render(<EquipmentTable {...props} />)
-
     await testUtils.clickRow(user, props.dataSource[0].id)
     expect(props.onRow).toBeCalledTimes(1)
   })
