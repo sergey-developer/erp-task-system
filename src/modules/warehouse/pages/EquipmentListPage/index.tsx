@@ -18,6 +18,7 @@ import {
   EquipmentModel,
   GetEquipmentListQueryArgs,
 } from 'modules/warehouse/models'
+import { equipmentFilterToParams } from 'modules/warehouse/utils'
 
 import { useDebounceFn } from 'shared/hooks'
 import {
@@ -102,6 +103,7 @@ const EquipmentListPage: FC = () => {
   const [getEquipmentListParams, setGetEquipmentListParams] =
     useSetState<GetEquipmentListQueryArgs>({
       ...getInitialPaginationParams(),
+      ...(context.filter && equipmentFilterToParams(context.filter)),
       search: context.search,
       nomenclature: nomenclatureId,
       ordering: 'title',

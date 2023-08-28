@@ -1,6 +1,6 @@
 import { useOutletContext } from 'react-router-dom'
 
-import { EquipmentFilterFormFields } from '../EquipmentFilter/types'
+import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
 
 export type EquipmentPageContextType = Partial<{
   filter: EquipmentFilterFormFields
