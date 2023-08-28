@@ -27,8 +27,12 @@ import EquipmentNomenclatureListPage from './index'
 const getContainer = () =>
   screen.getByTestId('equipment-nomenclature-list-page')
 
+const findContainer = () =>
+  screen.findByTestId('equipment-nomenclature-list-page')
+
 export const testUtils = {
   getContainer,
+  findContainer,
 }
 
 setupApiTests()

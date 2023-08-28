@@ -5,9 +5,19 @@ import React from 'react'
 import { RouteEnum } from 'configs/routes'
 
 import { testUtils as equipmentNomenclatureListFilterTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureListFilter/EquipmentNomenclatureListFilter.test'
+import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
+import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
+import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
 import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 
+import commonFixtures from 'fixtures/common'
+import warehouseFixtures from 'fixtures/warehouse'
+
+import {
+  mockGetEquipmentListSuccess,
+  mockGetEquipmentNomenclatureListSuccess,
+} from '_tests_/mocks/api'
 import {
   fakeWord,
   getButtonIn,
@@ -35,9 +45,13 @@ const getAddEquipmentButton = () =>
 const getSearchField = () =>
   within(getContainer()).getByPlaceholderText('Поиск оборудования')
 
-const setSearch = async (user: UserEvent, value: string) => {
+const setSearch = async (
+  user: UserEvent,
+  value: string,
+  pressEnter: boolean = false,
+): Promise<HTMLElement> => {
   const field = getSearchField()
-  await user.type(field, value)
+  await user.type(field, pressEnter ? value.concat('{enter}') : value)
   return field
 }
 
@@ -53,8 +67,10 @@ const testUtils = {
   setSearch,
 }
 
-describe('Layout списка резервов', () => {
+describe('Layout номенклатуры оборудования', () => {
   test('Отображает дочерний роут', () => {
+    mockGetEquipmentNomenclatureListSuccess()
+
     renderInRoute_latest(
       [
         {
@@ -133,6 +149,53 @@ describe('Layout списка резервов', () => {
       const field = await testUtils.setSearch(user, value)
 
       expect(field).toHaveDisplayValue(value)
+    })
+
+    test('После установки значения переходит на страницу списка номенклатуры оборудования', async () => {
+      const equipmentNomenclatureListItem =
+        warehouseFixtures.equipmentNomenclatureListItem()
+
+      mockGetEquipmentNomenclatureListSuccess({
+        body: commonFixtures.paginatedListResponse([
+          equipmentNomenclatureListItem,
+        ]),
+        once: false,
+      })
+
+      mockGetEquipmentListSuccess()
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: RouteEnum.EquipmentNomenclatureList,
+            element: <EquipmentNomenclatureLayout />,
+            children: [
+              {
+                index: true,
+                element: <EquipmentNomenclatureListPage />,
+              },
+              {
+                path: RouteEnum.EquipmentList,
+                element: <EquipmentListPage />,
+              },
+            ],
+          },
+        ],
+        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+      )
+
+      await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
+      await equipmentNomenclatureTableTestUtils.clickTitleLink(
+        user,
+        equipmentNomenclatureListItem.id,
+        equipmentNomenclatureListItem.title,
+      )
+      equipmentListPageTestUtils.getContainer()
+
+      await testUtils.setSearch(user, fakeWord(), true)
+      await equipmentNomenclatureListPageTestUtils.findContainer()
+      await equipmentNomenclatureTableTestUtils.expectLoadingStarted()
+      await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
     })
   })
 })
