@@ -8,6 +8,10 @@ import commonFixtures from 'fixtures/common'
 import warehouseFixtures from 'fixtures/warehouse'
 
 import {
+  ariaSortAttrAscValue,
+  ariaSortAttrName,
+} from '_tests_/constants/components'
+import {
   mockGetEquipmentListSuccess,
   mockGetEquipmentListForbiddenError,
   mockGetEquipmentListServerError,
@@ -91,6 +95,42 @@ describe('Страница списка оборудования', () => {
       await equipmentTableTestUtils.expectLoadingFinished()
 
       equipmentList.slice(-1).forEach((item) => {
+        const row = equipmentTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    test('Установлена сортировка по умолчанию', async () => {
+      mockGetEquipmentListSuccess({
+        body: commonFixtures.paginatedListResponse(warehouseFixtures.equipmentList()),
+        once: false,
+      })
+
+      render(<EquipmentListPage />)
+
+      await equipmentTableTestUtils.expectLoadingFinished()
+      const headCell = equipmentTableTestUtils.getHeadCell('Наименование')
+
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const equipmentList = warehouseFixtures.equipmentList()
+      mockGetEquipmentListSuccess({
+        body: commonFixtures.paginatedListResponse(equipmentList),
+        once: false,
+      })
+
+      const { user } = render(<EquipmentListPage />)
+
+      await equipmentTableTestUtils.expectLoadingFinished()
+      await equipmentTableTestUtils.clickColTitle(user, 'Серийный номер')
+      await equipmentTableTestUtils.expectLoadingStarted()
+      await equipmentTableTestUtils.expectLoadingFinished()
+      const headCell = equipmentTableTestUtils.getHeadCell('Серийный номер')
+
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+      equipmentList.forEach((item) => {
         const row = equipmentTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })

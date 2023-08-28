@@ -23,7 +23,7 @@ import {
   fakeCategories,
   fakeOwners,
   fakeWarehouses,
-} from '../ReservesListLayout'
+} from '../EquipmentNomenclatureLayout'
 import EquipmentNomenclatureListFilter from './index'
 import { EquipmentNomenclatureListFilterProps } from './types'
 

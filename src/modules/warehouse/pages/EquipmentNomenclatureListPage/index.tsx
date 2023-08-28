@@ -1,22 +1,43 @@
 import { useSetState } from 'ahooks'
-import { TablePaginationConfig } from 'antd'
-import { FC, useCallback } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 
+import { useEquipmentNomenclatureContext } from 'modules/warehouse/components/EquipmentNomenclatureLayout/context'
 import EquipmentNomenclatureTable from 'modules/warehouse/components/EquipmentNomenclatureTable'
 import { EquipmentNomenclatureTableProps } from 'modules/warehouse/components/EquipmentNomenclatureTable/types'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks'
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
 
-import { calculatePaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
+
+const initialPaginationParams = getInitialPaginationParams()
 
 const EquipmentNomenclatureListPage: FC = () => {
+  const { search } = useEquipmentNomenclatureContext()
+
   const [
     getEquipmentNomenclatureListParams,
     setGetEquipmentNomenclatureListParams,
   ] = useSetState<GetEquipmentNomenclatureListQueryArgs>({
-    limit: 10,
-    offset: 0,
+    ...initialPaginationParams,
+    search,
   })
+
+  useEffect(() => {
+    setGetEquipmentNomenclatureListParams((prevState) => {
+      if (prevState.search !== search) {
+        return {
+          ...prevState,
+          search: search || undefined,
+          offset: initialPaginationParams.offset,
+        }
+      }
+
+      return prevState
+    })
+  }, [search, setGetEquipmentNomenclatureListParams])
 
   const {
     currentData: equipmentNomenclatureList,
@@ -24,7 +45,9 @@ const EquipmentNomenclatureListPage: FC = () => {
   } = useGetEquipmentNomenclatureList(getEquipmentNomenclatureListParams)
 
   const handleTablePagination = useCallback(
-    (pagination: TablePaginationConfig) => {
+    (
+      pagination: Parameters<EquipmentNomenclatureTableProps['onChange']>[0],
+    ) => {
       setGetEquipmentNomenclatureListParams(
         calculatePaginationParams(pagination),
       )

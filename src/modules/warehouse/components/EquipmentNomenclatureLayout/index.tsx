@@ -1,7 +1,10 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
+import { SearchProps } from 'antd/es/input'
 import { FC, useMemo, useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+
+import { RouteEnum } from 'configs/routes'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import { WarehouseListModel } from 'modules/warehouse/models'
@@ -10,6 +13,7 @@ import FilterButton from 'components/Buttons/FilterButton'
 
 import EquipmentNomenclatureListFilter from '../EquipmentNomenclatureListFilter'
 import { EquipmentNomenclatureListFilterFormFields } from '../EquipmentNomenclatureListFilter/types'
+import { EquipmentNomenclatureContextType } from './context'
 
 const { Search } = Input
 
@@ -64,7 +68,11 @@ export const fakeOwners = [
   },
 ]
 
-const ReservesListLayout: FC = () => {
+const EquipmentNomenclatureLayout: FC = () => {
+  const navigate = useNavigate()
+
+  const [searchValue, setSearchValue] = useState<string>()
+
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
 
   const [filterValues, setFilterValues] =
@@ -87,11 +95,20 @@ const ReservesListLayout: FC = () => {
   const handleApplyFilter = (
     values: EquipmentNomenclatureListFilterFormFields,
   ) => {
+    navigate(RouteEnum.EquipmentNomenclatureList)
     setFilterValues(values)
     toggleFilterOpened()
   }
 
-  const routeContext = useMemo(() => ({ filter: filterValues }), [filterValues])
+  const handleSearch: SearchProps['onSearch'] = (value) => {
+    navigate(RouteEnum.EquipmentNomenclatureList)
+    setSearchValue(value)
+  }
+
+  const routeContext = useMemo<EquipmentNomenclatureContextType>(
+    () => ({ filter: filterValues, search: searchValue }),
+    [filterValues, searchValue],
+  )
 
   return (
     <>
@@ -107,7 +124,11 @@ const ReservesListLayout: FC = () => {
             </Col>
 
             <Col>
-              <Search placeholder='Поиск оборудования' />
+              <Search
+                allowClear
+                placeholder='Поиск оборудования'
+                onSearch={handleSearch}
+              />
             </Col>
           </Row>
         </Col>
@@ -133,4 +154,4 @@ const ReservesListLayout: FC = () => {
   )
 }
 
-export default ReservesListLayout
+export default EquipmentNomenclatureLayout
