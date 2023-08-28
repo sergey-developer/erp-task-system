@@ -11,9 +11,9 @@ import { WarehouseListModel } from 'modules/warehouse/models'
 
 import FilterButton from 'components/Buttons/FilterButton'
 
-import EquipmentNomenclatureListFilter from '../EquipmentNomenclatureListFilter'
-import { EquipmentNomenclatureListFilterFormFields } from '../EquipmentNomenclatureListFilter/types'
-import { EquipmentNomenclatureContextType } from './context'
+import EquipmentFilter from '../EquipmentFilter'
+import { EquipmentFilterFormFields } from '../EquipmentFilter/types'
+import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
 
@@ -68,33 +68,29 @@ export const fakeOwners = [
   },
 ]
 
-const EquipmentNomenclatureLayout: FC = () => {
+const EquipmentPageLayout: FC = () => {
   const navigate = useNavigate()
 
   const [searchValue, setSearchValue] = useState<string>()
 
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
 
-  const [filterValues, setFilterValues] =
-    useState<EquipmentNomenclatureListFilterFormFields>()
+  const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
 
-  const initialFilterValues: EquipmentNomenclatureListFilterFormFields =
-    useMemo(
-      () => ({
-        conditions: [
-          EquipmentConditionEnum.Working,
-          EquipmentConditionEnum.Broken,
-          EquipmentConditionEnum.NonRepairable,
-        ],
-        categories: fakeCategories.map((c) => c.id),
-        warehouses: fakeWarehouses.map((w) => w.id),
-      }),
-      [],
-    )
+  const initialFilterValues: EquipmentFilterFormFields = useMemo(
+    () => ({
+      conditions: [
+        EquipmentConditionEnum.Working,
+        EquipmentConditionEnum.Broken,
+        EquipmentConditionEnum.NonRepairable,
+      ],
+      categories: fakeCategories.map((c) => c.id),
+      warehouses: fakeWarehouses.map((w) => w.id),
+    }),
+    [],
+  )
 
-  const handleApplyFilter = (
-    values: EquipmentNomenclatureListFilterFormFields,
-  ) => {
+  const handleApplyFilter = (values: EquipmentFilterFormFields) => {
     navigate(RouteEnum.EquipmentNomenclatureList)
     setFilterValues(values)
     toggleFilterOpened()
@@ -105,7 +101,7 @@ const EquipmentNomenclatureLayout: FC = () => {
     setSearchValue(value)
   }
 
-  const routeContext = useMemo<EquipmentNomenclatureContextType>(
+  const routeContext = useMemo<EquipmentPageContextType>(
     () => ({ filter: filterValues, search: searchValue }),
     [filterValues, searchValue],
   )
@@ -139,7 +135,7 @@ const EquipmentNomenclatureLayout: FC = () => {
       </Row>
 
       {filterOpened && (
-        <EquipmentNomenclatureListFilter
+        <EquipmentFilter
           visible={filterOpened}
           values={filterValues}
           initialValues={initialFilterValues}
@@ -154,4 +150,4 @@ const EquipmentNomenclatureLayout: FC = () => {
   )
 }
 
-export default EquipmentNomenclatureLayout
+export default EquipmentPageLayout

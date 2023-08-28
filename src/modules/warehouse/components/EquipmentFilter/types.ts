@@ -3,7 +3,7 @@ import { Moment } from 'moment-timezone'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import { WarehouseListModel } from 'modules/warehouse/models'
 
-export type EquipmentNomenclatureListFilterFormFields = Partial<{
+export type EquipmentFilterFormFields = Partial<{
   conditions: EquipmentConditionEnum[]
   warehouses: number[]
   owners: number[]
@@ -16,17 +16,17 @@ export type EquipmentNomenclatureListFilterFormFields = Partial<{
   createdAt: [Moment, Moment]
 }>
 
-export type EquipmentNomenclatureListFilterProps = {
+export type EquipmentFilterProps = {
   visible: boolean
 
-  values?: EquipmentNomenclatureListFilterFormFields
-  initialValues: EquipmentNomenclatureListFilterFormFields
+  values?: EquipmentFilterFormFields
+  initialValues: EquipmentFilterFormFields
 
   warehouseList: WarehouseListModel
   // todo: поменять во время интеграции с бэком
   categoryList: any[]
   ownerList: any[]
 
-  onApply: (values: EquipmentNomenclatureListFilterFormFields) => void
+  onApply: (values: EquipmentFilterFormFields) => void
   onClose: () => void
 }

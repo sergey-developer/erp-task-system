@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 
 import Equipment from 'modules/warehouse/components/Equipment'
 import { FieldsDependOnCategory } from 'modules/warehouse/components/Equipment/types'
-import { useEquipmentNomenclatureContext } from 'modules/warehouse/components/EquipmentNomenclatureLayout/context'
+import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import {
   getSort,
@@ -94,7 +94,7 @@ const EquipmentListPage: FC = () => {
   const params = useParams<'id'>()
   const nomenclatureId = defaultTo(Number(params?.id), undefined)
 
-  const context = useEquipmentNomenclatureContext()
+  const context = useEquipmentPageContext()
 
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<number>()
   const debouncedSetSelectedEquipmentId = useDebounceFn(setSelectedEquipmentId)

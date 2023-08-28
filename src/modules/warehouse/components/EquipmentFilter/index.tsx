@@ -12,16 +12,11 @@ import {
 } from 'shared/constants/selectField'
 
 import { conditionOptions } from './options'
-import {
-  EquipmentNomenclatureListFilterFormFields,
-  EquipmentNomenclatureListFilterProps,
-} from './types'
+import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
 
 const { RangePicker } = DatePicker
 
-const EquipmentNomenclatureListFilter: FC<
-  EquipmentNomenclatureListFilterProps
-> = ({
+const EquipmentFilter: FC<EquipmentFilterProps> = ({
   visible,
   values,
   initialValues,
@@ -31,7 +26,7 @@ const EquipmentNomenclatureListFilter: FC<
   onClose,
   onApply,
 }) => {
-  const [form] = Form.useForm<EquipmentNomenclatureListFilterFormFields>()
+  const [form] = Form.useForm<EquipmentFilterFormFields>()
 
   useEffect(() => {
     if (!isEmpty(values) && !isEqual(values, initialValues)) {
@@ -40,19 +35,19 @@ const EquipmentNomenclatureListFilter: FC<
   }, [form, values, initialValues])
 
   const resetFields =
-    (fields?: Array<keyof EquipmentNomenclatureListFilterFormFields>) => () => {
+    (fields?: Array<keyof EquipmentFilterFormFields>) => () => {
       form.resetFields(fields)
     }
 
   return (
     <DrawerFilter
-      data-testid='equipment-nomenclature-list-filter'
+      data-testid='equipment-filter'
       visible={visible}
       onClose={onClose}
       onReset={resetFields()}
       onApply={form.submit}
     >
-      <Form<EquipmentNomenclatureListFilterFormFields>
+      <Form<EquipmentFilterFormFields>
         preserve={false}
         layout='vertical'
         form={form}
@@ -186,4 +181,4 @@ const EquipmentNomenclatureListFilter: FC<
   )
 }
 
-export default EquipmentNomenclatureListFilter
+export default EquipmentFilter

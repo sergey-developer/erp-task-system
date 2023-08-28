@@ -1,9 +1,9 @@
 import { useSetState } from 'ahooks'
 import { FC, useCallback, useEffect } from 'react'
 
-import { useEquipmentNomenclatureContext } from 'modules/warehouse/components/EquipmentNomenclatureLayout/context'
 import EquipmentNomenclatureTable from 'modules/warehouse/components/EquipmentNomenclatureTable'
 import { EquipmentNomenclatureTableProps } from 'modules/warehouse/components/EquipmentNomenclatureTable/types'
+import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks'
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
 
@@ -15,29 +15,29 @@ import {
 const initialPaginationParams = getInitialPaginationParams()
 
 const EquipmentNomenclatureListPage: FC = () => {
-  const { search } = useEquipmentNomenclatureContext()
+  const context = useEquipmentPageContext()
 
   const [
     getEquipmentNomenclatureListParams,
     setGetEquipmentNomenclatureListParams,
   ] = useSetState<GetEquipmentNomenclatureListQueryArgs>({
     ...initialPaginationParams,
-    search,
+    search: context.search,
   })
 
   useEffect(() => {
     setGetEquipmentNomenclatureListParams((prevState) => {
-      if (prevState.search !== search) {
+      if (prevState.search !== context.search) {
         return {
           ...prevState,
-          search: search || undefined,
+          search: context.search || undefined,
           offset: initialPaginationParams.offset,
         }
       }
 
       return prevState
     })
-  }, [search, setGetEquipmentNomenclatureListParams])
+  }, [context.search, setGetEquipmentNomenclatureListParams])
 
   const {
     currentData: equipmentNomenclatureList,

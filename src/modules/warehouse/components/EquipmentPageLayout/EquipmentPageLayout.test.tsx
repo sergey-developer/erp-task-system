@@ -4,7 +4,7 @@ import React from 'react'
 
 import { RouteEnum } from 'configs/routes'
 
-import { testUtils as equipmentNomenclatureListFilterTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureListFilter/EquipmentNomenclatureListFilter.test'
+import { testUtils as equipmentFilterTestUtils } from 'modules/warehouse/components/EquipmentFilter/EquipmentFilter.test'
 import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
 import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
 import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
@@ -25,7 +25,7 @@ import {
   renderInRoute_latest,
 } from '_tests_/utils'
 
-import EquipmentNomenclatureLayout from './index'
+import EquipmentPageLayout from './index'
 
 const getContainer = () => screen.getByTestId('reserves-list-layout')
 
@@ -75,7 +75,7 @@ describe('Layout номенклатуры оборудования', () => {
       [
         {
           path: RouteEnum.EquipmentNomenclatureList,
-          element: <EquipmentNomenclatureLayout />,
+          element: <EquipmentPageLayout />,
           children: [
             {
               index: true,
@@ -91,67 +91,75 @@ describe('Layout номенклатуры оборудования', () => {
     expect(page).toBeInTheDocument()
   })
 
-  describe('Кнопка фильтров', () => {
-    test('Отображается', () => {
-      render(<EquipmentNomenclatureLayout />)
-
-      const button = testUtils.getFilterButton()
-
-      expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
-    })
-
-    test('Открывает фильтр', async () => {
-      const { user } = render(<EquipmentNomenclatureLayout />)
-
-      await testUtils.clickFilterButton(user)
-
-      const filter = equipmentNomenclatureListFilterTestUtils.getContainer()
-      expect(filter).toBeInTheDocument()
-    })
-  })
-
   describe('Фильтры', () => {
+    describe('Кнопка фильтров', () => {
+      test('Отображается корректно', () => {
+        render(<EquipmentPageLayout />)
+
+        const button = testUtils.getFilterButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
+
+      test('Открывает фильтр', async () => {
+        const { user } = render(<EquipmentPageLayout />)
+
+        await testUtils.clickFilterButton(user)
+
+        const filter = equipmentFilterTestUtils.getContainer()
+        expect(filter).toBeInTheDocument()
+      })
+    })
+
     test.todo('Устанавливается значение по умолчанию для состояния')
     test.todo('Устанавливается значение по умолчанию для склада')
     test.todo('Устанавливается значение по умолчанию для категории')
-    test.todo('После применения фильтр закрывается')
-    test.todo('После применения значения сохраняются')
     test.todo('Можно закрыть фильтр')
+    test.todo('После применения значения сохраняются')
+
+    test.todo('После применения фильтр закрывается и отправляется запрос')
+    test.todo(
+      'После применения переходит на страницу списка номенклатуры оборудования',
+    )
   })
 
-  describe('Кнопка добавления оборудования', () => {
-    test('Отображается', () => {
-      render(<EquipmentNomenclatureLayout />)
+  describe('Добавление оборудования', () => {
+    describe('Кнопка добавления', () => {
+      test('Отображается корректно', () => {
+        render(<EquipmentPageLayout />)
 
-      const button = testUtils.getAddEquipmentButton()
+        const button = testUtils.getAddEquipmentButton()
 
-      expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
     })
   })
 
-  describe('Поле поиска', () => {
-    test('Отображается', () => {
-      render(<EquipmentNomenclatureLayout />)
+  describe('Поиск', () => {
+    describe('Поле поиска', () => {
+      test('Отображается корректно', () => {
+        render(<EquipmentPageLayout />)
 
-      const field = testUtils.getSearchField()
+        const field = testUtils.getSearchField()
 
-      expect(field).toBeInTheDocument()
-      expect(field).toBeEnabled()
-      expect(field).not.toHaveValue()
+        expect(field).toBeInTheDocument()
+        expect(field).toBeEnabled()
+        expect(field).not.toHaveValue()
+      })
+
+      test('Можно установить значение', async () => {
+        const { user } = render(<EquipmentPageLayout />)
+
+        const value = fakeWord()
+        const field = await testUtils.setSearch(user, value)
+
+        expect(field).toHaveDisplayValue(value)
+      })
     })
 
-    test('Можно установить значение', async () => {
-      const { user } = render(<EquipmentNomenclatureLayout />)
-
-      const value = fakeWord()
-      const field = await testUtils.setSearch(user, value)
-
-      expect(field).toHaveDisplayValue(value)
-    })
-
-    test('После установки значения переходит на страницу списка номенклатуры оборудования', async () => {
+    test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
       const equipmentNomenclatureListItem =
         warehouseFixtures.equipmentNomenclatureListItem()
 
@@ -168,7 +176,7 @@ describe('Layout номенклатуры оборудования', () => {
         [
           {
             path: RouteEnum.EquipmentNomenclatureList,
-            element: <EquipmentNomenclatureLayout />,
+            element: <EquipmentPageLayout />,
             children: [
               {
                 index: true,
@@ -190,10 +198,16 @@ describe('Layout номенклатуры оборудования', () => {
         equipmentNomenclatureListItem.id,
         equipmentNomenclatureListItem.title,
       )
-      equipmentListPageTestUtils.getContainer()
+
+      const equipmentListPage = equipmentListPageTestUtils.getContainer()
+      expect(equipmentListPage).toBeInTheDocument()
 
       await testUtils.setSearch(user, fakeWord(), true)
-      await equipmentNomenclatureListPageTestUtils.findContainer()
+
+      const equipmentNomenclatureListPage =
+        equipmentNomenclatureListPageTestUtils.getContainer()
+      expect(equipmentNomenclatureListPage).toBeInTheDocument()
+
       await equipmentNomenclatureTableTestUtils.expectLoadingStarted()
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
     })
