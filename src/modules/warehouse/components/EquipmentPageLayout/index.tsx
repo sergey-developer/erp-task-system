@@ -52,6 +52,13 @@ const EquipmentPageLayout: FC = () => {
       ],
       categories: equipmentCategoryList.map((c) => c.id),
       warehouses: warehouseList.map((w) => w.id),
+      owners: undefined,
+      priceTo: undefined,
+      priceFrom: undefined,
+      createdAt: undefined,
+      isNew: undefined,
+      isRepaired: undefined,
+      isWarranty: undefined,
     }),
     [equipmentCategoryList, warehouseList],
   )
