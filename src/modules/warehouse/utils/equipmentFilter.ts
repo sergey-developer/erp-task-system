@@ -1,6 +1,9 @@
 import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
 import { EquipmentFilterParams } from 'modules/warehouse/types'
 
+import { DATE_FILTER_FORMAT } from 'shared/constants/dateTime'
+import { formatDate } from 'shared/utils/date'
+
 export const equipmentFilterToParams = (
   values: EquipmentFilterFormFields,
 ): EquipmentFilterParams => {
@@ -27,7 +30,7 @@ export const equipmentFilterToParams = (
     isWarranty,
     priceFrom,
     priceTo,
-    createdAtFrom: createdAt?.[0] ? createdAt[0].toISOString() : undefined,
-    createdAtTo: createdAt?.[1] ? createdAt[1].toISOString() : undefined,
+    createdAtFrom: createdAt?.[0] ? formatDate(createdAt[0], DATE_FILTER_FORMAT) : undefined,
+    createdAtTo: createdAt?.[1] ? formatDate(createdAt[1], DATE_FILTER_FORMAT) : undefined,
   }
 }
