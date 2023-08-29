@@ -14,17 +14,11 @@ import {
 } from 'modules/warehouse/components/EquipmentTable/sort'
 import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
 import { useGetEquipmentList } from 'modules/warehouse/hooks'
-import {
-  EquipmentModel,
-  GetEquipmentListQueryArgs,
-} from 'modules/warehouse/models'
+import { EquipmentModel, GetEquipmentListQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils'
 
 import { useDebounceFn } from 'shared/hooks'
-import {
-  calculatePaginationParams,
-  getInitialPaginationParams,
-} from 'shared/utils/pagination'
+import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import { EquipmentConditionEnum } from '../../constants'
 
@@ -106,7 +100,7 @@ const EquipmentListPage: FC = () => {
       ...getInitialPaginationParams(),
       ...(context.filter && equipmentFilterToParams(context.filter)),
       search: context.search,
-      nomenclature: nomenclatureId,
+      nomenclatureId,
       ordering: 'title',
     })
 
@@ -127,9 +121,7 @@ const EquipmentListPage: FC = () => {
 
         if (columnKey && columnKey in sortableFieldToSortValues) {
           setGetEquipmentListParams({
-            ordering: order
-              ? getSort(columnKey as SortableField, order)
-              : undefined,
+            ordering: order ? getSort(columnKey as SortableField, order) : undefined,
           })
         }
       }
@@ -171,9 +163,7 @@ const EquipmentListPage: FC = () => {
           title={fakeEquipment.title}
           equipment={fakeEquipment}
           displayableFields={
-            fakeEquipment.category.code
-              ? fieldsByCategory[fakeEquipment.category.code]
-              : []
+            fakeEquipment.category.code ? fieldsByCategory[fakeEquipment.category.code] : []
           }
           onClose={() => debouncedSetSelectedEquipmentId(undefined)}
         />
