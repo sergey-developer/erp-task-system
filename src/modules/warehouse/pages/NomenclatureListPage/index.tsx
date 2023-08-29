@@ -37,11 +37,13 @@ import {
   NomenclatureGroupListItemModel,
 } from 'modules/warehouse/models'
 import {
-  useCreateNomenclatureGroupMutation,
   useCreateNomenclatureMutation,
-  useUpdateNomenclatureGroupMutation,
   useUpdateNomenclatureMutation,
 } from 'modules/warehouse/services/nomenclatureApi.service'
+import {
+  useCreateNomenclatureGroupMutation,
+  useUpdateNomenclatureGroupMutation,
+} from 'modules/warehouse/services/nomenclatureGroupApi.service'
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'

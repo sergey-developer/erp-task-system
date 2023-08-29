@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 
 import Equipment from 'modules/warehouse/components/Equipment'
 import { FieldsDependOnCategory } from 'modules/warehouse/components/Equipment/types'
-import { useEquipmentNomenclatureContext } from 'modules/warehouse/components/EquipmentNomenclatureLayout/context'
+import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import {
   getSort,
@@ -18,6 +18,7 @@ import {
   EquipmentModel,
   GetEquipmentListQueryArgs,
 } from 'modules/warehouse/models'
+import { equipmentFilterToParams } from 'modules/warehouse/utils'
 
 import { useDebounceFn } from 'shared/hooks'
 import {
@@ -91,10 +92,11 @@ const fakeEquipment: EquipmentModel = {
 }
 
 const EquipmentListPage: FC = () => {
+  // todo: создать хук который будет возвращать распарсеные значения
   const params = useParams<'id'>()
   const nomenclatureId = defaultTo(Number(params?.id), undefined)
 
-  const context = useEquipmentNomenclatureContext()
+  const context = useEquipmentPageContext()
 
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<number>()
   const debouncedSetSelectedEquipmentId = useDebounceFn(setSelectedEquipmentId)
@@ -102,6 +104,7 @@ const EquipmentListPage: FC = () => {
   const [getEquipmentListParams, setGetEquipmentListParams] =
     useSetState<GetEquipmentListQueryArgs>({
       ...getInitialPaginationParams(),
+      ...(context.filter && equipmentFilterToParams(context.filter)),
       search: context.search,
       nomenclature: nomenclatureId,
       ordering: 'title',
@@ -167,7 +170,11 @@ const EquipmentListPage: FC = () => {
           visible={isShowEquipment}
           title={fakeEquipment.title}
           equipment={fakeEquipment}
-          displayableFields={fieldsByCategory[fakeEquipment.category.code]}
+          displayableFields={
+            fakeEquipment.category.code
+              ? fieldsByCategory[fakeEquipment.category.code]
+              : []
+          }
           onClose={() => debouncedSetSelectedEquipmentId(undefined)}
         />
       )}

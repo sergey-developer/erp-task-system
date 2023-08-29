@@ -1,11 +1,12 @@
 import { useSetState } from 'ahooks'
 import { FC, useCallback, useEffect } from 'react'
 
-import { useEquipmentNomenclatureContext } from 'modules/warehouse/components/EquipmentNomenclatureLayout/context'
 import EquipmentNomenclatureTable from 'modules/warehouse/components/EquipmentNomenclatureTable'
 import { EquipmentNomenclatureTableProps } from 'modules/warehouse/components/EquipmentNomenclatureTable/types'
+import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks'
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
+import { equipmentFilterToParams } from 'modules/warehouse/utils'
 
 import {
   calculatePaginationParams,
@@ -15,29 +16,32 @@ import {
 const initialPaginationParams = getInitialPaginationParams()
 
 const EquipmentNomenclatureListPage: FC = () => {
-  const { search } = useEquipmentNomenclatureContext()
+  const context = useEquipmentPageContext()
 
   const [
     getEquipmentNomenclatureListParams,
     setGetEquipmentNomenclatureListParams,
   ] = useSetState<GetEquipmentNomenclatureListQueryArgs>({
     ...initialPaginationParams,
-    search,
+    ...(context.filter && equipmentFilterToParams(context.filter)),
+    search: context.search,
   })
 
   useEffect(() => {
-    setGetEquipmentNomenclatureListParams((prevState) => {
-      if (prevState.search !== search) {
-        return {
-          ...prevState,
-          search: search || undefined,
-          offset: initialPaginationParams.offset,
-        }
-      }
-
-      return prevState
+    setGetEquipmentNomenclatureListParams({
+      search: context.search || undefined,
+      offset: initialPaginationParams.offset,
     })
-  }, [search, setGetEquipmentNomenclatureListParams])
+  }, [context.search, setGetEquipmentNomenclatureListParams])
+
+  useEffect(() => {
+    if (context.filter) {
+      setGetEquipmentNomenclatureListParams({
+        ...equipmentFilterToParams(context.filter),
+        offset: initialPaginationParams.offset,
+      })
+    }
+  }, [context.filter, setGetEquipmentNomenclatureListParams])
 
   const {
     currentData: equipmentNomenclatureList,

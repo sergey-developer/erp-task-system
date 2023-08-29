@@ -107,7 +107,7 @@ afterEach(() => {
   const onChange = props.onChange as jest.Mock
   onChange.mockReset()
 })
-
+// todo: сделать тесты для сортировки как в EquipmentTable
 describe('Таблица складов', () => {
   test('Отображается корректно', () => {
     renderInRoute_latest(

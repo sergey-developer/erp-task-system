@@ -47,6 +47,10 @@ export const getEquipmentNomenclatureListMessages: ApiRequestMessages<'commonErr
   commonError: 'Ошибка получения списка номенклатуры оборудования',
 }
 
+export const getEquipmentCategoryListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка категорий оборудования',
+}
+
 export const getEquipmentListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка оборудования',
 }
@@ -58,4 +62,8 @@ export const getMeasurementUnitListMessages: ApiRequestMessages<'commonError'> =
 
 export const getCountryListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка стран производителей',
+}
+
+export const getCustomerListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка клиентов',
 }

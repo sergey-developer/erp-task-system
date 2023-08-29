@@ -5,8 +5,8 @@ import { RouteEnum } from 'configs/routes'
 
 import { BreadCrumbArgs } from 'components/Breadcrumbs'
 
+import EquipmentPageLayout from './components/EquipmentPageLayout'
 import ManageWarehousesLayout from './components/ManageWarehousesLayout'
-import EquipmentNomenclatureLayout from './components/EquipmentNomenclatureLayout'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('./pages/WarehouseCatalogListPage'),
@@ -97,7 +97,7 @@ export const route: Readonly<RouteObject> = {
         },
         {
           path: RouteEnum.EquipmentNomenclatureList,
-          element: <EquipmentNomenclatureLayout />,
+          element: <EquipmentPageLayout />,
           handle: {
             crumb: () => (
               <Link to={RouteEnum.EquipmentNomenclatureList}>Оборудование</Link>
