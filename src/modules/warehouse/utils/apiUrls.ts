@@ -2,6 +2,7 @@ import { generatePath } from 'react-router-dom'
 
 import {
   NomenclatureApiEnum,
+  NomenclatureGroupApiEnum,
   WarehouseApiEnum,
 } from 'modules/warehouse/constants'
 
@@ -28,7 +29,7 @@ export const updateNomenclatureUrl = (id: number): string =>
 
 export const updateNomenclatureGroupUrl = (id: number): string =>
   appendSlashAtEnd(
-    generatePath(NomenclatureApiEnum.UpdateNomenclatureGroup, {
+    generatePath(NomenclatureGroupApiEnum.UpdateNomenclatureGroup, {
       id: String(id),
     }),
   )

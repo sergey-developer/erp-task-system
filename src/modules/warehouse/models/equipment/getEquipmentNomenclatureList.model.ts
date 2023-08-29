@@ -1,11 +1,14 @@
+import { EquipmentNomenclatureListItemModel } from 'modules/warehouse/models'
+import { EquipmentFilterParams } from 'modules/warehouse/types'
+
 import { PaginatedListSuccessResponse } from 'shared/models'
 import { PaginationParams } from 'shared/types/pagination'
 
-import { EquipmentNomenclatureListItemModel } from './equipmentNomenclatureList.model'
-
-export type GetEquipmentNomenclatureListQueryArgs = PaginationParams & Partial<{
-  search: string
-}>
+export type GetEquipmentNomenclatureListQueryArgs = PaginationParams &
+  EquipmentFilterParams &
+  Partial<{
+    search: string
+  }>
 
 export type GetEquipmentNomenclatureListSuccessResponse =
   PaginatedListSuccessResponse<EquipmentNomenclatureListItemModel>

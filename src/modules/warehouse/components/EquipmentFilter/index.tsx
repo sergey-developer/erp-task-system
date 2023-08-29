@@ -1,6 +1,6 @@
 import { Form, Radio, Select, InputNumber, DatePicker, Row, Col } from 'antd'
 import isEmpty from 'lodash/isEmpty'
-import isEqual from 'lodash/isEqual'
+import isUndefined from 'lodash/isUndefined'
 import React, { FC, useEffect } from 'react'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
@@ -12,51 +12,61 @@ import {
 } from 'shared/constants/selectField'
 
 import { conditionOptions } from './options'
-import {
-  EquipmentNomenclatureListFilterFormFields,
-  EquipmentNomenclatureListFilterProps,
-} from './types'
+import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
 
 const { RangePicker } = DatePicker
 
-const EquipmentNomenclatureListFilter: FC<
-  EquipmentNomenclatureListFilterProps
-> = ({
+const EquipmentFilter: FC<EquipmentFilterProps> = ({
   visible,
+
   values,
   initialValues,
+
   warehouseList,
+  warehouseListIsLoading,
+
   categoryList,
   ownerList,
+
   onClose,
   onApply,
 }) => {
-  const [form] = Form.useForm<EquipmentNomenclatureListFilterFormFields>()
+  const [form] = Form.useForm<EquipmentFilterFormFields>()
 
   useEffect(() => {
-    if (!isEmpty(values) && !isEqual(values, initialValues)) {
+    if (!isEmpty(values)) {
       form.setFieldsValue(values!)
+    } else {
+      form.setFieldsValue(initialValues)
     }
   }, [form, values, initialValues])
 
   const resetFields =
-    (fields?: Array<keyof EquipmentNomenclatureListFilterFormFields>) => () => {
-      form.resetFields(fields)
+    (fields?: Array<keyof EquipmentFilterFormFields>) => () => {
+      if (isEmpty(fields)) {
+        form.setFieldsValue(initialValues)
+      } else {
+        fields!.forEach((fieldKey) => {
+          const value = initialValues[fieldKey]
+          if (!isUndefined(value)) {
+            form.setFieldsValue({ [fieldKey]: value })
+          }
+        })
+      }
     }
 
   return (
     <DrawerFilter
-      data-testid='equipment-nomenclature-list-filter'
+      data-testid='equipment-filter'
       visible={visible}
       onClose={onClose}
       onReset={resetFields()}
       onApply={form.submit}
     >
-      <Form<EquipmentNomenclatureListFilterFormFields>
+      <Form<EquipmentFilterFormFields>
         preserve={false}
         layout='vertical'
         form={form}
-        initialValues={initialValues}
         onFinish={onApply}
       >
         <FilterBlock
@@ -86,6 +96,7 @@ const EquipmentNomenclatureListFilter: FC<
               fieldNames={idAndTitleSelectFieldNames}
               placeholder='Выберите склад'
               options={warehouseList}
+              loading={warehouseListIsLoading}
             />
           </Form.Item>
         </FilterBlock>
@@ -186,4 +197,4 @@ const EquipmentNomenclatureListFilter: FC<
   )
 }
 
-export default EquipmentNomenclatureListFilter
+export default EquipmentFilter

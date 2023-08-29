@@ -7,94 +7,56 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { RouteEnum } from 'configs/routes'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
-import { WarehouseListModel } from 'modules/warehouse/models'
+import {
+  useGetCustomerList,
+  useGetEquipmentCategoryList,
+  useGetWarehouseList,
+} from 'modules/warehouse/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 
-import EquipmentNomenclatureListFilter from '../EquipmentNomenclatureListFilter'
-import { EquipmentNomenclatureListFilterFormFields } from '../EquipmentNomenclatureListFilter/types'
-import { EquipmentNomenclatureContextType } from './context'
+import EquipmentFilter from '../EquipmentFilter'
+import { EquipmentFilterFormFields } from '../EquipmentFilter/types'
+import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
 
-export const fakeWarehouses: WarehouseListModel = [
-  {
-    id: 1,
-    title: 'warehouse 1',
-    address: 'address 1',
-    legalEntity: {
-      id: 1,
-      title: 'legalEntity 1',
-    },
-    parent: {
-      id: 1,
-      title: 'parent 1',
-    },
-  },
-  {
-    id: 2,
-    title: 'warehouse 2',
-    address: 'address 2',
-    legalEntity: {
-      id: 2,
-      title: 'legalEntity 2',
-    },
-    parent: {
-      id: 2,
-      title: 'parent 2',
-    },
-  },
-]
-
-export const fakeCategories = [
-  {
-    id: 1,
-    title: 'category 1',
-  },
-  {
-    id: 2,
-    title: 'category 2',
-  },
-]
-
-export const fakeOwners = [
-  {
-    id: 1,
-    title: 'owner 1',
-  },
-  {
-    id: 2,
-    title: 'owner 2',
-  },
-]
-
-const EquipmentNomenclatureLayout: FC = () => {
+const EquipmentPageLayout: FC = () => {
   const navigate = useNavigate()
 
   const [searchValue, setSearchValue] = useState<string>()
 
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
 
-  const [filterValues, setFilterValues] =
-    useState<EquipmentNomenclatureListFilterFormFields>()
+  const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
 
-  const initialFilterValues: EquipmentNomenclatureListFilterFormFields =
-    useMemo(
-      () => ({
-        conditions: [
-          EquipmentConditionEnum.Working,
-          EquipmentConditionEnum.Broken,
-          EquipmentConditionEnum.NonRepairable,
-        ],
-        categories: fakeCategories.map((c) => c.id),
-        warehouses: fakeWarehouses.map((w) => w.id),
-      }),
-      [],
-    )
+  const {
+    currentData: warehouseList = [],
+    isFetching: warehouseListIsFetching,
+  } = useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
 
-  const handleApplyFilter = (
-    values: EquipmentNomenclatureListFilterFormFields,
-  ) => {
+  const {
+    currentData: equipmentCategoryList = [],
+    isFetching: equipmentCategoryListIsFetching,
+  } = useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
+
+  const { currentData: customerList = [], isFetching: customerListIsFetching } =
+    useGetCustomerList(undefined, { skip: !filterOpened })
+
+  const initialFilterValues: EquipmentFilterFormFields = useMemo(
+    () => ({
+      conditions: [
+        EquipmentConditionEnum.Working,
+        EquipmentConditionEnum.Broken,
+        EquipmentConditionEnum.NonRepairable,
+      ],
+      categories: equipmentCategoryList.map((c) => c.id),
+      warehouses: warehouseList.map((w) => w.id),
+    }),
+    [equipmentCategoryList, warehouseList],
+  )
+
+  const handleApplyFilter = (values: EquipmentFilterFormFields) => {
     navigate(RouteEnum.EquipmentNomenclatureList)
     setFilterValues(values)
     toggleFilterOpened()
@@ -105,7 +67,7 @@ const EquipmentNomenclatureLayout: FC = () => {
     setSearchValue(value)
   }
 
-  const routeContext = useMemo<EquipmentNomenclatureContextType>(
+  const routeContext = useMemo<EquipmentPageContextType>(
     () => ({ filter: filterValues, search: searchValue }),
     [filterValues, searchValue],
   )
@@ -139,13 +101,16 @@ const EquipmentNomenclatureLayout: FC = () => {
       </Row>
 
       {filterOpened && (
-        <EquipmentNomenclatureListFilter
+        <EquipmentFilter
           visible={filterOpened}
           values={filterValues}
           initialValues={initialFilterValues}
-          warehouseList={fakeWarehouses}
-          categoryList={fakeCategories}
-          ownerList={fakeOwners}
+          warehouseList={warehouseList}
+          warehouseListIsLoading={warehouseListIsFetching}
+          categoryList={equipmentCategoryList}
+          categoryListIsLoading={equipmentCategoryListIsFetching}
+          ownerList={customerList}
+          ownerListIsLoading={customerListIsFetching}
           onClose={toggleFilterOpened}
           onApply={handleApplyFilter}
         />
@@ -154,4 +119,4 @@ const EquipmentNomenclatureLayout: FC = () => {
   )
 }
 
-export default EquipmentNomenclatureLayout
+export default EquipmentPageLayout

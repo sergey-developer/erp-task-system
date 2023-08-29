@@ -39,7 +39,7 @@ setupApiTests()
 setupNotifications()
 
 describe('Страница списка номенклатуры оборудования', () => {
-  describe('Список номенклатуры', () => {
+  describe('Список номенклатуры оборудования', () => {
     test('При успешном запросе отображается верное количество', async () => {
       const equipmentNomenclatureList = [
         warehouseFixtures.equipmentNomenclatureListItem(),
