@@ -11,13 +11,13 @@ export * from './createNomenclature.mock'
 export * from './updateNomenclature.mock'
 export * from './getNomenclatureList.mock'
 
+export * from './getEquipment.mock'
 export * from './getEquipmentList.mock'
 export * from './getEquipmentNomenclatureList.mock'
+export * from './getEquipmentCategoryList.mock'
 
 export * from './getMeasurementUnitList.mock'
 
 export * from './getCountryList.mock'
 
 export * from './getCustomerList.mock'
-
-export * from './getEquipmentCategoryList.mock'

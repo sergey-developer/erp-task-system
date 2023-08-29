@@ -13,32 +13,33 @@ export type FieldsDependOnCategory = keyof Pick<
   | 'owner'
 >
 
-export type EquipmentProps = Required<
-  Pick<DrawerProps, 'onClose' | 'visible' | 'title'>
-> & {
-  equipment: Pick<
-    EquipmentModel,
-    | 'title'
-    | 'category'
-    | 'nomenclature'
-    | 'serialNumber'
-    | 'warehouse'
-    | 'condition'
-    | 'createdAt'
-    | 'createdBy'
-    | 'quantity'
-    | 'measurementUnit'
-    | 'price'
-    | 'currency'
-    | 'purpose'
-    | 'comment'
-    | 'customerInventoryNumber'
-    | 'inventoryNumber'
-    | 'isNew'
-    | 'isWarranty'
-    | 'isRepaired'
-    | 'usageCounter'
-    | 'owner'
-  >
-  displayableFields: FieldsDependOnCategory[]
-}
+export type EquipmentProps = Required<Pick<DrawerProps, 'onClose' | 'visible'>> &
+  Pick<DrawerProps, 'title'> & {
+    equipment?: Pick<
+      EquipmentModel,
+      | 'title'
+      | 'category'
+      | 'nomenclature'
+      | 'serialNumber'
+      | 'warehouse'
+      | 'condition'
+      | 'createdAt'
+      | 'createdBy'
+      | 'quantity'
+      | 'measurementUnit'
+      | 'price'
+      | 'currency'
+      | 'purpose'
+      | 'comment'
+      | 'customerInventoryNumber'
+      | 'inventoryNumber'
+      | 'isNew'
+      | 'isWarranty'
+      | 'isRepaired'
+      | 'usageCounter'
+      | 'owner'
+    >
+    equipmentIsLoading: boolean
+
+    displayableFields: FieldsDependOnCategory[]
+  }
