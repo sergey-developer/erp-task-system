@@ -21,13 +21,7 @@ import {
   mockGetEquipmentNomenclatureListSuccess,
   mockGetWarehouseListSuccess,
 } from '_tests_/mocks/api'
-import {
-  fakeWord,
-  getButtonIn,
-  render,
-  renderInRoute_latest,
-  setupApiTests,
-} from '_tests_/utils'
+import { fakeWord, getButtonIn, render, renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
 import EquipmentPageLayout from './index'
 
@@ -42,12 +36,10 @@ const clickFilterButton = async (user: UserEvent) => {
 }
 
 // add equipment button
-const getAddEquipmentButton = () =>
-  getButtonIn(getContainer(), /Добавить оборудование/)
+const getAddEquipmentButton = () => getButtonIn(getContainer(), /Добавить оборудование/)
 
 // search field
-const getSearchField = () =>
-  within(getContainer()).getByPlaceholderText('Поиск оборудования')
+const getSearchField = () => within(getContainer()).getByPlaceholderText('Поиск оборудования')
 
 const setSearch = async (
   user: UserEvent,
@@ -123,15 +115,119 @@ describe('Layout номенклатуры оборудования', () => {
     })
 
     test.todo('Устанавливается значение по умолчанию для состояния')
+
     test.todo('Устанавливается значение по умолчанию для склада')
+    test.todo('Имеет верные варианты складов')
+
     test.todo('Устанавливается значение по умолчанию для категории')
-    test.todo('Можно закрыть фильтр')
+    test.todo('Имеет верные варианты категорий')
+
+    test.todo('Имеет верные варианты владельцев')
+
+    test('Можно закрыть фильтр', async () => {
+      mockGetCustomerListSuccess()
+      mockGetWarehouseListSuccess({ body: warehouseFixtures.warehouseList() })
+      mockGetEquipmentCategoryListSuccess({
+        body: warehouseFixtures.equipmentCategoryList(),
+      })
+      mockGetEquipmentNomenclatureListSuccess()
+
+      const { user } = render(<EquipmentPageLayout />)
+
+      await testUtils.clickFilterButton(user)
+      await equipmentFilterTestUtils.clickCloseButton(user)
+      const filter = equipmentFilterTestUtils.queryContainer()
+
+      expect(filter).not.toBeInTheDocument()
+    })
+
     test.todo('После применения значения сохраняются')
 
-    test.todo('После применения фильтр закрывается и отправляется запрос')
-    test.todo(
-      'После применения переходит на страницу списка номенклатуры оборудования',
-    )
+    test('После применения фильтр закрывается и отправляется запрос', async () => {
+      mockGetCustomerListSuccess()
+      mockGetWarehouseListSuccess({ body: warehouseFixtures.warehouseList() })
+      mockGetEquipmentCategoryListSuccess({
+        body: warehouseFixtures.equipmentCategoryList(),
+      })
+      mockGetEquipmentNomenclatureListSuccess({ once: false })
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: RouteEnum.EquipmentNomenclatureList,
+            element: <EquipmentPageLayout />,
+            children: [
+              {
+                index: true,
+                element: <EquipmentNomenclatureListPage />,
+              },
+            ],
+          },
+        ],
+        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+      )
+
+      await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
+      await testUtils.clickFilterButton(user)
+      await equipmentFilterTestUtils.clickApplyButton(user)
+      const filter = equipmentFilterTestUtils.queryContainer()
+
+      await equipmentNomenclatureTableTestUtils.expectLoadingStarted()
+      await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
+      expect(filter).not.toBeInTheDocument()
+    })
+
+    test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
+      mockGetCustomerListSuccess()
+      mockGetWarehouseListSuccess({ body: warehouseFixtures.warehouseList() })
+      mockGetEquipmentCategoryListSuccess({
+        body: warehouseFixtures.equipmentCategoryList(),
+      })
+
+      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      mockGetEquipmentNomenclatureListSuccess({
+        body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
+        once: false,
+      })
+
+      mockGetEquipmentListSuccess()
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: RouteEnum.EquipmentNomenclatureList,
+            element: <EquipmentPageLayout />,
+            children: [
+              {
+                index: true,
+                element: <EquipmentNomenclatureListPage />,
+              },
+              {
+                path: RouteEnum.EquipmentList,
+                element: <EquipmentListPage />,
+              },
+            ],
+          },
+        ],
+        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+      )
+
+      await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
+      await equipmentNomenclatureTableTestUtils.clickTitleLink(
+        user,
+        equipmentNomenclatureListItem.id,
+        equipmentNomenclatureListItem.title,
+      )
+      const equipmentListPage = equipmentListPageTestUtils.getContainer()
+      expect(equipmentListPage).toBeInTheDocument()
+
+      await testUtils.clickFilterButton(user)
+      await equipmentFilterTestUtils.clickApplyButton(user)
+      const equipmentNomenclatureListPage =
+        await equipmentNomenclatureListPageTestUtils.findContainer()
+
+      expect(equipmentNomenclatureListPage).toBeInTheDocument()
+    })
   })
 
   describe('Добавление оборудования', () => {
@@ -170,13 +266,9 @@ describe('Layout номенклатуры оборудования', () => {
     })
 
     test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
-      const equipmentNomenclatureListItem =
-        warehouseFixtures.equipmentNomenclatureListItem()
-
+      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclatureListSuccess({
-        body: commonFixtures.paginatedListResponse([
-          equipmentNomenclatureListItem,
-        ]),
+        body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
       })
 
@@ -208,16 +300,9 @@ describe('Layout номенклатуры оборудования', () => {
         equipmentNomenclatureListItem.id,
         equipmentNomenclatureListItem.title,
       )
-
-      const equipmentListPage = equipmentListPageTestUtils.getContainer()
-      expect(equipmentListPage).toBeInTheDocument()
-
+      equipmentListPageTestUtils.getContainer()
       await testUtils.setSearch(user, fakeWord(), true)
-
-      const equipmentNomenclatureListPage =
-        equipmentNomenclatureListPageTestUtils.getContainer()
-      expect(equipmentNomenclatureListPage).toBeInTheDocument()
-
+      equipmentNomenclatureListPageTestUtils.getContainer()
       await equipmentNomenclatureTableTestUtils.expectLoadingStarted()
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
     })

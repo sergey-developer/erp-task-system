@@ -12,6 +12,7 @@ import warehouseFixtures from 'fixtures/warehouse'
 
 import {
   clickSelectOption,
+  expectLoadingFinishedBySelect,
   getButtonIn,
   getRadioButtonIn,
   getSelect,
@@ -44,6 +45,8 @@ const props: EquipmentFilterProps = {
 }
 
 const getContainer = () => screen.getByTestId('equipment-filter')
+
+const queryContainer = () => screen.queryByTestId('equipment-filter')
 
 // conditions
 const getConditionsBlock = (): HTMLElement =>
@@ -91,6 +94,9 @@ const getSelectedWarehouse = (title: string) =>
 const querySelectedWarehouse = (title: string) =>
   querySelectedOptionByTitle(getWarehousesSelect(), title)
 
+const expectWarehousesLoadingFinished = () =>
+  expectLoadingFinishedBySelect(getWarehousesSelect())
+
 // owners
 const getOwnersBlock = () => within(getContainer()).getByTestId('owners')
 
@@ -111,6 +117,9 @@ const getSelectedOwner = (title: string) =>
 
 const querySelectedOwner = (title: string) =>
   querySelectedOptionByTitle(getOwnersSelect(), title)
+
+const expectOwnersLoadingFinished = () =>
+  expectLoadingFinishedBySelect(getOwnersSelect())
 
 // categories
 const getCategoriesBlock = () =>
@@ -134,6 +143,9 @@ const getSelectedCategory = (title: string) =>
 
 const querySelectedCategory = (title: string) =>
   querySelectedOptionByTitle(getCategoriesSelect(), title)
+
+const expectCategoryLoadingFinished = () =>
+  expectLoadingFinishedBySelect(getCategoriesSelect())
 
 // is new
 const getIsNewBlock = () => within(getContainer()).getByTestId('is-new')
@@ -188,7 +200,7 @@ const clickResetAllButton = async (user: UserEvent) => {
 // close button
 const getCloseButton = () => getButtonIn(getContainer(), /close/i)
 
-const clickCloseFilter = async (user: UserEvent) => {
+const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
 }
@@ -203,6 +215,7 @@ const clickApplyButton = async (user: UserEvent) => {
 
 export const testUtils = {
   getContainer,
+  queryContainer,
 
   getConditionsBlock,
   getConditionsSelect,
@@ -221,6 +234,7 @@ export const testUtils = {
   setWarehouse,
   getSelectedWarehouse,
   querySelectedWarehouse,
+  expectWarehousesLoadingFinished,
 
   getOwnersBlock,
   getOwnersSelect,
@@ -230,6 +244,7 @@ export const testUtils = {
   setOwner,
   getSelectedOwner,
   querySelectedOwner,
+  expectOwnersLoadingFinished,
 
   getIsNewBlock,
   getIsNewField,
@@ -251,13 +266,14 @@ export const testUtils = {
   setCategory,
   getSelectedCategory,
   querySelectedCategory,
+  expectCategoryLoadingFinished,
 
   getResetAllButton,
   clickResetButtonIn,
   clickResetAllButton,
 
   getCloseButton,
-  clickCloseFilter,
+  clickCloseButton,
 
   getApplyButton,
   clickApplyButton,

@@ -6,10 +6,7 @@ import React, { FC, useEffect } from 'react'
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
-import {
-  idAndTitleSelectFieldNames,
-  yesNoOptions,
-} from 'shared/constants/selectField'
+import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 
 import { conditionOptions } from './options'
 import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
@@ -26,7 +23,10 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
   warehouseListIsLoading,
 
   categoryList,
+  categoryListIsLoading,
+
   ownerList,
+  ownerListIsLoading,
 
   onClose,
   onApply,
@@ -41,19 +41,18 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
     }
   }, [form, values, initialValues])
 
-  const resetFields =
-    (fields?: Array<keyof EquipmentFilterFormFields>) => () => {
-      if (isEmpty(fields)) {
-        form.setFieldsValue(initialValues)
-      } else {
-        fields!.forEach((fieldKey) => {
-          const value = initialValues[fieldKey]
-          if (!isUndefined(value)) {
-            form.setFieldsValue({ [fieldKey]: value })
-          }
-        })
-      }
+  const resetFields = (fields?: Array<keyof EquipmentFilterFormFields>) => () => {
+    if (isEmpty(fields)) {
+      form.setFieldsValue(initialValues)
+    } else {
+      fields!.forEach((fieldKey) => {
+        const value = initialValues[fieldKey]
+        if (!isUndefined(value)) {
+          form.setFieldsValue({ [fieldKey]: value })
+        }
+      })
     }
+  }
 
   return (
     <DrawerFilter
@@ -84,11 +83,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock
-          data-testid='warehouses'
-          label='Склад'
-          onReset={resetFields(['warehouses'])}
-        >
+        <FilterBlock data-testid='warehouses' label='Склад' onReset={resetFields(['warehouses'])}>
           <Form.Item name='warehouses'>
             <Select
               data-testid='warehouses-select'
@@ -113,15 +108,12 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
               fieldNames={idAndTitleSelectFieldNames}
               placeholder='Выберите владельца оборудования'
               options={ownerList}
+              loading={ownerListIsLoading}
             />
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock
-          data-testid='is-new'
-          label='Новое'
-          onReset={resetFields(['isNew'])}
-        >
+        <FilterBlock data-testid='is-new' label='Новое' onReset={resetFields(['isNew'])}>
           <Form.Item name='isNew'>
             <Radio.Group options={yesNoOptions} />
           </Form.Item>
@@ -159,6 +151,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
               fieldNames={idAndTitleSelectFieldNames}
               placeholder='Выберите категорию'
               options={categoryList}
+              loading={categoryListIsLoading}
             />
           </Form.Item>
         </FilterBlock>
