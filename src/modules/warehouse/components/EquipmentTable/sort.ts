@@ -32,8 +32,8 @@ export const sortableFieldToSortValues: Record<
   ]
 > = {
   title: ['title', '-title'],
-  serialNumber: ['serialNumber', '-serialNumber'],
-  inventoryNumber: ['inventoryNumber', '-inventoryNumber'],
+  serialNumber: ['serial_number', '-serial_number'],
+  inventoryNumber: ['inventory_number', '-inventory_number'],
   warehouse: ['warehouse', '-warehouse'],
   condition: ['condition', '-condition'],
   quantity: ['quantity', '-quantity'],
