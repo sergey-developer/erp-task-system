@@ -20,8 +20,6 @@ import { equipmentFilterToParams } from 'modules/warehouse/utils'
 import { useDebounceFn } from 'shared/hooks'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
-import { EquipmentConditionEnum } from '../../constants'
-
 const fieldsByCategory: Record<string, FieldsDependOnCategory[]> = {
   CONSUMABLE: [
     'customerInventoryNumber',
@@ -50,7 +48,7 @@ const EquipmentListPage: FC = () => {
       ...getInitialPaginationParams(),
       ...(context.filter && equipmentFilterToParams(context.filter)),
       search: context.search,
-      nomenclature: nomenclatureId,
+      nomenclatureId,
       ordering: 'title',
     })
 
@@ -109,19 +107,7 @@ const EquipmentListPage: FC = () => {
   return (
     <div data-testid='equipment-list-page'>
       <EquipmentTable
-        dataSource={[
-          {
-            id: 1,
-            title: '',
-            serialNumber: null,
-            inventoryNumber: null,
-            purpose: { id: 123, title: '' },
-            quantity: 124,
-            category: { id: 43, title: '' },
-            warehouse: null,
-            condition: EquipmentConditionEnum.Working,
-          },
-        ]}
+        dataSource={equipmentList?.results || []}
         pagination={equipmentList?.pagination || false}
         loading={equipmentListIsFetching}
         sort={getEquipmentListParams.ordering}

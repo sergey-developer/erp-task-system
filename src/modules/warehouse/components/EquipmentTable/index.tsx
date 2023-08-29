@@ -18,6 +18,7 @@ const EquipmentTable: FC<EquipmentTableProps> = ({ sort, ...props }) => {
         {...props}
         rowKey='id'
         columns={sortedColumns}
+        showSorterTooltip={false}
       />
     </div>
   )
