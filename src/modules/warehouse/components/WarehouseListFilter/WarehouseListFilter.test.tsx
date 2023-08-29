@@ -51,7 +51,7 @@ const clickResetAllButton = async (user: UserEvent) => {
 // close button
 const getCloseButton = () => getButtonIn(getContainer(), /close/i)
 
-const clickCloseFilter = async (user: UserEvent) => {
+const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
 }
@@ -161,7 +161,7 @@ export const testUtils = {
   clickResetAllButton,
 
   getCloseButton,
-  clickCloseFilter,
+  clickCloseButton,
 
   getApplyButton,
   clickApplyButton,
@@ -229,7 +229,7 @@ describe('Фильтр списка складов', () => {
 
       const { user } = render(<WarehouseListFilter {...props} />)
 
-      await testUtils.clickCloseFilter(user)
+      await testUtils.clickCloseButton(user)
       expect(props.onClose).toBeCalledTimes(1)
     })
   })
