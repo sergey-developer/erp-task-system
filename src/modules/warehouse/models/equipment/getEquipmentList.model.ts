@@ -6,8 +6,8 @@ import { EquipmentListItemModel } from './equipmentList.model'
 
 export type GetEquipmentListSortKey =
   | 'title'
-  | 'serialNumber'
-  | 'inventoryNumber'
+  | 'serial_number'
+  | 'inventory_number'
   | 'warehouse'
   | 'condition'
   | 'quantity'
@@ -19,9 +19,8 @@ export type GetEquipmentListSortValue = ExtendSortKey<GetEquipmentListSortKey>
 export type GetEquipmentListQueryArgs = PaginationParams &
   Partial<{
     search: string
-    nomenclature: number
+    nomenclatureId: number
     ordering: GetEquipmentListSortValue
   }>
 
-export type GetEquipmentListSuccessResponse =
-  PaginatedListSuccessResponse<EquipmentListItemModel>
+export type GetEquipmentListSuccessResponse = PaginatedListSuccessResponse<EquipmentListItemModel>
