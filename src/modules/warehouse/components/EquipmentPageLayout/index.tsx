@@ -7,7 +7,11 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { RouteEnum } from 'configs/routes'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
-import { useGetWarehouseList } from 'modules/warehouse/hooks'
+import {
+  useGetCustomerList,
+  useGetEquipmentCategoryList,
+  useGetWarehouseList,
+} from 'modules/warehouse/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 
@@ -16,17 +20,6 @@ import { EquipmentFilterFormFields } from '../EquipmentFilter/types'
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
-
-export const fakeCategories = [
-  {
-    id: 1,
-    title: 'category 1',
-  },
-  {
-    id: 2,
-    title: 'category 2',
-  },
-]
 
 const EquipmentPageLayout: FC = () => {
   const navigate = useNavigate()
@@ -42,6 +35,14 @@ const EquipmentPageLayout: FC = () => {
     isFetching: warehouseListIsFetching,
   } = useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
 
+  const {
+    currentData: equipmentCategoryList = [],
+    isFetching: equipmentCategoryListIsFetching,
+  } = useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
+
+  const { currentData: customerList = [], isFetching: customerListIsFetching } =
+    useGetCustomerList(undefined, { skip: !filterOpened })
+
   const initialFilterValues: EquipmentFilterFormFields = useMemo(
     () => ({
       conditions: [
@@ -49,10 +50,10 @@ const EquipmentPageLayout: FC = () => {
         EquipmentConditionEnum.Broken,
         EquipmentConditionEnum.NonRepairable,
       ],
-      categories: fakeCategories.map((c) => c.id),
+      categories: equipmentCategoryList.map((c) => c.id),
       warehouses: warehouseList.map((w) => w.id),
     }),
-    [warehouseList],
+    [equipmentCategoryList, warehouseList],
   )
 
   const handleApplyFilter = (values: EquipmentFilterFormFields) => {
@@ -106,10 +107,10 @@ const EquipmentPageLayout: FC = () => {
           initialValues={initialFilterValues}
           warehouseList={warehouseList}
           warehouseListIsLoading={warehouseListIsFetching}
-          categoryList={[]}
-          categoryListIsLoading={false}
-          ownerList={[]}
-          ownerListIsLoading={false}
+          categoryList={equipmentCategoryList}
+          categoryListIsLoading={equipmentCategoryListIsFetching}
+          ownerList={customerList}
+          ownerListIsLoading={customerListIsFetching}
           onClose={toggleFilterOpened}
           onApply={handleApplyFilter}
         />

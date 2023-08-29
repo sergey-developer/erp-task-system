@@ -1,6 +1,6 @@
 import { Form, Radio, Select, InputNumber, DatePicker, Row, Col } from 'antd'
 import isEmpty from 'lodash/isEmpty'
-import isEqual from 'lodash/isEqual'
+import isUndefined from 'lodash/isUndefined'
 import React, { FC, useEffect } from 'react'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
@@ -27,20 +27,32 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
 
   categoryList,
   ownerList,
+
   onClose,
   onApply,
 }) => {
   const [form] = Form.useForm<EquipmentFilterFormFields>()
 
   useEffect(() => {
-    if (!isEmpty(values) && !isEqual(values, initialValues)) {
+    if (!isEmpty(values)) {
       form.setFieldsValue(values!)
+    } else {
+      form.setFieldsValue(initialValues)
     }
   }, [form, values, initialValues])
 
   const resetFields =
     (fields?: Array<keyof EquipmentFilterFormFields>) => () => {
-      form.resetFields(fields)
+      if (isEmpty(fields)) {
+        form.setFieldsValue(initialValues)
+      } else {
+        fields!.forEach((fieldKey) => {
+          const value = initialValues[fieldKey]
+          if (!isUndefined(value)) {
+            form.setFieldsValue({ [fieldKey]: value })
+          }
+        })
+      }
     }
 
   return (
@@ -55,7 +67,6 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
         preserve={false}
         layout='vertical'
         form={form}
-        initialValues={initialValues}
         onFinish={onApply}
       >
         <FilterBlock

@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
 import { getEquipmentNomenclatureListMessages } from 'modules/warehouse/constants'
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
-import { useGetEquipmentNomenclatureListQuery } from 'modules/warehouse/services/equipmentNomenclatureApi.service'
+import { useGetEquipmentNomenclatureListQuery } from 'modules/warehouse/services/equipmentApi.service'
 import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/api'

@@ -15,11 +15,6 @@ export enum NomenclatureApiEnum {
   GetNomenclature = '/nomenclatures/:id/',
   CreateNomenclature = '/nomenclatures/',
   UpdateNomenclature = '/nomenclatures/:id/',
-
-  // todo: выделить в отдельный enum
-  GetNomenclatureGroupList = '/nomenclature-groups/',
-  CreateNomenclatureGroup = '/nomenclature-groups/',
-  UpdateNomenclatureGroup = '/nomenclature-groups/:id/',
 }
 
 export enum NomenclatureApiTriggerEnum {
@@ -27,21 +22,30 @@ export enum NomenclatureApiTriggerEnum {
   CreateNomenclature = 'createNomenclature',
   UpdateNomenclature = 'updateNomenclature',
   GetNomenclatureList = 'getNomenclatureList',
-
-  // todo: выделить в отдельный enum
-  CreateNomenclatureGroup = 'createNomenclatureGroup',
-  UpdateNomenclatureGroup = 'updateNomenclatureGroup',
-  GetNomenclatureGroupList = 'getNomenclatureGroupList',
 }
 
 export enum NomenclatureApiTagEnum {
   NomenclatureList = 'NomenclatureList',
 }
 
+// nomenclature group
+export enum NomenclatureGroupApiEnum {
+  GetNomenclatureGroupList = '/nomenclature-groups/',
+  CreateNomenclatureGroup = '/nomenclature-groups/',
+  UpdateNomenclatureGroup = '/nomenclature-groups/:id/',
+}
+
+export enum NomenclatureGroupApiTriggerEnum {
+  CreateNomenclatureGroup = 'createNomenclatureGroup',
+  UpdateNomenclatureGroup = 'updateNomenclatureGroup',
+  GetNomenclatureGroupList = 'getNomenclatureGroupList',
+}
+
 // equipment
 export enum EquipmentApiEnum {
   GetEquipmentNomenclatureList = '/equipments/nomenclatures/reserves/',
   GetEquipmentList = '/equipments/',
+  GetEquipmentCategoryList = '/equipments/categories/',
 }
 
 // measurement
@@ -52,4 +56,9 @@ export enum MeasurementUnitApiEnum {
 // country
 export enum CountryApiEnum {
   GetCountryList = '/countries/',
+}
+
+// customer
+export enum CustomerApiEnum {
+  GetCustomerList = '/customers/',
 }

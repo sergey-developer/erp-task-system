@@ -15,6 +15,8 @@ import commonFixtures from 'fixtures/common'
 import warehouseFixtures from 'fixtures/warehouse'
 
 import {
+  mockGetCustomerListSuccess,
+  mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
   mockGetWarehouseListSuccess,
@@ -24,6 +26,7 @@ import {
   getButtonIn,
   render,
   renderInRoute_latest,
+  setupApiTests,
 } from '_tests_/utils'
 
 import EquipmentPageLayout from './index'
@@ -68,6 +71,8 @@ const testUtils = {
   setSearch,
 }
 
+setupApiTests()
+
 describe('Layout номенклатуры оборудования', () => {
   test('Отображает дочерний роут', () => {
     mockGetEquipmentNomenclatureListSuccess()
@@ -104,7 +109,9 @@ describe('Layout номенклатуры оборудования', () => {
       })
 
       test('Открывает фильтр', async () => {
+        mockGetCustomerListSuccess()
         mockGetWarehouseListSuccess()
+        mockGetEquipmentCategoryListSuccess()
 
         const { user } = render(<EquipmentPageLayout />)
 

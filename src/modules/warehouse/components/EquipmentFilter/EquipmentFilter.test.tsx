@@ -21,7 +21,6 @@ import {
   render,
 } from '_tests_/utils'
 
-import { fakeCategories } from '../EquipmentPageLayout'
 import EquipmentFilter from './index'
 import { EquipmentFilterProps } from './types'
 
@@ -34,7 +33,7 @@ const props: EquipmentFilterProps = {
   warehouseList: warehouseFixtures.warehouseList(2),
   warehouseListIsLoading: false,
 
-  categoryList: fakeCategories,
+  categoryList: warehouseFixtures.equipmentCategoryList(2),
   categoryListIsLoading: false,
 
   ownerList: warehouseFixtures.customerList(2),

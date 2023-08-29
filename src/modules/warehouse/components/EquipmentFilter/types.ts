@@ -1,7 +1,11 @@
 import { Moment } from 'moment-timezone'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
-import { CustomerListModel, WarehouseListModel } from "modules/warehouse/models";
+import {
+  CustomerListModel,
+  EquipmentCategoryListModel,
+  WarehouseListModel,
+} from 'modules/warehouse/models'
 
 export type EquipmentFilterFormFields = Partial<{
   conditions: EquipmentConditionEnum[]
@@ -25,8 +29,7 @@ export type EquipmentFilterProps = {
   warehouseList: WarehouseListModel
   warehouseListIsLoading: boolean
 
-  // todo: поменять во время интеграции с бэком
-  categoryList: any[]
+  categoryList: EquipmentCategoryListModel
   categoryListIsLoading: boolean
 
   ownerList: CustomerListModel

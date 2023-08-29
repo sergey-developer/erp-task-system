@@ -5,6 +5,7 @@ import * as customer from './customer'
 import * as customerList from './customerList'
 import * as equipment from './equipment'
 import * as equipmentCategory from './equipmentCategory'
+import * as equipmentCategoryList from './equipmentCategoryList'
 import * as equipmentList from './equipmentList'
 import * as equipmentNomenclatureList from './equipmentNomenclatureList'
 import * as legalEntityList from './legalEntityList'
@@ -45,6 +46,7 @@ const warehouseFixtures = {
   ...countryList,
 
   ...equipmentCategory,
+  ...equipmentCategoryList,
 
   ...equipment,
   ...equipmentList,

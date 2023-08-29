@@ -92,6 +92,7 @@ const fakeEquipment: EquipmentModel = {
 }
 
 const EquipmentListPage: FC = () => {
+  // todo: создать хук который будет возвращать распарсеные значения
   const params = useParams<'id'>()
   const nomenclatureId = defaultTo(Number(params?.id), undefined)
 
@@ -169,7 +170,11 @@ const EquipmentListPage: FC = () => {
           visible={isShowEquipment}
           title={fakeEquipment.title}
           equipment={fakeEquipment}
-          displayableFields={fieldsByCategory[fakeEquipment.category.code]}
+          displayableFields={
+            fakeEquipment.category.code
+              ? fieldsByCategory[fakeEquipment.category.code]
+              : []
+          }
           onClose={() => debouncedSetSelectedEquipmentId(undefined)}
         />
       )}
