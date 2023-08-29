@@ -223,7 +223,8 @@ describe('Layout номенклатуры оборудования', () => {
 
       await testUtils.clickFilterButton(user)
       await equipmentFilterTestUtils.clickApplyButton(user)
-      const equipmentNomenclatureListPage = equipmentNomenclatureListPageTestUtils.getContainer()
+      const equipmentNomenclatureListPage =
+        await equipmentNomenclatureListPageTestUtils.findContainer()
 
       expect(equipmentNomenclatureListPage).toBeInTheDocument()
     })
