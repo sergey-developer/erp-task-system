@@ -1,6 +1,5 @@
 import { Form, Radio, Select, InputNumber, DatePicker, Row, Col } from 'antd'
 import isEmpty from 'lodash/isEmpty'
-import isUndefined from 'lodash/isUndefined'
 import React, { FC, useEffect } from 'react'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
@@ -46,10 +45,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
       form.setFieldsValue(initialValues)
     } else {
       fields!.forEach((fieldKey) => {
-        const value = initialValues[fieldKey]
-        if (!isUndefined(value)) {
-          form.setFieldsValue({ [fieldKey]: value })
-        }
+        form.setFieldsValue({ [fieldKey]: initialValues[fieldKey] })
       })
     }
   }
