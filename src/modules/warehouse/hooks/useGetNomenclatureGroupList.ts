@@ -10,7 +10,7 @@ import {
   GetNomenclatureGroupListQueryArgs,
   GetNomenclatureGroupListSuccessResponse,
 } from 'modules/warehouse/models'
-import { useGetNomenclatureGroupListQuery } from 'modules/warehouse/services/nomenclatureApi.service'
+import { useGetNomenclatureGroupListQuery } from 'modules/warehouse/services/nomenclatureGroupApi.service'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/api'
 import { MaybeUndefined } from 'shared/types/utils'

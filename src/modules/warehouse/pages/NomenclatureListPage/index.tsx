@@ -1,5 +1,5 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Input, Button, Row, Col, MenuProps, TablePaginationConfig } from 'antd'
+import { Input, Button, Row, Col, MenuProps } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
 import {
   FC,
@@ -37,11 +37,13 @@ import {
   NomenclatureGroupListItemModel,
 } from 'modules/warehouse/models'
 import {
-  useCreateNomenclatureGroupMutation,
   useCreateNomenclatureMutation,
-  useUpdateNomenclatureGroupMutation,
   useUpdateNomenclatureMutation,
 } from 'modules/warehouse/services/nomenclatureApi.service'
+import {
+  useCreateNomenclatureGroupMutation,
+  useUpdateNomenclatureGroupMutation,
+} from 'modules/warehouse/services/nomenclatureGroupApi.service'
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -361,7 +363,7 @@ const NomenclatureListPage: FC = () => {
   }
 
   const handleTablePagination = useCallback(
-    (pagination: TablePaginationConfig) => {
+    (pagination: Parameters<NomenclatureTableProps['onChange']>[0]) => {
       setGetNomenclatureListParams(calculatePaginationParams(pagination))
     },
     [setGetNomenclatureListParams],

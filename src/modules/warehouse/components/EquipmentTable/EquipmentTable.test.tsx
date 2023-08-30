@@ -7,6 +7,12 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import warehouseFixtures from 'fixtures/warehouse'
 
+import {
+  ariaSortAttrAscValue,
+  ariaSortAttrDescValue,
+  ariaSortAttrName,
+  columnWithSortingClass,
+} from '_tests_/constants/components'
 import { render, tableTestUtils } from '_tests_/utils'
 
 import EquipmentTable from './index'
@@ -26,10 +32,18 @@ const getContainer = () => screen.getByTestId('equipment-table')
 
 const getRow = (id: number) => tableTestUtils.getRowIn(getContainer(), id)
 
+const getHeadCell = (text: string) =>
+  tableTestUtils.getHeadCell(getContainer(), text)
+
 const clickRow = async (user: UserEvent, id: number) =>
   tableTestUtils.clickRowIn(getContainer(), user, id)
 
 const getColTitle = (text: string) => within(getContainer()).getByText(text)
+
+const clickColTitle = async (user: UserEvent, title: string) => {
+  const col = getColTitle(title)
+  await user.click(col)
+}
 
 const getColValue = (
   id: number,
@@ -51,9 +65,14 @@ const expectLoadingFinished = async (): Promise<HTMLElement> => {
 
 export const testUtils = {
   getContainer,
+
   getRow,
   clickRow,
+
+  getHeadCell,
+
   getColTitle,
+  clickColTitle,
   getColValue,
 
   expectLoadingStarted,
@@ -108,15 +127,21 @@ describe('Таблица оборудования', () => {
 
   test('При клике на строку обработчик вызывается корректно', async () => {
     const { user } = render(<EquipmentTable {...props} />)
-
     await testUtils.clickRow(user, props.dataSource[0].id)
     expect(props.onRow).toBeCalledTimes(1)
+  })
+
+  test('Можно установить сортировку по умолчанию', () => {
+    render(<EquipmentTable {...props} sort='-title' />)
+    const headCell = testUtils.getHeadCell('Наименование')
+    expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
   })
 
   describe('Наименование', () => {
     test('Отображается', () => {
       render(<EquipmentTable {...props} />)
 
+      const headCell = testUtils.getHeadCell('Наименование')
       const title = testUtils.getColTitle('Наименование')
       const value = testUtils.getColValue(
         equipmentListItem.id,
@@ -125,6 +150,44 @@ describe('Таблица оборудования', () => {
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+      expect(headCell).toHaveClass(columnWithSortingClass)
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+    })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Наименование')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Наименование')
+      const headCell = testUtils.getHeadCell('Наименование')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Наименование')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Наименование')
+      expect(headCell).not.toHaveAttribute(
+        ariaSortAttrName,
+        ariaSortAttrDescValue,
+      )
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
     })
   })
 
@@ -141,6 +204,42 @@ describe('Таблица оборудования', () => {
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
     })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Серийный номер')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Серийный номер')
+      const headCell = testUtils.getHeadCell('Серийный номер')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Серийный номер')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Серийный номер')
+      expect(headCell).not.toHaveAttribute(
+        ariaSortAttrName,
+        ariaSortAttrDescValue,
+      )
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
   })
 
   describe('Инвентарный номер', () => {
@@ -155,6 +254,42 @@ describe('Таблица оборудования', () => {
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Инвентарный номер')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Инвентарный номер')
+      const headCell = testUtils.getHeadCell('Инвентарный номер')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Инвентарный номер')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Инвентарный номер')
+      expect(headCell).not.toHaveAttribute(
+        ariaSortAttrName,
+        ariaSortAttrDescValue,
+      )
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
     })
   })
 
@@ -171,6 +306,42 @@ describe('Таблица оборудования', () => {
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
     })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Склад')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Склад')
+      const headCell = testUtils.getHeadCell('Склад')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Склад')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Склад')
+      expect(headCell).not.toHaveAttribute(
+        ariaSortAttrName,
+        ariaSortAttrDescValue,
+      )
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
   })
 
   describe('Состояние', () => {
@@ -185,6 +356,42 @@ describe('Таблица оборудования', () => {
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Состояние')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Состояние')
+      const headCell = testUtils.getHeadCell('Состояние')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Состояние')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Состояние')
+      expect(headCell).not.toHaveAttribute(
+        ariaSortAttrName,
+        ariaSortAttrDescValue,
+      )
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
     })
   })
 
@@ -201,6 +408,42 @@ describe('Таблица оборудования', () => {
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
     })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Количество')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Количество')
+      const headCell = testUtils.getHeadCell('Количество')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Количество')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Количество')
+      expect(headCell).not.toHaveAttribute(
+        ariaSortAttrName,
+        ariaSortAttrDescValue,
+      )
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
   })
 
   describe('Категория', () => {
@@ -216,6 +459,42 @@ describe('Таблица оборудования', () => {
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
     })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Категория')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Категория')
+      const headCell = testUtils.getHeadCell('Категория')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Категория')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Категория')
+      expect(headCell).not.toHaveAttribute(
+        ariaSortAttrName,
+        ariaSortAttrDescValue,
+      )
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
   })
 
   describe('Назначение', () => {
@@ -230,6 +509,42 @@ describe('Таблица оборудования', () => {
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Назначение')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<EquipmentTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Назначение')
+      const headCell = testUtils.getHeadCell('Назначение')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Назначение')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Назначение')
+      expect(headCell).not.toHaveAttribute(
+        ariaSortAttrName,
+        ariaSortAttrDescValue,
+      )
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
     })
   })
 })

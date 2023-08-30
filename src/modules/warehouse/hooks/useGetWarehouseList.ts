@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import {
+  CustomUseQueryHookResult,
+  CustomUseQueryOptions,
+} from 'lib/rtk-query/types'
 
 import { getWarehouseListMessages } from 'modules/warehouse/constants'
 import {
@@ -19,8 +22,12 @@ export type UseGetWarehouseListResult = CustomUseQueryHookResult<
 
 export const useGetWarehouseList = (
   args?: GetWarehouseListQueryArgs,
+  options?: CustomUseQueryOptions<
+    GetWarehouseListQueryArgs,
+    GetWarehouseListSuccessResponse
+  >,
 ): UseGetWarehouseListResult => {
-  const state = useGetWarehouseListQuery(args)
+  const state = useGetWarehouseListQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {

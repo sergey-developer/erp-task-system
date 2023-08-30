@@ -22,6 +22,7 @@ import {
   expectLoadingFinishedByIconIn,
   expectLoadingStartedByIconIn,
   renderInRoute_latest,
+  tableTestUtils,
 } from '_tests_/utils'
 
 import WarehouseTable from './index'
@@ -37,22 +38,12 @@ const props: Readonly<WarehouseTableProps> = {
 
 const getContainer = () => screen.getByTestId('warehouse-table')
 
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
+const getRow = (id: number) => tableTestUtils.getRowIn(getContainer(), id)
 
-const queryChildByText = (text: string) =>
-  within(getContainer()).queryByText(text)
+const getHeadCell = (text: string) =>
+  tableTestUtils.getHeadCell(getContainer(), text)
 
-const getRow = (id: WarehouseTableItem['id']): MaybeNull<HTMLElement> =>
-  // eslint-disable-next-line testing-library/no-node-access
-  getContainer().querySelector(`[data-row-key='${id}']`)
-
-const getHeadCell = (text: string) => {
-  // eslint-disable-next-line testing-library/no-node-access
-  return getChildByText(text).parentElement?.parentElement!
-}
-
-const getColTitle = getChildByText
-const queryColTitle = queryChildByText
+const getColTitle = (text: string) => within(getContainer()).getByText(text)
 
 const clickColTitle = async (user: UserEvent, title: string) => {
   const col = getColTitle(title)
@@ -96,13 +87,13 @@ const expectLoadingFinished = () =>
 
 export const testUtils = {
   getContainer,
+
   getRow,
-  getChildByText,
-  queryChildByText,
+
   getHeadCell,
+
   getColTitle,
   getColValue,
-  queryColTitle,
   clickColTitle,
 
   getTitleLink,
@@ -116,7 +107,7 @@ afterEach(() => {
   const onChange = props.onChange as jest.Mock
   onChange.mockReset()
 })
-
+// todo: сделать тесты для сортировки как в EquipmentTable
 describe('Таблица складов', () => {
   test('Отображается корректно', () => {
     renderInRoute_latest(
@@ -194,8 +185,8 @@ describe('Таблица складов', () => {
           warehouseListItem.title,
         )
 
-        const warehousePage = warehousePageTestUtils.getContainer()
-        expect(warehousePage).toBeInTheDocument()
+        const page = warehousePageTestUtils.getContainer()
+        expect(page).toBeInTheDocument()
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {

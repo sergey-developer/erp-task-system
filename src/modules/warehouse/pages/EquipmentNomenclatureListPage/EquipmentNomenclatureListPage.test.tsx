@@ -27,15 +27,19 @@ import EquipmentNomenclatureListPage from './index'
 const getContainer = () =>
   screen.getByTestId('equipment-nomenclature-list-page')
 
+const findContainer = (): Promise<HTMLElement> =>
+  screen.findByTestId('equipment-nomenclature-list-page')
+
 export const testUtils = {
   getContainer,
+  findContainer,
 }
 
 setupApiTests()
 setupNotifications()
 
 describe('Страница списка номенклатуры оборудования', () => {
-  describe('Список номенклатуры', () => {
+  describe('Список номенклатуры оборудования', () => {
     test('При успешном запросе отображается верное количество', async () => {
       const equipmentNomenclatureList = [
         warehouseFixtures.equipmentNomenclatureListItem(),

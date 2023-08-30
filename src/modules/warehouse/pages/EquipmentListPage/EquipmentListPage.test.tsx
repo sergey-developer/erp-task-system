@@ -7,10 +7,12 @@ import { getEquipmentListMessages } from 'modules/warehouse/constants'
 import commonFixtures from 'fixtures/common'
 import warehouseFixtures from 'fixtures/warehouse'
 
+import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import {
   mockGetEquipmentListSuccess,
   mockGetEquipmentListForbiddenError,
   mockGetEquipmentListServerError,
+  mockGetEquipmentSuccess,
 } from '_tests_/mocks/api'
 import {
   fakeWord,
@@ -68,9 +70,7 @@ describe('Страница списка оборудования', () => {
         render(<EquipmentListPage />)
 
         await equipmentTableTestUtils.expectLoadingFinished()
-        const notification = await findNotification(
-          getEquipmentListMessages.commonError,
-        )
+        const notification = await findNotification(getEquipmentListMessages.commonError)
 
         expect(notification).toBeInTheDocument()
       })
@@ -96,12 +96,51 @@ describe('Страница списка оборудования', () => {
       })
     })
 
-    test('При клике на строку открывается карточка просмотра оборудования', async () => {
-      // todo: вызвать mockGetEquipmentSuccess когда будет готова интеграция
+    test('Установлена сортировка по умолчанию', async () => {
+      mockGetEquipmentListSuccess({
+        body: commonFixtures.paginatedListResponse(warehouseFixtures.equipmentList()),
+        once: false,
+      })
+
+      render(<EquipmentListPage />)
+
+      await equipmentTableTestUtils.expectLoadingFinished()
+      const headCell = equipmentTableTestUtils.getHeadCell('Наименование')
+
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const equipmentList = warehouseFixtures.equipmentList()
+      mockGetEquipmentListSuccess({
+        body: commonFixtures.paginatedListResponse(equipmentList),
+        once: false,
+      })
+
+      const { user } = render(<EquipmentListPage />)
+
+      await equipmentTableTestUtils.expectLoadingFinished()
+      await equipmentTableTestUtils.clickColTitle(user, 'Серийный номер')
+      await equipmentTableTestUtils.expectLoadingStarted()
+      await equipmentTableTestUtils.expectLoadingFinished()
+      const headCell = equipmentTableTestUtils.getHeadCell('Серийный номер')
+
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+      equipmentList.forEach((item) => {
+        const row = equipmentTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Карточка просмотра оборудования', () => {
+    test('Карточка просмотра оборудования открывается', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
+
+      mockGetEquipmentSuccess(equipmentListItem.id)
 
       const { user } = render(<EquipmentListPage />)
 
@@ -112,11 +151,13 @@ describe('Страница списка оборудования', () => {
       expect(equipment).toBeInTheDocument()
     })
 
-    test('Можно закрыть карточку просмотра оборудования', async () => {
+    test('Карточка просмотра оборудования закрывается', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
+
+      mockGetEquipmentSuccess(equipmentListItem.id)
 
       const { user } = render(<EquipmentListPage />)
 
@@ -128,6 +169,14 @@ describe('Страница списка оборудования', () => {
       await waitFor(() => {
         expect(equipment).not.toBeInTheDocument()
       })
+    })
+
+    test.todo('При успешном запросе отображается информация оборудования')
+
+    describe('При не успешном запросе', () => {
+      test.todo('Обрабатывается ошибка 403')
+      test.todo('Обрабатывается ошибка 404')
+      test.todo('Обрабатывается ошибка 500')
     })
   })
 })

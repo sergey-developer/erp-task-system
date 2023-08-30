@@ -1,20 +1,24 @@
 import { useSetState } from 'ahooks'
-import { FC, useCallback, useState } from 'react'
+import defaultTo from 'lodash/defaultTo'
+import { FC, useCallback, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 import Equipment from 'modules/warehouse/components/Equipment'
 import { FieldsDependOnCategory } from 'modules/warehouse/components/Equipment/types'
+import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
-import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
-import { useGetEquipmentList } from 'modules/warehouse/hooks'
 import {
-  EquipmentModel,
-  GetEquipmentListQueryArgs,
-} from 'modules/warehouse/models'
+  getSort,
+  SortableField,
+  sortableFieldToSortValues,
+} from 'modules/warehouse/components/EquipmentTable/sort'
+import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
+import { useGetEquipment, useGetEquipmentList } from 'modules/warehouse/hooks'
+import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
+import { equipmentFilterToParams } from 'modules/warehouse/utils'
 
 import { useDebounceFn } from 'shared/hooks'
-import { calculatePaginationParams } from 'shared/utils/pagination'
-
-import { EquipmentConditionEnum } from '../../constants'
+import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 const fieldsByCategory: Record<string, FieldsDependOnCategory[]> = {
   CONSUMABLE: [
@@ -28,67 +32,40 @@ const fieldsByCategory: Record<string, FieldsDependOnCategory[]> = {
   ],
 }
 
-const fakeEquipment: EquipmentModel = {
-  id: 1,
-  title: 'title 1',
-  quantity: 1234,
-  condition: EquipmentConditionEnum.Working,
-  category: {
-    id: 1,
-    title: 'category',
-    code: 'CONSUMABLE',
-  },
-  purpose: {
-    id: 1,
-    title: 'purpose',
-  },
-  warehouse: {
-    id: 1,
-    title: 'warehouse',
-  },
-  currency: {
-    id: 1,
-    title: 'руб',
-  },
-  measurementUnit: {
-    id: 1,
-    title: 'шт',
-  },
-  createdBy: {
-    id: 1,
-    fullName: 'user name',
-  },
-  createdAt: new Date().toISOString(),
-  nomenclature: {
-    id: 1,
-    title: 'nomenclature',
-    equipmentHasSerialNumber: true,
-  },
-  isNew: true,
-  isRepaired: true,
-  isWarranty: true,
-  owner: {
-    id: 1,
-    title: 'owner',
-  },
-  usageCounter: null,
-  customerInventoryNumber: null,
-  comment: null,
-  price: null,
-  serialNumber: null,
-  inventoryNumber: null,
-}
-
 const EquipmentListPage: FC = () => {
+  // todo: создать хук который будет возвращать распарсеные значения
+  const params = useParams<'id'>()
+  const nomenclatureId = defaultTo(Number(params?.id), undefined)
+
+  const context = useEquipmentPageContext()
+
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<number>()
   const debouncedSetSelectedEquipmentId = useDebounceFn(setSelectedEquipmentId)
   const isShowEquipment = Boolean(selectedEquipmentId)
 
   const [getEquipmentListParams, setGetEquipmentListParams] =
-    useSetState<GetEquipmentListQueryArgs>({ limit: 10, offset: 0 })
+    useSetState<GetEquipmentListQueryArgs>({
+      ...getInitialPaginationParams(),
+      ...(context.filter && equipmentFilterToParams(context.filter)),
+      search: context.search,
+      nomenclatureId,
+      ordering: 'title',
+    })
 
   const { currentData: equipmentList, isFetching: equipmentListIsFetching } =
     useGetEquipmentList(getEquipmentListParams)
+
+  const {
+    currentData: equipment,
+    isFetching: equipmentIsFetching,
+    isError: isGetEquipmentError,
+  } = useGetEquipment({ equipmentId: selectedEquipmentId! }, { skip: !isShowEquipment })
+
+  useEffect(() => {
+    if (isGetEquipmentError) {
+      setSelectedEquipmentId(undefined)
+    }
+  }, [isGetEquipmentError])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<EquipmentTableProps['onChange']>[0]) => {
@@ -97,11 +74,27 @@ const EquipmentListPage: FC = () => {
     [setGetEquipmentListParams],
   )
 
-  const handleChangeTable = useCallback<EquipmentTableProps['onChange']>(
-    (pagination) => {
-      handleTablePagination(pagination)
+  const handleTableSort = useCallback(
+    (sorter: Parameters<EquipmentTableProps['onChange']>[2]) => {
+      if (sorter) {
+        const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
+
+        if (columnKey && columnKey in sortableFieldToSortValues) {
+          setGetEquipmentListParams({
+            ordering: order ? getSort(columnKey as SortableField, order) : undefined,
+          })
+        }
+      }
     },
-    [handleTablePagination],
+    [setGetEquipmentListParams],
+  )
+
+  const handleChangeTable = useCallback<EquipmentTableProps['onChange']>(
+    (pagination, _, sorter) => {
+      handleTablePagination(pagination)
+      handleTableSort(sorter)
+    },
+    [handleTablePagination, handleTableSort],
   )
 
   const handleTableRowClick = useCallback<EquipmentTableProps['onRow']>(
@@ -117,6 +110,7 @@ const EquipmentListPage: FC = () => {
         dataSource={equipmentList?.results || []}
         pagination={equipmentList?.pagination || false}
         loading={equipmentListIsFetching}
+        sort={getEquipmentListParams.ordering}
         onChange={handleChangeTable}
         onRow={handleTableRowClick}
       />
@@ -124,9 +118,10 @@ const EquipmentListPage: FC = () => {
       {isShowEquipment && (
         <Equipment
           visible={isShowEquipment}
-          title={fakeEquipment.title}
-          equipment={fakeEquipment}
-          displayableFields={fieldsByCategory[fakeEquipment.category.code]}
+          title={equipment?.title}
+          equipment={equipment}
+          equipmentIsLoading={equipmentIsFetching}
+          displayableFields={fieldsByCategory[equipment?.category.code || ''] || []}
           onClose={() => debouncedSetSelectedEquipmentId(undefined)}
         />
       )}

@@ -7,7 +7,7 @@ import {
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
 
-const measurementUnitApiService = baseApiService.injectEndpoints({
+const countryApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     getCountryList: build.query<
       GetCountryListSuccessResponse,
@@ -21,4 +21,4 @@ const measurementUnitApiService = baseApiService.injectEndpoints({
   }),
 })
 
-export const { useGetCountryListQuery } = measurementUnitApiService
+export const { useGetCountryListQuery } = countryApiService
