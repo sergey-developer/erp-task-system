@@ -15,11 +15,7 @@ import { MaybeNull } from 'shared/types/utils'
 export type EquipmentModel = {
   id: number
   title: string
-  nomenclature: Pick<
-    NomenclatureModel,
-    'id' | 'title' | 'equipmentHasSerialNumber'
-  >
-  warehouse: Pick<WarehouseModel, 'id' | 'title'>
+  nomenclature: Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'>
   condition: EquipmentConditionEnum
   createdAt: string
   createdBy: Pick<UserModel, 'id' | 'fullName'>
@@ -30,6 +26,7 @@ export type EquipmentModel = {
   isRepaired: boolean
   purpose: Pick<WorkTypeModel, 'id' | 'title'>
 
+  warehouse: MaybeNull<Pick<WarehouseModel, 'id' | 'title'>>
   customerInventoryNumber: MaybeNull<string>
   inventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>

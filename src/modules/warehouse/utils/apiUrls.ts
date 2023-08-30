@@ -1,10 +1,11 @@
 import { generatePath } from 'react-router-dom'
 
 import {
+  EquipmentApiEnum,
   NomenclatureApiEnum,
   NomenclatureGroupApiEnum,
-  WarehouseApiEnum,
-} from 'modules/warehouse/constants'
+  WarehouseApiEnum
+} from "modules/warehouse/constants";
 
 import { appendSlashAtEnd } from 'shared/utils/string'
 
@@ -32,4 +33,9 @@ export const updateNomenclatureGroupUrl = (id: number): string =>
     generatePath(NomenclatureGroupApiEnum.UpdateNomenclatureGroup, {
       id: String(id),
     }),
+  )
+
+export const getEquipmentUrl = (id: number): string =>
+  appendSlashAtEnd(
+    generatePath(EquipmentApiEnum.GetEquipment, { id: String(id) }),
   )

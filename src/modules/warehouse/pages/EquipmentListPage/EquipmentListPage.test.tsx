@@ -7,14 +7,12 @@ import { getEquipmentListMessages } from 'modules/warehouse/constants'
 import commonFixtures from 'fixtures/common'
 import warehouseFixtures from 'fixtures/warehouse'
 
-import {
-  ariaSortAttrAscValue,
-  ariaSortAttrName,
-} from '_tests_/constants/components'
+import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import {
   mockGetEquipmentListSuccess,
   mockGetEquipmentListForbiddenError,
   mockGetEquipmentListServerError,
+  mockGetEquipmentSuccess,
 } from '_tests_/mocks/api'
 import {
   fakeWord,
@@ -72,9 +70,7 @@ describe('Страница списка оборудования', () => {
         render(<EquipmentListPage />)
 
         await equipmentTableTestUtils.expectLoadingFinished()
-        const notification = await findNotification(
-          getEquipmentListMessages.commonError,
-        )
+        const notification = await findNotification(getEquipmentListMessages.commonError)
 
         expect(notification).toBeInTheDocument()
       })
@@ -135,13 +131,16 @@ describe('Страница списка оборудования', () => {
         expect(row).toBeInTheDocument()
       })
     })
+  })
 
-    test('При клике на строку открывается карточка просмотра оборудования', async () => {
-      // todo: вызвать mockGetEquipmentSuccess когда будет готова интеграция
+  describe('Карточка просмотра оборудования', () => {
+    test('Карточка просмотра оборудования открывается', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
+
+      mockGetEquipmentSuccess(equipmentListItem.id)
 
       const { user } = render(<EquipmentListPage />)
 
@@ -152,11 +151,13 @@ describe('Страница списка оборудования', () => {
       expect(equipment).toBeInTheDocument()
     })
 
-    test('Можно закрыть карточку просмотра оборудования', async () => {
+    test('Карточка просмотра оборудования закрывается', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
+
+      mockGetEquipmentSuccess(equipmentListItem.id)
 
       const { user } = render(<EquipmentListPage />)
 
@@ -168,6 +169,14 @@ describe('Страница списка оборудования', () => {
       await waitFor(() => {
         expect(equipment).not.toBeInTheDocument()
       })
+    })
+
+    test.todo('При успешном запросе отображается информация оборудования')
+
+    describe('При не успешном запросе', () => {
+      test.todo('Обрабатывается ошибка 403')
+      test.todo('Обрабатывается ошибка 404')
+      test.todo('Обрабатывается ошибка 500')
     })
   })
 })
