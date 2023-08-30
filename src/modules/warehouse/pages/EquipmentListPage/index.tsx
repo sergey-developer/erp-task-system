@@ -4,7 +4,6 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Equipment from 'modules/warehouse/components/Equipment'
-import { FieldsDependOnCategory } from 'modules/warehouse/components/Equipment/types'
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import {
@@ -20,17 +19,7 @@ import { equipmentFilterToParams } from 'modules/warehouse/utils'
 import { useDebounceFn } from 'shared/hooks'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
-const fieldsByCategory: Record<string, FieldsDependOnCategory[]> = {
-  CONSUMABLE: [
-    'customerInventoryNumber',
-    'inventoryNumber',
-    'isNew',
-    'isWarranty',
-    'isRepaired',
-    'usageCounter',
-    'owner',
-  ],
-}
+import { getHiddenFieldsByCategory } from '../../components/Equipment/utils'
 
 const EquipmentListPage: FC = () => {
   // todo: создать хук который будет возвращать распарсеные значения
@@ -121,7 +110,7 @@ const EquipmentListPage: FC = () => {
           title={equipment?.title}
           equipment={equipment}
           equipmentIsLoading={equipmentIsFetching}
-          displayableFields={fieldsByCategory[equipment?.category?.code || ''] || []}
+          hiddenFields={equipment?.category ? getHiddenFieldsByCategory(equipment.category) : []}
           onClose={() => debouncedSetSelectedEquipmentId(undefined)}
         />
       )}

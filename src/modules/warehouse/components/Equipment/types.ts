@@ -2,7 +2,7 @@ import { DrawerProps } from 'antd'
 
 import { EquipmentModel } from 'modules/warehouse/models'
 
-export type FieldsDependOnCategory = keyof Pick<
+export type FieldsMaybeHidden = keyof Pick<
   EquipmentModel,
   | 'customerInventoryNumber'
   | 'inventoryNumber'
@@ -41,5 +41,5 @@ export type EquipmentProps = Required<Pick<DrawerProps, 'onClose' | 'visible'>> 
     >
     equipmentIsLoading: boolean
 
-    displayableFields: FieldsDependOnCategory[]
+    hiddenFields: FieldsMaybeHidden[]
   }

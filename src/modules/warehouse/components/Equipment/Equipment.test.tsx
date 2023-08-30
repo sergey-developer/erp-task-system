@@ -20,7 +20,7 @@ const props: EquipmentProps = {
   title: fakeWord(),
   equipment: warehouseFixtures.equipment(),
   equipmentIsLoading: false,
-  displayableFields: [],
+  hiddenFields: [],
   onClose: jest.fn(),
 }
 
@@ -28,12 +28,20 @@ export const blockTestIds = [
   'title',
   'category',
   'nomenclature',
+  'customer-inventory-number',
+  'inventory-number',
+  'serial-number',
   'warehouse',
   'condition',
   'created-at',
   'created-by',
   'quantity',
   'price',
+  'is-new',
+  'is-warranty',
+  'is-repaired',
+  'usage-counter',
+  'owner',
   'purpose',
   'comment',
 ]
@@ -85,9 +93,7 @@ export const testUtils = {
 describe('Информация об оборудовании', () => {
   test('Заголовок отображается', () => {
     render(<Equipment {...props} />)
-
     const title = within(testUtils.getContainer()).getByText(props.title as string)
-
     expect(title).toBeInTheDocument()
   })
 
@@ -146,7 +152,7 @@ describe('Информация об оборудовании', () => {
 
   describe('Инвентарный номер заказчика', () => {
     test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['customerInventoryNumber']} />)
+      render(<Equipment {...props} hiddenFields={['customerInventoryNumber']} />)
 
       const block = testUtils.getBlock('customer-inventory-number')
       const label = testUtils.getInfoInBlock(block, /Инвентарный номер заказчика/)
@@ -165,7 +171,7 @@ describe('Информация об оборудовании', () => {
 
   describe('Инвентарный номер', () => {
     test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['inventoryNumber']} />)
+      render(<Equipment {...props} hiddenFields={['inventoryNumber']} />)
 
       const block = testUtils.getBlock('inventory-number')
       const label = testUtils.getInfoInBlock(block, /Инвентарный номер/)
@@ -273,7 +279,7 @@ describe('Информация об оборудовании', () => {
     const block = testUtils.getBlock('quantity')
     const quantityLabel = testUtils.getInfoInBlock(block, /Количество/)
     const quantityValue = testUtils.getInfoInBlock(block, props.equipment!.quantity!)
-    const measurementUnitLabel = testUtils.getInfoInBlock(block, /Ед. измерения/)
+    const measurementUnitLabel = testUtils.getInfoInBlock(block, /Ед. изм/)
     const measurementUnitValue = testUtils.getInfoInBlock(
       block,
       props.equipment!.measurementUnit.title,
@@ -302,7 +308,7 @@ describe('Информация об оборудовании', () => {
 
   describe('Новое', () => {
     test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['isNew']} />)
+      render(<Equipment {...props} hiddenFields={['isNew']} />)
 
       const block = testUtils.getBlock('is-new')
       const label = testUtils.getInfoInBlock(block, /Новое/)
@@ -321,7 +327,7 @@ describe('Информация об оборудовании', () => {
 
   describe('На гарантии', () => {
     test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['isWarranty']} />)
+      render(<Equipment {...props} hiddenFields={['isWarranty']} />)
 
       const block = testUtils.getBlock('is-warranty')
       const label = testUtils.getInfoInBlock(block, /На гарантии/)
@@ -340,7 +346,7 @@ describe('Информация об оборудовании', () => {
 
   describe('Отремонтированное', () => {
     test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['isRepaired']} />)
+      render(<Equipment {...props} hiddenFields={['isRepaired']} />)
 
       const block = testUtils.getBlock('is-repaired')
       const label = testUtils.getInfoInBlock(block, /Отремонтированное/)
@@ -359,7 +365,7 @@ describe('Информация об оборудовании', () => {
 
   describe('Счётчик пробега текущий', () => {
     test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['usageCounter']} />)
+      render(<Equipment {...props} hiddenFields={['usageCounter']} />)
 
       const block = testUtils.getBlock('usage-counter')
       const label = testUtils.getInfoInBlock(block, /Счётчик пробега текущий/)
@@ -378,7 +384,7 @@ describe('Информация об оборудовании', () => {
 
   describe('Владелец оборудования', () => {
     test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['owner']} />)
+      render(<Equipment {...props} hiddenFields={['owner']} />)
 
       const block = testUtils.getBlock('owner')
       const label = testUtils.getInfoInBlock(block, /Владелец оборудования/)
