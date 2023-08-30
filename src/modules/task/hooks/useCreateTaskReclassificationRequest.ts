@@ -30,7 +30,7 @@ export const useCreateTaskReclassificationRequest = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
@@ -41,7 +41,7 @@ export const useCreateTaskReclassificationRequest = () => {
         showErrorNotification(commonApiMessages.unknownError)
       }
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return { fn, state }
 }

@@ -1,4 +1,4 @@
-import { ExtendedSortKey } from 'shared/types/sort'
+import { ExtendSortKey } from 'shared/types/sort'
 import { MaybeUndefined } from 'shared/types/utils'
 
 import { WarehouseListModel } from './warehouseList.model'
@@ -10,7 +10,7 @@ export type GetWarehouseListSortKey =
   | 'address'
   | 'parent'
 
-export type GetWarehouseListSortValue = ExtendedSortKey<GetWarehouseListSortKey>
+export type GetWarehouseListSortValue = ExtendSortKey<GetWarehouseListSortKey>
 
 export type GetWarehouseListQueryArgs = MaybeUndefined<
   Partial<{

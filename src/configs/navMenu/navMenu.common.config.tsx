@@ -21,6 +21,11 @@ const navMenuCommonConfig: Array<NavMenuItem> = [
         text: 'Справочники',
         link: RouteEnum.WarehouseCatalogList,
       },
+      {
+        key: RouteEnum.ReserveCatalogList,
+        text: 'Управление запасами',
+        link: RouteEnum.ReserveCatalogList,
+      },
     ],
   },
 ]

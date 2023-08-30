@@ -1,18 +1,18 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { FC, useCallback, useState } from 'react'
 
-import WarehouseListFilter from 'modules/warehouse/features/WarehouseListFilter'
+import WarehouseListFilter from 'modules/warehouse/components/WarehouseListFilter'
 import {
   WarehouseListFilterFormFields,
   WarehouseListFilterProps,
-} from 'modules/warehouse/features/WarehouseListFilter/interfaces'
-import WarehouseTable from 'modules/warehouse/features/WarehouseTable'
-import { WarehouseTableProps } from 'modules/warehouse/features/WarehouseTable/interfaces'
+} from 'modules/warehouse/components/WarehouseListFilter/types'
+import WarehouseTable from 'modules/warehouse/components/WarehouseTable'
 import {
   SortableField,
   sortableFieldToSortValues,
-} from 'modules/warehouse/features/WarehouseTable/sort'
-import { getSort } from 'modules/warehouse/features/WarehouseTable/utils'
+  getSort,
+} from 'modules/warehouse/components/WarehouseTable/sort'
+import { WarehouseTableProps } from 'modules/warehouse/components/WarehouseTable/types'
 import { useGetWarehouseList } from 'modules/warehouse/hooks'
 import { GetWarehouseListQueryArgs } from 'modules/warehouse/models'
 

@@ -2,7 +2,9 @@ export * from './baseTask.model'
 export * from './task.model'
 
 export * from './taskComment.model'
+
 export * from './taskAttachment.model'
+export * from './taskAttachmentList.model'
 
 export * from './getTask.model'
 export * from './resolveTask.model'
