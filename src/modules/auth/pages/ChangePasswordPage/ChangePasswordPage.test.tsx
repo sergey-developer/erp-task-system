@@ -290,9 +290,9 @@ describe('Страница смены пароля', () => {
     })
 
     test('Обрабатывается ошибка 404', async () => {
-      const notFoundErrorMessage = fakeWord()
+      const errorMessage = fakeWord()
       mockUpdatePasswordNotFoundError({
-        body: { detail: notFoundErrorMessage },
+        body: { detail: errorMessage },
       })
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
@@ -306,11 +306,11 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
-      const errorMessage = testUtils.getChildByText(notFoundErrorMessage)
+      const notification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      const errorText = testUtils.getChildByText(errorMessage)
 
-      expect(successNotification).not.toBeInTheDocument()
-      expect(errorMessage).toBeInTheDocument()
+      expect(notification).not.toBeInTheDocument()
+      expect(errorText).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
       expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
     })
