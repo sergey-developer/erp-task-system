@@ -17,7 +17,7 @@ const { Text } = Typography
 const Equipment: FC<EquipmentProps> = ({
   equipment,
   equipmentIsLoading,
-  hiddenFields,
+  hiddenFields = [],
   ...props
 }) => {
   return (

@@ -110,7 +110,7 @@ const EquipmentListPage: FC = () => {
           title={equipment?.title}
           equipment={equipment}
           equipmentIsLoading={equipmentIsFetching}
-          hiddenFields={equipment?.category ? getHiddenFieldsByCategory(equipment.category) : []}
+          hiddenFields={equipment?.category && getHiddenFieldsByCategory(equipment.category)}
           onClose={() => debouncedSetSelectedEquipmentId(undefined)}
         />
       )}
