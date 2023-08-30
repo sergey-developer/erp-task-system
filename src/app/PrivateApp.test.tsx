@@ -428,9 +428,9 @@ describe('Private app', () => {
               })
               mockGetUserMeSuccess({ body: fakeUser })
 
-              const notFoundErrorMessage = fakeWord()
+              const errorMessage = fakeWord()
               mockUpdateUserStatusNotFoundError(fakeUser.id, {
-                body: { detail: notFoundErrorMessage },
+                body: { detail: errorMessage },
               })
 
               const { user } = render(<PrivateApp />)
@@ -452,7 +452,7 @@ describe('Private app', () => {
                 new RegExp(fakeUserStatus1.title),
               )
 
-              const notification = await findNotification(notFoundErrorMessage)
+              const notification = await findNotification(errorMessage)
               expect(notification).toBeInTheDocument()
             })
 

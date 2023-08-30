@@ -12,6 +12,7 @@ export const equipment = (
   props?: Partial<
     Pick<
       EquipmentModel,
+      | 'id'
       | 'nomenclature'
       | 'category'
       | 'customerInventoryNumber'
@@ -24,17 +25,11 @@ export const equipment = (
     >
   >,
 ): EquipmentModel => ({
+  id: props?.id || fakeId(),
   nomenclature:
     props?.nomenclature ||
-    pick(
-      warehouseFixtures.nomenclature(),
-      'id',
-      'title',
-      'equipmentHasSerialNumber',
-    ),
-  category:
-    props?.category ||
-    pick(warehouseFixtures.equipmentCategory(), 'id', 'title', 'code'),
+    pick(warehouseFixtures.nomenclature(), 'id', 'title', 'equipmentHasSerialNumber'),
+  category: props?.category || pick(warehouseFixtures.equipmentCategory(), 'id', 'title', 'code'),
   isNew: props?.isNew || false,
   isWarranty: props?.isWarranty || false,
   isRepaired: props?.isRepaired || false,
@@ -43,7 +38,6 @@ export const equipment = (
   usageCounter: props?.usageCounter || fakeInteger(),
   owner: props?.owner || pick(warehouseFixtures.customer(), 'id', 'title'),
 
-  id: fakeId(),
   title: fakeWord(),
   warehouse: pick(warehouseFixtures.warehouse(), 'id', 'title'),
   condition: EquipmentConditionEnum.Working,

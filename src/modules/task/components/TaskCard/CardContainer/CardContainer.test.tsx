@@ -2105,9 +2105,9 @@ describe('Контейнер детальной карточки заявки', 
 
         mockGetWorkGroupListSuccess({ body: [] })
 
-        const forbiddenErrorMessage = fakeWord()
+        const errorMessage = fakeWord()
         mockTakeTaskForbiddenError(props.taskId, {
-          body: { detail: [forbiddenErrorMessage] },
+          body: { detail: [errorMessage] },
         })
 
         const { user } = render(<TaskCardContainer {...props} />, {
@@ -2121,7 +2121,7 @@ describe('Контейнер детальной карточки заявки', 
         await assigneeBlockTestUtils.clickTakeTaskButton(user)
         taskCardTestUtils.expectLoadingNotStarted()
 
-        const notification = await findNotification(forbiddenErrorMessage)
+        const notification = await findNotification(errorMessage)
         expect(notification).toBeInTheDocument()
       })
     })
