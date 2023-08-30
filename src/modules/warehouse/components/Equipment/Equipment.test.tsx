@@ -10,7 +10,7 @@ import { formatDate } from 'shared/utils/date'
 
 import warehouseFixtures from 'fixtures/warehouse'
 
-import { fakeWord, getButtonIn, render } from '_tests_/utils'
+import { expectLoadingFinishedBySpinner, fakeWord, getButtonIn, render } from '_tests_/utils'
 
 import Equipment from './index'
 import { EquipmentProps } from './types'
@@ -19,19 +19,32 @@ const props: EquipmentProps = {
   visible: true,
   title: fakeWord(),
   equipment: warehouseFixtures.equipment(),
+  equipmentIsLoading: false,
   displayableFields: [],
   onClose: jest.fn(),
 }
 
+export const blockTestIds = [
+  'title',
+  'category',
+  'nomenclature',
+  'warehouse',
+  'condition',
+  'created-at',
+  'created-by',
+  'quantity',
+  'price',
+  'purpose',
+  'comment',
+]
+
 const getContainer = () => screen.getByTestId('equipment')
 
-const findContainer = (): Promise<HTMLElement> =>
-  screen.findByTestId('equipment')
+const findContainer = (): Promise<HTMLElement> => screen.findByTestId('equipment')
 
 const getBlock = (testId: string) => within(getContainer()).getByTestId(testId)
 
-const queryBlock = (testId: string) =>
-  within(getContainer()).queryByTestId(testId)
+const queryBlock = (testId: string) => within(getContainer()).queryByTestId(testId)
 
 const getInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
   within(block).getByText(value)
@@ -47,6 +60,11 @@ const clickCloseButton = async (user: UserEvent) => {
   await user.click(button)
 }
 
+// loading
+const expectLoadingStarted = expectLoadingFinishedBySpinner('equipment-started')
+
+const expectLoadingFinished = expectLoadingFinishedBySpinner('equipment-loading')
+
 export const testUtils = {
   getContainer,
   findContainer,
@@ -59,15 +77,16 @@ export const testUtils = {
 
   getCloseButton,
   clickCloseButton,
+
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
 describe('Информация об оборудовании', () => {
   test('Заголовок отображается', () => {
     render(<Equipment {...props} />)
 
-    const title = within(testUtils.getContainer()).getByText(
-      props.title as string,
-    )
+    const title = within(testUtils.getContainer()).getByText(props.title as string)
 
     expect(title).toBeInTheDocument()
   })
@@ -78,12 +97,26 @@ describe('Информация об оборудовании', () => {
     expect(props.onClose).toBeCalledTimes(1)
   })
 
+  test('Состояние загрузки отображается', async () => {
+    render(<Equipment {...props} equipmentIsLoading />)
+    await testUtils.expectLoadingStarted()
+  })
+
+  test('Информация не отображаются во время загрузки', () => {
+    render(<Equipment {...props} equipmentIsLoading />)
+
+    blockTestIds.forEach((id) => {
+      const block = testUtils.queryBlock(id)
+      expect(block).not.toBeInTheDocument()
+    })
+  })
+
   test('Наименование отображается', () => {
     render(<Equipment {...props} />)
 
     const block = testUtils.getBlock('title')
     const label = testUtils.getInfoInBlock(block, /Наименование/)
-    const value = testUtils.getInfoInBlock(block, props.equipment.title)
+    const value = testUtils.getInfoInBlock(block, props.equipment!.title)
 
     expect(label).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -94,10 +127,7 @@ describe('Информация об оборудовании', () => {
 
     const block = testUtils.getBlock('category')
     const label = testUtils.getInfoInBlock(block, /Категория/)
-    const value = testUtils.getInfoInBlock(
-      block,
-      props.equipment.category.title,
-    )
+    const value = testUtils.getInfoInBlock(block, props.equipment!.category.title)
 
     expect(label).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -108,10 +138,7 @@ describe('Информация об оборудовании', () => {
 
     const block = testUtils.getBlock('nomenclature')
     const label = testUtils.getInfoInBlock(block, /Номенклатура/)
-    const value = testUtils.getInfoInBlock(
-      block,
-      props.equipment.nomenclature.title,
-    )
+    const value = testUtils.getInfoInBlock(block, props.equipment!.nomenclature.title)
 
     expect(label).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -119,22 +146,11 @@ describe('Информация об оборудовании', () => {
 
   describe('Инвентарный номер заказчика', () => {
     test('Отображается если есть в списке отображаемых', () => {
-      render(
-        <Equipment
-          {...props}
-          displayableFields={['customerInventoryNumber']}
-        />,
-      )
+      render(<Equipment {...props} displayableFields={['customerInventoryNumber']} />)
 
       const block = testUtils.getBlock('customer-inventory-number')
-      const label = testUtils.getInfoInBlock(
-        block,
-        /Инвентарный номер заказчика/,
-      )
-      const value = testUtils.getInfoInBlock(
-        block,
-        props.equipment.customerInventoryNumber!,
-      )
+      const label = testUtils.getInfoInBlock(block, /Инвентарный номер заказчика/)
+      const value = testUtils.getInfoInBlock(block, props.equipment!.customerInventoryNumber!)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -153,10 +169,7 @@ describe('Информация об оборудовании', () => {
 
       const block = testUtils.getBlock('inventory-number')
       const label = testUtils.getInfoInBlock(block, /Инвентарный номер/)
-      const value = testUtils.getInfoInBlock(
-        block,
-        props.equipment.inventoryNumber!,
-      )
+      const value = testUtils.getInfoInBlock(block, props.equipment!.inventoryNumber!)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -209,10 +222,7 @@ describe('Информация об оборудовании', () => {
 
     const block = testUtils.getBlock('warehouse')
     const label = testUtils.getInfoInBlock(block, /Склад/)
-    const value = testUtils.getInfoInBlock(
-      block,
-      props.equipment.warehouse.title,
-    )
+    const value = testUtils.getInfoInBlock(block, props.equipment!.warehouse!.title)
 
     expect(label).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -225,7 +235,7 @@ describe('Информация об оборудовании', () => {
     const label = testUtils.getInfoInBlock(block, /Состояние/)
     const value = testUtils.getInfoInBlock(
       block,
-      equipmentConditionDict[props.equipment.condition],
+      equipmentConditionDict[props.equipment!.condition],
     )
 
     expect(label).toBeInTheDocument()
@@ -239,7 +249,7 @@ describe('Информация об оборудовании', () => {
     const label = testUtils.getInfoInBlock(block, /Дата оприходования/)
     const value = testUtils.getInfoInBlock(
       block,
-      formatDate(props.equipment.createdAt, DATE_FORMAT),
+      formatDate(props.equipment!.createdAt, DATE_FORMAT),
     )
 
     expect(label).toBeInTheDocument()
@@ -251,10 +261,7 @@ describe('Информация об оборудовании', () => {
 
     const block = testUtils.getBlock('created-by')
     const label = testUtils.getInfoInBlock(block, /Кем оприходовано/)
-    const value = testUtils.getInfoInBlock(
-      block,
-      props.equipment.createdBy.fullName,
-    )
+    const value = testUtils.getInfoInBlock(block, props.equipment!.createdBy.fullName)
 
     expect(label).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -265,17 +272,11 @@ describe('Информация об оборудовании', () => {
 
     const block = testUtils.getBlock('quantity')
     const quantityLabel = testUtils.getInfoInBlock(block, /Количество/)
-    const quantityValue = testUtils.getInfoInBlock(
-      block,
-      props.equipment.quantity!,
-    )
-    const measurementUnitLabel = testUtils.getInfoInBlock(
-      block,
-      /Ед. измерения/,
-    )
+    const quantityValue = testUtils.getInfoInBlock(block, props.equipment!.quantity!)
+    const measurementUnitLabel = testUtils.getInfoInBlock(block, /Ед. измерения/)
     const measurementUnitValue = testUtils.getInfoInBlock(
       block,
-      props.equipment.measurementUnit.title,
+      props.equipment!.measurementUnit.title,
     )
 
     expect(quantityLabel).toBeInTheDocument()
@@ -289,12 +290,9 @@ describe('Информация об оборудовании', () => {
 
     const block = testUtils.getBlock('price')
     const priceLabel = testUtils.getInfoInBlock(block, /Стоимость/)
-    const priceValue = testUtils.getInfoInBlock(block, props.equipment.price!)
+    const priceValue = testUtils.getInfoInBlock(block, props.equipment!.price!)
     const currencyLabel = testUtils.getInfoInBlock(block, /Валюта/)
-    const currencyValue = testUtils.getInfoInBlock(
-      block,
-      props.equipment.currency!.title,
-    )
+    const currencyValue = testUtils.getInfoInBlock(block, props.equipment!.currency!.title)
 
     expect(priceLabel).toBeInTheDocument()
     expect(priceValue).toBeInTheDocument()
@@ -308,10 +306,7 @@ describe('Информация об оборудовании', () => {
 
       const block = testUtils.getBlock('is-new')
       const label = testUtils.getInfoInBlock(block, /Новое/)
-      const value = testUtils.getInfoInBlock(
-        block,
-        getYesNo(props.equipment.isNew),
-      )
+      const value = testUtils.getInfoInBlock(block, getYesNo(props.equipment!.isNew))
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -330,10 +325,7 @@ describe('Информация об оборудовании', () => {
 
       const block = testUtils.getBlock('is-warranty')
       const label = testUtils.getInfoInBlock(block, /На гарантии/)
-      const value = testUtils.getInfoInBlock(
-        block,
-        getYesNo(props.equipment.isWarranty),
-      )
+      const value = testUtils.getInfoInBlock(block, getYesNo(props.equipment!.isWarranty))
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -352,10 +344,7 @@ describe('Информация об оборудовании', () => {
 
       const block = testUtils.getBlock('is-repaired')
       const label = testUtils.getInfoInBlock(block, /Отремонтированное/)
-      const value = testUtils.getInfoInBlock(
-        block,
-        getYesNo(props.equipment.isRepaired),
-      )
+      const value = testUtils.getInfoInBlock(block, getYesNo(props.equipment!.isRepaired))
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -374,10 +363,7 @@ describe('Информация об оборудовании', () => {
 
       const block = testUtils.getBlock('usage-counter')
       const label = testUtils.getInfoInBlock(block, /Счётчик пробега текущий/)
-      const value = testUtils.getInfoInBlock(
-        block,
-        props.equipment.usageCounter!,
-      )
+      const value = testUtils.getInfoInBlock(block, props.equipment!.usageCounter!)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -396,10 +382,7 @@ describe('Информация об оборудовании', () => {
 
       const block = testUtils.getBlock('owner')
       const label = testUtils.getInfoInBlock(block, /Владелец оборудования/)
-      const value = testUtils.getInfoInBlock(
-        block,
-        props.equipment.owner!.title,
-      )
+      const value = testUtils.getInfoInBlock(block, props.equipment!.owner!.title)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -417,7 +400,7 @@ describe('Информация об оборудовании', () => {
 
     const block = testUtils.getBlock('purpose')
     const label = testUtils.getInfoInBlock(block, /Назначение оборудования/)
-    const value = testUtils.getInfoInBlock(block, props.equipment.purpose.title)
+    const value = testUtils.getInfoInBlock(block, props.equipment!.purpose.title)
 
     expect(label).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -428,7 +411,7 @@ describe('Информация об оборудовании', () => {
 
     const block = testUtils.getBlock('comment')
     const label = testUtils.getInfoInBlock(block, /Комментарий/)
-    const value = testUtils.getInfoInBlock(block, props.equipment.comment!)
+    const value = testUtils.getInfoInBlock(block, props.equipment!.comment!)
 
     expect(label).toBeInTheDocument()
     expect(value).toBeInTheDocument()

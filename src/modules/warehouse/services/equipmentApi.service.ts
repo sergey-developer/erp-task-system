@@ -8,11 +8,14 @@ import {
   GetEquipmentListSuccessResponse,
   GetEquipmentNomenclatureListQueryArgs,
   GetEquipmentNomenclatureListSuccessResponse,
+  GetEquipmentQueryArgs,
+  GetEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
   GetEquipmentListTransformedSuccessResponse,
   GetEquipmentNomenclatureListTransformedSuccessResponse,
 } from 'modules/warehouse/types'
+import { getEquipmentUrl } from 'modules/warehouse/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
@@ -28,11 +31,8 @@ const equipmentApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
         params,
       }),
-      transformResponse: (
-        response: GetEquipmentNomenclatureListSuccessResponse,
-        meta,
-        arg,
-      ) => getPaginatedList(response, arg),
+      transformResponse: (response: GetEquipmentNomenclatureListSuccessResponse, meta, arg) =>
+        getPaginatedList(response, arg),
     }),
     getEquipmentList: build.query<
       GetEquipmentListTransformedSuccessResponse,
@@ -43,11 +43,14 @@ const equipmentApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
         params,
       }),
-      transformResponse: (
-        response: GetEquipmentListSuccessResponse,
-        meta,
-        arg,
-      ) => getPaginatedList(response, arg),
+      transformResponse: (response: GetEquipmentListSuccessResponse, meta, arg) =>
+        getPaginatedList(response, arg),
+    }),
+    getEquipment: build.query<GetEquipmentSuccessResponse, GetEquipmentQueryArgs>({
+      query: ({ equipmentId }) => ({
+        url: getEquipmentUrl(equipmentId),
+        method: HttpMethodEnum.Get,
+      }),
     }),
     getEquipmentCategoryList: build.query<
       GetEquipmentCategoryListSuccessResponse,
@@ -63,6 +66,9 @@ const equipmentApiService = baseApiService.injectEndpoints({
 
 export const {
   useGetEquipmentNomenclatureListQuery,
+
+  useGetEquipmentQuery,
   useGetEquipmentListQuery,
+
   useGetEquipmentCategoryListQuery,
 } = equipmentApiService

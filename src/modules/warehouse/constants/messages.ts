@@ -55,6 +55,10 @@ export const getEquipmentListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка оборудования',
 }
 
+export const getEquipmentMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения оборудования',
+}
+
 export const getMeasurementUnitListMessages: ApiRequestMessages<'commonError'> =
   {
     commonError: 'Ошибка получения списка единиц измерения',
