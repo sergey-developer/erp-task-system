@@ -140,7 +140,7 @@ describe('Страница списка оборудования', () => {
   })
 
   describe('Карточка просмотра оборудования', () => {
-    test('Карточка просмотра оборудования открывается', async () => {
+    test('Можно открыть', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
@@ -157,7 +157,7 @@ describe('Страница списка оборудования', () => {
       expect(equipment).toBeInTheDocument()
     })
 
-    test('Карточка просмотра оборудования закрывается', async () => {
+    test('Можно закрыть', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
@@ -216,9 +216,14 @@ describe('Страница списка оборудования', () => {
 
         await equipmentTableTestUtils.expectLoadingFinished()
         await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
-
+        const equipment = await equipmentTestUtils.findContainer()
+        await equipmentTestUtils.expectLoadingFinished()
         const notification = await findNotification(errorMessage)
+
         expect(notification).toBeInTheDocument()
+        await waitFor(() => {
+          expect(equipment).not.toBeInTheDocument()
+        })
       })
 
       test('Обрабатывается ошибка 404', async () => {
@@ -236,9 +241,14 @@ describe('Страница списка оборудования', () => {
 
         await equipmentTableTestUtils.expectLoadingFinished()
         await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
-
+        const equipment = await equipmentTestUtils.findContainer()
+        await equipmentTestUtils.expectLoadingFinished()
         const notification = await findNotification(errorMessage)
+
         expect(notification).toBeInTheDocument()
+        await waitFor(() => {
+          expect(equipment).not.toBeInTheDocument()
+        })
       })
 
       test('Обрабатывается ошибка 500', async () => {
@@ -253,9 +263,14 @@ describe('Страница списка оборудования', () => {
 
         await equipmentTableTestUtils.expectLoadingFinished()
         await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
-
+        const equipment = await equipmentTestUtils.findContainer()
+        await equipmentTestUtils.expectLoadingFinished()
         const notification = await findNotification(getEquipmentMessages.commonError)
+
         expect(notification).toBeInTheDocument()
+        await waitFor(() => {
+          expect(equipment).not.toBeInTheDocument()
+        })
       })
     })
   })
