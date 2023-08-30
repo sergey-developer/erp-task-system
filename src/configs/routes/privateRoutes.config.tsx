@@ -4,6 +4,7 @@ import { Navigate, RouteObject } from 'react-router-dom'
 import { routes as staffRoutes } from 'modules/monitoring/routes'
 import { routes as taskRoutes } from 'modules/task/routes'
 import { UserModel } from 'modules/user/models'
+import { route as manageWarehousesRoute } from 'modules/warehouse/routes'
 
 import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
@@ -33,8 +34,7 @@ export const getPrivateRoutesConfig = ({
         element: <ChangePasswordPage />,
       },
       ...(isStaff ? staffRoutes : []),
-      // закоменчено временно только для rc
-      // manageWarehousesRoute,
+      manageWarehousesRoute,
       {
         path: RouteEnum.NotFound,
         element: <NotFoundPage />,

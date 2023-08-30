@@ -17,7 +17,7 @@ const WarehouseListPage = React.lazy(() => import('./pages/WarehouseListPage'))
 
 const WarehousePage = React.lazy(() => import('./pages/WarehousePage'))
 
-export const manageWarehousesRoute: Readonly<RouteObject> = {
+export const route: Readonly<RouteObject> = {
   path: RouteEnum.ManageWarehouses,
   element: (
     <Space $block direction='vertical' size='large'>
