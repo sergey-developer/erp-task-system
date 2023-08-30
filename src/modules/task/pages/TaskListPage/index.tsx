@@ -128,7 +128,7 @@ const TaskListPage: FC = () => {
     refetch: refetchTaskCounters,
   } = useGetTaskCounters()
 
-  // закоменчено только для rc
+  // закоменчено временно только для rc
   // const { currentData: userList = [], isFetching: userListIsFetching } =
   //   useGetUserList({ isManager: true }, { skip: !isExtendedFilterOpened })
 
@@ -406,7 +406,7 @@ const TaskListPage: FC = () => {
         <ExtendedFilter
           formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
-          // закоменчено только для rc
+          // закоменчено временно только для rc
           // userList={userList}
           // userListIsLoading={userListIsFetching}
           onClose={debouncedToggleOpenExtendedFilter}

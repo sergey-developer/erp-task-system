@@ -24,7 +24,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
   initialFormValues,
 
-  // закоменчено только для rc
+  // закоменчено временно только для rc
   // userList,
   // userListIsLoading,
 
@@ -140,7 +140,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           </Space>
         </FilterBlock>
 
-        {/* закоменчено только для rc*/}
+        {/* закоменчено временно только для rc*/}
         {/*<FilterBlock*/}
         {/*  data-testid='extended-filter-manager'*/}
         {/*  label='Руководитель'*/}

@@ -38,7 +38,7 @@ export type ExtendedFilterProps = {
   formValues: ExtendedFilterFormFields
   initialFormValues: ExtendedFilterFormFields
 
-  // закоменчено только для rc
+  // закоменчено временно только для rc
   // userList: UserListModel
   // userListIsLoading: boolean
 

@@ -49,7 +49,7 @@ const props: Readonly<ExtendedFilterProps> = {
   formValues: initialExtendedFilterFormValues,
   initialFormValues: initialExtendedFilterFormValues,
 
-  // закоменчено только для rc
+  // закоменчено временно только для rc
   // userList: [],
   // userListIsLoading: false,
 
@@ -1164,7 +1164,7 @@ describe('Расширенный фильтр', () => {
     })
   })
 
-  // закоменчено только для rc
+  // закоменчено временно только для rc
   // describe('Руководитель', () => {
   //   test('Отображается корректно', async () => {
   //     mockGetWorkGroupListSuccess()
