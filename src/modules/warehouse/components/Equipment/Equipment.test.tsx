@@ -20,7 +20,7 @@ const props: EquipmentProps = {
   title: fakeWord(),
   equipment: warehouseFixtures.equipment(),
   equipmentIsLoading: false,
-  displayableFields: [],
+  hiddenFields: [],
   onClose: jest.fn(),
 }
 
@@ -28,12 +28,20 @@ export const blockTestIds = [
   'title',
   'category',
   'nomenclature',
+  'customer-inventory-number',
+  'inventory-number',
+  'serial-number',
   'warehouse',
   'condition',
   'created-at',
   'created-by',
   'quantity',
   'price',
+  'is-new',
+  'is-warranty',
+  'is-repaired',
+  'usage-counter',
+  'owner',
   'purpose',
   'comment',
 ]
@@ -85,9 +93,7 @@ export const testUtils = {
 describe('Информация об оборудовании', () => {
   test('Заголовок отображается', () => {
     render(<Equipment {...props} />)
-
     const title = within(testUtils.getContainer()).getByText(props.title as string)
-
     expect(title).toBeInTheDocument()
   })
 
@@ -145,8 +151,8 @@ describe('Информация об оборудовании', () => {
   })
 
   describe('Инвентарный номер заказчика', () => {
-    test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['customerInventoryNumber']} />)
+    test('Отображается если нет в списке скрытых', () => {
+      render(<Equipment {...props} />)
 
       const block = testUtils.getBlock('customer-inventory-number')
       const label = testUtils.getInfoInBlock(block, /Инвентарный номер заказчика/)
@@ -156,16 +162,16 @@ describe('Информация об оборудовании', () => {
       expect(value).toBeInTheDocument()
     })
 
-    test('Не отображается если нет в списке отображаемых', () => {
-      render(<Equipment {...props} />)
+    test('Не отображается если есть в списке скрытых', () => {
+      render(<Equipment {...props} hiddenFields={['customerInventoryNumber']} />)
       const block = testUtils.queryBlock('customer-inventory-number')
       expect(block).not.toBeInTheDocument()
     })
   })
 
   describe('Инвентарный номер', () => {
-    test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['inventoryNumber']} />)
+    test('Отображается если нет в списке скрытых', () => {
+      render(<Equipment {...props} />)
 
       const block = testUtils.getBlock('inventory-number')
       const label = testUtils.getInfoInBlock(block, /Инвентарный номер/)
@@ -175,8 +181,8 @@ describe('Информация об оборудовании', () => {
       expect(value).toBeInTheDocument()
     })
 
-    test('Не отображается если нет в списке отображаемых', () => {
-      render(<Equipment {...props} />)
+    test('Не отображается если есть в списке скрытых', () => {
+      render(<Equipment {...props} hiddenFields={['inventoryNumber']} />)
       const block = testUtils.queryBlock('inventory-number')
       expect(block).not.toBeInTheDocument()
     })
@@ -273,7 +279,7 @@ describe('Информация об оборудовании', () => {
     const block = testUtils.getBlock('quantity')
     const quantityLabel = testUtils.getInfoInBlock(block, /Количество/)
     const quantityValue = testUtils.getInfoInBlock(block, props.equipment!.quantity!)
-    const measurementUnitLabel = testUtils.getInfoInBlock(block, /Ед. измерения/)
+    const measurementUnitLabel = testUtils.getInfoInBlock(block, /Ед. изм/)
     const measurementUnitValue = testUtils.getInfoInBlock(
       block,
       props.equipment!.measurementUnit.title,
@@ -301,8 +307,8 @@ describe('Информация об оборудовании', () => {
   })
 
   describe('Новое', () => {
-    test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['isNew']} />)
+    test('Отображается если нет в списке скрытых', () => {
+      render(<Equipment {...props} />)
 
       const block = testUtils.getBlock('is-new')
       const label = testUtils.getInfoInBlock(block, /Новое/)
@@ -312,16 +318,16 @@ describe('Информация об оборудовании', () => {
       expect(value).toBeInTheDocument()
     })
 
-    test('Не отображается если нет в списке отображаемых', () => {
-      render(<Equipment {...props} />)
+    test('Не отображается если есть в списке скрытых', () => {
+      render(<Equipment {...props} hiddenFields={['isNew']} />)
       const block = testUtils.queryBlock('is-new')
       expect(block).not.toBeInTheDocument()
     })
   })
 
   describe('На гарантии', () => {
-    test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['isWarranty']} />)
+    test('Отображается если нет в списке скрытых', () => {
+      render(<Equipment {...props} />)
 
       const block = testUtils.getBlock('is-warranty')
       const label = testUtils.getInfoInBlock(block, /На гарантии/)
@@ -331,16 +337,16 @@ describe('Информация об оборудовании', () => {
       expect(value).toBeInTheDocument()
     })
 
-    test('Не отображается если нет в списке отображаемых', () => {
-      render(<Equipment {...props} />)
+    test('Не отображается если есть в списке скрытых', () => {
+      render(<Equipment {...props} hiddenFields={['isWarranty']} />)
       const block = testUtils.queryBlock('is-warranty')
       expect(block).not.toBeInTheDocument()
     })
   })
 
   describe('Отремонтированное', () => {
-    test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['isRepaired']} />)
+    test('Отображается если нет в списке скрытых', () => {
+      render(<Equipment {...props} />)
 
       const block = testUtils.getBlock('is-repaired')
       const label = testUtils.getInfoInBlock(block, /Отремонтированное/)
@@ -350,16 +356,16 @@ describe('Информация об оборудовании', () => {
       expect(value).toBeInTheDocument()
     })
 
-    test('Не отображается если нет в списке отображаемых', () => {
-      render(<Equipment {...props} />)
+    test('Не отображается если есть в списке скрытых', () => {
+      render(<Equipment {...props} hiddenFields={['isRepaired']} />)
       const block = testUtils.queryBlock('is-repaired')
       expect(block).not.toBeInTheDocument()
     })
   })
 
   describe('Счётчик пробега текущий', () => {
-    test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['usageCounter']} />)
+    test('Отображается если нет в списке скрытых', () => {
+      render(<Equipment {...props} />)
 
       const block = testUtils.getBlock('usage-counter')
       const label = testUtils.getInfoInBlock(block, /Счётчик пробега текущий/)
@@ -369,16 +375,16 @@ describe('Информация об оборудовании', () => {
       expect(value).toBeInTheDocument()
     })
 
-    test('Не отображается если нет в списке отображаемых', () => {
-      render(<Equipment {...props} />)
+    test('Не отображается если есть в списке скрытых', () => {
+      render(<Equipment {...props} hiddenFields={['usageCounter']} />)
       const block = testUtils.queryBlock('usage-counter')
       expect(block).not.toBeInTheDocument()
     })
   })
 
   describe('Владелец оборудования', () => {
-    test('Отображается если есть в списке отображаемых', () => {
-      render(<Equipment {...props} displayableFields={['owner']} />)
+    test('Отображается если нет в списке скрытых', () => {
+      render(<Equipment {...props} />)
 
       const block = testUtils.getBlock('owner')
       const label = testUtils.getInfoInBlock(block, /Владелец оборудования/)
@@ -388,8 +394,8 @@ describe('Информация об оборудовании', () => {
       expect(value).toBeInTheDocument()
     })
 
-    test('Не отображается если нет в списке отображаемых', () => {
-      render(<Equipment {...props} />)
+    test('Не отображается если есть в списке скрытых', () => {
+      render(<Equipment {...props} hiddenFields={['owner']} />)
       const block = testUtils.queryBlock('owner')
       expect(block).not.toBeInTheDocument()
     })
