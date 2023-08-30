@@ -121,7 +121,7 @@ const EquipmentListPage: FC = () => {
           title={equipment?.title}
           equipment={equipment}
           equipmentIsLoading={equipmentIsFetching}
-          displayableFields={fieldsByCategory[equipment?.category.code || ''] || []}
+          displayableFields={fieldsByCategory[equipment?.category?.code || ''] || []}
           onClose={() => debouncedSetSelectedEquipmentId(undefined)}
         />
       )}

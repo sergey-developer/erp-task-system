@@ -24,6 +24,20 @@ const props: EquipmentProps = {
   onClose: jest.fn(),
 }
 
+export const blockTestIds = [
+  'title',
+  'category',
+  'nomenclature',
+  'warehouse',
+  'condition',
+  'created-at',
+  'created-by',
+  'quantity',
+  'price',
+  'purpose',
+  'comment',
+]
+
 const getContainer = () => screen.getByTestId('equipment')
 
 const findContainer = (): Promise<HTMLElement> => screen.findByTestId('equipment')
@@ -86,6 +100,15 @@ describe('Информация об оборудовании', () => {
   test('Состояние загрузки отображается', async () => {
     render(<Equipment {...props} equipmentIsLoading />)
     await testUtils.expectLoadingStarted()
+  })
+
+  test('Информация не отображаются во время загрузки', () => {
+    render(<Equipment {...props} equipmentIsLoading />)
+
+    blockTestIds.forEach((id) => {
+      const block = testUtils.queryBlock(id)
+      expect(block).not.toBeInTheDocument()
+    })
   })
 
   test('Наименование отображается', () => {
