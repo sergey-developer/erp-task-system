@@ -16,7 +16,6 @@ import {
   taskAssignedOptions,
   taskExtendedStatusOptions,
   taskOverdueOptions,
-  managerSelectFieldNames,
 } from './constants'
 import { CheckboxGroupStyled, RangePickerStyled } from './styles'
 import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
@@ -25,8 +24,9 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
   initialFormValues,
 
-  userList,
-  userListIsLoading,
+  // закоменчено только для rc
+  // userList,
+  // userListIsLoading,
 
   onClose,
   onSubmit,
@@ -71,7 +71,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <CheckboxGroupStyled options={taskExtendedStatusOptions} />
           </Form.Item>
         </FilterBlock>
-
         <FilterBlock
           data-testid='extended-filter-is-assigned'
           label='Назначенный'
@@ -81,7 +80,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <Radio.Group options={taskAssignedOptions} />
           </Form.Item>
         </FilterBlock>
-
         <FilterBlock
           data-testid='extended-filter-is-overdue'
           label='Просрочено'
@@ -91,7 +89,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <Radio.Group options={taskOverdueOptions} />
           </Form.Item>
         </FilterBlock>
-
         <FilterBlock
           data-testid='extended-filter-complete-at'
           label='Выполнить до'
@@ -101,7 +98,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>
-
         <Permissions config={extendedFilterPermissions.workGroup}>
           {() => (
             <FilterBlock
@@ -128,7 +124,6 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             </FilterBlock>
           )}
         </Permissions>
-
         <FilterBlock
           data-testid='extended-filter-search-by-column'
           label='Поиск по столбцу'
@@ -145,27 +140,28 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           </Space>
         </FilterBlock>
 
-        <FilterBlock
-          data-testid='extended-filter-manager'
-          label='Руководитель'
-          onReset={resetFields(['manager'])}
-        >
-          <Form.Item name='manager'>
-            <Select
-              data-testid='extended-filter-manager-select'
-              fieldNames={managerSelectFieldNames}
-              loading={userListIsLoading}
-              options={userList}
-              placeholder='Руководитель'
-              showSearch
-              filterOption={(input, option) => {
-                return option
-                  ? option.fullName.toLowerCase().includes(input.toLowerCase())
-                  : false
-              }}
-            />
-          </Form.Item>
-        </FilterBlock>
+        {/* закоменчено только для rc*/}
+        {/*<FilterBlock*/}
+        {/*  data-testid='extended-filter-manager'*/}
+        {/*  label='Руководитель'*/}
+        {/*  onReset={resetFields(['manager'])}*/}
+        {/*>*/}
+        {/*  <Form.Item name='manager'>*/}
+        {/*    <Select*/}
+        {/*      data-testid='extended-filter-manager-select'*/}
+        {/*      fieldNames={managerSelectFieldNames}*/}
+        {/*      loading={userListIsLoading}*/}
+        {/*      options={userList}*/}
+        {/*      placeholder='Руководитель'*/}
+        {/*      showSearch*/}
+        {/*      filterOption={(input, option) => {*/}
+        {/*        return option*/}
+        {/*          ? option.fullName.toLowerCase().includes(input.toLowerCase())*/}
+        {/*          : false*/}
+        {/*      }}*/}
+        {/*    />*/}
+        {/*  </Form.Item>*/}
+        {/*</FilterBlock>*/}
       </Form>
     </DrawerFilter>
   )
