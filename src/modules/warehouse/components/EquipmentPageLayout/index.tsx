@@ -15,6 +15,8 @@ import {
 
 import FilterButton from 'components/Buttons/FilterButton'
 
+import { useDebounceFn } from 'shared/hooks'
+
 import EquipmentFilter from '../EquipmentFilter'
 import { EquipmentFilterFormFields } from '../EquipmentFilter/types'
 import { EquipmentPageContextType } from './context'
@@ -27,21 +29,21 @@ const EquipmentPageLayout: FC = () => {
   const [searchValue, setSearchValue] = useState<string>()
 
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
-
   const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
 
-  const {
-    currentData: warehouseList = [],
-    isFetching: warehouseListIsFetching,
-  } = useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
+  const [equipmentModalOpened, { toggle: toggleEquipmentModalOpened }] = useBoolean(false)
+  const debouncedToggleEquipmentModalOpened = useDebounceFn(toggleEquipmentModalOpened)
 
-  const {
-    currentData: equipmentCategoryList = [],
-    isFetching: equipmentCategoryListIsFetching,
-  } = useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
+  const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
+    useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
 
-  const { currentData: customerList = [], isFetching: customerListIsFetching } =
-    useGetCustomerList(undefined, { skip: !filterOpened })
+  const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
+    useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
+
+  const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
+    undefined,
+    { skip: !filterOpened },
+  )
 
   const initialFilterValues: EquipmentFilterFormFields = useMemo(
     () => ({
@@ -88,16 +90,14 @@ const EquipmentPageLayout: FC = () => {
               <Space size='middle'>
                 <FilterButton onClick={toggleFilterOpened} />
 
-                <Button>+ Добавить оборудование</Button>
+                <Button onClick={debouncedToggleEquipmentModalOpened}>
+                  + Добавить оборудование
+                </Button>
               </Space>
             </Col>
 
             <Col>
-              <Search
-                allowClear
-                placeholder='Поиск оборудования'
-                onSearch={handleSearch}
-              />
+              <Search allowClear placeholder='Поиск оборудования' onSearch={handleSearch} />
             </Col>
           </Row>
         </Col>
@@ -122,6 +122,8 @@ const EquipmentPageLayout: FC = () => {
           onApply={handleApplyFilter}
         />
       )}
+
+      {equipmentModalOpened && <div>equipmentModalOpened</div>}
     </>
   )
 }
