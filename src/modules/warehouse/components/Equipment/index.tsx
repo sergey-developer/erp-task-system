@@ -17,7 +17,7 @@ const { Text } = Typography
 const Equipment: FC<EquipmentProps> = ({
   equipment,
   equipmentIsLoading,
-  displayableFields,
+  hiddenFields = [],
   ...props
 }) => {
   return (
@@ -49,7 +49,7 @@ const Equipment: FC<EquipmentProps> = ({
               <Col span={16}>{equipment.nomenclature.title}</Col>
             </Row>
 
-            {displayableFields.includes('customerInventoryNumber') && (
+            {!hiddenFields.includes('customerInventoryNumber') && (
               <Row data-testid='customer-inventory-number'>
                 <Col span={8}>
                   <Text type='secondary'>Инвентарный номер заказчика:</Text>
@@ -59,7 +59,7 @@ const Equipment: FC<EquipmentProps> = ({
               </Row>
             )}
 
-            {displayableFields.includes('inventoryNumber') && (
+            {!hiddenFields.includes('inventoryNumber') && (
               <Row data-testid='inventory-number'>
                 <Col span={8}>
                   <Text type='secondary'>Инвентарный номер:</Text>
@@ -159,7 +159,7 @@ const Equipment: FC<EquipmentProps> = ({
               </Col>
             </Row>
 
-            {displayableFields.includes('isNew') && (
+            {!hiddenFields.includes('isNew') && (
               <Row data-testid='is-new'>
                 <Col span={8}>
                   <Text type='secondary'>Новое:</Text>
@@ -169,7 +169,7 @@ const Equipment: FC<EquipmentProps> = ({
               </Row>
             )}
 
-            {displayableFields.includes('isWarranty') && (
+            {!hiddenFields.includes('isWarranty') && (
               <Row data-testid='is-warranty'>
                 <Col span={8}>
                   <Text type='secondary'>На гарантии:</Text>
@@ -179,7 +179,7 @@ const Equipment: FC<EquipmentProps> = ({
               </Row>
             )}
 
-            {displayableFields.includes('isRepaired') && (
+            {!hiddenFields.includes('isRepaired') && (
               <Row data-testid='is-repaired'>
                 <Col span={8}>
                   <Text type='secondary'>Отремонтированное:</Text>
@@ -189,7 +189,7 @@ const Equipment: FC<EquipmentProps> = ({
               </Row>
             )}
 
-            {displayableFields.includes('usageCounter') && (
+            {!hiddenFields.includes('usageCounter') && (
               <Row data-testid='usage-counter'>
                 <Col span={8}>
                   <Text type='secondary'>Счётчик пробега текущий:</Text>
@@ -199,7 +199,7 @@ const Equipment: FC<EquipmentProps> = ({
               </Row>
             )}
 
-            {displayableFields.includes('owner') && (
+            {!hiddenFields.includes('owner') && (
               <Row data-testid='owner'>
                 <Col span={8}>
                   <Text type='secondary'>Владелец оборудования:</Text>
