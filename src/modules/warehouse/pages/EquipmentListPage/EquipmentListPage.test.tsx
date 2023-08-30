@@ -5,20 +5,24 @@ import {
   testUtils as equipmentTestUtils,
 } from 'modules/warehouse/components/Equipment/Equipment.test'
 import { testUtils as equipmentTableTestUtils } from 'modules/warehouse/components/EquipmentTable/EquipmentTable.test'
-import { getEquipmentListMessages, getEquipmentMessages } from 'modules/warehouse/constants'
+import {
+  EquipmentCategoryEnum,
+  getEquipmentListMessages,
+  getEquipmentMessages,
+} from 'modules/warehouse/constants'
 
 import commonFixtures from 'fixtures/common'
 import warehouseFixtures from 'fixtures/warehouse'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import {
-  mockGetEquipmentListSuccess,
+  mockGetEquipmentForbiddenError,
   mockGetEquipmentListForbiddenError,
   mockGetEquipmentListServerError,
-  mockGetEquipmentSuccess,
+  mockGetEquipmentListSuccess,
   mockGetEquipmentNotFoundError,
-  mockGetEquipmentForbiddenError,
   mockGetEquipmentServerError,
+  mockGetEquipmentSuccess,
 } from '_tests_/mocks/api'
 import {
   fakeWord,
@@ -203,6 +207,56 @@ describe('Страница списка оборудования', () => {
         equipmentBlocksTestIds.forEach((id) => {
           const block = equipmentTestUtils.getBlock(id)
           expect(block).toBeInTheDocument()
+        })
+      })
+
+      test(`Отображается информация для категории ${EquipmentCategoryEnum.Consumable}`, async () => {
+        const equipmentListItem = warehouseFixtures.equipmentListItem()
+        mockGetEquipmentListSuccess({
+          body: commonFixtures.paginatedListResponse([equipmentListItem]),
+        })
+
+        mockGetEquipmentSuccess(equipmentListItem.id, {
+          body: warehouseFixtures.equipment({
+            id: equipmentListItem.id,
+            category: warehouseFixtures.equipmentCategory({
+              code: EquipmentCategoryEnum.Consumable,
+            }),
+            nomenclature: warehouseFixtures.nomenclature({
+              equipmentHasSerialNumber: true,
+            }),
+          }),
+        })
+
+        const { user } = render(<EquipmentListPage />)
+
+        await equipmentTableTestUtils.expectLoadingFinished()
+        await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
+        await equipmentTestUtils.findContainer()
+        await equipmentTestUtils.expectLoadingFinished()
+
+        const hiddenBlocksTestIds = [
+          'customer-inventory-number',
+          'inventory-number',
+          'is-new',
+          'is-warranty',
+          'is-repaired',
+          'usage-counter',
+          'owner',
+        ]
+
+        const shownBlocksTestIds = equipmentBlocksTestIds.filter(
+          (id) => !hiddenBlocksTestIds.includes(id),
+        )
+
+        shownBlocksTestIds.forEach((id) => {
+          const block = equipmentTestUtils.getBlock(id)
+          expect(block).toBeInTheDocument()
+        })
+
+        hiddenBlocksTestIds.forEach((id) => {
+          const block = equipmentTestUtils.queryBlock(id)
+          expect(block).not.toBeInTheDocument()
         })
       })
     })
