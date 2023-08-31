@@ -2,6 +2,7 @@ import { Form, Input, Select } from 'antd'
 import isArray from 'lodash/isArray'
 import { FC, useState } from 'react'
 
+import { EquipmentCategoryEnum } from 'modules/warehouse/constants'
 import { EquipmentCategoryListItemModel, NomenclatureListItemModel } from 'modules/warehouse/models'
 
 import BaseModal from 'components/Modals/BaseModal'
@@ -18,6 +19,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
   categoryList,
   categoryListIsLoading,
 
+  nomenclature,
   nomenclatureList,
   nomenclatureListIsLoading,
   onChangeNomenclature,
@@ -29,12 +31,21 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
   const [form] = Form.useForm<EquipmentModalFormFields>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
-  // const isConsumableCategory = selectedCategory?.code ===
+  const isConsumableCategory = selectedCategory?.code === EquipmentCategoryEnum.Consumable
+
+  const handleChangeCategory = (
+    value: IdType,
+    option: EquipmentCategoryListItemModel | EquipmentCategoryListItemModel[],
+  ) => {
+    if (!isArray(option)) {
+      setSelectedCategory(option)
+    }
+  }
 
   const handleFinish = async (values: EquipmentModalFormFields) => {
     await onSubmit(values, form.setFields)
   }
-  console.log(selectedCategory)
+
   return (
     <BaseModal
       data-testid='equipment-modal'
@@ -56,11 +67,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
             fieldNames={idAndTitleSelectFieldNames}
             options={categoryList}
             loading={categoryListIsLoading}
-            onChange={(_, option) => {
-              if (!isArray(option)) {
-                setSelectedCategory(option)
-              }
-            }}
+            onChange={handleChangeCategory}
           />
         </Form.Item>
 
@@ -77,8 +84,24 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         </Form.Item>
 
         <Form.Item data-testid='title' label='Наименование' name='title'>
-          <Input placeholder='Введите наименование' />
+          <Input placeholder='Введите наименование' disabled={isConsumableCategory} />
         </Form.Item>
+
+        {!isConsumableCategory && (
+          <Form.Item
+            data-testid='customer-inventory-number'
+            label='Инвентарный номер заказчика'
+            name='customerInventoryNumber'
+          >
+            <Input placeholder='Введите инвентарный номер заказчика' />
+          </Form.Item>
+        )}
+
+        {nomenclature?.equipmentHasSerialNumber && (
+          <Form.Item data-testid='serial-number' label='Серийный номер' name='serialNumber'>
+            <Input placeholder='Введите серийный номер' />
+          </Form.Item>
+        )}
       </Form>
     </BaseModal>
   )

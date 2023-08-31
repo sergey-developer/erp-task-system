@@ -1,7 +1,11 @@
 import { FormInstance } from 'antd'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
-import { EquipmentCategoryListModel, NomenclatureListModel } from 'modules/warehouse/models'
+import {
+  EquipmentCategoryListModel,
+  NomenclatureListModel,
+  NomenclatureModel,
+} from 'modules/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -39,6 +43,7 @@ export type EquipmentModalProps = Required<
   categoryList: EquipmentCategoryListModel
   categoryListIsLoading: boolean
 
+  nomenclature?: NomenclatureModel
   nomenclatureList: NomenclatureListModel
   nomenclatureListIsLoading: boolean
   onChangeNomenclature: (id: IdType) => void

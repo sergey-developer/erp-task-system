@@ -51,12 +51,9 @@ const EquipmentPageLayout: FC = () => {
     { skip: !filterOpened },
   )
 
-  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
-    selectedNomenclatureId!,
-    {
-      skip: !selectedNomenclatureId,
-    },
-  )
+  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
+    skip: !selectedNomenclatureId,
+  })
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
     useGetNomenclatureList(undefined, { skip: !equipmentModalOpened })
@@ -147,6 +144,7 @@ const EquipmentPageLayout: FC = () => {
           isLoading={false}
           categoryList={equipmentCategoryList}
           categoryListIsLoading={equipmentCategoryListIsFetching}
+          nomenclature={nomenclature}
           nomenclatureList={nomenclatureList?.results || []}
           nomenclatureListIsLoading={nomenclatureListIsFetching}
           onChangeNomenclature={setSelectedNomenclatureId}
