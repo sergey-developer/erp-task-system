@@ -6,17 +6,25 @@ import { Outlet, useNavigate } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
+import EquipmentFilter from 'modules/warehouse/components/EquipmentFilter'
+import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
+import EquipmentModal from 'modules/warehouse/components/EquipmentModal'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import {
+  useGetCurrencyList,
   useGetCustomerList,
   useGetEquipmentCategoryList,
+  useGetNomenclature,
+  useGetNomenclatureList,
   useGetWarehouseList,
+  useGetWorkTypeList,
 } from 'modules/warehouse/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 
-import EquipmentFilter from '../EquipmentFilter'
-import { EquipmentFilterFormFields } from '../EquipmentFilter/types'
+import { useDebounceFn } from 'shared/hooks'
+import { IdType } from 'shared/types/common'
+
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
@@ -27,21 +35,40 @@ const EquipmentPageLayout: FC = () => {
   const [searchValue, setSearchValue] = useState<string>()
 
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
-
   const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
 
-  const {
-    currentData: warehouseList = [],
-    isFetching: warehouseListIsFetching,
-  } = useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
+  const [equipmentModalOpened, { toggle: toggleEquipmentModalOpened }] = useBoolean(false)
+  const debouncedToggleEquipmentModalOpened = useDebounceFn(toggleEquipmentModalOpened)
 
-  const {
-    currentData: equipmentCategoryList = [],
-    isFetching: equipmentCategoryListIsFetching,
-  } = useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
+  const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
-  const { currentData: customerList = [], isFetching: customerListIsFetching } =
-    useGetCustomerList(undefined, { skip: !filterOpened })
+  const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
+    useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened && !equipmentModalOpened })
+
+  const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
+    useGetEquipmentCategoryList(undefined, { skip: !filterOpened && !equipmentModalOpened })
+
+  const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
+    undefined,
+    { skip: !filterOpened && !equipmentModalOpened },
+  )
+
+  const { currentData: currencyList = [], isFetching: currencyListIsFetching } = useGetCurrencyList(
+    undefined,
+    { skip: !equipmentModalOpened },
+  )
+
+  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
+    undefined,
+    { skip: !equipmentModalOpened },
+  )
+
+  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
+    skip: !selectedNomenclatureId,
+  })
+
+  const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
+    useGetNomenclatureList(undefined, { skip: !equipmentModalOpened })
 
   const initialFilterValues: EquipmentFilterFormFields = useMemo(
     () => ({
@@ -74,6 +101,10 @@ const EquipmentPageLayout: FC = () => {
     setSearchValue(value)
   }
 
+  const handleAddEquipment = async () => {
+    toggleEquipmentModalOpened()
+  }
+
   const routeContext = useMemo<EquipmentPageContextType>(
     () => ({ filter: filterValues, search: searchValue }),
     [filterValues, searchValue],
@@ -88,16 +119,14 @@ const EquipmentPageLayout: FC = () => {
               <Space size='middle'>
                 <FilterButton onClick={toggleFilterOpened} />
 
-                <Button>+ Добавить оборудование</Button>
+                <Button onClick={debouncedToggleEquipmentModalOpened}>
+                  + Добавить оборудование
+                </Button>
               </Space>
             </Col>
 
             <Col>
-              <Search
-                allowClear
-                placeholder='Поиск оборудования'
-                onSearch={handleSearch}
-              />
+              <Search allowClear placeholder='Поиск оборудования' onSearch={handleSearch} />
             </Col>
           </Row>
         </Col>
@@ -120,6 +149,31 @@ const EquipmentPageLayout: FC = () => {
           ownerListIsLoading={customerListIsFetching}
           onClose={toggleFilterOpened}
           onApply={handleApplyFilter}
+        />
+      )}
+
+      {equipmentModalOpened && (
+        <EquipmentModal
+          visible={equipmentModalOpened}
+          title='Добавление оборудования'
+          okText='Добавить'
+          isLoading={false}
+          categoryList={equipmentCategoryList}
+          categoryListIsLoading={equipmentCategoryListIsFetching}
+          warehouseList={warehouseList}
+          warehouseListIsLoading={warehouseListIsFetching}
+          currencyList={currencyList}
+          currencyListIsFetching={currencyListIsFetching}
+          ownerList={customerList}
+          ownerListIsFetching={customerListIsFetching}
+          workTypeList={workTypeList}
+          workTypeListIsFetching={workTypeListIsFetching}
+          nomenclature={nomenclature}
+          nomenclatureList={nomenclatureList?.results || []}
+          nomenclatureListIsLoading={nomenclatureListIsFetching}
+          onChangeNomenclature={setSelectedNomenclatureId}
+          onCancel={debouncedToggleEquipmentModalOpened}
+          onSubmit={handleAddEquipment}
         />
       )}
     </>

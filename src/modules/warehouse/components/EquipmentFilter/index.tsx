@@ -2,12 +2,13 @@ import { Form, Radio, Select, InputNumber, DatePicker, Row, Col } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
+import { conditionOptions } from 'modules/warehouse/constants'
+
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 
-import { conditionOptions } from './options'
 import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
 
 const { RangePicker } = DatePicker

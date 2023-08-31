@@ -18,6 +18,7 @@ import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils'
 
 import { useDebounceFn } from 'shared/hooks'
+import { IdType } from 'shared/types/common'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 const EquipmentListPage: FC = () => {
@@ -27,7 +28,7 @@ const EquipmentListPage: FC = () => {
 
   const context = useEquipmentPageContext()
 
-  const [selectedEquipmentId, setSelectedEquipmentId] = useState<number>()
+  const [selectedEquipmentId, setSelectedEquipmentId] = useState<IdType>()
   const debouncedSetSelectedEquipmentId = useDebounceFn(setSelectedEquipmentId)
   const isShowEquipment = Boolean(selectedEquipmentId)
 

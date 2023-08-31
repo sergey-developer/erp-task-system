@@ -1,6 +1,6 @@
 import { RouteEnum } from 'configs/routes'
 
-import { UnorderedListIcon, ReadIcon } from 'components/Icons'
+import { ReadIcon, UnorderedListIcon } from 'components/Icons'
 
 import { NavMenuItem } from './types'
 

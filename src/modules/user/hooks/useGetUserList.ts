@@ -1,15 +1,9 @@
 import { useEffect } from 'react'
 
-import {
-  CustomUseQueryHookResult,
-  CustomUseQueryOptions,
-} from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getUserListMessages } from 'modules/user/constants'
-import {
-  GetUserListQueryArgs,
-  GetUserListSuccessResponse,
-} from 'modules/user/models'
+import { GetUserListQueryArgs, GetUserListSuccessResponse } from 'modules/user/models'
 import { useGetUserListQuery } from 'modules/user/services/userApi.service'
 
 import { isErrorResponse } from 'shared/services/api'
@@ -21,12 +15,11 @@ type UseGetUserListResult = CustomUseQueryHookResult<
   GetUserListSuccessResponse
 >
 
+type UseGetUserListOptions = CustomUseQueryOptions<GetUserListQueryArgs, GetUserListSuccessResponse>
+
 export const useGetUserList = (
   args?: GetUserListQueryArgs,
-  options?: CustomUseQueryOptions<
-    MaybeUndefined<GetUserListQueryArgs>,
-    GetUserListSuccessResponse
-  >,
+  options?: UseGetUserListOptions,
 ): UseGetUserListResult => {
   const state = useGetUserListQuery(args, options)
 

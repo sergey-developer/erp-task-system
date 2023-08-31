@@ -24,20 +24,15 @@ const props: Readonly<AddOrEditNomenclatureGroupModalProps> = {
   onSubmit: jest.fn(),
 }
 
-const addModeProps: Readonly<
-  Pick<AddOrEditNomenclatureGroupModalProps, 'okText'>
-> = {
+const addModeProps: Readonly<Pick<AddOrEditNomenclatureGroupModalProps, 'okText'>> = {
   okText: 'Добавить',
 }
 
-const editModeProps: Readonly<
-  Pick<AddOrEditNomenclatureGroupModalProps, 'okText'>
-> = {
+const editModeProps: Readonly<Pick<AddOrEditNomenclatureGroupModalProps, 'okText'>> = {
   okText: 'Сохранить',
 }
 
-const getContainer = () =>
-  screen.getByTestId('add-or-edit-nomenclature-group-modal')
+const getContainer = () => screen.getByTestId('add-or-edit-nomenclature-group-modal')
 
 const queryContainer = (): MaybeNull<HTMLElement> =>
   screen.queryByTestId('add-or-edit-nomenclature-group-modal')
@@ -46,14 +41,11 @@ const findContainer = (): Promise<HTMLElement> =>
   screen.findByTestId('add-or-edit-nomenclature-group-modal')
 
 // name field
-const getNameFormItem = () =>
-  within(getContainer()).getByTestId('name-form-item')
+const getNameFormItem = () => within(getContainer()).getByTestId('name-form-item')
 
-const getNameLabel = () =>
-  within(getNameFormItem()).getByLabelText('Наименование')
+const getNameLabel = () => within(getNameFormItem()).getByLabelText('Наименование')
 
-const getNameField = () =>
-  within(getNameFormItem()).getByPlaceholderText('Введите наименование')
+const getNameField = () => within(getNameFormItem()).getByPlaceholderText('Введите наименование')
 
 const setName = async (user: UserEvent, value: string) => {
   const field = getNameField()
@@ -83,8 +75,7 @@ const clickCancelButton = async (user: UserEvent) => {
 // loading
 const expectLoadingStarted = () => expectLoadingStartedByButton(getAddButton())
 
-const expectLoadingFinished = () =>
-  expectLoadingFinishedByButton(getAddButton())
+const expectLoadingFinished = () => expectLoadingFinishedByButton(getAddButton())
 
 export const testUtils = {
   getContainer,
@@ -110,7 +101,7 @@ export const testUtils = {
 describe('Модалка создания и редактирования номенклатурной группы', () => {
   test('Заголовок отображается', () => {
     render(<AddOrEditNomenclatureGroupModal {...props} />)
-    const title = within(testUtils.getContainer()).getByText(props.title)
+    const title = within(testUtils.getContainer()).getByText(props.title as string)
     expect(title).toBeInTheDocument()
   })
 
@@ -125,28 +116,17 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <AddOrEditNomenclatureGroupModal {...props} {...addModeProps} />,
-      )
+      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} {...addModeProps} />)
 
       await testUtils.setName(user, fakeWord())
       await testUtils.clickAddButton(user)
 
       expect(props.onSubmit).toBeCalledTimes(1)
-      expect(props.onSubmit).toBeCalledWith(
-        expect.anything(),
-        expect.anything(),
-      )
+      expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
     })
 
     test('При загрузке отображается спиннер', async () => {
-      render(
-        <AddOrEditNomenclatureGroupModal
-          {...props}
-          {...addModeProps}
-          isLoading
-        />,
-      )
+      render(<AddOrEditNomenclatureGroupModal {...props} {...addModeProps} isLoading />)
 
       await testUtils.expectLoadingStarted()
     })
@@ -192,9 +172,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
-      const { user } = render(
-        <AddOrEditNomenclatureGroupModal {...props} {...addModeProps} />,
-      )
+      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
       const error = await testUtils.findNameError(validationMessages.required)
