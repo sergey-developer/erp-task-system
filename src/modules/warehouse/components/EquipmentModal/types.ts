@@ -24,6 +24,7 @@ export type EquipmentModalFormFields = {
   isNew: boolean
   isWarranty: boolean
   isRepaired: boolean
+  isResponsibleStorage: boolean
   purpose: IdType
 
   customerInventoryNumber?: string
