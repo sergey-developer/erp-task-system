@@ -121,7 +121,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Form.Item>
         )}
 
-        {!isConsumableCategory && nomenclature?.equipmentHasSerialNumber && (
+        {nomenclature?.equipmentHasSerialNumber && (
           <Form.Item data-testid='serial-number' label='Серийный номер' name='serialNumber'>
             <Input placeholder='Введите серийный номер' />
           </Form.Item>
