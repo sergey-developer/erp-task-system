@@ -47,6 +47,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<EquipmentModalFormFields>()
+  const isResponsibleStorageFormValue = Form.useWatch('isResponsibleStorage', form)
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const isConsumableCategory = selectedCategory?.code === EquipmentCategoryEnum.Consumable
@@ -145,7 +146,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           />
         </Form.Item>
 
-        {isConsumableCategory && (
+        {!isConsumableCategory && (
           <Form.Item>
             <Row gutter={8}>
               <Col span={12}>
@@ -220,6 +221,16 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         )}
 
         {!isConsumableCategory && (
+          <Form.Item
+            data-testid='is-responsible-storage'
+            label='Ответственное хранение'
+            name='isResponsibleStorage'
+          >
+            <Radio.Group options={yesNoOptions} />
+          </Form.Item>
+        )}
+
+        {!isConsumableCategory && isResponsibleStorageFormValue !== false && (
           <Form.Item data-testid='owner' label='Владелец оборудования' name='owner'>
             <Select
               data-testid='owner-select'
