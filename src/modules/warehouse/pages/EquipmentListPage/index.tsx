@@ -4,6 +4,7 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Equipment from 'modules/warehouse/components/Equipment'
+import { getHiddenFieldsByCategory } from 'modules/warehouse/components/Equipment/utils'
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import {
@@ -18,8 +19,6 @@ import { equipmentFilterToParams } from 'modules/warehouse/utils'
 
 import { useDebounceFn } from 'shared/hooks'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
-
-import { getHiddenFieldsByCategory } from '../../components/Equipment/utils'
 
 const EquipmentListPage: FC = () => {
   // todo: создать хук который будет возвращать распарсеные значения
@@ -37,7 +36,7 @@ const EquipmentListPage: FC = () => {
       ...getInitialPaginationParams(),
       ...(context.filter && equipmentFilterToParams(context.filter)),
       search: context.search,
-      nomenclatureId,
+      nomenclature: nomenclatureId,
       ordering: 'title',
     })
 
