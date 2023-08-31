@@ -10,6 +10,8 @@ import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import {
   useGetCustomerList,
   useGetEquipmentCategoryList,
+  useGetNomenclature,
+  useGetNomenclatureList,
   useGetWarehouseList,
 } from 'modules/warehouse/hooks'
 
@@ -17,8 +19,10 @@ import FilterButton from 'components/Buttons/FilterButton'
 
 import { useDebounceFn } from 'shared/hooks'
 
+import { IdType } from '../../../../shared/types/common'
 import EquipmentFilter from '../EquipmentFilter'
 import { EquipmentFilterFormFields } from '../EquipmentFilter/types'
+import EquipmentModal from '../EquipmentModal'
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
@@ -34,16 +38,28 @@ const EquipmentPageLayout: FC = () => {
   const [equipmentModalOpened, { toggle: toggleEquipmentModalOpened }] = useBoolean(false)
   const debouncedToggleEquipmentModalOpened = useDebounceFn(toggleEquipmentModalOpened)
 
+  const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
+
   const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
     useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
-    useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
+    useGetEquipmentCategoryList(undefined, { skip: !filterOpened && !equipmentModalOpened })
 
   const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
     undefined,
     { skip: !filterOpened },
   )
+
+  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
+    selectedNomenclatureId!,
+    {
+      skip: !selectedNomenclatureId,
+    },
+  )
+
+  const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
+    useGetNomenclatureList(undefined, { skip: !equipmentModalOpened })
 
   const initialFilterValues: EquipmentFilterFormFields = useMemo(
     () => ({
@@ -123,7 +139,21 @@ const EquipmentPageLayout: FC = () => {
         />
       )}
 
-      {equipmentModalOpened && <div>equipmentModalOpened</div>}
+      {equipmentModalOpened && (
+        <EquipmentModal
+          visible={equipmentModalOpened}
+          title='Добавление оборудования'
+          okText='Добавить'
+          isLoading={false}
+          categoryList={equipmentCategoryList}
+          categoryListIsLoading={equipmentCategoryListIsFetching}
+          nomenclatureList={nomenclatureList?.results || []}
+          nomenclatureListIsLoading={nomenclatureListIsFetching}
+          onChangeNomenclature={setSelectedNomenclatureId}
+          onCancel={debouncedToggleEquipmentModalOpened}
+          onSubmit={async () => {}}
+        />
+      )}
     </>
   )
 }

@@ -16,13 +16,11 @@ import {
   UpdateNomenclatureSuccessResponse,
 } from 'modules/warehouse/models'
 import { GetNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
-import {
-  getNomenclatureUrl,
-  updateNomenclatureUrl,
-} from 'modules/warehouse/utils'
+import { getNomenclatureUrl, updateNomenclatureUrl } from 'modules/warehouse/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/api'
+import { MaybeUndefined } from 'shared/types/utils'
 
 const nomenclatureApiService = baseApiService
   .enhanceEndpoints({
@@ -32,7 +30,7 @@ const nomenclatureApiService = baseApiService
     endpoints: (build) => ({
       [NomenclatureApiTriggerEnum.GetNomenclatureList]: build.query<
         GetNomenclatureListTransformedSuccessResponse,
-        GetNomenclatureListQueryArgs
+        MaybeUndefined<GetNomenclatureListQueryArgs>
       >({
         providesTags: [NomenclatureApiTagEnum.NomenclatureList],
         query: (params) => ({
@@ -40,11 +38,8 @@ const nomenclatureApiService = baseApiService
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (
-          response: GetNomenclatureListSuccessResponse,
-          meta,
-          arg,
-        ) => getPaginatedList(response, arg),
+        transformResponse: (response: GetNomenclatureListSuccessResponse, meta, arg) =>
+          getPaginatedList(response, arg),
       }),
       [NomenclatureApiTriggerEnum.GetNomenclature]: build.query<
         GetNomenclatureSuccessResponse,

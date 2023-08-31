@@ -1,6 +1,7 @@
 import { FormInstance } from 'antd'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { EquipmentCategoryListModel, NomenclatureListModel } from 'modules/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -35,5 +36,12 @@ export type EquipmentModalProps = Required<
     setFields: FormInstance['setFields'],
   ) => Promise<void>
 
-  initialValues?: EquipmentModalFormFields
+  categoryList: EquipmentCategoryListModel
+  categoryListIsLoading: boolean
+
+  nomenclatureList: NomenclatureListModel
+  nomenclatureListIsLoading: boolean
+  onChangeNomenclature: (id: IdType) => void
+
+  initialValues?: Partial<EquipmentModalFormFields>
 }

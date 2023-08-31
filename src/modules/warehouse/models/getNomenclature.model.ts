@@ -1,5 +1,7 @@
-import { NomenclatureModel } from './nomenclature.model'
+import { NomenclatureModel } from 'modules/warehouse/models'
 
-export type GetNomenclatureQueryArgs = number
+import { IdType } from 'shared/types/common'
+
+export type GetNomenclatureQueryArgs = IdType
 
 export type GetNomenclatureSuccessResponse = NomenclatureModel
