@@ -1,4 +1,4 @@
-import { ExtendedSortKey } from 'shared/types/sort'
+import { ExtendSortKey } from 'shared/types/sort'
 
 import { TaskTableListItem } from '../types'
 
@@ -15,7 +15,7 @@ export type AscendSortValue =
   | 'created_at'
   | 'ola_next_breach_time'
 
-export type SortValue = ExtendedSortKey<AscendSortValue>
+export type SortValue = ExtendSortKey<AscendSortValue>
 
 export type SortableField = keyof Pick<
   TaskTableListItem,

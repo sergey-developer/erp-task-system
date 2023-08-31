@@ -8,6 +8,7 @@ import {
 } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 
+import userFixtures from 'fixtures/user'
 import workGroupFixtures from 'fixtures/workGroup'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
@@ -49,9 +50,8 @@ const props: Readonly<ExtendedFilterProps> = {
   formValues: initialExtendedFilterFormValues,
   initialFormValues: initialExtendedFilterFormValues,
 
-  // закоменчено временно только для rc
-  // userList: [],
-  // userListIsLoading: false,
+  userList: [],
+  userListIsLoading: false,
 
   onClose: jest.fn(),
   onSubmit: jest.fn(),
@@ -1164,118 +1164,117 @@ describe('Расширенный фильтр', () => {
     })
   })
 
-  // закоменчено временно только для rc
-  // describe('Руководитель', () => {
-  //   test('Отображается корректно', async () => {
-  //     mockGetWorkGroupListSuccess()
-  //
-  //     const userList = [userFixtures.userListItem()]
-  //     const { user } = render(<ExtendedFilter {...props} userList={userList} />)
-  //
-  //     const field = testUtils.manager.getField()
-  //     const selectedOption = testUtils.manager.getSelected()
-  //     await testUtils.manager.openField(user)
-  //
-  //     expect(field).toBeInTheDocument()
-  //     expect(field).toBeEnabled()
-  //     expect(selectedOption).not.toBeInTheDocument()
-  //     userList.forEach((usr) => {
-  //       const option = getSelectOption(usr.fullName)
-  //       expect(option).toBeInTheDocument()
-  //     })
-  //   })
-  //
-  //   test('Можно установить значение', async () => {
-  //     mockGetWorkGroupListSuccess()
-  //
-  //     const userListItem = userFixtures.userListItem()
-  //     const { user } = render(
-  //       <ExtendedFilter {...props} userList={[userListItem]} />,
-  //     )
-  //
-  //     await testUtils.manager.openField(user)
-  //     await testUtils.manager.setValue(user, userListItem.fullName)
-  //
-  //     const selectedOption = testUtils.manager.getSelected()
-  //     expect(selectedOption).toBeInTheDocument()
-  //     expect(selectedOption).toHaveTextContent(userListItem.fullName)
-  //   })
-  //
-  //   test('Переданное значение устанавливается', () => {
-  //     mockGetWorkGroupListSuccess()
-  //
-  //     const userListItem = userFixtures.userListItem()
-  //
-  //     render(
-  //       <ExtendedFilter
-  //         {...props}
-  //         userList={[userListItem]}
-  //         formValues={{
-  //           ...props.formValues,
-  //           manager: userListItem.id,
-  //         }}
-  //       />,
-  //     )
-  //
-  //     const selectedOption = testUtils.manager.getSelected()
-  //
-  //     expect(selectedOption).toBeInTheDocument()
-  //     expect(selectedOption).toHaveTextContent(userListItem.fullName)
-  //   })
-  //
-  //   test('Поиск по списку работает', async () => {
-  //     mockGetWorkGroupListSuccess()
-  //
-  //     const userListItem1 = userFixtures.userListItem()
-  //     const userListItem2 = userFixtures.userListItem()
-  //
-  //     const { user } = render(
-  //       <ExtendedFilter {...props} userList={[userListItem1, userListItem2]} />,
-  //     )
-  //
-  //     const container = await testUtils.manager.openField(user)
-  //     await userSearchInSelect(user, container, userListItem1.fullName)
-  //
-  //     const option1 = getSelectOption(userListItem1.fullName)
-  //     const option2 = querySelectOption(userListItem2.fullName)
-  //
-  //     expect(option1).toBeInTheDocument()
-  //     expect(option2).not.toBeInTheDocument()
-  //   })
-  //
-  //   test('Кнопка "Сбросить" сбрасывает значение', async () => {
-  //     mockGetWorkGroupListSuccess()
-  //
-  //     const userListItem = userFixtures.userListItem()
-  //
-  //     const { user } = render(
-  //       <ExtendedFilter {...props} userList={[userListItem]} />,
-  //     )
-  //
-  //     await testUtils.manager.openField(user)
-  //     await testUtils.manager.setValue(user, userListItem.fullName)
-  //     const container = testUtils.manager.getContainer()
-  //     await testUtils.clickResetButtonIn(user, container)
-  //     const selectedOption = testUtils.manager.getSelected()
-  //
-  //     expect(selectedOption).not.toBeInTheDocument()
-  //   })
-  //
-  //   test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
-  //     mockGetWorkGroupListSuccess()
-  //
-  //     const userListItem = userFixtures.userListItem()
-  //
-  //     const { user } = render(
-  //       <ExtendedFilter {...props} userList={[userListItem]} />,
-  //     )
-  //
-  //     await testUtils.manager.openField(user)
-  //     await testUtils.manager.setValue(user, userListItem.fullName)
-  //     await testUtils.clickResetAllButton(user)
-  //     const selectedOption = testUtils.manager.getSelected()
-  //
-  //     expect(selectedOption).not.toBeInTheDocument()
-  //   })
-  // })
+  describe('Руководитель', () => {
+    test('Отображается корректно', async () => {
+      mockGetWorkGroupListSuccess()
+
+      const userList = [userFixtures.userListItem()]
+      const { user } = render(<ExtendedFilter {...props} userList={userList} />)
+
+      const field = testUtils.manager.getField()
+      const selectedOption = testUtils.manager.getSelected()
+      await testUtils.manager.openField(user)
+
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(selectedOption).not.toBeInTheDocument()
+      userList.forEach((usr) => {
+        const option = getSelectOption(usr.fullName)
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test('Можно установить значение', async () => {
+      mockGetWorkGroupListSuccess()
+
+      const userListItem = userFixtures.userListItem()
+      const { user } = render(
+        <ExtendedFilter {...props} userList={[userListItem]} />,
+      )
+
+      await testUtils.manager.openField(user)
+      await testUtils.manager.setValue(user, userListItem.fullName)
+
+      const selectedOption = testUtils.manager.getSelected()
+      expect(selectedOption).toBeInTheDocument()
+      expect(selectedOption).toHaveTextContent(userListItem.fullName)
+    })
+
+    test('Переданное значение устанавливается', () => {
+      mockGetWorkGroupListSuccess()
+
+      const userListItem = userFixtures.userListItem()
+
+      render(
+        <ExtendedFilter
+          {...props}
+          userList={[userListItem]}
+          formValues={{
+            ...props.formValues,
+            manager: userListItem.id,
+          }}
+        />,
+      )
+
+      const selectedOption = testUtils.manager.getSelected()
+
+      expect(selectedOption).toBeInTheDocument()
+      expect(selectedOption).toHaveTextContent(userListItem.fullName)
+    })
+
+    test('Поиск по списку работает', async () => {
+      mockGetWorkGroupListSuccess()
+
+      const userListItem1 = userFixtures.userListItem()
+      const userListItem2 = userFixtures.userListItem()
+
+      const { user } = render(
+        <ExtendedFilter {...props} userList={[userListItem1, userListItem2]} />,
+      )
+
+      const container = await testUtils.manager.openField(user)
+      await userSearchInSelect(user, container, userListItem1.fullName)
+
+      const option1 = getSelectOption(userListItem1.fullName)
+      const option2 = querySelectOption(userListItem2.fullName)
+
+      expect(option1).toBeInTheDocument()
+      expect(option2).not.toBeInTheDocument()
+    })
+
+    test('Кнопка "Сбросить" сбрасывает значение', async () => {
+      mockGetWorkGroupListSuccess()
+
+      const userListItem = userFixtures.userListItem()
+
+      const { user } = render(
+        <ExtendedFilter {...props} userList={[userListItem]} />,
+      )
+
+      await testUtils.manager.openField(user)
+      await testUtils.manager.setValue(user, userListItem.fullName)
+      const container = testUtils.manager.getContainer()
+      await testUtils.clickResetButtonIn(user, container)
+      const selectedOption = testUtils.manager.getSelected()
+
+      expect(selectedOption).not.toBeInTheDocument()
+    })
+
+    test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
+      mockGetWorkGroupListSuccess()
+
+      const userListItem = userFixtures.userListItem()
+
+      const { user } = render(
+        <ExtendedFilter {...props} userList={[userListItem]} />,
+      )
+
+      await testUtils.manager.openField(user)
+      await testUtils.manager.setValue(user, userListItem.fullName)
+      await testUtils.clickResetAllButton(user)
+      const selectedOption = testUtils.manager.getSelected()
+
+      expect(selectedOption).not.toBeInTheDocument()
+    })
+  })
 })

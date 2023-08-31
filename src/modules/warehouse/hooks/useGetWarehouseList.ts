@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import {
+  CustomUseQueryHookResult,
+  CustomUseQueryOptions,
+} from 'lib/rtk-query/types'
 
 import { getWarehouseListMessages } from 'modules/warehouse/constants'
 import {
@@ -9,6 +12,7 @@ import {
 } from 'modules/warehouse/models'
 import { useGetWarehouseListQuery } from 'modules/warehouse/services/warehouseApi.service'
 
+import { isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export type UseGetWarehouseListResult = CustomUseQueryHookResult<
@@ -18,14 +22,18 @@ export type UseGetWarehouseListResult = CustomUseQueryHookResult<
 
 export const useGetWarehouseList = (
   args?: GetWarehouseListQueryArgs,
+  options?: CustomUseQueryOptions<
+    GetWarehouseListQueryArgs,
+    GetWarehouseListSuccessResponse
+  >,
 ): UseGetWarehouseListResult => {
-  const state = useGetWarehouseListQuery(args)
+  const state = useGetWarehouseListQuery(args, options)
 
   useEffect(() => {
-    if (state.isError) {
+    if (isErrorResponse(state.error)) {
       showErrorNotification(getWarehouseListMessages.commonError)
     }
-  }, [state.isError])
+  }, [state.error])
 
   return state
 }

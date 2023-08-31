@@ -8,7 +8,7 @@ import {
 } from 'modules/supportGroup/models'
 import { useGetSupportGroupListQuery } from 'modules/supportGroup/services/supportGroupApi.service'
 
-import { CustomBaseQueryFn } from 'shared/services/api'
+import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/api'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetSupportGroupList = (
@@ -21,10 +21,10 @@ export const useGetSupportGroupList = (
   const state = useGetSupportGroupListQuery(args)
 
   useEffect(() => {
-    if (!state.isError) return
-
-    showErrorNotification(getSupportGroupListMessages.commonError)
-  }, [state.isError])
+    if (isErrorResponse(state.error)) {
+      showErrorNotification(getSupportGroupListMessages.commonError)
+    }
+  }, [state.error])
 
   return state
 }

@@ -1,5 +1,5 @@
-import { TaskModel } from './task.model'
-import { TaskJournalModel } from './taskJournal.model'
+import { TaskJournalModel } from 'modules/task/models'
 
-export type GetTaskJournalQueryArgs = TaskModel['id']
+export type GetTaskJournalQueryArgs = number
+
 export type GetTaskJournalSuccessResponse = TaskJournalModel

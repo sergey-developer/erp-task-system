@@ -360,7 +360,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         describe('При не успешном запросе', () => {
-          test('Корректно обрабатывается ошибка - 404', async () => {
+          test('Обрабатывается ошибка 404', async () => {
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
@@ -653,7 +653,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         describe('При не успешном запросе', () => {
-          test('Корректно обрабатывается ошибка - 404', async () => {
+          test('Обрабатывается ошибка 404', async () => {
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
@@ -848,7 +848,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         describe('При не успешном запросе', () => {
-          test('Корректно обрабатывается ошибка - 404', async () => {
+          test('Обрабатывается ошибка 404', async () => {
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
@@ -1513,7 +1513,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1532,7 +1532,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1551,7 +1551,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1653,7 +1653,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1672,7 +1672,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1690,7 +1690,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1792,7 +1792,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1811,7 +1811,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1829,7 +1829,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1931,7 +1931,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1949,7 +1949,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1967,7 +1967,7 @@ describe('Контейнер детальной карточки заявки', 
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -2105,9 +2105,9 @@ describe('Контейнер детальной карточки заявки', 
 
         mockGetWorkGroupListSuccess({ body: [] })
 
-        const forbiddenErrorMessage = fakeWord()
+        const errorMessage = fakeWord()
         mockTakeTaskForbiddenError(props.taskId, {
-          body: { detail: [forbiddenErrorMessage] },
+          body: { detail: [errorMessage] },
         })
 
         const { user } = render(<TaskCardContainer {...props} />, {
@@ -2121,7 +2121,7 @@ describe('Контейнер детальной карточки заявки', 
         await assigneeBlockTestUtils.clickTakeTaskButton(user)
         taskCardTestUtils.expectLoadingNotStarted()
 
-        const notification = await findNotification(forbiddenErrorMessage)
+        const notification = await findNotification(errorMessage)
         expect(notification).toBeInTheDocument()
       })
     })

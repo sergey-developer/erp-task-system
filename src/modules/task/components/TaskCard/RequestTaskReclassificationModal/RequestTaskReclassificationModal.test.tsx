@@ -13,6 +13,7 @@ import {
   expectLoadingStartedByButton,
   modalTestUtils,
   render,
+  getRadioButtonIn,
 } from '_tests_/utils'
 
 import { reclassificationReasonLabels } from './constants'
@@ -81,9 +82,10 @@ const getReclassificationReasonTitle = () =>
 const getReclassificationReasonField = (
   reason: ReclassificationReasonEnum,
 ): HTMLInputElement =>
-  within(getReclassificationReasonBlock()).getByRole('radio', {
-    name: reclassificationReasonLabels[reason],
-  })
+  getRadioButtonIn(
+    getReclassificationReasonBlock(),
+    reclassificationReasonLabels[reason],
+  )
 
 const findReclassificationReasonError = (text: string) =>
   within(getReclassificationReasonBlock()).findByText(text)
@@ -172,9 +174,7 @@ describe('Модалка запроса о переклассификации з
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <RequestTaskReclassificationModal {...props} />,
-      )
+      const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
       await testUtils.clickCloseButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
@@ -192,9 +192,7 @@ describe('Модалка запроса о переклассификации з
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <RequestTaskReclassificationModal {...props} />,
-      )
+      const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
       await testUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
@@ -218,9 +216,7 @@ describe('Модалка запроса о переклассификации з
 
     describe('При клике обработчик вызывается корректно', () => {
       test('Если поля заполнены', async () => {
-        const { user } = render(
-          <RequestTaskReclassificationModal {...props} />,
-        )
+        const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
         for await (const reason of Object.values(ReclassificationReasonEnum)) {
           await testUtils.setReclassificationReason(user, reason)
@@ -236,9 +232,7 @@ describe('Модалка запроса о переклассификации з
       })
 
       test('Если поля не заполнены', async () => {
-        const { user } = render(
-          <RequestTaskReclassificationModal {...props} />,
-        )
+        const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
         await testUtils.clickSubmitButton(user)
         expect(props.onSubmit).not.toBeCalled()
@@ -275,9 +269,7 @@ describe('Модалка запроса о переклассификации з
       })
 
       test('Можно выбрать любую доступную причину', async () => {
-        const { user } = render(
-          <RequestTaskReclassificationModal {...props} />,
-        )
+        const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
         for await (const reason of availableReasons) {
           const field = await testUtils.setReclassificationReason(user, reason)
@@ -286,9 +278,7 @@ describe('Модалка запроса о переклассификации з
       })
 
       test('Не активно во время загрузки', () => {
-        render(
-          <RequestTaskReclassificationModal {...props} isLoading />,
-        )
+        render(<RequestTaskReclassificationModal {...props} isLoading />)
 
         Object.values(ReclassificationReasonEnum).forEach((reason) => {
           const field = testUtils.getReclassificationReasonField(reason)
@@ -330,9 +320,7 @@ describe('Модалка запроса о переклассификации з
       })
 
       test('Можно заполнить', async () => {
-        const { user } = render(
-          <RequestTaskReclassificationModal {...props} />,
-        )
+        const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
         const value = fakeWord()
         const field = await testUtils.setComment(user, value)
@@ -341,9 +329,7 @@ describe('Модалка запроса о переклассификации з
       })
 
       test('Не активно во время загрузки', () => {
-        render(
-          <RequestTaskReclassificationModal {...props} isLoading />,
-        )
+        render(<RequestTaskReclassificationModal {...props} isLoading />)
         expect(testUtils.getCommentField()).toBeDisabled()
       })
 
@@ -376,9 +362,7 @@ describe('Модалка запроса о переклассификации з
   })
 
   test('Обработчик вызывается корректно кликнув вне модалки', async () => {
-    const { user } = render(
-      <RequestTaskReclassificationModal {...props} />,
-    )
+    const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
     await modalTestUtils.clickOutsideModal(user)
     expect(props.onCancel).toBeCalledTimes(1)

@@ -3,8 +3,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { RouteEnum } from 'configs/routes'
 
-import { testUtils as warehouseListFilterTestUtils } from 'modules/warehouse/features/WarehouseListFilter/WarehouseListFilter.test'
-import { testUtils as warehouseTableTestUtils } from 'modules/warehouse/features/WarehouseTable/WarehouseTable.test'
+import { testUtils as warehouseListFilterTestUtils } from 'modules/warehouse/components/WarehouseListFilter/WarehouseListFilter.test'
+import { testUtils as warehouseTableTestUtils } from 'modules/warehouse/components/WarehouseTable/WarehouseTable.test'
 
 import warehouseFixtures from 'fixtures/warehouse'
 
@@ -34,7 +34,7 @@ export const testUtils = {
 }
 
 setupApiTests()
-
+// todo: сделать тесты для сортировки как в EquipmentListPage
 describe('Страница списка складов', () => {
   test('Таблицу складов отображается корректно', async () => {
     const warehouseList = [warehouseFixtures.warehouseListItem()]
