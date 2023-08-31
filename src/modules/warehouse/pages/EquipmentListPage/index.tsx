@@ -4,6 +4,7 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Equipment from 'modules/warehouse/components/Equipment'
+import { getHiddenFieldsByCategory } from 'modules/warehouse/components/Equipment/utils'
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import {
@@ -17,9 +18,8 @@ import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils'
 
 import { useDebounceFn } from 'shared/hooks'
+import { IdType } from 'shared/types/common'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
-
-import { getHiddenFieldsByCategory } from '../../components/Equipment/utils'
 
 const EquipmentListPage: FC = () => {
   // todo: создать хук который будет возвращать распарсеные значения
@@ -28,7 +28,7 @@ const EquipmentListPage: FC = () => {
 
   const context = useEquipmentPageContext()
 
-  const [selectedEquipmentId, setSelectedEquipmentId] = useState<number>()
+  const [selectedEquipmentId, setSelectedEquipmentId] = useState<IdType>()
   const debouncedSetSelectedEquipmentId = useDebounceFn(setSelectedEquipmentId)
   const isShowEquipment = Boolean(selectedEquipmentId)
 

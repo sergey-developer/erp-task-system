@@ -6,23 +6,25 @@ import { Outlet, useNavigate } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
+import EquipmentFilter from 'modules/warehouse/components/EquipmentFilter'
+import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
+import EquipmentModal from 'modules/warehouse/components/EquipmentModal'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import {
+  useGetCurrencyList,
   useGetCustomerList,
   useGetEquipmentCategoryList,
   useGetNomenclature,
   useGetNomenclatureList,
   useGetWarehouseList,
+  useGetWorkTypeList,
 } from 'modules/warehouse/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 
 import { useDebounceFn } from 'shared/hooks'
+import { IdType } from 'shared/types/common'
 
-import { IdType } from '../../../../shared/types/common'
-import EquipmentFilter from '../EquipmentFilter'
-import { EquipmentFilterFormFields } from '../EquipmentFilter/types'
-import EquipmentModal from '../EquipmentModal'
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
@@ -41,14 +43,24 @@ const EquipmentPageLayout: FC = () => {
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
-    useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
+    useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened && !equipmentModalOpened })
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
     useGetEquipmentCategoryList(undefined, { skip: !filterOpened && !equipmentModalOpened })
 
   const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
     undefined,
-    { skip: !filterOpened },
+    { skip: !filterOpened && !equipmentModalOpened },
+  )
+
+  const { currentData: currencyList = [], isFetching: currencyListIsFetching } = useGetCurrencyList(
+    undefined,
+    { skip: !equipmentModalOpened },
+  )
+
+  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
+    undefined,
+    { skip: !equipmentModalOpened },
   )
 
   const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
@@ -87,6 +99,10 @@ const EquipmentPageLayout: FC = () => {
   const handleSearch: SearchProps['onSearch'] = (value) => {
     navigate(RouteEnum.EquipmentNomenclatureList)
     setSearchValue(value)
+  }
+
+  const handleAddEquipment = async () => {
+    toggleEquipmentModalOpened()
   }
 
   const routeContext = useMemo<EquipmentPageContextType>(
@@ -144,12 +160,20 @@ const EquipmentPageLayout: FC = () => {
           isLoading={false}
           categoryList={equipmentCategoryList}
           categoryListIsLoading={equipmentCategoryListIsFetching}
+          warehouseList={warehouseList}
+          warehouseListIsLoading={warehouseListIsFetching}
+          currencyList={currencyList}
+          currencyListIsFetching={currencyListIsFetching}
+          ownerList={customerList}
+          ownerListIsFetching={customerListIsFetching}
+          workTypeList={workTypeList}
+          workTypeListIsFetching={workTypeListIsFetching}
           nomenclature={nomenclature}
           nomenclatureList={nomenclatureList?.results || []}
           nomenclatureListIsLoading={nomenclatureListIsFetching}
           onChangeNomenclature={setSelectedNomenclatureId}
           onCancel={debouncedToggleEquipmentModalOpened}
-          onSubmit={async () => {}}
+          onSubmit={handleAddEquipment}
         />
       )}
     </>

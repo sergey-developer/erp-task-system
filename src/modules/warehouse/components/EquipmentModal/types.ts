@@ -2,9 +2,13 @@ import { FormInstance } from 'antd'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import {
+  CurrencyListModel,
+  CustomerListModel,
   EquipmentCategoryListModel,
   NomenclatureListModel,
   NomenclatureModel,
+  WarehouseListModel,
+  WorkTypeListModel,
 } from 'modules/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
@@ -43,7 +47,19 @@ export type EquipmentModalProps = Required<
   categoryList: EquipmentCategoryListModel
   categoryListIsLoading: boolean
 
-  nomenclature?: NomenclatureModel
+  warehouseList: WarehouseListModel
+  warehouseListIsLoading: boolean
+
+  currencyList: CurrencyListModel
+  currencyListIsFetching: boolean
+
+  ownerList: CustomerListModel
+  ownerListIsFetching: boolean
+
+  workTypeList: WorkTypeListModel
+  workTypeListIsFetching: boolean
+
+  nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>
   nomenclatureList: NomenclatureListModel
   nomenclatureListIsLoading: boolean
   onChangeNomenclature: (id: IdType) => void
