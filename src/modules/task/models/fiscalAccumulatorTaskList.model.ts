@@ -1,5 +1,6 @@
 import { FiscalAccumulatorFormatEnum } from 'modules/task/constants'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type FiscalAccumulatorTaskListItemModel = {
@@ -10,15 +11,15 @@ export type FiscalAccumulatorTaskListItemModel = {
   name: string
   address: string
   fiscalAccumulator: MaybeNull<{
-    id: number
+    id: IdType
     faNumber: number
   }>
   deadlineOrTotalFiscalDocs: MaybeNull<number>
   supportGroup: {
-    id: number
+    id: IdType
     name: string
     macroregion: MaybeNull<{
-      id: number
+      id: IdType
       title: string
     }>
   }
@@ -27,5 +28,4 @@ export type FiscalAccumulatorTaskListItemModel = {
   faFormat: MaybeNull<FiscalAccumulatorFormatEnum>
 }
 
-export type FiscalAccumulatorTaskListModel =
-  Array<FiscalAccumulatorTaskListItemModel>
+export type FiscalAccumulatorTaskListModel = Array<FiscalAccumulatorTaskListItemModel>

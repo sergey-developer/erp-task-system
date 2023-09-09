@@ -1,4 +1,6 @@
+import { IdType } from 'shared/types/common'
+
 export type CountryModel = {
-  id: number
+  id: IdType
   title: string
 }

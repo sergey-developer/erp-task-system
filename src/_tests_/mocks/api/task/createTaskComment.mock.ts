@@ -3,6 +3,7 @@ import { createTaskCommentUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -14,30 +15,30 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const createTaskCommentMockFn = (taskId: number) =>
-  getRequestMockFn(HttpMethodEnum.Post, createTaskCommentUrl(taskId))
+const createTaskCommentMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Post, createTaskCommentUrl(id))
 
 export const mockCreateTaskCommentSuccess = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<CreateTaskCommentSuccessResponse>>,
-) => getSuccessMockFn(createTaskCommentMockFn(taskId), options)()
+) => getSuccessMockFn(createTaskCommentMockFn(id), options)()
 
 export const mockCreateTaskCommentBadRequestError = <T extends object>(
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => getBadRequestErrorMockFn(createTaskCommentMockFn(taskId), options)()
+) => getBadRequestErrorMockFn(createTaskCommentMockFn(id), options)()
 
 export const mockCreateTaskCommentNotFoundError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getNotFoundErrorMockFn(createTaskCommentMockFn(taskId), options)()
+) => getNotFoundErrorMockFn(createTaskCommentMockFn(id), options)()
 
 export const mockCreateTaskCommentForbiddenError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getForbiddenErrorMockFn(createTaskCommentMockFn(taskId), options)()
+) => getForbiddenErrorMockFn(createTaskCommentMockFn(id), options)()
 
 export const mockCreateTaskCommentServerError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(createTaskCommentMockFn(taskId), options)()
+) => getServerErrorMockFn(createTaskCommentMockFn(id), options)()

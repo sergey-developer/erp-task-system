@@ -7,6 +7,7 @@ import {
 } from 'modules/task/constants'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 import { TaskAssigneeModel } from './taskAssignee.model'
@@ -20,7 +21,7 @@ export type TaskResponseTimeModel = {
 }
 
 export type BaseTaskModel = {
-  id: number
+  id: IdType
   createdAt: string
   type: TaskTypeEnum
   contactService: string

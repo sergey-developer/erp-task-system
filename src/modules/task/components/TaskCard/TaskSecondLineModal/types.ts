@@ -2,8 +2,10 @@ import { FormInstance, ModalProps } from 'antd'
 
 import { TaskModel } from 'modules/task/models'
 
+import { IdType } from 'shared/types/common'
+
 export type TaskSecondLineFormFields = {
-  workGroup: number
+  workGroup: IdType
   markAsDefault?: boolean
   comment?: string
 }

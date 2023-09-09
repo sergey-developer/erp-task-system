@@ -4,38 +4,35 @@ import {
   EquipmentApiEnum,
   NomenclatureApiEnum,
   NomenclatureGroupApiEnum,
-  WarehouseApiEnum
-} from "modules/warehouse/constants";
+  WarehouseApiEnum,
+} from 'modules/warehouse/constants'
 
+import { IdType } from 'shared/types/common'
 import { appendSlashAtEnd } from 'shared/utils/string'
 
-export const getWarehouseUrl = (id: number): string =>
-  appendSlashAtEnd(
-    generatePath(WarehouseApiEnum.GetWarehouse, { id: String(id) }),
-  )
+export const getWarehouseUrl = (id: IdType): string =>
+  appendSlashAtEnd(generatePath(WarehouseApiEnum.GetWarehouse, { id: String(id) }))
 
-export const getNomenclatureUrl = (id: number): string =>
+export const getNomenclatureUrl = (id: IdType): string =>
   appendSlashAtEnd(
     generatePath(NomenclatureApiEnum.GetNomenclature, {
       id: String(id),
     }),
   )
 
-export const updateNomenclatureUrl = (id: number): string =>
+export const updateNomenclatureUrl = (id: IdType): string =>
   appendSlashAtEnd(
     generatePath(NomenclatureApiEnum.UpdateNomenclature, {
       id: String(id),
     }),
   )
 
-export const updateNomenclatureGroupUrl = (id: number): string =>
+export const updateNomenclatureGroupUrl = (id: IdType): string =>
   appendSlashAtEnd(
     generatePath(NomenclatureGroupApiEnum.UpdateNomenclatureGroup, {
       id: String(id),
     }),
   )
 
-export const getEquipmentUrl = (id: number): string =>
-  appendSlashAtEnd(
-    generatePath(EquipmentApiEnum.GetEquipment, { id: String(id) }),
-  )
+export const getEquipmentUrl = (id: IdType): string =>
+  appendSlashAtEnd(generatePath(EquipmentApiEnum.GetEquipment, { id: String(id) }))

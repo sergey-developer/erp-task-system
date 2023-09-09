@@ -1,5 +1,7 @@
+import { IdType } from 'shared/types/common'
+
 export type MeasurementUnitListItemModel = {
-  id: number
+  id: IdType
   title: string
 }
 

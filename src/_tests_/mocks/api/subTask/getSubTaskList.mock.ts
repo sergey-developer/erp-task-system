@@ -2,27 +2,20 @@ import { GetSubTaskListSuccessResponse } from 'modules/subTask/models'
 import { getSubTaskListUrl } from 'modules/subTask/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
+import { IdType } from 'shared/types/common'
 
-import {
-  getRequestMockFn,
-  getServerErrorMockFn,
-  getSuccessMockFn,
-} from '_tests_/mocks/request'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getSubTaskListMockFn = (taskId: number) =>
-  getRequestMockFn(HttpMethodEnum.Get, getSubTaskListUrl(taskId))
+const getSubTaskListMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Get, getSubTaskListUrl(id))
 
 export const mockGetSubTaskListSuccess = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<GetSubTaskListSuccessResponse>>,
-) => {
-  getSuccessMockFn(getSubTaskListMockFn(taskId), options)()
-}
+) => getSuccessMockFn(getSubTaskListMockFn(id), options)()
 
 export const mockGetSubTaskListServerError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => {
-  getServerErrorMockFn(getSubTaskListMockFn(taskId), options)()
-}
+) => getServerErrorMockFn(getSubTaskListMockFn(id), options)()

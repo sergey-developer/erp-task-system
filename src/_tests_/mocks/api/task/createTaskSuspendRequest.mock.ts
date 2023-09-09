@@ -3,6 +3,7 @@ import { createTaskSuspendRequestUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -13,27 +14,25 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const createTaskSuspendRequestMockFn = (taskId: number) =>
-  getRequestMockFn(HttpMethodEnum.Post, createTaskSuspendRequestUrl(taskId))
+const createTaskSuspendRequestMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Post, createTaskSuspendRequestUrl(id))
 
 export const mockCreateTaskSuspendRequestSuccess = (
-  taskId: number,
-  options?: Partial<
-    ResponseResolverOptions<CreateTaskSuspendRequestSuccessResponse>
-  >,
-) => getSuccessMockFn(createTaskSuspendRequestMockFn(taskId), options)()
+  id: IdType,
+  options?: Partial<ResponseResolverOptions<CreateTaskSuspendRequestSuccessResponse>>,
+) => getSuccessMockFn(createTaskSuspendRequestMockFn(id), options)()
 
 export const mockCreateTaskSuspendRequestNotFoundError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getNotFoundErrorMockFn(createTaskSuspendRequestMockFn(taskId), options)()
+) => getNotFoundErrorMockFn(createTaskSuspendRequestMockFn(id), options)()
 
 export const mockCreateTaskSuspendRequestBadRequestError = <T extends object>(
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => getBadRequestErrorMockFn(createTaskSuspendRequestMockFn(taskId), options)()
+) => getBadRequestErrorMockFn(createTaskSuspendRequestMockFn(id), options)()
 
 export const mockCreateTaskSuspendRequestServerError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(createTaskSuspendRequestMockFn(taskId), options)()
+) => getServerErrorMockFn(createTaskSuspendRequestMockFn(id), options)()

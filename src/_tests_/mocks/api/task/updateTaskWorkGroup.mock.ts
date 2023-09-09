@@ -3,6 +3,7 @@ import { updateTaskWorkGroupUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -13,27 +14,25 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const updateTaskWorkGroupMockFn = (taskId: number) =>
+const updateTaskWorkGroupMockFn = (taskId: IdType) =>
   getRequestMockFn(HttpMethodEnum.Post, updateTaskWorkGroupUrl(taskId))
 
 export const mockUpdateTaskWorkGroupSuccess = (
-  taskId: number,
-  options?: Partial<
-    ResponseResolverOptions<UpdateTaskWorkGroupSuccessResponse>
-  >,
+  taskId: IdType,
+  options?: Partial<ResponseResolverOptions<UpdateTaskWorkGroupSuccessResponse>>,
 ) => getSuccessMockFn(updateTaskWorkGroupMockFn(taskId), options)()
 
 export const mockUpdateTaskWorkGroupBadRequestError = <T extends object>(
-  taskId: number,
+  taskId: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(updateTaskWorkGroupMockFn(taskId), options)()
 
 export const mockUpdateTaskWorkGroupServerError = (
-  taskId: number,
+  taskId: IdType,
   options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(updateTaskWorkGroupMockFn(taskId), options)()
 
 export const mockUpdateTaskWorkGroupForbiddenError = (
-  taskId: number,
+  taskId: IdType,
   options?: Partial<ResponseResolverOptions>,
 ) => getForbiddenErrorMockFn(updateTaskWorkGroupMockFn(taskId), options)()

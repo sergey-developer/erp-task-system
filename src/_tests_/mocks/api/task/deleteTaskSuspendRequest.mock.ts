@@ -3,6 +3,7 @@ import { deleteTaskSuspendRequestUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -13,27 +14,25 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const deleteTaskSuspendRequestMockFn = (taskId: number) =>
-  getRequestMockFn(HttpMethodEnum.Delete, deleteTaskSuspendRequestUrl(taskId))
+const deleteTaskSuspendRequestMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Delete, deleteTaskSuspendRequestUrl(id))
 
 export const mockDeleteTaskSuspendRequestSuccess = (
-  taskId: number,
-  options?: Partial<
-    ResponseResolverOptions<DeleteTaskSuspendRequestSuccessResponse>
-  >,
-) => getSuccessMockFn(deleteTaskSuspendRequestMockFn(taskId), options)()
+  id: IdType,
+  options?: Partial<ResponseResolverOptions<DeleteTaskSuspendRequestSuccessResponse>>,
+) => getSuccessMockFn(deleteTaskSuspendRequestMockFn(id), options)()
 
 export const mockDeleteTaskSuspendRequestNotFoundError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getNotFoundErrorMockFn(deleteTaskSuspendRequestMockFn(taskId), options)()
+) => getNotFoundErrorMockFn(deleteTaskSuspendRequestMockFn(id), options)()
 
 export const mockDeleteTaskSuspendRequestBadRequestError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
-) => getBadRequestErrorMockFn(deleteTaskSuspendRequestMockFn(taskId), options)()
+) => getBadRequestErrorMockFn(deleteTaskSuspendRequestMockFn(id), options)()
 
 export const mockDeleteTaskSuspendRequestServerError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(deleteTaskSuspendRequestMockFn(taskId), options)()
+) => getServerErrorMockFn(deleteTaskSuspendRequestMockFn(id), options)()

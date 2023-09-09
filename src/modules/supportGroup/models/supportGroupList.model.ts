@@ -1,5 +1,7 @@
+import { IdType } from 'shared/types/common'
+
 export type SupportGroupListItemModel = {
-  id: number
+  id: IdType
   name: string
 }
 

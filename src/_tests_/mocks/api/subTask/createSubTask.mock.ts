@@ -3,6 +3,7 @@ import { createSubTaskUrl } from 'modules/subTask/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -12,20 +13,20 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const createSubTaskMockFn = (taskId: number) =>
-  getRequestMockFn(HttpMethodEnum.Post, createSubTaskUrl(taskId))
+const createSubTaskMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Post, createSubTaskUrl(id))
 
 export const mockCreateSubTaskSuccess = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<CreateSubTaskSuccessResponse>>,
-) => getSuccessMockFn(createSubTaskMockFn(taskId), options)()
+) => getSuccessMockFn(createSubTaskMockFn(id), options)()
 
 export const mockCreateSubTaskBadRequestError = <T extends object>(
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => getBadRequestErrorMockFn(createSubTaskMockFn(taskId), options)()
+) => getBadRequestErrorMockFn(createSubTaskMockFn(id), options)()
 
 export const mockCreateSubTaskServerError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(createSubTaskMockFn(taskId), options)()
+) => getServerErrorMockFn(createSubTaskMockFn(id), options)()

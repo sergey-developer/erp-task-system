@@ -4,10 +4,11 @@ import {
   NomenclatureGroupModel,
 } from 'modules/warehouse/models'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type NomenclatureModel = {
-  id: number
+  id: IdType
   title: string
   shortTitle: string
   vendorCode: string

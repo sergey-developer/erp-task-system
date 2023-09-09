@@ -3,6 +3,7 @@ import { Moment } from 'moment-timezone'
 import { TaskExtendedStatusEnum } from 'modules/task/constants'
 import { UserListModel } from 'modules/user/models'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 import { TaskAssignedEnum, TaskOverdueEnum } from './constants'
@@ -19,8 +20,8 @@ export type ExtendedFilterQueries = Partial<{
   status: Array<TaskExtendedStatusEnum>
   isOverdue: Array<TaskOverdueEnum>
   isAssigned: Array<TaskAssignedEnum>
-  workGroupId: number
-  manager: number
+  workGroupId: IdType
+  manager: IdType
 }> &
   SearchFields
 
@@ -32,7 +33,7 @@ export type ExtendedFilterFormFields = {
   isOverdue: Array<TaskOverdueEnum>
   isAssigned: Array<TaskAssignedEnum>
   workGroupId?: string
-  manager?: number
+  manager?: IdType
 }
 
 export type ExtendedFilterProps = {

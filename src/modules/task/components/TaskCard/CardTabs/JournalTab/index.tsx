@@ -8,13 +8,14 @@ import { DownloadIcon, SyncIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
+import { IdType } from 'shared/types/common'
 import { clickDownloadLink } from 'shared/utils/common/downloadLink'
 
 import Journal from './Journal'
 import { getJournalCsvFilename } from './utils'
 
 export type JournalTabProps = {
-  taskId: number
+  taskId: IdType
 }
 
 const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
@@ -50,20 +51,11 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
                 type='link'
                 onClick={handleGetJournalCsv}
                 loading={journalCsvIsFetching}
-                icon={
-                  <DownloadIcon
-                    data-testid='journal-icon-download'
-                    $color='black'
-                  />
-                }
+                icon={<DownloadIcon data-testid='journal-icon-download' $color='black' />}
               />
             )}
 
-            <Button
-              type='link'
-              icon={<SyncIcon $color='black' />}
-              onClick={refetchJournal}
-            />
+            <Button type='link' icon={<SyncIcon $color='black' />} onClick={refetchJournal} />
           </Space>
         </Row>
 

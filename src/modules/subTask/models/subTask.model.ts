@@ -1,10 +1,11 @@
 import { SupportGroupModel } from 'modules/supportGroup/models'
 import { TaskStatusEnum } from 'modules/task/constants'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type SubTaskModel = {
-  id: number
+  id: IdType
   title: string
   status: TaskStatusEnum
   supportGroup: MaybeNull<SupportGroupModel>

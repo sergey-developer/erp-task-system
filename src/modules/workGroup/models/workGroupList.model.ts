@@ -1,3 +1,4 @@
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export enum WorkGroupTypeEnum {
@@ -8,12 +9,12 @@ export enum WorkGroupTypeEnum {
 }
 
 type WorkGroupListMemberModel = {
-  id: number
+  id: IdType
   fullName: string
 }
 
 export type WorkGroupListItemModel = {
-  id: number
+  id: IdType
   name: string
   seniorEngineer: WorkGroupListMemberModel
   groupLead: WorkGroupListMemberModel

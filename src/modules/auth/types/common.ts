@@ -1,7 +1,9 @@
 import { UserRoleEnum } from 'modules/user/constants'
 
+import { IdType } from 'shared/types/common'
+
 export type JwtPayload = {
-  userId: number
+  userId: IdType
   userRole: UserRoleEnum
 }
 

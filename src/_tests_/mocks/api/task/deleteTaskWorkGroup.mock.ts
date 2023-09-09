@@ -3,6 +3,7 @@ import { deleteTaskWorkGroupUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -14,32 +15,30 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const deleteTaskWorkGroupMockFn = (taskId: number) =>
-  getRequestMockFn(HttpMethodEnum.Delete, deleteTaskWorkGroupUrl(taskId))
+const deleteTaskWorkGroupMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Delete, deleteTaskWorkGroupUrl(id))
 
 export const mockDeleteTaskWorkGroupSuccess = (
-  taskId: number,
-  options?: Partial<
-    ResponseResolverOptions<DeleteTaskWorkGroupSuccessResponse>
-  >,
-) => getSuccessMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
+  id: IdType,
+  options?: Partial<ResponseResolverOptions<DeleteTaskWorkGroupSuccessResponse>>,
+) => getSuccessMockFn(deleteTaskWorkGroupMockFn(id), options)()
 
 export const mockDeleteTaskWorkGroupBadRequestError = <T extends object>(
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => getBadRequestErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
+) => getBadRequestErrorMockFn(deleteTaskWorkGroupMockFn(id), options)()
 
 export const mockDeleteTaskWorkGroupNotFoundError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
-) => getNotFoundErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
+) => getNotFoundErrorMockFn(deleteTaskWorkGroupMockFn(id), options)()
 
 export const mockDeleteTaskWorkGroupServerError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
-) => getServerErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
+) => getServerErrorMockFn(deleteTaskWorkGroupMockFn(id), options)()
 
 export const mockDeleteTaskWorkGroupForbiddenError = (
-  taskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getForbiddenErrorMockFn(deleteTaskWorkGroupMockFn(taskId), options)()
+) => getForbiddenErrorMockFn(deleteTaskWorkGroupMockFn(id), options)()

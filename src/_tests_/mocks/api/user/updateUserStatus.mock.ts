@@ -3,6 +3,7 @@ import { updateUserStatusUrl } from 'modules/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -14,30 +15,30 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const updateUserStatusMockFn = (userId: number) =>
+const updateUserStatusMockFn = (userId: IdType) =>
   getRequestMockFn(HttpMethodEnum.Post, updateUserStatusUrl(userId))
 
 export const mockUpdateUserStatusSuccess = (
-  userId: number,
+  userId: IdType,
   options?: Partial<ResponseResolverOptions<UpdateUserStatusSuccessResponse>>,
 ) => getSuccessMockFn(updateUserStatusMockFn(userId), options)()
 
 export const mockUpdateUserStatusBadRequestError = (
-  userId: number,
+  userId: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getBadRequestErrorMockFn(updateUserStatusMockFn(userId), options)()
 
 export const mockUpdateUserStatusUnauthorizedError = (
-  userId: number,
+  userId: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getUnauthorizedErrorMockFn(updateUserStatusMockFn(userId), options)()
 
 export const mockUpdateUserStatusNotFoundError = (
-  userId: number,
+  userId: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getNotFoundErrorMockFn(updateUserStatusMockFn(userId), options)()
 
 export const mockUpdateUserStatusServerError = (
-  userId: number,
+  userId: IdType,
   options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(updateUserStatusMockFn(userId), options)()

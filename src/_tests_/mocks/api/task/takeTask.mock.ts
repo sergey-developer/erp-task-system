@@ -3,6 +3,7 @@ import { takeTaskUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getForbiddenErrorMockFn,
@@ -12,20 +13,20 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const takeTaskMockFn = (taskId: number) =>
+const takeTaskMockFn = (taskId: IdType) =>
   getRequestMockFn(HttpMethodEnum.Post, takeTaskUrl(taskId))
 
 export const mockTakeTaskSuccess = (
-  taskId: number,
+  taskId: IdType,
   options?: Partial<ResponseResolverOptions<TakeTaskSuccessResponse>>,
 ) => getSuccessMockFn(takeTaskMockFn(taskId), options)()
 
 export const mockTakeTaskForbiddenError = (
-  taskId: number,
+  taskId: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getForbiddenErrorMockFn(takeTaskMockFn(taskId), options)()
 
 export const mockTakeTaskServerError = (
-  taskId: number,
+  taskId: IdType,
   options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(takeTaskMockFn(taskId), options)()

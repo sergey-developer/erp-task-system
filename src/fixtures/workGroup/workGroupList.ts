@@ -6,18 +6,18 @@ import {
   WorkGroupTypeEnum,
 } from 'modules/workGroup/models'
 
+import { IdType } from 'shared/types/common'
 import { ArrayFirst } from 'shared/types/utils'
 
 import { fakeId, fakeInteger, fakeName, fakeWord } from '_tests_/utils'
 
-export const workGroupMember = (): ArrayFirst<
-  WorkGroupListItemModel['members']
-> => ({ id: fakeId(), fullName: fakeName() })
+export const workGroupMember = (): ArrayFirst<WorkGroupListItemModel['members']> => ({
+  id: fakeId(),
+  fullName: fakeName(),
+})
 
 export const workGroupPriority = (
-  props?: Partial<
-    Omit<NonNullable<WorkGroupListItemModel['priority']>, 'description'>
-  >,
+  props?: Partial<Omit<NonNullable<WorkGroupListItemModel['priority']>, 'description'>>,
 ): NonNullable<WorkGroupListItemModel['priority']> => ({
   type: props?.type || WorkGroupTypeEnum.NoType,
   value:
@@ -30,14 +30,13 @@ export const workGroupPriority = (
   description: fakeWord(),
 })
 
-export const workGroupMemberList = (
-  length: number = 1,
-): WorkGroupListItemModel['members'] => times(length, () => workGroupMember())
+export const workGroupMemberList = (length: number = 1): WorkGroupListItemModel['members'] =>
+  times(length, () => workGroupMember())
 
 export const workGroupListItem = (
   props?: Partial<{
-    seniorEngineerId: number
-    groupLeadId: number
+    seniorEngineerId: IdType
+    groupLeadId: IdType
     memberAmount: number
   }> &
     Partial<Pick<WorkGroupListItemModel, 'id' | 'priority'>>,

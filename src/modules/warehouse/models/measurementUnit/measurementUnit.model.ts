@@ -1,4 +1,6 @@
+import { IdType } from 'shared/types/common'
+
 export type MeasurementUnitModel = {
-  id: number
+  id: IdType
   title: string
 }

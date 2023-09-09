@@ -10,10 +10,11 @@ import {
   WorkTypeModel,
 } from 'modules/warehouse/models'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type EquipmentModel = {
-  id: number
+  id: IdType
   title: string
   nomenclature: Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'>
   condition: EquipmentConditionEnum

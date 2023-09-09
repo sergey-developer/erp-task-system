@@ -1,5 +1,7 @@
+import { IdType } from 'shared/types/common'
+
 export type EquipmentNomenclatureListItemModel = {
-  id: number
+  id: IdType
   title: string
   quantity: number
 }

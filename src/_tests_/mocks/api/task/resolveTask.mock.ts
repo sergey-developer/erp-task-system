@@ -1,10 +1,8 @@
-import {
-  ResolveTaskBadRequestErrorResponse,
-  ResolveTaskSuccessResponse,
-} from 'modules/task/models'
+import { ResolveTaskBadRequestErrorResponse, ResolveTaskSuccessResponse } from 'modules/task/models'
 import { resolveTaskUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -14,22 +12,20 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const resolveTaskMockFn = (taskId: number) =>
+const resolveTaskMockFn = (taskId: IdType) =>
   getRequestMockFn(HttpMethodEnum.Post, resolveTaskUrl(taskId))
 
 export const mockResolveTaskSuccess = (
-  taskId: number,
+  taskId: IdType,
   options?: Partial<ResponseResolverOptions<ResolveTaskSuccessResponse>>,
 ) => getSuccessMockFn(resolveTaskMockFn(taskId), options)()
 
 export const mockResolveTaskBadRequestError = (
-  taskId: number,
-  options?: Partial<
-    ResponseResolverOptions<ResolveTaskBadRequestErrorResponse['data']>
-  >,
+  taskId: IdType,
+  options?: Partial<ResponseResolverOptions<ResolveTaskBadRequestErrorResponse['data']>>,
 ) => getBadRequestErrorMockFn(resolveTaskMockFn(taskId), options)()
 
 export const mockResolveTaskServerError = (
-  taskId: number,
+  taskId: IdType,
   options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(resolveTaskMockFn(taskId), options)()

@@ -3,6 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { TaskTypeEnum } from 'modules/task/constants'
 
+import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
 
 import theme from 'styles/theme'
@@ -26,20 +27,19 @@ const getContainer = () => screen.getByTestId('task-list')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
-const getListItem = (id: number) =>
-  within(getContainer()).getByTestId(`task-list-item-${id}`)
+const getListItem = (id: IdType) => within(getContainer()).getByTestId(`task-list-item-${id}`)
 
-const getListItemChildByText = (id: number, text: string) => {
+const getListItemChildByText = (id: IdType, text: string) => {
   const listItem = getListItem(id)
   return within(listItem).getByText(text)
 }
 
-const queryListItemChildByText = (id: number, text: string) => {
+const queryListItemChildByText = (id: IdType, text: string) => {
   const listItem = getListItem(id)
   return within(listItem).queryByText(text)
 }
 
-const clickListItem = async (user: UserEvent, id: number) => {
+const clickListItem = async (user: UserEvent, id: IdType) => {
   const listItem = getListItem(id)
   await user.click(listItem)
   return listItem
@@ -160,10 +160,7 @@ describe('Список заявок', () => {
   test('Объект отображается', () => {
     render(<TaskList {...props} />)
 
-    const object = testUtils.getListItemChildByText(
-      taskListItem.id,
-      taskListItem.name,
-    )
+    const object = testUtils.getListItemChildByText(taskListItem.id, taskListItem.name)
 
     expect(object).toBeInTheDocument()
   })
@@ -180,12 +177,7 @@ describe('Список заявок', () => {
   })
 
   test('Срок выполнения не отображается если его нет', () => {
-    render(
-      <TaskList
-        {...props}
-        tasks={[{ ...taskListItem, olaNextBreachTime: null }]}
-      />,
-    )
+    render(<TaskList {...props} tasks={[{ ...taskListItem, olaNextBreachTime: null }]} />)
 
     const olaNextBreachTime = testUtils.queryListItemChildByText(
       taskListItem.id,
@@ -198,10 +190,7 @@ describe('Список заявок', () => {
   test('Тема отображается', () => {
     render(<TaskList {...props} />)
 
-    const theme = testUtils.getListItemChildByText(
-      taskListItem.id,
-      taskListItem.title,
-    )
+    const theme = testUtils.getListItemChildByText(taskListItem.id, taskListItem.title)
 
     expect(theme).toBeInTheDocument()
   })

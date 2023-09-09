@@ -3,6 +3,7 @@ import { reworkSubTaskUrl } from 'modules/subTask/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -12,20 +13,20 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const reworkSubTaskMockFn = (subTaskId: number) =>
-  getRequestMockFn(HttpMethodEnum.Post, reworkSubTaskUrl(subTaskId))
+const reworkSubTaskMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Post, reworkSubTaskUrl(id))
 
 export const mockReworkSubTaskSuccess = (
-  subTaskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ReworkSubTaskSuccessResponse>>,
-) => getSuccessMockFn(reworkSubTaskMockFn(subTaskId), options)()
+) => getSuccessMockFn(reworkSubTaskMockFn(id), options)()
 
 export const mockReworkSubTaskBadRequestError = <T extends object>(
-  subTaskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) => getBadRequestErrorMockFn(reworkSubTaskMockFn(subTaskId), options)()
+) => getBadRequestErrorMockFn(reworkSubTaskMockFn(id), options)()
 
 export const mockReworkSubTaskServerError = (
-  subTaskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(reworkSubTaskMockFn(subTaskId), options)()
+) => getServerErrorMockFn(reworkSubTaskMockFn(id), options)()

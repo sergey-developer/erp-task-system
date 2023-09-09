@@ -1,7 +1,9 @@
+import { IdType } from 'shared/types/common'
+
 export type BaseWarehouseRequestArgs = {
-  warehouseId: number
+  warehouseId: IdType
 }
 
 export type BaseEquipmentRequestArgs = {
-  equipmentId: number
+  equipmentId: IdType
 }

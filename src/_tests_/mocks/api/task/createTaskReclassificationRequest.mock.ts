@@ -3,6 +3,7 @@ import { createTaskReclassificationRequestUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getNotFoundErrorMockFn,
@@ -12,38 +13,20 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const createTaskReclassificationRequestMockFn = (taskId: number) =>
-  getRequestMockFn(
-    HttpMethodEnum.Post,
-    createTaskReclassificationRequestUrl(taskId),
-  )
+const createTaskReclassificationRequestMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Post, createTaskReclassificationRequestUrl(id))
 
 export const mockCreateTaskReclassificationRequestSuccess = (
-  taskId: number,
-  options?: Partial<
-    ResponseResolverOptions<CreateTaskReclassificationRequestSuccessResponse>
-  >,
-) =>
-  getSuccessMockFn(createTaskReclassificationRequestMockFn(taskId), options)()
+  id: IdType,
+  options?: Partial<ResponseResolverOptions<CreateTaskReclassificationRequestSuccessResponse>>,
+) => getSuccessMockFn(createTaskReclassificationRequestMockFn(id), options)()
 
-export const mockCreateTaskReclassificationRequestNotFoundError = <
-  T extends object,
->(
-  taskId: number,
+export const mockCreateTaskReclassificationRequestNotFoundError = <T extends object>(
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) =>
-  getNotFoundErrorMockFn(
-    createTaskReclassificationRequestMockFn(taskId),
-    options,
-  )()
+) => getNotFoundErrorMockFn(createTaskReclassificationRequestMockFn(id), options)()
 
-export const mockCreateTaskReclassificationRequestServerError = <
-  T extends object,
->(
-  taskId: number,
+export const mockCreateTaskReclassificationRequestServerError = <T extends object>(
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
-) =>
-  getServerErrorMockFn(
-    createTaskReclassificationRequestMockFn(taskId),
-    options,
-  )()
+) => getServerErrorMockFn(createTaskReclassificationRequestMockFn(id), options)()

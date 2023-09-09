@@ -6,6 +6,7 @@ import { cancelSubTaskUrl } from 'modules/subTask/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/api'
+import { IdType } from 'shared/types/common'
 
 import {
   getBadRequestErrorMockFn,
@@ -15,22 +16,22 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const cancelSubTaskMockFn = (subTaskId: number) =>
-  getRequestMockFn(HttpMethodEnum.Delete, cancelSubTaskUrl(subTaskId))
+const cancelSubTaskMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Delete, cancelSubTaskUrl(id))
 
 export const mockCancelSubTaskSuccess = (
-  subTaskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<CancelSubTaskSuccessResponse>>,
-) => getSuccessMockFn(cancelSubTaskMockFn(subTaskId), options)()
+) => getSuccessMockFn(cancelSubTaskMockFn(id), options)()
 
 export const mockCancelSubTaskBadRequestError = <
   T extends ErrorData<CancelSubTaskBadRequestErrorResponse>,
 >(
-  subTaskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions<T>>,
-) => getBadRequestErrorMockFn(cancelSubTaskMockFn(subTaskId), options)()
+) => getBadRequestErrorMockFn(cancelSubTaskMockFn(id), options)()
 
 export const mockCancelSubTaskServerError = (
-  subTaskId: number,
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(cancelSubTaskMockFn(subTaskId), options)()
+) => getServerErrorMockFn(cancelSubTaskMockFn(id), options)()

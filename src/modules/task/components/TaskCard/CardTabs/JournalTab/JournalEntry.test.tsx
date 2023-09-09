@@ -1,11 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import React from 'react'
 
-import {
-  TaskJournalSourceEnum,
-  TaskJournalTypeEnum,
-} from 'modules/task/constants'
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants'
+
+import { IdType } from 'shared/types/common'
 
 import taskFixtures from 'fixtures/task'
 
@@ -23,16 +22,13 @@ const props: JournalEntryProps = {
   attachments: [taskFixtures.attachment()],
 }
 
-const getContainer = (id: number) => screen.getByTestId(`journal-entry-${id}`)
+const getContainer = (id: IdType) => screen.getByTestId(`journal-entry-${id}`)
 
-const queryContainer = (id: number) =>
-  screen.queryByTestId(`journal-entry-${id}`)
+const queryContainer = (id: IdType) => screen.queryByTestId(`journal-entry-${id}`)
 
-const getChildByText = (id: number, text: string) =>
-  within(getContainer(id)).getByText(text)
+const getChildByText = (id: IdType, text: string) => within(getContainer(id)).getByText(text)
 
-const queryChildByText = (id: number, text: string) =>
-  within(getContainer(id)).queryByText(text)
+const queryChildByText = (id: IdType, text: string) => within(getContainer(id)).queryByText(text)
 
 export const testUtils = {
   getContainer,
