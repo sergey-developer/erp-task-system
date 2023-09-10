@@ -12,7 +12,7 @@ import {
 } from 'modules/warehouse/models'
 import { useGetMeasurementUnitListQuery } from 'modules/warehouse/services/measurementUnitApi.service'
 
-import { isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export type UseGetMeasurementUnitListResult = CustomUseQueryHookResult<

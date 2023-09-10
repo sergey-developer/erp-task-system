@@ -18,7 +18,7 @@ import {
 import { updateUserStatusUrl, updateUserUrl } from 'modules/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
 const userApiService = baseApiService.injectEndpoints({

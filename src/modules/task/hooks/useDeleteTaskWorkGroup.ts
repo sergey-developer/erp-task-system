@@ -5,14 +5,14 @@ import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
 import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/common'
 import {
   getErrorDetail,
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
   isServerRangeError,
-} from 'shared/services/api'
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useDeleteTaskWorkGroup = () => {

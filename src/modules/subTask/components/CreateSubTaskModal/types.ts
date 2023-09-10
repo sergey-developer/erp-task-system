@@ -1,7 +1,7 @@
 import { CreateSubTaskMutationArgs } from 'modules/subTask/models'
 import { TaskModel } from 'modules/task/models'
 
-import { FieldsErrors } from 'shared/services/api'
+import { FieldsErrors } from 'shared/services/baseApi'
 
 type FormFields = Omit<CreateSubTaskMutationArgs, 'taskId'>
 

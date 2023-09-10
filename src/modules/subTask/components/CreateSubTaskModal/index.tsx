@@ -16,7 +16,7 @@ import {
   idAndTitleSelectFieldNames,
 } from 'shared/constants/selectField'
 import { validationSizes } from 'shared/constants/validation'
-import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
 

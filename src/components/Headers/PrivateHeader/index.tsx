@@ -9,15 +9,8 @@ import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
-import {
-  updateUserStatusMessages,
-  updateUserTimeZoneMessages,
-} from 'modules/user/constants'
-import {
-  useUserMeCodeState,
-  useUserMeState,
-  useUserStatusListState,
-} from 'modules/user/hooks'
+import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'modules/user/constants'
+import { useUserMeCodeState, useUserMeState, useUserStatusListState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 import {
   useUpdateUserStatusMutation,
@@ -32,13 +25,13 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
+import { useTimeZoneListState } from 'shared/hooks'
 import {
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
   isUnauthorizedError,
-} from 'shared/services/api'
-import { useTimeZoneListState } from 'shared/services/api/hooks'
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { HeaderStyled, timeZoneDropdownStyles } from './styles'
@@ -53,16 +46,12 @@ const PrivateHeader: FC = () => {
   const { data: userMe } = useUserMeState()
   const { isFirstLineSupportRole } = getUserRoleMap(userMe?.role)
 
-  const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
-    useTimeZoneListState()
+  const { data: timeZoneList, isFetching: timeZoneListIsFetching } = useTimeZoneListState()
 
-  const { data: userStatusList, isFetching: userStatusListIsFetching } =
-    useUserStatusListState()
+  const { data: userStatusList, isFetching: userStatusListIsFetching } = useUserStatusListState()
 
-  const [
-    updateUserTimeZoneMutation,
-    { isLoading: updateUserTimeZoneIsLoading },
-  ] = useUpdateUserTimeZoneMutation()
+  const [updateUserTimeZoneMutation, { isLoading: updateUserTimeZoneIsLoading }] =
+    useUpdateUserTimeZoneMutation()
 
   const [updateUserStatusMutation, { isLoading: updateUserStatusIsLoading }] =
     useUpdateUserStatusMutation()
@@ -111,9 +100,7 @@ const PrivateHeader: FC = () => {
     } catch (error) {
       if (isErrorResponse(error)) {
         if (
-          (isNotFoundError(error) ||
-            isUnauthorizedError(error) ||
-            isBadRequestError(error)) &&
+          (isNotFoundError(error) || isUnauthorizedError(error) || isBadRequestError(error)) &&
           error.data.detail
         ) {
           showErrorNotification(error.data.detail)
@@ -134,10 +121,7 @@ const PrivateHeader: FC = () => {
             </Col>
 
             <Col xxl={17} xl={14}>
-              <NavMenu
-                selectedKeys={navMenuSelectedKeys}
-                items={navMenuItems}
-              />
+              <NavMenu selectedKeys={navMenuSelectedKeys} items={navMenuItems} />
             </Col>
           </Row>
         </Col>
@@ -174,19 +158,11 @@ const PrivateHeader: FC = () => {
 
             {userMe?.isStaff && (
               <Link to={RouteEnum.TaskMonitoring}>
-                <MonitoringIcon
-                  $color='black'
-                  $size='large'
-                  $cursor='pointer'
-                />
+                <MonitoringIcon $color='black' $size='large' $cursor='pointer' />
               </Link>
             )}
 
-            {userMe ? (
-              <DetailedUserAvatar profile={userMe} />
-            ) : (
-              <UserAvatar size='large' />
-            )}
+            {userMe ? <DetailedUserAvatar profile={userMe} /> : <UserAvatar size='large' />}
 
             <LogoutButton />
           </Space>

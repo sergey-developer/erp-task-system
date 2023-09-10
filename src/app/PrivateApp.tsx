@@ -7,8 +7,8 @@ import { getPrivateRoutesConfig } from 'configs/routes'
 import { useGetUserMe, useGetUserStatusList } from 'modules/user/hooks'
 import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
 
-import { useGetSystemInfoQuery } from 'shared/services/api'
-import { useGetTimeZoneList } from 'shared/services/api/hooks'
+import { useGetTimeZoneList } from 'shared/hooks'
+import { useGetSystemInfoQuery } from 'shared/services/systemApi.service'
 
 import AppRoutes from './AppRoutes'
 

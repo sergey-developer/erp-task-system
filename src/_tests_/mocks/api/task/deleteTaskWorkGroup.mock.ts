@@ -2,7 +2,7 @@ import { DeleteTaskWorkGroupSuccessResponse } from 'modules/task/models'
 import { deleteTaskWorkGroupUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
+import { ErrorData } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

@@ -10,7 +10,7 @@ import { BaseCard } from 'components/Card/BaseCard'
 import Space from 'components/Space'
 
 import { APP_NAME } from 'shared/constants/common'
-import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 
 import { LoginFormFields } from './types'

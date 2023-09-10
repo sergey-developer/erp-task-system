@@ -1,7 +1,7 @@
 import { SupportGroupApiEnum } from 'modules/supportGroup/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
 import {

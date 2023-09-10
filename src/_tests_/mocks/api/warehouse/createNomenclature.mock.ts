@@ -5,7 +5,7 @@ import {
 } from 'modules/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
+import { ErrorData } from 'shared/services/baseApi'
 
 import {
   getBadRequestErrorMockFn,

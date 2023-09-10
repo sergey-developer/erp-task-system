@@ -1,6 +1,6 @@
 export * from './api'
-export * from './timezone'
-export * from './systemInfo'
+export * from './catalogs'
+export * from './system'
 
 export * from './auth'
 export * from './user'

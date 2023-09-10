@@ -8,7 +8,7 @@ import {
 import { getWarehouseUrl } from 'modules/warehouse/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 
 const warehouseApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

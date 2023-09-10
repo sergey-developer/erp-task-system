@@ -5,7 +5,7 @@ import { subTaskApiPermissions } from 'modules/subTask/permissions'
 import { useReworkSubTaskMutation } from 'modules/subTask/services/subTaskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useReworkSubTask = () => {

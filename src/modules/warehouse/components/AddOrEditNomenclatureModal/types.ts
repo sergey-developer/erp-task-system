@@ -1,8 +1,8 @@
 import { FormInstance } from 'antd'
 
+import { CountryListModel } from 'modules/country/models'
 import { MatchedUserPermissions } from 'modules/user/utils'
 import {
-  CountryListModel,
   MeasurementUnitListModel,
   NomenclatureGroupListModel,
   NomenclatureModel,

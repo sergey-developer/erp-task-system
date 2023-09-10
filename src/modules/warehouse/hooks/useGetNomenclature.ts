@@ -6,7 +6,7 @@ import { getNomenclatureMessages } from 'modules/warehouse/constants'
 import { GetNomenclatureQueryArgs, GetNomenclatureSuccessResponse } from 'modules/warehouse/models'
 import { useGetNomenclatureQuery } from 'modules/warehouse/services/nomenclatureApi.service'
 
-import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/api'
+import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export type UseGetNomenclatureResult = CustomUseQueryHookResult<

@@ -1,7 +1,7 @@
 import omit from 'lodash/omit'
 import { FieldData as BaseFieldData } from 'rc-field-form/es/interface'
 
-import { ErrorData } from 'shared/services/api'
+import { ErrorData } from 'shared/services/baseApi'
 
 type FieldData = Pick<BaseFieldData, 'name' | 'errors'>
 

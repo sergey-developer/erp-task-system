@@ -9,7 +9,7 @@ import {
 } from 'modules/subTask/models'
 import { useGetSubTaskTemplateListQuery } from 'modules/subTask/services/subTaskApi.service'
 
-import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/api'
+import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetSubTaskTemplateList = (

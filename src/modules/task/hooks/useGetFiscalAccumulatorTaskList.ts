@@ -9,7 +9,7 @@ import {
 } from 'modules/task/models'
 import { useGetFiscalAccumulatorTaskListQuery } from 'modules/task/services/taskApi.service'
 
-import { isErrorResponse, isForbiddenError } from 'shared/services/api'
+import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export type UseGetFiscalAccumulatorTaskListResult = CustomUseQueryHookResult<

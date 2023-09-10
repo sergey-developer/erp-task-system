@@ -12,7 +12,7 @@ import {
 } from 'modules/warehouse/models'
 import { useGetWarehouseListQuery } from 'modules/warehouse/services/warehouseApi.service'
 
-import { isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export type UseGetWarehouseListResult = CustomUseQueryHookResult<

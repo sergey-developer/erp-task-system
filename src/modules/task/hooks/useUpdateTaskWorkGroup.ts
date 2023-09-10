@@ -10,7 +10,7 @@ import {
   isBadRequestError,
   isErrorResponse,
   isServerRangeError,
-} from 'shared/services/api'
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useUpdateTaskWorkGroup = () => {

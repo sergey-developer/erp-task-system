@@ -9,7 +9,7 @@ import { useUpdatePasswordMutation } from 'modules/auth/services/authApi.service
 
 import { BaseCard } from 'components/Card/BaseCard'
 
-import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showSuccessNotification } from 'shared/utils/notifications'
 

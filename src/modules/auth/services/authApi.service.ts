@@ -9,7 +9,7 @@ import {
 } from 'modules/auth/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 
 const authApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

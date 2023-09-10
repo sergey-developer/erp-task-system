@@ -8,7 +8,7 @@ import { TaskModel } from 'modules/task/models'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
-import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'

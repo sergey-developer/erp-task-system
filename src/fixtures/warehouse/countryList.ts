@@ -1,4 +1,4 @@
-import { CountryListItemModel } from 'modules/warehouse/models'
+import { CountryListItemModel } from 'modules/country/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

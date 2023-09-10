@@ -12,7 +12,7 @@ import {
 } from 'modules/warehouse/models'
 import { useGetCustomerListQuery } from 'modules/warehouse/services/customerApi.service'
 
-import { isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export type UseGetCustomerListResult = CustomUseQueryHookResult<

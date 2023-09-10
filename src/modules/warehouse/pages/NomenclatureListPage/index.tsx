@@ -55,7 +55,7 @@ import {
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
-} from 'shared/services/api'
+} from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 import { calculatePaginationParams } from 'shared/utils/pagination'

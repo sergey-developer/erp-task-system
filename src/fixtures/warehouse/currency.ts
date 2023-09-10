@@ -1,4 +1,4 @@
-import { CurrencyModel } from 'modules/warehouse/models'
+import { CurrencyModel } from 'modules/currency/models'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

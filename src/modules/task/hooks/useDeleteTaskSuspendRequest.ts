@@ -6,13 +6,13 @@ import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
 import { useDeleteSuspendRequestMutation } from 'modules/task/services/taskSuspendRequestApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/common'
 import {
   getErrorDetail,
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
-} from 'shared/services/api'
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useDeleteTaskSuspendRequest = () => {

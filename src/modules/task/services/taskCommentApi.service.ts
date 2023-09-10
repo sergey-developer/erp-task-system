@@ -8,7 +8,7 @@ import {
 import { createTaskCommentUrl, getTaskCommentListUrl } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 
 import taskApiService from './taskApi.service'
 

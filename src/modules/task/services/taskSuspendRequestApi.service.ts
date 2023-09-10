@@ -12,7 +12,7 @@ import {
 } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorResponse, isNotFoundError } from 'shared/services/api'
+import { ErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 
 import taskApiService from './taskApi.service'
 

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { GetTaskMonitoringQueryArgs } from 'modules/monitoring/models'
 import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApi.service'
 
-import { getErrorDetail, isErrorResponse } from 'shared/services/api'
+import { getErrorDetail, isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskMonitoring = (

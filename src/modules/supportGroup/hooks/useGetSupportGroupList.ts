@@ -8,7 +8,7 @@ import {
 } from 'modules/supportGroup/models'
 import { useGetSupportGroupListQuery } from 'modules/supportGroup/services/supportGroupApi.service'
 
-import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/api'
+import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetSupportGroupList = (

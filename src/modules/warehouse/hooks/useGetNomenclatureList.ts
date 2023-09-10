@@ -7,7 +7,7 @@ import { GetNomenclatureListQueryArgs } from 'modules/warehouse/models'
 import { useGetNomenclatureListQuery } from 'modules/warehouse/services/nomenclatureApi.service'
 import { GetNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
-import { isErrorResponse, isForbiddenError } from 'shared/services/api'
+import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

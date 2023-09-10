@@ -2,7 +2,7 @@ import { ReworkSubTaskSuccessResponse } from 'modules/subTask/models'
 import { reworkSubTaskUrl } from 'modules/subTask/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
+import { ErrorData } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

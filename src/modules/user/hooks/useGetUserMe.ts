@@ -9,7 +9,7 @@ import {
 } from 'modules/user/models'
 import { useGetUserMeQuery } from 'modules/user/services/userApi.service'
 
-import { isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetUserMeResult = CustomUseQueryHookResult<

@@ -1,7 +1,7 @@
 import { SuspendReasonEnum } from 'modules/task/constants'
 import { BaseTaskRequestArgs } from 'modules/task/types'
 
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse } from 'shared/services/baseApi'
 
 import { SuspendRequestModel } from './suspendRequest.model'
 

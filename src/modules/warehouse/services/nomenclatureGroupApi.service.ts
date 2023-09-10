@@ -14,7 +14,7 @@ import {
 import { updateNomenclatureGroupUrl } from 'modules/warehouse/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
 const nomenclatureGroupApiService = baseApiService.injectEndpoints({

@@ -5,7 +5,7 @@ import {
 import { getTaskMonitoringUrl } from 'modules/monitoring/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 
 const monitoringApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

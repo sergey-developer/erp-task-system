@@ -13,7 +13,7 @@ import {
   UseQueryStateOptions,
 } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 
-import { CustomBaseQueryFn } from 'shared/services/api'
+import { CustomBaseQueryFn } from 'shared/services/baseApi'
 
 export type CustomUseQueryStateResult<
   QueryArg,

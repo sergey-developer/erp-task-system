@@ -1,7 +1,7 @@
+import { CurrencyModel } from 'modules/currency/models'
 import { UserModel } from 'modules/user/models'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import {
-  CurrencyModel,
   CustomerModel,
   EquipmentCategoryModel,
   MeasurementUnitModel,

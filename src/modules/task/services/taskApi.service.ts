@@ -34,7 +34,7 @@ import {
 } from 'modules/task/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 
 const taskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

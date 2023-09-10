@@ -45,7 +45,7 @@ import {
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
-} from 'shared/services/api'
+} from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'

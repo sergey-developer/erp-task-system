@@ -3,8 +3,8 @@ import { useCallback, useEffect } from 'react'
 import { TakeTaskMutationArgs } from 'modules/task/models'
 import { useTakeTaskMutation } from 'modules/task/services/taskApi.service'
 
-import { commonApiMessages } from 'shared/constants/errors'
-import { isErrorResponse, isForbiddenError } from 'shared/services/api'
+import { commonApiMessages } from 'shared/constants/common'
+import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useTakeTask = () => {

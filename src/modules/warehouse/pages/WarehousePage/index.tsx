@@ -9,7 +9,7 @@ import LabeledData from 'components/LabeledData'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
-import { isErrorResponse, isNotFoundError } from 'shared/services/api'
+import { isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { valueOrHyphen } from 'shared/utils/common'
 import { showErrorNotification } from 'shared/utils/notifications'
 

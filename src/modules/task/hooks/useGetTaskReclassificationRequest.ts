@@ -10,8 +10,8 @@ import { taskReclassificationRequestApiPermissions } from 'modules/task/permissi
 import { useGetReclassificationRequestQuery } from 'modules/task/services/taskReclassificationRequestApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/errors'
-import { isErrorResponse, isNotFoundError } from 'shared/services/api'
+import { commonApiMessages } from 'shared/constants/common'
+import { isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskReclassificationRequest = (
@@ -21,9 +21,7 @@ export const useGetTaskReclassificationRequest = (
     GetTaskReclassificationRequestSuccessResponse
   >,
 ) => {
-  const permissions = useUserPermissions(
-    taskReclassificationRequestApiPermissions,
-  )
+  const permissions = useUserPermissions(taskReclassificationRequestApiPermissions)
 
   const state = useGetReclassificationRequestQuery(taskId, {
     skip: !permissions.canGet || options?.skip,

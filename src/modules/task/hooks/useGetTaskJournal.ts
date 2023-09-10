@@ -5,8 +5,8 @@ import { taskJournalApiPermissions } from 'modules/task/permissions'
 import { useGetTaskJournalQuery } from 'modules/task/services/taskJournalApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/errors'
-import { isErrorResponse } from 'shared/services/api'
+import { commonApiMessages } from 'shared/constants/common'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetTaskJournal = (id: GetTaskJournalQueryArgs) => {

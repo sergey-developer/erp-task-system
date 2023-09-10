@@ -6,7 +6,7 @@ import { getUserListMessages } from 'modules/user/constants'
 import { GetUserListQueryArgs, GetUserListSuccessResponse } from 'modules/user/models'
 import { useGetUserListQuery } from 'modules/user/services/userApi.service'
 
-import { isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

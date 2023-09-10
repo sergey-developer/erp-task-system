@@ -2,7 +2,7 @@ import { RcFile } from 'antd/es/upload'
 
 import { BaseTaskRequestArgs } from 'modules/task/types'
 
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse } from 'shared/services/baseApi'
 
 export type ResolveTaskMutationArgs = BaseTaskRequestArgs & {
   techResolution: string

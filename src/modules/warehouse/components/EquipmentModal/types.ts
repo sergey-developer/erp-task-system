@@ -1,8 +1,8 @@
 import { FormInstance } from 'antd'
 
+import { CurrencyListModel } from 'modules/currency/models'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import {
-  CurrencyListModel,
   CustomerListModel,
   EquipmentCategoryListModel,
   NomenclatureListModel,

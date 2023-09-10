@@ -6,7 +6,7 @@ import {
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/types/utils'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 
 const workGroupApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

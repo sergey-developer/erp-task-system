@@ -5,7 +5,7 @@ import {
 } from 'modules/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
+import { baseApiService } from 'shared/services/baseApi'
 
 const customerApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

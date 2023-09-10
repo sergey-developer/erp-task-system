@@ -6,7 +6,7 @@ import { GetWorkGroupListQueryArgs } from 'modules/workGroup/models'
 import { workGroupApiPermissions } from 'modules/workGroup/permissions'
 import { useGetWorkGroupListQuery } from 'modules/workGroup/services/workGroupApi.service'
 
-import { isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useGetWorkGroupList = (args?: GetWorkGroupListQueryArgs) => {

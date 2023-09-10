@@ -6,7 +6,7 @@ import {
   isErrorResponse,
   isNotFoundError,
   isUnauthorizedError,
-} from 'shared/services/api'
+} from 'shared/services/baseApi'
 
 export const getUpdatePasswordErrors = (
   error: unknown,

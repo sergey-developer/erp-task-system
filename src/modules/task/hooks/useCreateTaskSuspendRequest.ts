@@ -6,12 +6,8 @@ import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
 import { useCreateSuspendRequestMutation } from 'modules/task/services/taskSuspendRequestApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/errors'
-import {
-  isBadRequestError,
-  isErrorResponse,
-  isNotFoundError,
-} from 'shared/services/api'
+import { commonApiMessages } from 'shared/constants/common'
+import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useCreateTaskSuspendRequest = () => {

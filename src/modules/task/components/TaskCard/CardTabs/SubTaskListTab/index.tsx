@@ -24,7 +24,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks'
-import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 
 const CreateSubTaskModal = React.lazy(

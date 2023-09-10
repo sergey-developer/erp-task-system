@@ -6,7 +6,7 @@ import { getCountryListMessages } from 'modules/warehouse/constants'
 import { GetWorkTypeListQueryArgs, GetWorkTypeListSuccessResponse } from 'modules/warehouse/models'
 import { useGetCountryListQuery } from 'modules/warehouse/services/countryApi.service'
 
-import { isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetWorkTypeListResult = CustomUseQueryHookResult<

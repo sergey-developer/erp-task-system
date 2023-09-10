@@ -1,6 +1,6 @@
 import { BaseTaskRequestArgs } from 'modules/task/types'
 
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 export type UpdateTaskWorkGroupMutationArgs = BaseTaskRequestArgs & {

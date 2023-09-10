@@ -6,13 +6,13 @@ import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useCreateTaskCommentMutation } from 'modules/task/services/taskCommentApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/common'
 import {
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
   isServerRangeError,
-} from 'shared/services/api'
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useCreateTaskComment = () => {

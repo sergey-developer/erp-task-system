@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { createTaskCommentMessages } from 'modules/task/constants'
 
-import { commonApiMessages } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/common'
 
 import taskFixtures from 'fixtures/task'
 
@@ -29,14 +29,8 @@ import {
 
 import { testUtils as commentListTestUtils } from './CommentList/CommentList.test'
 import { testUtils as createCommentFormTestUtils } from './CreateCommentForm/CreateCommentForm.test'
-import {
-  CreateCommentFormErrors,
-  CreateCommentFormFields,
-} from './CreateCommentForm/types'
-import CommentListTab, {
-  CommentListTabProps,
-  DEFAULT_DISPLAYABLE_COUNT,
-} from './index'
+import { CreateCommentFormErrors, CreateCommentFormFields } from './CreateCommentForm/types'
+import CommentListTab, { CommentListTabProps, DEFAULT_DISPLAYABLE_COUNT } from './index'
 
 const props: Readonly<CommentListTabProps> = {
   title: fakeWord(),
@@ -50,17 +44,13 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const getExpandButton = (commentCount?: number) =>
   getButtonIn(
     getContainer(),
-    commentCount
-      ? `Отобразить все комментарии: ${commentCount}`
-      : /Отобразить все комментарии/,
+    commentCount ? `Отобразить все комментарии: ${commentCount}` : /Отобразить все комментарии/,
   )
 
 const queryExpandButton = (commentCount?: number) =>
   queryButtonIn(
     getContainer(),
-    commentCount
-      ? `Отобразить все комментарии: ${commentCount}`
-      : /Отобразить все комментарии/,
+    commentCount ? `Отобразить все комментарии: ${commentCount}` : /Отобразить все комментарии/,
   )
 
 const clickExpandButton = async (user: UserEvent) => {
@@ -69,8 +59,7 @@ const clickExpandButton = async (user: UserEvent) => {
   return button
 }
 
-const getCollapseButton = () =>
-  getButtonIn(getContainer(), /скрыть комментарии/i)
+const getCollapseButton = () => getButtonIn(getContainer(), /скрыть комментарии/i)
 
 const clickCollapseButton = async (user: UserEvent) => {
   const button = getCollapseButton()
@@ -102,9 +91,7 @@ describe('Вкладка списка комментариев заявки', ()
   describe('Кнопка раскрытия/скрытия комментариев', () => {
     describe('Отображается корректно если условия соблюдены', () => {
       test('Кнопка раскрытия', async () => {
-        const taskCommentList = taskFixtures.commentList(
-          DEFAULT_DISPLAYABLE_COUNT + 1,
-        )
+        const taskCommentList = taskFixtures.commentList(DEFAULT_DISPLAYABLE_COUNT + 1)
         mockGetTaskCommentListSuccess(props.taskId, {
           body: taskCommentList,
         })
@@ -118,15 +105,11 @@ describe('Вкладка списка комментариев заявки', ()
 
         expect(button).toBeInTheDocument()
         expect(button).toBeEnabled()
-        expect(button).toHaveTextContent(
-          new RegExp(String(taskCommentList.length)),
-        )
+        expect(button).toHaveTextContent(new RegExp(String(taskCommentList.length)))
       })
 
       test('Кнопка скрытия', async () => {
-        const taskCommentList = taskFixtures.commentList(
-          DEFAULT_DISPLAYABLE_COUNT + 1,
-        )
+        const taskCommentList = taskFixtures.commentList(DEFAULT_DISPLAYABLE_COUNT + 1)
         mockGetTaskCommentListSuccess(props.taskId, {
           body: taskCommentList,
         })
@@ -188,15 +171,11 @@ describe('Вкладка списка комментариев заявки', ()
 
       await commentListTestUtils.expectLoadingFinished()
 
-      expect(commentListTestUtils.getAllComments()).toHaveLength(
-        DEFAULT_DISPLAYABLE_COUNT,
-      )
+      expect(commentListTestUtils.getAllComments()).toHaveLength(DEFAULT_DISPLAYABLE_COUNT)
 
       await testUtils.clickExpandButton(user)
 
-      expect(commentListTestUtils.getAllComments()).toHaveLength(
-        allCommentCount,
-      )
+      expect(commentListTestUtils.getAllComments()).toHaveLength(allCommentCount)
     })
 
     test('Скрывает все комментарии', async () => {
@@ -211,21 +190,15 @@ describe('Вкладка списка комментариев заявки', ()
 
       await commentListTestUtils.expectLoadingFinished()
 
-      expect(commentListTestUtils.getAllComments()).toHaveLength(
-        DEFAULT_DISPLAYABLE_COUNT,
-      )
+      expect(commentListTestUtils.getAllComments()).toHaveLength(DEFAULT_DISPLAYABLE_COUNT)
 
       await testUtils.clickExpandButton(user)
 
-      expect(commentListTestUtils.getAllComments()).toHaveLength(
-        allCommentCount,
-      )
+      expect(commentListTestUtils.getAllComments()).toHaveLength(allCommentCount)
 
       await testUtils.clickCollapseButton(user)
 
-      expect(commentListTestUtils.getAllComments()).toHaveLength(
-        DEFAULT_DISPLAYABLE_COUNT,
-      )
+      expect(commentListTestUtils.getAllComments()).toHaveLength(DEFAULT_DISPLAYABLE_COUNT)
     })
   })
 
@@ -257,9 +230,9 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
-          const newCommentText = within(
-            commentListTestUtils.getFirstComment(),
-          ).getByText(newComment.text)
+          const newCommentText = within(commentListTestUtils.getFirstComment()).getByText(
+            newComment.text,
+          )
 
           expect(newCommentText).toBeInTheDocument()
         })
@@ -283,8 +256,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingFinished()
 
           const commentInput = createCommentFormTestUtils.getCommentField()
-          const uploadedAttachment =
-            createCommentFormTestUtils.queryUploadedAttachment(file.name)
+          const uploadedAttachment = createCommentFormTestUtils.queryUploadedAttachment(file.name)
 
           expect(commentInput).not.toHaveDisplayValue(newComment.text)
           expect(uploadedAttachment).not.toBeInTheDocument()
@@ -299,10 +271,9 @@ describe('Вкладка списка комментариев заявки', ()
             comment: [fakeWord()],
             attachments: [fakeWord()],
           }
-          mockCreateTaskCommentBadRequestError<CreateCommentFormFields>(
-            props.taskId,
-            { body: badRequestErrorResponse },
-          )
+          mockCreateTaskCommentBadRequestError<CreateCommentFormFields>(props.taskId, {
+            body: badRequestErrorResponse,
+          })
 
           const { user } = render(<CommentListTab {...props} />, {
             store: getStoreWithAuth(),
@@ -315,15 +286,13 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
-          const commentError =
-            await createCommentFormTestUtils.findCommentError(
-              badRequestErrorResponse.comment![0],
-            )
+          const commentError = await createCommentFormTestUtils.findCommentError(
+            badRequestErrorResponse.comment![0],
+          )
 
-          const attachmentsError =
-            await createCommentFormTestUtils.findAttachmentsError(
-              badRequestErrorResponse.attachments![0],
-            )
+          const attachmentsError = await createCommentFormTestUtils.findAttachmentsError(
+            badRequestErrorResponse.attachments![0],
+          )
 
           expect(commentError).toBeInTheDocument()
           expect(attachmentsError).toBeInTheDocument()
@@ -344,9 +313,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
-          const error = await findNotification(
-            createTaskCommentMessages.commonError,
-          )
+          const error = await findNotification(createTaskCommentMessages.commonError)
           expect(error).toBeInTheDocument()
         })
 
@@ -365,9 +332,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
-          const error = await findNotification(
-            createTaskCommentMessages.commonError,
-          )
+          const error = await findNotification(createTaskCommentMessages.commonError)
           expect(error).toBeInTheDocument()
         })
 

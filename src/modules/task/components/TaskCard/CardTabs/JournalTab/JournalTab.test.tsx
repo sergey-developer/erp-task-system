@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { commonApiMessages } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/common'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import taskFixtures from 'fixtures/task'
@@ -55,11 +55,9 @@ const clickDownloadButton = async (user: UserEvent): Promise<HTMLElement> => {
   return button
 }
 
-const expectJournalLoadingStarted =
-  expectLoadingStartedBySpinner('journal-loading')
+const expectJournalLoadingStarted = expectLoadingStartedBySpinner('journal-loading')
 
-const expectJournalLoadingFinished =
-  expectLoadingFinishedBySpinner('journal-loading')
+const expectJournalLoadingFinished = expectLoadingFinishedBySpinner('journal-loading')
 
 const expectJournalCsvLoadingStarted = expectLoadingStartedByButton
 const expectJournalCsvLoadingFinished = expectLoadingFinishedByButton
@@ -148,9 +146,7 @@ describe('Вкладка журнала задачи', () => {
 
           expect(downloadButton).toBeInTheDocument()
 
-          expect(
-            within(downloadButton).getByTestId('journal-icon-download'),
-          ).toBeInTheDocument()
+          expect(within(downloadButton).getByTestId('journal-icon-download')).toBeInTheDocument()
         })
       })
 
@@ -188,10 +184,7 @@ describe('Вкладка журнала задачи', () => {
       })
 
       describe('При успешной загрузке csv', () => {
-        const clickDownloadLinkSpy = jest.spyOn(
-          downloadLink,
-          'clickDownloadLink',
-        )
+        const clickDownloadLinkSpy = jest.spyOn(downloadLink, 'clickDownloadLink')
 
         test('Не показывает сообщение об ошибке', async () => {
           mockGetJournalSuccess(props.taskId, {
@@ -220,18 +213,13 @@ describe('Вкладка журнала задачи', () => {
             getJournalCsvFilename(props.taskId),
           )
 
-          const notification = screen.queryByText(
-            commonApiMessages.unknownError,
-          )
+          const notification = screen.queryByText(commonApiMessages.unknownError)
           expect(notification).not.toBeInTheDocument()
         })
       })
 
       describe('При не успешной загрузке csv', () => {
-        const clickDownloadLinkSpy = jest.spyOn(
-          downloadLink,
-          'clickDownloadLink',
-        )
+        const clickDownloadLinkSpy = jest.spyOn(downloadLink, 'clickDownloadLink')
 
         test('Показывает сообщение об ошибке', async () => {
           mockGetJournalSuccess(props.taskId, {
@@ -253,9 +241,7 @@ describe('Вкладка журнала задачи', () => {
 
           expect(clickDownloadLinkSpy).not.toBeCalled()
 
-          const notification = await findNotification(
-            commonApiMessages.unknownError,
-          )
+          const notification = await findNotification(commonApiMessages.unknownError)
           expect(notification).toBeInTheDocument()
         })
       })
@@ -312,13 +298,9 @@ describe('Вкладка журнала задачи', () => {
           await testUtils.expectJournalLoadingStarted()
           await testUtils.expectJournalLoadingFinished()
 
-          expect(
-            screen.queryByTestId('journal-btn-download'),
-          ).not.toBeInTheDocument()
+          expect(screen.queryByTestId('journal-btn-download')).not.toBeInTheDocument()
 
-          expect(
-            screen.queryByTestId('journal-icon-download'),
-          ).not.toBeInTheDocument()
+          expect(screen.queryByTestId('journal-icon-download')).not.toBeInTheDocument()
         })
       })
     })
@@ -336,9 +318,7 @@ describe('Вкладка журнала задачи', () => {
         await testUtils.expectJournalLoadingStarted()
         await testUtils.expectJournalLoadingFinished()
 
-        const notification = await findNotification(
-          commonApiMessages.unknownError,
-        )
+        const notification = await findNotification(commonApiMessages.unknownError)
         expect(notification).toBeInTheDocument()
       })
 
