@@ -1,4 +1,4 @@
-import { CountryListItemModel } from 'modules/country/models'
+import { CountryListItemModel } from 'shared/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

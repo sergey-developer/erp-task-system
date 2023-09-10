@@ -27,13 +27,11 @@ import WarehousePage from './index'
 
 const getContainer = () => screen.getByTestId('warehouse-page')
 
-const getChildByText = (value: string) =>
-  within(getContainer()).getByText(value)
+const getChildByText = (value: string) => within(getContainer()).getByText(value)
 
 const expectLoadingStarted = expectLoadingStartedBySpinner('warehouse-loading')
 
-const expectLoadingFinished =
-  expectLoadingFinishedBySpinner('warehouse-loading')
+const expectLoadingFinished = expectLoadingFinishedBySpinner('warehouse-loading')
 
 export const testUtils = {
   getContainer,
@@ -233,9 +231,7 @@ describe('Страница склада', () => {
 
       await testUtils.expectLoadingFinished()
 
-      const notification = await findNotification(
-        getWarehouseMessages.commonError,
-      )
+      const notification = await findNotification(getWarehouseMessages.commonError)
       expect(notification).toBeInTheDocument()
     })
   })

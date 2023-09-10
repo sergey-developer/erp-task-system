@@ -16,13 +16,13 @@ import commonFixtures from 'fixtures/common'
 import warehouseFixtures from 'fixtures/warehouse'
 
 import {
-  mockGetCountryListSuccess,
   mockGetCustomerListSuccess,
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
   mockGetNomenclatureListSuccess,
   mockGetWarehouseListSuccess,
+  mockGetCountryListSuccess,
 } from '_tests_/mocks/api'
 import { fakeWord, getButtonIn, render, renderInRoute_latest, setupApiTests } from '_tests_/utils'
 

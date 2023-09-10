@@ -2,11 +2,10 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getCountryListMessages } from 'modules/warehouse/constants'
-import { GetCurrencyListQueryArgs, GetCurrencyListSuccessResponse } from 'modules/currency/models'
-import { useGetCountryListQuery } from 'modules/warehouse/services/countryApi.service'
-
+import { getCountryListMessages } from 'shared/constants/country'
+import { GetCurrencyListQueryArgs, GetCurrencyListSuccessResponse } from 'shared/models'
 import { isErrorResponse } from 'shared/services/baseApi'
+import { useGetCountryListQuery } from 'shared/services/countryApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetCurrencyListResult = CustomUseQueryHookResult<

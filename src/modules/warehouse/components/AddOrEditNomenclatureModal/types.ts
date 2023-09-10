@@ -1,6 +1,5 @@
 import { FormInstance } from 'antd'
 
-import { CountryListModel } from 'modules/country/models'
 import { MatchedUserPermissions } from 'modules/user/utils'
 import {
   MeasurementUnitListModel,
@@ -10,6 +9,7 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { CountryListModel } from 'shared/models'
 import { MaybeNull } from 'shared/types/utils'
 
 export type AddOrEditNomenclatureModalFormFields = {

@@ -9,8 +9,8 @@ import {
   getServerErrorMockFn,
   getSuccessMockFn,
   getUnauthorizedErrorMockFn,
-} from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+  ResponseResolverOptions
+} from '_tests_/mocks/api'
 
 const loginMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, AuthApiEnum.Login)

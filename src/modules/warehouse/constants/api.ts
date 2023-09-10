@@ -54,11 +54,6 @@ export enum MeasurementUnitApiEnum {
   GetMeasurementUnitList = '/measurement-units/',
 }
 
-// country
-export enum CountryApiEnum {
-  GetCountryList = '/countries/',
-}
-
 // customer
 export enum CustomerApiEnum {
   GetCustomerList = '/customers/',

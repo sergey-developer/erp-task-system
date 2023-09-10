@@ -1,4 +1,4 @@
-import { CountryModel } from 'modules/country/models'
+import { CountryModel } from 'shared/models'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

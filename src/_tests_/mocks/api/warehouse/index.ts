@@ -18,6 +18,4 @@ export * from './getEquipmentCategoryList.mock'
 
 export * from './getMeasurementUnitList.mock'
 
-export * from './getCountryList.mock'
-
 export * from './getCustomerList.mock'

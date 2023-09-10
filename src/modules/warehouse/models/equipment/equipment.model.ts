@@ -1,4 +1,3 @@
-import { CurrencyModel } from 'modules/currency/models'
 import { UserModel } from 'modules/user/models'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import {
@@ -10,6 +9,7 @@ import {
   WorkTypeModel,
 } from 'modules/warehouse/models'
 
+import { CurrencyModel } from 'shared/models'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

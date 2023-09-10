@@ -12,20 +12,17 @@ export const getLegalEntityListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка юридических лиц',
 }
 
-export const createNomenclatureGroupMessages: ApiRequestMessages<'commonError'> =
-  {
-    commonError: 'Ошибка создания номенклатурной группы',
-  }
+export const createNomenclatureGroupMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка создания номенклатурной группы',
+}
 
-export const updateNomenclatureGroupMessages: ApiRequestMessages<'commonError'> =
-  {
-    commonError: 'Ошибка обновления номенклатурной группы',
-  }
+export const updateNomenclatureGroupMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка обновления номенклатурной группы',
+}
 
-export const getNomenclatureGroupListMessages: ApiRequestMessages<'commonError'> =
-  {
-    commonError: 'Ошибка получения списка номенклатурных групп',
-  }
+export const getNomenclatureGroupListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка номенклатурных групп',
+}
 
 export const createNomenclatureMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка создания номенклатурны',
@@ -59,13 +56,8 @@ export const getEquipmentMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения оборудования',
 }
 
-export const getMeasurementUnitListMessages: ApiRequestMessages<'commonError'> =
-  {
-    commonError: 'Ошибка получения списка единиц измерения',
-  }
-
-export const getCountryListMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения списка стран производителей',
+export const getMeasurementUnitListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка единиц измерения',
 }
 
 export const getCustomerListMessages: ApiRequestMessages<'commonError'> = {

@@ -1,4 +1,4 @@
-import { CountryListModel } from 'modules/country/models'
+import { CountryListModel } from './countryList.model'
 
 export type GetCountryListQueryArgs = void
 

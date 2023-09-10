@@ -1,4 +1,4 @@
-import { CurrencyModel } from 'modules/currency/models'
+import { CurrencyModel } from './currency.model'
 
 export type CurrencyListItemModel = Pick<CurrencyModel, 'id' | 'title'>
 

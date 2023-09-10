@@ -1,6 +1,5 @@
 import { FormInstance } from 'antd'
 
-import { CurrencyListModel } from 'modules/currency/models'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import {
   CustomerListModel,
@@ -13,6 +12,7 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { CurrencyListModel } from 'shared/models'
 import { IdType } from 'shared/types/common'
 
 export type EquipmentModalFormFields = {

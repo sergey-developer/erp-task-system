@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getCountryListMessages } from 'modules/warehouse/constants'
 import { GetWorkTypeListQueryArgs, GetWorkTypeListSuccessResponse } from 'modules/warehouse/models'
-import { useGetCountryListQuery } from 'modules/warehouse/services/countryApi.service'
 
+import { getCountryListMessages } from 'shared/constants/country'
 import { isErrorResponse } from 'shared/services/baseApi'
+import { useGetCountryListQuery } from 'shared/services/countryApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetWorkTypeListResult = CustomUseQueryHookResult<

@@ -4,8 +4,7 @@ import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'modules/task/utils'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
-import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn, ResponseResolverOptions } from '_tests_/mocks/api'
 
 const getJournalMockFn = (taskId: IdType) =>
   getRequestMockFn(HttpMethodEnum.Get, getTaskJournalUrl(taskId))

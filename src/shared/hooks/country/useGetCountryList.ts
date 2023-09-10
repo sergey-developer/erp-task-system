@@ -2,21 +2,25 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { GetCountryListQueryArgs, GetCountryListSuccessResponse } from 'modules/country/models'
-import { getCountryListMessages } from 'modules/warehouse/constants'
-import { useGetCountryListQuery } from 'modules/warehouse/services/countryApi.service'
-
+import { getCountryListMessages } from 'shared/constants/country'
+import { GetCountryListQueryArgs, GetCountryListSuccessResponse } from 'shared/models'
 import { isErrorResponse } from 'shared/services/baseApi'
+import { useGetCountryListQuery } from 'shared/services/countryApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetCountryListResult = CustomUseQueryHookResult<
+type UseGetCountryListResult = CustomUseQueryHookResult<
+  GetCountryListQueryArgs,
+  GetCountryListSuccessResponse
+>
+
+type UseGetCountryListOptions = CustomUseQueryOptions<
   GetCountryListQueryArgs,
   GetCountryListSuccessResponse
 >
 
 export const useGetCountryList = (
   args?: GetCountryListQueryArgs,
-  options?: CustomUseQueryOptions<GetCountryListQueryArgs, GetCountryListSuccessResponse>,
+  options?: UseGetCountryListOptions,
 ): UseGetCountryListResult => {
   const state = useGetCountryListQuery(args, options)
 

@@ -11,8 +11,8 @@ import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
-} from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+  ResponseResolverOptions
+} from '_tests_/mocks/api'
 
 const getEquipmentMockFn = (id: IdType) => getRequestMockFn(HttpMethodEnum.Get, getEquipmentUrl(id))
 

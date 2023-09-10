@@ -7,8 +7,8 @@ import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
-} from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+  ResponseResolverOptions,
+} from '_tests_/mocks/api'
 
 const getWorkGroupListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, WorkGroupApiEnum.GetWorkGroupList)
@@ -17,6 +17,5 @@ export const mockGetWorkGroupListSuccess = (
   options?: Partial<ResponseResolverOptions<GetWorkGroupListSuccessResponse>>,
 ) => getSuccessMockFn(getWorkGroupListMockFn(), options)()
 
-export const mockGetWorkGroupListServerError = (
-  options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(getWorkGroupListMockFn(), options)()
+export const mockGetWorkGroupListServerError = (options?: Partial<ResponseResolverOptions>) =>
+  getServerErrorMockFn(getWorkGroupListMockFn(), options)()

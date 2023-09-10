@@ -2,8 +2,7 @@ import { CatalogsApiEnum } from 'shared/constants/catalogs'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { GetTimeZoneListSuccessResponse } from 'shared/models'
 
-import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+import { getRequestMockFn, getSuccessMockFn, ResponseResolverOptions } from '_tests_/mocks/api'
 
 const getTimeZoneListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CatalogsApiEnum.GetTimeZoneList)

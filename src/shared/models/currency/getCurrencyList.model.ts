@@ -1,4 +1,4 @@
-import { CurrencyListModel } from 'modules/currency/models'
+import { CurrencyListModel } from './currencyList.model'
 
 export type GetCurrencyListQueryArgs = void
 

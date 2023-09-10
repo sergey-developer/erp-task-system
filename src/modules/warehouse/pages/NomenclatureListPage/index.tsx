@@ -1,14 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Input, Button, Row, Col, MenuProps } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
-import {
-  FC,
-  useCallback,
-  useMemo,
-  useState,
-  MouseEvent,
-  useEffect,
-} from 'react'
+import { FC, useCallback, useMemo, useState, MouseEvent, useEffect } from 'react'
 
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import { useMatchUserPermissions } from 'modules/user/hooks'
@@ -25,7 +18,6 @@ import {
   updateNomenclatureMessages,
 } from 'modules/warehouse/constants'
 import {
-  useGetCountryList,
   useGetMeasurementUnitList,
   useGetNomenclature,
   useGetNomenclatureGroupList,
@@ -50,6 +42,7 @@ import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks'
+import { useGetCountryList } from 'shared/hooks/country'
 import {
   isBadRequestError,
   isErrorResponse,
@@ -65,12 +58,8 @@ import { GroupListMenuStyled } from './styles'
 const { Search } = Input
 
 const NomenclatureListPage: FC = () => {
-  const updateNomenclaturePerms = useMatchUserPermissions([
-    'NOMENCLATURES_UPDATE',
-  ])
-  const updateNomenclatureGroupPerms = useMatchUserPermissions([
-    'NOMENCLATURE_GROUPS_UPDATE',
-  ])
+  const updateNomenclaturePerms = useMatchUserPermissions(['NOMENCLATURES_UPDATE'])
+  const updateNomenclatureGroupPerms = useMatchUserPermissions(['NOMENCLATURE_GROUPS_UPDATE'])
 
   const [getNomenclatureGroupListParams, setGetNomenclatureGroupListParams] =
     useSetState<GetNomenclatureGroupListQueryArgs>({})
@@ -79,38 +68,25 @@ const NomenclatureListPage: FC = () => {
     useSetState<GetNomenclatureListQueryArgs>({ limit: 10, offset: 0 })
 
   const [hoveredGroupId, setHoveredGroupId] = useState<number>()
-  const [editableGroup, setEditableGroup] =
-    useState<NomenclatureGroupListItemModel>()
+  const [editableGroup, setEditableGroup] = useState<NomenclatureGroupListItemModel>()
 
   const [editableNomenclatureId, setEditableNomenclatureId] = useState<number>()
 
-  const [
-    addNomenclatureGroupModalOpened,
-    { toggle: toggleAddNomenclatureGroupModal },
-  ] = useBoolean(false)
-
-  const debouncedToggleAddNomenclatureGroupModal = useDebounceFn(
-    toggleAddNomenclatureGroupModal,
-  )
-
-  const [
-    editNomenclatureGroupModalOpened,
-    { toggle: toggleEditNomenclatureGroupModal },
-  ] = useBoolean(false)
-
-  const debouncedToggleEditNomenclatureGroupModal = useDebounceFn(
-    toggleEditNomenclatureGroupModal,
-  )
-
-  const [addNomenclatureModalOpened, { toggle: toggleAddNomenclatureModal }] =
+  const [addNomenclatureGroupModalOpened, { toggle: toggleAddNomenclatureGroupModal }] =
     useBoolean(false)
 
-  const debouncedToggleAddNomenclatureModal = useDebounceFn(
-    toggleAddNomenclatureModal,
-  )
+  const debouncedToggleAddNomenclatureGroupModal = useDebounceFn(toggleAddNomenclatureGroupModal)
 
-  const [editNomenclatureModalOpened, { toggle: toggleEditNomenclatureModal }] =
+  const [editNomenclatureGroupModalOpened, { toggle: toggleEditNomenclatureGroupModal }] =
     useBoolean(false)
+
+  const debouncedToggleEditNomenclatureGroupModal = useDebounceFn(toggleEditNomenclatureGroupModal)
+
+  const [addNomenclatureModalOpened, { toggle: toggleAddNomenclatureModal }] = useBoolean(false)
+
+  const debouncedToggleAddNomenclatureModal = useDebounceFn(toggleAddNomenclatureModal)
+
+  const [editNomenclatureModalOpened, { toggle: toggleEditNomenclatureModal }] = useBoolean(false)
 
   const debouncedHandleOpenEditNomenclatureModal = useDebounceFn<
     NomenclatureTableProps['onClickName']
@@ -124,24 +100,16 @@ const NomenclatureListPage: FC = () => {
     toggleEditNomenclatureModal()
   }, [toggleEditNomenclatureModal])
 
-  const debouncedHandleCloseEditNomenclatureModal = useDebounceFn(
-    handleCloseEditNomenclatureModal,
-  )
+  const debouncedHandleCloseEditNomenclatureModal = useDebounceFn(handleCloseEditNomenclatureModal)
 
-  const [
-    createNomenclatureGroupMutation,
-    { isLoading: createNomenclatureGroupIsLoading },
-  ] = useCreateNomenclatureGroupMutation()
+  const [createNomenclatureGroupMutation, { isLoading: createNomenclatureGroupIsLoading }] =
+    useCreateNomenclatureGroupMutation()
 
-  const [
-    updateNomenclatureGroupMutation,
-    { isLoading: updateNomenclatureGroupIsLoading },
-  ] = useUpdateNomenclatureGroupMutation()
+  const [updateNomenclatureGroupMutation, { isLoading: updateNomenclatureGroupIsLoading }] =
+    useUpdateNomenclatureGroupMutation()
 
-  const {
-    currentData: nomenclatureGroupList = [],
-    isFetching: nomenclatureGroupListIsFetching,
-  } = useGetNomenclatureGroupList(getNomenclatureGroupListParams)
+  const { currentData: nomenclatureGroupList = [], isFetching: nomenclatureGroupListIsFetching } =
+    useGetNomenclatureGroupList(getNomenclatureGroupListParams)
 
   const {
     currentData: allNomenclatureGroupList = [],
@@ -150,15 +118,11 @@ const NomenclatureListPage: FC = () => {
     skip: !addNomenclatureModalOpened && !editNomenclatureModalOpened,
   })
 
-  const [
-    createNomenclatureMutation,
-    { isLoading: createNomenclatureIsLoading },
-  ] = useCreateNomenclatureMutation()
+  const [createNomenclatureMutation, { isLoading: createNomenclatureIsLoading }] =
+    useCreateNomenclatureMutation()
 
-  const [
-    updateNomenclatureMutation,
-    { isLoading: updateNomenclatureIsLoading },
-  ] = useUpdateNomenclatureMutation()
+  const [updateNomenclatureMutation, { isLoading: updateNomenclatureIsLoading }] =
+    useUpdateNomenclatureMutation()
 
   const {
     currentData: nomenclature,
@@ -174,30 +138,27 @@ const NomenclatureListPage: FC = () => {
     }
   }, [handleCloseEditNomenclatureModal, isGetNomenclatureError])
 
-  const {
-    currentData: nomenclatureList,
-    isFetching: nomenclatureListIsFetching,
-  } = useGetNomenclatureList(getNomenclatureListParams)
+  const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
+    useGetNomenclatureList(getNomenclatureListParams)
 
-  const {
-    currentData: measurementUnitList = [],
-    isFetching: measurementUnitListIsFetching,
-  } = useGetMeasurementUnitList(undefined, {
-    skip: !addNomenclatureModalOpened && !editNomenclatureModalOpened,
-  })
-
-  const { currentData: countryList = [], isFetching: countryListIsFetching } =
-    useGetCountryList(undefined, {
+  const { currentData: measurementUnitList = [], isFetching: measurementUnitListIsFetching } =
+    useGetMeasurementUnitList(undefined, {
       skip: !addNomenclatureModalOpened && !editNomenclatureModalOpened,
     })
 
+  const { currentData: countryList = [], isFetching: countryListIsFetching } = useGetCountryList(
+    undefined,
+    {
+      skip: !addNomenclatureModalOpened && !editNomenclatureModalOpened,
+    },
+  )
+
   const groupListMenuItems: MenuProps['items'] = useMemo(() => {
-    const handleClickEdit =
-      (group: NomenclatureGroupListItemModel) => (event: MouseEvent) => {
-        event.stopPropagation()
-        setEditableGroup(group)
-        debouncedToggleEditNomenclatureGroupModal()
-      }
+    const handleClickEdit = (group: NomenclatureGroupListItemModel) => (event: MouseEvent) => {
+      event.stopPropagation()
+      setEditableGroup(group)
+      debouncedToggleEditNomenclatureGroupModal()
+    }
 
     return nomenclatureGroupList.map((group) => {
       const { id, title } = group
@@ -208,10 +169,7 @@ const NomenclatureListPage: FC = () => {
         title,
         itemIcon: id === hoveredGroupId &&
           updateNomenclatureGroupPerms?.nomenclatureGroupsUpdate && (
-            <EditIcon
-              title='Редактировать группу'
-              onClick={handleClickEdit(group)}
-            />
+            <EditIcon title='Редактировать группу' onClick={handleClickEdit(group)} />
           ),
         onMouseEnter: () => setHoveredGroupId(id),
         onMouseLeave: () => setHoveredGroupId(undefined),
@@ -262,40 +220,40 @@ const NomenclatureListPage: FC = () => {
     ],
   )
 
-  const handleUpdateNomenclatureGroup: AddOrEditNomenclatureGroupModalProps['onSubmit'] =
-    async (values, setFields) => {
-      if (!editableGroup) return
+  const handleUpdateNomenclatureGroup: AddOrEditNomenclatureGroupModalProps['onSubmit'] = async (
+    values,
+    setFields,
+  ) => {
+    if (!editableGroup) return
 
-      try {
-        await updateNomenclatureGroupMutation({
-          ...values,
-          id: editableGroup.id,
-          getListParams: getNomenclatureGroupListParams,
-        }).unwrap()
+    try {
+      await updateNomenclatureGroupMutation({
+        ...values,
+        id: editableGroup.id,
+        getListParams: getNomenclatureGroupListParams,
+      }).unwrap()
 
-        toggleEditNomenclatureGroupModal()
-      } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-
-            setFields(getFieldsErrors(error.data))
-          } else if (isForbiddenError(error) && error.data.detail) {
+      toggleEditNomenclatureGroupModal()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          if (error.data.detail) {
             showErrorNotification(error.data.detail)
-          } else if (isNotFoundError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          } else {
-            showErrorNotification(updateNomenclatureGroupMessages.commonError)
           }
+
+          setFields(getFieldsErrors(error.data))
+        } else if (isForbiddenError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        } else if (isNotFoundError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        } else {
+          showErrorNotification(updateNomenclatureGroupMessages.commonError)
         }
       }
     }
+  }
 
-  const handleCreateNomenclature = useCallback<
-    AddOrEditNomenclatureModalProps['onSubmit']
-  >(
+  const handleCreateNomenclature = useCallback<AddOrEditNomenclatureModalProps['onSubmit']>(
     async (values, setFields) => {
       try {
         await createNomenclatureMutation(values).unwrap()
@@ -319,36 +277,38 @@ const NomenclatureListPage: FC = () => {
     [createNomenclatureMutation, toggleAddNomenclatureModal],
   )
 
-  const handleUpdateNomenclature: AddOrEditNomenclatureModalProps['onSubmit'] =
-    async (values, setFields) => {
-      if (!editableNomenclatureId) return
+  const handleUpdateNomenclature: AddOrEditNomenclatureModalProps['onSubmit'] = async (
+    values,
+    setFields,
+  ) => {
+    if (!editableNomenclatureId) return
 
-      try {
-        await updateNomenclatureMutation({
-          ...values,
-          id: editableNomenclatureId,
-          getListParams: getNomenclatureListParams,
-        }).unwrap()
+    try {
+      await updateNomenclatureMutation({
+        ...values,
+        id: editableNomenclatureId,
+        getListParams: getNomenclatureListParams,
+      }).unwrap()
 
-        handleCloseEditNomenclatureModal()
-      } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-
-            setFields(getFieldsErrors(error.data))
-          } else if (isForbiddenError(error) && error.data.detail) {
+      handleCloseEditNomenclatureModal()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          if (error.data.detail) {
             showErrorNotification(error.data.detail)
-          } else if (isNotFoundError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          } else {
-            showErrorNotification(updateNomenclatureMessages.commonError)
           }
+
+          setFields(getFieldsErrors(error.data))
+        } else if (isForbiddenError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        } else if (isNotFoundError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        } else {
+          showErrorNotification(updateNomenclatureMessages.commonError)
         }
       }
     }
+  }
 
   const handleChangeSearch: SearchProps['onSearch'] = (value) => {
     const searchValue = value || undefined
@@ -378,19 +338,12 @@ const NomenclatureListPage: FC = () => {
 
   return (
     <>
-      <Space
-        data-testid='nomenclature-list-page'
-        $block
-        direction='vertical'
-        size='middle'
-      >
+      <Space data-testid='nomenclature-list-page' $block direction='vertical' size='middle'>
         <Space size='middle'>
           <Search
             placeholder='Поиск номенклатуры'
             allowClear
-            disabled={
-              nomenclatureListIsFetching || nomenclatureGroupListIsFetching
-            }
+            disabled={nomenclatureListIsFetching || nomenclatureGroupListIsFetching}
             onSearch={handleChangeSearch}
           />
 
