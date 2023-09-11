@@ -1,4 +1,4 @@
-import { PaginatedListSuccessResponse } from 'shared/models'
+import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
 import { PaginationParams } from 'shared/types/pagination'
 
 import { NomenclatureListItemModel } from './nomenclatureList.model'

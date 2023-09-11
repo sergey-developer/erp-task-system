@@ -9,7 +9,7 @@ import {
   WorkTypeModel,
 } from 'modules/warehouse/models'
 
-import { CurrencyModel } from 'shared/models'
+import { CurrencyModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

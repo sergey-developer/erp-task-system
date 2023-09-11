@@ -1,7 +1,4 @@
-import {
-  SubTaskApiEnum,
-  SubTaskApiTriggerEnum,
-} from 'modules/subTask/constants'
+import { SubTaskApiTriggerEnum } from 'modules/subTask/constants'
 import {
   CancelSubTaskMutationArgs,
   CancelSubTaskSuccessResponse,
@@ -9,8 +6,6 @@ import {
   CreateSubTaskSuccessResponse,
   GetSubTaskListQueryArgs,
   GetSubTaskListSuccessResponse,
-  GetSubTaskTemplateListQueryArgs,
-  GetSubTaskTemplateListSuccessResponse,
   ReworkSubTaskMutationArgs,
   ReworkSubTaskSuccessResponse,
   SubTaskModel,
@@ -35,16 +30,6 @@ const subTaskApiService = baseApiService.injectEndpoints({
       query: (taskId) => ({
         url: getSubTaskListUrl(taskId),
         method: HttpMethodEnum.Get,
-      }),
-    }),
-    [SubTaskApiTriggerEnum.GetSubTaskTemplateList]: build.query<
-      GetSubTaskTemplateListSuccessResponse,
-      GetSubTaskTemplateListQueryArgs
-    >({
-      query: (params) => ({
-        url: SubTaskApiEnum.GetSubTaskTemplateList,
-        method: HttpMethodEnum.Get,
-        params,
       }),
     }),
     [SubTaskApiTriggerEnum.CreateSubTask]: build.mutation<
@@ -81,10 +66,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Delete,
         data: payload,
       }),
-      onQueryStarted: async (
-        { subTaskId, taskId },
-        { dispatch, queryFulfilled },
-      ) => {
+      onQueryStarted: async ({ subTaskId, taskId }, { dispatch, queryFulfilled }) => {
         try {
           await queryFulfilled
 
@@ -113,10 +95,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Post,
         data: payload,
       }),
-      onQueryStarted: async (
-        { subTaskId, taskId },
-        { dispatch, queryFulfilled },
-      ) => {
+      onQueryStarted: async ({ subTaskId, taskId }, { dispatch, queryFulfilled }) => {
         try {
           await queryFulfilled
 
@@ -141,7 +120,6 @@ const subTaskApiService = baseApiService.injectEndpoints({
 })
 
 export const {
-  useGetSubTaskTemplateListQuery,
   useCreateSubTaskMutation,
   useCancelSubTaskMutation,
   useReworkSubTaskMutation,

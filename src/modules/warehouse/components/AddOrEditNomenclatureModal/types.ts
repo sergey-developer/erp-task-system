@@ -9,7 +9,7 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CountryListModel } from 'shared/models'
+import { CountryListModel } from 'shared/models/country'
 import { MaybeNull } from 'shared/types/utils'
 
 export type AddOrEditNomenclatureModalFormFields = {

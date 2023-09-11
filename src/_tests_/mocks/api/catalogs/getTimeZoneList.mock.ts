@@ -1,6 +1,6 @@
 import { CatalogsApiEnum } from 'shared/constants/catalogs'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { GetTimeZoneListSuccessResponse } from 'shared/models'
+import { GetTimeZoneListSuccessResponse } from 'shared/models/catalogs'
 
 import { getRequestMockFn, getSuccessMockFn, ResponseResolverOptions } from '_tests_/mocks/api'
 

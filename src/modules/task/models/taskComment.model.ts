@@ -1,6 +1,6 @@
 import { TaskAttachmentListModel } from 'modules/task/models'
 
-import { CommentAuthorModel } from 'shared/models'
+import { CommentAuthorModel } from 'shared/models/commentAuthor.model'
 import { IdType } from 'shared/types/common'
 
 export type TaskCommentModel = {

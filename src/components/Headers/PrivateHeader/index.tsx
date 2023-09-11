@@ -25,7 +25,7 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
-import { useTimeZoneListState } from 'shared/hooks'
+import { useTimeZoneListState } from 'shared/hooks/catalogs'
 import {
   isBadRequestError,
   isErrorResponse,

@@ -1,6 +1,6 @@
 import { MeasurementUnitModel, NomenclatureGroupModel } from 'modules/warehouse/models'
 
-import { CountryModel } from 'shared/models'
+import { CountryModel } from 'shared/models/country'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

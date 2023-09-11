@@ -41,8 +41,8 @@ import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/hooks'
 import { useGetCountryList } from 'shared/hooks/country'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
   isBadRequestError,
   isErrorResponse,

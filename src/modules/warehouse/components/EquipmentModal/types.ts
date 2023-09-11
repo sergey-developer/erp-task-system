@@ -12,7 +12,7 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CurrencyListModel } from 'shared/models'
+import { CurrencyListModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
 
 export type EquipmentModalFormFields = {

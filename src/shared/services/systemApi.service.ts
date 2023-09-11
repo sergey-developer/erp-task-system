@@ -1,6 +1,6 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { SystemApiEnum } from 'shared/constants/system'
-import { GetSystemInfoQueryArgs, GetSystemInfoSuccessResponse } from 'shared/models'
+import { GetSystemInfoQueryArgs, GetSystemInfoSuccessResponse } from 'shared/models/system'
 
 import { baseApiService } from './baseApi'
 

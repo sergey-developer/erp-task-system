@@ -1,7 +1,6 @@
 import { CountryApiEnum } from 'shared/constants/country'
-
 import { HttpMethodEnum } from 'shared/constants/http'
-import { GetCountryListQueryArgs, GetCountryListSuccessResponse } from 'shared/models'
+import { GetCountryListQueryArgs, GetCountryListSuccessResponse } from 'shared/models/country'
 import { baseApiService } from 'shared/services/baseApi'
 
 const countryApiService = baseApiService.injectEndpoints({

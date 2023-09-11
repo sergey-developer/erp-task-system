@@ -1,17 +1,19 @@
-import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
 
+import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+
 import { getTimeZoneListMessages } from 'shared/constants/catalogs'
-import { GetTimeZoneListQueryArgs, GetTimeZoneListSuccessResponse } from 'shared/models'
-import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/baseApi'
+import { GetTimeZoneListQueryArgs, GetTimeZoneListSuccessResponse } from 'shared/models/catalogs'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { useGetTimeZoneListQuery } from 'shared/services/catalogsApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useGetTimeZoneList = (): TypedUseQueryHookResult<
-  GetTimeZoneListSuccessResponse,
+type UseGetTimeZoneListResult = CustomUseQueryHookResult<
   GetTimeZoneListQueryArgs,
-  CustomBaseQueryFn
-> => {
+  GetTimeZoneListSuccessResponse
+>
+
+export const useGetTimeZoneList = (): UseGetTimeZoneListResult => {
   const state = useGetTimeZoneListQuery()
 
   useEffect(() => {

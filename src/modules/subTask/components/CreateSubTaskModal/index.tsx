@@ -2,20 +2,15 @@ import { Form, Input, Select, Typography } from 'antd'
 import { Rule } from 'rc-field-form/es/interface'
 import React, { FC, useState } from 'react'
 
-import {
-  useCreateSubTask,
-  useGetSubTaskTemplateList,
-} from 'modules/subTask/hooks'
+import { useCreateSubTask } from 'modules/subTask/hooks'
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import { SupportGroupListItemModel } from 'modules/supportGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import {
-  idAndNameSelectFieldNames,
-  idAndTitleSelectFieldNames,
-} from 'shared/constants/selectField'
+import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { validationSizes } from 'shared/constants/validation'
+import { useGetSubTaskTemplateList } from 'shared/hooks/catalogs'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -43,10 +38,7 @@ const descriptionValidationRules: Rule[] = [
   },
 ]
 
-const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
-  task,
-  onCancel,
-}) => {
+const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => {
   const [form] = Form.useForm<CreateSubTaskFormFields>()
 
   const [selectedSupportGroup, setSelectedSupportGroup] =
@@ -66,21 +58,15 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({
       { skip: !selectedSupportGroup },
     )
 
-  const {
-    currentData: supportGroupList,
-    isFetching: supportGroupListIsFetching,
-  } = useGetSupportGroupList()
+  const { currentData: supportGroupList, isFetching: supportGroupListIsFetching } =
+    useGetSupportGroupList()
 
   const {
     fn: createSubTask,
     state: { isLoading: createSubTaskIsLoading },
   } = useCreateSubTask()
 
-  const handleFinish = async ({
-    title,
-    description,
-    templateX5,
-  }: CreateSubTaskFormFields) => {
+  const handleFinish = async ({ title, description, templateX5 }: CreateSubTaskFormFields) => {
     try {
       await createSubTask({
         taskId: task.id,

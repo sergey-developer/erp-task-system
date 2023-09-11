@@ -3,7 +3,7 @@ import { TaskModel } from 'modules/task/models'
 
 import { MaybeUndefined } from 'shared/types/utils'
 
-import { SubTaskTemplateModel } from './subTaskTemplate.model'
+import { SubTaskTemplateListModel } from './subTaskTemplateList.model'
 
 export type GetSubTaskTemplateListQueryArgs = MaybeUndefined<
   Partial<{
@@ -12,4 +12,4 @@ export type GetSubTaskTemplateListQueryArgs = MaybeUndefined<
   }>
 >
 
-export type GetSubTaskTemplateListSuccessResponse = Array<SubTaskTemplateModel>
+export type GetSubTaskTemplateListSuccessResponse = SubTaskTemplateListModel

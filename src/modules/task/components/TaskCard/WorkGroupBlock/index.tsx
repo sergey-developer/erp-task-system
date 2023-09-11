@@ -21,7 +21,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/hooks'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 
 import {
   TaskSecondLineFormFields,

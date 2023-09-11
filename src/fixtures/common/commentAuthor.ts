@@ -1,4 +1,4 @@
-import { CommentAuthorModel } from 'shared/models'
+import { CommentAuthorModel } from 'shared/models/commentAuthor.model'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

@@ -1,6 +1,6 @@
 import { CountryApiEnum } from 'shared/constants/country'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { GetCountryListSuccessResponse } from 'shared/models'
+import { GetCountryListSuccessResponse } from 'shared/models/country'
 
 import {
   getRequestMockFn,

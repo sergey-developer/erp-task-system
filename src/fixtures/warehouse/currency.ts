@@ -1,4 +1,4 @@
-import { CurrencyModel } from 'shared/models'
+import { CurrencyModel } from 'shared/models/currency'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

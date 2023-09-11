@@ -42,7 +42,7 @@ import FilterButton from 'components/Buttons/FilterButton'
 import { SyncIcon } from 'components/Icons'
 
 import { SortOrderEnum } from 'shared/constants/sort'
-import { useDebounceFn } from 'shared/hooks'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 import { calculatePaginationParams } from 'shared/utils/pagination'
 

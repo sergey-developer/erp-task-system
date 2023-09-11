@@ -1,5 +1,5 @@
+import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
 import { ArrayFirst } from 'shared/types/utils'
-import { PaginatedListSuccessResponse } from 'shared/models'
 
 export const paginatedListResponse = <T extends any[]>(
   list: T,

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useSelector } from 'shared/hooks'
+import { useSelector } from 'shared/hooks/useSelector'
 import { MaybeNull } from 'shared/types/utils'
 
 import { authenticatedUserSelector } from '../selectors'

@@ -21,7 +21,7 @@ import {
 
 import FilterButton from 'components/Buttons/FilterButton'
 
-import { useDebounceFn } from 'shared/hooks'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { IdType } from 'shared/types/common'
 

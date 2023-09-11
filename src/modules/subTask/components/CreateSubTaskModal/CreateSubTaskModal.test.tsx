@@ -1,16 +1,11 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import {
-  createSubTaskMessages,
-  getSubTaskTemplateListMessages,
-} from 'modules/subTask/constants'
+import { createSubTaskMessages } from 'modules/subTask/constants'
 import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
 
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
+import { getSubTaskTemplateListMessages } from 'shared/constants/catalogs'
+import { validationMessages, validationSizes } from 'shared/constants/validation'
 
 import subTaskFixtures from 'fixtures/subTask'
 import supportGroupFixtures from 'fixtures/supportGroup'
@@ -45,11 +40,7 @@ import {
 } from '_tests_/utils'
 
 import CreateSubTaskModal from './index'
-import {
-  CreateSubTaskFormErrors,
-  CreateSubTaskFormFields,
-  CreateSubTaskModalProps,
-} from './types'
+import { CreateSubTaskFormErrors, CreateSubTaskFormFields, CreateSubTaskModalProps } from './types'
 
 const props: Readonly<CreateSubTaskModalProps> = {
   task: taskFixtures.task(),
@@ -60,12 +51,10 @@ const getContainer = () => screen.getByTestId('create-sub-task-modal')
 
 const findContainer = () => screen.findByTestId('create-sub-task-modal')
 
-const getChildByText = (text: string | RegExp) =>
-  within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // support group field
-const getSupportGroupFormItem = () =>
-  within(getContainer()).getByTestId('supportGroup')
+const getSupportGroupFormItem = () => within(getContainer()).getByTestId('supportGroup')
 
 const getSupportGroupSelect = (opened?: boolean) =>
   getSelect(getSupportGroupFormItem(), {
@@ -82,8 +71,7 @@ const querySupportGroupSelect = (opened?: boolean) =>
 const getSupportGroupSelectPlaceholder = () =>
   within(getSupportGroupFormItem()).getByText('Доступные группы')
 
-const getSupportGroupLabel = () =>
-  within(getSupportGroupFormItem()).getByTitle('Группа поддержки')
+const getSupportGroupLabel = () => within(getSupportGroupFormItem()).getByTitle('Группа поддержки')
 
 const setSupportGroup = clickSelectOption
 
@@ -99,8 +87,7 @@ const openSupportGroupSelect = async (user: UserEvent) => {
   await openSelect(user, getSupportGroupFormItem())
 }
 
-const findSupportGroupError = (error: string) =>
-  within(getSupportGroupFormItem()).findByText(error)
+const findSupportGroupError = (error: string) => within(getSupportGroupFormItem()).findByText(error)
 
 const supportGroupExpectLoadingStarted = () =>
   expectLoadingStartedBySelect(getSupportGroupFormItem())
@@ -109,8 +96,7 @@ const supportGroupExpectLoadingFinished = () =>
   expectLoadingFinishedBySelect(getSupportGroupFormItem())
 
 // service field
-const getServiceFieldFormItem = () =>
-  within(getContainer()).getByTestId('service')
+const getServiceFieldFormItem = () => within(getContainer()).getByTestId('service')
 
 const getServiceField = (opened?: boolean) =>
   getSelect(getServiceFieldFormItem(), { name: 'Сервис', expanded: opened })
@@ -121,15 +107,13 @@ const queryServiceField = (opened?: boolean) =>
 const getServiceFieldPlaceholder = () =>
   within(getServiceFieldFormItem()).getByText('Наименование сервиса')
 
-const getServiceFieldLabel = () =>
-  within(getServiceFieldFormItem()).getByTitle('Сервис')
+const getServiceFieldLabel = () => within(getServiceFieldFormItem()).getByTitle('Сервис')
 
 const setService = clickSelectOption
 
 const getServiceOption = getSelectOption
 
-const getSelectedService = (value: string) =>
-  within(getServiceFieldFormItem()).getByTitle(value)
+const getSelectedService = (value: string) => within(getServiceFieldFormItem()).getByTitle(value)
 
 const querySelectedService = (value: string) =>
   within(getServiceFieldFormItem()).queryByTitle(value)
@@ -138,25 +122,19 @@ const openServiceSelect = async (user: UserEvent) => {
   await openSelect(user, getServiceFieldFormItem())
 }
 
-const findServiceFieldError = (error: string) =>
-  within(getServiceFieldFormItem()).findByText(error)
+const findServiceFieldError = (error: string) => within(getServiceFieldFormItem()).findByText(error)
 
-const serviceExpectLoadingStarted = () =>
-  expectLoadingStartedBySelect(getServiceFieldFormItem())
+const serviceExpectLoadingStarted = () => expectLoadingStartedBySelect(getServiceFieldFormItem())
 
-const serviceExpectLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getServiceFieldFormItem())
+const serviceExpectLoadingFinished = () => expectLoadingFinishedBySelect(getServiceFieldFormItem())
 
 // title field
 const getTitleFieldContainer = () => within(getContainer()).getByTestId('title')
 
 const getTitleField = () =>
-  within(getTitleFieldContainer()).getByPlaceholderText(
-    'Опишите коротко задачу',
-  )
+  within(getTitleFieldContainer()).getByPlaceholderText('Опишите коротко задачу')
 
-const getTitleFieldLabel = () =>
-  within(getTitleFieldContainer()).getByTitle('Краткое описание')
+const getTitleFieldLabel = () => within(getTitleFieldContainer()).getByTitle('Краткое описание')
 
 const setTitle = async (user: UserEvent, value: string) => {
   const field = getTitleField()
@@ -169,17 +147,13 @@ const resetTitle = async (user: UserEvent) => {
   await user.click(button)
 }
 
-const findTitleFieldError = (error: string) =>
-  within(getTitleFieldContainer()).findByText(error)
+const findTitleFieldError = (error: string) => within(getTitleFieldContainer()).findByText(error)
 
 // description field
-const getDescriptionFieldContainer = () =>
-  within(getContainer()).getByTestId('description')
+const getDescriptionFieldContainer = () => within(getContainer()).getByTestId('description')
 
 const getDescriptionField = () =>
-  within(getDescriptionFieldContainer()).getByPlaceholderText(
-    'Расскажите подробнее о задаче',
-  )
+  within(getDescriptionFieldContainer()).getByPlaceholderText('Расскажите подробнее о задаче')
 
 const getDescriptionFieldLabel = () =>
   within(getDescriptionFieldContainer()).getByTitle('Подробное описание')
@@ -236,10 +210,8 @@ const setFormValues = async (
   await setDescription(user, values.description)
 }
 
-const expectLoadingStarted = () =>
-  expectLoadingStartedByButton(getSubmitButton())
-const expectLoadingFinished = () =>
-  expectLoadingFinishedByButton(getSubmitButton())
+const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -317,9 +289,7 @@ describe('Модалка создания задачи заявки', () => {
     render(<CreateSubTaskModal {...props} />)
 
     expect(testUtils.getChildByText(/задание по заявке/i)).toBeInTheDocument()
-    expect(
-      testUtils.getChildByText(props.task.recordId),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.task.recordId)).toBeInTheDocument()
   })
 
   describe('Форма создания', () => {
@@ -351,8 +321,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test.skip('Не активно во время создания задачи', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -386,9 +355,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Имеет верное количество вариантов', async () => {
-        const fakeSupportGroupList = [
-          supportGroupFixtures.supportGroupListItem(),
-        ]
+        const fakeSupportGroupList = [supportGroupFixtures.supportGroupListItem()]
         mockGetSupportGroupListSuccess({ body: fakeSupportGroupList })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
@@ -403,9 +370,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Не имеет значения по умолчанию', async () => {
-        const fakeSupportGroupList = [
-          supportGroupFixtures.supportGroupListItem(),
-        ]
+        const fakeSupportGroupList = [supportGroupFixtures.supportGroupListItem()]
         mockGetSupportGroupListSuccess({ body: fakeSupportGroupList })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
@@ -420,8 +385,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Можно выбрать значение', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         mockGetSubTaskTemplateListSuccess()
@@ -430,20 +394,14 @@ describe('Модалка создания задачи заявки', () => {
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(
-          user,
-          fakeSupportGroupListItem.name,
-        )
-        const value = testUtils.supportGroup.getValue(
-          fakeSupportGroupListItem.name,
-        )
+        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
+        const value = testUtils.supportGroup.getValue(fakeSupportGroupListItem.name)
 
         expect(value).toBeInTheDocument()
       })
 
       test('Закрывается после выбора значения', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         mockGetSubTaskTemplateListSuccess()
@@ -452,10 +410,7 @@ describe('Модалка создания задачи заявки', () => {
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(
-          user,
-          fakeSupportGroupListItem.name,
-        )
+        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
 
         expect(testUtils.supportGroup.getField(false)).toBeInTheDocument()
       })
@@ -467,9 +422,7 @@ describe('Модалка создания задачи заявки', () => {
           const { user } = render(<CreateSubTaskModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
-          const error = await testUtils.supportGroup.findError(
-            validationMessages.required,
-          )
+          const error = await testUtils.supportGroup.findError(validationMessages.required)
 
           expect(error).toBeInTheDocument()
         })
@@ -509,8 +462,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Не активно во время создания задачи', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -536,8 +488,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Становится активным после выбора группы поддержки', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         mockGetSubTaskTemplateListSuccess({
@@ -550,18 +501,14 @@ describe('Модалка создания задачи заявки', () => {
         expect(testUtils.service.getField()).toBeDisabled()
 
         await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(
-          user,
-          fakeSupportGroupListItem.name,
-        )
+        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
         await testUtils.service.expectLoadingFinished()
 
         expect(testUtils.service.getField()).toBeEnabled()
       })
 
       test('Отображает состояние загрузки во время загрузки шаблонов', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         mockGetSubTaskTemplateListSuccess()
@@ -570,16 +517,12 @@ describe('Модалка создания задачи заявки', () => {
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(
-          user,
-          fakeSupportGroupListItem.name,
-        )
+        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
         await testUtils.service.expectLoadingStarted()
       })
 
       test('Имеет верное количество вариантов', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplateList = [subTaskFixtures.subTaskTemplate()]
@@ -589,10 +532,7 @@ describe('Модалка создания задачи заявки', () => {
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(
-          user,
-          fakeSupportGroupListItem.name,
-        )
+        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
         await testUtils.service.expectLoadingFinished()
         await testUtils.service.openField(user)
 
@@ -603,8 +543,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Не имеет значения по умолчанию', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplateList = [subTaskFixtures.subTaskTemplate()]
@@ -614,10 +553,7 @@ describe('Модалка создания задачи заявки', () => {
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(
-          user,
-          fakeSupportGroupListItem.name,
-        )
+        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
         await testUtils.service.expectLoadingFinished()
         await testUtils.service.openField(user)
 
@@ -628,8 +564,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Можно выбрать значение', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -639,10 +574,7 @@ describe('Модалка создания задачи заявки', () => {
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(
-          user,
-          fakeSupportGroupListItem.name,
-        )
+        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
         await testUtils.service.expectLoadingFinished()
         await testUtils.service.openField(user)
         await testUtils.service.setValue(user, fakeTemplate.title)
@@ -652,8 +584,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Закрывается после выбора значения', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -663,10 +594,7 @@ describe('Модалка создания задачи заявки', () => {
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(
-          user,
-          fakeSupportGroupListItem.name,
-        )
+        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
         await testUtils.service.expectLoadingFinished()
         await testUtils.service.openField(user)
         await testUtils.service.setValue(user, fakeTemplate.title)
@@ -681,9 +609,7 @@ describe('Модалка создания задачи заявки', () => {
           const { user } = render(<CreateSubTaskModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
-          const error = await testUtils.service.findError(
-            validationMessages.required,
-          )
+          const error = await testUtils.service.findError(validationMessages.required)
 
           expect(error).toBeInTheDocument()
         })
@@ -705,8 +631,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Не активно во время создания задачи', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -777,9 +702,7 @@ describe('Модалка создания задачи заявки', () => {
           )
 
           await testUtils.clickSubmitButton(user)
-          const error = await testUtils.title.findError(
-            validationMessages.required,
-          )
+          const error = await testUtils.title.findError(validationMessages.required)
 
           expect(error).toBeInTheDocument()
         })
@@ -823,9 +746,7 @@ describe('Модалка создания задачи заявки', () => {
           )
 
           expect(
-            await testUtils.title.findError(
-              validationMessages.string.max.short,
-            ),
+            await testUtils.title.findError(validationMessages.string.max.short),
           ).toBeInTheDocument()
         })
       })
@@ -846,8 +767,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Не активно во время создания задачи', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -940,9 +860,7 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.description.setValue(user, ' ')
 
           expect(
-            await testUtils.description.findError(
-              validationMessages.canNotBeEmpty,
-            ),
+            await testUtils.description.findError(validationMessages.canNotBeEmpty),
           ).toBeInTheDocument()
         })
 
@@ -965,9 +883,7 @@ describe('Модалка создания задачи заявки', () => {
           )
 
           expect(
-            await testUtils.description.findError(
-              validationMessages.string.max.long,
-            ),
+            await testUtils.description.findError(validationMessages.string.max.long),
           ).toBeInTheDocument()
         })
       })
@@ -986,8 +902,7 @@ describe('Модалка создания задачи заявки', () => {
     })
 
     test('Отображает состояние загрузки во время создания задачи', async () => {
-      const fakeSupportGroupListItem =
-        supportGroupFixtures.supportGroupListItem()
+      const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
       mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
       const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -1036,8 +951,7 @@ describe('Модалка создания задачи заявки', () => {
   describe('Создание задачи', () => {
     describe('При успешном создании', () => {
       test('Вызывается обработчик закрытия модалки', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -1067,8 +981,7 @@ describe('Модалка создания задачи заявки', () => {
 
     describe('При не успешном создании', () => {
       test('Обрабатывается ошибка 400', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -1100,25 +1013,18 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.service.findError(badRequestResponse.templateX5[0]),
         ).toBeInTheDocument()
 
-        expect(
-          await testUtils.title.findError(badRequestResponse.title[0]),
-        ).toBeInTheDocument()
+        expect(await testUtils.title.findError(badRequestResponse.title[0])).toBeInTheDocument()
 
         expect(
-          await testUtils.description.findError(
-            badRequestResponse.description[0],
-          ),
+          await testUtils.description.findError(badRequestResponse.description[0]),
         ).toBeInTheDocument()
 
-        const notification = await findNotification(
-          createSubTaskMessages.commonError,
-        )
+        const notification = await findNotification(createSubTaskMessages.commonError)
         expect(notification).toBeInTheDocument()
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = subTaskFixtures.subTaskTemplate()
@@ -1139,9 +1045,7 @@ describe('Модалка создания задачи заявки', () => {
         })
         await testUtils.clickSubmitButton(user)
 
-        const notification = await findNotification(
-          createSubTaskMessages.commonError,
-        )
+        const notification = await findNotification(createSubTaskMessages.commonError)
         expect(notification).toBeInTheDocument()
       })
     })
@@ -1150,8 +1054,7 @@ describe('Модалка создания задачи заявки', () => {
   describe('Список шаблонов', () => {
     describe('При не успешном запросе', () => {
       test('Отображается соответствующее уведомление', async () => {
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
         mockGetSubTaskTemplateListServerError()
@@ -1162,14 +1065,9 @@ describe('Модалка создания задачи заявки', () => {
 
         await testUtils.supportGroup.expectLoadingFinished()
         await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(
-          user,
-          fakeSupportGroupListItem.name,
-        )
+        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
 
-        const notification = await findNotification(
-          getSubTaskTemplateListMessages.commonError,
-        )
+        const notification = await findNotification(getSubTaskTemplateListMessages.commonError)
         expect(notification).toBeInTheDocument()
       })
     })
@@ -1184,9 +1082,7 @@ describe('Модалка создания задачи заявки', () => {
           store: getStoreWithAuth(),
         })
 
-        const notification = await findNotification(
-          getSupportGroupListMessages.commonError,
-        )
+        const notification = await findNotification(getSupportGroupListMessages.commonError)
         expect(notification).toBeInTheDocument()
       })
     })
