@@ -6,7 +6,7 @@ import { getSubTaskTemplateListMessages } from 'shared/constants/catalogs'
 import {
   GetSubTaskTemplateListQueryArgs,
   GetSubTaskTemplateListSuccessResponse,
-} from 'shared/models/catalogs'
+} from 'shared/models/catalogs/subTaskTemplate'
 import { isErrorResponse } from 'shared/services/baseApi'
 import { useGetSubTaskTemplateListQuery } from 'shared/services/catalogsApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'

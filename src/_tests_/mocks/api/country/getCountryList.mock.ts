@@ -2,12 +2,8 @@ import { CountryApiEnum } from 'shared/constants/country'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { GetCountryListSuccessResponse } from 'shared/models/country'
 
-import {
-  getRequestMockFn,
-  getServerErrorMockFn,
-  getSuccessMockFn,
-  ResponseResolverOptions,
-} from '_tests_/mocks/api'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getCountryListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CountryApiEnum.GetCountryList)

@@ -12,8 +12,8 @@ import {
   getServerErrorMockFn,
   getSuccessMockFn,
   getUnauthorizedErrorMockFn,
-  ResponseResolverOptions
-} from '_tests_/mocks/api'
+} from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const updateUserStatusMockFn = (userId: IdType) =>
   getRequestMockFn(HttpMethodEnum.Post, updateUserStatusUrl(userId))

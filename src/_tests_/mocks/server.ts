@@ -1,3 +1,3 @@
 import { setupServer } from 'msw/node'
 
-export const api = setupServer()
+export const server = setupServer()

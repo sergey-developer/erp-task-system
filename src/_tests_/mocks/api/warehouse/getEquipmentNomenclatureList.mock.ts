@@ -9,14 +9,11 @@ import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
-  ResponseResolverOptions
-} from '_tests_/mocks/api'
+} from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentNomenclatureListMockFn = () =>
-  getRequestMockFn(
-    HttpMethodEnum.Get,
-    EquipmentApiEnum.GetEquipmentNomenclatureList,
-  )
+  getRequestMockFn(HttpMethodEnum.Get, EquipmentApiEnum.GetEquipmentNomenclatureList)
 
 export const mockGetEquipmentNomenclatureListSuccess = (
   options?: Partial<

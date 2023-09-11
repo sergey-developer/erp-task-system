@@ -1,9 +1,8 @@
 import { UserRoleEnum } from 'modules/user/constants'
 
+import { UserStatusModel } from 'shared/models/catalogs/userStatus'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
-
-import { UserStatusModel } from './userStatus.model'
 
 export type BaseUserModel = {
   id: IdType

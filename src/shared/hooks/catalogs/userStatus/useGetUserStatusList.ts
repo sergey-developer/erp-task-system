@@ -2,14 +2,13 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
-import { getUserStatusListMessages } from 'modules/user/constants'
+import { getUserStatusListMessages } from 'shared/constants/catalogs'
 import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
-} from 'modules/user/models'
-import { useGetUserStatusListQuery } from 'modules/user/services/userApi.service'
-
+} from 'shared/models/catalogs/userStatus'
 import { isErrorResponse } from 'shared/services/baseApi'
+import { useGetUserStatusListQuery } from 'shared/services/catalogsApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetUserStatusListResult = CustomUseQueryHookResult<

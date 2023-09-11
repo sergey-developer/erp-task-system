@@ -1,4 +1,4 @@
-import { UserStatusModel } from 'modules/user/models'
+import { UserStatusModel } from 'shared/models/catalogs/userStatus'
 
 import { fakeColor, fakeId, fakeWord } from '_tests_/utils'
 

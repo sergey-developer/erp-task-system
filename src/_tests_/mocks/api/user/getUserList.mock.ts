@@ -3,12 +3,8 @@ import { GetUserListSuccessResponse } from 'modules/user/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import {
-  getRequestMockFn,
-  getServerErrorMockFn,
-  getSuccessMockFn,
-  ResponseResolverOptions,
-} from '_tests_/mocks/api'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getUserListMockFn = () => getRequestMockFn(HttpMethodEnum.Get, UserApiEnum.GetUserList)
 

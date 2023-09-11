@@ -11,13 +11,10 @@ import {
   testUtils as subTaskTestUtils,
 } from 'modules/subTask/components/SubTaskList/SubTask.test'
 import { testUtils as subTaskListTestUtils } from 'modules/subTask/components/SubTaskList/SubTaskList.test'
-import {
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-  TaskTypeEnum,
-} from 'modules/task/constants'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
+import { TaskExtendedStatusEnum, TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants'
 
+import catalogsFixtures from 'fixtures/catalogs'
 import subTaskFixtures from 'fixtures/subTask'
 import supportGroupFixtures from 'fixtures/supportGroup'
 import taskFixtures from 'fixtures/task'
@@ -67,8 +64,7 @@ const activeCreateSubTaskButtonTaskProps: Pick<
 // utils
 const getContainer = () => screen.getByTestId('subtask-list-tab')
 
-const getCreateSubTaskButton = () =>
-  getButtonIn(getContainer(), /создать новое задание/i)
+const getCreateSubTaskButton = () => getButtonIn(getContainer(), /создать новое задание/i)
 
 const clickCreateSubTaskButton = async (user: UserEvent) => {
   const button = getCreateSubTaskButton()
@@ -82,9 +78,7 @@ const testUtils = {
   getCreateSubTaskButton,
   openCreateSubTaskModal: clickCreateSubTaskButton,
 
-  expectLoadingFinished: expectLoadingFinishedBySpinner(
-    'sub-task-list-loading',
-  ),
+  expectLoadingFinished: expectLoadingFinishedBySpinner('sub-task-list-loading'),
 }
 
 setupApiTests()
@@ -248,9 +242,7 @@ describe('Вкладка списка заданий', () => {
 
       await testUtils.openCreateSubTaskModal(user)
 
-      expect(
-        await createSubTaskModalTestUtils.findContainer(),
-      ).toBeInTheDocument()
+      expect(await createSubTaskModalTestUtils.findContainer()).toBeInTheDocument()
     })
   })
 
@@ -259,11 +251,10 @@ describe('Вкладка списка заданий', () => {
       test('Модалка создания закрывается', async () => {
         mockGetSubTaskListSuccess(props.task.id)
 
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
-        const templateListItem = subTaskFixtures.subTaskTemplate()
+        const templateListItem = catalogsFixtures.subTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [templateListItem] })
 
         mockCreateSubTaskSuccess(props.task.id)
@@ -302,11 +293,10 @@ describe('Вкладка списка заданий', () => {
         const subTaskList = subTaskFixtures.getSubTaskList()
         mockGetSubTaskListSuccess(props.task.id, { body: subTaskList })
 
-        const fakeSupportGroupListItem =
-          supportGroupFixtures.supportGroupListItem()
+        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
-        const templateListItem = subTaskFixtures.subTaskTemplate()
+        const templateListItem = catalogsFixtures.subTaskTemplate()
         mockGetSubTaskTemplateListSuccess({ body: [templateListItem] })
 
         mockCreateSubTaskSuccess(props.task.id, {
@@ -342,9 +332,7 @@ describe('Вкладка списка заданий', () => {
         await waitForElementToBeRemoved(modal)
 
         expect(
-          subTaskTestUtils.getAllContainerIn(
-            subTaskListTestUtils.getContainer(),
-          ),
+          subTaskTestUtils.getAllContainerIn(subTaskListTestUtils.getContainer()),
         ).toHaveLength(subTaskList.length + 1)
       })
     })
@@ -383,9 +371,7 @@ describe('Вкладка списка заданий', () => {
         await testUtils.expectLoadingFinished()
 
         expect(
-          subTaskTestUtils.getAllContainerIn(
-            subTaskListTestUtils.getContainer(),
-          ),
+          subTaskTestUtils.getAllContainerIn(subTaskListTestUtils.getContainer()),
         ).toHaveLength(subTaskList.length)
       })
     })
@@ -432,9 +418,7 @@ describe('Вкладка списка заданий', () => {
 
         await testUtils.expectLoadingFinished()
 
-        expect(
-          await findNotification('Не удалось получить задания'),
-        ).toBeInTheDocument()
+        expect(await findNotification('Не удалось получить задания')).toBeInTheDocument()
       })
     })
   })
@@ -931,10 +915,9 @@ describe('Вкладка списка заданий', () => {
         await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
-        const notification =
-          await cancelSubTaskModalTestUtils.findCancelReasonFieldError(
-            cancelReasonError,
-          )
+        const notification = await cancelSubTaskModalTestUtils.findCancelReasonFieldError(
+          cancelReasonError,
+        )
 
         expect(notification).toBeInTheDocument()
       })
@@ -967,9 +950,7 @@ describe('Вкладка списка заданий', () => {
         await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
-        expect(
-          await findNotification('Не удалось отменить задание'),
-        ).toBeInTheDocument()
+        expect(await findNotification('Не удалось отменить задание')).toBeInTheDocument()
       })
     })
   })

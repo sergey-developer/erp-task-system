@@ -7,3 +7,7 @@ export const getTimeZoneListMessages: ApiRequestMessages<'commonError'> = {
 export const getSubTaskTemplateListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Не удалось получить шаблоны заданий',
 }
+
+export const getUserStatusListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения статусов пользователя',
+}

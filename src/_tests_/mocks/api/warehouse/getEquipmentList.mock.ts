@@ -9,22 +9,19 @@ import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
-  ResponseResolverOptions
-} from '_tests_/mocks/api'
+} from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, EquipmentApiEnum.GetEquipmentList)
 
 export const mockGetEquipmentListSuccess = (
-  options?: Partial<
-    ResponseResolverOptions<GetEquipmentListTransformedSuccessResponse>
-  >,
+  options?: Partial<ResponseResolverOptions<GetEquipmentListTransformedSuccessResponse>>,
 ) => getSuccessMockFn(getEquipmentListMockFn(), options)()
 
 export const mockGetEquipmentListForbiddenError = (
   options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getForbiddenErrorMockFn(getEquipmentListMockFn(), options)()
 
-export const mockGetEquipmentListServerError = (
-  options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(getEquipmentListMockFn(), options)()
+export const mockGetEquipmentListServerError = (options?: Partial<ResponseResolverOptions>) =>
+  getServerErrorMockFn(getEquipmentListMockFn(), options)()

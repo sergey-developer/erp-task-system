@@ -10,7 +10,7 @@ import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { validationSizes } from 'shared/constants/validation'
-import { useGetSubTaskTemplateList } from 'shared/hooks/catalogs'
+import { useGetSubTaskTemplateList } from 'shared/hooks/catalogs/subTaskTemplate'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'

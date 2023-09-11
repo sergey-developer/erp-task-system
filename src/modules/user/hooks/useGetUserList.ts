@@ -7,11 +7,10 @@ import { GetUserListQueryArgs, GetUserListSuccessResponse } from 'modules/user/m
 import { useGetUserListQuery } from 'modules/user/services/userApi.service'
 
 import { isErrorResponse } from 'shared/services/baseApi'
-import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetUserListResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetUserListQueryArgs>,
+  GetUserListQueryArgs,
   GetUserListSuccessResponse
 >
 

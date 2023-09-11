@@ -10,7 +10,7 @@ import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
 import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'modules/user/constants'
-import { useUserMeCodeState, useUserMeState, useUserStatusListState } from 'modules/user/hooks'
+import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 import {
   useUpdateUserStatusMutation,
@@ -25,7 +25,8 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
-import { useTimeZoneListState } from 'shared/hooks/catalogs'
+import { useTimeZoneListState } from 'shared/hooks/catalogs/timeZone'
+import { useUserStatusListState } from 'shared/hooks/catalogs/userStatus'
 import {
   isBadRequestError,
   isErrorResponse,

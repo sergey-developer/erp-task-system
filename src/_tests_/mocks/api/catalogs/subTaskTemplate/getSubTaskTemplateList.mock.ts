@@ -1,14 +1,9 @@
-import { GetSubTaskTemplateListSuccessResponse } from 'modules/subTask/models'
-
 import { CatalogsApiEnum } from 'shared/constants/catalogs'
 import { HttpMethodEnum } from 'shared/constants/http'
+import { GetSubTaskTemplateListSuccessResponse } from 'shared/models/catalogs/subTaskTemplate'
 
-import {
-  getRequestMockFn,
-  getServerErrorMockFn,
-  getSuccessMockFn,
-  ResponseResolverOptions,
-} from '_tests_/mocks/api'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getSubTaskTemplateListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CatalogsApiEnum.GetSubTaskTemplateList)

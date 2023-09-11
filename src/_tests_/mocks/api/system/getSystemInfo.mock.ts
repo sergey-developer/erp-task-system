@@ -2,7 +2,8 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import { SystemApiEnum } from 'shared/constants/system'
 import { GetSystemInfoSuccessResponse } from 'shared/models/system'
 
-import { getRequestMockFn, getSuccessMockFn, ResponseResolverOptions } from '_tests_/mocks/api'
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getSystemInfoMockFn = () => getRequestMockFn(HttpMethodEnum.Get, SystemApiEnum.GetSystemInfo)
 

@@ -5,8 +5,8 @@ import { CustomUseQueryStateResult } from 'lib/rtk-query/types'
 import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
-} from 'modules/user/models'
-import { userApiEndpoints } from 'modules/user/services/userApi.service'
+} from 'shared/models/catalogs/userStatus'
+import { endpoints } from 'shared/services/catalogsApi.service'
 
 type UseUserStatusListStateResult = CustomUseQueryStateResult<
   GetUserStatusListQueryArgs,
@@ -15,5 +15,4 @@ type UseUserStatusListStateResult = CustomUseQueryStateResult<
 
 export const useUserStatusListState = (
   args?: GetUserStatusListQueryArgs | SkipToken,
-): UseUserStatusListStateResult =>
-  userApiEndpoints.getUserStatusList.useQueryState(args)
+): UseUserStatusListStateResult => endpoints.getUserStatusList.useQueryState(args)

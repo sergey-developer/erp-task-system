@@ -3,12 +3,8 @@ import { GetWarehouseListSuccessResponse } from 'modules/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import {
-  getRequestMockFn,
-  getServerErrorMockFn,
-  getSuccessMockFn,
-  ResponseResolverOptions,
-} from '_tests_/mocks/api'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getWarehouseListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, WarehouseApiEnum.GetWarehouseList)

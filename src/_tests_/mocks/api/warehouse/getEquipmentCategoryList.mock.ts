@@ -3,23 +3,14 @@ import { GetEquipmentCategoryListSuccessResponse } from 'modules/warehouse/model
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import {
-  getRequestMockFn,
-  getServerErrorMockFn,
-  getSuccessMockFn,
-  ResponseResolverOptions
-} from '_tests_/mocks/api'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentCategoryListMockFn = () =>
-  getRequestMockFn(
-    HttpMethodEnum.Get,
-    EquipmentApiEnum.GetEquipmentCategoryList,
-  )
+  getRequestMockFn(HttpMethodEnum.Get, EquipmentApiEnum.GetEquipmentCategoryList)
 
 export const mockGetEquipmentCategoryListSuccess = (
-  options?: Partial<
-    ResponseResolverOptions<GetEquipmentCategoryListSuccessResponse>
-  >,
+  options?: Partial<ResponseResolverOptions<GetEquipmentCategoryListSuccessResponse>>,
 ) => getSuccessMockFn(getEquipmentCategoryListMockFn(), options)()
 
 export const mockGetEquipmentCategoryListServerError = (

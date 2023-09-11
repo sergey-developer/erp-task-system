@@ -8,22 +8,18 @@ import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
-  ResponseResolverOptions,
-} from '_tests_/mocks/api'
+} from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getNomenclatureListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, NomenclatureApiEnum.GetNomenclatureList)
 
 export const mockGetNomenclatureListSuccess = (
-  options?: Partial<
-    ResponseResolverOptions<GetNomenclatureListTransformedSuccessResponse>
-  >,
+  options?: Partial<ResponseResolverOptions<GetNomenclatureListTransformedSuccessResponse>>,
 ) => getSuccessMockFn(getNomenclatureListMockFn(), options)()
 
-export const mockGetNomenclatureListForbiddenError = (
-  options?: Partial<ResponseResolverOptions>,
-) => getForbiddenErrorMockFn(getNomenclatureListMockFn(), options)()
+export const mockGetNomenclatureListForbiddenError = (options?: Partial<ResponseResolverOptions>) =>
+  getForbiddenErrorMockFn(getNomenclatureListMockFn(), options)()
 
-export const mockGetNomenclatureListServerError = (
-  options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(getNomenclatureListMockFn(), options)()
+export const mockGetNomenclatureListServerError = (options?: Partial<ResponseResolverOptions>) =>
+  getServerErrorMockFn(getNomenclatureListMockFn(), options)()

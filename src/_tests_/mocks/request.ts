@@ -5,11 +5,11 @@ import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 import { makeAbsoluteApiUrl } from 'shared/services/baseApi'
 
 import {
-  api,
   getResponseResolver,
   ResponseResolver,
   ResponseResolverOptions,
-} from '_tests_/mocks/api'
+} from '_tests_/mocks/response'
+import { server } from '_tests_/mocks/server'
 
 export type AddMockFn = () => void
 
@@ -18,7 +18,7 @@ export type PartialAppliedRequestMockFn = (resolver: ResponseResolver) => AddMoc
 export const getRequestMockFn = curry(
   (method: HttpMethodEnum, url: string, resolver: ResponseResolver): AddMockFn => {
     return () => {
-      api.use(rest[method](makeAbsoluteApiUrl(url), resolver))
+      server.use(rest[method](makeAbsoluteApiUrl(url), resolver))
     }
   },
 )

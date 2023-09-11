@@ -11,8 +11,8 @@ import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
-  ResponseResolverOptions
-} from '_tests_/mocks/api'
+} from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const updateTaskWorkGroupMockFn = (taskId: IdType) =>
   getRequestMockFn(HttpMethodEnum.Post, updateTaskWorkGroupUrl(taskId))

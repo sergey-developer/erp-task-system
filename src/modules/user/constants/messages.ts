@@ -16,10 +16,6 @@ export const updateUserTimeZoneMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка обновления временной зоны пользователя',
 }
 
-export const getUserStatusListMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения статусов пользователя',
-}
-
 export const updateUserStatusMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка обновления статуса пользователя',
 }

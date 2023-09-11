@@ -4,7 +4,8 @@ import { getTaskCommentListUrl } from 'modules/task/utils'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
-import { getRequestMockFn, getSuccessMockFn, ResponseResolverOptions } from '_tests_/mocks/api'
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getTaskCommentListMockFn = (id: IdType) =>
   getRequestMockFn(HttpMethodEnum.Get, getTaskCommentListUrl(id))

@@ -4,10 +4,11 @@ import { FC, useEffect } from 'react'
 
 import { getPrivateRoutesConfig } from 'configs/routes'
 
-import { useGetUserMe, useGetUserStatusList } from 'modules/user/hooks'
+import { useGetUserMe } from 'modules/user/hooks'
 import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
 
-import { useGetTimeZoneList } from 'shared/hooks/catalogs'
+import { useGetTimeZoneList } from 'shared/hooks/catalogs/timeZone'
+import { useGetUserStatusList } from 'shared/hooks/catalogs/userStatus'
 import { useGetSystemInfoQuery } from 'shared/services/systemApi.service'
 
 import AppRoutes from './AppRoutes'
