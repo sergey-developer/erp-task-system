@@ -7,7 +7,7 @@ import { ErrorResponse } from 'shared/services/baseApi'
 export type ResolveTaskMutationArgs = BaseTaskRequestArgs & {
   techResolution: string
   userResolution?: string
-  attachments?: Array<RcFile>
+  attachments?: RcFile[]
 }
 
 export type ResolveTaskSuccessResponse = void

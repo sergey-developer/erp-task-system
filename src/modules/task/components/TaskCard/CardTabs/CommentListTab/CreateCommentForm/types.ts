@@ -5,7 +5,7 @@ import { FieldsErrors } from 'shared/services/baseApi'
 
 export type CreateCommentFormFields = {
   comment: string
-  attachments?: Array<UploadFile>
+  attachments?: UploadFile[]
 }
 
 export type CreateCommentFormErrors = FieldsErrors<CreateCommentFormFields>

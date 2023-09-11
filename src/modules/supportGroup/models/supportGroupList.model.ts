@@ -5,4 +5,4 @@ export type SupportGroupListItemModel = {
   name: string
 }
 
-export type SupportGroupListModel = Array<SupportGroupListItemModel>
+export type SupportGroupListModel = SupportGroupListItemModel[]

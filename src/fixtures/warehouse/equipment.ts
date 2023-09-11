@@ -3,6 +3,7 @@ import pick from 'lodash/pick'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import { EquipmentModel } from 'modules/warehouse/models'
 
+import currencyFixtures from 'fixtures/currency'
 import userFixtures from 'fixtures/user'
 import warehouseFixtures from 'fixtures/warehouse'
 
@@ -48,6 +49,6 @@ export const equipment = (
   serialNumber: fakeWord(),
   quantity: fakeInteger(),
   price: fakeInteger(),
-  currency: pick(warehouseFixtures.currency(), 'id', 'title'),
+  currency: pick(currencyFixtures.currency(), 'id', 'title'),
   comment: fakeWord(),
 })

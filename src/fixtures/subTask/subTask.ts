@@ -36,4 +36,4 @@ export const subTask = (
 
 export const getSubTaskList = (
   length: number = 1,
-): Array<NonNullableObject<SubTaskModel>> => times(length, () => subTask())
+): NonNullableObject<SubTaskModel>[] => times(length, () => subTask())

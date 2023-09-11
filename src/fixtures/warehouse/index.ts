@@ -1,6 +1,3 @@
-import * as country from './country'
-import * as countryList from './countryList'
-import * as currency from './currency'
 import * as customer from './customer'
 import * as customerList from './customerList'
 import * as equipment from './equipment'
@@ -37,13 +34,7 @@ const warehouseFixtures = {
   ...customer,
   ...customerList,
 
-  ...country,
-
-  ...currency,
-
   ...workType,
-
-  ...countryList,
 
   ...equipmentCategory,
   ...equipmentCategoryList,

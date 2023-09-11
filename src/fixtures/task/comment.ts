@@ -15,5 +15,5 @@ export const comment = (): TaskCommentModel => ({
   attachments: [taskFixtures.attachment()],
 })
 
-export const commentList = (length: number = 1): Array<TaskCommentModel> =>
+export const commentList = (length: number = 1): TaskCommentModel[] =>
   times(length, () => comment())

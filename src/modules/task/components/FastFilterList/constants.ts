@@ -27,11 +27,11 @@ export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
 export type FastFilterType = {
   filter: FastFilterEnum
   text: string
-  roles: Array<UserRoleEnum>
+  roles: UserRoleEnum[]
 }
 
 /* sequence make sense */
-export const fastFilters: Array<FastFilterType> = [
+export const fastFilters: FastFilterType[] = [
   {
     filter: FastFilterEnum.FirstLine,
     roles: [UserRoleEnum.FirstLineSupport],

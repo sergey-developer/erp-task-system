@@ -4,4 +4,4 @@ import { SubTaskModel } from './subTask.model'
 
 export type GetSubTaskListQueryArgs = TaskModel['id']
 
-export type GetSubTaskListSuccessResponse = Array<SubTaskModel>
+export type GetSubTaskListSuccessResponse = SubTaskModel[]

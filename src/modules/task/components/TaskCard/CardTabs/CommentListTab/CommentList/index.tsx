@@ -13,7 +13,7 @@ import Comment from './Comment'
 const { Text } = Typography
 
 export type CommentListProps = {
-  comments: Array<TaskCommentModel>
+  comments: TaskCommentModel[]
   isLoading: boolean
 }
 

@@ -10,11 +10,10 @@ import {
 import { useGetNomenclatureGroupListQuery } from 'modules/warehouse/services/nomenclatureGroupApi.service'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
-import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetNomenclatureGroupListResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetNomenclatureGroupListQueryArgs>,
+  GetNomenclatureGroupListQueryArgs,
   GetNomenclatureGroupListSuccessResponse
 >
 

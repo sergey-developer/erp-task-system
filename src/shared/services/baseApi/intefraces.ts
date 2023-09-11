@@ -4,7 +4,7 @@ import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 
 import { HttpCodeEnum } from 'shared/constants/http'
 
-export type ValidationErrors = Array<string>
+export type ValidationErrors = string[]
 
 export type FieldsErrors<T> = {
   [key in keyof T]?: ValidationErrors

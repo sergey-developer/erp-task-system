@@ -4,4 +4,4 @@ export type TimeZoneListItemModel = {
   label: string
 }
 
-export type TimeZoneListModel = Array<TimeZoneListItemModel>
+export type TimeZoneListModel = TimeZoneListItemModel[]

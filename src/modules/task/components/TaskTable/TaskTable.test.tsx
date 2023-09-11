@@ -160,7 +160,7 @@ const onChangeTableArgs = {
     ...paginationConfig,
     ...config,
   }),
-  extra: (action: TableAction, dataSource: Readonly<Array<TaskTableListItem>>) => ({
+  extra: (action: TableAction, dataSource: ReadonlyArray<TaskTableListItem>) => ({
     action,
     currentDataSource: dataSource,
   }),

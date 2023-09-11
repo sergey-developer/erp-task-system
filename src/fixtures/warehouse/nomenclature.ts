@@ -1,21 +1,18 @@
 import { NomenclatureModel } from 'modules/warehouse/models'
 
-import { fakeId, fakeWord } from '_tests_/utils'
+import countryFixtures from 'fixtures/country'
+import warehouseFixtures from 'fixtures/warehouse'
 
-import warehouseFixtures from './index'
+import { fakeId, fakeWord } from '_tests_/utils'
 
 export const nomenclature = (
   props?: Partial<
-    Pick<
-      NomenclatureModel,
-      'country' | 'group' | 'measurementUnit' | 'equipmentHasSerialNumber'
-    >
+    Pick<NomenclatureModel, 'country' | 'group' | 'measurementUnit' | 'equipmentHasSerialNumber'>
   >,
 ): NomenclatureModel => ({
-  country: props?.country || warehouseFixtures.country(),
+  country: props?.country || countryFixtures.country(),
   group: props?.group || warehouseFixtures.nomenclatureGroup(),
-  measurementUnit:
-    props?.measurementUnit || warehouseFixtures.measurementUnit(),
+  measurementUnit: props?.measurementUnit || warehouseFixtures.measurementUnit(),
   equipmentHasSerialNumber: props?.equipmentHasSerialNumber || false,
 
   id: fakeId(),

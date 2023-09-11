@@ -5,5 +5,5 @@ export type NavMenuItem = {
   key: string
   link?: string
   icon?: JSXElementConstructor<any>
-  children?: Array<NavMenuItem>
+  children?: NavMenuItem[]
 }

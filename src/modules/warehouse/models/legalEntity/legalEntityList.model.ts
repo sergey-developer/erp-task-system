@@ -5,4 +5,4 @@ export type LegalEntityListItemModel = {
   title: string
 }
 
-export type LegalEntityListModel = Array<LegalEntityListItemModel>
+export type LegalEntityListModel = LegalEntityListItemModel[]

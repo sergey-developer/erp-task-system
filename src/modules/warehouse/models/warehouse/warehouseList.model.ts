@@ -5,4 +5,4 @@ export type WarehouseListItemModel = Pick<
   'id' | 'title' | 'parent' | 'legalEntity' | 'address'
 >
 
-export type WarehouseListModel = Array<WarehouseListItemModel>
+export type WarehouseListModel = WarehouseListItemModel[]

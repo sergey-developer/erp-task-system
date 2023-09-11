@@ -20,7 +20,7 @@ export type SubTaskListProps = {
   taskStatus: TaskStatusEnum
   taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
-  list: Array<SubTaskModel>
+  list: SubTaskModel[]
   isError: boolean
   onClickCancel: (subTask: SubTaskModel) => void
   onClickRework: (subTask: SubTaskModel) => void

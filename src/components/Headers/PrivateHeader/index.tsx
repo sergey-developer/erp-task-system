@@ -64,7 +64,7 @@ const PrivateHeader: FC = () => {
 
   const navMenuSelectedKeys = matches.map(({ pathname }) => pathname)
 
-  const userStatusOptions = useMemo<Array<DefaultOptionType>>(
+  const userStatusOptions = useMemo<DefaultOptionType[]>(
     () =>
       userStatusList?.length
         ? userStatusList.map((status) => ({

@@ -72,7 +72,7 @@ export const taskListItem = (
   contactPhone: fakePhone(),
 })
 
-export const taskList = (length: number = 1): Array<TaskListItemModel> =>
+export const taskList = (length: number = 1): TaskListItemModel[] =>
   times(length, () => taskListItem())
 
 export const taskListResponse = (

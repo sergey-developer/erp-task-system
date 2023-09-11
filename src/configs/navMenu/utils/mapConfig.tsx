@@ -6,7 +6,7 @@ import { NavMenuProps } from 'components/NavMenu'
 import { NavMenuItem } from '../types'
 
 export const mapNavMenuConfig = (
-  items: Array<NavMenuItem>,
+  items: NavMenuItem[],
 ): NavMenuProps['items'] =>
   items.map(({ key, icon: Icon, link, text, children }) => ({
     key,

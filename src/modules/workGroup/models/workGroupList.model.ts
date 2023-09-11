@@ -18,7 +18,7 @@ export type WorkGroupListItemModel = {
   name: string
   seniorEngineer: WorkGroupListMemberModel
   groupLead: WorkGroupListMemberModel
-  members: Array<WorkGroupListMemberModel>
+  members: WorkGroupListMemberModel[]
   priority: MaybeNull<{
     value: 1 | 2 | 3 | 4
     type: WorkGroupTypeEnum
@@ -26,4 +26,4 @@ export type WorkGroupListItemModel = {
   }>
 }
 
-export type WorkGroupListModel = Array<WorkGroupListItemModel>
+export type WorkGroupListModel = WorkGroupListItemModel[]

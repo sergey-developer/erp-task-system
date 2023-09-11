@@ -2,4 +2,4 @@ import { UserStatusModel } from './userStatus.model'
 
 export type UserStatusListItemModel = UserStatusModel
 
-export type UserStatusListModel = Array<UserStatusListItemModel>
+export type UserStatusListModel = UserStatusListItemModel[]

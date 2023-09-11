@@ -5,4 +5,4 @@ export type MeasurementUnitListItemModel = {
   title: string
 }
 
-export type MeasurementUnitListModel = Array<MeasurementUnitListItemModel>
+export type MeasurementUnitListModel = MeasurementUnitListItemModel[]

@@ -15,13 +15,12 @@ import { updateNomenclatureGroupUrl } from 'modules/warehouse/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
-import { MaybeUndefined } from 'shared/types/utils'
 
 const nomenclatureGroupApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     [NomenclatureGroupApiTriggerEnum.GetNomenclatureGroupList]: build.query<
       GetNomenclatureGroupListSuccessResponse,
-      MaybeUndefined<GetNomenclatureGroupListQueryArgs>
+      GetNomenclatureGroupListQueryArgs
     >({
       query: (params) => ({
         url: NomenclatureGroupApiEnum.GetNomenclatureGroupList,
@@ -38,10 +37,7 @@ const nomenclatureGroupApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Post,
         data: payload,
       }),
-      onQueryStarted: async (
-        { getListParams },
-        { dispatch, queryFulfilled },
-      ) => {
+      onQueryStarted: async ({ getListParams }, { dispatch, queryFulfilled }) => {
         try {
           const { data: newGroup } = await queryFulfilled
 
@@ -66,10 +62,7 @@ const nomenclatureGroupApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Patch,
         data: payload,
       }),
-      onQueryStarted: async (
-        { getListParams, id },
-        { dispatch, queryFulfilled },
-      ) => {
+      onQueryStarted: async ({ getListParams, id }, { dispatch, queryFulfilled }) => {
         try {
           const { data: updatedGroup } = await queryFulfilled
 
@@ -78,9 +71,7 @@ const nomenclatureGroupApiService = baseApiService.injectEndpoints({
               NomenclatureGroupApiTriggerEnum.GetNomenclatureGroupList as never,
               getListParams as never,
               (groupList: NomenclatureGroupListModel) => {
-                const updatableGroup = groupList.find(
-                  (group) => group.id === id,
-                )
+                const updatableGroup = groupList.find((group) => group.id === id)
 
                 if (updatableGroup) {
                   Object.assign(updatableGroup, updatedGroup)

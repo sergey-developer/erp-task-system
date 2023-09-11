@@ -28,4 +28,4 @@ export type FiscalAccumulatorTaskListItemModel = {
   faFormat: MaybeNull<FiscalAccumulatorFormatEnum>
 }
 
-export type FiscalAccumulatorTaskListModel = Array<FiscalAccumulatorTaskListItemModel>
+export type FiscalAccumulatorTaskListModel = FiscalAccumulatorTaskListItemModel[]

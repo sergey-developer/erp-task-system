@@ -10,7 +10,7 @@ import {
 
 export const getUpdatePasswordErrors = (
   error: unknown,
-): MaybeNull<Array<string>> => {
+): MaybeNull<string[]> => {
   if (!isErrorResponse(error)) return null
 
   if (

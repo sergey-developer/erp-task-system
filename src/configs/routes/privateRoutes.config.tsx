@@ -19,7 +19,7 @@ const ChangePasswordPage = React.lazy(
 
 export const getPrivateRoutesConfig = ({
   isStaff,
-}: Pick<UserModel, 'isStaff'>): Array<RouteObject> => [
+}: Pick<UserModel, 'isStaff'>): RouteObject[] => [
   {
     path: RouteEnum.Root,
     element: <PrivateLayout />,

@@ -4,14 +4,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import ExtendedFilter from 'modules/task/components/ExtendedFilter'
 import { initialExtendedFilterFormValues } from 'modules/task/components/ExtendedFilter/constants'
@@ -29,10 +22,7 @@ import {
   SortableField,
   sortableFieldToSortValues,
 } from 'modules/task/components/TaskTable/constants/sort'
-import {
-  TaskTableListItem,
-  TaskTableProps,
-} from 'modules/task/components/TaskTable/types'
+import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
@@ -44,15 +34,12 @@ import { SyncIcon } from 'components/Icons'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
-import { calculatePaginationParams } from 'shared/utils/pagination'
+import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled, SearchStyled } from './styles'
 import { FastFilterQueries, TaskIdFilterQueries } from './types'
-import {
-  getInitialFastFilter,
-  mapExtendedFilterFormFieldsToQueries,
-} from './utils'
+import { getInitialFastFilter, mapExtendedFilterFormFieldsToQueries } from './utils'
 
 const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
@@ -61,13 +48,10 @@ const TaskListPage: FC = () => {
 
   const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
 
-  const [
-    taskAdditionalInfoExpanded,
-    { toggle: toggleTaskAdditionalInfoExpanded },
-  ] = useBoolean(false)
-
-  const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] =
+  const [taskAdditionalInfoExpanded, { toggle: toggleTaskAdditionalInfoExpanded }] =
     useBoolean(false)
+
+  const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
 
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
@@ -76,33 +60,29 @@ const TaskListPage: FC = () => {
 
   const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>({
     filter: initialFastFilter,
-    limit: DEFAULT_PAGE_SIZE,
-    offset: 0,
+    ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
   })
 
-  const [fastFilter, setFastFilter] =
-    useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+  const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
 
   const [searchValue, setSearchValue] = useState<string>()
 
-  const [appliedFilterType, setAppliedFilterType] = useState<
-    MaybeNull<FilterTypeEnum>
-  >(FilterTypeEnum.Fast)
+  const [appliedFilterType, setAppliedFilterType] = useState<MaybeNull<FilterTypeEnum>>(
+    FilterTypeEnum.Fast,
+  )
 
-  const previousAppliedFilterType =
-    usePrevious<typeof appliedFilterType>(appliedFilterType)
+  const previousAppliedFilterType = usePrevious<typeof appliedFilterType>(appliedFilterType)
 
   useLayoutEffect(() => {
-    const taskListLayoutEl: MaybeNull<HTMLElement> =
-      document.querySelector('.task-list-layout')
+    const taskListLayoutEl: MaybeNull<HTMLElement> = document.querySelector('.task-list-layout')
 
-    const taskListLayoutHeaderEl: MaybeNull<HTMLElement> =
-      document.querySelector('.task-list-layout-header')
-
-    const taskListPageHeaderEl: MaybeNull<HTMLElement> = document.querySelector(
-      '.task-list-page-header',
+    const taskListLayoutHeaderEl: MaybeNull<HTMLElement> = document.querySelector(
+      '.task-list-layout-header',
     )
+
+    const taskListPageHeaderEl: MaybeNull<HTMLElement> =
+      document.querySelector('.task-list-page-header')
 
     if (taskListLayoutEl && taskListPageHeaderEl && taskListLayoutHeaderEl) {
       const spaceBetweenElements = 56
@@ -122,8 +102,10 @@ const TaskListPage: FC = () => {
     refetch: refetchTaskCounters,
   } = useGetTaskCounters()
 
-  const { currentData: userList = [], isFetching: userListIsFetching } =
-    useGetUserList({ isManager: true }, { skip: !isExtendedFilterOpened })
+  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
+    { isManager: true },
+    { skip: !isExtendedFilterOpened },
+  )
 
   /**
    * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
@@ -131,25 +113,17 @@ const TaskListPage: FC = () => {
    * данные будут сбрасываться, это связано с багом https://github.com/reduxjs/redux-toolkit/issues/2871
    * Как баг починят, будет видно, оставлять как есть или можно использовать обычный Query.
    */
-  const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] =
-    useLazyGetTaskList()
+  const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] = useLazyGetTaskList()
 
   useEffect(() => {
-    if (
-      queryArgs.sort &&
-      !sortableFieldToSortValues.status.includes(queryArgs.sort)
-    ) {
+    if (queryArgs.sort && !sortableFieldToSortValues.status.includes(queryArgs.sort)) {
       getTaskList(queryArgs)
     }
   }, [getTaskList, queryArgs])
 
-  const debouncedToggleOpenExtendedFilter = useDebounceFn(
-    toggleOpenExtendedFilter,
-  )
+  const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
 
-  const handleExtendedFilterSubmit: ExtendedFilterProps['onSubmit'] = (
-    values,
-  ) => {
+  const handleExtendedFilterSubmit: ExtendedFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
@@ -172,9 +146,7 @@ const TaskListPage: FC = () => {
     handleCloseTaskCard()
   }
 
-  const handleSearchByTaskId = useDebounceFn<
-    NonNullable<SearchProps['onSearch']>
-  >(
+  const handleSearchByTaskId = useDebounceFn<NonNullable<SearchProps['onSearch']>>(
     (value) => {
       if (value) {
         setAppliedFilterType(FilterTypeEnum.Search)
@@ -186,10 +158,7 @@ const TaskListPage: FC = () => {
 
         setAppliedFilterType(previousAppliedFilterType!)
 
-        const prevFilter = isEqual(
-          previousAppliedFilterType,
-          FilterTypeEnum.Extended,
-        )
+        const prevFilter = isEqual(previousAppliedFilterType, FilterTypeEnum.Extended)
           ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
           : isEqual(previousAppliedFilterType, FilterTypeEnum.Fast)
           ? { filter: fastFilter }
@@ -222,9 +191,7 @@ const TaskListPage: FC = () => {
     setSelectedTaskId(null)
   }, [setSelectedTaskId])
 
-  const handleTableSort = (
-    sorter: Parameters<TaskTableProps['onChange']>[2],
-  ) => {
+  const handleTableSort = (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
     /**
      * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
      * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
@@ -236,10 +203,7 @@ const TaskListPage: FC = () => {
       if (columnKey && columnKey in sortableFieldToSortValues) {
         setQueryArgs((prevState) => ({
           ...prevState,
-          sort: getSort(
-            columnKey as SortableField,
-            order || SortOrderEnum.Ascend,
-          ),
+          sort: getSort(columnKey as SortableField, order || SortOrderEnum.Ascend),
         }))
       }
     }
@@ -264,10 +228,7 @@ const TaskListPage: FC = () => {
   )
 
   const triggerFilterChange = (
-    filterQueryParams:
-      | ExtendedFilterQueries
-      | FastFilterQueries
-      | TaskIdFilterQueries,
+    filterQueryParams: ExtendedFilterQueries | FastFilterQueries | TaskIdFilterQueries,
   ) => {
     setQueryArgs((prevState) => ({
       ...prevState,
@@ -294,10 +255,7 @@ const TaskListPage: FC = () => {
     refetchTaskCounters()
   }, [getTaskList, queryArgs])
 
-  const searchFilterApplied: boolean = isEqual(
-    appliedFilterType,
-    FilterTypeEnum.Search,
-  )
+  const searchFilterApplied: boolean = isEqual(appliedFilterType, FilterTypeEnum.Search)
 
   const getTableRowClassName = useCallback(
     (record: TaskTableListItem): string =>
@@ -309,11 +267,7 @@ const TaskListPage: FC = () => {
     <TaskListLayout>
       <Row data-testid='task-list-page' gutter={[0, 40]}>
         <Col span={24}>
-          <Row
-            className='task-list-page-header'
-            justify='space-between'
-            align='bottom'
-          >
+          <Row className='task-list-page-header' justify='space-between' align='bottom'>
             <Col xxl={16} xl={14}>
               <Row align='middle' gutter={[30, 30]}>
                 <Col span={17}>

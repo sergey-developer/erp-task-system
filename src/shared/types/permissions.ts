@@ -13,7 +13,7 @@ export type Permissions =
   | SubTaskApiPermissionsEnum
 
 export type UserPermissionConfig = Partial<
-  Record<UserRoleEnum, Array<Permissions>>
+  Record<UserRoleEnum, Permissions[]>
 >
 
 export type ObjectPermissionConfig<K extends string> = Record<

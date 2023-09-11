@@ -5,10 +5,10 @@ import { ErrorData } from 'shared/services/baseApi'
 
 type FieldData = Pick<BaseFieldData, 'name' | 'errors'>
 
-export const getFieldsErrors = (data: ErrorData): Array<FieldData> => {
+export const getFieldsErrors = (data: ErrorData): FieldData[] => {
   const dataCopy = omit({ ...data }, 'detail')
 
-  return Object.keys(dataCopy).reduce<Array<FieldData>>((acc, key) => {
+  return Object.keys(dataCopy).reduce<FieldData[]>((acc, key) => {
     const fieldName = key as keyof typeof dataCopy
     const fieldValue = dataCopy[fieldName]
 

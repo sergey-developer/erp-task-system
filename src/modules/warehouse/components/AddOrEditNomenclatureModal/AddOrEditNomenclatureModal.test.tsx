@@ -4,6 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { validationMessages } from 'shared/constants/validation'
 import { MaybeNull } from 'shared/types/utils'
 
+import countryFixtures from 'fixtures/country'
 import warehouseFixtures from 'fixtures/warehouse'
 
 import {
@@ -33,7 +34,7 @@ const props: AddOrEditNomenclatureModalProps = {
   groups: [warehouseFixtures.nomenclatureGroupListItem()],
   groupsIsLoading: false,
 
-  countries: [warehouseFixtures.countryListItem()],
+  countries: [countryFixtures.countryListItem()],
   countriesIsLoading: false,
 
   measurementUnits: [warehouseFixtures.measurementUnitListItem()],
@@ -58,14 +59,11 @@ const findContainer = (): Promise<HTMLElement> =>
   screen.findByTestId('add-or-edit-nomenclature-modal')
 
 // name field
-const getNameFormItem = () =>
-  within(getContainer()).getByTestId('name-form-item')
+const getNameFormItem = () => within(getContainer()).getByTestId('name-form-item')
 
-const getNameLabel = () =>
-  within(getNameFormItem()).getByLabelText('Наименование')
+const getNameLabel = () => within(getNameFormItem()).getByLabelText('Наименование')
 
-const getNameField = () =>
-  within(getNameFormItem()).getByPlaceholderText('Введите наименование')
+const getNameField = () => within(getNameFormItem()).getByPlaceholderText('Введите наименование')
 
 const setName = async (user: UserEvent, value: string) => {
   const field = getNameField()
@@ -77,16 +75,13 @@ const findNameError = (error: string): Promise<HTMLElement> =>
   within(getNameFormItem()).findByText(error)
 
 // short name field
-const getShortNameFormItem = () =>
-  within(getContainer()).getByTestId('short-name-form-item')
+const getShortNameFormItem = () => within(getContainer()).getByTestId('short-name-form-item')
 
 const getShortNameLabel = () =>
   within(getShortNameFormItem()).getByLabelText('Краткое наименование')
 
 const getShortNameField = () =>
-  within(getShortNameFormItem()).getByPlaceholderText(
-    'Введите краткое наименование',
-  )
+  within(getShortNameFormItem()).getByPlaceholderText('Введите краткое наименование')
 
 const setShortName = async (user: UserEvent, value: string) => {
   const field = getShortNameField()
@@ -98,8 +93,7 @@ const findShortNameError = (error: string): Promise<HTMLElement> =>
   within(getShortNameFormItem()).findByText(error)
 
 // group field
-const getGroupFormItem = () =>
-  within(getContainer()).getByTestId('group-form-item')
+const getGroupFormItem = () => within(getContainer()).getByTestId('group-form-item')
 
 const getGroupLabel = () => within(getGroupFormItem()).getByLabelText('Группа')
 
@@ -123,18 +117,14 @@ const openGroupSelect = async (user: UserEvent) => {
 const findGroupError = (error: string): Promise<HTMLElement> =>
   within(getGroupFormItem()).findByText(error)
 
-const expectGroupLoadingStarted = () =>
-  expectLoadingStartedBySelect(getGroupFormItem())
+const expectGroupLoadingStarted = () => expectLoadingStartedBySelect(getGroupFormItem())
 
-const expectGroupLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getGroupFormItem())
+const expectGroupLoadingFinished = () => expectLoadingFinishedBySelect(getGroupFormItem())
 
 // vendor code field
-const getVendorCodeFormItem = () =>
-  within(getContainer()).getByTestId('vendor-code-form-item')
+const getVendorCodeFormItem = () => within(getContainer()).getByTestId('vendor-code-form-item')
 
-const getVendorCodeLabel = () =>
-  within(getVendorCodeFormItem()).getByLabelText('Артикул')
+const getVendorCodeLabel = () => within(getVendorCodeFormItem()).getByLabelText('Артикул')
 
 const getVendorCodeField = () =>
   within(getVendorCodeFormItem()).getByPlaceholderText('Введите артикул')
@@ -185,11 +175,9 @@ const expectMeasurementUnitLoadingFinished = () =>
   expectLoadingFinishedBySelect(getMeasurementUnitFormItem())
 
 // country field
-const getCountryFormItem = () =>
-  within(getContainer()).getByTestId('country-form-item')
+const getCountryFormItem = () => within(getContainer()).getByTestId('country-form-item')
 
-const getCountryLabel = () =>
-  within(getCountryFormItem()).getByLabelText('Страна производитель')
+const getCountryLabel = () => within(getCountryFormItem()).getByLabelText('Страна производитель')
 
 const getCountryField = (opened?: boolean) =>
   getSelect(getCountryFormItem(), {
@@ -214,11 +202,9 @@ const openCountrySelect = async (user: UserEvent) => {
 const findCountryError = (error: string): Promise<HTMLElement> =>
   within(getCountryFormItem()).findByText(error)
 
-const expectCountryLoadingStarted = () =>
-  expectLoadingStartedBySelect(getCountryFormItem())
+const expectCountryLoadingStarted = () => expectLoadingStartedBySelect(getCountryFormItem())
 
-const expectCountryLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getCountryFormItem())
+const expectCountryLoadingFinished = () => expectLoadingFinishedBySelect(getCountryFormItem())
 
 // submit button
 const getSubmitButton = (name: RegExp) => getButtonIn(getContainer(), name)
@@ -339,12 +325,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Отображается корректно если есть права на редактирование', () => {
-      render(
-        <AddOrEditNomenclatureModal
-          {...props}
-          permissions={{ nomenclaturesUpdate: true }}
-        />,
-      )
+      render(<AddOrEditNomenclatureModal {...props} permissions={{ nomenclaturesUpdate: true }} />)
 
       const button = testUtils.getSubmitButton(new RegExp(props.okText))
 
@@ -353,12 +334,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Отображается корректно если нет прав на редактирование', () => {
-      render(
-        <AddOrEditNomenclatureModal
-          {...props}
-          permissions={{ nomenclaturesUpdate: false }}
-        />,
-      )
+      render(<AddOrEditNomenclatureModal {...props} permissions={{ nomenclaturesUpdate: false }} />)
 
       const button = testUtils.getSubmitButton(new RegExp(props.okText))
 
@@ -383,10 +359,7 @@ describe('Модалка создания и редактирования ном
       await testUtils.clickSubmitButton(user, new RegExp(props.okText))
 
       expect(props.onSubmit).toBeCalledTimes(1)
-      expect(props.onSubmit).toBeCalledWith(
-        expect.anything(),
-        expect.anything(),
-      )
+      expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
     })
 
     test('Не отображается во время загрузки номенклатуры', () => {
@@ -444,18 +417,14 @@ describe('Модалка создания и редактирования ном
     test('Можно установить значение по умолчанию', () => {
       const nomenclature = warehouseFixtures.nomenclature()
 
-      render(
-        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
-      )
+      render(<AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />)
 
       const field = testUtils.getNameField()
       expect(field).toHaveDisplayValue(nomenclature.title)
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
-      const { user } = render(
-        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
-      )
+      const { user } = render(<AddOrEditNomenclatureModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
 
@@ -489,24 +458,18 @@ describe('Модалка создания и редактирования ном
     test('Можно установить значение по умолчанию', () => {
       const nomenclature = warehouseFixtures.nomenclature()
 
-      render(
-        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
-      )
+      render(<AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />)
 
       const field = testUtils.getShortNameField()
       expect(field).toHaveDisplayValue(nomenclature.shortTitle)
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
-      const { user } = render(
-        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
-      )
+      const { user } = render(<AddOrEditNomenclatureModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
 
-      const error = await testUtils.findShortNameError(
-        validationMessages.required,
-      )
+      const error = await testUtils.findShortNameError(validationMessages.required)
       expect(error).toBeInTheDocument()
     })
   })
@@ -543,21 +506,15 @@ describe('Модалка создания и редактирования ном
     test('Можно установить значение по умолчанию', async () => {
       const nomenclature = warehouseFixtures.nomenclature()
 
-      render(
-        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
-      )
+      render(<AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />)
 
-      const selectedGroup = testUtils.getSelectedGroup(
-        String(nomenclature.group.id),
-      )
+      const selectedGroup = testUtils.getSelectedGroup(String(nomenclature.group.id))
 
       expect(selectedGroup).toBeInTheDocument()
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
-      const { user } = render(
-        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
-      )
+      const { user } = render(<AddOrEditNomenclatureModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
       const error = await testUtils.findGroupError(validationMessages.required)
@@ -591,24 +548,18 @@ describe('Модалка создания и редактирования ном
     test('Можно установить значение по умолчанию', () => {
       const nomenclature = warehouseFixtures.nomenclature()
 
-      render(
-        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
-      )
+      render(<AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />)
 
       const field = testUtils.getVendorCodeField()
       expect(field).toHaveDisplayValue(nomenclature.vendorCode)
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
-      const { user } = render(
-        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
-      )
+      const { user } = render(<AddOrEditNomenclatureModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
 
-      const error = await testUtils.findVendorCodeError(
-        validationMessages.required,
-      )
+      const error = await testUtils.findVendorCodeError(validationMessages.required)
       expect(error).toBeInTheDocument()
     })
   })
@@ -649,9 +600,7 @@ describe('Модалка создания и редактирования ном
     test('Можно установить значение по умолчанию', () => {
       const nomenclature = warehouseFixtures.nomenclature()
 
-      render(
-        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
-      )
+      render(<AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />)
 
       const selectedMeasurementUnit = testUtils.getSelectedMeasurementUnit(
         String(nomenclature.measurementUnit.id),
@@ -660,14 +609,10 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
-      const { user } = render(
-        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
-      )
+      const { user } = render(<AddOrEditNomenclatureModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
-      const error = await testUtils.findMeasurementUnitError(
-        validationMessages.required,
-      )
+      const error = await testUtils.findMeasurementUnitError(validationMessages.required)
 
       expect(error).toBeInTheDocument()
     })
@@ -679,9 +624,7 @@ describe('Модалка создания и редактирования ном
 
       const label = testUtils.getCountryLabel()
       const field = testUtils.getCountryField()
-      const selectedCountry = testUtils.querySelectedCountry(
-        props.countries[0].title,
-      )
+      const selectedCountry = testUtils.querySelectedCountry(props.countries[0].title)
       await testUtils.openCountrySelect(user)
 
       expect(label).toBeInTheDocument()
@@ -699,9 +642,7 @@ describe('Модалка создания и редактирования ном
 
       await testUtils.openCountrySelect(user)
       await testUtils.setCountry(user, props.countries[0].title)
-      const selectedCountry = testUtils.getSelectedCountry(
-        props.countries[0].title,
-      )
+      const selectedCountry = testUtils.getSelectedCountry(props.countries[0].title)
 
       expect(selectedCountry).toBeInTheDocument()
     })
@@ -709,13 +650,9 @@ describe('Модалка создания и редактирования ном
     test('Можно установить значение по умолчанию', () => {
       const nomenclature = warehouseFixtures.nomenclature()
 
-      render(
-        <AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />,
-      )
+      render(<AddOrEditNomenclatureModal {...props} nomenclature={nomenclature} />)
 
-      const selectedCountry = testUtils.getSelectedCountry(
-        String(nomenclature.country!.id),
-      )
+      const selectedCountry = testUtils.getSelectedCountry(String(nomenclature.country!.id))
       expect(selectedCountry).toBeInTheDocument()
     })
   })

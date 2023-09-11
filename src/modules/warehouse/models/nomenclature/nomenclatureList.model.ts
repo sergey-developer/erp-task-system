@@ -5,4 +5,4 @@ export type NomenclatureListItemModel = Pick<
   'id' | 'title' | 'vendorCode'
 >
 
-export type NomenclatureListModel = Array<NomenclatureListItemModel>
+export type NomenclatureListModel = NomenclatureListItemModel[]

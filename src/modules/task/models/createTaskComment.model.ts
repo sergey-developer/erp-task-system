@@ -5,7 +5,7 @@ import { TaskCommentModel } from './taskComment.model'
 
 export type CreateTaskCommentMutationArgs = BaseTaskRequestArgs & {
   comment: string
-  attachments?: Array<RcFile>
+  attachments?: RcFile[]
 }
 
 export type CreateTaskCommentSuccessResponse = TaskCommentModel

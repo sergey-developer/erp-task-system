@@ -51,7 +51,7 @@ import {
 } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
-import { calculatePaginationParams } from 'shared/utils/pagination'
+import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import { GroupListMenuStyled } from './styles'
 
@@ -61,11 +61,13 @@ const NomenclatureListPage: FC = () => {
   const updateNomenclaturePerms = useMatchUserPermissions(['NOMENCLATURES_UPDATE'])
   const updateNomenclatureGroupPerms = useMatchUserPermissions(['NOMENCLATURE_GROUPS_UPDATE'])
 
-  const [getNomenclatureGroupListParams, setGetNomenclatureGroupListParams] =
-    useSetState<GetNomenclatureGroupListQueryArgs>({})
+  const [getNomenclatureGroupListParams, setGetNomenclatureGroupListParams] = useSetState<
+    NonNullable<GetNomenclatureGroupListQueryArgs>
+  >({})
 
-  const [getNomenclatureListParams, setGetNomenclatureListParams] =
-    useSetState<GetNomenclatureListQueryArgs>({ limit: 10, offset: 0 })
+  const [getNomenclatureListParams, setGetNomenclatureListParams] = useSetState<
+    NonNullable<GetNomenclatureListQueryArgs>
+  >(getInitialPaginationParams())
 
   const [hoveredGroupId, setHoveredGroupId] = useState<number>()
   const [editableGroup, setEditableGroup] = useState<NomenclatureGroupListItemModel>()

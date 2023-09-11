@@ -44,4 +44,4 @@ export const taskTableItem = (
 
 export const taskTableItems = (
   length: number = 1,
-): Array<TaskTableListItem> => times(length, () => taskTableItem())
+): TaskTableListItem[] => times(length, () => taskTableItem())

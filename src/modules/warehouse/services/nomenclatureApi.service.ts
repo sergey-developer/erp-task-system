@@ -20,7 +20,6 @@ import { getNomenclatureUrl, updateNomenclatureUrl } from 'modules/warehouse/uti
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
-import { MaybeUndefined } from 'shared/types/utils'
 
 const nomenclatureApiService = baseApiService
   .enhanceEndpoints({
@@ -30,7 +29,7 @@ const nomenclatureApiService = baseApiService
     endpoints: (build) => ({
       [NomenclatureApiTriggerEnum.GetNomenclatureList]: build.query<
         GetNomenclatureListTransformedSuccessResponse,
-        MaybeUndefined<GetNomenclatureListQueryArgs>
+        GetNomenclatureListQueryArgs
       >({
         providesTags: [NomenclatureApiTagEnum.NomenclatureList],
         query: (params) => ({

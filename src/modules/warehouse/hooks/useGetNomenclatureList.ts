@@ -8,11 +8,10 @@ import { useGetNomenclatureListQuery } from 'modules/warehouse/services/nomencla
 import { GetNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
-import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetNomenclatureListResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetNomenclatureListQueryArgs>,
+  GetNomenclatureListQueryArgs,
   GetNomenclatureListTransformedSuccessResponse
 >
 

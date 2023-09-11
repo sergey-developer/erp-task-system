@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
-import { GetSubTaskListQueryArgs } from 'modules/subTask/models'
+import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+
+import { GetSubTaskListQueryArgs, GetSubTaskListSuccessResponse } from 'modules/subTask/models'
 import { subTaskApiPermissions } from 'modules/subTask/permissions'
 import { useGetSubTaskListQuery } from 'modules/subTask/services/subTaskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -8,7 +10,12 @@ import { useUserPermissions } from 'modules/user/hooks'
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useGetSubTaskList = (id: GetSubTaskListQueryArgs) => {
+type UseGetSubTaskListResult = CustomUseQueryHookResult<
+  GetSubTaskListQueryArgs,
+  GetSubTaskListSuccessResponse
+>
+
+export const useGetSubTaskList = (id: GetSubTaskListQueryArgs): UseGetSubTaskListResult => {
   const permissions = useUserPermissions(subTaskApiPermissions)
   const state = useGetSubTaskListQuery(id, { skip: !permissions.canGetList })
 
