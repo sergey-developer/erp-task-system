@@ -1,9 +1,6 @@
 import { useEffect } from 'react'
 
-import {
-  CustomUseQueryHookResult,
-  CustomUseQueryOptions,
-} from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getNomenclatureGroupListMessages } from 'modules/warehouse/constants'
 import {
@@ -16,17 +13,19 @@ import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetNomenclatureGroupListResult = CustomUseQueryHookResult<
+type UseGetNomenclatureGroupListResult = CustomUseQueryHookResult<
   MaybeUndefined<GetNomenclatureGroupListQueryArgs>,
+  GetNomenclatureGroupListSuccessResponse
+>
+
+type UseGetNomenclatureGroupListOptions = CustomUseQueryOptions<
+  GetNomenclatureGroupListQueryArgs,
   GetNomenclatureGroupListSuccessResponse
 >
 
 export const useGetNomenclatureGroupList = (
   args?: GetNomenclatureGroupListQueryArgs,
-  options?: CustomUseQueryOptions<
-    GetNomenclatureGroupListQueryArgs,
-    GetNomenclatureGroupListSuccessResponse
-  >,
+  options?: UseGetNomenclatureGroupListOptions,
 ): UseGetNomenclatureGroupListResult => {
   const state = useGetNomenclatureGroupListQuery(args, options)
 

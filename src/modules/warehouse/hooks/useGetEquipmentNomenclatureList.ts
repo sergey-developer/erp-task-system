@@ -10,7 +10,7 @@ import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetEquipmentNomenclatureListResult = CustomUseQueryHookResult<
+type UseGetEquipmentNomenclatureListResult = CustomUseQueryHookResult<
   GetEquipmentNomenclatureListQueryArgs,
   GetEquipmentNomenclatureListTransformedSuccessResponse
 >

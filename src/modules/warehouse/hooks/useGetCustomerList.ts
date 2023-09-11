@@ -1,31 +1,27 @@
 import { useEffect } from 'react'
 
-import {
-  CustomUseQueryHookResult,
-  CustomUseQueryOptions,
-} from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getCustomerListMessages } from 'modules/warehouse/constants'
-import {
-  GetCustomerListQueryArgs,
-  GetCustomerListSuccessResponse,
-} from 'modules/warehouse/models'
+import { GetCustomerListQueryArgs, GetCustomerListSuccessResponse } from 'modules/warehouse/models'
 import { useGetCustomerListQuery } from 'modules/warehouse/services/customerApi.service'
 
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetCustomerListResult = CustomUseQueryHookResult<
+type UseGetCustomerListResult = CustomUseQueryHookResult<
+  GetCustomerListQueryArgs,
+  GetCustomerListSuccessResponse
+>
+
+type UseGetCustomerListOptions = CustomUseQueryOptions<
   GetCustomerListQueryArgs,
   GetCustomerListSuccessResponse
 >
 
 export const useGetCustomerList = (
   args?: GetCustomerListQueryArgs,
-  options?: CustomUseQueryOptions<
-    GetCustomerListQueryArgs,
-    GetCustomerListSuccessResponse
-  >,
+  options?: UseGetCustomerListOptions,
 ): UseGetCustomerListResult => {
   const state = useGetCustomerListQuery(args, options)
 

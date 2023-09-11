@@ -10,7 +10,7 @@ import { GetEquipmentListTransformedSuccessResponse } from 'modules/warehouse/ty
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetEquipmentListResult = CustomUseQueryHookResult<
+type UseGetEquipmentListResult = CustomUseQueryHookResult<
   GetEquipmentListQueryArgs,
   GetEquipmentListTransformedSuccessResponse
 >

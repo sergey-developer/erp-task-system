@@ -1,9 +1,6 @@
 import { useEffect } from 'react'
 
-import {
-  CustomUseQueryHookResult,
-  CustomUseQueryOptions,
-} from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getEquipmentCategoryListMessages } from 'modules/warehouse/constants'
 import {
@@ -15,17 +12,19 @@ import { useGetEquipmentCategoryListQuery } from 'modules/warehouse/services/equ
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetEquipmentCategoryListResult = CustomUseQueryHookResult<
+type UseGetEquipmentCategoryListResult = CustomUseQueryHookResult<
+  GetEquipmentCategoryListQueryArgs,
+  GetEquipmentCategoryListSuccessResponse
+>
+
+type UseGetEquipmentCategoryListOptions = CustomUseQueryOptions<
   GetEquipmentCategoryListQueryArgs,
   GetEquipmentCategoryListSuccessResponse
 >
 
 export const useGetEquipmentCategoryList = (
   args?: GetEquipmentCategoryListQueryArgs,
-  options?: CustomUseQueryOptions<
-    GetEquipmentCategoryListQueryArgs,
-    GetEquipmentCategoryListSuccessResponse
-  >,
+  options?: UseGetEquipmentCategoryListOptions,
 ): UseGetEquipmentCategoryListResult => {
   const state = useGetEquipmentCategoryListQuery(args, options)
 

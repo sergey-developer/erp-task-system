@@ -12,28 +12,25 @@ import { useGetFiscalAccumulatorTaskListQuery } from 'modules/task/services/task
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetFiscalAccumulatorTaskListResult = CustomUseQueryHookResult<
+type UseGetFiscalAccumulatorTaskListResult = CustomUseQueryHookResult<
   GetFiscalAccumulatorTaskListQueryArgs,
   GetFiscalAccumulatorTaskListSuccessResponse
 >
 
-export const useGetFiscalAccumulatorTaskList =
-  (): UseGetFiscalAccumulatorTaskListResult => {
-    const state = useGetFiscalAccumulatorTaskListQuery()
+export const useGetFiscalAccumulatorTaskList = (): UseGetFiscalAccumulatorTaskListResult => {
+  const state = useGetFiscalAccumulatorTaskListQuery()
 
-    useEffect(() => {
-      if (!state.error) return
+  useEffect(() => {
+    if (!state.error) return
 
-      if (isErrorResponse(state.error)) {
-        if (isForbiddenError(state.error) && state.error.data.detail) {
-          showErrorNotification(state.error.data.detail)
-        } else {
-          showErrorNotification(
-            getFiscalAccumulatorTaskListMessages.commonError,
-          )
-        }
+    if (isErrorResponse(state.error)) {
+      if (isForbiddenError(state.error) && state.error.data.detail) {
+        showErrorNotification(state.error.data.detail)
+      } else {
+        showErrorNotification(getFiscalAccumulatorTaskListMessages.commonError)
       }
-    }, [state.error])
+    }
+  }, [state.error])
 
-    return state
-  }
+  return state
+}

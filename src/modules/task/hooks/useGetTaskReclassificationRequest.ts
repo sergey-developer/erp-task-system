@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryOptions } from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import {
   GetTaskReclassificationRequestQueryArgs,
@@ -14,13 +14,20 @@ import { commonApiMessages } from 'shared/constants/common'
 import { isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+type UseGetTaskReclassificationRequestResult = CustomUseQueryHookResult<
+  GetTaskReclassificationRequestQueryArgs,
+  GetTaskReclassificationRequestSuccessResponse
+>
+
+type UseGetTaskReclassificationRequestOptions = CustomUseQueryOptions<
+  GetTaskReclassificationRequestQueryArgs,
+  GetTaskReclassificationRequestSuccessResponse
+>
+
 export const useGetTaskReclassificationRequest = (
   taskId: GetTaskReclassificationRequestQueryArgs,
-  options?: CustomUseQueryOptions<
-    GetTaskReclassificationRequestQueryArgs,
-    GetTaskReclassificationRequestSuccessResponse
-  >,
-) => {
+  options?: UseGetTaskReclassificationRequestOptions,
+): UseGetTaskReclassificationRequestResult => {
   const permissions = useUserPermissions(taskReclassificationRequestApiPermissions)
 
   const state = useGetReclassificationRequestQuery(taskId, {

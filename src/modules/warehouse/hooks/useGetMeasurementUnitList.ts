@@ -1,9 +1,6 @@
 import { useEffect } from 'react'
 
-import {
-  CustomUseQueryHookResult,
-  CustomUseQueryOptions,
-} from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getMeasurementUnitListMessages } from 'modules/warehouse/constants'
 import {
@@ -15,17 +12,19 @@ import { useGetMeasurementUnitListQuery } from 'modules/warehouse/services/measu
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetMeasurementUnitListResult = CustomUseQueryHookResult<
+type UseGetMeasurementUnitListResult = CustomUseQueryHookResult<
+  GetMeasurementUnitListQueryArgs,
+  GetMeasurementUnitListSuccessResponse
+>
+
+type UseGetMeasurementUnitListOptions = CustomUseQueryOptions<
   GetMeasurementUnitListQueryArgs,
   GetMeasurementUnitListSuccessResponse
 >
 
 export const useGetMeasurementUnitList = (
   args?: GetMeasurementUnitListQueryArgs,
-  options?: CustomUseQueryOptions<
-    GetMeasurementUnitListQueryArgs,
-    GetMeasurementUnitListSuccessResponse
-  >,
+  options?: UseGetMeasurementUnitListOptions,
 ): UseGetMeasurementUnitListResult => {
   const state = useGetMeasurementUnitListQuery(args, options)
 

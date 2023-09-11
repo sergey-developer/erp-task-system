@@ -9,12 +9,12 @@ import { useGetNomenclatureQuery } from 'modules/warehouse/services/nomenclature
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetNomenclatureResult = CustomUseQueryHookResult<
+type UseGetNomenclatureResult = CustomUseQueryHookResult<
   GetNomenclatureQueryArgs,
   GetNomenclatureSuccessResponse
 >
 
-export type UseGetNomenclatureOptions = CustomUseQueryOptions<
+type UseGetNomenclatureOptions = CustomUseQueryOptions<
   GetNomenclatureQueryArgs,
   GetNomenclatureSuccessResponse
 >

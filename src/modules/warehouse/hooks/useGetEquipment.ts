@@ -9,12 +9,12 @@ import { useGetEquipmentQuery } from 'modules/warehouse/services/equipmentApi.se
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetEquipmentResult = CustomUseQueryHookResult<
+type UseGetEquipmentResult = CustomUseQueryHookResult<
   GetEquipmentQueryArgs,
   GetEquipmentSuccessResponse
 >
 
-export type UseGetEquipmentOptions = CustomUseQueryOptions<
+type UseGetEquipmentOptions = CustomUseQueryOptions<
   GetEquipmentQueryArgs,
   GetEquipmentSuccessResponse
 >

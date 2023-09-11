@@ -11,12 +11,12 @@ import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export type UseGetNomenclatureListResult = CustomUseQueryHookResult<
+type UseGetNomenclatureListResult = CustomUseQueryHookResult<
   MaybeUndefined<GetNomenclatureListQueryArgs>,
   GetNomenclatureListTransformedSuccessResponse
 >
 
-export type UseGetNomenclatureListOptions = CustomUseQueryOptions<
+type UseGetNomenclatureListOptions = CustomUseQueryOptions<
   GetNomenclatureListQueryArgs,
   GetNomenclatureListTransformedSuccessResponse
 >

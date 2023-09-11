@@ -14,8 +14,13 @@ type UseGetTaskCountersResult = CustomUseQueryHookResult<
   GetTaskCountersSuccessResponse
 >
 
+type UseGetTaskCountersOptions = CustomUseQueryOptions<
+  GetTaskCountersQueryArgs,
+  GetTaskCountersSuccessResponse
+>
+
 export const useGetTaskCounters = (
-  options?: CustomUseQueryOptions<GetTaskCountersQueryArgs, GetTaskCountersSuccessResponse>,
+  options?: UseGetTaskCountersOptions,
 ): UseGetTaskCountersResult => {
   const state = useGetTaskCountersQuery(undefined, options)
 
