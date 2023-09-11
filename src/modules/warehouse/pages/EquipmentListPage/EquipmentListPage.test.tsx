@@ -11,8 +11,8 @@ import {
   getEquipmentMessages,
 } from 'modules/warehouse/constants'
 
-import commonFixtures from 'fixtures/common'
-import warehouseFixtures from 'fixtures/warehouse'
+import commonFixtures from '_tests_/fixtures/common'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import {

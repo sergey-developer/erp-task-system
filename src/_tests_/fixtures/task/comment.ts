@@ -2,8 +2,8 @@ import times from 'lodash/times'
 
 import { TaskCommentModel } from 'modules/task/models'
 
-import commonFixtures from 'fixtures/common'
-import taskFixtures from 'fixtures/task'
+import commonFixtures from '_tests_/fixtures/common'
+import taskFixtures from '_tests_/fixtures/task'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 

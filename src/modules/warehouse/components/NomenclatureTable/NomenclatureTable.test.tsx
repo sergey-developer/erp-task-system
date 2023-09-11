@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import { iconTestUtils, render } from '_tests_/utils'
 

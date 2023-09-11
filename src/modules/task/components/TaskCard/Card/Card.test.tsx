@@ -6,8 +6,8 @@ import { UserRoleEnum } from 'modules/user/constants'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
+import taskFixtures from '_tests_/fixtures/task'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {

@@ -3,7 +3,7 @@ import { screen, within } from '@testing-library/react'
 import { TaskTypeEnum } from 'modules/task/constants'
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import { fakeWord, render } from '_tests_/utils'
 

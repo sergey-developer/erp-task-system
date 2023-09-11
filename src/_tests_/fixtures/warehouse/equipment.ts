@@ -3,9 +3,9 @@ import pick from 'lodash/pick'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import { EquipmentModel } from 'modules/warehouse/models'
 
-import currencyFixtures from 'fixtures/currency'
-import userFixtures from 'fixtures/user'
-import warehouseFixtures from 'fixtures/warehouse'
+import currencyFixtures from '_tests_/fixtures/currency'
+import userFixtures from '_tests_/fixtures/user'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import { fakeDateString, fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 

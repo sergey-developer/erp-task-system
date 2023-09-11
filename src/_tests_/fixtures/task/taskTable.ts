@@ -7,8 +7,8 @@ import {
 } from 'modules/task/constants'
 import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
 
-import commonFixtures from 'fixtures/common'
-import taskFixtures from 'fixtures/task'
+import commonFixtures from '_tests_/fixtures/common'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   fakeDateString,

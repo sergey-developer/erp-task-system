@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { commonApiMessages } from 'shared/constants/common'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   mockGetJournalCsvServerError,

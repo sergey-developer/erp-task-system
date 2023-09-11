@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import { spinnerTestUtils, render } from '_tests_/utils'
 

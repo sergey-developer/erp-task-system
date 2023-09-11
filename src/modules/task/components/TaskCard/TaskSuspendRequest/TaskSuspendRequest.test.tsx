@@ -5,7 +5,7 @@ import { getShortUserName } from 'modules/user/utils'
 
 import { formatDate } from 'shared/utils/date'
 
-import commonFixtures from 'fixtures/common'
+import commonFixtures from '_tests_/fixtures/common'
 
 import {
   fakeDateString,

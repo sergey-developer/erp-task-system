@@ -6,7 +6,7 @@ import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constan
 
 import { IdType } from 'shared/types/common'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import { fakeDateString, fakeId, fakeWord, render } from '_tests_/utils'
 

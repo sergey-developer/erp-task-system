@@ -4,8 +4,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { validationMessages } from 'shared/constants/validation'
 import { MaybeNull } from 'shared/types/utils'
 
-import countryFixtures from 'fixtures/country'
-import warehouseFixtures from 'fixtures/warehouse'
+import countryFixtures from '_tests_/fixtures/country'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
   selectTestUtils,

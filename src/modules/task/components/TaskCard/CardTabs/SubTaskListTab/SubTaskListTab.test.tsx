@@ -14,10 +14,10 @@ import { testUtils as subTaskListTestUtils } from 'modules/subTask/components/Su
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
 import { TaskExtendedStatusEnum, TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants'
 
-import catalogsFixtures from 'fixtures/catalogs'
-import subTaskFixtures from 'fixtures/subTask'
-import supportGroupFixtures from 'fixtures/supportGroup'
-import taskFixtures from 'fixtures/task'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import subTaskFixtures from '_tests_/fixtures/subTask'
+import supportGroupFixtures from '_tests_/fixtures/supportGroup'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   mockCancelSubTaskBadRequestError,

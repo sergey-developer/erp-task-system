@@ -7,7 +7,7 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import { fakeId, fakeIdStr, fakeWord, render } from '_tests_/utils'
 

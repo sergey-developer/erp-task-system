@@ -6,7 +6,7 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import workGroupFixtures from 'fixtures/workGroup'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {

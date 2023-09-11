@@ -6,7 +6,7 @@ import { RouteEnum } from 'configs/routes'
 import { testUtils as warehouseListFilterTestUtils } from 'modules/warehouse/components/WarehouseListFilter/WarehouseListFilter.test'
 import { testUtils as warehouseTableTestUtils } from 'modules/warehouse/components/WarehouseTable/WarehouseTable.test'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
 import { buttonTestUtils, renderInRoute_latest, setupApiTests } from '_tests_/utils'

@@ -6,7 +6,7 @@ import { testUtils as addOrEditNomenclatureModalTestUtils } from 'modules/wareho
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
   mockCreateNomenclatureGroupBadRequestError,

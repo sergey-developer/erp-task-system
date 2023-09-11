@@ -10,7 +10,7 @@ import { getEquipmentListPageLink } from 'modules/warehouse/utils'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import { mockGetEquipmentListSuccess } from '_tests_/mocks/api'
 import { linkTestUtils, renderInRoute_latest, setupApiTests, tableTestUtils } from '_tests_/utils'

@@ -8,7 +8,7 @@ import {
 } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import workGroupFixtures from 'fixtures/workGroup'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {

@@ -5,7 +5,7 @@ import { TaskStatusEnum } from 'modules/task/constants'
 
 import { NonNullableObject } from 'shared/types/utils'
 
-import commonFixtures from 'fixtures/common'
+import commonFixtures from '_tests_/fixtures/common'
 
 import {
   fakeDateString,

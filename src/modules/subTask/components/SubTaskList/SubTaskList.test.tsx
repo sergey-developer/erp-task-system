@@ -8,7 +8,7 @@ import {
 
 import { formatDate } from 'shared/utils/date'
 
-import subTaskFixtures from 'fixtures/subTask'
+import subTaskFixtures from '_tests_/fixtures/subTask'
 
 import { render } from '_tests_/utils'
 

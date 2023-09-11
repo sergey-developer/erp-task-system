@@ -5,7 +5,7 @@ import { createTaskCommentMessages } from 'modules/task/constants'
 
 import { commonApiMessages } from 'shared/constants/common'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   mockCreateTaskCommentBadRequestError,

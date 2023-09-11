@@ -12,8 +12,8 @@ import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
 import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 
-import commonFixtures from 'fixtures/common'
-import warehouseFixtures from 'fixtures/warehouse'
+import commonFixtures from '_tests_/fixtures/common'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
   mockGetCustomerListSuccess,

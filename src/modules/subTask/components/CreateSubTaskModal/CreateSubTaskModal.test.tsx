@@ -7,9 +7,9 @@ import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
 import { getSubTaskTemplateListMessages } from 'shared/constants/catalogs'
 import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import catalogsFixtures from 'fixtures/catalogs'
-import supportGroupFixtures from 'fixtures/supportGroup'
-import taskFixtures from 'fixtures/task'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import supportGroupFixtures from '_tests_/fixtures/supportGroup'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   mockCreateSubTaskBadRequestError,

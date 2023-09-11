@@ -10,8 +10,8 @@ import {
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
 
-import catalogsFixtures from 'fixtures/catalogs'
-import userFixtures from 'fixtures/user'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import userFixtures from '_tests_/fixtures/user'
 
 import {
   mockGetSystemInfoSuccess,

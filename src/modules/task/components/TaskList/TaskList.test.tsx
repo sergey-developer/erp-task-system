@@ -8,7 +8,7 @@ import { formatDate } from 'shared/utils/date'
 
 import theme from 'styles/theme'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import { render } from '_tests_/utils'
 

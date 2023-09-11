@@ -7,7 +7,7 @@ import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateL
 
 import PrivateApp from 'app/PrivateApp'
 
-import userFixtures from 'fixtures/user'
+import userFixtures from '_tests_/fixtures/user'
 
 import {
   mockGetTimeZoneListSuccess,

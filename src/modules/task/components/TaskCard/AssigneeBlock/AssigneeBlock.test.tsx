@@ -12,8 +12,8 @@ import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import { ArrayFirst, NonNullableObject } from 'shared/types/utils'
 
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
+import taskFixtures from '_tests_/fixtures/task'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
 
 import { fakeId, getStoreWithAuth, render, selectTestUtils, buttonTestUtils } from '_tests_/utils'
 

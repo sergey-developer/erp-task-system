@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import { iconTestUtils, render } from '_tests_/utils'
 

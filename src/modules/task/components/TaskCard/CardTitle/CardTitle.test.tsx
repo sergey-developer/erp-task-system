@@ -10,7 +10,7 @@ import {
 } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   fakeId,

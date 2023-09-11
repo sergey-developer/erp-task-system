@@ -5,7 +5,7 @@ import { RouteEnum } from 'configs/routes'
 import { getWarehouseMessages } from 'modules/warehouse/constants'
 import { getWarehousePageLink } from 'modules/warehouse/utils'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
   mockGetWarehouseNotFoundError,

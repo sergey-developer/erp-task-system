@@ -5,8 +5,8 @@ import { RouteEnum } from 'configs/routes'
 import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
 import { getEquipmentNomenclatureListMessages } from 'modules/warehouse/constants'
 
-import commonFixtures from 'fixtures/common'
-import warehouseFixtures from 'fixtures/warehouse'
+import commonFixtures from '_tests_/fixtures/common'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
   mockGetEquipmentNomenclatureListForbiddenError,

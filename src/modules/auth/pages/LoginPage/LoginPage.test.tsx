@@ -13,7 +13,7 @@ import { setupStore } from 'state/store'
 import { commonApiMessages } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
-import authFixtures from 'fixtures/auth'
+import authFixtures from '_tests_/fixtures/auth'
 
 import {
   mockLoginBadRequestError,

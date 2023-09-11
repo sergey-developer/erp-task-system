@@ -11,7 +11,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 import PrivateApp from 'app/PrivateApp'
 
-import userFixtures from 'fixtures/user'
+import userFixtures from '_tests_/fixtures/user'
 
 import {
   mockGetSystemInfoSuccess,

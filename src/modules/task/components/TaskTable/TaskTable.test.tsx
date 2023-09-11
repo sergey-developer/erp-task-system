@@ -14,7 +14,7 @@ import { IdType } from 'shared/types/common'
 import { NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   ariaSortAttrAscValue,

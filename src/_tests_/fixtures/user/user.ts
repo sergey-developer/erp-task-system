@@ -1,7 +1,7 @@
 import { UserRoleEnum } from 'modules/user/constants'
 import { UserModel } from 'modules/user/models'
 
-import catalogsFixtures from 'fixtures/catalogs'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 
 import { fakeEmail, fakeId, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'
 

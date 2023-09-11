@@ -16,9 +16,9 @@ import { taskExtendedStatusDict } from 'modules/task/constants'
 import { TaskCountersKeys } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import taskFixtures from 'fixtures/task'
-import userFixtures from 'fixtures/user'
-import workGroupFixtures from 'fixtures/workGroup'
+import taskFixtures from '_tests_/fixtures/task'
+import userFixtures from '_tests_/fixtures/user'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
 
 import {
   mockGetTaskCountersSuccess,

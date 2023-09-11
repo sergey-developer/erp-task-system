@@ -5,8 +5,8 @@ import moment from 'moment-timezone'
 import { TaskExtendedStatusEnum, taskExtendedStatusDict } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import userFixtures from 'fixtures/user'
-import workGroupFixtures from 'fixtures/workGroup'
+import userFixtures from '_tests_/fixtures/user'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {

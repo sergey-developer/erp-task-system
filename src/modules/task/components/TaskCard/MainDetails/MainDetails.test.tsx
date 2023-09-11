@@ -4,7 +4,7 @@ import { TaskOlaStatusEnum, TaskStatusEnum } from 'modules/task/constants'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   fakeAddress,

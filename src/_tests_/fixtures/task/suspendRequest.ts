@@ -1,7 +1,7 @@
 import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import { SuspendRequestModel } from 'modules/task/models'
 
-import commonFixtures from 'fixtures/common'
+import commonFixtures from '_tests_/fixtures/common'
 
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 

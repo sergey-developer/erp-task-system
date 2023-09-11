@@ -9,8 +9,8 @@ import {
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
 
-import subTaskFixtures from 'fixtures/subTask'
-import taskFixtures from 'fixtures/task'
+import subTaskFixtures from '_tests_/fixtures/subTask'
+import taskFixtures from '_tests_/fixtures/task'
 
 import { buttonTestUtils, render } from "_tests_/utils";
 

@@ -6,7 +6,7 @@ import { equipmentConditionDict } from 'modules/warehouse/constants'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
   ariaSortAttrAscValue,

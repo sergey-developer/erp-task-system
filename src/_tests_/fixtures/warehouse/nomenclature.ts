@@ -1,7 +1,7 @@
 import { NomenclatureModel } from 'modules/warehouse/models'
 
-import countryFixtures from 'fixtures/country'
-import warehouseFixtures from 'fixtures/warehouse'
+import countryFixtures from '_tests_/fixtures/country'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

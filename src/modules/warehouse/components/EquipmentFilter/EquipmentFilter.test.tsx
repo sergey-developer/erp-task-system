@@ -5,7 +5,7 @@ import { equipmentConditionDict, EquipmentConditionEnum } from 'modules/warehous
 
 import { yesNoOptions } from 'shared/constants/selectField'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
   selectTestUtils,

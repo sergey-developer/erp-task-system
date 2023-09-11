@@ -7,7 +7,7 @@ import { UserRoleEnum } from 'modules/user/constants'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import { render } from '_tests_/utils'
 

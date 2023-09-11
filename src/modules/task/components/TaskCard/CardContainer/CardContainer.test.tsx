@@ -27,8 +27,8 @@ import { getWorkGroupListMessages } from 'modules/workGroup/constants'
 
 import { commonApiMessages } from 'shared/constants/common'
 
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
+import taskFixtures from '_tests_/fixtures/task'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
 
 import {
   mockCreateTaskReclassificationRequestNotFoundError,

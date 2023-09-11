@@ -8,7 +8,7 @@ import { NumberOrString } from 'shared/types/utils'
 import { getYesNo } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import { buttonTestUtils, spinnerTestUtils, fakeWord, render } from '_tests_/utils'
 

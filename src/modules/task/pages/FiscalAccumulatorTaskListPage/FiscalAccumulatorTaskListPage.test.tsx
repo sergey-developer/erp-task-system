@@ -1,7 +1,7 @@
 import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/task/components/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
 import { getFiscalAccumulatorTaskListMessages } from 'modules/task/constants'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   mockGetFiscalAccumulatorTaskListServerError,
