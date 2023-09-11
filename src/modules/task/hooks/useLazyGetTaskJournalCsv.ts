@@ -1,26 +1,21 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { GetTaskJournalCsvQueryArgs } from 'modules/task/models'
-import { taskJournalApiPermissions } from 'modules/task/permissions'
-import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskJournalApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
+import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
+
+import { GetTaskJournalCsvQueryArgs, GetTaskJournalCsvSuccessResponse } from 'modules/task/models'
+import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskApiService'
 
 import { commonApiMessages } from 'shared/constants/common'
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useLazyGetTaskJournalCsv = () => {
-  const permissions = useUserPermissions(taskJournalApiPermissions.csv)
-  const [trigger, state] = useLazyGetTaskJournalCsvQuery()
+type UseLazyGetTaskJournalCsvResult = CustomUseLazyQueryHookResult<
+  GetTaskJournalCsvQueryArgs,
+  GetTaskJournalCsvSuccessResponse
+>
 
-  const fn = useCallback(
-    async (data: GetTaskJournalCsvQueryArgs) => {
-      if (permissions.canGet) {
-        return trigger(data).unwrap()
-      }
-    },
-    [permissions.canGet, trigger],
-  )
+export const useLazyGetTaskJournalCsv = (): UseLazyGetTaskJournalCsvResult => {
+  const [trigger, state] = useLazyGetTaskJournalCsvQuery()
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
@@ -28,5 +23,5 @@ export const useLazyGetTaskJournalCsv = () => {
     }
   }, [state.error])
 
-  return { fn, state }
+  return [trigger, state]
 }

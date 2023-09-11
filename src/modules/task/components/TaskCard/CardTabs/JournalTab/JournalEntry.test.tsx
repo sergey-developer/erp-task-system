@@ -12,7 +12,7 @@ import { fakeDateString, fakeId, fakeWord, render } from '_tests_/utils'
 
 import JournalEntry, { JournalEntryProps } from './JournalEntry'
 
-const props: JournalEntryProps = {
+const props: Readonly<JournalEntryProps> = {
   id: fakeId(),
   type: TaskJournalTypeEnum.StatusChange,
   createdAt: fakeDateString(),

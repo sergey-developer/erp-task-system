@@ -8,7 +8,7 @@ import { render } from '_tests_/utils'
 
 import AttachmentList, { AttachmentListProps } from './index'
 
-const props: AttachmentListProps = {
+const props: Readonly<AttachmentListProps> = {
   attachments: [taskFixtures.attachment()],
 }
 

@@ -29,4 +29,4 @@ export * from './useDeleteTaskWorkGroup'
 
 export * from './useGetTaskCounters'
 
-export * from './useGetFiscalAccumulatorTaskList'
+export * from './useGetFiscalAccumulatorList'

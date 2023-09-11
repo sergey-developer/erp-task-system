@@ -52,7 +52,7 @@ export const updateTaskAssigneeMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Невозможно изменить исполнителя',
 }
 
-export const getFiscalAccumulatorTaskListMessages: ApiRequestMessages<'commonError'> =
+export const getFiscalAccumulatorListMessages: ApiRequestMessages<'commonError'> =
   {
     commonError: 'Ошибка получения списка задач по фискальным накопителям',
   }

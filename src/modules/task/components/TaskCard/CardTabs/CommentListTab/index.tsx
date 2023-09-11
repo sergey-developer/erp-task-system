@@ -26,8 +26,9 @@ export type CommentListTabProps = {
 }
 
 const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
-  const { data: commentList = [], isFetching: commentListIsFetching } =
-    useGetTaskCommentList(taskId)
+  const { data: commentList = [], isFetching: commentListIsFetching } = useGetTaskCommentList({
+    taskId,
+  })
 
   const {
     fn: createComment,
@@ -42,9 +43,7 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
         await createComment({
           taskId,
           comment: values.comment.trim(),
-          attachments: values.attachments
-            ? mapUploadedFiles(values.attachments)
-            : undefined,
+          attachments: values.attachments ? mapUploadedFiles(values.attachments) : undefined,
         })
 
         form.resetFields()
@@ -63,8 +62,7 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
     [createComment, taskId],
   )
 
-  const isDisplayableCountExceed: boolean =
-    commentList.length > DEFAULT_DISPLAYABLE_COUNT
+  const isDisplayableCountExceed: boolean = commentList.length > DEFAULT_DISPLAYABLE_COUNT
 
   const displayableComments =
     isDisplayableCountExceed && expanded
@@ -72,37 +70,21 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
       : commentList.slice(0, DEFAULT_DISPLAYABLE_COUNT)
 
   return (
-    <Space
-      data-testid='task-comment-list-tab'
-      direction='vertical'
-      size='large'
-      $block
-    >
+    <Space data-testid='task-comment-list-tab' direction='vertical' size='large' $block>
       <Row justify='space-between'>
         <Title level={5}>{title}</Title>
 
         {!!commentList.length && isDisplayableCountExceed && (
           <Button type='link' onClick={toggleExpanded}>
-            {expanded
-              ? 'Скрыть комментарии'
-              : `Отобразить все комментарии: ${commentList.length}`}
+            {expanded ? 'Скрыть комментарии' : `Отобразить все комментарии: ${commentList.length}`}
           </Button>
         )}
       </Row>
 
-      <CreateCommentForm
-        onSubmit={handleCreateComment}
-        isLoading={createCommentIsLoading}
-      />
+      <CreateCommentForm onSubmit={handleCreateComment} isLoading={createCommentIsLoading} />
 
-      <LoadingArea
-        data-testid='task-comment-list-loading'
-        isLoading={commentListIsFetching}
-      >
-        <CommentList
-          isLoading={commentListIsFetching}
-          comments={displayableComments}
-        />
+      <LoadingArea data-testid='task-comment-list-loading' isLoading={commentListIsFetching}>
+        <CommentList isLoading={commentListIsFetching} comments={displayableComments} />
       </LoadingArea>
     </Space>
   )

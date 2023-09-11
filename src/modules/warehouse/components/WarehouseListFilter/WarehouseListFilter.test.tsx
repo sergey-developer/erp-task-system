@@ -9,7 +9,7 @@ import { fakeWord, selectTestUtils, render, setupApiTests, buttonTestUtils } fro
 import WarehouseListFilter from './index'
 import { WarehouseListFilterProps } from './types'
 
-const props: WarehouseListFilterProps = {
+const props: Readonly<WarehouseListFilterProps> = {
   visible: true,
   formValues: {},
   onApply: jest.fn(),

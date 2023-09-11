@@ -23,16 +23,13 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
     data: journal = [],
     isFetching: journalIsFetching,
     refetch: refetchJournal,
-  } = useGetTaskJournal(taskId)
+  } = useGetTaskJournal({ taskId })
 
-  const {
-    fn: getJournalCsv,
-    state: { isFetching: journalCsvIsFetching },
-  } = useLazyGetTaskJournalCsv()
+  const [getJournalCsv, { isFetching: journalCsvIsFetching }] = useLazyGetTaskJournalCsv()
 
   const handleGetJournalCsv = async () => {
     try {
-      const journalCsv = await getJournalCsv(taskId)
+      const journalCsv = await getJournalCsv({ taskId }).unwrap()
 
       if (journalCsv) {
         clickDownloadLink(journalCsv, 'text/csv', getJournalCsvFilename(taskId))

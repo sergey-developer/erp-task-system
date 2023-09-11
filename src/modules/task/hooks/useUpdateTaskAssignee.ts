@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { updateTaskAssigneeMessages } from 'modules/task/constants'
 import { UpdateTaskAssigneeMutationArgs } from 'modules/task/models'
 import { taskAssigneeApiPermissions } from 'modules/task/permissions'
-import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskAssigneeApi.service'
+import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskApiService'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { isErrorResponse } from 'shared/services/baseApi'

@@ -286,7 +286,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorTaskList)
+          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorList)
         })
       })
 
@@ -384,7 +384,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorTaskList)
+          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorList)
         })
       })
 
@@ -482,7 +482,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorTaskList)
+          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorList)
         })
       })
 

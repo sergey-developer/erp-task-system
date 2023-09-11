@@ -17,7 +17,7 @@ import {
 import AddOrEditNomenclatureModal from './index'
 import { AddOrEditNomenclatureModalProps } from './types'
 
-const props: AddOrEditNomenclatureModalProps = {
+const props: Readonly<AddOrEditNomenclatureModalProps> = {
   visible: true,
   isLoading: false,
   permissions: undefined,

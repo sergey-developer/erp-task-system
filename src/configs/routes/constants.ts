@@ -13,7 +13,7 @@ export enum RouteEnum {
   Tasks = '/tasks',
   TaskList = '/tasks/list',
   TaskListMap = '/tasks/map',
-  FiscalAccumulatorTaskList = '/tasks/fiscal-accumulators',
+  FiscalAccumulatorList = '/tasks/fiscal-accumulators',
 
   // warehouse routes
   ManageWarehouses = '/manage-warehouses',

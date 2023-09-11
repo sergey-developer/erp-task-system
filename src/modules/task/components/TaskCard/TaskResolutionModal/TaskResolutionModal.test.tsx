@@ -18,7 +18,7 @@ import {
 
 import TaskResolutionModal, { TaskResolutionModalProps } from './index'
 
-const props: TaskResolutionModalProps = {
+const props: Readonly<TaskResolutionModalProps> = {
   type: TaskTypeEnum.Request,
   recordId: fakeIdStr(),
   isLoading: false,

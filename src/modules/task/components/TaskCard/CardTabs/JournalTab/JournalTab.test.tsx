@@ -28,7 +28,7 @@ import { NO_DATA_MSG } from './constants'
 import JournalTab, { JournalTabProps } from './index'
 import { getJournalCsvFilename } from './utils'
 
-const props: JournalTabProps = {
+const props: Readonly<JournalTabProps> = {
   taskId: fakeId(),
 }
 

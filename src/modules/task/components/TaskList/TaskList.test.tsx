@@ -17,7 +17,7 @@ import { TaskListProps } from './types'
 
 const taskListItem = taskFixtures.taskListItem()
 
-const props: TaskListProps = {
+const props: Readonly<TaskListProps> = {
   tasks: [taskListItem],
   selectedTaskId: null,
   onClickTask: jest.fn(),

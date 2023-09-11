@@ -17,7 +17,7 @@ import {
 import EquipmentFilter from './index'
 import { EquipmentFilterProps } from './types'
 
-const props: EquipmentFilterProps = {
+const props: Readonly<EquipmentFilterProps> = {
   visible: true,
 
   values: {},

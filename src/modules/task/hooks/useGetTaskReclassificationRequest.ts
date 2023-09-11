@@ -7,7 +7,7 @@ import {
   GetTaskReclassificationRequestSuccessResponse,
 } from 'modules/task/models'
 import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
-import { useGetReclassificationRequestQuery } from 'modules/task/services/taskReclassificationRequestApi.service'
+import { useGetReclassificationRequestQuery } from 'modules/task/services/taskApiService'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/common'
@@ -25,12 +25,12 @@ type UseGetTaskReclassificationRequestOptions = CustomUseQueryOptions<
 >
 
 export const useGetTaskReclassificationRequest = (
-  taskId: GetTaskReclassificationRequestQueryArgs,
+  args: GetTaskReclassificationRequestQueryArgs,
   options?: UseGetTaskReclassificationRequestOptions,
 ): UseGetTaskReclassificationRequestResult => {
   const permissions = useUserPermissions(taskReclassificationRequestApiPermissions)
 
-  const state = useGetReclassificationRequestQuery(taskId, {
+  const state = useGetReclassificationRequestQuery(args, {
     skip: !permissions.canGet || options?.skip,
   })
 

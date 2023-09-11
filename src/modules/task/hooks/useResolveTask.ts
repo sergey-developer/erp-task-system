@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { resolveTaskMessages } from 'modules/task/constants'
 import { ResolveTaskMutationArgs } from 'modules/task/models'
 import { taskResolutionApiPermissions } from 'modules/task/permissions'
-import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
+import { useResolveTaskMutation } from 'modules/task/services/taskApiService'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import {

@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getTaskMessages } from 'modules/task/constants'
 import { GetTaskQueryArgs, GetTaskSuccessResponse } from 'modules/task/models'
-import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
+import { useGetTaskQuery } from 'modules/task/services/taskApiService'
 import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils'
 
 import {

@@ -1,5 +1,5 @@
-import { TaskApiEnum } from 'modules/task/constants'
 import { GetTaskListMapSuccessResponse } from 'modules/task/models'
+import { TaskApiEnum } from 'modules/task/services/taskApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

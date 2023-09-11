@@ -8,7 +8,7 @@ export * from './getTaskListMap.mock'
 
 export * from './getTaskCounters.mock'
 
-export * from './getFiscalAccumulatorTaskList.mock'
+export * from './getFiscalAccumulatorList.mock'
 
 export * from './getTaskJournal.mock'
 

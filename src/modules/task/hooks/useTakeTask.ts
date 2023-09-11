@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
 import { TakeTaskMutationArgs } from 'modules/task/models'
-import { useTakeTaskMutation } from 'modules/task/services/taskApi.service'
+import { useTakeTaskMutation } from 'modules/task/services/taskApiService'
 
 import { commonApiMessages } from 'shared/constants/common'
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'

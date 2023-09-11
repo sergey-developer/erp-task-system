@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom'
 
-import { TaskApiEnum } from 'modules/task/constants'
+import { TaskApiEnum } from 'modules/task/services/taskApiService'
 
 import { IdType } from 'shared/types/common'
 import { appendSlashAtEnd } from 'shared/utils/string'

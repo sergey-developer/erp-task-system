@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { updateTaskWorkGroupMessages } from 'modules/task/constants'
 import { UpdateTaskWorkGroupMutationArgs } from 'modules/task/models'
 import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
-import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
+import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskApiService'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import {

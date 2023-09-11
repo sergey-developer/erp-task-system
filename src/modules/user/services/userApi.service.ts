@@ -1,4 +1,4 @@
-import { TaskApiTagEnum } from 'modules/task/constants'
+import { TaskApiTagEnum } from 'modules/task/services/taskApiService'
 import { UserApiEnum } from 'modules/user/constants'
 import {
   GetUserListQueryArgs,

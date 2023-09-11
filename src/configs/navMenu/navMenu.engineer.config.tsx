@@ -12,9 +12,9 @@ const navMenuEngineerConfig: NavMenuItem[] = [
     text: 'Рабочие группы',
   },
   {
-    key: RouteEnum.FiscalAccumulatorTaskList,
+    key: RouteEnum.FiscalAccumulatorList,
     icon: QrcodeIcon,
-    link: RouteEnum.FiscalAccumulatorTaskList,
+    link: RouteEnum.FiscalAccumulatorList,
     text: 'Отчёт по ФН',
   },
 ]

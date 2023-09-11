@@ -18,7 +18,7 @@ import { render, renderInRoute, setupApiTests } from '_tests_/utils'
 
 import DetailedUserAvatar, { DetailedUserAvatarProps } from './index'
 
-const props: Pick<DetailedUserAvatarProps, 'profile'> = {
+const props: Readonly<Pick<DetailedUserAvatarProps, 'profile'>> = {
   profile: userFixtures.user(),
 }
 

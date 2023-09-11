@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { DeleteTaskWorkGroupMutationArgs } from 'modules/task/models'
 import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
-import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskWorkGroupApi.service'
+import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskApiService'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/common'

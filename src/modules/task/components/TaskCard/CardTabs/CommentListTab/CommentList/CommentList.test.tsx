@@ -6,7 +6,7 @@ import { spinnerTestUtils, render } from '_tests_/utils'
 
 import CommentList, { CommentListProps } from './index'
 
-const props: CommentListProps = {
+const props: Readonly<CommentListProps> = {
   comments: taskFixtures.commentList(),
   isLoading: false,
 }

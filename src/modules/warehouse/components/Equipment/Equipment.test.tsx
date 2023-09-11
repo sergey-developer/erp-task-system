@@ -15,7 +15,7 @@ import { buttonTestUtils, spinnerTestUtils, fakeWord, render } from '_tests_/uti
 import Equipment from './index'
 import { EquipmentProps } from './types'
 
-const props: EquipmentProps = {
+const props: Readonly<EquipmentProps> = {
   visible: true,
   title: fakeWord(),
   equipment: warehouseFixtures.equipment(),

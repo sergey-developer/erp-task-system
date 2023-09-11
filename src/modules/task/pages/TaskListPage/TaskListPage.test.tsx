@@ -19,7 +19,6 @@ import { UserRoleEnum } from 'modules/user/constants'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-
 import {
   mockGetTaskCountersSuccess,
   mockGetTaskListSuccess,
