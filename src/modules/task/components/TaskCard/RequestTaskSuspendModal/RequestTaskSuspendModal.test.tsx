@@ -10,13 +10,10 @@ import { formatDate } from 'shared/utils/date'
 import {
   fakeIdStr,
   fakeWord,
-  getButtonIn,
-  expectLoadingFinishedByButton,
-  expectLoadingStartedByButton,
   modalTestUtils,
   render,
-  getRadioButtonIn,
-} from '_tests_/utils'
+  radioButtonTestUtils, buttonTestUtils
+} from "_tests_/utils";
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import RequestTaskSuspendModal, { RequestTaskSuspendModalProps } from './index'
@@ -36,7 +33,7 @@ const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
 
 // close button
-const getCloseButton = () => getButtonIn(getContainer(), /close/i)
+const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
 
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
@@ -45,7 +42,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -55,7 +52,7 @@ const clickCancelButton = async (user: UserEvent) => {
 
 // submit button
 const getSubmitButton = () =>
-  getButtonIn(getContainer(), /перевести в ожидание/i)
+  buttonTestUtils.getButtonIn(getContainer(), /перевести в ожидание/i)
 
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
@@ -70,7 +67,7 @@ const getReasonTitle = () =>
   within(getReasonBlock()).getByTitle('Причина ожидания')
 
 const getReasonField = (reason: SuspendReasonEnum): HTMLInputElement =>
-  getRadioButtonIn(getReasonBlock(), suspendReasonDict[reason])
+  radioButtonTestUtils.getRadioButtonIn(getReasonBlock(), suspendReasonDict[reason])
 
 const findReasonError = (text: string) =>
   within(getReasonBlock()).findByText(text)
@@ -140,10 +137,10 @@ const setComment = async (user: UserEvent, value: string) => {
 
 // loading
 const expectLoadingStarted = () =>
-  expectLoadingStartedByButton(getSubmitButton())
+  buttonTestUtils.expectLoadingStarted(getSubmitButton())
 
 const expectLoadingFinished = () =>
-  expectLoadingFinishedByButton(getSubmitButton())
+  buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
   getContainer,

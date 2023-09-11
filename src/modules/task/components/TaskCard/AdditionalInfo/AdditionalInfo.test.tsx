@@ -2,13 +2,13 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {
+  buttonTestUtils,
   fakeAddress,
   fakeEmail,
   fakeWord,
-  getButtonIn,
-  getIconByNameIn,
-  render,
-} from '_tests_/utils'
+  iconTestUtils,
+  render
+} from "_tests_/utils";
 
 import AdditionalInfo, { AdditionalInfoProps } from './index'
 
@@ -65,7 +65,7 @@ const queryAdditionalInfoContent = () =>
   within(getContainer()).queryByTestId('additional-info-content')
 
 const getExpandButton = () =>
-  getButtonIn(getContainer(), /дополнительная информация/i)
+  buttonTestUtils.getButtonIn(getContainer(), /дополнительная информация/i)
 
 const clickExpandButton = async (user: UserEvent) => {
   const button = getExpandButton()
@@ -76,7 +76,7 @@ const clickExpandButton = async (user: UserEvent) => {
 const getAddress = () =>
   within(getAdditionalInfoContent()).getByTestId('additional-info-address')
 
-const getAddressIcon = () => getIconByNameIn(getAddress(), 'environment')
+const getAddressIcon = () => iconTestUtils.getIconByNameIn(getAddress(), 'environment')
 
 export const testUtils = {
   getContainer,

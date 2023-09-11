@@ -15,17 +15,15 @@ import {
 } from '_tests_/mocks/api'
 import {
   fakeWord,
-  findNotification,
+  notificationTestUtils,
   renderInRoute_latest,
   setupApiTests,
-  setupNotifications,
   tableTestUtils,
 } from '_tests_/utils'
 
 import EquipmentNomenclatureListPage from './index'
 
-const getContainer = () =>
-  screen.getByTestId('equipment-nomenclature-list-page')
+const getContainer = () => screen.getByTestId('equipment-nomenclature-list-page')
 
 const findContainer = (): Promise<HTMLElement> =>
   screen.findByTestId('equipment-nomenclature-list-page')
@@ -36,14 +34,12 @@ export const testUtils = {
 }
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Страница списка номенклатуры оборудования', () => {
   describe('Список номенклатуры оборудования', () => {
     test('При успешном запросе отображается верное количество', async () => {
-      const equipmentNomenclatureList = [
-        warehouseFixtures.equipmentNomenclatureListItem(),
-      ]
+      const equipmentNomenclatureList = [warehouseFixtures.equipmentNomenclatureListItem()]
 
       mockGetEquipmentNomenclatureListSuccess({
         body: commonFixtures.paginatedListResponse(equipmentNomenclatureList),
@@ -85,7 +81,7 @@ describe('Страница списка номенклатуры оборудо�
         )
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
-        const notification = await findNotification(errorMessage)
+        const notification = await notificationTestUtils.findNotification(errorMessage)
 
         expect(notification).toBeInTheDocument()
       })
@@ -104,7 +100,7 @@ describe('Страница списка номенклатуры оборудо�
         )
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
-        const notification = await findNotification(
+        const notification = await notificationTestUtils.findNotification(
           getEquipmentNomenclatureListMessages.commonError,
         )
 
@@ -113,8 +109,7 @@ describe('Страница списка номенклатуры оборудо�
     })
 
     test('Пагинация работает', async () => {
-      const equipmentNomenclatureList =
-        warehouseFixtures.equipmentNomenclatureList(11)
+      const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatureList(11)
 
       mockGetEquipmentNomenclatureListSuccess({
         body: commonFixtures.paginatedListResponse(equipmentNomenclatureList),
@@ -131,8 +126,7 @@ describe('Страница списка номенклатуры оборудо�
         { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
       )
 
-      const table =
-        await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
+      const table = await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
       await tableTestUtils.clickPaginationNextButtonIn(user, table)
       await equipmentNomenclatureTableTestUtils.expectLoadingStarted()
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()

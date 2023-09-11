@@ -8,18 +8,13 @@ import { validationMessages } from 'shared/constants/validation'
 import {
   fakeIdStr,
   fakeWord,
-  getButtonIn,
-  expectLoadingFinishedByButton,
-  expectLoadingStartedByButton,
   modalTestUtils,
   render,
-  getRadioButtonIn,
-} from '_tests_/utils'
+  radioButtonTestUtils, buttonTestUtils
+} from "_tests_/utils";
 
 import { reclassificationReasonLabels } from './constants'
-import RequestTaskReclassificationModal, {
-  RequestTaskReclassificationModalProps,
-} from './index'
+import RequestTaskReclassificationModal, { RequestTaskReclassificationModalProps } from './index'
 
 const props: Readonly<RequestTaskReclassificationModalProps> = {
   recordId: fakeIdStr(),
@@ -30,20 +25,18 @@ const props: Readonly<RequestTaskReclassificationModalProps> = {
 
 const notAvailableReasons = [ReclassificationReasonEnum.DivideTask]
 
-export const availableReasons = Object.values(
-  ReclassificationReasonEnum,
-).filter((reason) => !notAvailableReasons.includes(reason))
+export const availableReasons = Object.values(ReclassificationReasonEnum).filter(
+  (reason) => !notAvailableReasons.includes(reason),
+)
 
-const getContainer = () =>
-  screen.getByTestId('request-task-reclassification-modal')
+const getContainer = () => screen.getByTestId('request-task-reclassification-modal')
 
-const findContainer = () =>
-  screen.findByTestId('request-task-reclassification-modal')
+const findContainer = () => screen.findByTestId('request-task-reclassification-modal')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // close button
-const getCloseButton = () => getButtonIn(getContainer(), /close/i)
+const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
 
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
@@ -52,7 +45,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -61,8 +54,7 @@ const clickCancelButton = async (user: UserEvent) => {
 }
 
 // submit button
-const getSubmitButton = () =>
-  getButtonIn(getContainer(), /запросить переклассификацию/i)
+const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /запросить переклассификацию/i)
 
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
@@ -75,14 +67,10 @@ const getReclassificationReasonBlock = () =>
   within(getContainer()).getByTestId('reclassification-reason')
 
 const getReclassificationReasonTitle = () =>
-  within(getReclassificationReasonBlock()).getByTitle(
-    'Причина переклассификации',
-  )
+  within(getReclassificationReasonBlock()).getByTitle('Причина переклассификации')
 
-const getReclassificationReasonField = (
-  reason: ReclassificationReasonEnum,
-): HTMLInputElement =>
-  getRadioButtonIn(
+const getReclassificationReasonField = (reason: ReclassificationReasonEnum): HTMLInputElement =>
+  radioButtonTestUtils.getRadioButtonIn(
     getReclassificationReasonBlock(),
     reclassificationReasonLabels[reason],
   )
@@ -90,10 +78,7 @@ const getReclassificationReasonField = (
 const findReclassificationReasonError = (text: string) =>
   within(getReclassificationReasonBlock()).findByText(text)
 
-const setReclassificationReason = async (
-  user: UserEvent,
-  reason: ReclassificationReasonEnum,
-) => {
+const setReclassificationReason = async (user: UserEvent, reason: ReclassificationReasonEnum) => {
   const field = getReclassificationReasonField(reason)
   await user.click(field)
   return field
@@ -102,14 +87,11 @@ const setReclassificationReason = async (
 // comment
 const getCommentBlock = () => within(getContainer()).getByTestId('comment')
 
-const getCommentTitle = () =>
-  within(getCommentBlock()).getByTitle('Комментарий')
+const getCommentTitle = () => within(getCommentBlock()).getByTitle('Комментарий')
 
-const getCommentField = () =>
-  within(getCommentBlock()).getByPlaceholderText('Опишите ситуацию')
+const getCommentField = () => within(getCommentBlock()).getByPlaceholderText('Опишите ситуацию')
 
-const findCommentError = (text: string) =>
-  within(getCommentBlock()).findByText(text)
+const findCommentError = (text: string) => within(getCommentBlock()).findByText(text)
 
 const setComment = async (user: UserEvent, value: string) => {
   const field = getCommentField()
@@ -118,11 +100,9 @@ const setComment = async (user: UserEvent, value: string) => {
 }
 
 // loading
-const expectLoadingStarted = () =>
-  expectLoadingStartedByButton(getSubmitButton())
+const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
 
-const expectLoadingFinished = () =>
-  expectLoadingFinishedByButton(getSubmitButton())
+const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -158,9 +138,7 @@ describe('Модалка запроса о переклассификации з
   test('Заголовок отображается', () => {
     render(<RequestTaskReclassificationModal {...props} />)
 
-    expect(
-      testUtils.getChildByText('Запрос о переклассификации заявки'),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText('Запрос о переклассификации заявки')).toBeInTheDocument()
     expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
   })
 
@@ -225,10 +203,7 @@ describe('Модалка запроса о переклассификации з
         await testUtils.clickSubmitButton(user)
 
         expect(props.onSubmit).toBeCalledTimes(1)
-        expect(props.onSubmit).toBeCalledWith(
-          expect.anything(),
-          expect.anything(),
-        )
+        expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
       })
 
       test('Если поля не заполнены', async () => {
@@ -288,16 +263,12 @@ describe('Модалка запроса о переклассификации з
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(
-            <RequestTaskReclassificationModal {...props} />,
-          )
+          const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
 
           expect(
-            await testUtils.findReclassificationReasonError(
-              validationMessages.required,
-            ),
+            await testUtils.findReclassificationReasonError(validationMessages.required),
           ).toBeInTheDocument()
         })
       })
@@ -335,9 +306,7 @@ describe('Модалка запроса о переклассификации з
 
       describe('Отображается ошибка', () => {
         test('Если ввести только пробелы', async () => {
-          const { user } = render(
-            <RequestTaskReclassificationModal {...props} />,
-          )
+          const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
           await testUtils.setComment(user, ' ')
 
@@ -347,15 +316,11 @@ describe('Модалка запроса о переклассификации з
         })
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(
-            <RequestTaskReclassificationModal {...props} />,
-          )
+          const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
           await testUtils.clickSubmitButton(user)
 
-          expect(
-            await testUtils.findCommentError(validationMessages.required),
-          ).toBeInTheDocument()
+          expect(await testUtils.findCommentError(validationMessages.required)).toBeInTheDocument()
         })
       })
     })

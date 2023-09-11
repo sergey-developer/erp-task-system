@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
-import { GetTaskJournalQueryArgs } from 'modules/task/models'
+import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+
+import { GetTaskJournalQueryArgs, GetTaskJournalSuccessResponse } from 'modules/task/models'
 import { taskJournalApiPermissions } from 'modules/task/permissions'
 import { useGetTaskJournalQuery } from 'modules/task/services/taskJournalApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -9,7 +11,12 @@ import { commonApiMessages } from 'shared/constants/common'
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useGetTaskJournal = (id: GetTaskJournalQueryArgs) => {
+type UseGetTaskJournalResult = CustomUseQueryHookResult<
+  GetTaskJournalQueryArgs,
+  GetTaskJournalSuccessResponse
+>
+
+export const useGetTaskJournal = (id: GetTaskJournalQueryArgs): UseGetTaskJournalResult => {
   const permissions = useUserPermissions(taskJournalApiPermissions.list)
   const state = useGetTaskJournalQuery(id, { skip: !permissions.canGetList })
 

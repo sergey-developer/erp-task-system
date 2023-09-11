@@ -8,16 +8,10 @@ import countryFixtures from 'fixtures/country'
 import warehouseFixtures from 'fixtures/warehouse'
 
 import {
-  clickSelectOption,
-  expectLoadingFinishedBySelect,
-  expectLoadingStartedBySelect,
+  selectTestUtils,
   fakeWord,
-  getButtonIn,
-  getSelect,
-  getSelectOption,
-  openSelect,
-  queryButtonIn,
   render,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import AddOrEditNomenclatureModal from './index'
@@ -98,11 +92,11 @@ const getGroupFormItem = () => within(getContainer()).getByTestId('group-form-it
 const getGroupLabel = () => within(getGroupFormItem()).getByLabelText('Группа')
 
 const getGroupField = (opened?: boolean) =>
-  getSelect(getGroupFormItem(), { name: 'Группа', expanded: opened })
+  selectTestUtils.getSelect(getGroupFormItem(), { name: 'Группа', expanded: opened })
 
-const setGroup = clickSelectOption
+const setGroup = selectTestUtils.clickSelectOption
 
-const getGroupOption = getSelectOption
+const getGroupOption = selectTestUtils.getSelectOption
 
 const getSelectedGroup = (value: string): HTMLElement =>
   within(getGroupFormItem()).getByTitle(value)
@@ -111,15 +105,15 @@ const querySelectedGroup = (value: string): MaybeNull<HTMLElement> =>
   within(getGroupFormItem()).queryByTitle(value)
 
 const openGroupSelect = async (user: UserEvent) => {
-  await openSelect(user, getGroupFormItem())
+  await selectTestUtils.openSelect(user, getGroupFormItem())
 }
 
 const findGroupError = (error: string): Promise<HTMLElement> =>
   within(getGroupFormItem()).findByText(error)
 
-const expectGroupLoadingStarted = () => expectLoadingStartedBySelect(getGroupFormItem())
+const expectGroupLoadingStarted = () => selectTestUtils.expectLoadingStarted(getGroupFormItem())
 
-const expectGroupLoadingFinished = () => expectLoadingFinishedBySelect(getGroupFormItem())
+const expectGroupLoadingFinished = () => selectTestUtils.expectLoadingFinished(getGroupFormItem())
 
 // vendor code field
 const getVendorCodeFormItem = () => within(getContainer()).getByTestId('vendor-code-form-item')
@@ -146,14 +140,14 @@ const getMeasurementUnitLabel = () =>
   within(getMeasurementUnitFormItem()).getByLabelText('Единица измерения')
 
 const getMeasurementUnitField = (opened?: boolean) =>
-  getSelect(getMeasurementUnitFormItem(), {
+  selectTestUtils.getSelect(getMeasurementUnitFormItem(), {
     name: 'Единица измерения',
     expanded: opened,
   })
 
-const setMeasurementUnit = clickSelectOption
+const setMeasurementUnit = selectTestUtils.clickSelectOption
 
-const getMeasurementUnitOption = getSelectOption
+const getMeasurementUnitOption = selectTestUtils.getSelectOption
 
 const getSelectedMeasurementUnit = (value: string): HTMLElement =>
   within(getMeasurementUnitFormItem()).getByTitle(value)
@@ -162,17 +156,17 @@ const querySelectedMeasurementUnit = (value: string): MaybeNull<HTMLElement> =>
   within(getMeasurementUnitFormItem()).queryByTitle(value)
 
 const openMeasurementUnitSelect = async (user: UserEvent) => {
-  await openSelect(user, getMeasurementUnitFormItem())
+  await selectTestUtils.openSelect(user, getMeasurementUnitFormItem())
 }
 
 const findMeasurementUnitError = (error: string): Promise<HTMLElement> =>
   within(getMeasurementUnitFormItem()).findByText(error)
 
 const expectMeasurementUnitLoadingStarted = () =>
-  expectLoadingStartedBySelect(getMeasurementUnitFormItem())
+  selectTestUtils.expectLoadingStarted(getMeasurementUnitFormItem())
 
 const expectMeasurementUnitLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getMeasurementUnitFormItem())
+  selectTestUtils.expectLoadingFinished(getMeasurementUnitFormItem())
 
 // country field
 const getCountryFormItem = () => within(getContainer()).getByTestId('country-form-item')
@@ -180,14 +174,14 @@ const getCountryFormItem = () => within(getContainer()).getByTestId('country-for
 const getCountryLabel = () => within(getCountryFormItem()).getByLabelText('Страна производитель')
 
 const getCountryField = (opened?: boolean) =>
-  getSelect(getCountryFormItem(), {
+  selectTestUtils.getSelect(getCountryFormItem(), {
     name: 'Страна производитель',
     expanded: opened,
   })
 
-const setCountry = clickSelectOption
+const setCountry = selectTestUtils.clickSelectOption
 
-const getCountryOption = getSelectOption
+const getCountryOption = selectTestUtils.getSelectOption
 
 const getSelectedCountry = (value: string): HTMLElement =>
   within(getCountryFormItem()).getByTitle(value)
@@ -196,20 +190,20 @@ const querySelectedCountry = (value: string): MaybeNull<HTMLElement> =>
   within(getCountryFormItem()).queryByTitle(value)
 
 const openCountrySelect = async (user: UserEvent) => {
-  await openSelect(user, getCountryFormItem())
+  await selectTestUtils.openSelect(user, getCountryFormItem())
 }
 
 const findCountryError = (error: string): Promise<HTMLElement> =>
   within(getCountryFormItem()).findByText(error)
 
-const expectCountryLoadingStarted = () => expectLoadingStartedBySelect(getCountryFormItem())
+const expectCountryLoadingStarted = () => selectTestUtils.expectLoadingStarted(getCountryFormItem())
 
-const expectCountryLoadingFinished = () => expectLoadingFinishedBySelect(getCountryFormItem())
+const expectCountryLoadingFinished = () => selectTestUtils.expectLoadingFinished(getCountryFormItem())
 
 // submit button
-const getSubmitButton = (name: RegExp) => getButtonIn(getContainer(), name)
+const getSubmitButton = (name: RegExp) => buttonTestUtils.getButtonIn(getContainer(), name)
 
-const querySubmitButton = (name: RegExp) => queryButtonIn(getContainer(), name)
+const querySubmitButton = (name: RegExp) => buttonTestUtils.queryButtonIn(getContainer(), name)
 
 const clickSubmitButton = async (user: UserEvent, name: RegExp) => {
   const button = getSubmitButton(name)
@@ -227,9 +221,9 @@ const clickAddButton = async (user: UserEvent) => {
 }
 
 // close button
-const getCancelButton = () => getButtonIn(getContainer(), /Отменить/)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Отменить/)
 
-const queryCancelButton = () => queryButtonIn(getContainer(), /Отменить/)
+const queryCancelButton = () => buttonTestUtils.queryButtonIn(getContainer(), /Отменить/)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()

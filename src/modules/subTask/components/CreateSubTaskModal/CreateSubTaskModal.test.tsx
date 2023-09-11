@@ -21,23 +21,13 @@ import {
   mockGetSupportGroupListSuccess,
 } from '_tests_/mocks/api'
 import {
-  clickSelectOption,
+  selectTestUtils,
   fakeWord,
-  getButtonIn,
-  getSelect,
-  expectLoadingFinishedByButton,
-  expectLoadingFinishedBySelect,
-  expectLoadingStartedByButton,
-  expectLoadingStartedBySelect,
-  querySelect,
   render,
-  openSelect,
-  setupNotifications,
   getStoreWithAuth,
-  findNotification,
   setupApiTests,
-  getSelectOption,
-} from '_tests_/utils'
+  notificationTestUtils, buttonTestUtils
+} from "_tests_/utils";
 
 import CreateSubTaskModal from './index'
 import { CreateSubTaskFormErrors, CreateSubTaskFormFields, CreateSubTaskModalProps } from './types'
@@ -57,13 +47,13 @@ const getChildByText = (text: string | RegExp) => within(getContainer()).getByTe
 const getSupportGroupFormItem = () => within(getContainer()).getByTestId('supportGroup')
 
 const getSupportGroupSelect = (opened?: boolean) =>
-  getSelect(getSupportGroupFormItem(), {
+  selectTestUtils.getSelect(getSupportGroupFormItem(), {
     name: 'Группа поддержки',
     expanded: opened,
   })
 
 const querySupportGroupSelect = (opened?: boolean) =>
-  querySelect(getSupportGroupFormItem(), {
+  selectTestUtils.querySelect(getSupportGroupFormItem(), {
     name: 'Группа поддержки',
     expanded: opened,
   })
@@ -73,9 +63,9 @@ const getSupportGroupSelectPlaceholder = () =>
 
 const getSupportGroupLabel = () => within(getSupportGroupFormItem()).getByTitle('Группа поддержки')
 
-const setSupportGroup = clickSelectOption
+const setSupportGroup = selectTestUtils.clickSelectOption
 
-const getSupportGroupOption = getSelectOption
+const getSupportGroupOption = selectTestUtils.getSelectOption
 
 const getSelectedSupportGroup = (value: string) =>
   within(getSupportGroupFormItem()).getByTitle(value)
@@ -84,34 +74,34 @@ const querySelectedSupportGroup = (value: string) =>
   within(getSupportGroupFormItem()).queryByTitle(value)
 
 const openSupportGroupSelect = async (user: UserEvent) => {
-  await openSelect(user, getSupportGroupFormItem())
+  await selectTestUtils.openSelect(user, getSupportGroupFormItem())
 }
 
 const findSupportGroupError = (error: string) => within(getSupportGroupFormItem()).findByText(error)
 
 const supportGroupExpectLoadingStarted = () =>
-  expectLoadingStartedBySelect(getSupportGroupFormItem())
+  selectTestUtils.expectLoadingStarted(getSupportGroupFormItem())
 
 const supportGroupExpectLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getSupportGroupFormItem())
+  selectTestUtils.expectLoadingFinished(getSupportGroupFormItem())
 
 // service field
 const getServiceFieldFormItem = () => within(getContainer()).getByTestId('service')
 
 const getServiceField = (opened?: boolean) =>
-  getSelect(getServiceFieldFormItem(), { name: 'Сервис', expanded: opened })
+  selectTestUtils.getSelect(getServiceFieldFormItem(), { name: 'Сервис', expanded: opened })
 
 const queryServiceField = (opened?: boolean) =>
-  querySelect(getServiceFieldFormItem(), { name: 'Сервис', expanded: opened })
+  selectTestUtils.querySelect(getServiceFieldFormItem(), { name: 'Сервис', expanded: opened })
 
 const getServiceFieldPlaceholder = () =>
   within(getServiceFieldFormItem()).getByText('Наименование сервиса')
 
 const getServiceFieldLabel = () => within(getServiceFieldFormItem()).getByTitle('Сервис')
 
-const setService = clickSelectOption
+const setService = selectTestUtils.clickSelectOption
 
-const getServiceOption = getSelectOption
+const getServiceOption = selectTestUtils.getSelectOption
 
 const getSelectedService = (value: string) => within(getServiceFieldFormItem()).getByTitle(value)
 
@@ -119,14 +109,14 @@ const querySelectedService = (value: string) =>
   within(getServiceFieldFormItem()).queryByTitle(value)
 
 const openServiceSelect = async (user: UserEvent) => {
-  await openSelect(user, getServiceFieldFormItem())
+  await selectTestUtils.openSelect(user, getServiceFieldFormItem())
 }
 
 const findServiceFieldError = (error: string) => within(getServiceFieldFormItem()).findByText(error)
 
-const serviceExpectLoadingStarted = () => expectLoadingStartedBySelect(getServiceFieldFormItem())
+const serviceExpectLoadingStarted = () => selectTestUtils.expectLoadingStarted(getServiceFieldFormItem())
 
-const serviceExpectLoadingFinished = () => expectLoadingFinishedBySelect(getServiceFieldFormItem())
+const serviceExpectLoadingFinished = () => selectTestUtils.expectLoadingFinished(getServiceFieldFormItem())
 
 // title field
 const getTitleFieldContainer = () => within(getContainer()).getByTestId('title')
@@ -143,7 +133,7 @@ const setTitle = async (user: UserEvent, value: string) => {
 }
 
 const resetTitle = async (user: UserEvent) => {
-  const button = getButtonIn(getTitleFieldContainer(), 'close-circle')
+  const button = buttonTestUtils.getButtonIn(getTitleFieldContainer(), 'close-circle')
   await user.click(button)
 }
 
@@ -165,7 +155,7 @@ const setDescription = async (user: UserEvent, value: string) => {
 }
 
 const resetDescription = async (user: UserEvent) => {
-  const button = getButtonIn(getDescriptionFieldContainer(), 'close-circle')
+  const button = buttonTestUtils.getButtonIn(getDescriptionFieldContainer(), 'close-circle')
   await user.click(button)
 }
 
@@ -173,7 +163,7 @@ const findDescriptionFieldError = (error: string) =>
   within(getDescriptionFieldContainer()).findByText(error)
 
 // submit button
-const getSubmitButton = () => getButtonIn(getContainer(), /создать задание/i)
+const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /создать задание/i)
 
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
@@ -182,7 +172,7 @@ const clickSubmitButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -210,8 +200,8 @@ const setFormValues = async (
   await setDescription(user, values.description)
 }
 
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitButton())
-const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitButton())
+const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
+const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -275,7 +265,7 @@ export const testUtils = {
 }
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 afterEach(() => {
   const onCancel = props.onCancel as jest.Mock
@@ -1019,7 +1009,9 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.description.findError(badRequestResponse.description[0]),
         ).toBeInTheDocument()
 
-        const notification = await findNotification(createSubTaskMessages.commonError)
+        const notification = await notificationTestUtils.findNotification(
+          createSubTaskMessages.commonError,
+        )
         expect(notification).toBeInTheDocument()
       })
 
@@ -1045,7 +1037,9 @@ describe('Модалка создания задачи заявки', () => {
         })
         await testUtils.clickSubmitButton(user)
 
-        const notification = await findNotification(createSubTaskMessages.commonError)
+        const notification = await notificationTestUtils.findNotification(
+          createSubTaskMessages.commonError,
+        )
         expect(notification).toBeInTheDocument()
       })
     })
@@ -1067,7 +1061,9 @@ describe('Модалка создания задачи заявки', () => {
         await testUtils.supportGroup.openField(user)
         await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
 
-        const notification = await findNotification(getSubTaskTemplateListMessages.commonError)
+        const notification = await notificationTestUtils.findNotification(
+          getSubTaskTemplateListMessages.commonError,
+        )
         expect(notification).toBeInTheDocument()
       })
     })
@@ -1082,7 +1078,9 @@ describe('Модалка создания задачи заявки', () => {
           store: getStoreWithAuth(),
         })
 
-        const notification = await findNotification(getSupportGroupListMessages.commonError)
+        const notification = await notificationTestUtils.findNotification(
+          getSupportGroupListMessages.commonError,
+        )
         expect(notification).toBeInTheDocument()
       })
     })

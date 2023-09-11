@@ -4,15 +4,10 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { MaybeNull } from 'shared/types/utils'
 
 import {
-  clickSelectOption,
-  expectLoadingFinishedBySelect,
-  expectLoadingStartedBySelect,
+  selectTestUtils,
   fakeWord,
-  getButtonIn,
-  getSelect,
-  getSelectOption,
-  openSelect,
   render,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import EquipmentModal from './index'
@@ -60,7 +55,8 @@ const getContainer = () => screen.getByTestId('equipment-modal')
 const findContainer = (): Promise<HTMLElement> => screen.findByTestId('equipment-modal')
 
 // add button
-const getAddButton = () => getButtonIn(getContainer(), new RegExp(addModeProps.okText as string))
+const getAddButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), new RegExp(addModeProps.okText as string))
 
 const clickAddButton = async (user: UserEvent) => {
   const button = getAddButton()
@@ -68,7 +64,8 @@ const clickAddButton = async (user: UserEvent) => {
 }
 
 // edit button
-const getEditButton = () => getButtonIn(getContainer(), new RegExp(editModeProps.okText as string))
+const getEditButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), new RegExp(editModeProps.okText as string))
 
 const clickEditButton = async (user: UserEvent) => {
   const button = getEditButton()
@@ -76,7 +73,7 @@ const clickEditButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => getButtonIn(getContainer(), 'Отменить')
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Отменить')
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -89,11 +86,11 @@ const getCategoryFormItem = () => within(getContainer()).getByTestId('category')
 const getCategoryLabel = () => within(getCategoryFormItem()).getByLabelText('Группа')
 
 const getCategorySelectInput = (opened?: boolean) =>
-  getSelect(getCategoryFormItem(), { name: 'Выберите категорию', expanded: opened })
+  selectTestUtils.getSelect(getCategoryFormItem(), { name: 'Выберите категорию', expanded: opened })
 
-const setCategory = clickSelectOption
+const setCategory = selectTestUtils.clickSelectOption
 
-const getCategoryOption = getSelectOption
+const getCategoryOption = selectTestUtils.getSelectOption
 
 const getSelectedCategory = (value: string): HTMLElement =>
   within(getCategoryFormItem()).getByTitle(value)
@@ -102,15 +99,15 @@ const querySelectedCategory = (value: string): MaybeNull<HTMLElement> =>
   within(getCategoryFormItem()).queryByTitle(value)
 
 const openCategorySelect = async (user: UserEvent) => {
-  await openSelect(user, getCategoryFormItem())
+  await selectTestUtils.openSelect(user, getCategoryFormItem())
 }
 
 const findCategoryError = (error: string): Promise<HTMLElement> =>
   within(getCategoryFormItem()).findByText(error)
 
-const expectCategoryLoadingStarted = () => expectLoadingStartedBySelect(getCategoryFormItem())
+const expectCategoryLoadingStarted = () => selectTestUtils.expectLoadingStarted(getCategoryFormItem())
 
-const expectCategoryLoadingFinished = () => expectLoadingFinishedBySelect(getCategoryFormItem())
+const expectCategoryLoadingFinished = () => selectTestUtils.expectLoadingFinished(getCategoryFormItem())
 
 export const testUtils = {
   getContainer,

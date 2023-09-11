@@ -6,20 +6,12 @@ import { formatDate } from 'shared/utils/date'
 
 import taskFixtures from 'fixtures/task'
 
-import {
-  expectLoadingFinishedByIconIn,
-  expectLoadingStartedByIconIn,
-  render,
-} from '_tests_/utils'
+import { iconTestUtils, render } from '_tests_/utils'
 
 import FiscalAccumulatorTaskTable from './index'
-import {
-  FiscalAccumulatorTaskTableItem,
-  FiscalAccumulatorTaskTableProps,
-} from './types'
+import { FiscalAccumulatorTaskTableItem, FiscalAccumulatorTaskTableProps } from './types'
 
-const fakeFiscalAccumulatorTaskListItem =
-  taskFixtures.fiscalAccumulatorTaskListItem()
+const fakeFiscalAccumulatorTaskListItem = taskFixtures.fiscalAccumulatorTaskListItem()
 
 const props: Readonly<FiscalAccumulatorTaskTableProps> = {
   dataSource: [fakeFiscalAccumulatorTaskListItem],
@@ -30,12 +22,9 @@ const getContainer = () => screen.getByTestId('fiscal-accumulator-task-table')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
-const queryChildByText = (text: string) =>
-  within(getContainer()).queryByText(text)
+const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
-const getRow = (
-  id: FiscalAccumulatorTaskTableItem['olaNextBreachTime'],
-): MaybeNull<HTMLElement> =>
+const getRow = (id: FiscalAccumulatorTaskTableItem['olaNextBreachTime']): MaybeNull<HTMLElement> =>
   // eslint-disable-next-line testing-library/no-node-access
   getContainer().querySelector(`[data-row-key='${id}']`)
 
@@ -60,10 +49,9 @@ const getColValue = (
   return row ? within(row).getByText(value) : null
 }
 
-const expectLoadingStarted = () => expectLoadingStartedByIconIn(getContainer())
+const expectLoadingStarted = () => iconTestUtils.expectLoadingStartedIn(getContainer())
 
-const expectLoadingFinished = () =>
-  expectLoadingFinishedByIconIn(getContainer())
+const expectLoadingFinished = () => iconTestUtils.expectLoadingFinishedIn(getContainer())
 
 export const testUtils = {
   getContainer,

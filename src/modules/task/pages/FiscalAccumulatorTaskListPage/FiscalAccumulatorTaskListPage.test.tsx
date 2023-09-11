@@ -1,5 +1,5 @@
-import { getFiscalAccumulatorTaskListMessages } from 'modules/task/constants'
 import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/task/components/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
+import { getFiscalAccumulatorTaskListMessages } from 'modules/task/constants'
 
 import taskFixtures from 'fixtures/task'
 
@@ -7,24 +7,17 @@ import {
   mockGetFiscalAccumulatorTaskListServerError,
   mockGetFiscalAccumulatorTaskListSuccess,
 } from '_tests_/mocks/api'
-import {
-  findNotification,
-  render,
-  setupApiTests,
-  setupNotifications,
-} from '_tests_/utils'
+import { notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
 import FiscalAccumulatorTaskListPage from './index'
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Страница заявок фискальных накопителей', () => {
   describe('При успешном запросе', () => {
     test('Таблица отображается корректно', async () => {
-      const fakeFiscalAccumulatorTaskLists = [
-        taskFixtures.fiscalAccumulatorTaskListItem(),
-      ]
+      const fakeFiscalAccumulatorTaskLists = [taskFixtures.fiscalAccumulatorTaskListItem()]
       mockGetFiscalAccumulatorTaskListSuccess({
         body: fakeFiscalAccumulatorTaskLists,
       })
@@ -35,9 +28,7 @@ describe('Страница заявок фискальных накопител�
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
       fakeFiscalAccumulatorTaskLists.forEach((item) => {
-        const row = fiscalAccumulatorTaskTableTestUtils.getRow(
-          item.olaNextBreachTime,
-        )
+        const row = fiscalAccumulatorTaskTableTestUtils.getRow(item.olaNextBreachTime)
         expect(row).toBeInTheDocument()
       })
     })
@@ -52,7 +43,7 @@ describe('Страница заявок фискальных накопител�
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
-      const notification = await findNotification(
+      const notification = await notificationTestUtils.findNotification(
         getFiscalAccumulatorTaskListMessages.commonError,
       )
 

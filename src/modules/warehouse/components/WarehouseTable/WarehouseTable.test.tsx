@@ -19,12 +19,7 @@ import {
   columnWithSortingClass,
 } from '_tests_/constants/components'
 import { mockGetWarehouseSuccess } from '_tests_/mocks/api'
-import {
-  expectLoadingFinishedByIconIn,
-  expectLoadingStartedByIconIn,
-  renderInRoute_latest,
-  tableTestUtils,
-} from '_tests_/utils'
+import { iconTestUtils, renderInRoute_latest, tableTestUtils } from '_tests_/utils'
 
 import WarehouseTable from './index'
 import { WarehouseTableProps } from './types'
@@ -70,9 +65,9 @@ const clickTitleLink = async (user: UserEvent, id: IdType, title: string) => {
 }
 
 // loading
-const expectLoadingStarted = () => expectLoadingStartedByIconIn(getContainer())
+const expectLoadingStarted = () => iconTestUtils.expectLoadingStartedIn(getContainer())
 
-const expectLoadingFinished = () => expectLoadingFinishedByIconIn(getContainer())
+const expectLoadingFinished = () => iconTestUtils.expectLoadingFinishedIn(getContainer())
 
 export const testUtils = {
   getContainer,

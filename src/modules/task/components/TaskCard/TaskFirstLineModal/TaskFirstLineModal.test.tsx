@@ -1,17 +1,13 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
+import { validationMessages, validationSizes } from 'shared/constants/validation'
 
 import {
   fakeWord,
-  getButtonIn,
-  expectLoadingStartedByButton,
   render,
   fakeIdStr,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import TaskFirstLineModal from './index'
@@ -32,8 +28,7 @@ const getDescriptionField = () =>
     name: 'Причина возврата',
   })
 
-const getDescriptionFieldContainer = () =>
-  within(getContainer()).getByTestId('field-description')
+const getDescriptionFieldContainer = () => within(getContainer()).getByTestId('field-description')
 
 const setDescription = async (user: UserEvent, value: string) => {
   const field = getDescriptionField()
@@ -41,13 +36,14 @@ const setDescription = async (user: UserEvent, value: string) => {
   return field
 }
 
-const getSubmitButton = () => getButtonIn(getContainer(), /вернуть заявку/i)
+const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /вернуть заявку/i)
+
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
   return button
 }
-const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
 
 export const testUtils = {
   getContainer,
@@ -132,9 +128,7 @@ describe('Модальное окно перевода запроса на пе�
 
           await user.type(description, ' ')
 
-          const errorMessage = await screen.findByText(
-            validationMessages.canNotBeEmpty,
-          )
+          const errorMessage = await screen.findByText(validationMessages.canNotBeEmpty)
           expect(errorMessage).toBeInTheDocument()
         })
 
@@ -142,14 +136,9 @@ describe('Модальное окно перевода запроса на пе�
           const { user } = render(<TaskFirstLineModal {...props} />)
 
           const field = testUtils.getDescriptionField()
-          await user.type(
-            field,
-            fakeWord({ length: validationSizes.string.long + 1 }),
-          )
+          await user.type(field, fakeWord({ length: validationSizes.string.long + 1 }))
 
-          expect(
-            await screen.findByText(validationMessages.string.max.long),
-          ).toBeInTheDocument()
+          expect(await screen.findByText(validationMessages.string.max.long)).toBeInTheDocument()
         })
 
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
@@ -158,9 +147,7 @@ describe('Модальное окно перевода запроса на пе�
           const submitButton = testUtils.getSubmitButton()
           await user.click(submitButton)
 
-          const errorMessage = await screen.findByText(
-            validationMessages.required,
-          )
+          const errorMessage = await screen.findByText(validationMessages.required)
           expect(errorMessage).toBeInTheDocument()
         })
       })
@@ -180,7 +167,7 @@ describe('Модальное окно перевода запроса на пе�
         render(<TaskFirstLineModal {...props} isLoading />)
 
         const submitButton = testUtils.getSubmitButton()
-        await expectLoadingStartedByButton(submitButton)
+        await buttonTestUtils.expectLoadingStarted(submitButton)
       })
 
       test('Обработчик вызывается корректно', async () => {
@@ -193,10 +180,7 @@ describe('Модальное окно перевода запроса на пе�
         await user.click(submitButton)
 
         expect(props.onSubmit).toBeCalledTimes(1)
-        expect(props.onSubmit).toBeCalledWith(
-          expect.anything(),
-          expect.anything(),
-        )
+        expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
       })
     })
 

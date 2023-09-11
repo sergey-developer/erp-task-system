@@ -5,7 +5,7 @@ import React from 'react'
 import { RouteEnum } from 'configs/routes'
 
 import { mockGetEquipmentNomenclatureListSuccess } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/user'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { linkTestUtils, renderInRoute_latest } from '_tests_/utils'
 
 import EquipmentNomenclatureListPage from '../EquipmentNomenclatureListPage'

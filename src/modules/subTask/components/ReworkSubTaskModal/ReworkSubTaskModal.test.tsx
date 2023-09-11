@@ -8,12 +8,9 @@ import {
 
 import {
   fakeWord,
-  getButtonIn,
-  expectLoadingFinishedByButton,
-  expectLoadingStartedByButton,
   render,
-  fakeIdStr,
-} from '_tests_/utils'
+  fakeIdStr, buttonTestUtils
+} from "_tests_/utils";
 
 import ReworkSubTaskModal from './index'
 import { ReworkSubTaskModalProps } from './types'
@@ -51,7 +48,7 @@ const findReturnReasonFieldError = async (error: string) =>
   within(getReturnReasonFieldContainer()).findByText(error)
 
 // submit button
-const getSubmitButton = () => getButtonIn(getContainer(), /сохранить/i)
+const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /сохранить/i)
 
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
@@ -60,7 +57,7 @@ const clickSubmitButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -70,9 +67,9 @@ const clickCancelButton = async (user: UserEvent) => {
 
 // other
 const expectLoadingStarted = () =>
-  expectLoadingStartedByButton(getSubmitButton())
+  buttonTestUtils.expectLoadingStarted(getSubmitButton())
 const expectLoadingFinished = () =>
-  expectLoadingFinishedByButton(getSubmitButton())
+  buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -193,7 +190,7 @@ describe('Модалка отправки запроса на доработку
         render(<ReworkSubTaskModal {...props} isLoading />)
 
         const submitButton = testUtils.getSubmitButton()
-        await expectLoadingStartedByButton(submitButton)
+        await buttonTestUtils.expectLoadingStarted(submitButton)
       })
 
       test('Обработчик вызывается корректно', async () => {

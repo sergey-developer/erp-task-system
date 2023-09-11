@@ -2,10 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import moment from 'moment-timezone'
 
-import {
-  TaskExtendedStatusEnum,
-  taskExtendedStatusDict,
-} from 'modules/task/constants'
+import { TaskExtendedStatusEnum, taskExtendedStatusDict } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import userFixtures from 'fixtures/user'
@@ -13,22 +10,15 @@ import workGroupFixtures from 'fixtures/workGroup'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
-  clickSelectOption,
+  selectTestUtils,
   fakeName,
   fakeWord,
-  getButtonIn,
-  getCheckboxIn,
-  getRadioButtonIn,
-  getSelect,
-  getSelectOption,
-  getSelectedOption,
+  checkboxTestUtils,
+  radioButtonTestUtils,
   getStoreWithAuth,
-  expectLoadingFinishedBySelect,
-  querySelectOption,
   render,
   setupApiTests,
-  openSelect,
-  userSearchInSelect,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import {
@@ -61,10 +51,10 @@ const getContainer = () => screen.getByTestId('extended-filter')
 const findContainer = () => screen.findByTestId('extended-filter')
 
 // reset button
-const getResetAllButton = () => getButtonIn(getContainer(), /сбросить все/i)
+const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /сбросить все/i)
 
 const clickResetButtonIn = async (user: UserEvent, container: HTMLElement) => {
-  const button = getButtonIn(container, /сбросить/i)
+  const button = buttonTestUtils.getButtonIn(container, /сбросить/i)
   await user.click(button)
   return button
 }
@@ -76,7 +66,7 @@ const clickResetAllButton = async (user: UserEvent) => {
 }
 
 // close button
-const getCloseButton = () => getButtonIn(getContainer(), /close/i)
+const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
 
 const closeFilter = async (user: UserEvent) => {
   const button = getCloseButton()
@@ -85,7 +75,7 @@ const closeFilter = async (user: UserEvent) => {
 }
 
 // apply button
-const getApplyButton = () => getButtonIn(getContainer(), /применить/i)
+const getApplyButton = () => buttonTestUtils.getButtonIn(getContainer(), /применить/i)
 
 const applyFilter = async (user: UserEvent) => {
   const button = getApplyButton()
@@ -94,11 +84,10 @@ const applyFilter = async (user: UserEvent) => {
 }
 
 // status
-const getStatusFieldContainer = () =>
-  screen.getByTestId('extended-filter-status')
+const getStatusFieldContainer = () => screen.getByTestId('extended-filter-status')
 
 const getStatusField = (label: string) =>
-  getCheckboxIn(getStatusFieldContainer(), new RegExp(label))
+  checkboxTestUtils.getCheckboxIn(getStatusFieldContainer(), new RegExp(label))
 
 const setStatus = async (user: UserEvent, label: string) => {
   const field = getStatusField(label)
@@ -110,7 +99,7 @@ const expectStatusHasCorrectInitialValues = () => {
   const container = getStatusFieldContainer()
 
   Object.entries(taskExtendedStatusDict).forEach(([value, text]) => {
-    const checkbox = getCheckboxIn(container, new RegExp(text))
+    const checkbox = checkboxTestUtils.getCheckboxIn(container, new RegExp(text))
     expect(checkbox).not.toBeChecked()
     expect(checkbox.value).toBe(value)
   })
@@ -124,11 +113,10 @@ const status = {
 }
 
 // assigned
-const getAssignedFieldContainer = () =>
-  screen.getByTestId('extended-filter-is-assigned')
+const getAssignedFieldContainer = () => screen.getByTestId('extended-filter-is-assigned')
 
 const getAssignedField = (label: string) =>
-  getRadioButtonIn(getAssignedFieldContainer(), label)
+  radioButtonTestUtils.getRadioButtonIn(getAssignedFieldContainer(), label)
 
 const setAssigned = async (user: UserEvent, label: string) => {
   const radioButton = getAssignedField(label)
@@ -140,7 +128,7 @@ const expectAssignedHasCorrectInitialValues = () => {
   const container = getAssignedFieldContainer()
 
   Object.entries(taskAssignedDict).forEach(([value, text]) => {
-    const radioButton = getRadioButtonIn(container, text)
+    const radioButton = radioButtonTestUtils.getRadioButtonIn(container, text)
     expect(radioButton).not.toBeChecked()
     expect(radioButton.value).toBe(value)
   })
@@ -154,11 +142,10 @@ const assigned = {
 }
 
 // overdue
-const getOverdueFieldContainer = () =>
-  screen.getByTestId('extended-filter-is-overdue')
+const getOverdueFieldContainer = () => screen.getByTestId('extended-filter-is-overdue')
 
 const getOverdueField = (label: string) =>
-  getRadioButtonIn(getOverdueFieldContainer(), label)
+  radioButtonTestUtils.getRadioButtonIn(getOverdueFieldContainer(), label)
 
 const setOverdue = async (user: UserEvent, label: string) => {
   const radioButton = getOverdueField(label)
@@ -170,7 +157,7 @@ const expectOverdueHasCorrectInitialValues = () => {
   const container = getOverdueFieldContainer()
 
   Object.entries(taskOverdueDict).forEach(([value, text]) => {
-    const radioButton = getRadioButtonIn(container, text)
+    const radioButton = radioButtonTestUtils.getRadioButtonIn(container, text)
     expect(radioButton).not.toBeChecked()
     expect(radioButton.value).toBe(value)
   })
@@ -184,8 +171,7 @@ const overdue = {
 }
 
 // complete at
-const getCompleteAtFieldContainer = () =>
-  screen.getByTestId('extended-filter-complete-at')
+const getCompleteAtFieldContainer = () => screen.getByTestId('extended-filter-complete-at')
 
 const getStartDateField = (): HTMLInputElement =>
   within(getCompleteAtFieldContainer()).getByPlaceholderText('Начальная дата')
@@ -221,18 +207,15 @@ const completeAt = {
 }
 
 // work group
-const getWorkGroupFieldContainer = () =>
-  screen.getByTestId('extended-filter-work-group')
+const getWorkGroupFieldContainer = () => screen.getByTestId('extended-filter-work-group')
 
-const getWorkGroupField = () =>
-  screen.getByTestId('extended-filter-work-group-select')
+const getWorkGroupField = () => screen.getByTestId('extended-filter-work-group-select')
 
-const queryWorkGroupField = () =>
-  screen.queryByTestId('extended-filter-work-group-select')
+const queryWorkGroupField = () => screen.queryByTestId('extended-filter-work-group-select')
 
 const workGroupExpectLoadingFinished = async () => {
   const workGroupField = getWorkGroupField()
-  await expectLoadingFinishedBySelect(workGroupField)
+  await selectTestUtils.expectLoadingFinished(workGroupField)
   return workGroupField
 }
 
@@ -240,30 +223,27 @@ const workGroup = {
   getContainer: getWorkGroupFieldContainer,
   getField: getWorkGroupField,
   queryField: queryWorkGroupField,
-  openField: openSelect,
-  setValue: clickSelectOption,
+  openField: selectTestUtils.openSelect,
+  setValue: selectTestUtils.clickSelectOption,
   expectLoadingFinished: workGroupExpectLoadingFinished,
 }
 
 // manager
-const getManagerFilterBlock = () =>
-  screen.getByTestId('extended-filter-manager')
+const getManagerFilterBlock = () => screen.getByTestId('extended-filter-manager')
 
-const getManagerFieldContainer = () =>
-  screen.getByTestId('extended-filter-manager-select')
+const getManagerFieldContainer = () => screen.getByTestId('extended-filter-manager-select')
 
-const getManagerField = () => getSelect(getManagerFieldContainer())
+const getManagerField = () => selectTestUtils.getSelect(getManagerFieldContainer())
 
 const openManagerSelect = async (user: UserEvent): Promise<HTMLElement> => {
   const container = getManagerFieldContainer()
-  await openSelect(user, container)
+  await selectTestUtils.openSelect(user, container)
   return container
 }
 
-const getSelectedManager = () => getSelectedOption(getManagerFieldContainer())
+const getSelectedManager = () => selectTestUtils.getSelectedOption(getManagerFieldContainer())
 
-const expectManagerLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getManagerFieldContainer())
+const expectManagerLoadingFinished = () => selectTestUtils.expectLoadingFinished(getManagerFieldContainer())
 
 const manager = {
   getContainer: getManagerFilterBlock,
@@ -271,21 +251,18 @@ const manager = {
   getField: getManagerField,
   getSelected: getSelectedManager,
   openField: openManagerSelect,
-  setValue: clickSelectOption,
+  setValue: selectTestUtils.clickSelectOption,
   expectLoadingFinished: expectManagerLoadingFinished,
 }
 
 // search by column
-const getSearchByColumnFieldContainer = () =>
-  screen.getByTestId('extended-filter-search-by-column')
+const getSearchByColumnFieldContainer = () => screen.getByTestId('extended-filter-search-by-column')
 
 const getSearchByColumnKeywordField = (): HTMLInputElement =>
-  within(getSearchByColumnFieldContainer()).getByPlaceholderText(
-    'Ключевое слово',
-  )
+  within(getSearchByColumnFieldContainer()).getByPlaceholderText('Ключевое слово')
 
 const getSearchByColumnColumnField = (label: string) =>
-  getRadioButtonIn(getSearchByColumnFieldContainer(), label)
+  radioButtonTestUtils.getRadioButtonIn(getSearchByColumnFieldContainer(), label)
 
 const setSearchByColumnKeyword = async (user: UserEvent) => {
   const keywordField = getSearchByColumnKeywordField()
@@ -297,23 +274,20 @@ const setSearchByColumnKeyword = async (user: UserEvent) => {
 }
 
 const setSearchByColumnField = async (user: UserEvent, label: string) => {
-  const radioButton = getRadioButtonIn(getSearchByColumnFieldContainer(), label)
+  const radioButton = radioButtonTestUtils.getRadioButtonIn(
+    getSearchByColumnFieldContainer(),
+    label,
+  )
   await user.click(radioButton)
   return radioButton
 }
 
 const expectSearchByColumnHasCorrectInitialValues = () => {
-  const searchByNameButton = getSearchByColumnColumnField(
-    searchFieldDict.searchByName,
-  )
+  const searchByNameButton = getSearchByColumnColumnField(searchFieldDict.searchByName)
 
-  const searchByTitleButton = getSearchByColumnColumnField(
-    searchFieldDict.searchByTitle,
-  )
+  const searchByTitleButton = getSearchByColumnColumnField(searchFieldDict.searchByTitle)
 
-  const searchByAssigneeButton = getSearchByColumnColumnField(
-    searchFieldDict.searchByAssignee,
-  )
+  const searchByAssigneeButton = getSearchByColumnColumnField(searchFieldDict.searchByAssignee)
 
   expect(searchByNameButton.value).toBe('searchByName')
   expect(searchByTitleButton.value).toBe('searchByTitle')
@@ -434,7 +408,7 @@ describe('Расширенный фильтр', () => {
       const container = testUtils.status.getContainer()
 
       taskExtendedStatusDictValues.forEach((value) => {
-        const checkbox = getCheckboxIn(container, new RegExp(value))
+        const checkbox = checkboxTestUtils.getCheckboxIn(container, new RegExp(value))
         expect(checkbox).toBeInTheDocument()
       })
     })
@@ -458,7 +432,7 @@ describe('Расширенный фильтр', () => {
         />,
       )
 
-      const checkbox = getCheckboxIn(
+      const checkbox = checkboxTestUtils.getCheckboxIn(
         testUtils.status.getContainer(),
         new RegExp(taskExtendedStatusDict[TaskExtendedStatusEnum.InProgress]!),
       )
@@ -473,7 +447,7 @@ describe('Расширенный фильтр', () => {
       const container = testUtils.status.getContainer()
 
       taskExtendedStatusDictValues.forEach((value) => {
-        const checkbox = getCheckboxIn(container, new RegExp(value))
+        const checkbox = checkboxTestUtils.getCheckboxIn(container, new RegExp(value))
         expect(checkbox).toBeEnabled()
       })
     })
@@ -496,14 +470,14 @@ describe('Расширенный фильтр', () => {
         const container = testUtils.status.getContainer()
 
         for await (const value of taskExtendedStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(value))
+          const checkbox = checkboxTestUtils.getCheckboxIn(container, new RegExp(value))
           await user.click(checkbox)
         }
 
         await testUtils.clickResetButtonIn(user, container)
 
         taskExtendedStatusDictValues.forEach((value) => {
-          const checkbox = getCheckboxIn(container, new RegExp(value))
+          const checkbox = checkboxTestUtils.getCheckboxIn(container, new RegExp(value))
           expect(checkbox).not.toBeChecked()
         })
       })
@@ -515,14 +489,14 @@ describe('Расширенный фильтр', () => {
         const container = testUtils.status.getContainer()
 
         for await (const value of taskExtendedStatusDictValues) {
-          const checkbox = getCheckboxIn(container, new RegExp(value))
+          const checkbox = checkboxTestUtils.getCheckboxIn(container, new RegExp(value))
           await user.click(checkbox)
         }
 
         await testUtils.clickResetAllButton(user)
 
         taskExtendedStatusDictValues.forEach((value) => {
-          const checkbox = getCheckboxIn(container, new RegExp(value))
+          const checkbox = checkboxTestUtils.getCheckboxIn(container, new RegExp(value))
           expect(checkbox).not.toBeChecked()
         })
       })
@@ -537,7 +511,7 @@ describe('Расширенный фильтр', () => {
       const container = testUtils.assigned.getContainer()
 
       taskAssignedDictValues.forEach((value) => {
-        const radioButton = getRadioButtonIn(container, value)
+        const radioButton = radioButtonTestUtils.getRadioButtonIn(container, value)
         expect(radioButton).toBeInTheDocument()
       })
     })
@@ -562,7 +536,7 @@ describe('Расширенный фильтр', () => {
       const container = testUtils.assigned.getContainer()
 
       taskAssignedDictValues.forEach((value) => {
-        const radioButton = getRadioButtonIn(container, value)
+        const radioButton = radioButtonTestUtils.getRadioButtonIn(container, value)
         expect(radioButton).toBeEnabled()
       })
     })
@@ -585,7 +559,7 @@ describe('Расширенный фильтр', () => {
         const container = testUtils.assigned.getContainer()
 
         await user.click(
-          getRadioButtonIn(
+          radioButtonTestUtils.getRadioButtonIn(
             container,
             taskAssignedDict[TaskAssignedEnum.NotAssigned],
           ),
@@ -594,7 +568,7 @@ describe('Расширенный фильтр', () => {
         await testUtils.clickResetButtonIn(user, container)
 
         expect(
-          getRadioButtonIn(
+          radioButtonTestUtils.getRadioButtonIn(
             container,
             taskAssignedDict[TaskAssignedEnum.NotAssigned],
           ),
@@ -608,7 +582,7 @@ describe('Расширенный фильтр', () => {
         const container = testUtils.assigned.getContainer()
 
         await user.click(
-          getRadioButtonIn(
+          radioButtonTestUtils.getRadioButtonIn(
             container,
             taskAssignedDict[TaskAssignedEnum.Assigned],
           ),
@@ -617,7 +591,7 @@ describe('Расширенный фильтр', () => {
         await testUtils.clickResetAllButton(user)
 
         expect(
-          getRadioButtonIn(
+          radioButtonTestUtils.getRadioButtonIn(
             container,
             taskAssignedDict[TaskAssignedEnum.Assigned],
           ),
@@ -634,7 +608,7 @@ describe('Расширенный фильтр', () => {
       const container = testUtils.overdue.getContainer()
 
       taskOverdueDictValues.forEach((value) => {
-        const radioButton = getRadioButtonIn(container, value)
+        const radioButton = radioButtonTestUtils.getRadioButtonIn(container, value)
         expect(radioButton).toBeInTheDocument()
       })
     })
@@ -659,7 +633,7 @@ describe('Расширенный фильтр', () => {
       const container = testUtils.overdue.getContainer()
 
       taskOverdueDictValues.forEach((value) => {
-        const radioButton = getRadioButtonIn(container, value)
+        const radioButton = radioButtonTestUtils.getRadioButtonIn(container, value)
         expect(radioButton).toBeEnabled()
       })
     })
@@ -681,12 +655,12 @@ describe('Расширенный фильтр', () => {
 
         const container = testUtils.overdue.getContainer()
 
-        await user.click(getRadioButtonIn(container, taskOverdueDict.False))
+        await user.click(radioButtonTestUtils.getRadioButtonIn(container, taskOverdueDict.False))
 
         await testUtils.clickResetButtonIn(user, container)
 
         expect(
-          getRadioButtonIn(container, taskOverdueDict.False),
+          radioButtonTestUtils.getRadioButtonIn(container, taskOverdueDict.False),
         ).not.toBeChecked()
       })
 
@@ -696,12 +670,12 @@ describe('Расширенный фильтр', () => {
 
         const container = testUtils.overdue.getContainer()
 
-        await user.click(getRadioButtonIn(container, taskOverdueDict.True))
+        await user.click(radioButtonTestUtils.getRadioButtonIn(container, taskOverdueDict.True))
 
         await testUtils.clickResetAllButton(user)
 
         expect(
-          getRadioButtonIn(container, taskOverdueDict.True),
+          radioButtonTestUtils.getRadioButtonIn(container, taskOverdueDict.True),
         ).not.toBeChecked()
       })
     })
@@ -775,35 +749,25 @@ describe('Расширенный фильтр', () => {
         mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
-        const { startDateValue, endDateValue } =
-          await testUtils.completeAt.setValue(user)
+        const { startDateValue, endDateValue } = await testUtils.completeAt.setValue(user)
 
         const container = testUtils.completeAt.getContainer()
         await testUtils.clickResetButtonIn(user, container)
 
-        expect(testUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
-          startDateValue,
-        )
-        expect(testUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(
-          endDateValue,
-        )
+        expect(testUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(startDateValue)
+        expect(testUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(endDateValue)
       })
 
       test('Кнопка "Сбросить всё"', async () => {
         mockGetWorkGroupListSuccess()
         const { user } = render(<ExtendedFilter {...props} />)
 
-        const { startDateValue, endDateValue } =
-          await testUtils.completeAt.setValue(user)
+        const { startDateValue, endDateValue } = await testUtils.completeAt.setValue(user)
 
         await testUtils.clickResetAllButton(user)
 
-        expect(testUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
-          startDateValue,
-        )
-        expect(testUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(
-          endDateValue,
-        )
+        expect(testUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(startDateValue)
+        expect(testUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(endDateValue)
       })
     })
   })
@@ -816,7 +780,7 @@ describe('Расширенный фильтр', () => {
       const container = testUtils.searchByColumn.getContainer()
 
       searchFieldDictValues.forEach((value) => {
-        const radioButton = getRadioButtonIn(container, value)
+        const radioButton = radioButtonTestUtils.getRadioButtonIn(container, value)
         expect(radioButton).toBeInTheDocument()
       })
 
@@ -851,7 +815,7 @@ describe('Расширенный фильтр', () => {
       const keywordField = testUtils.searchByColumn.getKeywordField()
       expect(keywordField).toHaveValue(searchValue)
 
-      const searchByNameButton = getRadioButtonIn(
+      const searchByNameButton = radioButtonTestUtils.getRadioButtonIn(
         container,
         searchFieldDict.searchByName,
       )
@@ -865,7 +829,7 @@ describe('Расширенный фильтр', () => {
       const container = testUtils.searchByColumn.getContainer()
 
       searchFieldDictValues.forEach((value) => {
-        const radioButton = getRadioButtonIn(container, value)
+        const radioButton = radioButtonTestUtils.getRadioButtonIn(container, value)
         expect(radioButton).toBeEnabled()
       })
 
@@ -878,8 +842,7 @@ describe('Расширенный фильтр', () => {
       mockGetWorkGroupListSuccess()
       const { user } = render(<ExtendedFilter {...props} />)
 
-      const { keywordField, keyword } =
-        await testUtils.searchByColumn.setKeywordValue(user)
+      const { keywordField, keyword } = await testUtils.searchByColumn.setKeywordValue(user)
 
       expect(keywordField).toHaveDisplayValue(keyword)
     })
@@ -889,10 +852,7 @@ describe('Расширенный фильтр', () => {
       const { user } = render(<ExtendedFilter {...props} />)
 
       for await (const value of searchFieldDictValues) {
-        const radioButton = await testUtils.searchByColumn.setColumnValue(
-          user,
-          value,
-        )
+        const radioButton = await testUtils.searchByColumn.setColumnValue(user, value)
 
         expect(radioButton).toBeChecked()
       }
@@ -909,16 +869,14 @@ describe('Расширенный фильтр', () => {
         await user.type(testUtils.searchByColumn.getKeywordField(), keyword)
 
         await user.click(
-          getRadioButtonIn(container, searchFieldDict.searchByName),
+          radioButtonTestUtils.getRadioButtonIn(container, searchFieldDict.searchByName),
         )
 
         await testUtils.clickResetButtonIn(user, container)
 
+        expect(testUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(keyword)
         expect(
-          testUtils.searchByColumn.getKeywordField(),
-        ).not.toHaveDisplayValue(keyword)
-        expect(
-          getRadioButtonIn(container, searchFieldDict.searchByName),
+          radioButtonTestUtils.getRadioButtonIn(container, searchFieldDict.searchByName),
         ).not.toBeChecked()
       })
 
@@ -932,16 +890,14 @@ describe('Расширенный фильтр', () => {
         await user.type(testUtils.searchByColumn.getKeywordField(), keyword)
 
         await user.click(
-          getRadioButtonIn(container, searchFieldDict.searchByName),
+          radioButtonTestUtils.getRadioButtonIn(container, searchFieldDict.searchByName),
         )
 
         await testUtils.clickResetAllButton(user)
 
+        expect(testUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(keyword)
         expect(
-          testUtils.searchByColumn.getKeywordField(),
-        ).not.toHaveDisplayValue(keyword)
-        expect(
-          getRadioButtonIn(container, searchFieldDict.searchByName),
+          radioButtonTestUtils.getRadioButtonIn(container, searchFieldDict.searchByName),
         ).not.toBeChecked()
       })
     })
@@ -1023,7 +979,7 @@ describe('Расширенный фильтр', () => {
         })
 
         const workGroupField = await testUtils.workGroup.expectLoadingFinished()
-        const selectedOption = getSelectedOption(workGroupField)
+        const selectedOption = selectTestUtils.getSelectedOption(workGroupField)
 
         expect(selectedOption).not.toBeInTheDocument()
       })
@@ -1049,7 +1005,7 @@ describe('Расширенный фильтр', () => {
         )
 
         const workGroupField = await testUtils.workGroup.expectLoadingFinished()
-        const selectedOption = getSelectedOption(workGroupField)
+        const selectedOption = selectTestUtils.getSelectedOption(workGroupField)
 
         expect(selectedOption).toBeInTheDocument()
         expect(selectedOption).toHaveTextContent(workGroupId)
@@ -1065,7 +1021,7 @@ describe('Расширенный фильтр', () => {
         })
 
         const workGroupField = await testUtils.workGroup.expectLoadingFinished()
-        const select = getSelect(workGroupField)
+        const select = selectTestUtils.getSelect(workGroupField)
 
         expect(select).toBeEnabled()
       })
@@ -1084,7 +1040,7 @@ describe('Расширенный фильтр', () => {
         await testUtils.workGroup.openField(user, workGroupField)
         await testUtils.workGroup.setValue(user, workGroupListItem.name)
 
-        const selectedOption = getSelectedOption(workGroupField)
+        const selectedOption = selectTestUtils.getSelectedOption(workGroupField)
         expect(selectedOption).toHaveTextContent(workGroupListItem.name)
         expect(selectedOption).toBeVisible()
       })
@@ -1103,14 +1059,14 @@ describe('Расширенный фильтр', () => {
 
         const workGroupField = await testUtils.workGroup.expectLoadingFinished()
         await testUtils.workGroup.openField(user, workGroupField)
-        await userSearchInSelect(
+        await selectTestUtils.userSearchInSelect(
           user,
           workGroupField,
           mockedWorkGroupListItem1.name,
         )
 
-        const option1 = getSelectOption(mockedWorkGroupListItem1.name)
-        const option2 = querySelectOption(mockedWorkGroupListItem2.name)
+        const option1 = selectTestUtils.getSelectOption(mockedWorkGroupListItem1.name)
+        const option2 = selectTestUtils.querySelectOption(mockedWorkGroupListItem2.name)
 
         expect(option1).toBeInTheDocument()
         expect(option2).not.toBeInTheDocument()
@@ -1127,8 +1083,7 @@ describe('Расширенный фильтр', () => {
             }),
           })
 
-          const workGroupField =
-            await testUtils.workGroup.expectLoadingFinished()
+          const workGroupField = await testUtils.workGroup.expectLoadingFinished()
           await testUtils.workGroup.openField(user, workGroupField)
 
           await testUtils.workGroup.setValue(user, workGroupListItem.name)
@@ -1136,7 +1091,7 @@ describe('Расширенный фильтр', () => {
           const container = testUtils.workGroup.getContainer()
           await testUtils.clickResetButtonIn(user, container)
 
-          const selectedOption = getSelectedOption(workGroupField)
+          const selectedOption = selectTestUtils.getSelectedOption(workGroupField)
           expect(selectedOption).not.toBeInTheDocument()
         })
 
@@ -1150,14 +1105,13 @@ describe('Расширенный фильтр', () => {
             }),
           })
 
-          const workGroupField =
-            await testUtils.workGroup.expectLoadingFinished()
+          const workGroupField = await testUtils.workGroup.expectLoadingFinished()
           await testUtils.workGroup.openField(user, workGroupField)
 
           await testUtils.workGroup.setValue(user, workGroupListItem.name)
           await testUtils.clickResetAllButton(user)
 
-          const selectedOption = getSelectedOption(workGroupField)
+          const selectedOption = selectTestUtils.getSelectedOption(workGroupField)
           expect(selectedOption).not.toBeInTheDocument()
         })
       })
@@ -1179,7 +1133,7 @@ describe('Расширенный фильтр', () => {
       expect(field).toBeEnabled()
       expect(selectedOption).not.toBeInTheDocument()
       userList.forEach((usr) => {
-        const option = getSelectOption(usr.fullName)
+        const option = selectTestUtils.getSelectOption(usr.fullName)
         expect(option).toBeInTheDocument()
       })
     })
@@ -1188,9 +1142,7 @@ describe('Расширенный фильтр', () => {
       mockGetWorkGroupListSuccess()
 
       const userListItem = userFixtures.userListItem()
-      const { user } = render(
-        <ExtendedFilter {...props} userList={[userListItem]} />,
-      )
+      const { user } = render(<ExtendedFilter {...props} userList={[userListItem]} />)
 
       await testUtils.manager.openField(user)
       await testUtils.manager.setValue(user, userListItem.fullName)
@@ -1233,10 +1185,10 @@ describe('Расширенный фильтр', () => {
       )
 
       const container = await testUtils.manager.openField(user)
-      await userSearchInSelect(user, container, userListItem1.fullName)
+      await selectTestUtils.userSearchInSelect(user, container, userListItem1.fullName)
 
-      const option1 = getSelectOption(userListItem1.fullName)
-      const option2 = querySelectOption(userListItem2.fullName)
+      const option1 = selectTestUtils.getSelectOption(userListItem1.fullName)
+      const option2 = selectTestUtils.querySelectOption(userListItem2.fullName)
 
       expect(option1).toBeInTheDocument()
       expect(option2).not.toBeInTheDocument()
@@ -1247,9 +1199,7 @@ describe('Расширенный фильтр', () => {
 
       const userListItem = userFixtures.userListItem()
 
-      const { user } = render(
-        <ExtendedFilter {...props} userList={[userListItem]} />,
-      )
+      const { user } = render(<ExtendedFilter {...props} userList={[userListItem]} />)
 
       await testUtils.manager.openField(user)
       await testUtils.manager.setValue(user, userListItem.fullName)
@@ -1265,9 +1215,7 @@ describe('Расширенный фильтр', () => {
 
       const userListItem = userFixtures.userListItem()
 
-      const { user } = render(
-        <ExtendedFilter {...props} userList={[userListItem]} />,
-      )
+      const { user } = render(<ExtendedFilter {...props} userList={[userListItem]} />)
 
       await testUtils.manager.openField(user)
       await testUtils.manager.setValue(user, userListItem.fullName)

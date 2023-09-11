@@ -10,11 +10,9 @@ import commonFixtures from 'fixtures/common'
 import {
   fakeDateString,
   fakeWord,
-  getButtonIn,
-  getIconByNameIn,
-  expectLoadingStartedByButton,
-  queryButtonIn,
+  iconTestUtils,
   render,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import TaskSuspendRequest, { TaskSuspendRequestProps } from './index'
@@ -42,17 +40,16 @@ const findContainer = () => screen.findByTestId('task-card-suspend-request')
 
 const queryContainer = () => screen.queryByTestId('task-card-suspend-request')
 
-const getChildByText = (text: string | RegExp) =>
-  within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
-const getIcon = () => getIconByNameIn(getContainer(), 'pause-circle')
+const getIcon = () => iconTestUtils.getIconByNameIn(getContainer(), 'pause-circle')
 
 // cancel button
 const getCancelButton = () =>
-  getButtonIn(getContainer(), new RegExp(cancelRequestAction.text))
+  buttonTestUtils.getButtonIn(getContainer(), new RegExp(cancelRequestAction.text))
 
 const queryCancelButton = () =>
-  queryButtonIn(getContainer(), new RegExp(cancelRequestAction.text))
+  buttonTestUtils.queryButtonIn(getContainer(), new RegExp(cancelRequestAction.text))
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -60,15 +57,14 @@ const clickCancelButton = async (user: UserEvent) => {
   return button
 }
 
-const expectCancelRequestLoadingStarted = () =>
-  expectLoadingStartedByButton(getCancelButton())
+const expectCancelRequestLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getCancelButton())
 
 // return button
 const getReturnToWorkButton = () =>
-  getButtonIn(getContainer(), new RegExp(returnInWorkAction.text))
+  buttonTestUtils.getButtonIn(getContainer(), new RegExp(returnInWorkAction.text))
 
 const queryReturnToWorkButton = () =>
-  queryButtonIn(getContainer(), new RegExp(returnInWorkAction.text))
+  buttonTestUtils.queryButtonIn(getContainer(), new RegExp(returnInWorkAction.text))
 
 const clickReturnToWorkButton = async (user: UserEvent) => {
   const button = getReturnToWorkButton()
@@ -76,8 +72,7 @@ const clickReturnToWorkButton = async (user: UserEvent) => {
   return button
 }
 
-const expectReturnToWorkLoadingStarted = () =>
-  expectLoadingStartedByButton(getReturnToWorkButton())
+const expectReturnToWorkLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getReturnToWorkButton())
 
 export const testUtils = {
   getContainer,
@@ -118,17 +113,13 @@ describe('Запрос заявки на ожидание', () => {
     test('Данные пользователя', () => {
       render(<TaskSuspendRequest {...props} />)
 
-      expect(
-        testUtils.getChildByText(getShortUserName(props.user)),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(getShortUserName(props.user))).toBeInTheDocument()
     })
 
     test('Дата создания', () => {
       render(<TaskSuspendRequest {...props} />)
 
-      expect(
-        testUtils.getChildByText(`до ${formatDate(props.date)}`),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(`до ${formatDate(props.date)}`)).toBeInTheDocument()
     })
   })
 
@@ -148,31 +139,19 @@ describe('Запрос заявки на ожидание', () => {
     })
 
     test('Можно сделать не активной', () => {
-      render(
-        <TaskSuspendRequest
-          {...props}
-          action={{ ...cancelRequestAction, disabled: true }}
-        />,
-      )
+      render(<TaskSuspendRequest {...props} action={{ ...cancelRequestAction, disabled: true }} />)
 
       expect(testUtils.getCancelButton()).toBeDisabled()
     })
 
     test('Отображает состояние загрузки', async () => {
-      render(
-        <TaskSuspendRequest
-          {...props}
-          action={{ ...cancelRequestAction, loading: true }}
-        />,
-      )
+      render(<TaskSuspendRequest {...props} action={{ ...cancelRequestAction, loading: true }} />)
 
       await expectCancelRequestLoadingStarted()
     })
 
     test('При клике обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <TaskSuspendRequest {...props} action={cancelRequestAction} />,
-      )
+      const { user } = render(<TaskSuspendRequest {...props} action={cancelRequestAction} />)
 
       await testUtils.clickCancelButton(user)
       expect(cancelRequestAction.onClick).toBeCalledTimes(1)
@@ -195,31 +174,19 @@ describe('Запрос заявки на ожидание', () => {
     })
 
     test('Можно сделать не активной', () => {
-      render(
-        <TaskSuspendRequest
-          {...props}
-          action={{ ...returnInWorkAction, disabled: true }}
-        />,
-      )
+      render(<TaskSuspendRequest {...props} action={{ ...returnInWorkAction, disabled: true }} />)
 
       expect(testUtils.getReturnToWorkButton()).toBeDisabled()
     })
 
     test('Отображает состояние загрузки', async () => {
-      render(
-        <TaskSuspendRequest
-          {...props}
-          action={{ ...returnInWorkAction, loading: true }}
-        />,
-      )
+      render(<TaskSuspendRequest {...props} action={{ ...returnInWorkAction, loading: true }} />)
 
       await expectReturnToWorkLoadingStarted()
     })
 
     test('При клике обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <TaskSuspendRequest {...props} action={returnInWorkAction} />,
-      )
+      const { user } = render(<TaskSuspendRequest {...props} action={returnInWorkAction} />)
 
       await testUtils.clickReturnToWorkButton(user)
       expect(returnInWorkAction.onClick).toBeCalledTimes(1)

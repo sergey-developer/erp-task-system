@@ -23,10 +23,9 @@ import {
   mockRefreshTokenSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
   fakeEmail,
   fakeWord,
-  expectLoadingFinishedByButton,
-  expectLoadingStartedByButton,
   render,
   renderInRoute,
   setupApiTests,
@@ -75,8 +74,8 @@ const clickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
 }
 
 // other
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitBtn())
-const expectLoadingFinished = () => expectLoadingFinishedByButton(getSubmitBtn())
+const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitBtn())
+const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitBtn())
 
 const testUtils = {
   getContainer,

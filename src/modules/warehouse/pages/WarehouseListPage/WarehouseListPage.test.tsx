@@ -8,18 +8,15 @@ import { testUtils as warehouseTableTestUtils } from 'modules/warehouse/componen
 
 import warehouseFixtures from 'fixtures/warehouse'
 
-import {
-  mockGetLegalEntityListSuccess,
-  mockGetWarehouseListSuccess,
-} from '_tests_/mocks/api'
-import { getButtonIn, renderInRoute_latest, setupApiTests } from '_tests_/utils'
+import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
+import { buttonTestUtils, renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
 import WarehouseListPage from './index'
 
 const getContainer = () => screen.getByTestId('warehouse-list-page')
 
 // filter button
-const getFilterButton = () => getButtonIn(getContainer(), /filter/)
+const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
 
 const clickFilterButton = async (user: UserEvent) => {
   const button = getFilterButton()

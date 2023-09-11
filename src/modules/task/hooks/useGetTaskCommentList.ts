@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
-import { GetTaskCommentListQueryArgs } from 'modules/task/models'
+import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+
+import { GetTaskCommentListQueryArgs, GetTaskCommentListSuccessResponse } from 'modules/task/models'
 import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useGetTaskCommentListQuery } from 'modules/task/services/taskCommentApi.service'
 import { getTaskCommentListServerErrorMsg, getTaskNotFoundErrorMsg } from 'modules/task/utils'
@@ -10,7 +12,14 @@ import { commonApiMessages } from 'shared/constants/common'
 import { isErrorResponse, isNotFoundError, isServerRangeError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useGetTaskCommentList = (id: GetTaskCommentListQueryArgs) => {
+type UseGetTaskCommentListResult = CustomUseQueryHookResult<
+  GetTaskCommentListQueryArgs,
+  GetTaskCommentListSuccessResponse
+>
+
+export const useGetTaskCommentList = (
+  id: GetTaskCommentListQueryArgs,
+): UseGetTaskCommentListResult => {
   const permissions = useUserPermissions(taskCommentApiPermissions)
 
   const state = useGetTaskCommentListQuery(id, {

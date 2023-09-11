@@ -12,11 +12,9 @@ import commonFixtures from 'fixtures/common'
 import {
   fakeDateString,
   fakeWord,
-  getButtonIn,
-  getIconByNameIn,
-  expectLoadingStartedByButton,
-  queryButtonIn,
+  iconTestUtils,
   render,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import TaskRequest, { TaskRequestProps } from './index'
@@ -44,16 +42,15 @@ const findContainer = () => screen.findByTestId(props['data-testid'])
 
 const queryContainer = () => screen.queryByTestId(props['data-testid'])
 
-const getChildByText = (text: string | RegExp) =>
-  within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
-const getIcon = () => getIconByNameIn(getContainer(), 'pause-circle')
+const getIcon = () => iconTestUtils.getIconByNameIn(getContainer(), 'pause-circle')
 
 const getActionButton = (label: string) =>
-  getButtonIn(getContainer(), new RegExp(label))
+  buttonTestUtils.getButtonIn(getContainer(), new RegExp(label))
 
 const queryActionButton = (label: string) =>
-  queryButtonIn(getContainer(), new RegExp(label))
+  buttonTestUtils.queryButtonIn(getContainer(), new RegExp(label))
 
 const clickActionButton = async (user: UserEvent, label: string) => {
   const button = getActionButton(label)
@@ -62,7 +59,7 @@ const clickActionButton = async (user: UserEvent, label: string) => {
 }
 
 const expectActionLoadingStarted = (label: string) =>
-  expectLoadingStartedByButton(getActionButton(label))
+  buttonTestUtils.expectLoadingStarted(getActionButton(label))
 
 export const testUtils = {
   getContainer,
@@ -99,9 +96,7 @@ describe('Запрос заявки', () => {
     test('Данные пользователя', () => {
       render(<TaskRequest {...props} />)
 
-      expect(
-        testUtils.getChildByText(getShortUserName(props.user)),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(getShortUserName(props.user))).toBeInTheDocument()
     })
 
     test('Дата создания', () => {
@@ -138,17 +133,13 @@ describe('Запрос заявки', () => {
     })
 
     test('Можно сделать не активной', () => {
-      render(
-        <TaskRequest {...props} actions={[{ ...action, disabled: true }]} />,
-      )
+      render(<TaskRequest {...props} actions={[{ ...action, disabled: true }]} />)
 
       expect(testUtils.getActionButton(action.text)).toBeDisabled()
     })
 
     test('Отображает состояние загрузки', async () => {
-      render(
-        <TaskRequest {...props} actions={[{ ...action, loading: true }]} />,
-      )
+      render(<TaskRequest {...props} actions={[{ ...action, loading: true }]} />)
 
       await expectActionLoadingStarted(action.text)
     })

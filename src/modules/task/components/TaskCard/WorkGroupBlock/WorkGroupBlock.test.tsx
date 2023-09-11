@@ -12,13 +12,10 @@ import workGroupFixtures from 'fixtures/workGroup'
 
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
-  findButtonIn,
+  buttonTestUtils,
   fakeId,
   fakeWord,
-  getButtonIn,
   getStoreWithAuth,
-  expectLoadingStartedByButton,
-  queryButtonIn,
   render,
   fakeIdStr,
 } from '_tests_/utils'
@@ -84,13 +81,13 @@ const getChildByText = (text: string | RegExp) =>
 
 // first line button
 const getFirstLineButton = () =>
-  getButtonIn(getContainer(), /вернуть на I линию/i)
+  buttonTestUtils.getButtonIn(getContainer(), /вернуть на I линию/i)
 
 const findFirstLineButton = () =>
-  findButtonIn(getContainer(), /вернуть на I линию/i)
+  buttonTestUtils.findButtonIn(getContainer(), /вернуть на I линию/i)
 
 const queryFirstLineButton = () =>
-  queryButtonIn(getContainer(), /вернуть на I линию/i)
+  buttonTestUtils.queryButtonIn(getContainer(), /вернуть на I линию/i)
 
 const clickFirstLineButton = async (user: UserEvent) => {
   const button = getFirstLineButton()
@@ -99,15 +96,15 @@ const clickFirstLineButton = async (user: UserEvent) => {
 }
 
 const expectFirstLineLoadingStarted = async () => {
-  await expectLoadingStartedByButton(getFirstLineButton())
+  await buttonTestUtils.expectLoadingStarted(getFirstLineButton())
 }
 
 // second line button
 const getSecondLineButton = () =>
-  getButtonIn(getContainer(), /перевести на II линию/i)
+  buttonTestUtils.getButtonIn(getContainer(), /перевести на II линию/i)
 
 const querySecondLineButton = () =>
-  queryButtonIn(getContainer(), /перевести на II линию/i)
+  buttonTestUtils.queryButtonIn(getContainer(), /перевести на II линию/i)
 
 const clickSecondLineButton = async (user: UserEvent) => {
   const button = getSecondLineButton()
@@ -116,7 +113,7 @@ const clickSecondLineButton = async (user: UserEvent) => {
 }
 
 const expectSecondLineLoadingStarted = async () => {
-  await expectLoadingStartedByButton(getSecondLineButton())
+  await buttonTestUtils.expectLoadingStarted(getSecondLineButton())
 }
 
 export const testUtils = {

@@ -13,17 +13,14 @@ import {
   mockGetJournalSuccess,
 } from '_tests_/mocks/api'
 import {
-  findNotification,
   fakeId,
   fakeWord,
-  getButtonIn,
   getStoreWithAuth,
-  expectLoadingFinishedByButton,
-  expectLoadingFinishedBySpinner,
-  expectLoadingStartedByButton,
-  expectLoadingStartedBySpinner,
+  spinnerTestUtils,
   render,
   setupApiTests,
+  notificationTestUtils,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import { testUtils as journalEntryTestUtils } from '../JournalTab/JournalEntry.test'
@@ -38,7 +35,7 @@ const props: JournalTabProps = {
 const getContainer = () => screen.getByTestId('task-journal')
 
 // reload button
-const getReloadButton = () => getButtonIn(getContainer(), 'sync')
+const getReloadButton = () => buttonTestUtils.getButtonIn(getContainer(), 'sync')
 
 const clickReloadButton = async (user: UserEvent) => {
   const button = getReloadButton()
@@ -55,12 +52,12 @@ const clickDownloadButton = async (user: UserEvent): Promise<HTMLElement> => {
   return button
 }
 
-const expectJournalLoadingStarted = expectLoadingStartedBySpinner('journal-loading')
+const expectJournalLoadingStarted = spinnerTestUtils.expectLoadingStarted('journal-loading')
 
-const expectJournalLoadingFinished = expectLoadingFinishedBySpinner('journal-loading')
+const expectJournalLoadingFinished = spinnerTestUtils.expectLoadingFinished('journal-loading')
 
-const expectJournalCsvLoadingStarted = expectLoadingStartedByButton
-const expectJournalCsvLoadingFinished = expectLoadingFinishedByButton
+const expectJournalCsvLoadingStarted = buttonTestUtils.expectLoadingStarted
+const expectJournalCsvLoadingFinished = buttonTestUtils.expectLoadingFinished
 
 export const testUtils = {
   getContainer,
@@ -241,7 +238,9 @@ describe('Вкладка журнала задачи', () => {
 
           expect(clickDownloadLinkSpy).not.toBeCalled()
 
-          const notification = await findNotification(commonApiMessages.unknownError)
+          const notification = await notificationTestUtils.findNotification(
+            commonApiMessages.unknownError,
+          )
           expect(notification).toBeInTheDocument()
         })
       })
@@ -318,7 +317,9 @@ describe('Вкладка журнала задачи', () => {
         await testUtils.expectJournalLoadingStarted()
         await testUtils.expectJournalLoadingFinished()
 
-        const notification = await findNotification(commonApiMessages.unknownError)
+        const notification = await notificationTestUtils.findNotification(
+          commonApiMessages.unknownError,
+        )
         expect(notification).toBeInTheDocument()
       })
 

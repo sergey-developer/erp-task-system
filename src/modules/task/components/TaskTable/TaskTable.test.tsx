@@ -22,7 +22,7 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
-import { expectLoadingFinishedByIconIn, expectLoadingStartedByIconIn, render } from '_tests_/utils'
+import { iconTestUtils, render } from '_tests_/utils'
 
 import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
@@ -145,13 +145,13 @@ const changePageSize = async (user: UserEvent, pageSize: NumberOrString) => {
 
 const expectLoadingStarted = async () => {
   const taskTable = getContainer()
-  await expectLoadingStartedByIconIn(taskTable)
+  await iconTestUtils.expectLoadingStartedIn(taskTable)
   return taskTable
 }
 
 const expectLoadingFinished = async () => {
   const taskTable = getContainer()
-  await expectLoadingFinishedByIconIn(taskTable)
+  await iconTestUtils.expectLoadingFinishedIn(taskTable)
   return taskTable
 }
 

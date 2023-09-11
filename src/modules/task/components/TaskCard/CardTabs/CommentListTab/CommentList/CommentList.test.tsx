@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 
 import taskFixtures from 'fixtures/task'
 
-import { expectLoadingFinishedBySpinner, render } from '_tests_/utils'
+import { spinnerTestUtils, render } from '_tests_/utils'
 
 import CommentList, { CommentListProps } from './index'
 
@@ -23,7 +23,7 @@ const queryAllComments = () =>
 
 const getFirstComment = () => getAllComments()[0]
 
-const expectLoadingFinished = expectLoadingFinishedBySpinner(
+const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished(
   'task-comment-list-loading',
 )
 

@@ -13,14 +13,12 @@ import {
   mockGetWarehouseSuccess,
 } from '_tests_/mocks/api'
 import {
-  expectLoadingFinishedBySpinner,
-  expectLoadingStartedBySpinner,
+  spinnerTestUtils,
   fakeId,
   fakeWord,
-  findNotification,
   renderInRoute_latest,
   setupApiTests,
-  setupNotifications,
+  notificationTestUtils,
 } from '_tests_/utils'
 
 import WarehousePage from './index'
@@ -29,9 +27,9 @@ const getContainer = () => screen.getByTestId('warehouse-page')
 
 const getChildByText = (value: string) => within(getContainer()).getByText(value)
 
-const expectLoadingStarted = expectLoadingStartedBySpinner('warehouse-loading')
+const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('warehouse-loading')
 
-const expectLoadingFinished = expectLoadingFinishedBySpinner('warehouse-loading')
+const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('warehouse-loading')
 
 export const testUtils = {
   getContainer,
@@ -42,7 +40,7 @@ export const testUtils = {
 }
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Страница склада', () => {
   describe('При успешном запросе', () => {
@@ -211,7 +209,7 @@ describe('Страница склада', () => {
 
       await testUtils.expectLoadingFinished()
 
-      const notification = await findNotification(errorMessage)
+      const notification = await notificationTestUtils.findNotification(errorMessage)
       expect(notification).toBeInTheDocument()
     })
 
@@ -231,7 +229,9 @@ describe('Страница склада', () => {
 
       await testUtils.expectLoadingFinished()
 
-      const notification = await findNotification(getWarehouseMessages.commonError)
+      const notification = await notificationTestUtils.findNotification(
+        getWarehouseMessages.commonError,
+      )
       expect(notification).toBeInTheDocument()
     })
   })

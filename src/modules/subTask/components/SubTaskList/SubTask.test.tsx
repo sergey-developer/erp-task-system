@@ -12,7 +12,7 @@ import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskSt
 import subTaskFixtures from 'fixtures/subTask'
 import taskFixtures from 'fixtures/task'
 
-import { getButtonIn, queryButtonIn, render } from '_tests_/utils'
+import { buttonTestUtils, render } from "_tests_/utils";
 
 import SubTask, { SubTaskProps } from './SubTask'
 
@@ -72,10 +72,10 @@ const queryChildByText = (text: string) =>
   within(getContainer()).queryByText(text)
 
 // tech resolution button
-const getTechResolutionButton = () => getButtonIn(getContainer(), /решение/i)
+const getTechResolutionButton = () => buttonTestUtils.getButtonIn(getContainer(), /решение/i)
 
 const queryTechResolutionButton = () =>
-  queryButtonIn(getContainer(), /решение/i)
+  buttonTestUtils.queryButtonIn(getContainer(), /решение/i)
 
 const clickTechResolutionButton = async (user: UserEvent) => {
   const button = getTechResolutionButton()
@@ -85,10 +85,10 @@ const clickTechResolutionButton = async (user: UserEvent) => {
 
 // return reason button
 const getReturnReasonButton = () =>
-  getButtonIn(getContainer(), /причина возврата/i)
+  buttonTestUtils.getButtonIn(getContainer(), /причина возврата/i)
 
 const queryReturnReasonButton = () =>
-  queryButtonIn(getContainer(), /причина возврата/i)
+  buttonTestUtils.queryButtonIn(getContainer(), /причина возврата/i)
 
 const clickReturnReasonButton = async (user: UserEvent) => {
   const button = getReturnReasonButton()
@@ -98,10 +98,10 @@ const clickReturnReasonButton = async (user: UserEvent) => {
 
 // cancel reason button
 const getCancelReasonButton = () =>
-  getButtonIn(getContainer(), /причина отмены/i)
+  buttonTestUtils.getButtonIn(getContainer(), /причина отмены/i)
 
 const queryCancelReasonButton = () =>
-  queryButtonIn(getContainer(), /причина отмены/i)
+  buttonTestUtils.queryButtonIn(getContainer(), /причина отмены/i)
 
 const clickCancelReasonButton = async (user: UserEvent) => {
   const button = getCancelReasonButton()
@@ -111,7 +111,7 @@ const clickCancelReasonButton = async (user: UserEvent) => {
 
 // description button
 const getDescriptionButton = () =>
-  getButtonIn(getContainer(), /подробное описание/i)
+  buttonTestUtils.getButtonIn(getContainer(), /подробное описание/i)
 
 const clickDescriptionButton = async (user: UserEvent) => {
   const button = getDescriptionButton()
@@ -121,10 +121,10 @@ const clickDescriptionButton = async (user: UserEvent) => {
 
 // rework button
 const getReworkButton = () =>
-  getButtonIn(getContainer(), /вернуть на доработку/i)
+  buttonTestUtils.getButtonIn(getContainer(), /вернуть на доработку/i)
 
 const queryReworkButton = () =>
-  queryButtonIn(getContainer(), /вернуть на доработку/i)
+  buttonTestUtils.queryButtonIn(getContainer(), /вернуть на доработку/i)
 
 const clickReworkButton = async (user: UserEvent) => {
   const button = getReworkButton()
@@ -133,9 +133,9 @@ const clickReworkButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => getButtonIn(getContainer(), /отменить/i)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
 
-const queryCancelButton = () => queryButtonIn(getContainer(), /отменить/i)
+const queryCancelButton = () => buttonTestUtils.queryButtonIn(getContainer(), /отменить/i)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()

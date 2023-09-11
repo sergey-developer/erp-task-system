@@ -4,13 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { validationMessages } from 'shared/constants/validation'
 import { MaybeNull } from 'shared/types/utils'
 
-import {
-  expectLoadingFinishedByButton,
-  expectLoadingStartedByButton,
-  fakeWord,
-  getButtonIn,
-  render,
-} from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render } from '_tests_/utils'
 
 import AddOrEditNomenclatureGroupModal from './index'
 import { AddOrEditNomenclatureGroupModalProps } from './types'
@@ -57,7 +51,7 @@ const findNameError = (error: string): Promise<HTMLElement> =>
   within(getNameFormItem()).findByText(error)
 
 // add button
-const getAddButton = () => getButtonIn(getContainer(), /Добавить/)
+const getAddButton = () => buttonTestUtils.getButtonIn(getContainer(), /Добавить/)
 
 const clickAddButton = async (user: UserEvent) => {
   const button = getAddButton()
@@ -65,7 +59,7 @@ const clickAddButton = async (user: UserEvent) => {
 }
 
 // close button
-const getCancelButton = () => getButtonIn(getContainer(), /Отменить/)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Отменить/)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -73,9 +67,9 @@ const clickCancelButton = async (user: UserEvent) => {
 }
 
 // loading
-const expectLoadingStarted = () => expectLoadingStartedByButton(getAddButton())
+const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getAddButton())
 
-const expectLoadingFinished = () => expectLoadingFinishedByButton(getAddButton())
+const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getAddButton())
 
 export const testUtils = {
   getContainer,

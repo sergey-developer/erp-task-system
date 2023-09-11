@@ -3,21 +3,12 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import {
-  expectLoadingFinishedByIconIn,
-  expectLoadingStartedByIconIn,
-} from './loading'
+import { iconTestUtils } from '_tests_/utils'
 
-const getRowIn = (
-  container: HTMLElement,
-  id: NumberOrString,
-): MaybeNull<HTMLElement> => container.querySelector(`[data-row-key='${id}']`)
+const getRowIn = (container: HTMLElement, id: NumberOrString): MaybeNull<HTMLElement> =>
+  container.querySelector(`[data-row-key='${id}']`)
 
-const clickRowIn = async (
-  container: HTMLElement,
-  user: UserEvent,
-  id: NumberOrString,
-) => {
+const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrString) => {
   const row = getRowIn(container, id)
   await user.click(row!)
 }
@@ -37,20 +28,17 @@ const expectPaginationEnabledIn = (table: HTMLElement) => {
 const getPaginationNextButtonIn = (table: HTMLElement) =>
   within(getPaginationIn(table)!).getByRole('listitem', { name: 'Вперед' })
 
-const clickPaginationNextButtonIn = async (
-  user: UserEvent,
-  table: HTMLElement,
-) => {
+const clickPaginationNextButtonIn = async (user: UserEvent, table: HTMLElement) => {
   const button = getPaginationNextButtonIn(table)
   await user.click(button)
 }
 
 // loading
 const expectLoadingStarted = (container: HTMLElement) =>
-  expectLoadingStartedByIconIn(container)
+  iconTestUtils.expectLoadingStartedIn(container)
 
 const expectLoadingFinished = (container: HTMLElement) =>
-  expectLoadingFinishedByIconIn(container)
+  iconTestUtils.expectLoadingFinishedIn(container)
 
 const utils = {
   getRowIn,

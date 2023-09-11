@@ -27,18 +27,12 @@ import {
   mockUpdateUserStatusUnauthorizedError,
   mockUpdateUserSuccess,
 } from '_tests_/mocks/api'
-import {
-  fakeWord,
-  findNotification,
-  render,
-  setupApiTests,
-  setupNotifications,
-} from '_tests_/utils'
+import { fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
 import PrivateApp from './PrivateApp'
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Private app', () => {
   describe('Private header', () => {
@@ -197,7 +191,9 @@ describe('Private app', () => {
         await privateHeaderTestUtils.setTimeZone(user, fakeTimeZoneListItem.label)
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
 
-        const notification = await findNotification(updateUserTimeZoneMessages.commonError)
+        const notification = await notificationTestUtils.findNotification(
+          updateUserTimeZoneMessages.commonError,
+        )
 
         expect(notification).toBeInTheDocument()
       })
@@ -319,7 +315,9 @@ describe('Private app', () => {
 
               expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
 
-              const notification = await findNotification(badRequestErrorMessage)
+              const notification = await notificationTestUtils.findNotification(
+                badRequestErrorMessage,
+              )
               expect(notification).toBeInTheDocument()
             })
 
@@ -358,7 +356,9 @@ describe('Private app', () => {
 
               expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
 
-              const notification = await findNotification(unauthorizedErrorMessage)
+              const notification = await notificationTestUtils.findNotification(
+                unauthorizedErrorMessage,
+              )
               expect(notification).toBeInTheDocument()
             })
 
@@ -397,7 +397,7 @@ describe('Private app', () => {
 
               expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
 
-              const notification = await findNotification(errorMessage)
+              const notification = await notificationTestUtils.findNotification(errorMessage)
               expect(notification).toBeInTheDocument()
             })
 
@@ -433,7 +433,9 @@ describe('Private app', () => {
 
               expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
 
-              const notification = await findNotification(updateUserStatusMessages.commonError)
+              const notification = await notificationTestUtils.findNotification(
+                updateUserStatusMessages.commonError,
+              )
               expect(notification).toBeInTheDocument()
             })
           })

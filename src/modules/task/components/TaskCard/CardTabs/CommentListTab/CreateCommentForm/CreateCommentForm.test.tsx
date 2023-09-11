@@ -5,11 +5,8 @@ import { validationMessages } from 'shared/constants/validation'
 
 import {
   fakeWord,
-  getButtonIn,
-  expectLoadingFinishedByButton,
-  expectLoadingStartedByButton,
   render,
-  getAllButtonIn,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import CreateCommentForm from './index'
@@ -22,20 +19,15 @@ const props: Readonly<CreateCommentFormProps> = {
 
 const getContainer = () => screen.getByTestId('create-comment-form')
 
-const findChildByText = (text: string) =>
-  within(getContainer()).findByText(text)
+const findChildByText = (text: string) => within(getContainer()).findByText(text)
 
 // comment
-const getCommentFormItem = () =>
-  within(getContainer()).getByTestId('comment-form-item')
+const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
 
-const findCommentError = (error: string) =>
-  within(getCommentFormItem()).findByText(error)
+const findCommentError = (error: string) => within(getCommentFormItem()).findByText(error)
 
 const getCommentField = () =>
-  within(getCommentFormItem()).getByPlaceholderText(
-    'Дополните информацию о заявке',
-  )
+  within(getCommentFormItem()).getByPlaceholderText('Дополните информацию о заявке')
 
 const setComment = async (user: UserEvent, comment: string) => {
   const input = getCommentField()
@@ -44,14 +36,13 @@ const setComment = async (user: UserEvent, comment: string) => {
 }
 
 // attachment
-const getAttachmentsFormItem = () =>
-  within(getContainer()).getByTestId('attachments-form-item')
+const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
 
 const getAddAttachmentsButton = () =>
-  getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
+  buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
 
 const getAddAttachmentsZoneButton = () =>
-  getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[0]
+  buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[0]
 
 const clickAddAttachmentsButton = async (user: UserEvent) => {
   const button = getAddAttachmentsButton()
@@ -75,12 +66,11 @@ const getUploadedAttachment = (filename: string) =>
 const queryUploadedAttachment = (filename: string) =>
   within(getAttachmentsFormItem()).queryByTitle(filename)
 
-const findAttachmentsError = (error: string) =>
-  within(getAttachmentsFormItem()).findByText(error)
+const findAttachmentsError = (error: string) => within(getAttachmentsFormItem()).findByText(error)
 
 // submit button
 const getSubmitButton = () =>
-  getButtonIn(getContainer(), /опубликовать комментарий/i)
+  buttonTestUtils.getButtonIn(getContainer(), /опубликовать комментарий/i)
 
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
@@ -91,12 +81,12 @@ const clickSubmitButton = async (user: UserEvent) => {
 // loading
 const expectLoadingStarted = async () => {
   const submitButton = getSubmitButton()
-  await expectLoadingStartedByButton(submitButton)
+  await buttonTestUtils.expectLoadingStarted(submitButton)
 }
 
 const expectLoadingFinished = async () => {
   const submitButton = getSubmitButton()
-  await expectLoadingFinishedByButton(submitButton)
+  await buttonTestUtils.expectLoadingFinished(submitButton)
 }
 
 export const testUtils = {
@@ -155,9 +145,7 @@ describe('Форма добавления комментария', () => {
         const { user } = render(<CreateCommentForm {...props} />)
 
         await testUtils.setComment(user, ' ')
-        const error = await testUtils.findCommentError(
-          validationMessages.canNotBeEmpty,
-        )
+        const error = await testUtils.findCommentError(validationMessages.canNotBeEmpty)
 
         expect(error).toBeInTheDocument()
       })
@@ -166,9 +154,7 @@ describe('Форма добавления комментария', () => {
         const { user } = render(<CreateCommentForm {...props} />)
 
         await testUtils.clickSubmitButton(user)
-        const error = await testUtils.findCommentError(
-          validationMessages.required,
-        )
+        const error = await testUtils.findCommentError(validationMessages.required)
 
         expect(error).toBeInTheDocument()
       })
@@ -233,10 +219,7 @@ describe('Форма добавления комментария', () => {
       await testUtils.clickSubmitButton(user)
 
       expect(props.onSubmit).toBeCalledTimes(1)
-      expect(props.onSubmit).toBeCalledWith(
-        expect.anything(),
-        expect.anything(),
-      )
+      expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
     })
   })
 })

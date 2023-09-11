@@ -16,16 +16,13 @@ import {
   mockGetTaskCommentListSuccess,
 } from '_tests_/mocks/api'
 import {
-  findNotification,
   fakeId,
   fakeWord,
-  getButtonIn,
   getStoreWithAuth,
-  queryButtonIn,
   render,
   setupApiTests,
-  setupNotifications,
-} from '_tests_/utils'
+  notificationTestUtils, buttonTestUtils
+} from "_tests_/utils";
 
 import { testUtils as commentListTestUtils } from './CommentList/CommentList.test'
 import { testUtils as createCommentFormTestUtils } from './CreateCommentForm/CreateCommentForm.test'
@@ -42,13 +39,13 @@ const getContainer = () => screen.getByTestId('task-comment-list-tab')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 const getExpandButton = (commentCount?: number) =>
-  getButtonIn(
+  buttonTestUtils.getButtonIn(
     getContainer(),
     commentCount ? `Отобразить все комментарии: ${commentCount}` : /Отобразить все комментарии/,
   )
 
 const queryExpandButton = (commentCount?: number) =>
-  queryButtonIn(
+  buttonTestUtils.queryButtonIn(
     getContainer(),
     commentCount ? `Отобразить все комментарии: ${commentCount}` : /Отобразить все комментарии/,
   )
@@ -59,7 +56,7 @@ const clickExpandButton = async (user: UserEvent) => {
   return button
 }
 
-const getCollapseButton = () => getButtonIn(getContainer(), /скрыть комментарии/i)
+const getCollapseButton = () => buttonTestUtils.getButtonIn(getContainer(), /скрыть комментарии/i)
 
 const clickCollapseButton = async (user: UserEvent) => {
   const button = getCollapseButton()
@@ -80,7 +77,7 @@ export const testUtils = {
 }
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Вкладка списка комментариев заявки', () => {
   test('Заголовок отображается корректно', () => {
@@ -313,7 +310,9 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
-          const error = await findNotification(createTaskCommentMessages.commonError)
+          const error = await notificationTestUtils.findNotification(
+            createTaskCommentMessages.commonError,
+          )
           expect(error).toBeInTheDocument()
         })
 
@@ -332,7 +331,9 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
-          const error = await findNotification(createTaskCommentMessages.commonError)
+          const error = await notificationTestUtils.findNotification(
+            createTaskCommentMessages.commonError,
+          )
           expect(error).toBeInTheDocument()
         })
 
@@ -351,7 +352,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
-          const error = await findNotification(commonApiMessages.unknownError)
+          const error = await notificationTestUtils.findNotification(commonApiMessages.unknownError)
           expect(error).toBeInTheDocument()
         })
       })

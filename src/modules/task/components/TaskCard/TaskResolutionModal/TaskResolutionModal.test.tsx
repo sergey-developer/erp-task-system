@@ -11,13 +11,10 @@ import {
 import {
   fakeIdStr,
   fakeWord,
-  getButtonIn,
-  expectLoadingFinishedByButton,
-  expectLoadingStartedByButton,
   modalTestUtils,
   render,
-  getAllButtonIn,
-} from '_tests_/utils'
+  buttonTestUtils
+} from "_tests_/utils";
 
 import TaskResolutionModal, { TaskResolutionModalProps } from './index'
 
@@ -38,7 +35,7 @@ const findContainer = () => screen.findByTestId('task-resolution-modal')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // close button
-const getCloseButton = () => getButtonIn(getContainer(), /close/i)
+const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
 
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
@@ -47,7 +44,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => getButtonIn(getContainer(), /Отменить/)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Отменить/)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -56,7 +53,7 @@ const clickCancelButton = async (user: UserEvent) => {
 }
 
 // get act button
-const getGetActButton = () => getButtonIn(getContainer(), /Сформировать акт/)
+const getGetActButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сформировать акт/)
 
 const clickGetActButton = async (user: UserEvent) => {
   const button = getGetActButton()
@@ -64,13 +61,13 @@ const clickGetActButton = async (user: UserEvent) => {
 }
 
 const expectGetActLoadingStarted = () =>
-  expectLoadingStartedByButton(getGetActButton())
+  buttonTestUtils.expectLoadingStarted(getGetActButton())
 
 const expectGetActLoadingFinished = () =>
-  expectLoadingFinishedByButton(getGetActButton())
+  buttonTestUtils.expectLoadingFinished(getGetActButton())
 
 // submit button
-const getSubmitButton = () => getButtonIn(getContainer(), /Выполнить заявку/)
+const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /Выполнить заявку/)
 
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
@@ -128,10 +125,10 @@ const getAttachmentsFormItem = () =>
   within(getContainer()).getByTestId('attachments-form-item')
 
 const getAddAttachmentsButton = () =>
-  getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
+  buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
 
 const getAddAttachmentsZoneButton = () =>
-  getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[0]
+  buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[0]
 
 const clickAddAttachmentsButton = async (user: UserEvent) => {
   const button = getAddAttachmentsButton()
@@ -157,10 +154,10 @@ const findAttachmentsError = (error: string) =>
 
 // loading
 const expectLoadingStarted = () =>
-  expectLoadingStartedByButton(getSubmitButton())
+  buttonTestUtils.expectLoadingStarted(getSubmitButton())
 
 const expectLoadingFinished = () =>
-  expectLoadingFinishedByButton(getSubmitButton())
+  buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
   getContainer,

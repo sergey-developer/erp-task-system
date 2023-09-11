@@ -8,12 +8,12 @@ import { formatDate } from 'shared/utils/date'
 import commonFixtures from 'fixtures/common'
 
 import {
+  buttonTestUtils,
   fakeDateString,
   fakeWord,
-  getButtonIn,
-  getIconByNameIn,
-  render,
-} from '_tests_/utils'
+  iconTestUtils,
+  render
+} from "_tests_/utils";
 
 import TaskReclassificationRequest, {
   TaskReclassificationRequestProps,
@@ -39,9 +39,9 @@ const queryContainer = () =>
 const getChildByText = (text: string | RegExp) =>
   within(getContainer()).getByText(text)
 
-const getIcon = () => getIconByNameIn(getContainer(), 'question-circle')
+const getIcon = () => iconTestUtils.getIconByNameIn(getContainer(), 'question-circle')
 
-const getCancelButton = () => getButtonIn(getContainer(), /отменить запрос/i)
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить запрос/i)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()

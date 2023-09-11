@@ -33,14 +33,13 @@ import {
   mockReworkSubTaskSuccess,
 } from '_tests_/mocks/api'
 import {
-  findNotification,
   fakeWord,
-  getButtonIn,
   getStoreWithAuth,
-  expectLoadingFinishedBySpinner,
+  spinnerTestUtils,
   render,
   setupApiTests,
-  setupNotifications,
+  notificationTestUtils,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import SubTaskListTab, { SubTaskListTabProps } from './index'
@@ -64,7 +63,8 @@ const activeCreateSubTaskButtonTaskProps: Pick<
 // utils
 const getContainer = () => screen.getByTestId('subtask-list-tab')
 
-const getCreateSubTaskButton = () => getButtonIn(getContainer(), /создать новое задание/i)
+const getCreateSubTaskButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /создать новое задание/i)
 
 const clickCreateSubTaskButton = async (user: UserEvent) => {
   const button = getCreateSubTaskButton()
@@ -78,11 +78,11 @@ const testUtils = {
   getCreateSubTaskButton,
   openCreateSubTaskModal: clickCreateSubTaskButton,
 
-  expectLoadingFinished: expectLoadingFinishedBySpinner('sub-task-list-loading'),
+  expectLoadingFinished: spinnerTestUtils.expectLoadingFinished('sub-task-list-loading'),
 }
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Вкладка списка заданий', () => {
   describe('Кнопка создания задания', () => {
@@ -418,7 +418,9 @@ describe('Вкладка списка заданий', () => {
 
         await testUtils.expectLoadingFinished()
 
-        expect(await findNotification('Не удалось получить задания')).toBeInTheDocument()
+        expect(
+          await notificationTestUtils.findNotification('Не удалось получить задания'),
+        ).toBeInTheDocument()
       })
     })
   })
@@ -685,7 +687,7 @@ describe('Вкладка списка заданий', () => {
         await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
-          await findNotification('Не удалось вернуть задание на доработку'),
+          await notificationTestUtils.findNotification('Не удалось вернуть задание на доработку'),
         ).toBeInTheDocument()
       })
     })
@@ -950,7 +952,9 @@ describe('Вкладка списка заданий', () => {
         await cancelSubTaskModalTestUtils.setCancelReason(user, fakeWord())
         await cancelSubTaskModalTestUtils.clickSubmitButton(user)
 
-        expect(await findNotification('Не удалось отменить задание')).toBeInTheDocument()
+        expect(
+          await notificationTestUtils.findNotification('Не удалось отменить задание'),
+        ).toBeInTheDocument()
       })
     })
   })
