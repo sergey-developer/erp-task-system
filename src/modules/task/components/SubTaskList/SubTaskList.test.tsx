@@ -8,8 +8,7 @@ import {
 
 import { formatDate } from 'shared/utils/date'
 
-import subTaskFixtures from '_tests_/fixtures/subTask'
-
+import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 
 import {
@@ -20,7 +19,7 @@ import {
 import SubTaskList, { SubTaskListProps } from './index'
 
 const props: Readonly<SubTaskListProps> = {
-  list: subTaskFixtures.getSubTaskList(),
+  list: taskFixtures.getSubTaskList(),
   isError: false,
   taskStatus: TaskStatusEnum.New,
   taskExtendedStatus: TaskExtendedStatusEnum.New,
@@ -43,17 +42,15 @@ describe('Список подзадач', () => {
   test('Отображает верное количество задач', () => {
     render(<SubTaskList {...props} />)
 
-    expect(
-      subTaskTestUtils.getAllContainerIn(testUtils.getContainer()),
-    ).toHaveLength(props.list.length)
+    expect(subTaskTestUtils.getAllContainerIn(testUtils.getContainer())).toHaveLength(
+      props.list.length,
+    )
   })
 
   test('Верно отображает дату "olaNextBreachTime"', () => {
     render(<SubTaskList {...props} />)
 
-    const formattedOlaNextBreachTime = formatDate(
-      props.list[0].olaNextBreachTime,
-    )
+    const formattedOlaNextBreachTime = formatDate(props.list[0].olaNextBreachTime)
 
     expect(
       subTaskTestUtils.getChildByText(new RegExp(formattedOlaNextBreachTime)),
@@ -65,9 +62,7 @@ describe('Список подзадач', () => {
 
     const formattedCreatedAt = formatDate(props.list[0].createdAt)
 
-    expect(
-      subTaskTestUtils.getChildByText(new RegExp(formattedCreatedAt)),
-    ).toBeInTheDocument()
+    expect(subTaskTestUtils.getChildByText(new RegExp(formattedCreatedAt))).toBeInTheDocument()
   })
 
   test('Отображается соответствующее сообщение если список пуст', () => {
@@ -78,15 +73,13 @@ describe('Список подзадач', () => {
   test('При ошибке получения списка отображается соответствующее сообщение', () => {
     render(<SubTaskList {...props} list={[]} isError />)
 
-    expect(
-      testUtils.getChildByText('Не удалось получить задания'),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText('Не удалось получить задания')).toBeInTheDocument()
   })
 
   describe('Отправка задания на доработку', () => {
     test('Обработчик кнопки вызывается корректно', async () => {
       const subTask = {
-        ...subTaskFixtures.subTask(),
+        ...taskFixtures.subTask(),
         status: activeReworkButtonProps.status,
       }
 
@@ -95,9 +88,7 @@ describe('Список подзадач', () => {
           {...props}
           list={[subTask]}
           taskStatus={activeReworkButtonProps.taskStatus}
-          currentUserIsTaskAssignee={
-            activeReworkButtonProps.currentUserIsTaskAssignee
-          }
+          currentUserIsTaskAssignee={activeReworkButtonProps.currentUserIsTaskAssignee}
         />,
       )
 
@@ -111,7 +102,7 @@ describe('Список подзадач', () => {
   describe('Отмена задания', () => {
     test('Обработчик кнопки вызывается корректно', async () => {
       const subTask = {
-        ...subTaskFixtures.subTask(),
+        ...taskFixtures.subTask(),
         status: activeCancelButtonProps.status,
       }
 
@@ -120,9 +111,7 @@ describe('Список подзадач', () => {
           {...props}
           list={[subTask]}
           taskStatus={activeCancelButtonProps.taskStatus}
-          currentUserIsTaskAssignee={
-            activeCancelButtonProps.currentUserIsTaskAssignee
-          }
+          currentUserIsTaskAssignee={activeCancelButtonProps.currentUserIsTaskAssignee}
         />,
       )
 
