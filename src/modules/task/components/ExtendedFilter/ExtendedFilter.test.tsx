@@ -2,12 +2,15 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import moment from 'moment-timezone'
 
-import { TaskExtendedStatusEnum, taskExtendedStatusDict } from 'modules/task/constants'
+import {
+  TaskExtendedStatusEnum,
+  taskExtendedStatusDict,
+  TaskAssignedEnum,
+} from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import userFixtures from '_tests_/fixtures/user'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   selectTestUtils,
@@ -22,7 +25,6 @@ import {
 } from '_tests_/utils'
 
 import {
-  TaskAssignedEnum,
   initialExtendedFilterFormValues,
   searchFieldDict,
   taskAssignedDict,
@@ -243,7 +245,8 @@ const openManagerSelect = async (user: UserEvent): Promise<HTMLElement> => {
 
 const getSelectedManager = () => selectTestUtils.getSelectedOption(getManagerFieldContainer())
 
-const expectManagerLoadingFinished = () => selectTestUtils.expectLoadingFinished(getManagerFieldContainer())
+const expectManagerLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getManagerFieldContainer())
 
 const manager = {
   getContainer: getManagerFilterBlock,

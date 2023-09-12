@@ -1,6 +1,10 @@
-import { ExtendedFilterQueries } from 'modules/task/components/ExtendedFilter/types'
+import {
+  FastFilterEnum,
+  TaskExtendedStatusEnum,
+  TaskAssignedEnum,
+  TaskOverdueEnum,
+} from 'modules/task/constants'
 import { TaskListItemModel } from 'modules/task/models'
-import { FastFilterQueries, TaskIdFilterQueries } from 'modules/task/pages/TaskListPage/types'
 
 import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
 import { IdType } from 'shared/types/common'
@@ -22,6 +26,31 @@ export type GetTaskListSortKey =
 
 export type GetTaskListSortValue = ExtendSortKey<GetTaskListSortKey>
 
+export type FastFilterQueries = Partial<{
+  filter: FastFilterEnum
+}>
+
+export type TaskIdFilterQueries = Partial<{
+  taskId: string
+}>
+
+export type SearchFields = Partial<{
+  searchByAssignee: string
+  searchByName: string
+  searchByTitle: string
+}>
+
+export type ExtendedFilterQueries = Partial<{
+  completeAtFrom: string
+  completeAtTo: string
+  status: TaskExtendedStatusEnum[]
+  isOverdue: TaskOverdueEnum[]
+  isAssigned: TaskAssignedEnum[]
+  workGroupId: IdType
+  manager: IdType
+}> &
+  SearchFields
+
 export type GetTaskListQueryArgs = Partial<
   PaginationParams & {
     sort: GetTaskListSortValue
@@ -29,7 +58,7 @@ export type GetTaskListQueryArgs = Partial<
     lat: number
     long: number
   }
-> /** вынести типы ниже сюда */ &
+> &
   ExtendedFilterQueries &
   FastFilterQueries &
   TaskIdFilterQueries

@@ -20,8 +20,8 @@ import {
   fakeIdStr,
 } from '_tests_/utils'
 
-import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
-import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
+import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
+import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
 
 const props: Readonly<

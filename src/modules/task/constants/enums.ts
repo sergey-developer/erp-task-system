@@ -1,3 +1,14 @@
+export enum FastFilterEnum {
+  All = 'ALL',
+  Free = 'FREE',
+  Mine = 'MINE',
+  Overdue = 'OVERDUE',
+  FirstLine = 'FIRST_LINE',
+  SecondLine = 'SECOND_LINE',
+  LessOneHour = 'LESS_1_HOUR',
+  LessThreeHours = 'LESS_3_HOURS',
+}
+
 export enum TaskStatusEnum {
   New = 'NEW',
   InProgress = 'IN_PROGRESS',
@@ -85,4 +96,14 @@ export enum FiscalAccumulatorFormatEnum {
   OutOfMemoryLess7 = 'OUT_OF_MEMORY_LESS_7',
   OutOfMemoryLess15 = 'DATE_EXPIRES_LESS_15',
   OutOfMemoryLess21 = 'DATE_EXPIRES_LESS_21',
+}
+
+export enum TaskAssignedEnum {
+  Assigned = 'True',
+  NotAssigned = 'False',
+}
+
+export enum TaskOverdueEnum {
+  Overdue = 'True',
+  NotOverdue = 'False',
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { TaskCardContainerStyled } from '../Card/styles'
+import { TaskCardContainerStyled } from '../TaskCard/Card/styles'
 
 export const WrapperStyled = styled(TaskCardContainerStyled)`
   margin-top: -20px;

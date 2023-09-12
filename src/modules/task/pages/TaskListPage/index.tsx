@@ -11,10 +11,8 @@ import { initialExtendedFilterFormValues } from 'modules/task/components/Extende
 import {
   ExtendedFilterFormFields,
   ExtendedFilterProps,
-  ExtendedFilterQueries,
 } from 'modules/task/components/ExtendedFilter/types'
 import FastFilterList from 'modules/task/components/FastFilterList'
-import { FastFilterEnum } from 'modules/task/components/FastFilterList/constants'
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskListLayout from 'modules/task/components/TaskListLayout'
 import TaskTable from 'modules/task/components/TaskTable'
@@ -24,8 +22,14 @@ import {
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
+import { FastFilterEnum } from 'modules/task/constants'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
-import { GetTaskListQueryArgs } from 'modules/task/models'
+import {
+  ExtendedFilterQueries,
+  FastFilterQueries,
+  GetTaskListQueryArgs,
+  TaskIdFilterQueries,
+} from 'modules/task/models'
 import { useGetUserList, useUserRole } from 'modules/user/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
@@ -38,7 +42,6 @@ import { calculatePaginationParams, getInitialPaginationParams } from 'shared/ut
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled, SearchStyled } from './styles'
-import { FastFilterQueries, TaskIdFilterQueries } from './types'
 import { getInitialFastFilter, mapExtendedFilterFormFieldsToQueries } from './utils'
 
 const TaskListPage: FC = () => {

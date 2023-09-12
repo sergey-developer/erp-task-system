@@ -6,7 +6,7 @@ import { TaskModel } from 'modules/task/models'
 
 import Spinner from 'components/Spinner'
 
-import TaskCardWrapper from '../TaskCardWrapper'
+import TaskCardWrapper from '../TaskCard/TaskCardWrapper'
 import DescriptionTab from './DescriptionTab'
 import ResolutionTab from './ResolutionTab'
 import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
@@ -90,10 +90,7 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
         </TaskCardWrapper>
       </TabPane>
 
-      <TabPane
-        tab={taskCardTabNamesDict[TaskCardTabsEnum.Journal]}
-        key={TaskCardTabsEnum.Journal}
-      >
+      <TabPane tab={taskCardTabNamesDict[TaskCardTabsEnum.Journal]} key={TaskCardTabsEnum.Journal}>
         <TaskCardWrapper>
           <React.Suspense fallback={<Spinner />}>
             <JournalTab taskId={task.id} />

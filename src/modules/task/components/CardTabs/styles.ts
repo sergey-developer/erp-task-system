@@ -1,7 +1,7 @@
 import { Tabs } from 'antd'
 import styled from 'styled-components'
 
-import { taskCardContainerStretchCss } from '../Card/styles'
+import { taskCardContainerStretchCss } from '../TaskCard/Card/styles'
 
 export const TabsStyled = styled(Tabs)`
   && {

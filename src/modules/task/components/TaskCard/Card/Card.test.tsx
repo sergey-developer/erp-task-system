@@ -8,17 +8,20 @@ import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  render,
-  spinnerTestUtils,
-  cardTestUtils,
-} from '_tests_/utils'
+import { fakeWord, getStoreWithAuth, render, spinnerTestUtils, cardTestUtils } from '_tests_/utils'
 import { modalTestUtils } from '_tests_/utils/components'
 
+import {
+  availableReasons,
+  testUtils as taskReclassificationModalTestUtils,
+} from '../../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
+import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
+import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
+import { testUtils as taskReclassificationRequestTestUtils } from '../../TaskReclassificationRequest/TaskReclassificationRequest.test'
+import { testUtils as taskResolutionModalTestUtils } from '../../TaskResolutionModal/TaskResolutionModal.test'
+import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
+import { testUtils as taskSuspendRequestTestUtils } from '../../TaskSuspendRequest/TaskSuspendRequest.test'
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
 import {
   activeAssignButtonProps,
@@ -27,7 +30,7 @@ import {
   testUtils as assigneeBlockTestUtils,
   canSelectAssigneeProps,
 } from '../AssigneeBlock/AssigneeBlock.test'
-import { testUtils as cardTabsTestUtils } from '../CardTabs/CardTabs.test'
+import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,
@@ -35,17 +38,7 @@ import {
   testUtils as cardTitleTestUtils,
 } from '../CardTitle/CardTitle.test'
 import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
-import {
-  availableReasons,
-  testUtils as taskReclassificationModalTestUtils,
-} from '../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
-import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
-import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
-import { testUtils as taskReclassificationRequestTestUtils } from '../TaskReclassificationRequest/TaskReclassificationRequest.test'
-import { testUtils as taskResolutionModalTestUtils } from '../TaskResolutionModal/TaskResolutionModal.test'
-import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
-import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,

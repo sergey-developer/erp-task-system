@@ -1,29 +1,11 @@
 import { Moment } from 'moment-timezone'
 
-import { TaskExtendedStatusEnum } from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskAssignedEnum, TaskOverdueEnum } from 'modules/task/constants'
+import { SearchFields } from 'modules/task/models'
 import { UserListModel } from 'modules/user/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
-
-import { TaskAssignedEnum, TaskOverdueEnum } from './constants'
-
-export type SearchFields = Partial<{
-  searchByAssignee: string
-  searchByName: string
-  searchByTitle: string
-}>
-
-export type ExtendedFilterQueries = Partial<{
-  completeAtFrom: string
-  completeAtTo: string
-  status: TaskExtendedStatusEnum[]
-  isOverdue: TaskOverdueEnum[]
-  isAssigned: TaskAssignedEnum[]
-  workGroupId: IdType
-  manager: IdType
-}> &
-  SearchFields
 
 export type ExtendedFilterFormFields = {
   completeAt: MaybeNull<[Moment, Moment]>

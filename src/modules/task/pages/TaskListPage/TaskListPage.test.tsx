@@ -8,11 +8,10 @@ import {
   taskOverdueDict,
 } from 'modules/task/components/ExtendedFilter/constants'
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilterList/FastFilterList.test'
-import { FastFilterEnum } from 'modules/task/components/FastFilterList/constants'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
-import { taskExtendedStatusDict } from 'modules/task/constants'
+import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants'
 import { TaskCountersKeys } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 

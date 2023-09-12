@@ -1,4 +1,5 @@
 import {
+  FastFilterEnum,
   FiscalAccumulatorFormatEnum,
   SuspendReasonEnum,
   TaskExtendedStatusEnum,
@@ -8,6 +9,17 @@ import { BaseTaskModel } from 'modules/task/models'
 
 import { StringMap } from 'shared/types/utils'
 
+export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
+  [FastFilterEnum.All]: 'Все',
+  [FastFilterEnum.Mine]: 'Мои',
+  [FastFilterEnum.Overdue]: 'Просроченные',
+  [FastFilterEnum.Free]: 'Свободные',
+  [FastFilterEnum.FirstLine]: 'Первая линия',
+  [FastFilterEnum.SecondLine]: 'Вторая линия',
+  [FastFilterEnum.LessOneHour]: 'Менее 1 часа',
+  [FastFilterEnum.LessThreeHours]: 'Менее 3-х часов',
+}
+
 export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.New]: 'Новая',
   [TaskStatusEnum.InProgress]: 'В работе',
@@ -16,9 +28,7 @@ export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.Closed]: 'Закрыта',
 }
 
-export const taskExtendedStatusDict: Readonly<
-  Partial<StringMap<TaskExtendedStatusEnum>>
-> = {
+export const taskExtendedStatusDict: Readonly<Partial<StringMap<TaskExtendedStatusEnum>>> = {
   [TaskExtendedStatusEnum.New]: 'Новые',
   [TaskExtendedStatusEnum.InProgress]: 'В работе',
   [TaskExtendedStatusEnum.Completed]: 'Выполнено',
@@ -28,13 +38,12 @@ export const taskExtendedStatusDict: Readonly<
   [TaskExtendedStatusEnum.Closed]: 'Закрытые',
 }
 
-export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> =
-  new Map([
-    [1, '1-всеохватывающее/широкое'],
-    [2, '2-значительное/большое'],
-    [3, '3-умеренное/ограниченное'],
-    [4, '4-малое/локализованное'],
-  ])
+export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> = new Map([
+  [1, '1-всеохватывающее/широкое'],
+  [2, '2-значительное/большое'],
+  [3, '3-умеренное/ограниченное'],
+  [4, '4-малое/локализованное'],
+])
 
 export const taskSeverityMap: Map<BaseTaskModel['severity'], string> = new Map([
   [1, '1-критическая'],
@@ -43,32 +52,27 @@ export const taskSeverityMap: Map<BaseTaskModel['severity'], string> = new Map([
   [4, '4-низкая'],
 ])
 
-export const taskPriorityMap: Map<BaseTaskModel['priorityCode'], string> =
-  new Map([
-    [1, '1-критический'],
-    [2, '2-высокий'],
-    [3, '3-средний'],
-    [4, '4-низкий'],
-  ])
+export const taskPriorityMap: Map<BaseTaskModel['priorityCode'], string> = new Map([
+  [1, '1-критический'],
+  [2, '2-высокий'],
+  [3, '3-средний'],
+  [4, '4-низкий'],
+])
 
 /**
  Порядок значений имеет значение т.к. они отображаются с помощью `Object.values`
  */
 export const suspendReasonDict: Readonly<StringMap<SuspendReasonEnum>> = {
-  [SuspendReasonEnum.AwaitingInformation]:
-    'Ожидание информации от пользователя',
+  [SuspendReasonEnum.AwaitingInformation]: 'Ожидание информации от пользователя',
   [SuspendReasonEnum.AwaitingInformationFromFirstLine]:
     'Ожидание информации от пользователя, уточнение через 1-ю линию',
   [SuspendReasonEnum.AwaitingInitiator]: 'Ожидание пользователя',
   [SuspendReasonEnum.AwaitingPurchase]: 'Ожидание закупки',
   [SuspendReasonEnum.AwaitingRelease]: 'Ожидание релиза',
-  [SuspendReasonEnum.AwaitingNonItWork]:
-    'Ожидание работ вне зоны ответственности ИТ',
+  [SuspendReasonEnum.AwaitingNonItWork]: 'Ожидание работ вне зоны ответственности ИТ',
 }
 
-export const fiscalAccumulatorFormatColorDict: Readonly<
-  StringMap<FiscalAccumulatorFormatEnum>
-> = {
+export const fiscalAccumulatorFormatColorDict: Readonly<StringMap<FiscalAccumulatorFormatEnum>> = {
   [FiscalAccumulatorFormatEnum.Dubbed]: '#6600ff',
   [FiscalAccumulatorFormatEnum.OutOfMemoryLess7]: '#F2994A',
   [FiscalAccumulatorFormatEnum.OutOfMemoryLess15]: '#EB5757',
