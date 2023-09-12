@@ -1,17 +1,30 @@
 import { screen, waitFor, within } from '@testing-library/react'
 
-import { getTaskWorkPerformedActMessages, SuspendReasonEnum, SuspendRequestStatusEnum } from 'modules/task/constants'
+import {
+  getTaskWorkPerformedActMessages,
+  SuspendReasonEnum,
+  SuspendRequestStatusEnum,
+} from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 
+import commonFixtures from '_tests_/fixtures/common'
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
-import { fakeWord, getStoreWithAuth, render, spinnerTestUtils, cardTestUtils, findNotification } from '_tests_/utils'
+import {
+  fakeWord,
+  getStoreWithAuth,
+  render,
+  spinnerTestUtils,
+  cardTestUtils,
+  notificationTestUtils,
+} from '_tests_/utils'
 import { modalTestUtils } from '_tests_/utils/components'
 
+import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
 import {
   availableReasons,
   testUtils as taskReclassificationModalTestUtils,
@@ -30,7 +43,6 @@ import {
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from '../AssigneeBlock/AssigneeBlock.test'
-import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,
@@ -603,22 +615,14 @@ describe('Карточка заявки', () => {
       })
 
       test('Корректно отрабатывает вызов с ошибкой 404', async () => {
-        const clickDownloadLinkSpy = jest.spyOn(
-          downloadLinkUtils,
-          'clickDownloadLink',
-        )
+        const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
 
-        const base64ToArrayBufferSpy = jest.spyOn(
-          base64Utils,
-          'base64ToArrayBuffer',
-        )
+        const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
 
         const errorMessage = fakeWord()
         const getTaskWorkPerformedActMock = jest.fn(() => ({
           unwrap: jest.fn(() =>
-            Promise.reject(
-              commonFixtures.notFoundErrorResponse({ detail: [errorMessage] }),
-            ),
+            Promise.reject(commonFixtures.notFoundErrorResponse({ detail: [errorMessage] })),
           ),
         }))
 
@@ -645,7 +649,7 @@ describe('Карточка заявки', () => {
         await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
         await taskResolutionModalTestUtils.clickGetActButton(user)
 
-        const errorNotification = await findNotification(errorMessage)
+        const errorNotification = await notificationTestUtils.findNotification(errorMessage)
 
         expect(errorNotification).toBeInTheDocument()
         expect(base64ToArrayBufferSpy).not.toBeCalled()
@@ -653,20 +657,12 @@ describe('Карточка заявки', () => {
       })
 
       test('Корректно отрабатывает вызов с ошибкой 500', async () => {
-        const clickDownloadLinkSpy = jest.spyOn(
-          downloadLinkUtils,
-          'clickDownloadLink',
-        )
+        const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
 
-        const base64ToArrayBufferSpy = jest.spyOn(
-          base64Utils,
-          'base64ToArrayBuffer',
-        )
+        const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
 
         const getTaskWorkPerformedActMock = jest.fn(() => ({
-          unwrap: jest.fn(() =>
-            Promise.reject(commonFixtures.serverErrorResponse()),
-          ),
+          unwrap: jest.fn(() => Promise.reject(commonFixtures.serverErrorResponse())),
         }))
 
         const { user } = render(
@@ -692,7 +688,7 @@ describe('Карточка заявки', () => {
         await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
         await taskResolutionModalTestUtils.clickGetActButton(user)
 
-        const errorNotification = await findNotification(
+        const errorNotification = await notificationTestUtils.findNotification(
           getTaskWorkPerformedActMessages.commonError,
         )
 
