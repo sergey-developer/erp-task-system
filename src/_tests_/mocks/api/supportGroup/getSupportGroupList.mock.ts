@@ -1,5 +1,5 @@
-import { SupportGroupApiEnum } from 'modules/supportGroup/constants'
 import { GetSupportGroupListSuccessResponse } from 'modules/supportGroup/models'
+import { SupportGroupApiEnum } from 'modules/supportGroup/services/supportGroupApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

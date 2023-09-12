@@ -5,20 +5,13 @@ import { getShortUserName } from 'modules/user/utils'
 
 import { formatDate } from 'shared/utils/date'
 
-import commonFixtures from '_tests_/fixtures/common'
-
-import {
-  fakeDateString,
-  fakeWord,
-  iconTestUtils,
-  render,
-  buttonTestUtils,
-} from '_tests_/utils'
+import userFixtures from '_tests_/fixtures/user'
+import { fakeDateString, fakeWord, iconTestUtils, render, buttonTestUtils } from '_tests_/utils'
 
 import TaskSuspendRequest, { TaskSuspendRequestProps } from './index'
 
 const props: Readonly<Omit<TaskSuspendRequestProps, 'action'>> = {
-  user: commonFixtures.user(),
+  user: userFixtures.baseUser(),
   title: fakeWord(),
   comment: fakeWord(),
   date: fakeDateString(),
@@ -57,7 +50,8 @@ const clickCancelButton = async (user: UserEvent) => {
   return button
 }
 
-const expectCancelRequestLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getCancelButton())
+const expectCancelRequestLoadingStarted = () =>
+  buttonTestUtils.expectLoadingStarted(getCancelButton())
 
 // return button
 const getReturnToWorkButton = () =>
@@ -72,7 +66,8 @@ const clickReturnToWorkButton = async (user: UserEvent) => {
   return button
 }
 
-const expectReturnToWorkLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getReturnToWorkButton())
+const expectReturnToWorkLoadingStarted = () =>
+  buttonTestUtils.expectLoadingStarted(getReturnToWorkButton())
 
 export const testUtils = {
   getContainer,

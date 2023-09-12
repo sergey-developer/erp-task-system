@@ -1,6 +1,3 @@
-export * from './getOlaStatusMap'
-export * from './getOlaStatusTextType'
-
 export * from './task'
 export * from './taskJournal'
 export * from './taskComment'
@@ -8,3 +5,4 @@ export * from './taskAssignee'
 export * from './taskWorkGroup'
 export * from './taskSuspendRequest'
 export * from './taskReclassificationRequest'
+export * from './subTask'

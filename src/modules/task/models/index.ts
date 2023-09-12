@@ -7,5 +7,5 @@ export * from './taskWorkGroup'
 export * from './taskAttachment'
 export * from './taskSuspendRequest'
 export * from './taskReclassificationRequest'
-
 export * from './fiscalAccumulator'
+export * from './subTask'

@@ -5,39 +5,26 @@ import { getShortUserName } from 'modules/user/utils'
 
 import { formatDate } from 'shared/utils/date'
 
-import commonFixtures from '_tests_/fixtures/common'
+import userFixtures from '_tests_/fixtures/user'
+import { buttonTestUtils, fakeDateString, fakeWord, iconTestUtils, render } from '_tests_/utils'
 
-import {
-  buttonTestUtils,
-  fakeDateString,
-  fakeWord,
-  iconTestUtils,
-  render
-} from "_tests_/utils";
-
-import TaskReclassificationRequest, {
-  TaskReclassificationRequestProps,
-} from './index'
+import TaskReclassificationRequest, { TaskReclassificationRequestProps } from './index'
 
 const props: Readonly<TaskReclassificationRequestProps> = {
-  user: commonFixtures.user(),
+  user: userFixtures.baseUser(),
   comment: fakeWord(),
   date: fakeDateString(),
   onCancel: jest.fn(),
   cancelBtnDisabled: false,
 }
 
-const getContainer = () =>
-  screen.getByTestId('task-card-reclassification-request')
+const getContainer = () => screen.getByTestId('task-card-reclassification-request')
 
-const findContainer = () =>
-  screen.findByTestId('task-card-reclassification-request')
+const findContainer = () => screen.findByTestId('task-card-reclassification-request')
 
-const queryContainer = () =>
-  screen.queryByTestId('task-card-reclassification-request')
+const queryContainer = () => screen.queryByTestId('task-card-reclassification-request')
 
-const getChildByText = (text: string | RegExp) =>
-  within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 const getIcon = () => iconTestUtils.getIconByNameIn(getContainer(), 'question-circle')
 
@@ -70,9 +57,7 @@ describe('Запрос заявки на переклассификацию', ()
 
     test('Заголовок', () => {
       render(<TaskReclassificationRequest {...props} />)
-      expect(
-        testUtils.getChildByText(/запрошена переклассификация/i),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(/запрошена переклассификация/i)).toBeInTheDocument()
     })
 
     test('Комментарий', () => {
@@ -83,17 +68,13 @@ describe('Запрос заявки на переклассификацию', ()
     test('Данные пользователя', () => {
       render(<TaskReclassificationRequest {...props} />)
 
-      expect(
-        testUtils.getChildByText(getShortUserName(props.user)),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(getShortUserName(props.user))).toBeInTheDocument()
     })
 
     test('Дата создания', () => {
       render(<TaskReclassificationRequest {...props} />)
 
-      expect(
-        testUtils.getChildByText(formatDate(props.date)),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(formatDate(props.date))).toBeInTheDocument()
     })
   })
 

@@ -1,27 +1,10 @@
-export * from './getTask.mock'
-export * from './takeTask.mock'
-export * from './resolveTask.mock'
-
-export * from './getTaskList.mock'
-
-export * from './getTaskListMap.mock'
-
-export * from './getTaskCounters.mock'
-
-export * from './getFiscalAccumulatorList.mock'
-
-export * from './getTaskJournal.mock'
-
-export * from './createTaskComment.mock'
-export * from './getTaskCommentList.mock'
-
-export * from './deleteTaskWorkGroup.mock'
-export * from './updateTaskWorkGroup.mock'
-
-export * from './updateTaskAssignee.mock'
-
-export * from './createTaskReclassificationRequest.mock'
-export * from './getTaskReclassificationRequest.mock'
-
-export * from './createTaskSuspendRequest.mock'
-export * from './deleteTaskSuspendRequest.mock'
+export * from './fiscalAccumulator'
+export * from './subTask'
+export * from './task'
+export * from './taskAssignee'
+export * from './taskComment'
+export * from './taskCounters'
+export * from './taskJournal'
+export * from './taskReclassificationRequest'
+export * from './taskSuspendRequest'
+export * from './taskWorkGroup'

@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getUserListMessages } from 'modules/user/constants'
 import { GetUserListQueryArgs, GetUserListSuccessResponse } from 'modules/user/models'
-import { useGetUserListQuery } from 'modules/user/services/userApi.service'
+import { useGetUserListQuery } from 'modules/user/services/userApiService'
 
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

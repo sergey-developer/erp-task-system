@@ -5,7 +5,7 @@ import { RouteEnum } from 'configs/routes'
 
 import { login as loginAction } from 'modules/auth/auth.slice'
 import { LoginFormFields } from 'modules/auth/pages/LoginPage/types'
-import { useLoginMutation } from 'modules/auth/services/authApi.service'
+import { useLoginMutation } from 'modules/auth/services/authApiService'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { parseJwt } from 'modules/auth/utils'
 

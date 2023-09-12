@@ -3,7 +3,7 @@ import { SkipToken } from '@reduxjs/toolkit/query'
 import { CustomUseQueryStateResult } from 'lib/rtk-query/types'
 
 import { GetUserMeQueryArgs, GetUserMeSuccessResponse } from 'modules/user/models'
-import { endpoints } from 'modules/user/services/userApi.service'
+import { endpoints } from 'modules/user/services/userApiService'
 
 type UseUserMeStateResult = CustomUseQueryStateResult<GetUserMeQueryArgs, GetUserMeSuccessResponse>
 

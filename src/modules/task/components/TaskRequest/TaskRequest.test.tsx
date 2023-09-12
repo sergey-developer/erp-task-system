@@ -7,15 +7,8 @@ import { PauseCircleIcon } from 'components/Icons'
 
 import { ArrayFirst } from 'shared/types/utils'
 
-import commonFixtures from '_tests_/fixtures/common'
-
-import {
-  fakeDateString,
-  fakeWord,
-  iconTestUtils,
-  render,
-  buttonTestUtils,
-} from '_tests_/utils'
+import userFixtures from '_tests_/fixtures/user'
+import { fakeDateString, fakeWord, iconTestUtils, render, buttonTestUtils } from '_tests_/utils'
 
 import TaskRequest, { TaskRequestProps } from './index'
 
@@ -27,7 +20,7 @@ const action: ArrayFirst<TaskRequestProps['actions']> = {
 }
 
 const props: Readonly<TaskRequestProps & { 'data-testid': string }> = {
-  user: commonFixtures.user(),
+  user: userFixtures.baseUser(),
   title: fakeWord(),
   comment: fakeWord(),
   date: fakeDateString(),

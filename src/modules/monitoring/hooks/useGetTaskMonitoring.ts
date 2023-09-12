@@ -6,7 +6,7 @@ import {
   GetTaskMonitoringQueryArgs,
   GetTaskMonitoringSuccessResponse,
 } from 'modules/monitoring/models'
-import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApi.service'
+import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApiService'
 
 import { getErrorDetail, isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

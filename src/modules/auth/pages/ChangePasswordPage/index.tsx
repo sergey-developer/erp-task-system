@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { RouteEnum } from 'configs/routes'
 
 import { UPDATE_PASSWORD_SUCCESS_MSG } from 'modules/auth/constants'
-import { useUpdatePasswordMutation } from 'modules/auth/services/authApi.service'
+import { useUpdatePasswordMutation } from 'modules/auth/services/authApiService'
 
 import { BaseCard } from 'components/Card/BaseCard'
 

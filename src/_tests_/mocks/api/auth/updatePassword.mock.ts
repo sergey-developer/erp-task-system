@@ -1,8 +1,8 @@
-import { AuthApiEnum } from 'modules/auth/constants'
 import {
   UpdatePasswordBadRequestErrorResponse,
   UpdatePasswordSuccessResponse,
 } from 'modules/auth/models'
+import { AuthApiEnum } from 'modules/auth/services/authApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

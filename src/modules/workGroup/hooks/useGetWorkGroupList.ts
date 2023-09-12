@@ -9,7 +9,7 @@ import {
   GetWorkGroupListSuccessResponse,
 } from 'modules/workGroup/models'
 import { workGroupApiPermissions } from 'modules/workGroup/permissions'
-import { useGetWorkGroupListQuery } from 'modules/workGroup/services/workGroupApi.service'
+import { useGetWorkGroupListQuery } from 'modules/workGroup/services/workGroupApiService'
 
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

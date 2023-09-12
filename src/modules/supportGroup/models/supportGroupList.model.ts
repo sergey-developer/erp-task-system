@@ -1,8 +1,5 @@
-import { IdType } from 'shared/types/common'
+import { SupportGroupModel } from './supportGroup.model'
 
-export type SupportGroupListItemModel = {
-  id: IdType
-  name: string
-}
+export type SupportGroupListItemModel = Pick<SupportGroupModel, 'id' | 'name'>
 
 export type SupportGroupListModel = SupportGroupListItemModel[]

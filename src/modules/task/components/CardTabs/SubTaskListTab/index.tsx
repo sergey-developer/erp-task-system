@@ -3,15 +3,15 @@ import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback, useState } from 'react'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
-import { CancelSubTaskModalProps } from 'modules/subTask/components/CancelSubTaskModal/types'
-import { ReworkSubTaskModalProps } from 'modules/subTask/components/ReworkSubTaskModal/types'
-import SubTaskList from 'modules/subTask/components/SubTaskList'
+import { CancelSubTaskModalProps } from 'modules/task/components/CancelSubTaskModal/types'
+import { ReworkSubTaskModalProps } from 'modules/task/components/ReworkSubTaskModal/types'
+import SubTaskList from 'modules/task/components/SubTaskList'
 import {
   useCancelSubTask,
   useGetSubTaskList,
   useReworkSubTask,
-} from 'modules/subTask/hooks'
-import { SubTaskModel } from 'modules/subTask/models'
+} from 'modules/task/hooks'
+import { SubTaskModel } from 'modules/task/models'
 import {
   useTaskExtendedStatus,
   useTaskStatus,
@@ -28,13 +28,13 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 
 const CreateSubTaskModal = React.lazy(
-  () => import('modules/subTask/components/CreateSubTaskModal'),
+  () => import('modules/task/components/CreateSubTaskModal'),
 )
 const CancelSubTaskModal = React.lazy(
-  () => import('modules/subTask/components/CancelSubTaskModal'),
+  () => import('modules/task/components/CancelSubTaskModal'),
 )
 const ReworkSubTaskModal = React.lazy(
-  () => import('modules/subTask/components/ReworkSubTaskModal'),
+  () => import('modules/task/components/ReworkSubTaskModal'),
 )
 
 const { Title } = Typography

@@ -25,6 +25,9 @@ export enum TaskApiEnum {
 
   GetTaskJournal = '/tasks/:id/journal/',
   GetTaskJournalCsv = '/tasks/:id/journal/csv/',
+
+  GetSubTaskList = '/tasks/:id/subtasks/',
+  CreateSubTask = '/tasks/:id/subtasks/',
 }
 
 export enum TaskApiTagEnum {
@@ -42,4 +45,6 @@ export enum TaskApiTriggerEnum {
   TakeTask = 'takeTask',
   CreateTaskComment = 'createTaskComment',
   GetTaskCommentList = 'getTaskCommentList',
+  GetSubTaskList = 'getSubTaskList',
+  CreateSubTask = 'createSubTask',
 }

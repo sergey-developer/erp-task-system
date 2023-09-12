@@ -1,8 +1,7 @@
 import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import { SuspendRequestModel } from 'modules/task/models'
 
-import commonFixtures from '_tests_/fixtures/common'
-
+import userFixtures from '_tests_/fixtures/user'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
 export const suspendRequest = (
@@ -13,5 +12,5 @@ export const suspendRequest = (
   id: fakeId(),
   comment: fakeWord(),
   suspendEndAt: fakeDateString(),
-  author: commonFixtures.user(),
+  author: userFixtures.baseUser(),
 })

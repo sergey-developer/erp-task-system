@@ -5,18 +5,16 @@ import * as counters from './counters'
 import * as fiscalAccumulatorList from './fiscalAccumulatorList'
 import * as journal from './journal'
 import * as reclassificationRequest from './reclassificationRequest'
+import * as subTask from './subTask'
 import * as supportGroup from './supportGroup'
 import * as suspendRequest from './suspendRequest'
 import * as task from './task'
-import * as taskList from './taskList'
-import * as taskTable from './taskTable'
 import * as workGroup from './workGroup'
 
 const taskFixtures = {
   ...task,
-  ...taskList,
   ...counters,
-  ...taskTable,
+  ...subTask,
   ...comment,
   ...attachment,
   ...assignee,

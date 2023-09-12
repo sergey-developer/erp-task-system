@@ -1,10 +1,10 @@
 import { Mutex } from 'async-mutex'
 
 import { refreshToken as refreshTokenAction } from 'modules/auth/auth.slice'
-import { AuthApiEnum } from 'modules/auth/constants'
-import { RefreshTokenActionPayload } from 'modules/auth/types'
 import { RefreshTokenSuccessResponse } from 'modules/auth/models'
+import { AuthApiEnum } from 'modules/auth/services/authApiService'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
+import { RefreshTokenActionPayload } from 'modules/auth/types'
 import { logoutAndClearTokens, parseJwt } from 'modules/auth/utils'
 
 import { RootState } from 'state/store'
@@ -14,11 +14,7 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import baseQuery from './baseQuery'
 import { apiPath, currentApiVersion } from './constants'
 import { CustomBaseQueryFn } from './intefraces'
-import {
-  isClientRangeError,
-  isErrorResponse,
-  isUnauthorizedError,
-} from './utils'
+import { isClientRangeError, isErrorResponse, isUnauthorizedError } from './utils'
 
 const mutex = new Mutex()
 
@@ -38,19 +34,11 @@ const query = baseQuery({
   },
 })
 
-const baseQueryWithReauth: CustomBaseQueryFn = async (
-  args,
-  api,
-  extraOptions,
-) => {
+const baseQueryWithReauth: CustomBaseQueryFn = async (args, api, extraOptions) => {
   await mutex.waitForUnlock()
   let response = await query(args, api, extraOptions)
 
-  if (
-    response.error &&
-    isErrorResponse(response.error) &&
-    isUnauthorizedError(response.error)
-  ) {
+  if (response.error && isErrorResponse(response.error) && isUnauthorizedError(response.error)) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       let refreshResult
@@ -79,8 +67,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (
           }
 
           if (refreshResult.data) {
-            const refreshData =
-              refreshResult.data as RefreshTokenSuccessResponse
+            const refreshData = refreshResult.data as RefreshTokenSuccessResponse
 
             authLocalStorageService.setAccessToken(refreshData.access)
             authLocalStorageService.setRefreshToken(refreshData.refresh)

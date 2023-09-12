@@ -31,11 +31,11 @@ import {
 import {
   useCreateNomenclatureMutation,
   useUpdateNomenclatureMutation,
-} from 'modules/warehouse/services/nomenclatureApi.service'
+} from 'modules/warehouse/services/nomenclatureApiService'
 import {
   useCreateNomenclatureGroupMutation,
   useUpdateNomenclatureGroupMutation,
-} from 'modules/warehouse/services/nomenclatureGroupApi.service'
+} from 'modules/warehouse/services/nomenclatureGroupApiService'
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
