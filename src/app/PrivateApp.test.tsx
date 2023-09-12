@@ -10,8 +10,8 @@ import {
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
 
-import timeZoneFixtures from 'fixtures/timeZone'
-import userFixtures from 'fixtures/user'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import userFixtures from '_tests_/fixtures/user'
 
 import {
   mockGetSystemInfoSuccess,
@@ -27,18 +27,12 @@ import {
   mockUpdateUserStatusUnauthorizedError,
   mockUpdateUserSuccess,
 } from '_tests_/mocks/api'
-import {
-  fakeWord,
-  findNotification,
-  render,
-  setupApiTests,
-  setupNotifications,
-} from '_tests_/utils'
+import { fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
 import PrivateApp from './PrivateApp'
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Private app', () => {
   describe('Private header', () => {
@@ -46,11 +40,7 @@ describe('Private app', () => {
       test('Отображается состояние загрузки во время загрузки временных зон', async () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
-
-        mockGetTimeZoneListSuccess({
-          body: [timeZoneFixtures.timeZoneListItem()],
-        })
-
+        mockGetTimeZoneListSuccess({ body: [catalogsFixtures.timeZoneListItem()] })
         mockGetUserMeSuccess({ body: userFixtures.user() })
 
         render(<PrivateApp />)
@@ -63,7 +53,7 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem = catalogsFixtures.timeZoneListItem()
         mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
 
         const fakeUser = userFixtures.user()
@@ -76,10 +66,7 @@ describe('Private app', () => {
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         await privateHeaderTestUtils.openTimeZoneSelect(user)
-        await privateHeaderTestUtils.setTimeZone(
-          user,
-          fakeTimeZoneListItem.label,
-        )
+        await privateHeaderTestUtils.setTimeZone(user, fakeTimeZoneListItem.label)
         await privateHeaderTestUtils.expectTimeZoneLoadingStarted()
       })
 
@@ -88,7 +75,7 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem = catalogsFixtures.timeZoneListItem()
         mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
 
         const fakeUser = userFixtures.user()
@@ -103,10 +90,7 @@ describe('Private app', () => {
         await taskTableTestUtils.expectLoadingFinished()
         // await taskCardTestUtils.expectLoadingStarted()
         await privateHeaderTestUtils.openTimeZoneSelect(user)
-        await privateHeaderTestUtils.setTimeZone(
-          user,
-          fakeTimeZoneListItem.label,
-        )
+        await privateHeaderTestUtils.setTimeZone(user, fakeTimeZoneListItem.label)
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         await taskTableTestUtils.expectLoadingStarted()
         // await taskCardTestUtils.expectLoadingStarted()
@@ -116,7 +100,7 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem = catalogsFixtures.timeZoneListItem()
         mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
 
         const fakeUser = userFixtures.user()
@@ -135,7 +119,7 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const timeZoneList = timeZoneFixtures.timeZoneList()
+        const timeZoneList = catalogsFixtures.timeZoneList()
         mockGetTimeZoneListSuccess({ body: timeZoneList })
 
         const fakeUser = userFixtures.user()
@@ -156,8 +140,8 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem1 = timeZoneFixtures.timeZoneListItem()
-        const fakeTimeZoneListItem2 = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem1 = catalogsFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem2 = catalogsFixtures.timeZoneListItem()
         mockGetTimeZoneListSuccess({
           body: [fakeTimeZoneListItem1, fakeTimeZoneListItem2],
         })
@@ -173,25 +157,17 @@ describe('Private app', () => {
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
-        const currentTimeZoneOption =
-          privateHeaderTestUtils.getSelectedTimeZone()
+        const currentTimeZoneOption = privateHeaderTestUtils.getSelectedTimeZone()
 
-        expect(currentTimeZoneOption).toHaveTextContent(
-          fakeTimeZoneListItem1.label,
-        )
+        expect(currentTimeZoneOption).toHaveTextContent(fakeTimeZoneListItem1.label)
 
         await privateHeaderTestUtils.openTimeZoneSelect(user)
-        await privateHeaderTestUtils.setTimeZone(
-          user,
-          fakeTimeZoneListItem2.label,
-        )
+        await privateHeaderTestUtils.setTimeZone(user, fakeTimeZoneListItem2.label)
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
 
         await waitFor(() => {
           const newTimeZoneOption = privateHeaderTestUtils.getSelectedTimeZone()
-          expect(newTimeZoneOption).toHaveTextContent(
-            fakeTimeZoneListItem2.label,
-          )
+          expect(newTimeZoneOption).toHaveTextContent(fakeTimeZoneListItem2.label)
         })
       })
 
@@ -199,7 +175,7 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = timeZoneFixtures.timeZoneListItem()
+        const fakeTimeZoneListItem = catalogsFixtures.timeZoneListItem()
         mockGetTimeZoneListSuccess({ body: [fakeTimeZoneListItem] })
 
         const fakeUser = userFixtures.user()
@@ -212,13 +188,10 @@ describe('Private app', () => {
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         await privateHeaderTestUtils.openTimeZoneSelect(user)
-        await privateHeaderTestUtils.setTimeZone(
-          user,
-          fakeTimeZoneListItem.label,
-        )
+        await privateHeaderTestUtils.setTimeZone(user, fakeTimeZoneListItem.label)
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
 
-        const notification = await findNotification(
+        const notification = await notificationTestUtils.findNotification(
           updateUserTimeZoneMessages.commonError,
         )
 
@@ -243,8 +216,7 @@ describe('Private app', () => {
           render(<PrivateApp />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
-          const selectContainer =
-            privateHeaderTestUtils.getUserStatusSelectContainer()
+          const selectContainer = privateHeaderTestUtils.getUserStatusSelectContainer()
 
           expect(selectContainer).toBeInTheDocument()
         })
@@ -254,7 +226,7 @@ describe('Private app', () => {
           mockGetSystemInfoSuccess()
           mockGetTimeZoneListSuccess()
 
-          const fakeUserStatus = userFixtures.userStatusListItem()
+          const fakeUserStatus = catalogsFixtures.userStatusListItem()
           mockGetUserStatusListSuccess({ body: [fakeUserStatus] })
 
           mockGetUserMeSuccess({
@@ -268,12 +240,9 @@ describe('Private app', () => {
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await privateHeaderTestUtils.expectUserStatusLoadingFinished()
-          const selectedUserStatus =
-            privateHeaderTestUtils.getSelectedUserStatus()
+          const selectedUserStatus = privateHeaderTestUtils.getSelectedUserStatus()
 
-          expect(selectedUserStatus).toHaveTextContent(
-            new RegExp(fakeUserStatus.title),
-          )
+          expect(selectedUserStatus).toHaveTextContent(new RegExp(fakeUserStatus.title))
         })
 
         describe('Выбор статуса', () => {
@@ -282,8 +251,8 @@ describe('Private app', () => {
             mockGetSystemInfoSuccess()
             mockGetTimeZoneListSuccess()
 
-            const fakeUserStatus1 = userFixtures.userStatusListItem()
-            const fakeUserStatus2 = userFixtures.userStatusListItem()
+            const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+            const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
             mockGetUserStatusListSuccess({
               body: [fakeUserStatus1, fakeUserStatus2],
             })
@@ -301,19 +270,13 @@ describe('Private app', () => {
             await privateLayoutTestUtils.expectLoadingFinished()
             await privateHeaderTestUtils.expectUserStatusLoadingFinished()
             await privateHeaderTestUtils.openUserStatusSelect(user)
-            await privateHeaderTestUtils.setUserStatus(
-              user,
-              fakeUserStatus1.title,
-            )
+            await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
             await privateHeaderTestUtils.expectUserStatusSelectDisabled()
             await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
 
-            const selectedUserStatus =
-              privateHeaderTestUtils.getSelectedUserStatus()
+            const selectedUserStatus = privateHeaderTestUtils.getSelectedUserStatus()
 
-            expect(selectedUserStatus).toHaveTextContent(
-              new RegExp(fakeUserStatus1.title),
-            )
+            expect(selectedUserStatus).toHaveTextContent(new RegExp(fakeUserStatus1.title))
           })
 
           describe('При не успешном запросе', () => {
@@ -322,8 +285,8 @@ describe('Private app', () => {
               mockGetSystemInfoSuccess()
               mockGetTimeZoneListSuccess()
 
-              const fakeUserStatus1 = userFixtures.userStatusListItem()
-              const fakeUserStatus2 = userFixtures.userStatusListItem()
+              const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+              const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
               mockGetUserStatusListSuccess({
                 body: [fakeUserStatus1, fakeUserStatus2],
               })
@@ -344,21 +307,15 @@ describe('Private app', () => {
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
               await privateHeaderTestUtils.openUserStatusSelect(user)
-              await privateHeaderTestUtils.setUserStatus(
-                user,
-                fakeUserStatus1.title,
-              )
+              await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
               await privateHeaderTestUtils.expectUserStatusSelectDisabled()
               await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
 
-              const selectedUserStatus =
-                privateHeaderTestUtils.getSelectedUserStatus()
+              const selectedUserStatus = privateHeaderTestUtils.getSelectedUserStatus()
 
-              expect(selectedUserStatus).not.toHaveTextContent(
-                new RegExp(fakeUserStatus1.title),
-              )
+              expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
 
-              const notification = await findNotification(
+              const notification = await notificationTestUtils.findNotification(
                 badRequestErrorMessage,
               )
               expect(notification).toBeInTheDocument()
@@ -369,8 +326,8 @@ describe('Private app', () => {
               mockGetSystemInfoSuccess()
               mockGetTimeZoneListSuccess()
 
-              const fakeUserStatus1 = userFixtures.userStatusListItem()
-              const fakeUserStatus2 = userFixtures.userStatusListItem()
+              const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+              const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
               mockGetUserStatusListSuccess({
                 body: [fakeUserStatus1, fakeUserStatus2],
               })
@@ -391,21 +348,15 @@ describe('Private app', () => {
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
               await privateHeaderTestUtils.openUserStatusSelect(user)
-              await privateHeaderTestUtils.setUserStatus(
-                user,
-                fakeUserStatus1.title,
-              )
+              await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
               await privateHeaderTestUtils.expectUserStatusSelectDisabled()
               await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
 
-              const selectedUserStatus =
-                privateHeaderTestUtils.getSelectedUserStatus()
+              const selectedUserStatus = privateHeaderTestUtils.getSelectedUserStatus()
 
-              expect(selectedUserStatus).not.toHaveTextContent(
-                new RegExp(fakeUserStatus1.title),
-              )
+              expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
 
-              const notification = await findNotification(
+              const notification = await notificationTestUtils.findNotification(
                 unauthorizedErrorMessage,
               )
               expect(notification).toBeInTheDocument()
@@ -416,8 +367,8 @@ describe('Private app', () => {
               mockGetSystemInfoSuccess()
               mockGetTimeZoneListSuccess()
 
-              const fakeUserStatus1 = userFixtures.userStatusListItem()
-              const fakeUserStatus2 = userFixtures.userStatusListItem()
+              const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+              const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
               mockGetUserStatusListSuccess({
                 body: [fakeUserStatus1, fakeUserStatus2],
               })
@@ -438,21 +389,15 @@ describe('Private app', () => {
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
               await privateHeaderTestUtils.openUserStatusSelect(user)
-              await privateHeaderTestUtils.setUserStatus(
-                user,
-                fakeUserStatus1.title,
-              )
+              await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
               await privateHeaderTestUtils.expectUserStatusSelectDisabled()
               await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
 
-              const selectedUserStatus =
-                privateHeaderTestUtils.getSelectedUserStatus()
+              const selectedUserStatus = privateHeaderTestUtils.getSelectedUserStatus()
 
-              expect(selectedUserStatus).not.toHaveTextContent(
-                new RegExp(fakeUserStatus1.title),
-              )
+              expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
 
-              const notification = await findNotification(errorMessage)
+              const notification = await notificationTestUtils.findNotification(errorMessage)
               expect(notification).toBeInTheDocument()
             })
 
@@ -461,8 +406,8 @@ describe('Private app', () => {
               mockGetSystemInfoSuccess()
               mockGetTimeZoneListSuccess()
 
-              const fakeUserStatus1 = userFixtures.userStatusListItem()
-              const fakeUserStatus2 = userFixtures.userStatusListItem()
+              const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+              const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
               mockGetUserStatusListSuccess({
                 body: [fakeUserStatus1, fakeUserStatus2],
               })
@@ -480,21 +425,15 @@ describe('Private app', () => {
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
               await privateHeaderTestUtils.openUserStatusSelect(user)
-              await privateHeaderTestUtils.setUserStatus(
-                user,
-                fakeUserStatus1.title,
-              )
+              await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
               await privateHeaderTestUtils.expectUserStatusSelectDisabled()
               await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
 
-              const selectedUserStatus =
-                privateHeaderTestUtils.getSelectedUserStatus()
+              const selectedUserStatus = privateHeaderTestUtils.getSelectedUserStatus()
 
-              expect(selectedUserStatus).not.toHaveTextContent(
-                new RegExp(fakeUserStatus1.title),
-              )
+              expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
 
-              const notification = await findNotification(
+              const notification = await notificationTestUtils.findNotification(
                 updateUserStatusMessages.commonError,
               )
               expect(notification).toBeInTheDocument()
@@ -519,8 +458,7 @@ describe('Private app', () => {
           render(<PrivateApp />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
-          const selectContainer =
-            privateHeaderTestUtils.queryUserStatusSelectContainer()
+          const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
 
           expect(selectContainer).not.toBeInTheDocument()
         })
@@ -542,8 +480,7 @@ describe('Private app', () => {
           render(<PrivateApp />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
-          const selectContainer =
-            privateHeaderTestUtils.queryUserStatusSelectContainer()
+          const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
 
           expect(selectContainer).not.toBeInTheDocument()
         })
@@ -565,8 +502,7 @@ describe('Private app', () => {
           render(<PrivateApp />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
-          const selectContainer =
-            privateHeaderTestUtils.queryUserStatusSelectContainer()
+          const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
 
           expect(selectContainer).not.toBeInTheDocument()
         })

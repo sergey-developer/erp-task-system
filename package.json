@@ -76,7 +76,6 @@
       "<rootDir>/build/",
       "<rootDir>/node_modules/",
       "assets",
-      "fixtures",
       "_tests_",
       "types",
       "types.ts",

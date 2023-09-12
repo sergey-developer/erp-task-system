@@ -1,7 +1,11 @@
+import { MaybeUndefined } from 'shared/types/utils'
+
 import { UserListModel } from './userList.model'
 
-export type GetUserListQueryArgs = Partial<{
-  isManager: boolean
-}>
+export type GetUserListQueryArgs = MaybeUndefined<
+  Partial<{
+    isManager: boolean
+  }>
+>
 
 export type GetUserListSuccessResponse = UserListModel

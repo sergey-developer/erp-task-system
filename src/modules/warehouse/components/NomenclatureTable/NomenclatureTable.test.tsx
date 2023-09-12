@@ -3,13 +3,9 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
-import {
-  expectLoadingFinishedByIconIn,
-  expectLoadingStartedByIconIn,
-  render,
-} from '_tests_/utils'
+import { iconTestUtils, render } from '_tests_/utils'
 
 import NomenclatureTable from './index'
 import { NomenclatureTableItem, NomenclatureTableProps } from './types'
@@ -28,8 +24,7 @@ const getContainer = () => screen.getByTestId('nomenclature-table')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
-const queryChildByText = (text: string) =>
-  within(getContainer()).queryByText(text)
+const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
 const getRow = (id: NomenclatureTableItem['id']): MaybeNull<HTMLElement> =>
   // eslint-disable-next-line testing-library/no-node-access
@@ -57,10 +52,9 @@ const getColValue = (
 }
 
 // loading
-const expectLoadingStarted = () => expectLoadingStartedByIconIn(getContainer())
+const expectLoadingStarted = () => iconTestUtils.expectLoadingStartedIn(getContainer())
 
-const expectLoadingFinished = () =>
-  expectLoadingFinishedByIconIn(getContainer())
+const expectLoadingFinished = () => iconTestUtils.expectLoadingFinishedIn(getContainer())
 
 export const testUtils = {
   getContainer,
@@ -99,10 +93,7 @@ describe('Таблица номенклатуры', () => {
         render(<NomenclatureTable {...props} />)
 
         const title = testUtils.getColTitle('Наименование')
-        const value = testUtils.getColValue(
-          nomenclatureListItem.id,
-          nomenclatureListItem.title,
-        )
+        const value = testUtils.getColValue(nomenclatureListItem.id, nomenclatureListItem.title)
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()

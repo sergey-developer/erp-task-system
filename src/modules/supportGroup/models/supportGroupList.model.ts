@@ -1,6 +1,5 @@
-export type SupportGroupListItemModel = {
-  id: number
-  name: string
-}
+import { SupportGroupModel } from './supportGroup.model'
 
-export type SupportGroupListModel = Array<SupportGroupListItemModel>
+export type SupportGroupListItemModel = Pick<SupportGroupModel, 'id' | 'name'>
+
+export type SupportGroupListModel = SupportGroupListItemModel[]

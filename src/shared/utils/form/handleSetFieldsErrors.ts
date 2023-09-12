@@ -1,6 +1,6 @@
 import { FormInstance } from 'antd'
 
-import { ErrorResponse } from 'shared/services/api'
+import { ErrorResponse } from 'shared/services/baseApi'
 
 import { getFieldsErrors } from './getFieldsErrors'
 

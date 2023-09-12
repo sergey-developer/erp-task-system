@@ -19,7 +19,7 @@ import { GetWarehouseListQueryArgs } from 'modules/warehouse/models'
 import FilterButton from 'components/Buttons/FilterButton'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/hooks'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 
 const WarehouseListPage: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean()

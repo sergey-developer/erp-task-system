@@ -1,37 +1,14 @@
+import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
-
-import { StringMap } from 'shared/types/utils'
-
-export enum FastFilterEnum {
-  All = 'ALL',
-  Free = 'FREE',
-  Mine = 'MINE',
-  Overdue = 'OVERDUE',
-  FirstLine = 'FIRST_LINE',
-  SecondLine = 'SECOND_LINE',
-  LessOneHour = 'LESS_1_HOUR',
-  LessThreeHours = 'LESS_3_HOURS',
-}
-
-export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
-  [FastFilterEnum.All]: 'Все',
-  [FastFilterEnum.Mine]: 'Мои',
-  [FastFilterEnum.Overdue]: 'Просроченные',
-  [FastFilterEnum.Free]: 'Свободные',
-  [FastFilterEnum.FirstLine]: 'Первая линия',
-  [FastFilterEnum.SecondLine]: 'Вторая линия',
-  [FastFilterEnum.LessOneHour]: 'Менее 1 часа',
-  [FastFilterEnum.LessThreeHours]: 'Менее 3-х часов',
-}
 
 export type FastFilterType = {
   filter: FastFilterEnum
   text: string
-  roles: Array<UserRoleEnum>
+  roles: UserRoleEnum[]
 }
 
-/* sequence make sense */
-export const fastFilters: Array<FastFilterType> = [
+/* Последовательность имеет значение */
+export const fastFilters: FastFilterType[] = [
   {
     filter: FastFilterEnum.FirstLine,
     roles: [UserRoleEnum.FirstLineSupport],

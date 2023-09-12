@@ -1,9 +1,10 @@
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type EquipmentCategoryModel = {
-  id: number
+  id: IdType
   title: string
   code: MaybeNull<EquipmentCategoryEnum>
 }

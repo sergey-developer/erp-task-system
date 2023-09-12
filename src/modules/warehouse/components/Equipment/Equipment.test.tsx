@@ -8,14 +8,14 @@ import { NumberOrString } from 'shared/types/utils'
 import { getYesNo } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
-import { expectLoadingFinishedBySpinner, fakeWord, getButtonIn, render } from '_tests_/utils'
+import { buttonTestUtils, spinnerTestUtils, fakeWord, render } from '_tests_/utils'
 
 import Equipment from './index'
 import { EquipmentProps } from './types'
 
-const props: EquipmentProps = {
+const props: Readonly<EquipmentProps> = {
   visible: true,
   title: fakeWord(),
   equipment: warehouseFixtures.equipment(),
@@ -61,7 +61,7 @@ const queryInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
   within(block).queryByText(value)
 
 // close button
-const getCloseButton = () => getButtonIn(getContainer(), /close/i)
+const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
 
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
@@ -69,9 +69,9 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // loading
-const expectLoadingStarted = expectLoadingFinishedBySpinner('equipment-started')
+const expectLoadingStarted = spinnerTestUtils.expectLoadingFinished('equipment-started')
 
-const expectLoadingFinished = expectLoadingFinishedBySpinner('equipment-loading')
+const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('equipment-loading')
 
 export const testUtils = {
   getContainer,

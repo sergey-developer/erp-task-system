@@ -9,7 +9,7 @@ import {
   mockGetNomenclatureListSuccess,
   mockGetWarehouseListSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/user'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { linkTestUtils, renderInRoute_latest } from '_tests_/utils'
 
 import NomenclatureListPage from '../NomenclatureListPage'

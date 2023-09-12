@@ -9,7 +9,7 @@ import TaskListLayout from 'modules/task/components/TaskListLayout'
 import TaskListMap from 'modules/task/components/TaskListMap'
 import { getTaskListMapMessages } from 'modules/task/constants'
 import { useLazyGetTaskList } from 'modules/task/hooks'
-import { useGetTaskListMapQuery } from 'modules/task/services/taskApi.service'
+import { useGetTaskListMapQuery } from 'modules/task/services/taskApiService'
 
 import LoadingArea from 'components/LoadingArea'
 

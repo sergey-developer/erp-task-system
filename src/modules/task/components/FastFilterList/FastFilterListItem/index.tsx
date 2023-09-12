@@ -3,9 +3,10 @@ import { CheckableTagProps } from 'antd/es/tag/CheckableTag'
 import isNumber from 'lodash/isNumber'
 import React, { FC } from 'react'
 
+import { FastFilterEnum } from 'modules/task/constants'
+
 import { MaybeNull } from 'shared/types/utils'
 
-import { FastFilterEnum } from '../constants'
 import { CheckableTagStyled } from './styles'
 
 const { Text } = Typography

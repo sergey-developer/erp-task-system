@@ -11,7 +11,7 @@ import PrivateHeader from 'components/Headers/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
 import Spinner from 'components/Spinner'
 
-import { useSystemInfoState } from 'shared/services/api/hooks'
+import { useSystemInfoState } from 'shared/hooks/system'
 
 import { ContentStyled, FooterStyled } from './styles'
 

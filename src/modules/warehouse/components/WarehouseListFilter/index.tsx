@@ -3,7 +3,7 @@ import React, { FC, useEffect } from 'react'
 
 import { getLegalEntityListMessages } from 'modules/warehouse/constants'
 import { useGetWarehouseList } from 'modules/warehouse/hooks'
-import { useGetLegalEntityListQuery } from 'modules/warehouse/services/legalEntityApi.service'
+import { useGetLegalEntityListQuery } from 'modules/warehouse/services/legalEntityApiService'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
@@ -11,10 +11,7 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import {
-  WarehouseListFilterFormFields,
-  WarehouseListFilterProps,
-} from './types'
+import { WarehouseListFilterFormFields, WarehouseListFilterProps } from './types'
 
 const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
   visible,
@@ -24,10 +21,8 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
 }) => {
   const [form] = Form.useForm<WarehouseListFilterFormFields>()
 
-  const {
-    isFetching: warehouseListIsFetching,
-    currentData: warehouseList = [],
-  } = useGetWarehouseList()
+  const { isFetching: warehouseListIsFetching, currentData: warehouseList = [] } =
+    useGetWarehouseList()
 
   const {
     currentData: legalEntityList = [],
@@ -91,11 +86,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock
-          data-testid='address-filter'
-          label='Адрес'
-          onReset={resetFields('address')}
-        >
+        <FilterBlock data-testid='address-filter' label='Адрес' onReset={resetFields('address')}>
           <Form.Item name='address'>
             <Input placeholder='Ключевое слово' />
           </Form.Item>

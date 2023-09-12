@@ -1,15 +1,15 @@
 import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
+import { IdType } from 'shared/types/common'
+
 import { NomenclatureTableItem } from './types'
 
 const { Link } = Typography
 
-type GetColumnsArgs = { onClickName: (id: number) => void }
+type GetColumnsArgs = { onClickName: (id: IdType) => void }
 
-export const getColumns = ({
-  onClickName,
-}: GetColumnsArgs): ColumnsType<NomenclatureTableItem> => [
+export const getColumns = ({ onClickName }: GetColumnsArgs): ColumnsType<NomenclatureTableItem> => [
   {
     key: 'title',
     dataIndex: 'title',

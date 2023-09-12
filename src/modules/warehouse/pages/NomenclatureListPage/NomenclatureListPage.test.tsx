@@ -6,7 +6,7 @@ import { testUtils as addOrEditNomenclatureModalTestUtils } from 'modules/wareho
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
   mockCreateNomenclatureGroupBadRequestError,
@@ -16,17 +16,14 @@ import {
   mockGetNomenclatureGroupListSuccess,
   mockGetNomenclatureListSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/user'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
-  expectLoadingFinishedBySpinner,
-  expectLoadingStartedBySpinner,
+  buttonTestUtils,
+  spinnerTestUtils,
   fakeWord,
-  findNotification,
-  getButtonIn,
-  queryButtonIn,
+  notificationTestUtils,
   render,
   setupApiTests,
-  setupNotifications,
 } from '_tests_/utils'
 
 import NomenclatureListPage from './index'
@@ -34,8 +31,7 @@ import NomenclatureListPage from './index'
 const getContainer = () => screen.getByTestId('nomenclature-list-page')
 
 // search field
-const getSearchField = () =>
-  within(getContainer()).getByPlaceholderText('Поиск номенклатуры')
+const getSearchField = () => within(getContainer()).getByPlaceholderText('Поиск номенклатуры')
 
 const setSearchValue = async (user: UserEvent, value: string) => {
   const field = getSearchField()
@@ -45,10 +41,10 @@ const setSearchValue = async (user: UserEvent, value: string) => {
 
 // add nomenclature group button
 const getAddNomenclatureGroupButton = () =>
-  getButtonIn(getContainer(), /Добавить группу/)
+  buttonTestUtils.getButtonIn(getContainer(), /Добавить группу/)
 
 const queryAddNomenclatureGroupButton = () =>
-  queryButtonIn(getContainer(), /Добавить группу/)
+  buttonTestUtils.queryButtonIn(getContainer(), /Добавить группу/)
 
 const clickAddNomenclatureGroupButton = async (user: UserEvent) => {
   const button = await getAddNomenclatureGroupButton()
@@ -57,10 +53,10 @@ const clickAddNomenclatureGroupButton = async (user: UserEvent) => {
 
 // add nomenclature button
 const getAddNomenclatureButton = () =>
-  getButtonIn(getContainer(), /Добавить номенклатуру/)
+  buttonTestUtils.getButtonIn(getContainer(), /Добавить номенклатуру/)
 
 const queryAddNomenclatureButton = () =>
-  queryButtonIn(getContainer(), /Добавить номенклатуру/)
+  buttonTestUtils.queryButtonIn(getContainer(), /Добавить номенклатуру/)
 
 const clickAddNomenclatureButton = async (user: UserEvent) => {
   const button = await getAddNomenclatureButton()
@@ -70,17 +66,13 @@ const clickAddNomenclatureButton = async (user: UserEvent) => {
 // group list
 const getGroupList = () => within(getContainer()).getByRole('menu')
 
-const getGroupListItem = (name: string) =>
-  within(getGroupList()).getByRole('menuitem', { name })
+const getGroupListItem = (name: string) => within(getGroupList()).getByRole('menuitem', { name })
 
-const getAllGroupListItems = () =>
-  within(getGroupList()).getAllByRole('menuitem')
+const getAllGroupListItems = () => within(getGroupList()).getAllByRole('menuitem')
 
-const expectGroupListLoadingStarted =
-  expectLoadingStartedBySpinner('group-list-loading')
+const expectGroupListLoadingStarted = spinnerTestUtils.expectLoadingStarted('group-list-loading')
 
-const expectGroupListLoadingFinished =
-  expectLoadingFinishedBySpinner('group-list-loading')
+const expectGroupListLoadingFinished = spinnerTestUtils.expectLoadingFinished('group-list-loading')
 
 export const testUtils = {
   getContainer,
@@ -104,7 +96,7 @@ export const testUtils = {
 }
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Страница списка номенклатур', () => {
   describe('Поле поиска', () => {
@@ -158,7 +150,7 @@ describe('Страница списка номенклатур', () => {
 
       await testUtils.expectGroupListLoadingFinished()
       await testUtils.setSearchValue(user, groupListItem.title)
-      await user.click(getButtonIn(getContainer(), 'search'))
+      await user.click(buttonTestUtils.getButtonIn(getContainer(), 'search'))
       await testUtils.expectGroupListLoadingStarted()
       await testUtils.expectGroupListLoadingFinished()
 
@@ -219,8 +211,7 @@ describe('Страница списка номенклатур', () => {
       })
 
       await testUtils.clickAddNomenclatureGroupButton(user)
-      const modal =
-        await addOrEditNomenclatureGroupModalTestUtils.findContainer()
+      const modal = await addOrEditNomenclatureGroupModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
     })
@@ -251,8 +242,7 @@ describe('Страница списка номенклатур', () => {
 
       await testUtils.expectGroupListLoadingFinished()
       await testUtils.clickAddNomenclatureGroupButton(user)
-      const modal =
-        await addOrEditNomenclatureGroupModalTestUtils.findContainer()
+      const modal = await addOrEditNomenclatureGroupModalTestUtils.findContainer()
       await addOrEditNomenclatureGroupModalTestUtils.setName(user, fakeWord())
       await addOrEditNomenclatureGroupModalTestUtils.clickAddButton(user)
       await addOrEditNomenclatureGroupModalTestUtils.expectLoadingFinished()
@@ -297,11 +287,10 @@ describe('Страница списка номенклатур', () => {
         await addOrEditNomenclatureGroupModalTestUtils.clickAddButton(user)
         await addOrEditNomenclatureGroupModalTestUtils.expectLoadingFinished()
 
-        const titleError =
-          await addOrEditNomenclatureGroupModalTestUtils.findNameError(
-            titleErrorMessage,
-          )
-        const notification = await findNotification(detailErrorMessage)
+        const titleError = await addOrEditNomenclatureGroupModalTestUtils.findNameError(
+          titleErrorMessage,
+        )
+        const notification = await notificationTestUtils.findNotification(detailErrorMessage)
 
         expect(titleError).toBeInTheDocument()
         expect(notification).toBeInTheDocument()
@@ -336,7 +325,7 @@ describe('Страница списка номенклатур', () => {
         await addOrEditNomenclatureGroupModalTestUtils.clickAddButton(user)
         await addOrEditNomenclatureGroupModalTestUtils.expectLoadingFinished()
 
-        const notification = await findNotification(detailErrorMessage)
+        const notification = await notificationTestUtils.findNotification(detailErrorMessage)
         expect(notification).toBeInTheDocument()
       })
 
@@ -364,7 +353,7 @@ describe('Страница списка номенклатур', () => {
         await addOrEditNomenclatureGroupModalTestUtils.clickAddButton(user)
         await addOrEditNomenclatureGroupModalTestUtils.expectLoadingFinished()
 
-        const notification = await findNotification(
+        const notification = await notificationTestUtils.findNotification(
           createNomenclatureGroupMessages.commonError,
         )
         expect(notification).toBeInTheDocument()

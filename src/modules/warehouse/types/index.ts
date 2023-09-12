@@ -1,9 +1,2 @@
-export * from './apiRequest'
-
-export * from './equipmentFilter'
-
-export * from './nomenclatureList'
-
-export * from './equipmentList'
-
-export * from './equipmentNomenclatureList'
+export * from './equipment'
+export * from './nomenclature'

@@ -12,26 +12,32 @@ import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
 import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 
-import commonFixtures from 'fixtures/common'
-import warehouseFixtures from 'fixtures/warehouse'
+import commonFixtures from '_tests_/fixtures/common'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
-  mockGetCountryListSuccess,
   mockGetCustomerListSuccess,
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
   mockGetNomenclatureListSuccess,
   mockGetWarehouseListSuccess,
+  mockGetCountryListSuccess,
 } from '_tests_/mocks/api'
-import { fakeWord, getButtonIn, render, renderInRoute_latest, setupApiTests } from '_tests_/utils'
+import {
+  buttonTestUtils,
+  fakeWord,
+  render,
+  renderInRoute_latest,
+  setupApiTests,
+} from '_tests_/utils'
 
 import EquipmentPageLayout from './index'
 
 const getContainer = () => screen.getByTestId('reserves-list-layout')
 
 // filter button
-const getFilterButton = () => getButtonIn(getContainer(), /filter/)
+const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
 
 const clickFilterButton = async (user: UserEvent) => {
   const button = getFilterButton()
@@ -39,7 +45,8 @@ const clickFilterButton = async (user: UserEvent) => {
 }
 
 // add equipment button
-const getAddEquipmentButton = () => getButtonIn(getContainer(), /Добавить оборудование/)
+const getAddEquipmentButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /Добавить оборудование/)
 
 const clickAddEquipmentButton = async (user: UserEvent) => {
   const button = getAddEquipmentButton()

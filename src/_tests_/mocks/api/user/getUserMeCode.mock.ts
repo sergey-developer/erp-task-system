@@ -1,4 +1,4 @@
-import { UserApiEnum } from 'modules/user/constants'
+import { UserApiEnum } from 'modules/user/services/userApiService'
 import { GetUserMeCodeSuccessResponse } from 'modules/user/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -6,8 +6,7 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getUserMeCodeMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, UserApiEnum.GetUserMeCode)
+const getUserMeCodeMockFn = () => getRequestMockFn(HttpMethodEnum.Get, UserApiEnum.GetUserMeCode)
 
 export const mockGetUserMeCodeSuccess = (
   options?: Partial<ResponseResolverOptions<GetUserMeCodeSuccessResponse>>,

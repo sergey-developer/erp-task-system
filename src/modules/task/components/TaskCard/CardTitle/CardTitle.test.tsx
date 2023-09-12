@@ -10,15 +10,14 @@ import {
 } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import taskFixtures from 'fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 import {
   fakeId,
-  getButtonIn,
-  getIconByNameIn,
+  iconTestUtils,
   getStoreWithAuth,
-  render,
-} from '_tests_/utils'
+  render, buttonTestUtils
+} from "_tests_/utils";
 
 import CardTitle, { CardTitleProps } from './index'
 
@@ -84,7 +83,7 @@ const queryContainer = () => screen.queryByTestId('task-card-title')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // menu
-const getMenuButton = () => getButtonIn(getContainer(), 'menu')
+const getMenuButton = () => buttonTestUtils.getButtonIn(getContainer(), 'menu')
 
 const getMenu = () => screen.getByRole('menu')
 
@@ -99,7 +98,7 @@ const queryMenuItem = (name: string | RegExp) =>
 const getMenuItems = () => within(getMenu()).getAllByRole('menuitem')
 
 const getMenuItemIcon = (item: HTMLElement, iconName: string) =>
-  getIconByNameIn(item, iconName)
+  iconTestUtils.getIconByNameIn(item, iconName)
 
 const queryMenuItemText = (item: HTMLElement, text: string) =>
   within(item).queryByText(text)
@@ -124,7 +123,7 @@ const expectMenuItemNotDisabled = (item: HTMLElement) =>
   expect(item).not.toHaveClass('ant-dropdown-menu-item-disabled')
 
 // close button
-const getCloseButton = () => getButtonIn(getContainer(), 'close')
+const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), 'close')
 
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
@@ -133,7 +132,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // reload button
-const getReloadButton = () => getButtonIn(getContainer(), 'sync')
+const getReloadButton = () => buttonTestUtils.getButtonIn(getContainer(), 'sync')
 
 const clickReloadButton = async (user: UserEvent) => {
   const button = getReloadButton()

@@ -4,7 +4,7 @@ import React from 'react'
 
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants'
 
-import { getIconByName, getIconByNameIn, render } from '_tests_/utils'
+import { iconTestUtils, render } from '_tests_/utils'
 
 import {
   badgeByTaskExtendedStatus,
@@ -25,7 +25,7 @@ const queryContainer = (status: string) =>
   screen.queryByTestId(`task-status-${status}`)
 
 const getIcon = (status: string, name: string) =>
-  getIconByNameIn(getContainer(status), name)
+  iconTestUtils.getIconByNameIn(getContainer(status), name)
 
 const queryBadge = (status: string, badgeStatus: BadgeProps['status']) =>
   // eslint-disable-next-line testing-library/no-node-access
@@ -90,14 +90,14 @@ describe('Получение иконки работает корректно п
     const icon = iconByTaskStatus[TaskStatusEnum.Awaiting]
     render(icon!)
 
-    expect(getIconByName('pause-circle')).toBeInTheDocument()
+    expect(iconTestUtils.getIconByName('pause-circle')).toBeInTheDocument()
   })
 
   test(`${TaskStatusEnum.Closed}`, () => {
     const icon = iconByTaskStatus[TaskStatusEnum.Closed]
     render(icon!)
 
-    expect(getIconByName('check-circle')).toBeInTheDocument()
+    expect(iconTestUtils.getIconByName('check-circle')).toBeInTheDocument()
   })
 })
 
@@ -106,7 +106,7 @@ describe('Получение иконки работает корректно п
     const icon = iconByTaskExtendedStatus[TaskExtendedStatusEnum.Awaiting]
     render(icon!)
 
-    expect(getIconByName('pause-circle')).toBeInTheDocument()
+    expect(iconTestUtils.getIconByName('pause-circle')).toBeInTheDocument()
   })
 
   test(`${TaskExtendedStatusEnum.InReclassification}`, () => {
@@ -114,21 +114,21 @@ describe('Получение иконки работает корректно п
       iconByTaskExtendedStatus[TaskExtendedStatusEnum.InReclassification]
     render(icon!)
 
-    expect(getIconByName('question-circle')).toBeInTheDocument()
+    expect(iconTestUtils.getIconByName('question-circle')).toBeInTheDocument()
   })
 
   test(`${TaskExtendedStatusEnum.Returned}`, () => {
     const icon = iconByTaskExtendedStatus[TaskExtendedStatusEnum.Returned]
     render(icon!)
 
-    expect(getIconByName('right-circle')).toBeInTheDocument()
+    expect(iconTestUtils.getIconByName('right-circle')).toBeInTheDocument()
   })
 
   test(`${TaskExtendedStatusEnum.Closed}`, () => {
     const icon = iconByTaskExtendedStatus[TaskExtendedStatusEnum.Closed]
     render(icon!)
 
-    expect(getIconByName('check-circle')).toBeInTheDocument()
+    expect(iconTestUtils.getIconByName('check-circle')).toBeInTheDocument()
   })
 
   test(`${TaskExtendedStatusEnum.FirstLineReturned}`, () => {
@@ -136,7 +136,7 @@ describe('Получение иконки работает корректно п
       iconByTaskExtendedStatus[TaskExtendedStatusEnum.FirstLineReturned]
     render(icon!)
 
-    expect(getIconByName('exclamation-circle')).toBeInTheDocument()
+    expect(iconTestUtils.getIconByName('exclamation-circle')).toBeInTheDocument()
   })
 })
 

@@ -1,34 +1,27 @@
 import { screen, waitFor, within } from '@testing-library/react'
 
-import {
-  getTaskWorkPerformedActMessages,
-  SuspendReasonEnum,
-  SuspendRequestStatusEnum,
-} from 'modules/task/constants'
+import { getTaskWorkPerformedActMessages, SuspendReasonEnum, SuspendRequestStatusEnum } from 'modules/task/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 
-import commonFixtures from 'fixtures/common'
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-
+import taskFixtures from '_tests_/fixtures/task'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
-import {
-  expectLoadingFinishedByCard,
-  expectLoadingFinishedBySpinner,
-  expectLoadingNotStartedByCard,
-  expectLoadingNotStartedBySpinner,
-  expectLoadingStartedByCard,
-  expectLoadingStartedBySpinner,
-  fakeWord,
-  findNotification,
-  getStoreWithAuth,
-  render,
-} from '_tests_/utils'
-import modalTestUtils from '_tests_/utils/modal'
+import { fakeWord, getStoreWithAuth, render, spinnerTestUtils, cardTestUtils, findNotification } from '_tests_/utils'
+import { modalTestUtils } from '_tests_/utils/components'
 
+import {
+  availableReasons,
+  testUtils as taskReclassificationModalTestUtils,
+} from '../../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
+import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
+import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
+import { testUtils as taskReclassificationRequestTestUtils } from '../../TaskReclassificationRequest/TaskReclassificationRequest.test'
+import { testUtils as taskResolutionModalTestUtils } from '../../TaskResolutionModal/TaskResolutionModal.test'
+import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
+import { testUtils as taskSuspendRequestTestUtils } from '../../TaskSuspendRequest/TaskSuspendRequest.test'
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
 import {
   activeAssignButtonProps,
@@ -37,7 +30,7 @@ import {
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from '../AssigneeBlock/AssigneeBlock.test'
-import { testUtils as cardTabsTestUtils } from '../CardTabs/CardTabs.test'
+import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,
@@ -45,17 +38,7 @@ import {
   testUtils as cardTitleTestUtils,
 } from '../CardTitle/CardTitle.test'
 import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
-import {
-  availableReasons,
-  testUtils as taskReclassificationModalTestUtils,
-} from '../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
-import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
-import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
-import { testUtils as taskReclassificationRequestTestUtils } from '../TaskReclassificationRequest/TaskReclassificationRequest.test'
-import { testUtils as taskResolutionModalTestUtils } from '../TaskResolutionModal/TaskResolutionModal.test'
-import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
-import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,
@@ -112,30 +95,29 @@ const getContainer = () => screen.getByTestId('task-card')
 
 const findContainer = () => screen.findByTestId('task-card')
 
-const expectLoadingStarted = () => expectLoadingStartedByCard(getContainer())
+const expectLoadingStarted = () => cardTestUtils.expectLoadingStarted(getContainer())
 
-const expectLoadingNotStarted = () =>
-  expectLoadingNotStartedByCard(getContainer())
+const expectLoadingNotStarted = () => cardTestUtils.expectLoadingNotStarted(getContainer())
 
-const expectLoadingFinished = () => expectLoadingFinishedByCard(getContainer())
+const expectLoadingFinished = () => cardTestUtils.expectLoadingFinished(getContainer())
 
-const getCardDetails = () =>
-  within(getContainer()).getByTestId('task-card-details')
+const getCardDetails = () => within(getContainer()).getByTestId('task-card-details')
 
-const queryCardDetails = () =>
-  within(getContainer()).queryByTestId('task-card-details')
+const queryCardDetails = () => within(getContainer()).queryByTestId('task-card-details')
 
-const taskCardReclassificationRequestSpinnerTestId =
-  'task-card-reclassification-request-loading'
+const taskCardReclassificationRequestSpinnerTestId = 'task-card-reclassification-request-loading'
 
-const expectReclassificationRequestLoadingStarted =
-  expectLoadingStartedBySpinner(taskCardReclassificationRequestSpinnerTestId)
+const expectReclassificationRequestLoadingStarted = spinnerTestUtils.expectLoadingStarted(
+  taskCardReclassificationRequestSpinnerTestId,
+)
 
-const expectReclassificationRequestLoadingNotStarted =
-  expectLoadingNotStartedBySpinner(taskCardReclassificationRequestSpinnerTestId)
+const expectReclassificationRequestLoadingNotStarted = spinnerTestUtils.expectLoadingNotStarted(
+  taskCardReclassificationRequestSpinnerTestId,
+)
 
-const expectReclassificationRequestLoadingFinished =
-  expectLoadingFinishedBySpinner(taskCardReclassificationRequestSpinnerTestId)
+const expectReclassificationRequestLoadingFinished = spinnerTestUtils.expectLoadingFinished(
+  taskCardReclassificationRequestSpinnerTestId,
+)
 
 export const testUtils = {
   getContainer,
@@ -272,23 +254,16 @@ describe('Карточка заявки', () => {
     describe('Запрос на переклассификацию', () => {
       test('Отображается если он есть', async () => {
         render(
-          <TaskCard
-            {...props}
-            reclassificationRequest={taskFixtures.reclassificationRequest()}
-          />,
+          <TaskCard {...props} reclassificationRequest={taskFixtures.reclassificationRequest()} />,
         )
 
-        expect(
-          await taskReclassificationRequestTestUtils.findContainer(),
-        ).toBeInTheDocument()
+        expect(await taskReclassificationRequestTestUtils.findContainer()).toBeInTheDocument()
       })
 
       test('Не отображается если его нет', () => {
         render(<TaskCard {...props} />)
 
-        expect(
-          taskReclassificationRequestTestUtils.queryContainer(),
-        ).not.toBeInTheDocument()
+        expect(taskReclassificationRequestTestUtils.queryContainer()).not.toBeInTheDocument()
       })
 
       describe('Отображается состояние загрузки', () => {
@@ -412,9 +387,7 @@ describe('Карточка заявки', () => {
           await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
           expect(props.createReclassificationRequest).toBeCalledTimes(1)
-          expect(props.createReclassificationRequest).toBeCalledWith(
-            expect.anything(),
-          )
+          expect(props.createReclassificationRequest).toBeCalledWith(expect.anything())
         })
 
         test('Модалка закрывается', async () => {
@@ -581,15 +554,9 @@ describe('Карточка заявки', () => {
 
     describe('Формирование акта', () => {
       test('Корректно отрабатывает успешный вызов', async () => {
-        const clickDownloadLinkSpy = jest.spyOn(
-          downloadLinkUtils,
-          'clickDownloadLink',
-        )
+        const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
 
-        const base64ToArrayBufferSpy = jest.spyOn(
-          base64Utils,
-          'base64ToArrayBuffer',
-        )
+        const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
         const fakeArrayBuffer = new Uint8Array()
         base64ToArrayBufferSpy.mockReturnValueOnce(fakeArrayBuffer)
 
@@ -747,15 +714,12 @@ describe('Карточка заявки', () => {
 
   describe('Взятие заявки в работу', () => {
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <TaskCard {...props} {...activeTakeTaskButtonProps} />,
-        {
-          store: getStoreWithAuth({
-            userId: props.task!.assignee!.id,
-            userRole: UserRoleEnum.FirstLineSupport,
-          }),
-        },
-      )
+      const { user } = render(<TaskCard {...props} {...activeTakeTaskButtonProps} />, {
+        store: getStoreWithAuth({
+          userId: props.task!.assignee!.id,
+          userRole: UserRoleEnum.FirstLineSupport,
+        }),
+      })
 
       await assigneeBlockTestUtils.clickTakeTaskButton(user)
 
@@ -994,10 +958,7 @@ describe('Карточка заявки', () => {
         const modal = await taskSecondLineModalTestUtils.findContainer()
         await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
         await taskSecondLineModalTestUtils.openWorkGroupField(user)
-        await taskSecondLineModalTestUtils.selectWorkGroup(
-          user,
-          workGroupList[0].name,
-        )
+        await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroupList[0].name)
         await taskSecondLineModalTestUtils.setComment(user, fakeWord())
         await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
@@ -1024,9 +985,7 @@ describe('Карточка заявки', () => {
           />,
         )
 
-        expect(
-          await taskSuspendRequestTestUtils.findContainer(),
-        ).toBeInTheDocument()
+        expect(await taskSuspendRequestTestUtils.findContainer()).toBeInTheDocument()
       })
 
       test('Не отображается если его нет', () => {
@@ -1040,9 +999,7 @@ describe('Карточка заявки', () => {
           />,
         )
 
-        expect(
-          taskSuspendRequestTestUtils.queryContainer(),
-        ).not.toBeInTheDocument()
+        expect(taskSuspendRequestTestUtils.queryContainer()).not.toBeInTheDocument()
       })
 
       describe('Заголовок отображается корректно', () => {
@@ -1099,9 +1056,7 @@ describe('Карточка заявки', () => {
 
           await taskSuspendRequestTestUtils.findContainer()
 
-          expect(
-            taskSuspendRequestTestUtils.getCancelButton(),
-          ).toBeInTheDocument()
+          expect(taskSuspendRequestTestUtils.getCancelButton()).toBeInTheDocument()
         })
 
         test(`Отображается если статус запроса "${SuspendRequestStatusEnum.InProgress}"`, async () => {
@@ -1119,9 +1074,7 @@ describe('Карточка заявки', () => {
 
           await taskSuspendRequestTestUtils.findContainer()
 
-          expect(
-            taskSuspendRequestTestUtils.getCancelButton(),
-          ).toBeInTheDocument()
+          expect(taskSuspendRequestTestUtils.getCancelButton()).toBeInTheDocument()
         })
 
         describe('Активна', () => {

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useSelector } from 'shared/hooks'
+import { useSelector } from 'shared/hooks/useSelector'
 
 import { isAuthenticatedSelector } from '../selectors'
 

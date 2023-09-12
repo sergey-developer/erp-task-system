@@ -7,8 +7,8 @@ import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 
 import AssigneeBlock from '../AssigneeBlock'
-import { TaskFirstLineFormFields } from '../TaskFirstLineModal/types'
-import { TaskSecondLineFormFields } from '../TaskSecondLineModal/types'
+import { TaskFirstLineFormFields } from '../../TaskFirstLineModal/types'
+import { TaskSecondLineFormFields } from '../../TaskSecondLineModal/types'
 import WorkGroupBlock from '../WorkGroupBlock'
 
 export type SecondaryDetailsProps = Pick<

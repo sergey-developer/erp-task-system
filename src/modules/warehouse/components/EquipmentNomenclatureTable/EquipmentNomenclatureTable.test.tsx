@@ -7,23 +7,18 @@ import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
 import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
 import { getEquipmentListPageLink } from 'modules/warehouse/utils'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import { mockGetEquipmentListSuccess } from '_tests_/mocks/api'
-import {
-  linkTestUtils,
-  renderInRoute_latest,
-  setupApiTests,
-  tableTestUtils,
-} from '_tests_/utils'
+import { linkTestUtils, renderInRoute_latest, setupApiTests, tableTestUtils } from '_tests_/utils'
 
 import EquipmentNomenclatureTable from './index'
 import { EquipmentNomenclatureTableProps } from './types'
 
-const equipmentNomenclatureListItem =
-  warehouseFixtures.equipmentNomenclatureListItem()
+const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
 
 const props: Readonly<EquipmentNomenclatureTableProps> = {
   dataSource: [equipmentNomenclatureListItem],
@@ -34,25 +29,22 @@ const props: Readonly<EquipmentNomenclatureTableProps> = {
 
 const getContainer = () => screen.getByTestId('equipment-nomenclature-table')
 
-const getRow = (id: number) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
 
 const getColTitle = (text: string) => within(getContainer()).getByText(text)
 
-const getColValue = (
-  id: number,
-  value: NumberOrString,
-): MaybeNull<HTMLElement> => {
+const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> => {
   const row = getRow(id)
   return row ? within(row).getByText(value) : null
 }
 
 // title
-const getTitleLink = (id: number, title: string): MaybeNull<HTMLElement> => {
+const getTitleLink = (id: IdType, title: string): MaybeNull<HTMLElement> => {
   const row = getRow(id)
   return row ? linkTestUtils.getLinkIn(row, title) : null
 }
 
-const clickTitleLink = async (user: UserEvent, id: number, title: string) => {
+const clickTitleLink = async (user: UserEvent, id: IdType, title: string) => {
   const link = getTitleLink(id, title)
 
   if (link) {
@@ -61,8 +53,7 @@ const clickTitleLink = async (user: UserEvent, id: number, title: string) => {
 }
 
 // loading
-const expectLoadingStarted = () =>
-  tableTestUtils.expectLoadingStarted(getContainer())
+const expectLoadingStarted = () => tableTestUtils.expectLoadingStarted(getContainer())
 
 const expectLoadingFinished = async (): Promise<HTMLElement> => {
   const container = getContainer()
@@ -114,19 +105,13 @@ describe('Таблица номенклатуры оборудования', () 
   })
 
   test('Пагинация работает', async () => {
-    const equipmentNomenclatureList =
-      warehouseFixtures.equipmentNomenclatureList(11)
+    const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatureList(11)
 
     const { user } = renderInRoute_latest(
       [
         {
           path: RouteEnum.EquipmentNomenclatureList,
-          element: (
-            <EquipmentNomenclatureTable
-              {...props}
-              dataSource={equipmentNomenclatureList}
-            />
-          ),
+          element: <EquipmentNomenclatureTable {...props} dataSource={equipmentNomenclatureList} />,
         },
       ],
       { initialEntries: [RouteEnum.EquipmentNomenclatureList] },

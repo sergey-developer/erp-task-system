@@ -9,8 +9,8 @@ const TaskListMapPage = React.lazy(
   () => import('modules/task/pages/TaskListMapPage'),
 )
 
-const FiscalAccumulatorTaskListPage = React.lazy(
-  () => import('modules/task/pages/FiscalAccumulatorTaskListPage'),
+const FiscalAccumulatorListPage = React.lazy(
+  () => import('modules/task/pages/FiscalAccumulatorListPage'),
 )
 
 export const route: Readonly<RouteObject> = {
@@ -29,8 +29,8 @@ export const route: Readonly<RouteObject> = {
       element: <TaskListMapPage />,
     },
     {
-      path: RouteEnum.FiscalAccumulatorTaskList,
-      element: <FiscalAccumulatorTaskListPage />,
+      path: RouteEnum.FiscalAccumulatorList,
+      element: <FiscalAccumulatorListPage />,
     },
   ],
 }

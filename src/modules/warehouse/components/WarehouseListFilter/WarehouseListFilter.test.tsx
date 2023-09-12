@@ -1,27 +1,15 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
-import {
-  mockGetLegalEntityListSuccess,
-  mockGetWarehouseListSuccess,
-} from '_tests_/mocks/api'
-import {
-  clickSelectOption,
-  expectLoadingFinishedBySelect,
-  fakeWord,
-  getButtonIn,
-  getSelectedOption,
-  openSelect,
-  render,
-  setupApiTests,
-} from '_tests_/utils'
+import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
+import { fakeWord, selectTestUtils, render, setupApiTests, buttonTestUtils } from '_tests_/utils'
 
 import WarehouseListFilter from './index'
 import { WarehouseListFilterProps } from './types'
 
-const props: WarehouseListFilterProps = {
+const props: Readonly<WarehouseListFilterProps> = {
   visible: true,
   formValues: {},
   onApply: jest.fn(),
@@ -30,16 +18,15 @@ const props: WarehouseListFilterProps = {
 
 const getContainer = () => screen.getByTestId('warehouse-list-filter')
 
-const findContainer = (): Promise<HTMLElement> =>
-  screen.findByTestId('warehouse-list-filter')
+const findContainer = (): Promise<HTMLElement> => screen.findByTestId('warehouse-list-filter')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // reset button
-const getResetAllButton = () => getButtonIn(getContainer(), /Сбросить все/)
+const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сбросить все/)
 
 const clickResetButtonIn = async (user: UserEvent, container: HTMLElement) => {
-  const button = getButtonIn(container, /сбросить/i)
+  const button = buttonTestUtils.getButtonIn(container, /сбросить/i)
   await user.click(button)
 }
 
@@ -49,7 +36,7 @@ const clickResetAllButton = async (user: UserEvent) => {
 }
 
 // close button
-const getCloseButton = () => getButtonIn(getContainer(), /close/i)
+const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
 
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
@@ -57,7 +44,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // apply button
-const getApplyButton = () => getButtonIn(getContainer(), /Применить/)
+const getApplyButton = () => buttonTestUtils.getButtonIn(getContainer(), /Применить/)
 
 const clickApplyButton = async (user: UserEvent) => {
   const button = getApplyButton()
@@ -67,11 +54,9 @@ const clickApplyButton = async (user: UserEvent) => {
 // title
 const getTitleFilter = () => within(getContainer()).getByTestId('title-filter')
 
-const getTitleFilterLabel = () =>
-  within(getTitleFilter()).getByText('Наименование объекта')
+const getTitleFilterLabel = () => within(getTitleFilter()).getByText('Наименование объекта')
 
-const getTitleInput = () =>
-  within(getTitleFilter()).getByPlaceholderText('Ключевое слово')
+const getTitleInput = () => within(getTitleFilter()).getByPlaceholderText('Ключевое слово')
 
 const setTitle = async (user: UserEvent, value: string) => {
   const input = getTitleInput()
@@ -79,43 +64,35 @@ const setTitle = async (user: UserEvent, value: string) => {
   return input
 }
 
-const resetTitle = (user: UserEvent) =>
-  clickResetButtonIn(user, getTitleFilter())
+const resetTitle = (user: UserEvent) => clickResetButtonIn(user, getTitleFilter())
 
 // legal entity
-const getLegalEntityFilter = () =>
-  within(getContainer()).getByTestId('legal-entity-filter')
+const getLegalEntityFilter = () => within(getContainer()).getByTestId('legal-entity-filter')
 
-const getLegalEntityFilterLabel = () =>
-  within(getLegalEntityFilter()).getByText('Юридическое лицо')
+const getLegalEntityFilterLabel = () => within(getLegalEntityFilter()).getByText('Юридическое лицо')
 
-const getLegalEntitySelect = () =>
-  within(getLegalEntityFilter()).getByTestId('legal-entity-select')
+const getLegalEntitySelect = () => within(getLegalEntityFilter()).getByTestId('legal-entity-select')
 
 const openLegalEntitySelect = (user: UserEvent) =>
-  openSelect(user, getLegalEntitySelect())
+  selectTestUtils.openSelect(user, getLegalEntitySelect())
 
-const setLegalEntity = clickSelectOption
+const setLegalEntity = selectTestUtils.clickSelectOption
 
-const getSelectedLegalEntity = () => getSelectedOption(getLegalEntitySelect())
+const getSelectedLegalEntity = () => selectTestUtils.getSelectedOption(getLegalEntitySelect())
 
-const resetLegalEntity = (user: UserEvent) =>
-  clickResetButtonIn(user, getLegalEntityFilter())
+const resetLegalEntity = (user: UserEvent) => clickResetButtonIn(user, getLegalEntityFilter())
 
 const expectLegalEntityLoadingFinished = async () => {
   const select = getLegalEntitySelect()
-  await expectLoadingFinishedBySelect(select)
+  await selectTestUtils.expectLoadingFinished(select)
 }
 
 // address
-const getAddressFilter = () =>
-  within(getContainer()).getByTestId('address-filter')
+const getAddressFilter = () => within(getContainer()).getByTestId('address-filter')
 
-const getAddressFilterLabel = () =>
-  within(getAddressFilter()).getByText('Адрес')
+const getAddressFilterLabel = () => within(getAddressFilter()).getByText('Адрес')
 
-const getAddressInput = () =>
-  within(getAddressFilter()).getByPlaceholderText('Ключевое слово')
+const getAddressInput = () => within(getAddressFilter()).getByPlaceholderText('Ключевое слово')
 
 const setAddress = async (user: UserEvent, value: string) => {
   const input = getAddressInput()
@@ -123,32 +100,26 @@ const setAddress = async (user: UserEvent, value: string) => {
   return input
 }
 
-const resetAddress = (user: UserEvent) =>
-  clickResetButtonIn(user, getAddressFilter())
+const resetAddress = (user: UserEvent) => clickResetButtonIn(user, getAddressFilter())
 
 // parent
-const getParentFilter = () =>
-  within(getContainer()).getByTestId('parent-filter')
+const getParentFilter = () => within(getContainer()).getByTestId('parent-filter')
 
-const getParentFilterLabel = () =>
-  within(getParentFilter()).getByText('Родительский склад')
+const getParentFilterLabel = () => within(getParentFilter()).getByText('Родительский склад')
 
-const getParentSelect = () =>
-  within(getParentFilter()).getByTestId('parent-select')
+const getParentSelect = () => within(getParentFilter()).getByTestId('parent-select')
 
-const openParentSelect = (user: UserEvent) =>
-  openSelect(user, getParentSelect())
+const openParentSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getParentSelect())
 
-const setParent = clickSelectOption
+const setParent = selectTestUtils.clickSelectOption
 
-const getSelectedParent = () => getSelectedOption(getParentSelect())
+const getSelectedParent = () => selectTestUtils.getSelectedOption(getParentSelect())
 
-const resetParent = (user: UserEvent) =>
-  clickResetButtonIn(user, getParentFilter())
+const resetParent = (user: UserEvent) => clickResetButtonIn(user, getParentFilter())
 
 const expectParentLoadingFinished = async () => {
   const select = getLegalEntitySelect()
-  await expectLoadingFinishedBySelect(select)
+  await selectTestUtils.expectLoadingFinished(select)
 }
 
 export const testUtils = {
@@ -337,9 +308,7 @@ describe('Фильтр списка складов', () => {
       mockGetLegalEntityListSuccess()
       const titleValue = fakeWord()
 
-      render(
-        <WarehouseListFilter {...props} formValues={{ title: titleValue }} />,
-      )
+      render(<WarehouseListFilter {...props} formValues={{ title: titleValue }} />)
 
       const input = testUtils.getTitleInput()
       expect(input).toHaveDisplayValue(titleValue)
@@ -400,10 +369,7 @@ describe('Фильтр списка складов', () => {
       mockGetWarehouseListSuccess()
 
       render(
-        <WarehouseListFilter
-          {...props}
-          formValues={{ legalEntity: legalEntityListItem.id }}
-        />,
+        <WarehouseListFilter {...props} formValues={{ legalEntity: legalEntityListItem.id }} />,
       )
 
       await testUtils.expectLegalEntityLoadingFinished()
@@ -463,12 +429,7 @@ describe('Фильтр списка складов', () => {
       mockGetLegalEntityListSuccess()
       const addressValue = fakeWord()
 
-      render(
-        <WarehouseListFilter
-          {...props}
-          formValues={{ address: addressValue }}
-        />,
-      )
+      render(<WarehouseListFilter {...props} formValues={{ address: addressValue }} />)
 
       const input = testUtils.getAddressInput()
       expect(input).toHaveDisplayValue(addressValue)
@@ -528,12 +489,7 @@ describe('Фильтр списка складов', () => {
       mockGetWarehouseListSuccess({ body: [warehouseListItem] })
       mockGetLegalEntityListSuccess()
 
-      render(
-        <WarehouseListFilter
-          {...props}
-          formValues={{ parent: warehouseListItem.id }}
-        />,
-      )
+      render(<WarehouseListFilter {...props} formValues={{ parent: warehouseListItem.id }} />)
 
       await testUtils.expectParentLoadingFinished()
       const selectedParent = testUtils.getSelectedParent()

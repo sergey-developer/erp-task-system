@@ -1,31 +1,23 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import {
-  equipmentConditionDict,
-  EquipmentConditionEnum,
-} from 'modules/warehouse/constants'
+import { equipmentConditionDict, EquipmentConditionEnum } from 'modules/warehouse/constants'
 
 import { yesNoOptions } from 'shared/constants/selectField'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
-  clickSelectOption,
-  expectLoadingFinishedBySelect,
-  getButtonIn,
-  getRadioButtonIn,
-  getSelect,
-  getSelectedOptionByTitle,
-  openSelect,
-  querySelectedOptionByTitle,
+  selectTestUtils,
+  radioButtonTestUtils,
   render,
+  buttonTestUtils,
 } from '_tests_/utils'
 
 import EquipmentFilter from './index'
 import { EquipmentFilterProps } from './types'
 
-const props: EquipmentFilterProps = {
+const props: Readonly<EquipmentFilterProps> = {
   visible: true,
 
   values: {},
@@ -49,8 +41,7 @@ const getContainer = () => screen.getByTestId('equipment-filter')
 const queryContainer = () => screen.queryByTestId('equipment-filter')
 
 // conditions
-const getConditionsBlock = (): HTMLElement =>
-  within(getContainer()).getByTestId('conditions')
+const getConditionsBlock = (): HTMLElement => within(getContainer()).getByTestId('conditions')
 
 const getConditionsSelect = (): HTMLElement =>
   within(getConditionsBlock()).getByTestId('conditions-select')
@@ -58,99 +49,91 @@ const getConditionsSelect = (): HTMLElement =>
 const getConditionsPlaceholder = (): HTMLElement =>
   within(getConditionsSelect()).getByText('Выберите состояние')
 
-const getConditionsSelectInput = () => getSelect(getConditionsSelect())
+const getConditionsSelectInput = () => selectTestUtils.getSelect(getConditionsSelect())
 
 const openConditionsSelect = (user: UserEvent) =>
-  openSelect(user, getConditionsBlock())
+  selectTestUtils.openSelect(user, getConditionsBlock())
 
-const setCondition = clickSelectOption
+const setCondition = selectTestUtils.clickSelectOption
 
 const getSelectedCondition = (title: string) =>
-  getSelectedOptionByTitle(getConditionsSelect(), title)
+  selectTestUtils.getSelectedOptionByTitle(getConditionsSelect(), title)
 
 const querySelectedCondition = (title: string) =>
-  querySelectedOptionByTitle(getConditionsSelect(), title)
+  selectTestUtils.querySelectedOptionByTitle(getConditionsSelect(), title)
 
 // warehouses
-const getWarehousesBlock = () =>
-  within(getContainer()).getByTestId('warehouses')
+const getWarehousesBlock = () => within(getContainer()).getByTestId('warehouses')
 
-const getWarehousesSelect = () =>
-  within(getWarehousesBlock()).getByTestId('warehouses-select')
+const getWarehousesSelect = () => within(getWarehousesBlock()).getByTestId('warehouses-select')
 
 const getWarehousesPlaceholder = (): HTMLElement =>
   within(getWarehousesSelect()).getByText('Выберите склад')
 
-const getWarehousesSelectInput = () => getSelect(getWarehousesSelect())
+const getWarehousesSelectInput = () => selectTestUtils.getSelect(getWarehousesSelect())
 
 const openWarehousesSelect = (user: UserEvent) =>
-  openSelect(user, getWarehousesBlock())
+  selectTestUtils.openSelect(user, getWarehousesBlock())
 
-const setWarehouse = clickSelectOption
+const setWarehouse = selectTestUtils.clickSelectOption
 
 const getSelectedWarehouse = (title: string) =>
-  getSelectedOptionByTitle(getWarehousesSelect(), title)
+  selectTestUtils.getSelectedOptionByTitle(getWarehousesSelect(), title)
 
 const querySelectedWarehouse = (title: string) =>
-  querySelectedOptionByTitle(getWarehousesSelect(), title)
+  selectTestUtils.querySelectedOptionByTitle(getWarehousesSelect(), title)
 
-const expectWarehousesLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getWarehousesSelect())
+const expectWarehousesLoadingFinished = () => selectTestUtils.expectLoadingFinished(getWarehousesSelect())
 
 // owners
 const getOwnersBlock = () => within(getContainer()).getByTestId('owners')
 
-const getOwnersSelect = () =>
-  within(getOwnersBlock()).getByTestId('owners-select')
+const getOwnersSelect = () => within(getOwnersBlock()).getByTestId('owners-select')
 
 const getOwnersPlaceholder = (): HTMLElement =>
   within(getOwnersSelect()).getByText('Выберите владельца оборудования')
 
-const getOwnersSelectInput = () => getSelect(getOwnersSelect())
+const getOwnersSelectInput = () => selectTestUtils.getSelect(getOwnersSelect())
 
-const openOwnersSelect = (user: UserEvent) => openSelect(user, getOwnersBlock())
+const openOwnersSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getOwnersBlock())
 
-const setOwner = clickSelectOption
+const setOwner = selectTestUtils.clickSelectOption
 
 const getSelectedOwner = (title: string) =>
-  getSelectedOptionByTitle(getOwnersSelect(), title)
+  selectTestUtils.getSelectedOptionByTitle(getOwnersSelect(), title)
 
 const querySelectedOwner = (title: string) =>
-  querySelectedOptionByTitle(getOwnersSelect(), title)
+  selectTestUtils.querySelectedOptionByTitle(getOwnersSelect(), title)
 
-const expectOwnersLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getOwnersSelect())
+const expectOwnersLoadingFinished = () => selectTestUtils.expectLoadingFinished(getOwnersSelect())
 
 // categories
-const getCategoriesBlock = () =>
-  within(getContainer()).getByTestId('categories')
+const getCategoriesBlock = () => within(getContainer()).getByTestId('categories')
 
-const getCategoriesSelect = () =>
-  within(getCategoriesBlock()).getByTestId('categories-select')
+const getCategoriesSelect = () => within(getCategoriesBlock()).getByTestId('categories-select')
 
 const getCategoriesPlaceholder = (): HTMLElement =>
   within(getCategoriesSelect()).getByText('Выберите категорию')
 
-const getCategoriesSelectInput = () => getSelect(getCategoriesSelect())
+const getCategoriesSelectInput = () => selectTestUtils.getSelect(getCategoriesSelect())
 
 const openCategoriesSelect = (user: UserEvent) =>
-  openSelect(user, getCategoriesBlock())
+  selectTestUtils.openSelect(user, getCategoriesBlock())
 
-const setCategory = clickSelectOption
+const setCategory = selectTestUtils.clickSelectOption
 
 const getSelectedCategory = (title: string) =>
-  getSelectedOptionByTitle(getCategoriesSelect(), title)
+  selectTestUtils.getSelectedOptionByTitle(getCategoriesSelect(), title)
 
 const querySelectedCategory = (title: string) =>
-  querySelectedOptionByTitle(getCategoriesSelect(), title)
+  selectTestUtils.querySelectedOptionByTitle(getCategoriesSelect(), title)
 
-const expectCategoryLoadingFinished = () =>
-  expectLoadingFinishedBySelect(getCategoriesSelect())
+const expectCategoryLoadingFinished = () => selectTestUtils.expectLoadingFinished(getCategoriesSelect())
 
 // is new
 const getIsNewBlock = () => within(getContainer()).getByTestId('is-new')
 
-const getIsNewField = (text: string) => getRadioButtonIn(getIsNewBlock(), text)
+const getIsNewField = (text: string) => radioButtonTestUtils.getRadioButtonIn(getIsNewBlock(), text)
 
 const clickIsNewField = async (user: UserEvent, text: string) => {
   const field = getIsNewField(text)
@@ -159,11 +142,10 @@ const clickIsNewField = async (user: UserEvent, text: string) => {
 }
 
 // is warranty
-const getIsWarrantyBlock = () =>
-  within(getContainer()).getByTestId('is-warranty')
+const getIsWarrantyBlock = () => within(getContainer()).getByTestId('is-warranty')
 
 const getIsWarrantyField = (text: string) =>
-  getRadioButtonIn(getIsWarrantyBlock(), text)
+  radioButtonTestUtils.getRadioButtonIn(getIsWarrantyBlock(), text)
 
 const clickIsWarrantyField = async (user: UserEvent, text: string) => {
   const field = getIsWarrantyField(text)
@@ -172,11 +154,10 @@ const clickIsWarrantyField = async (user: UserEvent, text: string) => {
 }
 
 // is repaired
-const getIsRepairedBlock = () =>
-  within(getContainer()).getByTestId('is-repaired')
+const getIsRepairedBlock = () => within(getContainer()).getByTestId('is-repaired')
 
 const getIsRepairedField = (text: string) =>
-  getRadioButtonIn(getIsRepairedBlock(), text)
+  radioButtonTestUtils.getRadioButtonIn(getIsRepairedBlock(), text)
 
 const clickIsRepairedField = async (user: UserEvent, text: string) => {
   const field = getIsRepairedField(text)
@@ -185,10 +166,10 @@ const clickIsRepairedField = async (user: UserEvent, text: string) => {
 }
 
 // reset button
-const getResetAllButton = () => getButtonIn(getContainer(), /Сбросить все/)
+const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сбросить все/)
 
 const clickResetButtonIn = async (user: UserEvent, container: HTMLElement) => {
-  const button = getButtonIn(container, /сбросить/i)
+  const button = buttonTestUtils.getButtonIn(container, /сбросить/i)
   await user.click(button)
 }
 
@@ -198,7 +179,7 @@ const clickResetAllButton = async (user: UserEvent) => {
 }
 
 // close button
-const getCloseButton = () => getButtonIn(getContainer(), /close/i)
+const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
 
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
@@ -206,7 +187,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // apply button
-const getApplyButton = () => getButtonIn(getContainer(), /Применить/)
+const getApplyButton = () => buttonTestUtils.getButtonIn(getContainer(), /Применить/)
 
 const clickApplyButton = async (user: UserEvent) => {
   const button = getApplyButton()
@@ -297,14 +278,8 @@ describe('Фильтр списка номенклатуры оборудова�
       const { user } = render(<EquipmentFilter {...props} />)
 
       await testUtils.openConditionsSelect(user)
-      await testUtils.setCondition(
-        user,
-        equipmentConditionDict[EquipmentConditionEnum.WrittenOff],
-      )
-      await testUtils.setCondition(
-        user,
-        equipmentConditionDict[EquipmentConditionEnum.Broken],
-      )
+      await testUtils.setCondition(user, equipmentConditionDict[EquipmentConditionEnum.WrittenOff])
+      await testUtils.setCondition(user, equipmentConditionDict[EquipmentConditionEnum.Broken])
 
       const selectedCondition1 = testUtils.getSelectedCondition(
         equipmentConditionDict[EquipmentConditionEnum.WrittenOff],
@@ -345,10 +320,7 @@ describe('Фильтр списка номенклатуры оборудова�
       )
 
       await testUtils.openConditionsSelect(user)
-      await testUtils.setCondition(
-        user,
-        equipmentConditionDict[EquipmentConditionEnum.Working],
-      )
+      await testUtils.setCondition(user, equipmentConditionDict[EquipmentConditionEnum.Working])
 
       await testUtils.clickResetButtonIn(user, testUtils.getConditionsBlock())
 
@@ -407,12 +379,8 @@ describe('Фильтр списка номенклатуры оборудова�
       await testUtils.setWarehouse(user, props.warehouseList[0].title)
       await testUtils.setWarehouse(user, props.warehouseList[1].title)
 
-      const selectedWarehouse1 = testUtils.getSelectedWarehouse(
-        props.warehouseList[0].title,
-      )
-      const selectedWarehouse2 = testUtils.getSelectedWarehouse(
-        props.warehouseList[1].title,
-      )
+      const selectedWarehouse1 = testUtils.getSelectedWarehouse(props.warehouseList[0].title)
+      const selectedWarehouse2 = testUtils.getSelectedWarehouse(props.warehouseList[1].title)
 
       expect(selectedWarehouse1).toBeInTheDocument()
       expect(selectedWarehouse2).toBeInTheDocument()
@@ -428,9 +396,7 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      const selectedWarehouse = testUtils.getSelectedWarehouse(
-        props.warehouseList[0].title,
-      )
+      const selectedWarehouse = testUtils.getSelectedWarehouse(props.warehouseList[0].title)
 
       expect(selectedWarehouse).toBeInTheDocument()
     })
@@ -450,12 +416,8 @@ describe('Фильтр списка номенклатуры оборудова�
 
       await testUtils.clickResetButtonIn(user, testUtils.getWarehousesBlock())
 
-      const selectedWarehouse1 = testUtils.getSelectedWarehouse(
-        props.warehouseList[0].title,
-      )
-      const selectedWarehouse2 = testUtils.querySelectedCondition(
-        props.warehouseList[1].title,
-      )
+      const selectedWarehouse1 = testUtils.getSelectedWarehouse(props.warehouseList[0].title)
+      const selectedWarehouse2 = testUtils.querySelectedCondition(props.warehouseList[1].title)
 
       expect(selectedWarehouse1).toBeInTheDocument()
       expect(selectedWarehouse2).not.toBeInTheDocument()
@@ -474,12 +436,8 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      const selectedWarehouse1 = testUtils.getSelectedWarehouse(
-        props.warehouseList[1].title,
-      )
-      const selectedWarehouse2 = testUtils.querySelectedWarehouse(
-        props.warehouseList[0].title,
-      )
+      const selectedWarehouse1 = testUtils.getSelectedWarehouse(props.warehouseList[1].title)
+      const selectedWarehouse2 = testUtils.querySelectedWarehouse(props.warehouseList[0].title)
 
       expect(selectedWarehouse1).toBeInTheDocument()
       expect(selectedWarehouse2).not.toBeInTheDocument()
@@ -505,12 +463,8 @@ describe('Фильтр списка номенклатуры оборудова�
       await testUtils.setOwner(user, props.ownerList[0].title)
       await testUtils.setOwner(user, props.ownerList[1].title)
 
-      const selectedOwner1 = testUtils.getSelectedOwner(
-        props.ownerList[0].title,
-      )
-      const selectedOwner2 = testUtils.getSelectedOwner(
-        props.ownerList[1].title,
-      )
+      const selectedOwner1 = testUtils.getSelectedOwner(props.ownerList[0].title)
+      const selectedOwner2 = testUtils.getSelectedOwner(props.ownerList[1].title)
 
       expect(selectedOwner1).toBeInTheDocument()
       expect(selectedOwner2).toBeInTheDocument()
@@ -536,10 +490,7 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
 
-      const field = await testUtils.clickIsNewField(
-        user,
-        yesNoOptions[0].label as string,
-      )
+      const field = await testUtils.clickIsNewField(user, yesNoOptions[0].label as string)
       expect(field).toBeChecked()
     })
 
@@ -563,10 +514,7 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
 
-      const field = await testUtils.clickIsWarrantyField(
-        user,
-        yesNoOptions[0].label as string,
-      )
+      const field = await testUtils.clickIsWarrantyField(user, yesNoOptions[0].label as string)
       expect(field).toBeChecked()
     })
 
@@ -590,10 +538,7 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
 
-      const field = await testUtils.clickIsRepairedField(
-        user,
-        yesNoOptions[0].label as string,
-      )
+      const field = await testUtils.clickIsRepairedField(user, yesNoOptions[0].label as string)
       expect(field).toBeChecked()
     })
 
@@ -621,12 +566,8 @@ describe('Фильтр списка номенклатуры оборудова�
       await testUtils.setCategory(user, props.categoryList[0].title)
       await testUtils.setCategory(user, props.categoryList[1].title)
 
-      const selectedCategory1 = testUtils.getSelectedCategory(
-        props.categoryList[0].title,
-      )
-      const selectedCategory2 = testUtils.getSelectedCategory(
-        props.categoryList[1].title,
-      )
+      const selectedCategory1 = testUtils.getSelectedCategory(props.categoryList[0].title)
+      const selectedCategory2 = testUtils.getSelectedCategory(props.categoryList[1].title)
 
       expect(selectedCategory1).toBeInTheDocument()
       expect(selectedCategory2).toBeInTheDocument()

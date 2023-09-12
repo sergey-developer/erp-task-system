@@ -7,9 +7,10 @@ import WarehousePage from 'modules/warehouse/pages/WarehousePage'
 import { testUtils as warehousePageTestUtils } from 'modules/warehouse/pages/WarehousePage/WarehousePage.test'
 import { getWarehousePageLink } from 'modules/warehouse/utils'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import {
   ariaSortAttrAscValue,
@@ -18,15 +19,10 @@ import {
   columnWithSortingClass,
 } from '_tests_/constants/components'
 import { mockGetWarehouseSuccess } from '_tests_/mocks/api'
-import {
-  expectLoadingFinishedByIconIn,
-  expectLoadingStartedByIconIn,
-  renderInRoute_latest,
-  tableTestUtils,
-} from '_tests_/utils'
+import { iconTestUtils, renderInRoute_latest, tableTestUtils } from '_tests_/utils'
 
 import WarehouseTable from './index'
-import { WarehouseTableItem, WarehouseTableProps } from './types'
+import { WarehouseTableProps } from './types'
 
 const warehouseListItem = warehouseFixtures.warehouseListItem()
 
@@ -38,10 +34,9 @@ const props: Readonly<WarehouseTableProps> = {
 
 const getContainer = () => screen.getByTestId('warehouse-table')
 
-const getRow = (id: number) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
 
-const getHeadCell = (text: string) =>
-  tableTestUtils.getHeadCell(getContainer(), text)
+const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
 
 const getColTitle = (text: string) => within(getContainer()).getByText(text)
 
@@ -50,28 +45,18 @@ const clickColTitle = async (user: UserEvent, title: string) => {
   await user.click(col)
 }
 
-const getColValue = (
-  id: WarehouseTableItem['id'],
-  value: string,
-): MaybeNull<HTMLElement> => {
+const getColValue = (id: IdType, value: string): MaybeNull<HTMLElement> => {
   const row = getRow(id)
   return row ? within(row).getByText(value) : null
 }
 
 // title
-const getTitleLink = (
-  id: WarehouseTableItem['id'],
-  title: string,
-): MaybeNull<HTMLElement> => {
+const getTitleLink = (id: IdType, title: string): MaybeNull<HTMLElement> => {
   const row = getRow(id)
   return row ? within(row).getByRole('link', { name: title }) : null
 }
 
-const clickTitleLink = async (
-  user: UserEvent,
-  id: WarehouseTableItem['id'],
-  title: string,
-) => {
+const clickTitleLink = async (user: UserEvent, id: IdType, title: string) => {
   const link = getTitleLink(id, title)
 
   if (link) {
@@ -80,10 +65,9 @@ const clickTitleLink = async (
 }
 
 // loading
-const expectLoadingStarted = () => expectLoadingStartedByIconIn(getContainer())
+const expectLoadingStarted = () => iconTestUtils.expectLoadingStartedIn(getContainer())
 
-const expectLoadingFinished = () =>
-  expectLoadingFinishedByIconIn(getContainer())
+const expectLoadingFinished = () => iconTestUtils.expectLoadingFinishedIn(getContainer())
 
 export const testUtils = {
   getContainer,
@@ -145,18 +129,13 @@ describe('Таблица складов', () => {
 
         const headCell = testUtils.getHeadCell('Наименование объекта')
         const title = testUtils.getColTitle('Наименование объекта')
-        const link = testUtils.getTitleLink(
-          warehouseListItem.id,
-          warehouseListItem.title,
-        )
+        const link = testUtils.getTitleLink(warehouseListItem.id, warehouseListItem.title)
 
         expect(title).toBeInTheDocument()
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute(
           'href',
-          `${getWarehousePageLink(warehouseListItem.id)}?title=${
-            warehouseListItem.title
-          }`,
+          `${getWarehousePageLink(warehouseListItem.id)}?title=${warehouseListItem.title}`,
         )
         expect(headCell).toHaveClass(columnWithSortingClass)
         expect(headCell).not.toHaveAttribute(ariaSortAttrName)
@@ -179,11 +158,7 @@ describe('Таблица складов', () => {
           { initialEntries: [RouteEnum.WarehouseList] },
         )
 
-        await testUtils.clickTitleLink(
-          user,
-          warehouseListItem.id,
-          warehouseListItem.title,
-        )
+        await testUtils.clickTitleLink(user, warehouseListItem.id, warehouseListItem.title)
 
         const page = warehousePageTestUtils.getContainer()
         expect(page).toBeInTheDocument()
@@ -227,16 +202,10 @@ describe('Таблица складов', () => {
         expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Наименование объекта')
-        expect(headCell).toHaveAttribute(
-          ariaSortAttrName,
-          ariaSortAttrDescValue,
-        )
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         await testUtils.clickColTitle(user, 'Наименование объекта')
-        expect(headCell).not.toHaveAttribute(
-          ariaSortAttrName,
-          ariaSortAttrDescValue,
-        )
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         props.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -308,16 +277,10 @@ describe('Таблица складов', () => {
         expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Юридическое лицо')
-        expect(headCell).toHaveAttribute(
-          ariaSortAttrName,
-          ariaSortAttrDescValue,
-        )
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         await testUtils.clickColTitle(user, 'Юридическое лицо')
-        expect(headCell).not.toHaveAttribute(
-          ariaSortAttrName,
-          ariaSortAttrDescValue,
-        )
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         props.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -340,10 +303,7 @@ describe('Таблица складов', () => {
 
         const headCell = testUtils.getHeadCell('Адрес')
         const title = testUtils.getColTitle('Адрес')
-        const value = testUtils.getColValue(
-          warehouseListItem.id,
-          warehouseListItem.address,
-        )
+        const value = testUtils.getColValue(warehouseListItem.id, warehouseListItem.address)
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -389,16 +349,10 @@ describe('Таблица складов', () => {
         expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Адрес')
-        expect(headCell).toHaveAttribute(
-          ariaSortAttrName,
-          ariaSortAttrDescValue,
-        )
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         await testUtils.clickColTitle(user, 'Адрес')
-        expect(headCell).not.toHaveAttribute(
-          ariaSortAttrName,
-          ariaSortAttrDescValue,
-        )
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         props.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)
@@ -421,10 +375,7 @@ describe('Таблица складов', () => {
 
         const headCell = testUtils.getHeadCell('Родительский склад')
         const title = testUtils.getColTitle('Родительский склад')
-        const value = testUtils.getColValue(
-          warehouseListItem.id,
-          warehouseListItem.parent!.title,
-        )
+        const value = testUtils.getColValue(warehouseListItem.id, warehouseListItem.parent!.title)
 
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -470,16 +421,10 @@ describe('Таблица складов', () => {
         expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
         await testUtils.clickColTitle(user, 'Родительский склад')
-        expect(headCell).toHaveAttribute(
-          ariaSortAttrName,
-          ariaSortAttrDescValue,
-        )
+        expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         await testUtils.clickColTitle(user, 'Родительский склад')
-        expect(headCell).not.toHaveAttribute(
-          ariaSortAttrName,
-          ariaSortAttrDescValue,
-        )
+        expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
         props.dataSource.forEach((item) => {
           const row = testUtils.getRow(item.id)

@@ -4,7 +4,7 @@ import { ReadIcon, UnorderedListIcon } from 'components/Icons'
 
 import { NavMenuItem } from './types'
 
-const navMenuCommonConfig: Array<NavMenuItem> = [
+const navMenuCommonConfig: NavMenuItem[] = [
   {
     key: RouteEnum.Tasks,
     icon: UnorderedListIcon,

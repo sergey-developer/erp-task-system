@@ -3,19 +3,13 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
 import { getUserMeMessages } from 'modules/user/constants'
-import {
-  GetUserMeQueryArgs,
-  GetUserMeSuccessResponse,
-} from 'modules/user/models'
-import { useGetUserMeQuery } from 'modules/user/services/userApi.service'
+import { GetUserMeQueryArgs, GetUserMeSuccessResponse } from 'modules/user/models'
+import { useGetUserMeQuery } from 'modules/user/services/userApiService'
 
-import { isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetUserMeResult = CustomUseQueryHookResult<
-  GetUserMeQueryArgs,
-  GetUserMeSuccessResponse
->
+type UseGetUserMeResult = CustomUseQueryHookResult<GetUserMeQueryArgs, GetUserMeSuccessResponse>
 
 export const useGetUserMe = (): UseGetUserMeResult => {
   const state = useGetUserMeQuery()

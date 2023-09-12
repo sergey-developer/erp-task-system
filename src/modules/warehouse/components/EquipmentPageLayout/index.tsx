@@ -11,7 +11,6 @@ import { EquipmentFilterFormFields } from 'modules/warehouse/components/Equipmen
 import EquipmentModal from 'modules/warehouse/components/EquipmentModal'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants'
 import {
-  useGetCurrencyList,
   useGetCustomerList,
   useGetEquipmentCategoryList,
   useGetNomenclature,
@@ -22,7 +21,8 @@ import {
 
 import FilterButton from 'components/Buttons/FilterButton'
 
-import { useDebounceFn } from 'shared/hooks'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { useGetCurrencyList } from 'shared/hooks/currency'
 import { IdType } from 'shared/types/common'
 
 import { EquipmentPageContextType } from './context'

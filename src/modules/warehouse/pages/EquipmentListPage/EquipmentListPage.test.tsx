@@ -11,8 +11,8 @@ import {
   getEquipmentMessages,
 } from 'modules/warehouse/constants'
 
-import commonFixtures from 'fixtures/common'
-import warehouseFixtures from 'fixtures/warehouse'
+import commonFixtures from '_tests_/fixtures/common'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import {
@@ -26,10 +26,9 @@ import {
 } from '_tests_/mocks/api'
 import {
   fakeWord,
-  findNotification,
+  notificationTestUtils,
   render,
   setupApiTests,
-  setupNotifications,
   tableTestUtils,
 } from '_tests_/utils'
 
@@ -42,7 +41,7 @@ export const testUtils = {
 }
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Страница списка оборудования', () => {
   describe('Список оборудования', () => {
@@ -70,7 +69,7 @@ describe('Страница списка оборудования', () => {
         render(<EquipmentListPage />)
 
         await equipmentTableTestUtils.expectLoadingFinished()
-        const notification = await findNotification(errorMessage)
+        const notification = await notificationTestUtils.findNotification(errorMessage)
 
         expect(notification).toBeInTheDocument()
       })
@@ -80,7 +79,9 @@ describe('Страница списка оборудования', () => {
         render(<EquipmentListPage />)
 
         await equipmentTableTestUtils.expectLoadingFinished()
-        const notification = await findNotification(getEquipmentListMessages.commonError)
+        const notification = await notificationTestUtils.findNotification(
+          getEquipmentListMessages.commonError,
+        )
 
         expect(notification).toBeInTheDocument()
       })
@@ -279,7 +280,7 @@ describe('Страница списка оборудования', () => {
         await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
         const equipment = await equipmentTestUtils.findContainer()
         await equipmentTestUtils.expectLoadingFinished()
-        const notification = await findNotification(errorMessage)
+        const notification = await notificationTestUtils.findNotification(errorMessage)
 
         expect(notification).toBeInTheDocument()
         await waitFor(() => {
@@ -304,7 +305,7 @@ describe('Страница списка оборудования', () => {
         await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
         const equipment = await equipmentTestUtils.findContainer()
         await equipmentTestUtils.expectLoadingFinished()
-        const notification = await findNotification(errorMessage)
+        const notification = await notificationTestUtils.findNotification(errorMessage)
 
         expect(notification).toBeInTheDocument()
         await waitFor(() => {
@@ -326,7 +327,9 @@ describe('Страница списка оборудования', () => {
         await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
         const equipment = await equipmentTestUtils.findContainer()
         await equipmentTestUtils.expectLoadingFinished()
-        const notification = await findNotification(getEquipmentMessages.commonError)
+        const notification = await notificationTestUtils.findNotification(
+          getEquipmentMessages.commonError,
+        )
 
         expect(notification).toBeInTheDocument()
         await waitFor(() => {
