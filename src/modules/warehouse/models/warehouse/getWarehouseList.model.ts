@@ -4,7 +4,6 @@ import { MaybeUndefined } from 'shared/types/utils'
 
 import { WarehouseListModel } from './warehouseList.model'
 
-// todo: сделать также в других местах где есть сортировка
 export type GetWarehouseListSortKey = 'title' | 'legal_entity' | 'address' | 'parent'
 
 export type GetWarehouseListSortValue = ExtendSortKey<GetWarehouseListSortKey>
