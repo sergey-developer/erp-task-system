@@ -38,7 +38,7 @@ import {
 import { getSort } from 'modules/task/components/TaskTable/utils'
 import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
 import { GetTaskListQueryArgs } from 'modules/task/models'
-import { useUserRole } from 'modules/user/hooks'
+import { useGetUserList, useUserRole } from 'modules/user/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import { SyncIcon } from 'components/Icons'
@@ -124,9 +124,8 @@ const TaskListPage: FC = () => {
     refetch: refetchTaskCounters,
   } = useGetTaskCounters()
 
-  // закоменчено временно только для rc
-  // const { currentData: userList = [], isFetching: userListIsFetching } =
-  //   useGetUserList({ isManager: true }, { skip: !isExtendedFilterOpened })
+  const { currentData: userList = [], isFetching: userListIsFetching } =
+    useGetUserList({ isManager: true }, { skip: !isExtendedFilterOpened })
 
   /**
    * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
@@ -406,9 +405,8 @@ const TaskListPage: FC = () => {
         <ExtendedFilter
           formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
-          // закоменчено временно только для rc
-          // userList={userList}
-          // userListIsLoading={userListIsFetching}
+          userList={userList}
+          userListIsLoading={userListIsFetching}
           onClose={debouncedToggleOpenExtendedFilter}
           onSubmit={handleExtendedFilterSubmit}
         />

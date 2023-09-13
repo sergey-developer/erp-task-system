@@ -13,6 +13,7 @@ import Space from 'components/Space'
 import { idAndNameSelectFieldNames } from 'shared/constants/common'
 
 import {
+  managerSelectFieldNames,
   searchFieldOptions,
   taskAssignedOptions,
   taskExtendedStatusOptions,
@@ -25,9 +26,8 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
   initialFormValues,
 
-  // закоменчено временно только для rc
-  // userList,
-  // userListIsLoading,
+  userList,
+  userListIsLoading,
 
   onClose,
   onSubmit,
@@ -146,28 +146,27 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           </Space>
         </FilterBlock>
 
-        {/* закоменчено временно только для rc*/}
-        {/*<FilterBlock*/}
-        {/*  data-testid='extended-filter-manager'*/}
-        {/*  label='Руководитель'*/}
-        {/*  onReset={resetFields(['manager'])}*/}
-        {/*>*/}
-        {/*  <Form.Item name='manager'>*/}
-        {/*    <Select*/}
-        {/*      data-testid='extended-filter-manager-select'*/}
-        {/*      fieldNames={managerSelectFieldNames}*/}
-        {/*      loading={userListIsLoading}*/}
-        {/*      options={userList}*/}
-        {/*      placeholder='Руководитель'*/}
-        {/*      showSearch*/}
-        {/*      filterOption={(input, option) => {*/}
-        {/*        return option*/}
-        {/*          ? option.fullName.toLowerCase().includes(input.toLowerCase())*/}
-        {/*          : false*/}
-        {/*      }}*/}
-        {/*    />*/}
-        {/*  </Form.Item>*/}
-        {/*</FilterBlock>*/}
+        <FilterBlock
+          data-testid='extended-filter-manager'
+          label='Руководитель'
+          onReset={resetFields(['manager'])}
+        >
+          <Form.Item name='manager'>
+            <Select
+              data-testid='extended-filter-manager-select'
+              fieldNames={managerSelectFieldNames}
+              loading={userListIsLoading}
+              options={userList}
+              placeholder='Руководитель'
+              showSearch
+              filterOption={(input, option) => {
+                return option
+                  ? option.fullName.toLowerCase().includes(input.toLowerCase())
+                  : false
+              }}
+            />
+          </Form.Item>
+        </FilterBlock>
       </Form>
     </DrawerFilter>
   )

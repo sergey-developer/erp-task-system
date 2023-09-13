@@ -12,6 +12,7 @@ import {
   expectLoadingStartedBySelect,
   fakeWord,
   getButtonIn,
+  getCheckboxIn,
   getSelect,
   getSelectOption,
   openSelect,
@@ -208,6 +209,24 @@ const expectCountryLoadingStarted = () =>
 const expectCountryLoadingFinished = () =>
   expectLoadingFinishedBySelect(getCountryFormItem())
 
+// equipment has serial number field
+const getEquipmentHasSerialNumberFormItem = () =>
+  within(getContainer()).getByTestId('equipment-has-serial-number-form-item')
+
+const getEquipmentHasSerialNumberField = () =>
+  getCheckboxIn(getEquipmentHasSerialNumberFormItem())
+
+const setEquipmentHasSerialNumber = async (user: UserEvent) => {
+  const field = getEquipmentHasSerialNumberField()
+  await user.click(field)
+  return field
+}
+
+const findEquipmentHasSerialNumberError = (
+  error: string,
+): Promise<HTMLElement> =>
+  within(getEquipmentHasSerialNumberFormItem()).findByText(error)
+
 // add button
 const getAddButton = () =>
   getButtonIn(getContainer(), new RegExp(addModeProps.okText))
@@ -288,6 +307,11 @@ export const testUtils = {
   findCountryError,
   expectCountryLoadingStarted,
   expectCountryLoadingFinished,
+
+  getEquipmentHasSerialNumberFormItem,
+  getEquipmentHasSerialNumberField,
+  setEquipmentHasSerialNumber,
+  findEquipmentHasSerialNumberError,
 }
 
 describe('Модалка создания и редактирования номенклатурной позиции', () => {
@@ -575,6 +599,37 @@ describe('Модалка создания и редактирования ном
       )
 
       expect(selectedCountry).toBeInTheDocument()
+    })
+  })
+
+  describe('Поле ведения учета по серийным номерам', () => {
+    test('Отображается корректно', () => {
+      render(<AddOrEditNomenclatureModal {...props} />)
+
+      const field = testUtils.getEquipmentHasSerialNumberField()
+
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).not.toBeChecked()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<AddOrEditNomenclatureModal {...props} />)
+      const field = await testUtils.setEquipmentHasSerialNumber(user)
+      expect(field).toBeChecked()
+    })
+
+    test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
+      const { user } = render(
+        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
+      )
+
+      await testUtils.clickAddButton(user)
+      const error = await testUtils.findEquipmentHasSerialNumberError(
+        validationMessages.required,
+      )
+
+      expect(error).toBeInTheDocument()
     })
   })
 })

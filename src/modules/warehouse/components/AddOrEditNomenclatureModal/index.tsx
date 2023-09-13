@@ -1,4 +1,5 @@
-import { Form, Input, Select } from 'antd'
+import { Checkbox, Form, Input, Select } from 'antd'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
@@ -10,6 +11,7 @@ import {
   AddOrEditNomenclatureModalFormFields,
 } from './types'
 import {
+  equipmentHasSerialNumberValidationRules,
   groupValidationRules,
   measurementUnitValidationRules,
   nameValidationRules,
@@ -29,26 +31,30 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<AddOrEditNomenclatureModalFormFields>()
+  const equipmentHasSerialNumberValue = Form.useWatch(
+    'equipmentHasSerialNumber',
+    form,
+  )
 
   const handleFinish = async ({
     title,
     shortTitle,
     vendorCode,
-    group,
-    country,
-    measurementUnit,
+    ...values
   }: AddOrEditNomenclatureModalFormFields) => {
     await onSubmit(
       {
+        ...values,
         title: title.trim(),
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
-        group,
-        country,
-        measurementUnit,
       },
       form.setFields,
     )
+  }
+
+  const handleChangeEquipmentHasSerialNumber = (event: CheckboxChangeEvent) => {
+    form.setFieldsValue({ equipmentHasSerialNumber: event.target.checked })
   }
 
   return (
@@ -131,6 +137,19 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
             fieldNames={idAndTitleSelectFieldNames}
             loading={countriesIsLoading}
           />
+        </Form.Item>
+
+        <Form.Item
+          data-testid='equipment-has-serial-number-form-item'
+          name='equipmentHasSerialNumber'
+          rules={equipmentHasSerialNumberValidationRules}
+        >
+          <Checkbox
+            onChange={handleChangeEquipmentHasSerialNumber}
+            checked={equipmentHasSerialNumberValue}
+          >
+            Ведется учет по серийным номерам
+          </Checkbox>
         </Form.Item>
       </Form>
     </BaseModal>
