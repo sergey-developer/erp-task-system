@@ -3,7 +3,7 @@ import { FC, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { getWarehouseMessages } from 'modules/warehouse/constants/warehouse'
-import { useGetWarehouseQuery } from 'modules/warehouse/services/warehouseApiService'
+import { useGetWarehouseQuery } from 'modules/warehouse/services/warehouseApi.service'
 
 import LabeledData from 'components/LabeledData'
 import LoadingArea from 'components/LoadingArea'

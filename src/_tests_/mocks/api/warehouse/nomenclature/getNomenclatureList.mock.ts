@@ -1,4 +1,4 @@
-import { NomenclatureApiEnum } from 'modules/warehouse/services/nomenclatureApiService'
+import { NomenclatureApiEnum } from 'modules/warehouse/constants/nomenclature'
 import { GetNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'

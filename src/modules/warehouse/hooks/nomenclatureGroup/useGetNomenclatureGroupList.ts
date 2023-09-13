@@ -7,7 +7,7 @@ import {
   GetNomenclatureGroupListQueryArgs,
   GetNomenclatureGroupListSuccessResponse,
 } from 'modules/warehouse/models'
-import { useGetNomenclatureGroupListQuery } from 'modules/warehouse/services/nomenclatureGroupApiService'
+import { useGetNomenclatureGroupListQuery } from 'modules/warehouse/services/nomenclatureGroupApi.service'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

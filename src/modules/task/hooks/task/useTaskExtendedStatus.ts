@@ -1,7 +1,7 @@
 import isEqual from 'lodash/isEqual'
 import { useMemo } from 'react'
 
-import { TaskExtendedStatusEnum } from 'modules/task/constants'
+import { TaskExtendedStatusEnum } from 'modules/task/constants/task'
 
 import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/types/utils'
 
@@ -16,14 +16,8 @@ export const useTaskExtendedStatus = (
       isCompleted: isEqual(status, TaskExtendedStatusEnum.Completed),
       isInProgress: isEqual(status, TaskExtendedStatusEnum.InProgress),
       isReturned: isEqual(status, TaskExtendedStatusEnum.Returned),
-      isInReclassification: isEqual(
-        status,
-        TaskExtendedStatusEnum.InReclassification,
-      ),
-      isFirstLineReturned: isEqual(
-        status,
-        TaskExtendedStatusEnum.FirstLineReturned,
-      ),
+      isInReclassification: isEqual(status, TaskExtendedStatusEnum.InReclassification),
+      isFirstLineReturned: isEqual(status, TaskExtendedStatusEnum.FirstLineReturned),
     }),
     [status],
   )

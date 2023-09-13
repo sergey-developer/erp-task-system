@@ -1,19 +1,15 @@
 import { screen, within } from '@testing-library/react'
 
-import { TaskTypeEnum } from 'modules/task/constants'
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import taskFixtures from '_tests_/fixtures/task'
-
 import { fakeWord, render } from '_tests_/utils'
 
 import ResolutionTab, { ResolutionTabProps } from './index'
 
 const props: Readonly<
-  Pick<
-    ResolutionTabProps,
-    'title' | 'type' | 'techResolution' | 'userResolution' | 'attachments'
-  >
+  Pick<ResolutionTabProps, 'title' | 'type' | 'techResolution' | 'userResolution' | 'attachments'>
 > = {
   type: TaskTypeEnum.Request,
   title: fakeWord(),
@@ -24,11 +20,9 @@ const props: Readonly<
 
 const getContainer = () => screen.getByTestId('task-resolution-tab')
 
-const getChildByText = (text: string | RegExp) =>
-  within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
-const queryChildByText = (text: string | RegExp) =>
-  within(getContainer()).queryByText(text)
+const queryChildByText = (text: string | RegExp) => within(getContainer()).queryByText(text)
 
 export const testUtils = {
   getContainer,
@@ -73,16 +67,10 @@ describe('Вкладка решение заявки', () => {
     test('Отображается если условия соблюдены', () => {
       const userResolution = fakeWord()
       render(
-        <ResolutionTab
-          {...props}
-          type={TaskTypeEnum.Request}
-          userResolution={userResolution}
-        />,
+        <ResolutionTab {...props} type={TaskTypeEnum.Request} userResolution={userResolution} />,
       )
 
-      expect(
-        testUtils.getChildByText('Решение для пользователя'),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText('Решение для пользователя')).toBeInTheDocument()
 
       expect(testUtils.getChildByText(userResolution)).toBeInTheDocument()
     })

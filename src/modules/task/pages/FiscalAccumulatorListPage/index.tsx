@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import FiscalAccumulatorTable from 'modules/task/components/FiscalAccumulatorTable'
-import { useGetFiscalAccumulatorList } from 'modules/task/hooks'
+import { useGetFiscalAccumulatorList } from 'modules/task/hooks/fiscalAccumulator'
 
 const FiscalAccumulatorListPage: FC = () => {
   const { currentData: fiscalAccumulatorList = [], isFetching: fiscalAccumulatorListIsFetching } =

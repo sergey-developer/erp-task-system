@@ -1,20 +1,10 @@
 import { PaperClipOutlined } from '@ant-design/icons'
-import {
-  Button,
-  Col,
-  Form,
-  FormInstance,
-  Input,
-  ModalProps,
-  Row,
-  Typography,
-  Upload,
-} from 'antd'
+import { Button, Col, Form, FormInstance, Input, ModalProps, Row, Typography, Upload } from 'antd'
 import stubFalse from 'lodash/stubFalse'
 import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
-import { useTaskType } from 'modules/task/hooks'
+import { useTaskType } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
 
 import BaseModal from 'components/Modals/BaseModal'
@@ -53,9 +43,7 @@ export type TaskResolutionModalProps = Pick<TaskModel, 'type' | 'recordId'> & {
     setFields: FormInstance['setFields'],
   ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
-  onGetAct: (
-    values: Pick<TaskResolutionFormFields, 'techResolution'>,
-  ) => Promise<void>
+  onGetAct: (values: Pick<TaskResolutionFormFields, 'techResolution'>) => Promise<void>
   getActIsLoading: boolean
 }
 
@@ -124,8 +112,8 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
       <Space $block direction='vertical' size='large'>
         <Space direction='vertical'>
           <Text>
-            Заполните информацию о работах на объекте и предложенном решении.
-            Затем нажмите кнопку «{okBtnText}».
+            Заполните информацию о работах на объекте и предложенном решении. Затем нажмите кнопку «
+            {okBtnText}».
           </Text>
 
           <Text type='danger'>
@@ -145,10 +133,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
             name='techResolution'
             rules={techResolutionValidationRules}
           >
-            <TextArea
-              placeholder='Расскажите о работах на объекте'
-              disabled={isLoading}
-            />
+            <TextArea placeholder='Расскажите о работах на объекте' disabled={isLoading} />
           </Form.Item>
 
           {!taskType.isIncidentTask && !taskType.isRequestTask && (
@@ -158,10 +143,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
               name='userResolution'
               rules={userResolutionValidationRules}
             >
-              <TextArea
-                placeholder='Расскажите заявителю о решении'
-                disabled={isLoading}
-              />
+              <TextArea placeholder='Расскажите заявителю о решении' disabled={isLoading} />
             </Form.Item>
           )}
 
@@ -172,11 +154,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
             getValueFromEvent={getFilesFromEvent}
           >
             <Upload beforeUpload={stubFalse} multiple disabled={isLoading}>
-              <Button
-                type='link'
-                icon={<PaperClipOutlined />}
-                disabled={isLoading}
-              >
+              <Button type='link' icon={<PaperClipOutlined />} disabled={isLoading}>
                 Добавить вложение
               </Button>
             </Upload>

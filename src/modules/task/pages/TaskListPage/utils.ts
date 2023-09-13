@@ -1,5 +1,5 @@
 import { ExtendedFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
-import { FastFilterEnum } from 'modules/task/constants'
+import { FastFilterEnum } from 'modules/task/constants/task'
 import { ExtendedFilterQueries } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getUserRoleMap } from 'modules/user/utils'

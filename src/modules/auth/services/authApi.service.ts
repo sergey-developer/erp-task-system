@@ -1,3 +1,4 @@
+import { AuthApiEnum } from 'modules/auth/constants'
 import {
   LoginMutationArgs,
   LoginSuccessResponse,
@@ -6,7 +7,6 @@ import {
   UpdatePasswordMutationArgs,
   UpdatePasswordSuccessResponse,
 } from 'modules/auth/models'
-import { AuthApiEnum } from 'modules/auth/services/authApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'

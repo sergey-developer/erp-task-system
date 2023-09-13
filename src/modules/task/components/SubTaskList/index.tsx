@@ -1,12 +1,9 @@
 import { Divider, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { SubTaskModel } from 'modules/task/models'
-import {
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants'
 
 import Space from 'components/Space'
 

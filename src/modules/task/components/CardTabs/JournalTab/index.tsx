@@ -2,7 +2,7 @@ import { Button, Row } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
-import { useGetTaskJournal, useLazyGetTaskJournalCsv } from 'modules/task/hooks'
+import { useGetTaskJournal, useLazyGetTaskJournalCsv } from 'modules/task/hooks/taskJournal'
 
 import { DownloadIcon, SyncIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'

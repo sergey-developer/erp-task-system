@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getNomenclatureMessages } from 'modules/warehouse/constants/nomenclature'
 import { GetNomenclatureQueryArgs, GetNomenclatureSuccessResponse } from 'modules/warehouse/models'
-import { useGetNomenclatureQuery } from 'modules/warehouse/services/nomenclatureApiService'
+import { useGetNomenclatureQuery } from 'modules/warehouse/services/nomenclatureApi.service'
 
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

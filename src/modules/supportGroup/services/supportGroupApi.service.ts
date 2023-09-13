@@ -1,8 +1,8 @@
+import { SupportGroupApiEnum } from 'modules/supportGroup/constants'
 import {
   GetSupportGroupListQueryArgs,
   GetSupportGroupListSuccessResponse,
 } from 'modules/supportGroup/models'
-import { SupportGroupApiEnum } from 'modules/supportGroup/services/supportGroupApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'

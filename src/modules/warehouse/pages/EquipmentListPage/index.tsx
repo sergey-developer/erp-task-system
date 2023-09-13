@@ -15,7 +15,7 @@ import {
 import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
 import { useGetEquipment, useGetEquipmentList } from 'modules/warehouse/hooks/equipment'
 import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
-import { equipmentFilterToParams } from 'modules/warehouse/utils'
+import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'

@@ -1,5 +1,5 @@
 import { GetWarehouseSuccessResponse } from 'modules/warehouse/models'
-import { getWarehouseUrl } from 'modules/warehouse/utils'
+import { getWarehouseUrl } from 'modules/warehouse/utils/warehouse'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

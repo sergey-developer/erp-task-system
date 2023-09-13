@@ -5,7 +5,7 @@ import { RouteEnum } from 'configs/routes'
 
 import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
 import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
-import { getEquipmentListPageLink } from 'modules/warehouse/utils'
+import { getEquipmentListPageLink } from 'modules/warehouse/utils/equipment'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'

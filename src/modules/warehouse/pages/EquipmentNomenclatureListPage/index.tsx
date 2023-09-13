@@ -6,7 +6,7 @@ import { EquipmentNomenclatureTableProps } from 'modules/warehouse/components/Eq
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
-import { equipmentFilterToParams } from 'modules/warehouse/utils'
+import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 

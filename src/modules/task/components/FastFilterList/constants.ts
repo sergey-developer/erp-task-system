@@ -1,4 +1,4 @@
-import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants'
+import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants/task'
 import { UserRoleEnum } from 'modules/user/constants'
 
 export type FastFilterType = {

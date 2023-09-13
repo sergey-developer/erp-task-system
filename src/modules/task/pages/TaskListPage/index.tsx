@@ -22,8 +22,9 @@ import {
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
-import { FastFilterEnum } from 'modules/task/constants'
-import { useGetTaskCounters, useLazyGetTaskList } from 'modules/task/hooks'
+import { FastFilterEnum } from 'modules/task/constants/task'
+import { useLazyGetTaskList } from 'modules/task/hooks/task'
+import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
 import {
   ExtendedFilterQueries,
   FastFilterQueries,

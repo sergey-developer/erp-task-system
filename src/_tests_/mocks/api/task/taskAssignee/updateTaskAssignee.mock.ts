@@ -1,5 +1,5 @@
 import { UpdateTaskAssigneeSuccessResponse } from 'modules/task/models'
-import { updateTaskAssigneeUrl } from 'modules/task/utils'
+import { updateTaskAssigneeUrl } from 'modules/task/utils/taskAssignee'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

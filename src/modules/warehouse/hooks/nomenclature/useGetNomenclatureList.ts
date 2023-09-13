@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getNomenclatureListMessages } from 'modules/warehouse/constants/nomenclature'
 import { GetNomenclatureListQueryArgs } from 'modules/warehouse/models'
-import { useGetNomenclatureListQuery } from 'modules/warehouse/services/nomenclatureApiService'
+import { useGetNomenclatureListQuery } from 'modules/warehouse/services/nomenclatureApi.service'
 import { GetNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'

@@ -1,4 +1,4 @@
-import { FastFilterEnum } from 'modules/task/constants'
+import { FastFilterEnum } from 'modules/task/constants/task'
 
 import { fakeWord, render } from '_tests_/utils'
 

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { RouteEnum } from 'configs/routes'
 
 import { UPDATE_PASSWORD_SUCCESS_MSG } from 'modules/auth/constants'
-import { useUpdatePasswordMutation } from 'modules/auth/services/authApiService'
+import { useUpdatePasswordMutation } from 'modules/auth/services/authApi.service'
 
 import { BaseCard } from 'components/Card/BaseCard'
 
@@ -74,10 +74,7 @@ const ChangePasswordPage: FC = () => {
               name='password'
               rules={passwordRules}
             >
-              <Input.Password
-                placeholder='••••••••'
-                disabled={updatePasswordIsLoading}
-              />
+              <Input.Password placeholder='••••••••' disabled={updatePasswordIsLoading} />
             </Form.Item>
 
             <Form.Item
@@ -87,10 +84,7 @@ const ChangePasswordPage: FC = () => {
               rules={confirmPasswordRules}
               dependencies={['password']}
             >
-              <Input.Password
-                placeholder='••••••••'
-                disabled={updatePasswordIsLoading}
-              />
+              <Input.Password placeholder='••••••••' disabled={updatePasswordIsLoading} />
             </Form.Item>
 
             <Button

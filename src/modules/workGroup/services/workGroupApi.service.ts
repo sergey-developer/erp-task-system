@@ -1,8 +1,8 @@
+import { WorkGroupApiEnum } from 'modules/workGroup/constants'
 import {
   GetWorkGroupListQueryArgs,
   GetWorkGroupListSuccessResponse,
 } from 'modules/workGroup/models'
-import { WorkGroupApiEnum } from 'modules/workGroup/services/workGroupApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'

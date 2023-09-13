@@ -1,16 +1,12 @@
 import { useCallback, useEffect } from 'react'
 
-import { resolveTaskMessages } from 'modules/task/constants'
+import { resolveTaskMessages } from 'modules/task/constants/task'
 import { ResolveTaskMutationArgs } from 'modules/task/models'
 import { taskResolutionApiPermissions } from 'modules/task/permissions'
-import { useResolveTaskMutation } from 'modules/task/services/taskApiService'
+import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import {
-  getErrorDetail,
-  isBadRequestError,
-  isErrorResponse,
-} from 'shared/services/baseApi'
+import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useResolveTask = () => {

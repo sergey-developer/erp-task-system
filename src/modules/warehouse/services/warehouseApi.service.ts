@@ -1,15 +1,14 @@
+import { WarehouseApiEnum } from 'modules/warehouse/constants/warehouse'
 import {
   GetWarehouseListQueryArgs,
   GetWarehouseListSuccessResponse,
   GetWarehouseQueryArgs,
   GetWarehouseSuccessResponse,
 } from 'modules/warehouse/models'
-import { getWarehouseUrl } from 'modules/warehouse/utils'
+import { getWarehouseUrl } from 'modules/warehouse/utils/warehouse'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
-
-import { WarehouseApiEnum } from './constants'
 
 const warehouseApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

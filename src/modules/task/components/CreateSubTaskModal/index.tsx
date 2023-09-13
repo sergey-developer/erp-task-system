@@ -2,9 +2,9 @@ import { Form, Input, Select, Typography } from 'antd'
 import { Rule } from 'rc-field-form/es/interface'
 import React, { FC, useState } from 'react'
 
-import { useCreateSubTask } from 'modules/task/hooks'
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import { SupportGroupListItemModel } from 'modules/supportGroup/models'
+import { useCreateSubTask } from 'modules/task/hooks/subTask'
 
 import BaseModal from 'components/Modals/BaseModal'
 

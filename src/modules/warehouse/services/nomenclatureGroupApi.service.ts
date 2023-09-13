@@ -1,4 +1,8 @@
 import {
+  NomenclatureGroupApiEnum,
+  NomenclatureGroupApiTriggerEnum,
+} from 'modules/warehouse/constants/nomenclatureGroup'
+import {
   CreateNomenclatureGroupMutationArgs,
   CreateNomenclatureGroupSuccessResponse,
   GetNomenclatureGroupListQueryArgs,
@@ -7,11 +11,7 @@ import {
   UpdateNomenclatureGroupMutationArgs,
   UpdateNomenclatureGroupSuccessResponse,
 } from 'modules/warehouse/models'
-import {
-  NomenclatureGroupApiEnum,
-  NomenclatureGroupApiTriggerEnum,
-} from 'modules/warehouse/services/nomenclatureGroupApiService'
-import { updateNomenclatureGroupUrl } from 'modules/warehouse/utils'
+import { updateNomenclatureGroupUrl } from 'modules/warehouse/utils/nomenclatureGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'

@@ -1,16 +1,12 @@
 import { useCallback, useEffect } from 'react'
 
-import { updateTaskWorkGroupMessages } from 'modules/task/constants'
+import { updateTaskWorkGroupMessages } from 'modules/task/constants/taskWorkGroup'
 import { UpdateTaskWorkGroupMutationArgs } from 'modules/task/models'
 import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
-import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskApiService'
+import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import {
-  isBadRequestError,
-  isErrorResponse,
-  isServerRangeError,
-} from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse, isServerRangeError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useUpdateTaskWorkGroup = () => {

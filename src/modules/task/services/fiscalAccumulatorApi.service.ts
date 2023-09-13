@@ -1,3 +1,4 @@
+import { FiscalAccumulatorApiEnum } from 'modules/task/constants/fiscalAccumulator'
 import {
   GetFiscalAccumulatorListQueryArgs,
   GetFiscalAccumulatorListSuccessResponse,
@@ -5,8 +6,6 @@ import {
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
-
-import { FiscalAccumulatorApiEnum } from './constants'
 
 const fiscalAccumulatorApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

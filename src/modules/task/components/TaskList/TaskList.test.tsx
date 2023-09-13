@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { TaskTypeEnum } from 'modules/task/constants'
+import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
@@ -9,7 +9,6 @@ import { formatDate } from 'shared/utils/date'
 import theme from 'styles/theme'
 
 import taskFixtures from '_tests_/fixtures/task'
-
 import { render } from '_tests_/utils'
 
 import TaskList, { taskTypeText } from './index'

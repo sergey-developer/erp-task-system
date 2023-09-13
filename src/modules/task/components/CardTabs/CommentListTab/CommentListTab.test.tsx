@@ -1,12 +1,11 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { createTaskCommentMessages } from 'modules/task/constants'
+import { createTaskCommentMessages } from 'modules/task/constants/taskComment'
 
 import { commonApiMessages } from 'shared/constants/common'
 
 import taskFixtures from '_tests_/fixtures/task'
-
 import {
   mockCreateTaskCommentBadRequestError,
   mockCreateTaskCommentForbiddenError,
@@ -21,8 +20,9 @@ import {
   getStoreWithAuth,
   render,
   setupApiTests,
-  notificationTestUtils, buttonTestUtils
-} from "_tests_/utils";
+  notificationTestUtils,
+  buttonTestUtils,
+} from '_tests_/utils'
 
 import { testUtils as commentListTestUtils } from './CommentList/CommentList.test'
 import { testUtils as createCommentFormTestUtils } from './CreateCommentForm/CreateCommentForm.test'

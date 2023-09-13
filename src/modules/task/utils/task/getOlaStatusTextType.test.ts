@@ -1,4 +1,4 @@
-import { TaskOlaStatusEnum } from 'modules/task/constants'
+import { TaskOlaStatusEnum } from 'modules/task/constants/task'
 
 import { getOlaStatusTextType } from './getOlaStatusTextType'
 

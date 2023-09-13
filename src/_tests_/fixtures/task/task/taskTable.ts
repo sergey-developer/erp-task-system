@@ -1,7 +1,11 @@
 import times from 'lodash/times'
 
 import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
-import { TaskExtendedStatusEnum, TaskOlaStatusEnum, TaskStatusEnum } from 'modules/task/constants'
+import {
+  TaskExtendedStatusEnum,
+  TaskOlaStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/task'
 
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'

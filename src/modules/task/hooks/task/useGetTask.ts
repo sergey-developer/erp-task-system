@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getTaskMessages } from 'modules/task/constants'
+import { getTaskMessages } from 'modules/task/constants/task'
 import { GetTaskQueryArgs, GetTaskSuccessResponse } from 'modules/task/models'
-import { useGetTaskQuery } from 'modules/task/services/taskApiService'
-import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils'
+import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
+import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils/task'
 
 import {
   isBadRequestError,

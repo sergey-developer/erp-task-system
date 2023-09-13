@@ -17,7 +17,7 @@ import {
   GetEquipmentListTransformedSuccessResponse,
   GetEquipmentNomenclatureListTransformedSuccessResponse,
 } from 'modules/warehouse/types'
-import { getEquipmentUrl } from 'modules/warehouse/utils'
+import { getEquipmentUrl } from 'modules/warehouse/utils/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'

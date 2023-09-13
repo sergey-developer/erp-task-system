@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { ReclassificationReasonEnum } from 'modules/task/constants'
+import { ReclassificationReasonEnum } from 'modules/task/constants/taskReclassificationRequest'
 
 import { validationMessages } from 'shared/constants/validation'
 
@@ -10,8 +10,9 @@ import {
   fakeWord,
   modalTestUtils,
   render,
-  radioButtonTestUtils, buttonTestUtils
-} from "_tests_/utils";
+  radioButtonTestUtils,
+  buttonTestUtils,
+} from '_tests_/utils'
 
 import { reclassificationReasonLabels } from './constants'
 import RequestTaskReclassificationModal, { RequestTaskReclassificationModalProps } from './index'
@@ -54,7 +55,8 @@ const clickCancelButton = async (user: UserEvent) => {
 }
 
 // submit button
-const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /запросить переклассификацию/i)
+const getSubmitButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /запросить переклассификацию/i)
 
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()

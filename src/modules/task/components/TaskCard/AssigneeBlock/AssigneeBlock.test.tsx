@@ -2,11 +2,8 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
-import {
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { UserRoleEnum } from 'modules/user/constants'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
@@ -14,7 +11,6 @@ import { ArrayFirst, NonNullableObject } from 'shared/types/utils'
 
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-
 import { fakeId, getStoreWithAuth, render, selectTestUtils, buttonTestUtils } from '_tests_/utils'
 
 import AssigneeBlock, { AssigneeBlockProps } from './index'

@@ -1,63 +1,19 @@
-import {
-  cancelSubTaskUrl,
-  createSubTaskUrl,
-  getSubTaskListUrl,
-  reworkSubTaskUrl,
-} from 'modules/task/utils'
-import { TaskStatusEnum } from 'modules/task/constants'
+import { SubTaskApiTriggerEnum } from 'modules/task/constants/subTask'
+import { TaskStatusEnum, TaskApiTriggerEnum } from 'modules/task/constants/task'
 import {
   CancelSubTaskMutationArgs,
   CancelSubTaskSuccessResponse,
-  CreateSubTaskMutationArgs,
-  CreateSubTaskSuccessResponse,
-  GetSubTaskListQueryArgs,
-  GetSubTaskListSuccessResponse,
   ReworkSubTaskMutationArgs,
   ReworkSubTaskSuccessResponse,
   SubTaskModel,
 } from 'modules/task/models'
-import { SubTaskApiTriggerEnum } from 'modules/task/services/subTaskApiService'
-import { TaskApiTriggerEnum } from 'modules/task/services/taskApiService'
+import { cancelSubTaskUrl, reworkSubTaskUrl } from 'modules/task/utils/subTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
 
 const subTaskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
-    [TaskApiTriggerEnum.GetSubTaskList]: build.query<
-      GetSubTaskListSuccessResponse,
-      GetSubTaskListQueryArgs
-    >({
-      query: (taskId) => ({
-        url: getSubTaskListUrl(taskId),
-        method: HttpMethodEnum.Get,
-      }),
-    }),
-    [TaskApiTriggerEnum.CreateSubTask]: build.mutation<
-      CreateSubTaskSuccessResponse,
-      CreateSubTaskMutationArgs
-    >({
-      query: ({ taskId, ...payload }) => ({
-        url: createSubTaskUrl(taskId),
-        method: HttpMethodEnum.Post,
-        data: payload,
-      }),
-      onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
-        try {
-          const { data: newSubTask } = await queryFulfilled
-
-          dispatch(
-            baseApiService.util.updateQueryData(
-              TaskApiTriggerEnum.GetSubTaskList as never,
-              taskId as never,
-              (subTaskList: SubTaskModel[]) => {
-                subTaskList.unshift(newSubTask)
-              },
-            ),
-          )
-        } catch {}
-      },
-    }),
     [SubTaskApiTriggerEnum.CancelSubTask]: build.mutation<
       CancelSubTaskSuccessResponse,
       CancelSubTaskMutationArgs
@@ -120,9 +76,4 @@ const subTaskApiService = baseApiService.injectEndpoints({
   overrideExisting: false,
 })
 
-export const {
-  useCreateSubTaskMutation,
-  useCancelSubTaskMutation,
-  useReworkSubTaskMutation,
-  useGetSubTaskListQuery,
-} = subTaskApiService
+export const { useCancelSubTaskMutation, useReworkSubTaskMutation } = subTaskApiService

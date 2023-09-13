@@ -2,7 +2,7 @@ import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import AttachmentList from 'modules/task/components/AttachmentList'
-import { useTaskType } from 'modules/task/hooks'
+import { useTaskType } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
 
 import LabeledData from 'components/LabeledData'
@@ -12,10 +12,7 @@ import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Title, Paragraph } = Typography
 
-export type ResolutionTabProps = Pick<
-  TaskModel,
-  'techResolution' | 'userResolution' | 'type'
-> & {
+export type ResolutionTabProps = Pick<TaskModel, 'techResolution' | 'userResolution' | 'type'> & {
   title: string
   attachments: TaskModel['resolution']['attachments']
 }

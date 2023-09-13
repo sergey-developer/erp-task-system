@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom'
 
-import { TaskApiEnum } from 'modules/task/services/taskApiService'
+import { TaskApiEnum } from 'modules/task/constants/task'
 
 import { IdType } from 'shared/types/common'
 import { appendSlashAtEnd } from 'shared/utils/string'
@@ -16,3 +16,9 @@ export const resolveTaskUrl = (taskId: IdType): string =>
 
 export const getTaskWorkPerformedActUrl = (taskId: IdType): string =>
   appendSlashAtEnd(generatePath(TaskApiEnum.GetWorkPerformedAct, { id: String(taskId) }))
+
+export const getSubTaskListUrl = (taskId: IdType): string =>
+  appendSlashAtEnd(generatePath(TaskApiEnum.GetSubTaskList, { id: String(taskId) }))
+
+export const createSubTaskUrl = (taskId: IdType): string =>
+  appendSlashAtEnd(generatePath(TaskApiEnum.CreateSubTask, { id: String(taskId) }))

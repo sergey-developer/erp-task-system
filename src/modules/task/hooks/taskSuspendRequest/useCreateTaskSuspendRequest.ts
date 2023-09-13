@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react'
 
-import { createSuspendRequestMessages } from 'modules/task/constants'
+import { createSuspendRequestMessages } from 'modules/task/constants/taskSuspendRequest'
 import { CreateTaskSuspendRequestMutationArgs } from 'modules/task/models'
 import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
-import { useCreateSuspendRequestMutation } from 'modules/task/services/taskApiService'
+import { useCreateSuspendRequestMutation } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/common'

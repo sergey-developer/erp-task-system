@@ -7,7 +7,7 @@ import {
   GetWarehouseListQueryArgs,
   GetWarehouseListSuccessResponse,
 } from 'modules/warehouse/models'
-import { useGetWarehouseListQuery } from 'modules/warehouse/services/warehouseApiService'
+import { useGetWarehouseListQuery } from 'modules/warehouse/services/warehouseApi.service'
 
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

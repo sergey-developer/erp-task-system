@@ -1,6 +1,6 @@
 import { Rule } from 'rc-field-form/es/interface'
 
-import { ReclassificationReasonEnum } from 'modules/task/constants'
+import { ReclassificationReasonEnum } from 'modules/task/constants/taskReclassificationRequest'
 
 export const commentRules: Rule[] = [{ required: true, whitespace: true }]
 

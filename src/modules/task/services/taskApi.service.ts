@@ -2,8 +2,15 @@ import { decamelize } from 'humps'
 
 import { getPaginatedList } from 'lib/antd/utils'
 
-import { TaskExtendedStatusEnum } from 'modules/task/constants'
 import {
+  TaskApiEnum,
+  TaskApiTriggerEnum,
+  TaskApiTagEnum,
+  TaskExtendedStatusEnum,
+} from 'modules/task/constants/task'
+import {
+  CreateSubTaskMutationArgs,
+  CreateSubTaskSuccessResponse,
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
   CreateTaskReclassificationRequestMutationArgs,
@@ -13,7 +20,7 @@ import {
   DeleteTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestSuccessResponse,
   DeleteTaskWorkGroupMutationArgs,
-  DeleteTaskWorkGroupSuccessResponse,
+  DeleteTaskWorkGroupSuccessResponse, GetSubTaskListQueryArgs, GetSubTaskListSuccessResponse,
   GetTaskCommentListQueryArgs,
   GetTaskCommentListSuccessResponse,
   GetTaskCountersQueryArgs,
@@ -33,37 +40,38 @@ import {
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
   ResolveTaskMutationArgs,
-  ResolveTaskSuccessResponse,
+  ResolveTaskSuccessResponse, SubTaskModel,
   TakeTaskMutationArgs,
   TakeTaskSuccessResponse,
   UpdateTaskAssigneeMutationArgs,
   UpdateTaskAssigneeSuccessResponse,
   UpdateTaskWorkGroupMutationArgs,
-  UpdateTaskWorkGroupSuccessResponse,
-} from 'modules/task/models'
+  UpdateTaskWorkGroupSuccessResponse
+} from "modules/task/models";
 import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
+  createSubTaskUrl,
+  getSubTaskListUrl,
   getTaskUrl,
-  resolveTaskUrl,
-  takeTaskUrl,
   getTaskWorkPerformedActUrl,
-  createTaskCommentUrl,
-  getTaskCommentListUrl,
-  updateTaskAssigneeUrl,
-  getTaskJournalUrl,
-  getTaskJournalCsvUrl,
+  resolveTaskUrl,
+  takeTaskUrl
+} from "modules/task/utils/task";
+import { updateTaskAssigneeUrl } from 'modules/task/utils/taskAssignee'
+import { createTaskCommentUrl, getTaskCommentListUrl } from 'modules/task/utils/taskComment'
+import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'modules/task/utils/taskJournal'
+import {
   createTaskReclassificationRequestUrl,
   getTaskReclassificationRequestUrl,
+} from 'modules/task/utils/taskReclassificationRequest'
+import {
   createTaskSuspendRequestUrl,
   deleteTaskSuspendRequestUrl,
-  updateTaskWorkGroupUrl,
-  deleteTaskWorkGroupUrl,
-} from 'modules/task/utils'
+} from 'modules/task/utils/taskSuspendRequest'
+import { deleteTaskWorkGroupUrl, updateTaskWorkGroupUrl } from 'modules/task/utils/taskWorkGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService, ErrorResponse, isNotFoundError } from 'shared/services/baseApi'
-
-import { TaskApiEnum, TaskApiTriggerEnum, TaskApiTagEnum } from './constants'
 
 const taskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
@@ -324,6 +332,41 @@ const taskApiService = baseApiService.injectEndpoints({
       }),
       invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
     }),
+
+    [TaskApiTriggerEnum.GetSubTaskList]: build.query<
+      GetSubTaskListSuccessResponse,
+      GetSubTaskListQueryArgs
+      >({
+      query: (taskId) => ({
+        url: getSubTaskListUrl(taskId),
+        method: HttpMethodEnum.Get,
+      }),
+    }),
+    [TaskApiTriggerEnum.CreateSubTask]: build.mutation<
+      CreateSubTaskSuccessResponse,
+      CreateSubTaskMutationArgs
+      >({
+      query: ({ taskId, ...payload }) => ({
+        url: createSubTaskUrl(taskId),
+        method: HttpMethodEnum.Post,
+        data: payload,
+      }),
+      onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+        try {
+          const { data: newSubTask } = await queryFulfilled
+
+          dispatch(
+            baseApiService.util.updateQueryData(
+              TaskApiTriggerEnum.GetSubTaskList as never,
+              taskId as never,
+              (subTaskList: SubTaskModel[]) => {
+                subTaskList.unshift(newSubTask)
+              },
+            ),
+          )
+        } catch {}
+      },
+    }),
   }),
   overrideExisting: false,
 })
@@ -358,6 +401,9 @@ export const {
 
   useUpdateTaskWorkGroupMutation,
   useDeleteTaskWorkGroupMutation,
+
+  useCreateSubTaskMutation,
+  useGetSubTaskListQuery,
 } = taskApiService
 
 export default taskApiService

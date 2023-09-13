@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import {
   fiscalAccumulatorFormatColorDict,
   FiscalAccumulatorFormatEnum,
-} from 'modules/task/constants'
+} from 'modules/task/constants/fiscalAccumulator'
 
 import { MaybeNull } from 'shared/types/utils'
 
@@ -13,8 +13,7 @@ const { Text } = Typography
 export const OlaNextBreachTimeStyled = styled(Text)<{
   $faFormat: MaybeNull<FiscalAccumulatorFormatEnum>
 }>`
-  ${({ $faFormat }) =>
-    $faFormat ? `color: ${fiscalAccumulatorFormatColorDict[$faFormat]};` : ''}
+  ${({ $faFormat }) => ($faFormat ? `color: ${fiscalAccumulatorFormatColorDict[$faFormat]};` : '')}
 `
 
 export const BodyCellStyled = styled('td')<{ $bgColor?: string }>`

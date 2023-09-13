@@ -7,7 +7,7 @@ import {
   GetTaskReclassificationRequestSuccessResponse,
 } from 'modules/task/models'
 import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
-import { useGetReclassificationRequestQuery } from 'modules/task/services/taskApiService'
+import { useGetReclassificationRequestQuery } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/common'

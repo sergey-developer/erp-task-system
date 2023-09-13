@@ -1,5 +1,5 @@
 import { UpdateTaskWorkGroupSuccessResponse } from 'modules/task/models'
-import { updateTaskWorkGroupUrl } from 'modules/task/utils'
+import { updateTaskWorkGroupUrl } from 'modules/task/utils/taskWorkGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

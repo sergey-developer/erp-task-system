@@ -3,11 +3,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
-import {
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 
 import taskFixtures from '_tests_/fixtures/task'
 import { buttonTestUtils, render } from '_tests_/utils'

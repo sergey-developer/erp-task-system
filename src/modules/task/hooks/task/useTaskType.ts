@@ -1,7 +1,7 @@
 import isEqual from 'lodash/isEqual'
 import { useMemo } from 'react'
 
-import { TaskTypeEnum } from 'modules/task/constants'
+import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/types/utils'
 
