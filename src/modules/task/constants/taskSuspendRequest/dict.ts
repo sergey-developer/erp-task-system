@@ -1,6 +1,6 @@
-import { SuspendReasonEnum } from 'modules/task/constants'
-
 import { StringMap } from 'shared/types/utils'
+
+import { SuspendReasonEnum } from './enums'
 
 /** Порядок значений имеет значение */
 export const suspendReasonDict: Readonly<StringMap<SuspendReasonEnum>> = {

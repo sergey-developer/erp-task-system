@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
-import { TaskApiTagEnum } from 'modules/task/services/taskApiService'
+import { TaskApiTagEnum } from 'modules/task/services/taskApiService/constants'
 
 import baseQueryWithReauth from './baseQueryWithReauth'
 import { CACHE_TIME_LIFE } from './constants'
