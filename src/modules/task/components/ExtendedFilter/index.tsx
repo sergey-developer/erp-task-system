@@ -3,7 +3,6 @@ import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
-import { workGroupListSelectFieldNames } from 'modules/workGroup/constants'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
@@ -11,7 +10,10 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
+import { idAndNameSelectFieldNames } from 'shared/constants/common'
+
 import {
+  managerSelectFieldNames,
   searchFieldOptions,
   taskAssignedOptions,
   taskExtendedStatusOptions,
@@ -24,9 +26,8 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
   initialFormValues,
 
-  // закоменчено временно только для rc
-  // userList,
-  // userListIsLoading,
+  userList,
+  userListIsLoading,
 
   onClose,
   onSubmit,
@@ -71,6 +72,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <CheckboxGroupStyled options={taskExtendedStatusOptions} />
           </Form.Item>
         </FilterBlock>
+
         <FilterBlock
           data-testid='extended-filter-is-assigned'
           label='Назначенный'
@@ -80,6 +82,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <Radio.Group options={taskAssignedOptions} />
           </Form.Item>
         </FilterBlock>
+
         <FilterBlock
           data-testid='extended-filter-is-overdue'
           label='Просрочено'
@@ -89,6 +92,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <Radio.Group options={taskOverdueOptions} />
           </Form.Item>
         </FilterBlock>
+
         <FilterBlock
           data-testid='extended-filter-complete-at'
           label='Выполнить до'
@@ -98,6 +102,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <RangePickerStyled allowClear={false} />
           </Form.Item>
         </FilterBlock>
+
         <Permissions config={extendedFilterPermissions.workGroup}>
           {() => (
             <FilterBlock
@@ -109,7 +114,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
                 <Select
                   data-testid='extended-filter-work-group-select'
                   disabled={workGroupListIsFetching}
-                  fieldNames={workGroupListSelectFieldNames}
+                  fieldNames={idAndNameSelectFieldNames}
                   loading={workGroupListIsFetching}
                   options={workGroupList}
                   placeholder='Рабочая группа'
@@ -124,6 +129,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             </FilterBlock>
           )}
         </Permissions>
+
         <FilterBlock
           data-testid='extended-filter-search-by-column'
           label='Поиск по столбцу'
@@ -140,28 +146,27 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           </Space>
         </FilterBlock>
 
-        {/* закоменчено временно только для rc*/}
-        {/*<FilterBlock*/}
-        {/*  data-testid='extended-filter-manager'*/}
-        {/*  label='Руководитель'*/}
-        {/*  onReset={resetFields(['manager'])}*/}
-        {/*>*/}
-        {/*  <Form.Item name='manager'>*/}
-        {/*    <Select*/}
-        {/*      data-testid='extended-filter-manager-select'*/}
-        {/*      fieldNames={managerSelectFieldNames}*/}
-        {/*      loading={userListIsLoading}*/}
-        {/*      options={userList}*/}
-        {/*      placeholder='Руководитель'*/}
-        {/*      showSearch*/}
-        {/*      filterOption={(input, option) => {*/}
-        {/*        return option*/}
-        {/*          ? option.fullName.toLowerCase().includes(input.toLowerCase())*/}
-        {/*          : false*/}
-        {/*      }}*/}
-        {/*    />*/}
-        {/*  </Form.Item>*/}
-        {/*</FilterBlock>*/}
+        <FilterBlock
+          data-testid='extended-filter-manager'
+          label='Руководитель'
+          onReset={resetFields(['manager'])}
+        >
+          <Form.Item name='manager'>
+            <Select
+              data-testid='extended-filter-manager-select'
+              fieldNames={managerSelectFieldNames}
+              loading={userListIsLoading}
+              options={userList}
+              placeholder='Руководитель'
+              showSearch
+              filterOption={(input, option) => {
+                return option
+                  ? option.fullName.toLowerCase().includes(input.toLowerCase())
+                  : false
+              }}
+            />
+          </Form.Item>
+        </FilterBlock>
       </Form>
     </DrawerFilter>
   )

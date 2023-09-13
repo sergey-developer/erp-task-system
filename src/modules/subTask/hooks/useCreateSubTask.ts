@@ -27,14 +27,14 @@ export const useCreateSubTask = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isClientRangeError(state.error) || isServerRangeError(state.error)) {
         showErrorNotification(createSubTaskMessages.commonError)
       }
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return { fn, state }
 }

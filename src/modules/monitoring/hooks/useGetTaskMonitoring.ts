@@ -13,12 +13,12 @@ export const useGetTaskMonitoring = (
   const state = useGetTaskMonitoringQuery(args, options)
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       showErrorNotification(getErrorDetail(state.error))
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return state
 }

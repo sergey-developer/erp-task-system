@@ -7,18 +7,19 @@ import {
 } from 'modules/task/pages/TaskListPage/types'
 
 import { PaginatedListSuccessResponse } from 'shared/models'
+import { PaginationParams } from 'shared/types/pagination'
 
 export type GetTaskListSuccessResponse =
   PaginatedListSuccessResponse<TaskListItemModel>
 
-export type GetTaskListQueryArgs = Partial<{
-  limit: number
-  offset: number
-  sort: SortValue
-  userId: number
-  lat: number
-  long: number
-}> &
+export type GetTaskListQueryArgs = Partial<
+  PaginationParams & {
+    sort: SortValue
+    userId: number
+    lat: number
+    long: number
+  }
+> &
   ExtendedFilterQueries &
   FastFilterQueries &
   TaskIdFilterQueries

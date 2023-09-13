@@ -1,6 +1,7 @@
 import { Moment } from 'moment-timezone'
 
 import { TaskExtendedStatusEnum } from 'modules/task/constants'
+import { UserListModel } from 'modules/user/models'
 
 import { MaybeNull } from 'shared/types/utils'
 
@@ -38,9 +39,8 @@ export type ExtendedFilterProps = {
   formValues: ExtendedFilterFormFields
   initialFormValues: ExtendedFilterFormFields
 
-  // закоменчено временно только для rc
-  // userList: UserListModel
-  // userListIsLoading: boolean
+  userList: UserListModel
+  userListIsLoading: boolean
 
   onSubmit: (result: ExtendedFilterFormFields) => void
   onClose: () => void

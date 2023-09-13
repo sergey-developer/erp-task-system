@@ -22,7 +22,7 @@ export const useGetFiscalAccumulatorTaskList =
     const state = useGetFiscalAccumulatorTaskListQuery()
 
     useEffect(() => {
-      if (!state.isError) return
+      if (!state.error) return
 
       if (isErrorResponse(state.error)) {
         if (isForbiddenError(state.error) && state.error.data.detail) {
@@ -33,7 +33,7 @@ export const useGetFiscalAccumulatorTaskList =
           )
         }
       }
-    }, [state.error, state.isError])
+    }, [state.error])
 
     return state
   }
