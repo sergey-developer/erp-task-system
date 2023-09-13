@@ -29,7 +29,7 @@ export const useDeleteTaskWorkGroup = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error) || isServerRangeError(state.error)) {
@@ -38,7 +38,7 @@ export const useDeleteTaskWorkGroup = () => {
         showErrorNotification(commonApiMessages.unknownError)
       }
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return { fn, state }
 }

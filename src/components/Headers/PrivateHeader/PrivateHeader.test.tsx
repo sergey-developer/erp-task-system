@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { MaybeNull } from 'shared/types/utils'
 import { RouteEnum } from 'configs/routes'
 
-import { UserRoleEnum } from 'modules/user/constants/roles'
+import { UserRoleEnum } from 'modules/user/constants'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
 

@@ -11,6 +11,10 @@ const WarehouseCatalogListPage: FC = () => {
       <CatalogListItem>
         <Link to={RouteEnum.WarehouseList}>Склады</Link>
       </CatalogListItem>
+
+      <CatalogListItem>
+        <Link to={RouteEnum.NomenclatureList}>Номенклатура</Link>
+      </CatalogListItem>
     </div>
   )
 }

@@ -7,7 +7,7 @@ import { TaskModel } from 'modules/task/models'
 
 import LabeledData from 'components/LabeledData'
 
-import { commonEllipsisConfig } from 'shared/constants/text'
+import { commonEllipsisConfig } from 'shared/constants/common'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Title, Paragraph } = Typography

@@ -7,7 +7,7 @@ import { TaskJournalEntryModel } from 'modules/task/models'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 
-import { commonEllipsisConfig } from 'shared/constants/text'
+import { commonEllipsisConfig } from 'shared/constants/common'
 import { MaybeNull } from 'shared/types/utils'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 

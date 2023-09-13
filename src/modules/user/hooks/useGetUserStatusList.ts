@@ -19,12 +19,12 @@ export const useGetUserStatusList = (): TypedUseQueryHookResult<
   const state = useGetUserStatusListQuery()
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       showErrorNotification(getUserStatusListMessages.commonError)
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return state
 }

@@ -27,7 +27,7 @@ export const useUpdateTaskWorkGroup = () => {
   )
 
   useEffect(() => {
-    if (!state.isError) return
+    if (!state.error) return
 
     if (isErrorResponse(state.error)) {
       if (isBadRequestError(state.error) && state.error.data.detail) {
@@ -36,7 +36,7 @@ export const useUpdateTaskWorkGroup = () => {
         showErrorNotification(updateTaskWorkGroupMessages.commonError)
       }
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return { fn, state }
 }
