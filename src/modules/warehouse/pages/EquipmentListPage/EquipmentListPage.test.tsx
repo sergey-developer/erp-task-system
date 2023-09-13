@@ -9,7 +9,7 @@ import {
   EquipmentCategoryEnum,
   getEquipmentListMessages,
   getEquipmentMessages,
-} from 'modules/warehouse/constants'
+} from 'modules/warehouse/constants/equipment'
 
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

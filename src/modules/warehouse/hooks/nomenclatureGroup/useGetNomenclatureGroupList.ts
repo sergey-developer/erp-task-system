@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getNomenclatureGroupListMessages } from 'modules/warehouse/constants'
+import { getNomenclatureGroupListMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 import {
   GetNomenclatureGroupListQueryArgs,
   GetNomenclatureGroupListSuccessResponse,

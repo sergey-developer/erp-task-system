@@ -13,7 +13,7 @@ import {
   sortableFieldToSortValues,
 } from 'modules/warehouse/components/EquipmentTable/sort'
 import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
-import { useGetEquipment, useGetEquipmentList } from 'modules/warehouse/hooks'
+import { useGetEquipment, useGetEquipmentList } from 'modules/warehouse/hooks/equipment'
 import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils'
 

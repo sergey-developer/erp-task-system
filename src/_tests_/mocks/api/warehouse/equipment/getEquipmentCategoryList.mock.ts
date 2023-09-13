@@ -1,5 +1,5 @@
 import { GetEquipmentCategoryListSuccessResponse } from 'modules/warehouse/models'
-import { EquipmentApiEnum } from 'modules/warehouse/services/equipmentApiService'
+import { EquipmentApiEnum } from 'modules/warehouse/constants/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

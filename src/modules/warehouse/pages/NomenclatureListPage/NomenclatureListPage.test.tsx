@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/AddOrEditNomenclatureGroupModal.test'
 import { testUtils as addOrEditNomenclatureModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureModal/AddOrEditNomenclatureModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
-import { createNomenclatureGroupMessages } from 'modules/warehouse/constants'
+import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 

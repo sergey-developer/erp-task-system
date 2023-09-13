@@ -1,8 +1,8 @@
 import { Form, Input, Select } from 'antd'
 import React, { FC, useEffect } from 'react'
 
-import { getLegalEntityListMessages } from 'modules/warehouse/constants'
-import { useGetWarehouseList } from 'modules/warehouse/hooks'
+import { getLegalEntityListMessages } from 'modules/warehouse/constants/legalEntity'
+import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetLegalEntityListQuery } from 'modules/warehouse/services/legalEntityApiService'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'

@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
+import { getWorkTypeListMessages } from 'modules/warehouse/constants/workType'
 import { GetWorkTypeListQueryArgs, GetWorkTypeListSuccessResponse } from 'modules/warehouse/models'
+import { useGetWorkTypeListQuery } from 'modules/warehouse/services/workTypeApi.service'
 
-import { getCountryListMessages } from 'shared/constants/country'
 import { isErrorResponse } from 'shared/services/baseApi'
-import { useGetCountryListQuery } from 'shared/services/countryApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetWorkTypeListResult = CustomUseQueryHookResult<
@@ -23,18 +23,13 @@ export const useGetWorkTypeList = (
   args?: GetWorkTypeListQueryArgs,
   options?: UseGetWorkTypeListOptions,
 ): UseGetWorkTypeListResult => {
-  const state = useGetCountryListQuery(args, options)
+  const state = useGetWorkTypeListQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getCountryListMessages.commonError)
+      showErrorNotification(getWorkTypeListMessages.commonError)
     }
   }, [state.error])
 
-  const fakeData = [
-    { id: 1, title: 'WorkType 1' },
-    { id: 2, title: 'WorkType 2' },
-  ]
-
-  return { ...state, currentData: fakeData }
+  return state
 }

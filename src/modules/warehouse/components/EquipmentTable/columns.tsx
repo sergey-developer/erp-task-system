@@ -1,6 +1,6 @@
 import { ColumnsType } from 'antd/es/table'
 
-import { equipmentConditionDict } from 'modules/warehouse/constants'
+import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
 import { valueOrHyphen } from 'shared/utils/common'
 

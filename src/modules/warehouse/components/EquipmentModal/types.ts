@@ -1,8 +1,9 @@
 import { FormInstance } from 'antd'
 
-import { EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
   CustomerListModel,
+  EquipmentCategoryListItemModel,
   EquipmentCategoryListModel,
   NomenclatureListModel,
   NomenclatureModel,
@@ -24,7 +25,6 @@ export type EquipmentModalFormFields = {
   isNew: boolean
   isWarranty: boolean
   isRepaired: boolean
-  isResponsibleStorage: boolean
   purpose: IdType
 
   customerInventoryNumber?: string
@@ -47,6 +47,7 @@ export type EquipmentModalProps = Required<
 
   categoryList: EquipmentCategoryListModel
   categoryListIsLoading: boolean
+  onChangeCategory: (category: EquipmentCategoryListItemModel) => void
 
   warehouseList: WarehouseListModel
   warehouseListIsLoading: boolean

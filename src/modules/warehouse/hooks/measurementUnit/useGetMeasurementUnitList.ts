@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getMeasurementUnitListMessages } from 'modules/warehouse/constants'
+import { getMeasurementUnitListMessages } from 'modules/warehouse/constants/measurementUnit'
 import {
   GetMeasurementUnitListQueryArgs,
   GetMeasurementUnitListSuccessResponse,

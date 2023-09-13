@@ -1,6 +1,6 @@
 import { Moment } from 'moment-timezone'
 
-import { EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
   CustomerListModel,
   EquipmentCategoryListModel,

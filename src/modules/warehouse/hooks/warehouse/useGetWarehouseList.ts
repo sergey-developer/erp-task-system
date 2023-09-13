@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getWarehouseListMessages } from 'modules/warehouse/constants'
+import { getWarehouseListMessages } from 'modules/warehouse/constants/warehouse'
 import {
   GetWarehouseListQueryArgs,
   GetWarehouseListSuccessResponse,

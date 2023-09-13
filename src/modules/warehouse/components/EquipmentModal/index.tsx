@@ -2,7 +2,8 @@ import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
 import isArray from 'lodash/isArray'
 import { FC, useEffect, useState } from 'react'
 
-import { conditionOptions, EquipmentCategoryEnum } from 'modules/warehouse/constants'
+import { conditionOptions } from 'modules/warehouse/constants/equipment'
+import { useCheckEquipmentCategory } from 'modules/warehouse/hooks/equipment'
 import {
   EquipmentCategoryListItemModel,
   NomenclatureListItemModel,
@@ -12,6 +13,7 @@ import {
 import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
+import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 
 import { EquipmentModalProps, EquipmentModalFormFields } from './types'
@@ -24,6 +26,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 
   categoryList,
   categoryListIsLoading,
+  onChangeCategory,
 
   warehouseList,
   warehouseListIsLoading,
@@ -47,10 +50,9 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<EquipmentModalFormFields>()
-  const isResponsibleStorageFormValue = Form.useWatch('isResponsibleStorage', form)
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
-  const isConsumableCategory = selectedCategory?.code === EquipmentCategoryEnum.Consumable
+  const equipmentCategoryBooleans = useCheckEquipmentCategory(selectedCategory?.code)
 
   useEffect(() => {
     if (nomenclature) {
@@ -64,11 +66,21 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
   ) => {
     if (!isArray(option)) {
       setSelectedCategory(option)
+      onChangeCategory(option)
     }
   }
 
   const handleFinish = async (values: EquipmentModalFormFields) => {
-    await onSubmit(values, form.setFields)
+    await onSubmit(
+      {
+        ...values,
+        title: values.title.trim(),
+        comment: values.comment?.trim(),
+        serialNumber: values.serialNumber?.trim(),
+        customerInventoryNumber: values.customerInventoryNumber?.trim(),
+      },
+      form.setFields,
+    )
   }
 
   return (
@@ -85,7 +97,12 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         onFinish={handleFinish}
         preserve={false}
       >
-        <Form.Item data-testid='category' label='Категория' name='category'>
+        <Form.Item
+          data-testid='category'
+          label='Категория'
+          name='category'
+          rules={onlyRequiredRules}
+        >
           <Select<IdType, EquipmentCategoryListItemModel>
             data-testid='category-select'
             placeholder='Выберите категорию'
@@ -96,7 +113,12 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           />
         </Form.Item>
 
-        <Form.Item data-testid='nomenclature' label='Номенклатура' name='nomenclature'>
+        <Form.Item
+          data-testid='nomenclature'
+          label='Номенклатура'
+          name='nomenclature'
+          rules={onlyRequiredRules}
+        >
           <Select<IdType, NomenclatureListItemModel>
             data-testid='nomenclature-select'
             virtual
@@ -104,15 +126,24 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
             fieldNames={idAndTitleSelectFieldNames}
             options={nomenclatureList}
             loading={nomenclatureListIsLoading}
+            disabled={isLoading}
             onChange={onChangeNomenclature}
           />
         </Form.Item>
 
-        <Form.Item data-testid='title' label='Наименование' name='title'>
-          <Input placeholder='Введите наименование' disabled={isConsumableCategory} />
+        <Form.Item
+          data-testid='title'
+          label='Наименование'
+          name='title'
+          rules={requiredStringRules}
+        >
+          <Input
+            placeholder='Введите наименование'
+            disabled={equipmentCategoryBooleans.isConsumable}
+          />
         </Form.Item>
 
-        {!isConsumableCategory && (
+        {!equipmentCategoryBooleans.isConsumable && (
           <Form.Item
             data-testid='customer-inventory-number'
             label='Инвентарный номер заказчика'
@@ -128,7 +159,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Form.Item>
         )}
 
-        <Form.Item data-testid='warehouse' label='Склад' name='warehouse'>
+        <Form.Item data-testid='warehouse' label='Склад' name='warehouse' rules={onlyRequiredRules}>
           <Select<IdType, WarehouseListItemModel>
             data-testid='warehouse-select'
             placeholder='Выберите склад'
@@ -138,7 +169,12 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           />
         </Form.Item>
 
-        <Form.Item data-testid='condition' label='Состояние' name='condition'>
+        <Form.Item
+          data-testid='condition'
+          label='Состояние'
+          name='condition'
+          rules={onlyRequiredRules}
+        >
           <Select
             data-testid='condition-select'
             placeholder='Выберите состояние'
@@ -146,7 +182,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           />
         </Form.Item>
 
-        {!isConsumableCategory && (
+        {!equipmentCategoryBooleans.isConsumable && (
           <Form.Item>
             <Row gutter={8}>
               <Col span={12}>
@@ -186,23 +222,38 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Row>
         </Form.Item>
 
-        {!isConsumableCategory && (
+        {!equipmentCategoryBooleans.isConsumable && (
           <Form.Item>
             <Row>
               <Col span={8}>
-                <Form.Item data-testid='is-new' label='Новое' name='isNew'>
+                <Form.Item
+                  data-testid='is-new'
+                  label='Новое'
+                  name='isNew'
+                  rules={onlyRequiredRules}
+                >
                   <Radio.Group options={yesNoOptions} />
                 </Form.Item>
               </Col>
 
               <Col span={8}>
-                <Form.Item data-testid='is-warranty ' label='На гарантии' name='isWarranty '>
+                <Form.Item
+                  data-testid='is-warranty '
+                  label='На гарантии'
+                  name='isWarranty'
+                  rules={onlyRequiredRules}
+                >
                   <Radio.Group options={yesNoOptions} />
                 </Form.Item>
               </Col>
 
               <Col span={8}>
-                <Form.Item data-testid='is-repaired' label='Отремонтированное' name='isRepaired '>
+                <Form.Item
+                  data-testid='is-repaired'
+                  label='Отремонтированное'
+                  name='isRepaired'
+                  rules={onlyRequiredRules}
+                >
                   <Radio.Group options={yesNoOptions} />
                 </Form.Item>
               </Col>
@@ -210,7 +261,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Form.Item>
         )}
 
-        {!isConsumableCategory && (
+        {!equipmentCategoryBooleans.isConsumable && (
           <Form.Item
             data-testid='usage-counter'
             label='Счетчик пробега текущий'
@@ -220,17 +271,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Form.Item>
         )}
 
-        {!isConsumableCategory && (
-          <Form.Item
-            data-testid='is-responsible-storage'
-            label='Ответственное хранение'
-            name='isResponsibleStorage'
-          >
-            <Radio.Group options={yesNoOptions} />
-          </Form.Item>
-        )}
-
-        {!isConsumableCategory && isResponsibleStorageFormValue !== false && (
+        {!equipmentCategoryBooleans.isConsumable && (
           <Form.Item data-testid='owner' label='Владелец оборудования' name='owner'>
             <Select
               data-testid='owner-select'
@@ -242,7 +283,12 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Form.Item>
         )}
 
-        <Form.Item data-testid='purpose' label='Назначение оборудования' name='purpose'>
+        <Form.Item
+          data-testid='purpose'
+          label='Назначение оборудования'
+          name='purpose'
+          rules={onlyRequiredRules}
+        >
           <Select
             data-testid='purpose-select'
             placeholder='Выберите назначение оборудования'
