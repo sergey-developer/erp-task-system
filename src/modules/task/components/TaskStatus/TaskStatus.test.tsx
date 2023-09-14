@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { BadgeProps } from 'antd'
 import React from 'react'
 
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 
 import { iconTestUtils, render } from '_tests_/utils'
 
@@ -15,14 +15,12 @@ import {
 import TaskStatus from './index'
 import { BadgeStyled } from './styles'
 
-const getContainer = (status: string) =>
-  screen.getByTestId(`task-status-${status}`)
+const getContainer = (status: string) => screen.getByTestId(`task-status-${status}`)
 
 const getContainerIn = (container: HTMLElement, status: string) =>
   within(container).getByTestId(`task-status-${status}`)
 
-const queryContainer = (status: string) =>
-  screen.queryByTestId(`task-status-${status}`)
+const queryContainer = (status: string) => screen.queryByTestId(`task-status-${status}`)
 
 const getIcon = (status: string, name: string) =>
   iconTestUtils.getIconByNameIn(getContainer(status), name)
@@ -110,8 +108,7 @@ describe('Получение иконки работает корректно п
   })
 
   test(`${TaskExtendedStatusEnum.InReclassification}`, () => {
-    const icon =
-      iconByTaskExtendedStatus[TaskExtendedStatusEnum.InReclassification]
+    const icon = iconByTaskExtendedStatus[TaskExtendedStatusEnum.InReclassification]
     render(icon!)
 
     expect(iconTestUtils.getIconByName('question-circle')).toBeInTheDocument()
@@ -132,8 +129,7 @@ describe('Получение иконки работает корректно п
   })
 
   test(`${TaskExtendedStatusEnum.FirstLineReturned}`, () => {
-    const icon =
-      iconByTaskExtendedStatus[TaskExtendedStatusEnum.FirstLineReturned]
+    const icon = iconByTaskExtendedStatus[TaskExtendedStatusEnum.FirstLineReturned]
     render(icon!)
 
     expect(iconTestUtils.getIconByName('exclamation-circle')).toBeInTheDocument()
@@ -150,10 +146,7 @@ describe('TaskStatus', () => {
     )
 
     const status = testUtils.getContainer(TaskExtendedStatusEnum.Completed)
-    const badge = testUtils.queryBadge(
-      TaskExtendedStatusEnum.Completed,
-      'success',
-    )
+    const badge = testUtils.queryBadge(TaskExtendedStatusEnum.Completed, 'success')
 
     expect(status).toBeInTheDocument()
     expect(badge).toBeInTheDocument()
@@ -168,10 +161,7 @@ describe('TaskStatus', () => {
     )
 
     const status = testUtils.getContainer(TaskExtendedStatusEnum.Awaiting)
-    const icon = testUtils.getIcon(
-      TaskExtendedStatusEnum.Awaiting,
-      'pause-circle',
-    )
+    const icon = testUtils.getIcon(TaskExtendedStatusEnum.Awaiting, 'pause-circle')
 
     expect(status).toBeInTheDocument()
     expect(icon).toBeInTheDocument()
@@ -185,32 +175,20 @@ describe('TaskStatus', () => {
   })
 
   test('Если передать значок и иконку, отображает только иконку', () => {
-    const iconByStatus =
-      iconByTaskExtendedStatus[TaskExtendedStatusEnum.Awaiting]
+    const iconByStatus = iconByTaskExtendedStatus[TaskExtendedStatusEnum.Awaiting]
 
-    const badgeByStatus =
-      badgeByTaskExtendedStatus[TaskExtendedStatusEnum.Completed]
+    const badgeByStatus = badgeByTaskExtendedStatus[TaskExtendedStatusEnum.Completed]
 
     render(
       <TaskStatus
-        status={
-          iconByStatus
-            ? TaskExtendedStatusEnum.Awaiting
-            : TaskExtendedStatusEnum.Completed
-        }
+        status={iconByStatus ? TaskExtendedStatusEnum.Awaiting : TaskExtendedStatusEnum.Completed}
         icon={iconByStatus}
         badge={badgeByStatus}
       />,
     )
 
-    const icon = testUtils.getIcon(
-      TaskExtendedStatusEnum.Awaiting,
-      'pause-circle',
-    )
-    const badge = testUtils.queryBadge(
-      TaskExtendedStatusEnum.Awaiting,
-      'success',
-    )
+    const icon = testUtils.getIcon(TaskExtendedStatusEnum.Awaiting, 'pause-circle')
+    const badge = testUtils.queryBadge(TaskExtendedStatusEnum.Awaiting, 'success')
 
     expect(icon).toBeInTheDocument()
     expect(badge).not.toBeInTheDocument()

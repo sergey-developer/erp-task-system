@@ -1,4 +1,4 @@
-import { FiscalAccumulatorFormatEnum } from 'modules/task/constants'
+import { FiscalAccumulatorFormatEnum } from 'modules/task/constants/fiscalAccumulator'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'

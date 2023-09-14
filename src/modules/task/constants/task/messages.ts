@@ -19,3 +19,7 @@ export const getTaskWorkPerformedActMessages: ApiRequestMessages<'commonError'> 
 export const resolveTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Невозможно выполнить заявку',
 }
+
+export const createSubTaskMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Не удалось создать задание',
+}

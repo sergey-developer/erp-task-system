@@ -13,7 +13,7 @@ import {
   getSort,
 } from 'modules/warehouse/components/WarehouseTable/sort'
 import { WarehouseTableProps } from 'modules/warehouse/components/WarehouseTable/types'
-import { useGetWarehouseList } from 'modules/warehouse/hooks'
+import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { GetWarehouseListQueryArgs } from 'modules/warehouse/models'
 
 import FilterButton from 'components/Buttons/FilterButton'

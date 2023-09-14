@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getNomenclatureMessages } from 'modules/warehouse/constants'
+import { getNomenclatureMessages } from 'modules/warehouse/constants/nomenclature'
 import { GetNomenclatureQueryArgs, GetNomenclatureSuccessResponse } from 'modules/warehouse/models'
-import { useGetNomenclatureQuery } from 'modules/warehouse/services/nomenclatureApiService'
+import { useGetNomenclatureQuery } from 'modules/warehouse/services/nomenclatureApi.service'
 
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

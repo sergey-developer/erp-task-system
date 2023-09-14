@@ -1,14 +1,9 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import {
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-  TaskTypeEnum,
-} from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/task'
 
 import taskFixtures from '_tests_/fixtures/task'
-
 import { fakeId, fakeIdStr, fakeWord, render } from '_tests_/utils'
 
 import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
@@ -75,9 +70,7 @@ describe('Вкладки карточки заявки', () => {
   test('Установлена корректная вкладка по умолчанию', () => {
     render(<CardTabs {...props} />)
 
-    expect(
-      testUtils.getOpenedTab(TaskCardTabsEnum.Description),
-    ).toBeInTheDocument()
+    expect(testUtils.getOpenedTab(TaskCardTabsEnum.Description)).toBeInTheDocument()
   })
 
   test('Можно открыть любую вкладку', async () => {

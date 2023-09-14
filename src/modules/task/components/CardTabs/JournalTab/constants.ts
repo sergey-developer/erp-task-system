@@ -1,4 +1,4 @@
-import { TaskJournalTypeEnum } from 'modules/task/constants'
+import { TaskJournalTypeEnum } from 'modules/task/constants/taskJournal'
 
 import { StringMap } from 'shared/types/utils'
 
@@ -16,12 +16,10 @@ export const journalEntryTypeDict: Readonly<StringMap<TaskJournalTypeEnum>> = {
   [TaskJournalTypeEnum.AwaitingCreated]: 'Создан запрос на перевод в ожидание',
   [TaskJournalTypeEnum.AwaitingApproved]: 'Перевод в ожидание согласован',
   [TaskJournalTypeEnum.AwaitingRejected]: 'Перевод в ожидание отклонен',
-  [TaskJournalTypeEnum.ReclassificationCreated]:
-    'Создан запрос на переклассификацию',
+  [TaskJournalTypeEnum.ReclassificationCreated]: 'Создан запрос на переклассификацию',
   [TaskJournalTypeEnum.ReclassificationApproved]: 'Переклассификация одобрена',
   [TaskJournalTypeEnum.ReclassificationRejected]: 'Переклассификация отклонена',
-  [TaskJournalTypeEnum.ReclassificationCancelled]:
-    'Запрос на переклассификацию отменен',
+  [TaskJournalTypeEnum.ReclassificationCancelled]: 'Запрос на переклассификацию отменен',
   [TaskJournalTypeEnum.FirstLineReturned]: 'Возврат на первую линию',
   [TaskJournalTypeEnum.AwaitingCanceled]: 'Перевод в ожидание отменен',
   [TaskJournalTypeEnum.AutoEscalation]: 'Автоэскалация',

@@ -1,4 +1,4 @@
-import { SuspendRequestStatusEnum } from 'modules/task/constants'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { SuspendRequestModel } from 'modules/task/models'
 
 import userFixtures from '_tests_/fixtures/user'

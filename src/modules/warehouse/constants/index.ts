@@ -1,7 +1,0 @@
-export * from './customer'
-export * from './equipment'
-export * from './legalEntity'
-export * from './measurementUnit'
-export * from './nomenclature'
-export * from './nomenclatureGroup'
-export * from './warehouse'

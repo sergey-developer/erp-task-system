@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react'
 
-import { createReclassificationRequestMessages } from 'modules/task/constants'
+import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
 import { CreateTaskReclassificationRequestMutationArgs } from 'modules/task/models'
 import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
-import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskApiService'
+import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/common'

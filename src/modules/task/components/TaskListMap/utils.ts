@@ -6,7 +6,7 @@ import { Coordinate } from 'ol/coordinate'
 import { Extent } from 'ol/extent'
 import { Circle, Fill, Style, Text } from 'ol/style'
 
-import { TaskTypeEnum } from 'modules/task/constants'
+import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { isTruthy } from 'shared/utils/common'
 
@@ -35,9 +35,7 @@ export const getFeaturesGeometry = (
   features: Feature[],
 ): (Geometry & { getCoordinates: () => Coordinate })[] =>
   features
-    .map(
-      (f) => f.getGeometry() as Geometry & { getCoordinates: () => Coordinate },
-    )
+    .map((f) => f.getGeometry() as Geometry & { getCoordinates: () => Coordinate })
     .filter(isTruthy)
 
 export const getFeaturesCoordinate = (geometries: Geometry[]): Coordinate[] =>
@@ -58,20 +56,15 @@ export const checkFeaturesHaveSameCoords = (coords: Coordinate[]): boolean =>
 export const getFeaturesData = (features: Feature[]): FeatureData[] =>
   features.map((f) => f.get('data'))
 
-export const getFeatureData = (feature: Feature): FeatureData =>
-  feature.get('data')
+export const getFeatureData = (feature: Feature): FeatureData => feature.get('data')
 
 export const getFeaturesWithin = (feature: Feature | FeatureLike): Feature[] =>
   feature.get('features')
 
-export const getPriorityTaskType = (
-  featuresData: FeatureData[],
-): FeatureData['type'] => {
+export const getPriorityTaskType = (featuresData: FeatureData[]): FeatureData['type'] => {
   let type: TaskTypeEnum
 
-  const incident = featuresData.find(
-    ({ type }) => type === TaskTypeEnum.Incident,
-  )
+  const incident = featuresData.find(({ type }) => type === TaskTypeEnum.Incident)
   const request = featuresData.find(({ type }) => type === TaskTypeEnum.Request)
 
   if (incident) {

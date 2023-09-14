@@ -13,8 +13,9 @@ import {
   taskPriorityMap,
   taskSeverityMap,
   getTaskWorkPerformedActMessages,
-} from 'modules/task/constants'
-import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
+} from 'modules/task/constants/task'
+import { useTaskStatus } from 'modules/task/hooks/task'
+import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import {
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
@@ -48,6 +49,7 @@ import { mapUploadedFiles } from 'shared/utils/file'
 import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import CardTabs from '../../CardTabs'
 import { RequestTaskReclassificationModalProps } from '../../RequestTaskReclassificationModal'
 import { RequestTaskSuspendModalProps } from '../../RequestTaskSuspendModal'
 import { RequestTaskSuspendFormFields } from '../../RequestTaskSuspendModal/types'
@@ -56,7 +58,6 @@ import { TaskFirstLineFormFields } from '../../TaskFirstLineModal/types'
 import { TaskResolutionModalProps } from '../../TaskResolutionModal'
 import { TaskSecondLineFormFields } from '../../TaskSecondLineModal/types'
 import AdditionalInfo from '../AdditionalInfo'
-import CardTabs from '../../CardTabs'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
 import SecondaryDetails from '../SecondaryDetails'

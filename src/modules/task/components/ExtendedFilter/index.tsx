@@ -36,13 +36,11 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 }) => {
   const [form] = Form.useForm<ExtendedFilterFormFields>()
 
-  const { data: workGroupList, isFetching: workGroupListIsFetching } =
-    useGetWorkGroupList()
+  const { data: workGroupList, isFetching: workGroupListIsFetching } = useGetWorkGroupList()
 
-  const resetFields =
-    (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
-      form.resetFields(fields)
-    }
+  const resetFields = (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
+    form.resetFields(fields)
+  }
 
   useEffect(() => {
     if (!isEqual(initialFormValues, formValues)) {
@@ -122,9 +120,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
                   placeholder='Рабочая группа'
                   showSearch
                   filterOption={(input, option) => {
-                    return option
-                      ? option.name.toLowerCase().includes(input.toLowerCase())
-                      : false
+                    return option ? option.name.toLowerCase().includes(input.toLowerCase()) : false
                   }}
                 />
               </Form.Item>
@@ -162,9 +158,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               placeholder='Руководитель'
               showSearch
               filterOption={(input, option) => {
-                return option
-                  ? option.fullName.toLowerCase().includes(input.toLowerCase())
-                  : false
+                return option ? option.fullName.toLowerCase().includes(input.toLowerCase()) : false
               }}
             />
           </Form.Item>

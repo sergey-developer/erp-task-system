@@ -1,4 +1,4 @@
-import { SuspendReasonEnum } from 'modules/task/constants'
+import { SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
 
 export const reasonsMakeDateTimeFieldDisabled = [
   SuspendReasonEnum.AwaitingInformation,

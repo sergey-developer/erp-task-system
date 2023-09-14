@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom'
 
-import { NomenclatureApiEnum } from 'modules/warehouse/services/nomenclatureApiService'
+import { NomenclatureApiEnum } from 'modules/warehouse/constants/nomenclature'
 
 import { IdType } from 'shared/types/common'
 import { appendSlashAtEnd } from 'shared/utils/string'

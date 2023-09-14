@@ -1,20 +1,23 @@
 import React, { FC, useEffect } from 'react'
 
 import {
-  useCreateTaskReclassificationRequest,
-  useCreateTaskSuspendRequest,
-  useDeleteTaskSuspendRequest,
-  useDeleteTaskWorkGroup,
   useGetTask,
-  useGetTaskReclassificationRequest,
   useResolveTask,
   useTakeTask,
   useTaskExtendedStatus,
-  useUpdateTaskAssignee,
-  useUpdateTaskWorkGroup,
-} from 'modules/task/hooks'
+} from 'modules/task/hooks/task'
+import { useUpdateTaskAssignee } from 'modules/task/hooks/taskAssignee'
+import {
+  useCreateTaskReclassificationRequest,
+  useGetTaskReclassificationRequest,
+} from 'modules/task/hooks/taskReclassificationRequest'
+import {
+  useCreateTaskSuspendRequest,
+  useDeleteTaskSuspendRequest,
+} from 'modules/task/hooks/taskSuspendRequest'
+import { useDeleteTaskWorkGroup, useUpdateTaskWorkGroup } from 'modules/task/hooks/taskWorkGroup'
 import { TaskListItemModel } from 'modules/task/models'
-import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApiService'
+import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import Card from '../Card'

@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
   EquipmentListItemModel,
   EquipmentListModel,

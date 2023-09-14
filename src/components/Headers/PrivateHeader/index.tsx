@@ -15,7 +15,7 @@ import { UserModel } from 'modules/user/models'
 import {
   useUpdateUserStatusMutation,
   useUpdateUserTimeZoneMutation,
-} from 'modules/user/services/userApiService'
+} from 'modules/user/services/userApi.service'
 import { getUserRoleMap } from 'modules/user/utils'
 
 import DetailedUserAvatar from 'components/Avatars/DetailedUserAvatar'

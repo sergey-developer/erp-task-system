@@ -2,7 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
-import { createSubTaskMessages } from 'modules/task/constants'
+import { createSubTaskMessages } from 'modules/task/constants/task'
 
 import { getSubTaskTemplateListMessages } from 'shared/constants/catalogs'
 import { validationMessages, validationSizes } from 'shared/constants/validation'

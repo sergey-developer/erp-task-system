@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react'
 
-import { createSubTaskMessages } from 'modules/task/constants'
+import { createSubTaskMessages } from 'modules/task/constants/task'
 import { CreateSubTaskMutationArgs } from 'modules/task/models'
 import { subTaskApiPermissions } from 'modules/task/permissions'
-import { useCreateSubTaskMutation } from 'modules/task/services/subTaskApiService'
+import { useCreateSubTaskMutation } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { isClientRangeError, isErrorResponse, isServerRangeError } from 'shared/services/baseApi'

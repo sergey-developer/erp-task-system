@@ -1,7 +1,7 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
-import { FC, useMemo, useState } from 'react'
+import { FC, useCallback, useMemo, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
@@ -9,22 +9,28 @@ import { RouteEnum } from 'configs/routes'
 import EquipmentFilter from 'modules/warehouse/components/EquipmentFilter'
 import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
 import EquipmentModal from 'modules/warehouse/components/EquipmentModal'
-import { EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
-  useGetCustomerList,
+  useCheckEquipmentCategory,
   useGetEquipmentCategoryList,
-  useGetNomenclature,
-  useGetNomenclatureList,
-  useGetWarehouseList,
-  useGetWorkTypeList,
-} from 'modules/warehouse/hooks'
+} from 'modules/warehouse/hooks/equipment'
+import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
+import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
+import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
 
 import FilterButton from 'components/Buttons/FilterButton'
 
-import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { useGetCurrencyList } from 'shared/hooks/currency'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { getFieldsErrors } from 'shared/utils/form'
+import { showErrorNotification } from 'shared/utils/notifications'
 
+import { EquipmentModalProps } from '../EquipmentModal/types'
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
@@ -37,10 +43,22 @@ const EquipmentPageLayout: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
   const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
 
-  const [equipmentModalOpened, { toggle: toggleEquipmentModalOpened }] = useBoolean(false)
-  const debouncedToggleEquipmentModalOpened = useDebounceFn(toggleEquipmentModalOpened)
+  const [equipmentModalOpened, { toggle: toggleEquipmentModal, setFalse: closeEquipmentModal }] =
+    useBoolean(false)
+
+  const debouncedToggleEquipmentModal = useDebounceFn(toggleEquipmentModal)
+
+  const handleCloseEquipmentModal = useCallback(() => {
+    closeEquipmentModal()
+    setSelectedNomenclatureId(undefined)
+  }, [closeEquipmentModal])
+
+  const debouncedHandleCloseEquipmentModal = useDebounceFn(handleCloseEquipmentModal)
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
+
+  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const equipmentCategoryBooleans = useCheckEquipmentCategory(selectedCategory?.code)
 
   const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
     useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened && !equipmentModalOpened })
@@ -50,7 +68,7 @@ const EquipmentPageLayout: FC = () => {
 
   const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
     undefined,
-    { skip: !filterOpened && !equipmentModalOpened },
+    { skip: !filterOpened && (!equipmentModalOpened || equipmentCategoryBooleans.isConsumable) },
   )
 
   const { currentData: currencyList = [], isFetching: currencyListIsFetching } = useGetCurrencyList(
@@ -69,6 +87,9 @@ const EquipmentPageLayout: FC = () => {
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
     useGetNomenclatureList(undefined, { skip: !equipmentModalOpened })
+
+  const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] =
+    useCreateEquipmentMutation()
 
   const initialFilterValues: EquipmentFilterFormFields = useMemo(
     () => ({
@@ -101,9 +122,27 @@ const EquipmentPageLayout: FC = () => {
     setSearchValue(value)
   }
 
-  const handleAddEquipment = async () => {
-    toggleEquipmentModalOpened()
-  }
+  const handleAddEquipment: EquipmentModalProps['onSubmit'] = useCallback(
+    async (values, setFields) => {
+      try {
+        await createEquipmentMutation(values).unwrap()
+        toggleEquipmentModal()
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            setFields(getFieldsErrors(error.data))
+
+            if (error.data.detail) {
+              showErrorNotification(error.data.detail)
+            }
+          } else if (isForbiddenError(error) && error.data.detail) {
+            showErrorNotification(error.data.detail)
+          }
+        }
+      }
+    },
+    [createEquipmentMutation, toggleEquipmentModal],
+  )
 
   const routeContext = useMemo<EquipmentPageContextType>(
     () => ({ filter: filterValues, search: searchValue }),
@@ -119,9 +158,7 @@ const EquipmentPageLayout: FC = () => {
               <Space size='middle'>
                 <FilterButton onClick={toggleFilterOpened} />
 
-                <Button onClick={debouncedToggleEquipmentModalOpened}>
-                  + Добавить оборудование
-                </Button>
+                <Button onClick={debouncedToggleEquipmentModal}>+ Добавить оборудование</Button>
               </Space>
             </Col>
 
@@ -157,9 +194,10 @@ const EquipmentPageLayout: FC = () => {
           visible={equipmentModalOpened}
           title='Добавление оборудования'
           okText='Добавить'
-          isLoading={false}
+          isLoading={createEquipmentIsLoading}
           categoryList={equipmentCategoryList}
           categoryListIsLoading={equipmentCategoryListIsFetching}
+          onChangeCategory={setSelectedCategory}
           warehouseList={warehouseList}
           warehouseListIsLoading={warehouseListIsFetching}
           currencyList={currencyList}
@@ -172,7 +210,7 @@ const EquipmentPageLayout: FC = () => {
           nomenclatureList={nomenclatureList?.results || []}
           nomenclatureListIsLoading={nomenclatureListIsFetching}
           onChangeNomenclature={setSelectedNomenclatureId}
-          onCancel={debouncedToggleEquipmentModalOpened}
+          onCancel={debouncedHandleCloseEquipmentModal}
           onSubmit={handleAddEquipment}
         />
       )}

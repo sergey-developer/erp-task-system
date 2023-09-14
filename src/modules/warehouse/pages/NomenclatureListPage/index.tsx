@@ -12,17 +12,16 @@ import { AddOrEditNomenclatureModalProps } from 'modules/warehouse/components/Ad
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
 import { NomenclatureTableProps } from 'modules/warehouse/components/NomenclatureTable/types'
 import {
-  createNomenclatureGroupMessages,
   createNomenclatureMessages,
-  updateNomenclatureGroupMessages,
   updateNomenclatureMessages,
-} from 'modules/warehouse/constants'
+} from 'modules/warehouse/constants/nomenclature'
 import {
-  useGetMeasurementUnitList,
-  useGetNomenclature,
-  useGetNomenclatureGroupList,
-  useGetNomenclatureList,
-} from 'modules/warehouse/hooks'
+  createNomenclatureGroupMessages,
+  updateNomenclatureGroupMessages,
+} from 'modules/warehouse/constants/nomenclatureGroup'
+import { useGetMeasurementUnitList } from 'modules/warehouse/hooks/measurementUnit'
+import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetNomenclatureGroupList } from 'modules/warehouse/hooks/nomenclatureGroup'
 import {
   GetNomenclatureGroupListQueryArgs,
   GetNomenclatureListQueryArgs,
@@ -31,11 +30,11 @@ import {
 import {
   useCreateNomenclatureMutation,
   useUpdateNomenclatureMutation,
-} from 'modules/warehouse/services/nomenclatureApiService'
+} from 'modules/warehouse/services/nomenclatureApi.service'
 import {
   useCreateNomenclatureGroupMutation,
   useUpdateNomenclatureGroupMutation,
-} from 'modules/warehouse/services/nomenclatureGroupApiService'
+} from 'modules/warehouse/services/nomenclatureGroupApi.service'
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'

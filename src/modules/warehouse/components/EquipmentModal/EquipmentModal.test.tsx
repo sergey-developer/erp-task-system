@@ -3,12 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { MaybeNull } from 'shared/types/utils'
 
-import {
-  selectTestUtils,
-  fakeWord,
-  render,
-  buttonTestUtils,
-} from '_tests_/utils'
+import { selectTestUtils, fakeWord, render, buttonTestUtils } from '_tests_/utils'
 
 import EquipmentModal from './index'
 import { EquipmentModalProps } from './types'
@@ -28,6 +23,7 @@ const props: Readonly<EquipmentModalProps> = {
 
   categoryList: [],
   categoryListIsLoading: false,
+  onChangeCategory: jest.fn(),
 
   currencyList: [],
   currencyListIsFetching: false,
@@ -105,9 +101,11 @@ const openCategorySelect = async (user: UserEvent) => {
 const findCategoryError = (error: string): Promise<HTMLElement> =>
   within(getCategoryFormItem()).findByText(error)
 
-const expectCategoryLoadingStarted = () => selectTestUtils.expectLoadingStarted(getCategoryFormItem())
+const expectCategoryLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getCategoryFormItem())
 
-const expectCategoryLoadingFinished = () => selectTestUtils.expectLoadingFinished(getCategoryFormItem())
+const expectCategoryLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getCategoryFormItem())
 
 export const testUtils = {
   getContainer,

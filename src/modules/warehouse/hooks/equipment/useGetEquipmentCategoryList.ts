@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getEquipmentCategoryListMessages } from 'modules/warehouse/constants'
+import { getEquipmentCategoryListMessages } from 'modules/warehouse/constants/equipment'
 import {
   GetEquipmentCategoryListQueryArgs,
   GetEquipmentCategoryListSuccessResponse,
 } from 'modules/warehouse/models'
-import { useGetEquipmentCategoryListQuery } from 'modules/warehouse/services/equipmentApiService'
+import { useGetEquipmentCategoryListQuery } from 'modules/warehouse/services/equipmentApi.service'
 
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

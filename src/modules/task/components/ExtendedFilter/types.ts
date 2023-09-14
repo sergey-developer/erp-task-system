@@ -1,6 +1,10 @@
 import { Moment } from 'moment-timezone'
 
-import { TaskExtendedStatusEnum, TaskAssignedEnum, TaskOverdueEnum } from 'modules/task/constants'
+import {
+  TaskExtendedStatusEnum,
+  TaskAssignedEnum,
+  TaskOverdueEnum,
+} from 'modules/task/constants/task'
 import { SearchFields } from 'modules/task/models'
 import { UserListModel } from 'modules/user/models'
 

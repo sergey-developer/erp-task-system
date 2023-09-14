@@ -1,5 +1,5 @@
 import { TakeTaskSuccessResponse } from 'modules/task/models'
-import { takeTaskUrl } from 'modules/task/utils'
+import { takeTaskUrl } from 'modules/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

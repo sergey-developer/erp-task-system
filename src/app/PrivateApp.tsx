@@ -5,7 +5,7 @@ import { FC, useEffect } from 'react'
 import { getPrivateRoutesConfig } from 'configs/routes'
 
 import { useGetUserMe } from 'modules/user/hooks'
-import { useGetUserMeCodeQuery } from 'modules/user/services/userApiService'
+import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
 
 import { useGetTimeZoneList } from 'shared/hooks/catalogs/timeZone'
 import { useGetUserStatusList } from 'shared/hooks/catalogs/userStatus'

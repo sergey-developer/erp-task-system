@@ -2,24 +2,14 @@ import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { SubTaskModel } from 'modules/task/models'
-import {
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-  taskStatusDict,
-} from 'modules/task/constants'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import TaskStatus from 'modules/task/components/TaskStatus'
-import {
-  badgeByTaskStatus,
-  iconByTaskStatus,
-} from 'modules/task/components/TaskStatus/constants'
-import {
-  useTaskExtendedStatus,
-  useTaskStatus,
-  useTaskSuspendRequestStatus,
-} from 'modules/task/hooks'
+import { badgeByTaskStatus, iconByTaskStatus } from 'modules/task/components/TaskStatus/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum, taskStatusDict } from 'modules/task/constants/task'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
+import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
+import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
+import { SubTaskModel } from 'modules/task/models'
 import { makeUserNameObject } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
@@ -62,21 +52,16 @@ const SubTask: FC<SubTaskProps> = ({
 }) => {
   const taskStatus = useTaskStatus(rawTaskStatus)
   const taskExtendedStatus = useTaskExtendedStatus(rawTaskExtendedStatus)
-  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(
-    rawTaskSuspendRequestStatus,
-  )
+  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
   const subTaskStatus = useTaskStatus(status)
 
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
 
-  const [showTechResolution, { toggle: toggleShowTechResolution }] =
-    useBoolean(false)
+  const [showTechResolution, { toggle: toggleShowTechResolution }] = useBoolean(false)
 
-  const [showReturnReason, { toggle: toggleShowReturnReason }] =
-    useBoolean(false)
+  const [showReturnReason, { toggle: toggleShowReturnReason }] = useBoolean(false)
 
-  const [showCancelReason, { toggle: toggleShowCancelReason }] =
-    useBoolean(false)
+  const [showCancelReason, { toggle: toggleShowCancelReason }] = useBoolean(false)
 
   const isShowCancelBtn =
     currentUserIsTaskAssignee &&
@@ -91,21 +76,14 @@ const SubTask: FC<SubTaskProps> = ({
     !taskStatus.isClosed
 
   return (
-    <Space
-      data-testid='sub-task-list-item'
-      $block
-      direction='vertical'
-      size='middle'
-    >
+    <Space data-testid='sub-task-list-item' $block direction='vertical' size='middle'>
       <Row justify='space-between' align='middle'>
         {(recordId || olaNextBreachTime) && (
           <Col>
             <SeparatedText>
               {recordId && <Text type='secondary'>{recordId}</Text>}
 
-              {olaNextBreachTime && (
-                <Text type='secondary'>до {olaNextBreachTime}</Text>
-              )}
+              {olaNextBreachTime && <Text type='secondary'>до {olaNextBreachTime}</Text>}
             </SeparatedText>
           </Col>
         )}
@@ -167,20 +145,17 @@ const SubTask: FC<SubTaskProps> = ({
           </Row>
         </Space>
 
-        {techResolution &&
-          (subTaskStatus.isCompleted || subTaskStatus.isClosed) && (
-            <Expandable
-              onClick={toggleShowTechResolution}
-              expanded={showTechResolution}
-              btnText='Решение'
-              btnTextType='success'
-              arrowColor='crayola'
-            >
-              <Paragraph type='success'>
-                {renderStringWithLineBreak(techResolution)}
-              </Paragraph>
-            </Expandable>
-          )}
+        {techResolution && (subTaskStatus.isCompleted || subTaskStatus.isClosed) && (
+          <Expandable
+            onClick={toggleShowTechResolution}
+            expanded={showTechResolution}
+            btnText='Решение'
+            btnTextType='success'
+            arrowColor='crayola'
+          >
+            <Paragraph type='success'>{renderStringWithLineBreak(techResolution)}</Paragraph>
+          </Expandable>
+        )}
 
         {returnReason && (
           <Expandable
@@ -209,9 +184,7 @@ const SubTask: FC<SubTaskProps> = ({
 
       <Row gutter={10}>
         <Col span={12}>
-          <LabeledData label='Группа поддержки'>
-            {supportGroup?.name}
-          </LabeledData>
+          <LabeledData label='Группа поддержки'>{supportGroup?.name}</LabeledData>
         </Col>
 
         {externalAssigneeName && (

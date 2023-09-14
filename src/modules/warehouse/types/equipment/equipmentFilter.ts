@@ -1,4 +1,4 @@
-import { EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 
 export type EquipmentFilterParams = Partial<{
   conditions: EquipmentConditionEnum[]

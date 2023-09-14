@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getCountryListMessages } from 'shared/constants/country'
+import { getCurrencyListMessages } from 'shared/constants/currency'
 import { GetCurrencyListQueryArgs, GetCurrencyListSuccessResponse } from 'shared/models/currency'
 import { isErrorResponse } from 'shared/services/baseApi'
-import { useGetCountryListQuery } from 'shared/services/countryApi.service'
+import { useGetCurrencyListQuery } from 'shared/services/currencyApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetCurrencyListResult = CustomUseQueryHookResult<
@@ -22,18 +22,13 @@ export const useGetCurrencyList = (
   args?: GetCurrencyListQueryArgs,
   options?: UseGetCurrencyListOptions,
 ): UseGetCurrencyListResult => {
-  const state = useGetCountryListQuery(args, options)
+  const state = useGetCurrencyListQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getCountryListMessages.commonError)
+      showErrorNotification(getCurrencyListMessages.commonError)
     }
   }, [state.error])
 
-  const fakeData = [
-    { id: 1, title: 'Currency 1' },
-    { id: 2, title: 'Currency 2' },
-  ]
-
-  return { ...state, currentData: fakeData }
+  return state
 }

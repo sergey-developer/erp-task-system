@@ -2,9 +2,11 @@ import { screen, waitFor, within } from '@testing-library/react'
 
 import {
   getTaskWorkPerformedActMessages,
+} from 'modules/task/constants/task'
+import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
-} from 'modules/task/constants'
+} from 'modules/task/constants/taskSuspendRequest'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import * as base64Utils from 'shared/utils/common/base64'

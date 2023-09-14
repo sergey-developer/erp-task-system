@@ -2,8 +2,8 @@ import { screen, within } from '@testing-library/react'
 
 import { RouteEnum } from 'configs/routes'
 
-import { getWarehouseMessages } from 'modules/warehouse/constants'
-import { getWarehousePageLink } from 'modules/warehouse/utils'
+import { getWarehouseMessages } from 'modules/warehouse/constants/warehouse'
+import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 

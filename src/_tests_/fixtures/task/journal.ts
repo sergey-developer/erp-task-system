@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants'
+import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants/taskJournal'
 import { TaskJournalEntryModel, TaskJournalModel } from 'modules/task/models'
 
 import taskFixtures from '_tests_/fixtures/task'

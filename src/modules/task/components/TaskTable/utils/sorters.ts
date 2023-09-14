@@ -1,4 +1,4 @@
-import { taskStatusDict } from 'modules/task/constants'
+import { taskStatusDict } from 'modules/task/constants/task'
 
 import { TaskTableListItem } from '../types'
 

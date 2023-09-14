@@ -1,5 +1,5 @@
 import { CreateTaskSuspendRequestSuccessResponse } from 'modules/task/models'
-import { createTaskSuspendRequestUrl } from 'modules/task/utils'
+import { createTaskSuspendRequestUrl } from 'modules/task/utils/taskSuspendRequest'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

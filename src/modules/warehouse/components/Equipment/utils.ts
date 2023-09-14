@@ -1,4 +1,4 @@
-import { EquipmentCategoryEnum } from 'modules/warehouse/constants'
+import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 import { EquipmentCategoryModel } from 'modules/warehouse/models'
 
 import { FieldsMaybeHidden } from './types'

@@ -1,7 +1,7 @@
 import { ColumnsType } from 'antd/es/table'
 import { Link } from 'react-router-dom'
 
-import { getWarehousePageLink } from 'modules/warehouse/utils'
+import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
 
 import { valueOrHyphen } from 'shared/utils/common'
 

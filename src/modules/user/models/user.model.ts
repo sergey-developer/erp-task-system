@@ -12,7 +12,6 @@ export type BaseUserModel = {
   avatar: MaybeNull<string>
 }
 
-// todo: разместить по модулям
 type NomenclatureUserPermissions =
   | 'NOMENCLATURES_READ'
   | 'NOMENCLATURES_CREATE'
@@ -31,6 +30,7 @@ type EquipmentUserPermissions =
   | 'EQUIPMENTS_DELETE'
   | 'EQUIPMENTS_UPDATE'
 
+// todo: переделать на enum
 export type UserPermissions =
   | NomenclatureUserPermissions
   | NomenclatureGroupUserPermissions

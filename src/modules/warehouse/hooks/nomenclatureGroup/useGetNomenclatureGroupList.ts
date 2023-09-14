@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getNomenclatureGroupListMessages } from 'modules/warehouse/constants'
+import { getNomenclatureGroupListMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 import {
   GetNomenclatureGroupListQueryArgs,
   GetNomenclatureGroupListSuccessResponse,
 } from 'modules/warehouse/models'
-import { useGetNomenclatureGroupListQuery } from 'modules/warehouse/services/nomenclatureGroupApiService'
+import { useGetNomenclatureGroupListQuery } from 'modules/warehouse/services/nomenclatureGroupApi.service'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
