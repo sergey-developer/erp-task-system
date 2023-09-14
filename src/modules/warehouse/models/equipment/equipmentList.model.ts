@@ -1,4 +1,4 @@
-import { EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { EquipmentCategoryModel, WarehouseModel, WorkTypeModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'

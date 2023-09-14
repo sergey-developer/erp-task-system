@@ -3,7 +3,7 @@ import {
   TaskExtendedStatusEnum,
   TaskAssignedEnum,
   TaskOverdueEnum,
-} from 'modules/task/constants'
+} from 'modules/task/constants/task'
 import { TaskListItemModel } from 'modules/task/models'
 
 import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'

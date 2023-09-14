@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { ReworkSubTaskMutationArgs } from 'modules/task/models'
 import { subTaskApiPermissions } from 'modules/task/permissions'
-import { useReworkSubTaskMutation } from 'modules/task/services/subTaskApiService'
+import { useReworkSubTaskMutation } from 'modules/task/services/subTaskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'

@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
-import { getEquipmentNomenclatureListMessages } from 'modules/warehouse/constants'
+import { getEquipmentNomenclatureListMessages } from 'modules/warehouse/constants/equipment'
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
-import { useGetEquipmentNomenclatureListQuery } from 'modules/warehouse/services/equipmentApiService'
+import { useGetEquipmentNomenclatureListQuery } from 'modules/warehouse/services/equipmentApi.service'
 import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'

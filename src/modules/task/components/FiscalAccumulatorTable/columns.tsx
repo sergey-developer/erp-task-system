@@ -1,13 +1,13 @@
 import { ColumnsType } from 'antd/es/table'
 
-import { fiscalAccumulatorFormatColorDict } from 'modules/task/constants'
+import { fiscalAccumulatorFormatColorDict } from 'modules/task/constants/fiscalAccumulator'
 
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { BodyCellProps } from './components'
-import { FiscalAccumulatorTableItem } from './types'
 import { OlaNextBreachTimeStyled } from './styles'
+import { FiscalAccumulatorTableItem } from './types'
 
 export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
   {
@@ -15,21 +15,15 @@ export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
     dataIndex: 'blockingIn',
     title: 'Блокировка через',
     onCell: (data): BodyCellProps => ({
-      bgColor: data.faFormat
-        ? fiscalAccumulatorFormatColorDict[data.faFormat]
-        : undefined,
+      bgColor: data.faFormat ? fiscalAccumulatorFormatColorDict[data.faFormat] : undefined,
     }),
-    render: (value: FiscalAccumulatorTableItem['blockingIn']) =>
-      valueOrHyphen(value),
+    render: (value: FiscalAccumulatorTableItem['blockingIn']) => valueOrHyphen(value),
   },
   {
     key: 'olaNextBreachTime',
     dataIndex: 'olaNextBreachTime',
     title: 'Крайний срок',
-    render: (
-      value: FiscalAccumulatorTableItem['olaNextBreachTime'],
-      record,
-    ) => (
+    render: (value: FiscalAccumulatorTableItem['olaNextBreachTime'], record) => (
       <OlaNextBreachTimeStyled $faFormat={record.faFormat}>
         {formatDate(value)}
       </OlaNextBreachTimeStyled>
@@ -66,9 +60,8 @@ export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
     key: 'deadlineOrTotalFiscalDocs',
     dataIndex: 'deadlineOrTotalFiscalDocs',
     title: 'Срок / Всего ФД',
-    render: (
-      value: FiscalAccumulatorTableItem['deadlineOrTotalFiscalDocs'],
-    ) => valueOrHyphen(value),
+    render: (value: FiscalAccumulatorTableItem['deadlineOrTotalFiscalDocs']) =>
+      valueOrHyphen(value),
   },
   {
     key: 'mr',
@@ -81,8 +74,7 @@ export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
     key: 'supportGroup',
     dataIndex: 'supportGroup',
     title: 'Группа поддержки',
-    render: (value: FiscalAccumulatorTableItem['supportGroup']) =>
-      value.name,
+    render: (value: FiscalAccumulatorTableItem['supportGroup']) => value.name,
   },
   {
     key: 'title',
@@ -93,7 +85,6 @@ export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
     key: 'createdAt',
     dataIndex: 'createdAt',
     title: 'Дата создания заявки',
-    render: (value: FiscalAccumulatorTableItem['createdAt']) =>
-      formatDate(value),
+    render: (value: FiscalAccumulatorTableItem['createdAt']) => formatDate(value),
   },
 ]

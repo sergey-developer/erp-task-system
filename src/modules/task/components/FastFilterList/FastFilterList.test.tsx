@@ -2,7 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { camelize } from 'humps'
 
-import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants'
+import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 

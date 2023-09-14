@@ -6,17 +6,9 @@ import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import { CancelSubTaskModalProps } from 'modules/task/components/CancelSubTaskModal/types'
 import { ReworkSubTaskModalProps } from 'modules/task/components/ReworkSubTaskModal/types'
 import SubTaskList from 'modules/task/components/SubTaskList'
-import {
-  useCancelSubTask,
-  useGetSubTaskList,
-  useReworkSubTask,
-} from 'modules/task/hooks'
+import { useCancelSubTask, useGetSubTaskList, useReworkSubTask } from 'modules/task/hooks/subTask'
+import { useTaskExtendedStatus, useTaskStatus, useTaskType } from 'modules/task/hooks/task'
 import { SubTaskModel } from 'modules/task/models'
-import {
-  useTaskExtendedStatus,
-  useTaskStatus,
-  useTaskType,
-} from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 
 import LoadingArea from 'components/LoadingArea'
@@ -27,15 +19,9 @@ import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 
-const CreateSubTaskModal = React.lazy(
-  () => import('modules/task/components/CreateSubTaskModal'),
-)
-const CancelSubTaskModal = React.lazy(
-  () => import('modules/task/components/CancelSubTaskModal'),
-)
-const ReworkSubTaskModal = React.lazy(
-  () => import('modules/task/components/ReworkSubTaskModal'),
-)
+const CreateSubTaskModal = React.lazy(() => import('modules/task/components/CreateSubTaskModal'))
+const CancelSubTaskModal = React.lazy(() => import('modules/task/components/CancelSubTaskModal'))
+const ReworkSubTaskModal = React.lazy(() => import('modules/task/components/ReworkSubTaskModal'))
 
 const { Title } = Typography
 
@@ -73,23 +59,14 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
 
   const [subTask, setSubTask] = useState<SubTaskModel>()
 
-  const [createSubTaskModalOpened, { toggle: toggleCreateSubTaskModalOpened }] =
-    useBoolean(false)
-  const debouncedToggleCreateSubTaskModalOpened = useDebounceFn(
-    toggleCreateSubTaskModalOpened,
-  )
+  const [createSubTaskModalOpened, { toggle: toggleCreateSubTaskModalOpened }] = useBoolean(false)
+  const debouncedToggleCreateSubTaskModalOpened = useDebounceFn(toggleCreateSubTaskModalOpened)
 
-  const [cancelSubTaskModalOpened, { toggle: toggleCancelSubTaskModalOpened }] =
-    useBoolean(false)
-  const debouncedToggleCancelSubTaskModalOpened = useDebounceFn(
-    toggleCancelSubTaskModalOpened,
-  )
+  const [cancelSubTaskModalOpened, { toggle: toggleCancelSubTaskModalOpened }] = useBoolean(false)
+  const debouncedToggleCancelSubTaskModalOpened = useDebounceFn(toggleCancelSubTaskModalOpened)
 
-  const [reworkSubTaskModalOpened, { toggle: toggleReworkSubTaskModalOpened }] =
-    useBoolean(false)
-  const debouncedToggleReworkSubTaskModalOpened = useDebounceFn(
-    toggleReworkSubTaskModalOpened,
-  )
+  const [reworkSubTaskModalOpened, { toggle: toggleReworkSubTaskModalOpened }] = useBoolean(false)
+  const debouncedToggleReworkSubTaskModalOpened = useDebounceFn(toggleReworkSubTaskModalOpened)
 
   const taskType = useTaskType(task.type)
   const taskStatus = useTaskStatus(task.status)
@@ -105,9 +82,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
     [setSubTask, debouncedToggleCancelSubTaskModalOpened],
   )
 
-  const handleCancelSubTask = useDebounceFn<
-    CancelSubTaskModalProps['onSubmit']
-  >(
+  const handleCancelSubTask = useDebounceFn<CancelSubTaskModalProps['onSubmit']>(
     async ({ cancelReason }, setFields) => {
       if (!subTask) return
 
@@ -138,9 +113,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
     [setSubTask, debouncedToggleReworkSubTaskModalOpened],
   )
 
-  const handleReworkSubTask = useDebounceFn<
-    ReworkSubTaskModalProps['onSubmit']
-  >(
+  const handleReworkSubTask = useDebounceFn<ReworkSubTaskModalProps['onSubmit']>(
     async ({ returnReason }, setFields) => {
       if (!subTask) return
 
@@ -164,12 +137,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
   )
 
   return (
-    <Space
-      data-testid='subtask-list-tab'
-      size='middle'
-      direction='vertical'
-      $block
-    >
+    <Space data-testid='subtask-list-tab' size='middle' direction='vertical' $block>
       <Row justify='space-between' align='middle'>
         <Col>
           <Title level={5}>
@@ -196,10 +164,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
         </Col>
       </Row>
 
-      <LoadingArea
-        data-testid='sub-task-list-loading'
-        isLoading={subTaskListIsLoading}
-      >
+      <LoadingArea data-testid='sub-task-list-loading' isLoading={subTaskListIsLoading}>
         <SubTaskList
           taskStatus={task.status}
           taskExtendedStatus={task.extendedStatus}
@@ -221,10 +186,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
             />
           }
         >
-          <CreateSubTaskModal
-            task={task}
-            onCancel={debouncedToggleCreateSubTaskModalOpened}
-          />
+          <CreateSubTaskModal task={task} onCancel={debouncedToggleCreateSubTaskModalOpened} />
         </React.Suspense>
       )}
 

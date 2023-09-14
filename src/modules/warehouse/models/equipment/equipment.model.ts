@@ -1,5 +1,5 @@
 import { UserModel } from 'modules/user/models'
-import { EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
   CustomerModel,
   EquipmentCategoryModel,

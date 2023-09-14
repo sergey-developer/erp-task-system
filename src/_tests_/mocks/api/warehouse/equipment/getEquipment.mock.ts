@@ -1,5 +1,5 @@
 import { GetEquipmentSuccessResponse } from 'modules/warehouse/models'
-import { getEquipmentUrl } from 'modules/warehouse/utils'
+import { getEquipmentUrl } from 'modules/warehouse/utils/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

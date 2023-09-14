@@ -1,5 +1,5 @@
+import { UserApiEnum } from 'modules/user/constants'
 import { GetUserListSuccessResponse } from 'modules/user/models'
-import { UserApiEnum } from 'modules/user/services/userApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

@@ -1,6 +1,9 @@
 import { screen, waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
 
-import { SuspendReasonEnum, SuspendRequestStatusEnum } from 'modules/task/constants'
+import {
+  SuspendReasonEnum,
+  SuspendRequestStatusEnum,
+} from 'modules/task/constants/taskSuspendRequest'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import * as base64Utils from 'shared/utils/common/base64'
@@ -12,6 +15,7 @@ import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import { fakeWord, getStoreWithAuth, render, spinnerTestUtils, cardTestUtils } from '_tests_/utils'
 import { modalTestUtils } from '_tests_/utils/components'
 
+import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
 import {
   availableReasons,
   testUtils as taskReclassificationModalTestUtils,
@@ -30,7 +34,6 @@ import {
   testUtils as assigneeBlockTestUtils,
   canSelectAssigneeProps,
 } from '../AssigneeBlock/AssigneeBlock.test'
-import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,

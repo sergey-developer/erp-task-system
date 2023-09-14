@@ -13,7 +13,7 @@ import {
   taskExtendedStatusDict,
   TaskAssignedEnum,
   TaskOverdueEnum,
-} from 'modules/task/constants'
+} from 'modules/task/constants/task'
 import { SearchFields } from 'modules/task/models'
 
 import { StringMap } from 'shared/types/utils'

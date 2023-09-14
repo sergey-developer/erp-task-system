@@ -1,8 +1,8 @@
+import { NomenclatureApiEnum } from 'modules/warehouse/constants/nomenclature'
 import {
   CreateNomenclatureBadRequestErrorResponse,
   CreateNomenclatureSuccessResponse,
 } from 'modules/warehouse/models'
-import { NomenclatureApiEnum } from 'modules/warehouse/services/nomenclatureApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

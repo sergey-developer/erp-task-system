@@ -1,4 +1,4 @@
-import { SuspendRequestStatusEnum } from 'modules/task/constants'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { BaseUserModel } from 'modules/user/models'
 
 import { IdType } from 'shared/types/common'

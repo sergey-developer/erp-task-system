@@ -11,7 +11,7 @@ import { testUtils as fastFilterListTestUtils } from 'modules/task/components/Fa
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
-import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants'
+import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 

@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { equipmentConditionDict, EquipmentConditionEnum } from 'modules/warehouse/constants'
+import { equipmentConditionDict, EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 
 import { yesNoOptions } from 'shared/constants/selectField'
 

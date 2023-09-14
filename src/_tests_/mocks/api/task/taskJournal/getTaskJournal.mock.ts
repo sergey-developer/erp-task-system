@@ -1,5 +1,5 @@
 import { GetTaskJournalSuccessResponse } from 'modules/task/models'
-import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'modules/task/utils'
+import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'modules/task/utils/taskJournal'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

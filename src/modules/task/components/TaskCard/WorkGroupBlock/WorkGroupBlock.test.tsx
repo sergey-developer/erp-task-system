@@ -1,15 +1,11 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import {
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
@@ -45,43 +41,31 @@ const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof props> = {
 }
 
 // first line button
-export const showFirstLineButtonProps: Pick<
-  WorkGroupBlockProps,
-  'workGroup' | 'status'
-> = {
+export const showFirstLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup' | 'status'> = {
   workGroup: workGroupFixtures.workGroupListItem(),
   status: TaskStatusEnum.New,
 }
 
-export const activeFirstLineButtonProps: Pick<
-  WorkGroupBlockProps,
-  'status' | 'extendedStatus'
-> = {
+export const activeFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status' | 'extendedStatus'> = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
 }
 
 // second line button
-export const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> =
-  {
-    workGroup: undefined,
-  }
+export const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> = {
+  workGroup: undefined,
+}
 
-export const activeSecondLineButtonProps: Pick<
-  WorkGroupBlockProps,
-  'status' | 'extendedStatus'
-> = {
+export const activeSecondLineButtonProps: Pick<WorkGroupBlockProps, 'status' | 'extendedStatus'> = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
 }
 
 const getContainer = () => screen.getByTestId('task-work-group')
-const getChildByText = (text: string | RegExp) =>
-  within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // first line button
-const getFirstLineButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /вернуть на I линию/i)
+const getFirstLineButton = () => buttonTestUtils.getButtonIn(getContainer(), /вернуть на I линию/i)
 
 const findFirstLineButton = () =>
   buttonTestUtils.findButtonIn(getContainer(), /вернуть на I линию/i)
@@ -140,13 +124,9 @@ describe('Блок рабочей группы', () => {
 
   describe('Рабочая группа', () => {
     test('Отображается если есть установленное значение', () => {
-      render(
-        <WorkGroupBlock {...props} workGroup={notRequiredProps.workGroup} />,
-      )
+      render(<WorkGroupBlock {...props} workGroup={notRequiredProps.workGroup} />)
 
-      expect(
-        testUtils.getChildByText(notRequiredProps.workGroup!.name),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(notRequiredProps.workGroup!.name)).toBeInTheDocument()
     })
 
     test('Отображается значение по умолчанию если нет группы', () => {
@@ -275,9 +255,7 @@ describe('Блок рабочей группы', () => {
 
         await testUtils.clickSecondLineButton(user)
 
-        expect(
-          await taskSecondLineModalTestUtils.findContainer(),
-        ).toBeInTheDocument()
+        expect(await taskSecondLineModalTestUtils.findContainer()).toBeInTheDocument()
       })
     })
 
@@ -335,10 +313,7 @@ describe('Блок рабочей группы', () => {
         await taskSecondLineModalTestUtils.findContainer()
         await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
         await taskSecondLineModalTestUtils.openWorkGroupField(user)
-        await taskSecondLineModalTestUtils.selectWorkGroup(
-          user,
-          workGroupList[0].name,
-        )
+        await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroupList[0].name)
         await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
         expect(props.transferTaskToSecondLine).toBeCalledTimes(1)
@@ -435,19 +410,13 @@ describe('Блок рабочей группы', () => {
 
         await testUtils.clickFirstLineButton(user)
 
-        expect(
-          await taskFirstLineModalTestUtils.findContainer(),
-        ).toBeInTheDocument()
+        expect(await taskFirstLineModalTestUtils.findContainer()).toBeInTheDocument()
       })
 
       describe('Не отображается если условия соблюдены', () => {
         test('Но нет рабочей группы', () => {
           render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              workGroup={undefined}
-            />,
+            <WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />,
             {
               store: getStoreWithAuth({
                 userRole: UserRoleEnum.FirstLineSupport,
@@ -577,19 +546,13 @@ describe('Блок рабочей группы', () => {
 
         await testUtils.clickFirstLineButton(user)
 
-        expect(
-          await taskFirstLineModalTestUtils.findContainer(),
-        ).toBeInTheDocument()
+        expect(await taskFirstLineModalTestUtils.findContainer()).toBeInTheDocument()
       })
 
       describe('Не отображается если условия соблюдены', () => {
         test('Но нет рабочей группы', () => {
           render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              workGroup={undefined}
-            />,
+            <WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />,
             {
               store: getStoreWithAuth({
                 userRole: UserRoleEnum.Engineer,
@@ -719,19 +682,13 @@ describe('Блок рабочей группы', () => {
 
         await testUtils.clickFirstLineButton(user)
 
-        expect(
-          await taskFirstLineModalTestUtils.findContainer(),
-        ).toBeInTheDocument()
+        expect(await taskFirstLineModalTestUtils.findContainer()).toBeInTheDocument()
       })
 
       describe('Не отображается если условия соблюдены', () => {
         test('Но нет рабочей группы', () => {
           render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              workGroup={undefined}
-            />,
+            <WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />,
             {
               store: getStoreWithAuth({
                 userRole: UserRoleEnum.SeniorEngineer,
@@ -861,19 +818,13 @@ describe('Блок рабочей группы', () => {
 
         await testUtils.clickFirstLineButton(user)
 
-        expect(
-          await taskFirstLineModalTestUtils.findContainer(),
-        ).toBeInTheDocument()
+        expect(await taskFirstLineModalTestUtils.findContainer()).toBeInTheDocument()
       })
 
       describe('Не отображается', () => {
         test('Если нет рабочей группы', () => {
           render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              workGroup={undefined}
-            />,
+            <WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />,
             {
               store: getStoreWithAuth({
                 userRole: UserRoleEnum.HeadOfDepartment,

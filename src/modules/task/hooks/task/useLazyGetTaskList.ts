@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
-import { getTaskListMessages } from 'modules/task/constants'
+import { getTaskListMessages } from 'modules/task/constants/task'
 import { GetTaskListQueryArgs } from 'modules/task/models'
-import { useLazyGetTaskListQuery } from 'modules/task/services/taskApiService'
+import { useLazyGetTaskListQuery } from 'modules/task/services/taskApi.service'
 import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 
 import { isErrorResponse } from 'shared/services/baseApi'

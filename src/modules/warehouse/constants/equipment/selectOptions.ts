@@ -1,6 +1,6 @@
 import { SelectProps } from 'antd'
 
-import { equipmentConditionDict } from 'modules/warehouse/constants'
+import { equipmentConditionDict } from './dict'
 
 export const conditionOptions: SelectProps['options'] = Object.keys(equipmentConditionDict).map(
   (key) => ({

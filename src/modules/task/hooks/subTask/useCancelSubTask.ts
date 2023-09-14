@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { CancelSubTaskMutationArgs } from 'modules/task/models'
 import { subTaskApiPermissions } from 'modules/task/permissions'
-import { useCancelSubTaskMutation } from 'modules/task/services/subTaskApiService'
+import { useCancelSubTaskMutation } from 'modules/task/services/subTaskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'

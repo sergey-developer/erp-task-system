@@ -2,12 +2,11 @@ import { screen, within } from '@testing-library/react'
 import React from 'react'
 
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
-import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants'
+import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants/taskJournal'
 
 import { IdType } from 'shared/types/common'
 
 import taskFixtures from '_tests_/fixtures/task'
-
 import { fakeDateString, fakeId, fakeWord, render } from '_tests_/utils'
 
 import JournalEntry, { JournalEntryProps } from './JournalEntry'

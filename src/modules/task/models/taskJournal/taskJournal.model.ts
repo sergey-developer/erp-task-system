@@ -1,4 +1,4 @@
-import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants'
+import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants/taskJournal'
 import { TaskAttachmentListModel } from 'modules/task/models'
 import { BaseUserModel } from 'modules/user/models'
 

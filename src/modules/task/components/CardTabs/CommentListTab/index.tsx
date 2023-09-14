@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Button, Row, Typography } from 'antd'
 import React, { FC, useCallback } from 'react'
 
-import { useCreateTaskComment, useGetTaskCommentList } from 'modules/task/hooks'
+import { useCreateTaskComment, useGetTaskCommentList } from 'modules/task/hooks/taskComment'
 import { TaskModel } from 'modules/task/models'
 
 import LoadingArea from 'components/LoadingArea'

@@ -6,7 +6,7 @@ import {
   TaskExtendedStatusEnum,
   taskExtendedStatusDict,
   TaskAssignedEnum,
-} from 'modules/task/constants'
+} from 'modules/task/constants/task'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import userFixtures from '_tests_/fixtures/user'

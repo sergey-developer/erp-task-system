@@ -5,23 +5,22 @@ import {
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
 } from 'modules/task/components/TaskCard/WorkGroupBlock/WorkGroupBlock.test'
+import { resolveTaskMessages, TaskExtendedStatusEnum } from 'modules/task/constants/task'
+import { updateTaskAssigneeMessages } from 'modules/task/constants/taskAssignee'
+import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
 import {
-  SuspendReasonEnum,
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  createReclassificationRequestMessages,
-  updateTaskAssigneeMessages,
-  updateTaskWorkGroupMessages,
-  resolveTaskMessages,
   createSuspendRequestMessages,
   deleteSuspendRequestMessages,
-} from 'modules/task/constants'
+  SuspendReasonEnum,
+  SuspendRequestStatusEnum,
+} from 'modules/task/constants/taskSuspendRequest'
+import { updateTaskWorkGroupMessages } from 'modules/task/constants/taskWorkGroup'
 import {
   CreateTaskSuspendRequestBadRequestErrorResponse,
   ResolveTaskBadRequestErrorResponse,
   UpdateTaskWorkGroupBadRequestErrorResponse,
 } from 'modules/task/models'
-import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils'
+import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getWorkGroupListMessages } from 'modules/workGroup/constants'
 

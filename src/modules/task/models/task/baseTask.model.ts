@@ -4,7 +4,7 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants'
+} from 'modules/task/constants/task'
 import { TaskAssigneeModel, TaskResponseTimeModel, TaskWorkGroupModel } from 'modules/task/models'
 
 import { IdType } from 'shared/types/common'

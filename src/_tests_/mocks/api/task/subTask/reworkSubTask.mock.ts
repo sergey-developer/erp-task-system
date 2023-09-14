@@ -1,5 +1,5 @@
 import { ReworkSubTaskSuccessResponse } from 'modules/task/models'
-import { reworkSubTaskUrl } from 'modules/task/utils'
+import { reworkSubTaskUrl } from 'modules/task/utils/subTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { GetTaskJournalCsvQueryArgs, GetTaskJournalCsvSuccessResponse } from 'modules/task/models'
-import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskApiService'
+import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskApi.service'
 
 import { commonApiMessages } from 'shared/constants/common'
 import { isErrorResponse } from 'shared/services/baseApi'

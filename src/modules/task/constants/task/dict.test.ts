@@ -1,4 +1,4 @@
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 
 import {
   taskExtendedStatusDict,

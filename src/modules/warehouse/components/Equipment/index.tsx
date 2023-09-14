@@ -1,7 +1,7 @@
 import { Col, Drawer, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { equipmentConditionDict } from 'modules/warehouse/constants'
+import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'

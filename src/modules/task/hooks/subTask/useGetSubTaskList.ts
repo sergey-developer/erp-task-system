@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
 import { GetSubTaskListQueryArgs, GetSubTaskListSuccessResponse } from 'modules/task/models'
 import { subTaskApiPermissions } from 'modules/task/permissions'
-import { useGetSubTaskListQuery } from 'modules/task/services/subTaskApiService'
+import { useGetSubTaskListQuery } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { isErrorResponse } from 'shared/services/baseApi'

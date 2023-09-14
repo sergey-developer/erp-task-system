@@ -1,7 +1,7 @@
 import isEqual from 'lodash/isEqual'
 import { useMemo } from 'react'
 
-import { SuspendRequestStatusEnum } from 'modules/task/constants'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 
 import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/types/utils'
 

@@ -1,7 +1,8 @@
-import { FastFilterEnum, TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants'
 import { BaseTaskModel } from 'modules/task/models'
 
 import { StringMap } from 'shared/types/utils'
+
+import { FastFilterEnum, TaskExtendedStatusEnum, TaskStatusEnum } from './enums'
 
 export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
   [FastFilterEnum.All]: 'Все',

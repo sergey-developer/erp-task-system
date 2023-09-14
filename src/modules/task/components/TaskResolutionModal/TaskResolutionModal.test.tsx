@@ -1,20 +1,11 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { TaskTypeEnum } from 'modules/task/constants'
+import { TaskTypeEnum } from 'modules/task/constants/task'
 
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
+import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import {
-  fakeIdStr,
-  fakeWord,
-  modalTestUtils,
-  render,
-  buttonTestUtils
-} from "_tests_/utils";
+import { fakeIdStr, fakeWord, modalTestUtils, render, buttonTestUtils } from '_tests_/utils'
 
 import TaskResolutionModal, { TaskResolutionModalProps } from './index'
 
@@ -60,11 +51,9 @@ const clickGetActButton = async (user: UserEvent) => {
   await user.click(button)
 }
 
-const expectGetActLoadingStarted = () =>
-  buttonTestUtils.expectLoadingStarted(getGetActButton())
+const expectGetActLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getGetActButton())
 
-const expectGetActLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getGetActButton())
+const expectGetActLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getGetActButton())
 
 // submit button
 const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /Выполнить заявку/)
@@ -76,8 +65,7 @@ const clickSubmitButton = async (user: UserEvent) => {
 }
 
 // tech resolution
-const getTechResolutionBlock = () =>
-  within(getContainer()).getByTestId('tech-resolution')
+const getTechResolutionBlock = () => within(getContainer()).getByTestId('tech-resolution')
 
 const getTechResolutionTitle = () =>
   within(getTechResolutionBlock()).getByTitle('Техническое решение')
@@ -85,8 +73,7 @@ const getTechResolutionTitle = () =>
 const getTechResolutionField = () =>
   within(getContainer()).getByPlaceholderText('Расскажите о работах на объекте')
 
-const findTechResolutionError = (text: string) =>
-  within(getTechResolutionBlock()).findByText(text)
+const findTechResolutionError = (text: string) => within(getTechResolutionBlock()).findByText(text)
 
 const setTechResolution = async (user: UserEvent, value: string) => {
   const field = getTechResolutionField()
@@ -95,24 +82,20 @@ const setTechResolution = async (user: UserEvent, value: string) => {
 }
 
 // user resolution
-const getUserResolutionBlock = () =>
-  within(getContainer()).getByTestId('user-resolution')
+const getUserResolutionBlock = () => within(getContainer()).getByTestId('user-resolution')
 
 const getUserResolutionTitle = () =>
   within(getUserResolutionBlock()).getByTitle('Решение для пользователя')
 
 const getUserResolutionField = () =>
-  within(getUserResolutionBlock()).getByPlaceholderText(
-    'Расскажите заявителю о решении',
-  )
+  within(getUserResolutionBlock()).getByPlaceholderText('Расскажите заявителю о решении')
 
 const queryUserResolutionField = () =>
   within(getContainer()).queryByRole('textbox', {
     name: 'Решение для пользователя',
   })
 
-const findUserResolutionError = (text: string) =>
-  within(getUserResolutionBlock()).findByText(text)
+const findUserResolutionError = (text: string) => within(getUserResolutionBlock()).findByText(text)
 
 const setUserResolution = async (user: UserEvent, value: string) => {
   const field = getUserResolutionField()
@@ -121,8 +104,7 @@ const setUserResolution = async (user: UserEvent, value: string) => {
 }
 
 // attachments
-const getAttachmentsFormItem = () =>
-  within(getContainer()).getByTestId('attachments-form-item')
+const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
 
 const getAddAttachmentsButton = () =>
   buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
@@ -149,15 +131,12 @@ const setAttachment = async (
 const getUploadedAttachment = (filename: string) =>
   within(getAttachmentsFormItem()).getByTitle(filename)
 
-const findAttachmentsError = (error: string) =>
-  within(getAttachmentsFormItem()).findByText(error)
+const findAttachmentsError = (error: string) => within(getAttachmentsFormItem()).findByText(error)
 
 // loading
-const expectLoadingStarted = () =>
-  buttonTestUtils.expectLoadingStarted(getSubmitButton())
+const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
 
-const expectLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getSubmitButton())
+const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -219,9 +198,7 @@ describe('Модалка решения по заявке', () => {
     ).toBeInTheDocument()
 
     expect(
-      testUtils.getChildByText(
-        'После выполнения заявка будет доступна только в режиме просмотра.',
-      ),
+      testUtils.getChildByText('После выполнения заявка будет доступна только в режиме просмотра.'),
     ).toBeInTheDocument()
   })
 
@@ -321,10 +298,7 @@ describe('Модалка решения по заявке', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(props.onSubmit).toBeCalledTimes(1)
-        expect(props.onSubmit).toBeCalledWith(
-          expect.anything(),
-          expect.anything(),
-        )
+        expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
       })
 
       test('Если поля не заполнены', async () => {
@@ -374,9 +348,7 @@ describe('Модалка решения по заявке', () => {
           await testUtils.setTechResolution(user, ' ')
 
           expect(
-            await testUtils.findTechResolutionError(
-              validationMessages.canNotBeEmpty,
-            ),
+            await testUtils.findTechResolutionError(validationMessages.canNotBeEmpty),
           ).toBeInTheDocument()
         })
 
@@ -386,9 +358,7 @@ describe('Модалка решения по заявке', () => {
           await testUtils.clickSubmitButton(user)
 
           expect(
-            await testUtils.findTechResolutionError(
-              validationMessages.required,
-            ),
+            await testUtils.findTechResolutionError(validationMessages.required),
           ).toBeInTheDocument()
         })
 
@@ -401,9 +371,7 @@ describe('Модалка решения по заявке', () => {
           )
 
           expect(
-            await testUtils.findTechResolutionError(
-              validationMessages.string.max.long,
-            ),
+            await testUtils.findTechResolutionError(validationMessages.string.max.long),
           ).toBeInTheDocument()
         })
       })
@@ -427,17 +395,13 @@ describe('Модалка решения по заявке', () => {
 
       describe('Не отображается', () => {
         test('Если тип заявки - incident task', () => {
-          render(
-            <TaskResolutionModal {...props} type={TaskTypeEnum.IncidentTask} />,
-          )
+          render(<TaskResolutionModal {...props} type={TaskTypeEnum.IncidentTask} />)
 
           expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
         })
 
         test('Если тип заявки - request task', () => {
-          render(
-            <TaskResolutionModal {...props} type={TaskTypeEnum.RequestTask} />,
-          )
+          render(<TaskResolutionModal {...props} type={TaskTypeEnum.RequestTask} />)
 
           expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
         })
@@ -464,9 +428,7 @@ describe('Модалка решения по заявке', () => {
           await testUtils.setUserResolution(user, ' ')
 
           expect(
-            await testUtils.findUserResolutionError(
-              validationMessages.canNotBeEmpty,
-            ),
+            await testUtils.findUserResolutionError(validationMessages.canNotBeEmpty),
           ).toBeInTheDocument()
         })
 
@@ -476,9 +438,7 @@ describe('Модалка решения по заявке', () => {
           await testUtils.clickSubmitButton(user)
 
           expect(
-            await testUtils.findUserResolutionError(
-              validationMessages.required,
-            ),
+            await testUtils.findUserResolutionError(validationMessages.required),
           ).toBeInTheDocument()
         })
 
@@ -491,9 +451,7 @@ describe('Модалка решения по заявке', () => {
           )
 
           expect(
-            await testUtils.findUserResolutionError(
-              validationMessages.string.max.long,
-            ),
+            await testUtils.findUserResolutionError(validationMessages.string.max.long),
           ).toBeInTheDocument()
         })
       })

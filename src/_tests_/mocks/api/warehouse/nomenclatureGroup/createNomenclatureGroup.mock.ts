@@ -2,7 +2,7 @@ import {
   CreateNomenclatureGroupBadRequestErrorResponse,
   CreateNomenclatureGroupSuccessResponse,
 } from 'modules/warehouse/models'
-import { NomenclatureGroupApiEnum } from 'modules/warehouse/services/nomenclatureGroupApiService'
+import { NomenclatureGroupApiEnum } from 'modules/warehouse/constants/nomenclatureGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

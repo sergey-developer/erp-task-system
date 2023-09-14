@@ -7,12 +7,9 @@ import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
 } from 'modules/task/components/TaskFirstLineModal/types'
-import { SuspendRequestStatusEnum } from 'modules/task/constants'
-import {
-  useTaskExtendedStatus,
-  useTaskStatus,
-  useTaskSuspendRequestStatus,
-} from 'modules/task/hooks'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
+import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
+import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
 import { WorkGroupListItemModel } from 'modules/workGroup/models'

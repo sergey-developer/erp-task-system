@@ -2,7 +2,7 @@ import {
   UpdateNomenclatureGroupBadRequestErrorResponse,
   UpdateNomenclatureGroupSuccessResponse,
 } from 'modules/warehouse/models'
-import { updateNomenclatureGroupUrl } from 'modules/warehouse/utils'
+import { updateNomenclatureGroupUrl } from 'modules/warehouse/utils/nomenclatureGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'

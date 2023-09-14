@@ -1,5 +1,5 @@
 import { GetTaskSuccessResponse } from 'modules/task/models'
-import { getTaskUrl } from 'modules/task/utils'
+import { getTaskUrl } from 'modules/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

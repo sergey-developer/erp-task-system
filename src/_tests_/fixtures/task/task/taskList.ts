@@ -5,7 +5,7 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants'
+} from 'modules/task/constants/task'
 import { GetTaskListSuccessResponse, TaskListItemModel } from 'modules/task/models'
 
 import commonFixtures from '_tests_/fixtures/common'

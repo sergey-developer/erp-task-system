@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
-import { getEquipmentListMessages } from 'modules/warehouse/constants'
+import { getEquipmentListMessages } from 'modules/warehouse/constants/equipment'
 import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
-import { useGetEquipmentListQuery } from 'modules/warehouse/services/equipmentApiService'
+import { useGetEquipmentListQuery } from 'modules/warehouse/services/equipmentApi.service'
 import { GetEquipmentListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
@@ -15,9 +15,7 @@ type UseGetEquipmentListResult = CustomUseQueryHookResult<
   GetEquipmentListTransformedSuccessResponse
 >
 
-export const useGetEquipmentList = (
-  args: GetEquipmentListQueryArgs,
-): UseGetEquipmentListResult => {
+export const useGetEquipmentList = (args: GetEquipmentListQueryArgs): UseGetEquipmentListResult => {
   const state = useGetEquipmentListQuery(args)
 
   useEffect(() => {

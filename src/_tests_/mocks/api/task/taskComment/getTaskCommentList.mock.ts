@@ -1,5 +1,5 @@
 import { GetTaskCommentListSuccessResponse } from 'modules/task/models'
-import { getTaskCommentListUrl } from 'modules/task/utils'
+import { getTaskCommentListUrl } from 'modules/task/utils/taskComment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

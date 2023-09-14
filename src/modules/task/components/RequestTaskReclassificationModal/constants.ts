@@ -1,9 +1,6 @@
-import { ReclassificationReasonEnum } from 'modules/task/constants'
+import { ReclassificationReasonEnum } from 'modules/task/constants/taskReclassificationRequest'
 
-export const reclassificationReasonLabels: Record<
-  ReclassificationReasonEnum,
-  string
-> = {
+export const reclassificationReasonLabels: Record<ReclassificationReasonEnum, string> = {
   [ReclassificationReasonEnum.WrongClassification]:
     'Требуется переклассификация (классификация неверная)',
   [ReclassificationReasonEnum.WrongSupportGroup]:

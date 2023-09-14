@@ -1,6 +1,6 @@
-import { FiscalAccumulatorFormatEnum } from 'modules/task/constants'
-
 import { StringMap } from 'shared/types/utils'
+
+import { FiscalAccumulatorFormatEnum } from './enums'
 
 export const fiscalAccumulatorFormatColorDict: Readonly<StringMap<FiscalAccumulatorFormatEnum>> = {
   [FiscalAccumulatorFormatEnum.Dubbed]: '#6600ff',

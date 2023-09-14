@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { equipmentConditionDict } from 'modules/warehouse/constants'
+import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'

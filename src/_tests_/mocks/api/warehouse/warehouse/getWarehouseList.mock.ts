@@ -1,5 +1,5 @@
+import { WarehouseApiEnum } from 'modules/warehouse/constants/warehouse'
 import { GetWarehouseListSuccessResponse } from 'modules/warehouse/models'
-import { WarehouseApiEnum } from 'modules/warehouse/services/warehouseApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

@@ -1,6 +1,6 @@
 import isEqual from 'lodash/isEqual'
 
-import { TaskOlaStatusEnum } from 'modules/task/constants'
+import { TaskOlaStatusEnum } from 'modules/task/constants/task'
 
 import { BooleanKey, BooleanMap } from 'shared/types/utils'
 

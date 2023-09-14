@@ -1,4 +1,4 @@
-import { EquipmentApiEnum } from 'modules/warehouse/services/equipmentApiService'
+import { EquipmentApiEnum } from 'modules/warehouse/constants/equipment'
 import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'

@@ -2,7 +2,7 @@ import { Form, Radio, Select, InputNumber, DatePicker, Row, Col } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
-import { conditionOptions } from 'modules/warehouse/constants'
+import { conditionOptions } from 'modules/warehouse/constants/equipment'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
@@ -158,7 +158,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
           label='Стоимость'
           onReset={resetFields(['priceFrom', 'priceTo'])}
         >
-          <Row>
+          <Row gutter={8}>
             <Col span={12}>
               <Form.Item label='От' name='priceFrom'>
                 <InputNumber min={0} />

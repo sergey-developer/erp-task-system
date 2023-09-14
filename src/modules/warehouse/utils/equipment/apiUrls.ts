@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom'
 
-import { EquipmentApiEnum } from 'modules/warehouse/services/equipmentApiService'
+import { EquipmentApiEnum } from 'modules/warehouse/constants/equipment'
 
 import { IdType } from 'shared/types/common'
 import { appendSlashAtEnd } from 'shared/utils/string'

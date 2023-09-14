@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { equipmentConditionDict } from 'modules/warehouse/constants'
+import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { NumberOrString } from 'shared/types/utils'

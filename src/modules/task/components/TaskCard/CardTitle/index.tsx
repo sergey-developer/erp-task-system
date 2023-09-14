@@ -7,8 +7,8 @@ import {
   useTaskOlaStatus,
   useTaskStatus,
   useTaskType,
-  useTaskSuspendRequestStatus,
-} from 'modules/task/hooks'
+} from 'modules/task/hooks/task'
+import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskModel } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 
 import {
   CheckCircleIcon,
@@ -12,17 +12,13 @@ import {
 
 import { BadgeStyled } from './styles'
 
-export const badgeByTaskStatus: Readonly<
-  Partial<Record<TaskStatusEnum, ReactElement>>
-> = {
+export const badgeByTaskStatus: Readonly<Partial<Record<TaskStatusEnum, ReactElement>>> = {
   [TaskStatusEnum.New]: <BadgeStyled status='default' />,
   [TaskStatusEnum.InProgress]: <BadgeStyled status='warning' />,
   [TaskStatusEnum.Completed]: <BadgeStyled status='success' />,
 }
 
-export const iconByTaskStatus: Readonly<
-  Partial<Record<TaskStatusEnum, ReactElement>>
-> = {
+export const iconByTaskStatus: Readonly<Partial<Record<TaskStatusEnum, ReactElement>>> = {
   [TaskStatusEnum.Awaiting]: <PauseCircleIcon />,
   [TaskStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
 }
@@ -42,7 +38,5 @@ export const iconByTaskExtendedStatus: Readonly<
   [TaskExtendedStatusEnum.InReclassification]: <QuestionCircleIcon />,
   [TaskExtendedStatusEnum.Returned]: <RightCircleIcon $color='fireOpal' />,
   [TaskExtendedStatusEnum.Closed]: <CheckCircleIcon $color='crayola' />,
-  [TaskExtendedStatusEnum.FirstLineReturned]: (
-    <ExclamationCircleIcon $color='fireOpal' />
-  ),
+  [TaskExtendedStatusEnum.FirstLineReturned]: <ExclamationCircleIcon $color='fireOpal' />,
 }

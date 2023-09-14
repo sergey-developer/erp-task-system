@@ -5,7 +5,7 @@ import { TableAction } from 'antd/es/table/interface'
 
 import { parseResponseTime } from 'modules/task/components/TaskCard/MainDetails/utils'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
-import { TaskExtendedStatusEnum, TaskStatusEnum, taskStatusDict } from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum, taskStatusDict } from 'modules/task/constants/task'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getShortUserName } from 'modules/user/utils'
@@ -14,14 +14,13 @@ import { IdType } from 'shared/types/common'
 import { NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import taskFixtures from '_tests_/fixtures/task'
-
 import {
   ariaSortAttrAscValue,
   ariaSortAttrDescValue,
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
+import taskFixtures from '_tests_/fixtures/task'
 import { iconTestUtils, render } from '_tests_/utils'
 
 import { paginationConfig } from './constants/pagination'

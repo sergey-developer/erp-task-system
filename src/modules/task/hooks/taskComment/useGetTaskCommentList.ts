@@ -4,8 +4,9 @@ import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
 import { GetTaskCommentListQueryArgs, GetTaskCommentListSuccessResponse } from 'modules/task/models'
 import { taskCommentApiPermissions } from 'modules/task/permissions'
-import { useGetTaskCommentListQuery } from 'modules/task/services/taskApiService'
-import { getTaskCommentListServerErrorMsg, getTaskNotFoundErrorMsg } from 'modules/task/utils'
+import { useGetTaskCommentListQuery } from 'modules/task/services/taskApi.service'
+import { getTaskNotFoundErrorMsg } from 'modules/task/utils/task'
+import { getTaskCommentListServerErrorMsg } from 'modules/task/utils/taskComment'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/common'
