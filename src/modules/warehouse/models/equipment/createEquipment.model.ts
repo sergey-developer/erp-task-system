@@ -9,11 +9,11 @@ export type CreateEquipmentMutationArgs = {
   warehouse: IdType
   condition: EquipmentConditionEnum
   category: IdType
-  isNew: boolean
-  isWarranty: boolean
-  isRepaired: boolean
   purpose: IdType
 
+  isNew?: boolean
+  isWarranty?: boolean
+  isRepaired?: boolean
   customerInventoryNumber?: string
   serialNumber?: string
   quantity?: number
