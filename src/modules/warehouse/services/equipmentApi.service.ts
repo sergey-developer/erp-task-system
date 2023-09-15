@@ -12,18 +12,22 @@ import {
   GetEquipmentNomenclatureListSuccessResponse,
   GetEquipmentQueryArgs,
   GetEquipmentSuccessResponse,
+  UpdateEquipmentMutationArgs,
+  UpdateEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
   GetEquipmentListTransformedSuccessResponse,
   GetEquipmentNomenclatureListTransformedSuccessResponse,
 } from 'modules/warehouse/types'
-import { getEquipmentUrl } from 'modules/warehouse/utils/equipment'
+import { getEquipmentUrl, updateEquipmentUrl } from 'modules/warehouse/utils/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
 
 const equipmentApiService = baseApiService
-  .enhanceEndpoints({ addTagTypes: [EquipmentApiTagEnum.EquipmentList] })
+  .enhanceEndpoints({
+    addTagTypes: [EquipmentApiTagEnum.EquipmentList, EquipmentApiTagEnum.Equipment],
+  })
   .injectEndpoints({
     endpoints: (build) => ({
       getEquipmentNomenclatureList: build.query<
@@ -53,6 +57,7 @@ const equipmentApiService = baseApiService
           getPaginatedList(response, arg),
       }),
       getEquipment: build.query<GetEquipmentSuccessResponse, GetEquipmentQueryArgs>({
+        providesTags: (result, error) => (error ? [] : [EquipmentApiTagEnum.Equipment]),
         query: ({ equipmentId }) => ({
           url: getEquipmentUrl(equipmentId),
           method: HttpMethodEnum.Get,
@@ -63,6 +68,15 @@ const equipmentApiService = baseApiService
         query: (payload) => ({
           url: EquipmentApiEnum.CreateEquipment,
           method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+      }),
+      updateEquipment: build.mutation<UpdateEquipmentSuccessResponse, UpdateEquipmentMutationArgs>({
+        invalidatesTags: (result, error) =>
+          error ? [] : [EquipmentApiTagEnum.EquipmentList, EquipmentApiTagEnum.Equipment],
+        query: ({ equipmentId, ...payload }) => ({
+          url: updateEquipmentUrl(equipmentId),
+          method: HttpMethodEnum.Put,
           data: payload,
         }),
       }),
@@ -82,8 +96,9 @@ const equipmentApiService = baseApiService
 export const {
   useGetEquipmentNomenclatureListQuery,
 
-  useGetEquipmentQuery,
+  useLazyGetEquipmentQuery,
   useCreateEquipmentMutation,
+  useUpdateEquipmentMutation,
   useGetEquipmentListQuery,
 
   useGetEquipmentCategoryListQuery,

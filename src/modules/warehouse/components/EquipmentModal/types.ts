@@ -1,7 +1,7 @@
 import { FormInstance } from 'antd'
 
-import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
+  CreateEquipmentMutationArgs,
   CustomerListModel,
   EquipmentCategoryListItemModel,
   EquipmentCategoryListModel,
@@ -16,26 +16,7 @@ import { BaseModalProps } from 'components/Modals/BaseModal'
 import { CurrencyListModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
 
-export type EquipmentModalFormFields = {
-  title: string
-  nomenclature: IdType
-  warehouse: IdType
-  condition: EquipmentConditionEnum
-  category: IdType
-  purpose: IdType
-
-  isNew?: boolean
-  isWarranty?: boolean
-  isRepaired?: boolean
-  customerInventoryNumber?: string
-  serialNumber?: string
-  quantity?: number
-  price?: number
-  currency?: IdType
-  usageCounter?: number
-  owner?: IdType
-  comment?: string
-}
+export type EquipmentModalFormFields = CreateEquipmentMutationArgs
 
 export type EquipmentModalProps = Required<
   Pick<BaseModalProps, 'visible' | 'onCancel' | 'okText' | 'title' | 'isLoading'>
@@ -47,6 +28,7 @@ export type EquipmentModalProps = Required<
 
   categoryList: EquipmentCategoryListModel
   categoryListIsLoading: boolean
+  selectedCategory?: EquipmentCategoryListItemModel
   onChangeCategory: (category: EquipmentCategoryListItemModel) => void
 
   warehouseList: WarehouseListModel

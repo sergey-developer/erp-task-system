@@ -1,8 +1,8 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
 import isArray from 'lodash/isArray'
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 
-import { conditionOptions } from 'modules/warehouse/constants/equipment'
+import { conditionOptions, EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 import { useCheckEquipmentCategory } from 'modules/warehouse/hooks/equipment'
 import {
   EquipmentCategoryListItemModel,
@@ -26,6 +26,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 
   categoryList,
   categoryListIsLoading,
+  selectedCategory,
   onChangeCategory,
 
   warehouseList,
@@ -51,7 +52,6 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 }) => {
   const [form] = Form.useForm<EquipmentModalFormFields>()
 
-  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const equipmentCategoryBooleans = useCheckEquipmentCategory(selectedCategory?.code)
 
   useEffect(() => {
@@ -65,8 +65,20 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
     option: EquipmentCategoryListItemModel | EquipmentCategoryListItemModel[],
   ) => {
     if (!isArray(option)) {
-      setSelectedCategory(option)
       onChangeCategory(option)
+
+      if (option.code === EquipmentCategoryEnum.Consumable) {
+        form.setFieldsValue({
+          owner: undefined,
+          usageCounter: undefined,
+          isNew: undefined,
+          isWarranty: undefined,
+          isRepaired: undefined,
+          customerInventoryNumber: undefined,
+        })
+      } else {
+        form.setFieldsValue({ quantity: undefined })
+      }
     }
   }
 
@@ -154,7 +166,12 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         )}
 
         {nomenclature?.equipmentHasSerialNumber && (
-          <Form.Item data-testid='serial-number' label='Серийный номер' name='serialNumber'>
+          <Form.Item
+            data-testid='serial-number'
+            label='Серийный номер'
+            name='serialNumber'
+            rules={requiredStringRules}
+          >
             <Input placeholder='Введите серийный номер' />
           </Form.Item>
         )}
@@ -182,7 +199,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           />
         </Form.Item>
 
-        {!equipmentCategoryBooleans.isConsumable && (
+        {equipmentCategoryBooleans.isConsumable && (
           <Form.Item>
             <Row gutter={8}>
               <Col span={12}>
