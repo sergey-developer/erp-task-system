@@ -186,7 +186,7 @@ const EquipmentPageLayout: FC = () => {
         }
       }
     },
-    [equipment, toggleAddEquipmentModal, updateEquipmentMutation],
+    [equipment, toggleEditEquipmentModal, updateEquipmentMutation],
   )
 
   const initialFilterValues: EquipmentFilterFormFields = useMemo(
