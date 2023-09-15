@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
+import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
@@ -10,6 +11,7 @@ import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { getYesNo, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
+import { DrawerExtraStyled } from './style'
 import { EquipmentProps } from './types'
 
 const { Text } = Typography
@@ -17,11 +19,23 @@ const { Text } = Typography
 const Equipment: FC<EquipmentProps> = ({
   equipment,
   equipmentIsLoading,
+
+  onClickEdit,
+
   hiddenFields = [],
   ...props
 }) => {
   return (
-    <Drawer data-testid='equipment' {...props} width={500}>
+    <Drawer
+      data-testid='equipment'
+      {...props}
+      width={500}
+      extra={
+        <DrawerExtraStyled>
+          <EditIcon $size='large' onClick={onClickEdit} />
+        </DrawerExtraStyled>
+      }
+    >
       <LoadingArea data-testid='equipment-loading' isLoading={equipmentIsLoading}>
         {equipment && (
           <Space $block direction='vertical' size='middle'>
