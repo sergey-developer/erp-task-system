@@ -26,7 +26,12 @@ import FilterButton from 'components/Buttons/FilterButton'
 
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -180,6 +185,8 @@ const EquipmentPageLayout: FC = () => {
             if (error.data.detail) {
               showErrorNotification(error.data.detail)
             }
+          } else if (isNotFoundError(error) && error.data.detail) {
+            showErrorNotification(error.data.detail)
           } else if (isForbiddenError(error) && error.data.detail) {
             showErrorNotification(error.data.detail)
           }
