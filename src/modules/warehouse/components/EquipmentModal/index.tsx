@@ -110,13 +110,12 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         preserve={false}
       >
         <Form.Item
-          data-testid='category'
+          data-testid='category-form-item'
           label='Категория'
           name='category'
           rules={onlyRequiredRules}
         >
           <Select<IdType, EquipmentCategoryListItemModel>
-            data-testid='category-select'
             placeholder='Выберите категорию'
             fieldNames={idAndTitleSelectFieldNames}
             options={categoryList}
@@ -126,13 +125,12 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          data-testid='nomenclature'
+          data-testid='nomenclature-form-item'
           label='Номенклатура'
           name='nomenclature'
           rules={onlyRequiredRules}
         >
           <Select<IdType, NomenclatureListItemModel>
-            data-testid='nomenclature-select'
             virtual
             placeholder='Выберите номенклатуру'
             fieldNames={idAndTitleSelectFieldNames}
@@ -144,7 +142,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          data-testid='title'
+          data-testid='title-form-item'
           label='Наименование'
           name='title'
           rules={requiredStringRules}
@@ -157,7 +155,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 
         {!equipmentCategoryBooleans.isConsumable && (
           <Form.Item
-            data-testid='customer-inventory-number'
+            data-testid='customer-inventory-number-form-item'
             label='Инвентарный номер заказчика'
             name='customerInventoryNumber'
           >
@@ -167,7 +165,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 
         {nomenclature?.equipmentHasSerialNumber && (
           <Form.Item
-            data-testid='serial-number'
+            data-testid='serial-number-form-item'
             label='Серийный номер'
             name='serialNumber'
             rules={requiredStringRules}
@@ -176,9 +174,13 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Form.Item>
         )}
 
-        <Form.Item data-testid='warehouse' label='Склад' name='warehouse' rules={onlyRequiredRules}>
+        <Form.Item
+          data-testid='warehouse-form-item'
+          label='Склад'
+          name='warehouse'
+          rules={onlyRequiredRules}
+        >
           <Select<IdType, WarehouseListItemModel>
-            data-testid='warehouse-select'
             placeholder='Выберите склад'
             fieldNames={idAndTitleSelectFieldNames}
             options={warehouseList}
@@ -187,29 +189,25 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          data-testid='condition'
+          data-testid='condition-form-item'
           label='Состояние'
           name='condition'
           rules={onlyRequiredRules}
         >
-          <Select
-            data-testid='condition-select'
-            placeholder='Выберите состояние'
-            options={conditionOptions}
-          />
+          <Select placeholder='Выберите состояние' options={conditionOptions} />
         </Form.Item>
 
         {equipmentCategoryBooleans.isConsumable && (
           <Form.Item>
             <Row gutter={8}>
               <Col span={12}>
-                <Form.Item data-testid='quantity' label='Количество' name='quantity'>
-                  <InputNumber min={1} />
+                <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
+                  <InputNumber min={1} placeholder='Введите количество' />
                 </Form.Item>
               </Col>
 
               <Col span={6}>
-                <Form.Item data-testid='measurement-unit' label='Ед.измерения'>
+                <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
                   {nomenclature?.measurementUnit.title}
                 </Form.Item>
               </Col>
@@ -220,15 +218,14 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         <Form.Item>
           <Row gutter={8}>
             <Col span={12}>
-              <Form.Item data-testid='price' label='Стоимость' name='price'>
-                <InputNumber min={0} />
+              <Form.Item data-testid='price-form-item' label='Стоимость' name='price'>
+                <InputNumber min={0} placeholder='Введите стоимость' />
               </Form.Item>
             </Col>
 
             <Col span={6}>
-              <Form.Item data-testid='currency' label='Валюта' name='currency'>
+              <Form.Item data-testid='currency-form-item' label='Валюта' name='currency'>
                 <Select
-                  data-testid='currency-select'
                   placeholder='Выберите валюту'
                   fieldNames={idAndTitleSelectFieldNames}
                   options={currencyList}
@@ -244,7 +241,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
             <Row>
               <Col span={8}>
                 <Form.Item
-                  data-testid='is-new'
+                  data-testid='is-new-form-item'
                   label='Новое'
                   name='isNew'
                   rules={onlyRequiredRules}
@@ -255,7 +252,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 
               <Col span={8}>
                 <Form.Item
-                  data-testid='is-warranty '
+                  data-testid='is-warranty-form-item'
                   label='На гарантии'
                   name='isWarranty'
                   rules={onlyRequiredRules}
@@ -266,7 +263,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 
               <Col span={8}>
                 <Form.Item
-                  data-testid='is-repaired'
+                  data-testid='is-repaired-form-item'
                   label='Отремонтированное'
                   name='isRepaired'
                   rules={onlyRequiredRules}
@@ -280,18 +277,17 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 
         {!equipmentCategoryBooleans.isConsumable && (
           <Form.Item
-            data-testid='usage-counter'
+            data-testid='usage-counter-form-item'
             label='Счетчик пробега текущий'
             name='usageCounter'
           >
-            <InputNumber min={0} />
+            <InputNumber min={0} placeholder='Введите значение' />
           </Form.Item>
         )}
 
         {!equipmentCategoryBooleans.isConsumable && (
-          <Form.Item data-testid='owner' label='Владелец оборудования' name='owner'>
+          <Form.Item data-testid='owner-form-item' label='Владелец оборудования' name='owner'>
             <Select
-              data-testid='owner-select'
               placeholder='Выберите владельца оборудования'
               fieldNames={idAndTitleSelectFieldNames}
               options={ownerList}
@@ -301,13 +297,12 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
         )}
 
         <Form.Item
-          data-testid='purpose'
+          data-testid='purpose-form-item'
           label='Назначение оборудования'
           name='purpose'
           rules={onlyRequiredRules}
         >
           <Select
-            data-testid='purpose-select'
             placeholder='Выберите назначение оборудования'
             fieldNames={idAndTitleSelectFieldNames}
             options={workTypeList}
@@ -315,7 +310,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           />
         </Form.Item>
 
-        <Form.Item data-testid='comment' label='Комментарий' name='comment'>
+        <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
           <TextArea placeholder='Добавьте комментарий' />
         </Form.Item>
       </Form>
