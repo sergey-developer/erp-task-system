@@ -6,10 +6,7 @@ import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
-import {
-  AddOrEditNomenclatureModalProps,
-  AddOrEditNomenclatureModalFormFields,
-} from './types'
+import { AddOrEditNomenclatureModalProps, AddOrEditNomenclatureModalFormFields } from './types'
 import {
   equipmentHasSerialNumberValidationRules,
   groupValidationRules,
@@ -39,10 +36,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<AddOrEditNomenclatureModalFormFields>()
-  const equipmentHasSerialNumberValue = Form.useWatch(
-    'equipmentHasSerialNumber',
-    form,
-  )
+  const equipmentHasSerialNumberValue = Form.useWatch('equipmentHasSerialNumber', form)
 
   useEffect(() => {
     if (nomenclature) {
@@ -52,6 +46,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         vendorCode: nomenclature.vendorCode,
         group: nomenclature.group.id,
         measurementUnit: nomenclature.measurementUnit.id,
+        equipmentHasSerialNumber: nomenclature.equipmentHasSerialNumber,
         country: nomenclature.country?.id,
       })
     }
@@ -153,11 +148,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
           />
         </Form.Item>
 
-        <Form.Item
-          data-testid='country-form-item'
-          name='country'
-          label='Страна производитель'
-        >
+        <Form.Item data-testid='country-form-item' name='country' label='Страна производитель'>
           <Select
             placeholder='Выберите страну производителя'
             allowClear
