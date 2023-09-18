@@ -1,4 +1,5 @@
 export * from './customer'
+export * from './workType'
 export * from './equipment'
 export * from './legalEntity'
 export * from './measurementUnit'
