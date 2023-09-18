@@ -27,6 +27,8 @@ export enum RouteEnum {
   EquipmentNomenclatureList = '/manage-warehouses/reserves-catalogs/equipment-nomenclature',
   EquipmentList = '/manage-warehouses/reserves-catalogs/equipment-nomenclature/:id',
 
+  RelocationTaskList = '/manage-warehouses/reserves-catalogs/relocation-tasks',
+
   // work group routes
   WorkingGroups = '/working-groups',
 
