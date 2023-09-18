@@ -1,6 +1,7 @@
 export * from './catalogs'
 export * from './system'
 export * from './country'
+export * from './currency'
 export * from './auth'
 export * from './user'
 export * from './task'

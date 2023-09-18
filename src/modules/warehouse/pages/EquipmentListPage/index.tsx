@@ -1,6 +1,7 @@
-import { useSetState } from 'ahooks'
+import { useBoolean, useSetState } from 'ahooks'
+import debounce from 'lodash/debounce'
 import defaultTo from 'lodash/defaultTo'
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Equipment from 'modules/warehouse/components/Equipment'
@@ -13,12 +14,12 @@ import {
   sortableFieldToSortValues,
 } from 'modules/warehouse/components/EquipmentTable/sort'
 import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
-import { useGetEquipment, useGetEquipmentList } from 'modules/warehouse/hooks/equipment'
+import { useGetEquipmentList } from 'modules/warehouse/hooks/equipment'
 import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { IdType } from 'shared/types/common'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 const EquipmentListPage: FC = () => {
@@ -28,33 +29,20 @@ const EquipmentListPage: FC = () => {
 
   const context = useEquipmentPageContext()
 
-  const [selectedEquipmentId, setSelectedEquipmentId] = useState<IdType>()
-  const debouncedSetSelectedEquipmentId = useDebounceFn(setSelectedEquipmentId)
-  const isShowEquipment = Boolean(selectedEquipmentId)
+  const [isShowEquipment, { toggle: toggleShowEquipment }] = useBoolean(false)
+  const debouncedToggleShowEquipment = useDebounceFn(toggleShowEquipment)
 
   const [getEquipmentListParams, setGetEquipmentListParams] =
     useSetState<GetEquipmentListQueryArgs>({
       ...getInitialPaginationParams(),
       ...(context.filter && equipmentFilterToParams(context.filter)),
       search: context.search,
-      nomenclatureId,
+      nomenclature: nomenclatureId,
       ordering: 'title',
     })
 
   const { currentData: equipmentList, isFetching: equipmentListIsFetching } =
     useGetEquipmentList(getEquipmentListParams)
-
-  const {
-    currentData: equipment,
-    isFetching: equipmentIsFetching,
-    isError: isGetEquipmentError,
-  } = useGetEquipment({ equipmentId: selectedEquipmentId! }, { skip: !isShowEquipment })
-
-  useEffect(() => {
-    if (isGetEquipmentError) {
-      setSelectedEquipmentId(undefined)
-    }
-  }, [isGetEquipmentError])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<EquipmentTableProps['onChange']>[0]) => {
@@ -88,9 +76,17 @@ const EquipmentListPage: FC = () => {
 
   const handleTableRowClick = useCallback<EquipmentTableProps['onRow']>(
     (record) => ({
-      onClick: () => debouncedSetSelectedEquipmentId(record.id),
+      onClick: debounce(async () => {
+        toggleShowEquipment()
+
+        try {
+          await context.getEquipment(record.id)
+        } catch {
+          toggleShowEquipment()
+        }
+      }, DEFAULT_DEBOUNCE_VALUE),
     }),
-    [debouncedSetSelectedEquipmentId],
+    [context.getEquipment, toggleShowEquipment],
   )
 
   return (
@@ -107,11 +103,14 @@ const EquipmentListPage: FC = () => {
       {isShowEquipment && (
         <Equipment
           visible={isShowEquipment}
-          title={equipment?.title}
-          equipment={equipment}
-          equipmentIsLoading={equipmentIsFetching}
-          hiddenFields={equipment?.category && getHiddenFieldsByCategory(equipment.category)}
-          onClose={() => debouncedSetSelectedEquipmentId(undefined)}
+          title={context.equipment?.title}
+          equipment={context.equipment}
+          equipmentIsLoading={context.equipmentIsLoading}
+          hiddenFields={
+            context.equipment?.category && getHiddenFieldsByCategory(context.equipment.category)
+          }
+          onClickEdit={context.onClickEditEquipment}
+          onClose={debouncedToggleShowEquipment}
         />
       )}
     </div>

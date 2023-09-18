@@ -15,6 +15,7 @@ import * as nomenclatureList from './nomenclatureList'
 import * as warehouse from './warehouse'
 import * as warehouseList from './warehouseList'
 import * as workType from './workType'
+import * as workTypeList from './workTypeList'
 
 const warehouseFixtures = {
   ...warehouse,
@@ -35,6 +36,7 @@ const warehouseFixtures = {
   ...customerList,
 
   ...workType,
+  ...workTypeList,
 
   ...equipmentCategory,
   ...equipmentCategoryList,

@@ -34,7 +34,7 @@ import {
 
 import EquipmentPageLayout from './index'
 
-const getContainer = () => screen.getByTestId('reserves-list-layout')
+const getContainer = () => screen.getByTestId('equipment-page-layout')
 
 // filter button
 const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)

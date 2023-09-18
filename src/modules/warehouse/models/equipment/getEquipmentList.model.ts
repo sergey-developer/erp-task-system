@@ -20,7 +20,7 @@ export type GetEquipmentListSortValue = ExtendSortKey<GetEquipmentListSortKey>
 export type GetEquipmentListQueryArgs = PaginationParams &
   Partial<{
     search: string
-    nomenclatureId: IdType
+    nomenclature: IdType
     ordering: GetEquipmentListSortValue
   }>
 

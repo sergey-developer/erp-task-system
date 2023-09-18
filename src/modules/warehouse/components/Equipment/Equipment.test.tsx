@@ -9,7 +9,6 @@ import { getYesNo } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import { buttonTestUtils, spinnerTestUtils, fakeWord, render } from '_tests_/utils'
 
 import Equipment from './index'
@@ -22,6 +21,7 @@ const props: Readonly<EquipmentProps> = {
   equipmentIsLoading: false,
   hiddenFields: [],
   onClose: jest.fn(),
+  onClickEdit: jest.fn(),
 }
 
 export const blockTestIds = [

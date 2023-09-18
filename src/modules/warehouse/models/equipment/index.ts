@@ -1,6 +1,7 @@
 export * from './equipment.model'
 export * from './getEquipment.model'
 export * from './createEquipment.model'
+export * from './updateEquipment.model'
 
 export * from './equipmentList.model'
 export * from './getEquipmentList.model'

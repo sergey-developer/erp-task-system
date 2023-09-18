@@ -8,10 +8,13 @@ import {
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
-export const equipmentCategoryListItem = (): EquipmentCategoryListItemModel => ({
+export const equipmentCategoryListItem = (
+  props?: Partial<Pick<EquipmentCategoryListItemModel, 'code'>>,
+): EquipmentCategoryListItemModel => ({
+  code: props?.code || EquipmentCategoryEnum.Equipment,
+
   id: fakeId(),
   title: fakeWord(),
-  code: EquipmentCategoryEnum.Equipment,
 })
 
 export const equipmentCategoryList = (length: number = 1): EquipmentCategoryListModel =>
