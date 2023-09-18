@@ -31,7 +31,7 @@ const nomenclatureApiService = baseApiService
         GetNomenclatureListTransformedSuccessResponse,
         GetNomenclatureListQueryArgs
       >({
-        providesTags: [NomenclatureApiTagEnum.NomenclatureList],
+        providesTags: (result, error) => (error ? [] : [NomenclatureApiTagEnum.NomenclatureList]),
         query: (params) => ({
           url: NomenclatureApiEnum.GetNomenclatureList,
           method: HttpMethodEnum.Get,
