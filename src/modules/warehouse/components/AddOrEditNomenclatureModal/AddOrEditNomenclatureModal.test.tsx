@@ -13,7 +13,6 @@ import {
   render,
   checkboxTestUtils,
   buttonTestUtils,
-  checkboxTestUtils,
 } from '_tests_/utils'
 
 import AddOrEditNomenclatureModal from './index'

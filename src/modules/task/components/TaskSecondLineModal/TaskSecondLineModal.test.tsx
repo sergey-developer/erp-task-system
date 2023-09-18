@@ -18,7 +18,8 @@ import {
   setupApiTests,
   selectTestUtils,
   fakeWord,
-  checkboxTestUtils, buttonTestUtils
+  checkboxTestUtils,
+  buttonTestUtils
 } from "_tests_/utils";
 
 import TaskSecondLineModal from './index'
