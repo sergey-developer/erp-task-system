@@ -1,15 +1,14 @@
-import { Form, Input, Select } from 'antd'
+import { Checkbox, Form, Input, Select } from 'antd'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import React, { FC, useEffect } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
+import { AddOrEditNomenclatureModalProps, AddOrEditNomenclatureModalFormFields } from './types'
 import {
-  AddOrEditNomenclatureModalProps,
-  AddOrEditNomenclatureModalFormFields,
-} from './types'
-import {
+  equipmentHasSerialNumberValidationRules,
   groupValidationRules,
   measurementUnitValidationRules,
   nameValidationRules,
@@ -37,6 +36,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<AddOrEditNomenclatureModalFormFields>()
+  const equipmentHasSerialNumberValue = Form.useWatch('equipmentHasSerialNumber', form)
 
   useEffect(() => {
     if (nomenclature) {
@@ -46,6 +46,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         vendorCode: nomenclature.vendorCode,
         group: nomenclature.group.id,
         measurementUnit: nomenclature.measurementUnit.id,
+        equipmentHasSerialNumber: nomenclature.equipmentHasSerialNumber,
         country: nomenclature.country?.id,
       })
     }
@@ -55,21 +56,23 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
     title,
     shortTitle,
     vendorCode,
-    group,
     country,
-    measurementUnit,
+    ...values
   }: AddOrEditNomenclatureModalFormFields) => {
     await onSubmit(
       {
+        ...values,
         title: title.trim(),
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
-        group,
         country: country || null,
-        measurementUnit,
       },
       form.setFields,
     )
+  }
+
+  const handleChangeEquipmentHasSerialNumber = (event: CheckboxChangeEvent) => {
+    form.setFieldsValue({ equipmentHasSerialNumber: event.target.checked })
   }
 
   return (
@@ -145,11 +148,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
           />
         </Form.Item>
 
-        <Form.Item
-          data-testid='country-form-item'
-          name='country'
-          label='Страна производитель'
-        >
+        <Form.Item data-testid='country-form-item' name='country' label='Страна производитель'>
           <Select
             placeholder='Выберите страну производителя'
             allowClear
@@ -157,6 +156,19 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
             fieldNames={idAndTitleSelectFieldNames}
             loading={countriesIsLoading}
           />
+        </Form.Item>
+
+        <Form.Item
+          data-testid='equipment-has-serial-number-form-item'
+          name='equipmentHasSerialNumber'
+          rules={equipmentHasSerialNumberValidationRules}
+        >
+          <Checkbox
+            onChange={handleChangeEquipmentHasSerialNumber}
+            checked={equipmentHasSerialNumberValue}
+          >
+            Ведется учет по серийным номерам
+          </Checkbox>
         </Form.Item>
       </Form>
     </BaseModal>

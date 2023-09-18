@@ -72,6 +72,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <CheckboxGroupStyled options={taskExtendedStatusOptions} />
           </Form.Item>
         </FilterBlock>
+
         <FilterBlock
           data-testid='extended-filter-is-assigned'
           label='Назначенный'
@@ -81,6 +82,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <Radio.Group options={taskAssignedOptions} />
           </Form.Item>
         </FilterBlock>
+
         <FilterBlock
           data-testid='extended-filter-is-overdue'
           label='Просрочено'
@@ -90,6 +92,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <Radio.Group options={taskOverdueOptions} />
           </Form.Item>
         </FilterBlock>
+
         <FilterBlock
           data-testid='extended-filter-complete-at'
           label='Выполнить до'
@@ -99,6 +102,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             <RangePicker allowClear={false} />
           </Form.Item>
         </FilterBlock>
+
         <Permissions config={extendedFilterPermissions.workGroup}>
           {() => (
             <FilterBlock
@@ -123,6 +127,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
             </FilterBlock>
           )}
         </Permissions>
+
         <FilterBlock
           data-testid='extended-filter-search-by-column'
           label='Поиск по столбцу'

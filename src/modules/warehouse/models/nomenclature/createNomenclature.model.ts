@@ -8,6 +8,7 @@ export type CreateNomenclatureMutationArgs = {
   group: number
   vendorCode: string
   measurementUnit: number
+  equipmentHasSerialNumber: boolean
   country?: MaybeNull<number>
 }
 
