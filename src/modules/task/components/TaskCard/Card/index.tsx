@@ -466,7 +466,7 @@ const TaskCard: FC<TaskCardProps> = ({
               {reclassificationRequest && (
                 <React.Suspense fallback={<Spinner area='block' />}>
                   <TaskReclassificationRequest
-                    comment={reclassificationRequest.comment.text}
+                    comment={reclassificationRequest.comment}
                     date={reclassificationRequest.createdAt}
                     user={reclassificationRequest.user}
                     onCancel={noop}
