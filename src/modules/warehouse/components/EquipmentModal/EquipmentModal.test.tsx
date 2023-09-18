@@ -730,9 +730,10 @@ describe('Модалка оборудования', () => {
   })
 
   describe('Серийный номер', () => {
-    test('Отображается если оборудование имеет серийный номер', () => {
+    test('Отображается если условия соблюдены', () => {
       const nomenclature = warehouseFixtures.nomenclature({ equipmentHasSerialNumber: true })
-      render(<EquipmentModal {...props} nomenclature={nomenclature} />)
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      render(<EquipmentModal {...props} nomenclature={nomenclature} selectedCategory={category} />)
 
       const label = testUtils.getSerialNumberLabel()
       const field = testUtils.getSerialNumberField()
@@ -745,7 +746,19 @@ describe('Модалка оборудования', () => {
 
     test('Не отображается если у оборудования нет серийного номера', () => {
       const nomenclature = warehouseFixtures.nomenclature()
-      render(<EquipmentModal {...props} nomenclature={nomenclature} />)
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      render(<EquipmentModal {...props} nomenclature={nomenclature} selectedCategory={category} />)
+
+      const formItem = testUtils.querySerialNumberFormItem()
+      expect(formItem).not.toBeInTheDocument()
+    })
+
+    test('Не отображается если категория расходный материал', () => {
+      const nomenclature = warehouseFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const category = warehouseFixtures.equipmentCategoryListItem({
+        code: EquipmentCategoryEnum.Consumable,
+      })
+      render(<EquipmentModal {...props} nomenclature={nomenclature} selectedCategory={category} />)
 
       const formItem = testUtils.querySerialNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
