@@ -1,5 +1,6 @@
 export enum EquipmentApiEnum {
   GetEquipment = '/equipments/:id/',
+  UpdateEquipment = '/equipments/:id/',
   CreateEquipment = '/equipments/',
   GetEquipmentList = '/equipments/',
 
@@ -9,5 +10,6 @@ export enum EquipmentApiEnum {
 }
 
 export enum EquipmentApiTagEnum {
+  Equipment = 'Equipment',
   EquipmentList = 'EquipmentList',
 }
