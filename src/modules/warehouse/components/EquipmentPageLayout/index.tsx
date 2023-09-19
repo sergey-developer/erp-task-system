@@ -20,7 +20,10 @@ import {
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
-import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
+import {
+  EquipmentCategoryListItemModel,
+  GetNomenclatureListQueryArgs,
+} from 'modules/warehouse/models'
 import {
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,
@@ -43,6 +46,10 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
+
+const defaultGetNomenclatureListParams: Pick<NonNullable<GetNomenclatureListQueryArgs>, 'limit'> = {
+  limit: 999999,
+}
 
 const EquipmentPageLayout: FC = () => {
   const navigate = useNavigate()
@@ -118,8 +125,8 @@ const EquipmentPageLayout: FC = () => {
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
     useGetNomenclatureList(
       equipmentCategoryBooleans.isConsumable
-        ? { equipmentHasSerialNumber: false, limit: 999999 }
-        : { limit: 999999 },
+        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
+        : defaultGetNomenclatureListParams,
       {
         skip: !addEquipmentModalOpened && !editEquipmentModalOpened,
       },
