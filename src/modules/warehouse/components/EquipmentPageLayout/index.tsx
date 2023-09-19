@@ -111,9 +111,12 @@ const EquipmentPageLayout: FC = () => {
   )
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
-    useGetNomenclatureList(undefined, {
-      skip: !addEquipmentModalOpened && !editEquipmentModalOpened,
-    })
+    useGetNomenclatureList(
+      { limit: 999999 },
+      {
+        skip: !addEquipmentModalOpened && !editEquipmentModalOpened,
+      },
+    )
 
   const [getEquipment, { currentData: equipment, isFetching: equipmentIsFetching }] =
     useLazyGetEquipment()
