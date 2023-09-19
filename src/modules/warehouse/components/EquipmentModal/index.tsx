@@ -2,7 +2,7 @@ import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
 import isArray from 'lodash/isArray'
 import { FC, useEffect } from 'react'
 
-import { conditionOptions, EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
+import { conditionOptions } from 'modules/warehouse/constants/equipment'
 import { useCheckEquipmentCategory } from 'modules/warehouse/hooks/equipment'
 import {
   EquipmentCategoryListItemModel,
@@ -52,7 +52,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 }) => {
   const [form] = Form.useForm<EquipmentModalFormFields>()
 
-  const equipmentCategoryBooleans = useCheckEquipmentCategory(selectedCategory?.code)
+  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
 
   useEffect(() => {
     if (nomenclature) {
@@ -67,18 +67,24 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
     if (!isArray(option)) {
       onChangeCategory(option)
 
-      if (option.code === EquipmentCategoryEnum.Consumable) {
-        form.setFieldsValue({
-          owner: undefined,
-          usageCounter: undefined,
-          isNew: undefined,
-          isWarranty: undefined,
-          isRepaired: undefined,
-          customerInventoryNumber: undefined,
-        })
-      } else {
-        form.setFieldsValue({ quantity: undefined })
-      }
+      form.setFieldsValue({
+        nomenclature: undefined,
+        title: undefined,
+        customerInventoryNumber: undefined,
+        serialNumber: undefined,
+        warehouse: undefined,
+        condition: undefined,
+        quantity: undefined,
+        price: undefined,
+        currency: undefined,
+        isNew: undefined,
+        isWarranty: undefined,
+        isRepaired: undefined,
+        usageCounter: undefined,
+        owner: undefined,
+        purpose: undefined,
+        comment: undefined,
+      })
     }
   }
 
@@ -147,13 +153,10 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           name='title'
           rules={requiredStringRules}
         >
-          <Input
-            placeholder='Введите наименование'
-            disabled={equipmentCategoryBooleans.isConsumable}
-          />
+          <Input placeholder='Введите наименование' disabled={equipmentCategory.isConsumable} />
         </Form.Item>
 
-        {!equipmentCategoryBooleans.isConsumable && (
+        {!equipmentCategory.isConsumable && (
           <Form.Item
             data-testid='customer-inventory-number-form-item'
             label='Инвентарный номер заказчика'
@@ -163,7 +166,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Form.Item>
         )}
 
-        {nomenclature?.equipmentHasSerialNumber && (
+        {nomenclature?.equipmentHasSerialNumber && !equipmentCategory.isConsumable && (
           <Form.Item
             data-testid='serial-number-form-item'
             label='Серийный номер'
@@ -197,7 +200,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           <Select placeholder='Выберите состояние' options={conditionOptions} />
         </Form.Item>
 
-        {equipmentCategoryBooleans.isConsumable && (
+        {equipmentCategory.isConsumable && (
           <Form.Item>
             <Row gutter={8}>
               <Col span={12}>
@@ -236,7 +239,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Row>
         </Form.Item>
 
-        {!equipmentCategoryBooleans.isConsumable && (
+        {!equipmentCategory.isConsumable && (
           <Form.Item>
             <Row>
               <Col span={8}>
@@ -275,7 +278,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Form.Item>
         )}
 
-        {!equipmentCategoryBooleans.isConsumable && (
+        {!equipmentCategory.isConsumable && (
           <Form.Item
             data-testid='usage-counter-form-item'
             label='Счетчик пробега текущий'
@@ -285,7 +288,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           </Form.Item>
         )}
 
-        {!equipmentCategoryBooleans.isConsumable && (
+        {!equipmentCategory.isConsumable && (
           <Form.Item data-testid='owner-form-item' label='Владелец оборудования' name='owner'>
             <Select
               placeholder='Выберите владельца оборудования'
