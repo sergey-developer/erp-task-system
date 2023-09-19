@@ -1,5 +1,7 @@
 import { screen, within } from '@testing-library/react'
 
+import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
@@ -157,7 +159,10 @@ describe('Таблица заявок на перемещение оборудо
       render(<EquipmentNomenclatureTable {...props} />)
 
       const title = testUtils.getColTitle('Статус')
-      const value = testUtils.getColValue(relocationTaskListItem.id, relocationTaskListItem.status)
+      const value = testUtils.getColValue(
+        relocationTaskListItem.id,
+        relocationTaskStatusDict[relocationTaskListItem.status],
+      )
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
