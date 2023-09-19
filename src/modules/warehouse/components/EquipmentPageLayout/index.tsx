@@ -12,7 +12,11 @@ import EquipmentModal from 'modules/warehouse/components/EquipmentModal'
 import { EquipmentModalProps } from 'modules/warehouse/components/EquipmentModal/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
-import { useLazyGetEquipment, useGetEquipmentCategoryList } from 'modules/warehouse/hooks/equipment'
+import {
+  useLazyGetEquipment,
+  useGetEquipmentCategoryList,
+  useCheckEquipmentCategory,
+} from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
@@ -51,6 +55,7 @@ const EquipmentPageLayout: FC = () => {
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const equipmentCategoryBooleans = useCheckEquipmentCategory(selectedCategory?.code)
 
   const [
     addEquipmentModalOpened,
@@ -112,7 +117,9 @@ const EquipmentPageLayout: FC = () => {
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
     useGetNomenclatureList(
-      { limit: 999999 },
+      equipmentCategoryBooleans.isConsumable
+        ? { equipmentHasSerialNumber: false, limit: 999999 }
+        : { limit: 999999 },
       {
         skip: !addEquipmentModalOpened && !editEquipmentModalOpened,
       },
