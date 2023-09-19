@@ -12,6 +12,7 @@ import * as nomenclature from './nomenclature'
 import * as nomenclatureGroup from './nomenclatureGroup'
 import * as nomenclatureGroupList from './nomenclatureGroupList'
 import * as nomenclatureList from './nomenclatureList'
+import * as relocationTaskList from './relocationTaskList'
 import * as warehouse from './warehouse'
 import * as warehouseList from './warehouseList'
 import * as workType from './workType'
@@ -45,6 +46,8 @@ const warehouseFixtures = {
   ...equipmentList,
 
   ...equipmentNomenclatureList,
+
+  ...relocationTaskList,
 } as const
 
 export default warehouseFixtures
