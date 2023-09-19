@@ -1,7 +1,9 @@
-export * from './warehouse.model'
-
-export * from './warehouseList.model'
-export * from './getWarehouseList.model'
-
-export * from './legalEntityList.model'
-export * from './getLegalEntityList.model'
+export * from './warehouse'
+export * from './nomenclature'
+export * from './nomenclatureGroup'
+export * from './equipment'
+export * from './measurementUnit'
+export * from './customer'
+export * from './workType'
+export * from './legalEntity'
+export * from './relocationTask'

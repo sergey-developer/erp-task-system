@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom'
 
 export type AppRoutesProps = {
-  routes: Array<RouteObject>
+  routes: RouteObject[]
 }
 
 const AppRoutes: FC<AppRoutesProps> = ({ routes }) => {

@@ -3,23 +3,20 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { RouteEnum } from 'configs/routes'
 
-import { testUtils as warehouseListFilterTestUtils } from 'modules/warehouse/features/WarehouseListFilter/WarehouseListFilter.test'
-import { testUtils as warehouseTableTestUtils } from 'modules/warehouse/features/WarehouseTable/WarehouseTable.test'
+import { testUtils as warehouseListFilterTestUtils } from 'modules/warehouse/components/WarehouseListFilter/WarehouseListFilter.test'
+import { testUtils as warehouseTableTestUtils } from 'modules/warehouse/components/WarehouseTable/WarehouseTable.test'
 
-import warehouseFixtures from 'fixtures/warehouse'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
-import {
-  mockGetLegalEntityListSuccess,
-  mockGetWarehouseListSuccess,
-} from '_tests_/mocks/api'
-import { getButtonIn, renderInRoute_latest, setupApiTests } from '_tests_/utils'
+import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
+import { buttonTestUtils, renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
 import WarehouseListPage from './index'
 
 const getContainer = () => screen.getByTestId('warehouse-list-page')
 
 // filter button
-const getFilterButton = () => getButtonIn(getContainer(), /filter/)
+const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
 
 const clickFilterButton = async (user: UserEvent) => {
   const button = getFilterButton()
@@ -34,7 +31,7 @@ export const testUtils = {
 }
 
 setupApiTests()
-
+// todo: сделать тесты для сортировки как в EquipmentListPage
 describe('Страница списка складов', () => {
   test('Таблицу складов отображается корректно', async () => {
     const warehouseList = [warehouseFixtures.warehouseListItem()]

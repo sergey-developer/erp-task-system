@@ -1,15 +1,15 @@
-import { api } from '_tests_/mocks/api'
+import { server } from '_tests_/mocks/server'
 
 export const setupApiTests = () => {
   beforeAll(() => {
-    api.listen()
+    server.listen()
   })
 
   afterEach(() => {
-    api.resetHandlers()
+    server.resetHandlers()
   })
 
   afterAll(() => {
-    api.close()
+    server.close()
   })
 }

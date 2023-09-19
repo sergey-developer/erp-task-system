@@ -4,7 +4,7 @@ import { QrcodeIcon, TeamIcon } from 'components/Icons'
 
 import { NavMenuItem } from './types'
 
-const navMenuEngineerConfig: Array<NavMenuItem> = [
+const navMenuEngineerConfig: NavMenuItem[] = [
   {
     key: RouteEnum.WorkingGroups,
     icon: TeamIcon,
@@ -12,9 +12,9 @@ const navMenuEngineerConfig: Array<NavMenuItem> = [
     text: 'Рабочие группы',
   },
   {
-    key: RouteEnum.FiscalAccumulatorTaskList,
+    key: RouteEnum.FiscalAccumulatorList,
     icon: QrcodeIcon,
-    link: RouteEnum.FiscalAccumulatorTaskList,
+    link: RouteEnum.FiscalAccumulatorList,
     text: 'Отчёт по ФН',
   },
 ]

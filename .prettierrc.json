@@ -1,4 +1,5 @@
 {
+  "printWidth": 100,
   "semi": false,
   "singleQuote": true,
   "jsxSingleQuote": true,
@@ -14,7 +15,6 @@
     "^shared/(.*)$",
     "^styles/(.*)$",
     "^app/(.*)$",
-    "^fixtures/(.*)$",
     "^_tests_/(.*)$",
     "^[./]"
   ],

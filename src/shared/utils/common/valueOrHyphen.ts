@@ -1,3 +1,4 @@
-import defaultTo from 'lodash/defaultTo'
+import { isTruthy } from './isTruthy'
 
-export const valueOrHyphen = (value: any) => defaultTo(value, '-')
+export const valueOrHyphen = <T>(value: T): T | '-' =>
+  isTruthy(value) ? value : '-'

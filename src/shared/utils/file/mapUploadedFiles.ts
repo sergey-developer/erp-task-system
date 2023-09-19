@@ -3,5 +3,5 @@ import { UploadFile } from 'antd/es/upload/interface'
 
 import { isTruthy } from 'shared/utils/common'
 
-export const mapUploadedFiles = (files: Array<UploadFile>): Array<RcFile> =>
+export const mapUploadedFiles = (files: UploadFile[]): RcFile[] =>
   files.map((file) => file.originFileObj).filter(isTruthy)

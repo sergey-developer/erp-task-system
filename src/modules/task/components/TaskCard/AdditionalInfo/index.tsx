@@ -9,7 +9,7 @@ import { MapPointIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/hooks'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { valueOrHyphen } from 'shared/utils/common'
 
 import { ContentWrapperStyled } from './styles'

@@ -1,4 +1,4 @@
-type MakeUserNameObjectReturnType = {
+type MakeUserNameObjectResult = {
   firstName: string
   lastName: string
   middleName: string
@@ -6,15 +6,11 @@ type MakeUserNameObjectReturnType = {
 
 export const makeUserNameObject = (
   value: string,
-): MakeUserNameObjectReturnType => {
+): MakeUserNameObjectResult => {
   const fullNameParts = value.split(' ')
-  const firstName = fullNameParts[1]
-  const lastName = fullNameParts[0]
-  const middleName = fullNameParts[2]
+  const firstName = fullNameParts[1] || ''
+  const lastName = fullNameParts[0] || ''
+  const middleName = fullNameParts[2] || ''
 
-  return {
-    firstName: firstName || '',
-    lastName: lastName || '',
-    middleName: middleName || '',
-  }
+  return { firstName, lastName, middleName }
 }
