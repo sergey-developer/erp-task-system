@@ -30,11 +30,14 @@ type EquipmentUserPermissions =
   | 'EQUIPMENTS_DELETE'
   | 'EQUIPMENTS_UPDATE'
 
+type RelocationTaskUserPermissions = 'RELOCATION_TASKS_READ'
+
 // todo: переделать на enum
 export type UserPermissions =
   | NomenclatureUserPermissions
   | NomenclatureGroupUserPermissions
   | EquipmentUserPermissions
+  | RelocationTaskUserPermissions
 
 export type UserModel = BaseUserModel & {
   fullName: string
