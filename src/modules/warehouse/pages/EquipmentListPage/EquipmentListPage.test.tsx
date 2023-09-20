@@ -45,7 +45,7 @@ notificationTestUtils.setupNotifications()
 
 describe('Страница списка оборудования', () => {
   describe('Список оборудования', () => {
-    test('При успешном запросе отображается верное количество', async () => {
+    test('При успешном запросе отображается корректно', async () => {
       const equipmentList = [warehouseFixtures.equipmentListItem()]
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse(equipmentList),
