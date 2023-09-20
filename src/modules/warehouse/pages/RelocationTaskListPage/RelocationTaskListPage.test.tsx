@@ -1,7 +1,13 @@
 import { screen } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTaskListFilter/RelocationTaskListFilter.test'
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
-import { getRelocationTaskListMessages } from 'modules/warehouse/constants/relocationTask'
+import {
+  getRelocationTaskListMessages,
+  relocationTaskStatusDict,
+  RelocationTaskStatusEnum,
+} from 'modules/warehouse/constants/relocationTask'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import commonFixtures from '_tests_/fixtures/common'
@@ -12,6 +18,7 @@ import {
   mockGetRelocationTaskListSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
   fakeWord,
   notificationTestUtils,
   render,
@@ -23,8 +30,19 @@ import RelocationTaskListPage from './index'
 
 const getContainer = () => screen.getByTestId('relocation-task-list-page')
 
+// filter button
+const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
+
+const clickFilterButton = async (user: UserEvent) => {
+  const button = getFilterButton()
+  await user.click(button)
+}
+
 export const testUtils = {
   getContainer,
+
+  getFilterButton,
+  clickFilterButton,
 }
 
 setupApiTests()
@@ -124,6 +142,86 @@ describe('Страница списка заявок на перемещение
       const headCell = relocationTaskTableTestUtils.getHeadCell('Объект выбытия')
 
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+      relocationTaskList.forEach((item) => {
+        const row = relocationTaskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Фильтры', () => {
+    describe('Кнопка фильтров', () => {
+      test('Отображается корректно', async () => {
+        mockGetRelocationTaskListSuccess()
+        render(<RelocationTaskListPage />)
+
+        await relocationTaskTableTestUtils.expectLoadingFinished()
+
+        const button = testUtils.getFilterButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
+
+      test('Открывает фильтры', async () => {
+        mockGetRelocationTaskListSuccess()
+        const { user } = render(<RelocationTaskListPage />)
+
+        await relocationTaskTableTestUtils.expectLoadingFinished()
+
+        await testUtils.clickFilterButton(user)
+        const filter = await relocationTaskListFilterTestUtils.findContainer()
+
+        expect(filter).toBeInTheDocument()
+      })
+    })
+
+    test('Устанавливаются корректные значения по умолчанию', async () => {
+      mockGetRelocationTaskListSuccess()
+
+      const { user } = render(<RelocationTaskListPage />)
+
+      await relocationTaskTableTestUtils.expectLoadingFinished()
+      await testUtils.clickFilterButton(user)
+      await relocationTaskListFilterTestUtils.findContainer()
+      await relocationTaskListFilterTestUtils.openStatusSelect(user)
+      const selectedStatus1 = relocationTaskListFilterTestUtils.getSelectedStatus(
+        relocationTaskStatusDict[RelocationTaskStatusEnum.New],
+      )
+      const selectedStatus2 = relocationTaskListFilterTestUtils.getSelectedStatus(
+        relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
+      )
+      const selectedStatus3 = relocationTaskListFilterTestUtils.getSelectedStatus(
+        relocationTaskStatusDict[RelocationTaskStatusEnum.Returned],
+      )
+
+      expect(selectedStatus1).toBeInTheDocument()
+      expect(selectedStatus2).toBeInTheDocument()
+      expect(selectedStatus3).toBeInTheDocument()
+    })
+
+    test('После применения список отображается корректно', async () => {
+      const relocationTaskList = warehouseFixtures.relocationTaskList()
+      mockGetRelocationTaskListSuccess({
+        body: commonFixtures.paginatedListResponse(relocationTaskList),
+        once: false,
+      })
+
+      const { user } = render(<RelocationTaskListPage />)
+
+      await relocationTaskTableTestUtils.expectLoadingFinished()
+      await testUtils.clickFilterButton(user)
+      await relocationTaskListFilterTestUtils.findContainer()
+      await relocationTaskListFilterTestUtils.openStatusSelect(user)
+      await relocationTaskListFilterTestUtils.setStatus(
+        user,
+        relocationTaskStatusDict[RelocationTaskStatusEnum.Canceled],
+      )
+      await relocationTaskListFilterTestUtils.clickApplyButton(user)
+
+      await relocationTaskTableTestUtils.expectLoadingStarted()
+      await relocationTaskTableTestUtils.expectLoadingFinished()
+
       relocationTaskList.forEach((item) => {
         const row = relocationTaskTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
