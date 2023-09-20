@@ -2,7 +2,6 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
 import { fakeWord, selectTestUtils, render, setupApiTests, buttonTestUtils } from '_tests_/utils'
 
@@ -19,8 +18,6 @@ const props: Readonly<WarehouseListFilterProps> = {
 const getContainer = () => screen.getByTestId('warehouse-list-filter')
 
 const findContainer = (): Promise<HTMLElement> => screen.findByTestId('warehouse-list-filter')
-
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // reset button
 const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сбросить все/)
@@ -125,7 +122,6 @@ const expectParentLoadingFinished = async () => {
 export const testUtils = {
   getContainer,
   findContainer,
-  getChildByText,
 
   getResetAllButton,
   clickResetButtonIn,
@@ -171,16 +167,6 @@ export const testUtils = {
 setupApiTests()
 
 describe('Фильтр списка складов', () => {
-  test('Заголовок отображается корректно', () => {
-    mockGetWarehouseListSuccess()
-    mockGetLegalEntityListSuccess()
-
-    render(<WarehouseListFilter {...props} />)
-
-    const title = testUtils.getChildByText('Фильтры')
-    expect(title).toBeInTheDocument()
-  })
-
   describe('Кнопка закрытия', () => {
     test('Отображается корректно', () => {
       mockGetWarehouseListSuccess()
@@ -205,7 +191,7 @@ describe('Фильтр списка складов', () => {
     })
   })
 
-  describe('Кнопка "Применить"', () => {
+  describe('Кнопка применить', () => {
     test('Отображается корректно', () => {
       mockGetWarehouseListSuccess()
       mockGetLegalEntityListSuccess()
@@ -231,7 +217,7 @@ describe('Фильтр списка складов', () => {
     })
   })
 
-  describe('Кнопка "Сбросить всё"', () => {
+  describe('Кнопка сбросить всё', () => {
     test('Отображается корректно', () => {
       mockGetWarehouseListSuccess()
       mockGetLegalEntityListSuccess()

@@ -1,3 +1,4 @@
+import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { RelocationTaskListItemModel } from 'modules/warehouse/models'
 
 import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
@@ -17,6 +18,7 @@ export type GetRelocationTaskListSortValue = ExtendSortKey<GetRelocationTaskList
 
 export type GetRelocationTaskListQueryArgs = PaginationParams &
   Partial<{
+    status: RelocationTaskStatusEnum[]
     ordering: GetRelocationTaskListSortValue
   }>
 
