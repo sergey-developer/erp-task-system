@@ -33,7 +33,7 @@ export const testUtils = {
 setupApiTests()
 // todo: сделать тесты для сортировки как в EquipmentListPage
 describe('Страница списка складов', () => {
-  test('Таблицу складов отображается корректно', async () => {
+  test('Таблица складов отображается корректно', async () => {
     const warehouseList = [warehouseFixtures.warehouseListItem()]
     mockGetWarehouseListSuccess({ body: warehouseList })
 
