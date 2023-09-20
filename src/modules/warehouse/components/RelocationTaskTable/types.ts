@@ -1,6 +1,9 @@
 import { TableProps } from 'antd'
 
-import { RelocationTaskListItemModel } from 'modules/warehouse/models'
+import {
+  GetRelocationTaskListSortValue,
+  RelocationTaskListItemModel,
+} from 'modules/warehouse/models'
 
 export type RelocationTaskTableItem = Pick<
   RelocationTaskListItemModel,
@@ -16,4 +19,6 @@ export type RelocationTaskTableItem = Pick<
 
 export type RelocationTaskTableProps = Required<
   Pick<TableProps<RelocationTaskTableItem>, 'dataSource' | 'loading' | 'onChange' | 'pagination'>
->
+> & {
+  sort?: GetRelocationTaskListSortValue
+}

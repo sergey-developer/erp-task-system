@@ -170,6 +170,7 @@ describe('Таблица оборудования', () => {
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       await testUtils.clickColTitle(user, 'Наименование')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       props.dataSource.forEach((item) => {
@@ -215,6 +216,7 @@ describe('Таблица оборудования', () => {
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       await testUtils.clickColTitle(user, 'Серийный номер')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       props.dataSource.forEach((item) => {
@@ -260,6 +262,7 @@ describe('Таблица оборудования', () => {
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       await testUtils.clickColTitle(user, 'Инвентарный номер')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       props.dataSource.forEach((item) => {
@@ -305,6 +308,7 @@ describe('Таблица оборудования', () => {
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       await testUtils.clickColTitle(user, 'Склад')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       props.dataSource.forEach((item) => {
@@ -353,6 +357,7 @@ describe('Таблица оборудования', () => {
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       await testUtils.clickColTitle(user, 'Состояние')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       props.dataSource.forEach((item) => {
@@ -398,6 +403,7 @@ describe('Таблица оборудования', () => {
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       await testUtils.clickColTitle(user, 'Количество')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       props.dataSource.forEach((item) => {
@@ -443,6 +449,7 @@ describe('Таблица оборудования', () => {
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       await testUtils.clickColTitle(user, 'Категория')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       props.dataSource.forEach((item) => {
@@ -488,6 +495,7 @@ describe('Таблица оборудования', () => {
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       await testUtils.clickColTitle(user, 'Назначение')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
       props.dataSource.forEach((item) => {
