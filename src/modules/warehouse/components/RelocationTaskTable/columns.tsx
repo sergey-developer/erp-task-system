@@ -1,5 +1,7 @@
 import { ColumnsType } from 'antd/es/table'
 
+import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
@@ -34,7 +36,7 @@ export const columns: ColumnsType<RelocationTaskTableItem> = [
     key: 'status',
     dataIndex: 'status',
     title: 'Статус',
-    render: (value: RelocationTaskTableItem['status']) => value,
+    render: (value: RelocationTaskTableItem['status']) => relocationTaskStatusDict[value],
   },
   {
     key: 'createdBy',
