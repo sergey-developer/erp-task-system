@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react'
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
 import { getRelocationTaskListMessages } from 'modules/warehouse/constants/relocationTask'
 
+import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -88,6 +89,42 @@ describe('Страница списка заявок на перемещение
       await relocationTaskTableTestUtils.expectLoadingFinished()
 
       relocationTaskList.slice(-1).forEach((item) => {
+        const row = relocationTaskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    test('Установлена сортировка по умолчанию', async () => {
+      mockGetRelocationTaskListSuccess({
+        body: commonFixtures.paginatedListResponse(warehouseFixtures.relocationTaskList()),
+        once: false,
+      })
+
+      render(<RelocationTaskListPage />)
+
+      await relocationTaskTableTestUtils.expectLoadingFinished()
+      const headCell = relocationTaskTableTestUtils.getHeadCell('Срок выполнения')
+
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const relocationTaskList = warehouseFixtures.relocationTaskList()
+      mockGetRelocationTaskListSuccess({
+        body: commonFixtures.paginatedListResponse(relocationTaskList),
+        once: false,
+      })
+
+      const { user } = render(<RelocationTaskListPage />)
+
+      await relocationTaskTableTestUtils.expectLoadingFinished()
+      await relocationTaskTableTestUtils.clickColTitle(user, 'Объект выбытия')
+      await relocationTaskTableTestUtils.expectLoadingStarted()
+      await relocationTaskTableTestUtils.expectLoadingFinished()
+      const headCell = relocationTaskTableTestUtils.getHeadCell('Объект выбытия')
+
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+      relocationTaskList.forEach((item) => {
         const row = relocationTaskTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
