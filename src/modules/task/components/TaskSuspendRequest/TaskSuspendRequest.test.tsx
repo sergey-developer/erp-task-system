@@ -107,13 +107,11 @@ describe('Запрос заявки на ожидание', () => {
 
     test('Данные пользователя', () => {
       render(<TaskSuspendRequest {...props} />)
-
-      expect(testUtils.getChildByText(getShortUserName(props.user))).toBeInTheDocument()
+      expect(testUtils.getChildByText(getShortUserName(props.user!))).toBeInTheDocument()
     })
 
     test('Дата создания', () => {
       render(<TaskSuspendRequest {...props} />)
-
       expect(testUtils.getChildByText(`до ${formatDate(props.date)}`)).toBeInTheDocument()
     })
   })
@@ -135,13 +133,11 @@ describe('Запрос заявки на ожидание', () => {
 
     test('Можно сделать не активной', () => {
       render(<TaskSuspendRequest {...props} action={{ ...cancelRequestAction, disabled: true }} />)
-
       expect(testUtils.getCancelButton()).toBeDisabled()
     })
 
     test('Отображает состояние загрузки', async () => {
       render(<TaskSuspendRequest {...props} action={{ ...cancelRequestAction, loading: true }} />)
-
       await expectCancelRequestLoadingStarted()
     })
 
@@ -170,13 +166,11 @@ describe('Запрос заявки на ожидание', () => {
 
     test('Можно сделать не активной', () => {
       render(<TaskSuspendRequest {...props} action={{ ...returnInWorkAction, disabled: true }} />)
-
       expect(testUtils.getReturnToWorkButton()).toBeDisabled()
     })
 
     test('Отображает состояние загрузки', async () => {
       render(<TaskSuspendRequest {...props} action={{ ...returnInWorkAction, loading: true }} />)
-
       await expectReturnToWorkLoadingStarted()
     })
 

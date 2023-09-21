@@ -88,8 +88,7 @@ describe('Запрос заявки', () => {
 
     test('Данные пользователя', () => {
       render(<TaskRequest {...props} />)
-
-      expect(testUtils.getChildByText(getShortUserName(props.user))).toBeInTheDocument()
+      expect(testUtils.getChildByText(getShortUserName(props.user!))).toBeInTheDocument()
     })
 
     test('Дата создания', () => {
@@ -127,13 +126,11 @@ describe('Запрос заявки', () => {
 
     test('Можно сделать не активной', () => {
       render(<TaskRequest {...props} actions={[{ ...action, disabled: true }]} />)
-
       expect(testUtils.getActionButton(action.text)).toBeDisabled()
     })
 
     test('Отображает состояние загрузки', async () => {
       render(<TaskRequest {...props} actions={[{ ...action, loading: true }]} />)
-
       await expectActionLoadingStarted(action.text)
     })
 
