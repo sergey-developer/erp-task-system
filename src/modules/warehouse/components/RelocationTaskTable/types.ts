@@ -18,7 +18,10 @@ export type RelocationTaskTableItem = Pick<
 >
 
 export type RelocationTaskTableProps = Required<
-  Pick<TableProps<RelocationTaskTableItem>, 'dataSource' | 'loading' | 'onChange' | 'pagination'>
+  Pick<
+    TableProps<RelocationTaskTableItem>,
+    'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
+  >
 > & {
   sort?: GetRelocationTaskListSortValue
 }
