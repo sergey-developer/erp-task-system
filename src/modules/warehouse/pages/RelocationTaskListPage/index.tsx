@@ -13,6 +13,7 @@ import { RelocationTaskTableProps } from 'modules/warehouse/components/Relocatio
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { useGetRelocationTaskList } from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationTaskListQueryArgs } from 'modules/warehouse/models'
+import { relocationTaskListFilterToParams } from 'modules/warehouse/utils/relocationTask'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import Space from 'components/Space'
@@ -30,11 +31,11 @@ const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = 
 
 const initialGetRelocationTaskListParams: Pick<
   GetRelocationTaskListQueryArgs,
-  'status' | 'ordering' | 'offset' | 'limit'
+  'statuses' | 'ordering' | 'offset' | 'limit'
 > = {
   ...getInitialPaginationParams(),
   ordering: 'deadline_at',
-  status: initialFilterValues.status,
+  statuses: initialFilterValues.status,
 }
 
 const RelocationTaskListPage: FC = () => {
@@ -80,7 +81,7 @@ const RelocationTaskListPage: FC = () => {
 
   const handleApplyFilter = (values: RelocationTaskListFilterFormFields) => {
     setFilterValues(values)
-    setGetRelocationTaskListParams(values)
+    setGetRelocationTaskListParams(relocationTaskListFilterToParams(values))
     toggleOpenFilter()
   }
 
