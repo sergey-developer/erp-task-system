@@ -33,10 +33,10 @@ const getContainer = () => screen.getByTestId('equipment-table')
 
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
 
-const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
-
 const clickRow = async (user: UserEvent, id: IdType) =>
   tableTestUtils.clickRowIn(getContainer(), user, id)
+
+const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
 
 const getColTitle = (text: string) => within(getContainer()).getByText(text)
 
@@ -121,8 +121,11 @@ describe('Таблица оборудования', () => {
 
   test('При клике на строку обработчик вызывается корректно', async () => {
     const { user } = render(<EquipmentTable {...props} />)
+
     await testUtils.clickRow(user, props.dataSource[0].id)
+
     expect(props.onRow).toBeCalledTimes(1)
+    expect(props.onRow).toBeCalledWith(props.dataSource[0], 0)
   })
 
   test('Можно установить сортировку по умолчанию', () => {

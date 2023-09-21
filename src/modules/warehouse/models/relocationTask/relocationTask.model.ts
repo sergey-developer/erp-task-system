@@ -1,3 +1,4 @@
+import { TaskAttachmentModel } from 'modules/task/models'
 import { UserModel } from 'modules/user/models'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 
@@ -20,4 +21,6 @@ export type RelocationTaskModel = {
   }>
   executor: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   createdBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
+  comment: MaybeNull<string>
+  documents: MaybeNull<Pick<TaskAttachmentModel, 'id' | 'name' | 'url' | 'size'>[]>
 }
