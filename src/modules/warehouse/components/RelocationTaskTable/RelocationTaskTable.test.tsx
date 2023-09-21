@@ -26,11 +26,15 @@ const props: Readonly<RelocationTaskTableProps> = {
   pagination: {},
   loading: false,
   onChange: jest.fn(),
+  onRow: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-table')
 
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+
+const clickRow = async (user: UserEvent, id: IdType) =>
+  tableTestUtils.clickRowIn(getContainer(), user, id)
 
 const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
 
@@ -58,6 +62,7 @@ const expectLoadingFinished = async (): Promise<HTMLElement> => {
 export const testUtils = {
   getContainer,
   getRow,
+  clickRow,
   getHeadCell,
   getColTitle,
   getColValue,
@@ -68,7 +73,10 @@ export const testUtils = {
 }
 
 afterEach(() => {
+  const onRow = props.onRow as jest.Mock
   const onChange = props.onChange as jest.Mock
+
+  onRow.mockReset()
   onChange.mockReset()
 })
 
@@ -106,6 +114,15 @@ describe('Таблица заявок на перемещение оборудо
       const row = testUtils.getRow(item.id)
       expect(row).toBeInTheDocument()
     })
+  })
+
+  test('При клике на строку обработчик вызывается корректно', async () => {
+    const { user } = render(<RelocationTaskTable {...props} />)
+
+    await testUtils.clickRow(user, props.dataSource[0].id)
+
+    expect(props.onRow).toBeCalledTimes(1)
+    expect(props.onRow).toBeCalledWith(props.dataSource[0], 0)
   })
 
   test('Можно установить сортировку по умолчанию', () => {

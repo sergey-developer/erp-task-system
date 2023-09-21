@@ -27,10 +27,10 @@ import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
 import { TaskTableListItem, TaskTableProps } from './types'
 
-const fakeTaskTableItem = taskFixtures.taskTableItem()
+const taskTableItem = taskFixtures.taskTableItem()
 
 const props: Readonly<Omit<TaskTableProps, 'sort'>> = {
-  dataSource: [fakeTaskTableItem],
+  dataSource: [taskTableItem],
   loading: false,
   onRow: jest.fn(),
   onChange: jest.fn(),
@@ -47,7 +47,7 @@ const paginationProps: Readonly<
   total: DEFAULT_PAGE_SIZE + 1,
 }
 
-const firstTaskTableItem = fakeTaskTableItem
+const firstTaskTableItem = taskTableItem
 
 export const testConstants = {
   props,
@@ -195,7 +195,10 @@ export const testUtils = {
 }
 
 afterEach(() => {
+  const onRow = props.onRow as jest.Mock
   const onChange = props.onChange as jest.Mock
+
+  onRow.mockReset()
   onChange.mockReset()
 })
 
@@ -1409,13 +1412,11 @@ describe('Таблица заявок', () => {
   })
 
   test('При клике на строку вызывается обработчик', async () => {
-    const onRow = jest.fn()
-    const { user } = render(<TaskTable {...testConstants.props} onRow={onRow} />)
-
-    const index = 0
+    const { user } = render(<TaskTable {...testConstants.props} />)
 
     await testUtils.clickRow(user, testConstants.firstTaskTableItem.id)
-    expect(onRow).toBeCalled()
-    expect(onRow).toBeCalledWith(testConstants.firstTaskTableItem, index)
+
+    expect(props.onRow).toBeCalledTimes(1)
+    expect(props.onRow).toBeCalledWith(testConstants.firstTaskTableItem, 0)
   })
 })
