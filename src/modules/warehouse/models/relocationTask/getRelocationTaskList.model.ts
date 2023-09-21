@@ -16,9 +16,13 @@ export type GetRelocationTaskListSortKey =
 
 export type GetRelocationTaskListSortValue = ExtendSortKey<GetRelocationTaskListSortKey>
 
+export type GetRelocationTaskListFilter = Partial<{
+  statuses: RelocationTaskStatusEnum[]
+}>
+
 export type GetRelocationTaskListQueryArgs = PaginationParams &
+  GetRelocationTaskListFilter &
   Partial<{
-    status: RelocationTaskStatusEnum[]
     ordering: GetRelocationTaskListSortValue
   }>
 
