@@ -41,7 +41,7 @@ export type EquipmentProps = Required<Pick<DrawerProps, 'onClose' | 'visible'>> 
     >
     equipmentIsLoading: boolean
 
-    onClickEdit: () => void
+    onClickEdit?: () => void
 
     hiddenFields?: FieldsMaybeHidden[]
   }

@@ -35,8 +35,8 @@ const EquipmentListPage: FC = () => {
   const [getEquipmentListParams, setGetEquipmentListParams] =
     useSetState<GetEquipmentListQueryArgs>({
       ...getInitialPaginationParams(),
-      ...(context.filter && equipmentFilterToParams(context.filter)),
-      search: context.search,
+      ...(context?.filter && equipmentFilterToParams(context.filter)),
+      search: context?.search,
       nomenclature: nomenclatureId,
       ordering: 'title',
     })
@@ -80,13 +80,13 @@ const EquipmentListPage: FC = () => {
         toggleShowEquipment()
 
         try {
-          await context.getEquipment(record.id)
+          await context?.getEquipment(record.id)
         } catch {
           toggleShowEquipment()
         }
       }, DEFAULT_DEBOUNCE_VALUE),
     }),
-    [context.getEquipment, toggleShowEquipment],
+    [context?.getEquipment, toggleShowEquipment],
   )
 
   return (
@@ -103,13 +103,13 @@ const EquipmentListPage: FC = () => {
       {isShowEquipment && (
         <Equipment
           visible={isShowEquipment}
-          title={context.equipment?.title}
-          equipment={context.equipment}
-          equipmentIsLoading={context.equipmentIsLoading}
+          title={context?.equipment?.title}
+          equipment={context?.equipment}
+          equipmentIsLoading={context?.equipmentIsLoading || false}
           hiddenFields={
-            context.equipment?.category && getHiddenFieldsByCategory(context.equipment.category)
+            context?.equipment?.category && getHiddenFieldsByCategory(context.equipment.category)
           }
-          onClickEdit={context.onClickEditEquipment}
+          onClickEdit={context?.onClickEditEquipment}
           onClose={debouncedToggleShowEquipment}
         />
       )}

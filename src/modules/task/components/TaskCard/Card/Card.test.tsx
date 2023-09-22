@@ -1,4 +1,4 @@
-import { screen, waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 
 import {
   SuspendReasonEnum,
@@ -415,7 +415,9 @@ describe('Карточка заявки', () => {
             availableReasons[0],
           )
           await taskReclassificationModalTestUtils.clickSubmitButton(user)
-          await waitForElementToBeRemoved(modal)
+          await waitFor(() => {
+            expect(modal).not.toBeInTheDocument()
+          })
         })
       })
     })
@@ -827,7 +829,9 @@ describe('Карточка заявки', () => {
         expect(props.deleteWorkGroup).toBeCalledTimes(1)
         expect(props.deleteWorkGroup).toBeCalledWith(expect.anything())
         expect(props.closeTaskCard).toBeCalledTimes(1)
-        await waitForElementToBeRemoved(modal)
+        await waitFor(() => {
+          expect(modal).not.toBeInTheDocument()
+        })
       })
     })
   })
@@ -1137,15 +1141,7 @@ describe('Карточка заявки', () => {
     describe('Модалка перевода заявки в ожидание', () => {
       test('Открывается', async () => {
         const { user } = render(
-          <TaskCard
-            {...props}
-            task={{
-              ...props.task!,
-              status: activeRequestSuspendItemProps.status,
-              type: activeRequestSuspendItemProps.type,
-              suspendRequest: null,
-            }}
-          />,
+          <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
           { store: getStoreWithAuth() },
         )
 
@@ -1159,15 +1155,7 @@ describe('Карточка заявки', () => {
       describe('Закрывается', () => {
         test('При клике на кнопку "Отмена"', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 
@@ -1181,15 +1169,7 @@ describe('Карточка заявки', () => {
 
         test('При клике на кнопку закрытия', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 
@@ -1203,15 +1183,7 @@ describe('Карточка заявки', () => {
 
         test('При клике вне модалки', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 
@@ -1227,15 +1199,7 @@ describe('Карточка заявки', () => {
       describe('При успешном запросе', () => {
         test('Переданный обработчик вызывается корректно', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 
@@ -1256,15 +1220,7 @@ describe('Карточка заявки', () => {
 
         test('Модалка закрывается', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 

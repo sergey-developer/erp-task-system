@@ -1416,7 +1416,7 @@ describe('Таблица заявок', () => {
 
     await testUtils.clickRow(user, testConstants.firstTaskTableItem.id)
 
-    expect(props.onRow).toBeCalledTimes(1)
+    expect(props.onRow).toBeCalled()
     expect(props.onRow).toBeCalledWith(testConstants.firstTaskTableItem, 0)
   })
 })

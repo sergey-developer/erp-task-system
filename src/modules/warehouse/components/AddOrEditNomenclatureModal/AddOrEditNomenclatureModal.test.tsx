@@ -374,6 +374,8 @@ describe('Модалка создания и редактирования ном
       await testUtils.openMeasurementUnitSelect(user)
       await testUtils.setMeasurementUnit(user, props.measurementUnits[0].title)
 
+      await testUtils.setEquipmentHasSerialNumber(user)
+
       await testUtils.clickSubmitButton(user, new RegExp(props.okText))
 
       expect(props.onSubmit).toBeCalledTimes(1)

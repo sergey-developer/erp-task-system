@@ -11,10 +11,9 @@ import {
   getEquipmentMessages,
 } from 'modules/warehouse/constants/equipment'
 
+import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
-import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import {
   mockGetEquipmentForbiddenError,
   mockGetEquipmentListForbiddenError,

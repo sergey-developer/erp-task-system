@@ -1,5 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { camelize } from 'humps'
 
 import { testUtils as extendedFilterTestUtils } from 'modules/task/components/ExtendedFilter/ExtendedFilter.test'
 import {
@@ -142,11 +143,10 @@ describe('Страница реестра заявок', () => {
       await fastFilterListTestUtils.expectLoadingFinished()
 
       Object.values(FastFilterEnum).forEach((filter) => {
-        const counterName = filter.toLowerCase()
+        const counterName = camelize(filter.toLowerCase())
         const taskCount = taskCounters[counterName as TaskCountersKeys]
 
         const counter = fastFilterListTestUtils.getByTextInCheckableTag(filter, taskCount)
-
         expect(counter).toBeInTheDocument()
       })
     })

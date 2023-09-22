@@ -5,7 +5,11 @@ import {
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
 } from 'modules/task/components/TaskCard/WorkGroupBlock/WorkGroupBlock.test'
-import { resolveTaskMessages, TaskExtendedStatusEnum } from 'modules/task/constants/task'
+import {
+  getTaskMessages,
+  resolveTaskMessages,
+  TaskExtendedStatusEnum,
+} from 'modules/task/constants/task'
 import { updateTaskAssigneeMessages } from 'modules/task/constants/taskAssignee'
 import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
 import {
@@ -67,14 +71,14 @@ import {
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
+  cardTestUtils,
   fakeId,
   fakeWord,
   getStoreWithAuth,
+  notificationTestUtils,
   render,
   setupApiTests,
-  notificationTestUtils,
-  buttonTestUtils,
-  cardTestUtils,
 } from '_tests_/utils'
 
 import {
@@ -304,9 +308,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                status: activeRequestReclassificationItemProps.status,
-                olaStatus: activeRequestReclassificationItemProps.olaStatus,
-                type: activeRequestReclassificationItemProps.type,
+                ...activeRequestReclassificationItemProps,
               }),
             })
 
@@ -348,9 +350,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                status: activeRequestReclassificationItemProps.status,
-                olaStatus: activeRequestReclassificationItemProps.olaStatus,
-                type: activeRequestReclassificationItemProps.type,
+                ...activeRequestReclassificationItemProps,
               }),
             })
 
@@ -580,9 +580,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                status: activeRequestReclassificationItemProps.status,
-                olaStatus: activeRequestReclassificationItemProps.olaStatus,
-                type: activeRequestReclassificationItemProps.type,
+                ...activeRequestReclassificationItemProps,
               }),
             })
 
@@ -624,9 +622,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                status: activeRequestReclassificationItemProps.status,
-                olaStatus: activeRequestReclassificationItemProps.olaStatus,
-                type: activeRequestReclassificationItemProps.type,
+                ...activeRequestReclassificationItemProps,
               }),
             })
 
@@ -762,9 +758,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                status: activeRequestReclassificationItemProps.status,
-                olaStatus: activeRequestReclassificationItemProps.olaStatus,
-                type: activeRequestReclassificationItemProps.type,
+                ...activeRequestReclassificationItemProps,
               }),
             })
 
@@ -806,9 +800,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                status: activeRequestReclassificationItemProps.status,
-                olaStatus: activeRequestReclassificationItemProps.olaStatus,
-                type: activeRequestReclassificationItemProps.type,
+                ...activeRequestReclassificationItemProps,
               }),
             })
 
@@ -852,8 +844,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -890,8 +882,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -953,8 +945,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -994,8 +986,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1032,8 +1024,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1095,8 +1087,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1136,8 +1128,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1174,8 +1166,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1237,8 +1229,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1278,8 +1270,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1316,8 +1308,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1379,8 +1371,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            status: activeExecuteTaskItemProps.status,
-            extendedStatus: activeExecuteTaskItemProps.extendedStatus,
+            assignee: taskFixtures.assignee(),
+            ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1524,7 +1516,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(getTaskMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1663,7 +1655,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(getTaskMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1802,7 +1794,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(getTaskMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1940,7 +1932,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(getTaskMessages.commonError),
           ).toBeInTheDocument()
         })
       })
@@ -1977,8 +1969,7 @@ describe('Контейнер детальной карточки заявки', 
       test('Уведомление об ошибке не отображается и заявка запрашивается заново', async () => {
         const task = taskFixtures.task({
           id: props.taskId,
-          status: activeTakeTaskButtonProps.status,
-          extendedStatus: activeTakeTaskButtonProps.extendedStatus,
+          ...activeTakeTaskButtonProps,
         })
 
         mockGetTaskSuccess(props.taskId, { body: task })
@@ -2009,8 +2000,7 @@ describe('Контейнер детальной карточки заявки', 
       test('Обрабатывается ошибка 500', async () => {
         const task = taskFixtures.task({
           id: props.taskId,
-          status: activeTakeTaskButtonProps.status,
-          extendedStatus: activeTakeTaskButtonProps.extendedStatus,
+          ...activeTakeTaskButtonProps,
         })
 
         mockGetTaskSuccess(props.taskId, { body: task })
@@ -2038,8 +2028,8 @@ describe('Контейнер детальной карточки заявки', 
       test('Обрабатывается ошибка 403', async () => {
         const task = taskFixtures.task({
           id: props.taskId,
-          status: activeTakeTaskButtonProps.status,
-          extendedStatus: activeTakeTaskButtonProps.extendedStatus,
+          ...activeTakeTaskButtonProps,
+          suspendRequest: taskFixtures.suspendRequest({ status: SuspendRequestStatusEnum.Denied }),
         })
 
         mockGetTaskSuccess(props.taskId, { body: task })
