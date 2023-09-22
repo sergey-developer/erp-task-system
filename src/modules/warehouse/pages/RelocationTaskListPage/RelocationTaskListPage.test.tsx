@@ -1,6 +1,7 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTaskListFilter/RelocationTaskListFilter.test'
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
 import {
@@ -13,9 +14,11 @@ import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/compon
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
+  mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskListForbiddenError,
   mockGetRelocationTaskListServerError,
   mockGetRelocationTaskListSuccess,
+  mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
@@ -225,6 +228,45 @@ describe('Страница списка заявок на перемещение
       relocationTaskList.forEach((item) => {
         const row = relocationTaskTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Карточка заявки на перемещение оборудования', () => {
+    test('Открывается по клику на строку в таблице', async () => {
+      const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
+      mockGetRelocationTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
+      })
+      mockGetRelocationTaskSuccess(relocationTaskListItem.id)
+      mockGetRelocationEquipmentListSuccess(relocationTaskListItem.id)
+
+      const { user } = render(<RelocationTaskListPage />)
+
+      await relocationTaskTableTestUtils.expectLoadingFinished()
+      await relocationTaskTableTestUtils.clickRow(user, relocationTaskListItem.id)
+      const details = await relocationTaskDetailsTestUtils.findContainer()
+
+      expect(details).toBeInTheDocument()
+    })
+
+    test('Закрывается', async () => {
+      const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
+      mockGetRelocationTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
+      })
+      mockGetRelocationTaskSuccess(relocationTaskListItem.id)
+      mockGetRelocationEquipmentListSuccess(relocationTaskListItem.id)
+
+      const { user } = render(<RelocationTaskListPage />)
+
+      await relocationTaskTableTestUtils.expectLoadingFinished()
+      await relocationTaskTableTestUtils.clickRow(user, relocationTaskListItem.id)
+      const details = await relocationTaskDetailsTestUtils.findContainer()
+      await relocationTaskDetailsTestUtils.clickCloseButton(user)
+
+      await waitFor(() => {
+        expect(details).not.toBeInTheDocument()
       })
     })
   })

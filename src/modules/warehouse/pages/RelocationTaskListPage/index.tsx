@@ -2,7 +2,7 @@ import { useBoolean, useSetState } from 'ahooks'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 
-import { RelocationEquipmentTableProps } from 'modules/warehouse/components/RelocationEquipmentTable/types'
+import RelocationTaskDetails from 'modules/warehouse/components/RelocationTaskDetails'
 import RelocationTaskListFilter from 'modules/warehouse/components/RelocationTaskListFilter'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
@@ -20,12 +20,10 @@ import { relocationTaskListFilterToParams } from 'modules/warehouse/utils/reloca
 import FilterButton from 'components/Buttons/FilterButton'
 import Space from 'components/Space'
 
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
-
-import { DEFAULT_DEBOUNCE_VALUE } from '../../../../shared/constants/common'
-import RelocationTaskDetails from '../../components/RelocationTaskDetails'
 
 const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = {
   status: [
@@ -35,7 +33,7 @@ const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = 
   ],
 }
 
-const initialGetRelocationTaskListParams: Pick<
+const initialRelocationTaskListParams: Pick<
   GetRelocationTaskListQueryArgs,
   'statuses' | 'ordering' | 'offset' | 'limit'
 > = {
@@ -54,43 +52,43 @@ const RelocationTaskListPage: FC = () => {
   const [relocationTaskOpened, { toggle: toggleOpenRelocationTask }] = useBoolean(false)
   const debouncedToggleOpenRelocationTask = useDebounceFn(toggleOpenRelocationTask)
 
-  const [getRelocationTaskListParams, setGetRelocationTaskListParams] =
-    useSetState<GetRelocationTaskListQueryArgs>(initialGetRelocationTaskListParams)
+  const [relocationTaskListParams, setRelocationTaskListParams] =
+    useSetState<GetRelocationTaskListQueryArgs>(initialRelocationTaskListParams)
 
   const { currentData: relocationTaskList, isFetching: relocationTaskListIsFetching } =
-    useGetRelocationTaskList(getRelocationTaskListParams)
+    useGetRelocationTaskList(relocationTaskListParams)
 
-  const handleRelocationTaskTablePagination = useCallback(
+  const handleTablePagination = useCallback(
     (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
-      setGetRelocationTaskListParams(calculatePaginationParams(pagination))
+      setRelocationTaskListParams(calculatePaginationParams(pagination))
     },
-    [setGetRelocationTaskListParams],
+    [setRelocationTaskListParams],
   )
 
-  const handleRelocationTaskTableSort = useCallback(
+  const handleTableSort = useCallback(
     (sorter: Parameters<RelocationTaskTableProps['onChange']>[2]) => {
       if (sorter) {
         const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
         if (columnKey && columnKey in sortableFieldToSortValues) {
-          setGetRelocationTaskListParams({
+          setRelocationTaskListParams({
             ordering: order ? getSort(columnKey as SortableField, order) : undefined,
           })
         }
       }
     },
-    [setGetRelocationTaskListParams],
+    [setRelocationTaskListParams],
   )
 
-  const handleChangeRelocationTaskTable = useCallback<RelocationTaskTableProps['onChange']>(
+  const handleChangeTable = useCallback<RelocationTaskTableProps['onChange']>(
     (pagination, _, sorter) => {
-      handleRelocationTaskTablePagination(pagination)
-      handleRelocationTaskTableSort(sorter)
+      handleTablePagination(pagination)
+      handleTableSort(sorter)
     },
-    [handleRelocationTaskTablePagination, handleRelocationTaskTableSort],
+    [handleTablePagination, handleTableSort],
   )
 
-  const handleRelocationTaskTableRowClick = useCallback<RelocationTaskTableProps['onRow']>(
+  const handleTableRowClick = useCallback<RelocationTaskTableProps['onRow']>(
     (record) => ({
       onClick: debounce(() => {
         setSelectedRelocationTaskId(record.id)
@@ -100,24 +98,9 @@ const RelocationTaskListPage: FC = () => {
     [toggleOpenRelocationTask],
   )
 
-  const handleRelocationEquipmentTablePagination = useCallback(
-    (pagination: Parameters<RelocationEquipmentTableProps['onChange']>[0]) => {
-    },
-    [],
-  )
-
-  const handleChangeRelocationEquipmentTable = useCallback<
-    RelocationEquipmentTableProps['onChange']
-  >(
-    (pagination) => {
-      handleRelocationEquipmentTablePagination(pagination)
-    },
-    [handleRelocationEquipmentTablePagination],
-  )
-
   const handleApplyFilter = (values: RelocationTaskListFilterFormFields) => {
     setFilterValues(values)
-    setGetRelocationTaskListParams(relocationTaskListFilterToParams(values))
+    setRelocationTaskListParams(relocationTaskListFilterToParams(values))
     toggleOpenFilter()
   }
 
@@ -130,9 +113,9 @@ const RelocationTaskListPage: FC = () => {
           dataSource={relocationTaskList?.results || []}
           pagination={relocationTaskList?.pagination || false}
           loading={relocationTaskListIsFetching}
-          sort={getRelocationTaskListParams.ordering}
-          onChange={handleChangeRelocationTaskTable}
-          onRow={handleRelocationTaskTableRowClick}
+          sort={relocationTaskListParams.ordering}
+          onChange={handleChangeTable}
+          onRow={handleTableRowClick}
         />
       </Space>
 
@@ -140,34 +123,7 @@ const RelocationTaskListPage: FC = () => {
         <RelocationTaskDetails
           visible={relocationTaskOpened}
           onClose={debouncedToggleOpenRelocationTask}
-          relocationTask={{
-            id: 1,
-            status: RelocationTaskStatusEnum.New,
-            createdAt: new Date().toDateString(),
-            comment: 'comment',
-            deadlineAt: new Date().toDateString(),
-            createdBy: { id: 1, fullName: 'fullName' },
-            executor: { id: 1, fullName: 'fullName' },
-            relocateTo: { id: 1, title: 'relocateTo' },
-            relocateFrom: { id: 1, title: 'relocateFrom' },
-            documents: [
-              { id: 1, url: 'url123', size: 554454, name: 'name 1' },
-              { id: 2, url: 'url123', size: 554454, name: 'name 2' },
-            ],
-          }}
-          relocationTaskIsLoading={false}
-          relocationEquipmentList={[
-            {
-              id: 1,
-              title: 'title 1',
-              purpose: 'purpose 1',
-              condition: 'condition',
-              quantity: 4325,
-              serialNumber: '5837rhjkejtr8734',
-            },
-          ]}
-          relocationEquipmentListIsLoading={false}
-          onChangeEquipmentTable={handleChangeRelocationEquipmentTable}
+          relocationTaskId={selectedRelocationTaskId}
         />
       )}
 
