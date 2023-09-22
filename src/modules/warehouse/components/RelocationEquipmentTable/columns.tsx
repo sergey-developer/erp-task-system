@@ -1,5 +1,7 @@
 import { ColumnsType } from 'antd/es/table'
 
+import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
+
 import { valueOrHyphen } from 'shared/utils/common'
 
 import { RelocationEquipmentTableItem } from './types'
@@ -27,7 +29,7 @@ export const columns: ColumnsType<RelocationEquipmentTableItem> = [
     key: 'condition',
     dataIndex: 'condition',
     title: 'Состояние',
-    render: (value: RelocationEquipmentTableItem['condition']) => value,
+    render: (value: RelocationEquipmentTableItem['condition']) => equipmentConditionDict[value],
   },
   {
     key: 'quantity',
