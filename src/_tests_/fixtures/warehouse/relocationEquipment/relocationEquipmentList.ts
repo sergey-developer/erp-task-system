@@ -1,5 +1,6 @@
 import times from 'lodash/times'
 
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationEquipmentListItemModel } from 'modules/warehouse/models'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
@@ -9,7 +10,7 @@ export const relocationEquipmentListItem = (): RelocationEquipmentListItemModel 
   title: fakeWord(),
   purpose: fakeWord(),
   quantity: fakeInteger(),
-  condition: fakeWord(),
+  condition: EquipmentConditionEnum.Working,
   serialNumber: fakeWord(),
 })
 
