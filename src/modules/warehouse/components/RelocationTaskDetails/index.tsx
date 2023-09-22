@@ -1,8 +1,14 @@
+import { useSetState } from 'ahooks'
 import { Col, Drawer, DrawerProps, Row, Typography } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import {
+  useGetRelocationEquipmentList,
+  useGetRelocationTask,
+} from 'modules/warehouse/hooks/relocationTask'
+import { GetRelocationEquipmentListQueryArgs } from 'modules/warehouse/models'
 
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
@@ -10,40 +16,62 @@ import Spinner from 'components/Spinner'
 
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
+import { RelocationEquipmentTableProps } from '../RelocationEquipmentTable/types'
 import { RelocationTaskDetailsProps } from './types'
 
 const { Text } = Typography
 
-const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
-  relocationTask,
-  relocationTaskIsLoading,
+const initialRelocationEquipmentListParams = getInitialPaginationParams()
 
-  relocationEquipmentList,
-  relocationEquipmentListIsLoading,
-  onChangeEquipmentTable,
+const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
+  const [relocationEquipmentListParams, setRelocationEquipmentListParams] = useSetState<
+    Omit<GetRelocationEquipmentListQueryArgs, 'relocationTaskId'>
+  >(initialRelocationEquipmentListParams)
 
-  ...props
-}) => {
-  const title: DrawerProps['title'] = relocationTaskIsLoading ? (
+  const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
+    useGetRelocationTask({ relocationTaskId: relocationTaskId! }, { skip: !relocationTaskId })
+
+  const { currentData: relocationEquipmentList, isFetching: relocationEquipmentListIsFetching } =
+    useGetRelocationEquipmentList(
+      { relocationTaskId: relocationTaskId!, ...relocationEquipmentListParams },
+      { skip: !relocationTaskId },
+    )
+
+  const handleTablePagination = useCallback(
+    (pagination: Parameters<RelocationEquipmentTableProps['onChange']>[0]) => {
+      setRelocationEquipmentListParams(calculatePaginationParams(pagination))
+    },
+    [setRelocationEquipmentListParams],
+  )
+
+  const handleChangeTable = useCallback<RelocationEquipmentTableProps['onChange']>(
+    (pagination) => {
+      handleTablePagination(pagination)
+    },
+    [handleTablePagination],
+  )
+
+  const title: DrawerProps['title'] = relocationTaskIsFetching ? (
     <Space>
       <Text>Заявка на перемещение оборудования</Text>
       <Spinner centered={false} />
     </Space>
   ) : (
-    `Заявка на перемещение оборудования ${valueOrHyphen(relocationTask?.relocateFrom?.title)} 🠖 ${
-      relocationTask?.relocateTo?.title
-    }`
+    `Заявка на перемещение оборудования ${valueOrHyphen(
+      relocationTask?.relocateFrom?.title,
+    )} 🠖 ${valueOrHyphen(relocationTask?.relocateTo?.title)}`
   )
 
   return (
     <Drawer {...props} data-testid='relocation-task-details' placement='bottom' title={title}>
-      <Row>
+      <Row gutter={40}>
         <Col span={8}>
           <LoadingArea
             data-testid='relocation-task-details-loading'
-            isLoading={relocationTaskIsLoading}
+            isLoading={relocationTaskIsFetching}
             tip='Загрузка заявки на перемещение оборудования...'
             area='block'
           >
@@ -119,7 +147,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
                   </Col>
 
                   <Col span={16}>
-                    {<AttachmentList attachments={relocationTask.documents || []} />}
+                    {!!relocationTask.documents?.length && (
+                      <AttachmentList attachments={relocationTask.documents} />
+                    )}
                   </Col>
                 </Row>
               </Space>
@@ -132,10 +162,10 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
             <Text strong>Перечень оборудования</Text>
 
             <RelocationEquipmentTable
-              dataSource={relocationEquipmentList}
-              loading={relocationEquipmentListIsLoading}
-              pagination={false}
-              onChange={onChangeEquipmentTable}
+              dataSource={relocationEquipmentList?.results || []}
+              pagination={relocationEquipmentList?.pagination || false}
+              loading={relocationEquipmentListIsFetching}
+              onChange={handleChangeTable}
             />
           </Space>
         </Col>
