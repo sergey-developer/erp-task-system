@@ -3,7 +3,6 @@ import { screen, within } from '@testing-library/react'
 import { prettyBytes } from 'shared/utils/file'
 
 import taskFixtures from '_tests_/fixtures/task'
-
 import { render } from '_tests_/utils'
 
 import AttachmentList, { AttachmentListProps } from './index'
@@ -13,13 +12,14 @@ const props: Readonly<AttachmentListProps> = {
 }
 
 const getContainer = () => screen.getByTestId('attachment-list')
+
+const getContainerIn = (container: HTMLElement) => within(container).getByTestId('attachment-list')
+
 const queryContainer = () => screen.queryByTestId('attachment-list')
 
-const getChildByText = (text: string | RegExp) =>
-  within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
-const queryChildByText = (text: string | RegExp) =>
-  within(getContainer()).queryByText(text)
+const queryChildByText = (text: string | RegExp) => within(getContainer()).queryByText(text)
 
 const getAttachmentContainer = (name: string) =>
   within(getContainer()).getByTestId(`attachment-${name}`)
@@ -31,6 +31,7 @@ const getAttachmentLink = (name: string) =>
 
 export const testUtils = {
   getContainer,
+  getContainerIn,
   queryContainer,
   getChildByText,
   queryChildByText,
@@ -44,14 +45,10 @@ describe('Список вложений', () => {
 
     const fakeAttachment = props.attachments[0]
 
-    const allAttachmentLinks = props.attachments.map((att) =>
-      testUtils.getAttachmentLink(att.name),
-    )
+    const allAttachmentLinks = props.attachments.map((att) => testUtils.getAttachmentLink(att.name))
     const attachmentLink = allAttachmentLinks[0]
 
-    const attachmentSize = testUtils.getChildByText(
-      new RegExp(prettyBytes(fakeAttachment.size)),
-    )
+    const attachmentSize = testUtils.getChildByText(new RegExp(prettyBytes(fakeAttachment.size)))
     const externalIdText = testUtils.queryChildByText('Не передано в Х5')
 
     expect(externalIdText).not.toBeInTheDocument()
@@ -64,10 +61,7 @@ describe('Список вложений', () => {
 
   test('Текст "Не передано в Х5" отображается если у вложения нет externalId', () => {
     render(
-      <AttachmentList
-        {...props}
-        attachments={[taskFixtures.attachment({ externalId: '' })]}
-      />,
+      <AttachmentList {...props} attachments={[taskFixtures.attachment({ externalId: '' })]} />,
     )
 
     const externalIdText = testUtils.getChildByText('Не передано в Х5')

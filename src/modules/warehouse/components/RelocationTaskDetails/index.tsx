@@ -60,9 +60,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       <Spinner centered={false} />
     </Space>
   ) : (
-    `Заявка на перемещение оборудования ${valueOrHyphen(relocationTask?.relocateFrom?.title)} 🠖 ${
-      relocationTask?.relocateTo?.title
-    }`
+    `Заявка на перемещение оборудования ${valueOrHyphen(
+      relocationTask?.relocateFrom?.title,
+    )} 🠖 ${valueOrHyphen(relocationTask?.relocateTo?.title)}`
   )
 
   return (
