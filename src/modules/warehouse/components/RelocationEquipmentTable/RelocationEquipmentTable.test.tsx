@@ -1,5 +1,7 @@
 import { screen, within } from '@testing-library/react'
 
+import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
+
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
@@ -147,7 +149,7 @@ describe('Таблица перечня оборудования заявки н
       const title = testUtils.getColTitle('Состояние')
       const value = testUtils.getColValue(
         relocationEquipmentListItem.id,
-        relocationEquipmentListItem.condition,
+        equipmentConditionDict[relocationEquipmentListItem.condition],
       )
 
       expect(title).toBeInTheDocument()
