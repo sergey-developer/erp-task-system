@@ -9,6 +9,7 @@ import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 
 import { commonEllipsisConfig } from 'shared/constants/text'
+import { MaybeNull } from 'shared/types/utils'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 import { WrapperStyled } from './styles'
@@ -18,7 +19,7 @@ const { Text, Title, Paragraph } = Typography
 export type TaskRequestProps = {
   title: string
   comment: string
-  user: Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>
+  user: MaybeNull<Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>>
   date: string
   actions: Array<
     Pick<ButtonProps, 'onClick' | 'disabled' | 'loading'> & { text: string }
@@ -51,7 +52,7 @@ const TaskRequest: FC<TaskRequestProps> = ({
             </Paragraph>
 
             <SeparatedText>
-              <Text type='secondary'>{getShortUserName(user)}</Text>
+              {user && <Text type='secondary'>{getShortUserName(user)}</Text>}
               <Text type='secondary'>{date}</Text>
             </SeparatedText>
           </Space>
