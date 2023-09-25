@@ -8,6 +8,8 @@ import {
   GetRelocationTaskListSuccessResponse,
   GetRelocationTaskQueryArgs,
   GetRelocationTaskSuccessResponse,
+  GetRelocationTaskWaybillM15QueryArgs,
+  GetRelocationTaskWaybillM15SuccessResponse,
 } from 'modules/warehouse/models'
 import {
   GetRelocationEquipmentListTransformedSuccessResponse,
@@ -16,6 +18,7 @@ import {
 import {
   getRelocationEquipmentListUrl,
   getRelocationTaskUrl,
+  getRelocationTaskWaybillM15Url,
 } from 'modules/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -53,11 +56,22 @@ const relocationTaskApiService = baseApiService.injectEndpoints({
       transformResponse: (response: GetRelocationEquipmentListSuccessResponse, meta, arg) =>
         getPaginatedList(response, arg),
     }),
+
+    getRelocationTaskWaybillM15: build.query<
+      GetRelocationTaskWaybillM15SuccessResponse,
+      GetRelocationTaskWaybillM15QueryArgs
+    >({
+      query: ({ relocationTaskId }) => ({
+        url: getRelocationTaskWaybillM15Url(relocationTaskId),
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
 })
 
 export const {
-  useGetRelocationTaskListQuery,
   useGetRelocationTaskQuery,
+  useLazyGetRelocationTaskWaybillM15Query,
+  useGetRelocationTaskListQuery,
   useGetRelocationEquipmentListQuery,
 } = relocationTaskApiService

@@ -1,20 +1,36 @@
 import { useSetState } from 'ahooks'
-import { Col, Drawer, DrawerProps, Row, Typography } from 'antd'
+import {
+  Button,
+  Col,
+  Drawer,
+  DrawerProps,
+  Dropdown,
+  DropdownProps,
+  Menu,
+  MenuProps,
+  Row,
+  Typography,
+} from 'antd'
 import React, { FC, useCallback } from 'react'
 
 import AttachmentList from 'modules/task/components/AttachmentList'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
+  useLazyGetRelocationTaskWaybillM15,
 } from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationEquipmentListQueryArgs } from 'modules/warehouse/models'
+import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
 
+import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
@@ -24,9 +40,12 @@ import { RelocationTaskDetailsProps } from './types'
 
 const { Text } = Typography
 
+const dropdownTrigger: DropdownProps['trigger'] = ['click']
 const initialRelocationEquipmentListParams = getInitialPaginationParams()
 
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
+  const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
+
   const [relocationEquipmentListParams, setRelocationEquipmentListParams] = useSetState<
     Omit<GetRelocationEquipmentListQueryArgs, 'relocationTaskId'>
   >(initialRelocationEquipmentListParams)
@@ -39,6 +58,25 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       { relocationTaskId: relocationTaskId!, ...relocationEquipmentListParams },
       { skip: !relocationTaskId },
     )
+
+  const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
+    useLazyGetRelocationTaskWaybillM15()
+
+  const handleGetWaybillM15 = useDebounceFn(async () => {
+    if (!relocationTaskId) return
+
+    try {
+      const waybillM15 = await getWaybillM15({ relocationTaskId }).unwrap()
+
+      if (waybillM15) {
+        clickDownloadLink(
+          base64ToArrayBuffer(waybillM15),
+          'application/pdf',
+          getWaybillM15Filename(relocationTaskId),
+        )
+      }
+    } catch {}
+  }, [relocationTaskId])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<RelocationEquipmentTableProps['onChange']>[0]) => {
@@ -65,8 +103,32 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     )} 🠖 ${valueOrHyphen(relocationTask?.relocateTo?.title)}`
   )
 
+  const menuItems: MenuProps['items'] = [
+    {
+      key: 1,
+      label: (
+        <Space>
+          {getWaybillM15IsFetching && <Spinner />}
+          <Text>Сформировать накладную М-15</Text>
+        </Space>
+      ),
+      disabled: !userPermissions?.relocationTasksRead,
+      onClick: handleGetWaybillM15,
+    },
+  ]
+
   return (
-    <Drawer {...props} data-testid='relocation-task-details' placement='bottom' title={title}>
+    <Drawer
+      {...props}
+      data-testid='relocation-task-details'
+      placement='bottom'
+      title={title}
+      extra={
+        <Dropdown overlay={<Menu items={menuItems} />} trigger={dropdownTrigger}>
+          <Button type='text' icon={<MenuIcon />} />
+        </Dropdown>
+      }
+    >
       <Row gutter={40}>
         <Col span={8}>
           <LoadingArea

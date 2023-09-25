@@ -82,7 +82,6 @@ describe('Запрос заявки', () => {
 
     test('Комментарий', () => {
       render(<TaskRequest {...props} />)
-
       expect(testUtils.getChildByText(props.comment)).toBeInTheDocument()
     })
 
