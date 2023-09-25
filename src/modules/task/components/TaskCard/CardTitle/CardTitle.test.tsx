@@ -2,23 +2,16 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {
-  SuspendRequestStatusEnum,
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants'
+} from 'modules/task/constants/task'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import taskFixtures from 'fixtures/task'
-
-import {
-  fakeId,
-  getButtonIn,
-  getIconByNameIn,
-  getStoreWithAuth,
-  render,
-} from '_tests_/utils'
+import taskFixtures from '_tests_/fixtures/task'
+import { fakeId, iconTestUtils, getStoreWithAuth, render, buttonTestUtils } from '_tests_/utils'
 
 import CardTitle, { CardTitleProps } from './index'
 
@@ -41,11 +34,7 @@ const props: Readonly<CardTitleProps> = {
 export const activeExecuteTaskItemProps: Readonly<
   Pick<
     CardTitleProps,
-    | 'status'
-    | 'extendedStatus'
-    | 'isAssignedToCurrentUser'
-    | 'suspendRequest'
-    | 'workGroup'
+    'status' | 'extendedStatus' | 'isAssignedToCurrentUser' | 'suspendRequest' | 'workGroup'
   >
 > = {
   status: TaskStatusEnum.InProgress,
@@ -56,10 +45,7 @@ export const activeExecuteTaskItemProps: Readonly<
 }
 
 export const activeRequestReclassificationItemProps: Readonly<
-  Pick<
-    CardTitleProps,
-    'status' | 'olaStatus' | 'type' | 'suspendRequest' | 'workGroup'
-  >
+  Pick<CardTitleProps, 'status' | 'olaStatus' | 'type' | 'suspendRequest' | 'workGroup'>
 > = {
   status: TaskStatusEnum.New,
   olaStatus: TaskOlaStatusEnum.NotExpired,
@@ -84,25 +70,22 @@ const queryContainer = () => screen.queryByTestId('task-card-title')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // menu
-const getMenuButton = () => getButtonIn(getContainer(), 'menu')
+const getMenuButton = () => buttonTestUtils.getButtonIn(getContainer(), 'menu')
 
 const getMenu = () => screen.getByRole('menu')
 
 const findMenu = () => screen.findByRole('menu')
 
-const getMenuItem = (name: string | RegExp) =>
-  within(getMenu()).getByRole('menuitem', { name })
+const getMenuItem = (name: string | RegExp) => within(getMenu()).getByRole('menuitem', { name })
 
-const queryMenuItem = (name: string | RegExp) =>
-  within(getMenu()).queryByRole('menuitem', { name })
+const queryMenuItem = (name: string | RegExp) => within(getMenu()).queryByRole('menuitem', { name })
 
 const getMenuItems = () => within(getMenu()).getAllByRole('menuitem')
 
 const getMenuItemIcon = (item: HTMLElement, iconName: string) =>
-  getIconByNameIn(item, iconName)
+  iconTestUtils.getIconByNameIn(item, iconName)
 
-const queryMenuItemText = (item: HTMLElement, text: string) =>
-  within(item).queryByText(text)
+const queryMenuItemText = (item: HTMLElement, text: string) => within(item).queryByText(text)
 
 const clickMenuItem = async (user: UserEvent, name: string | RegExp) => {
   const item = getMenuItem(name)
@@ -124,7 +107,7 @@ const expectMenuItemNotDisabled = (item: HTMLElement) =>
   expect(item).not.toHaveClass('ant-dropdown-menu-item-disabled')
 
 // close button
-const getCloseButton = () => getButtonIn(getContainer(), 'close')
+const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), 'close')
 
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
@@ -133,7 +116,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // reload button
-const getReloadButton = () => getButtonIn(getContainer(), 'sync')
+const getReloadButton = () => buttonTestUtils.getButtonIn(getContainer(), 'sync')
 
 const clickReloadButton = async (user: UserEvent) => {
   const button = getReloadButton()
@@ -144,26 +127,21 @@ const clickReloadButton = async (user: UserEvent) => {
 // execute task
 const getExecuteTaskItem = () => getMenuItem(/выполнить заявку/i)
 
-const clickExecuteTaskItem = (user: UserEvent) =>
-  clickMenuItem(user, /выполнить заявку/i)
+const clickExecuteTaskItem = (user: UserEvent) => clickMenuItem(user, /выполнить заявку/i)
 
 // request reclassification
-const getRequestReclassificationItem = () =>
-  getMenuItem(/запросить переклассификацию/i)
+const getRequestReclassificationItem = () => getMenuItem(/запросить переклассификацию/i)
 
-const queryRequestReclassificationItem = () =>
-  queryMenuItem(/запросить переклассификацию/i)
+const queryRequestReclassificationItem = () => queryMenuItem(/запросить переклассификацию/i)
 
 const clickRequestReclassificationItem = (user: UserEvent) =>
   clickMenuItem(user, /запросить переклассификацию/i)
 
 // cancel reclassification
 
-const getCancelReclassificationItem = () =>
-  getMenuItem(/отменить переклассификацию/i)
+const getCancelReclassificationItem = () => getMenuItem(/отменить переклассификацию/i)
 
-const queryCancelReclassificationItem = () =>
-  queryMenuItem(/отменить переклассификацию/i)
+const queryCancelReclassificationItem = () => queryMenuItem(/отменить переклассификацию/i)
 
 const clickCancelReclassificationItem = (user: UserEvent) =>
   clickMenuItem(user, /отменить переклассификацию/i)
@@ -291,9 +269,7 @@ describe('Заголовок карточки заявки', () => {
       })
 
       test('При клике обработчик вызывается корректно', async () => {
-        const { user } = render(
-          <CardTitle {...props} {...activeExecuteTaskItemProps} />,
-        )
+        const { user } = render(<CardTitle {...props} {...activeExecuteTaskItemProps} />)
 
         await testUtils.openMenu(user)
         await testUtils.clickExecuteTaskItem(user)
@@ -301,9 +277,7 @@ describe('Заголовок карточки заявки', () => {
       })
 
       test('Активен если условия соблюдены', async () => {
-        const { user } = render(
-          <CardTitle {...props} {...activeExecuteTaskItemProps} />,
-        )
+        const { user } = render(<CardTitle {...props} {...activeExecuteTaskItemProps} />)
 
         await testUtils.openMenu(user)
         testUtils.expectMenuItemNotDisabled(testUtils.getExecuteTaskItem())
@@ -330,11 +304,7 @@ describe('Заголовок карточки заявки', () => {
 
         test('Но заявка не в статусе - "В процессе"', async () => {
           const { user } = render(
-            <CardTitle
-              {...props}
-              {...activeExecuteTaskItemProps}
-              status={TaskStatusEnum.New}
-            />,
+            <CardTitle {...props} {...activeExecuteTaskItemProps} status={TaskStatusEnum.New} />,
           )
 
           await testUtils.openMenu(user)
@@ -415,17 +385,12 @@ describe('Заголовок карточки заявки', () => {
 
       test('Не отображается если есть запрос на переклассификацию', async () => {
         const { user } = render(
-          <CardTitle
-            {...props}
-            extendedStatus={TaskExtendedStatusEnum.InReclassification}
-          />,
+          <CardTitle {...props} extendedStatus={TaskExtendedStatusEnum.InReclassification} />,
         )
 
         await testUtils.openMenu(user)
 
-        expect(
-          testUtils.queryRequestReclassificationItem(),
-        ).not.toBeInTheDocument()
+        expect(testUtils.queryRequestReclassificationItem()).not.toBeInTheDocument()
       })
 
       test('При клике обработчик вызывается корректно', async () => {
@@ -452,9 +417,7 @@ describe('Заголовок карточки заявки', () => {
         )
 
         await testUtils.openMenu(user)
-        testUtils.expectMenuItemNotDisabled(
-          testUtils.getRequestReclassificationItem(),
-        )
+        testUtils.expectMenuItemNotDisabled(testUtils.getRequestReclassificationItem())
       })
 
       describe('Не активен если условия соблюдены', () => {
@@ -474,9 +437,7 @@ describe('Заголовок карточки заявки', () => {
 
           await testUtils.openMenu(user)
 
-          testUtils.expectMenuItemDisabled(
-            testUtils.getRequestReclassificationItem(),
-          )
+          testUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
         test(`Но заявка не в статусе - ${TaskStatusEnum.New}`, async () => {
@@ -493,9 +454,7 @@ describe('Заголовок карточки заявки', () => {
 
           await testUtils.openMenu(user)
 
-          testUtils.expectMenuItemDisabled(
-            testUtils.getRequestReclassificationItem(),
-          )
+          testUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
         test(`Но заявка не имеет ola статуса - ${TaskOlaStatusEnum.NotExpired}`, async () => {
@@ -512,9 +471,7 @@ describe('Заголовок карточки заявки', () => {
 
           await testUtils.openMenu(user)
 
-          testUtils.expectMenuItemDisabled(
-            testUtils.getRequestReclassificationItem(),
-          )
+          testUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
         test(`Но заявка имеет ola статус - ${TaskOlaStatusEnum.HalfExpired}`, async () => {
@@ -531,9 +488,7 @@ describe('Заголовок карточки заявки', () => {
 
           await testUtils.openMenu(user)
 
-          testUtils.expectMenuItemDisabled(
-            testUtils.getRequestReclassificationItem(),
-          )
+          testUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
         test(`Но тип заявки - ${TaskTypeEnum.RequestTask}`, async () => {
@@ -550,9 +505,7 @@ describe('Заголовок карточки заявки', () => {
 
           await testUtils.openMenu(user)
 
-          testUtils.expectMenuItemDisabled(
-            testUtils.getRequestReclassificationItem(),
-          )
+          testUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
         test(`Но тип заявки - ${TaskTypeEnum.IncidentTask}`, async () => {
@@ -567,26 +520,19 @@ describe('Заголовок карточки заявки', () => {
 
           await testUtils.openMenu(user)
 
-          testUtils.expectMenuItemDisabled(
-            testUtils.getRequestReclassificationItem(),
-          )
+          testUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
         test(`Но у пользователя роль - ${UserRoleEnum.Engineer}`, async () => {
           const { user } = render(
-            <CardTitle
-              {...props}
-              {...activeRequestReclassificationItemProps}
-            />,
+            <CardTitle {...props} {...activeRequestReclassificationItemProps} />,
             {
               store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
             },
           )
 
           await testUtils.openMenu(user)
-          testUtils.expectMenuItemDisabled(
-            testUtils.getRequestReclassificationItem(),
-          )
+          testUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
         test('Но у заявки есть запрос на ожидание', async () => {
@@ -602,9 +548,7 @@ describe('Заголовок карточки заявки', () => {
           )
 
           await testUtils.openMenu(user)
-          testUtils.expectMenuItemDisabled(
-            testUtils.getRequestReclassificationItem(),
-          )
+          testUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
       })
     })
@@ -612,10 +556,7 @@ describe('Заголовок карточки заявки', () => {
     describe('Элемент "Отменить переклассификацию"', () => {
       test('Отображается корректно если условия соблюдены', async () => {
         const { user } = render(
-          <CardTitle
-            {...props}
-            extendedStatus={TaskExtendedStatusEnum.InReclassification}
-          />,
+          <CardTitle {...props} extendedStatus={TaskExtendedStatusEnum.InReclassification} />,
         )
 
         await testUtils.openMenu(user)
@@ -633,9 +574,7 @@ describe('Заголовок карточки заявки', () => {
 
         await testUtils.openMenu(user)
 
-        expect(
-          testUtils.queryCancelReclassificationItem(),
-        ).not.toBeInTheDocument()
+        expect(testUtils.queryCancelReclassificationItem()).not.toBeInTheDocument()
       })
     })
 
@@ -652,9 +591,7 @@ describe('Заголовок карточки заявки', () => {
       })
 
       test('При клике обработчик вызывается корректно', async () => {
-        const { user } = render(
-          <CardTitle {...props} {...activeRequestSuspendItemProps} />,
-        )
+        const { user } = render(<CardTitle {...props} {...activeRequestSuspendItemProps} />)
 
         await testUtils.openMenu(user)
         await testUtils.clickRequestSuspendItem(user)
@@ -662,9 +599,7 @@ describe('Заголовок карточки заявки', () => {
       })
 
       test('Активен если условия соблюдены', async () => {
-        const { user } = render(
-          <CardTitle {...props} {...activeRequestSuspendItemProps} />,
-        )
+        const { user } = render(<CardTitle {...props} {...activeRequestSuspendItemProps} />)
 
         await testUtils.openMenu(user)
         testUtils.expectMenuItemNotDisabled(testUtils.getRequestSuspendItem())

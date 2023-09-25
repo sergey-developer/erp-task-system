@@ -2,17 +2,11 @@ import { Button, Col, Row, Typography } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useState } from 'react'
 
-import {
-  useAuthenticatedUser,
-  useCheckUserAuthenticated,
-} from 'modules/auth/hooks'
-import { SuspendRequestStatusEnum } from 'modules/task/constants'
+import { useAuthenticatedUser, useCheckUserAuthenticated } from 'modules/auth/hooks'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
-import {
-  useTaskExtendedStatus,
-  useTaskStatus,
-  useTaskSuspendRequestStatus,
-} from 'modules/task/hooks'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
+import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
+import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { taskAssigneePermissions } from 'modules/task/permissions'
 import { getFullUserName } from 'modules/user/utils'
@@ -27,10 +21,7 @@ const { Text } = Typography
 
 const NOT_ASSIGNED_TEXT = 'Не назначен'
 
-export type AssigneeBlockProps = Pick<
-  TaskModel,
-  'status' | 'extendedStatus' | 'assignee'
-> & {
+export type AssigneeBlockProps = Pick<TaskModel, 'status' | 'extendedStatus' | 'assignee'> & {
   workGroup?: WorkGroupListItemModel
   workGroupListIsLoading: boolean
 
@@ -66,21 +57,14 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
-  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(
-    rawTaskSuspendRequestStatus,
-  )
+  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
   const authenticatedUser = useAuthenticatedUser()
 
-  const selectedAssigneeIsCurrentAssignee = isEqual(
-    selectedAssignee,
-    currentAssignee,
-  )
+  const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssignee, currentAssignee)
 
-  const currentAssigneeIsCurrentUser =
-    useCheckUserAuthenticated(currentAssignee)
+  const currentAssigneeIsCurrentUser = useCheckUserAuthenticated(currentAssignee)
 
-  const selectedAssigneeIsCurrentUser =
-    useCheckUserAuthenticated(selectedAssignee)
+  const selectedAssigneeIsCurrentUser = useCheckUserAuthenticated(selectedAssignee)
 
   const seniorEngineerFromWorkGroupIsCurrentUser = useCheckUserAuthenticated(
     workGroup?.seniorEngineer.id,
@@ -95,8 +79,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   const canSelectAssignee: boolean =
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
-    (seniorEngineerFromWorkGroupIsCurrentUser ||
-      headOfDepartmentFromWorkGroupIsCurrentUser)
+    (seniorEngineerFromWorkGroupIsCurrentUser || headOfDepartmentFromWorkGroupIsCurrentUser)
 
   const handleAssignOnMe = async () => {
     if (authenticatedUser) {
@@ -154,29 +137,19 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                   taskSuspendRequestStatus.isNew ||
                   taskSuspendRequestStatus.isInProgress
             }
-            onClick={
-              currentAssigneeIsCurrentUser ? undefined : handleAssignOnMe
-            }
+            onClick={currentAssigneeIsCurrentUser ? undefined : handleAssignOnMe}
           >
-            {currentAssigneeIsCurrentUser
-              ? 'Отказаться от заявки'
-              : 'Назначить на себя'}
+            {currentAssigneeIsCurrentUser ? 'Отказаться от заявки' : 'Назначить на себя'}
           </Button>
         </Col>
       </Row>
 
-      <Permissions
-        config={taskAssigneePermissions.select}
-        hideWhenViewForbidden={false}
-      >
+      <Permissions config={taskAssigneePermissions.select} hideWhenViewForbidden={false}>
         {({ canView, canEdit }) =>
           canView && !canEdit ? (
             <Space direction='vertical' size='middle' $block>
               {assignee ? (
-                <TaskAssignee
-                  name={getFullUserName(assignee)}
-                  assignee={assignee}
-                />
+                <TaskAssignee name={getFullUserName(assignee)} assignee={assignee} />
               ) : (
                 <Text>{NOT_ASSIGNED_TEXT}</Text>
               )}
@@ -195,18 +168,11 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                   onSelect={setSelectedAssignee}
                 >
                   {workGroupMembers.map(({ id, fullName }) => {
-                    const currentAssigneeInWorkGroup: boolean = isEqual(
-                      id,
-                      currentAssignee,
-                    )
+                    const currentAssigneeInWorkGroup: boolean = isEqual(id, currentAssignee)
 
-                    const authenticatedUserInWorkGroup: boolean = isEqual(
-                      id,
-                      authenticatedUser!.id,
-                    )
+                    const authenticatedUserInWorkGroup: boolean = isEqual(id, authenticatedUser!.id)
 
-                    const disabled =
-                      currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
+                    const disabled = currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
 
                     return (
                       <SelectStyled.Option
@@ -221,10 +187,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                   })}
                 </SelectStyled>
               ) : assignee ? (
-                <TaskAssignee
-                  name={getFullUserName(assignee)}
-                  assignee={assignee}
-                />
+                <TaskAssignee name={getFullUserName(assignee)} assignee={assignee} />
               ) : (
                 <Text>{NOT_ASSIGNED_TEXT}</Text>
               )}

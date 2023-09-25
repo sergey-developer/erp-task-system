@@ -18,10 +18,10 @@ const FastFilterList: FC<FastFilterListProps> = ({
   disabled,
   userRole,
 }) => {
-  const filters: Array<FastFilterItem> = useMemo(() => {
+  const filters: FastFilterItem[] = useMemo(() => {
     const counters = (data || {}) as NonNullable<typeof data>
 
-    return fastFilters.reduce<Array<FastFilterItem>>(
+    return fastFilters.reduce<FastFilterItem[]>(
       (acc, { filter, roles, text }) => {
         const taskCounterKey = camelize(
           filter.toLowerCase(),

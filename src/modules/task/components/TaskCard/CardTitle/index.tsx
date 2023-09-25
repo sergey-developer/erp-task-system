@@ -6,9 +6,9 @@ import {
   useTaskExtendedStatus,
   useTaskOlaStatus,
   useTaskStatus,
-  useTaskSuspendRequestStatus,
   useTaskType,
-} from 'modules/task/hooks'
+} from 'modules/task/hooks/task'
+import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskModel } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 
@@ -55,9 +55,7 @@ const CardTitle: FC<CardTitleProps> = ({
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskOlaStatus = useTaskOlaStatus(olaStatus)
   const { isEngineerRole, isFirstLineSupportRole } = useUserRole()
-  const suspendRequestStatus = useTaskSuspendRequestStatus(
-    suspendRequest?.status,
-  )
+  const suspendRequestStatus = useTaskSuspendRequestStatus(suspendRequest?.status)
 
   const suspendRequestExist = !!suspendRequest
 

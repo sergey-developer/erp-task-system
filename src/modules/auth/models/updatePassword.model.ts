@@ -1,6 +1,6 @@
 import { ChangePasswordFormFields } from 'modules/auth/pages/ChangePasswordPage/types'
 
-import { FieldsErrors } from 'shared/services/api'
+import { FieldsErrors } from 'shared/services/baseApi'
 
 export type UpdatePasswordMutationArgs = {
   password: string
