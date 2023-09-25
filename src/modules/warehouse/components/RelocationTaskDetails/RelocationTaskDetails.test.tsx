@@ -412,7 +412,7 @@ describe('Информация о заявке о перемещении', () =>
   })
 
   describe('Накладная M15', () => {
-    test('Пункт меню отображается корректно', async () => {
+    test('Пункт меню отображается и активен если есть права', async () => {
       mockGetRelocationTaskSuccess(props.relocationTaskId!)
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
 
@@ -434,6 +434,19 @@ describe('Информация о заявке о перемещении', () =>
       const item = testUtils.getWaybillM15MenuItem()
       expect(item).toBeInTheDocument()
       menuTestUtils.expectMenuItemNotDisabled(item)
+    })
+
+    test('Пункт меню не активен если нет прав', async () => {
+      mockGetRelocationTaskSuccess(props.relocationTaskId!)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+      )
+
+      await testUtils.openMenu(user)
+      const item = testUtils.getWaybillM15MenuItem()
+      menuTestUtils.expectMenuItemDisabled(item)
     })
 
     test('При успешном запросе отрабатывает функционал скачивания', async () => {
