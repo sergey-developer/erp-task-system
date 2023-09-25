@@ -40,6 +40,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { MaybeNull } from 'shared/types/utils'
@@ -282,7 +283,7 @@ const TaskCard: FC<TaskCardProps> = ({
           const blob = base64ToArrayBuffer(file)
 
           if (blob) {
-            clickDownloadLink(blob, 'application/pdf', `Акт о выполненных работах ${task.id}`)
+            clickDownloadLink(blob, MimetypeEnum.Pdf, `Акт о выполненных работах ${task.id}`)
           }
         }
       } catch (error) {
