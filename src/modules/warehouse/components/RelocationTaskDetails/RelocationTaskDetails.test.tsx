@@ -50,6 +50,25 @@ const findContainer = () => screen.findByTestId('relocation-task-details')
 const getRelocationTaskInfo = (testId: string, text: string | RegExp) =>
   within(within(getContainer()).getByTestId(testId)).getByText(text)
 
+// menu button
+const getMenuButton = () => buttonTestUtils.getButtonIn(getContainer(), 'menu')
+
+const clickMenuButton = async (user: UserEvent) => {
+  const button = getMenuButton()
+  await user.click(button)
+}
+
+// waybill m15 menu item
+const getWaybillM15MenuItem = () => buttonTestUtils.getButtonIn(getContainer(), /Сформировать накладную М-15/)
+
+const getMenu = () => screen.getByRole('menu')
+
+const findMenu = () => screen.findByRole('menu')
+
+const getMenuItem = (name: string | RegExp) => within(getMenu()).getByRole('menuitem', { name })
+
+const queryMenuItem = (name: string | RegExp) => within(getMenu()).queryByRole('menuitem', { name })
+
 // close button
 const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
 
@@ -393,6 +412,12 @@ describe('Информация о заявке о перемещении', () =>
         const row = relocationEquipmentTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Накладная M15', () => {
+    test('Пункт меню отображается корректно', async () => {
+
     })
   })
 })
