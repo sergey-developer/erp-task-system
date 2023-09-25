@@ -1,4 +1,5 @@
 import { waitFor, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 const btnLoadingClass = 'ant-btn-loading'
 
@@ -26,6 +27,23 @@ const expectLoadingFinished = async (button: HTMLElement) => {
   })
 }
 
+// menu button
+const getMenuButtonIn = (container: HTMLElement) => getButtonIn(container, 'menu')
+
+const clickMenuButtonIn = async (container: HTMLElement, user: UserEvent) => {
+  const button = getMenuButtonIn(container)
+  await user.click(button)
+}
+
+// close button
+const getCloseButtonIn = (container: HTMLElement) => getButtonIn(container, /close/i)
+
+const clickCloseButtonIn = async (container: HTMLElement, user: UserEvent) => {
+  const button = getCloseButtonIn(container)
+  await user.click(button)
+  return button
+}
+
 const utils = {
   findButtonIn,
   getButtonIn,
@@ -33,6 +51,12 @@ const utils = {
   queryButtonIn,
   expectLoadingStarted,
   expectLoadingFinished,
+
+  getMenuButtonIn,
+  clickMenuButtonIn,
+
+  getCloseButtonIn,
+  clickCloseButtonIn,
 }
 
 export default utils

@@ -2,10 +2,10 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { commonApiMessages } from 'shared/constants/common'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as downloadLink from 'shared/utils/common/downloadLink'
 
 import taskFixtures from '_tests_/fixtures/task'
-
 import {
   mockGetJournalCsvServerError,
   mockGetJournalCsvSuccess,
@@ -206,7 +206,7 @@ describe('Вкладка журнала задачи', () => {
           expect(clickDownloadLinkSpy).toBeCalledTimes(1)
           expect(clickDownloadLinkSpy).toBeCalledWith(
             fakeCsv,
-            'text/csv',
+            MimetypeEnum.Csv,
             getJournalCsvFilename(props.taskId),
           )
 

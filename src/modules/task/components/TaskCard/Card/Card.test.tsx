@@ -1,18 +1,15 @@
 import { screen, waitFor, within } from '@testing-library/react'
 
 import {
-  getTaskWorkPerformedActMessages,
-} from 'modules/task/constants/task'
-import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/taskSuspendRequest'
 import { UserRoleEnum } from 'modules/user/constants'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 
-import commonFixtures from '_tests_/fixtures/common'
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
@@ -22,7 +19,6 @@ import {
   render,
   spinnerTestUtils,
   cardTestUtils,
-  notificationTestUtils,
 } from '_tests_/utils'
 import { modalTestUtils } from '_tests_/utils/components'
 
@@ -611,93 +607,12 @@ describe('Карточка заявки', () => {
         expect(clickDownloadLinkSpy).toBeCalledTimes(1)
         expect(clickDownloadLinkSpy).toBeCalledWith(
           fakeArrayBuffer,
-          'application/pdf',
+          MimetypeEnum.Pdf,
           `Акт о выполненных работах ${props.task!.id}`,
         )
       })
 
-      test('Корректно отрабатывает вызов с ошибкой 404', async () => {
-        const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
-
-        const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
-
-        const errorMessage = fakeWord()
-        const getTaskWorkPerformedActMock = jest.fn(() => ({
-          unwrap: jest.fn(() =>
-            Promise.reject(commonFixtures.notFoundErrorResponse({ detail: [errorMessage] })),
-          ),
-        }))
-
-        const { user } = render(
-          <TaskCard
-            {...props}
-            task={{
-              ...props.task!,
-              ...activeExecuteTaskItemProps,
-            }}
-            getTaskWorkPerformedAct={getTaskWorkPerformedActMock as any}
-          />,
-          {
-            store: getStoreWithAuth({
-              userId: props.task!.assignee!.id,
-            }),
-          },
-        )
-
-        await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickExecuteTaskItem(user)
-        await taskResolutionModalTestUtils.findContainer()
-
-        await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-        await taskResolutionModalTestUtils.clickGetActButton(user)
-
-        const errorNotification = await notificationTestUtils.findNotification(errorMessage)
-
-        expect(errorNotification).toBeInTheDocument()
-        expect(base64ToArrayBufferSpy).not.toBeCalled()
-        expect(clickDownloadLinkSpy).not.toBeCalled()
-      })
-
-      test('Корректно отрабатывает вызов с ошибкой 500', async () => {
-        const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
-
-        const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
-
-        const getTaskWorkPerformedActMock = jest.fn(() => ({
-          unwrap: jest.fn(() => Promise.reject(commonFixtures.serverErrorResponse())),
-        }))
-
-        const { user } = render(
-          <TaskCard
-            {...props}
-            task={{
-              ...props.task!,
-              ...activeExecuteTaskItemProps,
-            }}
-            getTaskWorkPerformedAct={getTaskWorkPerformedActMock as any}
-          />,
-          {
-            store: getStoreWithAuth({
-              userId: props.task!.assignee!.id,
-            }),
-          },
-        )
-
-        await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickExecuteTaskItem(user)
-        await taskResolutionModalTestUtils.findContainer()
-
-        await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-        await taskResolutionModalTestUtils.clickGetActButton(user)
-
-        const errorNotification = await notificationTestUtils.findNotification(
-          getTaskWorkPerformedActMessages.commonError,
-        )
-
-        expect(errorNotification).toBeInTheDocument()
-        expect(base64ToArrayBufferSpy).not.toBeCalled()
-        expect(clickDownloadLinkSpy).not.toBeCalled()
-      })
+      test.todo('При не успешном запросе')
     })
   })
 

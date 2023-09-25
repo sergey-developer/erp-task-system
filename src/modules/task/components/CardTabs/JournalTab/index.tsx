@@ -8,6 +8,7 @@ import { DownloadIcon, SyncIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { IdType } from 'shared/types/common'
 import { clickDownloadLink } from 'shared/utils/common/downloadLink'
 
@@ -32,7 +33,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
       const journalCsv = await getJournalCsv({ taskId }).unwrap()
 
       if (journalCsv) {
-        clickDownloadLink(journalCsv, 'text/csv', getJournalCsvFilename(taskId))
+        clickDownloadLink(journalCsv, MimetypeEnum.Csv, getJournalCsvFilename(taskId))
       }
     } catch {}
   }
