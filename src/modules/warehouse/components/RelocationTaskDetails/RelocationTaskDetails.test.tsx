@@ -1,13 +1,19 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
 import { testUtils as relocationEquipmentTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentTable/RelocationEquipmentTable.test'
 import {
   getRelocationEquipmentListMessages,
   getRelocationTaskMessages,
+  getRelocationTaskWaybillM15Messages,
   relocationTaskStatusDict,
 } from 'modules/warehouse/constants/relocationTask'
+import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
+import * as base64Utils from 'shared/utils/common/base64'
+import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import { formatDate } from 'shared/utils/date'
 
 import commonFixtures from '_tests_/fixtures/common'
@@ -21,21 +27,26 @@ import {
   mockGetRelocationTaskNotFoundError,
   mockGetRelocationTaskServerError,
   mockGetRelocationTaskSuccess,
+  mockGetRelocationTaskWaybillM15ForbiddenError,
+  mockGetRelocationTaskWaybillM15NotFoundError,
+  mockGetRelocationTaskWaybillM15ServerError,
+  mockGetRelocationTaskWaybillM15Success,
 } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeId,
   fakeWord,
+  menuTestUtils,
   notificationTestUtils,
   render,
   setupApiTests,
   spinnerTestUtils,
-  tableTestUtils
-} from "_tests_/utils";
+  tableTestUtils,
+} from '_tests_/utils'
 
 import RelocationTaskDetails from './index'
 import { RelocationTaskDetailsProps } from './types'
-import { UserEvent } from "@testing-library/user-event/setup/setup";
 
 const props: RelocationTaskDetailsProps = {
   visible: true,
@@ -50,33 +61,14 @@ const findContainer = () => screen.findByTestId('relocation-task-details')
 const getRelocationTaskInfo = (testId: string, text: string | RegExp) =>
   within(within(getContainer()).getByTestId(testId)).getByText(text)
 
-// menu button
-const getMenuButton = () => buttonTestUtils.getButtonIn(getContainer(), 'menu')
-
-const clickMenuButton = async (user: UserEvent) => {
-  const button = getMenuButton()
-  await user.click(button)
-}
+const openMenu = (user: UserEvent) =>
+  buttonTestUtils.clickMenuButtonIn(testUtils.getContainer(), user)
 
 // waybill m15 menu item
-const getWaybillM15MenuItem = () => buttonTestUtils.getButtonIn(getContainer(), /Сформировать накладную М-15/)
+const getWaybillM15MenuItem = () => menuTestUtils.getMenuItem(/Сформировать накладную М-15/)
 
-const getMenu = () => screen.getByRole('menu')
-
-const findMenu = () => screen.findByRole('menu')
-
-const getMenuItem = (name: string | RegExp) => within(getMenu()).getByRole('menuitem', { name })
-
-const queryMenuItem = (name: string | RegExp) => within(getMenu()).queryByRole('menuitem', { name })
-
-// close button
-const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-
-const clickCloseButton = async (user: UserEvent) => {
-  const button = getCloseButton()
-  await user.click(button)
-  return button
-}
+const clickWaybillM15MenuItem = (user: UserEvent) =>
+  menuTestUtils.clickMenuItem(/Сформировать накладную М-15/, user)
 
 // loading
 const expectRelocationTaskLoadingFinished = spinnerTestUtils.expectLoadingFinished(
@@ -92,8 +84,12 @@ export const testUtils = {
 
   getRelocationTaskInfo,
 
-  getCloseButton,
-  clickCloseButton,
+  openMenu,
+
+  getWaybillM15MenuItem,
+  clickWaybillM15MenuItem,
+
+  clickCloseButton: (user: UserEvent) => buttonTestUtils.clickCloseButtonIn(getContainer(), user),
 
   expectRelocationTaskLoadingFinished,
 
@@ -417,7 +413,160 @@ describe('Информация о заявке о перемещении', () =>
 
   describe('Накладная M15', () => {
     test('Пункт меню отображается корректно', async () => {
+      mockGetRelocationTaskSuccess(props.relocationTaskId!)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
 
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+              },
+            },
+          },
+        },
+      )
+
+      await testUtils.openMenu(user)
+      const item = testUtils.getWaybillM15MenuItem()
+      expect(item).toBeInTheDocument()
+      menuTestUtils.expectMenuItemNotDisabled(item)
+    })
+
+    test('При успешном запросе отрабатывает функционал скачивания', async () => {
+      mockGetRelocationTaskSuccess(props.relocationTaskId!)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+      const m15File = fakeWord()
+      mockGetRelocationTaskWaybillM15Success(props.relocationTaskId!, { body: m15File })
+
+      const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
+
+      const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
+      const arrayBuffer = new Uint8Array()
+      base64ToArrayBufferSpy.mockReturnValueOnce(arrayBuffer)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+              },
+            },
+          },
+        },
+      )
+
+      await testUtils.openMenu(user)
+      await testUtils.clickWaybillM15MenuItem(user)
+
+      await waitFor(() => {
+        expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
+      })
+      expect(base64ToArrayBufferSpy).toBeCalledWith(m15File)
+
+      expect(clickDownloadLinkSpy).toBeCalledTimes(1)
+      expect(clickDownloadLinkSpy).toBeCalledWith(
+        arrayBuffer,
+        MimetypeEnum.Pdf,
+        getWaybillM15Filename(props.relocationTaskId!),
+      )
+    })
+
+    describe('При не успешном запросе', () => {
+      test('Обрабатывается ошибка 403', async () => {
+        mockGetRelocationTaskSuccess(props.relocationTaskId!)
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+        const errorMessage = fakeWord()
+        mockGetRelocationTaskWaybillM15ForbiddenError(props.relocationTaskId!, {
+          body: { detail: errorMessage },
+        })
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            preloadedState: {
+              api: {
+                // @ts-ignore
+                queries: {
+                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+                },
+              },
+            },
+          },
+        )
+
+        await testUtils.openMenu(user)
+        await testUtils.clickWaybillM15MenuItem(user)
+
+        const notification = await notificationTestUtils.findNotification(errorMessage)
+        expect(notification).toBeInTheDocument()
+      })
+
+      test('Обрабатывается ошибка 404', async () => {
+        mockGetRelocationTaskSuccess(props.relocationTaskId!)
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+        const errorMessage = fakeWord()
+        mockGetRelocationTaskWaybillM15NotFoundError(props.relocationTaskId!, {
+          body: { detail: errorMessage },
+        })
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            preloadedState: {
+              api: {
+                // @ts-ignore
+                queries: {
+                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+                },
+              },
+            },
+          },
+        )
+
+        await testUtils.openMenu(user)
+        await testUtils.clickWaybillM15MenuItem(user)
+
+        const notification = await notificationTestUtils.findNotification(errorMessage)
+        expect(notification).toBeInTheDocument()
+      })
+
+      test('Обрабатывается ошибка 500', async () => {
+        mockGetRelocationTaskSuccess(props.relocationTaskId!)
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+        mockGetRelocationTaskWaybillM15ServerError(props.relocationTaskId!)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            preloadedState: {
+              api: {
+                // @ts-ignore
+                queries: {
+                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+                },
+              },
+            },
+          },
+        )
+
+        await testUtils.openMenu(user)
+        await testUtils.clickWaybillM15MenuItem(user)
+
+        const notification = await notificationTestUtils.findNotification(
+          getRelocationTaskWaybillM15Messages.commonError,
+        )
+        expect(notification).toBeInTheDocument()
+      })
     })
   })
 })

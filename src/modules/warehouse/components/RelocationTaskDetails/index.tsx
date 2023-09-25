@@ -29,6 +29,7 @@ import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
@@ -71,7 +72,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       if (waybillM15) {
         clickDownloadLink(
           base64ToArrayBuffer(waybillM15),
-          'application/pdf',
+          MimetypeEnum.Pdf,
           getWaybillM15Filename(relocationTaskId),
         )
       }
