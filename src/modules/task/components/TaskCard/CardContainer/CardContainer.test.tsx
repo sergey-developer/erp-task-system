@@ -3236,9 +3236,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3276,9 +3274,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3316,9 +3312,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3390,9 +3384,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3432,9 +3424,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3472,9 +3462,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3512,9 +3500,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3586,9 +3572,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3628,9 +3612,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3668,9 +3650,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3708,9 +3688,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3782,9 +3760,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3824,9 +3800,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3864,9 +3838,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3904,9 +3876,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -3978,9 +3948,7 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                type: activeRequestSuspendItemProps.type,
-                status: activeRequestSuspendItemProps.status,
-                suspendRequest: null,
+                ...activeRequestSuspendItemProps,
               }),
             })
 
@@ -4022,7 +3990,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
               once: false,
             })
@@ -4050,7 +4020,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
               once: false,
             })
@@ -4082,7 +4054,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
             })
 
@@ -4113,7 +4087,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
             })
 
@@ -4144,7 +4120,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
               once: false,
             })
@@ -4172,7 +4150,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
               once: false,
             })
@@ -4204,7 +4184,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
             })
 
@@ -4235,7 +4217,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
             })
 
@@ -4266,7 +4250,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
               once: false,
             })
@@ -4294,7 +4280,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
               once: false,
             })
@@ -4326,7 +4314,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
             })
 
@@ -4357,7 +4347,9 @@ describe('Контейнер детальной карточки заявки', 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
                 id: props.taskId,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: taskFixtures.suspendRequest({
+                  status: SuspendRequestStatusEnum.New,
+                }),
               }),
             })
 
