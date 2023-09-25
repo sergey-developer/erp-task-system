@@ -5,34 +5,29 @@ import {
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
 } from 'modules/task/components/TaskCard/WorkGroupBlock/WorkGroupBlock.test'
+import { resolveTaskMessages, TaskExtendedStatusEnum } from 'modules/task/constants/task'
+import { updateTaskAssigneeMessages } from 'modules/task/constants/taskAssignee'
+import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
 import {
-  SuspendReasonEnum,
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  createReclassificationRequestMessages,
-  updateTaskAssigneeMessages,
-  updateTaskWorkGroupMessages,
-  resolveTaskMessages,
   createSuspendRequestMessages,
   deleteSuspendRequestMessages,
-} from 'modules/task/constants'
+  SuspendReasonEnum,
+  SuspendRequestStatusEnum,
+} from 'modules/task/constants/taskSuspendRequest'
+import { updateTaskWorkGroupMessages } from 'modules/task/constants/taskWorkGroup'
 import {
   CreateTaskSuspendRequestBadRequestErrorResponse,
   ResolveTaskBadRequestErrorResponse,
   UpdateTaskWorkGroupBadRequestErrorResponse,
 } from 'modules/task/models'
-import {
-  getTaskNotFoundErrorMsg,
-  getTaskServerErrorMsg,
-} from 'modules/task/utils'
+import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getWorkGroupListMessages } from 'modules/workGroup/constants'
 
-import { commonApiMessages } from 'shared/constants/errors'
+import { commonApiMessages } from 'shared/constants/common'
 
-import taskFixtures from 'fixtures/task'
-import workGroupFixtures from 'fixtures/workGroup'
-
+import taskFixtures from '_tests_/fixtures/task'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
 import {
   mockCreateTaskReclassificationRequestNotFoundError,
   mockCreateTaskReclassificationRequestSuccess,
@@ -72,19 +67,27 @@ import {
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
 import {
-  findNotification,
   fakeId,
   fakeWord,
   getStoreWithAuth,
-  expectLoadingFinishedByButton,
-  expectLoadingFinishedByCard,
-  expectLoadingStartedByButton,
-  queryNotification,
   render,
   setupApiTests,
-  setupNotifications,
+  notificationTestUtils,
+  buttonTestUtils,
+  cardTestUtils,
 } from '_tests_/utils'
 
+import {
+  availableReasons,
+  testUtils as taskReclassificationModalTestUtils,
+} from '../../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
+import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
+import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
+import { TaskFirstLineFormErrors } from '../../TaskFirstLineModal/types'
+import { testUtils as taskReclassificationRequestTestUtils } from '../../TaskReclassificationRequest/TaskReclassificationRequest.test'
+import { testUtils as taskResolutionModalTestUtils } from '../../TaskResolutionModal/TaskResolutionModal.test'
+import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
+import { testUtils as taskSuspendRequestTestUtils } from '../../TaskSuspendRequest/TaskSuspendRequest.test'
 import {
   activeAssignButtonProps,
   activeAssignOnMeButtonProps,
@@ -99,17 +102,6 @@ import {
   activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
 } from '../CardTitle/CardTitle.test'
-import {
-  availableReasons,
-  testUtils as taskReclassificationModalTestUtils,
-} from '../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
-import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
-import { testUtils as taskFirstLineModalTestUtils } from '../TaskFirstLineModal/TaskFirstLineModal.test'
-import { TaskFirstLineFormErrors } from '../TaskFirstLineModal/types'
-import { testUtils as taskReclassificationRequestTestUtils } from '../TaskReclassificationRequest/TaskReclassificationRequest.test'
-import { testUtils as taskResolutionModalTestUtils } from '../TaskResolutionModal/TaskResolutionModal.test'
-import { testUtils as taskSecondLineModalTestUtils } from '../TaskSecondLineModal/TaskSecondLineModal.test'
-import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
 
 const props: Readonly<TaskCardContainerProps> = {
@@ -120,7 +112,7 @@ const props: Readonly<TaskCardContainerProps> = {
 }
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Контейнер детальной карточки заявки', () => {
   describe('Получение списка рабочих групп', () => {
@@ -144,7 +136,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             getWorkGroupListMessages.commonError,
           )
 
@@ -173,7 +165,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             getWorkGroupListMessages.commonError,
           )
           expect(notification).toBeInTheDocument()
@@ -201,7 +193,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             getWorkGroupListMessages.commonError,
           )
           expect(notification).toBeInTheDocument()
@@ -239,9 +231,7 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              expect(
-                await taskReclassificationRequestTestUtils.findContainer(),
-              ).toBeInTheDocument()
+              expect(await taskReclassificationRequestTestUtils.findContainer()).toBeInTheDocument()
             })
           })
 
@@ -268,7 +258,7 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              const notification = await findNotification(
+              const notification = await notificationTestUtils.findNotification(
                 commonApiMessages.unknownError,
               )
               expect(notification).toBeInTheDocument()
@@ -297,9 +287,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
             taskCardTestUtils.expectReclassificationRequestLoadingNotStarted()
 
-            expect(
-              taskReclassificationRequestTestUtils.queryContainer(),
-            ).not.toBeInTheDocument()
+            expect(taskReclassificationRequestTestUtils.queryContainer()).not.toBeInTheDocument()
           })
         })
 
@@ -338,29 +326,23 @@ describe('Контейнер детальной карточки заявки', 
 
             await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
-            const modal =
-              await taskReclassificationModalTestUtils.findContainer()
+            const modal = await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.setComment(
-              user,
-              fakeWord(),
-            )
+            await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await taskReclassificationRequestTestUtils.findContainer(),
-            ).toBeInTheDocument()
+            expect(await taskReclassificationRequestTestUtils.findContainer()).toBeInTheDocument()
 
             expect(modal).not.toBeInTheDocument()
           })
         })
 
         describe('При не успешном запросе', () => {
-          test('Корректно обрабатывается ошибка - 404', async () => {
+          test('Обрабатывается ошибка 404', async () => {
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
@@ -387,17 +369,14 @@ describe('Контейнер детальной карточки заявки', 
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.setComment(
-              user,
-              fakeWord(),
-            )
+            await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-            const notification = await findNotification(
+            const notification = await notificationTestUtils.findNotification(
               createReclassificationRequestMessages.notFoundError,
             )
             expect(notification).toBeInTheDocument()
@@ -434,9 +413,7 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              expect(
-                await taskReclassificationRequestTestUtils.findContainer(),
-              ).toBeInTheDocument()
+              expect(await taskReclassificationRequestTestUtils.findContainer()).toBeInTheDocument()
             })
           })
 
@@ -463,7 +440,7 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              const notification = await findNotification(
+              const notification = await notificationTestUtils.findNotification(
                 commonApiMessages.unknownError,
               )
               expect(notification).toBeInTheDocument()
@@ -492,9 +469,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
             taskCardTestUtils.expectReclassificationRequestLoadingNotStarted()
 
-            expect(
-              taskReclassificationRequestTestUtils.queryContainer(),
-            ).not.toBeInTheDocument()
+            expect(taskReclassificationRequestTestUtils.queryContainer()).not.toBeInTheDocument()
           })
         })
 
@@ -532,9 +507,7 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              expect(
-                await taskReclassificationRequestTestUtils.findContainer(),
-              ).toBeInTheDocument()
+              expect(await taskReclassificationRequestTestUtils.findContainer()).toBeInTheDocument()
             })
           })
 
@@ -561,7 +534,7 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              const notification = await findNotification(
+              const notification = await notificationTestUtils.findNotification(
                 commonApiMessages.unknownError,
               )
               expect(notification).toBeInTheDocument()
@@ -590,9 +563,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
             taskCardTestUtils.expectReclassificationRequestLoadingNotStarted()
 
-            expect(
-              taskReclassificationRequestTestUtils.queryContainer(),
-            ).not.toBeInTheDocument()
+            expect(taskReclassificationRequestTestUtils.queryContainer()).not.toBeInTheDocument()
           })
         })
 
@@ -631,29 +602,23 @@ describe('Контейнер детальной карточки заявки', 
 
             await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
-            const modal =
-              await taskReclassificationModalTestUtils.findContainer()
+            const modal = await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.setComment(
-              user,
-              fakeWord(),
-            )
+            await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await taskReclassificationRequestTestUtils.findContainer(),
-            ).toBeInTheDocument()
+            expect(await taskReclassificationRequestTestUtils.findContainer()).toBeInTheDocument()
 
             expect(modal).not.toBeInTheDocument()
           })
         })
 
         describe('При не успешном запросе', () => {
-          test('Корректно обрабатывается ошибка - 404', async () => {
+          test('Обрабатывается ошибка 404', async () => {
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
@@ -680,17 +645,14 @@ describe('Контейнер детальной карточки заявки', 
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.setComment(
-              user,
-              fakeWord(),
-            )
+            await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-            const notification = await findNotification(
+            const notification = await notificationTestUtils.findNotification(
               createReclassificationRequestMessages.notFoundError,
             )
             expect(notification).toBeInTheDocument()
@@ -727,9 +689,7 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              expect(
-                await taskReclassificationRequestTestUtils.findContainer(),
-              ).toBeInTheDocument()
+              expect(await taskReclassificationRequestTestUtils.findContainer()).toBeInTheDocument()
             })
           })
 
@@ -756,7 +716,7 @@ describe('Контейнер детальной карточки заявки', 
               await taskCardTestUtils.expectLoadingFinished()
               await taskCardTestUtils.expectReclassificationRequestLoadingFinished()
 
-              const notification = await findNotification(
+              const notification = await notificationTestUtils.findNotification(
                 commonApiMessages.unknownError,
               )
               expect(notification).toBeInTheDocument()
@@ -785,9 +745,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
             taskCardTestUtils.expectReclassificationRequestLoadingNotStarted()
 
-            expect(
-              taskReclassificationRequestTestUtils.queryContainer(),
-            ).not.toBeInTheDocument()
+            expect(taskReclassificationRequestTestUtils.queryContainer()).not.toBeInTheDocument()
           })
         })
 
@@ -826,29 +784,23 @@ describe('Контейнер детальной карточки заявки', 
 
             await cardTitleTestUtils.openMenu(user)
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
-            const modal =
-              await taskReclassificationModalTestUtils.findContainer()
+            const modal = await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.setComment(
-              user,
-              fakeWord(),
-            )
+            await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await taskReclassificationRequestTestUtils.findContainer(),
-            ).toBeInTheDocument()
+            expect(await taskReclassificationRequestTestUtils.findContainer()).toBeInTheDocument()
 
             expect(modal).not.toBeInTheDocument()
           })
         })
 
         describe('При не успешном запросе', () => {
-          test('Корректно обрабатывается ошибка - 404', async () => {
+          test('Обрабатывается ошибка 404', async () => {
             mockGetWorkGroupListSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
@@ -875,17 +827,14 @@ describe('Контейнер детальной карточки заявки', 
             await cardTitleTestUtils.clickRequestReclassificationItem(user)
             await taskReclassificationModalTestUtils.findContainer()
 
-            await taskReclassificationModalTestUtils.setComment(
-              user,
-              fakeWord(),
-            )
+            await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
               availableReasons[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
-            const notification = await findNotification(
+            const notification = await notificationTestUtils.findNotification(
               createReclassificationRequestMessages.notFoundError,
             )
             expect(notification).toBeInTheDocument()
@@ -946,9 +895,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          const badRequestResponse: Required<
-            ResolveTaskBadRequestErrorResponse['data']
-          > = {
+          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse['data']> = {
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
@@ -979,7 +926,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(badRequestResponse.detail[0]),
+            await notificationTestUtils.findNotification(badRequestResponse.detail[0]),
           ).toBeInTheDocument()
 
           expect(
@@ -1032,7 +979,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             resolveTaskMessages.commonError,
           )
           expect(notification).toBeInTheDocument()
@@ -1090,9 +1037,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          const badRequestResponse: Required<
-            ResolveTaskBadRequestErrorResponse['data']
-          > = {
+          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse['data']> = {
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
@@ -1123,7 +1068,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(badRequestResponse.detail[0]),
+            await notificationTestUtils.findNotification(badRequestResponse.detail[0]),
           ).toBeInTheDocument()
 
           expect(
@@ -1176,7 +1121,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             resolveTaskMessages.commonError,
           )
           expect(notification).toBeInTheDocument()
@@ -1234,9 +1179,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          const badRequestResponse: Required<
-            ResolveTaskBadRequestErrorResponse['data']
-          > = {
+          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse['data']> = {
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
@@ -1267,7 +1210,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(badRequestResponse.detail[0]),
+            await notificationTestUtils.findNotification(badRequestResponse.detail[0]),
           ).toBeInTheDocument()
 
           expect(
@@ -1320,7 +1263,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             resolveTaskMessages.commonError,
           )
           expect(notification).toBeInTheDocument()
@@ -1378,9 +1321,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          const badRequestResponse: Required<
-            ResolveTaskBadRequestErrorResponse['data']
-          > = {
+          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse['data']> = {
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
@@ -1411,7 +1352,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(badRequestResponse.detail[0]),
+            await notificationTestUtils.findNotification(badRequestResponse.detail[0]),
           ).toBeInTheDocument()
 
           expect(
@@ -1464,7 +1405,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskResolutionModalTestUtils.setAttachment(user)
           await taskResolutionModalTestUtils.clickSubmitButton(user)
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             resolveTaskMessages.commonError,
           )
           expect(notification).toBeInTheDocument()
@@ -1513,7 +1454,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1526,13 +1467,13 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             getTaskNotFoundErrorMsg(props.taskId),
           )
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1545,13 +1486,13 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             getTaskServerErrorMsg(props.taskId),
           )
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1565,7 +1506,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(getTaskServerErrorMsg(props.taskId)),
+            await notificationTestUtils.findNotification(getTaskServerErrorMsg(props.taskId)),
           ).toBeInTheDocument()
         })
 
@@ -1583,7 +1524,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
           ).toBeInTheDocument()
         })
       })
@@ -1653,7 +1594,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1666,13 +1607,13 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             getTaskNotFoundErrorMsg(props.taskId),
           )
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1686,11 +1627,11 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(getTaskServerErrorMsg(props.taskId)),
+            await notificationTestUtils.findNotification(getTaskServerErrorMsg(props.taskId)),
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1704,7 +1645,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(getTaskServerErrorMsg(props.taskId)),
+            await notificationTestUtils.findNotification(getTaskServerErrorMsg(props.taskId)),
           ).toBeInTheDocument()
         })
 
@@ -1722,7 +1663,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
           ).toBeInTheDocument()
         })
       })
@@ -1792,7 +1733,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1805,13 +1746,13 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await findNotification(
+          const notification = await notificationTestUtils.findNotification(
             getTaskNotFoundErrorMsg(props.taskId),
           )
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1825,11 +1766,11 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(getTaskServerErrorMsg(props.taskId)),
+            await notificationTestUtils.findNotification(getTaskServerErrorMsg(props.taskId)),
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1843,7 +1784,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(getTaskServerErrorMsg(props.taskId)),
+            await notificationTestUtils.findNotification(getTaskServerErrorMsg(props.taskId)),
           ).toBeInTheDocument()
         })
 
@@ -1861,7 +1802,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
           ).toBeInTheDocument()
         })
       })
@@ -1931,7 +1872,7 @@ describe('Контейнер детальной карточки заявки', 
           expect(taskCardTestUtils.queryCardDetails()).not.toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 404', async () => {
+        test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
@@ -1945,11 +1886,11 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(getTaskNotFoundErrorMsg(props.taskId)),
+            await notificationTestUtils.findNotification(getTaskNotFoundErrorMsg(props.taskId)),
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 400', async () => {
+        test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
@@ -1963,11 +1904,11 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(getTaskServerErrorMsg(props.taskId)),
+            await notificationTestUtils.findNotification(getTaskServerErrorMsg(props.taskId)),
           ).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка - 500', async () => {
+        test('Обрабатывается ошибка 500', async () => {
           mockGetWorkGroupListSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
@@ -1981,7 +1922,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(getTaskServerErrorMsg(props.taskId)),
+            await notificationTestUtils.findNotification(getTaskServerErrorMsg(props.taskId)),
           ).toBeInTheDocument()
         })
 
@@ -1999,7 +1940,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           expect(
-            await findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
           ).toBeInTheDocument()
         })
       })
@@ -2059,7 +2000,7 @@ describe('Контейнер детальной карточки заявки', 
         await taskCardTestUtils.expectLoadingStarted()
         await taskCardTestUtils.expectLoadingFinished()
         expect(
-          queryNotification(commonApiMessages.unknownError),
+          notificationTestUtils.queryNotification(commonApiMessages.unknownError),
         ).not.toBeInTheDocument()
       })
     })
@@ -2088,7 +2029,7 @@ describe('Контейнер детальной карточки заявки', 
         await assigneeBlockTestUtils.clickTakeTaskButton(user)
         taskCardTestUtils.expectLoadingNotStarted()
 
-        const notification = await findNotification(
+        const notification = await notificationTestUtils.findNotification(
           commonApiMessages.unknownError,
         )
         expect(notification).toBeInTheDocument()
@@ -2105,9 +2046,9 @@ describe('Контейнер детальной карточки заявки', 
 
         mockGetWorkGroupListSuccess({ body: [] })
 
-        const forbiddenErrorMessage = fakeWord()
+        const errorMessage = fakeWord()
         mockTakeTaskForbiddenError(props.taskId, {
-          body: { detail: [forbiddenErrorMessage] },
+          body: { detail: [errorMessage] },
         })
 
         const { user } = render(<TaskCardContainer {...props} />, {
@@ -2121,7 +2062,7 @@ describe('Контейнер детальной карточки заявки', 
         await assigneeBlockTestUtils.clickTakeTaskButton(user)
         taskCardTestUtils.expectLoadingNotStarted()
 
-        const notification = await findNotification(forbiddenErrorMessage)
+        const notification = await notificationTestUtils.findNotification(errorMessage)
         expect(notification).toBeInTheDocument()
       })
     })
@@ -2169,7 +2110,7 @@ describe('Контейнер детальной карточки заявки', 
         await taskCardTestUtils.expectLoadingFinished()
 
         expect(
-          queryNotification(updateTaskAssigneeMessages.commonError),
+          notificationTestUtils.queryNotification(updateTaskAssigneeMessages.commonError),
         ).not.toBeInTheDocument()
       })
     })
@@ -2214,7 +2155,7 @@ describe('Контейнер детальной карточки заявки', 
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
-          await findNotification(updateTaskAssigneeMessages.commonError),
+          await notificationTestUtils.findNotification(updateTaskAssigneeMessages.commonError),
         ).toBeInTheDocument()
       })
     })
@@ -2248,7 +2189,7 @@ describe('Контейнер детальной карточки заявки', 
         await taskCardTestUtils.expectLoadingFinished()
 
         expect(
-          queryNotification(updateTaskAssigneeMessages.commonError),
+          notificationTestUtils.queryNotification(updateTaskAssigneeMessages.commonError),
         ).not.toBeInTheDocument()
       })
     })
@@ -2278,7 +2219,7 @@ describe('Контейнер детальной карточки заявки', 
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
-          await findNotification(updateTaskAssigneeMessages.commonError),
+          await notificationTestUtils.findNotification(updateTaskAssigneeMessages.commonError),
         ).toBeInTheDocument()
       })
     })
@@ -2307,10 +2248,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           const modal = await taskFirstLineModalTestUtils.findContainer()
@@ -2320,7 +2260,7 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
           })
@@ -2341,14 +2281,11 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const descriptionError = fakeWord()
-          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
-            props.taskId,
-            {
-              body: {
-                description: [descriptionError],
-              },
+          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(props.taskId, {
+            body: {
+              description: [descriptionError],
             },
-          )
+          })
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -2357,10 +2294,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2370,14 +2306,11 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const descriptionContainer =
-            taskFirstLineModalTestUtils.getDescriptionFieldContainer()
+          const descriptionContainer = taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
-          const errorMsg = await within(descriptionContainer).findByText(
-            descriptionError,
-          )
+          const errorMsg = await within(descriptionContainer).findByText(descriptionError)
           expect(errorMsg).toBeInTheDocument()
         })
 
@@ -2404,10 +2337,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2417,9 +2349,9 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const notification = await findNotification(notFoundError)
+          const notification = await notificationTestUtils.findNotification(notFoundError)
           expect(notification).toBeInTheDocument()
         })
 
@@ -2446,10 +2378,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2459,10 +2390,10 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const notification = await findNotification(serverError)
+          const notification = await notificationTestUtils.findNotification(serverError)
           expect(notification).toBeInTheDocument()
         })
 
@@ -2486,10 +2417,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2499,10 +2429,10 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const errorMsg = await findNotification(
+          const errorMsg = await notificationTestUtils.findNotification(
             commonApiMessages.unknownError,
           )
           expect(errorMsg).toBeInTheDocument()
@@ -2532,10 +2462,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           const modal = await taskFirstLineModalTestUtils.findContainer()
@@ -2545,7 +2474,7 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
           })
@@ -2566,10 +2495,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const descriptionError = fakeWord()
-          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
-            props.taskId,
-            { body: { description: [descriptionError] } },
-          )
+          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(props.taskId, {
+            body: { description: [descriptionError] },
+          })
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -2578,10 +2506,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2591,14 +2518,11 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const descriptionContainer =
-            taskFirstLineModalTestUtils.getDescriptionFieldContainer()
+          const descriptionContainer = taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
-          const errorMsg = await within(descriptionContainer).findByText(
-            descriptionError,
-          )
+          const errorMsg = await within(descriptionContainer).findByText(descriptionError)
           expect(errorMsg).toBeInTheDocument()
         })
 
@@ -2625,10 +2549,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2638,9 +2561,9 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const notification = await findNotification(notFoundError)
+          const notification = await notificationTestUtils.findNotification(notFoundError)
           expect(notification).toBeInTheDocument()
         })
 
@@ -2667,10 +2590,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2680,10 +2602,10 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const notification = await findNotification(serverError)
+          const notification = await notificationTestUtils.findNotification(serverError)
           expect(notification).toBeInTheDocument()
         })
 
@@ -2707,10 +2629,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2720,10 +2641,10 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const errorMsg = await findNotification(
+          const errorMsg = await notificationTestUtils.findNotification(
             commonApiMessages.unknownError,
           )
           expect(errorMsg).toBeInTheDocument()
@@ -2753,10 +2674,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           const modal = await taskFirstLineModalTestUtils.findContainer()
@@ -2766,7 +2686,7 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
           })
@@ -2787,10 +2707,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const descriptionError = fakeWord()
-          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
-            props.taskId,
-            { body: { description: [descriptionError] } },
-          )
+          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(props.taskId, {
+            body: { description: [descriptionError] },
+          })
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -2799,10 +2718,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2812,14 +2730,11 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const descriptionContainer =
-            taskFirstLineModalTestUtils.getDescriptionFieldContainer()
+          const descriptionContainer = taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
-          const errorMsg = await within(descriptionContainer).findByText(
-            descriptionError,
-          )
+          const errorMsg = await within(descriptionContainer).findByText(descriptionError)
           expect(errorMsg).toBeInTheDocument()
         })
 
@@ -2846,10 +2761,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2859,9 +2773,9 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const notification = await findNotification(notFoundError)
+          const notification = await notificationTestUtils.findNotification(notFoundError)
           expect(notification).toBeInTheDocument()
         })
 
@@ -2888,10 +2802,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2901,10 +2814,10 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const notification = await findNotification(serverError)
+          const notification = await notificationTestUtils.findNotification(serverError)
           expect(notification).toBeInTheDocument()
         })
 
@@ -2928,10 +2841,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -2941,10 +2853,10 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const errorMsg = await findNotification(
+          const errorMsg = await notificationTestUtils.findNotification(
             commonApiMessages.unknownError,
           )
           expect(errorMsg).toBeInTheDocument()
@@ -2972,10 +2884,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           const modal = await taskFirstLineModalTestUtils.findContainer()
@@ -2985,7 +2896,7 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
           await waitFor(() => {
             expect(modal).not.toBeInTheDocument()
           })
@@ -3006,10 +2917,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const descriptionError = fakeWord()
-          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(
-            props.taskId,
-            { body: { description: [descriptionError] } },
-          )
+          mockDeleteTaskWorkGroupBadRequestError<TaskFirstLineFormErrors>(props.taskId, {
+            body: { description: [descriptionError] },
+          })
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -3018,10 +2928,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -3031,15 +2940,12 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const descriptionContainer =
-            taskFirstLineModalTestUtils.getDescriptionFieldContainer()
+          const descriptionContainer = taskFirstLineModalTestUtils.getDescriptionFieldContainer()
 
-          const errorMsg = await within(descriptionContainer).findByText(
-            descriptionError,
-          )
+          const errorMsg = await within(descriptionContainer).findByText(descriptionError)
           expect(errorMsg).toBeInTheDocument()
         })
 
@@ -3066,10 +2972,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -3079,10 +2984,10 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const notification = await findNotification(notFoundError)
+          const notification = await notificationTestUtils.findNotification(notFoundError)
           expect(notification).toBeInTheDocument()
         })
 
@@ -3109,10 +3014,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -3122,10 +3026,10 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const notification = await findNotification(serverError)
+          const notification = await notificationTestUtils.findNotification(serverError)
           expect(notification).toBeInTheDocument()
         })
 
@@ -3149,10 +3053,9 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const taskCard = taskCardTestUtils.getContainer()
-          await expectLoadingFinishedByCard(taskCard)
+          await cardTestUtils.expectLoadingFinished(taskCard)
 
-          const firstLineButton =
-            await workGroupBlockTestUtils.findFirstLineButton()
+          const firstLineButton = await workGroupBlockTestUtils.findFirstLineButton()
           await user.click(firstLineButton)
 
           await taskFirstLineModalTestUtils.findContainer()
@@ -3162,10 +3065,10 @@ describe('Контейнер детальной карточки заявки', 
           const submitButton = taskFirstLineModalTestUtils.getSubmitButton()
           await user.click(submitButton)
 
-          await expectLoadingStartedByButton(firstLineButton)
-          await expectLoadingFinishedByButton(firstLineButton)
+          await buttonTestUtils.expectLoadingStarted(firstLineButton)
+          await buttonTestUtils.expectLoadingFinished(firstLineButton)
 
-          const errorMsg = await findNotification(
+          const errorMsg = await notificationTestUtils.findNotification(
             commonApiMessages.unknownError,
           )
           expect(errorMsg).toBeInTheDocument()
@@ -3203,10 +3106,7 @@ describe('Контейнер детальной карточки заявки', 
           const modal = await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
           await taskSecondLineModalTestUtils.openWorkGroupField(user)
-          await taskSecondLineModalTestUtils.selectWorkGroup(
-            user,
-            workGroup.name,
-          )
+          await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroup.name)
           await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
@@ -3231,10 +3131,9 @@ describe('Контейнер детальной карточки заявки', 
           const workGroup = workGroupFixtures.workGroupListItem()
           mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
 
-          const badRequestResponse: UpdateTaskWorkGroupBadRequestErrorResponse['data'] =
-            {
-              workGroup: [fakeWord()],
-            }
+          const badRequestResponse: UpdateTaskWorkGroupBadRequestErrorResponse['data'] = {
+            workGroup: [fakeWord()],
+          }
 
           mockUpdateTaskWorkGroupBadRequestError(props.taskId, {
             body: badRequestResponse,
@@ -3251,21 +3150,16 @@ describe('Контейнер детальной карточки заявки', 
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
           await taskSecondLineModalTestUtils.openWorkGroupField(user)
-          await taskSecondLineModalTestUtils.selectWorkGroup(
-            user,
-            workGroup.name,
-          )
+          await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroup.name)
           await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await taskSecondLineModalTestUtils.findWorkGroupError(
-              badRequestResponse.workGroup![0],
-            ),
+            await taskSecondLineModalTestUtils.findWorkGroupError(badRequestResponse.workGroup![0]),
           ).toBeInTheDocument()
 
           expect(
-            await findNotification(updateTaskWorkGroupMessages.commonError),
+            await notificationTestUtils.findNotification(updateTaskWorkGroupMessages.commonError),
           ).toBeInTheDocument()
         })
 
@@ -3295,15 +3189,12 @@ describe('Контейнер детальной карточки заявки', 
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
           await taskSecondLineModalTestUtils.openWorkGroupField(user)
-          await taskSecondLineModalTestUtils.selectWorkGroup(
-            user,
-            workGroup.name,
-          )
+          await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroup.name)
           await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(updateTaskWorkGroupMessages.commonError),
+            await notificationTestUtils.findNotification(updateTaskWorkGroupMessages.commonError),
           ).toBeInTheDocument()
         })
 
@@ -3333,15 +3224,12 @@ describe('Контейнер детальной карточки заявки', 
           await taskSecondLineModalTestUtils.findContainer()
           await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
           await taskSecondLineModalTestUtils.openWorkGroupField(user)
-          await taskSecondLineModalTestUtils.selectWorkGroup(
-            user,
-            workGroup.name,
-          )
+          await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroup.name)
           await taskSecondLineModalTestUtils.setComment(user, fakeWord())
           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
           ).toBeInTheDocument()
         })
       })
@@ -3387,9 +3275,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await taskSuspendRequestTestUtils.findContainer(),
-            ).toBeInTheDocument()
+            expect(await taskSuspendRequestTestUtils.findContainer()).toBeInTheDocument()
           })
         })
 
@@ -3428,7 +3314,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 createSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
@@ -3447,10 +3333,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             const badRequestResponse: Required<
-              Omit<
-                CreateTaskSuspendRequestBadRequestErrorResponse['data'],
-                'detail'
-              >
+              Omit<CreateTaskSuspendRequestBadRequestErrorResponse['data'], 'detail'>
             > = {
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
@@ -3481,7 +3364,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 createSuspendRequestMessages.badRequestError,
               ),
             ).toBeInTheDocument()
@@ -3545,7 +3428,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(commonApiMessages.unknownError),
+              await notificationTestUtils.findNotification(commonApiMessages.unknownError),
             ).toBeInTheDocument()
           })
         })
@@ -3588,9 +3471,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await taskSuspendRequestTestUtils.findContainer(),
-            ).toBeInTheDocument()
+            expect(await taskSuspendRequestTestUtils.findContainer()).toBeInTheDocument()
           })
         })
 
@@ -3629,7 +3510,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 createSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
@@ -3648,10 +3529,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             const badRequestResponse: Required<
-              Omit<
-                CreateTaskSuspendRequestBadRequestErrorResponse['data'],
-                'detail'
-              >
+              Omit<CreateTaskSuspendRequestBadRequestErrorResponse['data'], 'detail'>
             > = {
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
@@ -3682,7 +3560,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 createSuspendRequestMessages.badRequestError,
               ),
             ).toBeInTheDocument()
@@ -3746,7 +3624,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(commonApiMessages.unknownError),
+              await notificationTestUtils.findNotification(commonApiMessages.unknownError),
             ).toBeInTheDocument()
           })
         })
@@ -3789,9 +3667,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await taskSuspendRequestTestUtils.findContainer(),
-            ).toBeInTheDocument()
+            expect(await taskSuspendRequestTestUtils.findContainer()).toBeInTheDocument()
           })
         })
 
@@ -3830,7 +3706,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 createSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
@@ -3849,10 +3725,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             const badRequestResponse: Required<
-              Omit<
-                CreateTaskSuspendRequestBadRequestErrorResponse['data'],
-                'detail'
-              >
+              Omit<CreateTaskSuspendRequestBadRequestErrorResponse['data'], 'detail'>
             > = {
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
@@ -3883,7 +3756,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 createSuspendRequestMessages.badRequestError,
               ),
             ).toBeInTheDocument()
@@ -3947,7 +3820,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(commonApiMessages.unknownError),
+              await notificationTestUtils.findNotification(commonApiMessages.unknownError),
             ).toBeInTheDocument()
           })
         })
@@ -3990,9 +3863,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-            expect(
-              await taskSuspendRequestTestUtils.findContainer(),
-            ).toBeInTheDocument()
+            expect(await taskSuspendRequestTestUtils.findContainer()).toBeInTheDocument()
           })
         })
 
@@ -4031,7 +3902,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 createSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
@@ -4050,10 +3921,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             const badRequestResponse: Required<
-              Omit<
-                CreateTaskSuspendRequestBadRequestErrorResponse['data'],
-                'detail'
-              >
+              Omit<CreateTaskSuspendRequestBadRequestErrorResponse['data'], 'detail'>
             > = {
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
@@ -4084,7 +3952,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 createSuspendRequestMessages.badRequestError,
               ),
             ).toBeInTheDocument()
@@ -4148,7 +4016,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await findNotification(commonApiMessages.unknownError),
+              await notificationTestUtils.findNotification(commonApiMessages.unknownError),
             ).toBeInTheDocument()
           })
         })
@@ -4212,7 +4080,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 deleteSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
@@ -4243,7 +4111,9 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.findContainer()
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
-            const notification = await findNotification(badRequestErrorMessage)
+            const notification = await notificationTestUtils.findNotification(
+              badRequestErrorMessage,
+            )
             expect(notification).toBeInTheDocument()
           })
 
@@ -4270,7 +4140,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
             expect(
-              await findNotification(commonApiMessages.unknownError),
+              await notificationTestUtils.findNotification(commonApiMessages.unknownError),
             ).toBeInTheDocument()
           })
         })
@@ -4332,7 +4202,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 deleteSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
@@ -4363,7 +4233,9 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.findContainer()
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
-            const notification = await findNotification(badRequestErrorMessage)
+            const notification = await notificationTestUtils.findNotification(
+              badRequestErrorMessage,
+            )
             expect(notification).toBeInTheDocument()
           })
 
@@ -4390,7 +4262,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
             expect(
-              await findNotification(commonApiMessages.unknownError),
+              await notificationTestUtils.findNotification(commonApiMessages.unknownError),
             ).toBeInTheDocument()
           })
         })
@@ -4452,7 +4324,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             expect(
-              await findNotification(
+              await notificationTestUtils.findNotification(
                 deleteSuspendRequestMessages.notFoundError,
               ),
             ).toBeInTheDocument()
@@ -4483,7 +4355,9 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.findContainer()
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
-            const notification = await findNotification(badRequestErrorMessage)
+            const notification = await notificationTestUtils.findNotification(
+              badRequestErrorMessage,
+            )
             expect(notification).toBeInTheDocument()
           })
 
@@ -4510,7 +4384,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskSuspendRequestTestUtils.clickCancelButton(user)
 
             expect(
-              await findNotification(commonApiMessages.unknownError),
+              await notificationTestUtils.findNotification(commonApiMessages.unknownError),
             ).toBeInTheDocument()
           })
         })
@@ -4572,7 +4446,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskSuspendRequestTestUtils.clickReturnToWorkButton(user)
 
           expect(
-            await findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
           ).toBeInTheDocument()
         })
       })

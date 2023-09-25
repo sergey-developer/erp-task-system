@@ -1,28 +1,24 @@
-import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
 
-import { getUserMeMessages } from "modules/user/constants";
+import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+
+import { getUserMeMessages } from 'modules/user/constants'
+import { GetUserMeQueryArgs, GetUserMeSuccessResponse } from 'modules/user/models'
 import { useGetUserMeQuery } from 'modules/user/services/userApi.service'
 
-import { CustomBaseQueryFn, isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { GetUserMeQueryArgs, GetUserMeSuccessResponse } from '../models'
+type UseGetUserMeResult = CustomUseQueryHookResult<GetUserMeQueryArgs, GetUserMeSuccessResponse>
 
-export const useGetUserMe = (): TypedUseQueryHookResult<
-  GetUserMeSuccessResponse,
-  GetUserMeQueryArgs,
-  CustomBaseQueryFn
-> => {
+export const useGetUserMe = (): UseGetUserMeResult => {
   const state = useGetUserMeQuery()
 
   useEffect(() => {
-    if (!state.isError) return
-
     if (isErrorResponse(state.error)) {
       showErrorNotification(getUserMeMessages.commonError)
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return state
 }

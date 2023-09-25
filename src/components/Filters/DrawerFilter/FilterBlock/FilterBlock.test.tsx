@@ -4,7 +4,7 @@ import { fakeWord, render } from '_tests_/utils'
 
 import FilterBlock, { FilterBlockProps } from './index'
 
-const props: FilterBlockProps = {
+const props: Readonly<FilterBlockProps> = {
   label: fakeWord(),
   onReset: jest.fn(),
 }

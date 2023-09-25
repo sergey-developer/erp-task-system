@@ -38,7 +38,6 @@ module.exports = {
       shared: resolvePath('src/shared'),
       styles: resolvePath('src/styles'),
       app: resolvePath('src/app'),
-      fixtures: resolvePath('src/fixtures'),
       _tests_: resolvePath('src/_tests_'),
     },
   },

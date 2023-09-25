@@ -7,18 +7,16 @@ const TaskMonitoringPage = React.lazy(
   () => import('modules/monitoring/pages/TaskMonitoringPage'),
 )
 
-export const routes: RouteObject[] = [
-  {
-    path: RouteEnum.Monitoring,
-    children: [
-      {
-        index: true,
-        element: <Navigate to={RouteEnum.TaskMonitoring} />,
-      },
-      {
-        path: RouteEnum.TaskMonitoring,
-        element: <TaskMonitoringPage />,
-      },
-    ],
-  },
-]
+export const route: Readonly<RouteObject> = {
+  path: RouteEnum.Monitoring,
+  children: [
+    {
+      index: true,
+      element: <Navigate to={RouteEnum.TaskMonitoring} />,
+    },
+    {
+      path: RouteEnum.TaskMonitoring,
+      element: <TaskMonitoringPage />,
+    },
+  ],
+}

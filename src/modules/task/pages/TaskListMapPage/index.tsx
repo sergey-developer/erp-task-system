@@ -7,8 +7,8 @@ import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskList from 'modules/task/components/TaskList'
 import TaskListLayout from 'modules/task/components/TaskListLayout'
 import TaskListMap from 'modules/task/components/TaskListMap'
-import { getTaskListMapMessages } from 'modules/task/constants'
-import { useLazyGetTaskList } from 'modules/task/hooks'
+import { getTaskListMapMessages } from 'modules/task/constants/task'
+import { useLazyGetTaskList } from 'modules/task/hooks/task'
 import { useGetTaskListMapQuery } from 'modules/task/services/taskApi.service'
 
 import LoadingArea from 'components/LoadingArea'
@@ -21,8 +21,7 @@ const TaskListMapPage: FC = () => {
 
   const [coords, setCoords] = useState<MaybeNull<Coordinate>>(null)
 
-  const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] =
-    useBoolean(false)
+  const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] = useBoolean(false)
 
   const {
     currentData: taskListMap = [],
@@ -36,8 +35,7 @@ const TaskListMapPage: FC = () => {
     }
   }, [isGetTaskListMapError])
 
-  const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] =
-    useLazyGetTaskList()
+  const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] = useLazyGetTaskList()
 
   useEffect(() => {
     if (coords) {
@@ -53,10 +51,7 @@ const TaskListMapPage: FC = () => {
       <Row gutter={8} data-testid='task-list-map-page'>
         {coords && (
           <Col span={6}>
-            <LoadingArea
-              data-testid='task-list-loading'
-              isLoading={taskListIsFetching}
-            >
+            <LoadingArea data-testid='task-list-loading' isLoading={taskListIsFetching}>
               <TaskList
                 tasks={taskList?.results || []}
                 selectedTaskId={selectedTaskId}
@@ -67,18 +62,9 @@ const TaskListMapPage: FC = () => {
         )}
 
         <Col
-          span={
-            isShowTaskList && !isShowTaskCard
-              ? 18
-              : isShowTaskList && isShowTaskCard
-              ? 10
-              : 24
-          }
+          span={isShowTaskList && !isShowTaskCard ? 18 : isShowTaskList && isShowTaskCard ? 10 : 24}
         >
-          <LoadingArea
-            data-testid='task-list-map-loading'
-            isLoading={taskListMapIsFetching}
-          >
+          <LoadingArea data-testid='task-list-map-loading' isLoading={taskListMapIsFetching}>
             <TaskListMap tasks={taskListMap} onClickTask={setCoords} />
           </LoadingArea>
         </Col>

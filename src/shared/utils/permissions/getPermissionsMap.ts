@@ -16,7 +16,7 @@ const proxyHandler = {
 }
 
 export const getPermissionsMap = (
-  permissions: MaybeUndefined<Array<Permissions>> = [],
+  permissions: MaybeUndefined<Permissions[]> = [],
 ): PermissionsMap => {
   const permissionsMap = permissions.reduce((acc, permission) => {
     const key = camelize(permission) as keyof PermissionsMap

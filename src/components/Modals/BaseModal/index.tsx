@@ -1,8 +1,9 @@
 import { ButtonProps, Modal, ModalProps } from 'antd'
 import { FC, useMemo } from 'react'
 
-import { DEFAULT_MODAL_WIDTH } from 'shared/constants/components'
-import { cancelBtnText } from 'shared/constants/text'
+import LoadingArea from 'components/LoadingArea'
+
+import { modalWidth, cancelBtnText } from './constants'
 
 const commonButtonProps: ButtonProps = {
   size: 'large',
@@ -13,42 +14,46 @@ const baseOkButtonProps: ButtonProps = {
   htmlType: 'submit',
 }
 
-type BaseModalProps = ModalProps
+export type BaseModalProps = ModalProps & {
+  /* Determines whether spinner should be shown on whole modal */
+  isLoading?: boolean
+}
 
 const BaseModal: FC<BaseModalProps> = ({
+  width = modalWidth,
+  cancelText = cancelBtnText,
+  destroyOnClose = true,
+  isLoading = false,
   children,
-  okButtonProps: initialOkButtonProps,
-  cancelButtonProps: initialCancelButtonProps,
+  okButtonProps,
+  cancelButtonProps,
   ...props
 }) => {
-  const okButtonProps = useMemo(
+  const mergedOkButtonProps = useMemo(
     () => ({
       ...baseOkButtonProps,
-      ...(initialOkButtonProps || {}),
+      ...(okButtonProps || {}),
     }),
-    [initialOkButtonProps],
+    [okButtonProps],
   )
 
-  const cancelButtonProps = useMemo(
-    () => ({ ...commonButtonProps, ...(initialCancelButtonProps || {}) }),
-    [initialCancelButtonProps],
+  const mergedCancelButtonProps = useMemo(
+    () => ({ ...commonButtonProps, ...(cancelButtonProps || {}) }),
+    [cancelButtonProps],
   )
 
   return (
     <Modal
-      okButtonProps={okButtonProps}
-      cancelButtonProps={cancelButtonProps}
+      width={width}
+      cancelText={cancelText}
+      destroyOnClose={destroyOnClose}
+      okButtonProps={mergedOkButtonProps}
+      cancelButtonProps={mergedCancelButtonProps}
       {...props}
     >
-      {children}
+      <LoadingArea isLoading={isLoading}>{children}</LoadingArea>
     </Modal>
   )
-}
-
-BaseModal.defaultProps = {
-  width: DEFAULT_MODAL_WIDTH,
-  cancelText: cancelBtnText,
-  destroyOnClose: true,
 }
 
 export default BaseModal

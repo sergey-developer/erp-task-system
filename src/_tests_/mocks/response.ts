@@ -30,8 +30,6 @@ export const getResponseResolver = ({
     if (body) transformers.push(ctx.json(body))
     if (delay) transformers.push(ctx.delay(delay))
 
-    return once
-      ? res.once.apply(null, transformers)
-      : res.apply(null, transformers)
+    return once ? res.once.apply(null, transformers) : res.apply(null, transformers)
   }
 }
