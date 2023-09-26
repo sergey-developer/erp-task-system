@@ -9,10 +9,9 @@ import { SearchFields } from 'modules/task/models'
 import { UserListModel } from 'modules/user/models'
 
 import { IdType } from 'shared/types/common'
-import { MaybeNull } from 'shared/types/utils'
 
 export type ExtendedFilterFormFields = {
-  completeAt: MaybeNull<[Moment, Moment]>
+  completeAt: Moment[]
   searchField: keyof SearchFields
   searchValue: string
   status: TaskExtendedStatusEnum[]

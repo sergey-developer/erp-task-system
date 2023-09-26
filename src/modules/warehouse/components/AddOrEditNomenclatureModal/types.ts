@@ -23,7 +23,7 @@ export type AddOrEditNomenclatureModalFormFields = {
 }
 
 export type AddOrEditNomenclatureModalProps = Required<
-  Pick<BaseModalProps, 'visible' | 'onCancel'>
+  Pick<BaseModalProps, 'open' | 'onCancel'>
 > & {
   title: string
   okText: string

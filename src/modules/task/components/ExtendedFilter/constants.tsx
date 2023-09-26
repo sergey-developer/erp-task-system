@@ -23,7 +23,7 @@ import { ExtendedFilterFormFields } from './types'
 export const DEFAULT_SEARCH_FIELD: keyof SearchFields = 'searchByTitle'
 
 export const initialExtendedFilterFormValues: Readonly<ExtendedFilterFormFields> = {
-  completeAt: null,
+  completeAt: [],
   searchField: DEFAULT_SEARCH_FIELD,
   searchValue: '',
   status: [],

@@ -121,7 +121,7 @@ const RelocationTaskListPage: FC = () => {
 
       {relocationTaskOpened && (
         <RelocationTaskDetails
-          visible={relocationTaskOpened}
+          open={relocationTaskOpened}
           onClose={debouncedToggleOpenRelocationTask}
           relocationTaskId={selectedRelocationTaskId}
         />
@@ -129,7 +129,7 @@ const RelocationTaskListPage: FC = () => {
 
       {filterOpened && (
         <RelocationTaskListFilter
-          visible={filterOpened}
+          open={filterOpened}
           values={filterValues}
           initialValues={initialFilterValues}
           onClose={debouncedToggleOpenFilter}

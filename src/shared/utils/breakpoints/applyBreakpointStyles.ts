@@ -1,4 +1,4 @@
-import { SimpleInterpolation } from 'styled-components'
+import { SimpleInterpolation } from 'styled-components/index'
 
 import {
   BreakpointUnion,

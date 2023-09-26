@@ -1,5 +1,4 @@
 import { Tabs } from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
 import { TaskModel } from 'modules/task/models'
@@ -38,12 +37,9 @@ export type CardTabsProps = {
 }
 
 const CardTabs: FC<CardTabsProps> = ({ task }) => {
-  const breakpoints = useBreakpoint()
-
   return (
     <TabsStyled
       data-testid='task-card-tabs'
-      $breakpoints={breakpoints}
       defaultActiveKey={TaskCardTabsEnum.Description}
       type='card'
       destroyInactiveTabPane //todo: написать тесты

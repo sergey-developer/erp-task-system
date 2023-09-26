@@ -10,13 +10,12 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import { RelocationTaskListFilterFormFields, RelocationTaskListFilterProps } from './types'
 
 const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
-  visible,
-
   values,
   initialValues,
 
-  onClose,
   onApply,
+
+  ...props
 }) => {
   const [form] = Form.useForm<RelocationTaskListFilterFormFields>()
 
@@ -40,9 +39,8 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
 
   return (
     <DrawerFilter
+      {...props}
       data-testid='relocation-task-list-filter'
-      visible={visible}
-      onClose={onClose}
       onReset={resetFields()}
       onApply={form.submit}
     >

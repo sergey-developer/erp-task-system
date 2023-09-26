@@ -1,6 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { FormInstance } from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
 import moment from 'moment-timezone'
 import React, { FC, useCallback, useEffect } from 'react'
@@ -204,8 +203,6 @@ const TaskCard: FC<TaskCardProps> = ({
 
   isGetTaskError,
 }) => {
-  const breakpoints = useBreakpoint()
-
   const taskStatus = useTaskStatus(task?.status)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
@@ -450,12 +447,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
   return (
     <RootWrapperStyled>
-      <CardStyled
-        data-testid='task-card'
-        title={cardTitle}
-        loading={taskIsLoading}
-        $breakpoints={breakpoints}
-      >
+      <CardStyled data-testid='task-card' title={cardTitle} loading={taskIsLoading}>
         <Space direction='vertical' $block size='middle'>
           {
             <LoadingArea
@@ -579,7 +571,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      visible={isTaskResolutionModalOpened}
+                      open={isTaskResolutionModalOpened}
                       onCancel={closeTaskResolutionModal}
                     />
                   }
@@ -600,7 +592,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      visible={isTaskReclassificationModalOpened}
+                      open={isTaskReclassificationModalOpened}
                       onCancel={closeTaskReclassificationModal}
                     />
                   }
@@ -618,7 +610,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      visible={isRequestTaskSuspendModalOpened}
+                      open={isRequestTaskSuspendModalOpened}
                       onCancel={closeRequestTaskSuspendModal}
                     />
                   }
