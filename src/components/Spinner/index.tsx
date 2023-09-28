@@ -9,7 +9,17 @@ export type SpinnerProps = SpinProps & {
 }
 
 const Spinner: FC<SpinnerProps> = ({ area, centered, ...props }) => {
-  return <SpinnerStyled $area={area} $centered={centered} {...props} />
+  return props.tip ? (
+    <SpinnerStyled $area={area} $centered={centered} {...props}>
+      {/**
+       - div as children for preventing warning "tip only work in nest pattern"
+       - setting height to prevent zero height of spinner container
+       */}
+      <div style={{ minHeight: 50 }}></div>
+    </SpinnerStyled>
+  ) : (
+    <SpinnerStyled $area={area} $centered={centered} {...props} />
+  )
 }
 
 Spinner.defaultProps = {

@@ -21,7 +21,6 @@
     "antd": "5.9.3",
     "async-mutex": "^0.3.2",
     "axios": "^0.26.1",
-    "craco-antd": "^2.0.0",
     "history": "^5.3.0",
     "humps": "^2.0.1",
     "lodash": "^4.17.21",

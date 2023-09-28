@@ -82,7 +82,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
   return (
     <BaseModal
       data-testid='request-task-suspend-modal'
-      visible
+      open
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}

@@ -82,7 +82,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   return (
     <BaseModal
       data-testid='task-resolution-modal'
-      visible
+      open
       title={modalTitle}
       onCancel={onCancel}
       footer={

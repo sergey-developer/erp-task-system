@@ -1,4 +1,4 @@
-import { Tabs } from 'antd'
+import { TabsProps } from 'antd'
 import React, { FC } from 'react'
 
 import { TaskModel } from 'modules/task/models'
@@ -14,8 +14,6 @@ import { TabsStyled } from './styles'
 const JournalTab = React.lazy(() => import('./JournalTab'))
 const CommentListTab = React.lazy(() => import('./CommentListTab'))
 const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
-
-const { TabPane } = Tabs
 
 export type CardTabsProps = {
   task: Pick<
@@ -37,17 +35,11 @@ export type CardTabsProps = {
 }
 
 const CardTabs: FC<CardTabsProps> = ({ task }) => {
-  return (
-    <TabsStyled
-      data-testid='task-card-tabs'
-      defaultActiveKey={TaskCardTabsEnum.Description}
-      type='card'
-      destroyInactiveTabPane //todo: написать тесты
-    >
-      <TabPane
-        tab={taskCardTabNamesDict[TaskCardTabsEnum.Description]}
-        key={TaskCardTabsEnum.Description}
-      >
+  const tabsItems: TabsProps['items'] = [
+    {
+      key: TaskCardTabsEnum.Description,
+      label: taskCardTabNamesDict[TaskCardTabsEnum.Description],
+      children: (
         <TaskCardWrapper>
           <DescriptionTab
             title={taskCardTabNamesDict[TaskCardTabsEnum.Description]}
@@ -55,12 +47,12 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
             attachments={task.attachments}
           />
         </TaskCardWrapper>
-      </TabPane>
-
-      <TabPane
-        tab={taskCardTabNamesDict[TaskCardTabsEnum.CommentList]}
-        key={TaskCardTabsEnum.CommentList}
-      >
+      ),
+    },
+    {
+      key: TaskCardTabsEnum.CommentList,
+      label: taskCardTabNamesDict[TaskCardTabsEnum.CommentList],
+      children: (
         <TaskCardWrapper>
           <React.Suspense fallback={<Spinner />}>
             <CommentListTab
@@ -69,12 +61,12 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
             />
           </React.Suspense>
         </TaskCardWrapper>
-      </TabPane>
-
-      <TabPane
-        tab={taskCardTabNamesDict[TaskCardTabsEnum.Resolution]}
-        key={TaskCardTabsEnum.Resolution}
-      >
+      ),
+    },
+    {
+      key: TaskCardTabsEnum.Resolution,
+      label: taskCardTabNamesDict[TaskCardTabsEnum.Resolution],
+      children: (
         <TaskCardWrapper>
           <ResolutionTab
             title={taskCardTabNamesDict[TaskCardTabsEnum.Resolution]}
@@ -84,27 +76,40 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
             attachments={task.resolution.attachments}
           />
         </TaskCardWrapper>
-      </TabPane>
-
-      <TabPane tab={taskCardTabNamesDict[TaskCardTabsEnum.Journal]} key={TaskCardTabsEnum.Journal}>
+      ),
+    },
+    {
+      key: TaskCardTabsEnum.Journal,
+      label: taskCardTabNamesDict[TaskCardTabsEnum.Journal],
+      children: (
         <TaskCardWrapper>
           <React.Suspense fallback={<Spinner />}>
             <JournalTab taskId={task.id} />
           </React.Suspense>
         </TaskCardWrapper>
-      </TabPane>
-
-      <TabPane
-        tab={taskCardTabNamesDict[TaskCardTabsEnum.SubTaskList]}
-        key={TaskCardTabsEnum.SubTaskList}
-      >
+      ),
+    },
+    {
+      key: TaskCardTabsEnum.SubTaskList,
+      label: taskCardTabNamesDict[TaskCardTabsEnum.SubTaskList],
+      children: (
         <TaskCardWrapper>
           <React.Suspense fallback={<Spinner />}>
             <SubTaskListTab task={task} />
           </React.Suspense>
         </TaskCardWrapper>
-      </TabPane>
-    </TabsStyled>
+      ),
+    },
+  ]
+
+  return (
+    <TabsStyled
+      data-testid='task-card-tabs'
+      defaultActiveKey={TaskCardTabsEnum.Description}
+      type='card'
+      destroyInactiveTabPane
+      items={tabsItems}
+    />
   )
 }
 

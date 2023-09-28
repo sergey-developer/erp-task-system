@@ -40,7 +40,7 @@ const CancelSubTaskModal: FC<CancelSubTaskModalProps> = ({
   return (
     <BaseModal
       data-testid='cancel-sub-task-modal'
-      visible
+      open
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}

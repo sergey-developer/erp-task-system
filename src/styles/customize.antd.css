@@ -34,7 +34,7 @@
 }
 
 .ant-table-cell.ant-table-column-sort {
-  background-color: inherit;
+  background-color: inherit !important;
 }
 
 .ant-divider.ant-divider-horizontal {
