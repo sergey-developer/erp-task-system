@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
-import { RouteEnum } from 'configs/routes'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import {
   mockGetNomenclatureGroupListSuccess,
@@ -20,25 +20,20 @@ import WarehouseCatalogListPage from './index'
 
 const getContainer = () => screen.getByTestId('warehouse-catalog-list-page')
 
-const getCatalogContainer = () =>
-  within(getContainer()).getByTestId('warehouse-catalog-list')
+const getCatalogContainer = () => within(getContainer()).getByTestId('warehouse-catalog-list')
 
 // warehouse link
-const getWarehouseLink = () =>
-  linkTestUtils.getLinkIn(getCatalogContainer(), 'Склады')
+const getWarehouseLink = () => linkTestUtils.getLinkIn(getCatalogContainer(), 'Склады')
 
-const queryWarehouseLink = () =>
-  linkTestUtils.queryLinkIn(getCatalogContainer(), 'Склады')
+const queryWarehouseLink = () => linkTestUtils.queryLinkIn(getCatalogContainer(), 'Склады')
 
 const clickWarehouseLink = async (user: UserEvent) =>
   linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'Склады')
 
 // nomenclature link
-const getNomenclatureLink = () =>
-  linkTestUtils.getLinkIn(getCatalogContainer(), 'Номенклатура')
+const getNomenclatureLink = () => linkTestUtils.getLinkIn(getCatalogContainer(), 'Номенклатура')
 
-const queryNomenclatureLink = () =>
-  linkTestUtils.queryLinkIn(getCatalogContainer(), 'Номенклатура')
+const queryNomenclatureLink = () => linkTestUtils.queryLinkIn(getCatalogContainer(), 'Номенклатура')
 
 const clickNomenclatureLink = async (user: UserEvent) =>
   linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'Номенклатура')
@@ -63,17 +58,17 @@ describe('Страница списка справочников складов'
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogList,
             element: <WarehouseCatalogListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
 
       const link = testUtils.getWarehouseLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.WarehouseList)
+      expect(link).toHaveAttribute('href', WarehouseRouteEnum.WarehouseList)
     })
 
     test('При клике переходит на страницу складов', async () => {
@@ -82,15 +77,15 @@ describe('Страница списка справочников складов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogList,
             element: <WarehouseCatalogListPage />,
           },
           {
-            path: RouteEnum.WarehouseList,
+            path: WarehouseRouteEnum.WarehouseList,
             element: <WarehouseListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
 
       await testUtils.clickWarehouseLink(user)
@@ -105,11 +100,11 @@ describe('Страница списка справочников складов'
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogList,
             element: <WarehouseCatalogListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
         {
           preloadedState: {
             api: {
@@ -125,18 +120,18 @@ describe('Страница списка справочников складов'
       const link = testUtils.getNomenclatureLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.NomenclatureList)
+      expect(link).toHaveAttribute('href', WarehouseRouteEnum.NomenclatureList)
     })
 
     test('Не отображается если нет прав', async () => {
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogList,
             element: <WarehouseCatalogListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
       )
 
       const link = testUtils.queryNomenclatureLink()
@@ -150,15 +145,15 @@ describe('Страница списка справочников складов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogList,
             element: <WarehouseCatalogListPage />,
           },
           {
-            path: RouteEnum.NomenclatureList,
+            path: WarehouseRouteEnum.NomenclatureList,
             element: <NomenclatureListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
         {
           preloadedState: {
             api: {

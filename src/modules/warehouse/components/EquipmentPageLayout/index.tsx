@@ -4,13 +4,12 @@ import { SearchProps } from 'antd/es/input'
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
-import { RouteEnum } from 'configs/routes'
-
 import EquipmentFilter from 'modules/warehouse/components/EquipmentFilter'
 import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
 import EquipmentModal from 'modules/warehouse/components/EquipmentModal'
 import { EquipmentModalProps } from 'modules/warehouse/components/EquipmentModal/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useLazyGetEquipment, useGetEquipmentCategoryList } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -138,13 +137,13 @@ const EquipmentPageLayout: FC = () => {
   }, [equipment?.category])
 
   const handleApplyFilter = (values: EquipmentFilterFormFields) => {
-    navigate(RouteEnum.EquipmentNomenclatureList)
+    navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
     setFilterValues(values)
     toggleFilterOpened()
   }
 
   const handleSearch: SearchProps['onSearch'] = (value) => {
-    navigate(RouteEnum.EquipmentNomenclatureList)
+    navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
     setSearchValue(value)
   }
 
