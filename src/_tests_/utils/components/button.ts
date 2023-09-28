@@ -36,12 +36,20 @@ const clickMenuButtonIn = async (container: HTMLElement, user: UserEvent) => {
 }
 
 // close button
-const getCloseButtonIn = (container: HTMLElement) => getButtonIn(container, /close/i)
+const getCloseButtonIn = (container: HTMLElement) => getButtonIn(container, 'Close')
 
 const clickCloseButtonIn = async (container: HTMLElement, user: UserEvent) => {
   const button = getCloseButtonIn(container)
   await user.click(button)
   return button
+}
+
+// filter button
+const getFilterButtonIn = (container: HTMLElement) => getButtonIn(container, /filter/)
+
+const clickFilterButtonIn = async (container: HTMLElement, user: UserEvent) => {
+  const button = getFilterButtonIn(container)
+  await user.click(button)
 }
 
 const utils = {
@@ -57,6 +65,9 @@ const utils = {
 
   getCloseButtonIn,
   clickCloseButtonIn,
+
+  getFilterButtonIn,
+  clickFilterButtonIn,
 }
 
 export default utils
