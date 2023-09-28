@@ -15,7 +15,7 @@ import Equipment from './index'
 import { EquipmentProps } from './types'
 
 const props: Readonly<EquipmentProps> = {
-  visible: true,
+  open: true,
   title: fakeWord(),
   equipment: warehouseFixtures.equipment(),
   equipmentIsLoading: false,

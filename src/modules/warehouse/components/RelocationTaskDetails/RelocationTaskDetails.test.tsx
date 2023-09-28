@@ -49,7 +49,7 @@ import RelocationTaskDetails from './index'
 import { RelocationTaskDetailsProps } from './types'
 
 const props: RelocationTaskDetailsProps = {
-  visible: true,
+  open: true,
   relocationTaskId: fakeId(),
   onClose: jest.fn(),
 }

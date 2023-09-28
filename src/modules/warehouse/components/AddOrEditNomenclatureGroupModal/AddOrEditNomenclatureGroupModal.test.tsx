@@ -10,7 +10,7 @@ import AddOrEditNomenclatureGroupModal from './index'
 import { AddOrEditNomenclatureGroupModalProps } from './types'
 
 const props: Readonly<AddOrEditNomenclatureGroupModalProps> = {
-  visible: true,
+  open: true,
   title: fakeWord(),
   okText: fakeWord(),
   isLoading: false,

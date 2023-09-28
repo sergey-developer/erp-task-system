@@ -6,7 +6,6 @@ import {
   DrawerProps,
   Dropdown,
   DropdownProps,
-  Menu,
   MenuProps,
   Row,
   Typography,
@@ -104,19 +103,21 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     )} 🠖 ${valueOrHyphen(relocationTask?.relocateTo?.title)}`
   )
 
-  const menuItems: MenuProps['items'] = [
-    {
-      key: 1,
-      label: (
-        <Space>
-          {getWaybillM15IsFetching && <Spinner />}
-          <Text>Сформировать накладную М-15</Text>
-        </Space>
-      ),
-      disabled: !userPermissions?.relocationTasksRead,
-      onClick: handleGetWaybillM15,
-    },
-  ]
+  const menuProps: MenuProps = {
+    items: [
+      {
+        key: 1,
+        label: (
+          <Space>
+            {getWaybillM15IsFetching && <Spinner />}
+            <Text>Сформировать накладную М-15</Text>
+          </Space>
+        ),
+        disabled: !userPermissions?.relocationTasksRead,
+        onClick: handleGetWaybillM15,
+      },
+    ],
+  }
 
   return (
     <Drawer
@@ -125,7 +126,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       placement='bottom'
       title={title}
       extra={
-        <Dropdown overlay={<Menu items={menuItems} />} trigger={dropdownTrigger}>
+        <Dropdown menu={menuProps} trigger={dropdownTrigger}>
           <Button type='text' icon={<MenuIcon />} />
         </Dropdown>
       }

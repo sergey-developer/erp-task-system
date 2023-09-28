@@ -1,5 +1,4 @@
 import { Button, ButtonProps, Typography } from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC, ReactElement } from 'react'
 
 import { BaseUserModel } from 'modules/user/models'
@@ -34,10 +33,8 @@ const TaskRequest: FC<TaskRequestProps> = ({
   icon,
   ...props
 }) => {
-  const breakpoints = useBreakpoint()
-
   return (
-    <WrapperStyled $breakpoints={breakpoints} $stretch {...props}>
+    <WrapperStyled $stretch {...props}>
       <Space size='middle' align='baseline' $block>
         {icon}
 

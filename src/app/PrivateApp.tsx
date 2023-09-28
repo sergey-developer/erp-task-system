@@ -11,7 +11,7 @@ import { useGetTimeZoneList } from 'shared/hooks/catalogs/timeZone'
 import { useGetUserStatusList } from 'shared/hooks/catalogs/userStatus'
 import { useGetSystemInfoQuery } from 'shared/services/systemApi.service'
 
-import AppRoutes from './AppRoutes'
+import AppRouter from './AppRouter'
 
 const PrivateApp: FC = () => {
   const { data: userMe } = useGetUserMe()
@@ -33,7 +33,7 @@ const PrivateApp: FC = () => {
     isStaff: get(userMe, 'isStaff', false),
   })
 
-  return <AppRoutes routes={routes} />
+  return <AppRouter routes={routes} />
 }
 
 export default PrivateApp

@@ -1,5 +1,5 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Row, Space } from 'antd'
+import { Button, Col, Input, Row, Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import isArray from 'lodash/isArray'
@@ -42,8 +42,10 @@ import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
-import { ColStyled, RowStyled, SearchStyled } from './styles'
+import { ColStyled, RowStyled } from './styles'
 import { getInitialFastFilter, mapExtendedFilterFormFieldsToQueries } from './utils'
+
+const { Search } = Input
 
 const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
@@ -298,8 +300,7 @@ const TaskListPage: FC = () => {
             <Col span={8}>
               <Row justify='end' gutter={[16, 8]}>
                 <Col>
-                  <SearchStyled
-                    $breakpoints={breakpoints}
+                  <Search
                     allowClear
                     onSearch={handleSearchByTaskId}
                     onChange={onChangeSearch}

@@ -12,7 +12,7 @@ import RelocationTaskListFilter from './index'
 import { RelocationTaskListFilterProps } from './types'
 
 const props: Readonly<RelocationTaskListFilterProps> = {
-  visible: true,
+  open: true,
 
   values: {},
   initialValues: {},

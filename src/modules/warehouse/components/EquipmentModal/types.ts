@@ -19,7 +19,7 @@ import { IdType } from 'shared/types/common'
 export type EquipmentModalFormFields = CreateEquipmentMutationArgs
 
 export type EquipmentModalProps = Required<
-  Pick<BaseModalProps, 'visible' | 'onCancel' | 'okText' | 'title' | 'isLoading'>
+  Pick<BaseModalProps, 'open' | 'onCancel' | 'okText' | 'title' | 'isLoading'>
 > & {
   onSubmit: (
     values: EquipmentModalFormFields,
