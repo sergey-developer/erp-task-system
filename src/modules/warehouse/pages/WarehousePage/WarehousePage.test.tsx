@@ -1,12 +1,10 @@
 import { screen, within } from '@testing-library/react'
 
-import { RouteEnum } from 'configs/routes'
-
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { getWarehouseMessages } from 'modules/warehouse/constants/warehouse'
 import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import {
   mockGetWarehouseNotFoundError,
   mockGetWarehouseServerError,
@@ -52,7 +50,7 @@ describe('Страница склада', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.Warehouse,
+              path: WarehouseRouteEnum.Warehouse,
               element: <WarehousePage />,
             },
           ],
@@ -76,7 +74,7 @@ describe('Страница склада', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.Warehouse,
+              path: WarehouseRouteEnum.Warehouse,
               element: <WarehousePage />,
             },
           ],
@@ -100,7 +98,7 @@ describe('Страница склада', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.Warehouse,
+              path: WarehouseRouteEnum.Warehouse,
               element: <WarehousePage />,
             },
           ],
@@ -124,7 +122,7 @@ describe('Страница склада', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.Warehouse,
+              path: WarehouseRouteEnum.Warehouse,
               element: <WarehousePage />,
             },
           ],
@@ -148,7 +146,7 @@ describe('Страница склада', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.Warehouse,
+              path: WarehouseRouteEnum.Warehouse,
               element: <WarehousePage />,
             },
           ],
@@ -172,7 +170,7 @@ describe('Страница склада', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.Warehouse,
+              path: WarehouseRouteEnum.Warehouse,
               element: <WarehousePage />,
             },
           ],
@@ -200,7 +198,7 @@ describe('Страница склада', () => {
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.Warehouse,
+            path: WarehouseRouteEnum.Warehouse,
             element: <WarehousePage />,
           },
         ],
@@ -220,7 +218,7 @@ describe('Страница склада', () => {
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.Warehouse,
+            path: WarehouseRouteEnum.Warehouse,
             element: <WarehousePage />,
           },
         ],

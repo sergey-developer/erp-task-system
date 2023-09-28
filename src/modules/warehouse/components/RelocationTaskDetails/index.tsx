@@ -154,7 +154,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Объект выбытия:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.relocateFrom?.title)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.relocateFrom?.title)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='relocate-to'>
@@ -162,7 +164,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Объект прибытия:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.relocateTo?.title)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.relocateTo?.title)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='executor'>
@@ -170,7 +174,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Исполнитель:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.executor?.fullName)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.executor?.fullName)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='status'>
@@ -186,7 +192,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Инициатор:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.createdBy?.fullName)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.createdBy?.fullName)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='created-at'>
@@ -202,7 +210,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Комментарий:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.comment)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.comment)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='documents'>
