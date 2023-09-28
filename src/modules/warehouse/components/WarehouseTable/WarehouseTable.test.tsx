@@ -1,8 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { RouteEnum } from 'configs/routes'
-
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import WarehousePage from 'modules/warehouse/pages/WarehousePage'
 import { testUtils as warehousePageTestUtils } from 'modules/warehouse/pages/WarehousePage/WarehousePage.test'
 import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
@@ -10,14 +9,13 @@ import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import {
   ariaSortAttrAscValue,
   ariaSortAttrDescValue,
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetWarehouseSuccess } from '_tests_/mocks/api'
 import { iconTestUtils, renderInRoute_latest, tableTestUtils } from '_tests_/utils'
 
@@ -97,11 +95,11 @@ describe('Таблица складов', () => {
     renderInRoute_latest(
       [
         {
-          path: RouteEnum.WarehouseList,
+          path: WarehouseRouteEnum.WarehouseList,
           element: <WarehouseTable {...props} />,
         },
       ],
-      { initialEntries: [RouteEnum.WarehouseList] },
+      { initialEntries: [WarehouseRouteEnum.WarehouseList] },
     )
 
     const table = testUtils.getContainer()
@@ -120,11 +118,11 @@ describe('Таблица складов', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         const headCell = testUtils.getHeadCell('Наименование объекта')
@@ -147,15 +145,15 @@ describe('Таблица складов', () => {
         const { user } = renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
             {
-              path: RouteEnum.Warehouse,
+              path: WarehouseRouteEnum.Warehouse,
               element: <WarehousePage />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         await testUtils.clickTitleLink(user, warehouseListItem.id, warehouseListItem.title)
@@ -168,11 +166,11 @@ describe('Таблица складов', () => {
         const { user } = renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         await testUtils.clickColTitle(user, 'Наименование объекта')
@@ -190,11 +188,11 @@ describe('Таблица складов', () => {
         const { user } = renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         await testUtils.clickColTitle(user, 'Наименование объекта')
@@ -219,11 +217,11 @@ describe('Таблица складов', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         const headCell = testUtils.getHeadCell('Юридическое лицо')
@@ -243,11 +241,11 @@ describe('Таблица складов', () => {
         const { user } = renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         await testUtils.clickColTitle(user, 'Юридическое лицо')
@@ -265,11 +263,11 @@ describe('Таблица складов', () => {
         const { user } = renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         await testUtils.clickColTitle(user, 'Юридическое лицо')
@@ -294,11 +292,11 @@ describe('Таблица складов', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         const headCell = testUtils.getHeadCell('Адрес')
@@ -315,11 +313,11 @@ describe('Таблица складов', () => {
         const { user } = renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         await testUtils.clickColTitle(user, 'Адрес')
@@ -337,11 +335,11 @@ describe('Таблица складов', () => {
         const { user } = renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         await testUtils.clickColTitle(user, 'Адрес')
@@ -366,11 +364,11 @@ describe('Таблица складов', () => {
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         const headCell = testUtils.getHeadCell('Родительский склад')
@@ -387,11 +385,11 @@ describe('Таблица складов', () => {
         const { user } = renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         await testUtils.clickColTitle(user, 'Родительский склад')
@@ -409,11 +407,11 @@ describe('Таблица складов', () => {
         const { user } = renderInRoute_latest(
           [
             {
-              path: RouteEnum.WarehouseList,
+              path: WarehouseRouteEnum.WarehouseList,
               element: <WarehouseTable {...props} />,
             },
           ],
-          { initialEntries: [RouteEnum.WarehouseList] },
+          { initialEntries: [WarehouseRouteEnum.WarehouseList] },
         )
 
         await testUtils.clickColTitle(user, 'Родительский склад')

@@ -1,13 +1,11 @@
 import { screen } from '@testing-library/react'
 
-import { RouteEnum } from 'configs/routes'
-
 import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
 import { getEquipmentNomenclatureListMessages } from 'modules/warehouse/constants/equipment'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import {
   mockGetEquipmentNomenclatureListForbiddenError,
   mockGetEquipmentNomenclatureListServerError,
@@ -48,11 +46,11 @@ describe('Страница списка номенклатуры оборудо�
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatureList,
             element: <EquipmentNomenclatureListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -73,11 +71,11 @@ describe('Страница списка номенклатуры оборудо�
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.EquipmentNomenclatureList,
+              path: WarehouseRouteEnum.EquipmentNomenclatureList,
               element: <EquipmentNomenclatureListPage />,
             },
           ],
-          { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+          { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
         )
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -92,11 +90,11 @@ describe('Страница списка номенклатуры оборудо�
         renderInRoute_latest(
           [
             {
-              path: RouteEnum.EquipmentNomenclatureList,
+              path: WarehouseRouteEnum.EquipmentNomenclatureList,
               element: <EquipmentNomenclatureListPage />,
             },
           ],
-          { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+          { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
         )
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -119,11 +117,11 @@ describe('Страница списка номенклатуры оборудо�
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatureList,
             element: <EquipmentNomenclatureListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
       )
 
       const table = await equipmentNomenclatureTableTestUtils.expectLoadingFinished()

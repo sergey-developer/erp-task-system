@@ -1,8 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { RouteEnum } from 'configs/routes'
-
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
 import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
 import { getEquipmentListPageLink } from 'modules/warehouse/utils/equipment'
@@ -11,7 +10,6 @@ import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import { mockGetEquipmentListSuccess } from '_tests_/mocks/api'
 import { linkTestUtils, renderInRoute_latest, setupApiTests, tableTestUtils } from '_tests_/utils'
 
@@ -86,11 +84,11 @@ describe('Таблица номенклатуры оборудования', () 
     renderInRoute_latest(
       [
         {
-          path: RouteEnum.EquipmentNomenclatureList,
+          path: WarehouseRouteEnum.EquipmentNomenclatureList,
           element: <EquipmentNomenclatureTable {...props} />,
         },
       ],
-      { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
     )
 
     const table = testUtils.getContainer()
@@ -110,11 +108,11 @@ describe('Таблица номенклатуры оборудования', () 
     const { user } = renderInRoute_latest(
       [
         {
-          path: RouteEnum.EquipmentNomenclatureList,
+          path: WarehouseRouteEnum.EquipmentNomenclatureList,
           element: <EquipmentNomenclatureTable {...props} dataSource={equipmentNomenclatureList} />,
         },
       ],
-      { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
     )
 
     const table = testUtils.getContainer()
@@ -138,11 +136,11 @@ describe('Таблица номенклатуры оборудования', () 
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatureList,
             element: <EquipmentNomenclatureTable {...props} />,
           },
         ],
-        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
       )
 
       const title = testUtils.getColTitle('Наименование')
@@ -167,15 +165,15 @@ describe('Таблица номенклатуры оборудования', () 
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatureList,
             element: <EquipmentNomenclatureTable {...props} />,
           },
           {
-            path: RouteEnum.EquipmentList,
+            path: WarehouseRouteEnum.EquipmentList,
             element: <EquipmentListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
       )
 
       await testUtils.clickTitleLink(
@@ -194,11 +192,11 @@ describe('Таблица номенклатуры оборудования', () 
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatureList,
             element: <EquipmentNomenclatureTable {...props} />,
           },
         ],
-        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
       )
 
       const title = testUtils.getColTitle('Количество оборудования')

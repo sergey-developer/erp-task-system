@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@ant-design/pro-components": "^2.6.28",
     "@craco/craco": "7.0.0-alpha.3",
     "@reduxjs/toolkit": "^1.9.0",
     "ahooks": "^3.6.2",
