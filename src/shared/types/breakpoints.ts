@@ -1,8 +1,8 @@
 import {
   Breakpoint as BaseBreakpoint,
   ScreenMap as BaseScreenMap,
-} from 'antd/es/_util/responsiveObserve'
-import { FlattenSimpleInterpolation } from 'styled-components'
+} from 'antd/es/_util/responsiveObserver'
+import { FlattenSimpleInterpolation } from 'styled-components/index'
 
 /**
  $breakpoints - это результат вызова хука "useBreakpoint" для передачи его как пропс
@@ -16,6 +16,4 @@ export type BreakpointUnion = BaseBreakpoint
 
 export type StyledBreakpointsProps = Record<`$breakpoints`, ScreenMap>
 
-export type StyledBreakpointStyles = Partial<
-  Record<BreakpointUnion, FlattenSimpleInterpolation>
->
+export type StyledBreakpointStyles = Partial<Record<BreakpointUnion, FlattenSimpleInterpolation>>

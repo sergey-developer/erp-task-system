@@ -26,7 +26,7 @@ import EquipmentModal from './index'
 import { EquipmentModalProps } from './types'
 
 const props: Readonly<EquipmentModalProps> = {
-  visible: true,
+  open: true,
   title: fakeWord(),
   isLoading: false,
   okText: fakeWord(),

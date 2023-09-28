@@ -54,7 +54,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
   return (
     <DrawerFilter
       data-testid='equipment-filter'
-      visible={visible}
+      open={visible}
       onClose={onClose}
       onReset={resetFields()}
       onApply={form.submit}

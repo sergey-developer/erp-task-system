@@ -7,7 +7,7 @@ export type AddOrEditNomenclatureGroupModalFormFields = {
 }
 
 export type AddOrEditNomenclatureGroupModalProps = Required<
-  Pick<BaseModalProps, 'visible' | 'onCancel' | 'okText' | 'title' | 'isLoading'>
+  Pick<BaseModalProps, 'open' | 'onCancel' | 'okText' | 'title' | 'isLoading'>
 > & {
   onSubmit: (
     values: AddOrEditNomenclatureGroupModalFormFields,

@@ -1,5 +1,4 @@
 import { Layout, Typography } from 'antd'
-import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 import { Outlet, useMatch } from 'react-router-dom'
 
@@ -18,7 +17,6 @@ import { ContentStyled, FooterStyled } from './styles'
 const { Text } = Typography
 
 const PrivateLayout: FC = () => {
-  const breakpoints = useBreakpoint()
   const changePasswordRouteMatched = useMatch(RouteEnum.ChangePassword)
 
   const { isFetching: userMeIsFetching } = useUserMeState()
@@ -34,10 +32,7 @@ const PrivateLayout: FC = () => {
       >
         <PrivateHeader />
 
-        <ContentStyled
-          $breakpoints={breakpoints}
-          $centered={!!changePasswordRouteMatched}
-        >
+        <ContentStyled $centered={!!changePasswordRouteMatched}>
           <React.Suspense fallback={<Spinner area='parent' size='large' />}>
             <Outlet />
           </React.Suspense>

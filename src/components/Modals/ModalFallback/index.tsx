@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import Spinner from 'components/Spinner'
 
-type ModalFallbackProps = Pick<ModalProps, 'visible' | 'onCancel'>
+type ModalFallbackProps = Pick<ModalProps, 'open' | 'onCancel'>
 
 const ModalFallback: FC<ModalFallbackProps> = (props) => {
   return (

@@ -156,7 +156,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
         <React.Suspense
           fallback={
             <ModalFallback
-              visible={isTaskFirstLineModalOpened}
+              open={isTaskFirstLineModalOpened}
               onCancel={toggleOpenTaskFirstLineModal}
             />
           }
@@ -174,7 +174,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
         <React.Suspense
           fallback={
             <ModalFallback
-              visible={isTaskSecondLineModalOpened}
+              open={isTaskSecondLineModalOpened}
               onCancel={toggleOpenTaskSecondLineModal}
             />
           }

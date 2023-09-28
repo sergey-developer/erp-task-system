@@ -51,7 +51,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   return (
     <DrawerFilter
       data-testid='extended-filter'
-      visible
+      open
       onClose={onClose}
       onReset={resetFields()}
       onApply={form.submit}

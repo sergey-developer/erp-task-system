@@ -40,7 +40,7 @@ const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
   return (
     <BaseModal
       data-testid='rework-sub-task-modal'
-      visible
+      open
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}

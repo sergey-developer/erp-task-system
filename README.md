@@ -187,8 +187,6 @@ RTK query не умеет правильно доставать ReturnType из 
 
 ## Стили
 - При необходимости `Ant Design` кастомизируется с помощью `styled-components`
-- Дефолтная тема `Ant Design` кастомизируется с помощью [craco-antd](https://www.npmjs.com/package/craco-antd) в конфиге `craco.config.ts`
-- Кастомизация темы `antd` - `src/styles/customTheme.less`
 ---
 ### Адаптивность
 Для определения размеров экрана используется хук `useBreakpoint` из `antd`,

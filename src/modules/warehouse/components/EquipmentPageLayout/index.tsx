@@ -325,7 +325,7 @@ const EquipmentPageLayout: FC = () => {
 
       {addEquipmentModalOpened && (
         <EquipmentModal
-          visible={addEquipmentModalOpened}
+          open={addEquipmentModalOpened}
           title='Добавление оборудования'
           okText='Добавить'
           isLoading={createEquipmentIsLoading}
@@ -352,7 +352,7 @@ const EquipmentPageLayout: FC = () => {
 
       {editEquipmentModalOpened && (
         <EquipmentModal
-          visible={editEquipmentModalOpened}
+          open={editEquipmentModalOpened}
           title='Редактирование оборудования'
           okText='Сохранить'
           isLoading={updateEquipmentIsLoading}

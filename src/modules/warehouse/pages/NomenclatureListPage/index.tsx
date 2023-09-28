@@ -400,7 +400,7 @@ const NomenclatureListPage: FC = () => {
 
       {addNomenclatureGroupModalOpened && (
         <AddOrEditNomenclatureGroupModal
-          visible={addNomenclatureGroupModalOpened}
+          open={addNomenclatureGroupModalOpened}
           title='Добавление номенклатурной группы'
           okText='Добавить'
           isLoading={createNomenclatureGroupIsLoading}
@@ -411,7 +411,7 @@ const NomenclatureListPage: FC = () => {
 
       {editNomenclatureGroupModalOpened && !!editableGroup && (
         <AddOrEditNomenclatureGroupModal
-          visible={editNomenclatureGroupModalOpened}
+          open={editNomenclatureGroupModalOpened}
           title='Редактирование номенклатурной группы'
           okText='Сохранить'
           initialValues={{ title: editableGroup.title }}
@@ -423,7 +423,7 @@ const NomenclatureListPage: FC = () => {
 
       {addNomenclatureModalOpened && (
         <AddOrEditNomenclatureModal
-          visible={addNomenclatureModalOpened}
+          open={addNomenclatureModalOpened}
           title='Добавление номенклатурной позиции'
           okText='Добавить'
           isLoading={createNomenclatureIsLoading}
@@ -440,7 +440,7 @@ const NomenclatureListPage: FC = () => {
 
       {editNomenclatureModalOpened && !!editableNomenclatureId && (
         <AddOrEditNomenclatureModal
-          visible={editNomenclatureModalOpened}
+          open={editNomenclatureModalOpened}
           title='Редактирование номенклатурной позиции'
           okText='Сохранить'
           isLoading={updateNomenclatureIsLoading}

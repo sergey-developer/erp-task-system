@@ -88,7 +88,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
   return (
     <BaseModal
       data-testid='create-sub-task-modal'
-      visible
+      open
       title={modalTitle}
       confirmLoading={createSubTaskIsLoading}
       onOk={form.submit}
