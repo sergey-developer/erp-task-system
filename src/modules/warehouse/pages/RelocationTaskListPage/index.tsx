@@ -111,7 +111,7 @@ const RelocationTaskListPage: FC = () => {
   return (
     <>
       <Space data-testid='relocation-task-list-page' $block direction='vertical' size='middle'>
-        <Space>
+        <Space size='middle'>
           <FilterButton onClick={debouncedToggleOpenFilter} />
 
           <MatchUserPermissions expected={['RELOCATION_TASKS_CREATE']}>
