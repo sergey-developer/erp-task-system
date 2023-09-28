@@ -22,6 +22,7 @@ const EquipmentNomenclatureListPage = React.lazy(
 const EquipmentListPage = React.lazy(() => import('./pages/EquipmentListPage'))
 
 const RelocationTaskListPage = React.lazy(() => import('./pages/RelocationTaskListPage'))
+const CreateRelocationTaskPage = React.lazy(() => import('./pages/CreateRelocationTaskPage'))
 
 export const route: Readonly<RouteObject> = {
   path: WarehouseRouteEnum.ManageWarehouses,
@@ -119,6 +120,15 @@ export const route: Readonly<RouteObject> = {
             {
               index: true,
               element: <RelocationTaskListPage />,
+            },
+            {
+              path: WarehouseRouteEnum.CreateRelocationTask,
+              element: <CreateRelocationTaskPage />,
+              handle: {
+                crumb: () => (
+                  <Link to={WarehouseRouteEnum.CreateRelocationTask}>Создать заявку</Link>
+                ),
+              },
             },
           ],
         },

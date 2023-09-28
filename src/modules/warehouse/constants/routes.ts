@@ -11,4 +11,5 @@ export enum WarehouseRouteEnum {
   EquipmentList = '/manage-warehouses/reserves-catalogs/equipment-nomenclature/:id',
 
   RelocationTaskList = '/manage-warehouses/reserves-catalogs/relocation-tasks',
+  CreateRelocationTask = '/manage-warehouses/reserves-catalogs/relocation-tasks/create',
 }

@@ -1,7 +1,10 @@
 import { useBoolean, useSetState } from 'ahooks'
+import { Button } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
 
+import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import RelocationTaskDetails from 'modules/warehouse/components/RelocationTaskDetails'
 import RelocationTaskListFilter from 'modules/warehouse/components/RelocationTaskListFilter'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
@@ -13,6 +16,7 @@ import {
 } from 'modules/warehouse/components/RelocationTaskTable/sort'
 import { RelocationTaskTableProps } from 'modules/warehouse/components/RelocationTaskTable/types'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetRelocationTaskList } from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationTaskListQueryArgs } from 'modules/warehouse/models'
 import { relocationTaskListFilterToParams } from 'modules/warehouse/utils/relocationTask'
@@ -107,7 +111,19 @@ const RelocationTaskListPage: FC = () => {
   return (
     <>
       <Space data-testid='relocation-task-list-page' $block direction='vertical' size='middle'>
-        <FilterButton onClick={debouncedToggleOpenFilter} />
+        <Space>
+          <FilterButton onClick={debouncedToggleOpenFilter} />
+
+          <MatchUserPermissions expected={['RELOCATION_TASKS_CREATE']}>
+            {({ permissions }) =>
+              permissions.relocationTasksCreate ? (
+                <Link to={WarehouseRouteEnum.CreateRelocationTask}>
+                  <Button>Создать заявку</Button>
+                </Link>
+              ) : null
+            }
+          </MatchUserPermissions>
+        </Space>
 
         <RelocationTaskTable
           dataSource={relocationTaskList?.results || []}

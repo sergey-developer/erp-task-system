@@ -351,9 +351,7 @@ const NomenclatureListPage: FC = () => {
           <MatchUserPermissions expected={['NOMENCLATURE_GROUPS_CREATE']}>
             {({ permissions }) =>
               permissions.nomenclatureGroupsCreate ? (
-                <Button onClick={debouncedToggleAddNomenclatureGroupModal}>
-                  + Добавить группу
-                </Button>
+                <Button onClick={debouncedToggleAddNomenclatureGroupModal}>Добавить группу</Button>
               ) : null
             }
           </MatchUserPermissions>
@@ -361,9 +359,7 @@ const NomenclatureListPage: FC = () => {
           <MatchUserPermissions expected={['NOMENCLATURES_CREATE']}>
             {({ permissions }) =>
               permissions.nomenclaturesCreate ? (
-                <Button onClick={debouncedToggleAddNomenclatureModal}>
-                  + Добавить номенклатуру
-                </Button>
+                <Button onClick={debouncedToggleAddNomenclatureModal}>Добавить номенклатуру</Button>
               ) : null
             }
           </MatchUserPermissions>
