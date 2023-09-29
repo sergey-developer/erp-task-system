@@ -27,6 +27,7 @@ type ValidatedEnvConfig = Record<string, ParsedEnvConfigValue>
 interface IEnvConfig {
   isDevelopment: boolean
   isProduction: boolean
+  isTest: boolean
 
   get<T extends ParsedEnvConfigValue>(key: EnvConfigKeys): T
 }
@@ -52,10 +53,12 @@ class EnvConfig implements IEnvConfig {
     this.config = this.validate(config)
     this.isDevelopment = isEqual(env, 'development')
     this.isProduction = isEqual(env, 'production')
+    this.isTest = isEqual(env, 'test')
   }
 
   public readonly isDevelopment: boolean
   public readonly isProduction: boolean
+  public readonly isTest: boolean
 
   public static getInstance = (configs: ConfigsType): EnvConfig => {
     if (!EnvConfig.instance) {
