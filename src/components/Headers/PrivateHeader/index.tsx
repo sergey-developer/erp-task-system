@@ -1,5 +1,4 @@
-import { Badge, Col, Row, Select, Space, Typography } from 'antd'
-import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
+import { Badge, Col, Layout, Row, Select, Space, Typography } from 'antd'
 import moment from 'moment-timezone'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useMemo } from 'react'
@@ -35,12 +34,12 @@ import {
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { HeaderStyled, timeZoneDropdownStyles } from './styles'
+import { timeZoneDropdownStyles } from './styles'
 
+const { Header } = Layout
 const { Text } = Typography
 
 const PrivateHeader: FC = () => {
-  const breakpoints = useBreakpoint()
   const matches = useMatches()
 
   const { data: userMeCode } = useUserMeCodeState()
@@ -113,7 +112,7 @@ const PrivateHeader: FC = () => {
   }
 
   return (
-    <HeaderStyled data-testid='private-header' $breakpoints={breakpoints}>
+    <Header data-testid='private-header'>
       <Row justify='space-between' align='middle'>
         <Col xxl={12} xl={8}>
           <Row align='middle'>
@@ -169,7 +168,7 @@ const PrivateHeader: FC = () => {
           </Space>
         </Col>
       </Row>
-    </HeaderStyled>
+    </Header>
   )
 }
 

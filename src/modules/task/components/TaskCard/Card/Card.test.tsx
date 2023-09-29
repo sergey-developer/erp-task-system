@@ -6,6 +6,7 @@ import {
 } from 'modules/task/constants/taskSuspendRequest'
 import { UserRoleEnum } from 'modules/user/constants'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 
@@ -600,10 +601,12 @@ describe('Карточка заявки', () => {
         expect(clickDownloadLinkSpy).toBeCalledTimes(1)
         expect(clickDownloadLinkSpy).toBeCalledWith(
           fakeArrayBuffer,
-          'application/pdf',
+          MimetypeEnum.Pdf,
           `Акт о выполненных работах ${props.task!.id}`,
         )
       })
+
+      test.todo('При не успешном запросе')
     })
   })
 

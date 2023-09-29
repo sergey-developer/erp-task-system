@@ -67,7 +67,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   return (
     <BaseModal
       data-testid='task-second-line-modal'
-      visible
+      open
       title={modalTitle}
       confirmLoading={isLoading}
       okText={okBtnText}

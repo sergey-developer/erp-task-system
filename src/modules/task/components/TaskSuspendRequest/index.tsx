@@ -7,9 +7,9 @@ import { formatDate } from 'shared/utils/date'
 
 import TaskRequest, { TaskRequestProps } from '../TaskRequest'
 
-export type TaskSuspendRequestProps = Omit<
+export type TaskSuspendRequestProps = Pick<
   TaskRequestProps,
-  'icon' | 'actions'
+  'comment' | 'user' | 'date' | 'title'
 > & {
   action?: ArrayFirst<TaskRequestProps['actions']>
 }

@@ -43,7 +43,7 @@ const RequestTaskReclassificationModal: FC<RequestTaskReclassificationModalProps
   return (
     <BaseModal
       data-testid='request-task-reclassification-modal'
-      visible
+      open
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}

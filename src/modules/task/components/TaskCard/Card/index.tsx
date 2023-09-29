@@ -1,6 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { FormInstance } from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
 import moment from 'moment-timezone'
 import React, { FC, useCallback, useEffect } from 'react'
@@ -40,6 +39,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { MaybeNull } from 'shared/types/utils'
@@ -203,8 +203,6 @@ const TaskCard: FC<TaskCardProps> = ({
 
   isGetTaskError,
 }) => {
-  const breakpoints = useBreakpoint()
-
   const taskStatus = useTaskStatus(task?.status)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
@@ -282,7 +280,7 @@ const TaskCard: FC<TaskCardProps> = ({
           const blob = base64ToArrayBuffer(file)
 
           if (blob) {
-            clickDownloadLink(blob, 'application/pdf', `Акт о выполненных работах ${task.id}`)
+            clickDownloadLink(blob, MimetypeEnum.Pdf, `Акт о выполненных работах ${task.id}`)
           }
         }
       } catch (error) {
@@ -449,12 +447,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
   return (
     <RootWrapperStyled>
-      <CardStyled
-        data-testid='task-card'
-        title={cardTitle}
-        loading={taskIsLoading}
-        $breakpoints={breakpoints}
-      >
+      <CardStyled data-testid='task-card' title={cardTitle} loading={taskIsLoading}>
         <Space direction='vertical' $block size='middle'>
           {
             <LoadingArea
@@ -466,7 +459,7 @@ const TaskCard: FC<TaskCardProps> = ({
               {reclassificationRequest && (
                 <React.Suspense fallback={<Spinner area='block' />}>
                   <TaskReclassificationRequest
-                    comment={reclassificationRequest.comment.text}
+                    comment={reclassificationRequest.comment}
                     date={reclassificationRequest.createdAt}
                     user={reclassificationRequest.user}
                     onCancel={noop}
@@ -578,7 +571,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      visible={isTaskResolutionModalOpened}
+                      open={isTaskResolutionModalOpened}
                       onCancel={closeTaskResolutionModal}
                     />
                   }
@@ -599,7 +592,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      visible={isTaskReclassificationModalOpened}
+                      open={isTaskReclassificationModalOpened}
                       onCancel={closeTaskReclassificationModal}
                     />
                   }
@@ -617,7 +610,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      visible={isRequestTaskSuspendModalOpened}
+                      open={isRequestTaskSuspendModalOpened}
                       onCancel={closeRequestTaskSuspendModal}
                     />
                   }

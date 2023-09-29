@@ -102,7 +102,7 @@ const EquipmentListPage: FC = () => {
 
       {isShowEquipment && (
         <Equipment
-          visible={isShowEquipment}
+          open={isShowEquipment}
           title={context?.equipment?.title}
           equipment={context?.equipment}
           equipmentIsLoading={context?.equipmentIsLoading || false}

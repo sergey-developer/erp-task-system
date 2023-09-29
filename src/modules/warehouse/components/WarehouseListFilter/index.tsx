@@ -49,7 +49,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
   return (
     <DrawerFilter
       data-testid='warehouse-list-filter'
-      visible={visible}
+      open={visible}
       onClose={onClose}
       onReset={resetFields()}
       onApply={form.submit}

@@ -6,10 +6,11 @@ import { formatDate } from 'shared/utils/date'
 
 import TaskRequest, { TaskRequestProps } from '../TaskRequest'
 
-export type TaskReclassificationRequestProps = Omit<
+export type TaskReclassificationRequestProps = Pick<
   TaskRequestProps,
-  'icon' | 'title' | 'actions'
+  'comment' | 'date'
 > & {
+  user: NonNullable<TaskRequestProps['user']>
   onCancel: () => void
   cancelBtnDisabled: boolean
 }

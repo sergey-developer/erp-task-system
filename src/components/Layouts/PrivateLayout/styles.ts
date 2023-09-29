@@ -1,29 +1,10 @@
 import { Layout } from 'antd'
-import styled, { css } from 'styled-components'
-
-import {
-  StyledBreakpointStyles,
-  StyledBreakpointsProps,
-} from 'shared/types/breakpoints'
-import { applyBreakpointStyles } from 'shared/utils/breakpoints'
+import styled from 'styled-components'
 
 import { BaseLayoutContent, BaseLayoutContentProps } from '../BaseLayoutContent'
 
-const contentBreakpointStyles: StyledBreakpointStyles = {
-  xxl: css`
-    padding: 32px 40px;
-  `,
-  xl: css`
-    padding: 32px 15px;
-  `,
-}
-
-export const ContentStyled = styled(BaseLayoutContent)<
-  StyledBreakpointsProps & BaseLayoutContentProps
->`
-  ${({ $breakpoints }) =>
-    applyBreakpointStyles($breakpoints, contentBreakpointStyles)}
-
+export const ContentStyled = styled(BaseLayoutContent)<BaseLayoutContentProps>`
+  padding: 32px 50px;
   min-height: calc(100vh - 60px);
 `
 

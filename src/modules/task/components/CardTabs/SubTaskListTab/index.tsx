@@ -181,7 +181,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
         <React.Suspense
           fallback={
             <ModalFallback
-              visible={createSubTaskModalOpened}
+              open={createSubTaskModalOpened}
               onCancel={debouncedToggleCreateSubTaskModalOpened}
             />
           }
@@ -194,7 +194,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
         <React.Suspense
           fallback={
             <ModalFallback
-              visible={cancelSubTaskModalOpened}
+              open={cancelSubTaskModalOpened}
               onCancel={debouncedToggleCancelSubTaskModalOpened}
             />
           }
@@ -212,7 +212,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
         <React.Suspense
           fallback={
             <ModalFallback
-              visible={reworkSubTaskModalOpened}
+              open={reworkSubTaskModalOpened}
               onCancel={debouncedToggleReworkSubTaskModalOpened}
             />
           }

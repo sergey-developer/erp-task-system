@@ -5,13 +5,13 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-export type AppRoutesProps = {
+export type AppRouterProps = {
   routes: RouteObject[]
 }
 
-const AppRoutes: FC<AppRoutesProps> = ({ routes }) => {
+const AppRouter: FC<AppRouterProps> = ({ routes }) => {
   const router = createBrowserRouter(routes)
   return <RouterProvider router={router} />
 }
 
-export default AppRoutes
+export default AppRouter
