@@ -69,7 +69,7 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // loading
-const expectLoadingStarted = spinnerTestUtils.expectLoadingFinished('equipment-loading')
+const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('equipment-loading')
 
 const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('equipment-loading')
 
