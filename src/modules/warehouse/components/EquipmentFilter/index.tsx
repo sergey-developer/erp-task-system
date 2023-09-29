@@ -2,7 +2,7 @@ import { Form, Radio, Select, InputNumber, DatePicker, Row, Col } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
-import { conditionOptions } from 'modules/warehouse/constants/equipment'
+import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
@@ -75,7 +75,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
               data-testid='conditions-select'
               mode='multiple'
               placeholder='Выберите состояние'
-              options={conditionOptions}
+              options={equipmentConditionOptions}
             />
           </Form.Item>
         </FilterBlock>
