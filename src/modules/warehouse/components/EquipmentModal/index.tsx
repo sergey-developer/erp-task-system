@@ -2,7 +2,7 @@ import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
 import isArray from 'lodash/isArray'
 import { FC, useEffect } from 'react'
 
-import { conditionOptions } from 'modules/warehouse/constants/equipment'
+import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 import { useCheckEquipmentCategory } from 'modules/warehouse/hooks/equipment'
 import {
   EquipmentCategoryListItemModel,
@@ -197,7 +197,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           name='condition'
           rules={onlyRequiredRules}
         >
-          <Select placeholder='Выберите состояние' options={conditionOptions} />
+          <Select placeholder='Выберите состояние' options={equipmentConditionOptions} />
         </Form.Item>
 
         {equipmentCategory.isConsumable && (
