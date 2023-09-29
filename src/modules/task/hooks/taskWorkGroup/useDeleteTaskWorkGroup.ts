@@ -7,7 +7,6 @@ import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/common'
 import {
-  getErrorDetail,
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
@@ -32,8 +31,11 @@ export const useDeleteTaskWorkGroup = () => {
     if (!state.error) return
 
     if (isErrorResponse(state.error)) {
-      if (isNotFoundError(state.error) || isServerRangeError(state.error)) {
-        showErrorNotification(getErrorDetail(state.error))
+      if (
+        (isNotFoundError(state.error) || isServerRangeError(state.error)) &&
+        state.error.data.detail
+      ) {
+        showErrorNotification(state.error.data.detail)
       } else if (!isBadRequestError(state.error)) {
         showErrorNotification(commonApiMessages.unknownError)
       }

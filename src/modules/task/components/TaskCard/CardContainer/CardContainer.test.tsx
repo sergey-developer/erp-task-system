@@ -950,7 +950,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          mockResolveTaskServerError(props.taskId)
+          mockResolveTaskServerError(props.taskId, { body: {} })
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -1092,7 +1092,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          mockResolveTaskServerError(props.taskId)
+          mockResolveTaskServerError(props.taskId, { body: {} })
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -1234,7 +1234,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          mockResolveTaskServerError(props.taskId)
+          mockResolveTaskServerError(props.taskId, { body: {} })
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -1376,7 +1376,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          mockResolveTaskServerError(props.taskId)
+          mockResolveTaskServerError(props.taskId, { body: {} })
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({

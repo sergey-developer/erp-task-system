@@ -255,10 +255,6 @@ const TaskCard: FC<TaskCardProps> = ({
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
             setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
           }
         }
       }
