@@ -6,7 +6,6 @@ import { MaybeNull } from 'shared/types/utils'
 
 import countryFixtures from '_tests_/fixtures/country'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import {
   selectTestUtils,
   fakeWord,
@@ -89,14 +88,9 @@ const findShortNameError = (error: string): Promise<HTMLElement> =>
 
 // group field
 const getGroupFormItem = () => within(getContainer()).getByTestId('group-form-item')
-
 const getGroupLabel = () => within(getGroupFormItem()).getByLabelText('Группа')
-
-const getGroupField = (opened?: boolean) =>
-  selectTestUtils.getSelect(getGroupFormItem(), { name: 'Группа', expanded: opened })
-
+const getGroupField = () => selectTestUtils.getSelect(getGroupFormItem())
 const setGroup = selectTestUtils.clickSelectOption
-
 const getGroupOption = selectTestUtils.getSelectOption
 
 const getSelectedGroup = (value: string): HTMLElement =>
@@ -140,14 +134,8 @@ const getMeasurementUnitFormItem = () =>
 const getMeasurementUnitLabel = () =>
   within(getMeasurementUnitFormItem()).getByLabelText('Единица измерения')
 
-const getMeasurementUnitField = (opened?: boolean) =>
-  selectTestUtils.getSelect(getMeasurementUnitFormItem(), {
-    name: 'Единица измерения',
-    expanded: opened,
-  })
-
+const getMeasurementUnitField = () => selectTestUtils.getSelect(getMeasurementUnitFormItem())
 const setMeasurementUnit = selectTestUtils.clickSelectOption
-
 const getMeasurementUnitOption = selectTestUtils.getSelectOption
 
 const getSelectedMeasurementUnit = (value: string): HTMLElement =>
@@ -171,17 +159,9 @@ const expectMeasurementUnitLoadingFinished = () =>
 
 // country field
 const getCountryFormItem = () => within(getContainer()).getByTestId('country-form-item')
-
 const getCountryLabel = () => within(getCountryFormItem()).getByLabelText('Страна производитель')
-
-const getCountryField = (opened?: boolean) =>
-  selectTestUtils.getSelect(getCountryFormItem(), {
-    name: 'Страна производитель',
-    expanded: opened,
-  })
-
+const getCountryField = () => selectTestUtils.getSelect(getCountryFormItem())
 const setCountry = selectTestUtils.clickSelectOption
-
 const getCountryOption = selectTestUtils.getSelectOption
 
 const getSelectedCountry = (value: string): HTMLElement =>
@@ -199,7 +179,8 @@ const findCountryError = (error: string): Promise<HTMLElement> =>
 
 const expectCountryLoadingStarted = () => selectTestUtils.expectLoadingStarted(getCountryFormItem())
 
-const expectCountryLoadingFinished = () => selectTestUtils.expectLoadingFinished(getCountryFormItem())
+const expectCountryLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getCountryFormItem())
 
 // submit button
 const getSubmitButton = (name: RegExp) => buttonTestUtils.getButtonIn(getContainer(), name)
@@ -224,9 +205,7 @@ const setEquipmentHasSerialNumber = async (user: UserEvent) => {
   return field
 }
 
-const findEquipmentHasSerialNumberError = (
-  error: string,
-): Promise<HTMLElement> =>
+const findEquipmentHasSerialNumberError = (error: string): Promise<HTMLElement> =>
   within(getEquipmentHasSerialNumberFormItem()).findByText(error)
 
 // add button
@@ -695,14 +674,10 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
-      const { user } = render(
-        <AddOrEditNomenclatureModal {...props} {...addModeProps} />,
-      )
+      const { user } = render(<AddOrEditNomenclatureModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
-      const error = await testUtils.findEquipmentHasSerialNumberError(
-        validationMessages.required,
-      )
+      const error = await testUtils.findEquipmentHasSerialNumberError(validationMessages.required)
 
       expect(error).toBeInTheDocument()
     })
