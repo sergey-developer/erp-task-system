@@ -5,7 +5,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test --watchAll=false --maxWorkers=50% --only-failures",
+    "test": "craco test --watchAll=false --maxWorkers=50%",
     "test:watch": "craco test --maxWorkers=25%",
     "test:cov": "craco test --coverage",
     "test:ci": "yarn test:cov --watchAll=false --runInBand",

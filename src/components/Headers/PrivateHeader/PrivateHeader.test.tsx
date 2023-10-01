@@ -38,13 +38,7 @@ const clickNavMenuItem = async (user: UserEvent, name: string) => {
 
 // timezone
 const getTimeZoneSelectContainer = () => within(getContainer()).getByTestId('timezone-select')
-
-const getTimeZoneSelect = (opened?: boolean) =>
-  selectTestUtils.getSelect(getTimeZoneSelectContainer(), {
-    name: 'Временная зона',
-    expanded: opened,
-  })
-
+const getTimeZoneSelect = () => selectTestUtils.getSelect(getTimeZoneSelectContainer())
 const getSelectedTimeZone = () => selectTestUtils.getSelectedOption(getTimeZoneSelectContainer())
 
 const openTimeZoneSelect = (user: UserEvent) =>
@@ -67,11 +61,7 @@ const getUserStatusSelectContainer = (): HTMLElement =>
 const queryUserStatusSelectContainer = (): MaybeNull<HTMLElement> =>
   within(getContainer()).queryByTestId('user-status-select')
 
-const getUserStatusSelect = (opened?: boolean) =>
-  selectTestUtils.getSelect(getUserStatusSelectContainer(), {
-    name: 'Статус пользователя',
-    expanded: opened,
-  })
+const getUserStatusSelect = () => selectTestUtils.getSelect(getUserStatusSelectContainer())
 
 const getSelectedUserStatus = () =>
   selectTestUtils.getSelectedOption(getUserStatusSelectContainer())

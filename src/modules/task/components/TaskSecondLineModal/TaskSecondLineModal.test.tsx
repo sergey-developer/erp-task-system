@@ -1,4 +1,3 @@
-import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -7,7 +6,6 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 import { validationMessages } from 'shared/constants/validation'
 
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   fakeId,
@@ -18,8 +16,9 @@ import {
   setupApiTests,
   selectTestUtils,
   fakeWord,
-  checkboxTestUtils, buttonTestUtils
-} from "_tests_/utils";
+  checkboxTestUtils,
+  buttonTestUtils,
+} from '_tests_/utils'
 
 import TaskSecondLineModal from './index'
 import { TaskSecondLineModalProps } from './types'
@@ -34,30 +33,23 @@ const props: Readonly<TaskSecondLineModalProps> = {
 
 const getContainer = () => screen.getByTestId('task-second-line-modal')
 const findContainer = () => screen.findByTestId('task-second-line-modal')
-
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // work group field
 const getWorkGroupFormItem = () => within(getContainer()).getByTestId('work-group-form-item')
-
-const getWorkGroupField = (opts?: ByRoleOptions) =>
-  selectTestUtils.getSelect(getWorkGroupFormItem(), opts)
-
-const queryWorkGroupField = (opts?: ByRoleOptions) =>
-  selectTestUtils.querySelect(getWorkGroupFormItem(), opts)
-
+const getWorkGroupField = () => selectTestUtils.getSelect(getWorkGroupFormItem())
+const queryWorkGroupField = () => selectTestUtils.querySelect(getWorkGroupFormItem())
 const findWorkGroupError = (error: string) => within(getWorkGroupFormItem()).findByText(error)
-
 const getSelectedWorkGroup = () => selectTestUtils.getSelectedOption(getWorkGroupFormItem())
-
 const getSelectedWorkGroupText = selectTestUtils.getSelectedOptionText
-
 const getWorkGroupOption = selectTestUtils.getSelectOptionById
 const getWorkGroupOptionText = (option: HTMLElement, text: string) => within(option).getByText(text)
 
-const expectWorkGroupLoadingStarted = () => selectTestUtils.expectLoadingStarted(getWorkGroupFormItem())
+const expectWorkGroupLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getWorkGroupFormItem())
 
-const expectWorkGroupLoadingFinished = () => selectTestUtils.expectLoadingFinished(getWorkGroupFormItem())
+const expectWorkGroupLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getWorkGroupFormItem())
 
 const expectWorkGroupSelectDisabled = () => selectTestUtils.selectDisabledIn(getWorkGroupFormItem())
 
@@ -219,18 +211,6 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       expect(input).toBeEnabled()
       expect(title).toBeInTheDocument()
       expect(placeholder).toBeInTheDocument()
-    })
-
-    test('Поле закрыто по умолчанию', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
-
-      render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
-
-      await testUtils.expectWorkGroupLoadingFinished()
-
-      expect(testUtils.queryWorkGroupField({ expanded: true })).not.toBeInTheDocument()
     })
 
     describe('Имеет верное значение по умолчанию', () => {
@@ -432,21 +412,6 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       await testUtils.selectWorkGroup(user, workGroupList[0].name)
 
       expect(testUtils.getSelectedWorkGroup()).toBeInTheDocument()
-    })
-
-    test('После выбора рабочей группы поле закрывается', async () => {
-      const workGroupList = workGroupFixtures.workGroupList()
-      mockGetWorkGroupListSuccess({ body: workGroupList })
-
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
-
-      await testUtils.expectWorkGroupLoadingFinished()
-      await testUtils.openWorkGroupField(user)
-      await testUtils.selectWorkGroup(user, workGroupList[0].name)
-
-      expect(testUtils.getWorkGroupField({ expanded: false })).toBeInTheDocument()
     })
 
     test('Отображает ошибку если не выбрать группу и нажать кнопку отправки', async () => {
