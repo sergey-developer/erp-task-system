@@ -100,7 +100,7 @@ describe('Запрос заявки', () => {
       render(<TaskRequest {...props} />)
 
       expect(
-        testUtils.getChildByText(getShortUserName(props.user)),
+        testUtils.getChildByText(getShortUserName(props.user!)),
       ).toBeInTheDocument()
     })
 

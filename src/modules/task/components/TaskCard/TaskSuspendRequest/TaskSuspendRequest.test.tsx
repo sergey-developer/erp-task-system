@@ -119,7 +119,7 @@ describe('Запрос заявки на ожидание', () => {
       render(<TaskSuspendRequest {...props} />)
 
       expect(
-        testUtils.getChildByText(getShortUserName(props.user)),
+        testUtils.getChildByText(getShortUserName(props.user!)),
       ).toBeInTheDocument()
     })
 
