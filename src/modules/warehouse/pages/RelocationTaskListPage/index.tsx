@@ -74,7 +74,7 @@ const RelocationTaskListPage: FC = () => {
       if (sorter) {
         const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && columnKey in sortableFieldToSortValues) {
+        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
           setRelocationTaskListParams({
             ordering: order ? getSort(columnKey as SortableField, order) : undefined,
           })

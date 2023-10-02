@@ -1,6 +1,6 @@
-import { EditableProTable, ProColumns, ProForm, ProFormInstance } from '@ant-design/pro-components'
-import { Button, Col, Row } from 'antd'
-import { FC, Key, ReactNode, useRef, useState } from 'react'
+import { EditableProTable, ProColumns } from '@ant-design/pro-components'
+import { Button, Form } from 'antd'
+import { FC, Key, ReactNode, useState } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 
@@ -8,11 +8,19 @@ import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
 
 import { AddEquipmentButton } from './styles'
-import { RelocationEquipmentFormFields } from './types'
+import { RelocationEquipmentEditableTableProps, RelocationEquipmentFormFields } from './types'
 
-const RelocationEquipmentEditableTable: FC = () => {
-  const formRef = useRef<ProFormInstance<any>>()
+const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps> = () => {
+  const form = Form.useFormInstance()
   const [editableKeys, setEditableRowKeys] = useState<Key[]>([])
+
+  const handleDeleteRow = (row: RelocationEquipmentFormFields) => {
+    const tableDataSource = form.getFieldValue('equipments') as RelocationEquipmentFormFields[]
+
+    form.setFieldsValue({
+      equipments: tableDataSource.filter((item) => item.rowId !== row?.rowId),
+    })
+  }
 
   const columns: ProColumns<RelocationEquipmentFormFields>[] = [
     {
@@ -95,106 +103,51 @@ const RelocationEquipmentEditableTable: FC = () => {
           key='delete'
           type='text'
           icon={<MinusCircleIcon />}
-          onClick={() => {
-            const tableDataSource = formRef.current?.getFieldValue(
-              'equipments',
-            ) as RelocationEquipmentFormFields[]
-
-            formRef.current?.setFieldsValue({
-              equipments: tableDataSource.filter((item) => item.rowId !== row?.rowId),
-            })
-          }}
+          onClick={() => handleDeleteRow(row)}
         />,
       ],
     },
   ]
 
   return (
-    <ProForm<{
-      equipments: RelocationEquipmentFormFields[]
-    }>
-      formRef={formRef}
-      submitter={{
-        render: ({ form }) => [
-          <Row justify='end' gutter={8}>
-            <Col>
-              <Button>Отменить</Button>
-            </Col>
+    <EditableProTable<RelocationEquipmentFormFields>
+      data-testid='relocation-equipment-editable-table'
+      rowKey='rowId'
+      name='equipments'
+      columns={columns}
+      recordCreatorProps={{
+        record: (index) => ({ rowId: index + 1 }),
+        creatorButtonText: 'Добавить оборудование',
+      }}
+      formItemProps={{
+        rules: [
+          {
+            validator: async (_, value) => {
+              if (value.length < 1) {
+                throw new Error('Добавьте оборудование')
+              }
+            },
+          },
+        ],
 
-            <Col>
-              <Button type='primary' htmlType='submit' onClick={form?.submit}>
-                Создать заявку
-              </Button>
-            </Col>
-          </Row>,
+        // @ts-ignore
+        'data-testid': 'relocation-equipment-editable-table-form-item',
+      }}
+      editable={{
+        type: 'multiple',
+        editableKeys,
+        onChange: setEditableRowKeys,
+        onValuesChange: (record, recordList) => {},
+        actionRender: (row) => [
+          <Button
+            key='delete'
+            type='text'
+            icon={<MinusCircleIcon />}
+            onClick={() => handleDeleteRow(row)}
+          />,
         ],
       }}
-      onFinish={async (values) => {
-        return true
-      }}
-      // initialValues={{
-      //   equipments: [
-      //     {
-      //       rowId: 1,
-      //       id: 321,
-      //       serialNumber: '432-4343',
-      //       purpose: 'purpose',
-      //       condition: EquipmentConditionEnum.Working,
-      //       amount: 5433,
-      //       price: 434444,
-      //       currency: 1,
-      //       quantity: 432432,
-      //     },
-      //   ],
-      // }}
-    >
-      <EditableProTable<RelocationEquipmentFormFields>
-        data-testid='relocation-equipment-editable-table'
-        rowKey='rowId'
-        name='equipments'
-        columns={columns}
-        recordCreatorProps={{
-          record: (index) => ({ rowId: index + 1 }),
-          creatorButtonText: 'Добавить оборудование',
-        }}
-        formItemProps={{
-          rules: [
-            {
-              validator: async (_, value) => {
-                if (value.length < 1) {
-                  throw new Error('Добавьте оборудование')
-                }
-              },
-            },
-          ],
-
-          // @ts-ignore
-          'data-testid': 'relocation-equipment-editable-table-form-item',
-        }}
-        editable={{
-          type: 'multiple',
-          editableKeys,
-          onChange: setEditableRowKeys,
-          onValuesChange: (record, recordList) => {},
-          actionRender: (row) => [
-            <Button
-              key='delete'
-              type='text'
-              icon={<MinusCircleIcon />}
-              onClick={() => {
-                const tableDataSource = formRef.current?.getFieldValue(
-                  'equipments',
-                ) as RelocationEquipmentFormFields[]
-
-                formRef.current?.setFieldsValue({
-                  equipments: tableDataSource.filter((item) => item.rowId !== row?.rowId),
-                })
-              }}
-            />,
-          ],
-        }}
-      />
-    </ProForm>
+    />
   )
 }
 

@@ -1,5 +1,6 @@
 import {
   Col,
+  DatePicker,
   Form,
   FormInstance,
   Input,
@@ -9,19 +10,21 @@ import {
   RadioGroupProps,
   Row,
   Space,
+  TimePicker,
   Typography,
 } from 'antd'
 import moment from 'moment-timezone'
 import React, { FC, useEffect } from 'react'
+
+import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { SuspendReasonEnum, suspendReasonDict } from 'modules/task/constants/taskSuspendRequest'
 
 import BaseModal from 'components/Modals/BaseModal'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
-import { DatePickerStyled, TimePickerStyled } from './styles'
 import { RequestTaskSuspendFormFields } from './types'
-import { commentRules, END_DATE_RULES, END_TIME_RULES, REASON_RULES } from './validation'
+import { commentRules, endDateRules, endTimeRules, reasonRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -95,7 +98,12 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
         onFinish={handleFinish}
         preserve={false}
       >
-        <Form.Item data-testid='reason' label='Причина ожидания' name='reason' rules={REASON_RULES}>
+        <Form.Item
+          data-testid='reason-form-item'
+          label='Причина ожидания'
+          name='reason'
+          rules={reasonRules}
+        >
           <Radio.Group disabled={isLoading} onChange={handleChangeReason}>
             <Space direction='vertical'>
               {Object.keys(suspendReasonDict).map((key, index) => (
@@ -107,28 +115,36 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item data-testid='return-time' label='Время возврата'>
+        <Form.Item data-testid='return-time-form-item' label='Время возврата'>
           <Row justify='space-between'>
             <Col span={11}>
-              <Form.Item data-testid='end-date' name='endDate' rules={END_DATE_RULES}>
-                <DatePickerStyled disabled={isDateTimeFieldDisabled || isLoading} />
+              <Form.Item data-testid='end-date-form-item' name='endDate' rules={endDateRules}>
+                <DatePicker disabled={isDateTimeFieldDisabled || isLoading} />
               </Form.Item>
             </Col>
 
             <Col span={11}>
               <Form.Item
-                data-testid='end-time'
+                data-testid='end-time-form-item'
                 name='endTime'
                 dependencies={['endDate']}
-                rules={END_TIME_RULES}
+                rules={endTimeRules}
               >
-                <TimePickerStyled disabled={isDateTimeFieldDisabled || isLoading} format='HH:mm' />
+                <TimePicker
+                  disabled={isDateTimeFieldDisabled || isLoading}
+                  format={TIME_PICKER_FORMAT}
+                />
               </Form.Item>
             </Col>
           </Row>
         </Form.Item>
 
-        <Form.Item data-testid='comment' label='Комментарий' name='comment' rules={commentRules}>
+        <Form.Item
+          data-testid='comment-form-item'
+          label='Комментарий'
+          name='comment'
+          rules={commentRules}
+        >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>
       </Form>

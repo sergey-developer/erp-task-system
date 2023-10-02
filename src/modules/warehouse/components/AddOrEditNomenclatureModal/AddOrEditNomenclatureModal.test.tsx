@@ -357,7 +357,7 @@ describe('Модалка создания и редактирования ном
       const button = testUtils.getSubmitButton(new RegExp(props.okText))
 
       expect(button).toBeInTheDocument()
-      expect(button).not.toBeEnabled()
+      expect(button).toBeDisabled()
     })
 
     test('Обработчик вызывается корректно', async () => {
