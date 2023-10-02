@@ -56,7 +56,7 @@ const EquipmentListPage: FC = () => {
       if (sorter) {
         const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && columnKey in sortableFieldToSortValues) {
+        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
           setGetEquipmentListParams({
             ordering: order ? getSort(columnKey as SortableField, order) : undefined,
           })
