@@ -1,10 +1,7 @@
 import { screen } from '@testing-library/react'
 
-import {
-  SuspendRequestStatusEnum,
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 
 import { fakeId, fakeIdStr, render } from '_tests_/utils'
 

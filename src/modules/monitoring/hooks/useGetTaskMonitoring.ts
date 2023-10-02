@@ -1,24 +1,37 @@
 import { useEffect } from 'react'
 
-import { GetTaskMonitoringQueryArgs } from 'modules/monitoring/models'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
+
+import {
+  GetTaskMonitoringQueryArgs,
+  GetTaskMonitoringSuccessResponse,
+} from 'modules/monitoring/models'
 import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApi.service'
 
-import { getErrorDetail, isErrorResponse } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+type UseGetTaskMonitoringResult = CustomUseQueryHookResult<
+  GetTaskMonitoringQueryArgs,
+  GetTaskMonitoringSuccessResponse
+>
+
+type UseGetTaskMonitoringOptions = CustomUseQueryOptions<
+  GetTaskMonitoringQueryArgs,
+  GetTaskMonitoringSuccessResponse
+>
 
 export const useGetTaskMonitoring = (
   args: GetTaskMonitoringQueryArgs,
-  options?: Partial<{ skip: boolean }>,
-) => {
+  options?: UseGetTaskMonitoringOptions,
+): UseGetTaskMonitoringResult => {
   const state = useGetTaskMonitoringQuery(args, options)
 
   useEffect(() => {
-    if (!state.isError) return
-
-    if (isErrorResponse(state.error)) {
-      showErrorNotification(getErrorDetail(state.error))
+    if (isErrorResponse(state.error) && state.error.data.detail) {
+      showErrorNotification(state.error.data.detail)
     }
-  }, [state.error, state.isError])
+  }, [state.error])
 
   return state
 }

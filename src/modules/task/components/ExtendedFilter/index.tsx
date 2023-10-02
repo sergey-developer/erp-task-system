@@ -1,9 +1,8 @@
-import { Form, Input, Radio, Select } from 'antd'
+import { DatePicker, Form, Input, Radio, Select } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
-import { workGroupListSelectFieldNames } from 'modules/workGroup/constants'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
@@ -11,15 +10,19 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
+import { idAndNameSelectFieldNames } from 'shared/constants/selectField'
+
 import {
+  managerSelectFieldNames,
   searchFieldOptions,
   taskAssignedOptions,
   taskExtendedStatusOptions,
   taskOverdueOptions,
-  managerSelectFieldNames,
 } from './constants'
-import { CheckboxGroupStyled, RangePickerStyled } from './styles'
+import { CheckboxGroupStyled } from './styles'
 import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
+
+const { RangePicker } = DatePicker
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
@@ -33,13 +36,11 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 }) => {
   const [form] = Form.useForm<ExtendedFilterFormFields>()
 
-  const { data: workGroupList, isFetching: workGroupListIsFetching } =
-    useGetWorkGroupList()
+  const { data: workGroupList, isFetching: workGroupListIsFetching } = useGetWorkGroupList()
 
-  const resetFields =
-    (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
-      form.resetFields(fields)
-    }
+  const resetFields = (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
+    form.resetFields(fields)
+  }
 
   useEffect(() => {
     if (!isEqual(initialFormValues, formValues)) {
@@ -50,7 +51,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   return (
     <DrawerFilter
       data-testid='extended-filter'
-      visible
+      open
       onClose={onClose}
       onReset={resetFields()}
       onApply={form.submit}
@@ -98,7 +99,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           onReset={resetFields(['completeAt'])}
         >
           <Form.Item name='completeAt'>
-            <RangePickerStyled allowClear={false} />
+            <RangePicker allowClear={false} />
           </Form.Item>
         </FilterBlock>
 
@@ -113,15 +114,13 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
                 <Select
                   data-testid='extended-filter-work-group-select'
                   disabled={workGroupListIsFetching}
-                  fieldNames={workGroupListSelectFieldNames}
+                  fieldNames={idAndNameSelectFieldNames}
                   loading={workGroupListIsFetching}
                   options={workGroupList}
                   placeholder='Рабочая группа'
                   showSearch
                   filterOption={(input, option) => {
-                    return option
-                      ? option.name.toLowerCase().includes(input.toLowerCase())
-                      : false
+                    return option ? option.name.toLowerCase().includes(input.toLowerCase()) : false
                   }}
                 />
               </Form.Item>
@@ -159,9 +158,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               placeholder='Руководитель'
               showSearch
               filterOption={(input, option) => {
-                return option
-                  ? option.fullName.toLowerCase().includes(input.toLowerCase())
-                  : false
+                return option ? option.fullName.toLowerCase().includes(input.toLowerCase()) : false
               }}
             />
           </Form.Item>

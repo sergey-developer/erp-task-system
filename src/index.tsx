@@ -10,8 +10,7 @@ const renderApp = () => {
   const rootElementId = 'root'
   const rootElement = document.getElementById(rootElementId)
 
-  if (!rootElement)
-    throw new Error(`Element by id - "${rootElementId}" was not found`)
+  if (!rootElement) throw new Error(`Element by id - "${rootElementId}" was not found`)
 
   const root = ReactDOM.createRoot(rootElement)
 

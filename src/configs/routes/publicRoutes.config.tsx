@@ -7,7 +7,7 @@ import { RouteEnum } from './constants'
 
 const LoginPage = React.lazy(() => import('modules/auth/pages/LoginPage'))
 
-export const publicRoutesConfig: Array<RouteObject> = [
+export const publicRoutesConfig: RouteObject[] = [
   {
     path: RouteEnum.Root,
     element: <PublicLayout />,

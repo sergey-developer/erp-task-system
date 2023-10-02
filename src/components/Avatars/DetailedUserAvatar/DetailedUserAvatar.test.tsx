@@ -7,8 +7,7 @@ import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateL
 
 import PrivateApp from 'app/PrivateApp'
 
-import userFixtures from 'fixtures/user'
-
+import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetTimeZoneListSuccess,
   mockGetUserMeCodeSuccess,
@@ -18,7 +17,7 @@ import { render, renderInRoute, setupApiTests } from '_tests_/utils'
 
 import DetailedUserAvatar, { DetailedUserAvatarProps } from './index'
 
-const props: Pick<DetailedUserAvatarProps, 'profile'> = {
+const props: Readonly<Pick<DetailedUserAvatarProps, 'profile'>> = {
   profile: userFixtures.user(),
 }
 
@@ -65,10 +64,7 @@ describe('Детальный аватар пользователя', () => {
       const changePasswordLink = testUtils.getChangePasswordLink()
 
       expect(changePasswordLink).toBeInTheDocument()
-      expect(changePasswordLink).toHaveAttribute(
-        'href',
-        RouteEnum.ChangePassword,
-      )
+      expect(changePasswordLink).toHaveAttribute('href', RouteEnum.ChangePassword)
     })
 
     test('При нажатии переходит на страницу смены пароля', async () => {
@@ -79,6 +75,7 @@ describe('Детальный аватар пользователя', () => {
       const { user, checkRouteChanged, getCurrentRoute } = renderInRoute(
         <PrivateApp />,
         RouteEnum.TaskList,
+        { useBrowserRouter: false },
       )
 
       await privateLayoutTestUtils.expectLoadingStarted()

@@ -1,21 +1,6 @@
-import { ExtendedSortKey } from 'shared/types/sort'
+import { GetTaskListSortKey, GetTaskListSortValue } from 'modules/task/models'
 
 import { TaskTableListItem } from '../types'
-
-export type AscendSortValue =
-  | 'id'
-  | 'name'
-  | 'title'
-  | 'status'
-  | 'last_comment_text'
-  | 'assignee__last_name'
-  | 'record_id'
-  | 'work_group__name'
-  | 'support_group__name'
-  | 'created_at'
-  | 'ola_next_breach_time'
-
-export type SortValue = ExtendedSortKey<AscendSortValue>
 
 export type SortableField = keyof Pick<
   TaskTableListItem,
@@ -34,7 +19,7 @@ export type SortableField = keyof Pick<
 
 export const sortableFieldToSortValues: Record<
   SortableField,
-  [AscendSortValue, Exclude<SortValue, AscendSortValue>]
+  [GetTaskListSortKey, Exclude<GetTaskListSortValue, GetTaskListSortKey>]
 > = {
   id: ['id', '-id'],
   name: ['name', '-name'],
@@ -49,14 +34,15 @@ export const sortableFieldToSortValues: Record<
   olaNextBreachTime: ['ola_next_breach_time', '-ola_next_breach_time'],
 }
 
-export const sortValueToSortableField = Object.keys(
-  sortableFieldToSortValues,
-).reduce((acc, field) => {
-  const sortableField = field as SortableField
-  const [ascendValue, descendValue] = sortableFieldToSortValues[sortableField]
+export const sortValueToSortableField = Object.keys(sortableFieldToSortValues).reduce(
+  (acc, field) => {
+    const sortableField = field as SortableField
+    const [ascendValue, descendValue] = sortableFieldToSortValues[sortableField]
 
-  acc[ascendValue] = sortableField
-  acc[descendValue] = sortableField
+    acc[ascendValue] = sortableField
+    acc[descendValue] = sortableField
 
-  return acc
-}, {} as Record<SortValue, SortableField>)
+    return acc
+  },
+  {} as Record<GetTaskListSortValue, SortableField>,
+)

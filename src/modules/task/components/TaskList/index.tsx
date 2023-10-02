@@ -2,7 +2,7 @@ import { Col, List, Row, Typography } from 'antd'
 import isEqual from 'lodash/isEqual'
 import { FC } from 'react'
 
-import { TaskTypeEnum } from 'modules/task/constants'
+import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { formatDate } from 'shared/utils/date'
 
@@ -18,11 +18,7 @@ export const taskTypeText: Record<TaskTypeEnum, string> = {
 
 const { Text } = Typography
 
-const TaskList: FC<TaskListProps> = ({
-  tasks,
-  selectedTaskId,
-  onClickTask,
-}) => {
+const TaskList: FC<TaskListProps> = ({ tasks, selectedTaskId, onClickTask }) => {
   return (
     <ListStyled
       data-testid='task-list'
@@ -32,9 +28,7 @@ const TaskList: FC<TaskListProps> = ({
       renderItem={(item) => (
         <List.Item
           data-testid={`task-list-item-${item.id}`}
-          className={
-            isEqual(item.id, selectedTaskId) ? 'list-item-selected' : ''
-          }
+          className={isEqual(item.id, selectedTaskId) ? 'list-item-selected' : ''}
           onClick={() => onClickTask(item.id)}
         >
           <List.Item.Meta

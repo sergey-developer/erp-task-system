@@ -1,15 +1,7 @@
-import {
-  expectLoadingFinishedBySpinner,
-  expectLoadingStartedBySpinner,
-} from '_tests_/utils'
+import { spinnerTestUtils } from '_tests_/utils'
 
-const expectLoadingStarted = expectLoadingStartedBySpinner(
-  'private-layout-loading',
-)
-
-const expectLoadingFinished = expectLoadingFinishedBySpinner(
-  'private-layout-loading',
-)
+const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('private-layout-loading')
+const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('private-layout-loading')
 
 export const testUtils = {
   expectLoadingStarted,

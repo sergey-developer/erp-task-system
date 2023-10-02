@@ -7,24 +7,13 @@ import { ResizableProps } from 'react-resizable'
 import { localeConfig } from './constants/common'
 import tableComponents from './constants/components'
 import { paginationConfig } from './constants/pagination'
-import { TaskTableListItem, TaskTableProps } from './types'
 import { TableStyled, TableWrapperStyled } from './styles'
+import { TaskTableListItem, TaskTableProps } from './types'
 import { applySortToColumn, applyWidthToColumn, getTableColumns } from './utils'
 
-const TaskTable: FC<TaskTableProps> = ({
-  dataSource,
-  loading,
-  sort,
-  onChange,
-  onRow,
-  pagination,
-  rowClassName,
-  userRole,
-}) => {
+const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props }) => {
   const breakpoints = useBreakpoint()
-  const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(
-    getTableColumns(userRole),
-  )
+  const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(getTableColumns(userRole))
 
   const handleResize =
     (index: number): ResizableProps['onResize'] =>
@@ -55,9 +44,7 @@ const TaskTable: FC<TaskTableProps> = ({
   useEffect(() => {
     if (isEmpty(breakpoints)) return
 
-    setColumns((prevColumns) =>
-      prevColumns.map((col) => applyWidthToColumn(col, breakpoints)),
-    )
+    setColumns((prevColumns) => prevColumns.map((col) => applyWidthToColumn(col, breakpoints)))
   }, [breakpoints])
 
   const sortedColumns = useMemo(
@@ -69,8 +56,6 @@ const TaskTable: FC<TaskTableProps> = ({
     <TableWrapperStyled data-testid='task-table'>
       <TableStyled<TaskTableListItem>
         components={tableComponents}
-        rowClassName={rowClassName}
-        dataSource={dataSource}
         columns={sortedColumns}
         pagination={
           pagination && {
@@ -78,12 +63,10 @@ const TaskTable: FC<TaskTableProps> = ({
             ...pagination,
           }
         }
-        loading={loading}
         rowKey='id'
-        onRow={onRow}
-        onChange={onChange}
         showSorterTooltip={false}
         locale={localeConfig}
+        {...props}
       />
     </TableWrapperStyled>
   )
