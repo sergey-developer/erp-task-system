@@ -2,7 +2,8 @@ import { screen } from '@testing-library/react'
 
 import { buttonTestUtils, render } from '_tests_/utils'
 
-import RelocationEquipmentEditableTable, { RelocationEquipmentEditableTableProps } from './index'
+import RelocationEquipmentEditableTable from './index'
+import { RelocationEquipmentEditableTableProps } from './types'
 
 const props: RelocationEquipmentEditableTableProps = {
   onClickDeleteRow: jest.fn(),
