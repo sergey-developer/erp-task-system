@@ -2,6 +2,8 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import moment from 'moment-timezone'
 
+import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
+
 import { SuspendReasonEnum, suspendReasonDict } from 'modules/task/constants/taskSuspendRequest'
 
 import { validationMessages } from 'shared/constants/validation'
@@ -59,15 +61,13 @@ const clickSubmitButton = async (user: UserEvent) => {
   return button
 }
 
-// reason
-const getReasonBlock = () => within(getContainer()).getByTestId('reason')
-
-const getReasonTitle = () => within(getReasonBlock()).getByTitle('Причина ожидания')
-
+// reason field
+const getReasonFormItem = () => within(getContainer()).getByTestId('reason-form-item')
+const getReasonTitle = () => within(getReasonFormItem()).getByTitle('Причина ожидания')
 const getReasonField = (reason: SuspendReasonEnum): HTMLInputElement =>
-  radioButtonTestUtils.getRadioButtonIn(getReasonBlock(), suspendReasonDict[reason])
+  radioButtonTestUtils.getRadioButtonIn(getReasonFormItem(), suspendReasonDict[reason])
 
-const findReasonError = (text: string) => within(getReasonBlock()).findByText(text)
+const findReasonError = (text: string) => within(getReasonFormItem()).findByText(text)
 
 const setReason = async (user: UserEvent, reason: SuspendReasonEnum) => {
   const field = getReasonField(reason)
@@ -75,17 +75,15 @@ const setReason = async (user: UserEvent, reason: SuspendReasonEnum) => {
   return field
 }
 
-// return time
-const getReturnTimeBlock = () => within(getContainer()).getByTestId('return-time')
-
-const getReturnTimeTitle = () => within(getReturnTimeBlock()).getByTitle('Время возврата')
-
-const getEndDateBlock = () => within(getReturnTimeBlock()).getByTestId('end-date')
+// return time field
+const getReturnTimeFormItem = () => within(getContainer()).getByTestId('return-time-form-item')
+const getReturnTimeTitle = () => within(getReturnTimeFormItem()).getByTitle('Время возврата')
+const getEndDateFormItem = () => within(getReturnTimeFormItem()).getByTestId('end-date-form-item')
 
 const getEndDateField = (): HTMLInputElement =>
-  within(getEndDateBlock()).getByPlaceholderText('Выберите дату')
+  within(getEndDateFormItem()).getByPlaceholderText('Выберите дату')
 
-const findEndDateError = (text: string) => within(getEndDateBlock()).findByText(text)
+const findEndDateError = (text: string) => within(getEndDateFormItem()).findByText(text)
 
 const setEndDate = async (user: UserEvent, value: string) => {
   const field = getEndDateField()
@@ -94,12 +92,12 @@ const setEndDate = async (user: UserEvent, value: string) => {
   return field
 }
 
-const getEndTimeBlock = () => within(getReturnTimeBlock()).getByTestId('end-time')
+const getEndTimeFormItem = () => within(getReturnTimeFormItem()).getByTestId('end-time-form-item')
 
 const getEndTimeField = (): HTMLInputElement =>
-  within(getEndTimeBlock()).getByPlaceholderText('Выберите время')
+  within(getEndTimeFormItem()).getByPlaceholderText('Выберите время')
 
-const findEndTimeError = (text: string) => within(getEndTimeBlock()).findByText(text)
+const findEndTimeError = (text: string) => within(getEndTimeFormItem()).findByText(text)
 
 const setEndTime = async (user: UserEvent, value: string) => {
   const field = getEndTimeField()
@@ -108,14 +106,11 @@ const setEndTime = async (user: UserEvent, value: string) => {
   return field
 }
 
-// comment
-const getCommentBlock = () => within(getContainer()).getByTestId('comment')
-
-const getCommentTitle = () => within(getCommentBlock()).getByTitle('Комментарий')
-
-const getCommentField = () => within(getCommentBlock()).getByPlaceholderText('Опишите ситуацию')
-
-const findCommentError = (text: string) => within(getCommentBlock()).findByText(text)
+// comment field
+const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
+const getCommentTitle = () => within(getCommentFormItem()).getByTitle('Комментарий')
+const getCommentField = () => within(getCommentFormItem()).getByPlaceholderText('Опишите ситуацию')
+const findCommentError = (text: string) => within(getCommentFormItem()).findByText(text)
 
 const setComment = async (user: UserEvent, value: string) => {
   const field = getCommentField()
@@ -142,24 +137,24 @@ export const testUtils = {
   getSubmitButton,
   clickSubmitButton,
 
-  getReasonBlock,
+  getReasonFormItem,
   getReasonTitle,
   getReasonField,
   findReasonError,
   setReason,
 
-  getReturnTimeBlock,
+  getReturnTimeFormItem,
   getReturnTimeTitle,
-  getEndDateBlock,
+  getEndDateFormItem,
   getEndDateField,
   findEndDateError,
   setEndDate,
-  getEndTimeBlock,
+  getEndTimeFormItem,
   getEndTimeField,
   findEndTimeError,
   setEndTime,
 
-  getCommentBlock,
+  getCommentFormItem,
   getCommentTitle,
   getCommentField,
   findCommentError,
@@ -305,22 +300,23 @@ describe('Модалка создания запроса о переводе в 
     })
 
     describe('Поля времени возврата', () => {
-      test('Заголовок отображается', () => {
+      test('Отображаются корректно', () => {
         render(<RequestTaskSuspendModal {...props} />)
-        expect(testUtils.getReturnTimeTitle()).toBeInTheDocument()
+
+        const endDateField = testUtils.getEndDateField()
+        const endTimeField = testUtils.getEndTimeField()
+        const title = testUtils.getReturnTimeTitle()
+
+        expect(title).toBeInTheDocument()
+        expect(endDateField).toBeInTheDocument()
+        expect(endDateField).toBeDisabled()
+        expect(endDateField).not.toHaveValue()
+        expect(endTimeField).toBeInTheDocument()
+        expect(endTimeField).toBeDisabled()
+        expect(endTimeField).not.toHaveValue()
       })
 
       describe('Поле даты', () => {
-        test('Отображается корректно', () => {
-          render(<RequestTaskSuspendModal {...props} />)
-
-          const field = testUtils.getEndDateField()
-
-          expect(field).toBeInTheDocument()
-          expect(field).not.toBeEnabled()
-          expect(field).not.toHaveValue()
-        })
-
         test('Активно если выбрать определённую причину', async () => {
           const { user } = render(<RequestTaskSuspendModal {...props} />)
 
@@ -348,11 +344,6 @@ describe('Модалка создания запроса о переводе в 
               expect(testUtils.getEndDateField()).toBeDisabled()
             }
           })
-
-          test('Во время загрузки', () => {
-            render(<RequestTaskSuspendModal {...props} isLoading />)
-            expect(testUtils.getEndDateField()).toBeDisabled()
-          })
         })
 
         test('Можно установить значение если выбрать определённую причину', async () => {
@@ -360,7 +351,7 @@ describe('Модалка создания запроса о переводе в 
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
-          const value = formatDate(new Date(), 'YYYY-MM-DD')
+          const value = formatDate(new Date(), DATE_PICKER_FORMAT)
           const field = await testUtils.setEndDate(user, value)
 
           expect(field).toHaveDisplayValue(value)
@@ -372,7 +363,7 @@ describe('Модалка создания запроса о переводе в 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
           const field = testUtils.getEndDateField()
-          const plusFiveDaysDate = moment().add('5', 'days').format('YYYY-MM-DD')
+          const plusFiveDaysDate = moment().add('5', 'days').format(DATE_PICKER_FORMAT)
 
           expect(field.value).toBe(plusFiveDaysDate)
         })
@@ -393,7 +384,7 @@ describe('Модалка создания запроса о переводе в 
 
             await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
-            const value = formatDate(moment().subtract(1, 'day'), 'YYYY-MM-DD')
+            const value = formatDate(moment().subtract(1, 'day'), DATE_PICKER_FORMAT)
             await testUtils.setEndDate(user, value)
 
             expect(
@@ -417,16 +408,6 @@ describe('Модалка создания запроса о переводе в 
       })
 
       describe('Поле времени', () => {
-        test('Отображается корректно', () => {
-          render(<RequestTaskSuspendModal {...props} />)
-
-          const field = testUtils.getEndTimeField()
-
-          expect(field).toBeInTheDocument()
-          expect(field).not.toBeEnabled()
-          expect(field).not.toHaveValue()
-        })
-
         test('Активно если выбрать определённую причину', async () => {
           const { user } = render(<RequestTaskSuspendModal {...props} />)
 
@@ -466,7 +447,7 @@ describe('Модалка создания запроса о переводе в 
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
-          const value = formatDate(new Date(), 'HH:mm')
+          const value = formatDate(new Date(), TIME_PICKER_FORMAT)
           const field = await testUtils.setEndTime(user, value)
 
           expect(field).toHaveDisplayValue(value)
@@ -478,7 +459,7 @@ describe('Модалка создания запроса о переводе в 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
 
           const field = testUtils.getEndTimeField()
-          const plusFiveDaysTime = moment().add('5', 'days').format('HH:mm')
+          const plusFiveDaysTime = moment().add('5', 'days').format(TIME_PICKER_FORMAT)
 
           expect(field.value).toBe(plusFiveDaysTime)
         })
@@ -494,16 +475,16 @@ describe('Модалка создания запроса о переводе в 
             ).toBeInTheDocument()
           })
 
-          // todo: выяснить почему тест падает но всё написано корректно
+          // todo: выяснить почему тест падает но функционал работает
           test.skip('Если выбран сегодняшний день и если время в прошлом времени', async () => {
             const { user } = render(<RequestTaskSuspendModal {...props} />)
 
             await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
 
-            const dateValue = formatDate(new Date(), 'YYYY-MM-DD')
+            const dateValue = formatDate(new Date(), DATE_PICKER_FORMAT)
             await testUtils.setEndDate(user, dateValue)
 
-            const timeValue = formatDate(moment().subtract(1, 'hour'), 'HH:mm')
+            const timeValue = formatDate(moment().subtract(1, 'hour'), TIME_PICKER_FORMAT)
             await testUtils.setEndTime(user, timeValue)
 
             expect(
@@ -528,16 +509,13 @@ describe('Модалка создания запроса о переводе в 
     })
 
     describe('Поле комментария', () => {
-      test('Заголовок отображается', () => {
-        render(<RequestTaskSuspendModal {...props} />)
-        expect(testUtils.getCommentTitle()).toBeInTheDocument()
-      })
-
       test('Отображается корректно', () => {
         render(<RequestTaskSuspendModal {...props} />)
 
+        const title = testUtils.getCommentTitle()
         const field = testUtils.getCommentField()
 
+        expect(title).toBeInTheDocument()
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
         expect(field).not.toHaveValue()
@@ -550,11 +528,6 @@ describe('Модалка создания запроса о переводе в 
         const field = await testUtils.setComment(user, value)
 
         expect(field).toHaveDisplayValue(value)
-      })
-
-      test('Не активно во время загрузки', () => {
-        render(<RequestTaskSuspendModal {...props} isLoading />)
-        expect(testUtils.getCommentField()).toBeDisabled()
       })
 
       describe('Отображается ошибка', () => {

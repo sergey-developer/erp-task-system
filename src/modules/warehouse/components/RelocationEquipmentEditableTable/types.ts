@@ -13,3 +13,5 @@ export type RelocationEquipmentFormFields = {
   currency?: IdType
   quantity?: number
 }
+
+export type RelocationEquipmentEditableTableProps = {}
