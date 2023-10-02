@@ -380,7 +380,9 @@ describe('Страница реестра заявок', () => {
       const button = testUtils.getExtendedFilterButton()
 
       expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
+      await waitFor(() => {
+        expect(button).toBeEnabled()
+      })
     })
 
     test('Открывает расширенный фильтр', async () => {
