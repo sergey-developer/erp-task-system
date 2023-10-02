@@ -1,9 +1,7 @@
 import inRange from 'lodash/inRange'
-import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
 import isNumber from 'lodash/isNumber'
 import isObject from 'lodash/isObject'
-import isString from 'lodash/isString'
 
 import { env } from 'configs/env'
 
@@ -12,18 +10,9 @@ import { hasProperty } from 'shared/utils/common'
 import { makeString } from 'shared/utils/string'
 
 import { apiPath, currentApiVersion } from './constants'
-import { ApiVersionUnion, ErrorResponse, ValidationErrors } from './intefraces'
+import { ApiVersionUnion, ErrorResponse } from './intefraces'
 
-export function getErrorDetail<T extends object>(
-  error: ErrorResponse<T>,
-): ValidationErrors {
-  const detail = error.data?.detail
-  return isArray(detail) ? detail : isString(detail) ? [detail] : []
-}
-
-export const isErrorResponse = (
-  response: unknown,
-): response is ErrorResponse => {
+export const isErrorResponse = (response: unknown): response is ErrorResponse => {
   if (!isObject(response)) {
     return false
   }
@@ -52,25 +41,13 @@ export const makeAbsoluteApiUrl = (
   basePath: string = apiPath,
   apiVersion: ApiVersionUnion = currentApiVersion,
 ): string =>
-  makeString(
-    '',
-    env.get<string>('apiUrl'),
-    makeRelativeApiUrl(path, basePath, apiVersion),
-  )
+  makeString('', env.get<string>('apiUrl'), makeRelativeApiUrl(path, basePath, apiVersion))
 
 export const isServerRangeError = (error: ErrorResponse): boolean =>
-  inRange(
-    error.status,
-    HttpCodeEnum.ServerError,
-    HttpCodeEnum.InvalidSSLCertificate,
-  )
+  inRange(error.status, HttpCodeEnum.ServerError, HttpCodeEnum.InvalidSSLCertificate)
 
 export const isClientRangeError = (error: ErrorResponse): boolean =>
-  inRange(
-    error.status,
-    HttpCodeEnum.BadRequest,
-    HttpCodeEnum.ClientClosedRequest,
-  )
+  inRange(error.status, HttpCodeEnum.BadRequest, HttpCodeEnum.ClientClosedRequest)
 
 export const isNotFoundError = (error: ErrorResponse): boolean =>
   isEqual(error.status, HttpCodeEnum.NotFound)

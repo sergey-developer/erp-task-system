@@ -107,6 +107,7 @@ describe('Страница списка номенклатур', () => {
       render(<NomenclatureListPage />)
 
       await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureTableTestUtils.expectLoadingFinished()
       const field = testUtils.getSearchField()
 
       expect(field).toBeInTheDocument()
@@ -121,6 +122,7 @@ describe('Страница списка номенклатур', () => {
       const { user } = render(<NomenclatureListPage />)
 
       await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureTableTestUtils.expectLoadingFinished()
       const value = fakeWord()
       const field = await testUtils.setSearchValue(user, value)
 
@@ -149,6 +151,7 @@ describe('Страница списка номенклатур', () => {
       const { user } = render(<NomenclatureListPage />)
 
       await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureTableTestUtils.expectLoadingFinished()
       await testUtils.setSearchValue(user, groupListItem.title)
       await user.click(buttonTestUtils.getButtonIn(getContainer(), 'search'))
       await testUtils.expectGroupListLoadingStarted()

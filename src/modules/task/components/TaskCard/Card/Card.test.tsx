@@ -1150,13 +1150,7 @@ describe('Карточка заявки', () => {
     describe('Модалка перевода заявки в ожидание', () => {
       test('Открывается', async () => {
         const { user } = render(
-          <TaskCard
-            {...props}
-            task={{
-              ...props.task!,
-              ...activeRequestSuspendItemProps,
-            }}
-          />,
+          <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
           { store: getStoreWithAuth() },
         )
 
@@ -1170,13 +1164,7 @@ describe('Карточка заявки', () => {
       describe('Закрывается', () => {
         test('При клике на кнопку "Отмена"', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestSuspendItemProps,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 
@@ -1190,13 +1178,7 @@ describe('Карточка заявки', () => {
 
         test('При клике на кнопку закрытия', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestSuspendItemProps,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 
@@ -1210,13 +1192,7 @@ describe('Карточка заявки', () => {
 
         test('При клике вне модалки', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestSuspendItemProps,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 
@@ -1232,13 +1208,7 @@ describe('Карточка заявки', () => {
       describe('При успешном запросе', () => {
         test('Переданный обработчик вызывается корректно', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestSuspendItemProps,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 
@@ -1259,13 +1229,7 @@ describe('Карточка заявки', () => {
 
         test('Модалка закрывается', async () => {
           const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestSuspendItemProps,
-              }}
-            />,
+            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
             { store: getStoreWithAuth() },
           )
 

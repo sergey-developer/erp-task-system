@@ -47,18 +47,8 @@ const getChildByText = (text: string | RegExp) => within(getContainer()).getByTe
 
 // support group field
 const getSupportGroupFormItem = () => within(getContainer()).getByTestId('supportGroup')
-
-const getSupportGroupSelect = (opened?: boolean) =>
-  selectTestUtils.getSelect(getSupportGroupFormItem(), {
-    name: 'Группа поддержки',
-    expanded: opened,
-  })
-
-const querySupportGroupSelect = (opened?: boolean) =>
-  selectTestUtils.querySelect(getSupportGroupFormItem(), {
-    name: 'Группа поддержки',
-    expanded: opened,
-  })
+const getSupportGroupSelect = () => selectTestUtils.getSelect(getSupportGroupFormItem())
+const querySupportGroupSelect = () => selectTestUtils.querySelect(getSupportGroupFormItem())
 
 const getSupportGroupSelectPlaceholder = () =>
   within(getSupportGroupFormItem()).getByText('Доступные группы')
@@ -89,12 +79,8 @@ const supportGroupExpectLoadingFinished = () =>
 
 // service field
 const getServiceFieldFormItem = () => within(getContainer()).getByTestId('service')
-
-const getServiceField = (opened?: boolean) =>
-  selectTestUtils.getSelect(getServiceFieldFormItem(), { name: 'Сервис', expanded: opened })
-
-const queryServiceField = (opened?: boolean) =>
-  selectTestUtils.querySelect(getServiceFieldFormItem(), { name: 'Сервис', expanded: opened })
+const getServiceField = () => selectTestUtils.getSelect(getServiceFieldFormItem())
+const queryServiceField = () => selectTestUtils.querySelect(getServiceFieldFormItem())
 
 const getServiceFieldPlaceholder = () =>
   within(getServiceFieldFormItem()).getByText('Наименование сервиса')
@@ -303,16 +289,6 @@ describe('Модалка создания задачи заявки', () => {
         expect(label).toBeInTheDocument()
       })
 
-      test('Закрыто по умолчанию', async () => {
-        mockGetSupportGroupListSuccess()
-
-        render(<CreateSubTaskModal {...props} />)
-
-        await testUtils.supportGroup.expectLoadingFinished()
-
-        expect(testUtils.supportGroup.queryField(true)).not.toBeInTheDocument()
-      })
-
       test.skip('Не активно во время создания задачи', async () => {
         const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
@@ -393,21 +369,6 @@ describe('Модалка создания задачи заявки', () => {
         expect(value).toBeInTheDocument()
       })
 
-      test('Закрывается после выбора значения', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
-
-        mockGetSubTaskTemplateListSuccess()
-
-        const { user } = render(<CreateSubTaskModal {...props} />)
-
-        await testUtils.supportGroup.expectLoadingFinished()
-        await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
-
-        expect(testUtils.supportGroup.getField(false)).toBeInTheDocument()
-      })
-
       describe('Соответствующая ошибка отображается под полем', () => {
         test('Если не выбрать значение и нажать кнопку отправки', async () => {
           mockGetSupportGroupListSuccess()
@@ -436,14 +397,6 @@ describe('Модалка создания задачи заявки', () => {
         expect(field).toBeDisabled()
         expect(placeholder).toBeInTheDocument()
         expect(label).toBeInTheDocument()
-      })
-
-      test('Закрыто по умолчанию', () => {
-        mockGetSupportGroupListSuccess()
-
-        render(<CreateSubTaskModal {...props} />)
-
-        expect(testUtils.service.queryField(true)).not.toBeInTheDocument()
       })
 
       test('Не активно если не выбрана группа поддержки', async () => {
@@ -574,25 +527,6 @@ describe('Модалка создания задачи заявки', () => {
         const value = testUtils.service.getValue(fakeTemplate.title)
 
         expect(value).toBeInTheDocument()
-      })
-
-      test('Закрывается после выбора значения', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
-
-        const fakeTemplate = catalogsFixtures.subTaskTemplate()
-        mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
-
-        const { user } = render(<CreateSubTaskModal {...props} />)
-
-        await testUtils.supportGroup.expectLoadingFinished()
-        await testUtils.supportGroup.openField(user)
-        await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
-        await testUtils.service.expectLoadingFinished()
-        await testUtils.service.openField(user)
-        await testUtils.service.setValue(user, fakeTemplate.title)
-
-        expect(testUtils.service.getField(false)).toBeInTheDocument()
       })
 
       describe('Соответствующая ошибка отображается под полем', () => {

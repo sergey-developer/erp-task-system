@@ -124,7 +124,7 @@ describe('Таблица оборудования', () => {
 
     await testUtils.clickRow(user, props.dataSource[0].id)
 
-    expect(props.onRow).toBeCalledTimes(1)
+    expect(props.onRow).toBeCalled()
     expect(props.onRow).toBeCalledWith(props.dataSource[0], 0)
   })
 

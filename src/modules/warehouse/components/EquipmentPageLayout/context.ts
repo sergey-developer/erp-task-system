@@ -4,6 +4,7 @@ import { EquipmentFilterFormFields } from 'modules/warehouse/components/Equipmen
 import { EquipmentModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
+import { MaybeNull } from 'shared/types/utils'
 
 export type EquipmentPageContextType = {
   equipmentIsLoading: boolean
@@ -16,5 +17,5 @@ export type EquipmentPageContextType = {
 }>
 
 export const useEquipmentPageContext = () => {
-  return useOutletContext<EquipmentPageContextType>()
+  return useOutletContext<MaybeNull<EquipmentPageContextType>>()
 }

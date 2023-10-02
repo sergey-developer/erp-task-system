@@ -7,12 +7,7 @@ import { useDeleteSuspendRequestMutation } from 'modules/task/services/taskApi.s
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/common'
-import {
-  getErrorDetail,
-  isBadRequestError,
-  isErrorResponse,
-  isNotFoundError,
-} from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useDeleteTaskSuspendRequest = () => {
@@ -34,8 +29,8 @@ export const useDeleteTaskSuspendRequest = () => {
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
         showErrorNotification(deleteSuspendRequestMessages.notFoundError)
-      } else if (isBadRequestError(state.error)) {
-        showErrorNotification(getErrorDetail(state.error))
+      } else if (isBadRequestError(state.error) && state.error.data.detail) {
+        showErrorNotification(state.error.data.detail)
       } else {
         showErrorNotification(commonApiMessages.unknownError)
       }

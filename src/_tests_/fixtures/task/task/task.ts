@@ -1,3 +1,5 @@
+import isUndefined from 'lodash/isUndefined'
+
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -50,9 +52,11 @@ export const task = (
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
-  workGroup: props?.workGroup || taskFixtures.workGroup(),
-  assignee: props?.assignee || taskFixtures.assignee(),
-  suspendRequest: props?.suspendRequest || null,
+  workGroup: isUndefined(props?.workGroup) ? taskFixtures.workGroup() : props!.workGroup,
+  assignee: isUndefined(props?.assignee) ? taskFixtures.assignee() : props!.assignee,
+  suspendRequest: isUndefined(props?.suspendRequest)
+    ? taskFixtures.suspendRequest()
+    : props!.suspendRequest,
 
   attachments: [taskFixtures.attachment()],
   resolution: {
