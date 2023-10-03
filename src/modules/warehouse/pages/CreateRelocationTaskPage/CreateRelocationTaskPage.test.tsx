@@ -4,7 +4,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as createRelocationTaskFormTestUtils } from 'modules/warehouse/components/CreateRelocationTaskForm/CreateRelocationTaskForm.test'
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
 
-import { buttonTestUtils, render } from '_tests_/utils'
+import { mockGetLocationListSuccess, mockGetUserListSuccess } from '_tests_/mocks/api'
+import { buttonTestUtils, render, setupApiTests } from '_tests_/utils'
 
 import CreateRelocationTaskPage from './index'
 
@@ -34,10 +35,16 @@ export const testUtils = {
   clickCancelButton,
 }
 
+setupApiTests()
+
 describe('Страница создания заявки на перемещение', () => {
   describe('Форма', () => {
     test('Отображается корректно', () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess()
+
       render(<CreateRelocationTaskPage />)
+
       const form = createRelocationTaskFormTestUtils.getContainer()
       expect(form).toBeInTheDocument()
     })
@@ -45,6 +52,9 @@ describe('Страница создания заявки на перемещен
 
   describe('Перечень оборудования', () => {
     test('Отображается корректно', () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess()
+
       render(<CreateRelocationTaskPage />)
 
       const title = within(getContainer()).getByText('Перечень оборудования')

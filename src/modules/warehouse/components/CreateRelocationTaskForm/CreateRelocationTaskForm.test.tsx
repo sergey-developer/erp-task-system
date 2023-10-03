@@ -11,9 +11,20 @@ import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehous
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
-import { fakeWord, render } from '_tests_/utils'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import userFixtures from '_tests_/fixtures/user'
+import { mockGetLocationListSuccess, mockGetUserListSuccess } from '_tests_/mocks/api'
+import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/utils'
 
-import CreateRelocationTaskForm from './index'
+import CreateRelocationTaskForm, { CreateRelocationTaskFormProps } from './index'
+
+const props: CreateRelocationTaskFormProps = {
+  userList: [],
+  userListIsLoading: false,
+
+  locationList: [],
+  locationListIsLoading: false,
+}
 
 const getContainer = () => screen.getByTestId('create-relocation-task-form')
 
@@ -54,6 +65,57 @@ const setDeadlineAtTime = async (user: UserEvent, value: string) => {
   return field
 }
 
+// executor field
+const getExecutorFormItem = () => within(getContainer()).getByTestId('executor-form-item')
+const getExecutorSelectInput = () => selectTestUtils.getSelect(getExecutorFormItem())
+
+const openExecutorSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getExecutorFormItem())
+
+const setExecutor = selectTestUtils.clickSelectOption
+
+const getSelectedExecutor = (title: string) =>
+  selectTestUtils.getSelectedOptionByTitle(getExecutorFormItem(), title)
+
+const querySelectedExecutor = (title: string) =>
+  selectTestUtils.querySelectedOptionByTitle(getExecutorFormItem(), title)
+
+const findExecutorError = (text: string) => within(getExecutorFormItem()).findByText(text)
+
+// relocate from field
+const getRelocateFromFormItem = () => within(getContainer()).getByTestId('relocate-from-form-item')
+const getRelocateFromSelectInput = () => selectTestUtils.getSelect(getRelocateFromFormItem())
+
+const openRelocateFromSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getRelocateFromFormItem())
+
+const setRelocateFrom = selectTestUtils.clickSelectOption
+
+const getSelectedRelocateFrom = (title: string) =>
+  selectTestUtils.getSelectedOptionByTitle(getRelocateFromFormItem(), title)
+
+const querySelectedRelocateFrom = (title: string) =>
+  selectTestUtils.querySelectedOptionByTitle(getRelocateFromFormItem(), title)
+
+const findRelocateFromError = (text: string) => within(getRelocateFromFormItem()).findByText(text)
+
+// relocate to field
+const getRelocateToFormItem = () => within(getContainer()).getByTestId('relocate-to-form-item')
+const getRelocateToSelectInput = () => selectTestUtils.getSelect(getRelocateToFormItem())
+
+const openRelocateToSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getRelocateToFormItem())
+
+const setRelocateTo = selectTestUtils.clickSelectOption
+
+const getSelectedRelocateTo = (title: string) =>
+  selectTestUtils.getSelectedOptionByTitle(getRelocateToFormItem(), title)
+
+const querySelectedRelocateTo = (title: string) =>
+  selectTestUtils.querySelectedOptionByTitle(getRelocateToFormItem(), title)
+
+const findRelocateToError = (text: string) => within(getRelocateToFormItem()).findByText(text)
+
 // comment field
 const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
 
@@ -81,11 +143,34 @@ export const testUtils = {
   findDeadlineAtTimeError,
   setDeadlineAtTime,
 
+  getRelocateFromSelectInput,
+  openRelocateFromSelect,
+  setRelocateFrom,
+  getSelectedRelocateFrom,
+  querySelectedRelocateFrom,
+  findRelocateFromError,
+
+  getRelocateToSelectInput,
+  openRelocateToSelect,
+  setRelocateTo,
+  getSelectedRelocateTo,
+  querySelectedRelocateTo,
+  findRelocateToError,
+
+  getExecutorSelectInput,
+  openExecutorSelect,
+  setExecutor,
+  getSelectedExecutor,
+  querySelectedExecutor,
+  findExecutorError,
+
   getCommentTitle,
   getCommentField,
   findCommentError,
   setComment,
 }
+
+setupApiTests()
 
 describe('Форма создания заявки на перемещение оборудования', () => {
   describe('Срок выполнения', () => {
@@ -93,7 +178,7 @@ describe('Форма создания заявки на перемещение �
       test('Отображается корректно', () => {
         render(
           <Form>
-            <CreateRelocationTaskForm />
+            <CreateRelocationTaskForm {...props} />
           </Form>,
         )
 
@@ -109,7 +194,7 @@ describe('Форма создания заявки на перемещение �
       test('Можно установить значение', async () => {
         const { user } = render(
           <Form>
-            <CreateRelocationTaskForm />
+            <CreateRelocationTaskForm {...props} />
           </Form>,
         )
 
@@ -121,6 +206,8 @@ describe('Форма создания заявки на перемещение �
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
+          mockGetUserListSuccess()
+          mockGetLocationListSuccess({ body: [] })
           const { user } = render(<CreateRelocationTaskPage />)
 
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -130,7 +217,11 @@ describe('Форма создания заявки на перемещение �
         })
 
         test('Если дата в прошлом времени', async () => {
-          const { user } = render(<CreateRelocationTaskPage />)
+          const { user } = render(
+            <Form>
+              <CreateRelocationTaskForm {...props} />
+            </Form>,
+          )
 
           const value = formatDate(moment().subtract(1, 'day'), DATE_PICKER_FORMAT)
           await testUtils.setDeadlineAtDate(user, value)
@@ -147,7 +238,7 @@ describe('Форма создания заявки на перемещение �
       test('Отображается корректно', () => {
         render(
           <Form>
-            <CreateRelocationTaskForm />
+            <CreateRelocationTaskForm {...props} />
           </Form>,
         )
 
@@ -161,7 +252,7 @@ describe('Форма создания заявки на перемещение �
       test('Можно установить значение', async () => {
         const { user } = render(
           <Form>
-            <CreateRelocationTaskForm />
+            <CreateRelocationTaskForm {...props} />
           </Form>,
         )
 
@@ -173,6 +264,8 @@ describe('Форма создания заявки на перемещение �
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
+          mockGetUserListSuccess()
+          mockGetLocationListSuccess({ body: [] })
           const { user } = render(<CreateRelocationTaskPage />)
 
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -183,7 +276,11 @@ describe('Форма создания заявки на перемещение �
 
         // todo: выяснить почему тест падает но функционал работает
         test.skip('Если выбран сегодняшний день и если время в прошлом времени', async () => {
-          const { user } = render(<CreateRelocationTaskPage />)
+          const { user } = render(
+            <Form>
+              <CreateRelocationTaskForm {...props} />
+            </Form>,
+          )
 
           const dateValue = formatDate(new Date(), DATE_PICKER_FORMAT)
           await testUtils.setDeadlineAtDate(user, dateValue)
@@ -201,11 +298,167 @@ describe('Форма создания заявки на перемещение �
     })
   })
 
+  describe('Объект выбытия', () => {
+    test('Отображается корректно', async () => {
+      const locationListItem = catalogsFixtures.locationListItem()
+      const locationList = [locationListItem]
+
+      const { user } = render(
+        <Form>
+          <CreateRelocationTaskForm {...props} locationList={locationList} />
+        </Form>,
+      )
+
+      const input = testUtils.getRelocateFromSelectInput()
+      await testUtils.openRelocateFromSelect(user)
+      const selectedRelocateFrom = testUtils.querySelectedRelocateFrom(locationListItem.title)
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(selectedRelocateFrom).not.toBeInTheDocument()
+      locationList.forEach((loc) => {
+        const option = selectTestUtils.getSelectOption(loc.title)
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test('Можно выбрать значение', async () => {
+      const locationListItem = catalogsFixtures.locationListItem()
+
+      const { user } = render(
+        <Form>
+          <CreateRelocationTaskForm {...props} locationList={[locationListItem]} />
+        </Form>,
+      )
+
+      await testUtils.openRelocateFromSelect(user)
+      await testUtils.setRelocateFrom(user, locationListItem.title)
+      const selectedRelocateFrom = testUtils.getSelectedRelocateFrom(locationListItem.title)
+
+      expect(selectedRelocateFrom).toBeInTheDocument()
+    })
+
+    test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
+      const { user } = render(<CreateRelocationTaskPage />)
+
+      await createRelocationTaskPageTestUtils.clickSubmitButton(user)
+      const error = await testUtils.findRelocateFromError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
+    })
+  })
+
+  describe('Объект прибытия', () => {
+    test('Отображается корректно', async () => {
+      const locationListItem = catalogsFixtures.locationListItem()
+      const locationList = [locationListItem]
+
+      const { user } = render(
+        <Form>
+          <CreateRelocationTaskForm {...props} locationList={locationList} />
+        </Form>,
+      )
+
+      const input = testUtils.getRelocateToSelectInput()
+      await testUtils.openRelocateToSelect(user)
+      const selectedRelocateTo = testUtils.querySelectedRelocateTo(locationListItem.title)
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(selectedRelocateTo).not.toBeInTheDocument()
+      locationList.forEach((loc) => {
+        const option = selectTestUtils.getSelectOption(loc.title)
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test('Можно выбрать значение', async () => {
+      const locationListItem = catalogsFixtures.locationListItem()
+
+      const { user } = render(
+        <Form>
+          <CreateRelocationTaskForm {...props} locationList={[locationListItem]} />
+        </Form>,
+      )
+
+      await testUtils.openRelocateToSelect(user)
+      await testUtils.setRelocateTo(user, locationListItem.title)
+      const selectedRelocateTo = testUtils.getSelectedRelocateTo(locationListItem.title)
+
+      expect(selectedRelocateTo).toBeInTheDocument()
+    })
+
+    test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
+      const { user } = render(<CreateRelocationTaskPage />)
+
+      await createRelocationTaskPageTestUtils.clickSubmitButton(user)
+      const error = await testUtils.findRelocateToError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
+    })
+  })
+
+  describe('Исполнитель', () => {
+    test('Отображается корректно', async () => {
+      const userListItem = userFixtures.userListItem()
+      const userList = [userListItem]
+
+      const { user } = render(
+        <Form>
+          <CreateRelocationTaskForm {...props} userList={userList} />
+        </Form>,
+      )
+
+      const input = testUtils.getExecutorSelectInput()
+      await testUtils.openExecutorSelect(user)
+      const selectedExecutor = testUtils.querySelectedExecutor(userListItem.fullName)
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(selectedExecutor).not.toBeInTheDocument()
+      userList.forEach((usr) => {
+        const option = selectTestUtils.getSelectOption(usr.fullName)
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test('Можно выбрать значение', async () => {
+      const userListItem = userFixtures.userListItem()
+
+      const { user } = render(
+        <Form>
+          <CreateRelocationTaskForm {...props} userList={[userListItem]} />
+        </Form>,
+      )
+
+      await testUtils.openExecutorSelect(user)
+      await testUtils.setExecutor(user, userListItem.fullName)
+      const selectedExecutor = testUtils.getSelectedExecutor(userListItem.fullName)
+
+      expect(selectedExecutor).toBeInTheDocument()
+    })
+
+    test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess({ body: [] })
+      const { user } = render(<CreateRelocationTaskPage />)
+
+      await createRelocationTaskPageTestUtils.clickSubmitButton(user)
+      const error = await testUtils.findExecutorError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
+    })
+  })
+
   describe('Комментарий', () => {
     test('Отображается корректно', () => {
       render(
         <Form>
-          <CreateRelocationTaskForm />
+          <CreateRelocationTaskForm {...props} />
         </Form>,
       )
 
@@ -221,7 +474,7 @@ describe('Форма создания заявки на перемещение �
     test('Можно установить значение', async () => {
       const { user } = render(
         <Form>
-          <CreateRelocationTaskForm />
+          <CreateRelocationTaskForm {...props} />
         </Form>,
       )
 
@@ -235,7 +488,7 @@ describe('Форма создания заявки на перемещение �
       test('Если ввести только пробелы', async () => {
         const { user } = render(
           <Form>
-            <CreateRelocationTaskForm />
+            <CreateRelocationTaskForm {...props} />
           </Form>,
         )
 
