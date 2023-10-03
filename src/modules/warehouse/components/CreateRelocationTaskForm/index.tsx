@@ -1,18 +1,55 @@
 import { Col, DatePicker, Form, Input, Row, Select, TimePicker } from 'antd'
-import React, { FC } from 'react'
+import sortBy from 'lodash/sortBy'
+import { DefaultOptionType } from 'rc-select/lib/Select'
+import React, { FC, useMemo } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
-import { idAndNameSelectFieldNames } from 'shared/constants/selectField'
+import { userListSelectFieldNames } from 'modules/user/constants'
+import { UserListModel } from 'modules/user/models'
+
+import { locationDict } from 'shared/constants/catalogs'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
+import { LocationListModel } from 'shared/models/catalogs/location'
 
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
 const { TextArea } = Input
 
-export type CreateRelocationTaskFormProps = {}
+export type CreateRelocationTaskFormProps = {
+  userList: UserListModel
+  userListIsLoading: boolean
 
-const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = () => {
+  locationList: LocationListModel
+  locationListIsLoading: boolean
+}
+
+const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
+  userList,
+  userListIsLoading,
+
+  locationList,
+  locationListIsLoading,
+}) => {
+  const locationOptions = useMemo<DefaultOptionType[]>(
+    () =>
+      locationList
+        .reduce<DefaultOptionType[]>((acc, l) => {
+          const option = acc.find((item) => item.label === locationDict[l.type])
+
+          option
+            ? option.options.push({ label: l.title, value: l.id })
+            : acc.push({ label: locationDict[l.type], options: [{ label: l.title, value: l.id }] })
+
+          return acc
+        }, [])
+        .map((opt) => ({
+          ...opt,
+          options: sortBy(opt.options, 'label'),
+        })),
+    [locationList],
+  )
+
   return (
     <Row data-testid='create-relocation-task-form' gutter={90}>
       <Col span={6}>
@@ -48,10 +85,8 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = () => {
           rules={onlyRequiredRules}
         >
           <Select
-            disabled={false}
-            fieldNames={idAndNameSelectFieldNames}
-            loading={false}
-            options={[]}
+            loading={locationListIsLoading}
+            options={locationOptions}
             placeholder='Выберите объект'
           />
         </Form.Item>
@@ -63,10 +98,8 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = () => {
           rules={onlyRequiredRules}
         >
           <Select
-            disabled={false}
-            fieldNames={idAndNameSelectFieldNames}
-            loading={false}
-            options={[]}
+            loading={locationListIsLoading}
+            options={locationOptions}
             placeholder='Выберите объект'
           />
         </Form.Item>
@@ -80,10 +113,9 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = () => {
           rules={onlyRequiredRules}
         >
           <Select
-            disabled={false}
-            fieldNames={idAndNameSelectFieldNames}
-            loading={false}
-            options={[]}
+            fieldNames={userListSelectFieldNames}
+            loading={userListIsLoading}
+            options={userList}
             placeholder='Выберите исполнителя'
           />
         </Form.Item>
