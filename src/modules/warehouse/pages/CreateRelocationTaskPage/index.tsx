@@ -1,10 +1,13 @@
 import { Button, Col, Form, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import { useGetUserList } from 'modules/user/hooks'
 import CreateRelocationTaskForm from 'modules/warehouse/components/CreateRelocationTaskForm'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
 
 import Space from 'components/Space'
+
+import { useGetLocationList } from 'shared/hooks/catalogs/location'
 
 import { CreateRelocationTaskFormFields } from './types'
 
@@ -12,6 +15,13 @@ const { Text } = Typography
 
 const CreateRelocationTaskPage: FC = () => {
   const [form] = Form.useForm<CreateRelocationTaskFormFields>()
+
+  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
+    isManager: false,
+  })
+
+  const { currentData: locationList = [], isFetching: locationListIsFetching } =
+    useGetLocationList()
 
   return (
     <Form<CreateRelocationTaskFormFields>
@@ -25,7 +35,12 @@ const CreateRelocationTaskPage: FC = () => {
     >
       <Row gutter={[40, 40]}>
         <Col span={24}>
-          <CreateRelocationTaskForm />
+          <CreateRelocationTaskForm
+            userList={userList}
+            userListIsLoading={userListIsFetching}
+            locationList={locationList}
+            locationListIsLoading={locationListIsFetching}
+          />
         </Col>
 
         <Col span={24}>

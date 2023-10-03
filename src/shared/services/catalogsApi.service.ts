@@ -1,6 +1,10 @@
 import { CatalogsApiEnum } from 'shared/constants/catalogs'
 import { HttpMethodEnum } from 'shared/constants/http'
 import {
+  GetLocationListQueryArgs,
+  GetLocationListSuccessResponse,
+} from 'shared/models/catalogs/location'
+import {
   GetSubTaskTemplateListQueryArgs,
   GetSubTaskTemplateListSuccessResponse,
 } from 'shared/models/catalogs/subTaskTemplate'
@@ -39,6 +43,12 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getLocationList: build.query<GetLocationListSuccessResponse, GetLocationListQueryArgs>({
+      query: () => ({
+        url: CatalogsApiEnum.GetLocationList,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
 })
 
@@ -46,5 +56,6 @@ export const {
   useGetTimeZoneListQuery,
   useGetSubTaskTemplateListQuery,
   useGetUserStatusListQuery,
+  useGetLocationListQuery,
   endpoints,
 } = catalogsApiService

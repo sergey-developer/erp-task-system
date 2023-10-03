@@ -3,6 +3,7 @@ import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
+import { userListSelectFieldNames } from 'modules/user/constants'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
@@ -13,7 +14,6 @@ import Space from 'components/Space'
 import { idAndNameSelectFieldNames } from 'shared/constants/selectField'
 
 import {
-  managerSelectFieldNames,
   searchFieldOptions,
   taskAssignedOptions,
   taskExtendedStatusOptions,
@@ -152,7 +152,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           <Form.Item name='manager'>
             <Select
               data-testid='extended-filter-manager-select'
-              fieldNames={managerSelectFieldNames}
+              fieldNames={userListSelectFieldNames}
               loading={userListIsLoading}
               options={userList}
               placeholder='Руководитель'
