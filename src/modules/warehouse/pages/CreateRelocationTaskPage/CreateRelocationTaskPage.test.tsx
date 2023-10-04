@@ -4,7 +4,12 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as createRelocationTaskFormTestUtils } from 'modules/warehouse/components/CreateRelocationTaskForm/CreateRelocationTaskForm.test'
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
 
-import { mockGetLocationListSuccess, mockGetUserListSuccess } from '_tests_/mocks/api'
+import {
+  mockGetCurrencyListSuccess,
+  mockGetEquipmentCatalogListSuccess,
+  mockGetLocationListSuccess,
+  mockGetUserListSuccess,
+} from '_tests_/mocks/api'
 import { buttonTestUtils, render, setupApiTests } from '_tests_/utils'
 
 import CreateRelocationTaskPage from './index'
@@ -42,6 +47,8 @@ describe('Страница создания заявки на перемещен
     test('Отображается корректно', () => {
       mockGetUserListSuccess()
       mockGetLocationListSuccess()
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
 
       render(<CreateRelocationTaskPage />)
 
@@ -54,6 +61,8 @@ describe('Страница создания заявки на перемещен
     test('Отображается корректно', () => {
       mockGetUserListSuccess()
       mockGetLocationListSuccess()
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
 
       render(<CreateRelocationTaskPage />)
 
