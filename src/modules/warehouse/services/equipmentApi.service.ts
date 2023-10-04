@@ -4,6 +4,8 @@ import { EquipmentApiEnum, EquipmentApiTagEnum } from 'modules/warehouse/constan
 import {
   CreateEquipmentMutationArgs,
   CreateEquipmentSuccessResponse,
+  GetEquipmentCatalogListQueryArgs,
+  GetEquipmentCatalogListSuccessResponse,
   GetEquipmentCategoryListQueryArgs,
   GetEquipmentCategoryListSuccessResponse,
   GetEquipmentListQueryArgs,
@@ -41,6 +43,17 @@ const equipmentApiService = baseApiService
         }),
         transformResponse: (response: GetEquipmentNomenclatureListSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
+      }),
+
+      getEquipmentCatalogList: build.query<
+        GetEquipmentCatalogListSuccessResponse,
+        GetEquipmentCatalogListQueryArgs
+      >({
+        query: (params) => ({
+          url: EquipmentApiEnum.GetEquipmentCatalogList,
+          method: HttpMethodEnum.Get,
+          params,
+        }),
       }),
 
       getEquipmentList: build.query<
@@ -96,6 +109,9 @@ const equipmentApiService = baseApiService
 export const {
   useGetEquipmentNomenclatureListQuery,
 
+  useGetEquipmentCatalogListQuery,
+
+  useGetEquipmentQuery,
   useLazyGetEquipmentQuery,
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,
