@@ -3,6 +3,7 @@ export enum EquipmentApiEnum {
   UpdateEquipment = '/equipments/:id/',
   CreateEquipment = '/equipments/',
   GetEquipmentList = '/equipments/',
+  GetEquipmentCatalogList = '/equipments/catalog/',
 
   GetEquipmentCategoryList = '/equipments/categories/',
 

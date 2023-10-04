@@ -119,9 +119,9 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
                   options={workGroupList}
                   placeholder='Рабочая группа'
                   showSearch
-                  filterOption={(input, option) => {
-                    return option ? option.name.toLowerCase().includes(input.toLowerCase()) : false
-                  }}
+                  filterOption={(input, option) =>
+                    option ? option.name.toLowerCase().includes(input.toLowerCase()) : false
+                  }
                 />
               </Form.Item>
             </FilterBlock>
@@ -157,9 +157,9 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               options={userList}
               placeholder='Руководитель'
               showSearch
-              filterOption={(input, option) => {
-                return option ? option.fullName.toLowerCase().includes(input.toLowerCase()) : false
-              }}
+              filterOption={(input, option) =>
+                option ? option.fullName.toLowerCase().includes(input.toLowerCase()) : false
+              }
             />
           </Form.Item>
         </FilterBlock>

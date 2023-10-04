@@ -1,5 +1,7 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import { EquipmentCatalogListModel } from 'modules/warehouse/models'
 
+import { CurrencyListModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
 
 export type RelocationEquipmentFormFields = {
@@ -14,4 +16,10 @@ export type RelocationEquipmentFormFields = {
   quantity?: number
 }
 
-export type RelocationEquipmentEditableTableProps = {}
+export type RelocationEquipmentEditableTableProps = {
+  currencyList: CurrencyListModel
+  currencyListIsLoading: boolean
+
+  equipmentList: EquipmentCatalogListModel
+  equipmentListIsLoading: boolean
+}

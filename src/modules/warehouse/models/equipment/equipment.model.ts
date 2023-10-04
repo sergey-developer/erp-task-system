@@ -26,6 +26,7 @@ export type EquipmentModel = {
   isWarranty: boolean
   isRepaired: boolean
   purpose: Pick<WorkTypeModel, 'id' | 'title'>
+  amount: number
 
   warehouse: MaybeNull<Pick<WarehouseModel, 'id' | 'title'>>
   customerInventoryNumber: MaybeNull<string>

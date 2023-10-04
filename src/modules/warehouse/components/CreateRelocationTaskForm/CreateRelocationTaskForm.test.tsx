@@ -13,10 +13,16 @@ import { formatDate } from 'shared/utils/date'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
-import { mockGetLocationListSuccess, mockGetUserListSuccess } from '_tests_/mocks/api'
+import {
+  mockGetCurrencyListSuccess,
+  mockGetEquipmentCatalogListSuccess,
+  mockGetLocationListSuccess,
+  mockGetUserListSuccess,
+} from '_tests_/mocks/api'
 import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/utils'
 
-import CreateRelocationTaskForm, { CreateRelocationTaskFormProps } from './index'
+import CreateRelocationTaskForm from './index'
+import { CreateRelocationTaskFormProps } from './types'
 
 const props: CreateRelocationTaskFormProps = {
   userList: [],
@@ -24,6 +30,8 @@ const props: CreateRelocationTaskFormProps = {
 
   locationList: [],
   locationListIsLoading: false,
+
+  onChangeRelocateFrom: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('create-relocation-task-form')
@@ -208,6 +216,9 @@ describe('Форма создания заявки на перемещение �
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUserListSuccess()
           mockGetLocationListSuccess({ body: [] })
+          mockGetEquipmentCatalogListSuccess()
+          mockGetCurrencyListSuccess()
+
           const { user } = render(<CreateRelocationTaskPage />)
 
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -266,6 +277,9 @@ describe('Форма создания заявки на перемещение �
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUserListSuccess()
           mockGetLocationListSuccess({ body: [] })
+          mockGetEquipmentCatalogListSuccess()
+          mockGetCurrencyListSuccess()
+
           const { user } = render(<CreateRelocationTaskPage />)
 
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -341,6 +355,9 @@ describe('Форма создания заявки на перемещение �
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUserListSuccess()
       mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
+
       const { user } = render(<CreateRelocationTaskPage />)
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -393,6 +410,9 @@ describe('Форма создания заявки на перемещение �
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUserListSuccess()
       mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
+
       const { user } = render(<CreateRelocationTaskPage />)
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -445,6 +465,9 @@ describe('Форма создания заявки на перемещение �
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUserListSuccess()
       mockGetLocationListSuccess({ body: [] })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
+
       const { user } = render(<CreateRelocationTaskPage />)
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
