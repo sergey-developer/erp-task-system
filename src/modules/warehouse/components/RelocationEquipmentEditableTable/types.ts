@@ -1,20 +1,12 @@
-import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { EquipmentCatalogListModel } from 'modules/warehouse/models'
+import { CreateRelocationTaskFormFields } from 'modules/warehouse/pages/CreateRelocationTaskPage/types'
 
 import { CurrencyListModel } from 'shared/models/currency'
-import { IdType } from 'shared/types/common'
+import { ArrayFirst } from 'shared/types/utils'
 
 export type RelocationEquipmentFormFields = {
   rowId: number
-  id?: IdType
-  serialNumber?: string
-  purpose?: string
-  condition?: EquipmentConditionEnum
-  amount?: number
-  price?: number
-  currency?: IdType
-  quantity?: number
-}
+} & Partial<ArrayFirst<CreateRelocationTaskFormFields['equipments']>>
 
 export type RelocationEquipmentEditableTableProps = {
   currencyList: CurrencyListModel

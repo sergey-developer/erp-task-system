@@ -1,15 +1,16 @@
 import { Button, Col, Form, FormProps, Row, Typography } from 'antd'
+import { once } from 'lodash'
 import React, { FC, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { useGetUserList } from 'modules/user/hooks'
 import CreateRelocationTaskForm from 'modules/warehouse/components/CreateRelocationTaskForm'
-import {
-  CreateRelocationTaskFormProps,
-  LocationOption,
-} from 'modules/warehouse/components/CreateRelocationTaskForm/types'
+import { LocationOption } from 'modules/warehouse/components/CreateRelocationTaskForm/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
 import { RelocationEquipmentFormFields } from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetEquipmentCatalogList, useLazyGetEquipment } from 'modules/warehouse/hooks/equipment'
+import { useCreateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 
 import Space from 'components/Space'
 
@@ -21,6 +22,7 @@ import { CreateRelocationTaskFormFields } from './types'
 const { Text } = Typography
 
 const CreateRelocationTaskPage: FC = () => {
+  const navigate = useNavigate()
   const [form] = Form.useForm<CreateRelocationTaskFormFields>()
 
   const [selectedRelocateFromOption, setSelectedRelocateFromOption] = useState<LocationOption>()
@@ -46,10 +48,34 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [getEquipment] = useLazyGetEquipment()
 
-  const handleChangeRelocateFrom: CreateRelocationTaskFormProps['onChangeRelocateFrom'] = (
-    option,
-  ) => {
-    setSelectedRelocateFromOption(option)
+  const [createRelocationTaskMutation] = useCreateRelocationTaskMutation()
+
+  const handleCreateRelocationTask = async (values: CreateRelocationTaskFormFields) => {
+    try {
+      const relocationTask = await createRelocationTaskMutation({
+        deadlineAt: values.deadlineAtDate
+          .set('hours', values.deadlineAtTime.get('hours'))
+          .set('minutes', values.deadlineAtTime.get('minutes'))
+          .format(),
+        equipments: values.equipments.map((e) => ({
+          id: e.id,
+          quantity: e.quantity,
+          condition: e.condition,
+          currency: e.currency,
+          price: e.price,
+        })),
+        relocateToId: values.relocateTo,
+        relocateFromId: values.relocateFrom,
+        executor: values.executor,
+        comment: values.comment,
+      }).unwrap()
+
+      navigate(WarehouseRouteEnum.RelocationTaskList, {
+        state: { viewRelocationTaskId: relocationTask.id },
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const handleFormChange: FormProps<CreateRelocationTaskFormFields>['onValuesChange'] = async (
@@ -87,9 +113,7 @@ const CreateRelocationTaskPage: FC = () => {
       data-testid='create-relocation-task-page'
       form={form}
       layout='vertical'
-      onFinish={(values) => {
-        console.log({ onFinish: values })
-      }}
+      onFinish={once(handleCreateRelocationTask)}
       onValuesChange={handleFormChange}
       initialValues={{
         equipments: [],
@@ -102,7 +126,7 @@ const CreateRelocationTaskPage: FC = () => {
             userListIsLoading={userListIsFetching}
             locationList={locationList}
             locationListIsLoading={locationListIsFetching}
-            onChangeRelocateFrom={handleChangeRelocateFrom}
+            onChangeRelocateFrom={setSelectedRelocateFromOption}
           />
         </Col>
 

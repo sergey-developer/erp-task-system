@@ -1,4 +1,5 @@
 export * from './relocationTask.model'
+export * from './createRelocationTask.model'
 export * from './getRelocationTask.model'
 export * from './getRelocationTaskWaybillM15.model'
 

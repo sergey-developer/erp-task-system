@@ -86,7 +86,7 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
             name='relocateFrom'
             rules={onlyRequiredRules}
           >
-            <Select
+            <Select<LocationOption['value'], LocationOption>
               loading={locationListIsLoading}
               options={locationOptions}
               placeholder='Выберите объект'
