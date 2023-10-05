@@ -42,7 +42,6 @@ import {
   render,
   setupApiTests,
   spinnerTestUtils,
-  tableTestUtils,
 } from '_tests_/utils'
 
 import RelocationTaskDetails from './index'
@@ -384,29 +383,6 @@ describe('Информация о заявке о перемещении', () =>
           getRelocationEquipmentListMessages.commonError,
         )
         expect(notification).toBeInTheDocument()
-      })
-    })
-
-    test('Пагинация работает', async () => {
-      mockGetRelocationTaskSuccess(props.relocationTaskId!)
-      const relocationEquipmentList = warehouseFixtures.relocationEquipmentList(11)
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!, {
-        body: commonFixtures.paginatedListResponse(relocationEquipmentList),
-        once: false,
-      })
-
-      const { user } = render(
-        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
-      )
-
-      const table = await testUtils.expectRelocationEquipmentListLoadingFinished()
-      await tableTestUtils.clickPaginationNextButtonIn(user, table)
-      await relocationEquipmentTableTestUtils.expectLoadingStarted()
-      await relocationEquipmentTableTestUtils.expectLoadingFinished()
-
-      relocationEquipmentList.slice(-1).forEach((item) => {
-        const row = relocationEquipmentTableTestUtils.getRow(item.id)
-        expect(row).toBeInTheDocument()
       })
     })
   })

@@ -1,6 +1,6 @@
 import { Button, Col, Form, FormProps, Row, Typography } from 'antd'
 import React, { FC, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { useGetUserList } from 'modules/user/hooks'
 import CreateRelocationTaskForm from 'modules/warehouse/components/CreateRelocationTaskForm'
@@ -12,6 +12,7 @@ import { createRelocationTaskMessages } from 'modules/warehouse/constants/reloca
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetEquipmentCatalogList, useLazyGetEquipment } from 'modules/warehouse/hooks/equipment'
 import { useCreateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
+import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
 
 import Space from 'components/Space'
 
@@ -23,6 +24,7 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/services/baseApi'
+import { setTimeToDate } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -35,6 +37,7 @@ const initialValues: Pick<CreateRelocationTaskFormFields, 'equipments'> = {
 }
 
 const CreateRelocationTaskPage: FC = () => {
+  const navigate = useNavigate()
   const [form] = Form.useForm<CreateRelocationTaskFormFields>()
 
   const [selectedRelocateFromOption, setSelectedRelocateFromOption] = useState<LocationOption>()
@@ -65,11 +68,8 @@ const CreateRelocationTaskPage: FC = () => {
 
   const handleCreateRelocationTask = async (values: CreateRelocationTaskFormFields) => {
     try {
-      await createRelocationTaskMutation({
-        deadlineAt: values.deadlineAtDate
-          .set('hours', values.deadlineAtTime.get('hours'))
-          .set('minutes', values.deadlineAtTime.get('minutes'))
-          .format(),
+      const createdTask = await createRelocationTaskMutation({
+        deadlineAt: setTimeToDate(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
         equipments: values.equipments.map((e) => ({
           id: e.id,
           quantity: e.quantity,
@@ -82,6 +82,8 @@ const CreateRelocationTaskPage: FC = () => {
         executor: values.executor,
         comment: values.comment,
       }).unwrap()
+
+      navigate(getRelocationTaskListPageLink(createdTask.id))
     } catch (error) {
       if (isErrorResponse(error)) {
         if (isBadRequestError(error)) {

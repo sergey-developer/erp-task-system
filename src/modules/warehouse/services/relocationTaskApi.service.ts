@@ -13,10 +13,7 @@ import {
   GetRelocationTaskWaybillM15QueryArgs,
   GetRelocationTaskWaybillM15SuccessResponse,
 } from 'modules/warehouse/models'
-import {
-  GetRelocationEquipmentListTransformedSuccessResponse,
-  GetRelocationTaskListTransformedSuccessResponse,
-} from 'modules/warehouse/types'
+import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
 import {
   getRelocationEquipmentListUrl,
   getRelocationTaskUrl,
@@ -58,15 +55,13 @@ const relocationTaskApiService = baseApiService.injectEndpoints({
     }),
 
     getRelocationEquipmentList: build.query<
-      GetRelocationEquipmentListTransformedSuccessResponse,
+      GetRelocationEquipmentListSuccessResponse,
       GetRelocationEquipmentListQueryArgs
     >({
       query: ({ relocationTaskId }) => ({
         url: getRelocationEquipmentListUrl(relocationTaskId),
         method: HttpMethodEnum.Get,
       }),
-      transformResponse: (response: GetRelocationEquipmentListSuccessResponse, meta, arg) =>
-        getPaginatedList(response, arg),
     }),
 
     getRelocationTaskWaybillM15: build.query<
