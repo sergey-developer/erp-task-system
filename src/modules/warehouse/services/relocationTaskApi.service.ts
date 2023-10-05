@@ -2,6 +2,8 @@ import { getPaginatedList } from 'lib/antd/utils'
 
 import { RelocationTaskApiEnum } from 'modules/warehouse/constants/relocationTask'
 import {
+  CreateRelocationTaskMutationArgs,
+  CreateRelocationTaskSuccessResponse,
   GetRelocationEquipmentListQueryArgs,
   GetRelocationEquipmentListSuccessResponse,
   GetRelocationTaskListQueryArgs,
@@ -26,6 +28,16 @@ import { baseApiService } from 'shared/services/baseApi'
 
 const relocationTaskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
+    createRelocationTask: build.mutation<
+      CreateRelocationTaskSuccessResponse,
+      CreateRelocationTaskMutationArgs
+    >({
+      query: (payload) => ({
+        url: RelocationTaskApiEnum.CreateRelocationTask,
+        method: HttpMethodEnum.Post,
+        data: payload,
+      }),
+    }),
     getRelocationTask: build.query<GetRelocationTaskSuccessResponse, GetRelocationTaskQueryArgs>({
       query: ({ relocationTaskId }) => ({
         url: getRelocationTaskUrl(relocationTaskId),
@@ -70,6 +82,7 @@ const relocationTaskApiService = baseApiService.injectEndpoints({
 })
 
 export const {
+  useCreateRelocationTaskMutation,
   useGetRelocationTaskQuery,
   useLazyGetRelocationTaskWaybillM15Query,
   useGetRelocationTaskListQuery,
