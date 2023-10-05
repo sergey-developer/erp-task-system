@@ -17,6 +17,8 @@ const { TextArea } = Input
 const { Text } = Typography
 
 const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
+  isLoading,
+
   userList,
   userListIsLoading,
 
@@ -63,7 +65,7 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
                   name='deadlineAtDate'
                   rules={deadlineAtDateRules}
                 >
-                  <DatePicker disabled={false} />
+                  <DatePicker disabled={isLoading} />
                 </Form.Item>
               </Col>
 
@@ -74,7 +76,11 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
                   dependencies={['deadlineAtDate']}
                   rules={deadlineAtTimeRules}
                 >
-                  <TimePicker disabled={false} format={TIME_PICKER_FORMAT} placeholder='Время' />
+                  <TimePicker
+                    disabled={isLoading}
+                    format={TIME_PICKER_FORMAT}
+                    placeholder='Время'
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -88,6 +94,7 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
           >
             <Select<LocationOption['value'], LocationOption>
               loading={locationListIsLoading}
+              disabled={isLoading}
               options={locationOptions}
               placeholder='Выберите объект'
               onChange={(value, option) => {
@@ -113,6 +120,7 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
           >
             <Select
               loading={locationListIsLoading}
+              disabled={isLoading}
               options={locationOptions}
               placeholder='Выберите объект'
             />
@@ -129,6 +137,7 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
             <Select
               fieldNames={userListSelectFieldNames}
               loading={userListIsLoading}
+              disabled={isLoading}
               options={userList}
               placeholder='Выберите исполнителя'
             />
@@ -140,7 +149,7 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
             name='comment'
             rules={onlyNotEmptyStringRules}
           >
-            <TextArea placeholder='Добавьте комментарий' />
+            <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
           </Form.Item>
         </Col>
       </Row>

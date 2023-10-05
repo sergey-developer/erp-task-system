@@ -25,6 +25,8 @@ import CreateRelocationTaskForm from './index'
 import { CreateRelocationTaskFormProps } from './types'
 
 const props: CreateRelocationTaskFormProps = {
+  isLoading: false,
+
   userList: [],
   userListIsLoading: false,
 

@@ -1,13 +1,14 @@
 import { Button, Col, Form, FormProps, Row, Typography } from 'antd'
-import { once } from 'lodash'
 import React, { FC, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { useGetUserList } from 'modules/user/hooks'
 import CreateRelocationTaskForm from 'modules/warehouse/components/CreateRelocationTaskForm'
 import { LocationOption } from 'modules/warehouse/components/CreateRelocationTaskForm/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
 import { RelocationEquipmentFormFields } from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
+import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
+import { createRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetEquipmentCatalogList, useLazyGetEquipment } from 'modules/warehouse/hooks/equipment'
 import { useCreateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
@@ -16,13 +17,24 @@ import Space from 'components/Space'
 
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
+import { getFieldsErrors } from 'shared/utils/form'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { CreateRelocationTaskFormFields } from './types'
 
 const { Text } = Typography
 
+const initialValues: Pick<CreateRelocationTaskFormFields, 'equipments'> = {
+  equipments: [],
+}
+
 const CreateRelocationTaskPage: FC = () => {
-  const navigate = useNavigate()
   const [form] = Form.useForm<CreateRelocationTaskFormFields>()
 
   const [selectedRelocateFromOption, setSelectedRelocateFromOption] = useState<LocationOption>()
@@ -48,11 +60,12 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [getEquipment] = useLazyGetEquipment()
 
-  const [createRelocationTaskMutation] = useCreateRelocationTaskMutation()
+  const [createRelocationTaskMutation, { isLoading: createRelocationTaskIsLoading }] =
+    useCreateRelocationTaskMutation()
 
   const handleCreateRelocationTask = async (values: CreateRelocationTaskFormFields) => {
     try {
-      const relocationTask = await createRelocationTaskMutation({
+      await createRelocationTaskMutation({
         deadlineAt: values.deadlineAtDate
           .set('hours', values.deadlineAtTime.get('hours'))
           .set('minutes', values.deadlineAtTime.get('minutes'))
@@ -69,12 +82,22 @@ const CreateRelocationTaskPage: FC = () => {
         executor: values.executor,
         comment: values.comment,
       }).unwrap()
-
-      navigate(WarehouseRouteEnum.RelocationTaskList, {
-        state: { viewRelocationTaskId: relocationTask.id },
-      })
     } catch (error) {
-      console.log(error)
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          form.setFields(getFieldsErrors(error.data))
+
+          if (error.data.detail) {
+            showErrorNotification(error.data.detail)
+          }
+        } else if (isForbiddenError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        } else if (isNotFoundError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        } else {
+          showErrorNotification(createRelocationTaskMessages.commonError)
+        }
+      }
     }
   }
 
@@ -93,15 +116,18 @@ const CreateRelocationTaskPage: FC = () => {
 
         if (equipment) {
           const currentEquipment = values.equipments[Number(index)]
+          const isConsumable = equipment.category.code === EquipmentCategoryEnum.Consumable
 
           form.setFieldValue(['equipments', index], {
             ...currentEquipment,
+            quantity: isConsumable ? currentEquipment.quantity : 1,
             serialNumber: equipment.serialNumber,
             purpose: equipment.purpose.title,
             condition: equipment.condition,
             amount: equipment.amount,
             price: equipment.price,
             currency: equipment.currency?.id,
+            category: equipment.category,
           })
         }
       }
@@ -113,15 +139,14 @@ const CreateRelocationTaskPage: FC = () => {
       data-testid='create-relocation-task-page'
       form={form}
       layout='vertical'
-      onFinish={once(handleCreateRelocationTask)}
+      onFinish={handleCreateRelocationTask}
       onValuesChange={handleFormChange}
-      initialValues={{
-        equipments: [],
-      }}
+      initialValues={initialValues}
     >
       <Row gutter={[40, 40]}>
         <Col span={24}>
           <CreateRelocationTaskForm
+            isLoading={createRelocationTaskIsLoading}
             userList={userList}
             userListIsLoading={userListIsFetching}
             locationList={locationList}
@@ -135,6 +160,7 @@ const CreateRelocationTaskPage: FC = () => {
             <Text strong>Перечень оборудования</Text>
 
             <RelocationEquipmentEditableTable
+              isLoading={createRelocationTaskIsLoading}
               currencyList={currencyList}
               currencyListIsLoading={currencyListIsFetching}
               equipmentList={equipmentCatalogList}
@@ -146,11 +172,13 @@ const CreateRelocationTaskPage: FC = () => {
         <Col span={24}>
           <Row justify='end' gutter={8}>
             <Col>
-              <Button>Отменить</Button>
+              <Button>
+                <Link to={WarehouseRouteEnum.RelocationTaskList}>Отменить</Link>
+              </Button>
             </Col>
 
             <Col>
-              <Button type='primary' htmlType='submit' onClick={form?.submit}>
+              <Button type='primary' htmlType='submit' loading={createRelocationTaskIsLoading}>
                 Создать заявку
               </Button>
             </Col>

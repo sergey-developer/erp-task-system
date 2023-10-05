@@ -9,6 +9,8 @@ export type RelocationEquipmentFormFields = {
 } & Partial<ArrayFirst<CreateRelocationTaskFormFields['equipments']>>
 
 export type RelocationEquipmentEditableTableProps = {
+  isLoading: boolean
+
   currencyList: CurrencyListModel
   currencyListIsLoading: boolean
 

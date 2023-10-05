@@ -6,6 +6,8 @@ import RelocationEquipmentEditableTable from './index'
 import { RelocationEquipmentEditableTableProps } from './types'
 
 const props: RelocationEquipmentEditableTableProps = {
+  isLoading: false,
+
   currencyList: [],
   currencyListIsLoading: false,
 

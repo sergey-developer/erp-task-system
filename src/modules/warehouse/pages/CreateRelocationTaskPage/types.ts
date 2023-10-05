@@ -1,6 +1,7 @@
 import { Moment } from 'moment-timezone'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import { EquipmentModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 
@@ -15,6 +16,7 @@ export type CreateRelocationTaskFormFields = {
     amount?: number
     price?: number
     currency?: IdType
+    category?: EquipmentModel['category']
   }[]
   deadlineAtDate: Moment
   deadlineAtTime: Moment

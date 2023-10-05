@@ -7,7 +7,3 @@ export enum RelocationTaskApiEnum {
 
   GetRelocationEquipmentList = '/relocation-tasks/:id/equipments/',
 }
-
-export enum RelocationTaskApiTagEnum {
-  RelocationTaskList = 'RelocationTaskList',
-}
