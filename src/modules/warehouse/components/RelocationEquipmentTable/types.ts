@@ -8,8 +8,5 @@ export type RelocationEquipmentTableItem = Pick<
 >
 
 export type RelocationEquipmentTableProps = Required<
-  Pick<
-    TableProps<RelocationEquipmentTableItem>,
-    'dataSource' | 'loading' | 'pagination' | 'onChange'
-  >
+  Pick<TableProps<RelocationEquipmentTableItem>, 'dataSource' | 'loading'>
 >
