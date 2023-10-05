@@ -47,6 +47,7 @@ const initialRelocationTaskListParams: Pick<
 }
 
 const RelocationTaskListPage: FC = () => {
+  // const location = useLocation()
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<RelocationTaskListFilterFormFields>()
@@ -61,6 +62,13 @@ const RelocationTaskListPage: FC = () => {
 
   const { currentData: relocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList(relocationTaskListParams)
+
+  // useEffect(() => {
+  //   if (!relocationTaskOpened && location.state.viewRelocationTaskId) {
+  //     setSelectedRelocationTaskId(location.state.viewRelocationTaskId)
+  //     toggleOpenRelocationTask()
+  //   }
+  // }, [location.state.viewRelocationTaskId, relocationTaskOpened, toggleOpenRelocationTask])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {

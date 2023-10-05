@@ -4,7 +4,11 @@ import { Button, Form } from 'antd'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
-import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
+import {
+  EquipmentCategoryEnum,
+  equipmentConditionOptions,
+} from 'modules/warehouse/constants/equipment'
+import { EquipmentModel } from 'modules/warehouse/models'
 
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
@@ -13,16 +17,6 @@ import { makeString } from 'shared/utils/string'
 
 import { AddEquipmentButton } from './styles'
 import { RelocationEquipmentEditableTableProps, RelocationEquipmentFormFields } from './types'
-
-const recordCreatorProps: EditableProTableProps<
-  RelocationEquipmentFormFields,
-  any
->['recordCreatorProps'] = {
-  record: () => ({
-    rowId: Math.floor(new Date().getTime() * Math.random() * 1000),
-  }),
-  creatorButtonText: 'Добавить оборудование',
-}
 
 const formItemProps: EditableProTableProps<RelocationEquipmentFormFields, any>['formItemProps'] = {
   rules: [
@@ -39,6 +33,8 @@ const formItemProps: EditableProTableProps<RelocationEquipmentFormFields, any>['
 }
 
 const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps> = ({
+  isLoading,
+
   currencyList,
   currencyListIsLoading,
 
@@ -72,120 +68,110 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
     [form],
   )
 
-  const columns: ProColumns<RelocationEquipmentFormFields>[] = useMemo(
-    () => [
-      {
-        key: 'id',
-        dataIndex: 'id',
-        width: 440,
-        title: 'Оборудование',
-        valueType: 'select',
-        formItemProps: {
-          rules: [{ required: true }],
-          // @ts-ignore
-          'data-testid': 'equipment-form-item',
-        },
-        fieldProps: {
-          dropdownRender: (menu: ReactNode) => (
-            <Space $block direction='vertical'>
-              <AddEquipmentButton type='link'>Добавить оборудование</AddEquipmentButton>
+  const columns: ProColumns<RelocationEquipmentFormFields>[] = [
+    {
+      key: 'id',
+      dataIndex: 'id',
+      width: 440,
+      title: 'Оборудование',
+      valueType: 'select',
+      formItemProps: {
+        rules: [{ required: true }],
+        // @ts-ignore
+        'data-testid': 'equipment-form-item',
+      },
+      fieldProps: {
+        dropdownRender: (menu: ReactNode) => (
+          <Space $block direction='vertical'>
+            <AddEquipmentButton type='link'>Добавить оборудование</AddEquipmentButton>
 
-              {menu}
-            </Space>
-          ),
-          allowClear: false,
-          loading: equipmentListIsLoading,
-          options: equipmentOptions,
-          showSearch: true,
-          filterOption: (input: string, option: DefaultOptionType) =>
-            option ? (option.label as string).toLowerCase().includes(input.toLowerCase()) : false,
+            {menu}
+          </Space>
+        ),
+        allowClear: false,
+        loading: equipmentListIsLoading,
+        disabled: isLoading,
+        options: equipmentOptions,
+        showSearch: true,
+        onChange: () => {
+          form.resetFields(['quantity'])
         },
+        filterOption: (input: string, option: DefaultOptionType) =>
+          option ? (option.label as string).toLowerCase().includes(input.toLowerCase()) : false,
       },
-      {
-        key: 'serialNumber',
-        dataIndex: 'serialNumber',
-        title: 'Серийный номер',
-        fieldProps: {
-          disabled: true,
-          placeholder: null,
-        },
+    },
+    {
+      key: 'serialNumber',
+      dataIndex: 'serialNumber',
+      title: 'Серийный номер',
+      fieldProps: { disabled: true, placeholder: null },
+    },
+    {
+      key: 'purpose',
+      dataIndex: 'purpose',
+      title: 'Назначение',
+      fieldProps: { disabled: true, placeholder: null },
+    },
+    {
+      key: 'condition',
+      dataIndex: 'condition',
+      width: 190,
+      title: 'Состояние',
+      valueType: 'select',
+      formItemProps: { rules: [{ required: true }] },
+      fieldProps: { disabled: isLoading, options: equipmentConditionOptions },
+    },
+    {
+      key: 'amount',
+      dataIndex: 'amount',
+      title: 'Доступно',
+      valueType: 'digit',
+      fieldProps: { disabled: true, placeholder: null },
+    },
+    {
+      key: 'price',
+      dataIndex: 'price',
+      title: 'Стоимость',
+      valueType: 'digit',
+      fieldProps: { disabled: isLoading },
+    },
+    {
+      key: 'currency',
+      dataIndex: 'currency',
+      title: 'Валюта',
+      valueType: 'select',
+      fieldProps: { options: currencyOptions, loading: currencyListIsLoading, disabled: isLoading },
+    },
+    {
+      key: 'quantity',
+      dataIndex: 'quantity',
+      title: 'Количество',
+      valueType: 'digit',
+      formItemProps: { rules: [{ required: true }] },
+      fieldProps: (form, config) => {
+        const amount = form.getFieldValue((config.rowKey as unknown as string[]).concat('amount'))
+        const category: EquipmentModel['category'] = form.getFieldValue(
+          (config.rowKey as unknown as string[]).concat('category'),
+        )
+        const isConsumable = category?.code === EquipmentCategoryEnum.Consumable
+        return { min: 1, max: amount, disabled: (!!category && !isConsumable) || isLoading }
       },
-      {
-        key: 'purpose',
-        dataIndex: 'purpose',
-        title: 'Назначение',
-        fieldProps: {
-          disabled: true,
-          placeholder: null,
-        },
-      },
-      {
-        key: 'condition',
-        dataIndex: 'condition',
-        width: 190,
-        title: 'Состояние',
-        valueType: 'select',
-        formItemProps: { rules: [{ required: true }] },
-        fieldProps: {
-          options: equipmentConditionOptions,
-        },
-      },
-      {
-        key: 'amount',
-        dataIndex: 'amount',
-        title: 'Доступно',
-        valueType: 'digit',
-        fieldProps: {
-          disabled: true,
-          placeholder: null,
-        },
-      },
-      {
-        key: 'price',
-        dataIndex: 'price',
-        title: 'Стоимость',
-        valueType: 'digit',
-      },
-      {
-        key: 'currency',
-        dataIndex: 'currency',
-        title: 'Валюта',
-        valueType: 'select',
-        fieldProps: {
-          options: currencyOptions,
-          loading: currencyListIsLoading,
-        },
-      },
-      {
-        key: 'quantity',
-        dataIndex: 'quantity',
-        title: 'Количество',
-        valueType: 'digit',
-        formItemProps: { rules: [{ required: true }] },
-        fieldProps: { min: 1 },
-      },
-      {
-        title: '',
-        valueType: 'option',
-        width: 50,
-        render: (_, row) => [
-          <Button
-            key='delete'
-            type='text'
-            icon={<MinusCircleIcon />}
-            onClick={() => handleDeleteRow(row)}
-          />,
-        ],
-      },
-    ],
-    [
-      currencyListIsLoading,
-      currencyOptions,
-      equipmentListIsLoading,
-      equipmentOptions,
-      handleDeleteRow,
-    ],
-  )
+    },
+    {
+      title: '',
+      valueType: 'option',
+      width: 50,
+      render: (_, row) => [
+        <Button
+          key='delete'
+          type='text'
+          icon={<MinusCircleIcon />}
+          onClick={() => handleDeleteRow(row)}
+          disabled={isLoading}
+        />,
+      ],
+    },
+  ]
 
   return (
     <EditableProTable<RelocationEquipmentFormFields>
@@ -193,7 +179,13 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       rowKey='rowId'
       name='equipments'
       columns={columns}
-      recordCreatorProps={recordCreatorProps}
+      recordCreatorProps={{
+        record: () => ({
+          rowId: Math.floor(new Date().getTime() * Math.random() * 1000),
+        }),
+        disabled: isLoading,
+        creatorButtonText: 'Добавить оборудование',
+      }}
       formItemProps={formItemProps}
       editable={{
         type: 'multiple',
@@ -207,6 +199,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
             type='text'
             icon={<MinusCircleIcon />}
             onClick={() => handleDeleteRow(row)}
+            disabled={isLoading}
           />,
         ],
       }}
