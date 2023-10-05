@@ -1,8 +1,8 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button } from 'antd'
 import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import RelocationTaskDetails from 'modules/warehouse/components/RelocationTaskDetails'
@@ -47,7 +47,10 @@ const initialRelocationTaskListParams: Pick<
 }
 
 const RelocationTaskListPage: FC = () => {
-  // const location = useLocation()
+  // todo: создать хук для useSearchParams который парсит значения в нужный тип
+  const [searchParams, setSearchParams] = useSearchParams()
+  const relocationTaskId = Number(searchParams.get('relocationTask'))
+
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<RelocationTaskListFilterFormFields>()
@@ -55,7 +58,10 @@ const RelocationTaskListPage: FC = () => {
   const [selectedRelocationTaskId, setSelectedRelocationTaskId] = useState<IdType>()
 
   const [relocationTaskOpened, { toggle: toggleOpenRelocationTask }] = useBoolean(false)
-  const debouncedToggleOpenRelocationTask = useDebounceFn(toggleOpenRelocationTask)
+  const debouncedCloseRelocationTask = useDebounceFn(() => {
+    toggleOpenRelocationTask()
+    setSearchParams(undefined)
+  })
 
   const [relocationTaskListParams, setRelocationTaskListParams] =
     useSetState<GetRelocationTaskListQueryArgs>(initialRelocationTaskListParams)
@@ -63,12 +69,13 @@ const RelocationTaskListPage: FC = () => {
   const { currentData: relocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList(relocationTaskListParams)
 
-  // useEffect(() => {
-  //   if (!relocationTaskOpened && location.state.viewRelocationTaskId) {
-  //     setSelectedRelocationTaskId(location.state.viewRelocationTaskId)
-  //     toggleOpenRelocationTask()
-  //   }
-  // }, [location.state.viewRelocationTaskId, relocationTaskOpened, toggleOpenRelocationTask])
+  useEffect(() => {
+    if (!relocationTaskOpened && !!relocationTaskId) {
+      // todo: вынести в функцию и переиспользовать
+      setSelectedRelocationTaskId(relocationTaskId)
+      toggleOpenRelocationTask()
+    }
+  }, [relocationTaskId, relocationTaskOpened, toggleOpenRelocationTask])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
@@ -146,7 +153,7 @@ const RelocationTaskListPage: FC = () => {
       {relocationTaskOpened && (
         <RelocationTaskDetails
           open={relocationTaskOpened}
-          onClose={debouncedToggleOpenRelocationTask}
+          onClose={debouncedCloseRelocationTask}
           relocationTaskId={selectedRelocationTaskId}
         />
       )}

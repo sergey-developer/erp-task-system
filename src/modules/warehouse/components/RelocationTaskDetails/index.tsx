@@ -1,4 +1,3 @@
-import { useSetState } from 'ahooks'
 import {
   Button,
   Col,
@@ -10,7 +9,7 @@ import {
   Row,
   Typography,
 } from 'antd'
-import React, { FC, useCallback } from 'react'
+import React, { FC } from 'react'
 
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
@@ -20,7 +19,6 @@ import {
   useGetRelocationTask,
   useLazyGetRelocationTaskWaybillM15,
 } from 'modules/warehouse/hooks/relocationTask'
-import { GetRelocationEquipmentListQueryArgs } from 'modules/warehouse/models'
 import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
 
 import { MenuIcon } from 'components/Icons'
@@ -32,32 +30,27 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
-import { RelocationEquipmentTableProps } from '../RelocationEquipmentTable/types'
 import { RelocationTaskDetailsProps } from './types'
 
 const { Text } = Typography
 
 const dropdownTrigger: DropdownProps['trigger'] = ['click']
-const initialRelocationEquipmentListParams = getInitialPaginationParams()
 
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
   const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
 
-  const [relocationEquipmentListParams, setRelocationEquipmentListParams] = useSetState<
-    Omit<GetRelocationEquipmentListQueryArgs, 'relocationTaskId'>
-  >(initialRelocationEquipmentListParams)
-
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId: relocationTaskId! }, { skip: !relocationTaskId })
 
-  const { currentData: relocationEquipmentList, isFetching: relocationEquipmentListIsFetching } =
-    useGetRelocationEquipmentList(
-      { relocationTaskId: relocationTaskId!, ...relocationEquipmentListParams },
-      { skip: !relocationTaskId },
-    )
+  const {
+    currentData: relocationEquipmentList = [],
+    isFetching: relocationEquipmentListIsFetching,
+  } = useGetRelocationEquipmentList(
+    { relocationTaskId: relocationTaskId! },
+    { skip: !relocationTaskId },
+  )
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
@@ -77,20 +70,6 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       }
     } catch {}
   }, [relocationTaskId])
-
-  const handleTablePagination = useCallback(
-    (pagination: Parameters<RelocationEquipmentTableProps['onChange']>[0]) => {
-      setRelocationEquipmentListParams(calculatePaginationParams(pagination))
-    },
-    [setRelocationEquipmentListParams],
-  )
-
-  const handleChangeTable = useCallback<RelocationEquipmentTableProps['onChange']>(
-    (pagination) => {
-      handleTablePagination(pagination)
-    },
-    [handleTablePagination],
-  )
 
   const title: DrawerProps['title'] = relocationTaskIsFetching ? (
     <Space>
@@ -236,10 +215,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             <Text strong>Перечень оборудования</Text>
 
             <RelocationEquipmentTable
-              dataSource={relocationEquipmentList?.results || []}
-              pagination={relocationEquipmentList?.pagination || false}
+              dataSource={relocationEquipmentList}
               loading={relocationEquipmentListIsFetching}
-              onChange={handleChangeTable}
             />
           </Space>
         </Col>

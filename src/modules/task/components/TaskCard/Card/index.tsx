@@ -1,7 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { FormInstance } from 'antd'
 import noop from 'lodash/noop'
-import moment from 'moment-timezone'
 import React, { FC, useCallback, useEffect } from 'react'
 
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
@@ -44,7 +43,7 @@ import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { MaybeNull } from 'shared/types/utils'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
-import { formatDate } from 'shared/utils/date'
+import { formatDate, setTimeToDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -393,10 +392,7 @@ const TaskCard: FC<TaskCardProps> = ({
           taskId: task.id,
           comment: values.comment,
           suspendReason: values.reason,
-          suspendEndAt: moment(values.endDate)
-            .set('hours', values.endTime.get('hours'))
-            .set('minutes', values.endTime.get('minutes'))
-            .toISOString(),
+          suspendEndAt: setTimeToDate(values.endDate, values.endTime).toISOString(),
         })
 
         closeRequestTaskSuspendModal()
