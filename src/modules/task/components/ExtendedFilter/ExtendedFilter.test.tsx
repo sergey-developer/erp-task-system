@@ -24,6 +24,8 @@ import {
   buttonTestUtils,
 } from '_tests_/utils'
 
+import supportGroupFixtures from '../../../../_tests_/fixtures/supportGroup'
+import warehouseFixtures from '../../../../_tests_/fixtures/warehouse'
 import {
   initialExtendedFilterFormValues,
   searchFieldDict,
@@ -44,6 +46,15 @@ const props: Readonly<ExtendedFilterProps> = {
 
   userList: [],
   userListIsLoading: false,
+
+  customerList: [],
+  customerListIsLoading: false,
+
+  macroregionList: [],
+  macroregionListIsLoading: false,
+
+  supportGroupList: [],
+  supportGroupListIsLoading: false,
 
   onClose: jest.fn(),
   onSubmit: jest.fn(),
@@ -85,8 +96,55 @@ const applyFilter = async (user: UserEvent) => {
   return button
 }
 
+// support group
+const getSupportGroupBlock = () => within(getContainer()).getByTestId('support-group-block')
+// support group. customers
+const getCustomersFormItem = () => screen.getByTestId('customers-form-item')
+
+const getCustomersSelect = () => selectTestUtils.getSelect(getCustomersFormItem())
+
+const openCustomersSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getCustomersFormItem())
+
+const setCustomer = selectTestUtils.clickSelectOption
+
+const getSelectedCustomer = () => selectTestUtils.getSelectedOption(getCustomersFormItem())
+
+const expectCustomersLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getCustomersFormItem())
+
+// support group. macroregions
+const getMacroregionsFormItem = () => screen.getByTestId('macroregions-form-item')
+
+const getMacroregionsSelect = () => selectTestUtils.getSelect(getMacroregionsFormItem())
+
+const openMacroregionsSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getMacroregionsFormItem())
+
+const setMacroregion = selectTestUtils.clickSelectOption
+
+const getSelectedMacroregion = () => selectTestUtils.getSelectedOption(getMacroregionsFormItem())
+
+const expectMacroregionsLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getMacroregionsFormItem())
+
+// support group. supportGroups
+const getSupportGroupsFormItem = () => screen.getByTestId('support-groups-form-item')
+
+const getSupportGroupsSelect = () => selectTestUtils.getSelect(getSupportGroupsFormItem())
+
+const openSupportGroupsSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getSupportGroupsFormItem())
+
+const setSupportGroup = selectTestUtils.clickSelectOption
+
+const getSelectedSupportGroup = () => selectTestUtils.getSelectedOption(getSupportGroupsFormItem())
+
+const expectSupportGroupsLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getSupportGroupsFormItem())
+
 // status
-const getStatusFieldContainer = () => screen.getByTestId('extended-filter-status')
+const getStatusFieldContainer = () => screen.getByTestId('status-block')
 
 const getStatusField = (label: string) =>
   checkboxTestUtils.getCheckboxIn(getStatusFieldContainer(), new RegExp(label))
@@ -115,7 +173,7 @@ const status = {
 }
 
 // assigned
-const getAssignedFieldContainer = () => screen.getByTestId('extended-filter-is-assigned')
+const getAssignedFieldContainer = () => screen.getByTestId('is-assigned-block')
 
 const getAssignedField = (label: string) =>
   radioButtonTestUtils.getRadioButtonIn(getAssignedFieldContainer(), label)
@@ -144,7 +202,7 @@ const assigned = {
 }
 
 // overdue
-const getOverdueFieldContainer = () => screen.getByTestId('extended-filter-is-overdue')
+const getOverdueFieldContainer = () => screen.getByTestId('is-overdue-block')
 
 const getOverdueField = (label: string) =>
   radioButtonTestUtils.getRadioButtonIn(getOverdueFieldContainer(), label)
@@ -173,7 +231,7 @@ const overdue = {
 }
 
 // complete at
-const getCompleteAtFieldContainer = () => screen.getByTestId('extended-filter-complete-at')
+const getCompleteAtFieldContainer = () => screen.getByTestId('complete-at-block')
 
 const getStartDateField = (): HTMLInputElement =>
   within(getCompleteAtFieldContainer()).getByPlaceholderText('Начальная дата')
@@ -209,11 +267,11 @@ const completeAt = {
 }
 
 // work group
-const getWorkGroupFieldContainer = () => screen.getByTestId('extended-filter-work-group')
+const getWorkGroupFieldContainer = () => screen.getByTestId('work-group-block')
 
-const getWorkGroupField = () => screen.getByTestId('extended-filter-work-group-select')
+const getWorkGroupField = () => screen.getByTestId('work-group-select')
 
-const queryWorkGroupField = () => screen.queryByTestId('extended-filter-work-group-select')
+const queryWorkGroupField = () => screen.queryByTestId('work-group-select')
 
 const workGroupExpectLoadingFinished = async () => {
   const workGroupField = getWorkGroupField()
@@ -231,9 +289,9 @@ const workGroup = {
 }
 
 // manager
-const getManagerFilterBlock = () => screen.getByTestId('extended-filter-manager')
+const getManagerFilterBlock = () => screen.getByTestId('manager-block')
 
-const getManagerFieldContainer = () => screen.getByTestId('extended-filter-manager-select')
+const getManagerFieldContainer = () => screen.getByTestId('manager-select')
 
 const getManagerField = () => selectTestUtils.getSelect(getManagerFieldContainer())
 
@@ -259,7 +317,7 @@ const manager = {
 }
 
 // search by column
-const getSearchByColumnFieldContainer = () => screen.getByTestId('extended-filter-search-by-column')
+const getSearchByColumnFieldContainer = () => screen.getByTestId('search-by-column-block')
 
 const getSearchByColumnKeywordField = (): HTMLInputElement =>
   within(getSearchByColumnFieldContainer()).getByPlaceholderText('Ключевое слово')
@@ -335,6 +393,26 @@ export const testUtils = {
   getApplyButton,
   applyFilter,
 
+  getSupportGroupBlock,
+
+  getCustomersSelect,
+  openCustomersSelect,
+  setCustomer,
+  getSelectedCustomer,
+  expectCustomersLoadingFinished,
+
+  getMacroregionsSelect,
+  openMacroregionsSelect,
+  setMacroregion,
+  getSelectedMacroregion,
+  expectMacroregionsLoadingFinished,
+
+  getSupportGroupsSelect,
+  openSupportGroupsSelect,
+  setSupportGroup,
+  getSelectedSupportGroup,
+  expectSupportGroupsLoadingFinished,
+
   searchByColumn,
   status,
   assigned,
@@ -400,6 +478,290 @@ describe('Расширенный фильтр', () => {
 
       expect(applyButton).toBeEnabled()
       expect(resetAllButton).toBeEnabled()
+    })
+  })
+
+  describe('Группа поддержки', () => {
+    describe('Клиенты', () => {
+      test('Отображается корректно', async () => {
+        mockGetWorkGroupListSuccess()
+
+        const customerList = warehouseFixtures.customerList()
+        const { user } = render(<ExtendedFilter {...props} customerList={customerList} />)
+
+        const field = testUtils.getCustomersSelect()
+        const selectedOption = testUtils.getSelectedCustomer()
+        await testUtils.openCustomersSelect(user)
+
+        expect(field).toBeInTheDocument()
+        expect(field).toBeEnabled()
+        expect(selectedOption).not.toBeInTheDocument()
+        customerList.forEach((item) => {
+          const option = selectTestUtils.getSelectOption(item.title)
+          expect(option).toBeInTheDocument()
+        })
+      })
+
+      test('Можно установить значение', async () => {
+        mockGetWorkGroupListSuccess()
+
+        const customerListItem = warehouseFixtures.customerListItem()
+        const { user } = render(<ExtendedFilter {...props} customerList={[customerListItem]} />)
+
+        await testUtils.openCustomersSelect(user)
+        await testUtils.setCustomer(user, customerListItem.title)
+
+        const selectedOption = testUtils.getSelectedCustomer()
+        expect(selectedOption).toBeInTheDocument()
+        expect(selectedOption).toHaveTextContent(customerListItem.title)
+      })
+
+      test('Переданное значение устанавливается', () => {
+        mockGetWorkGroupListSuccess()
+
+        const customerListItem = warehouseFixtures.customerListItem()
+
+        render(
+          <ExtendedFilter
+            {...props}
+            customerList={[customerListItem]}
+            formValues={{
+              ...props.formValues,
+              customers: [customerListItem.id],
+            }}
+          />,
+        )
+
+        const selectedOption = testUtils.getSelectedCustomer()
+
+        expect(selectedOption).toBeInTheDocument()
+        expect(selectedOption).toHaveTextContent(customerListItem.title)
+      })
+
+      test('Кнопка "Сбросить" сбрасывает значение', async () => {
+        mockGetWorkGroupListSuccess()
+
+        const customerListItem = warehouseFixtures.customerListItem()
+
+        const { user } = render(<ExtendedFilter {...props} customerList={[customerListItem]} />)
+
+        await testUtils.openCustomersSelect(user)
+        await testUtils.setCustomer(user, customerListItem.title)
+        const block = testUtils.getSupportGroupBlock()
+        await testUtils.clickResetButtonIn(user, block)
+        const selectedOption = testUtils.getSelectedCustomer()
+
+        expect(selectedOption).not.toBeInTheDocument()
+      })
+
+      test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
+        mockGetWorkGroupListSuccess()
+
+        const customerListItem = warehouseFixtures.customerListItem()
+
+        const { user } = render(<ExtendedFilter {...props} customerList={[customerListItem]} />)
+
+        await testUtils.openCustomersSelect(user)
+        await testUtils.setCustomer(user, customerListItem.title)
+        await testUtils.clickResetAllButton(user)
+        const selectedOption = testUtils.getSelectedCustomer()
+
+        expect(selectedOption).not.toBeInTheDocument()
+      })
+    })
+
+    describe('Макрорегионы', () => {
+      test('Отображается корректно', async () => {
+        mockGetWorkGroupListSuccess()
+
+        // todo: получать соответствующие фикстуры когда будет готова интеграция
+        const macroregionList = warehouseFixtures.customerList()
+        const { user } = render(<ExtendedFilter {...props} macroregionList={macroregionList} />)
+
+        const field = testUtils.getMacroregionsSelect()
+        const selectedOption = testUtils.getSelectedMacroregion()
+        await testUtils.openMacroregionsSelect(user)
+
+        expect(field).toBeInTheDocument()
+        expect(field).toBeEnabled()
+        expect(selectedOption).not.toBeInTheDocument()
+        macroregionList.forEach((item) => {
+          const option = selectTestUtils.getSelectOption(item.title)
+          expect(option).toBeInTheDocument()
+        })
+      })
+
+      test('Можно установить значение', async () => {
+        mockGetWorkGroupListSuccess()
+
+        // todo: получать соответствующие фикстуры когда будет готова интеграция
+        const macroregionListItem = warehouseFixtures.customerListItem()
+
+        const { user } = render(
+          <ExtendedFilter {...props} macroregionList={[macroregionListItem]} />,
+        )
+
+        await testUtils.openMacroregionsSelect(user)
+        await testUtils.setMacroregion(user, macroregionListItem.title)
+
+        const selectedOption = testUtils.getSelectedMacroregion()
+        expect(selectedOption).toBeInTheDocument()
+        expect(selectedOption).toHaveTextContent(macroregionListItem.title)
+      })
+
+      test('Переданное значение устанавливается', () => {
+        mockGetWorkGroupListSuccess()
+
+        // todo: получать соответствующие фикстуры когда будет готова интеграция
+        const macroregionListItem = warehouseFixtures.customerListItem()
+
+        render(
+          <ExtendedFilter
+            {...props}
+            macroregionList={[macroregionListItem]}
+            formValues={{
+              ...props.formValues,
+              macroregions: [macroregionListItem.id],
+            }}
+          />,
+        )
+
+        const selectedOption = testUtils.getSelectedMacroregion()
+
+        expect(selectedOption).toBeInTheDocument()
+        expect(selectedOption).toHaveTextContent(macroregionListItem.title)
+      })
+
+      test('Кнопка "Сбросить" сбрасывает значение', async () => {
+        mockGetWorkGroupListSuccess()
+
+        // todo: получать соответствующие фикстуры когда будет готова интеграция
+        const macroregionListItem = warehouseFixtures.customerListItem()
+
+        const { user } = render(
+          <ExtendedFilter {...props} macroregionList={[macroregionListItem]} />,
+        )
+
+        await testUtils.openMacroregionsSelect(user)
+        await testUtils.setMacroregion(user, macroregionListItem.title)
+        const block = testUtils.getSupportGroupBlock()
+        await testUtils.clickResetButtonIn(user, block)
+        const selectedOption = testUtils.getSelectedMacroregion()
+
+        expect(selectedOption).not.toBeInTheDocument()
+      })
+
+      test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
+        mockGetWorkGroupListSuccess()
+
+        // todo: получать соответствующие фикстуры когда будет готова интеграция
+        const macroregionListItem = warehouseFixtures.customerListItem()
+
+        const { user } = render(
+          <ExtendedFilter {...props} macroregionList={[macroregionListItem]} />,
+        )
+
+        await testUtils.openMacroregionsSelect(user)
+        await testUtils.setMacroregion(user, macroregionListItem.title)
+        await testUtils.clickResetAllButton(user)
+        const selectedOption = testUtils.getSelectedMacroregion()
+
+        expect(selectedOption).not.toBeInTheDocument()
+      })
+    })
+
+    describe('Группы поддержки', () => {
+      test('Отображается корректно', async () => {
+        mockGetWorkGroupListSuccess()
+
+        const supportGroupList = supportGroupFixtures.supportGroupList()
+        const { user } = render(<ExtendedFilter {...props} supportGroupList={supportGroupList} />)
+
+        const field = testUtils.getSupportGroupsSelect()
+        const selectedOption = testUtils.getSelectedSupportGroup()
+        await testUtils.openSupportGroupsSelect(user)
+
+        expect(field).toBeInTheDocument()
+        expect(field).toBeEnabled()
+        expect(selectedOption).not.toBeInTheDocument()
+        supportGroupList.forEach((item) => {
+          const option = selectTestUtils.getSelectOption(item.name)
+          expect(option).toBeInTheDocument()
+        })
+      })
+
+      test('Можно установить значение', async () => {
+        mockGetWorkGroupListSuccess()
+
+        const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
+        const { user } = render(
+          <ExtendedFilter {...props} supportGroupList={[supportGroupListItem]} />,
+        )
+
+        await testUtils.openSupportGroupsSelect(user)
+        await testUtils.setSupportGroup(user, supportGroupListItem.name)
+
+        const selectedOption = testUtils.getSelectedSupportGroup()
+        expect(selectedOption).toBeInTheDocument()
+        expect(selectedOption).toHaveTextContent(supportGroupListItem.name)
+      })
+
+      test('Переданное значение устанавливается', () => {
+        mockGetWorkGroupListSuccess()
+
+        const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
+
+        render(
+          <ExtendedFilter
+            {...props}
+            supportGroupList={[supportGroupListItem]}
+            formValues={{
+              ...props.formValues,
+              supportGroups: [supportGroupListItem.id],
+            }}
+          />,
+        )
+
+        const selectedOption = testUtils.getSelectedSupportGroup()
+
+        expect(selectedOption).toBeInTheDocument()
+        expect(selectedOption).toHaveTextContent(supportGroupListItem.name)
+      })
+
+      test('Кнопка "Сбросить" сбрасывает значение', async () => {
+        mockGetWorkGroupListSuccess()
+
+        const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
+
+        const { user } = render(
+          <ExtendedFilter {...props} supportGroupList={[supportGroupListItem]} />,
+        )
+
+        await testUtils.openSupportGroupsSelect(user)
+        await testUtils.setSupportGroup(user, supportGroupListItem.name)
+        const block = testUtils.getSupportGroupBlock()
+        await testUtils.clickResetButtonIn(user, block)
+        const selectedOption = testUtils.getSelectedSupportGroup()
+
+        expect(selectedOption).not.toBeInTheDocument()
+      })
+
+      test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
+        mockGetWorkGroupListSuccess()
+
+        const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
+
+        const { user } = render(
+          <ExtendedFilter {...props} supportGroupList={[supportGroupListItem]} />,
+        )
+
+        await testUtils.openSupportGroupsSelect(user)
+        await testUtils.setSupportGroup(user, supportGroupListItem.name)
+        await testUtils.clickResetAllButton(user)
+        const selectedOption = testUtils.getSelectedSupportGroup()
+
+        expect(selectedOption).not.toBeInTheDocument()
+      })
     })
   })
 

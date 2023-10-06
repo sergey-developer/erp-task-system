@@ -361,6 +361,12 @@ const TaskListPage: FC = () => {
         <ExtendedFilter
           formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
+          customerList={[]}
+          customerListIsLoading={false}
+          macroregionList={[]}
+          macroregionListIsLoading={false}
+          supportGroupList={[]}
+          supportGroupListIsLoading={false}
           userList={userList}
           userListIsLoading={userListIsFetching}
           onClose={debouncedToggleOpenExtendedFilter}

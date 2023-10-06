@@ -10,7 +10,7 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
-import { idAndNameSelectFieldNames } from 'shared/constants/selectField'
+import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
 import {
   managerSelectFieldNames,
@@ -30,6 +30,15 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
   userList,
   userListIsLoading,
+
+  customerList,
+  customerListIsLoading,
+
+  macroregionList,
+  macroregionListIsLoading,
+
+  supportGroupList,
+  supportGroupListIsLoading,
 
   onClose,
   onSubmit,
@@ -64,17 +73,53 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         onFinish={onSubmit}
       >
         <FilterBlock
-          data-testid='extended-filter-status'
-          label='Статус'
-          onReset={resetFields(['status'])}
+          data-testid='support-group-block'
+          label='Группа поддержки'
+          onReset={resetFields(['customers', 'macroregions', 'supportGroups'])}
         >
+          <Form.Item data-testid='customers-form-item' name='customers' label='Клиенты'>
+            <Select
+              mode='multiple'
+              fieldNames={idAndTitleSelectFieldNames}
+              loading={customerListIsLoading}
+              options={customerList}
+              placeholder='Выберите из списка'
+            />
+          </Form.Item>
+
+          <Form.Item data-testid='macroregions-form-item' name='macroregions' label='Макрорегионы'>
+            <Select
+              mode='multiple'
+              fieldNames={idAndTitleSelectFieldNames}
+              loading={macroregionListIsLoading}
+              options={macroregionList}
+              placeholder='Выберите из списка'
+            />
+          </Form.Item>
+
+          <Form.Item
+            data-testid='support-groups-form-item'
+            name='supportGroups'
+            label='Группы поддержки'
+          >
+            <Select
+              mode='multiple'
+              fieldNames={idAndNameSelectFieldNames}
+              loading={supportGroupListIsLoading}
+              options={supportGroupList}
+              placeholder='Выберите из списка'
+            />
+          </Form.Item>
+        </FilterBlock>
+
+        <FilterBlock data-testid='status-block' label='Статус' onReset={resetFields(['status'])}>
           <Form.Item name='status'>
             <CheckboxGroupStyled options={taskExtendedStatusOptions} />
           </Form.Item>
         </FilterBlock>
 
         <FilterBlock
-          data-testid='extended-filter-is-assigned'
+          data-testid='is-assigned-block'
           label='Назначенный'
           onReset={resetFields(['isAssigned'])}
         >
@@ -84,7 +129,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         </FilterBlock>
 
         <FilterBlock
-          data-testid='extended-filter-is-overdue'
+          data-testid='is-overdue-block'
           label='Просрочено'
           onReset={resetFields(['isOverdue'])}
         >
@@ -94,7 +139,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         </FilterBlock>
 
         <FilterBlock
-          data-testid='extended-filter-complete-at'
+          data-testid='complete-at-block'
           label='Выполнить до'
           onReset={resetFields(['completeAt'])}
         >
@@ -106,14 +151,13 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         <Permissions config={extendedFilterPermissions.workGroup}>
           {() => (
             <FilterBlock
-              data-testid='extended-filter-work-group'
+              data-testid='work-group-block'
               label='Рабочая группа'
               onReset={resetFields(['workGroupId'])}
             >
               <Form.Item name='workGroupId'>
                 <Select
-                  data-testid='extended-filter-work-group-select'
-                  disabled={workGroupListIsFetching}
+                  data-testid='work-group-select'
                   fieldNames={idAndNameSelectFieldNames}
                   loading={workGroupListIsFetching}
                   options={workGroupList}
@@ -129,7 +173,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         </Permissions>
 
         <FilterBlock
-          data-testid='extended-filter-search-by-column'
+          data-testid='search-by-column-block'
           label='Поиск по столбцу'
           onReset={resetFields(['searchField', 'searchValue'])}
         >
@@ -145,13 +189,13 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         </FilterBlock>
 
         <FilterBlock
-          data-testid='extended-filter-manager'
+          data-testid='manager-block'
           label='Руководитель'
           onReset={resetFields(['manager'])}
         >
           <Form.Item name='manager'>
             <Select
-              data-testid='extended-filter-manager-select'
+              data-testid='manager-select'
               fieldNames={managerSelectFieldNames}
               loading={userListIsLoading}
               options={userList}

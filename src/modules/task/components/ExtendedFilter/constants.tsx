@@ -23,6 +23,9 @@ import { ExtendedFilterFormFields } from './types'
 export const DEFAULT_SEARCH_FIELD: keyof SearchFields = 'searchByTitle'
 
 export const initialExtendedFilterFormValues: Readonly<ExtendedFilterFormFields> = {
+  customers: [],
+  macroregions: [],
+  supportGroups: [],
   completeAt: [],
   searchField: DEFAULT_SEARCH_FIELD,
   searchValue: '',
