@@ -42,8 +42,15 @@ const getSelectOptionById = (id: NumberOrString | RegExp) =>
 
 const querySelectOption = (name: string) => screen.queryByRole('option', { name })
 
-const clickSelectOption = async (user: UserEvent, name: string) => {
-  const option = await screen.findByText(name)
+const clickSelectOption = async (user: UserEvent, name: string, isGetByRole?: boolean) => {
+  let option
+
+  if (isGetByRole) {
+    option = getSelectOption(name)
+  } else {
+    option = await screen.findByText(name)
+  }
+
   await user.click(option)
   return option
 }

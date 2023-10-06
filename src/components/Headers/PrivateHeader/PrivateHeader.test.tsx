@@ -12,19 +12,13 @@ import { MaybeNull } from 'shared/types/utils'
 import PrivateApp from 'app/PrivateApp'
 
 import userFixtures from '_tests_/fixtures/user'
-
 import {
   mockGetSystemInfoSuccess,
   mockGetTimeZoneListSuccess,
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
 } from '_tests_/mocks/api'
-import {
-  selectTestUtils,
-  render,
-  renderInRoute,
-  setupApiTests,
-} from '_tests_/utils'
+import { selectTestUtils, render, renderInRoute, setupApiTests } from '_tests_/utils'
 
 import PrivateHeader from './index'
 
@@ -73,12 +67,6 @@ const getUserStatusSelectContainer = (): HTMLElement =>
 const queryUserStatusSelectContainer = (): MaybeNull<HTMLElement> =>
   within(getContainer()).queryByTestId('user-status-select')
 
-const getUserStatusSelect = (opened?: boolean) =>
-  selectTestUtils.getSelect(getUserStatusSelectContainer(), {
-    name: 'Статус пользователя',
-    expanded: opened,
-  })
-
 const getSelectedUserStatus = () =>
   selectTestUtils.getSelectedOption(getUserStatusSelectContainer())
 
@@ -120,7 +108,6 @@ export const testUtils = {
 
   getUserStatusSelectContainer,
   queryUserStatusSelectContainer,
-  getUserStatusSelect,
   getSelectedUserStatus,
   openUserStatusSelect,
   setUserStatus,

@@ -16,7 +16,7 @@ const getTaskListPageFilters = (): MaybeNull<TaskListPageFiltersStorageState> =>
 const setTaskListPageFilters = (state: TaskListPageFiltersStorageState) =>
   localStorageService.setItem(StorageKeysEnum.TaskListPageFilters, JSON.stringify(state))
 
-const deleteTaskListPageFilters = (filterName: keyof TaskListPageFiltersStorageState): boolean => {
+const deleteTaskListPageFilter = (filterName: keyof TaskListPageFiltersStorageState): boolean => {
   const state = getTaskListPageFilters()
 
   if (state?.[filterName]) {
@@ -29,8 +29,12 @@ const deleteTaskListPageFilters = (filterName: keyof TaskListPageFiltersStorageS
   return false
 }
 
+const clearTaskListPageFilters = () =>
+  localStorageService.removeItem(StorageKeysEnum.TaskListPageFilters)
+
 export const taskLocalStorageService = {
   getTaskListPageFilters,
   setTaskListPageFilters,
-  deleteTaskListPageFilters,
+  deleteTaskListPageFilter,
+  clearTaskListPageFilters,
 }
