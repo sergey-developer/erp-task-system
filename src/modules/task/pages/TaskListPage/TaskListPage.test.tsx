@@ -13,8 +13,10 @@ import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTab
 import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
 import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
+import commonFixtures from '_tests_/fixtures/common'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
@@ -26,12 +28,12 @@ import {
   mockGetWorkGroupListSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
   fakeWord,
-  selectTestUtils,
   getStoreWithAuth,
   render,
+  selectTestUtils,
   setupApiTests,
-  buttonTestUtils,
 } from '_tests_/utils'
 
 import { DEFAULT_PAGE_SIZE } from './constants'
@@ -63,10 +65,10 @@ const getCreateTaskButton = () => buttonTestUtils.getButtonIn(getContainer(), /�
 
 const getExtendedFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
 
-const openExtendedFilter = async (user: UserEvent) => {
-  const extendedFilterButton = getExtendedFilterButton()
-  await user.click(extendedFilterButton)
-  return extendedFilterButton
+const clickExtendedFilterButton = async (user: UserEvent) => {
+  const button = getExtendedFilterButton()
+  await user.click(button)
+  return button
 }
 
 const setSearchValue = async (user: UserEvent, value: string, pressEnter: boolean = false) => {
@@ -92,7 +94,7 @@ export const testUtils = {
   getCreateTaskButton,
 
   getExtendedFilterButton,
-  openExtendedFilter,
+  clickExtendedFilterButton,
 }
 
 setupApiTests()
@@ -249,7 +251,7 @@ describe('Страница реестра заявок', () => {
       await fastFilterListTestUtils.expectLoadingFinished()
       await taskTableTestUtils.expectLoadingFinished()
 
-      await testUtils.openExtendedFilter(user)
+      await testUtils.clickExtendedFilterButton(user)
       await extendedFilterTestUtils.findContainer()
       await extendedFilterTestUtils.workGroup.expectLoadingFinished()
       await extendedFilterTestUtils.manager.expectLoadingFinished()
@@ -279,7 +281,7 @@ describe('Страница реестра заявок', () => {
       await extendedFilterTestUtils.manager.openField(user)
       await extendedFilterTestUtils.manager.setValue(user, userListItem.fullName)
 
-      await extendedFilterTestUtils.applyFilter(user)
+      await extendedFilterTestUtils.clickApplyButton(user)
       await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
 
@@ -287,7 +289,7 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
 
-      await testUtils.openExtendedFilter(user)
+      await testUtils.clickExtendedFilterButton(user)
       await extendedFilterTestUtils.findContainer()
       await extendedFilterTestUtils.workGroup.expectLoadingFinished()
       await extendedFilterTestUtils.manager.expectLoadingFinished()
@@ -392,7 +394,7 @@ describe('Страница реестра заявок', () => {
       const { user } = render(<TaskListPage />)
 
       await taskTableTestUtils.expectLoadingFinished()
-      await testUtils.openExtendedFilter(user)
+      await testUtils.clickExtendedFilterButton(user)
       const filter = await extendedFilterTestUtils.findContainer()
 
       expect(filter).toBeInTheDocument()
@@ -423,9 +425,9 @@ describe('Страница реестра заявок', () => {
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.applyFilter(user)
+        await extendedFilterTestUtils.clickApplyButton(user)
         await taskTableTestUtils.expectLoadingStarted()
       })
 
@@ -438,9 +440,9 @@ describe('Страница реестра заявок', () => {
         const { user } = render(<TaskListPage />)
 
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         const filter = await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.applyFilter(user)
+        await extendedFilterTestUtils.clickApplyButton(user)
 
         await waitFor(() => {
           expect(filter).not.toBeInTheDocument()
@@ -465,9 +467,9 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.clickRow(user, taskListItem.id)
         const taskCard = await taskCardTestUtils.findContainer()
 
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.applyFilter(user)
+        await extendedFilterTestUtils.clickApplyButton(user)
 
         await waitFor(() => {
           expect(taskCard).not.toBeInTheDocument()
@@ -486,9 +488,9 @@ describe('Страница реестра заявок', () => {
         await fastFilterListTestUtils.expectLoadingFinished()
         const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.FirstLine)
         fastFilterListTestUtils.expectFilterChecked(fastFilter)
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.applyFilter(user)
+        await extendedFilterTestUtils.clickApplyButton(user)
 
         await waitFor(() => {
           fastFilterListTestUtils.expectFilterNotChecked(fastFilter)
@@ -504,7 +506,7 @@ describe('Страница реестра заявок', () => {
         const { user } = render(<TaskListPage />)
 
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         const filter = await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.closeFilter(user)
 
@@ -522,7 +524,7 @@ describe('Страница реестра заявок', () => {
         const { user } = render(<TaskListPage />)
 
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         const filter = await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.clickOutOfFilter(user)
 
@@ -545,7 +547,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
         await extendedFilterTestUtils.manager.expectLoadingFinished()
@@ -575,10 +577,10 @@ describe('Страница реестра заявок', () => {
         await extendedFilterTestUtils.manager.openField(user)
         await extendedFilterTestUtils.manager.setValue(user, userListItem.fullName)
 
-        await extendedFilterTestUtils.applyFilter(user)
+        await extendedFilterTestUtils.clickApplyButton(user)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
         await extendedFilterTestUtils.manager.expectLoadingFinished()
@@ -617,6 +619,44 @@ describe('Страница реестра заявок', () => {
           userListItem.fullName,
         )
       })
+
+      test('Сохраняется фильтр групп поддержки', async () => {
+        mockGetWorkGroupListSuccess()
+        mockGetTaskCountersSuccess()
+        mockGetUserListSuccess()
+        mockGetTaskListSuccess({
+          body: commonFixtures.paginatedListResponse(taskFixtures.taskList()),
+          once: false,
+        })
+
+        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        const button = testUtils.getExtendedFilterButton()
+        await waitFor(() => {
+          expect(button).toBeEnabled()
+        })
+        await user.click(button)
+
+        const filter = await extendedFilterTestUtils.findContainer()
+        await extendedFilterTestUtils.openCustomersSelect(user)
+        await extendedFilterTestUtils.setCustomer(user, 'customer 1')
+        await extendedFilterTestUtils.openMacroregionsSelect(user)
+        await extendedFilterTestUtils.setMacroregion(user, 'macroregion 1')
+        await extendedFilterTestUtils.openSupportGroupsSelect(user)
+        await extendedFilterTestUtils.setSupportGroup(user, 'supportGroup 1')
+        await extendedFilterTestUtils.clickApplyButton(user)
+
+        await waitFor(() => {
+          expect(filter).not.toBeInTheDocument()
+        })
+
+        const filters = taskLocalStorageService.getTaskListPageFilters()!
+        expect(filters.customers).toEqual(expect.arrayContaining([1]))
+        expect(filters.macroregions).toEqual(expect.arrayContaining([1]))
+        expect(filters.supportGroups).toEqual(expect.arrayContaining([1]))
+      })
     })
 
     test('Значения не сохраняются если фильтр не был применён', async () => {
@@ -633,7 +673,7 @@ describe('Страница реестра заявок', () => {
       })
 
       await taskTableTestUtils.expectLoadingFinished()
-      await testUtils.openExtendedFilter(user)
+      await testUtils.clickExtendedFilterButton(user)
       const filter = await extendedFilterTestUtils.findContainer()
       await extendedFilterTestUtils.workGroup.expectLoadingFinished()
       await extendedFilterTestUtils.manager.expectLoadingFinished()
@@ -668,7 +708,7 @@ describe('Страница реестра заявок', () => {
         expect(filter).not.toBeInTheDocument()
       })
 
-      await testUtils.openExtendedFilter(user)
+      await testUtils.clickExtendedFilterButton(user)
       await extendedFilterTestUtils.findContainer()
       await extendedFilterTestUtils.workGroup.expectLoadingFinished()
       await extendedFilterTestUtils.manager.expectLoadingFinished()
@@ -712,7 +752,7 @@ describe('Страница реестра заявок', () => {
         const { user } = render(<TaskListPage />)
 
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
 
         extendedFilterTestUtils.status.expectHasCorrectInitialValues()
@@ -738,7 +778,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
 
         const workGroupField = await extendedFilterTestUtils.workGroup.expectLoadingFinished()
@@ -937,7 +977,7 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
         await extendedFilterTestUtils.manager.expectLoadingFinished()
@@ -967,7 +1007,7 @@ describe('Страница реестра заявок', () => {
         await extendedFilterTestUtils.manager.openField(user)
         await extendedFilterTestUtils.manager.setValue(user, userListItem.fullName)
 
-        await extendedFilterTestUtils.applyFilter(user)
+        await extendedFilterTestUtils.clickApplyButton(user)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
 
@@ -978,7 +1018,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
 
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
         await extendedFilterTestUtils.manager.expectLoadingFinished()
@@ -1085,7 +1125,7 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
         await extendedFilterTestUtils.manager.expectLoadingFinished()
@@ -1116,7 +1156,7 @@ describe('Страница реестра заявок', () => {
         await extendedFilterTestUtils.manager.openField(user)
         await extendedFilterTestUtils.manager.setValue(user, userListItem.fullName)
 
-        await extendedFilterTestUtils.applyFilter(user)
+        await extendedFilterTestUtils.clickApplyButton(user)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
 
@@ -1127,7 +1167,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
 
-        await testUtils.openExtendedFilter(user)
+        await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
         await extendedFilterTestUtils.manager.expectLoadingFinished()
