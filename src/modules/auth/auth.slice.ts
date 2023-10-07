@@ -5,7 +5,7 @@ import {
   LoginActionPayload,
   RefreshTokenActionPayload,
 } from './types'
-import authLocalStorageService from './services/authLocalStorage.service'
+import { authLocalStorageService } from './services/authLocalStorage.service'
 import { parseJwt } from './utils'
 
 export const getInitialState = (): AuthSliceState => {

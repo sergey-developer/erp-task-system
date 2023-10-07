@@ -311,18 +311,14 @@ describe('Private app', () => {
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
 
-              const taskListPageFiltersBeforeUpdate =
-                taskLocalStorageService.getTaskListPageFilters()
-              expect(taskListPageFiltersBeforeUpdate).toBeTruthy()
+              expect(taskLocalStorageService.getTaskListPageFilters()).toBeTruthy()
 
               await privateHeaderTestUtils.openUserStatusSelect(user)
               await privateHeaderTestUtils.setUserStatus(user, userStatus.title, true)
               await privateHeaderTestUtils.expectUserStatusSelectDisabled()
               await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
-              const taskListPageFiltersAfterUpdate =
-                taskLocalStorageService.getTaskListPageFilters()
 
-              expect(taskListPageFiltersAfterUpdate).toBeNull()
+              expect(taskLocalStorageService.getTaskListPageFilters()).toBeNull()
             })
           })
 

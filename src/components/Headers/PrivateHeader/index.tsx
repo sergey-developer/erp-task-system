@@ -95,7 +95,7 @@ const PrivateHeader: FC = () => {
     }
   }
 
-  const handleSelectUserStatus = async (statusId: number) => {
+  const handleUpdateUserStatus = async (statusId: number) => {
     if (!userMe) return
 
     try {
@@ -159,7 +159,7 @@ const PrivateHeader: FC = () => {
                 loading={userStatusListIsFetching}
                 disabled={updateUserStatusIsLoading}
                 value={userMe?.status.id}
-                onSelect={handleSelectUserStatus}
+                onSelect={handleUpdateUserStatus}
               />
             )}
 

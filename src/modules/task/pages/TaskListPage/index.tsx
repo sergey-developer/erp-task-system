@@ -40,6 +40,7 @@ import { SyncIcon } from 'components/Icons'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { IdType } from 'shared/types/common'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
@@ -54,7 +55,7 @@ const TaskListPage: FC = () => {
   const { role } = useUserRole()
   const colRef = useRef<number>()
 
-  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<IdType>>(null)
 
   const [taskAdditionalInfoExpanded, { toggle: toggleTaskAdditionalInfoExpanded }] =
     useBoolean(false)
