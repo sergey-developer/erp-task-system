@@ -6,7 +6,7 @@ import { RouteEnum } from 'configs/routes'
 
 import { LOGIN_BAD_REQUEST_ERROR_MSG, LOGIN_WRONG_DATA_ERROR_MSG } from 'modules/auth/constants'
 import LoginPage from 'modules/auth/pages/LoginPage'
-import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
+import { authLocalStorageService } from 'modules/auth/services/authLocalStorage.service'
 
 import { setupStore } from 'state/store'
 
@@ -32,6 +32,7 @@ import {
 } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId('login-card')
+const findContainer = () => screen.findByTestId('login-card')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
@@ -77,8 +78,9 @@ const clickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
 const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitBtn())
 const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitBtn())
 
-const testUtils = {
+export const testUtils = {
   getContainer,
+  findContainer,
   getChildByText,
 
   getEmailFieldContainer,

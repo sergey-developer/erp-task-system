@@ -13,10 +13,10 @@ import { APP_NAME } from 'shared/constants/common'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 
-import { LoginFormFields } from './types'
 import { PageTitleStyled } from './styles'
+import { LoginFormFields } from './types'
 import { getLoginError } from './utils'
-import { EMAIL_RULES, PASSWORD_RULES } from './validation'
+import { emailRules, passwordRules } from './validation'
 
 const { Text, Title } = Typography
 
@@ -34,8 +34,10 @@ const LoginPage: FC = () => {
     try {
       await login(values)
     } catch (error) {
-      if (isErrorResponse(error) && isBadRequestError(error)) {
-        form.setFields(getFieldsErrors(error.data))
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          form.setFields(getFieldsErrors(error.data))
+        }
       }
     }
   }
@@ -52,17 +54,8 @@ const LoginPage: FC = () => {
         <Space direction='vertical'>
           {loginError && <Text type='danger'>{loginError}</Text>}
 
-          <Form<LoginFormFields>
-            form={form}
-            onFinish={handleSubmit}
-            layout='vertical'
-          >
-            <Form.Item
-              data-testid='field-email'
-              label='E-mail'
-              name='email'
-              rules={EMAIL_RULES}
-            >
+          <Form<LoginFormFields> form={form} onFinish={handleSubmit} layout='vertical'>
+            <Form.Item data-testid='field-email' label='E-mail' name='email' rules={emailRules}>
               <Input
                 data-testid='input-email'
                 placeholder='ober@obermeister.ru'
@@ -74,7 +67,7 @@ const LoginPage: FC = () => {
               data-testid='field-password'
               label='Пароль'
               name='password'
-              rules={PASSWORD_RULES}
+              rules={passwordRules}
             >
               <Input.Password
                 data-testid='input-password'
@@ -95,10 +88,7 @@ const LoginPage: FC = () => {
                 Войти
               </Button>
 
-              <Link
-                data-testid='btn-forgotPassword'
-                to={RouteEnum.ForgotPassword}
-              >
+              <Link data-testid='btn-forgotPassword' to={RouteEnum.ForgotPassword}>
                 <Button type='link' block>
                   Забыли пароль?
                 </Button>
