@@ -7,7 +7,11 @@ import { fakeId } from '_tests_/utils'
 
 import getAuthState from './getAuthState'
 
-const getStoreWithAuth = (user?: Partial<AuthenticatedUser>) =>
+const getStoreWithAuth = (
+  user?: Partial<AuthenticatedUser>,
+  accessToken?: string,
+  refreshToken?: string,
+) =>
   setupStore({
     preloadedState: {
       auth: getAuthState({
@@ -15,6 +19,8 @@ const getStoreWithAuth = (user?: Partial<AuthenticatedUser>) =>
           userId: user?.userId || fakeId(),
           userRole: user?.userRole || UserRoleEnum.FirstLineSupport,
         },
+        accessToken,
+        refreshToken,
       }),
     },
   })

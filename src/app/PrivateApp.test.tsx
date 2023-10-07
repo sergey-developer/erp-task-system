@@ -10,11 +10,14 @@ import {
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
 
+import { UserStatusCodeEnum } from 'shared/constants/catalogs'
+
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
-
 import {
   mockGetSystemInfoSuccess,
+  mockGetTaskCountersSuccess,
+  mockGetTaskListSuccess,
   mockGetTimeZoneListSuccess,
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
@@ -27,8 +30,9 @@ import {
   mockUpdateUserStatusUnauthorizedError,
   mockUpdateUserSuccess,
 } from '_tests_/mocks/api'
-import { fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
+import { fakeId, fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
+import { taskLocalStorageService } from '../modules/task/services/taskLocalStorage.service'
 import PrivateApp from './PrivateApp'
 
 setupApiTests()
@@ -199,6 +203,7 @@ describe('Private app', () => {
       })
     })
 
+    // todo: Перенести в PrivateHeader
     describe('Селект выбора статуса пользователя', () => {
       describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
         test('Отображается', async () => {
@@ -246,37 +251,75 @@ describe('Private app', () => {
         })
 
         describe('Выбор статуса', () => {
-          test('При успешном запросе меняется выбранный статус', async () => {
-            mockGetUserMeCodeSuccess()
-            mockGetSystemInfoSuccess()
-            mockGetTimeZoneListSuccess()
+          describe('При успешном запросе', () => {
+            test('Меняется выбранный статус', async () => {
+              mockGetUserMeCodeSuccess()
+              mockGetSystemInfoSuccess()
+              mockGetTimeZoneListSuccess()
 
-            const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
-            const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
-            mockGetUserStatusListSuccess({
-              body: [fakeUserStatus1, fakeUserStatus2],
+              const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+              const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
+              mockGetUserStatusListSuccess({
+                body: [fakeUserStatus1, fakeUserStatus2],
+              })
+
+              const fakeUser = userFixtures.user({
+                role: UserRoleEnum.FirstLineSupport,
+                status: fakeUserStatus2,
+              })
+              mockGetUserMeSuccess({ body: fakeUser })
+
+              mockUpdateUserStatusSuccess(fakeUser.id)
+
+              const { user } = render(<PrivateApp />)
+
+              await privateLayoutTestUtils.expectLoadingFinished()
+              await privateHeaderTestUtils.expectUserStatusLoadingFinished()
+              await privateHeaderTestUtils.openUserStatusSelect(user)
+              await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
+              await privateHeaderTestUtils.expectUserStatusSelectDisabled()
+              await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
+
+              const selectedUserStatus = privateHeaderTestUtils.getSelectedUserStatus()
+
+              expect(selectedUserStatus).toHaveTextContent(new RegExp(fakeUserStatus1.title))
             })
 
-            const fakeUser = userFixtures.user({
-              role: UserRoleEnum.FirstLineSupport,
-              status: fakeUserStatus2,
+            test('Если выбран статус OFFLINE, то удаляются фильтры страницы реестра заявок из localStorage', async () => {
+              mockGetTaskListSuccess()
+              mockGetTaskCountersSuccess()
+              mockGetUserMeCodeSuccess()
+              mockGetSystemInfoSuccess()
+              mockGetTimeZoneListSuccess()
+
+              const userStatus = catalogsFixtures.userStatusListItem({
+                code: UserStatusCodeEnum.Offline,
+              })
+              mockGetUserStatusListSuccess({ body: [userStatus] })
+
+              const fakeUser = userFixtures.user({
+                role: UserRoleEnum.FirstLineSupport,
+                status: userStatus,
+              })
+              mockGetUserMeSuccess({ body: fakeUser })
+
+              mockUpdateUserStatusSuccess(fakeUser.id)
+
+              const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+
+              taskLocalStorageService.setTaskListPageFilters({ customers: [fakeId()] })
+              await privateLayoutTestUtils.expectLoadingFinished()
+              await privateHeaderTestUtils.expectUserStatusLoadingFinished()
+
+              expect(taskLocalStorageService.getTaskListPageFilters()).toBeTruthy()
+
+              await privateHeaderTestUtils.openUserStatusSelect(user)
+              await privateHeaderTestUtils.setUserStatus(user, userStatus.title, true)
+              await privateHeaderTestUtils.expectUserStatusSelectDisabled()
+              await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
+
+              expect(taskLocalStorageService.getTaskListPageFilters()).toBeNull()
             })
-            mockGetUserMeSuccess({ body: fakeUser })
-
-            mockUpdateUserStatusSuccess(fakeUser.id)
-
-            const { user } = render(<PrivateApp />)
-
-            await privateLayoutTestUtils.expectLoadingFinished()
-            await privateHeaderTestUtils.expectUserStatusLoadingFinished()
-            await privateHeaderTestUtils.openUserStatusSelect(user)
-            await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
-            await privateHeaderTestUtils.expectUserStatusSelectDisabled()
-            await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
-
-            const selectedUserStatus = privateHeaderTestUtils.getSelectedUserStatus()
-
-            expect(selectedUserStatus).toHaveTextContent(new RegExp(fakeUserStatus1.title))
           })
 
           describe('При не успешном запросе', () => {

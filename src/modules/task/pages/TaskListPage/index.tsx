@@ -4,6 +4,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
+import pick from 'lodash/pick'
 import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import ExtendedFilter from 'modules/task/components/ExtendedFilter'
@@ -31,6 +32,7 @@ import {
   GetTaskListQueryArgs,
   TaskIdFilterQueries,
 } from 'modules/task/models'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage.service'
 import { useGetUserList, useUserRole } from 'modules/user/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
@@ -38,6 +40,7 @@ import { SyncIcon } from 'components/Icons'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { IdType } from 'shared/types/common'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
@@ -52,7 +55,7 @@ const TaskListPage: FC = () => {
   const { role } = useUserRole()
   const colRef = useRef<number>()
 
-  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<IdType>>(null)
 
   const [taskAdditionalInfoExpanded, { toggle: toggleTaskAdditionalInfoExpanded }] =
     useBoolean(false)
@@ -129,12 +132,17 @@ const TaskListPage: FC = () => {
 
   const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
 
+  const saveSupportGroupFilter = (
+    data: Pick<ExtendedFilterFormFields, 'customers' | 'macroregions' | 'supportGroups'>,
+  ) => taskLocalStorageService.setTaskListPageFilters(data)
+
   const handleExtendedFilterSubmit: ExtendedFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
     setFastFilter(undefined)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
+    saveSupportGroupFilter(pick(values, 'customers', 'macroregions', 'supportGroups'))
     handleCloseTaskCard()
   }
 
@@ -361,11 +369,20 @@ const TaskListPage: FC = () => {
         <ExtendedFilter
           formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
-          customerList={[]}
+          customerList={[
+            { id: 1, title: 'customer 1' },
+            { id: 2, title: 'customer 2' },
+          ]}
           customerListIsLoading={false}
-          macroregionList={[]}
+          macroregionList={[
+            { id: 1, title: 'macroregion 1' },
+            { id: 2, title: 'macroregion 2' },
+          ]}
           macroregionListIsLoading={false}
-          supportGroupList={[]}
+          supportGroupList={[
+            { id: 1, name: 'supportGroup 1' },
+            { id: 2, name: 'supportGroup 2' },
+          ]}
           supportGroupListIsLoading={false}
           userList={userList}
           userListIsLoading={userListIsFetching}

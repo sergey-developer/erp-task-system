@@ -3,26 +3,37 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { RouteEnum } from 'configs/routes'
 
+import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/LogoutButton/LogoutButton.test'
+import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
 
 import { MaybeNull } from 'shared/types/utils'
 
+import App from 'app/App'
 import PrivateApp from 'app/PrivateApp'
 
+import authFixtures from '_tests_/fixtures/auth'
 import userFixtures from '_tests_/fixtures/user'
-
 import {
   mockGetSystemInfoSuccess,
+  mockGetTaskCountersSuccess,
+  mockGetTaskListSuccess,
   mockGetTimeZoneListSuccess,
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
+  mockGetUserStatusListSuccess,
+  mockLoginSuccess,
+  mockLogoutSuccess,
 } from '_tests_/mocks/api'
 import {
-  selectTestUtils,
+  fakeEmail,
+  fakeWord,
   render,
   renderInRoute,
+  selectTestUtils,
   setupApiTests,
 } from '_tests_/utils'
 
@@ -73,12 +84,6 @@ const getUserStatusSelectContainer = (): HTMLElement =>
 const queryUserStatusSelectContainer = (): MaybeNull<HTMLElement> =>
   within(getContainer()).queryByTestId('user-status-select')
 
-const getUserStatusSelect = (opened?: boolean) =>
-  selectTestUtils.getSelect(getUserStatusSelectContainer(), {
-    name: 'Статус пользователя',
-    expanded: opened,
-  })
-
 const getSelectedUserStatus = () =>
   selectTestUtils.getSelectedOption(getUserStatusSelectContainer())
 
@@ -120,7 +125,6 @@ export const testUtils = {
 
   getUserStatusSelectContainer,
   queryUserStatusSelectContainer,
-  getUserStatusSelect,
   getSelectedUserStatus,
   openUserStatusSelect,
   setUserStatus,
@@ -519,6 +523,39 @@ describe('PrivateHeader', () => {
 
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
+    })
+  })
+
+  describe('Logout', () => {
+    test('При успешном запросе переходит на страницу авторизации и очищает localStorage', async () => {
+      mockGetUserMeSuccess()
+      mockGetUserMeCodeSuccess()
+      mockGetSystemInfoSuccess()
+      mockGetTimeZoneListSuccess()
+      mockGetUserStatusListSuccess()
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
+      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+      mockLogoutSuccess()
+
+      taskLocalStorageService.setTaskListPageFilters({ customers: [1, 2] })
+
+      const { user } = render(<App />, { useBrowserRouter: false })
+
+      expect(taskLocalStorageService.getTaskListPageFilters()).toBeTruthy()
+
+      await loginPageTestUtils.findContainer()
+      await loginPageTestUtils.setEmail(user, fakeEmail())
+      await loginPageTestUtils.setPassword(user, fakeWord())
+      await loginPageTestUtils.clickSubmitButton(user)
+
+      const button = await logoutButtonTestUtils.findButton()
+      await user.click(button)
+
+      const loginPage = await loginPageTestUtils.findContainer()
+      expect(loginPage).toBeInTheDocument()
+
+      expect(taskLocalStorageService.getTaskListPageFilters()).toBeNull()
     })
   })
 })

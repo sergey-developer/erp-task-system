@@ -90,7 +90,7 @@ const closeFilter = async (user: UserEvent) => {
 // apply button
 const getApplyButton = () => buttonTestUtils.getButtonIn(getContainer(), /применить/i)
 
-const applyFilter = async (user: UserEvent) => {
+const clickApplyButton = async (user: UserEvent) => {
   const button = getApplyButton()
   await user.click(button)
   return button
@@ -391,7 +391,7 @@ export const testUtils = {
   closeFilter,
 
   getApplyButton,
-  applyFilter,
+  clickApplyButton,
 
   getSupportGroupBlock,
 
