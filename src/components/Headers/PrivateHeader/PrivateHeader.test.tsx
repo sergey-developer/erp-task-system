@@ -78,8 +78,6 @@ const getUserStatusSelectContainer = (): HTMLElement =>
 const queryUserStatusSelectContainer = (): MaybeNull<HTMLElement> =>
   within(getContainer()).queryByTestId('user-status-select')
 
-const getUserStatusSelect = () => selectTestUtils.getSelect(getUserStatusSelectContainer())
-
 const getSelectedUserStatus = () =>
   selectTestUtils.getSelectedOption(getUserStatusSelectContainer())
 
@@ -545,7 +543,7 @@ describe('PrivateHeader', () => {
       mockGetUserStatusListSuccess()
       mockGetTaskListSuccess()
       mockGetTaskCountersSuccess()
-      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
       mockLogoutSuccess()
 
       taskLocalStorageService.setTaskListPageFilters({ customers: [1, 2] })
