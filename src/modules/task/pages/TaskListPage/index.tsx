@@ -35,7 +35,10 @@ import {
   GetTaskListQueryArgs,
   TaskIdFilterQueries,
 } from 'modules/task/models'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import {
+  TaskListPageFiltersStorage,
+  taskLocalStorageService,
+} from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { parseTaskListPageFilters } from 'modules/task/services/taskLocalStorage/utils/taskListPageFilters'
 import { useGetUserList, useUserRole } from 'modules/user/hooks'
 
@@ -74,10 +77,11 @@ const TaskListPage: FC = () => {
 
   const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
 
-  const [preloadedExtendedFilters, setPreloadedExtendedFilters] = useState(() =>
-    taskLocalStorageService.getTaskListPageFilters(),
-  )
-  console.log(preloadedExtendedFilters)
+  const [preloadedExtendedFilters, setPreloadedExtendedFilters] =
+    useSetState<TaskListPageFiltersStorage>(
+      () => taskLocalStorageService.getTaskListPageFilters() || {},
+    )
+
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useSetState<ExtendedFilterFormFields>({
       ...initialExtendedFilterFormValues,
@@ -299,6 +303,7 @@ const TaskListPage: FC = () => {
 
     if (isDeleted) {
       setExtendedFilterFormValues({ [filter.name]: undefined })
+      setPreloadedExtendedFilters({ [filter.name]: undefined })
       // todo: раскомитить в задаче по интеграции
       // triggerFilterChange({ [filter.name]: undefined })
     }

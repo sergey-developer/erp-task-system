@@ -31,10 +31,11 @@ export const mapExtendedFilterFormFieldsToQueries = (
     customers,
     macroregions,
     supportGroups,
+    ...restFields
   } = fields
 
   return {
-    ...fields,
+    ...restFields,
     completeAtFrom: completeAt?.[0] ? formatDate(completeAt[0], DATE_FILTER_FORMAT) : undefined,
     completeAtTo: completeAt?.[1] ? formatDate(completeAt[1], DATE_FILTER_FORMAT) : undefined,
     ...(searchField && searchValue && { [searchField]: searchValue }),
