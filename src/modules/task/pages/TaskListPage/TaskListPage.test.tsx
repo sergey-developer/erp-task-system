@@ -13,7 +13,7 @@ import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTab
 import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
 import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import commonFixtures from '_tests_/fixtures/common'

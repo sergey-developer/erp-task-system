@@ -213,7 +213,7 @@ describe('Страница авторизации', () => {
 
   describe('При успешном запросе', () => {
     test('Пользователь покидает страницу авторизации', async () => {
-      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
 
       const { user, checkRouteChanged } = renderInRoute(<LoginPage />, RouteEnum.Login)
 
@@ -227,7 +227,7 @@ describe('Страница авторизации', () => {
     })
 
     test('В localStorage сохраняются access/refresh token', async () => {
-      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
 
       const { user } = render(<LoginPage />)
 
@@ -238,16 +238,16 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingFinished()
 
       expect(authLocalStorageService.getAccessToken()).toBe(
-        authFixtures.loginResponseSuccess.access,
+        authFixtures.loginSuccessResponse.access,
       )
 
       expect(authLocalStorageService.getRefreshToken()).toBe(
-        authFixtures.loginResponseSuccess.refresh,
+        authFixtures.loginSuccessResponse.refresh,
       )
     })
 
     test('Данные сохраняются в store', async () => {
-      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
       const store = setupStore()
 
       const { user } = render(<LoginPage />, { store })
@@ -261,8 +261,8 @@ describe('Страница авторизации', () => {
       const authState = store.getState().auth
 
       expect(authState.user).not.toBeNull()
-      expect(authState.accessToken).toBe(authFixtures.loginResponseSuccess.access)
-      expect(authState.refreshToken).toBe(authFixtures.loginResponseSuccess.refresh)
+      expect(authState.accessToken).toBe(authFixtures.loginSuccessResponse.access)
+      expect(authState.refreshToken).toBe(authFixtures.loginSuccessResponse.refresh)
       expect(authState.isAuthenticated).toBe(true)
     })
   })

@@ -32,7 +32,7 @@ import {
 } from '_tests_/mocks/api'
 import { fakeId, fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
-import { taskLocalStorageService } from '../modules/task/services/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import PrivateApp from './PrivateApp'
 
 setupApiTests()
