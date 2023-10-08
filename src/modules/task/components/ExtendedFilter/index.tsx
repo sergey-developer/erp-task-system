@@ -85,6 +85,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               loading={customerListIsLoading}
               options={customerList}
               placeholder='Выберите из списка'
+              onChange={resetFields(['macroregions', 'supportGroups'])}
             />
           </Form.Item>
 
@@ -95,6 +96,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               loading={macroregionListIsLoading}
               options={macroregionList}
               placeholder='Выберите из списка'
+              onChange={resetFields(['supportGroups'])}
             />
           </Form.Item>
 
