@@ -26,7 +26,7 @@ export type ExtendedFilterFormFields = ExtendedFilterSupportGroupFormFields &
     status: TaskExtendedStatusEnum[]
     isOverdue: TaskOverdueEnum[]
     isAssigned: TaskAssignedEnum[]
-    workGroupId: string
+    workGroupId: IdType
     manager: IdType
   }>
 

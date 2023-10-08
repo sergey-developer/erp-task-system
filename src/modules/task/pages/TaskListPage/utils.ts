@@ -1,3 +1,5 @@
+import get from 'lodash/get'
+
 import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/ExtendedFilter/constants'
 import { ExtendedFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { FastFilterEnum } from 'modules/task/constants/task'
@@ -25,7 +27,6 @@ export const mapExtendedFilterFormFieldsToQueries = (
     completeAt,
     searchField,
     searchValue,
-    workGroupId,
     // todo: раскомитить во время задачи по интеграции
     customers,
     macroregions,
@@ -36,8 +37,7 @@ export const mapExtendedFilterFormFieldsToQueries = (
     ...fields,
     completeAtFrom: completeAt?.[0] ? formatDate(completeAt[0], DATE_FILTER_FORMAT) : undefined,
     completeAtTo: completeAt?.[1] ? formatDate(completeAt[1], DATE_FILTER_FORMAT) : undefined,
-    workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
-    ...(searchField && { [searchField]: searchValue || undefined }),
+    ...(searchField && searchValue && { [searchField]: searchValue }),
   }
 }
 
@@ -53,16 +53,18 @@ export const getInitialFastFilter = (role?: UserRoleEnum): FastFilterEnum => {
     : FastFilterEnum.All
 }
 
-export const getInitialExtendedFilters = (
+export const getInitialExtendedFilterFormValues = (
   preloadedFilters?: Nullable<TaskListPageFiltersStorage>,
 ): Readonly<ExtendedFilterFormFields> => ({
   completeAt: [],
   searchField: DEFAULT_SEARCH_FIELD,
-  searchValue: '',
+  searchValue: undefined,
   status: [],
   isOverdue: [],
   isAssigned: [],
   workGroupId: undefined,
   manager: undefined,
-  ...(preloadedFilters && { ...preloadedFilters }),
+  customers: get(preloadedFilters, 'customers', []),
+  macroregions: get(preloadedFilters, 'macroregions', []),
+  supportGroups: get(preloadedFilters, 'supportGroups', []),
 })

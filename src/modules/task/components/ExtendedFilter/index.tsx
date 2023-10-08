@@ -45,6 +45,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 }) => {
   const [form] = Form.useForm<ExtendedFilterFormFields>()
 
+  // todo: перенести в TaskListPage
   const { data: workGroupList, isFetching: workGroupListIsFetching } = useGetWorkGroupList()
 
   const resetFields = (fields?: Array<keyof ExtendedFilterFormFields>) => () => {

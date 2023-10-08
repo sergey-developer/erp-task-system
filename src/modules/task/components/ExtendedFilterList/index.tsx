@@ -1,4 +1,4 @@
-import { Space, Tag, Typography } from 'antd'
+import { Space, Typography, Tag } from 'antd'
 import isArray from 'lodash/isArray'
 import size from 'lodash/size'
 import { FC } from 'react'
@@ -26,8 +26,8 @@ type ExtendedFilterListProps = {
 const ExtendedFilterList: FC<ExtendedFilterListProps> = ({ data, onClose, ...props }) => {
   return (
     <Space>
-      {data.map((item, index) => (
-        <Tag key={index} {...props} onClose={() => onClose(item)} closable>
+      {data.map((item) => (
+        <Tag key={item.name} {...props} closable onClose={() => onClose(item)}>
           <Space>
             <Text>{extendedFilterDict[item.name]}</Text>
 

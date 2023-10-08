@@ -4,6 +4,7 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
+import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
@@ -51,11 +52,12 @@ import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled } from './styles'
 import {
   getInitialFastFilter,
-  getInitialExtendedFilters,
+  getInitialExtendedFilterFormValues,
   mapExtendedFilterFormFieldsToQueries,
 } from './utils'
 
 const { Search } = Input
+const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
 
 const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
@@ -67,23 +69,28 @@ const TaskListPage: FC = () => {
   const [taskAdditionalInfoExpanded, { toggle: toggleTaskAdditionalInfoExpanded }] =
     useBoolean(false)
 
+  const initialFastFilter = getInitialFastFilter(role)
+  const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+
   const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
 
-  const preloadedExtendedFilters = taskLocalStorageService.getTaskListPageFilters()
-  const initialExtendedFilters = getInitialExtendedFilters(preloadedExtendedFilters)
-
+  const [preloadedExtendedFilters, setPreloadedExtendedFilters] = useState(() =>
+    taskLocalStorageService.getTaskListPageFilters(),
+  )
+  console.log(preloadedExtendedFilters)
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
-    useSetState<ExtendedFilterFormFields>(initialExtendedFilters)
+    useSetState<ExtendedFilterFormFields>({
+      ...initialExtendedFilterFormValues,
+      ...preloadedExtendedFilters,
+    })
 
-  const initialFastFilter = getInitialFastFilter(role)
-
-  const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>({
+  const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>(() => ({
     filter: initialFastFilter,
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
+    // todo: раскомитить в задаче по интеграции
+    // ...preloadedExtendedFilters,
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
-  })
-
-  const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+  }))
 
   const [searchValue, setSearchValue] = useState<string>()
 
@@ -142,7 +149,7 @@ const TaskListPage: FC = () => {
 
   const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
 
-  const saveSupportGroupFilter = (
+  const saveSupportGroupFilterToStorage = (
     data: Pick<ExtendedFilterFormFields, 'customers' | 'macroregions' | 'supportGroups'>,
   ) => taskLocalStorageService.setTaskListPageFilters(data)
 
@@ -151,15 +158,22 @@ const TaskListPage: FC = () => {
     toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
     setFastFilter(undefined)
-    triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
-    saveSupportGroupFilter(pick(values, 'customers', 'macroregions', 'supportGroups'))
+    triggerFilterChange(
+      mapExtendedFilterFormFieldsToQueries(
+        // todo: убрать omit в задаче по интеграции
+        omit(values, 'customers', 'macroregions', 'supportGroups'),
+      ),
+    )
     handleCloseTaskCard()
+    const supportGroupValues = pick(values, 'customers', 'macroregions', 'supportGroups')
+    saveSupportGroupFilterToStorage(supportGroupValues)
+    setPreloadedExtendedFilters(supportGroupValues)
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilter(value)
-    setExtendedFilterFormValues(initialExtendedFilters)
+    setExtendedFilterFormValues(initialExtendedFilterFormValues)
     setSearchValue(undefined)
     triggerFilterChange({ filter: value })
     handleCloseTaskCard()
@@ -394,7 +408,7 @@ const TaskListPage: FC = () => {
       {isExtendedFilterOpened && (
         <ExtendedFilter
           formValues={extendedFilterFormValues}
-          initialFormValues={initialExtendedFilters}
+          initialFormValues={initialExtendedFilterFormValues}
           customerList={[
             { id: 1, title: 'customer 1' },
             { id: 2, title: 'customer 2' },
