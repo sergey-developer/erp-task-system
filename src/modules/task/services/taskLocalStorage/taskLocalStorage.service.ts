@@ -4,28 +4,29 @@ import { StorageKeysEnum } from 'shared/constants/storage'
 import { localStorageService } from 'shared/services/localStorage.service'
 import { MaybeNull } from 'shared/types/utils'
 
-type TaskListPageFiltersStorageState = Partial<
-  Pick<ExtendedFilterFormFields, 'customers' | 'macroregions' | 'supportGroups'>
+export type TaskListPageFiltersStorage = Pick<
+  ExtendedFilterFormFields,
+  'customers' | 'macroregions' | 'supportGroups'
 >
 
-const getTaskListPageFilters = (): MaybeNull<TaskListPageFiltersStorageState> => {
+const getTaskListPageFilters = (): MaybeNull<TaskListPageFiltersStorage> => {
   const state = localStorageService.getItem(StorageKeysEnum.TaskListPageFilters)
   return state ? JSON.parse(state) : null
 }
 
-const setTaskListPageFilters = (state: TaskListPageFiltersStorageState) =>
+const setTaskListPageFilters = (state: TaskListPageFiltersStorage) =>
   localStorageService.setItem(StorageKeysEnum.TaskListPageFilters, JSON.stringify(state))
 
-const deleteTaskListPageFilter = (filterName: keyof TaskListPageFiltersStorageState): boolean => {
+const deleteTaskListPageFilter = (name: keyof TaskListPageFiltersStorage): boolean => {
   const state = getTaskListPageFilters()
 
-  if (state?.[filterName]) {
-    delete state[filterName]
+  if (state?.[name]) {
+    delete state[name]
     setTaskListPageFilters(state)
     return true
   }
 
-  console.error(`Filter with name ${filterName} not found in local storage`)
+  console.error(`Filter with name ${name} not found in local storage`)
   return false
 }
 

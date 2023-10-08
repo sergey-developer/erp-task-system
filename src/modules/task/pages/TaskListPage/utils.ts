@@ -1,10 +1,13 @@
+import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/ExtendedFilter/constants'
 import { ExtendedFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { FastFilterEnum } from 'modules/task/constants/task'
 import { ExtendedFilterQueries } from 'modules/task/models'
+import { TaskListPageFiltersStorage } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getUserRoleMap } from 'modules/user/utils'
 
 import { DATE_FILTER_FORMAT } from 'shared/constants/dateTime'
+import { Nullable } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
 /**
@@ -16,29 +19,25 @@ import { formatDate } from 'shared/utils/date'
  */
 
 export const mapExtendedFilterFormFieldsToQueries = (
-  fields: ExtendedFilterFormFields,
+  fields: Partial<ExtendedFilterFormFields>,
 ): ExtendedFilterQueries => {
   const {
     completeAt,
     searchField,
     searchValue,
-    status,
-    isOverdue,
-    isAssigned,
     workGroupId,
-    manager,
+    // todo: раскомитить во время задачи по интеграции
+    customers,
+    macroregions,
+    supportGroups,
   } = fields
 
   return {
+    ...fields,
     completeAtFrom: completeAt?.[0] ? formatDate(completeAt[0], DATE_FILTER_FORMAT) : undefined,
     completeAtTo: completeAt?.[1] ? formatDate(completeAt[1], DATE_FILTER_FORMAT) : undefined,
-
-    status,
-    isOverdue,
-    isAssigned,
-    [searchField]: searchValue || undefined,
     workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
-    manager,
+    ...(searchField && { [searchField]: searchValue || undefined }),
   }
 }
 
@@ -53,3 +52,17 @@ export const getInitialFastFilter = (role?: UserRoleEnum): FastFilterEnum => {
     ? FastFilterEnum.Mine
     : FastFilterEnum.All
 }
+
+export const getInitialExtendedFilters = (
+  preloadedFilters?: Nullable<TaskListPageFiltersStorage>,
+): Readonly<ExtendedFilterFormFields> => ({
+  completeAt: [],
+  searchField: DEFAULT_SEARCH_FIELD,
+  searchValue: '',
+  status: [],
+  isOverdue: [],
+  isAssigned: [],
+  workGroupId: undefined,
+  manager: undefined,
+  ...(preloadedFilters && { ...preloadedFilters }),
+})

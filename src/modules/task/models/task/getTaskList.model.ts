@@ -48,6 +48,9 @@ export type ExtendedFilterQueries = Partial<{
   isAssigned: TaskAssignedEnum[]
   workGroupId: IdType
   manager: IdType
+  customers: IdType[],
+  macroregions: IdType[],
+  supportGroups: IdType[],
 }> &
   SearchFields
 

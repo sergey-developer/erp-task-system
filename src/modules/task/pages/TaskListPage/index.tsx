@@ -1,4 +1,4 @@
-import { useBoolean, usePrevious } from 'ahooks'
+import { useBoolean, usePrevious, useSetState } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
@@ -8,11 +8,13 @@ import pick from 'lodash/pick'
 import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import ExtendedFilter from 'modules/task/components/ExtendedFilter'
-import { initialExtendedFilterFormValues } from 'modules/task/components/ExtendedFilter/constants'
 import {
   ExtendedFilterFormFields,
   ExtendedFilterProps,
 } from 'modules/task/components/ExtendedFilter/types'
+import ExtendedFilterList, {
+  ExtendedFilterListItem,
+} from 'modules/task/components/ExtendedFilterList'
 import FastFilterList from 'modules/task/components/FastFilterList'
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskListLayout from 'modules/task/components/TaskListLayout'
@@ -32,7 +34,8 @@ import {
   GetTaskListQueryArgs,
   TaskIdFilterQueries,
 } from 'modules/task/models'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import { parseTaskListPageFilters } from 'modules/task/services/taskLocalStorage/utils/taskListPageFilters'
 import { useGetUserList, useUserRole } from 'modules/user/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
@@ -46,7 +49,11 @@ import { calculatePaginationParams, getInitialPaginationParams } from 'shared/ut
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled } from './styles'
-import { getInitialFastFilter, mapExtendedFilterFormFieldsToQueries } from './utils'
+import {
+  getInitialFastFilter,
+  getInitialExtendedFilters,
+  mapExtendedFilterFormFieldsToQueries,
+} from './utils'
 
 const { Search } = Input
 
@@ -62,8 +69,11 @@ const TaskListPage: FC = () => {
 
   const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
 
+  const preloadedExtendedFilters = taskLocalStorageService.getTaskListPageFilters()
+  const initialExtendedFilters = getInitialExtendedFilters(preloadedExtendedFilters)
+
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
-    useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
+    useSetState<ExtendedFilterFormFields>(initialExtendedFilters)
 
   const initialFastFilter = getInitialFastFilter(role)
 
@@ -149,14 +159,9 @@ const TaskListPage: FC = () => {
   const handleFastFilterChange = (value: FastFilterEnum) => {
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilter(value)
-
-    setExtendedFilterFormValues(initialExtendedFilterFormValues)
+    setExtendedFilterFormValues(initialExtendedFilters)
     setSearchValue(undefined)
-
-    triggerFilterChange({
-      filter: value,
-    })
-
+    triggerFilterChange({ filter: value })
     handleCloseTaskCard()
   }
 
@@ -164,9 +169,7 @@ const TaskListPage: FC = () => {
     (value) => {
       if (value) {
         setAppliedFilterType(FilterTypeEnum.Search)
-        triggerFilterChange({
-          taskId: value,
-        })
+        triggerFilterChange({ taskId: value })
       } else {
         if (!previousAppliedFilterType) return
 
@@ -277,6 +280,16 @@ const TaskListPage: FC = () => {
     [selectedTaskId],
   )
 
+  const handleCloseFilter = (filter: ExtendedFilterListItem) => {
+    const isDeleted = taskLocalStorageService.deleteTaskListPageFilter(filter.name)
+
+    if (isDeleted) {
+      setExtendedFilterFormValues({ [filter.name]: undefined })
+      // todo: раскомитить в задаче по интеграции
+      // triggerFilterChange({ [filter.name]: undefined })
+    }
+  }
+
   return (
     <TaskListLayout>
       <Row data-testid='task-list-page' gutter={[0, 40]}>
@@ -285,15 +298,28 @@ const TaskListPage: FC = () => {
             <Col xxl={16} xl={14}>
               <Row align='middle' gutter={[30, 30]}>
                 <Col span={17}>
-                  <FastFilterList
-                    data={taskCounters}
-                    selectedFilter={queryArgs.filter}
-                    onChange={handleFastFilterChange}
-                    isShowCounters={!isGetTaskCountersError}
-                    disabled={taskListIsFetching}
-                    isLoading={taskCountersIsFetching}
-                    userRole={role}
-                  />
+                  <Row gutter={[16, 16]}>
+                    {preloadedExtendedFilters && (
+                      <Col>
+                        <ExtendedFilterList
+                          data={parseTaskListPageFilters(preloadedExtendedFilters)}
+                          onClose={handleCloseFilter}
+                        />
+                      </Col>
+                    )}
+
+                    <Col>
+                      <FastFilterList
+                        data={taskCounters}
+                        selectedFilter={queryArgs.filter}
+                        onChange={handleFastFilterChange}
+                        isShowCounters={!isGetTaskCountersError}
+                        disabled={taskListIsFetching}
+                        isLoading={taskCountersIsFetching}
+                        userRole={role}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
 
                 <Col xl={5} xxl={3}>
@@ -368,7 +394,7 @@ const TaskListPage: FC = () => {
       {isExtendedFilterOpened && (
         <ExtendedFilter
           formValues={extendedFilterFormValues}
-          initialFormValues={initialExtendedFilterFormValues}
+          initialFormValues={initialExtendedFilters}
           customerList={[
             { id: 1, title: 'customer 1' },
             { id: 2, title: 'customer 2' },

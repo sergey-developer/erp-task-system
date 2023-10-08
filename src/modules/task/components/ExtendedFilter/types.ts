@@ -12,19 +12,23 @@ import { CustomerListModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 
-export type ExtendedFilterFormFields = {
+export type ExtendedFilterSupportGroupFormFields = Partial<{
   customers: IdType[]
   macroregions: IdType[]
   supportGroups: IdType[]
-  completeAt: Moment[]
-  searchField: keyof SearchFields
-  searchValue: string
-  status: TaskExtendedStatusEnum[]
-  isOverdue: TaskOverdueEnum[]
-  isAssigned: TaskAssignedEnum[]
-  workGroupId?: string
-  manager?: IdType
-}
+}>
+
+export type ExtendedFilterFormFields = ExtendedFilterSupportGroupFormFields &
+  Partial<{
+    completeAt: Moment[]
+    searchField: keyof SearchFields
+    searchValue: string
+    status: TaskExtendedStatusEnum[]
+    isOverdue: TaskOverdueEnum[]
+    isAssigned: TaskAssignedEnum[]
+    workGroupId: string
+    manager: IdType
+  }>
 
 export type ExtendedFilterProps = {
   formValues: ExtendedFilterFormFields
