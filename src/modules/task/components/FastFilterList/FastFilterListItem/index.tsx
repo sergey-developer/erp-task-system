@@ -11,7 +11,7 @@ import { CheckableTagStyled } from './styles'
 
 const { Text } = Typography
 
-export type FastFilterListItemProps = CheckableTagProps & {
+export type FastFilterListItemProps = Pick<CheckableTagProps, 'checked' | 'onChange'> & {
   value: FastFilterEnum
   text: string
   amount: MaybeNull<number>

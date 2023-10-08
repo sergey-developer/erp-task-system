@@ -8,7 +8,7 @@ import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'modules/user/constants'
 import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'

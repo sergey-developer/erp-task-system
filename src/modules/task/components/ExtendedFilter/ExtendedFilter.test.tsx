@@ -7,9 +7,12 @@ import {
   taskExtendedStatusDict,
   TaskAssignedEnum,
 } from 'modules/task/constants/task'
+import { getInitialExtendedFilterFormValues } from 'modules/task/pages/TaskListPage/utils'
 import { UserRoleEnum } from 'modules/user/constants'
 
+import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import userFixtures from '_tests_/fixtures/user'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
@@ -24,14 +27,7 @@ import {
   buttonTestUtils,
 } from '_tests_/utils'
 
-import supportGroupFixtures from '../../../../_tests_/fixtures/supportGroup'
-import warehouseFixtures from '../../../../_tests_/fixtures/warehouse'
-import {
-  initialExtendedFilterFormValues,
-  searchFieldDict,
-  taskAssignedDict,
-  taskOverdueDict,
-} from './constants'
+import { searchFieldDict, taskAssignedDict, taskOverdueDict } from './constants'
 import ExtendedFilter from './index'
 import { ExtendedFilterProps } from './types'
 
@@ -41,8 +37,8 @@ const taskAssignedDictValues = Object.values(taskAssignedDict)
 const searchFieldDictValues = Object.values(searchFieldDict)
 
 const props: Readonly<ExtendedFilterProps> = {
-  formValues: initialExtendedFilterFormValues,
-  initialFormValues: initialExtendedFilterFormValues,
+  formValues: getInitialExtendedFilterFormValues(),
+  initialFormValues: getInitialExtendedFilterFormValues(),
 
   userList: [],
   userListIsLoading: false,
@@ -1351,7 +1347,7 @@ describe('Расширенный фильтр', () => {
 
       test('Переданное значение перезаписывает значение по умолчанию', async () => {
         const workGroupList = workGroupFixtures.workGroupList()
-        const workGroupId = String(workGroupList[0].id)
+        const workGroupId = workGroupList[0].id
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
         render(
@@ -1373,7 +1369,7 @@ describe('Расширенный фильтр', () => {
         const selectedOption = selectTestUtils.getSelectedOption(workGroupField)
 
         expect(selectedOption).toBeInTheDocument()
-        expect(selectedOption).toHaveTextContent(workGroupId)
+        expect(selectedOption).toHaveTextContent(String(workGroupId))
       })
 
       test('Доступен для редактирования после загрузки списка', async () => {

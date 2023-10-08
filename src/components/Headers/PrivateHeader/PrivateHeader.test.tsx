@@ -5,7 +5,7 @@ import { RouteEnum } from 'configs/routes'
 
 import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/LogoutButton/LogoutButton.test'
 import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
