@@ -9,10 +9,13 @@ import { useCreateSubTask } from 'modules/task/hooks/subTask'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/constants/selectField'
-import { onlyRequiredRules, validationSizes } from 'shared/constants/validation'
+import {
+  onlyRequiredRules,
+  requiredStringRules,
+  validationSizes,
+} from 'shared/constants/validation'
 import { useGetSubTaskTemplateList } from 'shared/hooks/catalogs/subTaskTemplate'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
-import { MaybeUndefined } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
 
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './types'
@@ -20,27 +23,14 @@ import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './types'
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-const titleValidationRules: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: validationSizes.string.short,
-  },
-]
-
-const descriptionValidationRules: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: validationSizes.string.long,
-  },
-]
+const titleRules: Rule[] = requiredStringRules.concat([{ max: validationSizes.string.short }])
+const descriptionRules: Rule[] = requiredStringRules.concat([{ max: validationSizes.string.long }])
 
 const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => {
   const [form] = Form.useForm<CreateSubTaskFormFields>()
 
   const [selectedSupportGroup, setSelectedSupportGroup] =
-    useState<MaybeUndefined<SupportGroupListItemModel['id']>>()
+    useState<SupportGroupListItemModel['id']>()
 
   const modalTitle = (
     <Text>
@@ -135,7 +125,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
           data-testid='title-form-item'
           label='Краткое описание'
           name='title'
-          rules={titleValidationRules}
+          rules={titleRules}
         >
           <Input
             placeholder='Опишите коротко задачу'
@@ -148,7 +138,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
           data-testid='description-form-item'
           label='Подробное описание'
           name='description'
-          rules={descriptionValidationRules}
+          rules={descriptionRules}
         >
           <TextArea
             placeholder='Расскажите подробнее о задаче'
