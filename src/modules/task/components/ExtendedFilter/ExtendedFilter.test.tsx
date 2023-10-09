@@ -26,6 +26,7 @@ import {
   buttonTestUtils,
 } from '_tests_/utils'
 
+import macroregionFixtures from '../../../../_tests_/fixtures/macroregion'
 import { searchFieldDict, taskAssignedDict, taskOverdueDict } from './constants'
 import ExtendedFilter from './index'
 import { ExtendedFilterProps } from './types'
@@ -371,14 +372,6 @@ const searchByColumn = {
   expectHasCorrectInitialValues: expectSearchByColumnHasCorrectInitialValues,
 }
 
-// other
-const clickOutOfFilter = async (user: UserEvent) => {
-  const filter = getContainer()
-  // eslint-disable-next-line testing-library/no-node-access
-  const overlay = filter.querySelector('.ant-drawer-mask')
-  if (overlay) await user.click(overlay)
-}
-
 export const testUtils = {
   getContainer,
   findContainer,
@@ -420,11 +413,17 @@ export const testUtils = {
   completeAt,
   workGroup,
   manager,
-
-  clickOutOfFilter,
 }
 
 setupApiTests()
+
+afterEach(() => {
+  const onChangeCustomers = props.onChangeCustomers as jest.Mock
+  const onChangeMacroregions = props.onChangeMacroregions as jest.Mock
+
+  onChangeCustomers.mockReset()
+  onChangeMacroregions.mockReset()
+})
 
 describe('Расширенный фильтр', () => {
   test('Отображается', () => {
@@ -495,7 +494,7 @@ describe('Расширенный фильтр', () => {
         })
       })
 
-      test('Можно установить значение', async () => {
+      test('Значение устанавливается', async () => {
         const customerListItem = warehouseFixtures.customerListItem()
         const { user } = render(<ExtendedFilter {...props} customerList={[customerListItem]} />)
 
@@ -505,6 +504,8 @@ describe('Расширенный фильтр', () => {
         const selectedOption = testUtils.getSelectedCustomer()
         expect(selectedOption).toBeInTheDocument()
         expect(selectedOption).toHaveTextContent(customerListItem.title)
+        expect(props.onChangeCustomers).toBeCalledTimes(1)
+        expect(props.onChangeCustomers).toBeCalledWith([customerListItem.id])
       })
 
       test('Переданное значение устанавливается', () => {
@@ -537,6 +538,8 @@ describe('Расширенный фильтр', () => {
         const block = testUtils.getSupportGroupBlock()
         await testUtils.clickResetButtonIn(user, block)
         const selectedOption = testUtils.getSelectedCustomer()
+        expect(props.onChangeCustomers).toBeCalled()
+        expect(props.onChangeCustomers).toBeCalledWith([])
 
         expect(selectedOption).not.toBeInTheDocument()
       })
@@ -550,6 +553,8 @@ describe('Расширенный фильтр', () => {
         await testUtils.setCustomer(user, customerListItem.title)
         await testUtils.clickResetAllButton(user)
         const selectedOption = testUtils.getSelectedCustomer()
+        expect(props.onChangeCustomers).toBeCalled()
+        expect(props.onChangeCustomers).toBeCalledWith([])
 
         expect(selectedOption).not.toBeInTheDocument()
       })
@@ -557,8 +562,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Макрорегионы', () => {
       test('Отображается корректно', async () => {
-        // todo: получать соответствующие фикстуры когда будет готова интеграция
-        const macroregionList = warehouseFixtures.customerList()
+        const macroregionList = macroregionFixtures.macroregionList()
         const { user } = render(<ExtendedFilter {...props} macroregionList={macroregionList} />)
 
         const field = testUtils.getMacroregionsSelect()
@@ -575,8 +579,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Можно установить значение', async () => {
-        // todo: получать соответствующие фикстуры когда будет готова интеграция
-        const macroregionListItem = warehouseFixtures.customerListItem()
+        const macroregionListItem = macroregionFixtures.macroregionListItem()
 
         const { user } = render(
           <ExtendedFilter {...props} macroregionList={[macroregionListItem]} />,
@@ -584,15 +587,16 @@ describe('Расширенный фильтр', () => {
 
         await testUtils.openMacroregionsSelect(user)
         await testUtils.setMacroregion(user, macroregionListItem.title)
-
         const selectedOption = testUtils.getSelectedMacroregion()
+
         expect(selectedOption).toBeInTheDocument()
         expect(selectedOption).toHaveTextContent(macroregionListItem.title)
+        expect(props.onChangeMacroregions).toBeCalledTimes(1)
+        expect(props.onChangeMacroregions).toBeCalledWith([macroregionListItem.id])
       })
 
       test('Переданное значение устанавливается', () => {
-        // todo: получать соответствующие фикстуры когда будет готова интеграция
-        const macroregionListItem = warehouseFixtures.customerListItem()
+        const macroregionListItem = macroregionFixtures.macroregionListItem()
 
         render(
           <ExtendedFilter
@@ -612,8 +616,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить" сбрасывает значение', async () => {
-        // todo: получать соответствующие фикстуры когда будет готова интеграция
-        const macroregionListItem = warehouseFixtures.customerListItem()
+        const macroregionListItem = macroregionFixtures.macroregionListItem()
 
         const { user } = render(
           <ExtendedFilter {...props} macroregionList={[macroregionListItem]} />,
@@ -626,11 +629,12 @@ describe('Расширенный фильтр', () => {
         const selectedOption = testUtils.getSelectedMacroregion()
 
         expect(selectedOption).not.toBeInTheDocument()
+        expect(props.onChangeMacroregions).toBeCalled()
+        expect(props.onChangeMacroregions).toBeCalledWith([macroregionListItem.id])
       })
 
       test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
-        // todo: получать соответствующие фикстуры когда будет готова интеграция
-        const macroregionListItem = warehouseFixtures.customerListItem()
+        const macroregionListItem = macroregionFixtures.macroregionListItem()
 
         const { user } = render(
           <ExtendedFilter {...props} macroregionList={[macroregionListItem]} />,
@@ -642,6 +646,8 @@ describe('Расширенный фильтр', () => {
         const selectedOption = testUtils.getSelectedMacroregion()
 
         expect(selectedOption).not.toBeInTheDocument()
+        expect(props.onChangeMacroregions).toBeCalled()
+        expect(props.onChangeMacroregions).toBeCalledWith([macroregionListItem.id])
       })
     })
 

@@ -98,7 +98,7 @@ const TaskListPage: FC = () => {
       ...preloadedExtendedFilters,
     })
 
-  const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>(() => ({
+  const [taskListQueryArgs, setTaskListQueryArgs] = useSetState<GetTaskListQueryArgs>(() => ({
     filter: initialFastFilter,
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
     ...preloadedExtendedFilters,
@@ -150,10 +150,13 @@ const TaskListPage: FC = () => {
   const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] = useLazyGetTaskList()
 
   useEffect(() => {
-    if (queryArgs.sort && !sortableFieldToSortValues.status.includes(queryArgs.sort)) {
-      getTaskList(queryArgs)
+    if (
+      taskListQueryArgs.sort &&
+      !sortableFieldToSortValues.status.includes(taskListQueryArgs.sort)
+    ) {
+      getTaskList(taskListQueryArgs)
     }
-  }, [getTaskList, queryArgs])
+  }, [getTaskList, taskListQueryArgs])
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
     { isManager: true },
@@ -210,7 +213,6 @@ const TaskListPage: FC = () => {
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilter(value)
     resetExtendedFilterToInitialValues()
-    // сбрасывать сохранённый фильтр?
     setSearchValue(undefined)
     triggerFilterChange({ filter: value })
     handleCloseTaskCard()
@@ -259,32 +261,29 @@ const TaskListPage: FC = () => {
     setSelectedTaskId(null)
   }, [setSelectedTaskId])
 
-  const handleTableSort = (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
-    /**
-     * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
-     * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
-     * при изначальной реализации
-     */
-    if (sorter) {
-      const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
+  const handleTableSort = useCallback(
+    (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
+      /**
+       * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
+       * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
+       * при изначальной реализации
+       */
+      if (sorter) {
+        const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
 
-      if (columnKey && columnKey in sortableFieldToSortValues) {
-        setQueryArgs((prevState) => ({
-          ...prevState,
-          sort: getSort(columnKey as SortableField, order || SortOrderEnum.Ascend),
-        }))
+        if (columnKey && columnKey in sortableFieldToSortValues) {
+          setTaskListQueryArgs({ sort: getSort(columnKey as SortableField, order || SortOrderEnum.Ascend) })
+        }
       }
-    }
-  }
+    },
+    [setTaskListQueryArgs],
+  )
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<TaskTableProps['onChange']>[0]) => {
-      setQueryArgs((prevState) => ({
-        ...prevState,
-        ...calculatePaginationParams(pagination),
-      }))
+      setTaskListQueryArgs(calculatePaginationParams(pagination))
     },
-    [],
+    [setTaskListQueryArgs],
   )
 
   const handleChangeTable = useCallback<TaskTableProps['onChange']>(
@@ -292,13 +291,14 @@ const TaskListPage: FC = () => {
       handleTableSort(sorter)
       handleTablePagination(pagination)
     },
-    [handleTablePagination],
+    [handleTablePagination, handleTableSort],
   )
 
+  // todo: refactor to avoid setting undefined
   const triggerFilterChange = (
     filterQueryParams: ExtendedFilterQueries | FastFilterQueries | TaskIdFilterQueries,
   ) => {
-    setQueryArgs((prevState) => ({
+    setTaskListQueryArgs((prevState) => ({
       ...prevState,
       offset: 0,
       completeAtFrom: undefined,
@@ -318,10 +318,10 @@ const TaskListPage: FC = () => {
   }
 
   const handleRefetchTaskList = useDebounceFn(() => {
-    getTaskList(queryArgs)
+    getTaskList(taskListQueryArgs)
     handleCloseTaskCard()
     refetchTaskCounters()
-  }, [getTaskList, queryArgs])
+  }, [getTaskList, taskListQueryArgs])
 
   const searchFilterApplied: boolean = isEqual(appliedFilterType, FilterTypeEnum.Search)
 
@@ -364,7 +364,7 @@ const TaskListPage: FC = () => {
                     <Col>
                       <FastFilterList
                         data={taskCounters}
-                        selectedFilter={queryArgs.filter}
+                        selectedFilter={taskListQueryArgs.filter}
                         onChange={handleFastFilterChange}
                         isShowCounters={!isGetTaskCountersError}
                         disabled={taskListIsFetching}
@@ -420,7 +420,7 @@ const TaskListPage: FC = () => {
             <ColStyled span={selectedTaskId ? (breakpoints.xxl ? 15 : 12) : 24}>
               <TaskTable
                 rowClassName={getTableRowClassName}
-                sort={queryArgs.sort}
+                sort={taskListQueryArgs.sort}
                 onRow={handleTableRowClick}
                 dataSource={taskList?.results || []}
                 loading={taskListIsFetching}

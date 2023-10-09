@@ -70,7 +70,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
     onChangeMacroregions(value)
   }
 
-  const handleResetSupportGroup = () => {
+  const handleResetSupportGroupFilters = () => {
     resetFields(['customers', 'macroregions', 'supportGroups'])()
     onChangeCustomers([])
     onChangeMacroregions([])
@@ -100,7 +100,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         <FilterBlock
           data-testid='support-group-block'
           label='Группа поддержки'
-          onReset={handleResetSupportGroup}
+          onReset={handleResetSupportGroupFilters}
         >
           <Form.Item data-testid='customers-form-item' name='customers' label='Клиенты'>
             <Select

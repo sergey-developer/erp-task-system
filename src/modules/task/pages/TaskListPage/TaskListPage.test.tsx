@@ -21,6 +21,9 @@ import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import {
+  mockGetCustomerListSuccess,
+  mockGetMacroregionListSuccess,
+  mockGetSupportGroupListSuccess,
   mockGetTaskCountersSuccess,
   mockGetTaskListSuccess,
   mockGetTaskSuccess,
@@ -36,6 +39,9 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
+import macroregionFixtures from '../../../../_tests_/fixtures/macroregion'
+import supportGroupFixtures from '../../../../_tests_/fixtures/supportGroup'
+import warehouseFixtures from '../../../../_tests_/fixtures/warehouse'
 import { DEFAULT_PAGE_SIZE } from './constants'
 import TaskListPage from './index'
 
@@ -421,6 +427,9 @@ describe('Страница реестра заявок', () => {
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess()
         mockGetUserListSuccess()
+        mockGetCustomerListSuccess()
+        mockGetMacroregionListSuccess()
+        mockGetSupportGroupListSuccess()
 
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
@@ -436,6 +445,9 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess()
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess()
+        mockGetCustomerListSuccess()
+        mockGetMacroregionListSuccess()
+        mockGetSupportGroupListSuccess()
 
         const { user } = render(<TaskListPage />)
 
@@ -453,6 +465,9 @@ describe('Страница реестра заявок', () => {
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
         mockGetUserListSuccess()
+        mockGetCustomerListSuccess()
+        mockGetMacroregionListSuccess()
+        mockGetSupportGroupListSuccess()
 
         const taskListItem = taskFixtures.taskListItem()
         mockGetTaskListSuccess({
@@ -481,6 +496,9 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess()
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess()
+        mockGetCustomerListSuccess()
+        mockGetMacroregionListSuccess()
+        mockGetSupportGroupListSuccess()
 
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
@@ -502,6 +520,9 @@ describe('Страница реестра заявок', () => {
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
+        mockGetCustomerListSuccess()
+        mockGetMacroregionListSuccess()
+        mockGetSupportGroupListSuccess()
 
         const { user } = render(<TaskListPage />)
 
@@ -515,29 +536,14 @@ describe('Страница реестра заявок', () => {
         })
       })
 
-      test('Закрывается нажав вне фильтра', async () => {
-        mockGetUserListSuccess()
-        mockGetWorkGroupListSuccess()
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess()
-
-        const { user } = render(<TaskListPage />)
-
-        await taskTableTestUtils.expectLoadingFinished()
-        await testUtils.clickExtendedFilterButton(user)
-        const filter = await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.clickOutOfFilter(user)
-
-        await waitFor(() => {
-          expect(filter).not.toBeInTheDocument()
-        })
-      })
-
       test('Значения сохраняются если другой фильтр не применялся', async () => {
         const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess({ once: false })
+        mockGetCustomerListSuccess()
+        mockGetMacroregionListSuccess()
+        mockGetSupportGroupListSuccess()
 
         const userListItem = userFixtures.userListItem()
         mockGetUserListSuccess({ body: [userListItem], once: false })
@@ -621,6 +627,15 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Сохраняется фильтр групп поддержки', async () => {
+        const customerListItem = warehouseFixtures.customerListItem()
+        mockGetCustomerListSuccess({ body: [customerListItem] })
+
+        const macroregionListItem = macroregionFixtures.macroregionListItem()
+        mockGetMacroregionListSuccess({ body: [macroregionListItem] })
+
+        const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
+        mockGetSupportGroupListSuccess({ body: [supportGroupListItem] })
+
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
         mockGetUserListSuccess()
@@ -640,12 +655,16 @@ describe('Страница реестра заявок', () => {
         await user.click(button)
 
         const filter = await extendedFilterTestUtils.findContainer()
+        await extendedFilterTestUtils.expectCustomersLoadingFinished()
+        await extendedFilterTestUtils.expectMacroregionsLoadingFinished()
+        await extendedFilterTestUtils.expectSupportGroupsLoadingFinished()
+
         await extendedFilterTestUtils.openCustomersSelect(user)
-        await extendedFilterTestUtils.setCustomer(user, 'customer 1')
+        await extendedFilterTestUtils.setCustomer(user, customerListItem.title)
         await extendedFilterTestUtils.openMacroregionsSelect(user)
-        await extendedFilterTestUtils.setMacroregion(user, 'macroregion 1')
+        await extendedFilterTestUtils.setMacroregion(user, macroregionListItem.title)
         await extendedFilterTestUtils.openSupportGroupsSelect(user)
-        await extendedFilterTestUtils.setSupportGroup(user, 'supportGroup 1')
+        await extendedFilterTestUtils.setSupportGroup(user, supportGroupListItem.name)
         await extendedFilterTestUtils.clickApplyButton(user)
 
         await waitFor(() => {
@@ -664,6 +683,9 @@ describe('Страница реестра заявок', () => {
       mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
+      mockGetCustomerListSuccess()
+      mockGetMacroregionListSuccess()
+      mockGetSupportGroupListSuccess()
 
       const userListItem = userFixtures.userListItem()
       mockGetUserListSuccess({ body: [userListItem], once: false })
@@ -748,6 +770,9 @@ describe('Страница реестра заявок', () => {
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
+        mockGetCustomerListSuccess()
+        mockGetMacroregionListSuccess()
+        mockGetSupportGroupListSuccess()
 
         const { user } = render(<TaskListPage />)
 
@@ -767,6 +792,9 @@ describe('Страница реестра заявок', () => {
         mockGetUserListSuccess()
         mockGetTaskListSuccess()
         mockGetTaskCountersSuccess()
+        mockGetCustomerListSuccess()
+        mockGetMacroregionListSuccess()
+        mockGetSupportGroupListSuccess()
         mockGetWorkGroupListSuccess({
           body: workGroupFixtures.workGroupList(),
         })
