@@ -4,10 +4,10 @@ import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
-import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
+import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import ExtendedFilter from 'modules/task/components/ExtendedFilter'
 import {
   ExtendedFilterFormFields,
@@ -41,11 +41,14 @@ import {
 } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { parseTaskListPageFilters } from 'modules/task/services/taskLocalStorage/utils/taskListPageFilters'
 import { useGetUserList, useUserRole } from 'modules/user/hooks'
+import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
+import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import { SyncIcon } from 'components/Icons'
 
 import { SortOrderEnum } from 'shared/constants/sort'
+import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
@@ -75,12 +78,19 @@ const TaskListPage: FC = () => {
   const initialFastFilter = getInitialFastFilter(role)
   const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
 
-  const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
+  const [extendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
 
   const [preloadedExtendedFilters, setPreloadedExtendedFilters] =
     useSetState<TaskListPageFiltersStorage>(
       () => taskLocalStorageService.getTaskListPageFilters() || {},
     )
+
+  const [selectedCustomers, setSelectedCustomers] = useState<MaybeUndefined<IdType[]>>(
+    preloadedExtendedFilters.customers,
+  )
+  const [selectedMacroregions, setSelectedMacroregions] = useState<MaybeUndefined<IdType[]>>(
+    preloadedExtendedFilters.macroregions,
+  )
 
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useSetState<ExtendedFilterFormFields>({
@@ -91,8 +101,7 @@ const TaskListPage: FC = () => {
   const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>(() => ({
     filter: initialFastFilter,
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
-    // todo: раскомитить в задаче по интеграции
-    // ...preloadedExtendedFilters,
+    ...preloadedExtendedFilters,
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
   }))
 
@@ -132,11 +141,6 @@ const TaskListPage: FC = () => {
     refetch: refetchTaskCounters,
   } = useGetTaskCounters()
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
-    { isManager: true },
-    { skip: !isExtendedFilterOpened },
-  )
-
   /**
    * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
    * Это также можно сделать если передать аргумент `skip` в обычный Query, но тогда
@@ -151,6 +155,33 @@ const TaskListPage: FC = () => {
     }
   }, [getTaskList, queryArgs])
 
+  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
+    { isManager: true },
+    { skip: !extendedFilterOpened },
+  )
+
+  const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
+    undefined,
+    { skip: !extendedFilterOpened },
+  )
+
+  const { currentData: supportGroupList = [], isFetching: supportGroupListIsFetching } =
+    useGetSupportGroupList(
+      {
+        customers: selectedCustomers,
+        macroregions: selectedMacroregions,
+      },
+      { skip: !extendedFilterOpened },
+    )
+
+  const { currentData: macroregionList = [], isFetching: macroregionListIsFetching } =
+    useGetMacroregionList({ customers: selectedCustomers }, { skip: !extendedFilterOpened })
+
+  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroupList(
+    undefined,
+    { skip: !extendedFilterOpened },
+  )
+
   const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
 
   const saveSupportGroupFilterToStorage = (
@@ -162,22 +193,24 @@ const TaskListPage: FC = () => {
     toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
     setFastFilter(undefined)
-    triggerFilterChange(
-      mapExtendedFilterFormFieldsToQueries(
-        // todo: убрать omit в задаче по интеграции
-        omit(values, 'customers', 'macroregions', 'supportGroups'),
-      ),
-    )
+    triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
     handleCloseTaskCard()
     const supportGroupValues = pick(values, 'customers', 'macroregions', 'supportGroups')
     saveSupportGroupFilterToStorage(supportGroupValues)
     setPreloadedExtendedFilters(supportGroupValues)
   }
 
+  const resetExtendedFilterToInitialValues = () => {
+    setExtendedFilterFormValues(initialExtendedFilterFormValues)
+    setSelectedCustomers(initialExtendedFilterFormValues.customers)
+    setSelectedMacroregions(initialExtendedFilterFormValues.macroregions)
+  }
+
   const handleFastFilterChange = (value: FastFilterEnum) => {
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilter(value)
-    setExtendedFilterFormValues(initialExtendedFilterFormValues)
+    resetExtendedFilterToInitialValues()
+    // сбрасывать сохранённый фильтр?
     setSearchValue(undefined)
     triggerFilterChange({ filter: value })
     handleCloseTaskCard()
@@ -303,9 +336,10 @@ const TaskListPage: FC = () => {
 
     if (isDeleted) {
       setExtendedFilterFormValues({ [filter.name]: undefined })
+      if (filter.name === 'customers') setSelectedCustomers([])
+      if (filter.name === 'macroregions') setSelectedMacroregions([])
       setPreloadedExtendedFilters({ [filter.name]: undefined })
-      // todo: раскомитить в задаче по интеграции
-      // triggerFilterChange({ [filter.name]: undefined })
+      triggerFilterChange({ [filter.name]: undefined })
     }
   }
 
@@ -410,27 +444,22 @@ const TaskListPage: FC = () => {
         </Col>
       </Row>
 
-      {isExtendedFilterOpened && (
+      {extendedFilterOpened && (
         <ExtendedFilter
           formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
-          customerList={[
-            { id: 1, title: 'customer 1' },
-            { id: 2, title: 'customer 2' },
-          ]}
-          customerListIsLoading={false}
-          macroregionList={[
-            { id: 1, title: 'macroregion 1' },
-            { id: 2, title: 'macroregion 2' },
-          ]}
-          macroregionListIsLoading={false}
-          supportGroupList={[
-            { id: 1, name: 'supportGroup 1' },
-            { id: 2, name: 'supportGroup 2' },
-          ]}
-          supportGroupListIsLoading={false}
+          customerList={customerList}
+          customerListIsLoading={customerListIsFetching}
+          onChangeCustomers={setSelectedCustomers}
+          macroregionList={macroregionList}
+          macroregionListIsLoading={macroregionListIsFetching}
+          onChangeMacroregions={setSelectedMacroregions}
+          supportGroupList={supportGroupList}
+          supportGroupListIsLoading={supportGroupListIsFetching}
           userList={userList}
           userListIsLoading={userListIsFetching}
+          workGroupList={workGroupList}
+          workGroupListIsLoading={workGroupListIsFetching}
           onClose={debouncedToggleOpenExtendedFilter}
           onSubmit={handleExtendedFilterSubmit}
         />
