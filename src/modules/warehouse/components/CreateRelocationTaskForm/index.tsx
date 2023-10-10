@@ -1,11 +1,14 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Col, DatePicker, Form, Input, Modal, Row, Select, TimePicker, Typography } from 'antd'
+import { Col, Form, Input, Modal, Row, Select, Typography } from 'antd'
 import sortBy from 'lodash/sortBy'
 import React, { FC, useMemo, useState } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { userListSelectFieldNames } from 'modules/user/constants'
+
+import DatePicker from 'components/DatePicker'
+import TimePicker from 'components/TimePicker'
 
 import { locationDict } from 'shared/constants/catalogs'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'

@@ -1,9 +1,10 @@
-import { Form, Radio, Select, InputNumber, DatePicker, Row, Col } from 'antd'
+import { Form, Radio, Select, InputNumber, Row, Col } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 
+import DatePicker from 'components/DatePicker'
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
