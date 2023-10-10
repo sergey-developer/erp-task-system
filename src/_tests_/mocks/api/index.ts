@@ -2,6 +2,8 @@ export * from './catalogs'
 export * from './system'
 export * from './country'
 export * from './currency'
+export * from './macroregion'
+
 export * from './auth'
 export * from './user'
 export * from './task'

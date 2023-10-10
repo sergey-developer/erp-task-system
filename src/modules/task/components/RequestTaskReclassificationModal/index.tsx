@@ -1,14 +1,18 @@
 import { Form, FormInstance, Input, ModalProps, Radio, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { ReclassificationReasonEnum } from 'modules/task/constants/taskReclassificationRequest'
+import {
+  ReclassificationReasonEnum,
+  reclassificationReasonDict,
+} from 'modules/task/constants/taskReclassificationRequest'
 import { TaskModel } from 'modules/task/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { reclassificationReasonLabels } from './constants'
+import { requiredStringRules } from 'shared/constants/validation'
+
 import { RequestTaskReclassificationFormFields } from './types'
-import { commentRules, RECLASSIFICATION_REASON_RULES } from './validation'
+import { reclassificationReasonRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -60,24 +64,29 @@ const RequestTaskReclassificationModal: FC<RequestTaskReclassificationModalProps
           data-testid='reclassification-reason'
           label='Причина переклассификации'
           name='reclassificationReason'
-          rules={RECLASSIFICATION_REASON_RULES}
+          rules={reclassificationReasonRules}
         >
           <Radio.Group disabled={isLoading}>
             <Space direction='vertical'>
               <Radio value={ReclassificationReasonEnum.WrongClassification}>
-                {reclassificationReasonLabels[ReclassificationReasonEnum.WrongClassification]}
+                {reclassificationReasonDict[ReclassificationReasonEnum.WrongClassification]}
               </Radio>
               <Radio value={ReclassificationReasonEnum.WrongSupportGroup}>
-                {reclassificationReasonLabels[ReclassificationReasonEnum.WrongSupportGroup]}
+                {reclassificationReasonDict[ReclassificationReasonEnum.WrongSupportGroup]}
               </Radio>
               <Radio value={ReclassificationReasonEnum.DivideTask} disabled>
-                {reclassificationReasonLabels[ReclassificationReasonEnum.DivideTask]}
+                {reclassificationReasonDict[ReclassificationReasonEnum.DivideTask]}
               </Radio>
             </Space>
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item data-testid='comment' label='Комментарий' name='comment' rules={commentRules}>
+        <Form.Item
+          data-testid='comment'
+          label='Комментарий'
+          name='comment'
+          rules={requiredStringRules}
+        >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>
       </Form>

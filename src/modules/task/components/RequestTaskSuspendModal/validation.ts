@@ -4,8 +4,6 @@ import { SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
 
 import { dateValidator, timeValidator } from 'shared/utils/validation'
 
-export const commentRules: Rule[] = [{ required: true, whitespace: true }]
-
 export const reasonRules: Rule[] = [
   {
     required: true,

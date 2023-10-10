@@ -23,16 +23,7 @@ import { formatDate } from 'shared/utils/date'
 export const mapExtendedFilterFormFieldsToQueries = (
   fields: Partial<ExtendedFilterFormFields>,
 ): ExtendedFilterQueries => {
-  const {
-    completeAt,
-    searchField,
-    searchValue,
-    // todo: раскомитить во время задачи по интеграции
-    customers,
-    macroregions,
-    supportGroups,
-    ...restFields
-  } = fields
+  const { completeAt, searchField, searchValue, ...restFields } = fields
 
   return {
     ...restFields,
