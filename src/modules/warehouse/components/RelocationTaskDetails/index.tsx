@@ -11,6 +11,7 @@ import {
 } from 'antd'
 import React, { FC } from 'react'
 
+import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
@@ -18,6 +19,7 @@ import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
   useLazyGetRelocationTaskWaybillM15,
+  useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
 import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
 
@@ -39,7 +41,10 @@ const { Text } = Typography
 const dropdownTrigger: DropdownProps['trigger'] = ['click']
 
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
-  const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
+  const userPermissions = useMatchUserPermissions([
+    'RELOCATION_TASKS_READ',
+    'RELOCATION_TASKS_UPDATE',
+  ])
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId: relocationTaskId! }, { skip: !relocationTaskId })
@@ -54,6 +59,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
+
+  const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
+  const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const handleGetWaybillM15 = useDebounceFn(async () => {
     if (!relocationTaskId) return
@@ -94,6 +102,16 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         ),
         disabled: !userPermissions?.relocationTasksRead,
         onClick: handleGetWaybillM15,
+      },
+      {
+        key: 2,
+        label: 'Изменить заявку',
+        disabled:
+          !userPermissions?.relocationTasksUpdate ||
+          !creatorIsCurrentUser ||
+          relocationTaskStatus.isCanceled ||
+          relocationTaskStatus.isClosed ||
+          relocationTaskStatus.isCompleted,
       },
     ],
   }
