@@ -3,7 +3,6 @@ import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
-import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
@@ -11,6 +10,7 @@ import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
 import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/constants/selectField'
+import { IdType } from 'shared/types/common'
 
 import {
   managerSelectFieldNames,
@@ -28,14 +28,19 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   formValues,
   initialFormValues,
 
+  workGroupList,
+  workGroupListIsLoading,
+
   userList,
   userListIsLoading,
 
   customerList,
   customerListIsLoading,
+  onChangeCustomers,
 
   macroregionList,
   macroregionListIsLoading,
+  onChangeMacroregions,
 
   supportGroupList,
   supportGroupListIsLoading,
@@ -45,25 +50,44 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 }) => {
   const [form] = Form.useForm<ExtendedFilterFormFields>()
 
-  // todo: перенести в TaskListPage
-  const { data: workGroupList, isFetching: workGroupListIsFetching } = useGetWorkGroupList()
-
-  const resetFields = (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
-    form.resetFields(fields)
-  }
-
   useEffect(() => {
     if (!isEqual(initialFormValues, formValues)) {
       form.setFieldsValue(formValues)
     }
   }, [form, formValues, initialFormValues])
 
+  const resetFields = (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
+    form.resetFields(fields)
+  }
+
+  const handleChangeCustomers = (value: IdType[]) => {
+    resetFields(['macroregions', 'supportGroups'])()
+    onChangeCustomers(value)
+  }
+
+  const handleChangeMacroregions = (value: IdType[]) => {
+    resetFields(['supportGroups'])()
+    onChangeMacroregions(value)
+  }
+
+  const handleResetSupportGroupFilters = () => {
+    resetFields(['customers', 'macroregions', 'supportGroups'])()
+    onChangeCustomers([])
+    onChangeMacroregions([])
+  }
+
+  const handleResetAll = () => {
+    resetFields()()
+    onChangeCustomers([])
+    onChangeMacroregions([])
+  }
+
   return (
     <DrawerFilter
       data-testid='extended-filter'
       open
       onClose={onClose}
-      onReset={resetFields()}
+      onReset={handleResetAll}
       onApply={form.submit}
     >
       <Form<ExtendedFilterFormFields>
@@ -76,7 +100,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
         <FilterBlock
           data-testid='support-group-block'
           label='Группа поддержки'
-          onReset={resetFields(['customers', 'macroregions', 'supportGroups'])}
+          onReset={handleResetSupportGroupFilters}
         >
           <Form.Item data-testid='customers-form-item' name='customers' label='Клиенты'>
             <Select
@@ -85,7 +109,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               loading={customerListIsLoading}
               options={customerList}
               placeholder='Выберите из списка'
-              onChange={resetFields(['macroregions', 'supportGroups'])}
+              onChange={handleChangeCustomers}
             />
           </Form.Item>
 
@@ -96,7 +120,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               loading={macroregionListIsLoading}
               options={macroregionList}
               placeholder='Выберите из списка'
-              onChange={resetFields(['supportGroups'])}
+              onChange={handleChangeMacroregions}
             />
           </Form.Item>
 
@@ -162,7 +186,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
                 <Select
                   data-testid='work-group-select'
                   fieldNames={idAndNameSelectFieldNames}
-                  loading={workGroupListIsFetching}
+                  loading={workGroupListIsLoading}
                   options={workGroupList}
                   placeholder='Рабочая группа'
                   showSearch
