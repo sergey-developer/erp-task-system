@@ -10,6 +10,7 @@ import {
 import { getInitialExtendedFilterFormValues } from 'modules/task/pages/TaskListPage/utils'
 import { UserRoleEnum } from 'modules/user/constants'
 
+import macroregionFixtures from '_tests_/fixtures/macroregion'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -26,7 +27,6 @@ import {
   buttonTestUtils,
 } from '_tests_/utils'
 
-import macroregionFixtures from '../../../../_tests_/fixtures/macroregion'
 import { searchFieldDict, taskAssignedDict, taskOverdueDict } from './constants'
 import ExtendedFilter from './index'
 import { ExtendedFilterProps } from './types'
@@ -528,6 +528,8 @@ describe('Расширенный фильтр', () => {
         expect(selectedOption).toHaveTextContent(customerListItem.title)
       })
 
+      test.todo('Сбрасывает выбранные макрорегионы и группы поддержки')
+
       test('Кнопка "Сбросить" сбрасывает значение', async () => {
         const customerListItem = warehouseFixtures.customerListItem()
 
@@ -614,6 +616,8 @@ describe('Расширенный фильтр', () => {
         expect(selectedOption).toBeInTheDocument()
         expect(selectedOption).toHaveTextContent(macroregionListItem.title)
       })
+
+      test.todo('Сбрасывает выбранные группы поддержки')
 
       test('Кнопка "Сбросить" сбрасывает значение', async () => {
         const macroregionListItem = macroregionFixtures.macroregionListItem()
