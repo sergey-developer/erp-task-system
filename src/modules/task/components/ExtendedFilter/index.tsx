@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, Radio, Select } from 'antd'
+import { Form, Input, Radio, Select } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
@@ -6,6 +6,7 @@ import { extendedFilterPermissions } from 'modules/task/permissions'
 import { userListSelectFieldNames } from 'modules/user/constants'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
+import DatePicker from 'components/DatePicker'
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'

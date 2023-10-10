@@ -1,6 +1,5 @@
 import {
   Col,
-  DatePicker,
   Form,
   FormInstance,
   Input,
@@ -10,7 +9,6 @@ import {
   RadioGroupProps,
   Row,
   Space,
-  TimePicker,
   Typography,
 } from 'antd'
 import moment from 'moment-timezone'
@@ -20,7 +18,9 @@ import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { SuspendReasonEnum, suspendReasonDict } from 'modules/task/constants/taskSuspendRequest'
 
+import DatePicker from 'components/DatePicker'
 import BaseModal from 'components/Modals/BaseModal'
+import TimePicker from 'components/TimePicker'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import { RequestTaskSuspendFormFields } from './types'
