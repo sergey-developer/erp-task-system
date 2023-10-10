@@ -11,9 +11,7 @@ export const columns: ColumnsType<EquipmentNomenclatureTableItem> = [
     dataIndex: 'title',
     title: 'Наименование',
     render: (value: EquipmentNomenclatureTableItem['title'], record) => (
-      <Link to={`${getEquipmentListPageLink(record.id)}?title=${record.title}`}>
-        {value}
-      </Link>
+      <Link to={getEquipmentListPageLink(record.id, record.title)}>{value}</Link>
     ),
   },
   {

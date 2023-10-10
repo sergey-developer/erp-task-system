@@ -1,19 +1,25 @@
+import { Key } from 'react'
+
 import { EquipmentCatalogListModel } from 'modules/warehouse/models'
-import { CreateRelocationTaskFormFields } from 'modules/warehouse/pages/CreateRelocationTaskPage/types'
+import { RelocationTaskFormFields } from 'modules/warehouse/types'
 
 import { CurrencyListModel } from 'shared/models/currency'
 import { ArrayFirst } from 'shared/types/utils'
 
-export type RelocationEquipmentFormFields = {
-  rowId: number
-} & Partial<ArrayFirst<CreateRelocationTaskFormFields['equipments']>>
+export type RelocationEquipmentRowFields = Partial<
+  ArrayFirst<RelocationTaskFormFields['equipments']>
+>
 
 export type RelocationEquipmentEditableTableProps = {
+  editableKeys?: Key[]
+  setEditableKeys?: (keys: Key[]) => void
+
   isLoading: boolean
+  equipmentListIsLoading?: boolean
 
   currencyList: CurrencyListModel
   currencyListIsLoading: boolean
 
-  equipmentList: EquipmentCatalogListModel
-  equipmentListIsLoading: boolean
+  equipmentCatalogList: EquipmentCatalogListModel
+  equipmentCatalogListIsLoading: boolean
 }

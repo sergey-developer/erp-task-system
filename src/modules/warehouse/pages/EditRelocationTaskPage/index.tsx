@@ -1,6 +1,8 @@
 import { Button, Col, Form, FormProps, Row, Typography } from 'antd'
-import React, { FC, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import defaultTo from 'lodash/defaultTo'
+import moment from 'moment-timezone'
+import { FC, Key, useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { useGetUserList } from 'modules/user/hooks'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
@@ -8,9 +10,13 @@ import { RelocationEquipmentRowFields } from 'modules/warehouse/components/Reloc
 import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
 import { LocationOption } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
-import { createRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
+import { updateRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetEquipmentCatalogList, useLazyGetEquipment } from 'modules/warehouse/hooks/equipment'
+import {
+  useGetRelocationEquipmentList,
+  useGetRelocationTask,
+} from 'modules/warehouse/hooks/relocationTask'
 import { useCreateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
@@ -35,12 +41,26 @@ const initialValues: Pick<RelocationTaskFormFields, 'equipments'> = {
   equipments: [],
 }
 
-const CreateRelocationTaskPage: FC = () => {
+const EditRelocationTaskPage: FC = () => {
   const navigate = useNavigate()
+
+  // todo: создать хук который будет возвращать распарсеные значения
+  const params = useParams<'id'>()
+  const relocationTaskId = defaultTo(Number(params?.id), undefined)
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
+  const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
+
   const [selectedRelocateFromOption, setSelectedRelocateFromOption] = useState<LocationOption>()
+
+  const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
+    useGetRelocationTask({ relocationTaskId: relocationTaskId! })
+
+  const {
+    currentData: relocationEquipmentList = [],
+    isFetching: relocationEquipmentListIsFetching,
+  } = useGetRelocationEquipmentList({ relocationTaskId: relocationTaskId! })
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
     isManager: false,
@@ -58,17 +78,17 @@ const CreateRelocationTaskPage: FC = () => {
         locationId: selectedRelocateFromOption?.value,
         locationType: selectedRelocateFromOption?.type,
       },
-      { skip: !selectedRelocateFromOption },
+      { skip: !selectedRelocateFromOption?.value || !selectedRelocateFromOption?.type },
     )
 
   const [getEquipment] = useLazyGetEquipment()
 
-  const [createRelocationTaskMutation, { isLoading: createRelocationTaskIsLoading }] =
+  const [updateRelocationTaskMutation, { isLoading: updateRelocationTaskIsLoading }] =
     useCreateRelocationTaskMutation()
 
-  const handleCreateRelocationTask = async (values: RelocationTaskFormFields) => {
+  const handleUpdateRelocationTask = async (values: RelocationTaskFormFields) => {
     try {
-      const createdTask = await createRelocationTaskMutation({
+      const updatedTask = await updateRelocationTaskMutation({
         deadlineAt: mergeDateTime(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
         equipments: values.equipments.map((e) => ({
           id: e.id,
@@ -83,7 +103,7 @@ const CreateRelocationTaskPage: FC = () => {
         comment: values.comment,
       }).unwrap()
 
-      navigate(getRelocationTaskListPageLink(createdTask.id))
+      navigate(getRelocationTaskListPageLink(updatedTask.id))
     } catch (error) {
       if (isErrorResponse(error)) {
         if (isBadRequestError(error)) {
@@ -97,7 +117,7 @@ const CreateRelocationTaskPage: FC = () => {
         } else if (isNotFoundError(error) && error.data.detail) {
           showErrorNotification(error.data.detail)
         } else {
-          showErrorNotification(createRelocationTaskMessages.commonError)
+          showErrorNotification(updateRelocationTaskMessages.commonError)
         }
       }
     }
@@ -136,23 +156,78 @@ const CreateRelocationTaskPage: FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (relocationTask && !relocationTaskIsFetching) {
+      form.setFieldsValue({
+        deadlineAtDate: moment(relocationTask.deadlineAt),
+        deadlineAtTime: moment(relocationTask.deadlineAt),
+        relocateFrom: relocationTask.relocateFrom?.id,
+        relocateTo: relocationTask.relocateTo?.id,
+        executor: relocationTask.executor?.id,
+        comment: defaultTo(relocationTask.comment, undefined),
+      })
+    }
+  }, [form, relocationTask, relocationTaskIsFetching])
+
+  useEffect(() => {
+    if (relocationEquipmentList.length && !relocationEquipmentListIsFetching) {
+      const equipments: RelocationTaskFormFields['equipments'] = []
+      const editableTableRowKeys: Key[] = []
+
+      relocationEquipmentList.forEach((eqp) => {
+        editableTableRowKeys.push(eqp.id)
+
+        equipments.push({
+          rowId: eqp.id,
+          id: eqp.id,
+          serialNumber: defaultTo(eqp.serialNumber, undefined),
+          purpose: eqp.purpose,
+          condition: eqp.condition,
+          amount: 0,
+          price: defaultTo(eqp.price, undefined),
+          currency: defaultTo(eqp.currency, undefined),
+          quantity: eqp.quantity,
+        })
+      })
+
+      form.setFieldsValue({ equipments })
+      setEditableTableRowKeys(editableTableRowKeys)
+    }
+  }, [form, relocationEquipmentList, relocationEquipmentListIsFetching])
+
+  useEffect(() => {
+    if (relocationTask && locationList.length && !locationListIsFetching) {
+      const relocateFromListItem = locationList.find(
+        (l) => l.id === relocationTask.relocateFrom?.id,
+      )
+
+      if (relocateFromListItem) {
+        setSelectedRelocateFromOption({
+          type: relocateFromListItem.type,
+          value: relocateFromListItem.id,
+        })
+      }
+    }
+  }, [locationList, locationListIsFetching, relocationTask])
+
   return (
     <Form<RelocationTaskFormFields>
-      data-testid='create-relocation-task-page'
+      data-testid='edit-relocation-task-page'
       form={form}
       layout='vertical'
-      onFinish={handleCreateRelocationTask}
+      onFinish={handleUpdateRelocationTask}
       onValuesChange={handleFormChange}
       initialValues={initialValues}
     >
       <Row gutter={[40, 40]}>
         <Col span={24}>
           <RelocationTaskForm
-            isLoading={createRelocationTaskIsLoading}
+            isLoading={updateRelocationTaskIsLoading || relocationTaskIsFetching}
             userList={userList}
             userListIsLoading={userListIsFetching}
             locationList={locationList}
             locationListIsLoading={locationListIsFetching}
+            selectedRelocateFrom={selectedRelocateFromOption}
             onChangeRelocateFrom={setSelectedRelocateFromOption}
           />
         </Col>
@@ -162,7 +237,10 @@ const CreateRelocationTaskPage: FC = () => {
             <Text strong>Перечень оборудования</Text>
 
             <RelocationEquipmentEditableTable
-              isLoading={createRelocationTaskIsLoading}
+              editableKeys={editableTableRowKeys}
+              setEditableKeys={setEditableTableRowKeys}
+              isLoading={updateRelocationTaskIsLoading}
+              equipmentListIsLoading={relocationEquipmentListIsFetching}
               currencyList={currencyList}
               currencyListIsLoading={currencyListIsFetching}
               equipmentCatalogList={equipmentCatalogList}
@@ -180,8 +258,8 @@ const CreateRelocationTaskPage: FC = () => {
             </Col>
 
             <Col>
-              <Button type='primary' htmlType='submit' loading={createRelocationTaskIsLoading}>
-                Создать заявку
+              <Button type='primary' htmlType='submit' loading={updateRelocationTaskIsLoading}>
+                Сохранить
               </Button>
             </Col>
           </Row>
@@ -191,4 +269,4 @@ const CreateRelocationTaskPage: FC = () => {
   )
 }
 
-export default CreateRelocationTaskPage
+export default EditRelocationTaskPage

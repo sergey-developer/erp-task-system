@@ -16,6 +16,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { WrapperStyled } from './styles'
 
 const WarehousePage: FC = () => {
+  // todo: создать хук который будет возвращать распарсеные значения
   const params = useParams<'id'>()
   const warehouseId = defaultTo(Number(params?.id), undefined)
 

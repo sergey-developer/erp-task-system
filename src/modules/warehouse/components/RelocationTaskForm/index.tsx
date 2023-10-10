@@ -1,7 +1,7 @@
 import { useBoolean, usePrevious } from 'ahooks'
 import { Col, Form, Input, Modal, Row, Select, Typography } from 'antd'
 import sortBy from 'lodash/sortBy'
-import React, { FC, useMemo, useState } from 'react'
+import React, { FC, useMemo } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
@@ -13,13 +13,13 @@ import TimePicker from 'components/TimePicker'
 import { locationDict } from 'shared/constants/catalogs'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 
-import { CreateRelocationTaskFormProps, LocationOption } from './types'
+import { RelocationTaskFormProps, LocationOption } from './types'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
 const { TextArea } = Input
 const { Text } = Typography
 
-const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
+const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   isLoading,
 
   userList,
@@ -28,11 +28,11 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
   locationList,
   locationListIsLoading,
 
+  selectedRelocateFrom,
   onChangeRelocateFrom,
 }) => {
   const form = Form.useFormInstance()
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
-  const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
   const locationOptions = useMemo(
@@ -103,7 +103,6 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
               onChange={(value, option) => {
                 if (Array.isArray(option)) return
 
-                setSelectedRelocateFrom(option)
                 form.setFieldValue('relocateFrom', value)
                 const equipments = form.getFieldValue('equipments')
                 if (!!equipments.length && selectedRelocateFrom) {
@@ -162,9 +161,10 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
         open={confirmModalOpened}
         onCancel={() => {
           toggleConfirmModal()
-          setSelectedRelocateFrom(prevSelectedRelocateFrom)
+
           if (prevSelectedRelocateFrom) {
             form.setFieldValue('relocateFrom', prevSelectedRelocateFrom.value)
+            onChangeRelocateFrom(prevSelectedRelocateFrom)
           }
         }}
         onOk={() => {
@@ -179,4 +179,4 @@ const CreateRelocationTaskForm: FC<CreateRelocationTaskFormProps> = ({
   )
 }
 
-export default CreateRelocationTaskForm
+export default RelocationTaskForm

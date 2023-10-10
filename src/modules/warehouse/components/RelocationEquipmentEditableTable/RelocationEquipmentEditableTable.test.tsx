@@ -7,12 +7,13 @@ import { RelocationEquipmentEditableTableProps } from './types'
 
 const props: RelocationEquipmentEditableTableProps = {
   isLoading: false,
+  equipmentListIsLoading: false,
 
   currencyList: [],
   currencyListIsLoading: false,
 
-  equipmentList: [],
-  equipmentListIsLoading: false,
+  equipmentCatalogList: [],
+  equipmentCatalogListIsLoading: false,
 }
 
 const getContainer = () => screen.getByTestId('relocation-equipment-editable-table-form-item')

@@ -133,7 +133,7 @@ describe('Таблица складов', () => {
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute(
           'href',
-          `${getWarehousePageLink(warehouseListItem.id)}?title=${warehouseListItem.title}`,
+          getWarehousePageLink(warehouseListItem.id, warehouseListItem.title),
         )
         expect(headCell).toHaveClass(columnWithSortingClass)
         expect(headCell).not.toHaveAttribute(ariaSortAttrName)
