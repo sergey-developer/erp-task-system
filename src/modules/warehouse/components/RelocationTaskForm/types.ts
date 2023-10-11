@@ -22,5 +22,5 @@ export type RelocationTaskFormProps = {
   locationListIsLoading: boolean
 
   selectedRelocateFrom?: LocationOption
-  onChangeRelocateFrom: (option: LocationOption) => void
+  onChangeRelocateFrom: (value: IdType, option: LocationOption) => void
 }

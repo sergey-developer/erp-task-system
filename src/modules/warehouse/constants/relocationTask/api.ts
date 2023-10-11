@@ -9,3 +9,8 @@ export enum RelocationTaskApiEnum {
   GetRelocationEquipmentList = '/relocation-tasks/:id/equipments/',
   GetRelocationEquipmentBalanceList = '/relocation-tasks/:id/equipments/balance/',
 }
+
+export enum RelocationTaskApiTagEnum {
+  RelocationTask = 'RelocationTask',
+  RelocationEquipmentList = 'RelocationEquipmentList',
+}

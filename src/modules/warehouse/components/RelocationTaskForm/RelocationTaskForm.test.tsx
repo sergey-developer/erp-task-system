@@ -33,10 +33,11 @@ const props: RelocationTaskFormProps = {
   locationList: [],
   locationListIsLoading: false,
 
+  selectedRelocateFrom: undefined,
   onChangeRelocateFrom: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('create-relocation-task-form')
+const getContainer = () => screen.getByTestId('relocation-task-form')
 
 // deadline at field
 const getDeadlineAtFormItem = () => within(getContainer()).getByTestId('deadline-at-form-item')

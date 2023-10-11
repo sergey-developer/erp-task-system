@@ -1,4 +1,3 @@
-import defaultTo from 'lodash/defaultTo'
 import { FC, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -18,7 +17,7 @@ import { WrapperStyled } from './styles'
 const WarehousePage: FC = () => {
   // todo: создать хук который будет возвращать распарсеные значения
   const params = useParams<'id'>()
-  const warehouseId = defaultTo(Number(params?.id), undefined)
+  const warehouseId = Number(params?.id) || undefined
 
   const {
     currentData: warehouse,

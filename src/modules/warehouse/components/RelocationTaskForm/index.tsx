@@ -1,5 +1,4 @@
-import { useBoolean, usePrevious } from 'ahooks'
-import { Col, Form, Input, Modal, Row, Select, Typography } from 'antd'
+import { Col, Form, Input, Row, Select } from 'antd'
 import sortBy from 'lodash/sortBy'
 import React, { FC, useMemo } from 'react'
 
@@ -12,12 +11,12 @@ import TimePicker from 'components/TimePicker'
 
 import { locationDict } from 'shared/constants/catalogs'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
+import { IdType } from 'shared/types/common'
 
 import { RelocationTaskFormProps, LocationOption } from './types'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
 const { TextArea } = Input
-const { Text } = Typography
 
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   isLoading,
@@ -28,13 +27,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   locationList,
   locationListIsLoading,
 
-  selectedRelocateFrom,
   onChangeRelocateFrom,
 }) => {
-  const form = Form.useFormInstance()
-  const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
-  const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
-
   const locationOptions = useMemo(
     () =>
       locationList
@@ -57,125 +51,91 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   )
 
   return (
-    <>
-      <Row data-testid='create-relocation-task-form' gutter={90}>
-        <Col span={6}>
-          <Form.Item data-testid='deadline-at-form-item' label='Срок выполнения'>
-            <Row justify='space-between'>
-              <Col span={15}>
-                <Form.Item
-                  data-testid='deadline-at-date-form-item'
-                  name='deadlineAtDate'
-                  rules={deadlineAtDateRules}
-                >
-                  <DatePicker disabled={isLoading} />
-                </Form.Item>
-              </Col>
+    <Row data-testid='relocation-task-form' gutter={90}>
+      <Col span={6}>
+        <Form.Item data-testid='deadline-at-form-item' label='Срок выполнения'>
+          <Row justify='space-between'>
+            <Col span={15}>
+              <Form.Item
+                data-testid='deadline-at-date-form-item'
+                name='deadlineAtDate'
+                rules={deadlineAtDateRules}
+              >
+                <DatePicker disabled={isLoading} />
+              </Form.Item>
+            </Col>
 
-              <Col span={8}>
-                <Form.Item
-                  data-testid='deadline-at-time-form-item'
-                  name='deadlineAtTime'
-                  dependencies={['deadlineAtDate']}
-                  rules={deadlineAtTimeRules}
-                >
-                  <TimePicker
-                    disabled={isLoading}
-                    format={TIME_PICKER_FORMAT}
-                    placeholder='Время'
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form.Item>
+            <Col span={8}>
+              <Form.Item
+                data-testid='deadline-at-time-form-item'
+                name='deadlineAtTime'
+                dependencies={['deadlineAtDate']}
+                rules={deadlineAtTimeRules}
+              >
+                <TimePicker disabled={isLoading} format={TIME_PICKER_FORMAT} placeholder='Время' />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form.Item>
 
-          <Form.Item
-            data-testid='relocate-from-form-item'
-            label='Объект выбытия'
-            name='relocateFrom'
-            rules={onlyRequiredRules}
-          >
-            <Select<LocationOption['value'], LocationOption>
-              loading={locationListIsLoading}
-              disabled={isLoading}
-              options={locationOptions}
-              placeholder='Выберите объект'
-              onChange={(value, option) => {
-                if (Array.isArray(option)) return
+        <Form.Item
+          data-testid='relocate-from-form-item'
+          label='Объект выбытия'
+          name='relocateFrom'
+          rules={onlyRequiredRules}
+        >
+          <Select<IdType, LocationOption>
+            loading={locationListIsLoading}
+            disabled={isLoading}
+            options={locationOptions}
+            placeholder='Выберите объект'
+            onChange={(value, option) => {
+              if (!Array.isArray(option)) onChangeRelocateFrom(value, option)
+            }}
+          />
+        </Form.Item>
 
-                form.setFieldValue('relocateFrom', value)
-                const equipments = form.getFieldValue('equipments')
-                if (!!equipments.length && selectedRelocateFrom) {
-                  toggleConfirmModal()
-                } else {
-                  onChangeRelocateFrom(option)
-                }
-              }}
-            />
-          </Form.Item>
+        <Form.Item
+          data-testid='relocate-to-form-item'
+          label='Объект прибытия'
+          name='relocateTo'
+          rules={onlyRequiredRules}
+        >
+          <Select
+            loading={locationListIsLoading}
+            disabled={isLoading}
+            options={locationOptions}
+            placeholder='Выберите объект'
+          />
+        </Form.Item>
+      </Col>
 
-          <Form.Item
-            data-testid='relocate-to-form-item'
-            label='Объект прибытия'
-            name='relocateTo'
-            rules={onlyRequiredRules}
-          >
-            <Select
-              loading={locationListIsLoading}
-              disabled={isLoading}
-              options={locationOptions}
-              placeholder='Выберите объект'
-            />
-          </Form.Item>
-        </Col>
+      <Col span={6}>
+        <Form.Item
+          data-testid='executor-form-item'
+          label='Исполнитель'
+          name='executor'
+          rules={onlyRequiredRules}
+        >
+          <Select
+            fieldNames={userListSelectFieldNames}
+            loading={userListIsLoading}
+            disabled={isLoading}
+            options={userList}
+            placeholder='Выберите исполнителя'
+          />
+        </Form.Item>
 
-        <Col span={6}>
-          <Form.Item
-            data-testid='executor-form-item'
-            label='Исполнитель'
-            name='executor'
-            rules={onlyRequiredRules}
-          >
-            <Select
-              fieldNames={userListSelectFieldNames}
-              loading={userListIsLoading}
-              disabled={isLoading}
-              options={userList}
-              placeholder='Выберите исполнителя'
-            />
-          </Form.Item>
-
-          <Form.Item
-            data-testid='comment-form-item'
-            label='Комментарий'
-            name='comment'
-            rules={onlyNotEmptyStringRules}
-          >
-            <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
-          </Form.Item>
-        </Col>
-      </Row>
-
-      <Modal
-        title='Перечень перемещаемого оборудования будет очищен'
-        open={confirmModalOpened}
-        onCancel={() => {
-          toggleConfirmModal()
-
-          if (prevSelectedRelocateFrom) {
-            form.setFieldValue('relocateFrom', prevSelectedRelocateFrom.value)
-            onChangeRelocateFrom(prevSelectedRelocateFrom)
-          }
-        }}
-        onOk={() => {
-          toggleConfirmModal()
-          form.setFieldValue('equipments', [])
-          selectedRelocateFrom && onChangeRelocateFrom(selectedRelocateFrom)
-        }}
-      >
-        <Text>Вы действительно хотите сменить объект выбытия?</Text>
-      </Modal>
-    </>
+        <Form.Item
+          data-testid='comment-form-item'
+          label='Комментарий'
+          name='comment'
+          rules={onlyNotEmptyStringRules}
+        >
+          <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
+        </Form.Item>
+      </Col>
+    </Row>
   )
 }
 
