@@ -13,12 +13,13 @@ import { EquipmentModel } from 'modules/warehouse/models'
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
 
+import { MaybeUndefined } from 'shared/types/utils'
 import { makeString } from 'shared/utils/string'
 
 import { AddEquipmentButton } from './styles'
-import { RelocationEquipmentEditableTableProps, RelocationEquipmentFormFields } from './types'
+import { RelocationEquipmentEditableTableProps, RelocationEquipmentRowFields } from './types'
 
-const formItemProps: EditableProTableProps<RelocationEquipmentFormFields, any>['formItemProps'] = {
+const formItemProps: EditableProTableProps<RelocationEquipmentRowFields, any>['formItemProps'] = {
   rules: [
     {
       validator: async (_, value) => {
@@ -33,23 +34,27 @@ const formItemProps: EditableProTableProps<RelocationEquipmentFormFields, any>['
 }
 
 const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps> = ({
+  editableKeys,
+  setEditableKeys,
+
   isLoading,
+  equipmentListIsLoading,
 
   currencyList,
   currencyListIsLoading,
 
-  equipmentList,
-  equipmentListIsLoading,
+  equipmentCatalogList,
+  equipmentCatalogListIsLoading,
 }) => {
   const form = Form.useFormInstance()
 
-  const equipmentOptions = useMemo<DefaultOptionType[]>(
+  const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
     () =>
-      equipmentList.map((eqp) => ({
+      equipmentCatalogList.map((eqp) => ({
         label: makeString(', ', eqp.title, eqp.serialNumber, eqp.inventoryNumber),
         value: eqp.id,
       })),
-    [equipmentList],
+    [equipmentCatalogList],
   )
 
   const currencyOptions = useMemo<DefaultOptionType[]>(
@@ -58,8 +63,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   )
 
   const handleDeleteRow = useCallback(
-    (row: RelocationEquipmentFormFields) => {
-      const tableDataSource: RelocationEquipmentFormFields[] = form.getFieldValue('equipments')
+    (row: RelocationEquipmentRowFields) => {
+      const tableDataSource: RelocationEquipmentRowFields[] = form.getFieldValue('equipments')
 
       form.setFieldsValue({
         equipments: tableDataSource.filter((item) => item.rowId !== row?.rowId),
@@ -68,7 +73,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
     [form],
   )
 
-  const columns: ProColumns<RelocationEquipmentFormFields>[] = [
+  const columns: ProColumns<RelocationEquipmentRowFields>[] = [
     {
       key: 'id',
       dataIndex: 'id',
@@ -89,9 +94,9 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
           </Space>
         ),
         allowClear: false,
-        loading: equipmentListIsLoading,
+        loading: equipmentCatalogListIsLoading,
         disabled: isLoading,
-        options: equipmentOptions,
+        options: equipmentCatalogOptions,
         showSearch: true,
         onChange: () => {
           form.resetFields(['quantity'])
@@ -149,12 +154,19 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       valueType: 'digit',
       formItemProps: { rules: [{ required: true }] },
       fieldProps: (form, config) => {
-        const amount = form.getFieldValue((config.rowKey as unknown as string[]).concat('amount'))
-        const category: EquipmentModel['category'] = form.getFieldValue(
-          (config.rowKey as unknown as string[]).concat('category'),
-        )
-        const isConsumable = category?.code === EquipmentCategoryEnum.Consumable
-        return { min: 1, max: amount, disabled: (!!category && !isConsumable) || isLoading }
+        if (form) {
+          const amount: MaybeUndefined<number> = form.getFieldValue(
+            (config.rowKey as unknown as string[]).concat('amount'),
+          )
+
+          const category: MaybeUndefined<EquipmentModel['category']> = form.getFieldValue(
+            (config.rowKey as unknown as string[]).concat('category'),
+          )
+
+          const isConsumable = category?.code === EquipmentCategoryEnum.Consumable
+
+          return { min: 1, max: amount, disabled: (!!category && !isConsumable) || isLoading }
+        }
       },
     },
     {
@@ -174,7 +186,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   ]
 
   return (
-    <EditableProTable<RelocationEquipmentFormFields>
+    <EditableProTable<RelocationEquipmentRowFields>
       data-testid='relocation-equipment-editable-table'
       rowKey='rowId'
       name='equipments'
@@ -187,9 +199,12 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         creatorButtonText: 'Добавить оборудование',
       }}
       formItemProps={formItemProps}
+      loading={equipmentListIsLoading}
       editable={{
         type: 'multiple',
         form,
+        editableKeys,
+        onChange: setEditableKeys,
         onValuesChange: (record, recordList) => {
           form.setFieldValue('equipments', recordList)
         },

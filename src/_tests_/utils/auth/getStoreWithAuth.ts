@@ -7,7 +7,8 @@ import { fakeId } from '_tests_/utils'
 
 import getAuthState from './getAuthState'
 
-const getStoreWithAuth = (user?: Partial<AuthenticatedUser>) =>
+// todo: fix type api: any
+const getStoreWithAuth = (user?: Partial<AuthenticatedUser>, api?: any) =>
   setupStore({
     preloadedState: {
       auth: getAuthState({
@@ -16,6 +17,7 @@ const getStoreWithAuth = (user?: Partial<AuthenticatedUser>) =>
           userRole: user?.userRole || UserRoleEnum.FirstLineSupport,
         },
       }),
+      api,
     },
   })
 

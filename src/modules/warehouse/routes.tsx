@@ -23,6 +23,7 @@ const EquipmentListPage = React.lazy(() => import('./pages/EquipmentListPage'))
 
 const RelocationTaskListPage = React.lazy(() => import('./pages/RelocationTaskListPage'))
 const CreateRelocationTaskPage = React.lazy(() => import('./pages/CreateRelocationTaskPage'))
+const EditRelocationTaskPage = React.lazy(() => import('./pages/EditRelocationTaskPage'))
 
 export const route: Readonly<RouteObject> = {
   path: WarehouseRouteEnum.ManageWarehouses,
@@ -101,9 +102,7 @@ export const route: Readonly<RouteObject> = {
             {
               path: WarehouseRouteEnum.EquipmentList,
               element: <EquipmentListPage />,
-              handle: {
-                crumb: ({ qs }: BreadCrumbArgs) => qs.get('title'),
-              },
+              handle: { crumb: ({ qs }: BreadCrumbArgs) => qs.get('title') },
             },
           ],
         },
@@ -124,11 +123,12 @@ export const route: Readonly<RouteObject> = {
             {
               path: WarehouseRouteEnum.CreateRelocationTask,
               element: <CreateRelocationTaskPage />,
-              handle: {
-                crumb: () => (
-                  <Link to={WarehouseRouteEnum.CreateRelocationTask}>Создать заявку</Link>
-                ),
-              },
+              handle: { crumb: () => 'Создать заявку' },
+            },
+            {
+              path: WarehouseRouteEnum.EditRelocationTask,
+              element: <EditRelocationTaskPage />,
+              handle: { crumb: () => 'Редактировать заявку' },
             },
           ],
         },

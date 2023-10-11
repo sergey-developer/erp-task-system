@@ -21,10 +21,10 @@ import {
 } from '_tests_/mocks/api'
 import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/utils'
 
-import CreateRelocationTaskForm from './index'
-import { CreateRelocationTaskFormProps } from './types'
+import RelocationTaskForm from './index'
+import { RelocationTaskFormProps } from './types'
 
-const props: CreateRelocationTaskFormProps = {
+const props: RelocationTaskFormProps = {
   isLoading: false,
 
   userList: [],
@@ -33,10 +33,11 @@ const props: CreateRelocationTaskFormProps = {
   locationList: [],
   locationListIsLoading: false,
 
+  selectedRelocateFrom: undefined,
   onChangeRelocateFrom: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('create-relocation-task-form')
+const getContainer = () => screen.getByTestId('relocation-task-form')
 
 // deadline at field
 const getDeadlineAtFormItem = () => within(getContainer()).getByTestId('deadline-at-form-item')
@@ -188,7 +189,7 @@ describe('Форма создания заявки на перемещение �
       test('Отображается корректно', () => {
         render(
           <Form>
-            <CreateRelocationTaskForm {...props} />
+            <RelocationTaskForm {...props} />
           </Form>,
         )
 
@@ -204,7 +205,7 @@ describe('Форма создания заявки на перемещение �
       test('Можно установить значение', async () => {
         const { user } = render(
           <Form>
-            <CreateRelocationTaskForm {...props} />
+            <RelocationTaskForm {...props} />
           </Form>,
         )
 
@@ -232,7 +233,7 @@ describe('Форма создания заявки на перемещение �
         test('Если дата в прошлом времени', async () => {
           const { user } = render(
             <Form>
-              <CreateRelocationTaskForm {...props} />
+              <RelocationTaskForm {...props} />
             </Form>,
           )
 
@@ -251,7 +252,7 @@ describe('Форма создания заявки на перемещение �
       test('Отображается корректно', () => {
         render(
           <Form>
-            <CreateRelocationTaskForm {...props} />
+            <RelocationTaskForm {...props} />
           </Form>,
         )
 
@@ -265,7 +266,7 @@ describe('Форма создания заявки на перемещение �
       test('Можно установить значение', async () => {
         const { user } = render(
           <Form>
-            <CreateRelocationTaskForm {...props} />
+            <RelocationTaskForm {...props} />
           </Form>,
         )
 
@@ -294,7 +295,7 @@ describe('Форма создания заявки на перемещение �
         test.skip('Если выбран сегодняшний день и если время в прошлом времени', async () => {
           const { user } = render(
             <Form>
-              <CreateRelocationTaskForm {...props} />
+              <RelocationTaskForm {...props} />
             </Form>,
           )
 
@@ -321,7 +322,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <CreateRelocationTaskForm {...props} locationList={locationList} />
+          <RelocationTaskForm {...props} locationList={locationList} />
         </Form>,
       )
 
@@ -343,7 +344,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <CreateRelocationTaskForm {...props} locationList={[locationListItem]} />
+          <RelocationTaskForm {...props} locationList={[locationListItem]} />
         </Form>,
       )
 
@@ -376,7 +377,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <CreateRelocationTaskForm {...props} locationList={locationList} />
+          <RelocationTaskForm {...props} locationList={locationList} />
         </Form>,
       )
 
@@ -398,7 +399,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <CreateRelocationTaskForm {...props} locationList={[locationListItem]} />
+          <RelocationTaskForm {...props} locationList={[locationListItem]} />
         </Form>,
       )
 
@@ -431,7 +432,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <CreateRelocationTaskForm {...props} userList={userList} />
+          <RelocationTaskForm {...props} userList={userList} />
         </Form>,
       )
 
@@ -453,7 +454,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <CreateRelocationTaskForm {...props} userList={[userListItem]} />
+          <RelocationTaskForm {...props} userList={[userListItem]} />
         </Form>,
       )
 
@@ -483,7 +484,7 @@ describe('Форма создания заявки на перемещение �
     test('Отображается корректно', () => {
       render(
         <Form>
-          <CreateRelocationTaskForm {...props} />
+          <RelocationTaskForm {...props} />
         </Form>,
       )
 
@@ -499,7 +500,7 @@ describe('Форма создания заявки на перемещение �
     test('Можно установить значение', async () => {
       const { user } = render(
         <Form>
-          <CreateRelocationTaskForm {...props} />
+          <RelocationTaskForm {...props} />
         </Form>,
       )
 
@@ -513,7 +514,7 @@ describe('Форма создания заявки на перемещение �
       test('Если ввести только пробелы', async () => {
         const { user } = render(
           <Form>
-            <CreateRelocationTaskForm {...props} />
+            <RelocationTaskForm {...props} />
           </Form>,
         )
 

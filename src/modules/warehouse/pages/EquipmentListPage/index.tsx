@@ -1,6 +1,5 @@
 import { useBoolean, useSetState } from 'ahooks'
 import debounce from 'lodash/debounce'
-import defaultTo from 'lodash/defaultTo'
 import { FC, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -25,7 +24,7 @@ import { calculatePaginationParams, getInitialPaginationParams } from 'shared/ut
 const EquipmentListPage: FC = () => {
   // todo: создать хук который будет возвращать распарсеные значения
   const params = useParams<'id'>()
-  const nomenclatureId = defaultTo(Number(params?.id), undefined)
+  const nomenclatureId = Number(params?.id) || undefined
 
   const context = useEquipmentPageContext()
 
