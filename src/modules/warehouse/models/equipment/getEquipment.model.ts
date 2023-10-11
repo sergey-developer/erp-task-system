@@ -1,6 +1,11 @@
 import { EquipmentModel } from 'modules/warehouse/models'
 import { BaseEquipmentRequestArgs } from 'modules/warehouse/types'
 
-export type GetEquipmentQueryArgs = BaseEquipmentRequestArgs
+import { IdType } from 'shared/types/common'
+
+export type GetEquipmentQueryArgs = BaseEquipmentRequestArgs &
+  Partial<{
+    ignoreRelocationTask: IdType
+  }>
 
 export type GetEquipmentSuccessResponse = EquipmentModel

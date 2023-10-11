@@ -89,10 +89,9 @@ const EditRelocationTaskPage: FC = () => {
         locationId: selectedRelocateFrom?.value,
         locationType: selectedRelocateFrom?.type,
       },
-      {
-        skip: !selectedRelocateFrom?.value || !selectedRelocateFrom?.type,
-      },
+      { skip: !selectedRelocateFrom?.value || !selectedRelocateFrom?.type },
     )
+
   const [getEquipment] = useLazyGetEquipment()
 
   const [updateRelocationTaskMutation, { isLoading: updateRelocationTaskIsLoading }] =
@@ -156,8 +155,11 @@ const EditRelocationTaskPage: FC = () => {
         Partial<Omit<RelocationEquipmentRowFields, 'rowId'>>,
       ]
 
-      if (changes.id) {
-        const { data: equipment } = await getEquipment({ equipmentId: changes.id })
+      if (changes.id && relocationTaskId) {
+        const { data: equipment } = await getEquipment({
+          equipmentId: changes.id,
+          ignoreRelocationTask: relocationTaskId,
+        })
 
         if (equipment) {
           const currentEquipment = values.equipments[Number(index)]
