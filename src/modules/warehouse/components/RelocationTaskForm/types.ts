@@ -12,7 +12,7 @@ export type LocationOption = {
   options?: LocationOption[]
 }
 
-export type CreateRelocationTaskFormProps = {
+export type RelocationTaskFormProps = {
   isLoading: boolean
 
   userList: UserListModel
@@ -21,5 +21,6 @@ export type CreateRelocationTaskFormProps = {
   locationList: LocationListModel
   locationListIsLoading: boolean
 
-  onChangeRelocateFrom: (option: LocationOption) => void
+  selectedRelocateFrom?: LocationOption
+  onChangeRelocateFrom: (value: IdType, option: LocationOption) => void
 }

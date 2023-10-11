@@ -10,5 +10,7 @@ export type RelocationEquipmentModel = {
   purpose: string
   quantity: number
 
+  price: MaybeNull<number>
+  currency: MaybeNull<number>
   serialNumber: MaybeNull<string>
 }

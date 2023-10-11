@@ -12,6 +12,8 @@ export const relocationEquipmentListItem = (): RelocationEquipmentListItemModel 
   quantity: fakeInteger(),
   condition: EquipmentConditionEnum.Working,
   serialNumber: fakeWord(),
+  currency: fakeInteger(),
+  price: fakeInteger(),
 })
 
 export const relocationEquipmentList = (length: number = 1) =>

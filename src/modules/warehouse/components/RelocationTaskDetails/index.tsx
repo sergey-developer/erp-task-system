@@ -10,7 +10,9 @@ import {
   Typography,
 } from 'antd'
 import React, { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 
+import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
@@ -18,8 +20,12 @@ import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
   useLazyGetRelocationTaskWaybillM15,
+  useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
-import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
+import {
+  getEditRelocationTaskPageLink,
+  getWaybillM15Filename,
+} from 'modules/warehouse/utils/relocationTask'
 
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -39,25 +45,28 @@ const { Text } = Typography
 const dropdownTrigger: DropdownProps['trigger'] = ['click']
 
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
-  const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
+  const navigate = useNavigate()
+
+  const userPermissions = useMatchUserPermissions([
+    'RELOCATION_TASKS_READ',
+    'RELOCATION_TASKS_UPDATE',
+  ])
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
-    useGetRelocationTask({ relocationTaskId: relocationTaskId! }, { skip: !relocationTaskId })
+    useGetRelocationTask({ relocationTaskId })
 
   const {
     currentData: relocationEquipmentList = [],
     isFetching: relocationEquipmentListIsFetching,
-  } = useGetRelocationEquipmentList(
-    { relocationTaskId: relocationTaskId! },
-    { skip: !relocationTaskId },
-  )
+  } = useGetRelocationEquipmentList({ relocationTaskId })
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
 
-  const handleGetWaybillM15 = useDebounceFn(async () => {
-    if (!relocationTaskId) return
+  const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
+  const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
+  const handleGetWaybillM15 = useDebounceFn(async () => {
     try {
       const waybillM15 = await getWaybillM15({ relocationTaskId }).unwrap()
 
@@ -94,6 +103,17 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         ),
         disabled: !userPermissions?.relocationTasksRead,
         onClick: handleGetWaybillM15,
+      },
+      {
+        key: 2,
+        label: 'Изменить заявку',
+        disabled:
+          !userPermissions?.relocationTasksUpdate ||
+          !creatorIsCurrentUser ||
+          relocationTaskStatus.isCanceled ||
+          relocationTaskStatus.isClosed ||
+          relocationTaskStatus.isCompleted,
+        onClick: () => navigate(getEditRelocationTaskPageLink(relocationTaskId)),
       },
     ],
   }

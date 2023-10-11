@@ -150,7 +150,7 @@ const RelocationTaskListPage: FC = () => {
         />
       </Space>
 
-      {relocationTaskOpened && (
+      {relocationTaskOpened && selectedRelocationTaskId && (
         <RelocationTaskDetails
           open={relocationTaskOpened}
           onClose={debouncedCloseRelocationTask}
