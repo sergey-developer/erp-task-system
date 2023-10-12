@@ -12,11 +12,11 @@ import { getYesNo, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { DrawerExtraStyled } from './style'
-import { EquipmentProps } from './types'
+import { EquipmentDetailsProps } from './types'
 
 const { Text } = Typography
 
-const Equipment: FC<EquipmentProps> = ({
+const EquipmentDetails: FC<EquipmentDetailsProps> = ({
   equipment,
   equipmentIsLoading,
 
@@ -27,7 +27,7 @@ const Equipment: FC<EquipmentProps> = ({
 }) => {
   return (
     <Drawer
-      data-testid='equipment'
+      data-testid='equipment-details'
       {...props}
       width={500}
       extra={
@@ -36,7 +36,7 @@ const Equipment: FC<EquipmentProps> = ({
         </DrawerExtraStyled>
       }
     >
-      <LoadingArea data-testid='equipment-loading' isLoading={equipmentIsLoading}>
+      <LoadingArea data-testid='equipment-details-loading' isLoading={equipmentIsLoading}>
         {equipment && (
           <Space $block direction='vertical' size='middle'>
             <Row data-testid='title'>
@@ -245,4 +245,4 @@ const Equipment: FC<EquipmentProps> = ({
   )
 }
 
-export default Equipment
+export default EquipmentDetails

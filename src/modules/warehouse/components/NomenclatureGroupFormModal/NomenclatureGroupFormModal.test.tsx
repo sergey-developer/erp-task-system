@@ -6,10 +6,10 @@ import { MaybeNull } from 'shared/types/utils'
 
 import { buttonTestUtils, fakeWord, render } from '_tests_/utils'
 
-import AddOrEditNomenclatureGroupModal from './index'
-import { AddOrEditNomenclatureGroupModalProps } from './types'
+import NomenclatureGroupFormModal from './index'
+import { NomenclatureGroupFormModalProps } from './types'
 
-const props: Readonly<AddOrEditNomenclatureGroupModalProps> = {
+const props: Readonly<NomenclatureGroupFormModalProps> = {
   open: true,
   title: fakeWord(),
   okText: fakeWord(),
@@ -18,21 +18,21 @@ const props: Readonly<AddOrEditNomenclatureGroupModalProps> = {
   onSubmit: jest.fn(),
 }
 
-const addModeProps: Readonly<Pick<AddOrEditNomenclatureGroupModalProps, 'okText'>> = {
+const addModeProps: Readonly<Pick<NomenclatureGroupFormModalProps, 'okText'>> = {
   okText: 'Добавить',
 }
 
-const editModeProps: Readonly<Pick<AddOrEditNomenclatureGroupModalProps, 'okText'>> = {
+const editModeProps: Readonly<Pick<NomenclatureGroupFormModalProps, 'okText'>> = {
   okText: 'Сохранить',
 }
 
-const getContainer = () => screen.getByTestId('add-or-edit-nomenclature-group-modal')
+const getContainer = () => screen.getByTestId('nomenclature-group-form-modal')
 
 const queryContainer = (): MaybeNull<HTMLElement> =>
-  screen.queryByTestId('add-or-edit-nomenclature-group-modal')
+  screen.queryByTestId('nomenclature-group-form-modal')
 
 const findContainer = (): Promise<HTMLElement> =>
-  screen.findByTestId('add-or-edit-nomenclature-group-modal')
+  screen.findByTestId('nomenclature-group-form-modal')
 
 // name field
 const getNameFormItem = () => within(getContainer()).getByTestId('name-form-item')
@@ -94,14 +94,14 @@ export const testUtils = {
 
 describe('Модалка создания и редактирования номенклатурной группы', () => {
   test('Заголовок отображается', () => {
-    render(<AddOrEditNomenclatureGroupModal {...props} />)
+    render(<NomenclatureGroupFormModal {...props} />)
     const title = within(testUtils.getContainer()).getByText(props.title as string)
     expect(title).toBeInTheDocument()
   })
 
   describe('Кнопка создания', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditNomenclatureGroupModal {...props} {...addModeProps} />)
+      render(<NomenclatureGroupFormModal {...props} {...addModeProps} />)
 
       const button = testUtils.getAddButton()
 
@@ -110,7 +110,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} {...addModeProps} />)
+      const { user } = render(<NomenclatureGroupFormModal {...props} {...addModeProps} />)
 
       await testUtils.setName(user, fakeWord())
       await testUtils.clickAddButton(user)
@@ -120,7 +120,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('При загрузке отображается спиннер', async () => {
-      render(<AddOrEditNomenclatureGroupModal {...props} {...addModeProps} isLoading />)
+      render(<NomenclatureGroupFormModal {...props} {...addModeProps} isLoading />)
 
       await testUtils.expectLoadingStarted()
     })
@@ -128,7 +128,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditNomenclatureGroupModal {...props} />)
+      render(<NomenclatureGroupFormModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -137,7 +137,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} />)
+      const { user } = render(<NomenclatureGroupFormModal {...props} />)
       await testUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
@@ -145,7 +145,7 @@ describe('Модалка создания и редактирования ном
 
   describe('Поле названия', () => {
     test('Отображается корректно', () => {
-      render(<AddOrEditNomenclatureGroupModal {...props} />)
+      render(<NomenclatureGroupFormModal {...props} />)
 
       const label = testUtils.getNameLabel()
       const field = testUtils.getNameField()
@@ -157,7 +157,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} />)
+      const { user } = render(<NomenclatureGroupFormModal {...props} />)
 
       const value = fakeWord()
       const field = await testUtils.setName(user, value)
@@ -166,7 +166,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
-      const { user } = render(<AddOrEditNomenclatureGroupModal {...props} {...addModeProps} />)
+      const { user } = render(<NomenclatureGroupFormModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
       const error = await testUtils.findNameError(validationMessages.required)
