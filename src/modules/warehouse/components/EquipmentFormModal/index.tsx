@@ -2,10 +2,7 @@ import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
 import isArray from 'lodash/isArray'
 import { FC, useEffect } from 'react'
 
-import {
-  equipmentConditionOptions,
-  EquipmentCategoryEnum,
-} from 'modules/warehouse/constants/equipment'
+import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 import { useCheckEquipmentCategory } from 'modules/warehouse/hooks/equipment'
 import {
   EquipmentCategoryListItemModel,
@@ -72,18 +69,24 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
     if (!isArray(option)) {
       onChangeCategory(option)
 
-      if (option.code === EquipmentCategoryEnum.Consumable) {
-        form.setFieldsValue({
-          owner: undefined,
-          usageCounter: undefined,
-          isNew: undefined,
-          isWarranty: undefined,
-          isRepaired: undefined,
-          customerInventoryNumber: undefined,
-        })
-      } else {
-        form.setFieldsValue({ quantity: undefined })
-      }
+      form.setFieldsValue({
+        nomenclature: undefined,
+        title: undefined,
+        customerInventoryNumber: undefined,
+        serialNumber: undefined,
+        warehouse: undefined,
+        condition: undefined,
+        quantity: undefined,
+        price: undefined,
+        currency: undefined,
+        isNew: undefined,
+        isWarranty: undefined,
+        isRepaired: undefined,
+        usageCounter: undefined,
+        owner: undefined,
+        purpose: undefined,
+        comment: undefined,
+      })
     }
   }
 

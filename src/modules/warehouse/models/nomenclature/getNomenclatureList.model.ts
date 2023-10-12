@@ -9,6 +9,7 @@ export type GetNomenclatureListQueryArgs = MaybeUndefined<
     PaginationParams & {
       search: string
       group: number
+      equipmentHasSerialNumber: boolean
     }
   >
 >

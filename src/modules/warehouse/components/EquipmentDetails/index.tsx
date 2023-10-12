@@ -7,11 +7,18 @@ import {
   equipmentConditionDict,
 } from 'modules/warehouse/constants/equipment'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
-import { useGetEquipment, useGetEquipmentCategoryList } from 'modules/warehouse/hooks/equipment'
+import {
+  useCheckEquipmentCategory,
+  useGetEquipment,
+  useGetEquipmentCategoryList,
+} from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
-import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
+import {
+  EquipmentCategoryListItemModel,
+  GetNomenclatureListQueryArgs,
+} from 'modules/warehouse/models'
 import { useUpdateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
 
 import { EditIcon } from 'components/Icons'
@@ -41,9 +48,15 @@ import { getHiddenFieldsByCategory } from './utils'
 
 const { Text } = Typography
 
+const defaultGetNomenclatureListParams: Pick<NonNullable<GetNomenclatureListQueryArgs>, 'limit'> = {
+  limit: 999999,
+}
+
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
+
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
 
   const [
     editEquipmentModalOpened,
@@ -79,7 +92,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   )
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
-    useGetNomenclatureList(undefined, { skip: !editEquipmentModalOpened })
+    useGetNomenclatureList(
+      equipmentCategory.isConsumable
+        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
+        : defaultGetNomenclatureListParams,
+      { skip: !editEquipmentModalOpened || !selectedCategory },
+    )
 
   const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
     skip: !selectedNomenclatureId || !editEquipmentModalOpened,
@@ -112,6 +130,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       getCustomerList()
     }
   }, [editEquipmentModalOpened, equipment, getCustomerList])
+
+  const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
+    setSelectedCategory(category)
+    setSelectedNomenclatureId(undefined)
+  }
 
   const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
@@ -394,7 +417,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           categoryList={equipmentCategoryList}
           categoryListIsLoading={equipmentCategoryListIsFetching}
           selectedCategory={selectedCategory}
-          onChangeCategory={setSelectedCategory}
+          onChangeCategory={handleChangeCategory}
           warehouseList={warehouseList}
           warehouseListIsLoading={warehouseListIsFetching}
           currencyList={currencyList}
