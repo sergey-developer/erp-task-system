@@ -1,6 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, FormInstance, Row, Typography } from 'antd'
-import get from 'lodash/get'
 import React, { FC } from 'react'
 
 import {
@@ -12,7 +11,6 @@ import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
-import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Permissions from 'components/Permissions'
@@ -20,7 +18,7 @@ import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 
-import { TaskSecondLineFormFields, TaskSecondLineModalProps } from '../../TaskSecondLineModal/types'
+import { TaskSecondLineFormFields, TaskSecondLineModalProps } from 'modules/task/components/TaskSecondLineModal/types'
 
 const TaskFirstLineModal = React.lazy(() => import('modules/task/components/TaskFirstLineModal'))
 
@@ -47,7 +45,7 @@ export type WorkGroupBlockProps = Pick<
   transferTaskToSecondLineIsLoading: boolean
 
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
-  workGroup?: WorkGroupListItemModel
+  workGroup?: TaskModel['workGroup']
 }
 
 const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
@@ -149,7 +147,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           </Col>
         </Row>
 
-        <Text>{get(workGroup, 'name', 'I линия поддержки')}</Text>
+        <Text>{workGroup?.name || 'I линия поддержки'}</Text>
       </Space>
 
       {isTaskFirstLineModalOpened && (
