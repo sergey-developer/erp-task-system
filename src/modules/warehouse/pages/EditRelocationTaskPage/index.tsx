@@ -221,9 +221,9 @@ const EditRelocationTaskPage: FC = () => {
           serialNumber: eqp?.serialNumber || undefined,
           purpose: eqp.purpose,
           condition: eqp.condition,
-          amount: balance?.amount || undefined,
-          price: eqp?.price || undefined,
-          currency: eqp?.currency || undefined,
+          amount: balance?.amount ?? undefined,
+          price: eqp?.price ?? undefined,
+          currency: eqp?.currency?.id || undefined,
           quantity: eqp.quantity,
         })
       })
