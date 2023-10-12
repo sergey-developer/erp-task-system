@@ -228,7 +228,7 @@ const EditRelocationTaskPage: FC = () => {
         })
       })
 
-      form.setFieldsValue({ equipments })
+      form.setFieldValue('equipments', equipments)
       setEditableTableRowKeys(editableTableRowKeys)
     }
   }, [
