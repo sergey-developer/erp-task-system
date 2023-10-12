@@ -67,7 +67,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   taskSuspendRequestStatus,
 }) => {
-  const workGroup = useMemo(
+  const workGroupListItem = useMemo(
     () =>
       workGroupList.find((workGroupListItem) =>
         isEqual(workGroupListItem.id, taskWorkGroup?.id),
@@ -83,7 +83,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           recordId={recordId}
           status={status}
           extendedStatus={extendedStatus}
-          workGroup={workGroup}
+          workGroup={taskWorkGroup}
           transferTaskToFirstLine={transferTaskToFirstLine}
           transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
           transferTaskToSecondLine={transferTaskToSecondLine}
@@ -97,7 +97,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           status={status}
           extendedStatus={extendedStatus}
           assignee={assignee}
-          workGroup={workGroup}
+          workGroup={workGroupListItem}
           workGroupListIsLoading={workGroupListIsLoading}
           updateAssignee={updateAssignee}
           updateAssigneeIsLoading={updateAssigneeIsLoading}
