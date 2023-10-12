@@ -1,5 +1,6 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 
+import { CurrencyModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -11,7 +12,7 @@ export type RelocationEquipmentListItemModel = {
   quantity: number
 
   price: MaybeNull<number>
-  currency: MaybeNull<number>
+  currency: MaybeNull<CurrencyModel>
   serialNumber: MaybeNull<string>
 }
 
