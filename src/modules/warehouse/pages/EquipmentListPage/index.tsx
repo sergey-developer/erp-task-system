@@ -1,10 +1,9 @@
 import { useBoolean, useSetState } from 'ahooks'
 import debounce from 'lodash/debounce'
-import { FC, useCallback } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import EquipmentDetails from 'modules/warehouse/components/EquipmentDetails'
-import { getHiddenFieldsByCategory } from 'modules/warehouse/components/EquipmentDetails/utils'
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import {
@@ -19,6 +18,7 @@ import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { IdType } from 'shared/types/common'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 const EquipmentListPage: FC = () => {
@@ -28,8 +28,10 @@ const EquipmentListPage: FC = () => {
 
   const context = useEquipmentPageContext()
 
-  const [isShowEquipment, { toggle: toggleShowEquipment }] = useBoolean(false)
-  const debouncedToggleShowEquipment = useDebounceFn(toggleShowEquipment)
+  const [selectedEquipmentId, setSelectedEquipmentId] = useState<IdType>()
+
+  const [equipmentDetailsOpened, { toggle: toggleOpenEquipmentDetails }] = useBoolean(false)
+  const debouncedToggleOpenEquipmentDetails = useDebounceFn(toggleOpenEquipmentDetails)
 
   const [getEquipmentListParams, setGetEquipmentListParams] =
     useSetState<GetEquipmentListQueryArgs>({
@@ -75,17 +77,12 @@ const EquipmentListPage: FC = () => {
 
   const handleTableRowClick = useCallback<EquipmentTableProps['onRow']>(
     (record) => ({
-      onClick: debounce(async () => {
-        toggleShowEquipment()
-
-        try {
-          await context?.getEquipment(record.id)
-        } catch {
-          toggleShowEquipment()
-        }
+      onClick: debounce(() => {
+        setSelectedEquipmentId(record.id)
+        toggleOpenEquipmentDetails()
       }, DEFAULT_DEBOUNCE_VALUE),
     }),
-    [context?.getEquipment, toggleShowEquipment],
+    [toggleOpenEquipmentDetails],
   )
 
   return (
@@ -99,17 +96,11 @@ const EquipmentListPage: FC = () => {
         onRow={handleTableRowClick}
       />
 
-      {isShowEquipment && (
+      {equipmentDetailsOpened && selectedEquipmentId && (
         <EquipmentDetails
-          open={isShowEquipment}
-          title={context?.equipment?.title}
-          equipment={context?.equipment}
-          equipmentIsLoading={context?.equipmentIsLoading || false}
-          hiddenFields={
-            context?.equipment?.category && getHiddenFieldsByCategory(context.equipment.category)
-          }
-          onClickEdit={context?.onClickEditEquipment}
-          onClose={debouncedToggleShowEquipment}
+          open={equipmentDetailsOpened}
+          onClose={debouncedToggleOpenEquipmentDetails}
+          equipmentId={selectedEquipmentId}
         />
       )}
     </div>

@@ -1,15 +1,8 @@
 import { screen, waitFor } from '@testing-library/react'
 
-import {
-  blockTestIds as equipmentBlocksTestIds,
-  testUtils as equipmentTestUtils,
-} from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
-import * as equipmentPageContext from 'modules/warehouse/components/EquipmentPageLayout/context'
+import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
 import { testUtils as equipmentTableTestUtils } from 'modules/warehouse/components/EquipmentTable/EquipmentTable.test'
-import {
-  EquipmentCategoryEnum,
-  getEquipmentListMessages,
-} from 'modules/warehouse/constants/equipment'
+import { getEquipmentListMessages } from 'modules/warehouse/constants/equipment'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import commonFixtures from '_tests_/fixtures/common'
@@ -18,6 +11,7 @@ import {
   mockGetEquipmentListForbiddenError,
   mockGetEquipmentListServerError,
   mockGetEquipmentListSuccess,
+  mockGetEquipmentSuccess,
 } from '_tests_/mocks/api'
 import {
   fakeWord,
@@ -37,9 +31,6 @@ export const testUtils = {
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
-afterEach(() => {
-  jest.restoreAllMocks()
-})
 
 describe('Страница списка оборудования', () => {
   describe('Список оборудования', () => {
@@ -149,11 +140,15 @@ describe('Страница списка оборудования', () => {
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
 
+      mockGetEquipmentSuccess(equipmentListItem.id, {
+        body: warehouseFixtures.equipment({ id: equipmentListItem.id }),
+      })
+
       const { user } = render(<EquipmentListPage />)
 
       await equipmentTableTestUtils.expectLoadingFinished()
       await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
-      const equipment = await equipmentTestUtils.findContainer()
+      const equipment = await equipmentDetailsTestUtils.findContainer()
 
       expect(equipment).toBeInTheDocument()
     })
@@ -164,105 +159,19 @@ describe('Страница списка оборудования', () => {
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
 
+      mockGetEquipmentSuccess(equipmentListItem.id, {
+        body: warehouseFixtures.equipment({ id: equipmentListItem.id }),
+      })
+
       const { user } = render(<EquipmentListPage />)
 
       await equipmentTableTestUtils.expectLoadingFinished()
       await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
-      const equipment = await equipmentTestUtils.findContainer()
-      await equipmentTestUtils.clickCloseButton(user)
+      const equipment = await equipmentDetailsTestUtils.findContainer()
+      await equipmentDetailsTestUtils.clickCloseButton(user)
 
       await waitFor(() => {
         expect(equipment).not.toBeInTheDocument()
-      })
-    })
-
-    test('Отображается информация оборудования', async () => {
-      const equipmentListItem = warehouseFixtures.equipmentListItem()
-      mockGetEquipmentListSuccess({
-        body: commonFixtures.paginatedListResponse([equipmentListItem]),
-      })
-
-      const equipment = warehouseFixtures.equipment({
-        id: equipmentListItem.id,
-        nomenclature: warehouseFixtures.nomenclature({
-          equipmentHasSerialNumber: true,
-        }),
-      })
-
-      const contextSpy = jest.spyOn(equipmentPageContext, 'useEquipmentPageContext')
-      contextSpy.mockReturnValue({
-        equipment,
-        equipmentIsLoading: false,
-        onClickEditEquipment: jest.fn(),
-        getEquipment: jest.fn(),
-      })
-
-      const { user } = render(<EquipmentListPage />)
-
-      await equipmentTableTestUtils.expectLoadingFinished()
-      await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
-      await equipmentTestUtils.findContainer()
-      await equipmentTestUtils.expectLoadingFinished()
-
-      equipmentBlocksTestIds.forEach((id) => {
-        const block = equipmentTestUtils.getBlock(id)
-        expect(block).toBeInTheDocument()
-      })
-    })
-
-    test(`Отображается информация для категории ${EquipmentCategoryEnum.Consumable}`, async () => {
-      const equipmentListItem = warehouseFixtures.equipmentListItem()
-      mockGetEquipmentListSuccess({
-        body: commonFixtures.paginatedListResponse([equipmentListItem]),
-      })
-
-      const equipment = warehouseFixtures.equipment({
-        id: equipmentListItem.id,
-        category: warehouseFixtures.equipmentCategory({
-          code: EquipmentCategoryEnum.Consumable,
-        }),
-        nomenclature: warehouseFixtures.nomenclature({
-          equipmentHasSerialNumber: true,
-        }),
-      })
-
-      const contextSpy = jest.spyOn(equipmentPageContext, 'useEquipmentPageContext')
-      contextSpy.mockReturnValue({
-        equipment,
-        equipmentIsLoading: false,
-        onClickEditEquipment: jest.fn(),
-        getEquipment: jest.fn(),
-      })
-
-      const { user } = render(<EquipmentListPage />)
-
-      await equipmentTableTestUtils.expectLoadingFinished()
-      await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
-      await equipmentTestUtils.findContainer()
-      await equipmentTestUtils.expectLoadingFinished()
-
-      const hiddenBlocksTestIds = [
-        'customer-inventory-number',
-        'inventory-number',
-        'is-new',
-        'is-warranty',
-        'is-repaired',
-        'usage-counter',
-        'owner',
-      ]
-
-      const shownBlocksTestIds = equipmentBlocksTestIds.filter(
-        (id) => !hiddenBlocksTestIds.includes(id),
-      )
-
-      shownBlocksTestIds.forEach((id) => {
-        const block = equipmentTestUtils.getBlock(id)
-        expect(block).toBeInTheDocument()
-      })
-
-      hiddenBlocksTestIds.forEach((id) => {
-        const block = equipmentTestUtils.queryBlock(id)
-        expect(block).not.toBeInTheDocument()
       })
     })
   })
