@@ -163,7 +163,7 @@ describe('Таблица перечня оборудования заявки н
       const title = testUtils.getColTitle('Валюта')
       const value = testUtils.getColValue(
         relocationEquipmentListItem.id,
-        relocationEquipmentListItem.currency!,
+        relocationEquipmentListItem.currency!.title,
       )
 
       expect(title).toBeInTheDocument()

@@ -47,6 +47,6 @@ export const columns: ColumnsType<RelocationEquipmentTableItem> = [
     key: 'currency',
     dataIndex: 'currency',
     title: 'Валюта',
-    render: (value: RelocationEquipmentTableItem['currency']) => valueOrHyphen(value),
+    render: (value: RelocationEquipmentTableItem['currency']) => valueOrHyphen(value?.title),
   },
 ]
