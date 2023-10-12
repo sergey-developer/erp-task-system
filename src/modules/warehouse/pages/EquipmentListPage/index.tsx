@@ -3,8 +3,8 @@ import debounce from 'lodash/debounce'
 import { FC, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 
-import Equipment from 'modules/warehouse/components/Equipment'
-import { getHiddenFieldsByCategory } from 'modules/warehouse/components/Equipment/utils'
+import EquipmentDetails from 'modules/warehouse/components/EquipmentDetails'
+import { getHiddenFieldsByCategory } from 'modules/warehouse/components/EquipmentDetails/utils'
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import {
@@ -100,7 +100,7 @@ const EquipmentListPage: FC = () => {
       />
 
       {isShowEquipment && (
-        <Equipment
+        <EquipmentDetails
           open={isShowEquipment}
           title={context.equipment?.title}
           equipment={context.equipment}

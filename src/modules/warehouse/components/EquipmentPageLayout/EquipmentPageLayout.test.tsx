@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
 import { testUtils as equipmentFilterTestUtils } from 'modules/warehouse/components/EquipmentFilter/EquipmentFilter.test'
-import { testUtils as equipmentModalTestUtils } from 'modules/warehouse/components/EquipmentModal/EquipmentModal.test'
+import { testUtils as equipmentModalTestUtils } from 'modules/warehouse/components/EquipmentFormModal/EquipmentFormModal.test'
 import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'

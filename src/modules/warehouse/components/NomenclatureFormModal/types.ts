@@ -12,7 +12,7 @@ import { BaseModalProps } from 'components/Modals/BaseModal'
 import { CountryListModel } from 'shared/models/country'
 import { MaybeNull } from 'shared/types/utils'
 
-export type AddOrEditNomenclatureModalFormFields = {
+export type NomenclatureFormModalFormFields = {
   title: string
   shortTitle: string
   group: number
@@ -22,9 +22,7 @@ export type AddOrEditNomenclatureModalFormFields = {
   country?: MaybeNull<number>
 }
 
-export type AddOrEditNomenclatureModalProps = Required<
-  Pick<BaseModalProps, 'open' | 'onCancel'>
-> & {
+export type NomenclatureFormModalProps = Required<Pick<BaseModalProps, 'open' | 'onCancel'>> & {
   title: string
   okText: string
   isLoading: boolean
@@ -43,7 +41,7 @@ export type AddOrEditNomenclatureModalProps = Required<
   measurementUnitsIsLoading: boolean
 
   onSubmit: (
-    values: AddOrEditNomenclatureModalFormFields,
+    values: NomenclatureFormModalFormFields,
     setFields: FormInstance['setFields'],
   ) => Promise<void>
 }

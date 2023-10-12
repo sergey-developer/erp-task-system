@@ -13,7 +13,7 @@ export type FieldsMaybeHidden = keyof Pick<
   | 'owner'
 >
 
-export type EquipmentProps = Required<Pick<DrawerProps, 'onClose' | 'open'>> &
+export type EquipmentDetailsProps = Required<Pick<DrawerProps, 'onClose' | 'open'>> &
   Pick<DrawerProps, 'title'> & {
     equipment?: Pick<
       EquipmentModel,

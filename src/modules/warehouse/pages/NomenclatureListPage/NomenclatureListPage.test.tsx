@@ -1,8 +1,8 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/AddOrEditNomenclatureGroupModal.test'
-import { testUtils as addOrEditNomenclatureModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureModal/AddOrEditNomenclatureModal.test'
+import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/NomenclatureGroupFormModal/NomenclatureGroupFormModal.test'
+import { testUtils as addOrEditNomenclatureModalTestUtils } from 'modules/warehouse/components/NomenclatureFormModal/NomenclatureFormModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 
