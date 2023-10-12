@@ -156,7 +156,7 @@ const EquipmentPageLayout: FC = () => {
     }
   }, [equipment?.category])
 
-  const handleChangeCategory: EquipmentModalProps['onChangeCategory'] = (category) => {
+  const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
     setSelectedCategory(category)
     setCategoryIsChanged(true)
     setSelectedNomenclatureId(undefined)
