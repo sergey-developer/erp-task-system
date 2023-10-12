@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 import {
   blockTestIds as equipmentBlocksTestIds,
   testUtils as equipmentTestUtils,
-} from 'modules/warehouse/components/Equipment/Equipment.test'
+} from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
 import * as equipmentPageContext from 'modules/warehouse/components/EquipmentPageLayout/context'
 import { testUtils as equipmentTableTestUtils } from 'modules/warehouse/components/EquipmentTable/EquipmentTable.test'
 import {

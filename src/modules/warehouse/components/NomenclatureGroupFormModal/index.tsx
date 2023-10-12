@@ -3,31 +3,29 @@ import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import {
-  AddOrEditNomenclatureGroupModalProps,
-  AddOrEditNomenclatureGroupModalFormFields,
-} from './types'
+import { NomenclatureGroupFormModalProps, NomenclatureGroupFormModalFormFields } from './types'
 import { nameValidationRules } from './validation'
 
-const AddOrEditNomenclatureGroupModal: FC<
-  AddOrEditNomenclatureGroupModalProps
-> = ({ onSubmit, isLoading, initialValues, ...props }) => {
-  const [form] = Form.useForm<AddOrEditNomenclatureGroupModalFormFields>()
+const NomenclatureGroupFormModal: FC<NomenclatureGroupFormModalProps> = ({
+  onSubmit,
+  isLoading,
+  initialValues,
+  ...props
+}) => {
+  const [form] = Form.useForm<NomenclatureGroupFormModalFormFields>()
 
-  const handleFinish = async (
-    values: AddOrEditNomenclatureGroupModalFormFields,
-  ) => {
+  const handleFinish = async (values: NomenclatureGroupFormModalFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
   return (
     <BaseModal
       {...props}
-      data-testid='add-or-edit-nomenclature-group-modal'
+      data-testid='nomenclature-group-form-modal'
       onOk={form.submit}
       confirmLoading={isLoading}
     >
-      <Form<AddOrEditNomenclatureGroupModalFormFields>
+      <Form<NomenclatureGroupFormModalFormFields>
         form={form}
         initialValues={initialValues}
         layout='vertical'
@@ -47,4 +45,4 @@ const AddOrEditNomenclatureGroupModal: FC<
   )
 }
 
-export default AddOrEditNomenclatureGroupModal
+export default NomenclatureGroupFormModal

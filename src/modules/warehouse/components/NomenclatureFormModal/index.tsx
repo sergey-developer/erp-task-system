@@ -6,7 +6,7 @@ import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
-import { AddOrEditNomenclatureModalProps, AddOrEditNomenclatureModalFormFields } from './types'
+import { NomenclatureFormModalProps, NomenclatureFormModalFormFields } from './types'
 import {
   equipmentHasSerialNumberValidationRules,
   groupValidationRules,
@@ -16,7 +16,7 @@ import {
   vendorCodeValidationRules,
 } from './validation'
 
-const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
+const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
   onSubmit,
   isLoading,
   permissions,
@@ -35,7 +35,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
 
   ...props
 }) => {
-  const [form] = Form.useForm<AddOrEditNomenclatureModalFormFields>()
+  const [form] = Form.useForm<NomenclatureFormModalFormFields>()
   const equipmentHasSerialNumberValue = Form.useWatch('equipmentHasSerialNumber', form)
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
     vendorCode,
     country,
     ...values
-  }: AddOrEditNomenclatureModalFormFields) => {
+  }: NomenclatureFormModalFormFields) => {
     await onSubmit(
       {
         ...values,
@@ -78,7 +78,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
   return (
     <BaseModal
       {...props}
-      data-testid='add-or-edit-nomenclature-modal'
+      data-testid='nomenclature-form-modal'
       onOk={form.submit}
       okButtonProps={{
         disabled: !!permissions && !permissions.nomenclaturesUpdate,
@@ -87,7 +87,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
       isLoading={nomenclatureIsLoading}
       footer={nomenclatureIsLoading ? null : undefined}
     >
-      <Form<AddOrEditNomenclatureModalFormFields>
+      <Form<NomenclatureFormModalFormFields>
         form={form}
         layout='vertical'
         onFinish={handleFinish}
@@ -175,4 +175,4 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
   )
 }
 
-export default AddOrEditNomenclatureModal
+export default NomenclatureFormModal

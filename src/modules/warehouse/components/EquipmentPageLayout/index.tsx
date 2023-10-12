@@ -6,8 +6,8 @@ import { Outlet, useNavigate } from 'react-router-dom'
 
 import EquipmentFilter from 'modules/warehouse/components/EquipmentFilter'
 import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
-import EquipmentModal from 'modules/warehouse/components/EquipmentModal'
-import { EquipmentModalProps } from 'modules/warehouse/components/EquipmentModal/types'
+import EquipmentFormModal from 'modules/warehouse/components/EquipmentFormModal'
+import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -173,7 +173,7 @@ const EquipmentPageLayout: FC = () => {
     setSearchValue(value)
   }
 
-  const handleAddEquipment: EquipmentModalProps['onSubmit'] = useCallback(
+  const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
       try {
         await createEquipmentMutation(values).unwrap()
@@ -195,7 +195,7 @@ const EquipmentPageLayout: FC = () => {
     [createEquipmentMutation, toggleAddEquipmentModal],
   )
 
-  const handleEditEquipment: EquipmentModalProps['onSubmit'] = useCallback(
+  const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
       if (!equipment) return
 
@@ -241,7 +241,7 @@ const EquipmentPageLayout: FC = () => {
     [equipmentCategoryList, warehouseList],
   )
 
-  const equipmentInitialValues: EquipmentModalProps['initialValues'] = equipment
+  const equipmentInitialValues: EquipmentFormModalProps['initialValues'] = equipment
     ? {
         nomenclature: equipment.nomenclature.id,
         condition: equipment.condition,
@@ -323,8 +323,9 @@ const EquipmentPageLayout: FC = () => {
       )}
 
       {addEquipmentModalOpened && (
-        <EquipmentModal
+        <EquipmentFormModal
           open={addEquipmentModalOpened}
+          mode='create'
           title='Добавление оборудования'
           okText='Добавить'
           isLoading={createEquipmentIsLoading}
@@ -350,8 +351,9 @@ const EquipmentPageLayout: FC = () => {
       )}
 
       {editEquipmentModalOpened && (
-        <EquipmentModal
+        <EquipmentFormModal
           open={editEquipmentModalOpened}
+          mode='edit'
           title='Редактирование оборудования'
           okText='Сохранить'
           isLoading={updateEquipmentIsLoading}

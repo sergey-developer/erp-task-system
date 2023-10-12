@@ -16,11 +16,13 @@ import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selec
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 
-import { EquipmentModalProps, EquipmentModalFormFields } from './types'
+import { EquipmentFormModalProps, EquipmentFormModalFormFields } from './types'
 
 const { TextArea } = Input
 
-const EquipmentModal: FC<EquipmentModalProps> = ({
+const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
+  mode,
+
   isLoading,
   initialValues,
 
@@ -50,7 +52,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 
   ...props
 }) => {
-  const [form] = Form.useForm<EquipmentModalFormFields>()
+  const [form] = Form.useForm<EquipmentFormModalFormFields>()
 
   const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
 
@@ -88,7 +90,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
     }
   }
 
-  const handleFinish = async (values: EquipmentModalFormFields) => {
+  const handleFinish = async (values: EquipmentFormModalFormFields) => {
     await onSubmit(
       {
         ...values,
@@ -103,12 +105,12 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
 
   return (
     <BaseModal
-      data-testid='equipment-modal'
+      data-testid='equipment-form-modal'
       confirmLoading={isLoading}
       onOk={form.submit}
       {...props}
     >
-      <Form<EquipmentModalFormFields>
+      <Form<EquipmentFormModalFormFields>
         form={form}
         initialValues={initialValues}
         layout='vertical'
@@ -200,7 +202,7 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
           <Select placeholder='Выберите состояние' options={equipmentConditionOptions} />
         </Form.Item>
 
-        {equipmentCategory.isConsumable && (
+        {mode === 'create' && equipmentCategory.isConsumable && (
           <Form.Item>
             <Row gutter={8}>
               <Col span={12}>
@@ -214,6 +216,26 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
                   {nomenclature?.measurementUnit.title}
                 </Form.Item>
               </Col>
+            </Row>
+          </Form.Item>
+        )}
+
+        {mode === 'edit' && (
+          <Form.Item>
+            <Row gutter={8}>
+              <Col span={12}>
+                <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
+                  <InputNumber disabled />
+                </Form.Item>
+              </Col>
+
+              {equipmentCategory.isConsumable && (
+                <Col span={6}>
+                  <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
+                    {nomenclature?.measurementUnit.title}
+                  </Form.Item>
+                </Col>
+              )}
             </Row>
           </Form.Item>
         )}
@@ -321,4 +343,4 @@ const EquipmentModal: FC<EquipmentModalProps> = ({
   )
 }
 
-export default EquipmentModal
+export default EquipmentFormModal

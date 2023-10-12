@@ -12,9 +12,9 @@ import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { buttonTestUtils, spinnerTestUtils, fakeWord, render } from '_tests_/utils'
 
 import Equipment from './index'
-import { EquipmentProps } from './types'
+import { EquipmentDetailsProps } from './types'
 
-const props: Readonly<EquipmentProps> = {
+const props: Readonly<EquipmentDetailsProps> = {
   open: true,
   title: fakeWord(),
   equipment: warehouseFixtures.equipment(),
@@ -46,12 +46,10 @@ export const blockTestIds = [
   'comment',
 ]
 
-const getContainer = () => screen.getByTestId('equipment')
-
-const findContainer = (): Promise<HTMLElement> => screen.findByTestId('equipment')
+const getContainer = () => screen.getByTestId('equipment-details')
+const findContainer = (): Promise<HTMLElement> => screen.findByTestId('equipment-details')
 
 const getBlock = (testId: string) => within(getContainer()).getByTestId(testId)
-
 const queryBlock = (testId: string) => within(getContainer()).queryByTestId(testId)
 
 const getInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
@@ -69,9 +67,8 @@ const clickCloseButton = async (user: UserEvent) => {
 }
 
 // loading
-const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('equipment-loading')
-
-const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('equipment-loading')
+const expectLoadingStarted = spinnerTestUtils.expectLoadingFinished('equipment-details-loading')
+const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('equipment-details-loading')
 
 export const testUtils = {
   getContainer,

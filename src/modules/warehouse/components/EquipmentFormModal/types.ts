@@ -16,13 +16,15 @@ import { BaseModalProps } from 'components/Modals/BaseModal'
 import { CurrencyListModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
 
-export type EquipmentModalFormFields = CreateEquipmentMutationArgs
+export type EquipmentFormModalFormFields = CreateEquipmentMutationArgs
 
-export type EquipmentModalProps = Required<
+export type EquipmentFormModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'okText' | 'title' | 'isLoading'>
 > & {
+  mode: 'create' | 'edit'
+
   onSubmit: (
-    values: EquipmentModalFormFields,
+    values: EquipmentFormModalFormFields,
     setFields: FormInstance['setFields'],
   ) => Promise<void>
 
@@ -48,5 +50,5 @@ export type EquipmentModalProps = Required<
   nomenclatureListIsLoading: boolean
   onChangeNomenclature: (id: IdType) => void
 
-  initialValues?: Partial<EquipmentModalFormFields>
+  initialValues?: Partial<EquipmentFormModalFormFields>
 }
