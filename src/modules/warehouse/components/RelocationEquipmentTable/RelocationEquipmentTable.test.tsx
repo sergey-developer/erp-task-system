@@ -140,4 +140,34 @@ describe('Таблица перечня оборудования заявки н
       expect(value).toBeInTheDocument()
     })
   })
+
+  describe('Стоимость', () => {
+    test('Отображается корректно', () => {
+      render(<RelocationEquipmentTable {...props} />)
+
+      const title = testUtils.getColTitle('Стоимость')
+      const value = testUtils.getColValue(
+        relocationEquipmentListItem.id,
+        relocationEquipmentListItem.price!,
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+  })
+
+  describe('Валюта', () => {
+    test('Отображается корректно', () => {
+      render(<RelocationEquipmentTable {...props} />)
+
+      const title = testUtils.getColTitle('Валюта')
+      const value = testUtils.getColValue(
+        relocationEquipmentListItem.id,
+        relocationEquipmentListItem.currency!,
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+  })
 })

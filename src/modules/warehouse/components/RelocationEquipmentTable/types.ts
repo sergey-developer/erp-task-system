@@ -4,7 +4,7 @@ import { RelocationEquipmentListItemModel } from 'modules/warehouse/models'
 
 export type RelocationEquipmentTableItem = Pick<
   RelocationEquipmentListItemModel,
-  'id' | 'title' | 'serialNumber' | 'condition' | 'purpose' | 'quantity'
+  'id' | 'title' | 'serialNumber' | 'condition' | 'purpose' | 'quantity' | 'price' | 'currency'
 >
 
 export type RelocationEquipmentTableProps = Required<
