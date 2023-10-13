@@ -22,4 +22,6 @@ export type RelocationEquipmentEditableTableProps = {
 
   equipmentCatalogList: EquipmentCatalogListModel
   equipmentCatalogListIsLoading: boolean
+
+  onClickAddEquipment?: () => void
 }

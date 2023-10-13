@@ -45,6 +45,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
 
   equipmentCatalogList,
   equipmentCatalogListIsLoading,
+
+  onClickAddEquipment,
 }) => {
   const form = Form.useFormInstance()
 
@@ -88,7 +90,9 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       fieldProps: {
         dropdownRender: (menu: ReactNode) => (
           <Space $block direction='vertical'>
-            <AddEquipmentButton type='link'>Добавить оборудование</AddEquipmentButton>
+            <AddEquipmentButton type='link' onClick={onClickAddEquipment}>
+              Добавить оборудование
+            </AddEquipmentButton>
 
             {menu}
           </Space>

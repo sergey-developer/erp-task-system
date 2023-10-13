@@ -3,7 +3,6 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
 import { testUtils as equipmentFilterTestUtils } from 'modules/warehouse/components/EquipmentFilter/EquipmentFilter.test'
-import { testUtils as equipmentModalTestUtils } from 'modules/warehouse/components/EquipmentFormModal/EquipmentFormModal.test'
 import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
@@ -18,9 +17,7 @@ import {
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
-  mockGetNomenclatureListSuccess,
   mockGetWarehouseListSuccess,
-  mockGetCountryListSuccess,
 } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
@@ -42,15 +39,6 @@ const clickFilterButton = async (user: UserEvent) => {
   await user.click(button)
 }
 
-// add equipment button
-const getAddEquipmentButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Добавить оборудование/)
-
-const clickAddEquipmentButton = async (user: UserEvent) => {
-  const button = getAddEquipmentButton()
-  await user.click(button)
-}
-
 // search field
 const getSearchField = () => within(getContainer()).getByPlaceholderText('Поиск оборудования')
 
@@ -69,9 +57,6 @@ const testUtils = {
 
   getFilterButton,
   clickFilterButton,
-
-  getAddEquipmentButton,
-  clickAddEquipmentButton,
 
   getSearchField,
   setSearch,
@@ -241,34 +226,6 @@ describe('Layout номенклатуры оборудования', () => {
         await equipmentNomenclatureListPageTestUtils.findContainer()
 
       expect(equipmentNomenclatureListPage).toBeInTheDocument()
-    })
-  })
-
-  describe('Добавление оборудования', () => {
-    describe('Кнопка добавления', () => {
-      test('Отображается корректно', () => {
-        render(<EquipmentPageLayout />)
-
-        const button = testUtils.getAddEquipmentButton()
-
-        expect(button).toBeInTheDocument()
-        expect(button).toBeEnabled()
-      })
-
-      test('При клике открывает модалку добавления оборудования', async () => {
-        mockGetWarehouseListSuccess()
-        mockGetEquipmentCategoryListSuccess()
-        mockGetCustomerListSuccess()
-        mockGetCountryListSuccess()
-        mockGetNomenclatureListSuccess()
-
-        const { user } = render(<EquipmentPageLayout />)
-
-        await testUtils.clickAddEquipmentButton(user)
-        const modal = await equipmentModalTestUtils.findContainer()
-
-        expect(modal).toBeInTheDocument()
-      })
     })
   })
 
