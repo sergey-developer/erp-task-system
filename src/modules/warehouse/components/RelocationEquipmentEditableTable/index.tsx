@@ -45,6 +45,9 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
 
   equipmentCatalogList,
   equipmentCatalogListIsLoading,
+
+  canAddEquipment,
+  onClickAddEquipment,
 }) => {
   const form = Form.useFormInstance()
 
@@ -86,13 +89,17 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         'data-testid': 'equipment-form-item',
       },
       fieldProps: {
-        dropdownRender: (menu: ReactNode) => (
-          <Space $block direction='vertical'>
-            <AddEquipmentButton type='link'>Добавить оборудование</AddEquipmentButton>
+        dropdownRender: canAddEquipment
+          ? (menu: ReactNode) => (
+              <Space $block direction='vertical'>
+                <AddEquipmentButton type='link' onClick={onClickAddEquipment}>
+                  Добавить оборудование
+                </AddEquipmentButton>
 
-            {menu}
-          </Space>
-        ),
+                {menu}
+              </Space>
+            )
+          : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
         disabled: isLoading,

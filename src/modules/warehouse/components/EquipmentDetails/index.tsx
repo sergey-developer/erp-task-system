@@ -2,10 +2,8 @@ import { useBoolean } from 'ahooks'
 import { Col, Drawer, Row, Typography } from 'antd'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
-import {
-  EquipmentCategoryEnum,
-  equipmentConditionDict,
-} from 'modules/warehouse/constants/equipment'
+import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
+import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCheckEquipmentCategory,
@@ -15,10 +13,7 @@ import {
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
-import {
-  EquipmentCategoryListItemModel,
-  GetNomenclatureListQueryArgs,
-} from 'modules/warehouse/models'
+import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { useUpdateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
 
 import { EditIcon } from 'components/Icons'
@@ -47,10 +42,6 @@ import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getHiddenFieldsByCategory } from './utils'
 
 const { Text } = Typography
-
-const defaultGetNomenclatureListParams: Pick<NonNullable<GetNomenclatureListQueryArgs>, 'limit'> = {
-  limit: 999999,
-}
 
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
@@ -122,14 +113,10 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     useLazyGetCustomerList()
 
   useEffect(() => {
-    if (
-      editEquipmentModalOpened &&
-      equipment &&
-      equipment.category.code !== EquipmentCategoryEnum.Consumable
-    ) {
+    if (editEquipmentModalOpened && Boolean(selectedCategory) && !equipmentCategory.isConsumable) {
       getCustomerList()
     }
-  }, [editEquipmentModalOpened, equipment, getCustomerList])
+  }, [editEquipmentModalOpened, equipmentCategory.isConsumable, getCustomerList, selectedCategory])
 
   const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
     setSelectedCategory(category)

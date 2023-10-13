@@ -1,39 +1,22 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Input, Row, Space } from 'antd'
+import { Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import EquipmentFilter from 'modules/warehouse/components/EquipmentFilter'
 import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
-import EquipmentFormModal from 'modules/warehouse/components/EquipmentFormModal'
-import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
-import { useGetEquipmentCategoryList, useCheckEquipmentCategory } from 'modules/warehouse/hooks/equipment'
-import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetEquipmentCategoryList } from 'modules/warehouse/hooks/equipment'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
-import { EquipmentCategoryListItemModel, GetNomenclatureListQueryArgs } from 'modules/warehouse/models'
-import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
 
 import FilterButton from 'components/Buttons/FilterButton'
-
-import { useGetCurrencyList } from 'shared/hooks/currency'
-import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
-import { IdType } from 'shared/types/common'
-import { getFieldsErrors } from 'shared/utils/form'
-import { showErrorNotification } from 'shared/utils/notifications'
 
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
-
-const defaultGetNomenclatureListParams: Pick<NonNullable<GetNomenclatureListQueryArgs>, 'limit'> = {
-  limit: 999999,
-}
 
 const EquipmentPageLayout: FC = () => {
   const navigate = useNavigate()
@@ -43,70 +26,16 @@ const EquipmentPageLayout: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
   const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
 
-  const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
-
-  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
-  const [categoryIsChanged, setCategoryIsChanged] = useState<boolean>(false)
-  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
-
-  const [
-    addEquipmentModalOpened,
-    { toggle: toggleAddEquipmentModal, setFalse: closeAddEquipmentModal },
-  ] = useBoolean(false)
-
-  const debouncedToggleAddEquipmentModal = useDebounceFn(toggleAddEquipmentModal)
-
-  const handleCloseAddEquipmentModal = useCallback(() => {
-    closeAddEquipmentModal()
-    setSelectedNomenclatureId(undefined)
-    setSelectedCategory(undefined)
-    setCategoryIsChanged(false)
-  }, [closeAddEquipmentModal])
-
-  const debouncedHandleCloseAddEquipmentModal = useDebounceFn(handleCloseAddEquipmentModal)
-
   const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
-    useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened && !addEquipmentModalOpened })
+    useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
-    useGetEquipmentCategoryList(undefined, { skip: !filterOpened && !addEquipmentModalOpened })
+    useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
 
   const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
     undefined,
-    { skip: !filterOpened && !addEquipmentModalOpened },
+    { skip: !filterOpened },
   )
-
-  const { currentData: currencyList = [], isFetching: currencyListIsFetching } = useGetCurrencyList(
-    undefined,
-    { skip: !addEquipmentModalOpened },
-  )
-
-  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
-    undefined,
-    { skip: !addEquipmentModalOpened },
-  )
-
-  const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
-    useGetNomenclatureList(
-      equipmentCategory.isConsumable
-        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
-        : defaultGetNomenclatureListParams,
-      { skip: !addEquipmentModalOpened },
-    )
-
-  const { currentData: nomenclature } = useGetNomenclature(
-    selectedNomenclatureId!,
-    { skip: !selectedNomenclatureId && categoryIsChanged },
-  )
-
-  const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] =
-    useCreateEquipmentMutation()
-
-  const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
-    setSelectedCategory(category)
-    setCategoryIsChanged(true)
-    setSelectedNomenclatureId(undefined)
-  }
 
   const handleApplyFilter = (values: EquipmentFilterFormFields) => {
     setFilterValues(values)
@@ -118,28 +47,6 @@ const EquipmentPageLayout: FC = () => {
     setSearchValue(value)
     navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
   }
-
-  const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async (values, setFields) => {
-      try {
-        await createEquipmentMutation(values).unwrap()
-        toggleAddEquipmentModal()
-      } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-          } else if (isForbiddenError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          }
-        }
-      }
-    },
-    [createEquipmentMutation, toggleAddEquipmentModal],
-  )
 
   const initialFilterValues: EquipmentFilterFormFields = useMemo(
     () => ({
@@ -174,8 +81,6 @@ const EquipmentPageLayout: FC = () => {
             <Col>
               <Space size='middle'>
                 <FilterButton onClick={toggleFilterOpened} />
-
-                <Button onClick={debouncedToggleAddEquipmentModal}>+ Добавить оборудование</Button>
               </Space>
             </Col>
 
@@ -203,34 +108,6 @@ const EquipmentPageLayout: FC = () => {
           ownerListIsLoading={customerListIsFetching}
           onClose={toggleFilterOpened}
           onApply={handleApplyFilter}
-        />
-      )}
-
-      {addEquipmentModalOpened && (
-        <EquipmentFormModal
-          open={addEquipmentModalOpened}
-          mode='create'
-          title='Добавление оборудования'
-          okText='Добавить'
-          isLoading={createEquipmentIsLoading}
-          categoryList={equipmentCategoryList}
-          categoryListIsLoading={equipmentCategoryListIsFetching}
-          selectedCategory={selectedCategory}
-          onChangeCategory={handleChangeCategory}
-          warehouseList={warehouseList}
-          warehouseListIsLoading={warehouseListIsFetching}
-          currencyList={currencyList}
-          currencyListIsFetching={currencyListIsFetching}
-          ownerList={customerList}
-          ownerListIsFetching={customerListIsFetching}
-          workTypeList={workTypeList}
-          workTypeListIsFetching={workTypeListIsFetching}
-          nomenclature={nomenclature}
-          nomenclatureList={nomenclatureList?.results || []}
-          nomenclatureListIsLoading={nomenclatureListIsFetching}
-          onChangeNomenclature={setSelectedNomenclatureId}
-          onCancel={debouncedHandleCloseAddEquipmentModal}
-          onSubmit={handleAddEquipment}
         />
       )}
     </>
