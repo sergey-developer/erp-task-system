@@ -184,19 +184,21 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               </Form.Item>
             )}
 
-            <Form.Item
-              data-testid='warehouse-form-item'
-              label='Склад'
-              name='warehouse'
-              rules={onlyRequiredRules}
-            >
-              <Select<IdType, WarehouseListItemModel>
-                placeholder='Выберите склад'
-                fieldNames={idAndTitleSelectFieldNames}
-                options={warehouseList}
-                loading={warehouseListIsLoading}
-              />
-            </Form.Item>
+            {mode === 'edit' && (
+              <Form.Item
+                data-testid='warehouse-form-item'
+                label='Склад'
+                name='warehouse'
+                rules={onlyRequiredRules}
+              >
+                <Select<IdType, WarehouseListItemModel>
+                  placeholder='Выберите склад'
+                  fieldNames={idAndTitleSelectFieldNames}
+                  options={warehouseList}
+                  loading={warehouseListIsLoading}
+                />
+              </Form.Item>
+            )}
 
             <Form.Item
               data-testid='condition-form-item'

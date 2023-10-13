@@ -2,10 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Col, Drawer, Row, Typography } from 'antd'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
-import {
-  EquipmentCategoryEnum,
-  equipmentConditionDict,
-} from 'modules/warehouse/constants/equipment'
+import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
@@ -116,14 +113,10 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     useLazyGetCustomerList()
 
   useEffect(() => {
-    if (
-      editEquipmentModalOpened &&
-      equipment &&
-      equipment.category.code !== EquipmentCategoryEnum.Consumable
-    ) {
+    if (editEquipmentModalOpened && Boolean(selectedCategory) && !equipmentCategory.isConsumable) {
       getCustomerList()
     }
-  }, [editEquipmentModalOpened, equipment, getCustomerList])
+  }, [editEquipmentModalOpened, equipmentCategory.isConsumable, getCustomerList, selectedCategory])
 
   const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
     setSelectedCategory(category)

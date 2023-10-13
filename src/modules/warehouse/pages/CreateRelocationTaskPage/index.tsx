@@ -1,9 +1,9 @@
 import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, FormProps, Modal, Row, Typography } from 'antd'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useGetUserList } from 'modules/user/hooks'
+import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import EquipmentFormModal from 'modules/warehouse/components/EquipmentFormModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
@@ -25,7 +25,6 @@ import {
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
-import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
@@ -58,6 +57,8 @@ const initialValues: Pick<RelocationTaskFormFields, 'equipments'> = {
 const CreateRelocationTaskPage: FC = () => {
   const navigate = useNavigate()
 
+  const userPermissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
+
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
@@ -79,6 +80,8 @@ const CreateRelocationTaskPage: FC = () => {
   }, [closeAddEquipmentModal])
 
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
+
+  const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
@@ -102,17 +105,14 @@ const CreateRelocationTaskPage: FC = () => {
       { skip: !selectedRelocateFrom?.value || !selectedRelocateFrom?.type },
     )
 
-  const [getEquipment, { currentData: equipment }] = useLazyGetEquipment()
-
-  const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
-    useGetWarehouseList({ ordering: 'title' }, { skip: !addEquipmentModalOpened })
+  const [getEquipment] = useLazyGetEquipment()
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
     useGetEquipmentCategoryList(undefined, { skip: !addEquipmentModalOpened })
 
   const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
     undefined,
-    { skip: !addEquipmentModalOpened },
+    { skip: !addEquipmentModalOpened || !selectedCategory || !selectedNomenclatureId },
   )
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
@@ -133,30 +133,25 @@ const CreateRelocationTaskPage: FC = () => {
   useEffect(() => {
     if (
       addEquipmentModalOpened &&
-      equipment &&
-      equipment.category.code !== EquipmentCategoryEnum.Consumable
+      Boolean(selectedCategory) &&
+      !equipmentCategory.isConsumable &&
+      Boolean(selectedNomenclatureId)
     ) {
       getCustomerList()
     }
-  }, [addEquipmentModalOpened, equipment, getCustomerList])
+  }, [
+    addEquipmentModalOpened,
+    equipmentCategory.isConsumable,
+    getCustomerList,
+    selectedCategory,
+    selectedNomenclatureId,
+  ])
 
   const [createRelocationTaskMutation, { isLoading: createRelocationTaskIsLoading }] =
     useCreateRelocationTaskMutation()
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] =
     useCreateEquipmentMutation()
-
-  useEffect(() => {
-    if (equipment?.category && addEquipmentModalOpened) {
-      setSelectedCategory(equipment.category)
-    }
-  }, [addEquipmentModalOpened, equipment?.category])
-
-  useEffect(() => {
-    if (equipment?.nomenclature.id && addEquipmentModalOpened) {
-      setSelectedNomenclatureId(equipment.nomenclature.id)
-    }
-  }, [addEquipmentModalOpened, equipment?.nomenclature.id])
 
   const handleCreateRelocationTask = async (values: RelocationTaskFormFields) => {
     try {
@@ -214,13 +209,13 @@ const CreateRelocationTaskPage: FC = () => {
 
           form.setFieldValue(['equipments', index], {
             ...currentEquipment,
-            quantity: isConsumable ? currentEquipment.quantity : 1,
             serialNumber: equipment.serialNumber,
             purpose: equipment.purpose.title,
             condition: equipment.condition,
             amount: equipment.amount,
             price: equipment.price,
             currency: equipment.currency?.id,
+            quantity: isConsumable ? currentEquipment.quantity : 1,
             category: equipment.category,
           })
         }
@@ -233,10 +228,32 @@ const CreateRelocationTaskPage: FC = () => {
     setSelectedNomenclatureId(undefined)
   }
 
+  const getEquipmentFormValue = useCallback<() => RelocationEquipmentRowFields[]>(
+    () => form.getFieldValue('equipments') || [],
+    [form],
+  )
+
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
       try {
-        await createEquipmentMutation(values).unwrap()
+        const createdEquipment = await createEquipmentMutation(values).unwrap()
+        const newEquipmentIndex = getEquipmentFormValue().length
+
+        form.setFieldValue(['equipments', newEquipmentIndex], {
+          rowId: createdEquipment.id,
+          id: createdEquipment.id,
+          serialNumber: createdEquipment.serialNumber,
+          purpose: createdEquipment.purpose.title,
+          condition: createdEquipment.condition,
+          amount: createdEquipment.amount,
+          price: createdEquipment.price,
+          currency: createdEquipment.currency?.id,
+          quantity: createdEquipment.quantity,
+          category: createdEquipment.category,
+        })
+
+        setEditableTableRowKeys((prevState) => [...prevState, newEquipmentIndex])
+
         closeAddEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error)) {
@@ -252,14 +269,14 @@ const CreateRelocationTaskPage: FC = () => {
         }
       }
     },
-    [createEquipmentMutation, closeAddEquipmentModal],
+    [createEquipmentMutation, getEquipmentFormValue, form, closeAddEquipmentModal],
   )
 
   const handleChangeRelocateFrom: RelocationTaskFormProps['onChangeRelocateFrom'] = (
     value,
     option,
   ) => {
-    const equipments = form.getFieldValue('equipments')
+    const equipments = getEquipmentFormValue()
     const relocateFrom = form.getFieldValue('relocateFrom')
     const isShowConfirmation = !!equipments.length && !!relocateFrom
     form.setFieldValue('relocateFrom', value)
@@ -295,11 +312,14 @@ const CreateRelocationTaskPage: FC = () => {
               <Text strong>Перечень оборудования</Text>
 
               <RelocationEquipmentEditableTable
+                editableKeys={editableTableRowKeys}
+                setEditableKeys={setEditableTableRowKeys}
                 isLoading={createRelocationTaskIsLoading}
                 currencyList={currencyList}
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
+                canAddEquipment={userPermissions?.equipmentsCreate}
                 onClickAddEquipment={debouncedOpenAddEquipmentModal}
               />
             </Space>
@@ -353,8 +373,6 @@ const CreateRelocationTaskPage: FC = () => {
           categoryListIsLoading={equipmentCategoryListIsFetching}
           selectedCategory={selectedCategory}
           onChangeCategory={handleChangeCategory}
-          warehouseList={warehouseList}
-          warehouseListIsLoading={warehouseListIsFetching}
           currencyList={currencyList}
           currencyListIsFetching={currencyListIsFetching}
           ownerList={customerList}

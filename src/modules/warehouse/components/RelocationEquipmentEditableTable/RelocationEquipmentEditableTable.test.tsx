@@ -18,6 +18,7 @@ const props: RelocationEquipmentEditableTableProps = {
   equipmentCatalogList: [],
   equipmentCatalogListIsLoading: false,
 
+  canAddEquipment: false,
   onClickAddEquipment: jest.fn(),
 }
 
