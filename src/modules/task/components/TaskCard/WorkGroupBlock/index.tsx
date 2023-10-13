@@ -1,13 +1,12 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, FormInstance, Row, Typography } from 'antd'
-import get from 'lodash/get'
 import React, { FC } from 'react'
 
-import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
 } from 'modules/task/components/TaskCard/TaskFirstLineModal/types'
+import { SuspendRequestStatusEnum } from 'modules/task/constants'
 import {
   useTaskExtendedStatus,
   useTaskStatus,
@@ -15,7 +14,6 @@ import {
 } from 'modules/task/hooks'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
-import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Permissions from 'components/Permissions'
@@ -57,7 +55,7 @@ export type WorkGroupBlockProps = Pick<
   transferTaskToSecondLineIsLoading: boolean
 
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
-  workGroup?: WorkGroupListItemModel
+  workGroup?: TaskModel['workGroup']
 }
 
 const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
@@ -179,7 +177,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           </Col>
         </Row>
 
-        <Text>{get(workGroup, 'name', 'I линия поддержки')}</Text>
+        <Text>{workGroup?.name || 'I линия поддержки'}</Text>
       </Space>
 
       {isTaskFirstLineModalOpened && (
