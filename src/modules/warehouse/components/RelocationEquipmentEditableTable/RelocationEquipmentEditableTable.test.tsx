@@ -6,6 +6,9 @@ import RelocationEquipmentEditableTable from './index'
 import { RelocationEquipmentEditableTableProps } from './types'
 
 const props: RelocationEquipmentEditableTableProps = {
+  editableKeys: undefined,
+  setEditableKeys: jest.fn(),
+
   isLoading: false,
   equipmentListIsLoading: false,
 
@@ -14,6 +17,8 @@ const props: RelocationEquipmentEditableTableProps = {
 
   equipmentCatalogList: [],
   equipmentCatalogListIsLoading: false,
+
+  onClickAddEquipment: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-equipment-editable-table-form-item')

@@ -1,10 +1,12 @@
 import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, FormProps, Modal, Row, Typography } from 'antd'
 import moment from 'moment-timezone'
-import React, { FC, Key, useEffect, useState } from 'react'
+import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { useGetUserList } from 'modules/user/hooks'
+import EquipmentFormModal from 'modules/warehouse/components/EquipmentFormModal'
+import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
 import { RelocationEquipmentRowFields } from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
 import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
@@ -13,14 +15,26 @@ import {
   RelocationTaskFormProps,
 } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
+import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { updateRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { useGetEquipmentCatalogList, useLazyGetEquipment } from 'modules/warehouse/hooks/equipment'
+import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
+import {
+  useCheckEquipmentCategory,
+  useGetEquipmentCatalogList,
+  useGetEquipmentCategoryList,
+  useLazyGetEquipment,
+} from 'modules/warehouse/hooks/equipment'
+import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import {
   useGetRelocationEquipmentBalanceList,
   useGetRelocationEquipmentList,
   useGetRelocationTask,
 } from 'modules/warehouse/hooks/relocationTask'
+import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
+import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
+import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
 import { useUpdateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
@@ -29,12 +43,14 @@ import Space from 'components/Space'
 
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
 } from 'shared/services/baseApi'
+import { IdType } from 'shared/types/common'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -53,6 +69,24 @@ const EditRelocationTaskPage: FC = () => {
   const relocationTaskId = Number(params?.id) || undefined
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
+
+  const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
+
+  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+  console.log({selectedCategory, selectedNomenclatureId});
+  const [
+    addEquipmentModalOpened,
+    { setTrue: addAddEquipmentModal, setFalse: closeAddEquipmentModal },
+  ] = useBoolean(false)
+
+  const debouncedOpenAddEquipmentModal = useDebounceFn(addAddEquipmentModal)
+
+  const debouncedHandleCloseAddEquipmentModal = useDebounceFn(() => {
+    closeAddEquipmentModal()
+    setSelectedNomenclatureId(undefined)
+    setSelectedCategory(undefined)
+  }, [closeAddEquipmentModal])
 
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
 
@@ -92,10 +126,61 @@ const EditRelocationTaskPage: FC = () => {
       { skip: !selectedRelocateFrom?.value || !selectedRelocateFrom?.type },
     )
 
-  const [getEquipment] = useLazyGetEquipment()
+  const [getEquipment, { currentData: equipment }] = useLazyGetEquipment()
+
+  const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
+    useGetWarehouseList({ ordering: 'title' }, { skip: !addEquipmentModalOpened })
+
+  const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
+    useGetEquipmentCategoryList(undefined, { skip: !addEquipmentModalOpened })
+
+  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
+    undefined,
+    { skip: !addEquipmentModalOpened },
+  )
+
+  const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
+    useGetNomenclatureList(
+      equipmentCategory.isConsumable
+        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
+        : defaultGetNomenclatureListParams,
+      { skip: !addEquipmentModalOpened || !selectedCategory },
+    )
+
+  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
+    skip: !selectedNomenclatureId || !addEquipmentModalOpened,
+  })
+
+  const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
+    useLazyGetCustomerList()
+
+  useEffect(() => {
+    if (
+      addEquipmentModalOpened &&
+      equipment &&
+      equipment.category.code !== EquipmentCategoryEnum.Consumable
+    ) {
+      getCustomerList()
+    }
+  }, [addEquipmentModalOpened, equipment, getCustomerList])
 
   const [updateRelocationTaskMutation, { isLoading: updateRelocationTaskIsLoading }] =
     useUpdateRelocationTaskMutation()
+
+  const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] =
+    useCreateEquipmentMutation()
+
+  useEffect(() => {
+    if (equipment?.category && addEquipmentModalOpened) {
+      setSelectedCategory(equipment.category)
+    }
+  }, [addEquipmentModalOpened, equipment?.category])
+
+  useEffect(() => {
+    if (equipment?.nomenclature.id && addEquipmentModalOpened) {
+      setSelectedNomenclatureId(equipment.nomenclature.id)
+    }
+  }, [addEquipmentModalOpened, equipment?.nomenclature.id])
 
   const handleUpdateRelocationTask = async (values: RelocationTaskFormFields) => {
     const relocateLocations = locationList.filter(
@@ -193,6 +278,33 @@ const EditRelocationTaskPage: FC = () => {
     if (isShowConfirmation) toggleConfirmModal()
   }
 
+  const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
+    setSelectedCategory(category)
+    setSelectedNomenclatureId(undefined)
+  }
+
+  const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+    async (values, setFields) => {
+      try {
+        await createEquipmentMutation(values).unwrap()
+        closeAddEquipmentModal()
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            setFields(getFieldsErrors(error.data))
+
+            if (error.data.detail) {
+              showErrorNotification(error.data.detail)
+            }
+          } else if (isForbiddenError(error) && error.data.detail) {
+            showErrorNotification(error.data.detail)
+          }
+        }
+      }
+    },
+    [createEquipmentMutation, closeAddEquipmentModal],
+  )
+
   useEffect(() => {
     if (relocationTask && !relocationTaskIsFetching) {
       form.setFieldsValue({
@@ -289,6 +401,7 @@ const EditRelocationTaskPage: FC = () => {
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
+                onClickAddEquipment={debouncedOpenAddEquipmentModal}
               />
             </Space>
           </Col>
@@ -329,6 +442,34 @@ const EditRelocationTaskPage: FC = () => {
       >
         <Text>Вы действительно хотите сменить объект выбытия?</Text>
       </Modal>
+
+      {addEquipmentModalOpened && (
+        <EquipmentFormModal
+          open={addEquipmentModalOpened}
+          mode='create'
+          title='Добавление оборудования'
+          okText='Добавить'
+          isLoading={createEquipmentIsLoading}
+          categoryList={equipmentCategoryList}
+          categoryListIsLoading={equipmentCategoryListIsFetching}
+          selectedCategory={selectedCategory}
+          onChangeCategory={handleChangeCategory}
+          warehouseList={warehouseList}
+          warehouseListIsLoading={warehouseListIsFetching}
+          currencyList={currencyList}
+          currencyListIsFetching={currencyListIsFetching}
+          ownerList={customerList}
+          ownerListIsFetching={customerListIsFetching}
+          workTypeList={workTypeList}
+          workTypeListIsFetching={workTypeListIsFetching}
+          nomenclature={nomenclature}
+          nomenclatureList={nomenclatureList?.results || []}
+          nomenclatureListIsLoading={nomenclatureListIsFetching}
+          onChangeNomenclature={setSelectedNomenclatureId}
+          onCancel={debouncedHandleCloseAddEquipmentModal}
+          onSubmit={handleAddEquipment}
+        />
+      )}
     </>
   )
 }
