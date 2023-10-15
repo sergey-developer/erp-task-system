@@ -1,14 +1,12 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { useUserPermissions } from 'modules/user/hooks'
 import { getWorkGroupListMessages } from 'modules/workGroup/constants'
 import {
   GetWorkGroupListQueryArgs,
   GetWorkGroupListSuccessResponse,
 } from 'modules/workGroup/models'
-import { workGroupApiPermissions } from 'modules/workGroup/permissions'
 import { useGetWorkGroupListQuery } from 'modules/workGroup/services/workGroupApi.service'
 
 import { isErrorResponse } from 'shared/services/baseApi'
@@ -19,14 +17,16 @@ type UseGetWorkGroupListResult = CustomUseQueryHookResult<
   GetWorkGroupListSuccessResponse
 >
 
+type UseGetWorkGroupListOptions = CustomUseQueryOptions<
+  GetWorkGroupListQueryArgs,
+  GetWorkGroupListSuccessResponse
+>
+
 export const useGetWorkGroupList = (
   args?: GetWorkGroupListQueryArgs,
+  options?: UseGetWorkGroupListOptions,
 ): UseGetWorkGroupListResult => {
-  const permissions = useUserPermissions(workGroupApiPermissions)
-
-  const state = useGetWorkGroupListQuery(args, {
-    skip: !permissions.canGetList,
-  })
+  const state = useGetWorkGroupListQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
