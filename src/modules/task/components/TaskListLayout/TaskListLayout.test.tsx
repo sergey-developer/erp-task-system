@@ -8,7 +8,7 @@ import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskLi
 import TaskListPage from 'modules/task/pages/TaskListPage'
 import { testUtils as taskListPageTestUtils } from 'modules/task/pages/TaskListPage/TaskListPage.test'
 
-import { mockGetTaskListMapSuccess } from '_tests_/mocks/api'
+import { mockGetTaskCountersSuccess, mockGetTaskListMapSuccess, mockGetTaskListSuccess } from "_tests_/mocks/api";
 import { renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
 import TaskListLayout from './index'
@@ -75,6 +75,8 @@ describe('TaskListLayout', () => {
     })
 
     test('При клике переходит на страницу реестра заявок', async () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
       mockGetTaskListMapSuccess()
 
       const { user } = renderInRoute_latest(
@@ -114,6 +116,8 @@ describe('TaskListLayout', () => {
     })
 
     test('При клике переходит на страницу карты с заявками', async () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
       mockGetTaskListMapSuccess()
 
       const { user } = renderInRoute_latest(
