@@ -8,14 +8,15 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { OptionTextStyled, WorkGroupFormItem } from './styles'
+import { onlyRequiredRules } from 'shared/constants/validation'
+
+import { WorkGroupFormItem } from './styles'
 import { TaskSecondLineFormFields, TaskSecondLineModalProps } from './types'
-import { workGroupValidationRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-const okBtnText: string = 'Перевести заявку'
+const okBtnText = 'Перевести заявку'
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
@@ -24,25 +25,20 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   onSubmit,
   onCancel,
 }) => {
-  const { data: workGroupList = [], isFetching: workGroupListIsFetching } =
-    useGetWorkGroupList({ taskId: id })
-
   const [form] = Form.useForm<TaskSecondLineFormFields>()
   const markDefaultGroupValue = Form.useWatch('markAsDefault', form)
+
+  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroupList({
+    taskId: id,
+  })
 
   useEffect(() => {
     if (!workGroupList.length) return
 
     const workGroup = workGroupList.find(
       (workGroup) =>
-        isEqual(
-          workGroup.priority?.type,
-          WorkGroupTypeEnum.AssociatedWithSapId,
-        ) ||
-        isEqual(
-          workGroup.priority?.type,
-          WorkGroupTypeEnum.DefaultForSupportGroup,
-        ),
+        isEqual(workGroup.priority?.type, WorkGroupTypeEnum.AssociatedWithSapId) ||
+        isEqual(workGroup.priority?.type, WorkGroupTypeEnum.DefaultForSupportGroup),
     )
 
     if (workGroup) {
@@ -77,13 +73,13 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
       <Space direction='vertical' size='large'>
         <Space direction='vertical'>
           <Text>
-            Выберите рабочую группу II линии, в которую хотите направить заявку
-            для дальнейшей работы. Нажмите кнопку «{okBtnText}».
+            Выберите рабочую группу II линии, в которую хотите направить заявку для дальнейшей
+            работы. Нажмите кнопку «{okBtnText}».
           </Text>
 
           <Text type='danger'>
-            Заявка исчезнет из вашей очереди заявок. Просмотр заявки и работа с
-            ней будут недоступны.
+            Заявка исчезнет из вашей очереди заявок. Просмотр заявки и работа с ней будут
+            недоступны.
           </Text>
         </Space>
 
@@ -97,12 +93,11 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
             data-testid='work-group-form-item'
             name='workGroup'
             label='Рабочая группа'
-            rules={workGroupValidationRules}
+            rules={onlyRequiredRules}
           >
             <Select
               placeholder='Выберите рабочую группу'
               loading={workGroupListIsFetching}
-              disabled={isLoading}
               showSearch
               filterOption={(input, option) =>
                 option?.title.toLowerCase().includes(input.toLowerCase())
@@ -115,35 +110,20 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
                   value={id}
                   title={priority?.description}
                 >
-                  <OptionTextStyled
-                    $isBold={priority ? priority.value < 4 : false}
-                  >
-                    {name}
-                  </OptionTextStyled>
+                  <Text strong={!!priority && priority.value < 4}>{name}</Text>
                 </Select.Option>
               ))}
             </Select>
           </WorkGroupFormItem>
 
-          <Form.Item
-            data-testid='mark-default-group-form-item'
-            name='markAsDefault'
-          >
-            <Checkbox
-              onChange={handleChangeMarkDefaultGroup}
-              checked={markDefaultGroupValue}
-            >
-              Установить выбранную Рабочую группу по умолчанию для данного SAP
-              ID
+          <Form.Item data-testid='mark-default-group-form-item' name='markAsDefault'>
+            <Checkbox onChange={handleChangeMarkDefaultGroup} checked={markDefaultGroupValue}>
+              Установить выбранную Рабочую группу по умолчанию для данного SAP ID
             </Checkbox>
           </Form.Item>
 
-          <Form.Item
-            data-testid='comment-form-item'
-            label='Комментарий'
-            name='comment'
-          >
-            <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
+          <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
+            <TextArea placeholder='Добавьте комментарий' />
           </Form.Item>
         </Form>
       </Space>
