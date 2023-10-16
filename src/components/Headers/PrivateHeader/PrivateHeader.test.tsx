@@ -136,7 +136,7 @@ setupApiTests()
 describe('PrivateHeader', () => {
   describe('Меню навигации', () => {
     describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
-      describe('Рабочий стол', () => {
+      describe('Заявки', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.FirstLineSupport,
@@ -151,7 +151,7 @@ describe('PrivateHeader', () => {
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
-          expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
+          expect(testUtils.getNavMenuItem('Заявки')).toBeInTheDocument()
         })
 
         test('При клике роут меняется', async () => {
@@ -167,7 +167,7 @@ describe('PrivateHeader', () => {
           const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Рабочий стол')
+          await testUtils.clickNavMenuItem(user, 'Заявки')
 
           expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
         })
@@ -216,7 +216,7 @@ describe('PrivateHeader', () => {
     })
 
     describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
-      describe('Рабочий стол', () => {
+      describe('Заявки', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.Engineer,
@@ -231,7 +231,7 @@ describe('PrivateHeader', () => {
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
-          expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
+          expect(testUtils.getNavMenuItem('Заявки')).toBeInTheDocument()
         })
 
         test('При клике роут меняется', async () => {
@@ -247,7 +247,7 @@ describe('PrivateHeader', () => {
           const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Рабочий стол')
+          await testUtils.clickNavMenuItem(user, 'Заявки')
 
           expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
         })
@@ -314,7 +314,7 @@ describe('PrivateHeader', () => {
     })
 
     describe(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
-      describe('Рабочий стол', () => {
+      describe('Заявки', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.SeniorEngineer,
@@ -329,7 +329,7 @@ describe('PrivateHeader', () => {
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
-          expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
+          expect(testUtils.getNavMenuItem('Заявки')).toBeInTheDocument()
         })
 
         test('При клике роут меняется', async () => {
@@ -345,7 +345,7 @@ describe('PrivateHeader', () => {
           const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Рабочий стол')
+          await testUtils.clickNavMenuItem(user, 'Заявки')
 
           expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
         })
@@ -412,7 +412,7 @@ describe('PrivateHeader', () => {
     })
 
     describe(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
-      describe('Рабочий стол', () => {
+      describe('Заявки', () => {
         test('Отображается корректно', async () => {
           const fakeUser = userFixtures.user({
             role: UserRoleEnum.HeadOfDepartment,
@@ -427,7 +427,7 @@ describe('PrivateHeader', () => {
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
-          expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
+          expect(testUtils.getNavMenuItem('Заявки')).toBeInTheDocument()
         })
 
         test('При клике роут меняется', async () => {
@@ -443,7 +443,7 @@ describe('PrivateHeader', () => {
           const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Рабочий стол')
+          await testUtils.clickNavMenuItem(user, 'Заявки')
 
           expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
         })
