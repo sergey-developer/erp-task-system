@@ -1,14 +1,16 @@
-import {
-  ExtendedFilterFormFields,
-  ExtendedFilterQueries,
-} from 'modules/task/components/ExtendedFilter/types'
-import { FastFilterEnum } from 'modules/task/components/FastFilterList/constants'
+import get from 'lodash/get'
+
+import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/ExtendedFilter/constants'
+import { ExtendedFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
+import { FastFilterEnum } from 'modules/task/constants/task'
+import { ExtendedFilterQueries } from 'modules/task/models'
+import { TaskListPageFiltersStorage } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getUserRoleMap } from 'modules/user/utils'
 
+import { DATE_FILTER_FORMAT } from 'shared/constants/dateTime'
+import { Nullable } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
-
-import { DATE_FILTER_FORMAT } from './constants'
 
 /**
  * Преобразует объект с полями формы расширенной фильтрации в объект с
@@ -19,33 +21,15 @@ import { DATE_FILTER_FORMAT } from './constants'
  */
 
 export const mapExtendedFilterFormFieldsToQueries = (
-  fields: ExtendedFilterFormFields,
+  fields: Partial<ExtendedFilterFormFields>,
 ): ExtendedFilterQueries => {
-  const {
-    completeAt,
-    searchField,
-    searchValue,
-    status,
-    isOverdue,
-    isAssigned,
-    workGroupId,
-    manager,
-  } = fields
+  const { completeAt, searchField, searchValue, ...restFields } = fields
 
   return {
-    completeAtFrom: completeAt?.[0]
-      ? formatDate(completeAt[0], DATE_FILTER_FORMAT)
-      : undefined,
-    completeAtTo: completeAt?.[1]
-      ? formatDate(completeAt[1], DATE_FILTER_FORMAT)
-      : undefined,
-
-    status,
-    isOverdue,
-    isAssigned,
-    [searchField]: searchValue || undefined,
-    workGroupId: workGroupId ? parseInt(workGroupId) : undefined,
-    manager,
+    ...restFields,
+    completeAtFrom: completeAt?.[0] ? formatDate(completeAt[0], DATE_FILTER_FORMAT) : undefined,
+    completeAtTo: completeAt?.[1] ? formatDate(completeAt[1], DATE_FILTER_FORMAT) : undefined,
+    ...(searchField && searchValue && { [searchField]: searchValue }),
   }
 }
 
@@ -60,3 +44,19 @@ export const getInitialFastFilter = (role?: UserRoleEnum): FastFilterEnum => {
     ? FastFilterEnum.Mine
     : FastFilterEnum.All
 }
+
+export const getInitialExtendedFilterFormValues = (
+  preloadedFilters?: Nullable<TaskListPageFiltersStorage>,
+): Readonly<ExtendedFilterFormFields> => ({
+  completeAt: [],
+  searchField: DEFAULT_SEARCH_FIELD,
+  searchValue: undefined,
+  status: [],
+  isOverdue: [],
+  isAssigned: [],
+  workGroupId: undefined,
+  manager: undefined,
+  customers: get(preloadedFilters, 'customers', []),
+  macroregions: get(preloadedFilters, 'macroregions', []),
+  supportGroups: get(preloadedFilters, 'supportGroups', []),
+})

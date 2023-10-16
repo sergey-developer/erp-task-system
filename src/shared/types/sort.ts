@@ -1,1 +1,1 @@
-export type ExtendedSortKey<KeyUnion extends string> = KeyUnion | `-${KeyUnion}`
+export type ExtendSortKey<Keys extends string> = Keys | `-${Keys}`

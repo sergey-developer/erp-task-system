@@ -1,12 +1,11 @@
-import { ConfigProvider as BaseConfigProvider } from 'antd'
+import { ConfigProvider as BaseConfigProvider, ThemeConfig } from 'antd'
 import { ConfigProviderProps as BaseConfigProviderProps } from 'antd/lib/config-provider'
 import ruRU from 'antd/lib/locale/ru_RU'
 import { FC } from 'react'
 
-import {
-  validationMessages,
-  validationTemplateMessages,
-} from 'shared/constants/validation'
+import { validationMessages, validationTemplateMessages } from 'shared/constants/validation'
+
+import theme from 'styles/theme'
 
 import setupAntd from './setup'
 
@@ -29,9 +28,20 @@ const globalFormConfig: BaseConfigProviderProps['form'] = {
 
 type ConfigProviderProps = Pick<BaseConfigProviderProps, 'children'>
 
+const themeConfig: ThemeConfig = {
+  components: {
+    Layout: {
+      headerBg: theme.colors.white,
+    },
+    Form: {
+      labelColor: theme.colors.oldSilver,
+    },
+  },
+}
+
 const ConfigProvider: FC<ConfigProviderProps> = ({ children }) => {
   return (
-    <BaseConfigProvider locale={ruRU} virtual={false} form={globalFormConfig}>
+    <BaseConfigProvider theme={themeConfig} locale={ruRU} virtual={false} form={globalFormConfig}>
       {children}
     </BaseConfigProvider>
   )

@@ -3,7 +3,6 @@ import { ColumnsType } from 'antd/es/table'
 import get from 'lodash/get'
 import React from 'react'
 
-import { taskStatusDict } from 'modules/task/constants'
 import { parseResponseTime } from 'modules/task/components/TaskCard/MainDetails/utils'
 import {
   badgeByTaskStatus,
@@ -11,7 +10,8 @@ import {
   iconByTaskStatus,
 } from 'modules/task/components/TaskStatus/constants'
 import TaskStatus from 'modules/task/components/TaskStatus/index'
-import { getOlaStatusTextType } from 'modules/task/utils'
+import { taskStatusDict } from 'modules/task/constants/task'
+import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getShortUserName, getUserRoleMap } from 'modules/user/utils'
 
@@ -22,9 +22,7 @@ import { TaskTableListItem } from '../types'
 
 const { Text } = Typography
 
-export const getTableColumns = (
-  role: UserRoleEnum,
-): ColumnsType<TaskTableListItem> => {
+export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListItem> => {
   const roleMap = getUserRoleMap(role)
 
   return [
@@ -126,10 +124,7 @@ export const getTableColumns = (
       key: 'olaNextBreachTime',
       dataIndex: 'olaNextBreachTime',
       title: 'Выполнить до',
-      render: (
-        value: TaskTableListItem['olaNextBreachTime'],
-        { olaStatus },
-      ) => (
+      render: (value: TaskTableListItem['olaNextBreachTime'], { olaStatus }) => (
         <Text type={getOlaStatusTextType(olaStatus)}>{formatDate(value)}</Text>
       ),
       sorter: true,
@@ -146,9 +141,7 @@ export const getTableColumns = (
       dataIndex: 'subtasksCounter',
       title: <Text title='Выполнено/Всего'>Задания</Text>,
       render: (_, { subtasksCounter }) =>
-        subtasksCounter.all
-          ? `${subtasksCounter.completed}/${subtasksCounter.all}`
-          : '-',
+        subtasksCounter.all ? `${subtasksCounter.completed}/${subtasksCounter.all}` : '-',
     },
     {
       key: 'lastComment',

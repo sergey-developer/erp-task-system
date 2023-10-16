@@ -5,7 +5,7 @@ import {
 } from 'modules/auth/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/api'
+import { ErrorData } from 'shared/services/baseApi'
 
 import {
   getBadRequestErrorMockFn,
@@ -17,8 +17,7 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const updatePasswordMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Post, AuthApiEnum.UpdatePassword)
+const updatePasswordMockFn = () => getRequestMockFn(HttpMethodEnum.Post, AuthApiEnum.UpdatePassword)
 
 export const mockUpdatePasswordSuccess = (
   options?: Partial<ResponseResolverOptions<UpdatePasswordSuccessResponse>>,
@@ -38,6 +37,5 @@ export const mockUpdatePasswordNotFoundError = (
   options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getNotFoundErrorMockFn(updatePasswordMockFn(), options)()
 
-export const mockUpdatePasswordServerError = (
-  options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(updatePasswordMockFn(), options)()
+export const mockUpdatePasswordServerError = (options?: Partial<ResponseResolverOptions>) =>
+  getServerErrorMockFn(updatePasswordMockFn(), options)()

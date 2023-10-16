@@ -1,12 +1,8 @@
 import { BlockProps } from 'antd/es/typography/Base'
 import { DurationFormatSettings } from 'moment-timezone'
 
-import {
-  BaseTaskModel,
-  TaskModel,
-  TaskResponseTimeModel,
-} from 'modules/task/models'
-import { getOlaStatusMap } from 'modules/task/utils'
+import { BaseTaskModel, TaskModel, TaskResponseTimeModel } from 'modules/task/models'
+import { getOlaStatusMap } from 'modules/task/utils/task'
 
 import { MaybeNull } from 'shared/types/utils'
 import { formatDate, humanizeDuration } from 'shared/utils/date'
@@ -24,10 +20,7 @@ export const getCompleteAt = ({
   olaStatus,
   olaEstimatedTime,
   olaNextBreachTime,
-}: Pick<
-  TaskModel,
-  'olaStatus' | 'olaNextBreachTime' | 'olaEstimatedTime'
->): string => {
+}: Pick<TaskModel, 'olaStatus' | 'olaNextBreachTime' | 'olaEstimatedTime'>): string => {
   if (!olaNextBreachTime) return ''
 
   const olaStatusMap = getOlaStatusMap(olaStatus)
@@ -46,14 +39,8 @@ const responseTimeDurationSettings: DurationFormatSettings = {
   trim: 'all',
 }
 
-export const humanizeResponseTime = (
-  responseTime: TaskResponseTimeModel,
-): string =>
-  humanizeDuration(
-    responseTime.timedelta,
-    'milliseconds',
-    responseTimeDurationSettings,
-  )
+export const humanizeResponseTime = (responseTime: TaskResponseTimeModel): string =>
+  humanizeDuration(responseTime.timedelta, 'milliseconds', responseTimeDurationSettings)
 
 export const parseResponseTime = (
   responseTime: BaseTaskModel['responseTime'],

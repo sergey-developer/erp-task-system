@@ -1,5 +1,14 @@
+import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
+
 import { SupportGroupListModel } from './supportGroupList.model'
 
-export type GetSupportGroupListQueryArgs = void
+export type GetSupportGroupListQueryArgs = MaybeUndefined<
+  Partial<{
+    hasTemplate: boolean
+    customers: IdType[]
+    macroregions: IdType[]
+  }>
+>
 
 export type GetSupportGroupListSuccessResponse = SupportGroupListModel

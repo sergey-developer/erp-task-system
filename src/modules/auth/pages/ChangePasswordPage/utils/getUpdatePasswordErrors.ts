@@ -6,11 +6,11 @@ import {
   isErrorResponse,
   isNotFoundError,
   isUnauthorizedError,
-} from 'shared/services/api'
+} from 'shared/services/baseApi'
 
 export const getUpdatePasswordErrors = (
   error: unknown,
-): MaybeNull<Array<string>> => {
+): MaybeNull<string[]> => {
   if (!isErrorResponse(error)) return null
 
   if (

@@ -4,13 +4,14 @@ import { FC, useEffect } from 'react'
 
 import { getPrivateRoutesConfig } from 'configs/routes'
 
-import { useGetUserMe, useGetUserStatusList } from 'modules/user/hooks'
+import { useGetUserMe } from 'modules/user/hooks'
 import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
 
-import { useGetSystemInfoQuery } from 'shared/services/api'
-import { useGetTimeZoneList } from 'shared/services/api/hooks'
+import { useGetTimeZoneList } from 'shared/hooks/catalogs/timeZone'
+import { useGetUserStatusList } from 'shared/hooks/catalogs/userStatus'
+import { useGetSystemInfoQuery } from 'shared/services/systemApi.service'
 
-import AppRoutes from './AppRoutes'
+import AppRouter from './AppRouter'
 
 const PrivateApp: FC = () => {
   const { data: userMe } = useGetUserMe()
@@ -19,7 +20,7 @@ const PrivateApp: FC = () => {
   useGetUserMeCodeQuery()
   useGetSystemInfoQuery()
 
-  /* Предполагается что в компоненте PrivateLayout отображается спиннер
+  /* В компоненте PrivateLayout отображается спиннер
    во время загрузки данных пользователя, прежде чем отобразить страницу
   */
   useEffect(() => {
@@ -32,7 +33,7 @@ const PrivateApp: FC = () => {
     isStaff: get(userMe, 'isStaff', false),
   })
 
-  return <AppRoutes routes={routes} />
+  return <AppRouter routes={routes} />
 }
 
 export default PrivateApp

@@ -4,20 +4,16 @@ import React from 'react'
 
 import { RouteEnum } from 'configs/routes'
 
-import {
-  LOGIN_BAD_REQUEST_ERROR_MSG,
-  LOGIN_WRONG_DATA_ERROR_MSG,
-} from 'modules/auth/constants'
+import { LOGIN_BAD_REQUEST_ERROR_MSG, LOGIN_WRONG_DATA_ERROR_MSG } from 'modules/auth/constants'
 import LoginPage from 'modules/auth/pages/LoginPage'
-import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
+import { authLocalStorageService } from 'modules/auth/services/authLocalStorage.service'
 
 import { setupStore } from 'state/store'
 
-import { commonApiMessages } from 'shared/constants/errors'
-import { HttpCodeEnum } from 'shared/constants/http'
+import { commonApiMessages } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
-import authFixtures from 'fixtures/auth'
+import authFixtures from '_tests_/fixtures/auth'
 
 import {
   mockLoginBadRequestError,
@@ -27,28 +23,26 @@ import {
   mockRefreshTokenSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
   fakeEmail,
   fakeWord,
-  expectLoadingFinishedByButton,
-  expectLoadingStartedByButton,
   render,
   renderInRoute,
   setupApiTests,
 } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId('login-card')
+const findContainer = () => screen.findByTestId('login-card')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // email field
-const getEmailFieldContainer = () =>
-  within(getContainer()).getByTestId('field-email')
+const getEmailFieldContainer = () => within(getContainer()).getByTestId('field-email')
 
 const getEmailField = (): HTMLInputElement =>
   within(getEmailFieldContainer()).getByPlaceholderText('ober@obermeister.ru')
 
-const findEmailFieldError = (error: string) =>
-  within(getEmailFieldContainer()).findByText(error)
+const findEmailFieldError = (error: string) => within(getEmailFieldContainer()).findByText(error)
 
 const setEmail = async (user: UserEvent, value: string) => {
   const field = getEmailField()
@@ -57,8 +51,7 @@ const setEmail = async (user: UserEvent, value: string) => {
 }
 
 // password field
-const getPasswordFieldContainer = () =>
-  within(getContainer()).getByTestId('field-password')
+const getPasswordFieldContainer = () => within(getContainer()).getByTestId('field-password')
 
 const getPasswordField = (): HTMLInputElement =>
   within(getPasswordFieldContainer()).getByPlaceholderText('••••••••')
@@ -82,12 +75,12 @@ const clickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
 }
 
 // other
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSubmitBtn())
-const expectLoadingFinished = () =>
-  expectLoadingFinishedByButton(getSubmitBtn())
+const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitBtn())
+const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitBtn())
 
-const testUtils = {
+export const testUtils = {
   getContainer,
+  findContainer,
   getChildByText,
 
   getEmailFieldContainer,
@@ -138,9 +131,7 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findEmailFieldError(
-            validationMessages.email.incorrect,
-          ),
+          await testUtils.findEmailFieldError(validationMessages.email.incorrect),
         ).toBeInTheDocument()
       })
 
@@ -151,9 +142,7 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findEmailFieldError(
-            validationMessages.email.incorrect,
-          ),
+          await testUtils.findEmailFieldError(validationMessages.email.incorrect),
         ).toBeInTheDocument()
       })
 
@@ -162,9 +151,7 @@ describe('Страница авторизации', () => {
 
         await testUtils.clickSubmitButton(user)
 
-        expect(
-          await testUtils.findEmailFieldError(validationMessages.required),
-        ).toBeInTheDocument()
+        expect(await testUtils.findEmailFieldError(validationMessages.required)).toBeInTheDocument()
       })
     })
   })
@@ -208,19 +195,14 @@ describe('Страница авторизации', () => {
         await testUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findPasswordFieldError(
-            validationMessages.canNotBeEmpty,
-          ),
+          await testUtils.findPasswordFieldError(validationMessages.canNotBeEmpty),
         ).toBeInTheDocument()
       })
     })
   })
 
   test('Пользователь остаётся на странице если не заполнить поля и нажать кнопку отправки', async () => {
-    const { user, checkRouteChanged } = renderInRoute(
-      <LoginPage />,
-      RouteEnum.Login,
-    )
+    const { user, checkRouteChanged } = renderInRoute(<LoginPage />, RouteEnum.Login)
 
     await testUtils.clickSubmitButton(user)
 
@@ -231,12 +213,9 @@ describe('Страница авторизации', () => {
 
   describe('При успешном запросе', () => {
     test('Пользователь покидает страницу авторизации', async () => {
-      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
 
-      const { user, checkRouteChanged } = renderInRoute(
-        <LoginPage />,
-        RouteEnum.Login,
-      )
+      const { user, checkRouteChanged } = renderInRoute(<LoginPage />, RouteEnum.Login)
 
       await testUtils.setEmail(user, fakeEmail())
       await testUtils.setPassword(user, fakeWord())
@@ -248,7 +227,7 @@ describe('Страница авторизации', () => {
     })
 
     test('В localStorage сохраняются access/refresh token', async () => {
-      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
 
       const { user } = render(<LoginPage />)
 
@@ -259,16 +238,16 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingFinished()
 
       expect(authLocalStorageService.getAccessToken()).toBe(
-        authFixtures.loginResponseSuccess.access,
+        authFixtures.loginSuccessResponse.access,
       )
 
       expect(authLocalStorageService.getRefreshToken()).toBe(
-        authFixtures.loginResponseSuccess.refresh,
+        authFixtures.loginSuccessResponse.refresh,
       )
     })
 
     test('Данные сохраняются в store', async () => {
-      mockLoginSuccess({ body: authFixtures.loginResponseSuccess })
+      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
       const store = setupStore()
 
       const { user } = render(<LoginPage />, { store })
@@ -282,12 +261,8 @@ describe('Страница авторизации', () => {
       const authState = store.getState().auth
 
       expect(authState.user).not.toBeNull()
-      expect(authState.accessToken).toBe(
-        authFixtures.loginResponseSuccess.access,
-      )
-      expect(authState.refreshToken).toBe(
-        authFixtures.loginResponseSuccess.refresh,
-      )
+      expect(authState.accessToken).toBe(authFixtures.loginSuccessResponse.access)
+      expect(authState.refreshToken).toBe(authFixtures.loginSuccessResponse.refresh)
       expect(authState.isAuthenticated).toBe(true)
     })
   })
@@ -296,10 +271,7 @@ describe('Страница авторизации', () => {
     test('Пользователь остаётся на странице авторизации', async () => {
       mockLoginBadRequestError()
 
-      const { user, checkRouteChanged } = renderInRoute(
-        <LoginPage />,
-        RouteEnum.Login,
-      )
+      const { user, checkRouteChanged } = renderInRoute(<LoginPage />, RouteEnum.Login)
 
       await testUtils.setEmail(user, fakeEmail())
       await testUtils.setPassword(user, fakeWord())
@@ -310,7 +282,7 @@ describe('Страница авторизации', () => {
       expect(checkRouteChanged()).toBe(false)
     })
 
-    test(`Корректно обрабатывается ошибка ${HttpCodeEnum.BadRequest}`, async () => {
+    test('Обрабатывается ошибка 400', async () => {
       mockLoginBadRequestError()
 
       const { user } = render(<LoginPage />)
@@ -321,12 +293,10 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      expect(
-        testUtils.getChildByText(LOGIN_BAD_REQUEST_ERROR_MSG),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(LOGIN_BAD_REQUEST_ERROR_MSG)).toBeInTheDocument()
     })
 
-    test(`Корректно обрабатывается ошибка ${HttpCodeEnum.Unauthorized}`, async () => {
+    test('Обрабатывается ошибка 401', async () => {
       mockLoginUnauthorizedError()
       mockRefreshTokenSuccess()
 
@@ -338,12 +308,10 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      expect(
-        testUtils.getChildByText(LOGIN_WRONG_DATA_ERROR_MSG),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(LOGIN_WRONG_DATA_ERROR_MSG)).toBeInTheDocument()
     })
 
-    test(`Корректно обрабатывается ошибка ${HttpCodeEnum.ServerError}`, async () => {
+    test('Обрабатывается ошибка 500', async () => {
       mockLoginServerError()
 
       const { user } = render(<LoginPage />)
@@ -354,9 +322,7 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      expect(
-        testUtils.getChildByText(commonApiMessages.unknownError),
-      ).toBeInTheDocument()
+      expect(testUtils.getChildByText(commonApiMessages.unknownError)).toBeInTheDocument()
     })
   })
 })

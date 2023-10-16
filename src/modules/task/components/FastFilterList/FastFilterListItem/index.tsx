@@ -3,14 +3,15 @@ import { CheckableTagProps } from 'antd/es/tag/CheckableTag'
 import isNumber from 'lodash/isNumber'
 import React, { FC } from 'react'
 
+import { FastFilterEnum } from 'modules/task/constants/task'
+
 import { MaybeNull } from 'shared/types/utils'
 
-import { FastFilterEnum } from '../constants'
 import { CheckableTagStyled } from './styles'
 
 const { Text } = Typography
 
-export type FastFilterListItemProps = CheckableTagProps & {
+export type FastFilterListItemProps = Pick<CheckableTagProps, 'checked' | 'onChange'> & {
   value: FastFilterEnum
   text: string
   amount: MaybeNull<number>

@@ -1,5 +1,6 @@
-import { TypedUseQueryHookResult } from '@reduxjs/toolkit/dist/query/react'
 import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
 import {
@@ -8,23 +9,30 @@ import {
 } from 'modules/supportGroup/models'
 import { useGetSupportGroupListQuery } from 'modules/supportGroup/services/supportGroupApi.service'
 
-import { CustomBaseQueryFn } from 'shared/services/api'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+type UseGetSupportGroupListResult = CustomUseQueryHookResult<
+  GetSupportGroupListQueryArgs,
+  GetSupportGroupListSuccessResponse
+>
+
+type UseGetSupportGroupListOptions = CustomUseQueryOptions<
+  GetSupportGroupListQueryArgs,
+  GetSupportGroupListSuccessResponse
+>
 
 export const useGetSupportGroupList = (
   args?: GetSupportGroupListQueryArgs,
-): TypedUseQueryHookResult<
-  GetSupportGroupListSuccessResponse,
-  GetSupportGroupListQueryArgs,
-  CustomBaseQueryFn
-> => {
-  const state = useGetSupportGroupListQuery(args)
+  options?: UseGetSupportGroupListOptions,
+): UseGetSupportGroupListResult => {
+  const state = useGetSupportGroupListQuery(args, options)
 
   useEffect(() => {
-    if (!state.isError) return
-
-    showErrorNotification(getSupportGroupListMessages.commonError)
-  }, [state.isError])
+    if (isErrorResponse(state.error)) {
+      showErrorNotification(getSupportGroupListMessages.commonError)
+    }
+  }, [state.error])
 
   return state
 }

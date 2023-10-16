@@ -2,13 +2,13 @@ import { Col, FormInstance, Row } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useMemo } from 'react'
 
-import { SuspendRequestStatusEnum } from 'modules/task/constants'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 
+import { TaskFirstLineFormFields } from '../../TaskFirstLineModal/types'
+import { TaskSecondLineFormFields } from '../../TaskSecondLineModal/types'
 import AssigneeBlock from '../AssigneeBlock'
-import { TaskFirstLineFormFields } from '../TaskFirstLineModal/types'
-import { TaskSecondLineFormFields } from '../TaskSecondLineModal/types'
 import WorkGroupBlock from '../WorkGroupBlock'
 
 export type SecondaryDetailsProps = Pick<
@@ -69,9 +69,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 }) => {
   const workGroupListItem = useMemo(
     () =>
-      workGroupList.find((workGroupListItem) =>
-        isEqual(workGroupListItem.id, taskWorkGroup?.id),
-      ),
+      workGroupList.find((workGroupListItem) => isEqual(workGroupListItem.id, taskWorkGroup?.id)),
     [taskWorkGroup?.id, workGroupList],
   )
 

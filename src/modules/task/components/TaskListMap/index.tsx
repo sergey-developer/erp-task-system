@@ -13,7 +13,7 @@ import VectorSource from 'ol/source/Vector'
 import { Style } from 'ol/style'
 import { FC, useCallback, useEffect, useRef, useState } from 'react'
 
-import { TaskTypeEnum } from 'modules/task/constants'
+import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { MaybeNull } from 'shared/types/utils'
 
@@ -45,8 +45,7 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
   const [map, setMap] = useState<OlMap>()
   const [featuresLayer, setFeaturesLayer] = useState<VectorLayer<Cluster>>()
 
-  const [selectedFeature, setSelectedFeature] =
-    useState<MaybeNull<Feature>>(null)
+  const [selectedFeature, setSelectedFeature] = useState<MaybeNull<Feature>>(null)
 
   const mapWrapperRef = useRef<HTMLDivElement>(null)
 
@@ -81,12 +80,9 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
           selectedFeature.setStyle(markerStyle)
           handleClickFeature(selectedFeature)
         } else {
-          const featuresCoords = getFeaturesCoordinate(
-            getFeaturesGeometry(features),
-          )
+          const featuresCoords = getFeaturesCoordinate(getFeaturesGeometry(features))
 
-          const isFeaturesHaveSameCoords =
-            checkFeaturesHaveSameCoords(featuresCoords)
+          const isFeaturesHaveSameCoords = checkFeaturesHaveSameCoords(featuresCoords)
 
           if (isFeaturesHaveSameCoords) {
             const featuresData = getFeaturesData(features)
@@ -129,13 +125,10 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
             const featuresGeometry = getFeaturesGeometry(features)
             const featuresCoords = getFeaturesCoordinate(featuresGeometry)
 
-            const isFeaturesHaveSameCoords =
-              checkFeaturesHaveSameCoords(featuresCoords)
+            const isFeaturesHaveSameCoords = checkFeaturesHaveSameCoords(featuresCoords)
 
             if (features.length > 1 && !isFeaturesHaveSameCoords) {
-              const extent = boundingExtent(
-                getGeometriesExtent(featuresGeometry),
-              )
+              const extent = boundingExtent(getGeometriesExtent(featuresGeometry))
 
               fitMapToExtent(initialMap, extent)
             }
@@ -165,34 +158,26 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
           let styleByType = styleCache[firstFeatureData.type]
 
           if (selectedFeature) {
-            const selectedFeatures: Feature[] =
-              getFeaturesWithin(selectedFeature)
+            const selectedFeatures: Feature[] = getFeaturesWithin(selectedFeature)
             const selectedFeaturesSize = selectedFeatures.length
 
             if (selectedFeaturesSize) {
               if (selectedFeaturesSize === 1) {
-                const selectedFeatureData: FeatureData = getFeatureData(
-                  selectedFeatures[0],
-                )
+                const selectedFeatureData: FeatureData = getFeatureData(selectedFeatures[0])
 
                 if (firstFeatureData.id === selectedFeatureData.id) {
                   return getSelectedMarkerStyle(selectedFeatureData.type)
                 }
               } else {
-                const selectedFeaturesIds = selectedFeatures.map(
-                  (f) => getFeatureData(f).id,
-                )
+                const selectedFeaturesIds = selectedFeatures.map((f) => getFeatureData(f).id)
                 const featuresIds = features.map((f) => getFeatureData(f).id)
 
-                if (
-                  selectedFeaturesIds.every((id) => featuresIds.includes(id))
-                ) {
+                if (selectedFeaturesIds.every((id) => featuresIds.includes(id))) {
                   const featuresCoords = getFeaturesCoordinate(
                     getFeaturesGeometry(selectedFeatures),
                   )
 
-                  const isFeaturesHaveSameCoords =
-                    checkFeaturesHaveSameCoords(featuresCoords)
+                  const isFeaturesHaveSameCoords = checkFeaturesHaveSameCoords(featuresCoords)
 
                   if (isFeaturesHaveSameCoords) {
                     const featuresData = getFeaturesData(selectedFeatures)
@@ -212,12 +197,9 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
 
             return styleByType
           } else {
-            const featuresCoords = getFeaturesCoordinate(
-              getFeaturesGeometry(features),
-            )
+            const featuresCoords = getFeaturesCoordinate(getFeaturesGeometry(features))
 
-            const isFeaturesHaveSameCoords =
-              checkFeaturesHaveSameCoords(featuresCoords)
+            const isFeaturesHaveSameCoords = checkFeaturesHaveSameCoords(featuresCoords)
 
             if (isFeaturesHaveSameCoords) {
               const featuresData = getFeaturesData(features)
@@ -241,9 +223,7 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
     if (tasks.length && featuresLayer) {
       // make features
       const features = tasks.map(({ id, type, long, lat }) => {
-        const feature = new Feature(
-          new Point(fromLonLat([Number(long), Number(lat)])),
-        )
+        const feature = new Feature(new Point(fromLonLat([Number(long), Number(lat)])))
 
         feature.set('data', { id, type })
 
@@ -251,15 +231,11 @@ const TaskListMap: FC<TaskListMapProps> = ({ tasks, onClickTask }) => {
       })
 
       // add features to map
-      featuresLayer.setSource(
-        new Cluster({ source: new VectorSource({ features }) }),
-      )
+      featuresLayer.setSource(new Cluster({ source: new VectorSource({ features }) }))
 
       // fit view to features
       if (mapRef.current) {
-        const extent = boundingExtent(
-          getGeometriesExtent(getFeaturesGeometry(features)),
-        )
+        const extent = boundingExtent(getGeometriesExtent(getFeaturesGeometry(features)))
 
         fitMapToExtent(mapRef.current, extent)
       }

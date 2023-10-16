@@ -1,9 +1,9 @@
-import { TaskListItemModel } from 'modules/task/models'
+import { TaskListMapItemModel } from 'modules/task/models'
 
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskListItem = Pick<
-  TaskListItemModel,
+  TaskListMapItemModel,
   'id' | 'type' | 'name' | 'title' | 'olaNextBreachTime'
 >
 

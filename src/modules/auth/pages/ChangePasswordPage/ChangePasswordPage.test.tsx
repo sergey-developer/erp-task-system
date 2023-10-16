@@ -20,17 +20,13 @@ import {
   mockUpdatePasswordUnauthorizedError,
 } from '_tests_/mocks/api'
 import {
-  expectLoadingFinishedByButton,
-  expectLoadingStartedByButton,
+  buttonTestUtils,
   fakeWord,
-  findNotification,
-  getButtonIn,
-  queryNotification,
+  notificationTestUtils,
   render,
   renderInRoute,
-  setupApiTests,
-  setupNotifications,
-} from '_tests_/utils'
+  setupApiTests
+} from "_tests_/utils";
 
 import ChangePasswordPage from './index'
 
@@ -39,17 +35,14 @@ const getContainer = () => screen.getByTestId('change-password-card')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // new password
-const getNewPasswordFormItem = () =>
-  within(getContainer()).getByTestId('password')
+const getNewPasswordFormItem = () => within(getContainer()).getByTestId('password')
 
 const getNewPasswordInput = (): HTMLInputElement =>
   within(getNewPasswordFormItem()).getByPlaceholderText('••••••••')
 
-const findPasswordError = (error: string) =>
-  within(getNewPasswordFormItem()).findByText(error)
+const findPasswordError = (error: string) => within(getNewPasswordFormItem()).findByText(error)
 
-const queryNewPasswordError = (error: string) =>
-  within(getNewPasswordFormItem()).queryByText(error)
+const queryNewPasswordError = (error: string) => within(getNewPasswordFormItem()).queryByText(error)
 
 const setNewPassword = async (user: UserEvent, value: string) => {
   const field = getNewPasswordInput()
@@ -58,8 +51,7 @@ const setNewPassword = async (user: UserEvent, value: string) => {
 }
 
 // confirm password
-const getConfirmPasswordFormItem = () =>
-  within(getContainer()).getByTestId('confirm-password')
+const getConfirmPasswordFormItem = () => within(getContainer()).getByTestId('confirm-password')
 
 const getConfirmPasswordInput = (): HTMLInputElement =>
   within(getConfirmPasswordFormItem()).getByPlaceholderText('••••••••')
@@ -74,7 +66,7 @@ const setConfirmPassword = async (user: UserEvent, value: string) => {
 }
 
 // submit button
-const getSaveButton = () => getButtonIn(getContainer(), /Сохранить/)
+const getSaveButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сохранить/)
 
 const clickSaveButton = async (user: UserEvent) => {
   const submitBtn = getSaveButton()
@@ -82,10 +74,9 @@ const clickSaveButton = async (user: UserEvent) => {
 }
 
 // other utils
-const expectLoadingStarted = () => expectLoadingStartedByButton(getSaveButton())
+const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSaveButton())
 
-const expectLoadingFinished = () =>
-  expectLoadingFinishedByButton(getSaveButton())
+const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSaveButton())
 
 const testUtils = {
   getContainer,
@@ -110,7 +101,7 @@ const testUtils = {
 }
 
 setupApiTests()
-setupNotifications()
+notificationTestUtils.setupNotifications()
 
 describe('Страница смены пароля', () => {
   test('Заголовок отображается', () => {
@@ -144,9 +135,7 @@ describe('Страница смены пароля', () => {
       const { user } = render(<ChangePasswordPage />)
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
-      const error = testUtils.queryNewPasswordError(
-        INCORRECT_PASSWORD_ERROR_MSG,
-      )
+      const error = testUtils.queryNewPasswordError(INCORRECT_PASSWORD_ERROR_MSG)
 
       expect(error).not.toBeInTheDocument()
     })
@@ -157,9 +146,7 @@ describe('Страница смены пароля', () => {
 
         await testUtils.clickSaveButton(user)
 
-        const error = await testUtils.findPasswordError(
-          validationMessages.required,
-        )
+        const error = await testUtils.findPasswordError(validationMessages.required)
 
         expect(error).toBeInTheDocument()
       })
@@ -169,9 +156,7 @@ describe('Страница смены пароля', () => {
 
         await testUtils.setNewPassword(user, fakeWord())
         await testUtils.clickSaveButton(user)
-        const error = await testUtils.findPasswordError(
-          INCORRECT_PASSWORD_ERROR_MSG,
-        )
+        const error = await testUtils.findPasswordError(INCORRECT_PASSWORD_ERROR_MSG)
 
         expect(error).toBeInTheDocument()
       })
@@ -205,9 +190,7 @@ describe('Страница смены пароля', () => {
 
         await testUtils.clickSaveButton(user)
 
-        const error = await testUtils.findConfirmPasswordError(
-          validationMessages.required,
-        )
+        const error = await testUtils.findConfirmPasswordError(validationMessages.required)
 
         expect(error).toBeInTheDocument()
       })
@@ -219,9 +202,7 @@ describe('Страница смены пароля', () => {
         await testUtils.setConfirmPassword(user, fakeWord())
         await testUtils.clickSaveButton(user)
 
-        const error = await testUtils.findConfirmPasswordError(
-          'Пароли не совпадают',
-        )
+        const error = await testUtils.findConfirmPasswordError('Пароли не совпадают')
 
         expect(error).toBeInTheDocument()
       })
@@ -242,9 +223,7 @@ describe('Страница смены пароля', () => {
       await testUtils.clickSaveButton(user)
       await testUtils.expectLoadingFinished()
 
-      const notification = await findNotification(
-        UPDATE_PASSWORD_SUCCESS_MSG,
-      )
+      const notification = await notificationTestUtils.findNotification(UPDATE_PASSWORD_SUCCESS_MSG)
 
       expect(notification).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(true)
@@ -274,13 +253,11 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
-      const commonErrorMessage = testUtils.getChildByText(
-        badRequestErrorMessage,
+      const successNotification = notificationTestUtils.queryNotification(
+        UPDATE_PASSWORD_SUCCESS_MSG,
       )
-      const passwordErrorMessage = await testUtils.findPasswordError(
-        passwordFieldErrorMessage,
-      )
+      const commonErrorMessage = testUtils.getChildByText(badRequestErrorMessage)
+      const passwordErrorMessage = await testUtils.findPasswordError(passwordFieldErrorMessage)
 
       expect(successNotification).not.toBeInTheDocument()
       expect(commonErrorMessage).toBeInTheDocument()
@@ -290,9 +267,9 @@ describe('Страница смены пароля', () => {
     })
 
     test('Обрабатывается ошибка 404', async () => {
-      const notFoundErrorMessage = fakeWord()
+      const errorMessage = fakeWord()
       mockUpdatePasswordNotFoundError({
-        body: { detail: notFoundErrorMessage },
+        body: { detail: errorMessage },
       })
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
@@ -306,11 +283,11 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
-      const errorMessage = testUtils.getChildByText(notFoundErrorMessage)
+      const notification = notificationTestUtils.queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      const errorText = testUtils.getChildByText(errorMessage)
 
-      expect(successNotification).not.toBeInTheDocument()
-      expect(errorMessage).toBeInTheDocument()
+      expect(notification).not.toBeInTheDocument()
+      expect(errorText).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
       expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
     })
@@ -332,7 +309,9 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      const successNotification = notificationTestUtils.queryNotification(
+        UPDATE_PASSWORD_SUCCESS_MSG,
+      )
       const errorMessage = testUtils.getChildByText(unauthorizedErrorMessage)
 
       expect(successNotification).not.toBeInTheDocument()
@@ -355,10 +334,10 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      const successNotification = queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
-      const errorMessage = testUtils.getChildByText(
-        updatePasswordMessages.commonError,
+      const successNotification = notificationTestUtils.queryNotification(
+        UPDATE_PASSWORD_SUCCESS_MSG,
       )
+      const errorMessage = testUtils.getChildByText(updatePasswordMessages.commonError)
 
       expect(successNotification).not.toBeInTheDocument()
       expect(errorMessage).toBeInTheDocument()
