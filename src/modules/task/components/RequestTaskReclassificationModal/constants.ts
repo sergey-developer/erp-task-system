@@ -2,8 +2,8 @@ import { ReclassificationReasonEnum } from 'modules/task/constants/taskReclassif
 
 export const reclassificationReasonLabels: Record<ReclassificationReasonEnum, string> = {
   [ReclassificationReasonEnum.WrongClassification]:
-    'Требуется переклассификация (классификация неверная)',
+    'Классификация не соответствует содержанию обращения',
   [ReclassificationReasonEnum.WrongSupportGroup]:
-    'Требуется переклассификация (классификация верная)',
+    'Группа поддержки не соответствует классификации',
   [ReclassificationReasonEnum.DivideTask]: 'Требуется разбить обращение',
 }
