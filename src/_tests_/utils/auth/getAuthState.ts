@@ -1,6 +1,6 @@
 import { AuthSliceState, AuthenticatedUser } from 'modules/auth/types'
 
-import authFixtures from 'fixtures/auth'
+import authFixtures from '_tests_/fixtures/auth'
 
 type GetAuthStateConfig = { user: AuthenticatedUser } & Partial<
   Pick<AuthSliceState, 'accessToken' | 'refreshToken' | 'isAuthenticated'>

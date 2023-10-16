@@ -5,7 +5,7 @@ import { useLogoutMutation } from 'modules/auth/services/authApi.service'
 import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
 import { logoutAndClearTokens } from 'modules/auth/utils'
 
-import { useDispatch } from 'shared/hooks'
+import { useDispatch } from 'shared/hooks/useDispatch'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useLogout = () => {

@@ -1,9 +1,10 @@
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
-import { routes as staffRoutes } from 'modules/monitoring/routes'
-import { routes as taskRoutes } from 'modules/task/routes'
+import { route as staffRoute } from 'modules/monitoring/routes'
+import { route as taskRoute } from 'modules/task/routes'
 import { UserModel } from 'modules/user/models'
+import { route as manageWarehousesRoute } from 'modules/warehouse/routes'
 
 import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
@@ -18,7 +19,7 @@ const ChangePasswordPage = React.lazy(
 
 export const getPrivateRoutesConfig = ({
   isStaff,
-}: Pick<UserModel, 'isStaff'>): Array<RouteObject> => [
+}: Pick<UserModel, 'isStaff'>): RouteObject[] => [
   {
     path: RouteEnum.Root,
     element: <PrivateLayout />,
@@ -27,14 +28,13 @@ export const getPrivateRoutesConfig = ({
         index: true,
         element: <Navigate to={RouteEnum.TaskList} />,
       },
-      ...taskRoutes,
+      taskRoute,
+      manageWarehousesRoute,
+      ...(isStaff ? [staffRoute] : []),
       {
         path: RouteEnum.ChangePassword,
         element: <ChangePasswordPage />,
       },
-      ...(isStaff ? staffRoutes : []),
-      // закоменчено временно только для rc
-      // manageWarehousesRoute,
       {
         path: RouteEnum.NotFound,
         element: <NotFoundPage />,

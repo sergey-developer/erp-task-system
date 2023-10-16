@@ -9,7 +9,7 @@ import { useUpdatePasswordMutation } from 'modules/auth/services/authApi.service
 
 import { BaseCard } from 'components/Card/BaseCard'
 
-import { isBadRequestError, isErrorResponse } from 'shared/services/api'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showSuccessNotification } from 'shared/utils/notifications'
 
@@ -74,10 +74,7 @@ const ChangePasswordPage: FC = () => {
               name='password'
               rules={passwordRules}
             >
-              <Input.Password
-                placeholder='••••••••'
-                disabled={updatePasswordIsLoading}
-              />
+              <Input.Password placeholder='••••••••' disabled={updatePasswordIsLoading} />
             </Form.Item>
 
             <Form.Item
@@ -87,10 +84,7 @@ const ChangePasswordPage: FC = () => {
               rules={confirmPasswordRules}
               dependencies={['password']}
             >
-              <Input.Password
-                placeholder='••••••••'
-                disabled={updatePasswordIsLoading}
-              />
+              <Input.Password placeholder='••••••••' disabled={updatePasswordIsLoading} />
             </Form.Item>
 
             <Button

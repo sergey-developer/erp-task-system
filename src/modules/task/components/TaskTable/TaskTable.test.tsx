@@ -3,21 +3,16 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { TablePaginationConfig } from 'antd'
 import { TableAction } from 'antd/es/table/interface'
 
-import {
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-  taskStatusDict,
-} from 'modules/task/constants'
 import { parseResponseTime } from 'modules/task/components/TaskCard/MainDetails/utils'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
+import { TaskExtendedStatusEnum, TaskStatusEnum, taskStatusDict } from 'modules/task/constants/task'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getShortUserName } from 'modules/user/utils'
 
+import { IdType } from 'shared/types/common'
 import { NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
-
-import taskFixtures from 'fixtures/task'
 
 import {
   ariaSortAttrAscValue,
@@ -25,20 +20,17 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
-import {
-  expectLoadingFinishedByIconIn,
-  expectLoadingStartedByIconIn,
-  render,
-} from '_tests_/utils'
+import taskFixtures from '_tests_/fixtures/task'
+import { iconTestUtils, render } from '_tests_/utils'
 
 import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
 import { TaskTableListItem, TaskTableProps } from './types'
 
-const fakeTaskTableItem = taskFixtures.taskTableItem()
+const taskTableItem = taskFixtures.taskTableItem()
 
 const props: Readonly<Omit<TaskTableProps, 'sort'>> = {
-  dataSource: [fakeTaskTableItem],
+  dataSource: [taskTableItem],
   loading: false,
   onRow: jest.fn(),
   onChange: jest.fn(),
@@ -55,7 +47,7 @@ const paginationProps: Readonly<
   total: DEFAULT_PAGE_SIZE + 1,
 }
 
-const firstTaskTableItem = fakeTaskTableItem
+const firstTaskTableItem = taskTableItem
 
 export const testConstants = {
   props,
@@ -67,14 +59,13 @@ const getContainer = () => screen.getByTestId('task-table')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
-const queryChildByText = (text: string) =>
-  within(getContainer()).queryByText(text)
+const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
-const getRow = (id: number) =>
+const getRow = (id: IdType) =>
   // eslint-disable-next-line testing-library/no-node-access
   getContainer().querySelector(`[data-row-key='${id}']`)
 
-const clickRow = async (user: UserEvent, id: number) => {
+const clickRow = async (user: UserEvent, id: IdType) => {
   const row = getRow(id)
   await user.click(row!)
   return row
@@ -121,10 +112,7 @@ const clickPaginationPrevButton = async (user: UserEvent) => {
 const getPaginationPageButton = (pageNumber: string) =>
   within(getPaginationContainer()).getByRole('listitem', { name: pageNumber })
 
-const clickPaginationPageButton = async (
-  user: UserEvent,
-  pageNumber: string,
-) => {
+const clickPaginationPageButton = async (user: UserEvent, pageNumber: string) => {
   const button = getPaginationPageButton(pageNumber)
   await user.click(button)
   return button
@@ -148,10 +136,7 @@ const openPageSizeOptions = async (user: UserEvent, container: HTMLElement) => {
 const changePageSize = async (user: UserEvent, pageSize: NumberOrString) => {
   const pagination = getPaginationContainer()
   await openPageSizeOptions(user, pagination)
-  const pageSizeOption = getPageSizeOption(
-    getPageSizeOptionsContainer(pagination),
-    pageSize,
-  )
+  const pageSizeOption = getPageSizeOption(getPageSizeOptionsContainer(pagination), pageSize)
   await user.click(pageSizeOption)
 
   return pageSizeOption
@@ -159,13 +144,13 @@ const changePageSize = async (user: UserEvent, pageSize: NumberOrString) => {
 
 const expectLoadingStarted = async () => {
   const taskTable = getContainer()
-  await expectLoadingStartedByIconIn(taskTable)
+  await iconTestUtils.expectLoadingStartedIn(taskTable)
   return taskTable
 }
 
 const expectLoadingFinished = async () => {
   const taskTable = getContainer()
-  await expectLoadingFinishedByIconIn(taskTable)
+  await iconTestUtils.expectLoadingFinishedIn(taskTable)
   return taskTable
 }
 
@@ -174,10 +159,7 @@ const onChangeTableArgs = {
     ...paginationConfig,
     ...config,
   }),
-  extra: (
-    action: TableAction,
-    dataSource: Readonly<Array<TaskTableListItem>>,
-  ) => ({
+  extra: (action: TableAction, dataSource: ReadonlyArray<TaskTableListItem>) => ({
     action,
     currentDataSource: dataSource,
   }),
@@ -213,7 +195,10 @@ export const testUtils = {
 }
 
 afterEach(() => {
+  const onRow = props.onRow as jest.Mock
   const onChange = props.onChange as jest.Mock
+
+  onRow.mockReset()
   onChange.mockReset()
 })
 
@@ -269,9 +254,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getContainer(
-            TaskStatusEnum.InProgress,
-          )
+          const status = taskStatusTestUtils.getContainer(TaskStatusEnum.InProgress)
           expect(status).toBeInTheDocument()
         })
 
@@ -288,9 +271,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getContainer(
-            TaskStatusEnum.Completed,
-          )
+          const status = taskStatusTestUtils.getContainer(TaskStatusEnum.Completed)
           expect(status).toBeInTheDocument()
         })
 
@@ -307,9 +288,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getContainer(
-            TaskStatusEnum.Awaiting,
-          )
+          const status = taskStatusTestUtils.getContainer(TaskStatusEnum.Awaiting)
           expect(status).toBeInTheDocument()
         })
 
@@ -346,9 +325,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getContainer(
-            TaskExtendedStatusEnum.Returned,
-          )
+          const status = taskStatusTestUtils.getContainer(TaskExtendedStatusEnum.Returned)
           expect(status).toBeInTheDocument()
         })
 
@@ -366,9 +343,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getContainer(
-            TaskExtendedStatusEnum.InReclassification,
-          )
+          const status = taskStatusTestUtils.getContainer(TaskExtendedStatusEnum.InReclassification)
           expect(status).toBeInTheDocument()
         })
 
@@ -386,9 +361,7 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          const status = taskStatusTestUtils.getContainer(
-            TaskExtendedStatusEnum.FirstLineReturned,
-          )
+          const status = taskStatusTestUtils.getContainer(TaskExtendedStatusEnum.FirstLineReturned)
           expect(status).toBeInTheDocument()
         })
       })
@@ -404,9 +377,7 @@ describe('Таблица заявок', () => {
       test('Отображает значение', () => {
         render(<TaskTable {...props} />)
 
-        expect(
-          testUtils.getChildByText(String(firstTaskTableItem.id)),
-        ).toBeInTheDocument()
+        expect(testUtils.getChildByText(String(firstTaskTableItem.id))).toBeInTheDocument()
       })
 
       test('Сортировка включена', () => {
@@ -457,9 +428,7 @@ describe('Таблица заявок', () => {
       test('Отображает значение', () => {
         render(<TaskTable {...props} />)
 
-        expect(
-          testUtils.getChildByText(firstTaskTableItem.recordId),
-        ).toBeInTheDocument()
+        expect(testUtils.getChildByText(firstTaskTableItem.recordId)).toBeInTheDocument()
       })
 
       test('Сортировка включена', () => {
@@ -511,9 +480,7 @@ describe('Таблица заявок', () => {
       test('Отображает значение', () => {
         render(<TaskTable {...props} />)
 
-        expect(
-          testUtils.getChildByText(firstTaskTableItem.name),
-        ).toBeInTheDocument()
+        expect(testUtils.getChildByText(firstTaskTableItem.name)).toBeInTheDocument()
       })
 
       test('Сортировка включена', () => {
@@ -564,9 +531,7 @@ describe('Таблица заявок', () => {
       test('Отображает значение', () => {
         render(<TaskTable {...props} />)
 
-        expect(
-          testUtils.getChildByText(firstTaskTableItem.title),
-        ).toBeInTheDocument()
+        expect(testUtils.getChildByText(firstTaskTableItem.title)).toBeInTheDocument()
       })
 
       test('Сортировка включена', () => {
@@ -618,9 +583,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...props} />)
 
         expect(
-          testUtils.getChildByText(
-            getShortUserName(firstTaskTableItem.assignee!),
-          ),
+          testUtils.getChildByText(getShortUserName(firstTaskTableItem.assignee!)),
         ).toBeInTheDocument()
       })
 
@@ -665,36 +628,23 @@ describe('Таблица заявок', () => {
     describe('Рабочая группа', () => {
       describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
         test('Не отображает заголовок', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.FirstLineSupport}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.FirstLineSupport} />)
 
-          expect(
-            testUtils.queryColTitle('Рабочая группа'),
-          ).not.toBeInTheDocument()
+          expect(testUtils.queryColTitle('Рабочая группа')).not.toBeInTheDocument()
         })
       })
 
       describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
         test('Отображает заголовок', () => {
-          render(
-            <TaskTable {...props} userRole={UserRoleEnum.Engineer} />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.Engineer} />)
 
           expect(testUtils.getColTitle('Рабочая группа')).toBeInTheDocument()
         })
 
         test('Отображает значение если оно присутствует', () => {
-          render(
-            <TaskTable {...props} userRole={UserRoleEnum.Engineer} />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.Engineer} />)
 
-          expect(
-            testUtils.getChildByText(firstTaskTableItem.workGroup!.name),
-          ).toBeInTheDocument()
+          expect(testUtils.getChildByText(firstTaskTableItem.workGroup!.name)).toBeInTheDocument()
         })
 
         test('Отображает резервный текст если значение отсутствует', () => {
@@ -711,55 +661,39 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          expect(
-            testUtils.getChildByText('I линия поддержки'),
-          ).toBeInTheDocument()
+          expect(testUtils.getChildByText('I линия поддержки')).toBeInTheDocument()
         })
 
         test('Сортировка включена', () => {
-          render(
-            <TaskTable {...props} userRole={UserRoleEnum.Engineer} />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.Engineer} />)
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
           expect(headCol).toHaveClass(columnWithSortingClass)
         })
 
         test('Значение сортировки по умолчанию не установлено', () => {
-          render(
-            <TaskTable {...props} userRole={UserRoleEnum.Engineer} />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.Engineer} />)
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
           expect(headCol).not.toHaveAttribute(ariaSortAttrName)
         })
 
         test('При клике на заголовок обработчик вызывается корректно', async () => {
-          const { user } = render(
-            <TaskTable {...props} userRole={UserRoleEnum.Engineer} />,
-          )
+          const { user } = render(<TaskTable {...props} userRole={UserRoleEnum.Engineer} />)
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
           expect(props.onChange).toBeCalledTimes(1)
         })
 
         test('Сортировка работает корректно', async () => {
-          const { user } = render(
-            <TaskTable {...props} userRole={UserRoleEnum.Engineer} />,
-          )
+          const { user } = render(<TaskTable {...props} userRole={UserRoleEnum.Engineer} />)
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).toHaveAttribute(
-            ariaSortAttrName,
-            ariaSortAttrAscValue,
-          )
+          expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
-          expect(headCol).toHaveAttribute(
-            ariaSortAttrName,
-            ariaSortAttrDescValue,
-          )
+          expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
           props.dataSource.forEach((item) => {
             const row = testUtils.getRow(item.id)
@@ -770,27 +704,15 @@ describe('Таблица заявок', () => {
 
       describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
         test('Отображает заголовок', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.SeniorEngineer}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.SeniorEngineer} />)
 
           expect(testUtils.getColTitle('Рабочая группа')).toBeInTheDocument()
         })
 
         test('Отображает значение если оно присутствует', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.SeniorEngineer}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.SeniorEngineer} />)
 
-          expect(
-            testUtils.getChildByText(firstTaskTableItem.workGroup!.name),
-          ).toBeInTheDocument()
+          expect(testUtils.getChildByText(firstTaskTableItem.workGroup!.name)).toBeInTheDocument()
         })
 
         test('Отображает резервный текст если значение отсутствует', () => {
@@ -807,67 +729,39 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          expect(
-            testUtils.getChildByText('I линия поддержки'),
-          ).toBeInTheDocument()
+          expect(testUtils.getChildByText('I линия поддержки')).toBeInTheDocument()
         })
 
         test('Сортировка включена', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.SeniorEngineer}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.SeniorEngineer} />)
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
           expect(headCol).toHaveClass(columnWithSortingClass)
         })
 
         test('Значение сортировки по умолчанию не установлено', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.SeniorEngineer}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.SeniorEngineer} />)
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
           expect(headCol).not.toHaveAttribute(ariaSortAttrName)
         })
 
         test('При клике на заголовок обработчик вызывается корректно', async () => {
-          const { user } = render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.SeniorEngineer}
-            />,
-          )
+          const { user } = render(<TaskTable {...props} userRole={UserRoleEnum.SeniorEngineer} />)
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
           expect(props.onChange).toBeCalledTimes(1)
         })
 
         test('Сортировка работает корректно', async () => {
-          const { user } = render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.SeniorEngineer}
-            />,
-          )
+          const { user } = render(<TaskTable {...props} userRole={UserRoleEnum.SeniorEngineer} />)
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).toHaveAttribute(
-            ariaSortAttrName,
-            ariaSortAttrAscValue,
-          )
+          expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
-          expect(headCol).toHaveAttribute(
-            ariaSortAttrName,
-            ariaSortAttrDescValue,
-          )
+          expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
           props.dataSource.forEach((item) => {
             const row = testUtils.getRow(item.id)
@@ -878,27 +772,15 @@ describe('Таблица заявок', () => {
 
       describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
         test('Отображает заголовок', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.HeadOfDepartment}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.HeadOfDepartment} />)
 
           expect(testUtils.getColTitle('Рабочая группа')).toBeInTheDocument()
         })
 
         test('Отображает значение если оно присутствует', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.HeadOfDepartment}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.HeadOfDepartment} />)
 
-          expect(
-            testUtils.getChildByText(firstTaskTableItem.workGroup!.name),
-          ).toBeInTheDocument()
+          expect(testUtils.getChildByText(firstTaskTableItem.workGroup!.name)).toBeInTheDocument()
         })
 
         test('Отображает резервный текст если значение отсутствует', () => {
@@ -915,67 +797,39 @@ describe('Таблица заявок', () => {
             />,
           )
 
-          expect(
-            testUtils.getChildByText('I линия поддержки'),
-          ).toBeInTheDocument()
+          expect(testUtils.getChildByText('I линия поддержки')).toBeInTheDocument()
         })
 
         test('Сортировка включена', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.HeadOfDepartment}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.HeadOfDepartment} />)
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
           expect(headCol).toHaveClass(columnWithSortingClass)
         })
 
         test('Значение сортировки по умолчанию не установлено', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.HeadOfDepartment}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.HeadOfDepartment} />)
 
           const headCol = testUtils.getHeadCol('Рабочая группа')
           expect(headCol).not.toHaveAttribute(ariaSortAttrName)
         })
 
         test('При клике на заголовок обработчик вызывается корректно', async () => {
-          const { user } = render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.HeadOfDepartment}
-            />,
-          )
+          const { user } = render(<TaskTable {...props} userRole={UserRoleEnum.HeadOfDepartment} />)
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
           expect(props.onChange).toBeCalledTimes(1)
         })
 
         test('Сортировка работает корректно', async () => {
-          const { user } = render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.HeadOfDepartment}
-            />,
-          )
+          const { user } = render(<TaskTable {...props} userRole={UserRoleEnum.HeadOfDepartment} />)
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
           const headCol = testUtils.getHeadCol('Рабочая группа')
-          expect(headCol).toHaveAttribute(
-            ariaSortAttrName,
-            ariaSortAttrAscValue,
-          )
+          expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
           await testUtils.clickColTitle(user, 'Рабочая группа')
-          expect(headCol).toHaveAttribute(
-            ariaSortAttrName,
-            ariaSortAttrDescValue,
-          )
+          expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
           props.dataSource.forEach((item) => {
             const row = testUtils.getRow(item.id)
@@ -988,50 +842,28 @@ describe('Таблица заявок', () => {
     describe('Группа поддержки', () => {
       describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
         test('Отображает заголовок', () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.FirstLineSupport}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.FirstLineSupport} />)
 
           expect(testUtils.getColTitle('Группа поддержки')).toBeInTheDocument()
         })
 
         test('Отображает значение', () => {
-          render(
-            <TaskTable
-              {...testConstants.props}
-              userRole={UserRoleEnum.FirstLineSupport}
-            />,
-          )
+          render(<TaskTable {...testConstants.props} userRole={UserRoleEnum.FirstLineSupport} />)
 
           expect(
-            testUtils.getChildByText(
-              testConstants.firstTaskTableItem.supportGroup!.name,
-            ),
+            testUtils.getChildByText(testConstants.firstTaskTableItem.supportGroup!.name),
           ).toBeInTheDocument()
         })
 
         test('Сортировка включена', () => {
-          render(
-            <TaskTable
-              {...testConstants.props}
-              userRole={UserRoleEnum.FirstLineSupport}
-            />,
-          )
+          render(<TaskTable {...testConstants.props} userRole={UserRoleEnum.FirstLineSupport} />)
 
           const headCol = testUtils.getHeadCol('Группа поддержки')
           expect(headCol).toHaveClass(columnWithSortingClass)
         })
 
         test('Значение сортировки по умолчанию не установлено', () => {
-          render(
-            <TaskTable
-              {...testConstants.props}
-              userRole={UserRoleEnum.FirstLineSupport}
-            />,
-          )
+          render(<TaskTable {...testConstants.props} userRole={UserRoleEnum.FirstLineSupport} />)
 
           const headCol = testUtils.getHeadCol('Группа поддержки')
           expect(headCol).not.toHaveAttribute(ariaSortAttrName)
@@ -1039,10 +871,7 @@ describe('Таблица заявок', () => {
 
         test('При клике на заголовок обработчик вызывается корректно', async () => {
           const { user } = render(
-            <TaskTable
-              {...testConstants.props}
-              userRole={UserRoleEnum.FirstLineSupport}
-            />,
+            <TaskTable {...testConstants.props} userRole={UserRoleEnum.FirstLineSupport} />,
           )
 
           await testUtils.clickColTitle(user, 'Группа поддержки')
@@ -1051,24 +880,15 @@ describe('Таблица заявок', () => {
 
         test('Сортировка работает корректно', async () => {
           const { user } = render(
-            <TaskTable
-              {...testConstants.props}
-              userRole={UserRoleEnum.FirstLineSupport}
-            />,
+            <TaskTable {...testConstants.props} userRole={UserRoleEnum.FirstLineSupport} />,
           )
 
           await testUtils.clickColTitle(user, 'Группа поддержки')
           const headCol = testUtils.getHeadCol('Группа поддержки')
-          expect(headCol).toHaveAttribute(
-            ariaSortAttrName,
-            ariaSortAttrAscValue,
-          )
+          expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
           await testUtils.clickColTitle(user, 'Группа поддержки')
-          expect(headCol).toHaveAttribute(
-            ariaSortAttrName,
-            ariaSortAttrDescValue,
-          )
+          expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
           testConstants.props.dataSource.forEach((item) => {
             const row = testUtils.getRow(item.id)
@@ -1079,46 +899,25 @@ describe('Таблица заявок', () => {
 
       describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
         test('Не отображает заголовок', () => {
-          render(
-            <TaskTable
-              {...testConstants.props}
-              userRole={UserRoleEnum.Engineer}
-            />,
-          )
+          render(<TaskTable {...testConstants.props} userRole={UserRoleEnum.Engineer} />)
 
-          expect(
-            testUtils.queryColTitle('Группа поддержки'),
-          ).not.toBeInTheDocument()
+          expect(testUtils.queryColTitle('Группа поддержки')).not.toBeInTheDocument()
         })
       })
 
       describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
         test('Не отображает заголовок', () => {
-          render(
-            <TaskTable
-              {...testConstants.props}
-              userRole={UserRoleEnum.SeniorEngineer}
-            />,
-          )
+          render(<TaskTable {...testConstants.props} userRole={UserRoleEnum.SeniorEngineer} />)
 
-          expect(
-            testUtils.queryColTitle('Группа поддержки'),
-          ).not.toBeInTheDocument()
+          expect(testUtils.queryColTitle('Группа поддержки')).not.toBeInTheDocument()
         })
       })
 
       describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
         test('Не отображает заголовок', () => {
-          render(
-            <TaskTable
-              {...testConstants.props}
-              userRole={UserRoleEnum.HeadOfDepartment}
-            />,
-          )
+          render(<TaskTable {...testConstants.props} userRole={UserRoleEnum.HeadOfDepartment} />)
 
-          expect(
-            testUtils.queryColTitle('Группа поддержки'),
-          ).not.toBeInTheDocument()
+          expect(testUtils.queryColTitle('Группа поддержки')).not.toBeInTheDocument()
         })
       })
     })
@@ -1126,39 +925,21 @@ describe('Таблица заявок', () => {
     describe('Срок реакции', () => {
       describe('Не отображается', () => {
         test(`Для роли ${UserRoleEnum.Engineer}`, () => {
-          render(
-            <TaskTable {...props} userRole={UserRoleEnum.Engineer} />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.Engineer} />)
 
-          expect(
-            testUtils.queryColTitle('Срок реакции'),
-          ).not.toBeInTheDocument()
+          expect(testUtils.queryColTitle('Срок реакции')).not.toBeInTheDocument()
         })
 
         test(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.SeniorEngineer}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.SeniorEngineer} />)
 
-          expect(
-            testUtils.queryColTitle('Срок реакции'),
-          ).not.toBeInTheDocument()
+          expect(testUtils.queryColTitle('Срок реакции')).not.toBeInTheDocument()
         })
 
         test(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
-          render(
-            <TaskTable
-              {...props}
-              userRole={UserRoleEnum.HeadOfDepartment}
-            />,
-          )
+          render(<TaskTable {...props} userRole={UserRoleEnum.HeadOfDepartment} />)
 
-          expect(
-            testUtils.queryColTitle('Срок реакции'),
-          ).not.toBeInTheDocument()
+          expect(testUtils.queryColTitle('Срок реакции')).not.toBeInTheDocument()
         })
       })
 
@@ -1182,14 +963,9 @@ describe('Таблица заявок', () => {
           />,
         )
 
-        const responseTime = parseResponseTime(
-          taskTableItem.responseTime!,
-          taskTableItem.workGroup,
-        )
+        const responseTime = parseResponseTime(taskTableItem.responseTime!, taskTableItem.workGroup)
 
-        expect(
-          testUtils.getChildByText(responseTime!.value),
-        ).toBeInTheDocument()
+        expect(testUtils.getChildByText(responseTime!.value)).toBeInTheDocument()
       })
 
       describe('Значение не отображается', () => {
@@ -1213,9 +989,7 @@ describe('Таблица заявок', () => {
             taskTableItem.workGroup,
           )
 
-          expect(
-            testUtils.queryChildByText(responseTime!.value),
-          ).not.toBeInTheDocument()
+          expect(testUtils.queryChildByText(responseTime!.value)).not.toBeInTheDocument()
         })
       })
 
@@ -1238,9 +1012,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.props} />)
 
         expect(
-          testUtils.getChildByText(
-            formatDate(testConstants.firstTaskTableItem.olaNextBreachTime),
-          ),
+          testUtils.getChildByText(formatDate(testConstants.firstTaskTableItem.olaNextBreachTime)),
         ).toBeInTheDocument()
       })
 
@@ -1252,12 +1024,7 @@ describe('Таблица заявок', () => {
       })
 
       test('Имеет корректное значение сортировки по умолчанию', () => {
-        render(
-          <TaskTable
-            {...testConstants.props}
-            sort='ola_next_breach_time'
-          />,
-        )
+        render(<TaskTable {...testConstants.props} sort='ola_next_breach_time' />)
 
         const headCol = testUtils.getHeadCol('Выполнить до')
         expect(headCol).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
@@ -1298,9 +1065,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.props} />)
 
         expect(
-          testUtils.getChildByText(
-            taskStatusDict[testConstants.firstTaskTableItem.status],
-          ),
+          testUtils.getChildByText(taskStatusDict[testConstants.firstTaskTableItem.status]),
         ).toBeInTheDocument()
       })
 
@@ -1378,9 +1143,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.props} />)
 
         expect(
-          testUtils.getChildByText(
-            testConstants.firstTaskTableItem.lastComment,
-          ),
+          testUtils.getChildByText(testConstants.firstTaskTableItem.lastComment),
         ).toBeInTheDocument()
       })
 
@@ -1433,9 +1196,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.props} />)
 
         expect(
-          testUtils.getChildByText(
-            formatDate(testConstants.firstTaskTableItem.createdAt),
-          ),
+          testUtils.getChildByText(formatDate(testConstants.firstTaskTableItem.createdAt)),
         ).toBeInTheDocument()
       })
 
@@ -1480,12 +1241,7 @@ describe('Таблица заявок', () => {
 
   describe('Пагинация', () => {
     test('Отображается', () => {
-      render(
-        <TaskTable
-          {...testConstants.props}
-          pagination={testConstants.paginationProps}
-        />,
-      )
+      render(<TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />)
 
       const pagination = testUtils.getPaginationContainer()
 
@@ -1494,12 +1250,7 @@ describe('Таблица заявок', () => {
     })
 
     test('Кнопки переключения страниц отображаются', () => {
-      render(
-        <TaskTable
-          {...testConstants.props}
-          pagination={testConstants.paginationProps}
-        />,
-      )
+      render(<TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />)
 
       const page1Button = testUtils.getPaginationPageButton('1')
       const page2Button = testUtils.getPaginationPageButton('2')
@@ -1510,12 +1261,7 @@ describe('Таблица заявок', () => {
 
     describe('Кнопки "Вперед" и "Назад" отображаются корректно', () => {
       test('Если элементов больше чем установленный размер страницы', () => {
-        render(
-          <TaskTable
-            {...testConstants.props}
-            pagination={testConstants.paginationProps}
-          />,
-        )
+        render(<TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />)
 
         const nextButton = testUtils.getPaginationNextButton()
         const prevButton = testUtils.getPaginationPrevButton()
@@ -1548,18 +1294,10 @@ describe('Таблица заявок', () => {
     })
 
     test('Отображается корректный размер страницы по умолчанию', () => {
-      render(
-        <TaskTable
-          {...testConstants.props}
-          pagination={testConstants.paginationProps}
-        />,
-      )
+      render(<TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />)
 
       const pagination = testUtils.getPaginationContainer()
-      const defaultPageSize = testUtils.getPageSizeOption(
-        pagination,
-        DEFAULT_PAGE_SIZE,
-      )
+      const defaultPageSize = testUtils.getPageSizeOption(pagination, DEFAULT_PAGE_SIZE)
 
       expect(defaultPageSize).toBeInTheDocument()
       expect(defaultPageSize).toHaveClass('ant-select-selection-item')
@@ -1567,37 +1305,27 @@ describe('Таблица заявок', () => {
 
     test('Отображаются корректные варианты размера страницы', async () => {
       const { user } = render(
-        <TaskTable
-          {...testConstants.props}
-          pagination={testConstants.paginationProps}
-        />,
+        <TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />,
       )
 
       const pagination = testUtils.getPaginationContainer()
 
       await testUtils.openPageSizeOptions(user, pagination)
 
-      const pageSizeOptionsContainer =
-        testUtils.getPageSizeOptionsContainer(pagination)
+      const pageSizeOptionsContainer = testUtils.getPageSizeOptionsContainer(pagination)
 
       paginationConfig.pageSizeOptions.forEach((pageSize) => {
-        const option = testUtils.getPageSizeOption(
-          pageSizeOptionsContainer,
-          pageSize,
-        )
+        const option = testUtils.getPageSizeOption(pageSizeOptionsContainer, pageSize)
         expect(option).toBeInTheDocument()
       })
     })
 
     test('При изменении размера страницы обработчик вызывается корректно', async () => {
       const { user } = render(
-        <TaskTable
-          {...testConstants.props}
-          pagination={testConstants.paginationProps}
-        />,
+        <TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />,
       )
 
-      const pageSize = paginationConfig.pageSizeOptions[0]
+      const pageSize = paginationConfig.pageSizeOptions[0] as number
 
       await testUtils.changePageSize(user, pageSize)
       expect(testConstants.props.onChange).toBeCalledTimes(1)
@@ -1608,19 +1336,13 @@ describe('Таблица заявок', () => {
         }),
         {},
         {},
-        testUtils.onChangeTableArgs.extra(
-          'paginate',
-          testConstants.props.dataSource,
-        ),
+        testUtils.onChangeTableArgs.extra('paginate', testConstants.props.dataSource),
       )
     })
 
     test('При клике "Вперед" обработчик вызывается корректно', async () => {
       const { user } = render(
-        <TaskTable
-          {...testConstants.props}
-          pagination={testConstants.paginationProps}
-        />,
+        <TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />,
       )
 
       await testUtils.clickPaginationNextButton(user)
@@ -1632,10 +1354,7 @@ describe('Таблица заявок', () => {
         }),
         {},
         {},
-        testUtils.onChangeTableArgs.extra(
-          'paginate',
-          testConstants.props.dataSource,
-        ),
+        testUtils.onChangeTableArgs.extra('paginate', testConstants.props.dataSource),
       )
     })
 
@@ -1659,19 +1378,13 @@ describe('Таблица заявок', () => {
         }),
         {},
         {},
-        testUtils.onChangeTableArgs.extra(
-          'paginate',
-          testConstants.props.dataSource,
-        ),
+        testUtils.onChangeTableArgs.extra('paginate', testConstants.props.dataSource),
       )
     })
 
     test('При клике на номер страницы обработчик вызывается корректно', async () => {
       const { user } = render(
-        <TaskTable
-          {...testConstants.props}
-          pagination={testConstants.paginationProps}
-        />,
+        <TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />,
       )
 
       await testUtils.clickPaginationPageButton(user, '2')
@@ -1683,10 +1396,7 @@ describe('Таблица заявок', () => {
         }),
         {},
         {},
-        testUtils.onChangeTableArgs.extra(
-          'paginate',
-          testConstants.props.dataSource,
-        ),
+        testUtils.onChangeTableArgs.extra('paginate', testConstants.props.dataSource),
       )
     })
   })
@@ -1696,23 +1406,17 @@ describe('Таблица заявок', () => {
       render(<TaskTable {...testConstants.props} dataSource={[]} />)
 
       expect(
-        testUtils.getChildByText(
-          'По заданным параметрам фильтрации ни одна заявка не найдена',
-        ),
+        testUtils.getChildByText('По заданным параметрам фильтрации ни одна заявка не найдена'),
       ).toBeInTheDocument()
     })
   })
 
   test('При клике на строку вызывается обработчик', async () => {
-    const onRow = jest.fn()
-    const { user } = render(
-      <TaskTable {...testConstants.props} onRow={onRow} />,
-    )
-
-    const index = 0
+    const { user } = render(<TaskTable {...testConstants.props} />)
 
     await testUtils.clickRow(user, testConstants.firstTaskTableItem.id)
-    expect(onRow).toBeCalled()
-    expect(onRow).toBeCalledWith(testConstants.firstTaskTableItem, index)
+
+    expect(props.onRow).toBeCalledTimes(1)
+    expect(props.onRow).toBeCalledWith(testConstants.firstTaskTableItem, 0)
   })
 })

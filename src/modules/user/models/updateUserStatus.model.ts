@@ -1,5 +1,7 @@
+import { IdType } from 'shared/types/common'
+
 export type UpdateUserStatusMutationArgs = {
-  userId: number
+  userId: IdType
   status: number
 }
 

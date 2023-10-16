@@ -1,9 +1,7 @@
 import { TableProps } from 'antd'
 
-import { TaskListItemModel } from 'modules/task/models'
+import { GetTaskListSortValue, TaskListItemModel } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
-
-import { SortValue } from './constants/sort'
 
 export type TaskTableListItem = Pick<
   TaskListItemModel,
@@ -46,14 +44,9 @@ export type TaskTableColumnKey =
 export type TaskTableProps = Required<
   Pick<
     TableProps<TaskTableListItem>,
-    | 'dataSource'
-    | 'loading'
-    | 'onChange'
-    | 'pagination'
-    | 'onRow'
-    | 'rowClassName'
+    'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow' | 'rowClassName'
   >
 > & {
-  sort?: SortValue
+  sort?: GetTaskListSortValue
   userRole: UserRoleEnum
 }

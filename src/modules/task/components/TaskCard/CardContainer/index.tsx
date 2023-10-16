@@ -1,18 +1,21 @@
 import React, { FC, useEffect } from 'react'
 
 import {
-  useCreateTaskReclassificationRequest,
-  useCreateTaskSuspendRequest,
-  useDeleteTaskSuspendRequest,
-  useDeleteTaskWorkGroup,
   useGetTask,
-  useGetTaskReclassificationRequest,
   useResolveTask,
   useTakeTask,
   useTaskExtendedStatus,
-  useUpdateTaskAssignee,
-  useUpdateTaskWorkGroup,
-} from 'modules/task/hooks'
+} from 'modules/task/hooks/task'
+import { useUpdateTaskAssignee } from 'modules/task/hooks/taskAssignee'
+import {
+  useCreateTaskReclassificationRequest,
+  useGetTaskReclassificationRequest,
+} from 'modules/task/hooks/taskReclassificationRequest'
+import {
+  useCreateTaskSuspendRequest,
+  useDeleteTaskSuspendRequest,
+} from 'modules/task/hooks/taskSuspendRequest'
+import { useDeleteTaskWorkGroup, useUpdateTaskWorkGroup } from 'modules/task/hooks/taskWorkGroup'
 import { TaskListItemModel } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
@@ -69,11 +72,12 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
   const {
     currentData: getReclassificationRequestResult = null,
     isFetching: reclassificationRequestIsFetching,
-  } = useGetTaskReclassificationRequest(taskId, {
-    skip:
-      !taskExtendedStatus.isInReclassification ||
-      !!createReclassificationRequestResult,
-  })
+  } = useGetTaskReclassificationRequest(
+    { taskId },
+    {
+      skip: !taskExtendedStatus.isInReclassification || !!createReclassificationRequestResult,
+    },
+  )
 
   const getTaskCalledAfterSuccessfullyRequestCreation =
     getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
@@ -83,8 +87,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
     state: { isLoading: takeTaskIsLoading },
   } = useTakeTask()
 
-  const { data: workGroupList = [], isFetching: workGroupListIsFetching } =
-    useGetWorkGroupList()
+  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroupList()
 
   const {
     fn: resolveTask,
@@ -106,16 +109,11 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
     state: { isLoading: updateAssigneeIsLoading },
   } = useUpdateTaskAssignee()
 
-  const [
-    getTaskWorkPerformedAct,
-    { isLoading: taskWorkPerformedActIsLoading },
-  ] = useGetTaskWorkPerformedActMutation()
+  const [getTaskWorkPerformedAct, { isLoading: taskWorkPerformedActIsLoading }] =
+    useGetTaskWorkPerformedActMutation()
 
   useEffect(() => {
-    if (
-      createReclassificationRequestResult &&
-      getTaskCalledAfterSuccessfullyRequestCreation
-    ) {
+    if (createReclassificationRequestResult && getTaskCalledAfterSuccessfullyRequestCreation) {
       resetCreateReclassificationRequestData()
     }
   }, [
@@ -142,9 +140,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
       }
       reclassificationRequestIsLoading={reclassificationRequestIsFetching}
       createReclassificationRequest={createReclassificationRequest}
-      createReclassificationRequestIsLoading={
-        createReclassificationRequestIsLoading
-      }
+      createReclassificationRequestIsLoading={createReclassificationRequestIsLoading}
       createSuspendRequest={createSuspendRequest}
       createSuspendRequestIsLoading={createSuspendRequestIsLoading}
       cancelSuspendRequest={deleteSuspendRequest}

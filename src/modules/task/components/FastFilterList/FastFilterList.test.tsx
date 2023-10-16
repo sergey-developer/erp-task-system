@@ -2,16 +2,16 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { camelize } from 'humps'
 
+import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import taskFixtures from 'fixtures/task'
-
+import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 
-import { FastFilterEnum, fastFilterNamesDict, fastFilters } from './constants'
+import { fastFilters } from './constants'
 import FastFilterList from './index'
 import { FastFilterListProps } from './types'
 
@@ -31,8 +31,7 @@ const getContainer = () => screen.getByTestId('fast-filter-list')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
-const queryChildByText = (text: string) =>
-  within(getContainer()).queryByText(text)
+const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
 const getFilterTag = () => screen.getByTestId('fast-filter-list-item')
 const getAllFilterTag = () => screen.getAllByTestId('fast-filter-list-item')
@@ -43,20 +42,13 @@ const getCheckableTag = (filter: FastFilterEnum): HTMLElement =>
 const queryCheckableTag = (filter: FastFilterEnum): MaybeNull<HTMLElement> =>
   screen.queryByTestId(`checkable-tag-${filter}`)
 
-const getByTextInCheckableTag = (
-  filter: FastFilterEnum,
-  text: NumberOrString,
-) => within(getCheckableTag(filter)).getByText(text)
+const getByTextInCheckableTag = (filter: FastFilterEnum, text: NumberOrString) =>
+  within(getCheckableTag(filter)).getByText(text)
 
-const queryByTextInCheckableTag = (
-  filter: FastFilterEnum,
-  text: NumberOrString,
-) => within(getCheckableTag(filter)).queryByText(text)
+const queryByTextInCheckableTag = (filter: FastFilterEnum, text: NumberOrString) =>
+  within(getCheckableTag(filter)).queryByText(text)
 
-const setFilter = async (
-  user: UserEvent,
-  filter: FastFilterEnum,
-): Promise<HTMLElement> => {
+const setFilter = async (user: UserEvent, filter: FastFilterEnum): Promise<HTMLElement> => {
   const tag = getCheckableTag(filter)
   await user.click(tag)
   return tag
@@ -151,15 +143,10 @@ describe('Быстрый фильтр', () => {
     ]
 
     test('Отображается корректно', () => {
-      render(
-        <FastFilterList {...props} userRole={UserRoleEnum.FirstLineSupport} />,
-      )
+      render(<FastFilterList {...props} userRole={UserRoleEnum.FirstLineSupport} />)
 
       availableFilters.forEach((filter) => {
-        const filterEl = testUtils.getByTextInCheckableTag(
-          filter,
-          fastFilterNamesDict[filter],
-        )
+        const filterEl = testUtils.getByTextInCheckableTag(filter, fastFilterNamesDict[filter])
         const taskCount = testUtils.getByTextInCheckableTag(
           filter,
           props.data![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -181,19 +168,13 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Overdue,
     ]
 
-    const notAvailableFilters = [
-      FastFilterEnum.FirstLine,
-      FastFilterEnum.SecondLine,
-    ]
+    const notAvailableFilters = [FastFilterEnum.FirstLine, FastFilterEnum.SecondLine]
 
     test('Отображается корректно', () => {
       render(<FastFilterList {...props} userRole={UserRoleEnum.Engineer} />)
 
       availableFilters.forEach((filter) => {
-        const filterEl = testUtils.getByTextInCheckableTag(
-          filter,
-          fastFilterNamesDict[filter],
-        )
+        const filterEl = testUtils.getByTextInCheckableTag(filter, fastFilterNamesDict[filter])
         const taskCount = testUtils.getByTextInCheckableTag(
           filter,
           props.data![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -220,21 +201,13 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Overdue,
     ]
 
-    const notAvailableFilters = [
-      FastFilterEnum.FirstLine,
-      FastFilterEnum.SecondLine,
-    ]
+    const notAvailableFilters = [FastFilterEnum.FirstLine, FastFilterEnum.SecondLine]
 
     test('Отображается корректно', () => {
-      render(
-        <FastFilterList {...props} userRole={UserRoleEnum.SeniorEngineer} />,
-      )
+      render(<FastFilterList {...props} userRole={UserRoleEnum.SeniorEngineer} />)
 
       availableFilters.forEach((filter) => {
-        const filterEl = testUtils.getByTextInCheckableTag(
-          filter,
-          fastFilterNamesDict[filter],
-        )
+        const filterEl = testUtils.getByTextInCheckableTag(filter, fastFilterNamesDict[filter])
         const taskCount = testUtils.getByTextInCheckableTag(
           filter,
           props.data![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -261,21 +234,13 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.Overdue,
     ]
 
-    const notAvailableFilters = [
-      FastFilterEnum.FirstLine,
-      FastFilterEnum.SecondLine,
-    ]
+    const notAvailableFilters = [FastFilterEnum.FirstLine, FastFilterEnum.SecondLine]
 
     test('Отображается корректно', () => {
-      render(
-        <FastFilterList {...props} userRole={UserRoleEnum.HeadOfDepartment} />,
-      )
+      render(<FastFilterList {...props} userRole={UserRoleEnum.HeadOfDepartment} />)
 
       availableFilters.forEach((filter) => {
-        const filterEl = testUtils.getByTextInCheckableTag(
-          filter,
-          fastFilterNamesDict[filter],
-        )
+        const filterEl = testUtils.getByTextInCheckableTag(filter, fastFilterNamesDict[filter])
 
         const taskCount = testUtils.getByTextInCheckableTag(
           filter,
@@ -295,11 +260,7 @@ describe('Быстрый фильтр', () => {
 
   test('Можно скрыть отображение количества', () => {
     render(
-      <FastFilterList
-        {...props}
-        isShowCounters={false}
-        userRole={UserRoleEnum.FirstLineSupport}
-      />,
+      <FastFilterList {...props} isShowCounters={false} userRole={UserRoleEnum.FirstLineSupport} />,
     )
 
     fastFilters.forEach(({ filter }) => {
@@ -312,21 +273,13 @@ describe('Быстрый фильтр', () => {
   })
 
   test('Отображает состояние загрузки', async () => {
-    render(
-      <FastFilterList
-        {...props}
-        isLoading
-        userRole={UserRoleEnum.FirstLineSupport}
-      />,
-    )
+    render(<FastFilterList {...props} isLoading userRole={UserRoleEnum.FirstLineSupport} />)
 
     await testUtils.expectLoadingStarted()
   })
 
   test('Обработчик onChange вызывается корректно', async () => {
-    const { user } = render(
-      <FastFilterList {...props} userRole={UserRoleEnum.FirstLineSupport} />,
-    )
+    const { user } = render(<FastFilterList {...props} userRole={UserRoleEnum.FirstLineSupport} />)
 
     await testUtils.setFilter(user, FastFilterEnum.Free)
 
@@ -349,13 +302,7 @@ describe('Быстрый фильтр', () => {
   })
 
   test('Можно сделать все фильтры не активными', () => {
-    render(
-      <FastFilterList
-        {...props}
-        disabled
-        userRole={UserRoleEnum.FirstLineSupport}
-      />,
-    )
+    render(<FastFilterList {...props} disabled userRole={UserRoleEnum.FirstLineSupport} />)
 
     testUtils.expectAllFiltersDisabled()
   })

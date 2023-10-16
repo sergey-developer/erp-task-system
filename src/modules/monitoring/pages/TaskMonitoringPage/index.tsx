@@ -1,4 +1,4 @@
-import { Col, Input, Row, Tabs, Typography } from 'antd'
+import { Col, Input, Row, Tabs, TabsProps, Typography } from 'antd'
 import { FC, useState } from 'react'
 
 import { useGetTaskMonitoring } from 'modules/monitoring/hooks'
@@ -13,10 +13,15 @@ const { Text } = Typography
 const TaskMonitoringPage: FC = () => {
   const [recordId, setRecordId] = useState<string>('')
 
-  const { isFetching, currentData: monitoringData = [] } = useGetTaskMonitoring(
-    recordId,
-    { skip: !recordId },
-  )
+  const { isFetching, currentData: monitoringData = [] } = useGetTaskMonitoring(recordId, {
+    skip: !recordId,
+  })
+
+  const tabsItems: TabsProps['items'] = monitoringData.map((item, index) => ({
+    key: String(index),
+    label: item.title,
+    children: <PrettyJson data={item.data} />,
+  }))
 
   return (
     <Space direction='vertical' size='large'>
@@ -36,13 +41,7 @@ const TaskMonitoringPage: FC = () => {
         <Col span={24}>
           <LoadingArea isLoading={isFetching}>
             {monitoringData.length ? (
-              <Tabs tabPosition='left'>
-                {monitoringData.map((item, index) => (
-                  <Tabs.TabPane key={index} tab={item.title}>
-                    <PrettyJson data={item.data} />
-                  </Tabs.TabPane>
-                ))}
-              </Tabs>
+              <Tabs tabPosition='left' items={tabsItems} />
             ) : (
               <Text>По вашему запросу ничего не найдено</Text>
             )}

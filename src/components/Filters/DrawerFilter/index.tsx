@@ -6,19 +6,15 @@ import { FCWithChildren } from 'shared/types/utils'
 
 import { DrawerStyled } from './styles'
 
-export type DrawerFilterProps = Required<
-  Pick<DrawerProps, 'onClose' | 'visible'>
-> &
-  Pick<DrawerProps, 'title' | 'placement'> & {
-    onApply: () => void
-    onReset: () => void
-  }
+export type DrawerFilterProps = Pick<DrawerProps, 'open' | 'title' | 'placement'> & {
+  onApply: () => void
+  onReset: () => void
+  onClose: () => void
+}
 
 const DrawerFilter: FCWithChildren<DrawerFilterProps> = ({
   title = 'Фильтры',
   placement = 'left',
-  visible,
-  onClose,
   onApply,
   onReset,
   children,
@@ -41,12 +37,9 @@ const DrawerFilter: FCWithChildren<DrawerFilterProps> = ({
   return (
     <DrawerStyled
       {...props}
-      $breakpoints={breakpoints}
-      visible={visible}
       title={title}
       placement={placement}
       width={breakpoints.xxl ? 500 : 380}
-      onClose={onClose}
       footer={footer}
     >
       {children}

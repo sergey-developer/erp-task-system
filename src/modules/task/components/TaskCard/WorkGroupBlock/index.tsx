@@ -5,13 +5,10 @@ import React, { FC } from 'react'
 import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
-} from 'modules/task/components/TaskCard/TaskFirstLineModal/types'
-import { SuspendRequestStatusEnum } from 'modules/task/constants'
-import {
-  useTaskExtendedStatus,
-  useTaskStatus,
-  useTaskSuspendRequestStatus,
-} from 'modules/task/hooks'
+} from 'modules/task/components/TaskFirstLineModal/types'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
+import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
+import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskModel } from 'modules/task/models'
 import { taskWorkGroupPermissions } from 'modules/task/permissions'
 
@@ -19,20 +16,13 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/hooks'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 
-import {
-  TaskSecondLineFormFields,
-  TaskSecondLineModalProps,
-} from '../TaskSecondLineModal/types'
+import { TaskSecondLineFormFields, TaskSecondLineModalProps } from '../../TaskSecondLineModal/types'
 
-const TaskFirstLineModal = React.lazy(
-  () => import('modules/task/components/TaskCard/TaskFirstLineModal'),
-)
+const TaskFirstLineModal = React.lazy(() => import('modules/task/components/TaskFirstLineModal'))
 
-const TaskSecondLineModal = React.lazy(
-  () => import('modules/task/components/TaskCard/TaskSecondLineModal'),
-)
+const TaskSecondLineModal = React.lazy(() => import('modules/task/components/TaskSecondLineModal'))
 
 const { Text } = Typography
 
@@ -74,47 +64,33 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
 
   taskSuspendRequestStatus: rawTaskSuspendRequestStatus,
 }) => {
-  const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] =
-    useBoolean(false)
+  const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] = useBoolean(false)
 
-  const [
-    isTaskSecondLineModalOpened,
-    { toggle: toggleOpenTaskSecondLineModal },
-  ] = useBoolean(false)
+  const [isTaskSecondLineModalOpened, { toggle: toggleOpenTaskSecondLineModal }] = useBoolean(false)
 
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
-  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(
-    rawTaskSuspendRequestStatus,
-  )
+  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
 
   const hasWorkGroup: boolean = !!workGroup
 
-  const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(
-    toggleOpenTaskSecondLineModal,
-  )
+  const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(toggleOpenTaskSecondLineModal)
 
-  const debouncedToggleOpenTaskFirstLineModal = useDebounceFn(
-    toggleOpenTaskFirstLineModal,
-  )
+  const debouncedToggleOpenTaskFirstLineModal = useDebounceFn(toggleOpenTaskFirstLineModal)
 
-  const handleTransferTaskToSecondLine: TaskSecondLineModalProps['onSubmit'] =
-    async (values, setFields) => {
-      await transferTaskToSecondLine(
-        values,
-        setFields,
-        toggleOpenTaskSecondLineModal,
-      )
-    }
+  const handleTransferTaskToSecondLine: TaskSecondLineModalProps['onSubmit'] = async (
+    values,
+    setFields,
+  ) => {
+    await transferTaskToSecondLine(values, setFields, toggleOpenTaskSecondLineModal)
+  }
 
-  const handleTransferTaskToFirstLine: TaskFirstLineModalProps['onSubmit'] =
-    async (values, setFields) => {
-      await transferTaskToFirstLine(
-        values,
-        setFields,
-        toggleOpenTaskFirstLineModal,
-      )
-    }
+  const handleTransferTaskToFirstLine: TaskFirstLineModalProps['onSubmit'] = async (
+    values,
+    setFields,
+  ) => {
+    await transferTaskToFirstLine(values, setFields, toggleOpenTaskFirstLineModal)
+  }
 
   return (
     <>
@@ -125,13 +101,9 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           </Col>
 
           <Col>
-            <Permissions
-              config={taskWorkGroupPermissions.transferToFirstLineBtn}
-            >
+            <Permissions config={taskWorkGroupPermissions.transferToFirstLineBtn}>
               {() =>
-                hasWorkGroup &&
-                !taskStatus.isClosed &&
-                !taskStatus.isCompleted ? (
+                hasWorkGroup && !taskStatus.isClosed && !taskStatus.isCompleted ? (
                   <Button
                     type='link'
                     onClick={debouncedToggleOpenTaskFirstLineModal}
@@ -151,9 +123,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
               }
             </Permissions>
 
-            <Permissions
-              config={taskWorkGroupPermissions.transferToSecondLineBtn}
-            >
+            <Permissions config={taskWorkGroupPermissions.transferToSecondLineBtn}>
               {() =>
                 hasWorkGroup ? null : (
                   <Button
@@ -184,7 +154,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
         <React.Suspense
           fallback={
             <ModalFallback
-              visible={isTaskFirstLineModalOpened}
+              open={isTaskFirstLineModalOpened}
               onCancel={toggleOpenTaskFirstLineModal}
             />
           }
@@ -202,7 +172,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
         <React.Suspense
           fallback={
             <ModalFallback
-              visible={isTaskSecondLineModalOpened}
+              open={isTaskSecondLineModalOpened}
               onCancel={toggleOpenTaskSecondLineModal}
             />
           }

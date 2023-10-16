@@ -1,5 +1,4 @@
-import { Badge, Col, Row, Select, Space, Typography } from 'antd'
-import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint'
+import { Badge, Col, Layout, Row, Select, Space, Typography } from 'antd'
 import moment from 'moment-timezone'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useMemo } from 'react'
@@ -9,15 +8,8 @@ import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
-import {
-  updateUserStatusMessages,
-  updateUserTimeZoneMessages,
-} from 'modules/user/constants'
-import {
-  useUserMeCodeState,
-  useUserMeState,
-  useUserStatusListState,
-} from 'modules/user/hooks'
+import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'modules/user/constants'
+import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 import {
   useUpdateUserStatusMutation,
@@ -32,37 +24,34 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
+import { useTimeZoneListState } from 'shared/hooks/catalogs/timeZone'
+import { useUserStatusListState } from 'shared/hooks/catalogs/userStatus'
 import {
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
   isUnauthorizedError,
-} from 'shared/services/api'
-import { useTimeZoneListState } from 'shared/services/api/hooks'
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { HeaderStyled, timeZoneDropdownStyles } from './styles'
+import { timeZoneDropdownStyles } from './styles'
 
+const { Header } = Layout
 const { Text } = Typography
 
 const PrivateHeader: FC = () => {
-  const breakpoints = useBreakpoint()
   const matches = useMatches()
 
   const { data: userMeCode } = useUserMeCodeState()
   const { data: userMe } = useUserMeState()
   const { isFirstLineSupportRole } = getUserRoleMap(userMe?.role)
 
-  const { data: timeZoneList, isFetching: timeZoneListIsFetching } =
-    useTimeZoneListState()
+  const { data: timeZoneList, isFetching: timeZoneListIsFetching } = useTimeZoneListState()
 
-  const { data: userStatusList, isFetching: userStatusListIsFetching } =
-    useUserStatusListState()
+  const { data: userStatusList, isFetching: userStatusListIsFetching } = useUserStatusListState()
 
-  const [
-    updateUserTimeZoneMutation,
-    { isLoading: updateUserTimeZoneIsLoading },
-  ] = useUpdateUserTimeZoneMutation()
+  const [updateUserTimeZoneMutation, { isLoading: updateUserTimeZoneIsLoading }] =
+    useUpdateUserTimeZoneMutation()
 
   const [updateUserStatusMutation, { isLoading: updateUserStatusIsLoading }] =
     useUpdateUserStatusMutation()
@@ -74,7 +63,7 @@ const PrivateHeader: FC = () => {
 
   const navMenuSelectedKeys = matches.map(({ pathname }) => pathname)
 
-  const userStatusOptions = useMemo<Array<DefaultOptionType>>(
+  const userStatusOptions = useMemo<DefaultOptionType[]>(
     () =>
       userStatusList?.length
         ? userStatusList.map((status) => ({
@@ -111,9 +100,7 @@ const PrivateHeader: FC = () => {
     } catch (error) {
       if (isErrorResponse(error)) {
         if (
-          (isNotFoundError(error) ||
-            isUnauthorizedError(error) ||
-            isBadRequestError(error)) &&
+          (isNotFoundError(error) || isUnauthorizedError(error) || isBadRequestError(error)) &&
           error.data.detail
         ) {
           showErrorNotification(error.data.detail)
@@ -125,7 +112,7 @@ const PrivateHeader: FC = () => {
   }
 
   return (
-    <HeaderStyled data-testid='private-header' $breakpoints={breakpoints}>
+    <Header data-testid='private-header'>
       <Row justify='space-between' align='middle'>
         <Col xxl={12} xl={8}>
           <Row align='middle'>
@@ -134,10 +121,7 @@ const PrivateHeader: FC = () => {
             </Col>
 
             <Col xxl={17} xl={14}>
-              <NavMenu
-                selectedKeys={navMenuSelectedKeys}
-                items={navMenuItems}
-              />
+              <NavMenu selectedKeys={navMenuSelectedKeys} items={navMenuItems} />
             </Col>
           </Row>
         </Col>
@@ -174,25 +158,17 @@ const PrivateHeader: FC = () => {
 
             {userMe?.isStaff && (
               <Link to={RouteEnum.TaskMonitoring}>
-                <MonitoringIcon
-                  $color='black'
-                  $size='large'
-                  $cursor='pointer'
-                />
+                <MonitoringIcon $color='black' $size='large' $cursor='pointer' />
               </Link>
             )}
 
-            {userMe ? (
-              <DetailedUserAvatar profile={userMe} />
-            ) : (
-              <UserAvatar size='large' />
-            )}
+            {userMe ? <DetailedUserAvatar profile={userMe} /> : <UserAvatar size='large' />}
 
             <LogoutButton />
           </Space>
         </Col>
       </Row>
-    </HeaderStyled>
+    </Header>
   )
 }
 

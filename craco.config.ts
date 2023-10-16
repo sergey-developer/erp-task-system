@@ -9,19 +9,9 @@ import { when } from '@craco/craco'
  */
 require('react-scripts/config/env')
 
-const CracoAntdPlugin = require('craco-antd')
-
 const resolvePath = (p: string) => path.resolve(__dirname, p)
 
 module.exports = {
-  plugins: [
-    {
-      plugin: CracoAntdPlugin,
-      options: {
-        customizeThemeLessPath: resolvePath('src/styles/customTheme.less'),
-      },
-    },
-  ],
   ...when(process.env.REACT_APP_ENVIRONMENT === 'production', () => ({
     babel: {
       plugins: ['babel-plugin-jsx-remove-data-test-id'],
@@ -38,7 +28,6 @@ module.exports = {
       shared: resolvePath('src/shared'),
       styles: resolvePath('src/styles'),
       app: resolvePath('src/app'),
-      fixtures: resolvePath('src/fixtures'),
       _tests_: resolvePath('src/_tests_'),
     },
   },

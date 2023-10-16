@@ -4,11 +4,11 @@ import { useAuthenticatedUser } from 'modules/auth/hooks'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getUserRoleMap } from 'modules/user/utils'
 
-export type UseUserRoleReturnType = ReturnType<typeof getUserRoleMap> & {
+type UseUserRoleResult = ReturnType<typeof getUserRoleMap> & {
   role?: UserRoleEnum
 }
 
-export const useUserRole = (): UseUserRoleReturnType => {
+export const useUserRole = (): UseUserRoleResult => {
   const user = useAuthenticatedUser()
 
   return useMemo(() => {
