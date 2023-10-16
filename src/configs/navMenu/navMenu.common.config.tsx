@@ -9,7 +9,7 @@ const navMenuCommonConfig: NavMenuItem[] = [
     key: RouteEnum.Tasks,
     icon: UnorderedListIcon,
     link: RouteEnum.TaskList,
-    text: 'Заявки',
+    text: 'Рабочий стол',
   },
   {
     key: RouteEnum.ManageWarehouses,
