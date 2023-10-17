@@ -1,12 +1,15 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { validationMessages } from 'shared/constants/validation'
+
 import { render, buttonTestUtils } from '_tests_/utils'
 
 import ExecuteRelocationTaskModal from './index'
 import { ExecuteRelocationTaskModalProps } from './types'
 
 const props: Readonly<ExecuteRelocationTaskModalProps> = {
+  open: true,
   isLoading: false,
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
@@ -33,8 +36,8 @@ const clickSubmitButton = async (user: UserEvent) => {
   return button
 }
 
-// attachments
-const getDocumentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
+// documents
+const getDocumentsFormItem = () => within(getContainer()).getByTestId('documents-form-item')
 
 const getAddDocumentsButton = () =>
   buttonTestUtils.getAllButtonIn(getDocumentsFormItem(), /Добавить вложение/)[1]
@@ -87,7 +90,7 @@ export const testUtils = {
   expectLoadingFinished,
 }
 
-describe('Модалка решения по заявке', () => {
+describe('Модалка выполнения заявки на перемещение', () => {
   test('Заголовок отображается', () => {
     render(<ExecuteRelocationTaskModal {...props} />)
     const title = within(getContainer()).getByText('Решение по заявке')
@@ -159,6 +162,15 @@ describe('Модалка решения по заявке', () => {
 
       const uploadedDocument = testUtils.getUploadedDocument(file.name)
       expect(uploadedDocument).toBeInTheDocument()
+    })
+
+    test('Отображается ошибка если не заполнить поле', async () => {
+      const { user } = render(<ExecuteRelocationTaskModal {...props} />)
+
+      await testUtils.clickSubmitButton(user)
+
+      const error = await testUtils.findDocumentsError(validationMessages.required)
+      expect(error).toBeInTheDocument()
     })
   })
 })

@@ -13,9 +13,8 @@ import { ExecuteRelocationTaskModalFormFields, ExecuteRelocationTaskModalProps }
 
 const ExecuteRelocationTaskModal: FC<ExecuteRelocationTaskModalProps> = ({
   isLoading,
-
   onSubmit,
-  onCancel,
+  ...props
 }) => {
   const [form] = Form.useForm<ExecuteRelocationTaskModalFormFields>()
 
@@ -26,11 +25,11 @@ const ExecuteRelocationTaskModal: FC<ExecuteRelocationTaskModalProps> = ({
   return (
     <BaseModal
       data-testid='execute-relocation-task-modal'
+      {...props}
       title='Решение по заявке'
       confirmLoading={isLoading}
       onOk={form.submit}
       okText='Выполнить заявку'
-      onCancel={onCancel}
     >
       <Space $block direction='vertical' size='large'>
         <Form<ExecuteRelocationTaskModalFormFields>

@@ -181,7 +181,7 @@ export const testUtils = {
   expectLoadingFinished,
 }
 
-describe('Модалка решения по заявке', () => {
+describe('Модалка выполнения заявки', () => {
   test('Заголовок отображается', () => {
     render(<ExecuteTaskModal {...props} />)
 

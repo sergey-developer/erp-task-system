@@ -6,7 +6,7 @@ export type ExecuteRelocationTaskModalFormFields = {
   documents: UploadFile[]
 }
 
-export type ExecuteRelocationTaskModalProps = {
+export type ExecuteRelocationTaskModalProps = Required<Pick<ModalProps, 'open'>> & {
   isLoading: boolean
 
   onSubmit: (
