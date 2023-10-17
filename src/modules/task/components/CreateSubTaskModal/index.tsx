@@ -13,6 +13,7 @@ import { validationSizes } from 'shared/constants/validation'
 import { useGetSubTaskTemplateList } from 'shared/hooks/catalogs/subTaskTemplate'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
+import { filterOption } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './types'
@@ -115,6 +116,8 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
             disabled={createSubTaskIsLoading}
             fieldNames={idAndNameSelectFieldNames}
             onChange={setSelectedSupportGroup}
+            showSearch
+            filterOption={filterOption('name')}
           />
         </Form.Item>
 
