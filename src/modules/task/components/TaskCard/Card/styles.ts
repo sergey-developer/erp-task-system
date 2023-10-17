@@ -1,18 +1,13 @@
 import { Card, Divider } from 'antd'
 import styled, { css } from 'styled-components'
 
-import { StyledBreakpointsProps } from 'shared/types/breakpoints'
-
-export const taskCardContainerBaseCss = css<StyledBreakpointsProps>`
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: ${({ $breakpoints }) => ($breakpoints.xxl ? '20' : '30')}px;
-  padding-right: ${({ $breakpoints }) => ($breakpoints.xxl ? '20' : '30')}px;
+export const taskCardContainerBaseCss = css`
+  padding: 20px;
 `
 
-export const taskCardContainerStretchCss = css<StyledBreakpointsProps>`
-  margin-left: ${({ $breakpoints }) => ($breakpoints.xxl ? '-20' : '-30')}px;
-  margin-right: ${({ $breakpoints }) => ($breakpoints.xxl ? '-20' : '-30')}px;
+export const taskCardContainerStretchCss = css`
+  margin-left: -20px;
+  margin-right: -20px;
 `
 
 export const RootWrapperStyled = styled.div`
@@ -20,7 +15,7 @@ export const RootWrapperStyled = styled.div`
   height: 100%;
 `
 
-export const CardStyled = styled(Card)<StyledBreakpointsProps>`
+export const CardStyled = styled(Card)`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -36,8 +31,7 @@ export const CardStyled = styled(Card)<StyledBreakpointsProps>`
   }
 
   .ant-card-head-title {
-    padding: 12px 20px 12px
-      ${({ $breakpoints }) => ($breakpoints.xxl ? '30px' : '20px')};
+    padding: 12px 20px;
   }
 
   .ant-card-body {
@@ -59,9 +53,7 @@ export type TaskCardContainerStyledProps = {
   $stretch?: boolean
 }
 
-export const TaskCardContainerStyled = styled.div<
-  StyledBreakpointsProps & TaskCardContainerStyledProps
->`
+export const TaskCardContainerStyled = styled.div<TaskCardContainerStyledProps>`
   ${taskCardContainerBaseCss}
   ${({ $stretch }) => ($stretch ? taskCardContainerStretchCss : '')}
 `

@@ -1,13 +1,5 @@
-import { Col, Input, Row } from 'antd'
-import styled, { css } from 'styled-components'
-
-import {
-  StyledBreakpointStyles,
-  StyledBreakpointsProps,
-} from 'shared/types/breakpoints'
-import { applyBreakpointStyles } from 'shared/utils/breakpoints'
-
-const { Search } = Input
+import { Col, Row } from 'antd'
+import styled from 'styled-components'
 
 export const RowStyled = styled(Row)`
   height: 100%;
@@ -19,18 +11,4 @@ export const RowStyled = styled(Row)`
 
 export const ColStyled = styled(Col)`
   height: 100%;
-`
-
-const searchBreakpointStyles: StyledBreakpointStyles = {
-  xxl: css`
-    width: 230px;
-  `,
-  xl: css`
-    width: 310px;
-  `,
-}
-
-export const SearchStyled = styled(Search)<StyledBreakpointsProps>`
-  ${({ $breakpoints }) =>
-    applyBreakpointStyles($breakpoints, searchBreakpointStyles)}
 `

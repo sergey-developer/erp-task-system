@@ -1,46 +1,57 @@
 import { Moment } from 'moment-timezone'
 
-import { TaskExtendedStatusEnum } from 'modules/task/constants'
+import { SupportGroupListModel } from 'modules/supportGroup/models'
+import {
+  TaskExtendedStatusEnum,
+  TaskAssignedEnum,
+  TaskOverdueEnum,
+} from 'modules/task/constants/task'
+import { SearchFields } from 'modules/task/models'
+import { CustomerListModel } from 'modules/warehouse/models'
+import { WorkGroupListModel } from 'modules/workGroup/models'
 
-import { MaybeNull } from 'shared/types/utils'
+import { MacroregionListModel } from 'shared/models/macroregion'
+import { IdType } from 'shared/types/common'
 
-import { TaskAssignedEnum, TaskOverdueEnum } from './constants'
-
-export type SearchFields = Partial<{
-  searchByAssignee: string
-  searchByName: string
-  searchByTitle: string
+export type ExtendedFilterSupportGroupFormFields = Partial<{
+  customers: IdType[]
+  macroregions: IdType[]
+  supportGroups: IdType[]
 }>
 
-export type ExtendedFilterQueries = Partial<{
-  completeAtFrom: string
-  completeAtTo: string
-  status: Array<TaskExtendedStatusEnum>
-  isOverdue: Array<TaskOverdueEnum>
-  isAssigned: Array<TaskAssignedEnum>
-  workGroupId: number
-  manager: number
-}> &
-  SearchFields
-
-export type ExtendedFilterFormFields = {
-  completeAt: MaybeNull<[Moment, Moment]>
-  searchField: keyof SearchFields
-  searchValue: string
-  status: Array<TaskExtendedStatusEnum>
-  isOverdue: Array<TaskOverdueEnum>
-  isAssigned: Array<TaskAssignedEnum>
-  workGroupId?: string
-  manager?: number
-}
+export type ExtendedFilterFormFields = ExtendedFilterSupportGroupFormFields &
+  Partial<{
+    completeAt: Moment[]
+    searchField: keyof SearchFields
+    searchValue: string
+    status: TaskExtendedStatusEnum[]
+    isOverdue: TaskOverdueEnum[]
+    isAssigned: TaskAssignedEnum[]
+    workGroupId: IdType
+    manager: IdType
+  }>
 
 export type ExtendedFilterProps = {
   formValues: ExtendedFilterFormFields
   initialFormValues: ExtendedFilterFormFields
 
-  // закоменчено временно только для rc
+  customerList: CustomerListModel
+  customerListIsLoading: boolean
+  onChangeCustomers: (value: IdType[]) => void
+
+  macroregionList: MacroregionListModel
+  macroregionListIsLoading: boolean
+  onChangeMacroregions: (value: IdType[]) => void
+
+  supportGroupList: SupportGroupListModel
+  supportGroupListIsLoading: boolean
+
+  /* закоменчено временно только для rc */
   // userList: UserListModel
   // userListIsLoading: boolean
+
+  workGroupList: WorkGroupListModel
+  workGroupListIsLoading: boolean
 
   onSubmit: (result: ExtendedFilterFormFields) => void
   onClose: () => void

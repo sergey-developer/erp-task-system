@@ -1,4 +1,6 @@
+import { IdType } from 'shared/types/common'
+
 export type SupportGroupModel = {
-  id: number
+  id: IdType
   name: string
 }

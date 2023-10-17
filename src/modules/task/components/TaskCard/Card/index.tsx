@@ -1,6 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { FormInstance } from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import noop from 'lodash/noop'
 import moment from 'moment-timezone'
 import React, { FC, useCallback, useEffect } from 'react'
@@ -13,8 +12,9 @@ import {
   taskPriorityMap,
   taskSeverityMap,
   getTaskWorkPerformedActMessages,
-} from 'modules/task/constants'
-import { useTaskStatus, useTaskSuspendRequestStatus } from 'modules/task/hooks'
+} from 'modules/task/constants/task'
+import { useTaskStatus } from 'modules/task/hooks/task'
+import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import {
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
@@ -39,48 +39,41 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
-import { useDebounceFn } from 'shared/hooks'
+import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { MaybeNull } from 'shared/types/utils'
-import {
-  isBadRequestError,
-  isErrorResponse,
-  isNotFoundError,
-} from 'shared/services/api'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import CardTabs from '../../CardTabs'
+import { RequestTaskReclassificationModalProps } from '../../RequestTaskReclassificationModal'
+import { RequestTaskSuspendModalProps } from '../../RequestTaskSuspendModal'
+import { RequestTaskSuspendFormFields } from '../../RequestTaskSuspendModal/types'
+import { getFormErrorsFromBadRequestError } from '../../RequestTaskSuspendModal/utils'
+import { TaskFirstLineFormFields } from '../../TaskFirstLineModal/types'
+import { TaskResolutionModalProps } from '../../TaskResolutionModal'
+import { TaskSecondLineFormFields } from '../../TaskSecondLineModal/types'
 import AdditionalInfo from '../AdditionalInfo'
-import CardTabs from '../CardTabs'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
-import { RequestTaskReclassificationModalProps } from '../RequestTaskReclassificationModal'
-import { RequestTaskSuspendModalProps } from '../RequestTaskSuspendModal'
-import { RequestTaskSuspendFormFields } from '../RequestTaskSuspendModal/types'
-import { getFormErrorsFromBadRequestError } from '../RequestTaskSuspendModal/utils'
 import SecondaryDetails from '../SecondaryDetails'
-import { TaskFirstLineFormFields } from '../TaskFirstLineModal/types'
-import { TaskResolutionModalProps } from '../TaskResolutionModal'
-import { TaskSecondLineFormFields } from '../TaskSecondLineModal/types'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
-const TaskResolutionModal = React.lazy(() => import('../TaskResolutionModal'))
+const TaskResolutionModal = React.lazy(() => import('../../TaskResolutionModal'))
 
 const RequestTaskReclassificationModal = React.lazy(
-  () => import('../RequestTaskReclassificationModal'),
+  () => import('../../RequestTaskReclassificationModal'),
 )
 
-const TaskReclassificationRequest = React.lazy(
-  () => import('../TaskReclassificationRequest'),
-)
+const TaskReclassificationRequest = React.lazy(() => import('../../TaskReclassificationRequest'))
 
-const RequestTaskSuspendModal = React.lazy(
-  () => import('../RequestTaskSuspendModal'),
-)
+const RequestTaskSuspendModal = React.lazy(() => import('../../RequestTaskSuspendModal'))
 
-const TaskSuspendRequest = React.lazy(() => import('../TaskSuspendRequest'))
+const TaskSuspendRequest = React.lazy(() => import('../../TaskSuspendRequest'))
 
 export type TaskCardProps = {
   task: MaybeNull<
@@ -136,13 +129,9 @@ export type TaskCardProps = {
   ) => Promise<void>
   createReclassificationRequestIsLoading: boolean
 
-  createSuspendRequest: (
-    data: CreateTaskSuspendRequestMutationArgs,
-  ) => Promise<void>
+  createSuspendRequest: (data: CreateTaskSuspendRequestMutationArgs) => Promise<void>
   createSuspendRequestIsLoading: boolean
-  cancelSuspendRequest: (
-    data: DeleteTaskSuspendRequestMutationArgs,
-  ) => Promise<void>
+  cancelSuspendRequest: (data: DeleteTaskSuspendRequestMutationArgs) => Promise<void>
   cancelSuspendRequestIsLoading: boolean
 
   takeTask: (data: TakeTaskMutationArgs) => Promise<void>
@@ -214,12 +203,8 @@ const TaskCard: FC<TaskCardProps> = ({
 
   isGetTaskError,
 }) => {
-  const breakpoints = useBreakpoint()
-
   const taskStatus = useTaskStatus(task?.status)
-  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(
-    task?.suspendRequest?.status,
-  )
+  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
   const userRole = useUserRole()
   const isAssignedToCurrentUser = useCheckUserAuthenticated(task?.assignee?.id)
@@ -233,41 +218,27 @@ const TaskCard: FC<TaskCardProps> = ({
     { setTrue: openTaskResolutionModal, setFalse: closeTaskResolutionModal },
   ] = useBoolean(false)
 
-  const debouncedOpenTaskResolutionModal = useDebounceFn(
-    openTaskResolutionModal,
-  )
+  const debouncedOpenTaskResolutionModal = useDebounceFn(openTaskResolutionModal)
 
   const [
     isTaskReclassificationModalOpened,
-    {
-      setTrue: openTaskReclassificationModal,
-      setFalse: closeTaskReclassificationModal,
-    },
+    { setTrue: openTaskReclassificationModal, setFalse: closeTaskReclassificationModal },
   ] = useBoolean(false)
 
-  const debouncedOpenTaskReclassificationModal = useDebounceFn(
-    openTaskReclassificationModal,
-  )
+  const debouncedOpenTaskReclassificationModal = useDebounceFn(openTaskReclassificationModal)
 
   const [
     isRequestTaskSuspendModalOpened,
-    {
-      setTrue: openRequestTaskSuspendModal,
-      setFalse: closeRequestTaskSuspendModal,
-    },
+    { setTrue: openRequestTaskSuspendModal, setFalse: closeRequestTaskSuspendModal },
   ] = useBoolean(false)
 
-  const debouncedOpenRequestTaskSuspendModal = useDebounceFn(
-    openRequestTaskSuspendModal,
-  )
+  const debouncedOpenRequestTaskSuspendModal = useDebounceFn(openRequestTaskSuspendModal)
 
   useEffect(() => {
     if (isGetTaskError) closeTaskCard()
   }, [isGetTaskError, closeTaskCard])
 
-  const handleResolutionSubmit = useCallback<
-    TaskResolutionModalProps['onSubmit']
-  >(
+  const handleResolutionSubmit = useCallback<TaskResolutionModalProps['onSubmit']>(
     async (values, setFields) => {
       if (!task) return
 
@@ -276,9 +247,7 @@ const TaskCard: FC<TaskCardProps> = ({
           taskId: task.id,
           techResolution: values.techResolution.trim(),
           userResolution: values.userResolution?.trim(),
-          attachments: values.attachments
-            ? mapUploadedFiles(values.attachments)
-            : undefined,
+          attachments: values.attachments ? mapUploadedFiles(values.attachments) : undefined,
         })
 
         closeTaskCard()
@@ -311,11 +280,7 @@ const TaskCard: FC<TaskCardProps> = ({
           const blob = base64ToArrayBuffer(file)
 
           if (blob) {
-            clickDownloadLink(
-              blob,
-              'application/pdf',
-              `Акт о выполненных работах ${task.id}`,
-            )
+            clickDownloadLink(blob, MimetypeEnum.Pdf, `Акт о выполненных работах ${task.id}`)
           }
         }
       } catch (error) {
@@ -419,42 +384,40 @@ const TaskCard: FC<TaskCardProps> = ({
     } catch {}
   }, [takeTask, task])
 
-  const handleCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] =
-    useCallback(
-      async (values: RequestTaskSuspendFormFields, setFields) => {
-        if (!task) return
+  const handleCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
+    async (values: RequestTaskSuspendFormFields, setFields) => {
+      if (!task) return
 
-        try {
-          await createSuspendRequest({
-            taskId: task.id,
-            comment: values.comment,
-            suspendReason: values.reason,
-            suspendEndAt: moment(values.endDate)
-              .set('hours', values.endTime.get('hours'))
-              .set('minutes', values.endTime.get('minutes'))
-              .toISOString(),
-          })
+      try {
+        await createSuspendRequest({
+          taskId: task.id,
+          comment: values.comment,
+          suspendReason: values.reason,
+          suspendEndAt: moment(values.endDate)
+            .set('hours', values.endTime.get('hours'))
+            .set('minutes', values.endTime.get('minutes'))
+            .toISOString(),
+        })
 
-          closeRequestTaskSuspendModal()
-        } catch (error) {
-          if (isErrorResponse(error)) {
-            if (isBadRequestError(error)) {
-              const badRequestError =
-                error as CreateTaskSuspendRequestBadRequestErrorResponse
+        closeRequestTaskSuspendModal()
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            const badRequestError = error as CreateTaskSuspendRequestBadRequestErrorResponse
 
-              handleSetFieldsErrors(
-                {
-                  ...badRequestError,
-                  data: getFormErrorsFromBadRequestError(badRequestError),
-                },
-                setFields,
-              )
-            }
+            handleSetFieldsErrors(
+              {
+                ...badRequestError,
+                data: getFormErrorsFromBadRequestError(badRequestError),
+              },
+              setFields,
+            )
           }
         }
-      },
-      [closeRequestTaskSuspendModal, createSuspendRequest, task],
-    )
+      }
+    },
+    [closeRequestTaskSuspendModal, createSuspendRequest, task],
+  )
 
   const handleCancelTaskSuspendRequest = useDebounceFn(async () => {
     if (!task) return
@@ -484,20 +447,12 @@ const TaskCard: FC<TaskCardProps> = ({
 
   return (
     <RootWrapperStyled>
-      <CardStyled
-        data-testid='task-card'
-        title={cardTitle}
-        loading={taskIsLoading}
-        $breakpoints={breakpoints}
-      >
+      <CardStyled data-testid='task-card' title={cardTitle} loading={taskIsLoading}>
         <Space direction='vertical' $block size='middle'>
           {
             <LoadingArea
               data-testid='task-card-reclassification-request-loading'
-              isLoading={
-                reclassificationRequestIsLoading ||
-                createReclassificationRequestIsLoading
-              }
+              isLoading={reclassificationRequestIsLoading || createReclassificationRequestIsLoading}
               tip='Загрузка запроса на переклассификацию...'
               area='block'
             >
@@ -519,8 +474,7 @@ const TaskCard: FC<TaskCardProps> = ({
             <React.Suspense fallback={<Spinner area='block' />}>
               <TaskSuspendRequest
                 title={
-                  taskSuspendRequestStatus.isNew ||
-                  taskSuspendRequestStatus.isInProgress
+                  taskSuspendRequestStatus.isNew || taskSuspendRequestStatus.isInProgress
                     ? 'Запрошено ожидание'
                     : taskSuspendRequestStatus.isApproved
                     ? 'Заявка в ожидании'
@@ -530,8 +484,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 user={task.suspendRequest.author}
                 comment={task.suspendRequest.comment}
                 action={
-                  taskSuspendRequestStatus.isNew ||
-                  taskSuspendRequestStatus.isInProgress
+                  taskSuspendRequestStatus.isNew || taskSuspendRequestStatus.isInProgress
                     ? {
                         text: 'Отменить запрос',
                         onClick: handleCancelTaskSuspendRequest,
@@ -551,12 +504,7 @@ const TaskCard: FC<TaskCardProps> = ({
           )}
 
           {task && (
-            <Space
-              data-testid='task-card-details'
-              direction='vertical'
-              $block
-              size='middle'
-            >
+            <Space data-testid='task-card-details' direction='vertical' $block size='middle'>
               <MainDetails
                 recordId={task.recordId}
                 status={task.status}
@@ -623,7 +571,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      visible={isTaskResolutionModalOpened}
+                      open={isTaskResolutionModalOpened}
                       onCancel={closeTaskResolutionModal}
                     />
                   }
@@ -644,7 +592,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      visible={isTaskReclassificationModalOpened}
+                      open={isTaskReclassificationModalOpened}
                       onCancel={closeTaskReclassificationModal}
                     />
                   }
@@ -662,7 +610,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      visible={isRequestTaskSuspendModalOpened}
+                      open={isRequestTaskSuspendModalOpened}
                       onCancel={closeRequestTaskSuspendModal}
                     />
                   }

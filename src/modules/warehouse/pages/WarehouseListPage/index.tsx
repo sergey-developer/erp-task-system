@@ -1,25 +1,25 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { FC, useCallback, useState } from 'react'
 
-import WarehouseListFilter from 'modules/warehouse/features/WarehouseListFilter'
+import WarehouseListFilter from 'modules/warehouse/components/WarehouseListFilter'
 import {
   WarehouseListFilterFormFields,
   WarehouseListFilterProps,
-} from 'modules/warehouse/features/WarehouseListFilter/interfaces'
-import WarehouseTable from 'modules/warehouse/features/WarehouseTable'
-import { WarehouseTableProps } from 'modules/warehouse/features/WarehouseTable/interfaces'
+} from 'modules/warehouse/components/WarehouseListFilter/types'
+import WarehouseTable from 'modules/warehouse/components/WarehouseTable'
 import {
   SortableField,
   sortableFieldToSortValues,
-} from 'modules/warehouse/features/WarehouseTable/sort'
-import { getSort } from 'modules/warehouse/features/WarehouseTable/utils'
-import { useGetWarehouseList } from 'modules/warehouse/hooks'
+  getSort,
+} from 'modules/warehouse/components/WarehouseTable/sort'
+import { WarehouseTableProps } from 'modules/warehouse/components/WarehouseTable/types'
+import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { GetWarehouseListQueryArgs } from 'modules/warehouse/models'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/hooks'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 
 const WarehouseListPage: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean()

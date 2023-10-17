@@ -1,27 +1,7 @@
 import { Drawer } from 'antd'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
-import {
-  StyledBreakpointStyles,
-  StyledBreakpointsProps,
-} from 'shared/types/breakpoints'
-import { applyBreakpointStyles } from 'shared/utils/breakpoints'
-
-const drawerBreakpointStyles: StyledBreakpointStyles = {
-  xxl: css`
-    padding: 20px 40px;
-  `,
-  xl: css`
-    padding: 20px 15px;
-  `,
-}
-
-export const DrawerStyled = styled(Drawer)<StyledBreakpointsProps>`
-  .ant-drawer-header {
-    ${({ $breakpoints }) =>
-      applyBreakpointStyles($breakpoints, drawerBreakpointStyles)}
-  }
-
+export const DrawerStyled = styled(Drawer)`
   .ant-drawer-close {
     padding-left: 0;
   }

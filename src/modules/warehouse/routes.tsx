@@ -1,30 +1,32 @@
 import React from 'react'
-import { Navigate, Outlet, RouteObject } from 'react-router-dom'
+import { Link, Navigate, RouteObject } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
-import Breadcrumbs from 'components/Breadcrumbs'
-import Space from 'components/Space'
+import { BreadCrumbArgs } from 'components/Breadcrumbs'
 
-import WarehouseCatalogListPageBreadcrumb from './pages/WarehouseCatalogListPage/Breadcrumb'
-import WarehouseListPageBreadcrumb from './pages/WarehouseListPage/Breadcrumb'
+import EquipmentPageLayout from './components/EquipmentPageLayout'
+import ManageWarehousesLayout from './components/ManageWarehousesLayout'
 
-const WarehouseCatalogListPage = React.lazy(
-  () => import('./pages/WarehouseCatalogListPage'),
-)
-
+const WarehouseCatalogListPage = React.lazy(() => import('./pages/WarehouseCatalogListPage'))
 const WarehouseListPage = React.lazy(() => import('./pages/WarehouseListPage'))
-
 const WarehousePage = React.lazy(() => import('./pages/WarehousePage'))
 
-export const manageWarehousesRoute: Readonly<RouteObject> = {
+const NomenclatureListPage = React.lazy(() => import('./pages/NomenclatureListPage'))
+
+const ReserveCatalogListPage = React.lazy(() => import('./pages/ReserveCatalogListPage'))
+
+const EquipmentNomenclatureListPage = React.lazy(
+  () => import('./pages/EquipmentNomenclatureListPage'),
+)
+
+const EquipmentListPage = React.lazy(() => import('./pages/EquipmentListPage'))
+
+const RelocationTaskListPage = React.lazy(() => import('./pages/RelocationTaskListPage'))
+
+export const route: Readonly<RouteObject> = {
   path: RouteEnum.ManageWarehouses,
-  element: (
-    <Space $block direction='vertical' size='large'>
-      <Breadcrumbs />
-      <Outlet />
-    </Space>
-  ),
+  element: <ManageWarehousesLayout />,
   children: [
     {
       index: true,
@@ -33,7 +35,7 @@ export const manageWarehousesRoute: Readonly<RouteObject> = {
     {
       path: RouteEnum.WarehouseCatalogList,
       handle: {
-        crumb: WarehouseCatalogListPageBreadcrumb,
+        crumb: () => <Link to={RouteEnum.WarehouseCatalogList}>Справочники</Link>,
       },
       children: [
         {
@@ -43,7 +45,7 @@ export const manageWarehousesRoute: Readonly<RouteObject> = {
         {
           path: RouteEnum.WarehouseList,
           handle: {
-            crumb: WarehouseListPageBreadcrumb,
+            crumb: () => <Link to={RouteEnum.WarehouseList}>Склады</Link>,
           },
           children: [
             {
@@ -54,8 +56,66 @@ export const manageWarehousesRoute: Readonly<RouteObject> = {
               path: RouteEnum.Warehouse,
               element: <WarehousePage />,
               handle: {
-                crumb: ({ qs }: { qs: URLSearchParams }) => qs.get('name'),
+                crumb: ({ qs }: BreadCrumbArgs) => qs.get('title'),
               },
+            },
+          ],
+        },
+        {
+          path: RouteEnum.NomenclatureList,
+          handle: {
+            crumb: () => <Link to={RouteEnum.NomenclatureList}>Номенклатура</Link>,
+          },
+          children: [
+            {
+              index: true,
+              element: <NomenclatureListPage />,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: RouteEnum.ReserveCatalogList,
+      handle: {
+        crumb: () => <Link to={RouteEnum.ReserveCatalogList}>Управление запасами</Link>,
+      },
+      children: [
+        {
+          index: true,
+          element: <ReserveCatalogListPage />,
+        },
+        {
+          path: RouteEnum.EquipmentNomenclatureList,
+          element: <EquipmentPageLayout />,
+          handle: {
+            crumb: () => <Link to={RouteEnum.EquipmentNomenclatureList}>Оборудование</Link>,
+          },
+          children: [
+            {
+              index: true,
+              element: <EquipmentNomenclatureListPage />,
+            },
+            {
+              path: RouteEnum.EquipmentList,
+              element: <EquipmentListPage />,
+              handle: {
+                crumb: ({ qs }: BreadCrumbArgs) => qs.get('title'),
+              },
+            },
+          ],
+        },
+        {
+          path: RouteEnum.RelocationTaskList,
+          handle: {
+            crumb: () => (
+              <Link to={RouteEnum.RelocationTaskList}>Заявки на перемещение оборудования</Link>
+            ),
+          },
+          children: [
+            {
+              index: true,
+              element: <RelocationTaskListPage />,
             },
           ],
         },

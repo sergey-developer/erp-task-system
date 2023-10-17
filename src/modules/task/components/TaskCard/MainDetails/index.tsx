@@ -1,14 +1,11 @@
 import { Col, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
-import { taskStatusDict } from 'modules/task/constants'
 import TaskStatus from 'modules/task/components/TaskStatus'
-import {
-  badgeByTaskStatus,
-  iconByTaskStatus,
-} from 'modules/task/components/TaskStatus/constants'
+import { badgeByTaskStatus, iconByTaskStatus } from 'modules/task/components/TaskStatus/constants'
+import { taskStatusDict } from 'modules/task/constants/task'
 import { TaskModel } from 'modules/task/models'
-import { getOlaStatusTextType } from 'modules/task/utils'
+import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { useUserRole } from 'modules/user/hooks'
 
 import LabeledData from 'components/LabeledData'
@@ -75,12 +72,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   )
 
   return (
-    <Space
-      data-testid='task-card-main-details'
-      direction='vertical'
-      size='middle'
-      $block
-    >
+    <Space data-testid='task-card-main-details' direction='vertical' size='middle' $block>
       <Space direction='vertical' $block>
         <SeparatedText>
           <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
@@ -88,9 +80,7 @@ const MainDetails: FC<MainDetailsProps> = ({
           </RecordIdStyled>
 
           <Space>
-            {olaNextBreachTime && (
-              <Text type={olaStatusTextType}>{completeAt}</Text>
-            )}
+            {olaNextBreachTime && <Text type={olaStatusTextType}>{completeAt}</Text>}
 
             <TaskStatus
               status={status}
@@ -105,8 +95,7 @@ const MainDetails: FC<MainDetailsProps> = ({
           isFirstLineSupportRole && !!assignee ? null : (
             <Space>
               <Text>
-                Срок реакции:{' '}
-                <Text type={responseTime.type}>{responseTime.value}</Text>
+                Срок реакции: <Text type={responseTime.type}>{responseTime.value}</Text>
               </Text>
             </Space>
           )

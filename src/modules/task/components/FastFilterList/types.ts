@@ -1,15 +1,12 @@
+import { FastFilterEnum } from 'modules/task/constants/task'
 import { TaskCountersModel } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import { Nullable } from 'shared/types/utils'
 
 import { FastFilterListItemProps } from './FastFilterListItem'
-import { FastFilterEnum } from './constants'
 
-export type FastFilterItem = Pick<
-  FastFilterListItemProps,
-  'text' | 'amount'
-> & {
+export type FastFilterItem = Pick<FastFilterListItemProps, 'text' | 'amount'> & {
   value: FastFilterEnum
 }
 

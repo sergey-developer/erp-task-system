@@ -25,7 +25,12 @@ const removeRefreshToken = () => {
   return localStorageService.removeItem(StorageKeysEnum.refreshToken)
 }
 
-const authLocalStorageService = {
+const clearTokens = () => {
+  removeAccessToken()
+  removeRefreshToken()
+}
+
+export const authLocalStorageService = {
   setAccessToken,
   getAccessToken,
   removeAccessToken,
@@ -33,6 +38,6 @@ const authLocalStorageService = {
   setRefreshToken,
   getRefreshToken,
   removeRefreshToken,
-}
 
-export default authLocalStorageService
+  clearTokens,
+}

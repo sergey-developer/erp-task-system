@@ -2,7 +2,7 @@ import { Avatar, List } from 'antd'
 import isEqual from 'lodash/isEqual'
 import styled from 'styled-components'
 
-import { TaskTypeEnum } from 'modules/task/constants'
+import { TaskTypeEnum } from 'modules/task/constants/task'
 
 export const ListStyled: typeof List = styled(List)`
   height: 900px;

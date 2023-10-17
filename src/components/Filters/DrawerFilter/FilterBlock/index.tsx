@@ -1,5 +1,4 @@
 import { Button, Typography } from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React from 'react'
 
 import Space from 'components/Space'
@@ -15,16 +14,9 @@ export type FilterBlockProps = {
   onReset: () => void
 }
 
-const FilterBlock: FCWithChildren<FilterBlockProps> = ({
-  children,
-  onReset,
-  label,
-  ...props
-}) => {
-  const breakpoints = useBreakpoint()
-
+const FilterBlock: FCWithChildren<FilterBlockProps> = ({ children, onReset, label, ...props }) => {
   return (
-    <WrapperStyled $breakpoints={breakpoints} {...props}>
+    <WrapperStyled {...props}>
       <Space $block direction='vertical' size={30}>
         <Space align='baseline' size={12}>
           <Title level={4}>{label}</Title>

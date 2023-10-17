@@ -1,6 +1,6 @@
 import setupMoment from 'lib/moment/setup'
 
-import { TaskOlaStatusEnum } from 'modules/task/constants'
+import { TaskOlaStatusEnum } from 'modules/task/constants/task'
 
 import { getCompleteAt } from './utils'
 

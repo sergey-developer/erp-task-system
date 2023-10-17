@@ -1,3 +1,16 @@
-export const APP_NAME: string = 'Obermeister-ITSM'
+import { EllipsisConfig } from 'antd/es/typography/Base'
 
-export const DOUBLE_CLICK_DEBOUNCE_TIME: number = 300
+import { ApiRequestMessages } from 'shared/types/messages'
+
+export const APP_NAME = 'Obermeister-ITSM'
+
+export const DEFAULT_DEBOUNCE_VALUE = 100
+
+export const commonEllipsisConfig: Pick<EllipsisConfig, 'rows' | 'expandable'> = {
+  rows: 4,
+  expandable: true,
+}
+
+export const commonApiMessages: ApiRequestMessages<'unknownError'> = {
+  unknownError: 'Неизвестная ошибка',
+}

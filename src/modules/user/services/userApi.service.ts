@@ -1,4 +1,4 @@
-import { TaskApiTagEnum } from 'modules/task/constants'
+import { TaskApiTagEnum } from 'modules/task/constants/task'
 import { UserApiEnum } from 'modules/user/constants'
 import {
   GetUserListQueryArgs,
@@ -7,8 +7,6 @@ import {
   GetUserMeCodeSuccessResponse,
   GetUserMeQueryArgs,
   GetUserMeSuccessResponse,
-  GetUserStatusListQueryArgs,
-  GetUserStatusListSuccessResponse,
   UpdateUserStatusMutationArgs,
   UpdateUserStatusSuccessResponse,
   UpdateUserTimeZoneMutationArgs,
@@ -18,33 +16,28 @@ import {
 import { updateUserStatusUrl, updateUserUrl } from 'modules/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/services/api'
-import { MaybeUndefined } from 'shared/types/utils'
+import { baseApiService } from 'shared/services/baseApi'
 
 const userApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
-    getUserList: build.query<
-      GetUserListSuccessResponse,
-      MaybeUndefined<GetUserListQueryArgs>
-    >({
+    getUserList: build.query<GetUserListSuccessResponse, GetUserListQueryArgs>({
       query: (params) => ({
         url: UserApiEnum.GetUserList,
         method: HttpMethodEnum.Get,
         params,
       }),
     }),
-
     updateUserTimeZone: build.mutation<
       UpdateUserTimeZoneSuccessResponse,
       UpdateUserTimeZoneMutationArgs
     >({
+      invalidatesTags: (result, error) =>
+        error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.Task],
       query: ({ userId, ...payload }) => ({
         url: updateUserUrl(userId),
         method: HttpMethodEnum.Patch,
         data: payload,
       }),
-      invalidatesTags: (result, error) =>
-        error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.Task],
       onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
         try {
           const { data: updatedUser } = await queryFulfilled
@@ -67,51 +60,36 @@ const userApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
-    getUserMeCode: build.query<
-      GetUserMeCodeSuccessResponse,
-      GetUserMeCodeQueryArgs
-    >({
+    getUserMeCode: build.query<GetUserMeCodeSuccessResponse, GetUserMeCodeQueryArgs>({
       query: () => ({
         url: UserApiEnum.GetUserMeCode,
         method: HttpMethodEnum.Get,
       }),
     }),
-    getUserStatusList: build.query<
-      GetUserStatusListSuccessResponse,
-      GetUserStatusListQueryArgs
-    >({
-      query: () => ({
-        url: UserApiEnum.GetUserStatusList,
-        method: HttpMethodEnum.Get,
-      }),
-    }),
-    updateUserStatus: build.mutation<
-      UpdateUserStatusSuccessResponse,
-      UpdateUserStatusMutationArgs
-    >({
-      query: ({ userId, ...payload }) => ({
-        url: updateUserStatusUrl(userId),
-        method: HttpMethodEnum.Post,
-        data: payload,
-      }),
-      onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
-        try {
-          await queryFulfilled
+    updateUserStatus: build.mutation<UpdateUserStatusSuccessResponse, UpdateUserStatusMutationArgs>(
+      {
+        query: ({ userId, ...payload }) => ({
+          url: updateUserStatusUrl(userId),
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+        onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled
 
-          dispatch(
-            baseApiService.util.updateQueryData(
-              'getUserMe' as never,
-              undefined as never,
-              (user: UserModel) => {
-                Object.assign(user, {
-                  status: { ...user.status, id: payload.status },
-                })
-              },
-            ),
-          )
-        } catch {}
+            dispatch(
+              baseApiService.util.updateQueryData(
+                'getUserMe' as never,
+                undefined as never,
+                (user: UserModel) => {
+                  Object.assign(user, { status: data })
+                },
+              ),
+            )
+          } catch {}
+        },
       },
-    }),
+    ),
   }),
   overrideExisting: false,
 })
@@ -120,8 +98,7 @@ export const {
   useGetUserMeQuery,
   useGetUserMeCodeQuery,
   useGetUserListQuery,
-  useGetUserStatusListQuery,
   useUpdateUserTimeZoneMutation,
   useUpdateUserStatusMutation,
-  endpoints: userApiEndpoints,
+  endpoints,
 } = userApiService

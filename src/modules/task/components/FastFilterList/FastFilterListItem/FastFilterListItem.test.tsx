@@ -1,7 +1,8 @@
+import { FastFilterEnum } from 'modules/task/constants/task'
+
 import { fakeWord, render } from '_tests_/utils'
 
 import { testUtils } from '../FastFilterList.test'
-import { FastFilterEnum } from '../constants'
 import FastFilterListItem, { FastFilterListItemProps } from './'
 
 export const props: Readonly<
@@ -22,9 +23,7 @@ describe('Элемент быстрого фильтра', () => {
   test('Отображает текст', () => {
     render(<FastFilterListItem {...props} />)
 
-    expect(
-      testUtils.getByTextInCheckableTag(props.value, props.text),
-    ).toBeInTheDocument()
+    expect(testUtils.getByTextInCheckableTag(props.value, props.text)).toBeInTheDocument()
   })
 
   describe('Количество', () => {
@@ -32,9 +31,7 @@ describe('Элемент быстрого фильтра', () => {
       const amount = 0
       render(<FastFilterListItem {...props} amount={amount} />)
 
-      expect(
-        testUtils.getByTextInCheckableTag(props.value, amount),
-      ).toBeInTheDocument()
+      expect(testUtils.getByTextInCheckableTag(props.value, amount)).toBeInTheDocument()
     })
 
     test('Не отображается если оно отсутствует', () => {
@@ -87,9 +84,7 @@ describe('Элемент быстрого фильтра', () => {
     })
 
     test('Не вызывается если элемент не активный', async () => {
-      const { user } = render(
-        <FastFilterListItem {...props} disabled onChange={onChange} />,
-      )
+      const { user } = render(<FastFilterListItem {...props} disabled onChange={onChange} />)
 
       await testUtils.setFilter(user, props.value)
       expect(onChange).not.toBeCalled()

@@ -2,29 +2,23 @@ import curry from 'lodash/curry'
 import { rest } from 'msw'
 
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
-import { makeAbsoluteApiUrl } from 'shared/services/api'
+import { makeAbsoluteApiUrl } from 'shared/services/baseApi'
 
-import { api } from '_tests_/mocks/api'
 import {
+  getResponseResolver,
   ResponseResolver,
   ResponseResolverOptions,
-  getResponseResolver,
 } from '_tests_/mocks/response'
+import { server } from '_tests_/mocks/server'
 
 export type AddMockFn = () => void
 
-export type PartialAppliedRequestMockFn = (
-  resolver: ResponseResolver,
-) => AddMockFn
+export type PartialAppliedRequestMockFn = (resolver: ResponseResolver) => AddMockFn
 
 export const getRequestMockFn = curry(
-  (
-    method: HttpMethodEnum,
-    url: string,
-    resolver: ResponseResolver,
-  ): AddMockFn => {
+  (method: HttpMethodEnum, url: string, resolver: ResponseResolver): AddMockFn => {
     return () => {
-      api.use(rest[method](makeAbsoluteApiUrl(url), resolver))
+      server.use(rest[method](makeAbsoluteApiUrl(url), resolver))
     }
   },
 )
@@ -32,10 +26,7 @@ export const getRequestMockFn = curry(
 export const getSuccessMockFn = (
   requestMockFn: PartialAppliedRequestMockFn,
   responseOptions: Omit<ResponseResolverOptions, 'status'> = {},
-): AddMockFn =>
-  requestMockFn(
-    getResponseResolver({ status: HttpCodeEnum.Ok, ...responseOptions }),
-  )
+): AddMockFn => requestMockFn(getResponseResolver({ status: HttpCodeEnum.Ok, ...responseOptions }))
 
 export const getServerErrorMockFn = (
   requestMockFn: PartialAppliedRequestMockFn,

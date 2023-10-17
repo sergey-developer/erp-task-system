@@ -1,5 +1,4 @@
 import { Col, Row, Typography } from 'antd'
-import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React, { FC } from 'react'
 
 import { TaskModel } from 'modules/task/models'
@@ -9,7 +8,7 @@ import { MapPointIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/hooks'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { valueOrHyphen } from 'shared/utils/common'
 
 import { ContentWrapperStyled } from './styles'
@@ -60,7 +59,6 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   expanded,
   onExpand,
 }) => {
-  const breakpoints = useBreakpoint()
   const handleExpand = useDebounceFn(onExpand, [onExpand])
 
   return (
@@ -73,10 +71,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
       expanded={expanded}
       onClick={handleExpand}
     >
-      <ContentWrapperStyled
-        data-testid='additional-info-content'
-        $breakpoints={breakpoints}
-      >
+      <ContentWrapperStyled data-testid='additional-info-content'>
         <Space direction='vertical' size={30} $block>
           <Row justify='space-between'>
             <Col span={11}>
@@ -129,11 +124,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                   <MapPointIcon $size='large' />
 
                   <Link
-                    href={
-                      !!address
-                        ? makeYandexMapLink({ longitude, latitude })
-                        : undefined
-                    }
+                    href={!!address ? makeYandexMapLink({ longitude, latitude }) : undefined}
                     target='_blank'
                   >
                     <Text strong={!!address} underline={!!address}>
@@ -190,19 +181,19 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
               <Row gutter={20}>
                 <Col span={8}>
                   <LabeledData label='Влияние'>
-                    <Text>{impact}</Text>
+                    <Text>{valueOrHyphen(impact)}</Text>
                   </LabeledData>
                 </Col>
 
                 <Col span={8}>
                   <LabeledData label='Срочность'>
-                    <Text>{severity}</Text>
+                    <Text>{valueOrHyphen(severity)}</Text>
                   </LabeledData>
                 </Col>
 
                 <Col span={8}>
                   <LabeledData label='Приоритет'>
-                    <Text>{priority}</Text>
+                    <Text>{valueOrHyphen(priority)}</Text>
                   </LabeledData>
                 </Col>
               </Row>

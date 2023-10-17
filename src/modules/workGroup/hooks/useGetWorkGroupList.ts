@@ -1,26 +1,38 @@
 import { useEffect } from 'react'
 
-import { useUserPermissions } from 'modules/user/hooks'
-import { GetWorkGroupListQueryArgs } from 'modules/workGroup/models'
-import { workGroupApiPermissions } from 'modules/workGroup/permissions'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
+
+import { getWorkGroupListMessages } from 'modules/workGroup/constants'
+import {
+  GetWorkGroupListQueryArgs,
+  GetWorkGroupListSuccessResponse,
+} from 'modules/workGroup/models'
 import { useGetWorkGroupListQuery } from 'modules/workGroup/services/workGroupApi.service'
 
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getWorkGroupListMessages } from '../constants/messages'
+type UseGetWorkGroupListResult = CustomUseQueryHookResult<
+  GetWorkGroupListQueryArgs,
+  GetWorkGroupListSuccessResponse
+>
 
-export const useGetWorkGroupList = (args?: GetWorkGroupListQueryArgs) => {
-  const permissions = useUserPermissions(workGroupApiPermissions)
+type UseGetWorkGroupListOptions = CustomUseQueryOptions<
+  GetWorkGroupListQueryArgs,
+  GetWorkGroupListSuccessResponse
+>
 
-  const state = useGetWorkGroupListQuery(args, {
-    skip: !permissions.canGetList,
-  })
+export const useGetWorkGroupList = (
+  args?: GetWorkGroupListQueryArgs,
+  options?: UseGetWorkGroupListOptions,
+): UseGetWorkGroupListResult => {
+  const state = useGetWorkGroupListQuery(args, options)
 
   useEffect(() => {
-    if (!state.isError) return
-
-    showErrorNotification(getWorkGroupListMessages.commonError)
-  }, [state.isError])
+    if (isErrorResponse(state.error)) {
+      showErrorNotification(getWorkGroupListMessages.commonError)
+    }
+  }, [state.error])
 
   return state
 }
