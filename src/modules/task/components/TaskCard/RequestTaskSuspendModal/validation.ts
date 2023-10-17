@@ -5,7 +5,7 @@ import { SuspendReasonEnum } from 'modules/task/constants'
 
 import { validationMessages } from 'shared/constants/validation'
 
-export const commentRules: Rule[] = [{ required: true, whitespace: true }]
+export const commentRules: Rule[] = [{ required: true, whitespace: true, max: 10000 }]
 
 export const REASON_RULES: Rule[] = [
   {
