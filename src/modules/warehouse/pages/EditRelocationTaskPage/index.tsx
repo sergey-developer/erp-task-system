@@ -293,7 +293,7 @@ const EditRelocationTaskPage: FC = () => {
           serialNumber: createdEquipment.serialNumber,
           purpose: createdEquipment.purpose.title,
           condition: createdEquipment.condition,
-          amount: createdEquipment.amount,
+          amount: createdEquipment.availableQuantity,
           price: createdEquipment.price,
           currency: createdEquipment.currency?.id,
           quantity: createdEquipment.quantity,

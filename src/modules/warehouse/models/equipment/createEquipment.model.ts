@@ -37,7 +37,8 @@ export type CreateEquipmentSuccessResponse = Pick<
   | 'purpose'
   | 'price'
   | 'currency'
-  | 'amount'
->
+> & {
+  availableQuantity: number
+}
 
 export type CreateEquipmentBadRequestErrorResponse = Partial<CreateEquipmentMutationArgs>
