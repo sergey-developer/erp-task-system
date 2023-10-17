@@ -3,6 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
 import { UserRoleEnum } from 'modules/user/constants'
+// import { testUtils as executeRelocationTaskModalTestUtils } from 'modules/warehouse/components/ExecuteRelocationTaskModal/ExecuteRelocationTaskModal.test'
 import { testUtils as relocationEquipmentTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentTable/RelocationEquipmentTable.test'
 import {
   getRelocationEquipmentListMessages,
@@ -59,7 +60,6 @@ const props: RelocationTaskDetailsProps = {
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-details')
-
 const findContainer = () => screen.findByTestId('relocation-task-details')
 
 const getRelocationTaskInfo = (testId: string, text: string | RegExp) =>
@@ -774,5 +774,7 @@ describe('Информация о заявке о перемещении', () =>
         menuTestUtils.expectMenuItemDisabled(item)
       })
     })
+
+    test.todo('При успешном запросе')
   })
 })

@@ -4,7 +4,7 @@ import { ApiRequestMessages } from 'shared/types/messages'
 
 export const APP_NAME = 'Obermeister-ITSM'
 
-export const DEFAULT_DEBOUNCE_VALUE = 100
+export const DEFAULT_DEBOUNCE_VALUE = 150
 
 export const commonEllipsisConfig: Pick<EllipsisConfig, 'rows' | 'expandable'> = {
   rows: 4,
