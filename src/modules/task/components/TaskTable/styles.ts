@@ -1,6 +1,9 @@
+import { Typography } from 'antd'
 import styled from 'styled-components'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
+
+const { Text } = Typography
 
 export const TableStyled: typeof ParentSizedTable = styled(ParentSizedTable)`
   .ant-table-cell {
@@ -33,4 +36,8 @@ export const TableWrapperStyled = styled.div`
 
 export const EmptyContentStyled = styled.div`
   padding: 20px 0;
+`
+
+export const OlaNextBreachTimeStyled = styled(Text)`
+  white-space: nowrap;
 `
