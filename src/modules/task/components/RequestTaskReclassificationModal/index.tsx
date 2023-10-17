@@ -9,10 +9,8 @@ import { TaskModel } from 'modules/task/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { requiredStringRules } from 'shared/constants/validation'
-
 import { RequestTaskReclassificationFormFields } from './types'
-import { reclassificationReasonRules } from './validation'
+import { commentRules, reclassificationReasonRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -81,12 +79,7 @@ const RequestTaskReclassificationModal: FC<RequestTaskReclassificationModalProps
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item
-          data-testid='comment'
-          label='Комментарий'
-          name='comment'
-          rules={requiredStringRules}
-        >
+        <Form.Item data-testid='comment' label='Комментарий' name='comment' rules={commentRules}>
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>
       </Form>

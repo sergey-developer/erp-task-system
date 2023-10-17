@@ -22,11 +22,9 @@ import DatePicker from 'components/DatePicker'
 import BaseModal from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
-import { requiredStringRules } from 'shared/constants/validation'
-
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import { RequestTaskSuspendFormFields } from './types'
-import { endDateRules, endTimeRules, reasonRules } from './validation'
+import { commentRules, endDateRules, endTimeRules, reasonRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -145,7 +143,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           data-testid='comment-form-item'
           label='Комментарий'
           name='comment'
-          rules={requiredStringRules}
+          rules={commentRules}
         >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>
