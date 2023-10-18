@@ -46,8 +46,8 @@ const ExecuteRelocationTaskModal: FC<ExecuteRelocationTaskModalProps> = ({
             valuePropName='fileList'
             getValueFromEvent={getFilesFromEvent}
           >
-            <Upload beforeUpload={stubFalse} multiple disabled={isLoading}>
-              <Button type='link' icon={<PaperClipOutlined />} disabled={isLoading}>
+            <Upload beforeUpload={stubFalse} multiple>
+              <Button type='link' icon={<PaperClipOutlined />}>
                 Добавить вложение
               </Button>
             </Upload>
