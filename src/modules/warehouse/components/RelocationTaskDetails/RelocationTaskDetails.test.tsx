@@ -2,12 +2,15 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { UserRoleEnum } from 'modules/user/constants'
+// import { testUtils as executeRelocationTaskModalTestUtils } from 'modules/warehouse/components/ExecuteRelocationTaskModal/ExecuteRelocationTaskModal.test'
 import { testUtils as relocationEquipmentTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentTable/RelocationEquipmentTable.test'
 import {
   getRelocationEquipmentListMessages,
   getRelocationTaskMessages,
   getRelocationTaskWaybillM15Messages,
   relocationTaskStatusDict,
+  RelocationTaskStatusEnum,
 } from 'modules/warehouse/constants/relocationTask'
 import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
 
@@ -37,6 +40,7 @@ import {
   buttonTestUtils,
   fakeId,
   fakeWord,
+  getStoreWithAuth,
   menuTestUtils,
   notificationTestUtils,
   render,
@@ -44,6 +48,7 @@ import {
   spinnerTestUtils,
   tableTestUtils,
 } from '_tests_/utils'
+import getAuthState from '_tests_/utils/auth/getAuthState'
 
 import RelocationTaskDetails from './index'
 import { RelocationTaskDetailsProps } from './types'
@@ -55,7 +60,6 @@ const props: RelocationTaskDetailsProps = {
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-details')
-
 const findContainer = () => screen.findByTestId('relocation-task-details')
 
 const getRelocationTaskInfo = (testId: string, text: string | RegExp) =>
@@ -69,6 +73,12 @@ const getWaybillM15MenuItem = () => menuTestUtils.getMenuItem(/Сформиро�
 
 const clickWaybillM15MenuItem = (user: UserEvent) =>
   menuTestUtils.clickMenuItem(/Сформировать накладную М-15/, user)
+
+// execute task
+const getExecuteTaskMenuItem = () => menuTestUtils.getMenuItem('Выполнить заявку')
+
+const clickExecuteTaskMenuItem = (user: UserEvent) =>
+  menuTestUtils.clickMenuItem('Выполнить заявку', user)
 
 // loading
 const expectRelocationTaskLoadingFinished = spinnerTestUtils.expectLoadingFinished(
@@ -88,6 +98,9 @@ export const testUtils = {
 
   getWaybillM15MenuItem,
   clickWaybillM15MenuItem,
+
+  getExecuteTaskMenuItem,
+  clickExecuteTaskMenuItem,
 
   clickCloseButton: (user: UserEvent) => buttonTestUtils.clickCloseButtonIn(getContainer(), user),
 
@@ -581,5 +594,187 @@ describe('Информация о заявке о перемещении', () =>
         expect(notification).toBeInTheDocument()
       })
     })
+  })
+
+  describe('Выполнить заявку', () => {
+    test('Пункт меню отображается', async () => {
+      mockGetRelocationTaskSuccess(props.relocationTaskId!)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+      )
+
+      await testUtils.openMenu(user)
+      const item = testUtils.getExecuteTaskMenuItem()
+      expect(item).toBeInTheDocument()
+    })
+
+    test('Пункт меню активен если условия соблюдены', async () => {
+      const relocationTask = warehouseFixtures.relocationTask({
+        id: props.relocationTaskId!,
+        status: RelocationTaskStatusEnum.New,
+      })
+
+      mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          preloadedState: {
+            auth: getAuthState({
+              user: {
+                userId: relocationTask.createdBy!.id,
+                userRole: UserRoleEnum.FirstLineSupport,
+              },
+            }),
+            api: {
+              // @ts-ignore
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+              },
+            },
+          },
+        },
+      )
+
+      await testUtils.openMenu(user)
+      const item = testUtils.getExecuteTaskMenuItem()
+      await waitFor(() => {
+        menuTestUtils.expectMenuItemNotDisabled(item)
+      })
+    })
+
+    describe('Пункт меню не активен', () => {
+      test('Если условия соблюдены, но нет прав', async () => {
+        const relocationTask = warehouseFixtures.relocationTask({
+          id: props.relocationTaskId!,
+          status: RelocationTaskStatusEnum.New,
+        })
+
+        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          { store: getStoreWithAuth({ userId: relocationTask.createdBy!.id }) },
+        )
+
+        await testUtils.openMenu(user)
+        const item = testUtils.getExecuteTaskMenuItem()
+        menuTestUtils.expectMenuItemDisabled(item)
+      })
+
+      test('Если условия соблюдены, но создатель заявки не авторизованный пользователь', async () => {
+        const relocationTask = warehouseFixtures.relocationTask({
+          id: props.relocationTaskId!,
+          status: RelocationTaskStatusEnum.New,
+        })
+
+        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            preloadedState: {
+              api: {
+                // @ts-ignore
+                queries: {
+                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                },
+              },
+            },
+          },
+        )
+
+        await testUtils.openMenu(user)
+        const item = testUtils.getExecuteTaskMenuItem()
+        await waitFor(() => {
+          menuTestUtils.expectMenuItemDisabled(item)
+        })
+      })
+
+      test('Если условия соблюдены, но заявка отменена', async () => {
+        const relocationTask = warehouseFixtures.relocationTask({
+          id: props.relocationTaskId!,
+          status: RelocationTaskStatusEnum.Canceled,
+        })
+
+        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            store: getStoreWithAuth(
+              { userId: relocationTask.createdBy!.id },
+              undefined,
+              undefined,
+              { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
+            ),
+          },
+        )
+
+        await testUtils.openMenu(user)
+        const item = testUtils.getExecuteTaskMenuItem()
+        menuTestUtils.expectMenuItemDisabled(item)
+      })
+
+      test('Если условия соблюдены, но заявка закрыта', async () => {
+        const relocationTask = warehouseFixtures.relocationTask({
+          id: props.relocationTaskId!,
+          status: RelocationTaskStatusEnum.Closed,
+        })
+
+        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            store: getStoreWithAuth(
+              { userId: relocationTask.createdBy!.id },
+              undefined,
+              undefined,
+              { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
+            ),
+          },
+        )
+
+        await testUtils.openMenu(user)
+        const item = testUtils.getExecuteTaskMenuItem()
+        menuTestUtils.expectMenuItemDisabled(item)
+      })
+
+      test('Если условия соблюдены, но заявка завершена', async () => {
+        const relocationTask = warehouseFixtures.relocationTask({
+          id: props.relocationTaskId!,
+          status: RelocationTaskStatusEnum.Completed,
+        })
+
+        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            store: getStoreWithAuth(
+              { userId: relocationTask.createdBy!.id },
+              undefined,
+              undefined,
+              { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
+            ),
+          },
+        )
+
+        await testUtils.openMenu(user)
+        const item = testUtils.getExecuteTaskMenuItem()
+        menuTestUtils.expectMenuItemDisabled(item)
+      })
+    })
+
+    test.todo('При успешном запросе')
   })
 })

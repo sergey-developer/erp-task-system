@@ -7,10 +7,12 @@ import { fakeId } from '_tests_/utils'
 
 import getAuthState from './getAuthState'
 
+// todo: fix type api: any
 const getStoreWithAuth = (
   user?: Partial<AuthenticatedUser>,
   accessToken?: string,
   refreshToken?: string,
+  api?: any,
 ) =>
   setupStore({
     preloadedState: {
@@ -22,6 +24,7 @@ const getStoreWithAuth = (
         accessToken,
         refreshToken,
       }),
+      api,
     },
   })
 
