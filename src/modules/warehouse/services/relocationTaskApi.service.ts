@@ -5,6 +5,8 @@ import {
   RelocationTaskApiTagEnum,
 } from 'modules/warehouse/constants/relocationTask'
 import {
+  ExecuteRelocationTaskMutationArgs,
+  ExecuteRelocationTaskSuccessResponse,
   CreateRelocationTaskMutationArgs,
   CreateRelocationTaskSuccessResponse,
   GetRelocationEquipmentBalanceListQueryArgs,
@@ -23,6 +25,7 @@ import {
 import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
 import {
   getRelocationEquipmentBalanceListUrl,
+  executeRelocationTaskUrl,
   getRelocationEquipmentListUrl,
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
@@ -68,6 +71,28 @@ const relocationTaskApiService = baseApiService
           data: payload,
         }),
       }),
+      executeRelocationTask: build.mutation<
+        ExecuteRelocationTaskSuccessResponse,
+        ExecuteRelocationTaskMutationArgs
+        >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [RelocationTaskApiTagEnum.RelocationTask],
+        query: ({ relocationTaskId, documents }) => {
+          const formData = new FormData()
+
+          if (documents.length) {
+            documents.forEach((doc) => {
+              formData.append('documents', doc)
+            })
+          }
+
+          return {
+            url: executeRelocationTaskUrl(relocationTaskId),
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
       getRelocationTask: build.query<GetRelocationTaskSuccessResponse, GetRelocationTaskQueryArgs>({
         providesTags: (result, error) => (error ? [] : [RelocationTaskApiTagEnum.RelocationTask]),
         query: ({ relocationTaskId }) => ({
@@ -75,6 +100,7 @@ const relocationTaskApiService = baseApiService
           method: HttpMethodEnum.Get,
         }),
       }),
+
       getRelocationTaskList: build.query<
         GetRelocationTaskListTransformedSuccessResponse,
         GetRelocationTaskListQueryArgs
@@ -125,6 +151,7 @@ export const {
   useCreateRelocationTaskMutation,
   useUpdateRelocationTaskMutation,
   useGetRelocationTaskQuery,
+  useExecuteRelocationTaskMutation,
 
   useLazyGetRelocationTaskWaybillM15Query,
 

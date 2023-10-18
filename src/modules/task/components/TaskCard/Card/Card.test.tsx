@@ -30,7 +30,7 @@ import {
 import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskReclassificationRequestTestUtils } from '../../TaskReclassificationRequest/TaskReclassificationRequest.test'
-import { testUtils as taskResolutionModalTestUtils } from '../../TaskResolutionModal/TaskResolutionModal.test'
+import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskSuspendRequestTestUtils } from '../../TaskSuspendRequest/TaskSuspendRequest.test'
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
@@ -450,7 +450,7 @@ describe('Карточка заявки', () => {
 
         await cardTitleTestUtils.openMenu(user)
         await cardTitleTestUtils.clickExecuteTaskItem(user)
-        const modal = await taskResolutionModalTestUtils.findContainer()
+        const modal = await executeTaskModalTestUtils.findContainer()
 
         expect(modal).toBeInTheDocument()
       })
@@ -474,8 +474,8 @@ describe('Карточка заявки', () => {
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          const modal = await taskResolutionModalTestUtils.findContainer()
-          await taskResolutionModalTestUtils.clickCancelButton(user)
+          const modal = await executeTaskModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.clickCancelButton(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -498,8 +498,8 @@ describe('Карточка заявки', () => {
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          const modal = await taskResolutionModalTestUtils.findContainer()
-          await taskResolutionModalTestUtils.clickCloseButton(user)
+          const modal = await executeTaskModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.clickCloseButton(user)
 
           expect(modal).not.toBeInTheDocument()
         })
@@ -522,7 +522,7 @@ describe('Карточка заявки', () => {
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          const modal = await taskResolutionModalTestUtils.findContainer()
+          const modal = await executeTaskModalTestUtils.findContainer()
           await modalTestUtils.clickOutsideModal(user)
 
           expect(modal).not.toBeInTheDocument()
@@ -549,12 +549,12 @@ describe('Карточка заявки', () => {
 
         await cardTitleTestUtils.openMenu(user)
         await cardTitleTestUtils.clickExecuteTaskItem(user)
-        await taskResolutionModalTestUtils.findContainer()
+        await executeTaskModalTestUtils.findContainer()
 
-        await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-        await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-        await taskResolutionModalTestUtils.setAttachment(user)
-        await taskResolutionModalTestUtils.clickSubmitButton(user)
+        await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+        await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+        await executeTaskModalTestUtils.setAttachment(user)
+        await executeTaskModalTestUtils.clickSubmitButton(user)
 
         expect(props.resolveTask).toBeCalledTimes(1)
         expect(props.resolveTask).toBeCalledWith(expect.anything())
@@ -593,10 +593,10 @@ describe('Карточка заявки', () => {
 
         await cardTitleTestUtils.openMenu(user)
         await cardTitleTestUtils.clickExecuteTaskItem(user)
-        await taskResolutionModalTestUtils.findContainer()
+        await executeTaskModalTestUtils.findContainer()
 
-        await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-        await taskResolutionModalTestUtils.clickGetActButton(user)
+        await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+        await executeTaskModalTestUtils.clickGetActButton(user)
 
         expect(getTaskWorkPerformedActMock).toBeCalledTimes(1)
         expect(getTaskWorkPerformedActMock).toBeCalledWith(expect.anything())

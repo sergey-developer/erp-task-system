@@ -11,15 +11,11 @@ import NotFoundPage from 'components/Pages/NotFoundPage'
 
 import { RouteEnum } from './constants'
 
-const ChangePasswordPage = React.lazy(
-  () => import('modules/auth/pages/ChangePasswordPage'),
-)
+const ChangePasswordPage = React.lazy(() => import('modules/auth/pages/ChangePasswordPage'))
 
 // todo: разделить роуты по модулям
 
-export const getPrivateRoutesConfig = ({
-  isStaff,
-}: Pick<UserModel, 'isStaff'>): RouteObject[] => [
+export const getPrivateRoutesConfig = ({ isStaff }: Pick<UserModel, 'isStaff'>): RouteObject[] => [
   {
     path: RouteEnum.Root,
     element: <PrivateLayout />,
@@ -29,7 +25,9 @@ export const getPrivateRoutesConfig = ({
         element: <Navigate to={RouteEnum.TaskList} />,
       },
       taskRoute,
+
       manageWarehousesRoute,
+
       ...(isStaff ? [staffRoute] : []),
       {
         path: RouteEnum.ChangePassword,
