@@ -145,7 +145,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       dataIndex: 'price',
       title: 'Стоимость',
       valueType: 'digit',
-      fieldProps: { disabled: isLoading },
+      fieldProps: { disabled: isLoading, min: 0 },
     },
     {
       key: 'currency',
