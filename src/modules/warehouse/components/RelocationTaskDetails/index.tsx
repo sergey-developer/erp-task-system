@@ -23,6 +23,7 @@ import {
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationEquipmentListQueryArgs } from 'modules/warehouse/models'
+import { useExecuteRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
 
 import { MenuIcon } from 'components/Icons'
@@ -33,10 +34,20 @@ import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { mapUploadedFiles } from 'shared/utils/file'
+import { getFieldsErrors } from 'shared/utils/form'
+import { showErrorNotification } from 'shared/utils/notifications'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
+import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
 import { RelocationEquipmentTableProps } from '../RelocationEquipmentTable/types'
 import { RelocationTaskDetailsProps } from './types'
@@ -62,23 +73,24 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   >(initialRelocationEquipmentListParams)
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
-    useGetRelocationTask({ relocationTaskId: relocationTaskId! }, { skip: !relocationTaskId })
+    useGetRelocationTask({ relocationTaskId }, { skip: !relocationTaskId })
 
   const { currentData: relocationEquipmentList, isFetching: relocationEquipmentListIsFetching } =
     useGetRelocationEquipmentList(
-      { relocationTaskId: relocationTaskId!, ...relocationEquipmentListParams },
+      { relocationTaskId, ...relocationEquipmentListParams },
       { skip: !relocationTaskId },
     )
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
 
+  const [executeRelocationTaskMutation, { isLoading: executeRelocationTaskIsLoading }] =
+    useExecuteRelocationTaskMutation()
+
   const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const handleGetWaybillM15 = useDebounceFn(async () => {
-    if (!relocationTaskId) return
-
     try {
       const waybillM15 = await getWaybillM15({ relocationTaskId }).unwrap()
 
@@ -105,6 +117,34 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     },
     [handleTablePagination],
   )
+
+  const handleExecuteRelocationTask: ExecuteRelocationTaskModalProps['onSubmit'] = async (
+    values,
+    setFields,
+  ) => {
+    try {
+      await executeRelocationTaskMutation({
+        relocationTaskId,
+        documents: mapUploadedFiles(values.documents),
+      })
+
+      toggleOpenExecuteTaskModal()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
+
+          if (error.data.detail) {
+            showErrorNotification(error.data.detail)
+          }
+        } else if (isForbiddenError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        } else if (isNotFoundError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        }
+      }
+    }
+  }
 
   const title: DrawerProps['title'] = relocationTaskIsFetching ? (
     <Space>
@@ -273,9 +313,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         >
           <ExecuteRelocationTaskModal
             open={executeTaskModalOpened}
-            isLoading={false}
+            isLoading={executeRelocationTaskIsLoading}
             onCancel={debouncedToggleOpenExecuteTaskModal}
-            onSubmit={async () => {}}
+            onSubmit={handleExecuteRelocationTask}
           />
         </React.Suspense>
       )}
