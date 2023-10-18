@@ -15,7 +15,3 @@ export enum RelocationTaskApiTagEnum {
   RelocationTask = 'RelocationTask',
   RelocationEquipmentList = 'RelocationEquipmentList',
 }
-
-export enum RelocationTaskApiTagEnum {
-  RelocationTask = 'RelocationTask',
-}
