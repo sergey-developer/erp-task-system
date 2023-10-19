@@ -5,7 +5,6 @@ import { route as staffRoute } from 'modules/monitoring/routes'
 import { route as taskRoute } from 'modules/task/routes'
 import { route as manageWarehousesRoute } from 'modules/warehouse/routes'
 import { UserModel } from 'modules/user/models'
-import { route as manageWarehousesRoute } from 'modules/warehouse/routes'
 
 import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
