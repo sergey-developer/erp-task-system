@@ -222,6 +222,7 @@ describe('Вкладка списка заданий', () => {
 
     test('При нажатии открывает модалку создания задания', async () => {
       mockGetSubTaskListSuccess(props.task.id)
+      mockGetSupportGroupListSuccess()
       mockGetSubTaskTemplateListSuccess()
 
       const { user } = render(
