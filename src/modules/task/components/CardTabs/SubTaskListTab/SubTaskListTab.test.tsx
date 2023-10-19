@@ -85,6 +85,7 @@ notificationTestUtils.setupNotifications()
 describe('Вкладка списка заданий', () => {
   describe('Кнопка создания задания', () => {
     test('Отображается', () => {
+      mockGetSubTaskListSuccess(props.task.id)
       render(<SubTaskListTab {...props} />)
       expect(testUtils.getCreateSubTaskButton()).toBeInTheDocument()
     })
