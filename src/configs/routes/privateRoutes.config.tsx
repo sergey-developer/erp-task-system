@@ -3,6 +3,7 @@ import { Navigate, RouteObject } from 'react-router-dom'
 
 import { route as staffRoute } from 'modules/monitoring/routes'
 import { route as taskRoute } from 'modules/task/routes'
+import { route as manageWarehousesRoute } from 'modules/warehouse/routes'
 import { UserModel } from 'modules/user/models'
 
 import PrivateLayout from 'components/Layouts/PrivateLayout'
@@ -29,8 +30,7 @@ export const getPrivateRoutesConfig = ({
       },
       taskRoute,
 
-      /* заменчено временно только для rc */
-      // manageWarehousesRoute,
+      manageWarehousesRoute,
 
       ...(isStaff ? [staffRoute] : []),
       {
