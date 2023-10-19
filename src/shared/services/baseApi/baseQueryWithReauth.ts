@@ -3,7 +3,7 @@ import { Mutex } from 'async-mutex'
 import { refreshToken as refreshTokenAction } from 'modules/auth/auth.slice'
 import { AuthApiEnum } from 'modules/auth/constants'
 import { RefreshTokenSuccessResponse } from 'modules/auth/models'
-import authLocalStorageService from 'modules/auth/services/authLocalStorage.service'
+import { authLocalStorageService } from 'modules/auth/services/authLocalStorage.service'
 import { RefreshTokenActionPayload } from 'modules/auth/types'
 import { logoutAndClearTokens, parseJwt } from 'modules/auth/utils'
 

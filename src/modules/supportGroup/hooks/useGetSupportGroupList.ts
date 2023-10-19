@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
 import {
@@ -17,10 +17,16 @@ type UseGetSupportGroupListResult = CustomUseQueryHookResult<
   GetSupportGroupListSuccessResponse
 >
 
+type UseGetSupportGroupListOptions = CustomUseQueryOptions<
+  GetSupportGroupListQueryArgs,
+  GetSupportGroupListSuccessResponse
+>
+
 export const useGetSupportGroupList = (
   args?: GetSupportGroupListQueryArgs,
+  options?: UseGetSupportGroupListOptions,
 ): UseGetSupportGroupListResult => {
-  const state = useGetSupportGroupListQuery(args)
+  const state = useGetSupportGroupListQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {

@@ -8,6 +8,7 @@ import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
 import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'modules/user/constants'
 import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
@@ -24,6 +25,7 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
+import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 import { useTimeZoneListState } from 'shared/hooks/catalogs/timeZone'
 import { useUserStatusListState } from 'shared/hooks/catalogs/userStatus'
 import {
@@ -48,7 +50,8 @@ const PrivateHeader: FC = () => {
 
   const { data: timeZoneList, isFetching: timeZoneListIsFetching } = useTimeZoneListState()
 
-  const { data: userStatusList, isFetching: userStatusListIsFetching } = useUserStatusListState()
+  const { data: userStatusList = [], isFetching: userStatusListIsFetching } =
+    useUserStatusListState()
 
   const [updateUserTimeZoneMutation, { isLoading: updateUserTimeZoneIsLoading }] =
     useUpdateUserTimeZoneMutation()
@@ -65,7 +68,7 @@ const PrivateHeader: FC = () => {
 
   const userStatusOptions = useMemo<DefaultOptionType[]>(
     () =>
-      userStatusList?.length
+      userStatusList.length
         ? userStatusList.map((status) => ({
             value: status.id,
             label: (
@@ -92,11 +95,19 @@ const PrivateHeader: FC = () => {
     }
   }
 
-  const handleSelectUserStatus = async (status: number) => {
+  const handleUpdateUserStatus = async (statusId: number) => {
     if (!userMe) return
 
     try {
-      await updateUserStatusMutation({ userId: userMe.id, status }).unwrap()
+      await updateUserStatusMutation({ userId: userMe.id, status: statusId }).unwrap()
+
+      if (userStatusList.length) {
+        const status = userStatusList.find((status) => status.id === statusId)
+
+        if (status?.code === UserStatusCodeEnum.Offline) {
+          taskLocalStorageService.clearTaskListPageFilters()
+        }
+      }
     } catch (error) {
       if (isErrorResponse(error)) {
         if (
@@ -148,7 +159,7 @@ const PrivateHeader: FC = () => {
                 loading={userStatusListIsFetching}
                 disabled={updateUserStatusIsLoading}
                 value={userMe?.status.id}
-                onSelect={handleSelectUserStatus}
+                onSelect={handleUpdateUserStatus}
               />
             )}
 

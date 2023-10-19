@@ -13,9 +13,10 @@ const supportGroupApiService = baseApiService.injectEndpoints({
       GetSupportGroupListSuccessResponse,
       GetSupportGroupListQueryArgs
     >({
-      query: () => ({
+      query: (params) => ({
         url: SupportGroupApiEnum.GetSupportGroupList,
         method: HttpMethodEnum.Get,
+        params,
       }),
     }),
   }),

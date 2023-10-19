@@ -1,3 +1,4 @@
+import { UserStatusModel } from 'shared/models/catalogs/userStatus'
 import { IdType } from 'shared/types/common'
 
 export type UpdateUserStatusMutationArgs = {
@@ -5,4 +6,4 @@ export type UpdateUserStatusMutationArgs = {
   status: number
 }
 
-export type UpdateUserStatusSuccessResponse = void
+export type UpdateUserStatusSuccessResponse = UserStatusModel

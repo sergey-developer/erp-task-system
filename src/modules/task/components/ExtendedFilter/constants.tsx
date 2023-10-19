@@ -18,20 +18,7 @@ import { SearchFields } from 'modules/task/models'
 
 import { StringMap } from 'shared/types/utils'
 
-import { ExtendedFilterFormFields } from './types'
-
 export const DEFAULT_SEARCH_FIELD: keyof SearchFields = 'searchByTitle'
-
-export const initialExtendedFilterFormValues: Readonly<ExtendedFilterFormFields> = {
-  completeAt: [],
-  searchField: DEFAULT_SEARCH_FIELD,
-  searchValue: '',
-  status: [],
-  isOverdue: [],
-  isAssigned: [],
-  workGroupId: undefined,
-  manager: undefined,
-}
 
 export const searchFieldDict: Readonly<StringMap<keyof SearchFields>> = {
   searchByName: 'Объект',

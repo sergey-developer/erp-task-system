@@ -9,10 +9,13 @@ import { useCreateSubTask } from 'modules/task/hooks/subTask'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/constants/selectField'
-import { validationSizes } from 'shared/constants/validation'
+import {
+  onlyRequiredRules,
+  requiredStringRules,
+  validationSizes,
+} from 'shared/constants/validation'
 import { useGetSubTaskTemplateList } from 'shared/hooks/catalogs/subTaskTemplate'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
-import { MaybeUndefined } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
 
 import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './types'
@@ -20,29 +23,14 @@ import { CreateSubTaskFormFields, CreateSubTaskModalProps } from './types'
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-const supportGroupValidationRules: Rule[] = [{ required: true }]
-const templateX5ValidationRules: Rule[] = [{ required: true }]
-const titleValidationRules: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: validationSizes.string.short,
-  },
-]
-
-const descriptionValidationRules: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: validationSizes.string.long,
-  },
-]
+const titleRules: Rule[] = requiredStringRules.concat([{ max: validationSizes.string.short }])
+const descriptionRules: Rule[] = requiredStringRules.concat([{ max: validationSizes.string.long }])
 
 const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => {
   const [form] = Form.useForm<CreateSubTaskFormFields>()
 
   const [selectedSupportGroup, setSelectedSupportGroup] =
-    useState<MaybeUndefined<SupportGroupListItemModel['id']>>()
+    useState<SupportGroupListItemModel['id']>()
 
   const modalTitle = (
     <Text>
@@ -59,7 +47,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
     )
 
   const { currentData: supportGroupList, isFetching: supportGroupListIsFetching } =
-    useGetSupportGroupList()
+    useGetSupportGroupList({ hasTemplate: true })
 
   const {
     fn: createSubTask,
@@ -103,10 +91,10 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
         preserve={false}
       >
         <Form.Item
-          data-testid='supportGroup'
+          data-testid='support-group-form-item'
           label='Группа поддержки'
           name='supportGroup'
-          rules={supportGroupValidationRules}
+          rules={onlyRequiredRules}
         >
           <Select<SupportGroupListItemModel['id'], SupportGroupListItemModel>
             placeholder='Доступные группы'
@@ -119,10 +107,10 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
         </Form.Item>
 
         <Form.Item
-          data-testid='service'
+          data-testid='service-form-item'
           label='Сервис'
           name='templateX5'
-          rules={templateX5ValidationRules}
+          rules={onlyRequiredRules}
         >
           <Select
             placeholder='Наименование сервиса'
@@ -134,10 +122,10 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
         </Form.Item>
 
         <Form.Item
-          data-testid='title'
+          data-testid='title-form-item'
           label='Краткое описание'
           name='title'
-          rules={titleValidationRules}
+          rules={titleRules}
         >
           <Input
             placeholder='Опишите коротко задачу'
@@ -147,10 +135,10 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
         </Form.Item>
 
         <Form.Item
-          data-testid='description'
+          data-testid='description-form-item'
           label='Подробное описание'
           name='description'
-          rules={descriptionValidationRules}
+          rules={descriptionRules}
         >
           <TextArea
             placeholder='Расскажите подробнее о задаче'

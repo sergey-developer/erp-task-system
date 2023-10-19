@@ -31,13 +31,13 @@ const userApiService = baseApiService.injectEndpoints({
       UpdateUserTimeZoneSuccessResponse,
       UpdateUserTimeZoneMutationArgs
     >({
+      invalidatesTags: (result, error) =>
+        error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.Task],
       query: ({ userId, ...payload }) => ({
         url: updateUserUrl(userId),
         method: HttpMethodEnum.Patch,
         data: payload,
       }),
-      invalidatesTags: (result, error) =>
-        error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.Task],
       onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
         try {
           const { data: updatedUser } = await queryFulfilled
@@ -75,16 +75,14 @@ const userApiService = baseApiService.injectEndpoints({
         }),
         onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
           try {
-            await queryFulfilled
+            const { data } = await queryFulfilled
 
             dispatch(
               baseApiService.util.updateQueryData(
                 'getUserMe' as never,
                 undefined as never,
                 (user: UserModel) => {
-                  Object.assign(user, {
-                    status: { ...user.status, id: payload.status },
-                  })
+                  Object.assign(user, { status: data })
                 },
               ),
             )

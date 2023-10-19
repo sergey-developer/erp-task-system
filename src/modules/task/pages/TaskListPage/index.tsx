@@ -1,17 +1,21 @@
-import { useBoolean, usePrevious } from 'ahooks'
+import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
+import pick from 'lodash/pick'
 import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
+import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import ExtendedFilter from 'modules/task/components/ExtendedFilter'
-import { initialExtendedFilterFormValues } from 'modules/task/components/ExtendedFilter/constants'
 import {
   ExtendedFilterFormFields,
   ExtendedFilterProps,
 } from 'modules/task/components/ExtendedFilter/types'
+import ExtendedFilterList, {
+  ExtendedFilterListItem,
+} from 'modules/task/components/ExtendedFilterList'
 import FastFilterList from 'modules/task/components/FastFilterList'
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskListLayout from 'modules/task/components/TaskListLayout'
@@ -31,54 +35,129 @@ import {
   GetTaskListQueryArgs,
   TaskIdFilterQueries,
 } from 'modules/task/models'
-import { useGetUserList, useUserRole } from 'modules/user/hooks'
+import { TaskListPageFiltersStorage } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import { parseTaskListPageFilters } from 'modules/task/services/taskLocalStorage/utils/taskListPageFilters'
+import {
+  useOnChangeUserStatus,
+  UseOnChangeUserStatusFn,
+  useUserRole,
+} from 'modules/user/hooks'
+import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
+import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import { SyncIcon } from 'components/Icons'
 
+import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 import { SortOrderEnum } from 'shared/constants/sort'
+import { StorageKeysEnum } from 'shared/constants/storage'
+import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { IdType } from 'shared/types/common'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled } from './styles'
-import { getInitialFastFilter, mapExtendedFilterFormFieldsToQueries } from './utils'
+import {
+  getInitialExtendedFilterFormValues,
+  getInitialFastFilter,
+  mapExtendedFilterFormFieldsToQueries,
+} from './utils'
 
 const { Search } = Input
+const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
 
 const TaskListPage: FC = () => {
   const breakpoints = useBreakpoint()
+
   const { role } = useUserRole()
+
   const colRef = useRef<number>()
 
-  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<IdType>>(null)
 
   const [taskAdditionalInfoExpanded, { toggle: toggleTaskAdditionalInfoExpanded }] =
     useBoolean(false)
 
-  const [isExtendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
+  const initialFastFilter = getInitialFastFilter(role)
+  const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+
+  const [extendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
+
+  const [preloadedExtendedFilters, setPreloadedExtendedFilters] = useLocalStorageState<
+    MaybeUndefined<TaskListPageFiltersStorage>
+  >(StorageKeysEnum.TaskListPageFilters)
+
+  const [selectedCustomers, setSelectedCustomers] = useState<MaybeUndefined<IdType[]>>(
+    preloadedExtendedFilters?.customers,
+  )
+  const [selectedMacroregions, setSelectedMacroregions] = useState<MaybeUndefined<IdType[]>>(
+    preloadedExtendedFilters?.macroregions,
+  )
 
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
-    useState<ExtendedFilterFormFields>(initialExtendedFilterFormValues)
+    useSetState<ExtendedFilterFormFields>({
+      ...initialExtendedFilterFormValues,
+      ...preloadedExtendedFilters,
+    })
 
-  const initialFastFilter = getInitialFastFilter(role)
-
-  const [queryArgs, setQueryArgs] = useState<GetTaskListQueryArgs>({
+  const [taskListQueryArgs, setTaskListQueryArgs] = useSetState<GetTaskListQueryArgs>(() => ({
     filter: initialFastFilter,
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
+    ...preloadedExtendedFilters,
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
-  })
-
-  const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+  }))
 
   const [searchValue, setSearchValue] = useState<string>()
 
-  const [appliedFilterType, setAppliedFilterType] = useState<MaybeNull<FilterTypeEnum>>(
-    FilterTypeEnum.Fast,
+  const [appliedFilterType, setAppliedFilterType] = useState<FilterTypeEnum>(FilterTypeEnum.Fast)
+  const prevAppliedFilterType = usePrevious<typeof appliedFilterType>(appliedFilterType)
+
+  // todo: refactor to avoid setting undefined
+  const triggerFilterChange = useCallback(
+    (filterQueryParams: ExtendedFilterQueries | FastFilterQueries | TaskIdFilterQueries) => {
+      setTaskListQueryArgs((prevState) => ({
+        ...prevState,
+        offset: 0,
+        completeAtFrom: undefined,
+        completeAtTo: undefined,
+        filter: undefined,
+        status: undefined,
+        isOverdue: undefined,
+        isAssigned: undefined,
+        searchByAssignee: undefined,
+        searchByName: undefined,
+        searchByTitle: undefined,
+        taskId: undefined,
+        workGroupId: undefined,
+        manager: undefined,
+        ...filterQueryParams,
+      }))
+    },
+    [setTaskListQueryArgs],
   )
 
-  const previousAppliedFilterType = usePrevious<typeof appliedFilterType>(appliedFilterType)
+  const onUpdateUserStatus = useCallback<UseOnChangeUserStatusFn>(
+    (status) => {
+      if (status.code === UserStatusCodeEnum.Offline) {
+        setPreloadedExtendedFilters(undefined)
+        const initialSupportGroupFilters = pick(
+          initialExtendedFilterFormValues,
+          'customers',
+          'macroregions',
+          'supportGroups',
+        )
+        setExtendedFilterFormValues(initialSupportGroupFilters)
+        setSelectedCustomers(initialSupportGroupFilters.customers)
+        setSelectedMacroregions(initialSupportGroupFilters.macroregions)
+        triggerFilterChange(initialSupportGroupFilters)
+      }
+    },
+    [setExtendedFilterFormValues, setPreloadedExtendedFilters, triggerFilterChange],
+  )
+
+  useOnChangeUserStatus(onUpdateUserStatus)
 
   useLayoutEffect(() => {
     const taskListLayoutEl: MaybeNull<HTMLElement> = document.querySelector('.task-list-layout')
@@ -108,11 +187,6 @@ const TaskListPage: FC = () => {
     refetch: refetchTaskCounters,
   } = useGetTaskCounters()
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
-    { isManager: true },
-    { skip: !isExtendedFilterOpened },
-  )
-
   /**
    * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
    * Это также можно сделать если передать аргумент `skip` в обычный Query, но тогда
@@ -122,33 +196,66 @@ const TaskListPage: FC = () => {
   const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] = useLazyGetTaskList()
 
   useEffect(() => {
-    if (queryArgs.sort && !sortableFieldToSortValues.status.includes(queryArgs.sort)) {
-      getTaskList(queryArgs)
+    if (
+      taskListQueryArgs.sort &&
+      !sortableFieldToSortValues.status.includes(taskListQueryArgs.sort)
+    ) {
+      getTaskList(taskListQueryArgs)
     }
-  }, [getTaskList, queryArgs])
+  }, [getTaskList, taskListQueryArgs])
+
+  /* закоменчено временно только для rc */
+  // const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
+  //   { isManager: true },
+  //   { skip: !extendedFilterOpened },
+  // )
+
+  const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
+    undefined,
+    { skip: !extendedFilterOpened },
+  )
+
+  const { currentData: supportGroupList = [], isFetching: supportGroupListIsFetching } =
+    useGetSupportGroupList(
+      {
+        customers: selectedCustomers,
+        macroregions: selectedMacroregions,
+      },
+      { skip: !extendedFilterOpened },
+    )
+
+  const { currentData: macroregionList = [], isFetching: macroregionListIsFetching } =
+    useGetMacroregionList({ customers: selectedCustomers }, { skip: !extendedFilterOpened })
+
+  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroupList(
+    undefined,
+    { skip: !extendedFilterOpened },
+  )
 
   const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
 
   const handleExtendedFilterSubmit: ExtendedFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
-    toggleOpenExtendedFilter()
     setExtendedFilterFormValues(values)
-    setFastFilter(undefined)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
+    setPreloadedExtendedFilters(pick(values, 'customers', 'macroregions', 'supportGroups'))
+    setFastFilter(undefined)
+    toggleOpenExtendedFilter()
     handleCloseTaskCard()
+  }
+
+  const resetExtendedFilterToInitialValues = () => {
+    setExtendedFilterFormValues(initialExtendedFilterFormValues)
+    setSelectedCustomers(initialExtendedFilterFormValues.customers)
+    setSelectedMacroregions(initialExtendedFilterFormValues.macroregions)
   }
 
   const handleFastFilterChange = (value: FastFilterEnum) => {
     setAppliedFilterType(FilterTypeEnum.Fast)
     setFastFilter(value)
-
-    setExtendedFilterFormValues(initialExtendedFilterFormValues)
+    resetExtendedFilterToInitialValues()
     setSearchValue(undefined)
-
-    triggerFilterChange({
-      filter: value,
-    })
-
+    triggerFilterChange({ filter: value })
     handleCloseTaskCard()
   }
 
@@ -156,17 +263,15 @@ const TaskListPage: FC = () => {
     (value) => {
       if (value) {
         setAppliedFilterType(FilterTypeEnum.Search)
-        triggerFilterChange({
-          taskId: value,
-        })
+        triggerFilterChange({ taskId: value })
       } else {
-        if (!previousAppliedFilterType) return
+        if (!prevAppliedFilterType) return
 
-        setAppliedFilterType(previousAppliedFilterType!)
+        setAppliedFilterType(prevAppliedFilterType!)
 
-        const prevFilter = isEqual(previousAppliedFilterType, FilterTypeEnum.Extended)
+        const prevFilter = isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)
           ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
-          : isEqual(previousAppliedFilterType, FilterTypeEnum.Fast)
+          : isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)
           ? { filter: fastFilter }
           : {}
 
@@ -175,7 +280,7 @@ const TaskListPage: FC = () => {
 
       handleCloseTaskCard()
     },
-    [previousAppliedFilterType, extendedFilterFormValues, fastFilter],
+    [prevAppliedFilterType, extendedFilterFormValues, fastFilter],
   )
 
   const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) => {
@@ -197,32 +302,31 @@ const TaskListPage: FC = () => {
     setSelectedTaskId(null)
   }, [setSelectedTaskId])
 
-  const handleTableSort = (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
-    /**
-     * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
-     * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
-     * при изначальной реализации
-     */
-    if (sorter) {
-      const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
+  const handleTableSort = useCallback(
+    (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
+      /**
+       * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
+       * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
+       * при изначальной реализации
+       */
+      if (sorter) {
+        const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
 
-      if (columnKey && columnKey in sortableFieldToSortValues) {
-        setQueryArgs((prevState) => ({
-          ...prevState,
-          sort: getSort(columnKey as SortableField, order || SortOrderEnum.Ascend),
-        }))
+        if (columnKey && columnKey in sortableFieldToSortValues) {
+          setTaskListQueryArgs({
+            sort: getSort(columnKey as SortableField, order || SortOrderEnum.Ascend),
+          })
+        }
       }
-    }
-  }
+    },
+    [setTaskListQueryArgs],
+  )
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<TaskTableProps['onChange']>[0]) => {
-      setQueryArgs((prevState) => ({
-        ...prevState,
-        ...calculatePaginationParams(pagination),
-      }))
+      setTaskListQueryArgs(calculatePaginationParams(pagination))
     },
-    [],
+    [setTaskListQueryArgs],
   )
 
   const handleChangeTable = useCallback<TaskTableProps['onChange']>(
@@ -230,36 +334,14 @@ const TaskListPage: FC = () => {
       handleTableSort(sorter)
       handleTablePagination(pagination)
     },
-    [handleTablePagination],
+    [handleTablePagination, handleTableSort],
   )
 
-  const triggerFilterChange = (
-    filterQueryParams: ExtendedFilterQueries | FastFilterQueries | TaskIdFilterQueries,
-  ) => {
-    setQueryArgs((prevState) => ({
-      ...prevState,
-      offset: 0,
-      completeAtFrom: undefined,
-      completeAtTo: undefined,
-      filter: undefined,
-      status: undefined,
-      isOverdue: undefined,
-      isAssigned: undefined,
-      searchByAssignee: undefined,
-      searchByName: undefined,
-      searchByTitle: undefined,
-      taskId: undefined,
-      workGroupId: undefined,
-      manager: undefined,
-      ...filterQueryParams,
-    }))
-  }
-
   const handleRefetchTaskList = useDebounceFn(() => {
-    getTaskList(queryArgs)
+    getTaskList(taskListQueryArgs)
     handleCloseTaskCard()
     refetchTaskCounters()
-  }, [getTaskList, queryArgs])
+  }, [getTaskList, taskListQueryArgs])
 
   const searchFilterApplied: boolean = isEqual(appliedFilterType, FilterTypeEnum.Search)
 
@@ -269,6 +351,14 @@ const TaskListPage: FC = () => {
     [selectedTaskId],
   )
 
+  const handleCloseFilter = (filter: ExtendedFilterListItem) => {
+    setPreloadedExtendedFilters((prevState) => ({ ...prevState, [filter.name]: undefined }))
+    setExtendedFilterFormValues({ [filter.name]: undefined })
+    if (filter.name === 'customers') setSelectedCustomers([])
+    if (filter.name === 'macroregions') setSelectedMacroregions([])
+    triggerFilterChange({ [filter.name]: undefined })
+  }
+
   return (
     <TaskListLayout>
       <Row data-testid='task-list-page' gutter={[0, 40]}>
@@ -277,15 +367,28 @@ const TaskListPage: FC = () => {
             <Col xxl={16} xl={14}>
               <Row align='middle' gutter={[30, 30]}>
                 <Col span={17}>
-                  <FastFilterList
-                    data={taskCounters}
-                    selectedFilter={queryArgs.filter}
-                    onChange={handleFastFilterChange}
-                    isShowCounters={!isGetTaskCountersError}
-                    disabled={taskListIsFetching}
-                    isLoading={taskCountersIsFetching}
-                    userRole={role}
-                  />
+                  <Row gutter={[16, 16]}>
+                    {preloadedExtendedFilters && (
+                      <Col>
+                        <ExtendedFilterList
+                          data={parseTaskListPageFilters(preloadedExtendedFilters)}
+                          onClose={handleCloseFilter}
+                        />
+                      </Col>
+                    )}
+
+                    <Col>
+                      <FastFilterList
+                        data={taskCounters}
+                        selectedFilter={taskListQueryArgs.filter}
+                        onChange={handleFastFilterChange}
+                        isShowCounters={!isGetTaskCountersError}
+                        disabled={taskListIsFetching}
+                        isLoading={taskCountersIsFetching}
+                        userRole={role}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
 
                 <Col xl={5} xxl={3}>
@@ -333,7 +436,7 @@ const TaskListPage: FC = () => {
             <ColStyled span={selectedTaskId ? (breakpoints.xxl ? 15 : 12) : 24}>
               <TaskTable
                 rowClassName={getTableRowClassName}
-                sort={queryArgs.sort}
+                sort={taskListQueryArgs.sort}
                 onRow={handleTableRowClick}
                 dataSource={taskList?.results || []}
                 loading={taskListIsFetching}
@@ -357,12 +460,23 @@ const TaskListPage: FC = () => {
         </Col>
       </Row>
 
-      {isExtendedFilterOpened && (
+      {extendedFilterOpened && (
         <ExtendedFilter
           formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
-          userList={userList}
-          userListIsLoading={userListIsFetching}
+          customerList={customerList}
+          customerListIsLoading={customerListIsFetching}
+          onChangeCustomers={setSelectedCustomers}
+          macroregionList={macroregionList}
+          macroregionListIsLoading={macroregionListIsFetching}
+          onChangeMacroregions={setSelectedMacroregions}
+          supportGroupList={supportGroupList}
+          supportGroupListIsLoading={supportGroupListIsFetching}
+          /* закоменчено временно только для rc */
+          // userList={userList}
+          // userListIsLoading={userListIsFetching}
+          workGroupList={workGroupList}
+          workGroupListIsLoading={workGroupListIsFetching}
           onClose={debouncedToggleOpenExtendedFilter}
           onSubmit={handleExtendedFilterSubmit}
         />

@@ -181,19 +181,19 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
               <Row gutter={20}>
                 <Col span={8}>
                   <LabeledData label='Влияние'>
-                    <Text>{impact}</Text>
+                    <Text>{valueOrHyphen(impact)}</Text>
                   </LabeledData>
                 </Col>
 
                 <Col span={8}>
                   <LabeledData label='Срочность'>
-                    <Text>{severity}</Text>
+                    <Text>{valueOrHyphen(severity)}</Text>
                   </LabeledData>
                 </Col>
 
                 <Col span={8}>
                   <LabeledData label='Приоритет'>
-                    <Text>{priority}</Text>
+                    <Text>{valueOrHyphen(priority)}</Text>
                   </LabeledData>
                 </Col>
               </Row>

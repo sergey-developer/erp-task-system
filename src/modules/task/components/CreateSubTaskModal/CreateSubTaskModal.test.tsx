@@ -5,7 +5,7 @@ import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
 import { createSubTaskMessages } from 'modules/task/constants/task'
 
 import { getSubTaskTemplateListMessages } from 'shared/constants/catalogs'
-import { validationMessages, validationSizes } from 'shared/constants/validation'
+import { validationMessages } from 'shared/constants/validation'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
@@ -44,7 +44,7 @@ const findContainer = () => screen.findByTestId('create-sub-task-modal')
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // support group field
-const getSupportGroupFormItem = () => within(getContainer()).getByTestId('supportGroup')
+const getSupportGroupFormItem = () => within(getContainer()).getByTestId('support-group-form-item')
 const getSupportGroupSelect = () => selectTestUtils.getSelect(getSupportGroupFormItem())
 const querySupportGroupSelect = () => selectTestUtils.querySelect(getSupportGroupFormItem())
 
@@ -76,7 +76,7 @@ const supportGroupExpectLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getSupportGroupFormItem())
 
 // service field
-const getServiceFieldFormItem = () => within(getContainer()).getByTestId('service')
+const getServiceFieldFormItem = () => within(getContainer()).getByTestId('service-form-item')
 const getServiceField = () => selectTestUtils.getSelect(getServiceFieldFormItem())
 const queryServiceField = () => selectTestUtils.querySelect(getServiceFieldFormItem())
 
@@ -107,7 +107,7 @@ const serviceExpectLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getServiceFieldFormItem())
 
 // title field
-const getTitleFieldContainer = () => within(getContainer()).getByTestId('title')
+const getTitleFieldContainer = () => within(getContainer()).getByTestId('title-form-item')
 
 const getTitleField = () =>
   within(getTitleFieldContainer()).getByPlaceholderText('Опишите коротко задачу')
@@ -120,15 +120,11 @@ const setTitle = async (user: UserEvent, value: string) => {
   return field
 }
 
-const resetTitle = async (user: UserEvent) => {
-  const button = buttonTestUtils.getButtonIn(getTitleFieldContainer(), 'close-circle')
-  await user.click(button)
-}
-
 const findTitleFieldError = (error: string) => within(getTitleFieldContainer()).findByText(error)
 
 // description field
-const getDescriptionFieldContainer = () => within(getContainer()).getByTestId('description')
+const getDescriptionFieldContainer = () =>
+  within(getContainer()).getByTestId('description-form-item')
 
 const getDescriptionField = () =>
   within(getDescriptionFieldContainer()).getByPlaceholderText('Расскажите подробнее о задаче')
@@ -140,11 +136,6 @@ const setDescription = async (user: UserEvent, value: string) => {
   const field = getDescriptionField()
   await user.type(field, value)
   return field
-}
-
-const resetDescription = async (user: UserEvent) => {
-  const button = buttonTestUtils.getButtonIn(getDescriptionFieldContainer(), 'close-circle')
-  await user.click(button)
 }
 
 const findDescriptionFieldError = (error: string) =>
@@ -230,14 +221,12 @@ export const testUtils = {
     getField: getTitleField,
     getLabel: getTitleFieldLabel,
     setValue: setTitle,
-    resetValue: resetTitle,
     findError: findTitleFieldError,
   },
   description: {
     getField: getDescriptionField,
     getLabel: getDescriptionFieldLabel,
     setValue: setDescription,
-    resetValue: resetDescription,
     findError: findDescriptionFieldError,
   },
   setFormValues,
@@ -556,32 +545,6 @@ describe('Модалка создания задачи заявки', () => {
         expect(testUtils.title.getLabel()).toBeInTheDocument()
       })
 
-      test('Не активно во время создания задачи', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
-
-        const fakeTemplate = catalogsFixtures.subTaskTemplate()
-        mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
-
-        mockCreateSubTaskSuccess(props.task.id)
-
-        const { user } = render(<CreateSubTaskModal {...props} />, {
-          store: getStoreWithAuth(),
-        })
-
-        await testUtils.supportGroup.expectLoadingFinished()
-        await testUtils.setFormValues(user, {
-          title: fakeWord(),
-          description: fakeWord(),
-          supportGroup: fakeSupportGroupListItem.name,
-          templateX5: fakeTemplate.title,
-        })
-        await testUtils.clickSubmitButton(user)
-        await testUtils.expectLoadingStarted()
-
-        expect(testUtils.title.getField()).toBeDisabled()
-      })
-
       test('Можно ввести значение', async () => {
         mockGetSupportGroupListSuccess()
 
@@ -599,18 +562,6 @@ describe('Модалка создания задачи заявки', () => {
         const field = await testUtils.title.setValue(user, value)
 
         expect(field).toHaveDisplayValue(value)
-      })
-
-      test('Можно очистить значение', async () => {
-        mockGetSupportGroupListSuccess()
-
-        const { user } = render(<CreateSubTaskModal {...props} />)
-
-        const value = fakeWord()
-        await testUtils.title.setValue(user, value)
-        await testUtils.title.resetValue(user)
-
-        expect(testUtils.title.getField()).not.toHaveDisplayValue(value)
       })
 
       describe('Соответствующая ошибка отображается под полем', () => {
@@ -652,29 +603,6 @@ describe('Модалка создания задачи заявки', () => {
             await testUtils.title.findError(validationMessages.canNotBeEmpty),
           ).toBeInTheDocument()
         })
-
-        test('Если превысить лимит символов', async () => {
-          mockGetSupportGroupListSuccess()
-
-          const { user } = render(
-            <CreateSubTaskModal
-              {...props}
-              task={{
-                ...props.task,
-                title: '',
-              }}
-            />,
-          )
-
-          await testUtils.title.setValue(
-            user,
-            fakeWord({ length: validationSizes.string.short + 1 }),
-          )
-
-          expect(
-            await testUtils.title.findError(validationMessages.string.max.short),
-          ).toBeInTheDocument()
-        })
       })
     })
 
@@ -690,32 +618,6 @@ describe('Модалка создания задачи заявки', () => {
         expect(field).toBeEnabled()
         expect(field).toHaveDisplayValue(props.task.description!)
         expect(testUtils.description.getLabel()).toBeInTheDocument()
-      })
-
-      test('Не активно во время создания задачи', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
-
-        const fakeTemplate = catalogsFixtures.subTaskTemplate()
-        mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
-
-        mockCreateSubTaskSuccess(props.task.id)
-
-        const { user } = render(<CreateSubTaskModal {...props} />, {
-          store: getStoreWithAuth(),
-        })
-
-        await testUtils.supportGroup.expectLoadingFinished()
-        await testUtils.setFormValues(user, {
-          title: fakeWord(),
-          description: fakeWord(),
-          supportGroup: fakeSupportGroupListItem.name,
-          templateX5: fakeTemplate.title,
-        })
-        await testUtils.clickSubmitButton(user)
-        await testUtils.expectLoadingStarted()
-
-        expect(testUtils.description.getField()).toBeDisabled()
       })
 
       test('Можно ввести значение', async () => {
@@ -735,18 +637,6 @@ describe('Модалка создания задачи заявки', () => {
         const field = await testUtils.description.setValue(user, value)
 
         expect(field).toHaveDisplayValue(value)
-      })
-
-      test('Можно очистить значение', async () => {
-        mockGetSupportGroupListSuccess()
-
-        const { user } = render(<CreateSubTaskModal {...props} />)
-
-        const value = fakeWord()
-        await testUtils.description.setValue(user, value)
-        await testUtils.description.resetValue(user)
-
-        expect(testUtils.description.getField()).not.toHaveDisplayValue(value)
       })
 
       describe('Соответствующая ошибка отображается под полем', () => {
@@ -787,29 +677,6 @@ describe('Модалка создания задачи заявки', () => {
 
           expect(
             await testUtils.description.findError(validationMessages.canNotBeEmpty),
-          ).toBeInTheDocument()
-        })
-
-        test('Если превысить лимит символов', async () => {
-          mockGetSupportGroupListSuccess()
-
-          const { user } = render(
-            <CreateSubTaskModal
-              {...props}
-              task={{
-                ...props.task,
-                description: '',
-              }}
-            />,
-          )
-
-          await testUtils.description.setValue(
-            user,
-            fakeWord({ length: validationSizes.string.long + 1 }),
-          )
-
-          expect(
-            await testUtils.description.findError(validationMessages.string.max.long),
           ).toBeInTheDocument()
         })
       })

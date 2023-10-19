@@ -1,7 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { ReclassificationReasonEnum } from 'modules/task/constants/taskReclassificationRequest'
+import {
+  ReclassificationReasonEnum,
+  reclassificationReasonDict,
+} from 'modules/task/constants/taskReclassificationRequest'
 
 import { validationMessages } from 'shared/constants/validation'
 
@@ -14,7 +17,6 @@ import {
   buttonTestUtils,
 } from '_tests_/utils'
 
-import { reclassificationReasonLabels } from './constants'
 import RequestTaskReclassificationModal, { RequestTaskReclassificationModalProps } from './index'
 
 const props: Readonly<RequestTaskReclassificationModalProps> = {
@@ -74,7 +76,7 @@ const getReclassificationReasonTitle = () =>
 const getReclassificationReasonField = (reason: ReclassificationReasonEnum): HTMLInputElement =>
   radioButtonTestUtils.getRadioButtonIn(
     getReclassificationReasonBlock(),
-    reclassificationReasonLabels[reason],
+    reclassificationReasonDict[reason],
   )
 
 const findReclassificationReasonError = (text: string) =>

@@ -4,7 +4,6 @@ import { Navigate, RouteObject } from 'react-router-dom'
 import { route as staffRoute } from 'modules/monitoring/routes'
 import { route as taskRoute } from 'modules/task/routes'
 import { UserModel } from 'modules/user/models'
-import { route as manageWarehousesRoute } from 'modules/warehouse/routes'
 
 import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
@@ -29,7 +28,10 @@ export const getPrivateRoutesConfig = ({
         element: <Navigate to={RouteEnum.TaskList} />,
       },
       taskRoute,
-      manageWarehousesRoute,
+
+      /* заменчено временно только для rc */
+      // manageWarehousesRoute,
+
       ...(isStaff ? [staffRoute] : []),
       {
         path: RouteEnum.ChangePassword,

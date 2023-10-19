@@ -1,3 +1,4 @@
+import { ExtendedFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { BaseTaskModel } from 'modules/task/models'
 
 import { StringMap } from 'shared/types/utils'
@@ -31,6 +32,14 @@ export const taskExtendedStatusDict: Readonly<Partial<StringMap<TaskExtendedStat
   [TaskExtendedStatusEnum.InReclassification]: 'На переклассификации',
   [TaskExtendedStatusEnum.Returned]: 'Возврат заявителем',
   [TaskExtendedStatusEnum.Closed]: 'Закрытые',
+}
+
+export const extendedFilterDict: Readonly<
+  StringMap<keyof Pick<ExtendedFilterFormFields, 'customers' | 'macroregions' | 'supportGroups'>>
+> = {
+  customers: 'Клиенты',
+  macroregions: 'Макрорегионы',
+  supportGroups: 'Группы поддержки',
 }
 
 export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> = new Map([
