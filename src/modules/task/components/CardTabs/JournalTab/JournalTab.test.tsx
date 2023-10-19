@@ -76,6 +76,7 @@ export const testUtils = {
 }
 
 setupApiTests()
+notificationTestUtils.setupNotifications()
 
 describe('Вкладка журнала задачи', () => {
   describe('Кнопка обновления журнала', () => {
