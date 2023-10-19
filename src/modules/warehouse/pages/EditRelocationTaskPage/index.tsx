@@ -78,12 +78,12 @@ const EditRelocationTaskPage: FC = () => {
 
   const [
     addEquipmentModalOpened,
-    { setTrue: addAddEquipmentModal, setFalse: closeAddEquipmentModal },
+    { setTrue: openAddEquipmentModal, setFalse: closeAddEquipmentModal },
   ] = useBoolean(false)
 
-  const debouncedOpenAddEquipmentModal = useDebounceFn(addAddEquipmentModal)
+  const handleOpenAddEquipmentModal = useDebounceFn(openAddEquipmentModal)
 
-  const debouncedHandleCloseAddEquipmentModal = useDebounceFn(() => {
+  const handleCloseAddEquipmentModal = useDebounceFn(() => {
     closeAddEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
@@ -302,7 +302,7 @@ const EditRelocationTaskPage: FC = () => {
 
         setEditableTableRowKeys((prevState) => [...prevState, newEquipmentIndex])
 
-        closeAddEquipmentModal()
+        handleCloseAddEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
@@ -317,7 +317,7 @@ const EditRelocationTaskPage: FC = () => {
         }
       }
     },
-    [createEquipmentMutation, getEquipmentFormValue, form, closeAddEquipmentModal],
+    [createEquipmentMutation, getEquipmentFormValue, form, handleCloseAddEquipmentModal],
   )
 
   useEffect(() => {
@@ -417,7 +417,7 @@ const EditRelocationTaskPage: FC = () => {
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canAddEquipment={userPermissions?.equipmentsCreate}
-                onClickAddEquipment={debouncedOpenAddEquipmentModal}
+                onClickAddEquipment={handleOpenAddEquipmentModal}
               />
             </Space>
           </Col>
@@ -480,7 +480,7 @@ const EditRelocationTaskPage: FC = () => {
           nomenclatureList={nomenclatureList?.results || []}
           nomenclatureListIsLoading={nomenclatureListIsFetching}
           onChangeNomenclature={setSelectedNomenclatureId}
-          onCancel={debouncedHandleCloseAddEquipmentModal}
+          onCancel={handleCloseAddEquipmentModal}
           onSubmit={handleAddEquipment}
         />
       )}
