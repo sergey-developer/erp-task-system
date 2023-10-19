@@ -7,6 +7,7 @@ import {
   TaskOverdueEnum,
 } from 'modules/task/constants/task'
 import { SearchFields } from 'modules/task/models'
+import { UserListModel } from 'modules/user/models'
 import { CustomerListModel } from 'modules/warehouse/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 
@@ -46,9 +47,8 @@ export type ExtendedFilterProps = {
   supportGroupList: SupportGroupListModel
   supportGroupListIsLoading: boolean
 
-  /* закоменчено временно только для rc */
-  // userList: UserListModel
-  // userListIsLoading: boolean
+  userList: UserListModel
+  userListIsLoading: boolean
 
   workGroupList: WorkGroupListModel
   workGroupListIsLoading: boolean
