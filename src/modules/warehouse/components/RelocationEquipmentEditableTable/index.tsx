@@ -88,18 +88,27 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         // @ts-ignore
         'data-testid': 'equipment-form-item',
       },
-      fieldProps: {
-        dropdownRender: canAddEquipment
-          ? (menu: ReactNode) => (
-              <Space $block direction='vertical'>
-                <AddEquipmentButton type='link' onClick={onClickAddEquipment}>
-                  Добавить оборудование
-                </AddEquipmentButton>
+      fieldProps: (form, config) => ({
+        dropdownRender:
+          canAddEquipment && onClickAddEquipment
+            ? (menu: ReactNode) => (
+                <Space $block direction='vertical'>
+                  <AddEquipmentButton
+                    type='link'
+                    onClick={() =>
+                      onClickAddEquipment({
+                        rowIndex: config.rowIndex,
+                        rowId: config.entity.rowId!,
+                      })
+                    }
+                  >
+                    Добавить оборудование
+                  </AddEquipmentButton>
 
-                {menu}
-              </Space>
-            )
-          : undefined,
+                  {menu}
+                </Space>
+              )
+            : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
         disabled: isLoading,
@@ -110,7 +119,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         },
         filterOption: (input: string, option: DefaultOptionType) =>
           option ? (option.label as string).toLowerCase().includes(input.toLowerCase()) : false,
-      },
+      }),
     },
     {
       key: 'serialNumber',
