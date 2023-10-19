@@ -1,4 +1,4 @@
-import { act, screen } from '@testing-library/react'
+import { act, screen, within } from '@testing-library/react'
 import { notification } from 'antd'
 
 const setupNotifications = () => {
@@ -9,7 +9,10 @@ const setupNotifications = () => {
   })
 }
 
-const findNotification = (text: string) => screen.findByText(text)
+const findNotification = async (text: string) => {
+  const notification = await screen.findByRole('alert')
+  return within(notification).getByText(text)
+}
 
 const queryNotification = (text: string) => screen.queryByText(text)
 

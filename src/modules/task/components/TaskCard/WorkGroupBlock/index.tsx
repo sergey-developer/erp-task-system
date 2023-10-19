@@ -6,6 +6,10 @@ import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
 } from 'modules/task/components/TaskFirstLineModal/types'
+import {
+  TaskSecondLineFormFields,
+  TaskSecondLineModalProps,
+} from 'modules/task/components/TaskSecondLineModal/types'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
@@ -17,8 +21,6 @@ import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-
-import { TaskSecondLineFormFields, TaskSecondLineModalProps } from 'modules/task/components/TaskSecondLineModal/types'
 
 const TaskFirstLineModal = React.lazy(() => import('modules/task/components/TaskFirstLineModal'))
 
