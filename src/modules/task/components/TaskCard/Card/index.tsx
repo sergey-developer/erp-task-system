@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { FormInstance } from 'antd'
+import { App, FormInstance } from 'antd'
 import noop from 'lodash/noop'
 import moment from 'moment-timezone'
 import React, { FC, useCallback, useEffect } from 'react'
@@ -117,6 +117,7 @@ export type TaskCardProps = {
       | 'resolution'
       | 'responseTime'
       | 'attachments'
+      | 'parentInteractionExternalId'
     >
   >
 
@@ -203,6 +204,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
   isGetTaskError,
 }) => {
+  const { modal } = App.useApp()
   const taskStatus = useTaskStatus(task?.status)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
@@ -225,7 +227,11 @@ const TaskCard: FC<TaskCardProps> = ({
     { setTrue: openTaskReclassificationModal, setFalse: closeTaskReclassificationModal },
   ] = useBoolean(false)
 
-  const debouncedOpenTaskReclassificationModal = useDebounceFn(openTaskReclassificationModal)
+  const handleOpenTaskReclassificationModal = useDebounceFn(() => {
+    task?.parentInteractionExternalId
+      ? openTaskReclassificationModal()
+      : modal.warning({ title: 'Невозможно переклассифицировать заявку без обращения' })
+  }, [task?.parentInteractionExternalId])
 
   const [
     isRequestTaskSuspendModalOpened,
@@ -441,7 +447,7 @@ const TaskCard: FC<TaskCardProps> = ({
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={debouncedOpenTaskResolutionModal}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
-      onRequestReclassification={debouncedOpenTaskReclassificationModal}
+      onRequestReclassification={handleOpenTaskReclassificationModal}
     />
   )
 
