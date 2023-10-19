@@ -13,11 +13,12 @@ import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/co
 import { IdType } from 'shared/types/common'
 
 import {
+  managerSelectFieldNames,
   searchFieldOptions,
   taskAssignedOptions,
   taskExtendedStatusOptions,
-  taskOverdueOptions,
-} from './constants'
+  taskOverdueOptions
+} from "./constants";
 import { CheckboxGroupStyled } from './styles'
 import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
 
@@ -30,9 +31,8 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   workGroupList,
   workGroupListIsLoading,
 
-  /* закоменчено временно только для rc */
-  // userList,
-  // userListIsLoading,
+  userList,
+  userListIsLoading,
 
   customerList,
   customerListIsLoading,
@@ -215,26 +215,25 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           </Space>
         </FilterBlock>
 
-        {/* закоменчено временно только для rc */}
-        {/*<FilterBlock*/}
-        {/*  data-testid='manager-block'*/}
-        {/*  label='Руководитель'*/}
-        {/*  onReset={resetFields(['manager'])}*/}
-        {/*>*/}
-        {/*  <Form.Item name='manager'>*/}
-        {/*    <Select*/}
-        {/*      data-testid='manager-select'*/}
-        {/*      fieldNames={managerSelectFieldNames}*/}
-        {/*      loading={userListIsLoading}*/}
-        {/*      options={userList}*/}
-        {/*      placeholder='Руководитель'*/}
-        {/*      showSearch*/}
-        {/*      filterOption={(input, option) => {*/}
-        {/*        return option ? option.fullName.toLowerCase().includes(input.toLowerCase()) : false*/}
-        {/*      }}*/}
-        {/*    />*/}
-        {/*  </Form.Item>*/}
-        {/*</FilterBlock>*/}
+        <FilterBlock
+          data-testid='manager-block'
+          label='Руководитель'
+          onReset={resetFields(['manager'])}
+        >
+          <Form.Item name='manager'>
+            <Select
+              data-testid='manager-select'
+              fieldNames={managerSelectFieldNames}
+              loading={userListIsLoading}
+              options={userList}
+              placeholder='Руководитель'
+              showSearch
+              filterOption={(input, option) => {
+                return option ? option.fullName.toLowerCase().includes(input.toLowerCase()) : false
+              }}
+            />
+          </Form.Item>
+        </FilterBlock>
       </Form>
     </DrawerFilter>
   )
