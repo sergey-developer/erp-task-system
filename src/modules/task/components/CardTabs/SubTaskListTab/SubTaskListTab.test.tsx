@@ -85,6 +85,7 @@ notificationTestUtils.setupNotifications()
 describe('Вкладка списка заданий', () => {
   describe('Кнопка создания задания', () => {
     test('Отображается', () => {
+      mockGetSubTaskListSuccess(props.task.id)
       render(<SubTaskListTab {...props} />)
       expect(testUtils.getCreateSubTaskButton()).toBeInTheDocument()
     })
@@ -221,6 +222,7 @@ describe('Вкладка списка заданий', () => {
 
     test('При нажатии открывает модалку создания задания', async () => {
       mockGetSubTaskListSuccess(props.task.id)
+      mockGetSupportGroupListSuccess()
       mockGetSubTaskTemplateListSuccess()
 
       const { user } = render(
