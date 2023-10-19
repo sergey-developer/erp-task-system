@@ -33,7 +33,7 @@ export const availableReasons = Object.values(ReclassificationReasonEnum).filter
 )
 
 const getContainer = () => screen.getByTestId('request-task-reclassification-modal')
-
+const queryContainer = () => screen.queryByTestId('request-task-reclassification-modal')
 const findContainer = () => screen.findByTestId('request-task-reclassification-modal')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
@@ -90,11 +90,8 @@ const setReclassificationReason = async (user: UserEvent, reason: Reclassificati
 
 // comment
 const getCommentBlock = () => within(getContainer()).getByTestId('comment')
-
 const getCommentTitle = () => within(getCommentBlock()).getByTitle('Комментарий')
-
 const getCommentField = () => within(getCommentBlock()).getByPlaceholderText('Опишите ситуацию')
-
 const findCommentError = (text: string) => within(getCommentBlock()).findByText(text)
 
 const setComment = async (user: UserEvent, value: string) => {
@@ -105,11 +102,11 @@ const setComment = async (user: UserEvent, value: string) => {
 
 // loading
 const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
-
 const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
   getContainer,
+  queryContainer,
   findContainer,
   getChildByText,
 
