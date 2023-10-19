@@ -2235,7 +2235,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2276,7 +2276,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2321,7 +2321,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2362,7 +2362,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2404,7 +2404,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2449,7 +2449,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2490,7 +2490,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2533,7 +2533,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2574,7 +2574,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2616,7 +2616,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2661,7 +2661,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2702,7 +2702,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2745,7 +2745,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2786,7 +2786,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2828,7 +2828,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2869,12 +2869,14 @@ describe('Контейнер детальной карточки заявки', 
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
           mockGetWorkGroupListSuccess({ body: [workGroup] })
+
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
+
           mockDeleteTaskWorkGroupSuccess(props.taskId)
 
           const { user } = render(<TaskCardContainer {...props} />, {
@@ -2912,7 +2914,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2956,7 +2958,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -2998,7 +3000,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
@@ -3040,7 +3042,7 @@ describe('Контейнер детальной карточки заявки', 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
               id: props.taskId,
-              workGroup,
+              workGroup: taskFixtures.workGroup({ id: workGroup.id }),
             }),
           })
 
