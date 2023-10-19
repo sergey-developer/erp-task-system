@@ -21,6 +21,7 @@ Lint:
     policy: pull-push
   only:
     - rc
+    - rc_warehouses
     - master
     - develop
   tags:
@@ -70,6 +71,7 @@ Tests:
       policy: pull
   except: [schedules]
   only:
+    - rc_warehouses
     - rc
     - master
     - develop
@@ -101,7 +103,7 @@ Build for Staging:
   variables:
     env: stage
   only:
-    - rc
+    - rc_warehouses
 
 Build for Production:
   <<: *base_build
@@ -129,7 +131,7 @@ Deploy to Staging:
     env: stage
     kube_context: default/dev
   only:
-    - rc
+    - rc_warehouses
 
 Deploy to Production:
   <<: *base_deploy

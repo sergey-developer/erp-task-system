@@ -43,4 +43,5 @@ export type BaseTaskModel = {
   address: MaybeNull<string>
   latitude: MaybeNull<string>
   longitude: MaybeNull<string>
+  parentInteractionExternalId: MaybeNull<string>
 }

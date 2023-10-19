@@ -42,9 +42,7 @@ const themeConfig: ThemeConfig = {
 const ConfigProvider: FC<ConfigProviderProps> = ({ children }) => {
   return (
     <BaseConfigProvider theme={themeConfig} locale={ruRU} virtual={false} form={globalFormConfig}>
-      <App>
-        {children}
-      </App>
+      <App>{children}</App>
     </BaseConfigProvider>
   )
 }

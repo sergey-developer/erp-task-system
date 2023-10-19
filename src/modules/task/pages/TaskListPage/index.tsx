@@ -41,8 +41,8 @@ import {
   useGetUserList,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
-  useUserRole,
-} from 'modules/user/hooks'
+  useUserRole
+} from "modules/user/hooks";
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 

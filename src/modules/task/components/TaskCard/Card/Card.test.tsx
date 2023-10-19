@@ -291,7 +291,51 @@ describe('Карточка заявки', () => {
     })
 
     describe('Модалка переклассификации заявки', () => {
-      test('Открывается', async () => {
+      test('Открывается если есть обращение', async () => {
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              ...activeRequestReclassificationItemProps,
+              parentInteractionExternalId: fakeWord(),
+            }}
+          />,
+          { store: getStoreWithAuth() },
+        )
+
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickRequestReclassificationItem(user)
+        const modal = await taskReclassificationModalTestUtils.findContainer()
+
+        expect(modal).toBeInTheDocument()
+      })
+
+      test('Предупреждение отображается вместо модалки если нет обращения', async () => {
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              ...activeRequestReclassificationItemProps,
+              parentInteractionExternalId: null,
+            }}
+          />,
+          { store: getStoreWithAuth() },
+        )
+
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickRequestReclassificationItem(user)
+        const modal = taskReclassificationModalTestUtils.queryContainer()
+        const warning = within(await screen.findByRole('dialog')).getByText(
+          'Невозможно переклассифицировать заявку без обращения',
+        )
+
+        expect(modal).not.toBeInTheDocument()
+        expect(warning).toBeInTheDocument()
+      })
+
+      test('Закрывается', async () => {
         const { user } = render(
           <TaskCard
             {...props}
@@ -306,70 +350,9 @@ describe('Карточка заявки', () => {
         await cardTitleTestUtils.openMenu(user)
         await cardTitleTestUtils.clickRequestReclassificationItem(user)
         const modal = await taskReclassificationModalTestUtils.findContainer()
+        await taskReclassificationModalTestUtils.clickCancelButton(user)
 
-        expect(modal).toBeInTheDocument()
-      })
-
-      describe('Закрывается', () => {
-        test('При клике на кнопку "Отмена"', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestReclassificationItemProps,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-          await taskReclassificationModalTestUtils.clickCancelButton(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике на кнопку закрытия', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestReclassificationItemProps,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-          await taskReclassificationModalTestUtils.clickCloseButton(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике вне модалки', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestReclassificationItemProps,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-          await modalTestUtils.clickOutsideModal(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
+        expect(modal).not.toBeInTheDocument()
       })
 
       describe('При успешном запросе', () => {
@@ -422,9 +405,7 @@ describe('Карточка заявки', () => {
             availableReasons[0],
           )
           await taskReclassificationModalTestUtils.clickSubmitButton(user)
-          await waitFor(() => {
-            expect(modal).not.toBeInTheDocument()
-          })
+          await waitFor(() => expect(modal).not.toBeInTheDocument())
         })
       })
     })

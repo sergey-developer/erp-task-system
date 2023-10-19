@@ -99,4 +99,5 @@ export const task = (
   weight: fakeInteger(),
   techResolution: fakeWord(),
   userResolution: fakeWord(),
+  parentInteractionExternalId: fakeWord(),
 })
