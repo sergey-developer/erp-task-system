@@ -1,3 +1,16 @@
-import { WorkGroupListItemModel } from 'modules/workGroup/models'
+import { UserModel } from 'modules/user/models'
 
-export type TaskWorkGroupModel = Pick<WorkGroupListItemModel, 'id' | 'name'>
+import { IdType } from 'shared/types/common'
+
+export type TaskWorkGroupModel = {
+  id: IdType
+  name: string
+  groupLead: Pick<
+    UserModel,
+    'id' | 'firstName' | 'lastName' | 'middleName' | 'role' | 'phone' | 'email'
+  >
+  seniorEngineer: Pick<
+    UserModel,
+    'id' | 'firstName' | 'lastName' | 'middleName' | 'role' | 'phone' | 'email'
+  >
+}

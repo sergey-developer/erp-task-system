@@ -1,9 +1,12 @@
-import { BaseUserModel } from 'modules/user/models'
-
+import { Nullable } from 'shared/types/utils'
 import { makeString } from 'shared/utils/string'
 
 export const getFullUserName = <
-  T extends Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>,
+  T extends {
+    firstName: string
+    lastName: string
+    middleName: Nullable<string>
+  },
 >({
   firstName,
   lastName,

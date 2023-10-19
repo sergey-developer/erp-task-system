@@ -643,6 +643,7 @@ describe('Карточка заявки', () => {
             ...props.task!,
             ...canSelectAssigneeProps,
             ...activeAssignButtonProps,
+            workGroup: taskFixtures.workGroup(),
           }}
         />,
         {

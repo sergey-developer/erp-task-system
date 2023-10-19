@@ -1,11 +1,12 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, FormInstance, Row, Typography } from 'antd'
+import { Button, Col, FormInstance, Popover, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
 } from 'modules/task/components/TaskFirstLineModal/types'
+import UserShortInfoList from 'modules/task/components/UserShortInfoList'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
@@ -147,7 +148,15 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           </Col>
         </Row>
 
-        <Text>{workGroup?.name || 'I линия поддержки'}</Text>
+        {workGroup ? (
+          <Popover
+            content={<UserShortInfoList data={[workGroup.groupLead, workGroup.seniorEngineer]} />}
+          >
+            <Text>{workGroup.name}</Text>
+          </Popover>
+        ) : (
+          <Text>I линия поддержки</Text>
+        )}
       </Space>
 
       {isTaskFirstLineModalOpened && (
