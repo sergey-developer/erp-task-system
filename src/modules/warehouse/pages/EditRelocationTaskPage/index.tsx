@@ -445,11 +445,8 @@ const EditRelocationTaskPage: FC = () => {
         open={confirmModalOpened}
         onCancel={() => {
           toggleConfirmModal()
-
-          if (prevSelectedRelocateFrom) {
-            form.setFieldValue('relocateFrom', prevSelectedRelocateFrom.value)
-            setSelectedRelocateFrom(prevSelectedRelocateFrom)
-          }
+          form.setFieldValue('relocateFrom', prevSelectedRelocateFrom?.value)
+          setSelectedRelocateFrom(prevSelectedRelocateFrom)
         }}
         onOk={() => {
           toggleConfirmModal()
