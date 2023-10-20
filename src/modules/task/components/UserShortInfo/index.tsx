@@ -20,6 +20,7 @@ type UserShortInfoProps = Partial<
   Pick<UserModel, 'firstName' | 'lastName' | 'middleName' | 'role' | 'phone' | 'email'> & {
     title: string
     skip: ['fio']
+    testId: string
   }
 >
 
@@ -33,9 +34,11 @@ const UserShortInfo: FC<UserShortInfoProps> = ({
 
   title,
   skip,
+
+  testId,
 }) => {
   return (
-    <Space direction='vertical'>
+    <Space data-testid={testId || 'user-short-info'} direction='vertical'>
       {title && <Text strong>{title}</Text>}
 
       <Space direction='vertical'>
