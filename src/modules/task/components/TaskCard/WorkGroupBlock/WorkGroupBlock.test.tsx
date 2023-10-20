@@ -1,9 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/components/TaskFirstLineModal/TaskFirstLineModal.test'
+import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
-import { UserRoleEnum } from 'modules/user/constants'
+import { userRoleDict, UserRoleEnum } from 'modules/user/constants'
+import { getFullUserName } from 'modules/user/utils'
 
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
@@ -17,8 +20,6 @@ import {
   fakeIdStr,
 } from '_tests_/utils'
 
-import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
-import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
 
 const props: Readonly<
@@ -35,10 +36,6 @@ const props: Readonly<
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
   taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
-}
-
-const notRequiredProps: Omit<WorkGroupBlockProps, keyof typeof props> = {
-  workGroup: taskFixtures.workGroup(),
 }
 
 // first line button
@@ -124,10 +121,66 @@ describe('Блок рабочей группы', () => {
   })
 
   describe('Рабочая группа', () => {
-    test('Отображается если есть установленное значение', () => {
-      render(<WorkGroupBlock {...props} workGroup={notRequiredProps.workGroup} />)
+    describe('Если установлена', () => {
+      test('Отображается корректно', () => {
+        const workGroup = taskFixtures.workGroup()
+        render(<WorkGroupBlock {...props} workGroup={workGroup} />)
+        expect(testUtils.getChildByText(workGroup.name)).toBeInTheDocument()
+      })
 
-      expect(testUtils.getChildByText(notRequiredProps.workGroup!.name)).toBeInTheDocument()
+      test('Информация о рабочей группе отображается при наведении', async () => {
+        const workGroup = taskFixtures.workGroup()
+
+        const { user } = render(<WorkGroupBlock {...props} workGroup={workGroup} />)
+
+        const name = testUtils.getChildByText(workGroup.name)
+        await user.hover(name)
+
+        const groupLeadInfo = await screen.findByTestId('user-short-info-group-lead')
+        const groupLeadTitle = within(groupLeadInfo).getByText('Руководитель группы')
+        const groupLeadEmail = within(groupLeadInfo).getByText(workGroup.groupLead.email)
+        const groupLeadPhone = within(groupLeadInfo).getByText(workGroup.groupLead.phone!)
+        const groupLeadRole = within(groupLeadInfo).getByText(
+          userRoleDict[workGroup.groupLead.role],
+        )
+        const groupLeadFio = within(groupLeadInfo).queryByText(
+          getFullUserName({
+            firstName: workGroup.groupLead.firstName,
+            lastName: workGroup.groupLead.lastName,
+            middleName: workGroup.groupLead.middleName,
+          }),
+        )
+
+        const seniorEngineerInfo = await screen.findByTestId('user-short-info-senior-engineer')
+        const seniorEngineerTitle = within(seniorEngineerInfo).getByText('Старший инженер группы')
+        const seniorEngineerEmail = within(seniorEngineerInfo).getByText(
+          workGroup.seniorEngineer.email,
+        )
+        const seniorEngineerPhone = within(seniorEngineerInfo).getByText(
+          workGroup.seniorEngineer.phone!,
+        )
+        const seniorEngineerRole = within(seniorEngineerInfo).getByText(
+          userRoleDict[workGroup.seniorEngineer.role],
+        )
+        const seniorEngineerFio = within(seniorEngineerInfo).queryByText(
+          getFullUserName({
+            firstName: workGroup.seniorEngineer.firstName,
+            lastName: workGroup.seniorEngineer.lastName,
+            middleName: workGroup.seniorEngineer.middleName,
+          }),
+        )
+
+        expect(groupLeadTitle).toBeInTheDocument()
+        expect(groupLeadEmail).toBeInTheDocument()
+        expect(groupLeadPhone).toBeInTheDocument()
+        expect(groupLeadRole).toBeInTheDocument()
+        expect(groupLeadFio).toBeInTheDocument()
+        expect(seniorEngineerTitle).toBeInTheDocument()
+        expect(seniorEngineerEmail).toBeInTheDocument()
+        expect(seniorEngineerPhone).toBeInTheDocument()
+        expect(seniorEngineerRole).toBeInTheDocument()
+        expect(seniorEngineerFio).toBeInTheDocument()
+      })
     })
 
     test('Отображается значение по умолчанию если нет группы', () => {

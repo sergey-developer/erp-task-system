@@ -155,6 +155,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
             content={
               <Space direction='vertical'>
                 <UserShortInfo
+                  testId='user-short-info-group-lead'
                   title='Руководитель группы'
                   role={workGroup.groupLead.role}
                   phone={workGroup.groupLead.phone}
@@ -167,6 +168,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                 <Divider />
 
                 <UserShortInfo
+                  testId='user-short-info-senior-engineer'
                   title='Старший инженер группы'
                   role={workGroup.seniorEngineer.role}
                   phone={workGroup.seniorEngineer.phone}
