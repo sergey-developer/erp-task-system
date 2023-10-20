@@ -5,6 +5,7 @@ import {
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/taskSuspendRequest'
 import { UserRoleEnum } from 'modules/user/constants'
+import { getFullUserName } from 'modules/user/utils'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
@@ -65,9 +66,6 @@ const props: Readonly<TaskCardProps> = {
 
   taskIsLoading: false,
   isGetTaskError: false,
-
-  workGroupList: [],
-  workGroupListIsLoading: false,
 
   deleteWorkGroup: jest.fn(),
   deleteWorkGroupIsLoading: false,
@@ -627,7 +625,6 @@ describe('Карточка заявки', () => {
       const { user } = render(
         <TaskCard
           {...props}
-          workGroupList={[canSelectAssigneeProps.workGroup]}
           task={{
             ...props.task!,
             ...canSelectAssigneeProps,
@@ -645,7 +642,7 @@ describe('Карточка заявки', () => {
       await assigneeBlockTestUtils.openAssigneeSelect(user)
       await assigneeBlockTestUtils.selectAssignee(
         user,
-        canSelectAssigneeProps.workGroup.members[0].fullName,
+        getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
       )
       await assigneeBlockTestUtils.clickAssignButton(user)
 
@@ -682,11 +679,6 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...props}
-            workGroupList={[
-              workGroupFixtures.workGroupListItem({
-                id: showFirstLineButtonProps.workGroup!.id,
-              }),
-            ]}
             task={{
               ...props.task!,
               ...showFirstLineButtonProps,
@@ -719,11 +711,6 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...props}
-            workGroupList={[
-              workGroupFixtures.workGroupListItem({
-                id: showFirstLineButtonProps.workGroup!.id,
-              }),
-            ]}
             task={{
               ...props.task!,
               ...showFirstLineButtonProps,
@@ -756,11 +743,6 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...props}
-            workGroupList={[
-              workGroupFixtures.workGroupListItem({
-                id: showFirstLineButtonProps.workGroup!.id,
-              }),
-            ]}
             task={{
               ...props.task!,
               ...showFirstLineButtonProps,
@@ -793,11 +775,6 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...props}
-            workGroupList={[
-              workGroupFixtures.workGroupListItem({
-                id: showFirstLineButtonProps.workGroup!.id,
-              }),
-            ]}
             task={{
               ...props.task!,
               ...showFirstLineButtonProps,
