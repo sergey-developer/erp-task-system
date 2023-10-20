@@ -14,12 +14,18 @@ const { Paragraph } = Typography
 
 export type DescriptionTabProps = Pick<TaskModel, 'description' | 'attachments'> & {
   title: string
+  taskTitle: string
 }
 
-const DescriptionTab: FC<DescriptionTabProps> = ({ title, description, attachments = [] }) => {
+const DescriptionTab: FC<DescriptionTabProps> = ({
+  title,
+  taskTitle,
+  description,
+  attachments = [],
+}) => {
   return (
     <Space data-testid='task-description-tab' $block direction='vertical'>
-      <TitleStyled level={5} copyable={{ text: `${title}\n\n${description}` }}>
+      <TitleStyled level={5} copyable={{ text: `${taskTitle}\n\n${description}` }}>
         {title}
       </TitleStyled>
 
