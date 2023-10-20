@@ -15,7 +15,3 @@ export const vendorCodeValidationRules: Rule[] = [
 ]
 
 export const measurementUnitValidationRules: Rule[] = [{ required: true }]
-
-export const equipmentHasSerialNumberValidationRules: Rule[] = [
-  { required: true },
-]
