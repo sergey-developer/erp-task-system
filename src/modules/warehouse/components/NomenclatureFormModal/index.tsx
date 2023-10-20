@@ -57,6 +57,7 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
     shortTitle,
     vendorCode,
     country,
+    equipmentHasSerialNumber,
     ...values
   }: NomenclatureFormModalFormFields) => {
     await onSubmit(
@@ -66,6 +67,7 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
         country: country || null,
+        equipmentHasSerialNumber: equipmentHasSerialNumber || false,
       },
       form.setFields,
     )
