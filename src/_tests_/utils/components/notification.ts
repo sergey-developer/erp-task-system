@@ -10,8 +10,14 @@ const setupNotifications = () => {
 }
 
 const findNotification = async (text: string) => {
-  const notification = await screen.findByRole('alert')
-  return within(notification).getByText(text)
+  const notifications = await screen.findAllByRole('alert')
+  const notification = notifications.find((ntf) => Boolean(within(ntf).queryByText(text)))
+
+  if (notification) {
+    return notification
+  } else {
+    throw new Error(`Notification with text "${text}" was not found`)
+  }
 }
 
 const queryNotification = (text: string) => screen.queryByText(text)

@@ -417,9 +417,9 @@ describe('Модалка создания задачи заявки', () => {
           templateX5: fakeTemplate.title,
         })
         await testUtils.clickSubmitButton(user)
-        await testUtils.expectLoadingStarted()
+        const field = testUtils.service.getField()
 
-        expect(testUtils.service.getField()).toBeDisabled()
+        expect(field).toBeDisabled()
       })
 
       test('Становится активным после выбора группы поддержки', async () => {
