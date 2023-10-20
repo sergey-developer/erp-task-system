@@ -22,6 +22,7 @@ import {
 } from 'modules/task/models'
 import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
+import { getFullUserName } from 'modules/user/utils'
 import { getWorkGroupListMessages } from 'modules/workGroup/constants'
 
 import { commonApiMessages } from 'shared/constants/common'
@@ -2084,10 +2085,6 @@ describe('Контейнер детальной карточки заявки', 
           once: false,
         })
 
-        mockGetWorkGroupListSuccess({
-          body: [canSelectAssigneeProps.workGroup],
-        })
-
         mockUpdateTaskAssigneeSuccess(props.taskId)
 
         const { user } = render(<TaskCardContainer {...props} />, {
@@ -2103,7 +2100,7 @@ describe('Контейнер детальной карточки заявки', 
         await assigneeBlockTestUtils.openAssigneeSelect(user)
         await assigneeBlockTestUtils.selectAssignee(
           user,
-          canSelectAssigneeProps.workGroup.members[0].fullName,
+          getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
         )
         await assigneeBlockTestUtils.clickAssignButton(user)
         await taskCardTestUtils.expectLoadingStarted()
@@ -2130,10 +2127,6 @@ describe('Контейнер детальной карточки заявки', 
           once: false,
         })
 
-        mockGetWorkGroupListSuccess({
-          body: [canSelectAssigneeProps.workGroup],
-        })
-
         mockUpdateTaskAssigneeServerError(props.taskId)
 
         const { user } = render(<TaskCardContainer {...props} />, {
@@ -2149,7 +2142,7 @@ describe('Контейнер детальной карточки заявки', 
         await assigneeBlockTestUtils.openAssigneeSelect(user)
         await assigneeBlockTestUtils.selectAssignee(
           user,
-          canSelectAssigneeProps.workGroup.members[0].fullName,
+          getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
         )
         await assigneeBlockTestUtils.clickAssignButton(user)
 

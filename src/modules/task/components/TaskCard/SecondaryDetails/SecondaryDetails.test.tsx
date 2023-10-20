@@ -14,8 +14,6 @@ const props: Readonly<SecondaryDetailsProps> = {
   recordId: fakeIdStr(),
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
-  workGroupList: [],
-  workGroupListIsLoading: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
   transferTaskToFirstLine: jest.fn(),
