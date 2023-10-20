@@ -12,7 +12,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 const { Text } = Typography
 
-type TaskAssigneeProps = {
+export type TaskAssigneeProps = {
   name: string
   assignee: MaybeNull<
     Pick<TaskAssigneeModel, 'firstName' | 'lastName' | 'middleName'> &
