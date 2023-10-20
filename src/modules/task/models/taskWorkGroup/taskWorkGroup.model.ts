@@ -13,4 +13,5 @@ export type TaskWorkGroupModel = {
     UserModel,
     'id' | 'firstName' | 'lastName' | 'middleName' | 'role' | 'phone' | 'email'
   >
+  members: Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>[]
 }

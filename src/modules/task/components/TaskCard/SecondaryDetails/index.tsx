@@ -1,23 +1,17 @@
 import { Col, FormInstance, Row } from 'antd'
-import isEqual from 'lodash/isEqual'
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 
+import AssigneeBlock from 'modules/task/components/TaskCard/AssigneeBlock'
+import WorkGroupBlock from 'modules/task/components/TaskCard/WorkGroupBlock'
+import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
+import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
-import { WorkGroupListModel } from 'modules/workGroup/models'
-
-import { TaskFirstLineFormFields } from '../../TaskFirstLineModal/types'
-import { TaskSecondLineFormFields } from '../../TaskSecondLineModal/types'
-import AssigneeBlock from '../AssigneeBlock'
-import WorkGroupBlock from '../WorkGroupBlock'
 
 export type SecondaryDetailsProps = Pick<
   TaskModel,
   'id' | 'recordId' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
 > & {
-  workGroupList: WorkGroupListModel
-  workGroupListIsLoading: boolean
-
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
     setFields: FormInstance['setFields'],
@@ -50,9 +44,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   status,
   extendedStatus,
 
-  workGroup: taskWorkGroup,
-  workGroupList,
-  workGroupListIsLoading,
+  workGroup,
 
   transferTaskToFirstLine,
   transferTaskToFirstLineIsLoading,
@@ -67,12 +59,6 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
   taskSuspendRequestStatus,
 }) => {
-  const workGroupListItem = useMemo(
-    () =>
-      workGroupList.find((workGroupListItem) => isEqual(workGroupListItem.id, taskWorkGroup?.id)),
-    [taskWorkGroup?.id, workGroupList],
-  )
-
   return (
     <Row data-testid='task-card-secondary-details' justify='space-between'>
       <Col span={11}>
@@ -81,7 +67,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           recordId={recordId}
           status={status}
           extendedStatus={extendedStatus}
-          workGroup={taskWorkGroup}
+          workGroup={workGroup}
           transferTaskToFirstLine={transferTaskToFirstLine}
           transferTaskToFirstLineIsLoading={transferTaskToFirstLineIsLoading}
           transferTaskToSecondLine={transferTaskToSecondLine}
@@ -95,8 +81,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           status={status}
           extendedStatus={extendedStatus}
           assignee={assignee}
-          workGroup={workGroupListItem}
-          workGroupListIsLoading={workGroupListIsLoading}
+          workGroup={workGroup}
           updateAssignee={updateAssignee}
           updateAssigneeIsLoading={updateAssigneeIsLoading}
           takeTask={takeTask}

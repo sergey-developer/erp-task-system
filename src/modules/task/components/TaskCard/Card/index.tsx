@@ -7,6 +7,12 @@ import React, { FC, useCallback, useEffect } from 'react'
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal'
+import { RequestTaskSuspendModalProps } from 'modules/task/components/RequestTaskSuspendModal'
+import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
+import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
+import { TaskResolutionModalProps } from 'modules/task/components/TaskResolutionModal'
+import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
   taskImpactMap,
   taskPriorityMap,
@@ -32,7 +38,6 @@ import {
   UpdateTaskWorkGroupMutationArgs,
 } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
-import { WorkGroupListModel } from 'modules/workGroup/models'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -50,30 +55,27 @@ import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import CardTabs from '../../CardTabs'
-import { RequestTaskReclassificationModalProps } from '../../RequestTaskReclassificationModal'
-import { RequestTaskSuspendModalProps } from '../../RequestTaskSuspendModal'
 import { RequestTaskSuspendFormFields } from '../../RequestTaskSuspendModal/types'
-import { getFormErrorsFromBadRequestError } from '../../RequestTaskSuspendModal/utils'
-import { TaskFirstLineFormFields } from '../../TaskFirstLineModal/types'
-import { TaskResolutionModalProps } from '../../TaskResolutionModal'
-import { TaskSecondLineFormFields } from '../../TaskSecondLineModal/types'
 import AdditionalInfo from '../AdditionalInfo'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
 import SecondaryDetails from '../SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
-const TaskResolutionModal = React.lazy(() => import('../../TaskResolutionModal'))
+const TaskResolutionModal = React.lazy(() => import('modules/task/components/TaskResolutionModal'))
+const TaskSuspendRequest = React.lazy(() => import('modules/task/components/TaskSuspendRequest'))
 
 const RequestTaskReclassificationModal = React.lazy(
-  () => import('../../RequestTaskReclassificationModal'),
+  () => import('modules/task/components/RequestTaskReclassificationModal'),
 )
 
-const TaskReclassificationRequest = React.lazy(() => import('../../TaskReclassificationRequest'))
+const TaskReclassificationRequest = React.lazy(
+  () => import('modules/task/components/TaskReclassificationRequest'),
+)
 
-const RequestTaskSuspendModal = React.lazy(() => import('../../RequestTaskSuspendModal'))
-
-const TaskSuspendRequest = React.lazy(() => import('../../TaskSuspendRequest'))
+const RequestTaskSuspendModal = React.lazy(
+  () => import('modules/task/components/RequestTaskSuspendModal'),
+)
 
 export type TaskCardProps = {
   task: MaybeNull<
@@ -149,8 +151,6 @@ export type TaskCardProps = {
   updateAssignee: (data: UpdateTaskAssigneeMutationArgs) => Promise<void>
   updateAssigneeIsLoading: boolean
 
-  workGroupList: WorkGroupListModel
-  workGroupListIsLoading: boolean
   updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgs) => Promise<void>
   updateWorkGroupIsLoading: boolean
   deleteWorkGroup: (data: DeleteTaskWorkGroupMutationArgs) => Promise<void>
@@ -186,8 +186,6 @@ const TaskCard: FC<TaskCardProps> = ({
   cancelSuspendRequest,
   cancelSuspendRequestIsLoading,
 
-  workGroupList,
-  workGroupListIsLoading,
   updateWorkGroup,
   updateWorkGroupIsLoading,
   deleteWorkGroup,
@@ -552,8 +550,6 @@ const TaskCard: FC<TaskCardProps> = ({
                 extendedStatus={task.extendedStatus}
                 assignee={task.assignee}
                 workGroup={task.workGroup}
-                workGroupList={workGroupList}
-                workGroupListIsLoading={workGroupListIsLoading}
                 transferTaskToFirstLine={handleTransferTaskToFirstLine}
                 transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
                 transferTaskToSecondLine={handleTransferTaskToSecondLine}

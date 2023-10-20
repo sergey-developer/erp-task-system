@@ -25,4 +25,12 @@ export const workGroup = (props?: Partial<Pick<TaskWorkGroupModel, 'id'>>): Task
     email: fakeEmail(),
     phone: fakePhone(),
   },
+  members: [
+    {
+      id: fakeId(),
+      firstName: fakeWord(),
+      lastName: fakeWord(),
+      middleName: fakeWord(),
+    },
+  ],
 })

@@ -12,12 +12,13 @@ const { Text } = Typography
 const renderInfo = (label: string, value: any): ReactNode => (
   <Space>
     <Text underline>{label}:</Text>
-    <Text>{value || 'не указано'}</Text>
+    <Text>{value || 'Не определено'}</Text>
   </Space>
 )
 
 type UserShortInfoProps = Partial<
   Pick<UserModel, 'firstName' | 'lastName' | 'middleName' | 'role' | 'phone' | 'email'> & {
+    title: string
     skip: ['fio']
   }
 >
@@ -30,21 +31,26 @@ const UserShortInfo: FC<UserShortInfoProps> = ({
   email,
   role,
 
+  title,
   skip,
 }) => {
   return (
     <Space direction='vertical'>
-      {renderInfo('Должность', role ? userRoleDict[role] : null)}
+      {title && <Text strong>{title}</Text>}
 
-      {!skip?.includes('fio') &&
-        renderInfo(
-          'ФИО',
-          firstName && lastName ? getFullUserName({ firstName, lastName, middleName }) : null,
-        )}
+      <Space direction='vertical'>
+        {renderInfo('Должность', role ? userRoleDict[role] : null)}
 
-      {renderInfo('Телефон', phone)}
+        {!skip?.includes('fio') &&
+          renderInfo(
+            'ФИО',
+            firstName && lastName ? getFullUserName({ firstName, lastName, middleName }) : null,
+          )}
 
-      {renderInfo('Почта', email)}
+        {renderInfo('Телефон', phone)}
+
+        {renderInfo('Почта', email)}
+      </Space>
     </Space>
   )
 }

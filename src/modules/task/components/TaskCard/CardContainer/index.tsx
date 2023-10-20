@@ -18,7 +18,6 @@ import {
 import { useDeleteTaskWorkGroup, useUpdateTaskWorkGroup } from 'modules/task/hooks/taskWorkGroup'
 import { TaskListItemModel } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
-import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import Card from '../Card'
 
@@ -87,8 +86,6 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
     state: { isLoading: takeTaskIsLoading },
   } = useTakeTask()
 
-  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroupList()
-
   const {
     fn: resolveTask,
     state: { isLoading: isTaskResolving },
@@ -145,8 +142,6 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
       createSuspendRequestIsLoading={createSuspendRequestIsLoading}
       cancelSuspendRequest={deleteSuspendRequest}
       cancelSuspendRequestIsLoading={deleteSuspendRequestIsLoading}
-      workGroupList={workGroupList}
-      workGroupListIsLoading={workGroupListIsFetching}
       updateWorkGroup={updateWorkGroup}
       updateWorkGroupIsLoading={updateWorkGroupIsLoading}
       deleteWorkGroup={deleteWorkGroup}
