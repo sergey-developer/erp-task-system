@@ -8,7 +8,6 @@ import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
 import { NomenclatureFormModalProps, NomenclatureFormModalFormFields } from './types'
 import {
-  equipmentHasSerialNumberValidationRules,
   groupValidationRules,
   measurementUnitValidationRules,
   nameValidationRules,
@@ -163,7 +162,6 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
         <Form.Item
           data-testid='equipment-has-serial-number-form-item'
           name='equipmentHasSerialNumber'
-          rules={equipmentHasSerialNumberValidationRules}
         >
           <Checkbox
             onChange={handleChangeEquipmentHasSerialNumber}
