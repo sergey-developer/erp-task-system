@@ -57,6 +57,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
     shortTitle,
     vendorCode,
     country,
+    equipmentHasSerialNumber,
     ...values
   }: AddOrEditNomenclatureModalFormFields) => {
     await onSubmit(
@@ -66,6 +67,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
         country: country || null,
+        equipmentHasSerialNumber: equipmentHasSerialNumber || false,
       },
       form.setFields,
     )
