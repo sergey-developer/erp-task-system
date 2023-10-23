@@ -629,20 +629,19 @@ describe('Информация о заявке о перемещении', () =>
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
         {
-          preloadedState: {
-            auth: getAuthState({
-              user: {
-                userId: relocationTask.createdBy!.id,
-                userRole: UserRoleEnum.FirstLineSupport,
-              },
-            }),
-            api: {
-              // @ts-ignore
+          store: getStoreWithAuth(
+            {
+              userId: relocationTask.createdBy!.id,
+              userRole: UserRoleEnum.FirstLineSupport,
+            },
+            undefined,
+            undefined,
+            {
               queries: {
                 ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
               },
             },
-          },
+          ),
         },
       )
 
