@@ -1,4 +1,7 @@
-import { ExecuteRelocationTaskSuccessResponse } from 'modules/warehouse/models'
+import {
+  ExecuteRelocationTaskBadRequestErrorResponse,
+  ExecuteRelocationTaskSuccessResponse,
+} from 'modules/warehouse/models'
 import { executeRelocationTaskUrl } from 'modules/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -25,7 +28,9 @@ export const mockExecuteRelocationTaskSuccess = (
 
 export const mockExecuteRelocationTaskBadRequestError = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<ErrorData>>,
+  options?: Partial<
+    ResponseResolverOptions<ErrorData<ExecuteRelocationTaskBadRequestErrorResponse>>
+  >,
 ) => getBadRequestErrorMockFn(executeRelocationTaskMockFn(id), options)()
 
 export const mockExecuteRelocationTaskNotFoundError = (

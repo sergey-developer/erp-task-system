@@ -1,15 +1,22 @@
 import { screen, waitFor } from '@testing-library/react'
 
+/**
+ Использование "All" нужно т.к. при передаче в компонент Spinner пропса "tip",
+ пропс "data-testid" присваивается нескольким его дочерним элементам
+ */
+
 const expectLoadingStarted = (testId: string) => async () => {
-  expect(await screen.findByTestId(testId)).toBeInTheDocument()
+  const spinner = (await screen.findAllByTestId(testId))[0]
+  expect(spinner).toBeInTheDocument()
 }
 
 const expectLoadingNotStarted = (testId: string) => () => {
-  expect(screen.queryByTestId(testId)).not.toBeInTheDocument()
+  const spinner = screen.queryAllByTestId(testId)[0]
+  expect(spinner).not.toBeInTheDocument()
 }
 
 const expectLoadingFinished = (testId: string) => async () => {
-  const spinner = screen.queryByTestId(testId)
+  const spinner = screen.queryAllByTestId(testId)[0]
 
   await waitFor(() => {
     expect(spinner).not.toBeInTheDocument()

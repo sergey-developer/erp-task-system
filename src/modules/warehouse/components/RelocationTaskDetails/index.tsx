@@ -15,7 +15,10 @@ import React, { FC, useCallback } from 'react'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import {
+  executeRelocationTaskMessages,
+  relocationTaskStatusDict,
+} from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
@@ -118,7 +121,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     [handleTablePagination],
   )
 
-  const handleExecuteRelocationTask: ExecuteRelocationTaskModalProps['onSubmit'] = async (
+  const handleExecuteTask: ExecuteRelocationTaskModalProps['onSubmit'] = async (
     values,
     setFields,
   ) => {
@@ -126,7 +129,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       await executeRelocationTaskMutation({
         relocationTaskId,
         documents: mapUploadedFiles(values.documents),
-      })
+      }).unwrap()
 
       toggleOpenExecuteTaskModal()
     } catch (error) {
@@ -141,6 +144,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
           showErrorNotification(error.data.detail)
         } else if (isNotFoundError(error) && error.data.detail) {
           showErrorNotification(error.data.detail)
+        } else {
+          showErrorNotification(executeRelocationTaskMessages.commonError)
         }
       }
     }
@@ -315,7 +320,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             open={executeTaskModalOpened}
             isLoading={executeRelocationTaskIsLoading}
             onCancel={debouncedToggleOpenExecuteTaskModal}
-            onSubmit={handleExecuteRelocationTask}
+            onSubmit={handleExecuteTask}
           />
         </React.Suspense>
       )}
