@@ -12,11 +12,18 @@ import EquipmentModal from 'modules/warehouse/components/EquipmentModal'
 import { EquipmentModalProps } from 'modules/warehouse/components/EquipmentModal/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
-import { useLazyGetEquipment, useGetEquipmentCategoryList } from 'modules/warehouse/hooks/equipment'
+import {
+  useLazyGetEquipment,
+  useGetEquipmentCategoryList,
+  useCheckEquipmentCategory,
+} from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
-import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
+import {
+  EquipmentCategoryListItemModel,
+  GetNomenclatureListQueryArgs,
+} from 'modules/warehouse/models'
 import {
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,
@@ -40,6 +47,10 @@ import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
 
+const defaultGetNomenclatureListParams: Pick<NonNullable<GetNomenclatureListQueryArgs>, 'limit'> = {
+  limit: 999999,
+}
+
 const EquipmentPageLayout: FC = () => {
   const navigate = useNavigate()
 
@@ -51,6 +62,8 @@ const EquipmentPageLayout: FC = () => {
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const [categoryIsChanged, setCategoryIsChanged] = useState<boolean>(false)
+  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
 
   const [
     addEquipmentModalOpened,
@@ -63,6 +76,7 @@ const EquipmentPageLayout: FC = () => {
     closeAddEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
+    setCategoryIsChanged(false)
   }, [closeAddEquipmentModal])
 
   const debouncedHandleCloseAddEquipmentModal = useDebounceFn(handleCloseAddEquipmentModal)
@@ -78,6 +92,7 @@ const EquipmentPageLayout: FC = () => {
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
+    setCategoryIsChanged(false)
   }, [closeEditEquipmentModal])
 
   const debouncedHandleCloseEditEquipmentModal = useDebounceFn(handleCloseEditEquipmentModal)
@@ -111,9 +126,14 @@ const EquipmentPageLayout: FC = () => {
   )
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
-    useGetNomenclatureList(undefined, {
-      skip: !addEquipmentModalOpened && !editEquipmentModalOpened,
-    })
+    useGetNomenclatureList(
+      equipmentCategory.isConsumable
+        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
+        : defaultGetNomenclatureListParams,
+      {
+        skip: !addEquipmentModalOpened && !editEquipmentModalOpened,
+      },
+    )
 
   const [getEquipment, { currentData: equipment, isFetching: equipmentIsFetching }] =
     useLazyGetEquipment()
@@ -121,7 +141,7 @@ const EquipmentPageLayout: FC = () => {
   const { currentData: nomenclature } = useGetNomenclature(
     selectedNomenclatureId! || equipment?.nomenclature.id!,
     {
-      skip: !selectedNomenclatureId && !editEquipmentModalOpened,
+      skip: !selectedNomenclatureId && (categoryIsChanged || !editEquipmentModalOpened),
     },
   )
 
@@ -136,6 +156,12 @@ const EquipmentPageLayout: FC = () => {
       setSelectedCategory(equipment.category)
     }
   }, [equipment?.category])
+
+  const handleChangeCategory: EquipmentModalProps['onChangeCategory'] = (category) => {
+    setSelectedCategory(category)
+    setCategoryIsChanged(true)
+    setSelectedNomenclatureId(undefined)
+  }
 
   const handleApplyFilter = (values: EquipmentFilterFormFields) => {
     navigate(RouteEnum.EquipmentNomenclatureList)
@@ -306,7 +332,7 @@ const EquipmentPageLayout: FC = () => {
           categoryList={equipmentCategoryList}
           categoryListIsLoading={equipmentCategoryListIsFetching}
           selectedCategory={selectedCategory}
-          onChangeCategory={setSelectedCategory}
+          onChangeCategory={handleChangeCategory}
           warehouseList={warehouseList}
           warehouseListIsLoading={warehouseListIsFetching}
           currencyList={currencyList}
@@ -334,7 +360,7 @@ const EquipmentPageLayout: FC = () => {
           categoryList={equipmentCategoryList}
           categoryListIsLoading={equipmentCategoryListIsFetching}
           selectedCategory={selectedCategory}
-          onChangeCategory={setSelectedCategory}
+          onChangeCategory={handleChangeCategory}
           warehouseList={warehouseList}
           warehouseListIsLoading={warehouseListIsFetching}
           currencyList={currencyList}

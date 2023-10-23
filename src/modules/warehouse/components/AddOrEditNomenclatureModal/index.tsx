@@ -8,7 +8,6 @@ import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
 import { AddOrEditNomenclatureModalProps, AddOrEditNomenclatureModalFormFields } from './types'
 import {
-  equipmentHasSerialNumberValidationRules,
   groupValidationRules,
   measurementUnitValidationRules,
   nameValidationRules,
@@ -57,6 +56,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
     shortTitle,
     vendorCode,
     country,
+    equipmentHasSerialNumber,
     ...values
   }: AddOrEditNomenclatureModalFormFields) => {
     await onSubmit(
@@ -66,6 +66,7 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
         country: country || null,
+        equipmentHasSerialNumber: equipmentHasSerialNumber || false,
       },
       form.setFields,
     )
@@ -161,7 +162,6 @@ const AddOrEditNomenclatureModal: FC<AddOrEditNomenclatureModalProps> = ({
         <Form.Item
           data-testid='equipment-has-serial-number-form-item'
           name='equipmentHasSerialNumber'
-          rules={equipmentHasSerialNumberValidationRules}
         >
           <Checkbox
             onChange={handleChangeEquipmentHasSerialNumber}
