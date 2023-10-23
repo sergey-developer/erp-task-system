@@ -30,7 +30,7 @@ type EquipmentUserPermissions =
   | 'EQUIPMENTS_DELETE'
   | 'EQUIPMENTS_UPDATE'
 
-type RelocationTaskUserPermissions = 'RELOCATION_TASKS_READ'
+type RelocationTaskUserPermissions = 'RELOCATION_TASKS_READ' | 'RELOCATION_TASKS_UPDATE'
 
 // todo: переделать на enum
 export type UserPermissions =
