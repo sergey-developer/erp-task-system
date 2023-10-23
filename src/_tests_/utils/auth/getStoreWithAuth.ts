@@ -5,12 +5,14 @@ import { setupStore } from 'state/store'
 
 import { fakeId } from '_tests_/utils'
 
-import getAuthState from './getAuthState'
+import { getAuthState } from './getAuthState'
 
-const getStoreWithAuth = (
+// todo: fix type api: any
+export const getStoreWithAuth = (
   user?: Partial<AuthenticatedUser>,
   accessToken?: string,
   refreshToken?: string,
+  api?: any,
 ) =>
   setupStore({
     preloadedState: {
@@ -22,7 +24,6 @@ const getStoreWithAuth = (
         accessToken,
         refreshToken,
       }),
+      api,
     },
   })
-
-export default getStoreWithAuth

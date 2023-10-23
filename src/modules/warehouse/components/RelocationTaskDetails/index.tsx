@@ -12,6 +12,7 @@ import {
 } from 'antd'
 import React, { FC, useCallback } from 'react'
 
+import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
@@ -19,6 +20,7 @@ import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
   useLazyGetRelocationTaskWaybillM15,
+  useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationEquipmentListQueryArgs } from 'modules/warehouse/models'
 import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
@@ -44,7 +46,10 @@ const dropdownTrigger: DropdownProps['trigger'] = ['click']
 const initialRelocationEquipmentListParams = getInitialPaginationParams()
 
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
-  const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
+  const userPermissions = useMatchUserPermissions([
+    'RELOCATION_TASKS_READ',
+    'RELOCATION_TASKS_UPDATE',
+  ])
 
   const [relocationEquipmentListParams, setRelocationEquipmentListParams] = useSetState<
     Omit<GetRelocationEquipmentListQueryArgs, 'relocationTaskId'>
@@ -61,6 +66,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
+
+  const executorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.executor?.id)
+  const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const handleGetWaybillM15 = useDebounceFn(async () => {
     if (!relocationTaskId) return
@@ -115,6 +123,15 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         ),
         disabled: !userPermissions?.relocationTasksRead,
         onClick: handleGetWaybillM15,
+      },
+      {
+        key: 4,
+        label: 'Вернуть на доработку',
+        disabled:
+          !userPermissions?.relocationTasksUpdate ||
+          !executorIsCurrentUser ||
+          !relocationTaskStatus.isCompleted,
+        onClick: () => {},
       },
     ],
   }
