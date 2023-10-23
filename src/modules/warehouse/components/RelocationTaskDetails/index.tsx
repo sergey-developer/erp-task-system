@@ -8,6 +8,7 @@ import {
   DropdownProps,
   MenuProps,
   Row,
+  Tooltip,
   Typography,
 } from 'antd'
 import React, { FC, useCallback } from 'react'
@@ -35,6 +36,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
+import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
@@ -248,6 +250,31 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
                     <Col span={16}>{relocationTaskStatusDict[relocationTask.status]}</Col>
                   </Row>
+
+                  {relocationTask.revision && (
+                    <Row data-testid='return-reason'>
+                      <Col span={8}>
+                        <Text type='secondary'>Причина возврата:</Text>
+                      </Col>
+
+                      <Col span={16}>
+                        <Tooltip
+                          title={
+                            <Space direction='vertical'>
+                              {formatDate(relocationTask.revision.createdAt, DATE_FORMAT)}
+
+                              <Space>
+                                {relocationTask.revision.user.fullName}
+                                {relocationTask.revision.user.phone}
+                              </Space>
+                            </Space>
+                          }
+                        >
+                          <Text type='warning'>{relocationTask.revision.text}</Text>
+                        </Tooltip>
+                      </Col>
+                    </Row>
+                  )}
 
                   <Row data-testid='created-by'>
                     <Col span={8}>

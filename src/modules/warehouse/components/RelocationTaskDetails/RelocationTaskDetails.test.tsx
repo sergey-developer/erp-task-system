@@ -15,6 +15,7 @@ import {
 } from 'modules/warehouse/constants/relocationTask'
 import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
 
+import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
@@ -218,6 +219,34 @@ describe('Информация о заявке о перемещении', () =>
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+
+    test('Причина возврата отображается корректно', async () => {
+      const relocationTask = warehouseFixtures.relocationTask()
+      mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+      )
+
+      await testUtils.expectRelocationTaskLoadingFinished()
+
+      const label = testUtils.getRelocationTaskInfo('return-reason', /Причина возврата/)
+      const value = testUtils.getRelocationTaskInfo('return-reason', relocationTask.revision!.text)
+
+      await user.hover(value)
+      const date = await screen.findByText(
+        formatDate(relocationTask.revision!.createdAt, DATE_FORMAT),
+      )
+      const fullName = await screen.findByText(relocationTask.revision!.user.fullName)
+      const phone = await screen.findByText(relocationTask.revision!.user.phone!)
+
+      expect(label).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+      expect(date).toBeInTheDocument()
+      expect(fullName).toBeInTheDocument()
+      expect(phone).toBeInTheDocument()
     })
 
     test('Инициатор отображается корректно', async () => {
