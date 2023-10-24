@@ -15,7 +15,10 @@ import React, { FC, useCallback } from 'react'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import {
+  cancelRelocationTaskMessages,
+  relocationTaskStatusDict,
+} from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
@@ -23,6 +26,7 @@ import {
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationEquipmentListQueryArgs } from 'modules/warehouse/models'
+import { useCancelRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
 
 import { MenuIcon } from 'components/Icons'
@@ -33,8 +37,15 @@ import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { showErrorNotification } from 'shared/utils/notifications'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
@@ -62,23 +73,42 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   >(initialRelocationEquipmentListParams)
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
-    useGetRelocationTask({ relocationTaskId: relocationTaskId! }, { skip: !relocationTaskId })
+    useGetRelocationTask({ relocationTaskId })
 
   const { currentData: relocationEquipmentList, isFetching: relocationEquipmentListIsFetching } =
-    useGetRelocationEquipmentList(
-      { relocationTaskId: relocationTaskId!, ...relocationEquipmentListParams },
-      { skip: !relocationTaskId },
-    )
+    useGetRelocationEquipmentList({ relocationTaskId, ...relocationEquipmentListParams })
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
 
+  const [cancelRelocationTaskMutation, { isLoading: cancelRelocationTaskIsLoading }] =
+    useCancelRelocationTaskMutation()
+
   const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
-  const handleGetWaybillM15 = useDebounceFn(async () => {
-    if (!relocationTaskId) return
+  const handleCancelTask = async () => {
+    try {
+      await cancelRelocationTaskMutation({ relocationTaskId }).unwrap()
+      toggleOpenCancelTaskModal()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (error.data.detail) {
+          if (isBadRequestError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isForbiddenError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isNotFoundError(error)) {
+            showErrorNotification(error.data.detail)
+          } else {
+            showErrorNotification(cancelRelocationTaskMessages.commonError)
+          }
+        }
+      }
+    }
+  }
 
+  const handleGetWaybillM15 = useDebounceFn(async () => {
     try {
       const waybillM15 = await getWaybillM15({ relocationTaskId }).unwrap()
 
@@ -273,9 +303,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         >
           <CancelRelocationTaskModal
             open={cancelTaskModalOpened}
-            isLoading={false}
+            isLoading={cancelRelocationTaskIsLoading}
             onCancel={debouncedToggleOpenCancelTaskModal}
-            onConfirm={async () => {}}
+            onConfirm={handleCancelTask}
           />
         </React.Suspense>
       )}
