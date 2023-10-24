@@ -12,7 +12,7 @@ import { CreateCommentFormFields, CreateCommentFormProps } from './types'
 
 const { TextArea } = Input
 
-const commentValidationRules: Rule[] = [{ required: true, whitespace: true }]
+const commentValidationRules: Rule[] = [{ required: true, whitespace: true, max: 10000 }]
 
 const CreateCommentForm: FC<CreateCommentFormProps> = ({
   onSubmit,

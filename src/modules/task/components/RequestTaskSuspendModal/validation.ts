@@ -5,6 +5,8 @@ import { SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
 
 import { validationMessages } from 'shared/constants/validation'
 
+export const commentRules: Rule[] = [{ required: true, whitespace: true, max: 10000 }]
+
 export const REASON_RULES: Rule[] = [
   {
     required: true,
