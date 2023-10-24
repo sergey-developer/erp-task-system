@@ -40,6 +40,7 @@ import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocatio
 
 import Space from 'components/Space'
 
+import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -93,6 +94,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
+  const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
@@ -155,9 +157,9 @@ const EditRelocationTaskPage: FC = () => {
   useEffect(() => {
     if (
       addEquipmentModalOpened &&
-      Boolean(selectedCategory) &&
+      !!selectedCategory &&
       !equipmentCategory.isConsumable &&
-      Boolean(selectedNomenclatureId)
+      !!selectedNomenclatureId
     ) {
       getCustomerList()
     }
@@ -283,8 +285,15 @@ const EditRelocationTaskPage: FC = () => {
 
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
+      if (!selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
+
       try {
-        const createdEquipment = await createEquipmentMutation(values).unwrap()
+        const createdEquipment = await createEquipmentMutation({
+          ...values,
+          location: selectedRelocateFrom.value,
+          warehouse: selectedRelocateTo.value,
+        }).unwrap()
+
         const newEquipmentIndex = getEquipmentFormValue().length
 
         form.setFieldValue(['equipments', newEquipmentIndex], {
@@ -317,7 +326,14 @@ const EditRelocationTaskPage: FC = () => {
         }
       }
     },
-    [createEquipmentMutation, getEquipmentFormValue, form, handleCloseAddEquipmentModal],
+    [
+      selectedRelocateTo?.value,
+      selectedRelocateFrom?.value,
+      createEquipmentMutation,
+      getEquipmentFormValue,
+      form,
+      handleCloseAddEquipmentModal,
+    ],
   )
 
   useEffect(() => {
@@ -380,6 +396,11 @@ const EditRelocationTaskPage: FC = () => {
     }
   }, [locationList, locationListIsFetching, relocationTask])
 
+  const addEquipmentBtnDisabled =
+    !selectedRelocateFrom ||
+    !selectedRelocateTo ||
+    selectedRelocateTo.type !== LocationTypeEnum.Warehouse
+
   return (
     <>
       <Form<RelocationTaskFormFields>
@@ -398,8 +419,8 @@ const EditRelocationTaskPage: FC = () => {
               userListIsLoading={userListIsFetching}
               locationList={locationList}
               locationListIsLoading={locationListIsFetching}
-              selectedRelocateFrom={selectedRelocateFrom}
               onChangeRelocateFrom={handleChangeRelocateFrom}
+              onChangeRelocateTo={setSelectedRelocateTo}
             />
           </Col>
 
@@ -417,6 +438,7 @@ const EditRelocationTaskPage: FC = () => {
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canAddEquipment={userPermissions?.equipmentsCreate}
+                addEquipmentBtnDisabled={addEquipmentBtnDisabled}
                 onClickAddEquipment={handleOpenAddEquipmentModal}
               />
             </Space>
