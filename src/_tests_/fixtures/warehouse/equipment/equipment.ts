@@ -50,4 +50,5 @@ export const equipment = (
   price: fakeInteger(),
   currency: pick(currencyFixtures.currency(), 'id', 'title'),
   comment: fakeWord(),
+  amount: fakeInteger(),
 })

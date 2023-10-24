@@ -1,13 +1,14 @@
 import { Space } from 'antd'
 import { FC, Fragment } from 'react'
-import { useMatches } from 'react-router-dom'
+import { useMatches, useSearchParams } from 'react-router-dom'
 
 export type BreadCrumbArgs = {
-  qs: URLSearchParams
+  qs: ReturnType<typeof useSearchParams>[0]
 }
 
 const Breadcrumbs: FC = () => {
   const matches = useMatches()
+  const [searchParams] = useSearchParams()
 
   const crumbs = matches
     .filter((match) => {
@@ -16,7 +17,7 @@ const Breadcrumbs: FC = () => {
     })
     .map((match) => {
       const handle = match.handle as any
-      return handle.crumb({ qs: new URLSearchParams(window.location.search) })
+      return handle.crumb({ qs: searchParams } as BreadCrumbArgs)
     })
 
   return !!crumbs.length ? (

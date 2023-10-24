@@ -11,3 +11,9 @@ export const getSubTaskTemplateListMessages: ApiRequestMessages<'commonError'> =
 export const getUserStatusListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения статусов пользователя',
 }
+
+export const getLocationListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка меcтонахождений',
+}
+
+

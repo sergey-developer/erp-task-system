@@ -3,21 +3,23 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getRelocationEquipmentListMessages } from 'modules/warehouse/constants/relocationTask'
-import { GetRelocationEquipmentListQueryArgs } from 'modules/warehouse/models'
+import {
+  GetRelocationEquipmentListQueryArgs,
+  GetRelocationEquipmentListSuccessResponse,
+} from 'modules/warehouse/models'
 import { useGetRelocationEquipmentListQuery } from 'modules/warehouse/services/relocationTaskApi.service'
-import { GetRelocationEquipmentListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationEquipmentListResult = CustomUseQueryHookResult<
   GetRelocationEquipmentListQueryArgs,
-  GetRelocationEquipmentListTransformedSuccessResponse
+  GetRelocationEquipmentListSuccessResponse
 >
 
 type UseGetRelocationEquipmentListOptions = CustomUseQueryOptions<
   GetRelocationEquipmentListQueryArgs,
-  GetRelocationEquipmentListTransformedSuccessResponse
+  GetRelocationEquipmentListSuccessResponse
 >
 
 export const useGetRelocationEquipmentList = (

@@ -1,13 +1,11 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { RouteEnum } from 'configs/routes'
-
 import { testUtils as warehouseListFilterTestUtils } from 'modules/warehouse/components/WarehouseListFilter/WarehouseListFilter.test'
 import { testUtils as warehouseTableTestUtils } from 'modules/warehouse/components/WarehouseTable/WarehouseTable.test'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
 import { buttonTestUtils, renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
@@ -40,11 +38,11 @@ describe('Страница списка складов', () => {
     renderInRoute_latest(
       [
         {
-          path: RouteEnum.WarehouseList,
+          path: WarehouseRouteEnum.WarehouseList,
           element: <WarehouseListPage />,
         },
       ],
-      { initialEntries: [RouteEnum.WarehouseList] },
+      { initialEntries: [WarehouseRouteEnum.WarehouseList] },
     )
 
     await warehouseTableTestUtils.expectLoadingFinished()
@@ -62,11 +60,11 @@ describe('Страница списка складов', () => {
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.WarehouseList,
+            path: WarehouseRouteEnum.WarehouseList,
             element: <WarehouseListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.WarehouseList] },
+        { initialEntries: [WarehouseRouteEnum.WarehouseList] },
       )
 
       await warehouseTableTestUtils.expectLoadingFinished()
@@ -84,11 +82,11 @@ describe('Страница списка складов', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.WarehouseList,
+            path: WarehouseRouteEnum.WarehouseList,
             element: <WarehouseListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.WarehouseList] },
+        { initialEntries: [WarehouseRouteEnum.WarehouseList] },
       )
 
       await warehouseTableTestUtils.expectLoadingFinished()

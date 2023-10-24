@@ -14,9 +14,7 @@ export const columns: ColumnsType<WarehouseTableItem> = [
     title: 'Наименование объекта',
     sorter: true,
     render: (value: WarehouseTableItem['title'], record) => (
-      <Link to={`${getWarehousePageLink(record.id)}?title=${record.title}`}>
-        {value}
-      </Link>
+      <Link to={getWarehousePageLink(record.id, record.title)}>{value}</Link>
     ),
   },
   {
@@ -37,7 +35,6 @@ export const columns: ColumnsType<WarehouseTableItem> = [
     dataIndex: 'parent',
     title: 'Родительский склад',
     sorter: true,
-    render: (value: WarehouseTableItem['parent']) =>
-      valueOrHyphen(value?.title),
+    render: (value: WarehouseTableItem['parent']) => valueOrHyphen(value?.title),
   },
 ]

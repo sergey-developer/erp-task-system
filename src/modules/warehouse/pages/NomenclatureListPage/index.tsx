@@ -5,10 +5,10 @@ import { FC, useCallback, useMemo, useState, MouseEvent, useEffect } from 'react
 
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import { useMatchUserPermissions } from 'modules/user/hooks'
-import AddOrEditNomenclatureGroupModal from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal'
-import { AddOrEditNomenclatureGroupModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/types'
-import AddOrEditNomenclatureModal from 'modules/warehouse/components/AddOrEditNomenclatureModal'
-import { AddOrEditNomenclatureModalProps } from 'modules/warehouse/components/AddOrEditNomenclatureModal/types'
+import NomenclatureGroupFormModal from 'modules/warehouse/components/NomenclatureGroupFormModal'
+import { NomenclatureGroupFormModalProps } from 'modules/warehouse/components/NomenclatureGroupFormModal/types'
+import NomenclatureFormModal from 'modules/warehouse/components/NomenclatureFormModal'
+import { NomenclatureFormModalProps } from 'modules/warehouse/components/NomenclatureFormModal/types'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
 import { NomenclatureTableProps } from 'modules/warehouse/components/NomenclatureTable/types'
 import {
@@ -188,7 +188,7 @@ const NomenclatureListPage: FC = () => {
   }
 
   const handleCreateNomenclatureGroup = useCallback<
-    AddOrEditNomenclatureGroupModalProps['onSubmit']
+    NomenclatureGroupFormModalProps['onSubmit']
   >(
     async (values, setFields) => {
       try {
@@ -221,7 +221,7 @@ const NomenclatureListPage: FC = () => {
     ],
   )
 
-  const handleUpdateNomenclatureGroup: AddOrEditNomenclatureGroupModalProps['onSubmit'] = async (
+  const handleUpdateNomenclatureGroup: NomenclatureGroupFormModalProps['onSubmit'] = async (
     values,
     setFields,
   ) => {
@@ -254,7 +254,7 @@ const NomenclatureListPage: FC = () => {
     }
   }
 
-  const handleCreateNomenclature = useCallback<AddOrEditNomenclatureModalProps['onSubmit']>(
+  const handleCreateNomenclature = useCallback<NomenclatureFormModalProps['onSubmit']>(
     async (values, setFields) => {
       try {
         await createNomenclatureMutation(values).unwrap()
@@ -278,7 +278,7 @@ const NomenclatureListPage: FC = () => {
     [createNomenclatureMutation, toggleAddNomenclatureModal],
   )
 
-  const handleUpdateNomenclature: AddOrEditNomenclatureModalProps['onSubmit'] = async (
+  const handleUpdateNomenclature: NomenclatureFormModalProps['onSubmit'] = async (
     values,
     setFields,
   ) => {
@@ -351,9 +351,7 @@ const NomenclatureListPage: FC = () => {
           <MatchUserPermissions expected={['NOMENCLATURE_GROUPS_CREATE']}>
             {({ permissions }) =>
               permissions.nomenclatureGroupsCreate ? (
-                <Button onClick={debouncedToggleAddNomenclatureGroupModal}>
-                  + Добавить группу
-                </Button>
+                <Button onClick={debouncedToggleAddNomenclatureGroupModal}>Добавить группу</Button>
               ) : null
             }
           </MatchUserPermissions>
@@ -361,9 +359,7 @@ const NomenclatureListPage: FC = () => {
           <MatchUserPermissions expected={['NOMENCLATURES_CREATE']}>
             {({ permissions }) =>
               permissions.nomenclaturesCreate ? (
-                <Button onClick={debouncedToggleAddNomenclatureModal}>
-                  + Добавить номенклатуру
-                </Button>
+                <Button onClick={debouncedToggleAddNomenclatureModal}>Добавить номенклатуру</Button>
               ) : null
             }
           </MatchUserPermissions>
@@ -399,7 +395,7 @@ const NomenclatureListPage: FC = () => {
       </Space>
 
       {addNomenclatureGroupModalOpened && (
-        <AddOrEditNomenclatureGroupModal
+        <NomenclatureGroupFormModal
           open={addNomenclatureGroupModalOpened}
           title='Добавление номенклатурной группы'
           okText='Добавить'
@@ -410,7 +406,7 @@ const NomenclatureListPage: FC = () => {
       )}
 
       {editNomenclatureGroupModalOpened && !!editableGroup && (
-        <AddOrEditNomenclatureGroupModal
+        <NomenclatureGroupFormModal
           open={editNomenclatureGroupModalOpened}
           title='Редактирование номенклатурной группы'
           okText='Сохранить'
@@ -422,7 +418,7 @@ const NomenclatureListPage: FC = () => {
       )}
 
       {addNomenclatureModalOpened && (
-        <AddOrEditNomenclatureModal
+        <NomenclatureFormModal
           open={addNomenclatureModalOpened}
           title='Добавление номенклатурной позиции'
           okText='Добавить'
@@ -439,7 +435,7 @@ const NomenclatureListPage: FC = () => {
       )}
 
       {editNomenclatureModalOpened && !!editableNomenclatureId && (
-        <AddOrEditNomenclatureModal
+        <NomenclatureFormModal
           open={editNomenclatureModalOpened}
           title='Редактирование номенклатурной позиции'
           okText='Сохранить'

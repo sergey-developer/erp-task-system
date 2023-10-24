@@ -1,11 +1,12 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentListItemModel } from 'modules/warehouse/models'
+import { EquipmentModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 
 export type CreateEquipmentMutationArgs = {
   title: string
   nomenclature: IdType
+  location: IdType
   warehouse: IdType
   condition: EquipmentConditionEnum
   category: IdType
@@ -24,6 +25,21 @@ export type CreateEquipmentMutationArgs = {
   comment?: string
 }
 
-export type CreateEquipmentSuccessResponse = EquipmentListItemModel
+export type CreateEquipmentSuccessResponse = Pick<
+  EquipmentModel,
+  | 'id'
+  | 'title'
+  | 'serialNumber'
+  | 'inventoryNumber'
+  | 'warehouse'
+  | 'condition'
+  | 'quantity'
+  | 'category'
+  | 'purpose'
+  | 'price'
+  | 'currency'
+> & {
+  availableQuantity: number
+}
 
 export type CreateEquipmentBadRequestErrorResponse = Partial<CreateEquipmentMutationArgs>

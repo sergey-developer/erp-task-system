@@ -312,7 +312,7 @@ const TaskListPage: FC = () => {
       if (sorter) {
         const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && columnKey in sortableFieldToSortValues) {
+        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
           setTaskListQueryArgs({
             sort: getSort(columnKey as SortableField, order || SortOrderEnum.Ascend),
           })

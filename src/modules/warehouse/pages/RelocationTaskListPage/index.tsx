@@ -1,7 +1,10 @@
 import { useBoolean, useSetState } from 'ahooks'
+import { Button } from 'antd'
 import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 
+import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import RelocationTaskDetails from 'modules/warehouse/components/RelocationTaskDetails'
 import RelocationTaskListFilter from 'modules/warehouse/components/RelocationTaskListFilter'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
@@ -13,6 +16,7 @@ import {
 } from 'modules/warehouse/components/RelocationTaskTable/sort'
 import { RelocationTaskTableProps } from 'modules/warehouse/components/RelocationTaskTable/types'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetRelocationTaskList } from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationTaskListQueryArgs } from 'modules/warehouse/models'
 import { relocationTaskListFilterToParams } from 'modules/warehouse/utils/relocationTask'
@@ -43,6 +47,10 @@ const initialRelocationTaskListParams: Pick<
 }
 
 const RelocationTaskListPage: FC = () => {
+  // todo: создать хук для useSearchParams который парсит значения в нужный тип
+  const [searchParams, setSearchParams] = useSearchParams()
+  const relocationTaskId = Number(searchParams.get('relocationTask'))
+
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<RelocationTaskListFilterFormFields>()
@@ -50,13 +58,24 @@ const RelocationTaskListPage: FC = () => {
   const [selectedRelocationTaskId, setSelectedRelocationTaskId] = useState<IdType>()
 
   const [relocationTaskOpened, { toggle: toggleOpenRelocationTask }] = useBoolean(false)
-  const debouncedToggleOpenRelocationTask = useDebounceFn(toggleOpenRelocationTask)
+  const debouncedCloseRelocationTask = useDebounceFn(() => {
+    toggleOpenRelocationTask()
+    setSearchParams(undefined)
+  })
 
   const [relocationTaskListParams, setRelocationTaskListParams] =
     useSetState<GetRelocationTaskListQueryArgs>(initialRelocationTaskListParams)
 
   const { currentData: relocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList(relocationTaskListParams)
+
+  useEffect(() => {
+    if (!relocationTaskOpened && !!relocationTaskId) {
+      // todo: вынести в функцию и переиспользовать
+      setSelectedRelocationTaskId(relocationTaskId)
+      toggleOpenRelocationTask()
+    }
+  }, [relocationTaskId, relocationTaskOpened, toggleOpenRelocationTask])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
@@ -70,7 +89,7 @@ const RelocationTaskListPage: FC = () => {
       if (sorter) {
         const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && columnKey in sortableFieldToSortValues) {
+        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
           setRelocationTaskListParams({
             ordering: order ? getSort(columnKey as SortableField, order) : undefined,
           })
@@ -107,7 +126,19 @@ const RelocationTaskListPage: FC = () => {
   return (
     <>
       <Space data-testid='relocation-task-list-page' $block direction='vertical' size='middle'>
-        <FilterButton onClick={debouncedToggleOpenFilter} />
+        <Space size='middle'>
+          <FilterButton onClick={debouncedToggleOpenFilter} />
+
+          <MatchUserPermissions expected={['RELOCATION_TASKS_CREATE']}>
+            {({ permissions }) =>
+              permissions.relocationTasksCreate ? (
+                <Link to={WarehouseRouteEnum.CreateRelocationTask}>
+                  <Button>Создать заявку</Button>
+                </Link>
+              ) : null
+            }
+          </MatchUserPermissions>
+        </Space>
 
         <RelocationTaskTable
           dataSource={relocationTaskList?.results || []}
@@ -119,10 +150,10 @@ const RelocationTaskListPage: FC = () => {
         />
       </Space>
 
-      {relocationTaskOpened && (
+      {relocationTaskOpened && selectedRelocationTaskId && (
         <RelocationTaskDetails
           open={relocationTaskOpened}
-          onClose={debouncedToggleOpenRelocationTask}
+          onClose={debouncedCloseRelocationTask}
           relocationTaskId={selectedRelocationTaskId}
         />
       )}

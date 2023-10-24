@@ -16,4 +16,4 @@ const customerApiService = baseApiService.injectEndpoints({
   }),
 })
 
-export const { useGetCustomerListQuery } = customerApiService
+export const { useGetCustomerListQuery, useLazyGetCustomerListQuery } = customerApiService

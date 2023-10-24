@@ -1,8 +1,8 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureGroupModal/AddOrEditNomenclatureGroupModal.test'
-import { testUtils as addOrEditNomenclatureModalTestUtils } from 'modules/warehouse/components/AddOrEditNomenclatureModal/AddOrEditNomenclatureModal.test'
+import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/NomenclatureGroupFormModal/NomenclatureGroupFormModal.test'
+import { testUtils as addOrEditNomenclatureModalTestUtils } from 'modules/warehouse/components/NomenclatureFormModal/NomenclatureFormModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 
@@ -41,10 +41,10 @@ const setSearchValue = async (user: UserEvent, value: string) => {
 
 // add nomenclature group button
 const getAddNomenclatureGroupButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Добавить группу/)
+  buttonTestUtils.getButtonIn(getContainer(), 'Добавить группу')
 
 const queryAddNomenclatureGroupButton = () =>
-  buttonTestUtils.queryButtonIn(getContainer(), /Добавить группу/)
+  buttonTestUtils.queryButtonIn(getContainer(), 'Добавить группу')
 
 const clickAddNomenclatureGroupButton = async (user: UserEvent) => {
   const button = await getAddNomenclatureGroupButton()
@@ -53,10 +53,10 @@ const clickAddNomenclatureGroupButton = async (user: UserEvent) => {
 
 // add nomenclature button
 const getAddNomenclatureButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Добавить номенклатуру/)
+  buttonTestUtils.getButtonIn(getContainer(), 'Добавить номенклатуру')
 
 const queryAddNomenclatureButton = () =>
-  buttonTestUtils.queryButtonIn(getContainer(), /Добавить номенклатуру/)
+  buttonTestUtils.queryButtonIn(getContainer(), 'Добавить номенклатуру')
 
 const clickAddNomenclatureButton = async (user: UserEvent) => {
   const button = await getAddNomenclatureButton()

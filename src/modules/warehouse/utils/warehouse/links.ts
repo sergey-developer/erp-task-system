@@ -1,8 +1,10 @@
 import { generatePath } from 'react-router-dom'
 
-import { RouteEnum } from 'configs/routes'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { IdType } from 'shared/types/common'
 
-export const getWarehousePageLink = (id: IdType): string =>
-  generatePath(RouteEnum.Warehouse, { id: String(id) })
+export const getWarehousePageLink = (id: IdType, title?: string): string => {
+  const link = generatePath(WarehouseRouteEnum.Warehouse, { id: String(id) })
+  return title ? `${link}?title=${title}` : link
+}
