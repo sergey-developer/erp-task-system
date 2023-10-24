@@ -694,6 +694,8 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               { userId: relocationTask.createdBy!.id },
+              undefined,
+              undefined,
               { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
             ),
           },
@@ -718,6 +720,8 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               { userId: relocationTask.createdBy!.id },
+              undefined,
+              undefined,
               { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
             ),
           },
@@ -742,6 +746,8 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               { userId: relocationTask.createdBy!.id },
+              undefined,
+              undefined,
               { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
             ),
           },
