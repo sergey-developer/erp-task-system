@@ -4,13 +4,12 @@ type MakeUserNameObjectResult = {
   middleName: string
 }
 
-export const makeUserNameObject = (
-  value: string,
-): MakeUserNameObjectResult => {
-  const fullNameParts = value.split(' ')
-  const firstName = fullNameParts[1] || ''
-  const lastName = fullNameParts[0] || ''
-  const middleName = fullNameParts[2] || ''
+export const makeUserNameObject = (value: string): MakeUserNameObjectResult => {
+  const [lastName, firstName, middleName] = value.split(' ')
 
-  return { firstName, lastName, middleName }
+  return {
+    firstName: firstName || '',
+    lastName: lastName || '',
+    middleName: middleName || '',
+  }
 }

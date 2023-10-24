@@ -1,11 +1,16 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, FormInstance, Row, Typography } from 'antd'
+import { Button, Col, Divider, FormInstance, Popover, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
 } from 'modules/task/components/TaskFirstLineModal/types'
+import {
+  TaskSecondLineFormFields,
+  TaskSecondLineModalProps,
+} from 'modules/task/components/TaskSecondLineModal/types'
+import UserShortInfo from 'modules/task/components/UserShortInfo'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
@@ -17,8 +22,6 @@ import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-
-import { TaskSecondLineFormFields, TaskSecondLineModalProps } from '../../TaskSecondLineModal/types'
 
 const TaskFirstLineModal = React.lazy(() => import('modules/task/components/TaskFirstLineModal'))
 
@@ -147,7 +150,41 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           </Col>
         </Row>
 
-        <Text>{workGroup?.name || 'I линия поддержки'}</Text>
+        {workGroup ? (
+          <Popover
+            content={
+              <Space direction='vertical'>
+                <UserShortInfo
+                  testId='user-short-info-group-lead'
+                  title='Руководитель группы'
+                  role={workGroup.groupLead.role}
+                  phone={workGroup.groupLead.phone}
+                  email={workGroup.groupLead.email}
+                  firstName={workGroup.groupLead.firstName}
+                  lastName={workGroup.groupLead.lastName}
+                  middleName={workGroup.groupLead.middleName}
+                />
+
+                <Divider />
+
+                <UserShortInfo
+                  testId='user-short-info-senior-engineer'
+                  title='Старший инженер группы'
+                  role={workGroup.seniorEngineer.role}
+                  phone={workGroup.seniorEngineer.phone}
+                  email={workGroup.seniorEngineer.email}
+                  firstName={workGroup.seniorEngineer.firstName}
+                  lastName={workGroup.seniorEngineer.lastName}
+                  middleName={workGroup.seniorEngineer.middleName}
+                />
+              </Space>
+            }
+          >
+            <Text>{workGroup.name}</Text>
+          </Popover>
+        ) : (
+          <Text>I линия поддержки</Text>
+        )}
       </Space>
 
       {isTaskFirstLineModalOpened && (
