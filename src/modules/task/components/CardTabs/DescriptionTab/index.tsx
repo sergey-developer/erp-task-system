@@ -8,27 +8,28 @@ import Space from 'components/Space'
 
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
-const { Title, Paragraph } = Typography
+import { TitleStyled } from './style'
 
-export type DescriptionTabProps = Pick<
-  TaskModel,
-  'description' | 'attachments'
-> & {
+const { Paragraph } = Typography
+
+export type DescriptionTabProps = Pick<TaskModel, 'description' | 'attachments'> & {
   title: string
+  taskTitle: string
 }
 
 const DescriptionTab: FC<DescriptionTabProps> = ({
   title,
+  taskTitle,
   description,
   attachments = [],
 }) => {
   return (
     <Space data-testid='task-description-tab' $block direction='vertical'>
-      <Title level={5}>{title}</Title>
+      <TitleStyled level={5} copyable={{ text: `${taskTitle}\n\n${description}` }}>
+        {title}
+      </TitleStyled>
 
-      {description && (
-        <Paragraph>{renderStringWithLineBreak(description)}</Paragraph>
-      )}
+      {description && <Paragraph>{renderStringWithLineBreak(description)}</Paragraph>}
 
       {!!attachments?.length && <AttachmentList attachments={attachments} />}
     </Space>
