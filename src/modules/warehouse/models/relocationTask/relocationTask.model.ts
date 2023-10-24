@@ -23,4 +23,10 @@ export type RelocationTaskModel = {
   createdBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   comment: MaybeNull<string>
   documents: MaybeNull<Pick<TaskAttachmentModel, 'id' | 'name' | 'url' | 'size'>[]>
+  revision: MaybeNull<{
+    relocationJournalEntry: IdType
+    text: string
+    createdAt: string
+    user: Pick<UserModel, 'id' | 'fullName' | 'phone'>
+  }>
 }

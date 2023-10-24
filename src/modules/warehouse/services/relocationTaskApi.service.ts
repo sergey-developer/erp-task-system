@@ -19,6 +19,8 @@ import {
   GetRelocationTaskSuccessResponse,
   GetRelocationTaskWaybillM15QueryArgs,
   GetRelocationTaskWaybillM15SuccessResponse,
+  ReturnRelocationTaskToReworkMutationArgs,
+  ReturnRelocationTaskToReworkSuccessResponse,
   UpdateRelocationTaskMutationArgs,
   UpdateRelocationTaskSuccessResponse,
 } from 'modules/warehouse/models'
@@ -30,6 +32,7 @@ import {
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
   updateRelocationTaskUrl,
+  returnRelocationTaskToReworkUrl,
 } from 'modules/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -93,6 +96,20 @@ const relocationTaskApiService = baseApiService
           }
         },
       }),
+      returnRelocationTaskToRework: build.mutation<
+        ReturnRelocationTaskToReworkSuccessResponse,
+        ReturnRelocationTaskToReworkMutationArgs
+        >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [RelocationTaskApiTagEnum.RelocationTask],
+        query: ({ relocationTaskId, ...payload }) => {
+          return {
+            url: returnRelocationTaskToReworkUrl(relocationTaskId),
+            method: HttpMethodEnum.Post,
+            data: payload,
+          }
+        },
+      }),
       getRelocationTask: build.query<GetRelocationTaskSuccessResponse, GetRelocationTaskQueryArgs>({
         providesTags: (result, error) => (error ? [] : [RelocationTaskApiTagEnum.RelocationTask]),
         query: ({ relocationTaskId }) => ({
@@ -125,6 +142,7 @@ const relocationTaskApiService = baseApiService
           method: HttpMethodEnum.Get,
         }),
       }),
+
       getRelocationEquipmentBalanceList: build.query<
         GetRelocationEquipmentBalanceListSuccessResponse,
         GetRelocationEquipmentBalanceListQueryArgs
@@ -152,6 +170,7 @@ export const {
   useUpdateRelocationTaskMutation,
   useGetRelocationTaskQuery,
   useExecuteRelocationTaskMutation,
+  useReturnRelocationTaskToReworkMutation,
 
   useLazyGetRelocationTaskWaybillM15Query,
 

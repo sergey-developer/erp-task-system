@@ -16,6 +16,10 @@ export const getRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения заявки на перемещение',
 }
 
+export const returnRelocationTaskToReworkMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка возврата заявки на перемещение на доработку',
+}
+
 export const executeRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка выполнения заявки на перемещение',
 }

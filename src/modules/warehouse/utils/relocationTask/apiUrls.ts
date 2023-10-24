@@ -8,6 +8,11 @@ import { appendSlashAtEnd } from 'shared/utils/string'
 export const getRelocationTaskUrl = (id: IdType): string =>
   appendSlashAtEnd(generatePath(RelocationTaskApiEnum.GetRelocationTask, { id: String(id) }))
 
+export const returnRelocationTaskToReworkUrl = (id: IdType): string =>
+  appendSlashAtEnd(
+    generatePath(RelocationTaskApiEnum.ReturnRelocationTaskToRework, { id: String(id) }),
+  )
+
 export const executeRelocationTaskUrl = (id: IdType): string =>
   appendSlashAtEnd(generatePath(RelocationTaskApiEnum.ExecuteRelocationTask, { id: String(id) }))
 
