@@ -33,7 +33,7 @@ const props: RelocationTaskFormProps = {
   locationList: [],
   locationListIsLoading: false,
 
-  selectedRelocateFrom: undefined,
+  onChangeRelocateTo: jest.fn(),
   onChangeRelocateFrom: jest.fn(),
 }
 

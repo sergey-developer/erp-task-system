@@ -13,6 +13,7 @@ import { EquipmentModel } from 'modules/warehouse/models'
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
 
+import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { makeString } from 'shared/utils/string'
 
@@ -47,9 +48,11 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   equipmentCatalogListIsLoading,
 
   canAddEquipment,
+  addEquipmentBtnDisabled,
   onClickAddEquipment,
 }) => {
   const form = Form.useFormInstance()
+  const relocateFromFormValue: MaybeUndefined<IdType> = Form.useWatch('relocateFrom', form)
 
   const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
     () =>
@@ -95,6 +98,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
                 <Space $block direction='vertical'>
                   <AddEquipmentButton
                     type='link'
+                    disabled={addEquipmentBtnDisabled}
                     onClick={() =>
                       onClickAddEquipment({
                         rowIndex: config.rowIndex,
@@ -111,7 +115,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
             : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
-        disabled: isLoading,
+        disabled: isLoading || !relocateFromFormValue,
         options: equipmentCatalogOptions,
         showSearch: true,
         onChange: () => {
