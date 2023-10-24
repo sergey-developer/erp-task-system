@@ -20,6 +20,7 @@ import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
   executeRelocationTaskMessages,
   returnRelocationTaskToReworkMessages,
+  cancelRelocationTaskMessages,
   relocationTaskStatusDict,
 } from 'modules/warehouse/constants/relocationTask'
 import {
@@ -31,6 +32,7 @@ import {
 import {
   useExecuteRelocationTaskMutation,
   useReturnRelocationTaskToReworkMutation,
+  useCancelRelocationTaskMutation,
 } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
@@ -63,6 +65,8 @@ import RelocationEquipmentTable from '../RelocationEquipmentTable'
 import { ReturnRelocationTaskToReworkModalProps } from '../ReturnRelocationTaskToReworkModal/types'
 import { RelocationTaskDetailsProps } from './types'
 
+const CancelRelocationTaskModal = React.lazy(() => import('../CancelRelocationTaskModal'))
+
 const ExecuteRelocationTaskModal = React.lazy(() => import('../ExecuteRelocationTaskModal'))
 
 const ReturnRelocationTaskToReworkModal = React.lazy(
@@ -79,6 +83,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     'RELOCATION_TASKS_READ',
     'RELOCATION_TASKS_UPDATE',
   ])
+
+  const [cancelTaskModalOpened, { toggle: toggleOpenCancelTaskModal }] = useBoolean()
+  const debouncedToggleOpenCancelTaskModal = useDebounceFn(toggleOpenCancelTaskModal)
 
   const [returnToReworkModalOpened, { toggle: toggleOpenReturnToReworkModal }] = useBoolean()
   const debouncedToggleOpenReturnToReworkModal = useDebounceFn(toggleOpenReturnToReworkModal)
@@ -103,9 +110,33 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [returnToReworkMutation, { isLoading: returnToReworkIsLoading }] =
     useReturnRelocationTaskToReworkMutation()
 
+  const [cancelRelocationTaskMutation, { isLoading: cancelRelocationTaskIsLoading }] =
+    useCancelRelocationTaskMutation()
+
   const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
   const executorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.executor?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
+
+  const handleCancelTask = async () => {
+    try {
+      await cancelRelocationTaskMutation({ relocationTaskId }).unwrap()
+      toggleOpenCancelTaskModal()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (error.data.detail) {
+          if (isBadRequestError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isForbiddenError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isNotFoundError(error)) {
+            showErrorNotification(error.data.detail)
+          } else {
+            showErrorNotification(cancelRelocationTaskMessages.commonError)
+          }
+        }
+      }
+    }
+  }
 
   const handleGetWaybillM15 = useDebounceFn(async () => {
     try {
@@ -231,6 +262,17 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
           !executorIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenReturnToReworkModal,
+      },
+      {
+        key: 5,
+        label: 'Отменить заявку',
+        disabled:
+          !userPermissions?.relocationTasksUpdate ||
+          !creatorIsCurrentUser ||
+          relocationTaskStatus.isCanceled ||
+          relocationTaskStatus.isClosed ||
+          relocationTaskStatus.isCompleted,
+        onClick: debouncedToggleOpenCancelTaskModal,
       },
     ],
   }
@@ -418,6 +460,24 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             isLoading={returnToReworkIsLoading}
             onCancel={debouncedToggleOpenReturnToReworkModal}
             onSubmit={handleReturnToRework}
+          />
+        </React.Suspense>
+      )}
+
+      {cancelTaskModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={cancelTaskModalOpened}
+              onCancel={debouncedToggleOpenCancelTaskModal}
+            />
+          }
+        >
+          <CancelRelocationTaskModal
+            open={cancelTaskModalOpened}
+            isLoading={cancelRelocationTaskIsLoading}
+            onCancel={debouncedToggleOpenCancelTaskModal}
+            onConfirm={handleCancelTask}
           />
         </React.Suspense>
       )}

@@ -3,8 +3,11 @@ import { getPaginatedList } from 'lib/antd/utils'
 import {
   RelocationTaskApiEnum,
   RelocationTaskApiTagEnum,
+  RelocationTaskApiTriggerEnum,
 } from 'modules/warehouse/constants/relocationTask'
 import {
+  CancelRelocationTaskMutationArgs,
+  CancelRelocationTaskSuccessResponse,
   ExecuteRelocationTaskMutationArgs,
   ExecuteRelocationTaskSuccessResponse,
   CreateRelocationTaskMutationArgs,
@@ -28,6 +31,7 @@ import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehou
 import {
   getRelocationEquipmentBalanceListUrl,
   executeRelocationTaskUrl,
+  cancelRelocationTaskUrl,
   getRelocationEquipmentListUrl,
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
@@ -110,7 +114,31 @@ const relocationTaskApiService = baseApiService
           }
         },
       }),
-      getRelocationTask: build.query<GetRelocationTaskSuccessResponse, GetRelocationTaskQueryArgs>({
+      cancelRelocationTask: build.mutation<
+        CancelRelocationTaskSuccessResponse,
+        CancelRelocationTaskMutationArgs
+        >({
+        query: ({ relocationTaskId }) => ({
+          url: cancelRelocationTaskUrl(relocationTaskId),
+          method: HttpMethodEnum.Post,
+        }),
+        onQueryStarted: async ({ relocationTaskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled
+
+            dispatch(
+              baseApiService.util.updateQueryData(
+                RelocationTaskApiTriggerEnum.GetRelocationTask as never,
+                { relocationTaskId } as never,
+                (task: GetRelocationTaskSuccessResponse) => {
+                  Object.assign(task, { status: data.status })
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
+      [RelocationTaskApiTriggerEnum.GetRelocationTask]: build.query<GetRelocationTaskSuccessResponse, GetRelocationTaskQueryArgs>({
         providesTags: (result, error) => (error ? [] : [RelocationTaskApiTagEnum.RelocationTask]),
         query: ({ relocationTaskId }) => ({
           url: getRelocationTaskUrl(relocationTaskId),
@@ -171,7 +199,7 @@ export const {
   useGetRelocationTaskQuery,
   useExecuteRelocationTaskMutation,
   useReturnRelocationTaskToReworkMutation,
-
+  useCancelRelocationTaskMutation,
   useLazyGetRelocationTaskWaybillM15Query,
 
   useGetRelocationTaskListQuery,
