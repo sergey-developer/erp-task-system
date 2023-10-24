@@ -38,6 +38,9 @@ export const testUtils = {
 
   getCancelButton,
   clickCancelButton,
+
+  expectLoadingStarted: () => buttonTestUtils.expectLoadingStarted(getConfirmButton()),
+  expectLoadingFinished: () => buttonTestUtils.expectLoadingFinished(getConfirmButton()),
 }
 
 describe('Модалка отмены заявки на перемещение', () => {
@@ -63,7 +66,7 @@ describe('Модалка отмены заявки на перемещение',
     })
 
     test('При клике обработчик вызывается', async () => {
-      const {user} = render(<CancelRelocationTaskModal {...props} />)
+      const { user } = render(<CancelRelocationTaskModal {...props} />)
       await testUtils.clickConfirmButton(user)
       expect(props.onConfirm).toBeCalledTimes(1)
     })
@@ -80,7 +83,7 @@ describe('Модалка отмены заявки на перемещение',
     })
 
     test('При клике обработчик вызывается', async () => {
-      const {user} = render(<CancelRelocationTaskModal {...props} />)
+      const { user } = render(<CancelRelocationTaskModal {...props} />)
       await testUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
