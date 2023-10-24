@@ -12,6 +12,7 @@ import TimePicker from 'components/TimePicker'
 import { locationDict } from 'shared/constants/catalogs'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 
 import { RelocationTaskFormProps, LocationOption } from './types'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
@@ -28,7 +29,11 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   locationListIsLoading,
 
   onChangeRelocateFrom,
+  onChangeRelocateTo,
 }) => {
+  const form = Form.useFormInstance()
+  const relocateFromFormValue: MaybeUndefined<IdType> = Form.useWatch('relocateFrom', form)
+
   const locationOptions = useMemo(
     () =>
       locationList
@@ -101,11 +106,14 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           name='relocateTo'
           rules={onlyRequiredRules}
         >
-          <Select
+          <Select<IdType, LocationOption>
             loading={locationListIsLoading}
-            disabled={isLoading}
+            disabled={isLoading || !relocateFromFormValue}
             options={locationOptions}
             placeholder='Выберите объект'
+            onChange={(value, option) => {
+              if (!Array.isArray(option)) onChangeRelocateTo(option)
+            }}
           />
         </Form.Item>
       </Col>

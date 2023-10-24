@@ -6,6 +6,7 @@ import { IdType } from 'shared/types/common'
 export type CreateEquipmentMutationArgs = {
   title: string
   nomenclature: IdType
+  location: IdType
   warehouse: IdType
   condition: EquipmentConditionEnum
   category: IdType

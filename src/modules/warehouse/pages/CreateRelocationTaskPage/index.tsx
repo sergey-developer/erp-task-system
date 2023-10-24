@@ -37,6 +37,7 @@ import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocatio
 
 import Space from 'components/Space'
 
+import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -103,6 +104,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
+  const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
@@ -117,10 +119,13 @@ const CreateRelocationTaskPage: FC = () => {
     useGetCurrencyList()
 
   const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
-    useGetEquipmentCatalogList({
-      locationId: selectedRelocateFrom?.value,
-      locationType: selectedRelocateFrom?.type,
-    })
+    useGetEquipmentCatalogList(
+      {
+        locationId: selectedRelocateFrom?.value,
+        locationType: selectedRelocateFrom?.type,
+      },
+      { skip: !selectedRelocateFrom?.value || !selectedRelocateFrom?.type },
+    )
 
   const [getEquipment] = useLazyGetEquipment()
 
@@ -150,9 +155,9 @@ const CreateRelocationTaskPage: FC = () => {
   useEffect(() => {
     if (
       addEquipmentModalOpened &&
-      Boolean(selectedCategory) &&
+      !!selectedCategory &&
       !equipmentCategory.isConsumable &&
-      Boolean(selectedNomenclatureId)
+      !!selectedNomenclatureId
     ) {
       getCustomerList()
     }
@@ -252,10 +257,14 @@ const CreateRelocationTaskPage: FC = () => {
 
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
-      if (!newEquipmentRow) return
+      if (!newEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
       try {
-        const createdEquipment = await createEquipmentMutation(values).unwrap()
+        const createdEquipment = await createEquipmentMutation({
+          ...values,
+          location: selectedRelocateFrom.value,
+          warehouse: selectedRelocateTo.value,
+        }).unwrap()
 
         form.setFieldValue(['equipments', newEquipmentRow.rowIndex], {
           rowId: createdEquipment.id,
@@ -294,7 +303,14 @@ const CreateRelocationTaskPage: FC = () => {
         }
       }
     },
-    [newEquipmentRow, createEquipmentMutation, form, handleCloseAddEquipmentModal],
+    [
+      newEquipmentRow,
+      selectedRelocateTo?.value,
+      selectedRelocateFrom?.value,
+      createEquipmentMutation,
+      form,
+      handleCloseAddEquipmentModal,
+    ],
   )
 
   const handleChangeRelocateFrom: RelocationTaskFormProps['onChangeRelocateFrom'] = (
@@ -308,6 +324,11 @@ const CreateRelocationTaskPage: FC = () => {
     setSelectedRelocateFrom(option)
     if (isShowConfirmation) toggleConfirmModal()
   }
+
+  const addEquipmentBtnDisabled =
+    !selectedRelocateFrom ||
+    !selectedRelocateTo ||
+    selectedRelocateTo.type !== LocationTypeEnum.Warehouse
 
   return (
     <>
@@ -327,8 +348,8 @@ const CreateRelocationTaskPage: FC = () => {
               userListIsLoading={userListIsFetching}
               locationList={locationList}
               locationListIsLoading={locationListIsFetching}
-              selectedRelocateFrom={selectedRelocateFrom}
               onChangeRelocateFrom={handleChangeRelocateFrom}
+              onChangeRelocateTo={setSelectedRelocateTo}
             />
           </Col>
 
@@ -345,6 +366,7 @@ const CreateRelocationTaskPage: FC = () => {
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canAddEquipment={userPermissions?.equipmentsCreate}
+                addEquipmentBtnDisabled={addEquipmentBtnDisabled}
                 onClickAddEquipment={handleOpenAddEquipmentModal}
               />
             </Space>
