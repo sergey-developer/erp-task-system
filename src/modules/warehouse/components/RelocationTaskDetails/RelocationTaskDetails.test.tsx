@@ -23,7 +23,6 @@ import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import { formatDate } from 'shared/utils/date'
 
-import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockExecuteRelocationTaskBadRequestError,
@@ -256,8 +255,8 @@ describe('Информация о заявке о перемещении', () =>
 
     test('Причина возврата отображается корректно', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
-      mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -404,7 +403,7 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId)
       const relocationEquipmentList = warehouseFixtures.relocationEquipmentList()
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {
-        body: commonFixtures.paginatedListResponse(relocationEquipmentList),
+        body: relocationEquipmentList,
       })
 
       render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
@@ -466,8 +465,8 @@ describe('Информация о заявке о перемещении', () =>
 
   describe('Накладная M15', () => {
     test('Пункт меню отображается', async () => {
-      mockGetRelocationTaskSuccess(props.relocationTaskId!)
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+      mockGetRelocationTaskSuccess(props.relocationTaskId)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -479,8 +478,8 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Пункт меню активен если есть права', async () => {
-      mockGetRelocationTaskSuccess(props.relocationTaskId!)
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+      mockGetRelocationTaskSuccess(props.relocationTaskId)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -635,8 +634,8 @@ describe('Информация о заявке о перемещении', () =>
 
   describe('Редактирование заявки', () => {
     test('Пункт меню отображается', async () => {
-      mockGetRelocationTaskSuccess(props.relocationTaskId!)
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+      mockGetRelocationTaskSuccess(props.relocationTaskId)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -649,12 +648,12 @@ describe('Информация о заявке о перемещении', () =>
 
     test('Пункт меню активен если условия соблюдены', async () => {
       const relocationTask = warehouseFixtures.relocationTask({
-        id: props.relocationTaskId!,
+        id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.New,
       })
 
-      mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -677,18 +676,18 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.openMenu(user)
       const item = testUtils.getEditTaskMenuItem()
-      menuTestUtils.expectMenuItemNotDisabled(item)
+      await waitFor(() => menuTestUtils.expectMenuItemNotDisabled(item))
     })
 
     describe('Пункт меню не активен', () => {
       test('Если условия соблюдены, но нет прав', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
-          id: props.relocationTaskId!,
+          id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
 
-        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
-        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -702,24 +701,21 @@ describe('Информация о заявке о перемещении', () =>
 
       test('Если условия соблюдены, но создатель заявки не авторизованный пользователь', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
-          id: props.relocationTaskId!,
+          id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
 
-        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
-        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
               },
-            },
+            }),
           },
         )
 
@@ -730,12 +726,12 @@ describe('Информация о заявке о перемещении', () =>
 
       test('Если условия соблюдены, но заявка отменена', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
-          id: props.relocationTaskId!,
+          id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Canceled,
         })
 
-        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
-        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -756,12 +752,12 @@ describe('Информация о заявке о перемещении', () =>
 
       test('Если условия соблюдены, но заявка закрыта', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
-          id: props.relocationTaskId!,
+          id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Closed,
         })
 
-        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
-        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -782,12 +778,12 @@ describe('Информация о заявке о перемещении', () =>
 
       test('Если условия соблюдены, но заявка завершена', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
-          id: props.relocationTaskId!,
+          id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
 
-        mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
-        mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
