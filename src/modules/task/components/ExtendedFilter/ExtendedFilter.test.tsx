@@ -1274,16 +1274,15 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Переданное значение перезаписывает значение по умолчанию', async () => {
-        const workGroupList = workGroupFixtures.workGroupList()
-        const workGroupId = workGroupList[0].id
+        const workGroupListItem = workGroupFixtures.workGroupListItem()
 
         render(
           <ExtendedFilter
             {...props}
-            workGroupList={workGroupList}
+            workGroupList={[workGroupListItem]}
             formValues={{
               ...props.formValues,
-              workGroupId,
+              workGroupId: workGroupListItem.id,
             }}
           />,
           {
@@ -1297,7 +1296,7 @@ describe('Расширенный фильтр', () => {
         const selectedOption = selectTestUtils.getSelectedOption(workGroupField)
 
         expect(selectedOption).toBeInTheDocument()
-        expect(selectedOption).toHaveTextContent(String(workGroupId))
+        expect(selectedOption).toHaveTextContent(workGroupListItem.name)
       })
 
       test('Доступен для редактирования после загрузки списка', async () => {
