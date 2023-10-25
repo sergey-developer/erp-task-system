@@ -15,8 +15,8 @@ export type AttachmentListProps = {
 const AttachmentList: FC<AttachmentListProps> = ({ attachments }) => {
   return (
     <Space data-testid='attachment-list' direction='vertical'>
-      {attachments.map((att, index) => (
-        <Space data-testid={`attachment-${att.name}`} key={index}>
+      {attachments.map((att) => (
+        <Space data-testid={`attachment-${att.name}`} key={att.id}>
           <Link download href={att.url} target='_blank'>
             <Space>
               <PaperClipOutlined />

@@ -18,6 +18,7 @@ import { getShortUserName, getUserRoleMap } from 'modules/user/utils'
 import { MaybeNull } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
+import { OlaNextBreachTimeStyled } from '../styles'
 import { TaskTableListItem } from '../types'
 
 const { Text } = Typography
@@ -86,6 +87,7 @@ export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListIt
             title: 'Группа поддержки',
             render: (value: TaskTableListItem['supportGroup']) => value?.name,
             sorter: true,
+            ellipsis: true,
           },
         ]
       : [
@@ -96,6 +98,7 @@ export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListIt
             render: (value: TaskTableListItem['workGroup']) =>
               get(value, 'name', 'I линия поддержки'),
             sorter: true,
+            ellipsis: true,
           },
         ]),
     ...(roleMap.isFirstLineSupportRole
@@ -125,9 +128,12 @@ export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListIt
       dataIndex: 'olaNextBreachTime',
       title: 'Выполнить до',
       render: (value: TaskTableListItem['olaNextBreachTime'], { olaStatus }) => (
-        <Text type={getOlaStatusTextType(olaStatus)}>{formatDate(value)}</Text>
+        <OlaNextBreachTimeStyled type={getOlaStatusTextType(olaStatus)}>
+          {formatDate(value)}
+        </OlaNextBreachTimeStyled>
       ),
       sorter: true,
+      ellipsis: true,
     },
     {
       key: 'status',
@@ -157,6 +163,7 @@ export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListIt
       title: 'Дата создания',
       render: (value: TaskTableListItem['createdAt']) => formatDate(value),
       sorter: true,
+      ellipsis: true,
     },
   ]
 }

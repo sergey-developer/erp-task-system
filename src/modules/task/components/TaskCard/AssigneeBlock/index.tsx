@@ -10,7 +10,6 @@ import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendReque
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { taskAssigneePermissions } from 'modules/task/permissions'
 import { getFullUserName } from 'modules/user/utils'
-import { WorkGroupListItemModel } from 'modules/workGroup/models'
 
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
@@ -21,10 +20,10 @@ const { Text } = Typography
 
 const NOT_ASSIGNED_TEXT = 'Не назначен'
 
-export type AssigneeBlockProps = Pick<TaskModel, 'status' | 'extendedStatus' | 'assignee'> & {
-  workGroup?: WorkGroupListItemModel
-  workGroupListIsLoading: boolean
-
+export type AssigneeBlockProps = Pick<
+  TaskModel,
+  'status' | 'extendedStatus' | 'assignee' | 'workGroup'
+> & {
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
 
@@ -41,7 +40,6 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   extendedStatus,
 
   workGroup,
-  workGroupListIsLoading,
 
   updateAssignee,
   updateAssigneeIsLoading,
@@ -161,17 +159,13 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               {canSelectAssignee ? (
                 <SelectStyled
                   defaultValue={selectedAssignee}
-                  loading={workGroupListIsLoading}
-                  disabled={updateAssigneeIsLoading}
                   bordered={false}
                   placeholder={assignee ? null : NOT_ASSIGNED_TEXT}
                   onSelect={setSelectedAssignee}
                 >
-                  {workGroupMembers.map(({ id, fullName }) => {
+                  {workGroupMembers.map(({ id, firstName, lastName, middleName }) => {
                     const currentAssigneeInWorkGroup: boolean = isEqual(id, currentAssignee)
-
                     const authenticatedUserInWorkGroup: boolean = isEqual(id, authenticatedUser!.id)
-
                     const disabled = currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
 
                     return (
@@ -181,7 +175,10 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                         value={id}
                         disabled={disabled}
                       >
-                        <TaskAssignee name={fullName} assignee={assignee} />
+                        <TaskAssignee
+                          name={getFullUserName({ firstName, lastName, middleName })}
+                          assignee={assignee}
+                        />
                       </SelectStyled.Option>
                     )
                   })}

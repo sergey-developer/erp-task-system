@@ -65,6 +65,7 @@ export const taskListItem = (props?: Partial<TaskListItemModel>): TaskListItemMo
   description: fakeWord(),
   address: fakeAddress(),
   contactPhone: fakePhone(),
+  parentInteractionExternalId: fakeWord(),
 })
 
 export const taskList = (length: number = 1): TaskListItemModel[] =>

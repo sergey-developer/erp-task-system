@@ -1,11 +1,9 @@
 import { useBoolean, useSetState } from 'ahooks'
 import debounce from 'lodash/debounce'
-import defaultTo from 'lodash/defaultTo'
-import { FC, useCallback } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import Equipment from 'modules/warehouse/components/Equipment'
-import { getHiddenFieldsByCategory } from 'modules/warehouse/components/Equipment/utils'
+import EquipmentDetails from 'modules/warehouse/components/EquipmentDetails'
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import {
@@ -20,23 +18,26 @@ import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { IdType } from 'shared/types/common'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 const EquipmentListPage: FC = () => {
   // todo: создать хук который будет возвращать распарсеные значения
   const params = useParams<'id'>()
-  const nomenclatureId = defaultTo(Number(params?.id), undefined)
+  const nomenclatureId = Number(params?.id) || undefined
 
   const context = useEquipmentPageContext()
 
-  const [isShowEquipment, { toggle: toggleShowEquipment }] = useBoolean(false)
-  const debouncedToggleShowEquipment = useDebounceFn(toggleShowEquipment)
+  const [selectedEquipmentId, setSelectedEquipmentId] = useState<IdType>()
+
+  const [equipmentDetailsOpened, { toggle: toggleOpenEquipmentDetails }] = useBoolean(false)
+  const debouncedToggleOpenEquipmentDetails = useDebounceFn(toggleOpenEquipmentDetails)
 
   const [getEquipmentListParams, setGetEquipmentListParams] =
     useSetState<GetEquipmentListQueryArgs>({
       ...getInitialPaginationParams(),
-      ...(context.filter && equipmentFilterToParams(context.filter)),
-      search: context.search,
+      ...(context?.filter && equipmentFilterToParams(context.filter)),
+      search: context?.search,
       nomenclature: nomenclatureId,
       ordering: 'title',
     })
@@ -56,7 +57,7 @@ const EquipmentListPage: FC = () => {
       if (sorter) {
         const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && columnKey in sortableFieldToSortValues) {
+        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
           setGetEquipmentListParams({
             ordering: order ? getSort(columnKey as SortableField, order) : undefined,
           })
@@ -76,17 +77,12 @@ const EquipmentListPage: FC = () => {
 
   const handleTableRowClick = useCallback<EquipmentTableProps['onRow']>(
     (record) => ({
-      onClick: debounce(async () => {
-        toggleShowEquipment()
-
-        try {
-          await context.getEquipment(record.id)
-        } catch {
-          toggleShowEquipment()
-        }
+      onClick: debounce(() => {
+        setSelectedEquipmentId(record.id)
+        toggleOpenEquipmentDetails()
       }, DEFAULT_DEBOUNCE_VALUE),
     }),
-    [context.getEquipment, toggleShowEquipment],
+    [toggleOpenEquipmentDetails],
   )
 
   return (
@@ -100,17 +96,11 @@ const EquipmentListPage: FC = () => {
         onRow={handleTableRowClick}
       />
 
-      {isShowEquipment && (
-        <Equipment
-          open={isShowEquipment}
-          title={context.equipment?.title}
-          equipment={context.equipment}
-          equipmentIsLoading={context.equipmentIsLoading}
-          hiddenFields={
-            context.equipment?.category && getHiddenFieldsByCategory(context.equipment.category)
-          }
-          onClickEdit={context.onClickEditEquipment}
-          onClose={debouncedToggleShowEquipment}
+      {equipmentDetailsOpened && selectedEquipmentId && (
+        <EquipmentDetails
+          open={equipmentDetailsOpened}
+          onClose={debouncedToggleOpenEquipmentDetails}
+          equipmentId={selectedEquipmentId}
         />
       )}
     </div>

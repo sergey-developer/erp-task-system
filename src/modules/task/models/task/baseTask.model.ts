@@ -28,10 +28,8 @@ export type BaseTaskModel = {
   severity: 1 | 2 | 3 | 4
   priorityCode: 1 | 2 | 3 | 4
 
-  workGroup: MaybeNull<Pick<TaskWorkGroupModel, 'id' | 'name'>>
-  assignee: MaybeNull<
-    Pick<TaskAssigneeModel, 'id' | 'firstName' | 'lastName' | 'middleName' | 'avatar'>
-  >
+  workGroup: MaybeNull<TaskWorkGroupModel>
+  assignee: MaybeNull<TaskAssigneeModel>
   responseTime: MaybeNull<Pick<TaskResponseTimeModel, 'progress' | 'timedelta' | 'value'>>
   supportGroup: MaybeNull<Pick<SupportGroupModel, 'id' | 'name'>>
   contactPhone: MaybeNull<string>
@@ -43,4 +41,5 @@ export type BaseTaskModel = {
   address: MaybeNull<string>
   latitude: MaybeNull<string>
   longitude: MaybeNull<string>
+  parentInteractionExternalId: MaybeNull<string>
 }

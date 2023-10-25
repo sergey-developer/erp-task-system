@@ -2,11 +2,9 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
-import { RouteEnum } from 'configs/routes'
-
 import { testUtils as equipmentFilterTestUtils } from 'modules/warehouse/components/EquipmentFilter/EquipmentFilter.test'
-import { testUtils as equipmentModalTestUtils } from 'modules/warehouse/components/EquipmentModal/EquipmentModal.test'
 import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
 import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
@@ -14,15 +12,12 @@ import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/war
 
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import {
   mockGetCustomerListSuccess,
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
-  mockGetNomenclatureListSuccess,
   mockGetWarehouseListSuccess,
-  mockGetCountryListSuccess,
 } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
@@ -41,15 +36,6 @@ const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filte
 
 const clickFilterButton = async (user: UserEvent) => {
   const button = getFilterButton()
-  await user.click(button)
-}
-
-// add equipment button
-const getAddEquipmentButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Добавить оборудование/)
-
-const clickAddEquipmentButton = async (user: UserEvent) => {
-  const button = getAddEquipmentButton()
   await user.click(button)
 }
 
@@ -72,9 +58,6 @@ const testUtils = {
   getFilterButton,
   clickFilterButton,
 
-  getAddEquipmentButton,
-  clickAddEquipmentButton,
-
   getSearchField,
   setSearch,
 }
@@ -88,7 +71,7 @@ describe('Layout номенклатуры оборудования', () => {
     renderInRoute_latest(
       [
         {
-          path: RouteEnum.EquipmentNomenclatureList,
+          path: WarehouseRouteEnum.EquipmentNomenclatureList,
           element: <EquipmentPageLayout />,
           children: [
             {
@@ -98,7 +81,7 @@ describe('Layout номенклатуры оборудования', () => {
           ],
         },
       ],
-      { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
     )
 
     const page = equipmentNomenclatureListPageTestUtils.getContainer()
@@ -170,7 +153,7 @@ describe('Layout номенклатуры оборудования', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatureList,
             element: <EquipmentPageLayout />,
             children: [
               {
@@ -180,7 +163,7 @@ describe('Layout номенклатуры оборудования', () => {
             ],
           },
         ],
-        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -211,7 +194,7 @@ describe('Layout номенклатуры оборудования', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatureList,
             element: <EquipmentPageLayout />,
             children: [
               {
@@ -219,13 +202,13 @@ describe('Layout номенклатуры оборудования', () => {
                 element: <EquipmentNomenclatureListPage />,
               },
               {
-                path: RouteEnum.EquipmentList,
+                path: WarehouseRouteEnum.EquipmentList,
                 element: <EquipmentListPage />,
               },
             ],
           },
         ],
-        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -243,34 +226,6 @@ describe('Layout номенклатуры оборудования', () => {
         await equipmentNomenclatureListPageTestUtils.findContainer()
 
       expect(equipmentNomenclatureListPage).toBeInTheDocument()
-    })
-  })
-
-  describe('Добавление оборудования', () => {
-    describe('Кнопка добавления', () => {
-      test('Отображается корректно', () => {
-        render(<EquipmentPageLayout />)
-
-        const button = testUtils.getAddEquipmentButton()
-
-        expect(button).toBeInTheDocument()
-        expect(button).toBeEnabled()
-      })
-
-      test('При клике открывает модалку добавления оборудования', async () => {
-        mockGetWarehouseListSuccess()
-        mockGetEquipmentCategoryListSuccess()
-        mockGetCustomerListSuccess()
-        mockGetCountryListSuccess()
-        mockGetNomenclatureListSuccess()
-
-        const { user } = render(<EquipmentPageLayout />)
-
-        await testUtils.clickAddEquipmentButton(user)
-        const modal = await equipmentModalTestUtils.findContainer()
-
-        expect(modal).toBeInTheDocument()
-      })
     })
   })
 
@@ -308,7 +263,7 @@ describe('Layout номенклатуры оборудования', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatureList,
             element: <EquipmentPageLayout />,
             children: [
               {
@@ -316,13 +271,13 @@ describe('Layout номенклатуры оборудования', () => {
                 element: <EquipmentNomenclatureListPage />,
               },
               {
-                path: RouteEnum.EquipmentList,
+                path: WarehouseRouteEnum.EquipmentList,
                 element: <EquipmentListPage />,
               },
             ],
           },
         ],
-        { initialEntries: [RouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()

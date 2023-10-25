@@ -1,6 +1,5 @@
 import { CheckboxOptionType } from 'antd'
 import isEqual from 'lodash/isEqual'
-import { FieldNames } from 'rc-select/lib/Select'
 import React from 'react'
 
 import {
@@ -70,8 +69,3 @@ export const taskExtendedStatusOptions: CheckboxOptionType[] = Object.values(Tas
     ),
     value: status,
   }))
-
-export const managerSelectFieldNames: Readonly<FieldNames> = {
-  label: 'fullName',
-  value: 'id',
-}

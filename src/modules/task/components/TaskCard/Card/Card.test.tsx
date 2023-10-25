@@ -5,6 +5,7 @@ import {
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/taskSuspendRequest'
 import { UserRoleEnum } from 'modules/user/constants'
+import { getFullUserName } from 'modules/user/utils'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
@@ -59,9 +60,6 @@ const props: Readonly<TaskCardProps> = {
 
   taskIsLoading: false,
   isGetTaskError: false,
-
-  workGroupList: [],
-  workGroupListIsLoading: false,
 
   deleteWorkGroup: jest.fn(),
   deleteWorkGroupIsLoading: false,
@@ -285,7 +283,51 @@ describe('Карточка заявки', () => {
     })
 
     describe('Модалка переклассификации заявки', () => {
-      test('Открывается', async () => {
+      test('Открывается если есть обращение', async () => {
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              ...activeRequestReclassificationItemProps,
+              parentInteractionExternalId: fakeWord(),
+            }}
+          />,
+          { store: getStoreWithAuth() },
+        )
+
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickRequestReclassificationItem(user)
+        const modal = await taskReclassificationModalTestUtils.findContainer()
+
+        expect(modal).toBeInTheDocument()
+      })
+
+      test('Предупреждение отображается вместо модалки если нет обращения', async () => {
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              ...activeRequestReclassificationItemProps,
+              parentInteractionExternalId: null,
+            }}
+          />,
+          { store: getStoreWithAuth() },
+        )
+
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickRequestReclassificationItem(user)
+        const modal = taskReclassificationModalTestUtils.queryContainer()
+        const warning = within(await screen.findByRole('dialog')).getByText(
+          'Невозможно переклассифицировать заявку без обращения',
+        )
+
+        expect(modal).not.toBeInTheDocument()
+        expect(warning).toBeInTheDocument()
+      })
+
+      test('Закрывается', async () => {
         const { user } = render(
           <TaskCard
             {...props}
@@ -300,70 +342,9 @@ describe('Карточка заявки', () => {
         await cardTitleTestUtils.openMenu(user)
         await cardTitleTestUtils.clickRequestReclassificationItem(user)
         const modal = await taskReclassificationModalTestUtils.findContainer()
+        await taskReclassificationModalTestUtils.clickCancelButton(user)
 
-        expect(modal).toBeInTheDocument()
-      })
-
-      describe('Закрывается', () => {
-        test('При клике на кнопку "Отмена"', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestReclassificationItemProps,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-          await taskReclassificationModalTestUtils.clickCancelButton(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике на кнопку закрытия', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestReclassificationItemProps,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-          await taskReclassificationModalTestUtils.clickCloseButton(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике вне модалки', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestReclassificationItemProps,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-          await modalTestUtils.clickOutsideModal(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
+        expect(modal).not.toBeInTheDocument()
       })
 
       describe('При успешном запросе', () => {
@@ -416,7 +397,7 @@ describe('Карточка заявки', () => {
             availableReasons[0],
           )
           await taskReclassificationModalTestUtils.clickSubmitButton(user)
-          await waitForElementToBeRemoved(modal)
+          await waitFor(() => expect(modal).not.toBeInTheDocument())
         })
       })
     })
@@ -638,7 +619,6 @@ describe('Карточка заявки', () => {
       const { user } = render(
         <TaskCard
           {...props}
-          workGroupList={[canSelectAssigneeProps.workGroup]}
           task={{
             ...props.task!,
             ...canSelectAssigneeProps,
@@ -656,7 +636,7 @@ describe('Карточка заявки', () => {
       await assigneeBlockTestUtils.openAssigneeSelect(user)
       await assigneeBlockTestUtils.selectAssignee(
         user,
-        canSelectAssigneeProps.workGroup.members[0].fullName,
+        getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
       )
       await assigneeBlockTestUtils.clickAssignButton(user)
 
@@ -693,11 +673,6 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...props}
-            workGroupList={[
-              workGroupFixtures.workGroupListItem({
-                id: showFirstLineButtonProps.workGroup!.id,
-              }),
-            ]}
             task={{
               ...props.task!,
               ...showFirstLineButtonProps,
@@ -730,11 +705,6 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...props}
-            workGroupList={[
-              workGroupFixtures.workGroupListItem({
-                id: showFirstLineButtonProps.workGroup!.id,
-              }),
-            ]}
             task={{
               ...props.task!,
               ...showFirstLineButtonProps,
@@ -767,11 +737,6 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...props}
-            workGroupList={[
-              workGroupFixtures.workGroupListItem({
-                id: showFirstLineButtonProps.workGroup!.id,
-              }),
-            ]}
             task={{
               ...props.task!,
               ...showFirstLineButtonProps,
@@ -804,11 +769,6 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...props}
-            workGroupList={[
-              workGroupFixtures.workGroupListItem({
-                id: showFirstLineButtonProps.workGroup!.id,
-              }),
-            ]}
             task={{
               ...props.task!,
               ...showFirstLineButtonProps,

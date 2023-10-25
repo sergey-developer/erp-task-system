@@ -1,17 +1,16 @@
 import { FC } from 'react'
 
-import { RouteEnum } from 'configs/routes'
-
 import CatalogList, { CatalogListProps } from 'modules/warehouse/components/CatalogList'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 const items: CatalogListProps['items'] = [
   {
-    link: RouteEnum.EquipmentNomenclatureList,
+    link: WarehouseRouteEnum.EquipmentNomenclatureList,
     text: 'Оборудование',
     permissions: ['EQUIPMENTS_READ'],
   },
   {
-    link: RouteEnum.RelocationTaskList,
+    link: WarehouseRouteEnum.RelocationTaskList,
     text: 'Заявки на перемещение оборудования',
     permissions: ['RELOCATION_TASKS_READ'],
   },
