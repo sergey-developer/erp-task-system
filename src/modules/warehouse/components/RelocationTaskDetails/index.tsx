@@ -16,13 +16,17 @@ import { useNavigate } from 'react-router-dom'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import {
+  closeRelocationTaskMessages,
+  relocationTaskStatusDict,
+} from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
   useLazyGetRelocationTaskWaybillM15,
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
+import { useCloseRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
   getWaybillM15Filename,
@@ -36,8 +40,15 @@ import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
 import { RelocationTaskDetailsProps } from './types'
@@ -72,9 +83,33 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
 
+  const [closeRelocationTaskMutation, { isLoading: closeRelocationTaskIsLoading }] =
+    useCloseRelocationTaskMutation()
+
   const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
   const executorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.executor?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
+
+  const handleCloseTask = async () => {
+    try {
+      await closeRelocationTaskMutation({ relocationTaskId }).unwrap()
+      toggleOpenConfirmExecutionModal()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (error.data.detail) {
+          if (isBadRequestError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isForbiddenError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isNotFoundError(error)) {
+            showErrorNotification(error.data.detail)
+          } else {
+            showErrorNotification(closeRelocationTaskMessages.commonError)
+          }
+        }
+      }
+    }
+  }
 
   const handleGetWaybillM15 = useDebounceFn(async () => {
     try {
@@ -274,9 +309,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         >
           <ConfirmExecutionRelocationTaskModal
             open={confirmExecutionModalOpened}
-            isLoading={false}
+            isLoading={closeRelocationTaskIsLoading}
             onCancel={debouncedToggleOpenConfirmExecutionModal}
-            onConfirm={async () => {}}
+            onConfirm={handleCloseTask}
           />
         </React.Suspense>
       )}
