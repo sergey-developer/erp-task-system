@@ -15,9 +15,7 @@ const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListIte
 
 const props: Readonly<RelocationEquipmentTableProps> = {
   dataSource: [relocationEquipmentListItem],
-  pagination: {},
   loading: false,
-  onChange: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-equipment-table')
@@ -53,12 +51,6 @@ export const testUtils = {
   expectLoadingFinished,
 }
 
-afterEach(() => {
-  const onChange = props.onChange as jest.Mock
-
-  onChange.mockReset()
-})
-
 describe('Таблица перечня оборудования заявки на перемещение оборудования', () => {
   test('Отображается корректно', () => {
     render(<RelocationEquipmentTable {...props} />)
@@ -69,29 +61,6 @@ describe('Таблица перечня оборудования заявки н
     tableTestUtils.expectPaginationEnabledIn(table)
 
     props.dataSource.forEach((item) => {
-      const row = testUtils.getRow(item.id)
-      expect(row).toBeInTheDocument()
-    })
-  })
-
-  test('Пагинация работает', async () => {
-    const relocationEquipmentList = warehouseFixtures.relocationEquipmentList(11)
-
-    const { user } = render(
-      <RelocationEquipmentTable {...props} dataSource={relocationEquipmentList} />,
-    )
-
-    const table = testUtils.getContainer()
-    await tableTestUtils.clickPaginationNextButtonIn(user, table)
-
-    expect(props.onChange).toBeCalledTimes(1)
-    expect(props.onChange).toBeCalledWith(
-      expect.anything(),
-      expect.anything(),
-      expect.anything(),
-      expect.anything(),
-    )
-    relocationEquipmentList.slice(-1).forEach((item) => {
       const row = testUtils.getRow(item.id)
       expect(row).toBeInTheDocument()
     })
@@ -165,6 +134,36 @@ describe('Таблица перечня оборудования заявки н
       const value = testUtils.getColValue(
         relocationEquipmentListItem.id,
         relocationEquipmentListItem.quantity,
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+  })
+
+  describe('Стоимость', () => {
+    test('Отображается корректно', () => {
+      render(<RelocationEquipmentTable {...props} />)
+
+      const title = testUtils.getColTitle('Стоимость')
+      const value = testUtils.getColValue(
+        relocationEquipmentListItem.id,
+        relocationEquipmentListItem.price!,
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+  })
+
+  describe('Валюта', () => {
+    test('Отображается корректно', () => {
+      render(<RelocationEquipmentTable {...props} />)
+
+      const title = testUtils.getColTitle('Валюта')
+      const value = testUtils.getColValue(
+        relocationEquipmentListItem.id,
+        relocationEquipmentListItem.currency!.title,
       )
 
       expect(title).toBeInTheDocument()

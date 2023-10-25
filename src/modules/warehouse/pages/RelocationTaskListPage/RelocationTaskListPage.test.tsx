@@ -9,6 +9,8 @@ import {
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
 } from 'modules/warehouse/constants/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskPage/CreateRelocationTaskPage.test'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import commonFixtures from '_tests_/fixtures/common'
@@ -20,32 +22,41 @@ import {
   mockGetRelocationTaskListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeWord,
+  linkTestUtils,
   notificationTestUtils,
   render,
+  renderInRoute_latest,
   setupApiTests,
   tableTestUtils,
 } from '_tests_/utils'
 
+import CreateRelocationTaskPage from '../CreateRelocationTaskPage'
 import RelocationTaskListPage from './index'
 
 const getContainer = () => screen.getByTestId('relocation-task-list-page')
 
-// filter button
-const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
+const getFilterButton = () => buttonTestUtils.getFilterButtonIn(getContainer())
+const clickFilterButton = (user: UserEvent) =>
+  buttonTestUtils.clickFilterButtonIn(getContainer(), user)
 
-const clickFilterButton = async (user: UserEvent) => {
-  const button = getFilterButton()
-  await user.click(button)
-}
+const getCreateTaskLink = () => linkTestUtils.getLinkIn(getContainer(), 'Создать заявку')
+const queryCreateTaskLink = () => linkTestUtils.queryLinkIn(getContainer(), 'Создать заявку')
+const clickCreateTaskLink = (user: UserEvent) =>
+  linkTestUtils.clickLinkIn(getContainer(), user, 'Создать заявку')
 
 export const testUtils = {
   getContainer,
 
   getFilterButton,
   clickFilterButton,
+
+  getCreateTaskLink,
+  queryCreateTaskLink,
+  clickCreateTaskLink,
 }
 
 setupApiTests()
@@ -267,6 +278,72 @@ describe('Страница списка заявок на перемещение
 
       await waitFor(() => {
         expect(details).not.toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Создание заявки на перемещение оборудования', () => {
+    describe('Кнопка создания', () => {
+      test('Отображается корректно если есть права', () => {
+        mockGetRelocationTaskListSuccess()
+
+        render(<RelocationTaskListPage />, {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
+              },
+            },
+          },
+        })
+
+        const link = testUtils.getCreateTaskLink()
+
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute('href', WarehouseRouteEnum.CreateRelocationTask)
+      })
+
+      test('Не отображается если нет прав', () => {
+        mockGetRelocationTaskListSuccess()
+
+        render(<RelocationTaskListPage />)
+
+        const link = testUtils.queryCreateTaskLink()
+        expect(link).not.toBeInTheDocument()
+      })
+
+      test('При клике переходит на страницу создания заявки', async () => {
+        mockGetRelocationTaskListSuccess()
+
+        const { user } = renderInRoute_latest(
+          [
+            {
+              path: WarehouseRouteEnum.RelocationTaskList,
+              element: <RelocationTaskListPage />,
+            },
+            {
+              path: WarehouseRouteEnum.CreateRelocationTask,
+              element: <CreateRelocationTaskPage />,
+            },
+          ],
+          { initialEntries: [WarehouseRouteEnum.RelocationTaskList], initialIndex: 0 },
+          {
+            preloadedState: {
+              api: {
+                // @ts-ignore
+                queries: {
+                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
+                },
+              },
+            },
+          },
+        )
+
+        await testUtils.clickCreateTaskLink(user)
+        const page = createRelocationTaskPageTestUtils.getContainer()
+
+        expect(page).toBeInTheDocument()
       })
     })
   })

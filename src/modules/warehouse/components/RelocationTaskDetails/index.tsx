@@ -1,4 +1,3 @@
-import { useSetState } from 'ahooks'
 import {
   Button,
   Col,
@@ -10,8 +9,10 @@ import {
   Row,
   Typography,
 } from 'antd'
-import React, { FC, useCallback } from 'react'
+import React, { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 
+import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
@@ -19,9 +20,12 @@ import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
   useLazyGetRelocationTaskWaybillM15,
+  useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
-import { GetRelocationEquipmentListQueryArgs } from 'modules/warehouse/models'
-import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
+import {
+  getEditRelocationTaskPageLink,
+  getWaybillM15Filename,
+} from 'modules/warehouse/utils/relocationTask'
 
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -32,39 +36,37 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
-import { RelocationEquipmentTableProps } from '../RelocationEquipmentTable/types'
 import { RelocationTaskDetailsProps } from './types'
 
 const { Text } = Typography
 
 const dropdownTrigger: DropdownProps['trigger'] = ['click']
-const initialRelocationEquipmentListParams = getInitialPaginationParams()
 
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
-  const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
+  const navigate = useNavigate()
 
-  const [relocationEquipmentListParams, setRelocationEquipmentListParams] = useSetState<
-    Omit<GetRelocationEquipmentListQueryArgs, 'relocationTaskId'>
-  >(initialRelocationEquipmentListParams)
+  const userPermissions = useMatchUserPermissions([
+    'RELOCATION_TASKS_READ',
+    'RELOCATION_TASKS_UPDATE',
+  ])
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
-    useGetRelocationTask({ relocationTaskId: relocationTaskId! }, { skip: !relocationTaskId })
+    useGetRelocationTask({ relocationTaskId })
 
-  const { currentData: relocationEquipmentList, isFetching: relocationEquipmentListIsFetching } =
-    useGetRelocationEquipmentList(
-      { relocationTaskId: relocationTaskId!, ...relocationEquipmentListParams },
-      { skip: !relocationTaskId },
-    )
+  const {
+    currentData: relocationEquipmentList = [],
+    isFetching: relocationEquipmentListIsFetching,
+  } = useGetRelocationEquipmentList({ relocationTaskId })
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
 
-  const handleGetWaybillM15 = useDebounceFn(async () => {
-    if (!relocationTaskId) return
+  const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
+  const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
+  const handleGetWaybillM15 = useDebounceFn(async () => {
     try {
       const waybillM15 = await getWaybillM15({ relocationTaskId }).unwrap()
 
@@ -77,20 +79,6 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       }
     } catch {}
   }, [relocationTaskId])
-
-  const handleTablePagination = useCallback(
-    (pagination: Parameters<RelocationEquipmentTableProps['onChange']>[0]) => {
-      setRelocationEquipmentListParams(calculatePaginationParams(pagination))
-    },
-    [setRelocationEquipmentListParams],
-  )
-
-  const handleChangeTable = useCallback<RelocationEquipmentTableProps['onChange']>(
-    (pagination) => {
-      handleTablePagination(pagination)
-    },
-    [handleTablePagination],
-  )
 
   const title: DrawerProps['title'] = relocationTaskIsFetching ? (
     <Space>
@@ -115,6 +103,17 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         ),
         disabled: !userPermissions?.relocationTasksRead,
         onClick: handleGetWaybillM15,
+      },
+      {
+        key: 2,
+        label: 'Изменить заявку',
+        disabled:
+          !userPermissions?.relocationTasksUpdate ||
+          !creatorIsCurrentUser ||
+          relocationTaskStatus.isCanceled ||
+          relocationTaskStatus.isClosed ||
+          relocationTaskStatus.isCompleted,
+        onClick: () => navigate(getEditRelocationTaskPageLink(relocationTaskId)),
       },
     ],
   }
@@ -154,7 +153,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Объект выбытия:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.relocateFrom?.title)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.relocateFrom?.title)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='relocate-to'>
@@ -162,7 +163,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Объект прибытия:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.relocateTo?.title)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.relocateTo?.title)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='executor'>
@@ -170,7 +173,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Исполнитель:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.executor?.fullName)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.executor?.fullName)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='status'>
@@ -186,7 +191,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Инициатор:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.createdBy?.fullName)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.createdBy?.fullName)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='created-at'>
@@ -202,7 +209,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Комментарий:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(relocationTask.comment)}</Col>
+                  <Col span={16}>
+                    <Text>{valueOrHyphen(relocationTask.comment)}</Text>
+                  </Col>
                 </Row>
 
                 <Row data-testid='documents'>
@@ -226,10 +235,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             <Text strong>Перечень оборудования</Text>
 
             <RelocationEquipmentTable
-              dataSource={relocationEquipmentList?.results || []}
-              pagination={relocationEquipmentList?.pagination || false}
+              dataSource={relocationEquipmentList}
               loading={relocationEquipmentListIsFetching}
-              onChange={handleChangeTable}
             />
           </Space>
         </Col>

@@ -4,6 +4,8 @@ import { EquipmentApiEnum, EquipmentApiTagEnum } from 'modules/warehouse/constan
 import {
   CreateEquipmentMutationArgs,
   CreateEquipmentSuccessResponse,
+  GetEquipmentCatalogListQueryArgs,
+  GetEquipmentCatalogListSuccessResponse,
   GetEquipmentCategoryListQueryArgs,
   GetEquipmentCategoryListSuccessResponse,
   GetEquipmentListQueryArgs,
@@ -26,7 +28,11 @@ import { baseApiService } from 'shared/services/baseApi'
 
 const equipmentApiService = baseApiService
   .enhanceEndpoints({
-    addTagTypes: [EquipmentApiTagEnum.EquipmentList, EquipmentApiTagEnum.Equipment],
+    addTagTypes: [
+      EquipmentApiTagEnum.EquipmentList,
+      EquipmentApiTagEnum.Equipment,
+      EquipmentApiTagEnum.EquipmentCatalogList,
+    ],
   })
   .injectEndpoints({
     endpoints: (build) => ({
@@ -41,6 +47,18 @@ const equipmentApiService = baseApiService
         }),
         transformResponse: (response: GetEquipmentNomenclatureListSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
+      }),
+
+      getEquipmentCatalogList: build.query<
+        GetEquipmentCatalogListSuccessResponse,
+        GetEquipmentCatalogListQueryArgs
+      >({
+        providesTags: (result, error) => (error ? [] : [EquipmentApiTagEnum.EquipmentCatalogList]),
+        query: (params) => ({
+          url: EquipmentApiEnum.GetEquipmentCatalogList,
+          method: HttpMethodEnum.Get,
+          params,
+        }),
       }),
 
       getEquipmentList: build.query<
@@ -64,7 +82,8 @@ const equipmentApiService = baseApiService
         }),
       }),
       createEquipment: build.mutation<CreateEquipmentSuccessResponse, CreateEquipmentMutationArgs>({
-        invalidatesTags: (result, error) => (error ? [] : [EquipmentApiTagEnum.EquipmentList]),
+        invalidatesTags: (result, error) =>
+          error ? [] : [EquipmentApiTagEnum.EquipmentCatalogList],
         query: (payload) => ({
           url: EquipmentApiEnum.CreateEquipment,
           method: HttpMethodEnum.Post,
@@ -96,6 +115,9 @@ const equipmentApiService = baseApiService
 export const {
   useGetEquipmentNomenclatureListQuery,
 
+  useGetEquipmentCatalogListQuery,
+
+  useGetEquipmentQuery,
   useLazyGetEquipmentQuery,
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,

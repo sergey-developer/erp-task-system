@@ -43,6 +43,7 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
         <TaskCardWrapper>
           <DescriptionTab
             title={taskCardTabNamesDict[TaskCardTabsEnum.Description]}
+            taskTitle={task.title}
             description={task.description}
             attachments={task.attachments}
           />

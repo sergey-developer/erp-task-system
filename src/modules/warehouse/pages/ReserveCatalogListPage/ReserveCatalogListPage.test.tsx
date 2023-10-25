@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
-import { RouteEnum } from 'configs/routes'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { mockGetEquipmentNomenclatureListSuccess } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
@@ -56,11 +56,11 @@ describe('Страница списка справочников запасов'
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.ReserveCatalogList,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
         {
           preloadedState: {
             api: {
@@ -76,18 +76,18 @@ describe('Страница списка справочников запасов'
       const link = testUtils.getEquipmentLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.EquipmentNomenclatureList)
+      expect(link).toHaveAttribute('href', WarehouseRouteEnum.EquipmentNomenclatureList)
     })
 
     test('Не отображается если нет прав', async () => {
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.ReserveCatalogList,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
       )
 
       const link = testUtils.queryEquipmentLink()
@@ -100,15 +100,15 @@ describe('Страница списка справочников запасов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.ReserveCatalogList,
             element: <ReserveCatalogListPage />,
           },
           {
-            path: RouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatureList,
             element: <EquipmentNomenclatureListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
         {
           preloadedState: {
             api: {
@@ -133,11 +133,11 @@ describe('Страница списка справочников запасов'
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.ReserveCatalogList,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
         {
           preloadedState: {
             api: {
@@ -153,18 +153,18 @@ describe('Страница списка справочников запасов'
       const link = testUtils.getRelocationTasksLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.RelocationTaskList)
+      expect(link).toHaveAttribute('href', WarehouseRouteEnum.RelocationTaskList)
     })
 
     test('Не отображается если нет прав', async () => {
       renderInRoute_latest(
         [
           {
-            path: RouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.ReserveCatalogList,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
       )
 
       const link = testUtils.queryRelocationTasksLink()
@@ -177,15 +177,15 @@ describe('Страница списка справочников запасов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.ReserveCatalogList,
             element: <ReserveCatalogListPage />,
           },
           {
-            path: RouteEnum.RelocationTaskList,
+            path: WarehouseRouteEnum.RelocationTaskList,
             element: <RelocationTaskListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
         {
           preloadedState: {
             api: {

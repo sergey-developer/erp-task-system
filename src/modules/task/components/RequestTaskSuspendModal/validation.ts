@@ -1,11 +1,12 @@
-import { Moment } from 'moment-timezone'
 import { Rule } from 'rc-field-form/es/interface'
 
 import { SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
 
-import { validationMessages } from 'shared/constants/validation'
+import { dateValidator, timeValidator } from 'shared/utils/validation'
 
-export const REASON_RULES: Rule[] = [
+export const commentRules: Rule[] = [{ required: true, whitespace: true, max: 10000 }]
+
+export const reasonRules: Rule[] = [
   {
     required: true,
     type: 'enum',
@@ -13,40 +14,18 @@ export const REASON_RULES: Rule[] = [
   },
 ]
 
-export const END_DATE_RULES: Rule[] = [
+export const endDateRules: Rule[] = [
   {
     type: 'date',
     required: true,
-    validator: (rule, value: Moment) =>
-      value
-        ? value.isBefore(new Date(), 'day')
-          ? Promise.reject(new Error(validationMessages.date.canNotBeInPast))
-          : Promise.resolve()
-        : Promise.reject(validationMessages.required),
+    validator: dateValidator,
   },
 ]
 
-export const END_TIME_RULES: Rule[] = [
+export const endTimeRules: Rule[] = [
   ({ getFieldValue }) => ({
     type: 'date',
     required: true,
-    validator: (rule, value: Moment) => {
-      if (!value) return Promise.reject(validationMessages.required)
-
-      const endDate: Moment = getFieldValue('endDate')
-      const currentDate = new Date()
-
-      if (!endDate || endDate.isAfter(currentDate, 'day')) {
-        return Promise.resolve()
-      }
-
-      if (endDate.isSame(currentDate, 'day')) {
-        return value.isBefore(currentDate, 'minute')
-          ? Promise.reject(new Error(validationMessages.time.canNotBeInPast))
-          : Promise.resolve()
-      } else {
-        return Promise.resolve()
-      }
-    },
+    validator: timeValidator(getFieldValue, 'endDate'),
   }),
 ]

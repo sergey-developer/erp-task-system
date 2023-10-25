@@ -245,7 +245,7 @@ describe('Модалка решения по заявке', () => {
       const button = testUtils.getGetActButton()
 
       expect(button).toBeInTheDocument()
-      expect(button).not.toBeEnabled()
+      expect(button).toBeDisabled()
     })
 
     test('Активна если заполнено техническое решение', async () => {

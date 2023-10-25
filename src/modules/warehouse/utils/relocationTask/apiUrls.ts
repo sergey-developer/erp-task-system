@@ -17,3 +17,11 @@ export const getRelocationEquipmentListUrl = (id: IdType): string =>
   appendSlashAtEnd(
     generatePath(RelocationTaskApiEnum.GetRelocationEquipmentList, { id: String(id) }),
   )
+
+export const getRelocationEquipmentBalanceListUrl = (id: IdType): string =>
+  appendSlashAtEnd(
+    generatePath(RelocationTaskApiEnum.GetRelocationEquipmentBalanceList, { id: String(id) }),
+  )
+
+export const updateRelocationTaskUrl = (id: IdType): string =>
+  appendSlashAtEnd(generatePath(RelocationTaskApiEnum.UpdateRelocationTask, { id: String(id) }))

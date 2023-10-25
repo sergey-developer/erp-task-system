@@ -1,9 +1,12 @@
-import { DatePicker, Form, Input, Radio, Select } from 'antd'
+import { Form, Input, Radio, Select } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
+import { userListSelectFieldNames } from 'modules/user/constants'
+import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
+import DatePicker from 'components/DatePicker'
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import Permissions from 'components/Permissions'
@@ -30,9 +33,8 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   workGroupList,
   workGroupListIsLoading,
 
-  /* закоменчено временно только для rc */
-  // userList,
-  // userListIsLoading,
+  userList,
+  userListIsLoading,
 
   customerList,
   customerListIsLoading,
@@ -190,9 +192,9 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
                   options={workGroupList}
                   placeholder='Рабочая группа'
                   showSearch
-                  filterOption={(input, option) => {
-                    return option ? option.name.toLowerCase().includes(input.toLowerCase()) : false
-                  }}
+                  filterOption={(input, option) =>
+                    option ? option.name.toLowerCase().includes(input.toLowerCase()) : false
+                  }
                 />
               </Form.Item>
             </FilterBlock>
@@ -215,26 +217,25 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
           </Space>
         </FilterBlock>
 
-        {/* закоменчено временно только для rc */}
-        {/*<FilterBlock*/}
-        {/*  data-testid='manager-block'*/}
-        {/*  label='Руководитель'*/}
-        {/*  onReset={resetFields(['manager'])}*/}
-        {/*>*/}
-        {/*  <Form.Item name='manager'>*/}
-        {/*    <Select*/}
-        {/*      data-testid='manager-select'*/}
-        {/*      fieldNames={managerSelectFieldNames}*/}
-        {/*      loading={userListIsLoading}*/}
-        {/*      options={userList}*/}
-        {/*      placeholder='Руководитель'*/}
-        {/*      showSearch*/}
-        {/*      filterOption={(input, option) => {*/}
-        {/*        return option ? option.fullName.toLowerCase().includes(input.toLowerCase()) : false*/}
-        {/*      }}*/}
-        {/*    />*/}
-        {/*  </Form.Item>*/}
-        {/*</FilterBlock>*/}
+        <FilterBlock
+          data-testid='manager-block'
+          label='Руководитель'
+          onReset={resetFields(['manager'])}
+        >
+          <Form.Item name='manager'>
+            <Select
+              data-testid='manager-select'
+              fieldNames={userListSelectFieldNames}
+              loading={userListIsLoading}
+              options={userList}
+              placeholder='Руководитель'
+              showSearch
+              filterOption={(input, option) =>
+                option ? option.fullName.toLowerCase().includes(input.toLowerCase()) : false
+              }
+            />
+          </Form.Item>
+        </FilterBlock>
       </Form>
     </DrawerFilter>
   )

@@ -25,17 +25,12 @@ const WarehouseListPage: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean()
   const debouncedToggleFilterOpened = useDebounceFn(toggleFilterOpened)
 
-  const [queryArgs, setQueryArgs] = useSetState<
-    NonNullable<GetWarehouseListQueryArgs>
-  >({})
+  const [queryArgs, setQueryArgs] = useSetState<NonNullable<GetWarehouseListQueryArgs>>({})
 
-  const [filterFormValues, setFilterFormValues] =
-    useState<WarehouseListFilterFormFields>()
+  const [filterFormValues, setFilterFormValues] = useState<WarehouseListFilterFormFields>()
 
-  const {
-    isFetching: warehouseListIsFetching,
-    currentData: warehouseList = [],
-  } = useGetWarehouseList(queryArgs)
+  const { isFetching: warehouseListIsFetching, currentData: warehouseList = [] } =
+    useGetWarehouseList(queryArgs)
 
   const handleApplyFilter = useCallback<WarehouseListFilterProps['onApply']>(
     (values) => {
@@ -51,11 +46,9 @@ const WarehouseListPage: FC = () => {
       if (sorter) {
         const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && columnKey in sortableFieldToSortValues) {
+        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
           setQueryArgs({
-            ordering: order
-              ? getSort(columnKey as SortableField, order)
-              : undefined,
+            ordering: order ? getSort(columnKey as SortableField, order) : undefined,
           })
         }
       }
@@ -71,12 +64,7 @@ const WarehouseListPage: FC = () => {
   )
 
   return (
-    <Space
-      data-testid='warehouse-list-page'
-      $block
-      direction='vertical'
-      size='large'
-    >
+    <Space data-testid='warehouse-list-page' $block direction='vertical' size='large'>
       <FilterButton onClick={debouncedToggleFilterOpened} />
 
       <WarehouseTable

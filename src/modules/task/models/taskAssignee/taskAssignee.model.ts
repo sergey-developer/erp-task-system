@@ -1,6 +1,6 @@
-import { BaseUserModel } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 
 export type TaskAssigneeModel = Pick<
-  BaseUserModel,
-  'id' | 'firstName' | 'lastName' | 'middleName' | 'avatar'
+  UserModel,
+  'id' | 'firstName' | 'lastName' | 'middleName' | 'role' | 'phone' | 'email' | 'avatar'
 >

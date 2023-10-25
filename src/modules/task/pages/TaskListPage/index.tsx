@@ -38,10 +38,11 @@ import {
 import { TaskListPageFiltersStorage } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { parseTaskListPageFilters } from 'modules/task/services/taskLocalStorage/utils/taskListPageFilters'
 import {
+  useGetUserList,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
-  useUserRole,
-} from 'modules/user/hooks'
+  useUserRole
+} from "modules/user/hooks";
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
@@ -204,11 +205,10 @@ const TaskListPage: FC = () => {
     }
   }, [getTaskList, taskListQueryArgs])
 
-  /* закоменчено временно только для rc */
-  // const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
-  //   { isManager: true },
-  //   { skip: !extendedFilterOpened },
-  // )
+  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
+    { isManager: true },
+    { skip: !extendedFilterOpened },
+  )
 
   const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
     undefined,
@@ -312,7 +312,7 @@ const TaskListPage: FC = () => {
       if (sorter) {
         const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && columnKey in sortableFieldToSortValues) {
+        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
           setTaskListQueryArgs({
             sort: getSort(columnKey as SortableField, order || SortOrderEnum.Ascend),
           })
@@ -472,9 +472,8 @@ const TaskListPage: FC = () => {
           onChangeMacroregions={setSelectedMacroregions}
           supportGroupList={supportGroupList}
           supportGroupListIsLoading={supportGroupListIsFetching}
-          /* закоменчено временно только для rc */
-          // userList={userList}
-          // userListIsLoading={userListIsFetching}
+          userList={userList}
+          userListIsLoading={userListIsFetching}
           workGroupList={workGroupList}
           workGroupListIsLoading={workGroupListIsFetching}
           onClose={debouncedToggleOpenExtendedFilter}
