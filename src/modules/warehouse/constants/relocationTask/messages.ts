@@ -28,6 +28,10 @@ export const cancelRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка отмены заявки на перемещение',
 }
 
+export const closeRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка закрытия заявки на перемещение',
+}
+
 export const getRelocationTaskWaybillM15Messages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка формирования накладной М-15',
 }

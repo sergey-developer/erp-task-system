@@ -10,6 +10,8 @@ import {
   CancelRelocationTaskSuccessResponse,
   ExecuteRelocationTaskMutationArgs,
   ExecuteRelocationTaskSuccessResponse,
+  CloseRelocationTaskMutationArgs,
+  CloseRelocationTaskSuccessResponse,
   CreateRelocationTaskMutationArgs,
   CreateRelocationTaskSuccessResponse,
   GetRelocationEquipmentBalanceListQueryArgs,
@@ -29,6 +31,7 @@ import {
 } from 'modules/warehouse/models'
 import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
 import {
+  closeRelocationTaskUrl,
   getRelocationEquipmentBalanceListUrl,
   executeRelocationTaskUrl,
   cancelRelocationTaskUrl,
@@ -145,6 +148,30 @@ const relocationTaskApiService = baseApiService
           method: HttpMethodEnum.Get,
         }),
       }),
+      closeRelocationTask: build.mutation<
+        CloseRelocationTaskSuccessResponse,
+        CloseRelocationTaskMutationArgs
+      >({
+        query: ({ relocationTaskId }) => ({
+          url: closeRelocationTaskUrl(relocationTaskId),
+          method: HttpMethodEnum.Post,
+        }),
+        onQueryStarted: async ({ relocationTaskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled
+
+            dispatch(
+              baseApiService.util.updateQueryData(
+                RelocationTaskApiTriggerEnum.GetRelocationTask as never,
+                { relocationTaskId } as never,
+                (task: GetRelocationTaskSuccessResponse) => {
+                  Object.assign(task, { status: data.status })
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
 
       getRelocationTaskList: build.query<
         GetRelocationTaskListTransformedSuccessResponse,
@@ -196,6 +223,7 @@ const relocationTaskApiService = baseApiService
 export const {
   useCreateRelocationTaskMutation,
   useUpdateRelocationTaskMutation,
+  useCloseRelocationTaskMutation,
   useGetRelocationTaskQuery,
   useExecuteRelocationTaskMutation,
   useReturnRelocationTaskToReworkMutation,

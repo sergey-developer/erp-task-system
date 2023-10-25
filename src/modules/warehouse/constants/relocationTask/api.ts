@@ -3,6 +3,7 @@ export enum RelocationTaskApiEnum {
   ReturnRelocationTaskToRework = '/relocation-tasks/:id/revision/',
   ExecuteRelocationTask = '/relocation-tasks/:id/complete/',
   CancelRelocationTask = '/relocation-tasks/:id/cancel/',
+  CloseRelocationTask = '/relocation-tasks/:id/close/',
   GetRelocationTaskWaybillM15 = '/relocation-tasks/:id/m-15/',
   CreateRelocationTask = '/relocation-tasks/',
   UpdateRelocationTask = '/relocation-tasks/:id/',
