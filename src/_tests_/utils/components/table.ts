@@ -5,13 +5,18 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import { iconTestUtils } from '_tests_/utils'
 
-const getRowIn = (container: HTMLElement, id: NumberOrString): MaybeNull<HTMLElement> =>
-  container.querySelector(`[data-row-key='${id}']`)
+const getRowIn = (container: HTMLElement, id: NumberOrString): HTMLElement => {
+  const row = container.querySelector(`[data-row-key='${id}']`) as HTMLElement
 
-const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrString) => {
-  const row = getRowIn(container, id)
-  await user.click(row!)
+  if (row) {
+    return row
+  } else {
+    throw new Error(`Table row with id: ${id} was not found`)
+  }
 }
+
+const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrString) =>
+  user.click(getRowIn(container, id))
 
 const getHeadCell = (container: HTMLElement, text: string) =>
   within(container).getByText(text).parentElement?.parentElement

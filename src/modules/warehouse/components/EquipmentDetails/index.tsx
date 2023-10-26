@@ -5,11 +5,13 @@ import React, { FC, useCallback, useEffect, useState } from 'react'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
+import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCheckEquipmentCategory,
   useGetEquipment,
   useGetEquipmentCategoryList,
+  useGetEquipmentRelocationHistory,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
@@ -19,6 +21,7 @@ import { useUpdateEquipmentMutation } from 'modules/warehouse/services/equipment
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
+import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
@@ -36,11 +39,16 @@ import { formatDate } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import EquipmentFormModal from '../EquipmentFormModal'
 import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
 import { DrawerExtraStyled } from './style'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getHiddenFieldsByCategory } from './utils'
+
+const EquipmentFormModal = React.lazy(() => import('../EquipmentFormModal'))
+
+const EquipmentRelocationHistoryModal = React.lazy(
+  () => import('../EquipmentRelocationHistoryModal'),
+)
 
 const { Text } = Typography
 
@@ -51,6 +59,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+
+  const [relocationHistoryModalOpened, { toggle: toggleOpenRelocationHistoryModal }] =
+    useBoolean(false)
+
+  const debouncedToggleOpenRelocationHistoryModal = useDebounceFn(toggleOpenRelocationHistoryModal)
 
   const [
     editEquipmentModalOpened,
@@ -121,6 +134,20 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     }
   }, [editEquipmentModalOpened, equipmentCategory.isConsumable, getCustomerList, selectedCategory])
 
+  const { currentData: relocationHistory = [], isFetching: relocationHistoryIsFetching } =
+    useGetEquipmentRelocationHistory(
+      {
+        equipmentId,
+        statuses: [
+          RelocationTaskStatusEnum.New,
+          RelocationTaskStatusEnum.Completed,
+          RelocationTaskStatusEnum.Returned,
+          RelocationTaskStatusEnum.Closed,
+        ],
+      },
+      { skip: !relocationHistoryModalOpened },
+    )
+
   const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
     setSelectedCategory(category)
     setSelectedNomenclatureId(undefined)
@@ -130,7 +157,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     async (values, setFields) => {
       try {
         await updateEquipmentMutation({ ...values, equipmentId }).unwrap()
-        closeEditEquipmentModal()
+        debouncedHandleCloseEditEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
@@ -147,7 +174,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         }
       }
     },
-    [closeEditEquipmentModal, equipmentId, updateEquipmentMutation],
+    [debouncedHandleCloseEditEquipmentModal, equipmentId, updateEquipmentMutation],
   )
 
   const equipmentFormInitialValues: EquipmentFormModalProps['initialValues'] = equipment
@@ -179,8 +206,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   return (
     <>
       <Drawer
-        data-testid='equipment-details'
         {...props}
+        data-testid='equipment-details'
         title={equipment?.title}
         width={500}
         extra={
@@ -260,6 +287,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                     disabled={
                       !userPermissions?.equipmentsRead || !userPermissions.relocationTasksRead
                     }
+                    onClick={debouncedToggleOpenRelocationHistoryModal}
                   >
                     История перемещений
                   </Button>
@@ -409,32 +437,59 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       </Drawer>
 
       {editEquipmentModalOpened && (
-        <EquipmentFormModal
-          open={editEquipmentModalOpened}
-          mode='edit'
-          title='Редактирование оборудования'
-          okText='Сохранить'
-          isLoading={updateEquipmentIsLoading}
-          initialValues={equipmentFormInitialValues}
-          categoryList={equipmentCategoryList}
-          categoryListIsLoading={equipmentCategoryListIsFetching}
-          selectedCategory={selectedCategory}
-          onChangeCategory={handleChangeCategory}
-          warehouseList={warehouseList}
-          warehouseListIsLoading={warehouseListIsFetching}
-          currencyList={currencyList}
-          currencyListIsFetching={currencyListIsFetching}
-          ownerList={customerList}
-          ownerListIsFetching={customerListIsFetching}
-          workTypeList={workTypeList}
-          workTypeListIsFetching={workTypeListIsFetching}
-          nomenclature={nomenclature}
-          nomenclatureList={nomenclatureList?.results || []}
-          nomenclatureListIsLoading={nomenclatureListIsFetching}
-          onChangeNomenclature={setSelectedNomenclatureId}
-          onCancel={debouncedHandleCloseEditEquipmentModal}
-          onSubmit={handleEditEquipment}
-        />
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={editEquipmentModalOpened}
+              onCancel={debouncedHandleCloseEditEquipmentModal}
+            />
+          }
+        >
+          <EquipmentFormModal
+            open={editEquipmentModalOpened}
+            mode='edit'
+            title='Редактирование оборудования'
+            okText='Сохранить'
+            isLoading={updateEquipmentIsLoading}
+            initialValues={equipmentFormInitialValues}
+            categoryList={equipmentCategoryList}
+            categoryListIsLoading={equipmentCategoryListIsFetching}
+            selectedCategory={selectedCategory}
+            onChangeCategory={handleChangeCategory}
+            warehouseList={warehouseList}
+            warehouseListIsLoading={warehouseListIsFetching}
+            currencyList={currencyList}
+            currencyListIsFetching={currencyListIsFetching}
+            ownerList={customerList}
+            ownerListIsFetching={customerListIsFetching}
+            workTypeList={workTypeList}
+            workTypeListIsFetching={workTypeListIsFetching}
+            nomenclature={nomenclature}
+            nomenclatureList={nomenclatureList?.results || []}
+            nomenclatureListIsLoading={nomenclatureListIsFetching}
+            onChangeNomenclature={setSelectedNomenclatureId}
+            onCancel={debouncedHandleCloseEditEquipmentModal}
+            onSubmit={handleEditEquipment}
+          />
+        </React.Suspense>
+      )}
+
+      {relocationHistoryModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={relocationHistoryModalOpened}
+              onCancel={debouncedToggleOpenRelocationHistoryModal}
+            />
+          }
+        >
+          <EquipmentRelocationHistoryModal
+            open={relocationHistoryModalOpened}
+            onCancel={debouncedToggleOpenRelocationHistoryModal}
+            dataSource={relocationHistory}
+            loading={relocationHistoryIsFetching}
+          />
+        </React.Suspense>
       )}
     </>
   )

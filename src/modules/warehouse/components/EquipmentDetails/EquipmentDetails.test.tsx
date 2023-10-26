@@ -1,10 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
   getEquipmentMessages,
+  getEquipmentRelocationHistoryMessages,
 } from 'modules/warehouse/constants/equipment'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
@@ -16,6 +18,10 @@ import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetEquipmentForbiddenError,
   mockGetEquipmentNotFoundError,
+  mockGetEquipmentRelocationHistoryForbiddenError,
+  mockGetEquipmentRelocationHistoryNotFoundError,
+  mockGetEquipmentRelocationHistoryServerError,
+  mockGetEquipmentRelocationHistorySuccess,
   mockGetEquipmentServerError,
   mockGetEquipmentSuccess,
 } from '_tests_/mocks/api'
@@ -54,7 +60,6 @@ const queryInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
 
 // close button
 const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
@@ -259,70 +264,6 @@ describe('Информация об оборудовании', () => {
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
-    })
-
-    describe('История перемещений', () => {
-      test('Кнопка отображается', async () => {
-        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-
-        render(<EquipmentDetails {...props} />)
-
-        await testUtils.expectLoadingFinished()
-        const button = testUtils.getRelocationHistoryButton()
-
-        expect(button).toBeInTheDocument()
-      })
-
-      test('Кнопка активна если условия соблюдены', async () => {
-        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-
-        render(<EquipmentDetails {...props} />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
-            },
-          }),
-        })
-
-        await testUtils.expectLoadingFinished()
-        const button = testUtils.getRelocationHistoryButton()
-
-        expect(button).toBeEnabled()
-      })
-
-      test('Кнопка не активна если условия соблюдены, но нет прав на чтение оборудования', async () => {
-        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-
-        render(<EquipmentDetails {...props} />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
-            },
-          }),
-        })
-
-        await testUtils.expectLoadingFinished()
-        const button = testUtils.getRelocationHistoryButton()
-
-        expect(button).toBeDisabled()
-      })
-
-      test('Кнопка не активна если условия соблюдены, но нет прав на чтение заявок на перемещение', async () => {
-        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-
-        render(<EquipmentDetails {...props} />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
-            },
-          }),
-        })
-
-        await testUtils.expectLoadingFinished()
-        const button = testUtils.getRelocationHistoryButton()
-
-        expect(button).toBeDisabled()
-      })
     })
 
     test('Состояние отображается', async () => {
@@ -625,6 +566,188 @@ describe('Информация об оборудовании', () => {
       )
 
       expect(notification).toBeInTheDocument()
+    })
+  })
+
+  describe('История перемещений', () => {
+    test('Кнопка отображается', async () => {
+      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+      render(<EquipmentDetails {...props} />)
+
+      await testUtils.expectLoadingFinished()
+      const button = testUtils.getRelocationHistoryButton()
+
+      expect(button).toBeInTheDocument()
+    })
+
+    test('Кнопка активна если условия соблюдены', async () => {
+      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+          },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      const button = testUtils.getRelocationHistoryButton()
+
+      expect(button).toBeEnabled()
+    })
+
+    test('Кнопка не активна если условия соблюдены, но нет прав на чтение оборудования', async () => {
+      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+          },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      const button = testUtils.getRelocationHistoryButton()
+
+      expect(button).toBeDisabled()
+    })
+
+    test('Кнопка не активна если условия соблюдены, но нет прав на чтение заявок на перемещение', async () => {
+      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
+          },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      const button = testUtils.getRelocationHistoryButton()
+
+      expect(button).toBeDisabled()
+    })
+
+    test('При клике открывается модалка', async () => {
+      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentRelocationHistorySuccess(props.equipmentId)
+
+      const { user } = render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+          },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.clickRelocationHistoryButton(user)
+      const modal = await equipmentRelocationHistoryModalTestUtils.findContainer()
+
+      expect(modal).toBeInTheDocument()
+    })
+
+    test('При успешном запрос данные отображаются', async () => {
+      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+      const equipmentRelocationHistory = warehouseFixtures.equipmentRelocationHistory()
+      mockGetEquipmentRelocationHistorySuccess(props.equipmentId, {
+        body: equipmentRelocationHistory,
+      })
+
+      const { user } = render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+          },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.clickRelocationHistoryButton(user)
+      await equipmentRelocationHistoryModalTestUtils.findContainer()
+      await equipmentRelocationHistoryModalTestUtils.expectLoadingFinished()
+
+      equipmentRelocationHistory.forEach((item) => {
+        const row = equipmentRelocationHistoryModalTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    describe('При не успешном запросе', () => {
+      test('Обрабатывается ошибка 403', async () => {
+        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+        const errorMsg = fakeWord()
+        mockGetEquipmentRelocationHistoryForbiddenError(props.equipmentId, {
+          body: { detail: errorMsg },
+        })
+
+        const { user } = render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+            },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        await testUtils.clickRelocationHistoryButton(user)
+        await equipmentRelocationHistoryModalTestUtils.findContainer()
+
+        const notification = await notificationTestUtils.findNotification(errorMsg)
+        expect(notification).toBeInTheDocument()
+      })
+
+      test('Обрабатывается ошибка 404', async () => {
+        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+        const errorMsg = fakeWord()
+        mockGetEquipmentRelocationHistoryNotFoundError(props.equipmentId, {
+          body: { detail: errorMsg },
+        })
+
+        const { user } = render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+            },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        await testUtils.clickRelocationHistoryButton(user)
+        await equipmentRelocationHistoryModalTestUtils.findContainer()
+
+        const notification = await notificationTestUtils.findNotification(errorMsg)
+        expect(notification).toBeInTheDocument()
+      })
+
+      test('Обрабатывается ошибка 500', async () => {
+        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+        mockGetEquipmentRelocationHistoryServerError(props.equipmentId)
+
+        const { user } = render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+            },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        await testUtils.clickRelocationHistoryButton(user)
+        await equipmentRelocationHistoryModalTestUtils.findContainer()
+
+        const notification = await notificationTestUtils.findNotification(
+          getEquipmentRelocationHistoryMessages.commonError,
+        )
+        expect(notification).toBeInTheDocument()
+      })
     })
   })
 })
