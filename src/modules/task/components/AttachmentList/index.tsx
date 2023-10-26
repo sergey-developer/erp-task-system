@@ -15,8 +15,8 @@ export type AttachmentListProps = {
 const AttachmentList: FC<AttachmentListProps> = ({ attachments }) => {
   return (
     <Space data-testid='attachment-list' direction='vertical'>
-      {attachments.map((att) => (
-        <Space data-testid={`attachment-${att.name}`} key={att.id}>
+      {attachments.map((att, index) => (
+        <Space data-testid={`attachment-${att.name}`} key={index}>
           <Link download href={att.url} target='_blank'>
             <Space>
               <PaperClipOutlined />
@@ -26,9 +26,7 @@ const AttachmentList: FC<AttachmentListProps> = ({ attachments }) => {
 
           <Text>({prettyBytes(att.size)})</Text>
 
-          {att.externalId === '' && (
-            <Text type='secondary'>Не передано в Х5</Text>
-          )}
+          {att.externalId === '' && <Text type='secondary'>Не передано в Х5</Text>}
         </Space>
       ))}
     </Space>
