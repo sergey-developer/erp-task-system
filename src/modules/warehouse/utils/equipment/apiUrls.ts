@@ -10,3 +10,6 @@ export const getEquipmentUrl = (id: IdType): string =>
 
 export const updateEquipmentUrl = (id: IdType): string =>
   appendSlashAtEnd(generatePath(EquipmentApiEnum.UpdateEquipment, { id: String(id) }))
+
+export const getEquipmentRelocationHistoryUrl = (id: IdType): string =>
+  appendSlashAtEnd(generatePath(EquipmentApiEnum.GetEquipmentRelocationHistory, { id: String(id) }))
