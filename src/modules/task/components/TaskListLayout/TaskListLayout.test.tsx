@@ -71,7 +71,7 @@ describe('TaskListLayout', () => {
       const link = testUtils.getTaskListLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.TaskList)
+      expect(link).toHaveAttribute('href', RouteEnum.DesktopTaskList)
     })
 
     test('При клике переходит на страницу реестра заявок', async () => {
@@ -80,15 +80,15 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.TaskList,
+            path: RouteEnum.DesktopTaskList,
             element: <TaskListPage />,
           },
           {
-            path: RouteEnum.TaskListMap,
+            path: RouteEnum.DesktopTaskListMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [RouteEnum.TaskListMap], initialIndex: 1 },
+        { initialEntries: [RouteEnum.DesktopTaskListMap], initialIndex: 1 },
       )
 
       await testUtils.clickTaskListLink(user)
@@ -110,7 +110,7 @@ describe('TaskListLayout', () => {
       const link = testUtils.getTaskListMapLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.TaskListMap)
+      expect(link).toHaveAttribute('href', RouteEnum.DesktopTaskListMap)
     })
 
     test('При клике переходит на страницу карты с заявками', async () => {
@@ -119,15 +119,15 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.TaskList,
+            path: RouteEnum.DesktopTaskList,
             element: <TaskListPage />,
           },
           {
-            path: RouteEnum.TaskListMap,
+            path: RouteEnum.DesktopTaskListMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [RouteEnum.TaskList], initialIndex: 0 },
+        { initialEntries: [RouteEnum.DesktopTaskList], initialIndex: 0 },
       )
 
       await testUtils.clickTaskListMapLink(user)

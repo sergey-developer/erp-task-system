@@ -10,6 +10,7 @@ import { FCWithChildren } from 'shared/types/utils'
 
 const { Text } = Typography
 
+// todo: применить groupbutton
 const TaskListLayout: FCWithChildren = ({ children }) => {
   return (
     <Space
@@ -22,14 +23,14 @@ const TaskListLayout: FCWithChildren = ({ children }) => {
     >
       <Row className='task-list-layout-header' justify='end'>
         <Col>
-          <NavLink to={RouteEnum.TaskList}>
+          <NavLink to={RouteEnum.DesktopTaskList}>
             {({ isActive }) => {
               const text = 'Реестр'
               return <Button>{isActive ? text : <Text>{text}</Text>}</Button>
             }}
           </NavLink>
 
-          <NavLink to={RouteEnum.TaskListMap}>
+          <NavLink to={RouteEnum.DesktopTaskListMap}>
             {({ isActive }) => {
               const text = 'Карта'
               return <Button>{isActive ? text : <Text>{text}</Text>}</Button>

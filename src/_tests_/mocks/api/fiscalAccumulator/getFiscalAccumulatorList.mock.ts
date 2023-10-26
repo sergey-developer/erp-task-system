@@ -1,5 +1,5 @@
-import { FiscalAccumulatorApiEnum } from 'modules/task/constants/fiscalAccumulator'
-import { GetFiscalAccumulatorListSuccessResponse } from 'modules/task/models'
+import { FiscalAccumulatorApiEnum } from 'modules/fiscalAccumulator/constants'
+import { GetFiscalAccumulatorListSuccessResponse } from 'modules/fiscalAccumulator/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

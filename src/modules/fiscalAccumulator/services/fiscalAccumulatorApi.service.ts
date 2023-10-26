@@ -1,8 +1,8 @@
-import { FiscalAccumulatorApiEnum } from 'modules/task/constants/fiscalAccumulator'
+import { FiscalAccumulatorApiEnum } from 'modules/fiscalAccumulator/constants'
 import {
   GetFiscalAccumulatorListQueryArgs,
   GetFiscalAccumulatorListSuccessResponse,
-} from 'modules/task/models'
+} from 'modules/fiscalAccumulator/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'

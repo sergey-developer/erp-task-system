@@ -18,6 +18,5 @@ export const columns: ColumnsType<EquipmentNomenclatureTableItem> = [
     key: 'quantity',
     dataIndex: 'quantity',
     title: 'Количество оборудования',
-    render: (value: EquipmentNomenclatureTableItem['quantity']) => value,
   },
 ]

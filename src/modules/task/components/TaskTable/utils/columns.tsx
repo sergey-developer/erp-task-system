@@ -155,7 +155,6 @@ export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListIt
       title: 'Комментарий',
       ellipsis: true,
       sorter: true,
-      render: (value: TaskTableListItem['lastComment']) => value,
     },
     {
       key: 'createdAt',
