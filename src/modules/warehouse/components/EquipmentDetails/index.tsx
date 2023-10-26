@@ -1,7 +1,8 @@
 import { useBoolean } from 'ahooks'
-import { Col, Drawer, Row, Typography } from 'antd'
+import { Button, Col, Drawer, Row, Typography } from 'antd'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -44,6 +45,8 @@ import { getHiddenFieldsByCategory } from './utils'
 const { Text } = Typography
 
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
+  const userPermissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
+
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
@@ -249,6 +252,18 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 </Col>
 
                 <Col span={16}>{valueOrHyphen(equipment.warehouse?.title)}</Col>
+              </Row>
+
+              <Row data-testid='relocation-history'>
+                <Col>
+                  <Button
+                    disabled={
+                      !userPermissions?.equipmentsRead || !userPermissions.relocationTasksRead
+                    }
+                  >
+                    История перемещений
+                  </Button>
+                </Col>
               </Row>
 
               <Row data-testid='condition'>

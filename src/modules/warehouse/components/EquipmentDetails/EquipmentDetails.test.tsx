@@ -19,10 +19,12 @@ import {
   mockGetEquipmentServerError,
   mockGetEquipmentSuccess,
 } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeInteger,
   fakeWord,
+  getStoreWithAuth,
   notificationTestUtils,
   render,
   setupApiTests,
@@ -37,28 +39,6 @@ const props: Readonly<EquipmentDetailsProps> = {
   onClose: jest.fn(),
   equipmentId: fakeInteger(),
 }
-
-export const blockTestIds = [
-  'title',
-  'category',
-  'nomenclature',
-  'customer-inventory-number',
-  'inventory-number',
-  'serial-number',
-  'warehouse',
-  'condition',
-  'created-at',
-  'created-by',
-  'quantity',
-  'price',
-  'is-new',
-  'is-warranty',
-  'is-repaired',
-  'usage-counter',
-  'owner',
-  'purpose',
-  'comment',
-]
 
 const getContainer = () => screen.getByTestId('equipment-details')
 const findContainer = (): Promise<HTMLElement> => screen.findByTestId('equipment-details')
@@ -80,6 +60,15 @@ const clickCloseButton = async (user: UserEvent) => {
   await user.click(button)
 }
 
+// relocation history button
+const getRelocationHistoryButton = () =>
+  buttonTestUtils.getButtonIn(getBlock('relocation-history'), /История перемещений/)
+
+const clickRelocationHistoryButton = async (user: UserEvent) => {
+  const button = getRelocationHistoryButton()
+  await user.click(button)
+}
+
 // loading
 const expectLoadingStarted = spinnerTestUtils.expectLoadingFinished('equipment-details-loading')
 const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('equipment-details-loading')
@@ -96,6 +85,9 @@ export const testUtils = {
 
   getCloseButton,
   clickCloseButton,
+
+  getRelocationHistoryButton,
+  clickRelocationHistoryButton,
 
   expectLoadingStarted,
   expectLoadingFinished,
@@ -267,6 +259,70 @@ describe('Информация об оборудовании', () => {
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+
+    describe('История перемещений', () => {
+      test('Кнопка отображается', async () => {
+        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+        render(<EquipmentDetails {...props} />)
+
+        await testUtils.expectLoadingFinished()
+        const button = testUtils.getRelocationHistoryButton()
+
+        expect(button).toBeInTheDocument()
+      })
+
+      test('Кнопка активна если условия соблюдены', async () => {
+        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+            },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        const button = testUtils.getRelocationHistoryButton()
+
+        expect(button).toBeEnabled()
+      })
+
+      test('Кнопка не активна если условия соблюдены, но нет прав на чтение оборудования', async () => {
+        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+            },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        const button = testUtils.getRelocationHistoryButton()
+
+        expect(button).toBeDisabled()
+      })
+
+      test('Кнопка не активна если условия соблюдены, но нет прав на чтение заявок на перемещение', async () => {
+        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
+            },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        const button = testUtils.getRelocationHistoryButton()
+
+        expect(button).toBeDisabled()
+      })
     })
 
     test('Состояние отображается', async () => {
