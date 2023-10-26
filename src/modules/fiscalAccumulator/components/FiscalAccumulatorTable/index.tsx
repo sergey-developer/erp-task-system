@@ -1,5 +1,8 @@
 import React, { FC } from 'react'
 
+// todo: придумать как переиспользовать
+import { TableWrapperStyled } from 'modules/task/components/TaskTable/styles'
+
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
 import { columns } from './columns'
@@ -12,7 +15,7 @@ const getRowKey = (
 
 const FiscalAccumulatorTable: FC<FiscalAccumulatorTableProps> = ({ dataSource = [], loading }) => {
   return (
-    <div data-testid='fiscal-accumulator-table'>
+    <TableWrapperStyled data-testid='fiscal-accumulator-table'>
       <ParentSizedTable<FiscalAccumulatorTableItem>
         rowKey={getRowKey}
         dataSource={dataSource}
@@ -20,7 +23,7 @@ const FiscalAccumulatorTable: FC<FiscalAccumulatorTableProps> = ({ dataSource = 
         columns={columns}
         loading={loading}
       />
-    </div>
+    </TableWrapperStyled>
   )
 }
 
