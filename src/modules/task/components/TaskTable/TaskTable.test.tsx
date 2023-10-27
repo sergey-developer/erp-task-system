@@ -21,7 +21,7 @@ import {
   columnWithSortingClass,
 } from '_tests_/constants/components'
 import taskFixtures from '_tests_/fixtures/task'
-import { iconTestUtils, render } from '_tests_/utils'
+import { iconTestUtils, render, tableTestUtils } from '_tests_/utils'
 
 import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
@@ -58,16 +58,12 @@ export const testConstants = {
 const getContainer = () => screen.getByTestId('task-table')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
-const getRow = (id: IdType) =>
-  // eslint-disable-next-line testing-library/no-node-access
-  getContainer().querySelector(`[data-row-key='${id}']`)
-
+const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
 const clickRow = async (user: UserEvent, id: IdType) => {
   const row = getRow(id)
-  await user.click(row!)
+  await user.click(row)
   return row
 }
 
@@ -143,15 +139,15 @@ const changePageSize = async (user: UserEvent, pageSize: NumberOrString) => {
 }
 
 const expectLoadingStarted = async () => {
-  const taskTable = getContainer()
-  await iconTestUtils.expectLoadingStartedIn(taskTable)
-  return taskTable
+  const table = getContainer()
+  await iconTestUtils.expectLoadingStartedIn(table)
+  return table
 }
 
 const expectLoadingFinished = async () => {
-  const taskTable = getContainer()
-  await iconTestUtils.expectLoadingFinishedIn(taskTable)
-  return taskTable
+  const table = getContainer()
+  await iconTestUtils.expectLoadingFinishedIn(table)
+  return table
 }
 
 const onChangeTableArgs = {

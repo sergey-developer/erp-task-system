@@ -344,7 +344,9 @@ describe('Страница реестра заявок', () => {
 
       const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
+      await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, taskListItem.id)
       const taskCard = await taskCardTestUtils.findContainer()
 
