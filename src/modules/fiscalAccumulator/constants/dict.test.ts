@@ -1,4 +1,4 @@
-import { FiscalAccumulatorFormatEnum } from 'modules/task/constants/fiscalAccumulator'
+import { FiscalAccumulatorFormatEnum } from 'modules/fiscalAccumulator/constants'
 
 import { fiscalAccumulatorFormatColorDict } from './dict'
 

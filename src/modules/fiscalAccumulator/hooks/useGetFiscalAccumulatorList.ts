@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
-import { getFiscalAccumulatorListMessages } from 'modules/task/constants/fiscalAccumulator'
+import { getFiscalAccumulatorListMessages } from 'modules/fiscalAccumulator/constants'
 import {
   GetFiscalAccumulatorListQueryArgs,
   GetFiscalAccumulatorListSuccessResponse,
-} from 'modules/task/models'
-import { useGetFiscalAccumulatorQuery } from 'modules/task/services/fiscalAccumulatorApi.service'
+} from 'modules/fiscalAccumulator/models'
+import { useGetFiscalAccumulatorQuery } from 'modules/fiscalAccumulator/services/fiscalAccumulatorApi.service'
 
 import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

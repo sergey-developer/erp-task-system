@@ -1,7 +1,6 @@
-import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/task/components/FiscalAccumulatorTable/FiscalAccumulatorTable.test'
-import { getFiscalAccumulatorListMessages } from 'modules/task/constants/fiscalAccumulator'
+import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/fiscalAccumulator/components/FiscalAccumulatorTable/FiscalAccumulatorTable.test'
+import { getFiscalAccumulatorListMessages } from 'modules/fiscalAccumulator/constants'
 
-import taskFixtures from '_tests_/fixtures/task'
 import {
   mockGetFiscalAccumulatorListServerError,
   mockGetFiscalAccumulatorListSuccess,
@@ -9,6 +8,7 @@ import {
 import { notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
 import FiscalAccumulatorListPage from './index'
+import fiscalAccumulatorFixtures from "_tests_/fixtures/fiscalAccumulator";
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -16,7 +16,7 @@ notificationTestUtils.setupNotifications()
 describe('Страница заявок фискальных накопителей', () => {
   describe('При успешном запросе', () => {
     test('Таблица отображается корректно', async () => {
-      const fakeFiscalAccumulatorList = [taskFixtures.fiscalAccumulatorListItem()]
+      const fakeFiscalAccumulatorList = [fiscalAccumulatorFixtures.fiscalAccumulatorListItem()]
       mockGetFiscalAccumulatorListSuccess({
         body: fakeFiscalAccumulatorList,
       })

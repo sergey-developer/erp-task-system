@@ -1,4 +1,4 @@
-import { FiscalAccumulatorListItemModel } from 'modules/task/models'
+import { FiscalAccumulatorListItemModel } from 'modules/fiscalAccumulator/models'
 
 import {
   fakeAddress,
