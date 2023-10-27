@@ -1,5 +1,6 @@
-import { screen, within } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import React from 'react'
 
 import { RouteEnum } from 'configs/routes'
 
@@ -8,90 +9,83 @@ import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskLi
 import TaskListPage from 'modules/task/pages/TaskListPage'
 import { testUtils as taskListPageTestUtils } from 'modules/task/pages/TaskListPage/TaskListPage.test'
 
-import { mockGetTaskListMapSuccess } from '_tests_/mocks/api'
-import { renderInRoute_latest, setupApiTests } from '_tests_/utils'
+import {
+  mockGetTaskCountersSuccess,
+  mockGetTaskListMapSuccess,
+  mockGetTaskListSuccess,
+} from '_tests_/mocks/api'
+import { radioButtonTestUtils, renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
 import TaskListLayout from './index'
 
 const getContainer = () => screen.getByTestId('task-list-layout')
 
-// task list link
-const getTaskListLink = () =>
-  within(getContainer()).getByRole('link', { name: 'Реестр' })
-
-const clickTaskListLink = async (user: UserEvent) => {
-  const link = getTaskListLink()
-  await user.click(link)
+// task list button
+const getTaskListButton = () => radioButtonTestUtils.getRadioButtonIn(getContainer(), 'Реестр')
+const clickTaskListButton = async (user: UserEvent) => {
+  const button = getTaskListButton()
+  await user.click(button)
 }
 
-// task list map link
-const getTaskListMapLink = () =>
-  within(getContainer()).getByRole('link', { name: 'Карта' })
-
-const clickTaskListMapLink = async (user: UserEvent) => {
-  const link = getTaskListMapLink()
-  await user.click(link)
+// task list map button
+const getTaskListMapButton = () => radioButtonTestUtils.getRadioButtonIn(getContainer(), 'Карта')
+const clickTaskListMapButton = async (user: UserEvent) => {
+  const button = getTaskListMapButton()
+  await user.click(button)
 }
 
 export const testUtils = {
   getContainer,
 
-  getTaskListLink,
-  clickTaskListLink,
+  getTaskListButton,
+  clickTaskListButton,
 
-  getTaskListMapLink,
-  clickTaskListMapLink,
+  getTaskListMapButton,
+  clickTaskListMapButton,
 }
 
 setupApiTests()
 
 describe('TaskListLayout', () => {
-  test('Отображает children', () => {
-    const children = 'children'
-
-    renderInRoute_latest([
-      {
-        path: RouteEnum.Root,
-        element: <TaskListLayout>{children}</TaskListLayout>,
-      },
-    ])
-
-    expect(within(getContainer()).getByText(children)).toBeInTheDocument()
-  })
-
   describe('Ссылка на реестр', () => {
     test('Отображается корректно', () => {
       renderInRoute_latest([
         {
           path: RouteEnum.Root,
-          element: <TaskListLayout>children</TaskListLayout>,
+          element: <TaskListLayout defaultRoute={RouteEnum.TaskList} />,
         },
       ])
 
-      const link = testUtils.getTaskListLink()
+      const button = testUtils.getTaskListButton()
 
-      expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.DesktopTaskList)
+      expect(button).toBeInTheDocument()
+      expect(button).toHaveAttribute('value', RouteEnum.TaskList)
     })
 
     test('При клике переходит на страницу реестра заявок', async () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
       mockGetTaskListMapSuccess()
 
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.DesktopTaskList,
+            path: RouteEnum.Tasks,
+            element: <TaskListLayout defaultRoute={RouteEnum.TaskListMap} />,
+          },
+          {
+            path: RouteEnum.TaskList,
             element: <TaskListPage />,
           },
           {
-            path: RouteEnum.DesktopTaskListMap,
+            path: RouteEnum.TaskListMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [RouteEnum.DesktopTaskListMap], initialIndex: 1 },
+        { initialEntries: [RouteEnum.Tasks], initialIndex: 0 },
       )
 
-      await testUtils.clickTaskListLink(user)
+      await testUtils.clickTaskListButton(user)
       const page = taskListPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
@@ -103,34 +97,40 @@ describe('TaskListLayout', () => {
       renderInRoute_latest([
         {
           path: RouteEnum.Root,
-          element: <TaskListLayout>children</TaskListLayout>,
+          element: <TaskListLayout defaultRoute={RouteEnum.TaskList} />,
         },
       ])
 
-      const link = testUtils.getTaskListMapLink()
+      const button = testUtils.getTaskListMapButton()
 
-      expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', RouteEnum.DesktopTaskListMap)
+      expect(button).toBeInTheDocument()
+      expect(button).toHaveAttribute('value', RouteEnum.TaskListMap)
     })
 
     test('При клике переходит на страницу карты с заявками', async () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
       mockGetTaskListMapSuccess()
 
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.DesktopTaskList,
+            path: RouteEnum.Tasks,
+            element: <TaskListLayout defaultRoute={RouteEnum.TaskList} />,
+          },
+          {
+            path: RouteEnum.TaskList,
             element: <TaskListPage />,
           },
           {
-            path: RouteEnum.DesktopTaskListMap,
+            path: RouteEnum.TaskListMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [RouteEnum.DesktopTaskList], initialIndex: 0 },
+        { initialEntries: [RouteEnum.Tasks], initialIndex: 0 },
       )
 
-      await testUtils.clickTaskListMapLink(user)
+      await testUtils.clickTaskListMapButton(user)
       const page = taskListMapPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()

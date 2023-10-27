@@ -1,11 +1,11 @@
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
-import { route as fiscalAccumulatorRoute } from 'modules/fiscalAccumulator/routes'
-import { route as staffRoute } from 'modules/monitoring/routes'
-import { route as taskRoute } from 'modules/task/routes'
+import { route as fiscalAccumulatorRoute } from 'modules/fiscalAccumulator/routes.config'
+import { route as monitoringRoute } from 'modules/monitoring/routes.config'
+import { route as taskRoute } from 'modules/task/routes.config'
 import { UserModel } from 'modules/user/models'
-import { route as manageWarehousesRoute } from 'modules/warehouse/routes'
+import { route as manageWarehousesRoute } from 'modules/warehouse/routes.config'
 
 import PrivateLayout from 'components/Layouts/PrivateLayout'
 import NotFoundPage from 'components/Pages/NotFoundPage'
@@ -23,7 +23,7 @@ export const getPrivateRoutesConfig = ({ isStaff }: Pick<UserModel, 'isStaff'>):
     children: [
       {
         index: true,
-        element: <Navigate to={RouteEnum.DesktopTaskList} />,
+        element: <Navigate to={RouteEnum.TaskList} />,
       },
       taskRoute,
 
@@ -31,7 +31,7 @@ export const getPrivateRoutesConfig = ({ isStaff }: Pick<UserModel, 'isStaff'>):
 
       manageWarehousesRoute,
 
-      ...(isStaff ? [staffRoute] : []),
+      ...(isStaff ? [monitoringRoute] : []),
       {
         path: RouteEnum.ChangePassword,
         element: <ChangePasswordPage />,

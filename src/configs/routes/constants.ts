@@ -1,23 +1,23 @@
 // todo: разделить по модулям
 export enum RouteEnum {
-  // other routes
+  // other
   Root = '/',
   NotFound = '*',
 
-  // auth routes
+  // auth
   Login = '/login',
   ForgotPassword = '/password/forgot',
   ChangePassword = '/password/change',
 
-  // desktop routes
-  Desktop = '/desktop',
-  DesktopTaskList = '/desktop/tasks/list',
-  DesktopTaskListMap = '/desktop/tasks/map',
+  // tasks
+  Tasks = '/tasks',
+  TaskList = '/tasks/list',
+  TaskListMap = '/tasks/map',
 
-  // work group routes
+  // work group
   WorkingGroups = '/working-groups',
 
-  // monitoring routes
+  // monitoring
   Monitoring = '/monitoring',
   TaskMonitoring = '/monitoring/tasks',
 }

@@ -174,7 +174,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.DesktopTaskList)
+          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
         })
       })
 
@@ -254,7 +254,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.DesktopTaskList)
+          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
         })
       })
 
@@ -352,7 +352,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.DesktopTaskList)
+          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
         })
       })
 
@@ -450,7 +450,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.DesktopTaskList)
+          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
         })
       })
 

@@ -78,7 +78,7 @@ describe('Детальный аватар пользователя', () => {
 
       const { user, checkRouteChanged, getCurrentRoute } = renderInRoute(
         <PrivateApp />,
-        RouteEnum.DesktopTaskList,
+        RouteEnum.TaskList,
       )
 
       await privateLayoutTestUtils.expectLoadingStarted()

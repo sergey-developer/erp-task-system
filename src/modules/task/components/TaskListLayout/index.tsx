@@ -1,17 +1,18 @@
-import { Button, Col, Row, Typography } from 'antd'
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { Col, Radio, Row } from 'antd'
+import React, { FC } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 import { RouteEnum } from 'configs/routes'
 
 import Space from 'components/Space'
 
-import { FCWithChildren } from 'shared/types/utils'
+type TaskListLayoutProps = {
+  defaultRoute: RouteEnum.TaskList | RouteEnum.TaskListMap
+}
 
-const { Text } = Typography
+const TaskListLayout: FC<TaskListLayoutProps> = ({ defaultRoute }) => {
+  const navigate = useNavigate()
 
-// todo: применить groupbutton
-const TaskListLayout: FCWithChildren = ({ children }) => {
   return (
     <Space
       className='task-list-layout'
@@ -23,23 +24,17 @@ const TaskListLayout: FCWithChildren = ({ children }) => {
     >
       <Row className='task-list-layout-header' justify='end'>
         <Col>
-          <NavLink to={RouteEnum.DesktopTaskList}>
-            {({ isActive }) => {
-              const text = 'Реестр'
-              return <Button>{isActive ? text : <Text>{text}</Text>}</Button>
-            }}
-          </NavLink>
-
-          <NavLink to={RouteEnum.DesktopTaskListMap}>
-            {({ isActive }) => {
-              const text = 'Карта'
-              return <Button>{isActive ? text : <Text>{text}</Text>}</Button>
-            }}
-          </NavLink>
+          <Radio.Group
+            onChange={(event) => navigate(event.target.value)}
+            defaultValue={defaultRoute}
+          >
+            <Radio.Button value={RouteEnum.TaskList}>Реестр</Radio.Button>
+            <Radio.Button value={RouteEnum.TaskListMap}>Карта</Radio.Button>
+          </Radio.Group>
         </Col>
       </Row>
 
-      {children}
+      <Outlet />
     </Space>
   )
 }

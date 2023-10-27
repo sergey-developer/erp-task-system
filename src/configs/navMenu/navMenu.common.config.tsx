@@ -8,9 +8,9 @@ import { NavMenuItem } from './types'
 
 const navMenuCommonConfig: NavMenuItem[] = [
   {
-    key: RouteEnum.Desktop,
+    key: RouteEnum.Tasks,
     icon: UnorderedListIcon,
-    link: RouteEnum.DesktopTaskList,
+    link: RouteEnum.TaskList,
     text: 'Рабочий стол',
   },
   {

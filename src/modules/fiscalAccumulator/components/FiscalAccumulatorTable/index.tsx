@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-// todo: придумать как переиспользовать
+// todo: придумать как избавиться от этого компонента
 import { TableWrapperStyled } from 'modules/task/components/TaskTable/styles'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
