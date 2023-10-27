@@ -18,8 +18,11 @@ import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/
 import { UserRoleEnum } from 'modules/user/constants'
 
 import commonFixtures from '_tests_/fixtures/common'
+import macroregionFixtures from '_tests_/fixtures/macroregion'
+import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import {
   mockGetCustomerListSuccess,
@@ -40,48 +43,43 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import macroregionFixtures from '../../../../_tests_/fixtures/macroregion'
-import supportGroupFixtures from '../../../../_tests_/fixtures/supportGroup'
-import warehouseFixtures from '../../../../_tests_/fixtures/warehouse'
 import { DEFAULT_PAGE_SIZE } from './constants'
 import TaskListPage from './index'
 
 const getContainer = () => screen.getByTestId('task-list-page')
 
+// search input
 const getSearchInput = () => within(getContainer()).getByPlaceholderText('Искать заявку по номеру')
-
 const getSearchButton = () => buttonTestUtils.getButtonIn(getContainer(), /search/)
-
+const setSearchValue = async (user: UserEvent, value: string, pressEnter: boolean = false) => {
+  const input = getSearchInput()
+  await user.type(input, pressEnter ? value.concat('{enter}') : value)
+  return input
+}
 const getSearchClearButton = () => buttonTestUtils.getButtonIn(getContainer(), 'close-circle')
-
 const clickSearchClearButton = async (user: UserEvent) => {
   const button = getSearchClearButton()
   await user.click(button)
   return button
 }
 
+// reload button
 const getReloadListButton = () => buttonTestUtils.getButtonIn(getContainer(), /sync/)
-
 const clickReloadListButton = async (user: UserEvent) => {
   const button = getReloadListButton()
   await user.click(button)
   return button
 }
 
+// create task button
 const getCreateTaskButton = () => buttonTestUtils.getButtonIn(getContainer(), /создать заявку/i)
 
+// extended filter button
 const getExtendedFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
-
 const clickExtendedFilterButton = async (user: UserEvent) => {
   const button = getExtendedFilterButton()
   await user.click(button)
   return button
-}
-
-const setSearchValue = async (user: UserEvent, value: string, pressEnter: boolean = false) => {
-  const input = getSearchInput()
-  await user.type(input, pressEnter ? value.concat('{enter}') : value)
-  return input
 }
 
 export const testUtils = {
