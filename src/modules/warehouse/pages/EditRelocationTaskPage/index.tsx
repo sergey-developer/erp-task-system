@@ -122,11 +122,8 @@ const EditRelocationTaskPage: FC = () => {
 
   const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
     useGetEquipmentCatalogList(
-      {
-        locationId: selectedRelocateFrom?.value,
-        locationType: selectedRelocateFrom?.type,
-      },
-      { skip: !selectedRelocateFrom?.value || !selectedRelocateFrom?.type },
+      { locationId: selectedRelocateFrom?.value },
+      { skip: !selectedRelocateFrom?.value },
     )
 
   const [getEquipment] = useLazyGetEquipment()
@@ -368,7 +365,7 @@ const EditRelocationTaskPage: FC = () => {
           price: eqp?.price ?? undefined,
           currency: eqp?.currency?.id || undefined,
           quantity: eqp.quantity,
-          category: eqp.category
+          category: eqp.category,
         })
       })
 
