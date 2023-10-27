@@ -11,7 +11,6 @@ export const columns: ColumnsType<RelocationEquipmentTableItem> = [
     key: 'title',
     dataIndex: 'title',
     title: 'Оборудование',
-    render: (value: RelocationEquipmentTableItem['title']) => value,
   },
   {
     key: 'serialNumber',
@@ -23,7 +22,6 @@ export const columns: ColumnsType<RelocationEquipmentTableItem> = [
     key: 'purpose',
     dataIndex: 'purpose',
     title: 'Назначение',
-    render: (value: RelocationEquipmentTableItem['purpose']) => value,
   },
   {
     key: 'condition',
@@ -35,7 +33,6 @@ export const columns: ColumnsType<RelocationEquipmentTableItem> = [
     key: 'quantity',
     dataIndex: 'quantity',
     title: 'Количество',
-    render: (value: RelocationEquipmentTableItem['quantity']) => value,
   },
   {
     key: 'price',

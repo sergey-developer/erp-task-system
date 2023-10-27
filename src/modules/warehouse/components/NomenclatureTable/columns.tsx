@@ -22,6 +22,5 @@ export const getColumns = ({ onClickName }: GetColumnsArgs): ColumnsType<Nomencl
     key: 'vendorCode',
     dataIndex: 'vendorCode',
     title: 'Артикул',
-    render: (value: NomenclatureTableItem['vendorCode']) => value,
   },
 ]

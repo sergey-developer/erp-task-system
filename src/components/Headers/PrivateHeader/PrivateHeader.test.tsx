@@ -5,6 +5,7 @@ import { RouteEnum } from 'configs/routes'
 
 import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/LogoutButton/LogoutButton.test'
 import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
+import { FiscalAccumulatorRouteEnum } from 'modules/fiscalAccumulator/constants'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
@@ -290,7 +291,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorList)
+          expect(getCurrentRoute()).toBe(FiscalAccumulatorRouteEnum.FiscalAccumulator)
         })
       })
 
@@ -388,7 +389,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorList)
+          expect(getCurrentRoute()).toBe(FiscalAccumulatorRouteEnum.FiscalAccumulator)
         })
       })
 
@@ -486,7 +487,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.FiscalAccumulatorList)
+          expect(getCurrentRoute()).toBe(FiscalAccumulatorRouteEnum.FiscalAccumulator)
         })
       })
 
