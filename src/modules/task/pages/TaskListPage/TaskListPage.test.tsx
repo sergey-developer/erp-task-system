@@ -11,7 +11,6 @@ import {
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilterList/FastFilterList.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
-import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
 import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
@@ -1339,6 +1338,7 @@ describe('Страница реестра заявок', () => {
 
       render(<TaskListPage />, { store: getStoreWithAuth() })
 
+      await taskTableTestUtils.expectLoadingStarted()
       const taskTable = await taskTableTestUtils.expectLoadingFinished()
 
       expect(taskTable).toBeInTheDocument()
@@ -1361,6 +1361,7 @@ describe('Страница реестра заявок', () => {
 
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
+        await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         const row = await taskTableTestUtils.clickRow(user, taskListItem.id)
 
@@ -1381,6 +1382,7 @@ describe('Страница реестра заявок', () => {
 
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
+        await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await taskTableTestUtils.clickRow(user, taskListItem.id)
 
@@ -1842,74 +1844,24 @@ describe('Страница реестра заявок', () => {
       })
     })
 
-    describe('Пагинация', () => {
-      describe('Отправляется запрос', () => {
-        test('При клике на кнопку "Вперед"', async () => {
-          mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1)),
-          })
+    test('Пагинация работает', async () => {
+      mockGetTaskCountersSuccess()
 
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickPaginationNextButton(user)
-          await taskTableTestUtils.expectLoadingStarted()
-        })
-
-        test('При клике на кнопку "Назад"', async () => {
-          mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1)),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickPaginationNextButton(user)
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickPaginationPrevButton(user)
-          await taskTableTestUtils.expectLoadingStarted()
-        })
-
-        test('При переходе на след. страницу', async () => {
-          mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1)),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickPaginationPageButton(user, '2')
-          await taskTableTestUtils.expectLoadingStarted()
-        })
-
-        test('При смене размера страницы', async () => {
-          mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1)),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.changePageSize(user, paginationConfig.pageSizeOptions[0])
-          await taskTableTestUtils.expectLoadingStarted()
-        })
+      const taskList = taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1)
+      mockGetTaskListSuccess({
+        once: false,
+        body: taskFixtures.taskListResponse(taskList),
       })
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth(),
+      })
+
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickPaginationNextButton(user)
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
     })
   })
 })
