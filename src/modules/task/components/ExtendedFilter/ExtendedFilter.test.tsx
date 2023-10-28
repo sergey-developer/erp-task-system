@@ -111,6 +111,9 @@ const setCustomer = selectTestUtils.clickSelectOption
 
 const getSelectedCustomer = () => selectTestUtils.getSelectedOption(getCustomersFormItem())
 
+const expectCustomersLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getCustomersFormItem())
+
 const expectCustomersLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getCustomersFormItem())
 
@@ -126,6 +129,9 @@ const setMacroregion = selectTestUtils.clickSelectOption
 
 const getSelectedMacroregion = () => selectTestUtils.getSelectedOption(getMacroregionsFormItem())
 
+const expectMacroregionsLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getMacroregionsFormItem())
+
 const expectMacroregionsLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getMacroregionsFormItem())
 
@@ -140,6 +146,9 @@ const openSupportGroupsSelect = (user: UserEvent) =>
 const setSupportGroup = selectTestUtils.clickSelectOption
 
 const getSelectedSupportGroup = () => selectTestUtils.getSelectedOption(getSupportGroupsFormItem())
+
+const expectSupportGroupsLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getSupportGroupsFormItem())
 
 const expectSupportGroupsLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getSupportGroupsFormItem())
@@ -392,18 +401,21 @@ export const testUtils = {
   openCustomersSelect,
   setCustomer,
   getSelectedCustomer,
+  expectCustomersLoadingStarted,
   expectCustomersLoadingFinished,
 
   getMacroregionsSelect,
   openMacroregionsSelect,
   setMacroregion,
   getSelectedMacroregion,
+  expectMacroregionsLoadingStarted,
   expectMacroregionsLoadingFinished,
 
   getSupportGroupsSelect,
   openSupportGroupsSelect,
   setSupportGroup,
   getSelectedSupportGroup,
+  expectSupportGroupsLoadingStarted,
   expectSupportGroupsLoadingFinished,
 
   searchByColumn,

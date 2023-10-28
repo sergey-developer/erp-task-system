@@ -267,7 +267,7 @@ const TaskListPage: FC = () => {
       } else {
         if (!prevAppliedFilterType) return
 
-        setAppliedFilterType(prevAppliedFilterType!)
+        setAppliedFilterType(prevAppliedFilterType)
 
         const prevFilter = isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)
           ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
