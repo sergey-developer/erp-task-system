@@ -5,7 +5,7 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
 import taskFixtures from '_tests_/fixtures/task'
-import { iconTestUtils, render } from '_tests_/utils'
+import { iconTestUtils, render, tableTestUtils } from '_tests_/utils'
 
 import FiscalAccumulatorTaskTable from './index'
 import { FiscalAccumulatorTableItem, FiscalAccumulatorTableProps } from './types'
@@ -20,12 +20,10 @@ const props: Readonly<FiscalAccumulatorTableProps> = {
 const getContainer = () => screen.getByTestId('fiscal-accumulator-table')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
-const getRow = (id: FiscalAccumulatorTableItem['olaNextBreachTime']): MaybeNull<HTMLElement> =>
-  // eslint-disable-next-line testing-library/no-node-access
-  getContainer().querySelector(`[data-row-key='${id}']`)
+const getRow = (id: FiscalAccumulatorTableItem['olaNextBreachTime']) =>
+  tableTestUtils.getRowIn(getContainer(), id)
 
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access

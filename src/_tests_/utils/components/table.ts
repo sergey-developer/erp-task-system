@@ -5,8 +5,15 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import { iconTestUtils } from '_tests_/utils'
 
-const getRowIn = (container: HTMLElement, id: NumberOrString): MaybeNull<HTMLElement> =>
-  container.querySelector(`[data-row-key='${id}']`)
+const getRowIn = (container: HTMLElement, id: NumberOrString): HTMLElement => {
+  const row = container.querySelector(`[data-row-key='${id}']`) as HTMLElement
+
+  if (row) {
+    return row
+  } else {
+    throw new Error(`Table row with id: ${id} was not found`)
+  }
+}
 
 const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrString) => {
   const row = getRowIn(container, id)

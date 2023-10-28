@@ -20,7 +20,9 @@ import {
   DeleteTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestSuccessResponse,
   DeleteTaskWorkGroupMutationArgs,
-  DeleteTaskWorkGroupSuccessResponse, GetSubTaskListQueryArgs, GetSubTaskListSuccessResponse,
+  DeleteTaskWorkGroupSuccessResponse,
+  GetSubTaskListQueryArgs,
+  GetSubTaskListSuccessResponse,
   GetTaskCommentListQueryArgs,
   GetTaskCommentListSuccessResponse,
   GetTaskCountersQueryArgs,
@@ -40,14 +42,15 @@ import {
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
   ResolveTaskMutationArgs,
-  ResolveTaskSuccessResponse, SubTaskModel,
+  ResolveTaskSuccessResponse,
+  SubTaskModel,
   TakeTaskMutationArgs,
   TakeTaskSuccessResponse,
   UpdateTaskAssigneeMutationArgs,
   UpdateTaskAssigneeSuccessResponse,
   UpdateTaskWorkGroupMutationArgs,
-  UpdateTaskWorkGroupSuccessResponse
-} from "modules/task/models";
+  UpdateTaskWorkGroupSuccessResponse,
+} from 'modules/task/models'
 import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
   createSubTaskUrl,
@@ -55,8 +58,8 @@ import {
   getTaskUrl,
   getTaskWorkPerformedActUrl,
   resolveTaskUrl,
-  takeTaskUrl
-} from "modules/task/utils/task";
+  takeTaskUrl,
+} from 'modules/task/utils/task'
 import { updateTaskAssigneeUrl } from 'modules/task/utils/taskAssignee'
 import { createTaskCommentUrl, getTaskCommentListUrl } from 'modules/task/utils/taskComment'
 import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'modules/task/utils/taskJournal'
@@ -79,6 +82,7 @@ const taskApiService = baseApiService.injectEndpoints({
       GetTaskListTransformedSuccessResponse,
       GetTaskListQueryArgs
     >({
+      providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
       query: (params) => ({
         url: TaskApiEnum.GetTaskList,
         method: HttpMethodEnum.Get,
@@ -86,7 +90,6 @@ const taskApiService = baseApiService.injectEndpoints({
       }),
       transformResponse: (response: GetTaskListSuccessResponse, meta, arg) =>
         getPaginatedList(response, arg),
-      providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
     }),
     [TaskApiTriggerEnum.GetTaskListMap]: build.query<
       GetTaskListMapSuccessResponse,
@@ -336,7 +339,7 @@ const taskApiService = baseApiService.injectEndpoints({
     [TaskApiTriggerEnum.GetSubTaskList]: build.query<
       GetSubTaskListSuccessResponse,
       GetSubTaskListQueryArgs
-      >({
+    >({
       query: (taskId) => ({
         url: getSubTaskListUrl(taskId),
         method: HttpMethodEnum.Get,
@@ -345,7 +348,7 @@ const taskApiService = baseApiService.injectEndpoints({
     [TaskApiTriggerEnum.CreateSubTask]: build.mutation<
       CreateSubTaskSuccessResponse,
       CreateSubTaskMutationArgs
-      >({
+    >({
       query: ({ taskId, ...payload }) => ({
         url: createSubTaskUrl(taskId),
         method: HttpMethodEnum.Post,
