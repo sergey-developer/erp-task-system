@@ -111,6 +111,9 @@ const setCustomer = selectTestUtils.clickSelectOption
 
 const getSelectedCustomer = () => selectTestUtils.getSelectedOption(getCustomersFormItem())
 
+const expectCustomersLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getCustomersFormItem())
+
 const expectCustomersLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getCustomersFormItem())
 
@@ -126,6 +129,9 @@ const setMacroregion = selectTestUtils.clickSelectOption
 
 const getSelectedMacroregion = () => selectTestUtils.getSelectedOption(getMacroregionsFormItem())
 
+const expectMacroregionsLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getMacroregionsFormItem())
+
 const expectMacroregionsLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getMacroregionsFormItem())
 
@@ -140,6 +146,9 @@ const openSupportGroupsSelect = (user: UserEvent) =>
 const setSupportGroup = selectTestUtils.clickSelectOption
 
 const getSelectedSupportGroup = () => selectTestUtils.getSelectedOption(getSupportGroupsFormItem())
+
+const expectSupportGroupsLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getSupportGroupsFormItem())
 
 const expectSupportGroupsLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getSupportGroupsFormItem())
@@ -392,18 +401,21 @@ export const testUtils = {
   openCustomersSelect,
   setCustomer,
   getSelectedCustomer,
+  expectCustomersLoadingStarted,
   expectCustomersLoadingFinished,
 
   getMacroregionsSelect,
   openMacroregionsSelect,
   setMacroregion,
   getSelectedMacroregion,
+  expectMacroregionsLoadingStarted,
   expectMacroregionsLoadingFinished,
 
   getSupportGroupsSelect,
   openSupportGroupsSelect,
   setSupportGroup,
   getSelectedSupportGroup,
+  expectSupportGroupsLoadingStarted,
   expectSupportGroupsLoadingFinished,
 
   searchByColumn,
@@ -1274,16 +1286,15 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Переданное значение перезаписывает значение по умолчанию', async () => {
-        const workGroupList = workGroupFixtures.workGroupList()
-        const workGroupId = workGroupList[0].id
+        const workGroupListItem = workGroupFixtures.workGroupListItem()
 
         render(
           <ExtendedFilter
             {...props}
-            workGroupList={workGroupList}
+            workGroupList={[workGroupListItem]}
             formValues={{
               ...props.formValues,
-              workGroupId,
+              workGroupId: workGroupListItem.id,
             }}
           />,
           {
@@ -1297,7 +1308,7 @@ describe('Расширенный фильтр', () => {
         const selectedOption = selectTestUtils.getSelectedOption(workGroupField)
 
         expect(selectedOption).toBeInTheDocument()
-        expect(selectedOption).toHaveTextContent(String(workGroupId))
+        expect(selectedOption).toHaveTextContent(workGroupListItem.name)
       })
 
       test('Доступен для редактирования после загрузки списка', async () => {

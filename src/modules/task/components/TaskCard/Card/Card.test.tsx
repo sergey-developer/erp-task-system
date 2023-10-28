@@ -100,17 +100,13 @@ const props: Readonly<TaskCardProps> = {
 }
 
 const getContainer = () => screen.getByTestId('task-card')
-
-const findContainer = () => screen.findByTestId('task-card')
+const findContainer = () => screen.findByTestId('task-card', undefined)
 
 const expectLoadingStarted = () => cardTestUtils.expectLoadingStarted(getContainer())
-
 const expectLoadingNotStarted = () => cardTestUtils.expectLoadingNotStarted(getContainer())
-
 const expectLoadingFinished = () => cardTestUtils.expectLoadingFinished(getContainer())
 
 const getCardDetails = () => within(getContainer()).getByTestId('task-card-details')
-
 const queryCardDetails = () => within(getContainer()).queryByTestId('task-card-details')
 
 const taskCardReclassificationRequestSpinnerTestId = 'task-card-reclassification-request-loading'
