@@ -2,14 +2,16 @@ import { Moment } from 'moment-timezone'
 
 import { SupportGroupListModel } from 'modules/supportGroup/models'
 import {
-  TaskExtendedStatusEnum,
   TaskAssignedEnum,
+  TaskExtendedStatusEnum,
   TaskOverdueEnum,
 } from 'modules/task/constants/task'
 import { SearchFields } from 'modules/task/models'
 import { UserListModel } from 'modules/user/models'
 import { CustomerListModel } from 'modules/warehouse/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
+
+import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
 import { MacroregionListModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
@@ -32,7 +34,7 @@ export type ExtendedFilterFormFields = ExtendedFilterSupportGroupFormFields &
     manager: IdType
   }>
 
-export type ExtendedFilterProps = {
+export type ExtendedFilterProps = Required<Pick<DrawerFilterProps, 'open'>> & {
   formValues: ExtendedFilterFormFields
   initialFormValues: ExtendedFilterFormFields
 
