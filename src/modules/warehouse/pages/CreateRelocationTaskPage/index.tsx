@@ -18,7 +18,14 @@ import {
 } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
-import { createRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
+import {
+  createRelocationTaskMessages,
+  relocateFromLocationTypes,
+  relocateFromWarehouseTypes,
+  relocateToLocationTypes,
+  relocateToWarehouseTypes,
+  RelocationTaskTypeEnum,
+} from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
@@ -104,6 +111,9 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
+  const [selectedType, setSelectedType] = useState<RelocationTaskTypeEnum>(
+    RelocationTaskTypeEnum.Relocation,
+  )
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
@@ -112,19 +122,27 @@ const CreateRelocationTaskPage: FC = () => {
     isManager: false,
   })
 
-  const { currentData: locationList = [], isFetching: locationListIsFetching } =
-    useGetLocationList()
+  const {
+    currentData: relocateFromLocationList = [],
+    isFetching: relocateFromLocationListIsFetching,
+  } = useGetLocationList({
+    locationTypes: relocateFromLocationTypes[selectedType],
+    warehouseTypes: relocateFromWarehouseTypes[selectedType],
+  })
+
+  const { currentData: relocateToLocationList = [], isFetching: relocateToLocationListIsFetching } =
+    useGetLocationList({
+      locationTypes: relocateToLocationTypes[selectedType],
+      warehouseTypes: relocateToWarehouseTypes[selectedType],
+    })
 
   const { currentData: currencyList = [], isFetching: currencyListIsFetching } =
     useGetCurrencyList()
 
   const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
     useGetEquipmentCatalogList(
-      {
-        locationId: selectedRelocateFrom?.value,
-        locationType: selectedRelocateFrom?.type,
-      },
-      { skip: !selectedRelocateFrom?.value || !selectedRelocateFrom?.type },
+      { locationId: selectedRelocateFrom?.value },
+      { skip: !selectedRelocateFrom?.value },
     )
 
   const [getEquipment] = useLazyGetEquipment()
@@ -178,6 +196,7 @@ const CreateRelocationTaskPage: FC = () => {
   const handleCreateRelocationTask = async (values: RelocationTaskFormFields) => {
     try {
       const createdTask = await createRelocationTaskMutation({
+        type: values.type,
         deadlineAt: mergeDateTime(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
         equipments: values.equipments.map((e) => ({
           id: e.id,
@@ -346,8 +365,11 @@ const CreateRelocationTaskPage: FC = () => {
               isLoading={createRelocationTaskIsLoading}
               userList={userList}
               userListIsLoading={userListIsFetching}
-              locationList={locationList}
-              locationListIsLoading={locationListIsFetching}
+              relocateFromLocationList={relocateFromLocationList}
+              relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
+              relocateToLocationList={relocateToLocationList}
+              relocateToLocationListIsLoading={relocateToLocationListIsFetching}
+              onChangeType={setSelectedType}
               onChangeRelocateFrom={handleChangeRelocateFrom}
               onChangeRelocateTo={setSelectedRelocateTo}
             />

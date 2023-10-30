@@ -16,7 +16,14 @@ import {
 } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
-import { updateRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
+import {
+  relocateFromLocationTypes,
+  relocateFromWarehouseTypes,
+  relocateToLocationTypes,
+  relocateToWarehouseTypes,
+  RelocationTaskTypeEnum,
+  updateRelocationTaskMessages,
+} from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
@@ -94,6 +101,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
+  const [selectedType, setSelectedType] = useState<RelocationTaskTypeEnum>()
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
@@ -110,8 +118,25 @@ const EditRelocationTaskPage: FC = () => {
     isManager: false,
   })
 
-  const { currentData: locationList = [], isFetching: locationListIsFetching } =
-    useGetLocationList()
+  const {
+    currentData: relocateFromLocationList = [],
+    isFetching: relocateFromLocationListIsFetching,
+  } = useGetLocationList(
+    {
+      locationTypes: relocateFromLocationTypes[selectedType!],
+      warehouseTypes: relocateFromWarehouseTypes[selectedType!],
+    },
+    { skip: !selectedType },
+  )
+
+  const { currentData: relocateToLocationList = [], isFetching: relocateToLocationListIsFetching } =
+    useGetLocationList(
+      {
+        locationTypes: relocateToLocationTypes[selectedType!],
+        warehouseTypes: relocateToWarehouseTypes[selectedType!],
+      },
+      { skip: !selectedType },
+    )
 
   const { currentData: currencyList = [], isFetching: currencyListIsFetching } =
     useGetCurrencyList()
@@ -122,11 +147,8 @@ const EditRelocationTaskPage: FC = () => {
 
   const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
     useGetEquipmentCatalogList(
-      {
-        locationId: selectedRelocateFrom?.value,
-        locationType: selectedRelocateFrom?.type,
-      },
-      { skip: !selectedRelocateFrom?.value || !selectedRelocateFrom?.type },
+      { locationId: selectedRelocateFrom?.value },
+      { skip: !selectedRelocateFrom?.value },
     )
 
   const [getEquipment] = useLazyGetEquipment()
@@ -178,17 +200,12 @@ const EditRelocationTaskPage: FC = () => {
     useCreateEquipmentMutation()
 
   const handleUpdateRelocationTask = async (values: RelocationTaskFormFields) => {
-    const relocateLocations = locationList.filter(
-      (l) => l.id === values.relocateTo || l.id === values.relocateFrom,
-    )
-    const relocateTo = relocateLocations.find((l) => l.id === values.relocateTo)
-    const relocateFrom = relocateLocations.find((l) => l.id === values.relocateFrom)
-
-    if (!relocationTaskId || !relocateTo || !relocateFrom) return
+    if (!relocationTaskId) return
 
     try {
       const updatedTask = await updateRelocationTaskMutation({
         relocationTaskId,
+        type: values.type,
         deadlineAt: mergeDateTime(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
         equipments: values.equipments.map((e) => ({
           id: e.id,
@@ -198,9 +215,7 @@ const EditRelocationTaskPage: FC = () => {
           price: e.price,
         })),
         relocateToId: values.relocateTo,
-        relocateToType: relocateTo.type,
         relocateFromId: values.relocateFrom,
-        relocateFromType: relocateFrom.type,
         executor: values.executor,
         comment: values.comment,
       }).unwrap()
@@ -336,9 +351,13 @@ const EditRelocationTaskPage: FC = () => {
     ],
   )
 
+  /* Установка значений формы */
   useEffect(() => {
     if (relocationTask && !relocationTaskIsFetching) {
+      setSelectedType(relocationTask.type)
+
       form.setFieldsValue({
+        type: relocationTask.type,
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
         relocateFrom: relocationTask.relocateFrom?.id,
@@ -349,6 +368,20 @@ const EditRelocationTaskPage: FC = () => {
     }
   }, [form, relocationTask, relocationTaskIsFetching])
 
+  /* Установка значения состояния объекта выбытия */
+  useEffect(() => {
+    if (relocationTask && relocateFromLocationList.length && !relocateFromLocationListIsFetching) {
+      const relocateFromListItem = relocateFromLocationList.find(
+        (l) => l.id === relocationTask.relocateFrom?.id,
+      )
+
+      if (relocateFromListItem) {
+        setSelectedRelocateFrom({ type: relocateFromListItem.type, value: relocateFromListItem.id })
+      }
+    }
+  }, [relocateFromLocationList, relocateFromLocationListIsFetching, relocationTask])
+
+  /* Установка значений перечня оборудования */
   useEffect(() => {
     if (relocationEquipmentList.length && !relocationEquipmentListIsFetching) {
       const equipments: RelocationTaskFormFields['equipments'] = []
@@ -381,21 +414,6 @@ const EditRelocationTaskPage: FC = () => {
     relocationEquipmentListIsFetching,
   ])
 
-  useEffect(() => {
-    if (relocationTask && locationList.length && !locationListIsFetching) {
-      const relocateFromListItem = locationList.find(
-        (l) => l.id === relocationTask.relocateFrom?.id,
-      )
-
-      if (relocateFromListItem) {
-        setSelectedRelocateFrom({
-          type: relocateFromListItem.type,
-          value: relocateFromListItem.id,
-        })
-      }
-    }
-  }, [locationList, locationListIsFetching, relocationTask])
-
   const addEquipmentBtnDisabled =
     !selectedRelocateFrom ||
     !selectedRelocateTo ||
@@ -417,8 +435,11 @@ const EditRelocationTaskPage: FC = () => {
               isLoading={updateRelocationTaskIsLoading || relocationTaskIsFetching}
               userList={userList}
               userListIsLoading={userListIsFetching}
-              locationList={locationList}
-              locationListIsLoading={locationListIsFetching}
+              relocateFromLocationList={relocateFromLocationList}
+              relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
+              relocateToLocationList={relocateToLocationList}
+              relocateToLocationListIsLoading={relocateToLocationListIsFetching}
+              onChangeType={setSelectedType}
               onChangeRelocateFrom={handleChangeRelocateFrom}
               onChangeRelocateTo={setSelectedRelocateTo}
             />
