@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getEquipmentMessages } from 'modules/warehouse/constants/equipment'
 import { GetEquipmentQueryArgs, GetEquipmentSuccessResponse } from 'modules/warehouse/models'
-import { useGetEquipmentQuery } from 'modules/warehouse/services/equipmentApi.service'
+import { useGetEquipmentQuery } from 'modules/warehouse/services/equipmentApiService/equipmentApi.service'
 
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

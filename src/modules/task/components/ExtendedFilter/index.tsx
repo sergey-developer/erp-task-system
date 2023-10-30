@@ -4,7 +4,6 @@ import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
 import { userListSelectFieldNames } from 'modules/user/constants'
-import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import DatePicker from 'components/DatePicker'
 import DrawerFilter from 'components/Filters/DrawerFilter'
@@ -14,6 +13,7 @@ import Space from 'components/Space'
 
 import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { IdType } from 'shared/types/common'
+import { filterOptionBy } from 'shared/utils/common'
 
 import {
   searchFieldOptions,
@@ -192,9 +192,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
                   options={workGroupList}
                   placeholder='Рабочая группа'
                   showSearch
-                  filterOption={(input, option) =>
-                    option ? option.name.toLowerCase().includes(input.toLowerCase()) : false
-                  }
+                  filterOption={filterOptionBy('name')}
                 />
               </Form.Item>
             </FilterBlock>
@@ -230,9 +228,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
               options={userList}
               placeholder='Руководитель'
               showSearch
-              filterOption={(input, option) =>
-                option ? option.fullName.toLowerCase().includes(input.toLowerCase()) : false
-              }
+              filterOption={filterOptionBy('fullName')}
             />
           </Form.Item>
         </FilterBlock>

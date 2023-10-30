@@ -24,7 +24,9 @@ export type RelocationTaskFormProps = {
   relocateToLocationList: LocationListModel
   relocateToLocationListIsLoading: boolean
 
+  type?: RelocationTaskTypeEnum
   onChangeType: (value: RelocationTaskTypeEnum) => void
+
   onChangeRelocateFrom: (value: IdType, option: LocationOption) => void
   onChangeRelocateTo: (option: LocationOption) => void
 }

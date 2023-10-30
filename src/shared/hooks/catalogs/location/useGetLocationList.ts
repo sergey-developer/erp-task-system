@@ -7,7 +7,7 @@ import {
   GetLocationListQueryArgs,
   GetLocationListSuccessResponse,
 } from 'shared/models/catalogs/location'
-import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { useGetLocationListQuery } from 'shared/services/catalogsApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -29,7 +29,9 @@ export const useGetLocationList = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isForbiddenError(state.error) && state.error.data.detail) {
+      if (isBadRequestError(state.error) && state.error.data.detail) {
+        showErrorNotification(state.error.data.detail)
+      } else if (isForbiddenError(state.error) && state.error.data.detail) {
         showErrorNotification(state.error.data.detail)
       } else {
         showErrorNotification(getLocationListMessages.commonError)

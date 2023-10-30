@@ -1,10 +1,11 @@
 import { Col, Form, Input, Row, Select } from 'antd'
-import React, { FC, useMemo } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { userListSelectFieldNames } from 'modules/user/constants'
 import { relocationTaskTypeOptions } from 'modules/warehouse/constants/relocationTask'
+import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
 import DatePicker from 'components/DatePicker'
 import TimePicker from 'components/TimePicker'
@@ -30,7 +31,9 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   relocateToLocationList,
   relocateToLocationListIsLoading,
 
+  type,
   onChangeType,
+
   onChangeRelocateFrom,
   onChangeRelocateTo,
 }) => {
@@ -47,6 +50,12 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     [relocateToLocationList],
   )
 
+  useEffect(() => {
+    if (type && type !== form.getFieldValue('type')) {
+      form.setFieldValue('type', type)
+    }
+  }, [form, type])
+
   return (
     <Row data-testid='relocation-task-form' gutter={90}>
       <Col span={6}>
@@ -59,6 +68,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           <Select
             options={relocationTaskTypeOptions}
             placeholder='Выберите тип'
+            value={type}
             onChange={onChangeType}
           />
         </Form.Item>
@@ -88,7 +98,9 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <Select<IdType, LocationOption>
             loading={relocateToLocationListIsLoading}
-            disabled={isLoading || !relocateFromFormValue}
+            disabled={
+              isLoading || !relocateFromFormValue || checkRelocationTaskTypeIsWriteOff(type)
+            }
             options={relocateToLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {

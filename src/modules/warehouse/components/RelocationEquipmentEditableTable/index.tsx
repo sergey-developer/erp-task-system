@@ -13,8 +13,10 @@ import { EquipmentModel } from 'modules/warehouse/models'
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
 
+import { onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
+import { filterOptionBy } from 'shared/utils/common'
 import { makeString } from 'shared/utils/string'
 
 import { AddEquipmentButton } from './styles'
@@ -87,7 +89,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       title: 'Оборудование',
       valueType: 'select',
       formItemProps: {
-        rules: [{ required: true }],
+        rules: onlyRequiredRules,
         // @ts-ignore
         'data-testid': 'equipment-form-item',
       },
@@ -121,8 +123,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         onChange: () => {
           form.resetFields(['quantity'])
         },
-        filterOption: (input: string, option: DefaultOptionType) =>
-          option ? (option.label as string).toLowerCase().includes(input.toLowerCase()) : false,
+        filterOption: filterOptionBy('label'),
       }),
     },
     {
@@ -143,7 +144,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       width: 190,
       title: 'Состояние',
       valueType: 'select',
-      formItemProps: { rules: [{ required: true }] },
+      formItemProps: { rules: onlyRequiredRules },
       fieldProps: { disabled: isLoading, options: equipmentConditionOptions },
     },
     {
@@ -172,7 +173,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       dataIndex: 'quantity',
       title: 'Количество',
       valueType: 'digit',
-      formItemProps: { rules: [{ required: true }] },
+      formItemProps: { rules: onlyRequiredRules },
       fieldProps: (form, config) => {
         if (form) {
           const amount: MaybeUndefined<number> = form.getFieldValue(

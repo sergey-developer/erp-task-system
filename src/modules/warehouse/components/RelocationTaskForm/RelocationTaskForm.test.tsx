@@ -5,6 +5,7 @@ import moment from 'moment-timezone'
 
 import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
+import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import CreateRelocationTaskPage from 'modules/warehouse/pages/CreateRelocationTaskPage'
 import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskPage/CreateRelocationTaskPage.test'
 
@@ -30,8 +31,14 @@ const props: RelocationTaskFormProps = {
   userList: [],
   userListIsLoading: false,
 
-  locationList: [],
-  locationListIsLoading: false,
+  relocateFromLocationList: [],
+  relocateFromLocationListIsLoading: false,
+
+  relocateToLocationList: [],
+  relocateToLocationListIsLoading: false,
+
+  type: RelocationTaskTypeEnum.Relocation,
+  onChangeType: jest.fn(),
 
   onChangeRelocateTo: jest.fn(),
   onChangeRelocateFrom: jest.fn(),
@@ -322,7 +329,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} locationList={locationList} />
+          <RelocationTaskForm {...props} relocateFromLocationList={locationList} />
         </Form>,
       )
 
@@ -344,7 +351,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} locationList={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateFromLocationList={[locationListItem]} />
         </Form>,
       )
 
@@ -377,7 +384,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} locationList={locationList} />
+          <RelocationTaskForm {...props} relocateToLocationList={locationList} />
         </Form>,
       )
 
@@ -399,7 +406,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} locationList={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateToLocationList={[locationListItem]} />
         </Form>,
       )
 

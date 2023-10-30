@@ -4,7 +4,7 @@ import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { getEquipmentMessages } from 'modules/warehouse/constants/equipment'
 import { GetEquipmentQueryArgs, GetEquipmentSuccessResponse } from 'modules/warehouse/models'
-import { useLazyGetEquipmentQuery } from 'modules/warehouse/services/equipmentApi.service'
+import { useLazyGetEquipmentQuery } from 'modules/warehouse/services/equipmentApiService/equipmentApi.service'
 
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

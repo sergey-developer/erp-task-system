@@ -7,7 +7,7 @@ import {
   GetEquipmentCategoryListQueryArgs,
   GetEquipmentCategoryListSuccessResponse,
 } from 'modules/warehouse/models'
-import { useGetEquipmentCategoryListQuery } from 'modules/warehouse/services/equipmentApi.service'
+import { useGetEquipmentCategoryListQuery } from 'modules/warehouse/services/equipmentApiService/equipmentApi.service'
 
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

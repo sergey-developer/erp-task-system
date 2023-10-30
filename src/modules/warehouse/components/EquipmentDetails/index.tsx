@@ -14,7 +14,7 @@ import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/ho
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { useUpdateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
+import { useUpdateEquipmentMutation } from 'modules/warehouse/services/equipmentApiService/equipmentApi.service'
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'

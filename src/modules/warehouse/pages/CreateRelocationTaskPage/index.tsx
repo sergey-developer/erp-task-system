@@ -37,14 +37,17 @@ import {
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
+import { conditionsByRelocationTaskType } from 'modules/warehouse/services/equipmentApiService/constants/getEquipmentCatalogList'
+import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApiService/equipmentApi.service'
 import { useCreateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
-import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
+import {
+  checkRelocationTaskTypeIsWriteOff,
+  getRelocationTaskListPageLink,
+} from 'modules/warehouse/utils/relocationTask'
 
 import Space from 'components/Space'
 
-import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -56,6 +59,7 @@ import {
 } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { ArrayFirst } from 'shared/types/utils'
+import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -141,7 +145,10 @@ const CreateRelocationTaskPage: FC = () => {
 
   const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
     useGetEquipmentCatalogList(
-      { locationId: selectedRelocateFrom?.value },
+      {
+        locationId: selectedRelocateFrom?.value,
+        conditions: conditionsByRelocationTaskType[selectedType],
+      },
       { skip: !selectedRelocateFrom?.value },
     )
 
@@ -264,16 +271,6 @@ const CreateRelocationTaskPage: FC = () => {
     }
   }
 
-  const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
-    setSelectedCategory(category)
-    setSelectedNomenclatureId(undefined)
-  }
-
-  const getEquipmentFormValue = useCallback<() => RelocationEquipmentRowFields[]>(
-    () => form.getFieldValue('equipments') || [],
-    [form],
-  )
-
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
       if (!newEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
@@ -332,22 +329,43 @@ const CreateRelocationTaskPage: FC = () => {
     ],
   )
 
-  const handleChangeRelocateFrom: RelocationTaskFormProps['onChangeRelocateFrom'] = (
-    value,
-    option,
-  ) => {
-    const equipments = getEquipmentFormValue()
-    const relocateFrom = form.getFieldValue('relocateFrom')
-    const isShowConfirmation = !!equipments.length && !!relocateFrom
-    form.setFieldValue('relocateFrom', value)
-    setSelectedRelocateFrom(option)
-    if (isShowConfirmation) toggleConfirmModal()
-  }
+  const handleChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>(
+    (category) => {
+      setSelectedCategory(category)
+      setSelectedNomenclatureId(undefined)
+    },
+    [],
+  )
+
+  const handleChangeRelocateFrom = useCallback<RelocationTaskFormProps['onChangeRelocateFrom']>(
+    (value, option) => {
+      const equipments = form.getFieldValue('equipments') || []
+      const relocateFrom = form.getFieldValue('relocateFrom')
+      const isShowConfirmation = !!equipments.length && !!relocateFrom
+      form.setFieldValue('relocateFrom', value)
+      setSelectedRelocateFrom(option)
+      if (isShowConfirmation) toggleConfirmModal()
+    },
+    [form, toggleConfirmModal],
+  )
+
+  const handleChangeType = useCallback<RelocationTaskFormProps['onChangeType']>(
+    (value) => {
+      setSelectedType(value)
+
+      if (checkRelocationTaskTypeIsWriteOff(value)) {
+        const newValue = undefined
+        form.setFieldValue('relocateTo', newValue)
+        setSelectedRelocateTo(newValue)
+      }
+    },
+    [form],
+  )
 
   const addEquipmentBtnDisabled =
     !selectedRelocateFrom ||
     !selectedRelocateTo ||
-    selectedRelocateTo.type !== LocationTypeEnum.Warehouse
+    !checkLocationTypeIsWarehouse(selectedRelocateTo.type)
 
   return (
     <>
@@ -369,7 +387,8 @@ const CreateRelocationTaskPage: FC = () => {
               relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
               relocateToLocationList={relocateToLocationList}
               relocateToLocationListIsLoading={relocateToLocationListIsFetching}
-              onChangeType={setSelectedType}
+              type={selectedType}
+              onChangeType={handleChangeType}
               onChangeRelocateFrom={handleChangeRelocateFrom}
               onChangeRelocateTo={setSelectedRelocateTo}
             />
