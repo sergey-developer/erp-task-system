@@ -4,13 +4,13 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import taskFixtures from '_tests_/fixtures/task'
+import fiscalAccumulatorFixtures from '_tests_/fixtures/fiscalAccumulator'
 import { iconTestUtils, render } from '_tests_/utils'
 
 import FiscalAccumulatorTaskTable from './index'
 import { FiscalAccumulatorTableItem, FiscalAccumulatorTableProps } from './types'
 
-const fakeFiscalAccumulatorListItem = taskFixtures.fiscalAccumulatorListItem()
+const fakeFiscalAccumulatorListItem = fiscalAccumulatorFixtures.fiscalAccumulatorListItem()
 
 const props: Readonly<FiscalAccumulatorTableProps> = {
   dataSource: [fakeFiscalAccumulatorListItem],

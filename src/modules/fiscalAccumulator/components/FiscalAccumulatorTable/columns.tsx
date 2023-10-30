@@ -1,6 +1,6 @@
 import { ColumnsType } from 'antd/es/table'
 
-import { fiscalAccumulatorFormatColorDict } from 'modules/task/constants/fiscalAccumulator'
+import { fiscalAccumulatorFormatColorDict } from 'modules/fiscalAccumulator/constants'
 
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'

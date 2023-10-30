@@ -2,7 +2,6 @@ import * as assignee from './assignee'
 import * as attachment from './attachment'
 import * as comment from './comment'
 import * as counters from './counters'
-import * as fiscalAccumulatorList from './fiscalAccumulatorList'
 import * as journal from './journal'
 import * as reclassificationRequest from './reclassificationRequest'
 import * as subTask from './subTask'
@@ -23,7 +22,6 @@ const taskFixtures = {
   ...reclassificationRequest,
   ...suspendRequest,
   ...supportGroup,
-  ...fiscalAccumulatorList,
 } as const
 
 export default taskFixtures

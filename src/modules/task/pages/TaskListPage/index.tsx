@@ -18,7 +18,6 @@ import ExtendedFilterList, {
 } from 'modules/task/components/ExtendedFilterList'
 import FastFilterList from 'modules/task/components/FastFilterList'
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
-import TaskListLayout from 'modules/task/components/TaskListLayout'
 import TaskTable from 'modules/task/components/TaskTable'
 import {
   SortableField,
@@ -41,8 +40,8 @@ import {
   useGetUserList,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
-  useUserRole
-} from "modules/user/hooks";
+  useUserRole,
+} from 'modules/user/hooks'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
@@ -360,7 +359,7 @@ const TaskListPage: FC = () => {
   }
 
   return (
-    <TaskListLayout>
+    <>
       <Row data-testid='task-list-page' gutter={[0, 40]}>
         <Col span={24}>
           <Row className='task-list-page-header' justify='space-between' align='bottom'>
@@ -480,7 +479,7 @@ const TaskListPage: FC = () => {
           onSubmit={handleExtendedFilterSubmit}
         />
       )}
-    </TaskListLayout>
+    </>
   )
 }
 

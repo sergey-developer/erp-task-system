@@ -12,7 +12,6 @@ export const columns: ColumnsType<EquipmentTableItem> = [
     dataIndex: 'title',
     title: 'Наименование',
     sorter: true,
-    render: (value: EquipmentTableItem['title']) => value,
   },
   {
     key: 'serialNumber',
@@ -50,7 +49,6 @@ export const columns: ColumnsType<EquipmentTableItem> = [
     dataIndex: 'quantity',
     title: 'Количество',
     sorter: true,
-    render: (value: EquipmentTableItem['quantity']) => value,
   },
   {
     key: 'category',
