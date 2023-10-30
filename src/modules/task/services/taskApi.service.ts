@@ -4,8 +4,8 @@ import { getPaginatedList } from 'lib/antd/utils'
 
 import {
   TaskApiEnum,
-  TaskApiTriggerEnum,
   TaskApiTagEnum,
+  TaskApiTriggerEnum,
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
 import {
@@ -193,7 +193,7 @@ const taskApiService = baseApiService.injectEndpoints({
           dispatch(
             baseApiService.util.updateQueryData(
               TaskApiTriggerEnum.GetTaskCommentList as never,
-              taskId as never,
+              { taskId } as never,
               (commentList: GetTaskCommentListSuccessResponse) => {
                 commentList.unshift(newComment)
               },
