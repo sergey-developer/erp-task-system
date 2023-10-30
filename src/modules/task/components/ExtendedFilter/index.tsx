@@ -26,6 +26,8 @@ import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
 const { RangePicker } = DatePicker
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({
+  open,
+
   formValues,
   initialFormValues,
 
@@ -86,7 +88,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   return (
     <DrawerFilter
       data-testid='extended-filter'
-      open
+      open={open}
       onClose={onClose}
       onReset={handleResetAll}
       onApply={form.submit}

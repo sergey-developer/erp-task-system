@@ -3,9 +3,9 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import moment from 'moment-timezone'
 
 import {
-  TaskExtendedStatusEnum,
-  taskExtendedStatusDict,
   TaskAssignedEnum,
+  taskExtendedStatusDict,
+  TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
 import { getInitialExtendedFilterFormValues } from 'modules/task/pages/TaskListPage/utils'
 import { UserRoleEnum } from 'modules/user/constants'
@@ -16,15 +16,15 @@ import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import {
-  selectTestUtils,
+  buttonTestUtils,
+  checkboxTestUtils,
   fakeName,
   fakeWord,
-  checkboxTestUtils,
-  radioButtonTestUtils,
   getStoreWithAuth,
+  radioButtonTestUtils,
   render,
+  selectTestUtils,
   setupApiTests,
-  buttonTestUtils,
 } from '_tests_/utils'
 
 import { searchFieldDict, taskAssignedDict, taskOverdueDict } from './constants'
@@ -37,6 +37,8 @@ const taskAssignedDictValues = Object.values(taskAssignedDict)
 const searchFieldDictValues = Object.values(searchFieldDict)
 
 const props: Readonly<ExtendedFilterProps> = {
+  open: true,
+
   formValues: getInitialExtendedFilterFormValues(),
   initialFormValues: getInitialExtendedFilterFormValues(),
 
