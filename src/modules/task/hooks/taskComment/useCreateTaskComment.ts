@@ -1,44 +1,43 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
+
+import { CustomMutationTrigger, CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { createTaskCommentMessages } from 'modules/task/constants/taskComment'
-import { CreateTaskCommentMutationArgs } from 'modules/task/models'
-import { taskCommentApiPermissions } from 'modules/task/permissions'
+import {
+  CreateTaskCommentMutationArgs,
+  CreateTaskCommentSuccessResponse,
+} from 'modules/task/models'
 import { useCreateTaskCommentMutation } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/common'
 import {
   isBadRequestError,
   isErrorResponse,
+  isForbiddenError,
   isNotFoundError,
-  isServerRangeError,
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useCreateTaskComment = () => {
-  const permissions = useUserPermissions(taskCommentApiPermissions)
+type UseCreateTaskCommentResult = [
+  CustomMutationTrigger<CreateTaskCommentMutationArgs, CreateTaskCommentSuccessResponse>,
+  CustomUseMutationResult<CreateTaskCommentMutationArgs, CreateTaskCommentSuccessResponse>,
+]
+
+export const useCreateTaskComment = (): UseCreateTaskCommentResult => {
   const [mutation, state] = useCreateTaskCommentMutation()
 
-  const fn = useCallback(
-    async (data: CreateTaskCommentMutationArgs) => {
-      if (!permissions.canCreate) return
-
-      await mutation(data).unwrap()
-    },
-    [mutation, permissions.canCreate],
-  )
-
   useEffect(() => {
-    if (!state.error) return
-
     if (isErrorResponse(state.error)) {
-      if (isNotFoundError(state.error) || isServerRangeError(state.error)) {
+      if (isNotFoundError(state.error) && state.error.data.detail) {
+        showErrorNotification(state.error.data.detail)
+      } else if (isBadRequestError(state.error) && state.error.data.detail) {
+        showErrorNotification(state.error.data.detail)
+      } else if (isForbiddenError(state.error) && state.error.data.detail) {
+        showErrorNotification(state.error.data.detail)
+      } else {
         showErrorNotification(createTaskCommentMessages.commonError)
-      } else if (!isBadRequestError(state.error)) {
-        showErrorNotification(commonApiMessages.unknownError)
       }
     }
   }, [state.error])
 
-  return { fn, state }
+  return [mutation, state]
 }
