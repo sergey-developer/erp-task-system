@@ -6,16 +6,19 @@ import React, { FC, useCallback, useEffect } from 'react'
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
-import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal'
-import { RequestTaskSuspendModalProps } from 'modules/task/components/RequestTaskSuspendModal'
+import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
+import {
+  RequestTaskSuspendFormFields,
+  RequestTaskSuspendModalProps,
+} from 'modules/task/components/RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
+  getTaskWorkPerformedActMessages,
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
-  getTaskWorkPerformedActMessages,
 } from 'modules/task/constants/task'
 import { useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
@@ -53,8 +56,8 @@ import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import CardTabs from '../../CardTabs'
-import { ExecuteTaskModalProps } from '../../ExecuteTaskModal/types'
-import { RequestTaskSuspendFormFields } from '../../RequestTaskSuspendModal/types'
+import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
+import { RequestTaskSuspendFormFields } from 'modules/task/components/RequestTaskSuspendModal/types'
 import AdditionalInfo from '../AdditionalInfo'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
@@ -213,14 +216,14 @@ const TaskCard: FC<TaskCardProps> = ({
   const debouncedRefetchTask = useDebounceFn(refetchTask)
 
   const [
-    isTaskResolutionModalOpened,
+    taskResolutionModalOpened,
     { setTrue: openTaskResolutionModal, setFalse: closeTaskResolutionModal },
   ] = useBoolean(false)
 
   const debouncedOpenTaskResolutionModal = useDebounceFn(openTaskResolutionModal)
 
   const [
-    isTaskReclassificationModalOpened,
+    taskReclassificationModalOpened,
     { setTrue: openTaskReclassificationModal, setFalse: closeTaskReclassificationModal },
   ] = useBoolean(false)
 
@@ -231,7 +234,7 @@ const TaskCard: FC<TaskCardProps> = ({
   }, [task?.parentInteractionExternalId])
 
   const [
-    isRequestTaskSuspendModalOpened,
+    requestTaskSuspendModalOpened,
     { setTrue: openRequestTaskSuspendModal, setFalse: closeRequestTaskSuspendModal },
   ] = useBoolean(false)
 
@@ -561,16 +564,17 @@ const TaskCard: FC<TaskCardProps> = ({
 
               <CardTabs task={task} />
 
-              {isTaskResolutionModalOpened && (
+              {taskResolutionModalOpened && (
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      open={isTaskResolutionModalOpened}
+                      open={taskResolutionModalOpened}
                       onCancel={closeTaskResolutionModal}
                     />
                   }
                 >
                   <ExecuteTaskModal
+                    open={taskResolutionModalOpened}
                     type={task.type}
                     recordId={task.recordId}
                     isLoading={isTaskResolving}
@@ -582,16 +586,17 @@ const TaskCard: FC<TaskCardProps> = ({
                 </React.Suspense>
               )}
 
-              {isTaskReclassificationModalOpened && (
+              {taskReclassificationModalOpened && (
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      open={isTaskReclassificationModalOpened}
+                      open={taskReclassificationModalOpened}
                       onCancel={closeTaskReclassificationModal}
                     />
                   }
                 >
                   <RequestTaskReclassificationModal
+                    open={taskReclassificationModalOpened}
                     recordId={task.recordId}
                     isLoading={createReclassificationRequestIsLoading}
                     onSubmit={handleReclassificationRequestSubmit}
@@ -600,16 +605,17 @@ const TaskCard: FC<TaskCardProps> = ({
                 </React.Suspense>
               )}
 
-              {isRequestTaskSuspendModalOpened && (
+              {requestTaskSuspendModalOpened && (
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      open={isRequestTaskSuspendModalOpened}
+                      open={requestTaskSuspendModalOpened}
                       onCancel={closeRequestTaskSuspendModal}
                     />
                   }
                 >
                   <RequestTaskSuspendModal
+                    open={requestTaskSuspendModalOpened}
                     recordId={task.recordId}
                     isLoading={createSuspendRequestIsLoading}
                     onSubmit={handleCreateTaskSuspendRequest}

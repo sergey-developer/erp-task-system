@@ -39,6 +39,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
   onGetAct,
   getActIsLoading,
 
+  open,
   isLoading,
   onSubmit,
 
@@ -70,7 +71,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
   return (
     <BaseModal
       data-testid='execute-task-modal'
-      open
+      open={open}
       title={modalTitle}
       onCancel={onCancel}
       footer={
