@@ -44,9 +44,10 @@ export const catalogsApiService = baseApiService.injectEndpoints({
       }),
     }),
     getLocationList: build.query<GetLocationListSuccessResponse, GetLocationListQueryArgs>({
-      query: () => ({
+      query: (params) => ({
         url: CatalogsApiEnum.GetLocationList,
         method: HttpMethodEnum.Get,
+        params,
       }),
     }),
   }),
