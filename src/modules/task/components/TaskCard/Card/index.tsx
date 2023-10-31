@@ -6,6 +6,7 @@ import React, { FC, useCallback, useEffect } from 'react'
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
   RequestTaskSuspendFormFields,
@@ -56,8 +57,6 @@ import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import CardTabs from '../../CardTabs'
-import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
-import { RequestTaskSuspendFormFields } from 'modules/task/components/RequestTaskSuspendModal/types'
 import AdditionalInfo from '../AdditionalInfo'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
@@ -216,11 +215,11 @@ const TaskCard: FC<TaskCardProps> = ({
   const debouncedRefetchTask = useDebounceFn(refetchTask)
 
   const [
-    taskResolutionModalOpened,
-    { setTrue: openTaskResolutionModal, setFalse: closeTaskResolutionModal },
+    executeTaskModalOpened,
+    { setTrue: openExecuteTaskModal, setFalse: closeExecuteTaskModal },
   ] = useBoolean(false)
 
-  const debouncedOpenTaskResolutionModal = useDebounceFn(openTaskResolutionModal)
+  const debouncedOpenExecuteTaskModal = useDebounceFn(openExecuteTaskModal)
 
   const [
     taskReclassificationModalOpened,
@@ -438,7 +437,7 @@ const TaskCard: FC<TaskCardProps> = ({
       suspendRequest={task.suspendRequest}
       onClose={debouncedCloseTaskCard}
       onReloadTask={debouncedRefetchTask}
-      onExecuteTask={debouncedOpenTaskResolutionModal}
+      onExecuteTask={debouncedOpenExecuteTaskModal}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
       onRequestReclassification={handleOpenTaskReclassificationModal}
     />
@@ -564,21 +563,18 @@ const TaskCard: FC<TaskCardProps> = ({
 
               <CardTabs task={task} />
 
-              {taskResolutionModalOpened && (
+              {executeTaskModalOpened && (
                 <React.Suspense
                   fallback={
-                    <ModalFallback
-                      open={taskResolutionModalOpened}
-                      onCancel={closeTaskResolutionModal}
-                    />
+                    <ModalFallback open={executeTaskModalOpened} onCancel={closeExecuteTaskModal} />
                   }
                 >
                   <ExecuteTaskModal
-                    open={taskResolutionModalOpened}
+                    open={executeTaskModalOpened}
                     type={task.type}
                     recordId={task.recordId}
                     isLoading={isTaskResolving}
-                    onCancel={closeTaskResolutionModal}
+                    onCancel={closeExecuteTaskModal}
                     onSubmit={handleResolutionSubmit}
                     onGetAct={handleGetAct}
                     getActIsLoading={taskWorkPerformedActIsLoading}
