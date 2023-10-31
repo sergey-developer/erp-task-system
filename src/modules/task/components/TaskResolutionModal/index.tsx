@@ -1,11 +1,10 @@
 import { PaperClipOutlined } from '@ant-design/icons'
-import { Button, Col, Form, FormInstance, Input, ModalProps, Row, Typography, Upload } from 'antd'
+import { Button, Col, Form, Input, Row, Typography, Upload } from 'antd'
 import stubFalse from 'lodash/stubFalse'
 import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
 import { useTaskType } from 'modules/task/hooks/task'
-import { TaskModel } from 'modules/task/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 import Space from 'components/Space'
@@ -13,7 +12,7 @@ import Space from 'components/Space'
 import { validationSizes } from 'shared/constants/validation'
 import { getFilesFromEvent } from 'shared/utils/form'
 
-import { TaskResolutionFormFields } from './types'
+import { TaskResolutionFormFields, TaskResolutionModalProps } from './types'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -36,21 +35,11 @@ const userResolutionValidationRules: Rule[] = [
   },
 ]
 
-export type TaskResolutionModalProps = Pick<TaskModel, 'type' | 'recordId'> & {
-  isLoading: boolean
-  onSubmit: (
-    values: TaskResolutionFormFields,
-    setFields: FormInstance['setFields'],
-  ) => Promise<void>
-  onCancel: NonNullable<ModalProps['onCancel']>
-  onGetAct: (values: Pick<TaskResolutionFormFields, 'techResolution'>) => Promise<void>
-  getActIsLoading: boolean
-}
-
 const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   onGetAct,
   getActIsLoading,
 
+  open,
   isLoading,
   onSubmit,
 
@@ -82,7 +71,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   return (
     <BaseModal
       data-testid='task-resolution-modal'
-      open
+      open={open}
       title={modalTitle}
       onCancel={onCancel}
       footer={
