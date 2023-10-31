@@ -1,21 +1,23 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
+import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
 import {
   EquipmentCategoryEnum,
+  EquipmentConditionEnum,
   equipmentConditionOptions,
 } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
+import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
 
 import { onlyRequiredRules } from 'shared/constants/validation'
-import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 import { makeString } from 'shared/utils/string'
@@ -55,7 +57,16 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   onClickAddEquipment,
 }) => {
   const form = Form.useFormInstance()
-  const relocateFromFormValue: MaybeUndefined<IdType> = Form.useWatch('relocateFrom', form)
+
+  const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
+    Form.useWatch('relocateFrom', form)
+
+  const typeFormValue: MaybeUndefined<RelocationTaskFormFields['type']> = Form.useWatch(
+    'type',
+    form,
+  )
+
+  const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(typeFormValue)
 
   const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
     () =>
@@ -146,16 +157,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       title: 'Состояние',
       valueType: 'select',
       formItemProps: { rules: onlyRequiredRules },
-      fieldProps: (form) => {
-        if (form) {
-          const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(form.getFieldValue('type'))
-
-          return {
-            disabled: isLoading || typeIsWriteOff,
-            options: equipmentConditionOptions,
-          }
-        }
-      },
+      fieldProps: { disabled: isLoading || typeIsWriteOff, options: equipmentConditionOptions },
     },
     {
       key: 'amount',
@@ -169,14 +171,18 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       dataIndex: 'price',
       title: 'Стоимость',
       valueType: 'digit',
-      fieldProps: { disabled: isLoading, min: 0 },
+      fieldProps: { disabled: isLoading || typeIsWriteOff, min: 0 },
     },
     {
       key: 'currency',
       dataIndex: 'currency',
       title: 'Валюта',
       valueType: 'select',
-      fieldProps: { options: currencyOptions, loading: currencyListIsLoading, disabled: isLoading },
+      fieldProps: {
+        options: currencyOptions,
+        loading: currencyListIsLoading,
+        disabled: isLoading || typeIsWriteOff,
+      },
     },
     {
       key: 'quantity',
@@ -224,7 +230,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       columns={columns}
       recordCreatorProps={{
         record: () => ({
-          rowId: Math.floor(new Date().getTime() * Math.random() * 1000),
+          rowId: random(9999999),
+          ...(typeIsWriteOff && { condition: EquipmentConditionEnum.WrittenOff }),
         }),
         disabled: isLoading,
         creatorButtonText: 'Добавить оборудование',

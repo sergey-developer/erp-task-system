@@ -1,10 +1,11 @@
 import { Col, Form, Input, Row, Select } from 'antd'
-import React, { FC, useEffect, useMemo } from 'react'
+import React, { FC, useMemo } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { userListSelectFieldNames } from 'modules/user/constants'
 import { relocationTaskTypeOptions } from 'modules/warehouse/constants/relocationTask'
+import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
 import DatePicker from 'components/DatePicker'
@@ -38,7 +39,11 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   onChangeRelocateTo,
 }) => {
   const form = Form.useFormInstance()
-  const relocateFromFormValue: MaybeUndefined<IdType> = Form.useWatch('relocateFrom', form)
+
+  const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
+    Form.useWatch('relocateFrom', form)
+
+  const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
 
   const relocateFromLocationOptions = useMemo(
     () => makeLocationOptions(relocateFromLocationList),
@@ -49,12 +54,6 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     () => makeLocationOptions(relocateToLocationList),
     [relocateToLocationList],
   )
-
-  useEffect(() => {
-    if (type && type !== form.getFieldValue('type')) {
-      form.setFieldValue('type', type)
-    }
-  }, [form, type])
 
   return (
     <Row data-testid='relocation-task-form' gutter={90}>
@@ -98,9 +97,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <Select<IdType, LocationOption>
             loading={relocateToLocationListIsLoading}
-            disabled={
-              isLoading || !relocateFromFormValue || checkRelocationTaskTypeIsWriteOff(type)
-            }
+            disabled={isLoading || !relocateFromFormValue || typeIsWriteOff}
             options={relocateToLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {

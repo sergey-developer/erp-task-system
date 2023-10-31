@@ -14,14 +14,16 @@ import {
   LocationOption,
   RelocationTaskFormProps,
 } from 'modules/warehouse/components/RelocationTaskForm/types'
-import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
+import {
+  EquipmentCategoryEnum,
+  EquipmentConditionEnum,
+} from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import {
   relocateFromLocationTypes,
   relocateFromWarehouseTypes,
   relocateToLocationTypes,
   relocateToWarehouseTypes,
-  RelocationTaskTypeEnum,
   updateRelocationTaskMessages,
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
@@ -105,7 +107,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
-  const [selectedType, setSelectedType] = useState<RelocationTaskTypeEnum>()
+  const [selectedType, setSelectedType] = useState<RelocationTaskFormFields['type']>()
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
@@ -294,6 +296,7 @@ const EditRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
+        const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(form.getFieldValue('type'))
         const newEquipmentIndex = (form.getFieldValue('equipments') || []).length
 
         form.setFieldValue(['equipments', newEquipmentIndex], {
@@ -301,7 +304,9 @@ const EditRelocationTaskPage: FC = () => {
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
           purpose: createdEquipment.purpose.title,
-          condition: createdEquipment.condition,
+          condition: typeIsWriteOff
+            ? EquipmentConditionEnum.WrittenOff
+            : createdEquipment.condition,
           amount: createdEquipment.availableQuantity,
           price: createdEquipment.price,
           currency: createdEquipment.currency?.id,
@@ -345,7 +350,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const handleChangeRelocateFrom = useCallback<RelocationTaskFormProps['onChangeRelocateFrom']>(
     (value, option) => {
-      const equipments = form.getFieldValue('equipments') || []
+      const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
       const relocateFrom = form.getFieldValue('relocateFrom')
       const isShowConfirmation = !!equipments.length && !!relocateFrom
       form.setFieldValue('relocateFrom', value)
@@ -359,10 +364,18 @@ const EditRelocationTaskPage: FC = () => {
     (value) => {
       setSelectedType(value)
 
-      if (checkRelocationTaskTypeIsWriteOff(value)) {
-        const newValue = undefined
-        form.setFieldValue('relocateTo', newValue)
-        setSelectedRelocateTo(newValue)
+      const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(value)
+      if (typeIsWriteOff) {
+        const relocateToValue = undefined
+        form.setFieldValue('relocateTo', relocateToValue)
+        setSelectedRelocateTo(relocateToValue)
+
+        const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
+        const newEquipments = equipments.map((eqp) => ({
+          ...eqp,
+          condition: EquipmentConditionEnum.WrittenOff,
+        }))
+        form.setFieldValue('equipments', newEquipments)
       }
     },
     [form],
@@ -414,7 +427,7 @@ const EditRelocationTaskPage: FC = () => {
   /* Установка значений перечня оборудования */
   useEffect(() => {
     if (relocationEquipmentList.length && !relocationEquipmentListIsFetching) {
-      const equipments: RelocationTaskFormFields['equipments'] = []
+      const equipments: RelocationEquipmentRowFields[] = []
       const editableTableRowKeys: Key[] = []
 
       relocationEquipmentList.forEach((eqp) => {

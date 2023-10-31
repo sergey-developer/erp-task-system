@@ -14,11 +14,7 @@ export const relocateFromLocationTypes: Partial<
 export const relocateFromWarehouseTypes: Partial<
   Record<RelocationTaskTypeEnum, WarehouseTypeEnum[]>
 > = {
-  [RelocationTaskTypeEnum.Relocation]: [
-    WarehouseTypeEnum.Main,
-    WarehouseTypeEnum.Msi,
-    WarehouseTypeEnum.Repair,
-  ],
+  [RelocationTaskTypeEnum.Relocation]: undefined,
   [RelocationTaskTypeEnum.WriteOff]: [
     WarehouseTypeEnum.Main,
     WarehouseTypeEnum.Msi,
