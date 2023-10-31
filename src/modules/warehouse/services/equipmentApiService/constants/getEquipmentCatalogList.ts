@@ -1,7 +1,7 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
-export const conditionsByRelocationTaskType: Partial<
+export const conditionsParamByRelocationTaskType: Partial<
   Record<RelocationTaskTypeEnum, EquipmentConditionEnum[]>
 > = {
   [RelocationTaskTypeEnum.Relocation]: [

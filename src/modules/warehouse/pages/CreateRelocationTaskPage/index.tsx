@@ -37,7 +37,7 @@ import {
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { conditionsByRelocationTaskType } from 'modules/warehouse/services/equipmentApiService/constants/getEquipmentCatalogList'
+import { conditionsParamByRelocationTaskType } from 'modules/warehouse/services/equipmentApiService/constants/getEquipmentCatalogList'
 import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApiService/equipmentApi.service'
 import { useCreateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
@@ -120,6 +120,8 @@ const CreateRelocationTaskPage: FC = () => {
   const [selectedType, setSelectedType] = useState<RelocationTaskFormFields['type']>(
     RelocationTaskTypeEnum.Relocation,
   )
+  const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(selectedType)
+
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
@@ -149,7 +151,7 @@ const CreateRelocationTaskPage: FC = () => {
     useGetEquipmentCatalogList(
       {
         locationId: selectedRelocateFrom?.value,
-        conditions: conditionsByRelocationTaskType[selectedType],
+        conditions: conditionsParamByRelocationTaskType[selectedType],
       },
       { skip: !selectedRelocateFrom?.value },
     )
@@ -240,37 +242,42 @@ const CreateRelocationTaskPage: FC = () => {
     }
   }
 
+  const handlePickEquipmentFromSelect: FormProps<RelocationTaskFormFields>['onValuesChange'] =
+    async (changedValues, values) => {
+      if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
+        const [index, changes] = Object.entries(changedValues.equipments)[0] as [
+          string,
+          Partial<Omit<RelocationEquipmentRowFields, 'rowId'>>,
+        ]
+
+        if (changes.id) {
+          const { data: equipment } = await getEquipment({ equipmentId: changes.id })
+
+          if (equipment) {
+            const currentEquipment = values.equipments[Number(index)]
+            const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
+
+            form.setFieldValue(['equipments', index], {
+              ...currentEquipment,
+              serialNumber: equipment.serialNumber,
+              purpose: equipment.purpose.title,
+              condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : equipment.condition,
+              amount: equipment.amount,
+              price: equipment.price,
+              currency: equipment.currency?.id,
+              quantity: isConsumable ? currentEquipment.quantity : 1,
+              category: equipment.category,
+            })
+          }
+        }
+      }
+    }
+
   const handleFormChange: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
     changedValues,
     values,
   ) => {
-    if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
-      const [index, changes] = Object.entries(changedValues.equipments)[0] as [
-        string,
-        Partial<Omit<RelocationEquipmentRowFields, 'rowId'>>,
-      ]
-
-      if (changes.id) {
-        const { data: equipment } = await getEquipment({ equipmentId: changes.id })
-
-        if (equipment) {
-          const currentEquipment = values.equipments[Number(index)]
-          const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
-
-          form.setFieldValue(['equipments', index], {
-            ...currentEquipment,
-            serialNumber: equipment.serialNumber,
-            purpose: equipment.purpose.title,
-            condition: equipment.condition,
-            amount: equipment.amount,
-            price: equipment.price,
-            currency: equipment.currency?.id,
-            quantity: isConsumable ? currentEquipment.quantity : 1,
-            category: equipment.category,
-          })
-        }
-      }
-    }
+    await handlePickEquipmentFromSelect(changedValues, values)
   }
 
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
@@ -283,8 +290,6 @@ const CreateRelocationTaskPage: FC = () => {
           location: selectedRelocateFrom.value,
           warehouse: selectedRelocateTo.value,
         }).unwrap()
-
-        const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(form.getFieldValue('type'))
 
         form.setFieldValue(['equipments', newEquipmentRow.rowIndex], {
           rowId: createdEquipment.id,
@@ -331,6 +336,7 @@ const CreateRelocationTaskPage: FC = () => {
       selectedRelocateFrom?.value,
       createEquipmentMutation,
       form,
+      typeIsWriteOff,
       handleCloseAddEquipmentModal,
     ],
   )
@@ -359,8 +365,7 @@ const CreateRelocationTaskPage: FC = () => {
     (value) => {
       setSelectedType(value)
 
-      const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(value)
-      if (typeIsWriteOff) {
+      if (checkRelocationTaskTypeIsWriteOff(value)) {
         const relocateToValue = undefined
         form.setFieldValue('relocateTo', relocateToValue)
         setSelectedRelocateTo(relocateToValue)
