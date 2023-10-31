@@ -19,13 +19,7 @@ import {
   EquipmentConditionEnum,
 } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
-import {
-  relocateFromLocationTypes,
-  relocateFromWarehouseTypes,
-  relocateToLocationTypes,
-  relocateToWarehouseTypes,
-  updateRelocationTaskMessages,
-} from 'modules/warehouse/constants/relocationTask'
+import { updateRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
@@ -42,8 +36,7 @@ import {
 } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { conditionsParamByRelocationTaskType } from 'modules/warehouse/services/equipmentApiService/constants/getEquipmentCatalogList'
-import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApiService/equipmentApi.service'
+import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
 import { useUpdateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import {
@@ -67,6 +60,14 @@ import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/che
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import {
+  conditionsParamByRelocationTaskType,
+  relocateFromLocationTypes,
+  relocateFromWarehouseTypes,
+  relocateToLocationTypes,
+  relocateToWarehouseTypes,
+} from '../CreateRelocationTaskPage/constants'
 
 const { Text } = Typography
 
