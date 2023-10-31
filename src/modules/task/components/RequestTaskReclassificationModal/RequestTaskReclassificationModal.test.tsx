@@ -2,24 +2,26 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {
-  ReclassificationReasonEnum,
   reclassificationReasonDict,
+  ReclassificationReasonEnum,
 } from 'modules/task/constants/taskReclassificationRequest'
 
 import { validationMessages } from 'shared/constants/validation'
 
 import {
+  buttonTestUtils,
   fakeIdStr,
   fakeWord,
   modalTestUtils,
-  render,
   radioButtonTestUtils,
-  buttonTestUtils,
+  render,
 } from '_tests_/utils'
 
-import RequestTaskReclassificationModal, { RequestTaskReclassificationModalProps } from './index'
+import RequestTaskReclassificationModal from './index'
+import { RequestTaskReclassificationModalProps } from './types'
 
 const props: Readonly<RequestTaskReclassificationModalProps> = {
+  open: true,
   recordId: fakeIdStr(),
   isLoading: false,
   onCancel: jest.fn(),
