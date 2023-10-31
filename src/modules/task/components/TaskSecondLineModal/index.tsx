@@ -1,4 +1,4 @@
-import { Form, Select, Space, Typography, Input, Checkbox } from 'antd'
+import { Checkbox, Form, Input, Select, Space, Typography } from 'antd'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
@@ -8,6 +8,7 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
+import { filterOptionBy } from 'shared/utils/common'
 import { onlyRequiredRules } from 'shared/constants/validation'
 
 import { WorkGroupFormItem } from './styles'
@@ -98,10 +99,9 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
             <Select
               placeholder='Выберите рабочую группу'
               loading={workGroupListIsFetching}
+              disabled={isLoading}
               showSearch
-              filterOption={(input, option) =>
-                option ? option.title.toLowerCase().includes(input.toLowerCase()) : false
-              }
+              filterOption={filterOptionBy('title')}
             >
               {workGroupList.map(({ id, name, priority }) => (
                 <Select.Option
@@ -123,7 +123,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           </Form.Item>
 
           <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
-            <TextArea placeholder='Добавьте комментарий' />
+            <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
           </Form.Item>
         </Form>
       </Space>
