@@ -69,6 +69,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             placeholder='Выберите тип'
             value={type}
             onChange={onChangeType}
+            disabled={isLoading}
           />
         </Form.Item>
 
