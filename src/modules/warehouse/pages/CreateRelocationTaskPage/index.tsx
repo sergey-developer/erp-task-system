@@ -16,7 +16,6 @@ import {
   LocationOption,
   RelocationTaskFormProps,
 } from 'modules/warehouse/components/RelocationTaskForm/types'
-import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import {
   createRelocationTaskMessages,
@@ -41,6 +40,7 @@ import { conditionsByRelocationTaskType } from 'modules/warehouse/services/equip
 import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApiService/equipmentApi.service'
 import { useCreateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
   checkRelocationTaskTypeIsWriteOff,
   getRelocationTaskListPageLink,
@@ -253,7 +253,7 @@ const CreateRelocationTaskPage: FC = () => {
 
         if (equipment) {
           const currentEquipment = values.equipments[Number(index)]
-          const isConsumable = equipment.category.code === EquipmentCategoryEnum.Consumable
+          const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
 
           form.setFieldValue(['equipments', index], {
             ...currentEquipment,

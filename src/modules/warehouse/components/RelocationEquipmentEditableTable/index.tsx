@@ -9,6 +9,7 @@ import {
   equipmentConditionOptions,
 } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
+import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
@@ -145,7 +146,16 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       title: 'Состояние',
       valueType: 'select',
       formItemProps: { rules: onlyRequiredRules },
-      fieldProps: { disabled: isLoading, options: equipmentConditionOptions },
+      fieldProps: (form) => {
+        if (form) {
+          const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(form.getFieldValue('type'))
+
+          return {
+            disabled: isLoading || typeIsWriteOff,
+            options: equipmentConditionOptions,
+          }
+        }
+      },
     },
     {
       key: 'amount',

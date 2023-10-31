@@ -8,11 +8,7 @@ export const relocateFromLocationTypes: Partial<
   Record<RelocationTaskTypeEnum, LocationTypeEnum[]>
 > = {
   [RelocationTaskTypeEnum.Relocation]: [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop],
-  [RelocationTaskTypeEnum.WriteOff]: [
-    LocationTypeEnum.Warehouse,
-    LocationTypeEnum.Shop,
-    LocationTypeEnum.ServiceCenter,
-  ],
+  [RelocationTaskTypeEnum.WriteOff]: [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop],
 }
 
 export const relocateFromWarehouseTypes: Partial<
