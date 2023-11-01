@@ -5,7 +5,7 @@ import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import { fakeIdStr, fakeWord, modalTestUtils, render, buttonTestUtils } from '_tests_/utils'
+import { buttonTestUtils, fakeIdStr, fakeWord, modalTestUtils, render } from '_tests_/utils'
 
 import TaskResolutionModal, { TaskResolutionModalProps } from './index'
 
@@ -103,8 +103,8 @@ const setUserResolution = async (user: UserEvent, value: string) => {
   return field
 }
 
-// attachments
-const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
+// attachment
+const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachment-form-item')
 
 const getAddAttachmentsButton = () =>
   buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]

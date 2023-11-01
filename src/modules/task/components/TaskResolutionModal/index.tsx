@@ -1,4 +1,3 @@
-import { PaperClipOutlined } from '@ant-design/icons'
 import { Button, Col, Form, FormInstance, Input, ModalProps, Row, Typography, Upload } from 'antd'
 import stubFalse from 'lodash/stubFalse'
 import { Rule } from 'rc-field-form/es/interface'
@@ -7,11 +6,12 @@ import React, { FC } from 'react'
 import { useTaskType } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
 
+import UploadButton from 'components/Buttons/UploadButton'
 import BaseModal from 'components/Modals/BaseModal'
 import Space from 'components/Space'
 
+import { filesFormItemProps } from 'shared/constants/form'
 import { validationSizes } from 'shared/constants/validation'
-import { getFilesFromEvent } from 'shared/utils/form'
 
 import { TaskResolutionFormFields } from './types'
 
@@ -147,16 +147,9 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
             </Form.Item>
           )}
 
-          <Form.Item
-            data-testid='attachments-form-item'
-            name='attachments'
-            valuePropName='fileList'
-            getValueFromEvent={getFilesFromEvent}
-          >
+          <Form.Item data-testid='attachments-form-item' name='attachments' {...filesFormItemProps}>
             <Upload beforeUpload={stubFalse} multiple disabled={isLoading}>
-              <Button type='link' icon={<PaperClipOutlined />} disabled={isLoading}>
-                Добавить вложение
-              </Button>
+              <UploadButton label='Добавить вложение' disabled={isLoading} />
             </Upload>
           </Form.Item>
         </Form>

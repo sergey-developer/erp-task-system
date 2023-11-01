@@ -1,13 +1,3 @@
-import { UploadFile as BaseUploadFile } from 'antd/es/upload/interface'
+import { RcFile } from 'antd/es/upload'
 
-export type UploadFile = Pick<
-  BaseUploadFile,
-  | 'uid'
-  | 'type'
-  | 'size'
-  | 'percent'
-  | 'originFileObj'
-  | 'name'
-  | 'lastModified'
-  | 'lastModifiedDate'
->
+export type FileToUpload = RcFile

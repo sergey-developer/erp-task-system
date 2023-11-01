@@ -3,11 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import {
-  fakeWord,
-  render,
-  buttonTestUtils,
-} from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render } from '_tests_/utils'
 
 import CreateCommentForm from './index'
 import { CreateCommentFormProps } from './types'
@@ -36,7 +32,7 @@ const setComment = async (user: UserEvent, comment: string) => {
 }
 
 // attachment
-const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
+const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachment-form-item')
 
 const getAddAttachmentsButton = () =>
   buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
