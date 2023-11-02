@@ -75,6 +75,7 @@ import { deleteTaskWorkGroupUrl, updateTaskWorkGroupUrl } from 'modules/task/uti
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService, ErrorResponse, isNotFoundError } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 
 const taskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
@@ -103,11 +104,12 @@ const taskApiService = baseApiService.injectEndpoints({
 
     [TaskApiTriggerEnum.GetTaskCounters]: build.query<
       GetTaskCountersSuccessResponse,
-      GetTaskCountersQueryArgs
+      MaybeUndefined<GetTaskCountersQueryArgs>
     >({
-      query: () => ({
+      query: (params) => ({
         url: TaskApiEnum.GetTaskCounters,
         method: HttpMethodEnum.Get,
+        params,
       }),
     }),
 
