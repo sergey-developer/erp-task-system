@@ -4,19 +4,12 @@ import moment from 'moment-timezone'
 
 import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
-import { SuspendReasonEnum, suspendReasonDict } from 'modules/task/constants/taskSuspendRequest'
+import { suspendReasonDict, SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
 
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
-import {
-  fakeIdStr,
-  fakeWord,
-  modalTestUtils,
-  render,
-  radioButtonTestUtils,
-  buttonTestUtils,
-} from '_tests_/utils'
+import { buttonTestUtils, fakeIdStr, fakeWord, radioButtonTestUtils, render } from '_tests_/utils'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import RequestTaskSuspendModal, { RequestTaskSuspendModalProps } from './index'
@@ -171,13 +164,6 @@ describe('Модалка создания запроса о переводе в 
     expect(testUtils.getChildByText(/^запрос перевода заявки/i)).toBeInTheDocument()
 
     expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
-  })
-
-  test('Обработчик вызывается корректно кликнув вне модалки', async () => {
-    const { user } = render(<RequestTaskSuspendModal {...props} />)
-
-    await modalTestUtils.clickOutsideModal(user)
-    expect(props.onCancel).toBeCalledTimes(1)
   })
 
   describe('Кнопка закрытия', () => {

@@ -1,4 +1,4 @@
-import { UploadFile } from 'shared/types/file'
+import { UploadFile } from 'antd/es/upload/interface'
 
 export type TaskResolutionFormFields = {
   techResolution: string

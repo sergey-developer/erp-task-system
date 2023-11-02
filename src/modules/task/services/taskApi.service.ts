@@ -1,5 +1,3 @@
-import { decamelize } from 'humps'
-
 import { getPaginatedList } from 'lib/antd/utils'
 
 import {
@@ -137,16 +135,14 @@ const taskApiService = baseApiService.injectEndpoints({
       query: ({ taskId, techResolution, userResolution, attachments }) => {
         const formData = new FormData()
 
-        formData.append(decamelize('techResolution'), techResolution)
+        formData.append('tech_resolution', techResolution)
 
         if (userResolution) {
-          formData.append(decamelize('userResolution'), userResolution)
+          formData.append('user_resolution', userResolution)
         }
 
         if (attachments?.length) {
-          attachments.forEach((att) => {
-            formData.append('attachments', att)
-          })
+          attachments.forEach((att) => formData.append('attachments', att))
         }
 
         return {

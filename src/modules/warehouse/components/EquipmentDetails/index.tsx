@@ -1,7 +1,10 @@
 import { useBoolean } from 'ahooks'
 import { Col, Drawer, Row, Typography } from 'antd'
+import { RcFile } from 'antd/es/upload'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
+import { AttachmentTypeEnum } from 'modules/attachment/constants'
+import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -18,12 +21,14 @@ import { useUpdateEquipmentMutation } from 'modules/warehouse/services/equipment
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
+import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
+  getErrorDetailStr,
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
@@ -32,14 +37,16 @@ import {
 import { IdType } from 'shared/types/common'
 import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import EquipmentFormModal from '../EquipmentFormModal'
 import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
 import { DrawerExtraStyled } from './style'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getHiddenFieldsByCategory } from './utils'
+
+const EquipmentFormModal = React.lazy(() => import('../EquipmentFormModal'))
 
 const { Text } = Typography
 
@@ -56,7 +63,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const debouncedOpenEditEquipmentModal = useDebounceFn(openEditEquipmentModal)
 
-  const debouncedHandleCloseEditEquipmentModal = useDebounceFn(() => {
+  const handleCloseEditEquipmentModal = useDebounceFn(() => {
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
@@ -97,6 +104,9 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] =
     useUpdateEquipmentMutation()
 
+  const [createAttachmentMutation] = useCreateAttachment()
+  const [deleteAttachmentMutation, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
+
   useEffect(() => {
     if (equipment?.category && editEquipmentModalOpened) {
       setSelectedCategory(equipment.category)
@@ -113,21 +123,65 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     useLazyGetCustomerList()
 
   useEffect(() => {
-    if (editEquipmentModalOpened && Boolean(selectedCategory) && !equipmentCategory.isConsumable) {
+    if (
+      editEquipmentModalOpened &&
+      !!selectedCategory &&
+      !equipmentCategory.isConsumable &&
+      !!selectedNomenclatureId
+    ) {
       getCustomerList()
     }
-  }, [editEquipmentModalOpened, equipmentCategory.isConsumable, getCustomerList, selectedCategory])
+  }, [
+    editEquipmentModalOpened,
+    equipmentCategory.isConsumable,
+    getCustomerList,
+    selectedCategory,
+    selectedNomenclatureId,
+  ])
 
   const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
     setSelectedCategory(category)
     setSelectedNomenclatureId(undefined)
   }
 
-  const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async (values, setFields) => {
+  const handleCreateAttachment = useCallback<EquipmentFormModalProps['onUploadImage']>(
+    async ({ file, onSuccess, onError }) => {
       try {
-        await updateEquipmentMutation({ ...values, equipmentId }).unwrap()
-        closeEditEquipmentModal()
+        const createdAttachment = await createAttachmentMutation({
+          file: file as RcFile,
+          type: AttachmentTypeEnum.EquipmentImage,
+        }).unwrap()
+
+        onSuccess && onSuccess({ id: createdAttachment.id })
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            onError && onError({ name: '', message: getErrorDetailStr(error) || '' })
+          }
+        }
+      }
+    },
+    [createAttachmentMutation],
+  )
+
+  const handleDeleteAttachment: EquipmentFormModalProps['onDeleteImage'] = useCallback(
+    async (file) => {
+      /* поле response это то что передаётся в колбэк onSuccess при создании */
+      await deleteAttachmentMutation({ attachmentId: file.response.id }).unwrap()
+    },
+    [deleteAttachmentMutation],
+  )
+
+  const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+    async ({ images, ...values }, setFields) => {
+      try {
+        await updateEquipmentMutation({
+          ...values,
+          images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
+          equipmentId,
+        }).unwrap()
+
+        handleCloseEditEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
@@ -144,7 +198,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         }
       }
     },
-    [closeEditEquipmentModal, equipmentId, updateEquipmentMutation],
+    [handleCloseEditEquipmentModal, equipmentId, updateEquipmentMutation],
   )
 
   const equipmentFormInitialValues: EquipmentFormModalProps['initialValues'] = equipment
@@ -394,32 +448,44 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       </Drawer>
 
       {editEquipmentModalOpened && (
-        <EquipmentFormModal
-          open={editEquipmentModalOpened}
-          mode='edit'
-          title='Редактирование оборудования'
-          okText='Сохранить'
-          isLoading={updateEquipmentIsLoading}
-          initialValues={equipmentFormInitialValues}
-          categoryList={equipmentCategoryList}
-          categoryListIsLoading={equipmentCategoryListIsFetching}
-          selectedCategory={selectedCategory}
-          onChangeCategory={handleChangeCategory}
-          warehouseList={warehouseList}
-          warehouseListIsLoading={warehouseListIsFetching}
-          currencyList={currencyList}
-          currencyListIsFetching={currencyListIsFetching}
-          ownerList={customerList}
-          ownerListIsFetching={customerListIsFetching}
-          workTypeList={workTypeList}
-          workTypeListIsFetching={workTypeListIsFetching}
-          nomenclature={nomenclature}
-          nomenclatureList={nomenclatureList?.results || []}
-          nomenclatureListIsLoading={nomenclatureListIsFetching}
-          onChangeNomenclature={setSelectedNomenclatureId}
-          onCancel={debouncedHandleCloseEditEquipmentModal}
-          onSubmit={handleEditEquipment}
-        />
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={editEquipmentModalOpened}
+              onCancel={handleCloseEditEquipmentModal}
+            />
+          }
+        >
+          <EquipmentFormModal
+            open={editEquipmentModalOpened}
+            mode='edit'
+            title='Редактирование оборудования'
+            okText='Сохранить'
+            isLoading={updateEquipmentIsLoading}
+            initialValues={equipmentFormInitialValues}
+            categoryList={equipmentCategoryList}
+            categoryListIsLoading={equipmentCategoryListIsFetching}
+            selectedCategory={selectedCategory}
+            onChangeCategory={handleChangeCategory}
+            warehouseList={warehouseList}
+            warehouseListIsLoading={warehouseListIsFetching}
+            currencyList={currencyList}
+            currencyListIsFetching={currencyListIsFetching}
+            ownerList={customerList}
+            ownerListIsFetching={customerListIsFetching}
+            workTypeList={workTypeList}
+            workTypeListIsFetching={workTypeListIsFetching}
+            nomenclature={nomenclature}
+            nomenclatureList={nomenclatureList?.results || []}
+            nomenclatureListIsLoading={nomenclatureListIsFetching}
+            onChangeNomenclature={setSelectedNomenclatureId}
+            onCancel={handleCloseEditEquipmentModal}
+            onSubmit={handleEditEquipment}
+            onUploadImage={handleCreateAttachment}
+            onDeleteImage={handleDeleteAttachment}
+            deleteImageIsLoading={deleteAttachmentIsLoading}
+          />
+        </React.Suspense>
       )}
     </>
   )

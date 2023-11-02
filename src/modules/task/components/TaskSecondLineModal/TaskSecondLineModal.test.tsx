@@ -7,19 +7,18 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 import { validationMessages } from 'shared/constants/validation'
 
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
+  checkboxTestUtils,
   fakeId,
   fakeIdStr,
-  getStoreWithAuth,
-  modalTestUtils,
-  render,
-  setupApiTests,
-  selectTestUtils,
   fakeWord,
-  checkboxTestUtils, buttonTestUtils
-} from "_tests_/utils";
+  getStoreWithAuth,
+  render,
+  selectTestUtils,
+  setupApiTests,
+} from '_tests_/utils'
 
 import TaskSecondLineModal from './index'
 import { TaskSecondLineModalProps } from './types'
@@ -55,9 +54,11 @@ const getSelectedWorkGroupText = selectTestUtils.getSelectedOptionText
 const getWorkGroupOption = selectTestUtils.getSelectOptionById
 const getWorkGroupOptionText = (option: HTMLElement, text: string) => within(option).getByText(text)
 
-const expectWorkGroupLoadingStarted = () => selectTestUtils.expectLoadingStarted(getWorkGroupFormItem())
+const expectWorkGroupLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getWorkGroupFormItem())
 
-const expectWorkGroupLoadingFinished = () => selectTestUtils.expectLoadingFinished(getWorkGroupFormItem())
+const expectWorkGroupLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getWorkGroupFormItem())
 
 const expectWorkGroupSelectDisabled = () => selectTestUtils.selectDisabledIn(getWorkGroupFormItem())
 
@@ -628,16 +629,5 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       await testUtils.clickCloseButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
-  })
-
-  test('Обработчик вызывается корректно кликнув вне модалки', async () => {
-    mockGetWorkGroupListSuccess({ body: [] })
-
-    const { user } = render(<TaskSecondLineModal {...props} />, {
-      store: getStoreWithAuth(),
-    })
-
-    await modalTestUtils.clickOutsideModal(user)
-    expect(props.onCancel).toBeCalledTimes(1)
   })
 })

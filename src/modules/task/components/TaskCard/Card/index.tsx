@@ -8,15 +8,16 @@ import { CustomMutationTrigger } from 'lib/rtk-query/types'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal'
 import { RequestTaskSuspendModalProps } from 'modules/task/components/RequestTaskSuspendModal'
+import { RequestTaskSuspendFormFields } from 'modules/task/components/RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskResolutionModalProps } from 'modules/task/components/TaskResolutionModal'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
+  getTaskWorkPerformedActMessages,
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
-  getTaskWorkPerformedActMessages,
 } from 'modules/task/constants/task'
 import { useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
@@ -49,12 +50,11 @@ import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/serv
 import { MaybeNull } from 'shared/types/utils'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
-import { mapUploadedFiles } from 'shared/utils/file'
+import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import CardTabs from '../../CardTabs'
-import { RequestTaskSuspendFormFields } from '../../RequestTaskSuspendModal/types'
 import AdditionalInfo from '../AdditionalInfo'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
@@ -250,7 +250,9 @@ const TaskCard: FC<TaskCardProps> = ({
           taskId: task.id,
           techResolution: values.techResolution.trim(),
           userResolution: values.userResolution?.trim(),
-          attachments: values.attachments ? mapUploadedFiles(values.attachments) : undefined,
+          attachments: values.attachments?.length
+            ? extractOriginFiles(values.attachments)
+            : undefined,
         })
 
         closeTaskCard()

@@ -1,3 +1,3 @@
 export * from './getFieldsErrors'
 export * from './handleSetFieldsErrors'
-export * from './getFileOrFilesFromEvent'
+export * from './getFilesFromEvent'

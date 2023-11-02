@@ -1,4 +1,5 @@
-import { FormInstance } from 'antd'
+import { FormInstance, UploadProps } from 'antd'
+import { UploadFile } from 'antd/es/upload/interface'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
@@ -35,6 +36,7 @@ export type EquipmentFormModalFormFields = {
   usageCounter?: number
   owner?: IdType
   comment?: string
+  images?: UploadFile<{ id: IdType }>[]
 }
 
 export type EquipmentFormModalProps = Required<
@@ -46,6 +48,12 @@ export type EquipmentFormModalProps = Required<
     values: EquipmentFormModalFormFields,
     setFields: FormInstance['setFields'],
   ) => Promise<void>
+
+  onUploadImage: NonNullable<UploadProps['customRequest']>
+
+  /* Должно соответствовать параметру onRemove для корректной работы https://ant.design/components/upload#api */
+  onDeleteImage: NonNullable<UploadProps['onRemove']>
+  deleteImageIsLoading: boolean
 
   categoryList: EquipmentCategoryListModel
   categoryListIsLoading: boolean
